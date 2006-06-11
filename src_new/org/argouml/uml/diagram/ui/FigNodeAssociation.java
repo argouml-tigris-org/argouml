@@ -279,8 +279,9 @@ public class FigNodeAssociation extends FigNodeModelElement {
 
     /**
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
+     * TODO: Why does this behaviour differ from standard? Please javadoc.
      */
-    public void removeFromDiagram() {
+    protected void removeFromDiagramImpl() {
         Object owner = getOwner();
         super.removeFromDiagram();
         Editor editor = Globals.curEditor();

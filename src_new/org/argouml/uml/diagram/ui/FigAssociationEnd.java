@@ -257,7 +257,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /**
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
-    public void removeFromDiagram() {
+    protected void removeFromDiagramImpl() {
         final Object association = Model.getFacade().getAssociation(getOwner());
         final Object owner = getOwner();
         final Layer layer = getLayer();

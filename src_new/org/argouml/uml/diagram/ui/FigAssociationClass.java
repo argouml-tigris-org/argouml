@@ -82,7 +82,7 @@ public class FigAssociationClass extends FigAssociation {
      * FigClassAssociationClass attached to that. Remove them from the diagram
      * before removing this.
      */
-    public void removeFromDiagram() {
+    protected void removeFromDiagramImpl() {
         // TODO implement as described above.
         super.removeFromDiagram();
     }

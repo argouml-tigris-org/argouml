@@ -271,7 +271,7 @@ public class FigEdgeNote
     /**
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
-    public void removeFromDiagram() {
+    public void removeFromDiagramImpl() {
         superRemoveFromDiagram();
     }
     

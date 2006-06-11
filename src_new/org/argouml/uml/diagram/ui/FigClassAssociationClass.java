@@ -24,10 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 
 /**
  * Class to display a class in an Association Class

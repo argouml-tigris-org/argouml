@@ -1496,7 +1496,11 @@ public abstract class FigNodeModelElement
     /**
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
-    public void removeFromDiagram() {
+    final public void removeFromDiagram() {
+        removeFromDiagramImpl();
+    }
+    
+    protected void removeFromDiagramImpl() {
         ArgoEventPump.removeListener(this);
         removeAllElementListeners();
         shadowSize = 0;
