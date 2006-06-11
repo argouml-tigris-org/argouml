@@ -967,6 +967,8 @@ public abstract class FigEdgeModelElement
             diagram.damage();
         }
 
+        /* TODO: MVW: Should we not call damage()
+         * for diagrams AFTER the next step? */
         super.removeFromDiagram();
 
     }
