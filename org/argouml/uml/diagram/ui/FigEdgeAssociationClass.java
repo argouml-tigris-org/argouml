@@ -32,7 +32,6 @@ import java.beans.VetoableChangeListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.DelayedVChangeListener;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
@@ -138,10 +137,16 @@ public class FigEdgeAssociationClass
             node = getSourceFigNode();
         }
         if (!(node instanceof FigEdgePort)) {
+            LOG.warn("The is no FigEdgePort attached" +
+                    " to the association class link");
             return null;
         }
         // Actually return the FigEdge that the FigEdgePort is part of.
-        return node.getAnnotationOwner();
+        Fig delegate = node.getGroup();
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Delegating remove to " + delegate.getClass().getName());
+        }
+        return delegate;
     }
 
 
