@@ -27,18 +27,22 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 import java.awt.AWTEvent;
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.apache.log4j.Logger;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  *
  * @author mkl
  *
  */
-public class ActionSetTagDefinitionOwner extends UMLAction {
+public class ActionSetTagDefinitionOwner extends UndoableAction {
     /**
      * Logger.
      */
@@ -55,7 +59,11 @@ public class ActionSetTagDefinitionOwner extends UMLAction {
      * Constructor.
      */
     public ActionSetTagDefinitionOwner() {
-        super("Set", HAS_ICON);
+        super(Translator.localize("Set"),
+                ResourceLoaderWrapper.lookupIcon("Set"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("Set"));
     }
 
     /**

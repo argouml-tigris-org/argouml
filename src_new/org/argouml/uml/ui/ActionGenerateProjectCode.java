@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,12 +29,16 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.GeneratorManager;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to trigger code generation for all classes/interfaces in the
@@ -42,7 +46,7 @@ import org.argouml.uml.generator.ui.ClassGenerationDialog;
  *
  * @stereotype singleton
  */
-public class ActionGenerateProjectCode extends UMLAction {
+public class ActionGenerateProjectCode extends UndoableAction {
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -51,7 +55,11 @@ public class ActionGenerateProjectCode extends UMLAction {
      *  The constructor.
      */
     public ActionGenerateProjectCode() {
-	super("action.generate-code-for-project", true, NO_ICON);
+	    super(Translator.localize("action.generate-code-for-project"), 
+	            null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.generate-code-for-project"));
     }
 
 
@@ -62,7 +70,8 @@ public class ActionGenerateProjectCode extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	Vector classes = new Vector();
+        super.actionPerformed(ae);
+        Vector classes = new Vector();
 	ArgoDiagram activeDiagram =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	if (!(activeDiagram instanceof UMLDiagram)) {
@@ -96,12 +105,16 @@ public class ActionGenerateProjectCode extends UMLAction {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * Check if the diagram is enabled
+     * 
+     * @return true if enabled
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
-    public boolean shouldBeEnabled() {
-	ArgoDiagram activeDiagram =
-	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-	return super.shouldBeEnabled() && (activeDiagram instanceof UMLDiagram);
+    public boolean isEnabled() {
+        ArgoDiagram activeDiagram = ProjectManager.getManager()
+				.getCurrentProject().getActiveDiagram();
+        return super.isEnabled() 
+		&& (activeDiagram instanceof UMLDiagram);
     }
 
     /**
@@ -130,7 +143,7 @@ public class ActionGenerateProjectCode extends UMLAction {
         while (parent != null) {
             path = GeneratorManager.getCodePath(parent);
             if (path != null) {
-        	    return (path.length() > 0);
+                return (path.length() > 0);
             }
             parent = Model.getFacade().getNamespace(parent);
         }

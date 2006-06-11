@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,13 +44,14 @@ public class ActionEmailExpert extends ToDoItemAction {
      * The constructor.
      */
     public ActionEmailExpert() {
-        super("action.send-email-to-expert", HAS_ICON);
+        super("action.send-email-to-expert", true);
     }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
         if (OsUtil.isWin32()) {
             ToDoItem target = (ToDoItem) getRememberedTarget();
             Poster p = target.getPoster();
@@ -85,9 +86,9 @@ public class ActionEmailExpert extends ToDoItemAction {
     }
 
     /**
-     * @see org.argouml.ui.cmd.ToDoItemAction#shouldBeEnabled(java.lang.Object)
+     * @see org.argouml.ui.cmd.ToDoItemAction#isEnabled(java.lang.Object)
      */
-    public boolean shouldBeEnabled(Object target) {
+    public boolean isEnabled(Object target) {
         return getRememberedTarget() != null
             && getRememberedTarget() instanceof ToDoItem;
     }

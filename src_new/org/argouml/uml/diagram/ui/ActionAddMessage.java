@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,21 +26,25 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to add a message.
  * @stereotype singleton
  */
-public class ActionAddMessage extends UMLAction {
+public class ActionAddMessage extends UndoableAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -55,7 +59,11 @@ public class ActionAddMessage extends UMLAction {
      * The constructor.
      */
     private ActionAddMessage() {
-        super("action.add-message", true, HAS_ICON);
+        super(Translator.localize("action.add-message"),
+                ResourceLoaderWrapper.lookupIcon("action.add-message"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.add-message"));
     }
 
 
@@ -66,6 +74,7 @@ public class ActionAddMessage extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+        super.actionPerformed(ae);
     	Object target =  TargetManager.getInstance().getModelTarget();
 
     	if (!(Model.getFacade().isAAssociationRole(target))
@@ -75,7 +84,6 @@ public class ActionAddMessage extends UMLAction {
     	}
         // So, the target is a MAssociationRole
     	this.addMessage(target);
-        super.actionPerformed(ae);
     }
 
     /**
@@ -110,11 +118,11 @@ public class ActionAddMessage extends UMLAction {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
 	Object target =  TargetManager.getInstance().getModelTarget();
-	return super.shouldBeEnabled()
+	return super.isEnabled()
 	    && Model.getFacade().isAAssociationRole(target);
     }
 

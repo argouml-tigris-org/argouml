@@ -229,9 +229,9 @@ public class PropPanelOperation extends PropPanelFeature {
         }
         
         /**
-         * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+         * @see org.tigris.gef.undo.UndoableAction#isEnabled()
          */
-        public boolean shouldBeEnabled() {
+        public boolean isEnabled() {
             Object target = TargetManager.getInstance().getModelTarget();
             boolean result = true;
             if (Model.getFacade().isAOperation(target)) {
@@ -240,17 +240,17 @@ public class PropPanelOperation extends PropPanelFeature {
                     result = false;
                 }
             }
-            return super.shouldBeEnabled() && result;
+            return super.isEnabled() && result;
         }
 
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAOperation(target)) {
                 addMethod();
-                super.actionPerformed(e);
             }
         }
     }

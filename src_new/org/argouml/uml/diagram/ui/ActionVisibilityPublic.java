@@ -38,7 +38,7 @@ class ActionVisibilityPublic extends AbstractActionRadioMenuItem {
      * @param o the target
      */
     public ActionVisibilityPublic(Object o) {
-        super("checkbox.visibility.public-uc", NO_ICON);
+        super("checkbox.visibility.public-uc", false);
         putValue("SELECTED", Boolean.valueOf(
             Model.getVisibilityKind().getPublic()
                 .equals(valueOfTarget(o))));

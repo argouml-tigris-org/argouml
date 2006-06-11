@@ -59,7 +59,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.ui.Actions;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
@@ -227,10 +226,6 @@ public class Main {
 	// is that some of the commands will use the projectbrowser.
 	st.mark("initialize gui");
         initializeGUI(splash);
-
-        // Initialize the UMLActions
-        st.mark("actions");
-        Actions.getInstance();
 
         if (reloadRecent && projectName == null) {
             // If no project was entered on the command line,

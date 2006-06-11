@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,14 +28,15 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.undo.UndoableAction;
 
 /** Action to select the properties tab.
  * @stereotype singleton
  */
-public class ActionProperties extends UMLAction {
+public class ActionProperties extends UndoableAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -50,7 +51,11 @@ public class ActionProperties extends UMLAction {
      * The constructor.
      */
     protected ActionProperties() {
-        super(Translator.localize("action.properties"), true, HAS_ICON);
+        super(Translator.localize("action.properties"),
+                ResourceLoaderWrapper.lookupIcon("action.properties"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.properties"));
         String localMnemonic =
             Translator.localize("action.properties.mnemonic");
         if (localMnemonic != null && localMnemonic.length() == 1) {
@@ -66,15 +71,17 @@ public class ActionProperties extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	if (pb == null) return;
 	pb.selectTabNamed("action.properties");
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @return always true (the action is always enabled)
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
 	return true;
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ import org.argouml.ui.cmd.ActionResolve;
 import org.argouml.ui.cmd.ActionSnooze;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.undo.UndoableAction;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Vertical;
@@ -54,10 +54,10 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
     // static variables
     private static int numHushes;
 
-    private static UMLAction actionNewToDoItem = new ActionNewToDoItem();
-    private static UMLAction actionResolve = new ActionResolve();
-    private static UMLAction actionEmailExpert = new ActionEmailExpert();
-    private static UMLAction actionSnooze = new ActionSnooze();
+    private static UndoableAction actionNewToDoItem = new ActionNewToDoItem();
+    private static UndoableAction actionResolve = new ActionResolve();
+    private static UndoableAction actionEmailExpert = new ActionEmailExpert();
+    private static UndoableAction actionSnooze = new ActionSnooze();
     //public static UMLAction _actionRecordFix = Actions.RecordFix;
     //public static UMLAction _actionReplayFix = Actions.ReplayFix;
     //public static UMLAction _actionFixItNext = Actions.FixItNext;
@@ -173,7 +173,7 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
         } else {
             showDescription();
         }
-        updateActionsEnabled(item);
+        updateActionsEnabled();
     }
 
    /**
@@ -194,12 +194,13 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
     }
 
     /**
-     * @param target ignored
-     */
-    protected static void updateActionsEnabled(Object target) {
-        actionResolve.updateEnabled(target);
-        actionEmailExpert.updateEnabled(target);
-        actionSnooze.updateEnabled(target);
+	 * Update the "enabled" state of the resolve, emailExpert and snooze
+	 * actions.
+	 */
+    protected static void updateActionsEnabled() {
+        actionResolve.setEnabled(actionResolve.isEnabled());
+        actionEmailExpert.setEnabled(actionEmailExpert.isEnabled());
+        actionSnooze.setEnabled(actionSnooze.isEnabled());
     }
 
     /**

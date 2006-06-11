@@ -26,19 +26,20 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
 import javax.swing.JRadioButton;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public class ActionSetAssociationEndAggregation extends UMLAction {
+public class ActionSetAssociationEndAggregation extends UndoableAction {
 
     private static final ActionSetAssociationEndAggregation SINGLETON =
 	new ActionSetAssociationEndAggregation();
@@ -62,7 +63,10 @@ public class ActionSetAssociationEndAggregation extends UMLAction {
      * Constructor for ActionSetElementOwnershipSpecification.
      */
     protected ActionSetAssociationEndAggregation() {
-        super(Translator.localize("action.set"), true, NO_ICON);
+        super(Translator.localize("action.set"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.set"));
     }
 
     /**

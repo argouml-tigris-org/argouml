@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,8 +27,12 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * This class adds the common algorithms
@@ -37,10 +41,18 @@ import org.argouml.uml.ui.UMLAction;
  *
  * @author mvw@tigris.org
  */
-abstract class AbstractActionRadioMenuItem extends UMLAction {
+abstract class AbstractActionRadioMenuItem extends UndoableAction {
 
+    /**
+     * @param key the name to be localized
+     * @param hasIcon true if an icon should be shown
+     */
     public AbstractActionRadioMenuItem(String key, boolean hasIcon) {
-        super(key, hasIcon);
+        super(Translator.localize(key),
+        		hasIcon ? ResourceLoaderWrapper.lookupIcon(key) : null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize(key));
     }
 
     /**
@@ -85,12 +97,12 @@ abstract class AbstractActionRadioMenuItem extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public final void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
         Iterator i = TargetManager.getInstance().getTargets().iterator();
         while (i.hasNext()) {
             Object t = i.next();
             toggleValueOfTarget(t);
         }
-        super.actionPerformed(e);
     }
 
     /**

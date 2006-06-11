@@ -38,7 +38,7 @@ class ActionVisibilityPackage extends AbstractActionRadioMenuItem {
      * @param o the target
      */
     public ActionVisibilityPackage(Object o) {
-        super("checkbox.visibility.package-uc", NO_ICON);
+        super("checkbox.visibility.package-uc", false);
         putValue("SELECTED", Boolean.valueOf(
             Model.getVisibilityKind().getPackage()
                 .equals(valueOfTarget(o))));

@@ -26,17 +26,21 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.undo.UndoableAction;
+
 
 /**
  * Action to add a sterotype to a model element.
  * @author Bob Tarling
  */
-class ActionAddStereotype extends UMLAction {
+class ActionAddStereotype extends UndoableAction {
     private Object modelElement;
     private Object stereotype;
 
@@ -47,7 +51,11 @@ class ActionAddStereotype extends UMLAction {
      * @param st The stereotype.
      */
     public ActionAddStereotype(Object me, Object st) {
-        super(buildString(st), NO_ICON);
+        super(Translator.localize(buildString(st)),
+                null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize(buildString(st)));
         modelElement = me;
         stereotype = st;
     }
@@ -64,6 +72,7 @@ class ActionAddStereotype extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
         if (Model.getFacade().getStereotypes(modelElement)
                 .contains(stereotype)) {
             Model.getCoreHelper().removeStereotype(modelElement, stereotype);

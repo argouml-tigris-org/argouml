@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,20 +26,33 @@ package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.argouml.cognitive.critics.ui.CriticBrowserDialog;
-import org.argouml.uml.ui.UMLAction;
+import org.argouml.i18n.Translator;
+import org.tigris.gef.undo.UndoableAction;
 
 
-class ActionOpenCritics extends UMLAction {
+/**
+ * Action to open the Browse Critics dialog.
+ */
+class ActionOpenCritics extends UndoableAction {
 
+    /**
+     * The constructor.
+     */
     public ActionOpenCritics() {
-        super("action.browse-critics", NO_ICON);
+        super(Translator.localize("action.browse-critics"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.browse-critics"));
     }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
 	CriticBrowserDialog dialog = new CriticBrowserDialog();
 	dialog.setVisible(true);
     }

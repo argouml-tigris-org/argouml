@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,20 +27,18 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
-import org.apache.log4j.Logger;
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.reveng.Import;
+import org.tigris.gef.undo.UndoableAction;
 
 
 /** Action to trigger importing from sources.
  * @stereotype singleton
  */
-public class ActionImportFromSources extends UMLAction {
-
-    private static final Logger LOG =
-        Logger.getLogger(ActionImportFromSources.class);
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
+public class ActionImportFromSources extends UndoableAction {
 
     /**
      * The singleton.
@@ -48,26 +46,23 @@ public class ActionImportFromSources extends UMLAction {
     private static final ActionImportFromSources SINGLETON =
         new ActionImportFromSources();
 
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      *  The constructor.
      */
     protected ActionImportFromSources() {
-        // this is not a "global" action, since it is never downlighted...
-        super("action.import-sources", HAS_ICON);
+        // this is never downlighted...
+        super(Translator.localize("action.import-sources"),
+                ResourceLoaderWrapper.lookupIcon("action.import-sources"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.import-sources"));
     }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent event) {
+    	super.actionPerformed(event);
     	new Import();
     }
 

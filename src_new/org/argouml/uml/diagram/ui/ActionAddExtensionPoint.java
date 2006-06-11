@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,9 +26,13 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * A class to implement the addition of extension points to use cases.<p>
@@ -40,18 +44,11 @@ import org.argouml.uml.ui.UMLAction;
  * @author  Jeremy Bennett (mail@jeremybennett.com).
  * @stereotype singleton
  */
-public final class ActionAddExtensionPoint extends UMLAction {
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Class variables
-    //
-    ///////////////////////////////////////////////////////////////////////////
+public final class ActionAddExtensionPoint extends UndoableAction {
 
     /**
      * Our private copy of the instance. Only accessible through the proper
-     * access method.<p>
+     * access method.
      */
     private static ActionAddExtensionPoint singleton;
 
@@ -67,7 +64,11 @@ public final class ActionAddExtensionPoint extends UMLAction {
      * singleton. Make use of the access funtion.<p>
      */
     public ActionAddExtensionPoint() {
-        super("button.new-extension-point", true, HAS_ICON);
+        super(Translator.localize("button.new-extension-point"),
+                ResourceLoaderWrapper.lookupIcon("button.new-extension-point"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("button.new-extension-point"));
     }
 
 
@@ -104,6 +105,7 @@ public final class ActionAddExtensionPoint extends UMLAction {
      * @param ae  The action that caused us to be invoked.
      */
     public void actionPerformed(ActionEvent ae) {
+	super.actionPerformed(ae);
 
         // Find the target in the project browser. We can only do anything if
         // its a use case.
@@ -122,22 +124,21 @@ public final class ActionAddExtensionPoint extends UMLAction {
             	.buildExtensionPoint(target);
 
         TargetManager.getInstance().setTarget(ep);
-	super.actionPerformed(ae);
     }
 
 
     /**
-     * A predicate to determine if this action should be enabled.<p>
+     * A predicate to determine if this action is enabled.<p>
      *
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     * @return  <code>true</code> if the superclass believes we should be
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
+     * @return  <code>true</code> if the superclass affirms this action is
      *          enabled and the target is a use case. <code>false</code>
      *          otherwise.
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
 	Object target = TargetManager.getInstance().getModelTarget();
 
-	return super.shouldBeEnabled()
+	return super.isEnabled()
                 && (Model.getFacade().isAUseCase(target));
     }
 

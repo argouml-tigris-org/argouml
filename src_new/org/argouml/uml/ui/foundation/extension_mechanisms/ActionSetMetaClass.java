@@ -26,16 +26,20 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to set the baseclass of a stereotype.
  * 
  * @author mkl
  */
-public class ActionSetMetaClass extends UMLAction {
+public class ActionSetMetaClass extends UndoableAction {
 
     /**
      * The Singleton.
@@ -47,7 +51,11 @@ public class ActionSetMetaClass extends UMLAction {
      * Constructor.
      */
     public ActionSetMetaClass() {
-        super("Set", HAS_ICON);
+        super(Translator.localize("Set"),
+                ResourceLoaderWrapper.lookupIcon("Set"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("Set"));
     }
 
     /**

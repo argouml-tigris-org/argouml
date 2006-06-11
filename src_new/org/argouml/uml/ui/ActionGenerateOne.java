@@ -29,10 +29,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to trigger generation of source
@@ -40,7 +44,7 @@ import org.tigris.gef.presentation.Fig;
  *
  * @stereotype singleton
  */
-public class ActionGenerateOne extends UMLAction {
+public class ActionGenerateOne extends UndoableAction {
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -49,7 +53,10 @@ public class ActionGenerateOne extends UMLAction {
      * The constructor.
      */
     public ActionGenerateOne() {
-        super("action.generate-selected-classes", true, NO_ICON);
+        super(Translator.localize("action.generate-selected-classes"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.generate-selected-classes"));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -59,6 +66,7 @@ public class ActionGenerateOne extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
         Vector classes = getCandidates();
         // There is no need to test if classes is empty because
         // the shouldBeEnabled mechanism blanks out the possibility to
@@ -68,10 +76,12 @@ public class ActionGenerateOne extends UMLAction {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @return true if the action is enabled and there is at least a 
+     * candidate class
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
-    public boolean shouldBeEnabled() {
-        if (!super.shouldBeEnabled()) {
+    public boolean isEnabled() {
+        if (!super.isEnabled()) {
             return false;
 	}
         Vector classes = getCandidates();
@@ -79,7 +89,7 @@ public class ActionGenerateOne extends UMLAction {
     }
 
     /**
-     * @return
+     * @return the candidates for generation
      */
     private Vector getCandidates() {
         Vector classes = new Vector();

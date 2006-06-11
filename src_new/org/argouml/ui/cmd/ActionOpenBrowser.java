@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,10 +29,13 @@ package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.util.osdep.StartBrowser;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * ActionOpenBrowser opens a web browser,
@@ -40,20 +43,23 @@ import org.argouml.util.osdep.StartBrowser;
  * Enhance the actionPerformed method for better functionality.
  *
  * @author MarkusK
- *
- */
-public class ActionOpenBrowser extends UMLAction {
+  */
+public class ActionOpenBrowser extends UndoableAction {
     /**
      * The constructor.
      */
     public ActionOpenBrowser() {
-        super("action.open-browser", NO_ICON);
+        super(Translator.localize("action.open-browser"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.open-browser"));
     }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
         Object target = TargetManager.getInstance().getTarget();
         if (target instanceof ToDoItem) {
             ToDoItem item = (ToDoItem) target;

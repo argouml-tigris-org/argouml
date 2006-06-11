@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,16 +29,18 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.Action;
+
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * An action that makes all edges on the selected node visible/not visible
@@ -47,15 +49,15 @@ import org.tigris.gef.presentation.Fig;
  * @author David Manura
  * @since 0.13.5
  */
-public class ActionEdgesDisplay extends UMLAction {
+public class ActionEdgesDisplay extends UndoableAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
     // compartments
-    private static UMLAction showEdges = new ActionEdgesDisplay(true,
+    private static UndoableAction showEdges = new ActionEdgesDisplay(true,
                 Translator.localize("menu.popup.add.all-relations"));
-    private static UMLAction hideEdges = new ActionEdgesDisplay(false,
+    private static UndoableAction hideEdges = new ActionEdgesDisplay(false,
                 Translator.localize("menu.popup.remove.all-relations"));
 
     private boolean show;
@@ -70,12 +72,14 @@ public class ActionEdgesDisplay extends UMLAction {
      * @param desc the name
      */
     protected ActionEdgesDisplay(boolean showEdge, String desc) {
-        super(desc, true, NO_ICON);
+        super(desc, null);
+		// Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, desc);
         show = showEdge;
     }
 
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // main methods
 
     /**
@@ -85,6 +89,7 @@ public class ActionEdgesDisplay extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
         ArgoDiagram d = ProjectManager.getManager()
                 .getCurrentProject().getActiveDiagram();
         Editor ce = Globals.curEditor();
@@ -130,9 +135,10 @@ public class ActionEdgesDisplay extends UMLAction {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @return true if the action is enabled
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
         return true;
     }
 
@@ -140,7 +146,7 @@ public class ActionEdgesDisplay extends UMLAction {
     /**
      * @return Returns the showEdges.
      */
-    public static UMLAction getShowEdges() {
+    public static UndoableAction getShowEdges() {
         return showEdges;
     }
 
@@ -148,7 +154,7 @@ public class ActionEdgesDisplay extends UMLAction {
     /**
      * @return Returns the hideEdges.
      */
-    public static UMLAction getHideEdges() {
+    public static UndoableAction getHideEdges() {
         return hideEdges;
     }
 

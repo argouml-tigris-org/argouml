@@ -27,10 +27,12 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ProjectBrowser;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Abstract action that is the parent to all add actions that add the
@@ -38,7 +40,7 @@ import org.argouml.ui.ProjectBrowser;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class AbstractActionAddModelElement extends UMLAction {
+public abstract class AbstractActionAddModelElement extends UndoableAction {
 
     private Object target;
     private boolean multiSelect = true;
@@ -48,8 +50,11 @@ public abstract class AbstractActionAddModelElement extends UMLAction {
      * The constructor.
      */
     protected AbstractActionAddModelElement() {
-        super(Translator.localize("menu.popup.add-modelelement"), false,
-                NO_ICON);
+        super(Translator.localize("menu.popup.add-modelelement"),
+                null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("menu.popup.add-modelelement"));
     }
 
 
@@ -149,7 +154,7 @@ public abstract class AbstractActionAddModelElement extends UMLAction {
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {
-         return !getChoices().isEmpty();
+        return !getChoices().isEmpty();
     }
 
 }
