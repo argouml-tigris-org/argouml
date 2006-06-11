@@ -26,15 +26,17 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.tigris.gef.undo.UndoableAction;
 /**
  * @since Nov 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionSetStructuralFeatureType extends UMLAction {
+public class ActionSetStructuralFeatureType extends UndoableAction {
 
     private static final ActionSetStructuralFeatureType SINGLETON =
         new ActionSetStructuralFeatureType();
@@ -43,7 +45,10 @@ public class ActionSetStructuralFeatureType extends UMLAction {
      * Constructor for ActionSetStructuralFeatureType.
      */
     protected ActionSetStructuralFeatureType() {
-        super(Translator.localize("Set"), true, NO_ICON);
+        super(Translator.localize("Set"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("Set"));
     }
 
     /**

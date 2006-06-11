@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,18 +29,20 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.Action;
+
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.undo.UndoableAction;
 
 
 /**
  * Action to set the Multiplicity.
  *
  */
-public class ActionMultiplicity extends UMLAction {
+public class ActionMultiplicity extends UndoableAction {
     private String str = "";
     private Object/*MMultiplicity*/ mult = null;
 
@@ -49,27 +51,29 @@ public class ActionMultiplicity extends UMLAction {
     // static variables
 
     // multiplicity
-    private static UMLAction srcMultOne = new ActionMultiplicity("1", "src");
+    private static UndoableAction srcMultOne = 
+        new ActionMultiplicity("1", "src");
 
-    private static UMLAction destMultOne = new ActionMultiplicity("1", "dest");
+    private static UndoableAction destMultOne = 
+        new ActionMultiplicity("1", "dest");
 
-    private static UMLAction srcMultZeroToOne = new ActionMultiplicity("0..1",
-            "src");
+    private static UndoableAction srcMultZeroToOne = 
+        new ActionMultiplicity("0..1", "src");
 
-    private static UMLAction destMultZeroToOne = new ActionMultiplicity("0..1",
-            "dest");
+    private static UndoableAction destMultZeroToOne = 
+        new ActionMultiplicity("0..1", "dest");
 
-    private static UMLAction srcMultZeroToMany = new ActionMultiplicity("0..*",
-            "src");
+    private static UndoableAction srcMultZeroToMany = 
+        new ActionMultiplicity("0..*", "src");
 
-    private static UMLAction destMultZeroToMany = new ActionMultiplicity(
-            "0..*", "dest");
+    private static UndoableAction destMultZeroToMany = 
+        new ActionMultiplicity("0..*", "dest");
 
-    private static UMLAction srcMultOneToMany = new ActionMultiplicity("1..*",
-            "src");
+    private static UndoableAction srcMultOneToMany = 
+        new ActionMultiplicity("1..*", "src");
 
-    private static UMLAction destMultOneToMany = new ActionMultiplicity("1..*",
-            "dest");
+    private static UndoableAction destMultOneToMany = 
+        new ActionMultiplicity("1..*", "dest");
 
 
     ////////////////////////////////////////////////////////////////
@@ -82,7 +86,9 @@ public class ActionMultiplicity extends UMLAction {
      * @param s "src" or "dest". Anything else is interpreted as "dest".
      */
     protected ActionMultiplicity(String m, String s) {
-	super(m, true, NO_ICON);
+        super(m, null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, m);
 	str = s;
 	mult = m;
     }
@@ -95,7 +101,8 @@ public class ActionMultiplicity extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	Vector sels = Globals.curEditor().getSelectionManager().selections();
+        super.actionPerformed(ae);
+    	Vector sels = Globals.curEditor().getSelectionManager().selections();
 	if (sels.size() == 1) {
 	    Selection sel = (Selection) sels.firstElement();
 	    Fig f = sel.getContent();
@@ -123,9 +130,10 @@ public class ActionMultiplicity extends UMLAction {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @return true if the action is enabled
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
 	return true;
     }
 
@@ -133,7 +141,7 @@ public class ActionMultiplicity extends UMLAction {
     /**
      * @return Returns the srcMultOne.
      */
-    public static UMLAction getSrcMultOne() {
+    public static UndoableAction getSrcMultOne() {
         return srcMultOne;
     }
 
@@ -141,7 +149,7 @@ public class ActionMultiplicity extends UMLAction {
     /**
      * @return Returns the destMultOne.
      */
-    public static UMLAction getDestMultOne() {
+    public static UndoableAction getDestMultOne() {
         return destMultOne;
     }
 
@@ -149,7 +157,7 @@ public class ActionMultiplicity extends UMLAction {
     /**
      * @return Returns the srcMultZeroToOne.
      */
-    public static UMLAction getSrcMultZeroToOne() {
+    public static UndoableAction getSrcMultZeroToOne() {
         return srcMultZeroToOne;
     }
 
@@ -157,7 +165,7 @@ public class ActionMultiplicity extends UMLAction {
     /**
      * @return Returns the destMultZeroToOne.
      */
-    public static UMLAction getDestMultZeroToOne() {
+    public static UndoableAction getDestMultZeroToOne() {
         return destMultZeroToOne;
     }
 
@@ -165,7 +173,7 @@ public class ActionMultiplicity extends UMLAction {
     /**
      * @return Returns the srcMultZeroToMany.
      */
-    public static UMLAction getSrcMultZeroToMany() {
+    public static UndoableAction getSrcMultZeroToMany() {
         return srcMultZeroToMany;
     }
 
@@ -173,7 +181,7 @@ public class ActionMultiplicity extends UMLAction {
     /**
      * @return Returns the destMultZeroToMany.
      */
-    public static UMLAction getDestMultZeroToMany() {
+    public static UndoableAction getDestMultZeroToMany() {
         return destMultZeroToMany;
     }
 
@@ -181,7 +189,7 @@ public class ActionMultiplicity extends UMLAction {
     /**
      * @return Returns the srcMultOneToMany.
      */
-    public static UMLAction getSrcMultOneToMany() {
+    public static UndoableAction getSrcMultOneToMany() {
         return srcMultOneToMany;
     }
 
@@ -189,7 +197,7 @@ public class ActionMultiplicity extends UMLAction {
     /**
      * @return Returns the destMultOneToMany.
      */
-    public static UMLAction getDestMultOneToMany() {
+    public static UndoableAction getDestMultOneToMany() {
         return destMultOneToMany;
     }
 } /* end class ActionSrcMultOneToMany */

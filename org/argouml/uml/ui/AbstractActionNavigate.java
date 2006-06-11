@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2005 The Regents of the University of California. All
+// Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,15 +30,17 @@ import javax.swing.Action;
 import javax.swing.Icon;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  *
  * @author mkl
  *
  */
-public abstract class AbstractActionNavigate extends UMLAction {
+public abstract class AbstractActionNavigate extends UndoableAction {
 
     /**
      * The constructor.
@@ -52,7 +54,11 @@ public abstract class AbstractActionNavigate extends UMLAction {
      * @param hasIcon true if there is an icon for this action
      */
     public AbstractActionNavigate(String key, boolean hasIcon) {
-        super(key, hasIcon);
+        super(Translator.localize(key),
+        		hasIcon ? ResourceLoaderWrapper.lookupIcon(key) : null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize(key));
         putValue(Action.SMALL_ICON,
                  ResourceLoaderWrapper.lookupIconResource("NavigateUp"));
     }
@@ -89,6 +95,7 @@ public abstract class AbstractActionNavigate extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+    	super.actionPerformed(e);
         Object target = TargetManager.getInstance().getModelTarget();
         if (Model.getFacade().isAModelElement(target)) {
             Object elem = /* (MModelElement) */target;

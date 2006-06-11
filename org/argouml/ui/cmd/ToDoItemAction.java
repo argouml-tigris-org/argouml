@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,17 +24,29 @@
 
 package org.argouml.ui.cmd;
 
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.ui.UMLAction;
+import org.argouml.i18n.Translator;
+import org.tigris.gef.undo.UndoableAction;
 
 
 
-abstract class ToDoItemAction extends UMLAction {
+abstract class ToDoItemAction extends UndoableAction {
 
     private Object rememberedTarget = null;
 
+    /**
+     * @param name to be localized
+     * @param hasIcon true if an icon is to be shown
+     */
     public ToDoItemAction(String name, boolean hasIcon) {
-	super(name, hasIcon);
+        super(Translator.localize(name),
+                hasIcon ? ResourceLoaderWrapper.lookupIcon(name) : null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize(name));
     }
 
     /**
@@ -45,7 +57,7 @@ abstract class ToDoItemAction extends UMLAction {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#updateEnabled(java.lang.Object)
+     * @param target the target
      */
     public void updateEnabled(Object target) {
 	if (target == null) {
@@ -54,14 +66,14 @@ abstract class ToDoItemAction extends UMLAction {
 	}
 
 	rememberedTarget = target;
-	setEnabled(shouldBeEnabled(target));
+	setEnabled(isEnabled(target));
     }
 
     /**
      * @param target the current target
      * @return true if the action icon should be enabled (i.e. not downlighted)
      */
-    public boolean shouldBeEnabled(Object target) {
+    public boolean isEnabled(Object target) {
 	return target instanceof ToDoItem;
     }
 }

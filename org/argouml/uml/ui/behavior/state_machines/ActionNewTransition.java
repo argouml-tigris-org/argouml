@@ -78,11 +78,12 @@ public class ActionNewTransition extends AbstractActionNewModelElement {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @return true if the action is enabled
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();
-        return super.shouldBeEnabled() 
+        return super.isEnabled() 
             && !Model.getStateMachinesHelper().isTopState(target);
     }
     

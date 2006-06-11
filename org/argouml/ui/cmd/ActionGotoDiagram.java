@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,13 +26,16 @@ package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.argouml.application.api.CommandLineInterface;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.GotoDialog;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.undo.UndoableAction;
 
 ////////////////////////////////////////////////////////////////
 // items on view menu
@@ -43,14 +46,17 @@ import org.tigris.gef.base.Diagram;
  *
  */
 public class ActionGotoDiagram
-	extends UMLAction
+	extends UndoableAction
 	implements CommandLineInterface {
 
     /**
      * The constructor.
      */
     public ActionGotoDiagram() {
-        super("action.goto-diagram", NO_ICON);
+        super(Translator.localize("action.goto-diagram"), null);
+		// Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, Translator
+				.localize("action.goto-diagram"));
     }
 
 
@@ -58,6 +64,7 @@ public class ActionGotoDiagram
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
         new GotoDialog().setVisible(true);
     }
 

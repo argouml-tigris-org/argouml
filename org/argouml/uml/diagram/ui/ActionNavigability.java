@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,9 +26,11 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * A class to perform the action of changing the unidirectional or
@@ -36,7 +38,7 @@ import org.argouml.uml.ui.UMLAction;
  *
  * @author  Bob Tarling
  */
-public class ActionNavigability extends UMLAction {
+public class ActionNavigability extends UndoableAction {
     /**
      * Enumeration constant for <code>BIDIRECTIONAL</code> navigability.
      */
@@ -148,7 +150,9 @@ public class ActionNavigability extends UMLAction {
 				 Object theAssociationStart,
 				 Object theAssociationEnd,
 				 int theNavigability) {
-        super(label, true, NO_ICON);
+        super(label, null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, label);
 
         this.nav = theNavigability;
         this.assocStart = theAssociationStart;
@@ -162,6 +166,7 @@ public class ActionNavigability extends UMLAction {
      *         java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
 	Model.getCoreHelper().setNavigable(assocStart,
 	        (nav == BIDIRECTIONAL || nav == ENDTOSTART));
         Model.getCoreHelper().setNavigable(assocEnd,
@@ -171,9 +176,10 @@ public class ActionNavigability extends UMLAction {
     /**
      * The is action is always enabled.
      *
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     *@return always true (the action is always enabled)
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
 	return true;
     }
 } /* end class ActionNavigability */

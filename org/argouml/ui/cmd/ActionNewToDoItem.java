@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,9 +26,13 @@ package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.ui.AddToDoItemDialog;
-import org.argouml.uml.ui.UMLAction;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLListCellRenderer2;
+import org.tigris.gef.undo.UndoableAction;
 
 
 
@@ -36,19 +40,24 @@ import org.argouml.uml.ui.UMLListCellRenderer2;
  * The action to create a new todo item.
  *
  */
-public class ActionNewToDoItem extends UMLAction {
+public class ActionNewToDoItem extends UndoableAction {
 
     /**
      * The constructor.
      */
     public ActionNewToDoItem() {
-        super("action.new-todo-item", HAS_ICON);
+        super(Translator.localize("action.new-todo-item"),
+                ResourceLoaderWrapper.lookupIcon("action.new-todo-item"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.new-todo-item"));
     }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
         AddToDoItemDialog dialog = new AddToDoItemDialog(
                 new UMLListCellRenderer2(true));
         dialog.setVisible(true);

@@ -26,10 +26,12 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.tigris.gef.undo.UndoableAction;
 
 import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
 
 
 /**
@@ -37,7 +39,7 @@ import java.awt.event.ActionEvent;
  *
  * @author pepargouml@yahoo.es
  */
-public class ActionSetStubStateReferenceState extends UMLAction {
+public class ActionSetStubStateReferenceState extends UndoableAction {
 
     private static final ActionSetStubStateReferenceState SINGLETON =
             new ActionSetStubStateReferenceState();
@@ -46,7 +48,10 @@ public class ActionSetStubStateReferenceState extends UMLAction {
      * The constructor.
      */
     protected ActionSetStubStateReferenceState() {
-        super(Translator.localize("action.set"), true, NO_ICON);
+        super(Translator.localize("action.set"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.set"));
     }
 
     /**

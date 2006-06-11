@@ -26,12 +26,13 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
 import javax.swing.JRadioButton;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * An action to set the concurrency of an operation.
@@ -39,7 +40,7 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  * @author mkl
  *
  */
-public class ActionSetOperationConcurrencyKind extends UMLAction {
+public class ActionSetOperationConcurrencyKind extends UndoableAction {
 
     private static final ActionSetOperationConcurrencyKind SINGLETON =
         new ActionSetOperationConcurrencyKind();
@@ -63,7 +64,10 @@ public class ActionSetOperationConcurrencyKind extends UMLAction {
      * Constructor for ActionSetElementOwnershipSpecification.
      */
     protected ActionSetOperationConcurrencyKind() {
-        super(Translator.localize("Set"), true, NO_ICON);
+        super(Translator.localize("Set"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("Set"));
     }
 
     /**

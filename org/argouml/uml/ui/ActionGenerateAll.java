@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,12 +30,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to trigger code generation for one or more classes.
@@ -47,7 +51,7 @@ import org.argouml.uml.generator.ui.ClassGenerationDialog;
  * (independent if they are named or not). <p>
  * TODO: Implement a more logical behaviour.
  */
-public class ActionGenerateAll extends UMLAction {
+public class ActionGenerateAll extends UndoableAction {
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -56,7 +60,10 @@ public class ActionGenerateAll extends UMLAction {
      * Constructor.
      */
     public ActionGenerateAll() {
-	super("action.generate-all-classes", true, NO_ICON);
+        super(Translator.localize("action.generate-all-classes"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.generate-all-classes"));
     }
 
 
@@ -67,6 +74,7 @@ public class ActionGenerateAll extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
 	ArgoDiagram activeDiagram =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	if (!(activeDiagram instanceof UMLClassDiagram)) {
@@ -127,12 +135,13 @@ public class ActionGenerateAll extends UMLAction {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @return true if the action is enabled and the diagram is a class diagram
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
 	ArgoDiagram activeDiagram =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-	return super.shouldBeEnabled()
+	return super.isEnabled()
 	    && (activeDiagram instanceof UMLClassDiagram);
     }
 

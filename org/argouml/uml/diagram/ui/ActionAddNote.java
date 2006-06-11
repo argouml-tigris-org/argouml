@@ -33,18 +33,19 @@ import java.util.Iterator;
 import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to add a note aka comment. This action adds a Comment to 0..*
@@ -53,7 +54,7 @@ import org.tigris.gef.presentation.FigPoly;
  * The modelelements that are present on the current diagram, are connected
  * graphically. All others are only annotated in the model.
  */
-public class ActionAddNote extends UMLAction {
+public class ActionAddNote extends UndoableAction {
 
     /**
      * The default position (x and y) of the new fig.
@@ -69,7 +70,11 @@ public class ActionAddNote extends UMLAction {
      * The constructor. This action is not global, since it is never disabled.
      */
     public ActionAddNote() {
-        super("action.new-comment", false, HAS_ICON);
+        super(Translator.localize("action.new-comment"),
+                ResourceLoaderWrapper.lookupIcon("action.new-comment"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.new-comment"));
         putValue(Action.SMALL_ICON, ResourceLoaderWrapper
                 .lookupIconResource("New Note"));
     }
@@ -81,6 +86,7 @@ public class ActionAddNote extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+        super.actionPerformed(ae); //update all tools' enabled status
         Collection targets = TargetManager.getInstance().getModelTargets();
 
         //Let's build the comment first, unlinked.
@@ -139,7 +145,6 @@ public class ActionAddNote extends UMLAction {
 
         //Select the new comment as target
         TargetManager.getInstance().setTarget(noteFig.getOwner());
-        super.actionPerformed(ae); //update all tools' enabled status
     }
 
     /**

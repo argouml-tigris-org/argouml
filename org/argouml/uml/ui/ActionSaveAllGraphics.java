@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -45,6 +46,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.CmdSaveGraphics;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.undo.UndoableAction;
 import org.tigris.gef.util.Util;
 
 
@@ -57,7 +59,7 @@ import org.tigris.gef.util.Util;
  * @author Leonardo Souza Mario Bueno (lsbueno@tigris.org)
  */
 
-public class ActionSaveAllGraphics extends UMLAction {
+public class ActionSaveAllGraphics extends UndoableAction {
     private static final Logger LOG =
         Logger.getLogger(ActionSaveAllGraphics.class);
 
@@ -70,7 +72,11 @@ public class ActionSaveAllGraphics extends UMLAction {
      *
      */
     public ActionSaveAllGraphics() {
-	super( "action.save-all-graphics", NO_ICON);
+        super(Translator.localize("action.save-all-graphics"),
+                null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.save-all-graphics"));
     }
 
 
@@ -81,6 +87,7 @@ public class ActionSaveAllGraphics extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed( ActionEvent ae ) {
+        super.actionPerformed(ae);
 	trySave( false );
     }
 

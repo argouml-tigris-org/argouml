@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,21 +26,28 @@ package org.argouml.ui;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.argouml.application.api.Configuration;
-import org.argouml.uml.ui.UMLAction;
+import org.argouml.i18n.Translator;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
- * Action for handling Argo configuration save.
+ * Action for handling ArgoUML configuration save.
  *
  * @author Thierry Lach
  * @since 0.9.4
  */
-public class ActionSaveConfiguration extends UMLAction {
+public class ActionSaveConfiguration extends UndoableAction {
     /**
      * Constructor.
      */
     public ActionSaveConfiguration() {
-        super("action.save-configuration", NO_ICON);
+        super(Translator.localize("action.save-configuration"),
+                null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.save-configuration"));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -50,6 +57,7 @@ public class ActionSaveConfiguration extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent event) {
+    	super.actionPerformed(event);
         ProjectBrowser.getInstance().saveScreenConfiguration();
         if (!Configuration.save()) {
 	    Configuration.save(true);

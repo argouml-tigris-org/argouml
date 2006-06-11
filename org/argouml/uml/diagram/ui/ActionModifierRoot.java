@@ -38,7 +38,7 @@ class ActionModifierRoot extends AbstractActionCheckBoxMenuItem {
      * @param o the target
      */
     public ActionModifierRoot(Object o) {
-        super("checkbox.root-uc", NO_ICON);
+        super("checkbox.root-uc");
         putValue("SELECTED", Boolean.valueOf(valueOfTarget(o)));
     }
 

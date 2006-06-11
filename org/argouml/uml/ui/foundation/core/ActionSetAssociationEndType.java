@@ -26,16 +26,18 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * @since Nov 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionSetAssociationEndType extends UMLAction {
+public class ActionSetAssociationEndType extends UndoableAction {
 
     private static final ActionSetAssociationEndType SINGLETON =
         new ActionSetAssociationEndType();
@@ -44,7 +46,10 @@ public class ActionSetAssociationEndType extends UMLAction {
      * Constructor for ActionSetStructuralFeatureType.
      */
     protected ActionSetAssociationEndType() {
-        super(Translator.localize("Set"), true, NO_ICON);
+        super(Translator.localize("Set"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("Set"));
     }
 
 
@@ -53,6 +58,7 @@ public class ActionSetAssociationEndType extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+    	super.actionPerformed(e);
         Object source = e.getSource();
         Object oldClassifier = null;
         Object newClassifier = null;

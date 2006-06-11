@@ -39,7 +39,7 @@ class ActionModifierAbstract extends AbstractActionCheckBoxMenuItem {
      * @param o the target
      */
     public ActionModifierAbstract(Object o) {
-        super("checkbox.abstract-uc", NO_ICON);
+        super("checkbox.abstract-uc");
         putValue("SELECTED", Boolean.valueOf(valueOfTarget(o)));
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,21 +26,33 @@ package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.argouml.cognitive.ui.GoalsDialog;
-import org.argouml.uml.ui.UMLAction;
+import org.argouml.i18n.Translator;
+import org.tigris.gef.undo.UndoableAction;
 
 
+/**
+ * Action to open the Goals dialog.
+ */
+class ActionOpenGoals extends UndoableAction {
 
-class ActionOpenGoals extends UMLAction {
-
+    /**
+     * The constructor.
+     */
     public ActionOpenGoals() {
-        super("action.design-goals", NO_ICON);
+        super(Translator.localize("action.design-goals"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.design-goals"));
     }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
 	GoalsDialog d = new GoalsDialog();
 	d.setVisible(true);
     }

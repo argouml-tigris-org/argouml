@@ -27,18 +27,20 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+import javax.swing.Action;
 import javax.swing.JFileChooser;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.tigris.gef.undo.UndoableAction;
 
 
 /**
  * Action to choose and set source path for model elements.
  */
-public class ActionSetSourcePath extends UMLAction {
+public class ActionSetSourcePath extends UndoableAction {
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -47,7 +49,10 @@ public class ActionSetSourcePath extends UMLAction {
      * The constructor.
      */
     public ActionSetSourcePath() {
-	super("action.set-source-path", false, NO_ICON);
+        super(Translator.localize("action.set-source-path"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.set-source-path"));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -57,6 +62,7 @@ public class ActionSetSourcePath extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+    	super.actionPerformed(e);
 	File f = getNewDirectory();
 	if (f != null) {
 	    Object obj = TargetManager.getInstance().getTarget();

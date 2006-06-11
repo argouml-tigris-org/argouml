@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,10 @@
 
 package org.argouml.uml.ui;
 
+import javax.swing.Action;
+
 import org.argouml.i18n.Translator;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Base class for remove actions. Remove actions can remove an element
@@ -35,7 +38,7 @@ import org.argouml.i18n.Translator;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 25, 2003
  */
-public class AbstractActionRemoveElement extends UMLAction {
+public class AbstractActionRemoveElement extends UndoableAction {
 
     /**
      * The object that owns the object that must be removed (the
@@ -57,7 +60,11 @@ public class AbstractActionRemoveElement extends UMLAction {
      * @param name the name for this action
      */
     protected AbstractActionRemoveElement(String name) {
-        super(name, true, NO_ICON);
+        super(Translator.localize(name),
+                null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize(name));
     }
 
      /**

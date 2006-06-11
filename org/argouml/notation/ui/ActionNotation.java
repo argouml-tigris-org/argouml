@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JRadioButtonMenuItem;
@@ -37,7 +38,7 @@ import javax.swing.event.MenuListener;
 import org.argouml.i18n.Translator;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
-import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.undo.UndoableAction;
 
 
 /**
@@ -46,7 +47,7 @@ import org.argouml.uml.ui.UMLAction;
  * @author Thierry Lach
  * @since  ARGO0.9.4
  */
-public class ActionNotation extends UMLAction
+public class ActionNotation extends UndoableAction
     implements MenuListener {
 
     ////////////////////////////////////////////////////////////////
@@ -72,7 +73,11 @@ public class ActionNotation extends UMLAction
      * Constructor - adds the Notation menu.
      */
     public ActionNotation() {
-        super("menu.notation", NO_ICON);
+	    super(Translator.localize("menu.notation"), 
+	            null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("menu.notation"));
         menu = new JMenu(Translator.localize("menu.notation"));
         menu.add(this);
         menu.addMenuListener(this);
@@ -82,6 +87,7 @@ public class ActionNotation extends UMLAction
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
         String key = ae.getActionCommand();
         List list = Notation.getAvailableNotations();
         ListIterator iterator = list.listIterator();

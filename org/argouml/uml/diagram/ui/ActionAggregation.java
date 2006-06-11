@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,17 +29,20 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to set the Aggregation kind.
  *
  */
-public class ActionAggregation extends UMLAction {
+public class ActionAggregation extends UndoableAction {
     private String str = "";
     private Object/*MAggregationKind*/ agg = null;
 
@@ -48,23 +51,23 @@ public class ActionAggregation extends UMLAction {
     // static variables
 
     // aggregation
-    private static UMLAction srcAgg =
+    private static UndoableAction srcAgg =
 	new ActionAggregation(
 	        Model.getAggregationKind().getAggregate(), "src");
-    private static UMLAction destAgg =
+    private static UndoableAction destAgg =
 	new ActionAggregation(
 	        Model.getAggregationKind().getAggregate(), "dest");
 
-    private static UMLAction srcAggComposite =
+    private static UndoableAction srcAggComposite =
 	new ActionAggregation(
 	        Model.getAggregationKind().getComposite(), "src");
-    private static UMLAction destAggComposite =
+    private static UndoableAction destAggComposite =
 	new ActionAggregation(
 	        Model.getAggregationKind().getComposite(), "dest");
 
-    private static UMLAction srcAggNone =
+    private static UndoableAction srcAggNone =
 	new ActionAggregation(Model.getAggregationKind().getNone(), "src");
-    private static UMLAction destAggNone =
+    private static UndoableAction destAggNone =
 	new ActionAggregation(
 	        Model.getAggregationKind().getNone(), "dest");
 
@@ -78,7 +81,11 @@ public class ActionAggregation extends UMLAction {
      * @param s "src" or "dest". Anything else is interpreted as "dest".
      */
     protected ActionAggregation(Object/*MAggregationKind*/ a, String s) {
-	super(Model.getFacade().getName(a), true, NO_ICON);
+        super(Translator.localize(Model.getFacade().getName(a)),
+                null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize(Model.getFacade().getName(a)));
 	str = s;
 	agg = a;
     }
@@ -91,6 +98,7 @@ public class ActionAggregation extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
 	Vector sels = Globals.curEditor().getSelectionManager().selections();
 	if (sels.size() == 1) {
 	    Selection sel = (Selection) sels.firstElement();
@@ -111,9 +119,10 @@ public class ActionAggregation extends UMLAction {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @return true if the action is enabled
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
-    public boolean shouldBeEnabled() {
+    public boolean isEnabled() {
 	return true;
     }
 
@@ -121,7 +130,7 @@ public class ActionAggregation extends UMLAction {
     /**
      * @return Returns the srcAgg.
      */
-    public static UMLAction getSrcAgg() {
+    public static UndoableAction getSrcAgg() {
         return srcAgg;
     }
 
@@ -129,7 +138,7 @@ public class ActionAggregation extends UMLAction {
     /**
      * @return Returns the destAgg.
      */
-    public static UMLAction getDestAgg() {
+    public static UndoableAction getDestAgg() {
         return destAgg;
     }
 
@@ -137,7 +146,7 @@ public class ActionAggregation extends UMLAction {
     /**
      * @return Returns the srcAggComposite.
      */
-    public static UMLAction getSrcAggComposite() {
+    public static UndoableAction getSrcAggComposite() {
         return srcAggComposite;
     }
 
@@ -145,7 +154,7 @@ public class ActionAggregation extends UMLAction {
     /**
      * @return Returns the destAggComposite.
      */
-    public static UMLAction getDestAggComposite() {
+    public static UndoableAction getDestAggComposite() {
         return destAggComposite;
     }
 
@@ -153,7 +162,7 @@ public class ActionAggregation extends UMLAction {
     /**
      * @return Returns the srcAggNone.
      */
-    public static UMLAction getSrcAggNone() {
+    public static UndoableAction getSrcAggNone() {
         return srcAggNone;
     }
 
@@ -161,7 +170,7 @@ public class ActionAggregation extends UMLAction {
     /**
      * @return Returns the destAggNone.
      */
-    public static UMLAction getDestAggNone() {
+    public static UndoableAction getDestAggNone() {
         return destAggNone;
     }
 } /* end class ActionSrcMultOneToMany */

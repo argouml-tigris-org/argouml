@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 
+import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -37,7 +38,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateOwner;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -45,6 +45,7 @@ import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * A property panel for methods.
@@ -194,13 +195,16 @@ public class PropPanelMethod extends PropPanelFeature {
         private static final long serialVersionUID = -7439424794380015022L;
     }
 
-    private static class ActionSetMethodSpecification extends UMLAction {
+    private static class ActionSetMethodSpecification extends UndoableAction {
 
         /**
          * Constructor for ActionSetStructuralFeatureType.
          */
         protected ActionSetMethodSpecification() {
-            super(Translator.localize("Set"), false, NO_ICON);
+            super(Translator.localize("Set"), null);
+            // Set the tooltip string:
+            putValue(Action.SHORT_DESCRIPTION, 
+                    Translator.localize("Set"));
         }
 
         /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,11 @@
 package org.argouml.ui;
 
 import java.awt.event.ActionEvent;
-import org.argouml.uml.ui.UMLAction;
+
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * A class to keep track of the users desire to have his diagram nodes
@@ -34,7 +38,7 @@ import org.argouml.uml.ui.UMLAction;
  * @see org.argouml.ui.cmd.CmdSetPreferredSize
  * @author Markus Klink
  */
-public class ActionAutoResize extends UMLAction {
+public class ActionAutoResize extends UndoableAction {
 
     private static boolean autoResize = false;
 
@@ -42,21 +46,25 @@ public class ActionAutoResize extends UMLAction {
      * The constructor.
      */
     public ActionAutoResize() {
-        super("action.toggle-auto-resizing", NO_ICON);
+	    super(Translator.localize("action.toggle-auto-resizing"), 
+	            null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.toggle-auto-resizing"));
     }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
         autoResize = !autoResize;
     }
 
     /**
      * Accessor to determine whether the nodes should be resized or not.
      *
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(
-     *         java.beans.PropertyChangeEvent)
+     * @return true if resizeable
      */
     public static boolean isAutoResizable() { return autoResize; }
 }

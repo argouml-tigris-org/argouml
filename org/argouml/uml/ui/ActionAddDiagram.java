@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,13 +26,18 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.apache.log4j.Logger;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Abstract class that is the parent of all actions adding diagrams to ArgoUML.
@@ -42,7 +47,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  *
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class ActionAddDiagram extends UMLAction {
+public abstract class ActionAddDiagram extends UndoableAction {
     /**
      * Logger.
      */
@@ -55,13 +60,18 @@ public abstract class ActionAddDiagram extends UMLAction {
      * @param s the name for this action
      */
     public ActionAddDiagram(String s) {
-        super(s, true, HAS_ICON);
+        super(Translator.localize(s),
+                ResourceLoaderWrapper.lookupIcon(s));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize(s));
     }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+    	super.actionPerformed(e);
         Project p = ProjectManager.getManager().getCurrentProject();
         Object ns = findNamespace();
 

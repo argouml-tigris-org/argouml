@@ -27,6 +27,9 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
@@ -39,12 +42,13 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.SelectionManager;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to automatically lay out a diagram.
  *
  */
-public class ActionLayout extends UMLAction {
+public class ActionLayout extends UndoableAction {
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -53,7 +57,10 @@ public class ActionLayout extends UMLAction {
      * The constructor.
      */
     public ActionLayout() {
-        super("action.layout", true, NO_ICON);
+        super(Translator.localize("action.layout"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("action.layout"));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -62,10 +69,11 @@ public class ActionLayout extends UMLAction {
     /**
      * Check whether we deal with a supported diagram type
      * (currently only UMLClassDiagram).
+     * @return true if the action is enabled
      * @see org.argouml.ui.ProjectBrowser
      */
-    public boolean shouldBeEnabled() {
-        if (!super.shouldBeEnabled()) {
+    public boolean isEnabled() {
+        if (!super.isEnabled()) {
             return false;
         }
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -76,9 +84,8 @@ public class ActionLayout extends UMLAction {
         if (d instanceof UMLClassDiagram 
                 || d instanceof UMLActivityDiagram) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -87,13 +94,14 @@ public class ActionLayout extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+    	super.actionPerformed(ae);
         ArgoDiagram diagram = ProjectManager.getManager()
                 .getCurrentProject().getActiveDiagram();
         Layouter layouter;
         if (diagram instanceof UMLClassDiagram) {
-             layouter = new ClassdiagramLayouter((UMLClassDiagram) diagram);
+            layouter = new ClassdiagramLayouter((UMLClassDiagram) diagram);
         } else if (diagram instanceof UMLActivityDiagram) {
-             layouter = 
+            layouter = 
                  new ActivityDiagramLayouter((UMLActivityDiagram) diagram);
         } else {
             return;

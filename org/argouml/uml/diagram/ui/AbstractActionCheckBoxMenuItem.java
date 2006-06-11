@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,8 +27,11 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * This class adds the common algorithms
@@ -37,10 +40,16 @@ import org.argouml.uml.ui.UMLAction;
  *
  * @author mvw@tigris.org
  */
-abstract class AbstractActionCheckBoxMenuItem extends UMLAction {
+abstract class AbstractActionCheckBoxMenuItem extends UndoableAction {
 
-    public AbstractActionCheckBoxMenuItem(String key, boolean hasIcon) {
-        super(key, hasIcon);
+    /**
+     * @param key the name (to be localized)
+     */
+    public AbstractActionCheckBoxMenuItem(String key) {
+        super(Translator.localize(key), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize(key));
     }
 
     /**

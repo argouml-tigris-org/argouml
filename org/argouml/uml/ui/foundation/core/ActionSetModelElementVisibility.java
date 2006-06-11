@@ -26,18 +26,20 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
 import javax.swing.JRadioButton;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public class ActionSetModelElementVisibility extends UMLAction {
+public class ActionSetModelElementVisibility extends UndoableAction {
     /**
      * The instance.
      */
@@ -68,7 +70,10 @@ public class ActionSetModelElementVisibility extends UMLAction {
      * Constructor for ActionSetElementOwnershipSpecification.
      */
     protected ActionSetModelElementVisibility() {
-        super("Set", true, NO_ICON);
+        super(Translator.localize("Set"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("Set"));
     }
 
     /**
