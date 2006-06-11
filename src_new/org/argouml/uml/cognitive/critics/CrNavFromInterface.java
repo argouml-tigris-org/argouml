@@ -40,7 +40,7 @@ import org.argouml.uml.cognitive.UMLDecision;
  * The critic will trigger whenever an association between an
  * interface and a class is navigable <em>from</em> the interface.<p>
  *
- * @see <a href=
+ * See <a href=
  * "http://argouml.tigris.org/documentation/printablehtml/manual/argouml.html/
  * #s2.ref.critics_nav_from_interface">
  * ArgoUML User Manual: N</a>

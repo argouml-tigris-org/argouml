@@ -24,8 +24,6 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.Collection;
-
 import javax.swing.JPanel;
 
 import org.argouml.cognitive.ui.WizStepTextField;

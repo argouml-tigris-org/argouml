@@ -87,6 +87,10 @@ public class LastRecentlyUsedMenuList {
 
     /**
      * Adds the eventhandler to the menu and renames the entry.
+     *
+     * @param filename the text for the entry
+     * @param addAt the location
+     * @return the menuitem
      */
     private JMenuItem addEventHandler(String filename, int addAt) {
         // the text is used by the event handler for opening the project

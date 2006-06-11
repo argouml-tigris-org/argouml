@@ -64,8 +64,10 @@ public class CmdSetPreferredSize extends Cmd {
 
     private static String wordFor(int r) {
         switch (r) {
-        case PREFERRED_SIZE: return "preferred";
-        case MINIMUM_SIZE: return "minimum";
+        case PREFERRED_SIZE: 
+            return "preferred";
+        case MINIMUM_SIZE: 
+            return "minimum";
         }
         throw new IllegalArgumentException("CmdSetPreferredSize invoked with "
 					   + "incompatible mode: " + r);

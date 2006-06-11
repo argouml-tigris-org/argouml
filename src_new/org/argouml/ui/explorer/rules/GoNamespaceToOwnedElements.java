@@ -63,7 +63,8 @@ public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
 	    Object o = it.next();
 	    if (Model.getFacade().isACollaboration(o)) {
                 if ((Model.getFacade().getRepresentedClassifier(o) != null)
-                        || (Model.getFacade().getRepresentedOperation(o) != null)) {
+                        || (Model.getFacade().getRepresentedOperation(o)
+                                != null)) {
                     continue;
                 }
 	    }

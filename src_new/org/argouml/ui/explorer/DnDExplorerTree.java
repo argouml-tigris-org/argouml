@@ -78,17 +78,23 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.<p>
- * @see http://java.sun.com/j2se/1.4.2/docs/guide/dragndrop/spec/dnd1.html
- * @see http://java.sun.com/products/jfc/tsc/articles/dragndrop/index.html
+ * See <a 
+ * href="http://java.sun.com/j2se/1.4.2/docs/guide/dragndrop/spec/dnd1.html">
+ * dnd1</a> and <a 
+ * href="http://java.sun.com/products/jfc/tsc/articles/dragndrop/index.html">
+ * dnd2</a><p>
  *
- * And it adds the 'copy to clipboard' capability for diagrams.<p>
- * @see http://java.sun.com/j2se/1.3/docs/guide/swing/KeyBindChanges.html
+ * And it adds the 'copy to clipboard' capability for diagrams. See
+ * <a href="http://java.sun.com/j2se/1.3/docs/guide/swing/KeyBindChanges.html">
+ * KeyBindChanges</a><p>
  *
- * The ghosted images code originates from <p>
- * @see http://www.javaworld.com/javaworld/javatips/jw-javatip114.html
+ * The ghosted images code originates from <p><a 
+ * href="http://www.javaworld.com/javaworld/javatips/jw-javatip114.html">
+ * javatip114</a><p>
  *
- * Interesting may also be the following:
- * @see http://forum.java.sun.com/thread.jspa?threadID=296255&start=30
+ * Interesting may also be the following: <p><a 
+ * href="http://forum.java.sun.com/thread.jspa?threadID=296255&start=30">
+ * thread</a>
  *
  * @author  alexb
  * @since Created on 16 April 2003

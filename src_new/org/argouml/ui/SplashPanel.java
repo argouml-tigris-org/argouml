@@ -78,6 +78,9 @@ class SplashPanel extends JPanel {
 	add(splashLabel, BorderLayout.CENTER);
     }
 
+    /**
+     * @return the image of the splash
+     */
     public ImageIcon getImage() {
 	return splashImage;
     }

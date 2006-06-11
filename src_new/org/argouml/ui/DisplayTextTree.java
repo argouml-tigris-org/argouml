@@ -72,7 +72,7 @@ public class DisplayTextTree extends JTree {
     /**
      * This determines if stereotypes are to be shown in the explorer.
      */
-    protected boolean showStereotype;
+    private boolean showStereotype;
 
     /**
      * Sets the label renderer, line style angled, enable tooltips,
@@ -361,6 +361,13 @@ public class DisplayTextTree extends JTree {
             expandPath(path);
         }
         reexpanding = false;
+    }
+
+    /**
+     * @param show true if stereotypes have to be shown
+     */
+    protected void setShowStereotype(boolean show) {
+        this.showStereotype = show;
     }
 
     /**

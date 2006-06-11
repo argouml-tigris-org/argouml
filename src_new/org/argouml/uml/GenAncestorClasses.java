@@ -44,7 +44,7 @@ public class GenAncestorClasses implements ChildGenerator {
 	Vector res = new Vector();
 
 	if (!(Model.getFacade().isAGeneralizableElement(cls))) {
-                return res.elements();
+	    return res.elements();
         }
 	Collection gens = Model.getFacade().getGeneralizations(cls);
 	if (gens == null) return res.elements();

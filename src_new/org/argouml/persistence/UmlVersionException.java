@@ -35,7 +35,8 @@ public class UmlVersionException extends XmiFormatException {
      * Construct an UmlVersionException with the version string
      * and a nested cause.
      * 
-     * @param cause
+     * @param message the message for the exception
+     * @param cause what caused the exception
      */
     public UmlVersionException(String message, Throwable cause) {
         super(cause);

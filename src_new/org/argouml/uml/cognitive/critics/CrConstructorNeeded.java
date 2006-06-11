@@ -43,7 +43,7 @@ import org.argouml.uml.cognitive.UMLDecision;
  *
  * This critic is part of a compound critic.<p>
  *
- * @see <a href=
+ * See <a href=
  * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
  * #s2.ref.critics_constructor_needed">
  * ArgoUML User Manual: Constructor Needed</a>

@@ -50,7 +50,7 @@ public class SplashScreen extends JWindow implements IStatusBar {
     /**
      * Flag indicating that the splash screen has been painted.
      */
-    public boolean paintCalled = false;
+    private boolean paintCalled = false;
 
     /**
      * The constructor.
@@ -119,6 +119,20 @@ public class SplashScreen extends JWindow implements IStatusBar {
                 notifyAll();
             }
         }
+    }
+
+    /**
+     * @param called true if paint() is already called
+     */
+    public void setPaintCalled(boolean called) {
+        this.paintCalled = called;
+    }
+
+    /**
+     * @return true if paint() is already called
+     */
+    public boolean isPaintCalled() {
+        return paintCalled;
     }
 
 } /* end class SplashScreen */

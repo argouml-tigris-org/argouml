@@ -252,7 +252,7 @@ class ArgoAny implements Any, Type2 {
 	return internalNavigateParameterized(name, qualifiers, false);
     }
 
-    public Type internalNavigateParameterized(final String name,
+    private Type internalNavigateParameterized(final String name,
                                               final Type[] params,
                                               boolean fCheckIsQuery)
 	throws OclTypeException {
@@ -292,7 +292,8 @@ class ArgoAny implements Any, Type2 {
 	    }
 	}
 
-        Collection returnParams = Model.getCoreHelper().getReturnParameters(foundOp);
+        Collection returnParams = 
+            Model.getCoreHelper().getReturnParameters(foundOp);
         Object rp;
         if (returnParams.size() == 0) {
             rp = null;

@@ -115,7 +115,6 @@ public class CrNodesOverlap extends CrUML {
 	//TODO: algorithm is n^2 in number of nodes
 	Vector figs = new Vector(d.getLayer().getContents());
 	int numFigs = figs.size();
-	int numRects = 0;
 	ListSet offs = null;
 	for (int i = 0; i < numFigs - 1; i++) {
 	    Object oi = figs.elementAt(i);

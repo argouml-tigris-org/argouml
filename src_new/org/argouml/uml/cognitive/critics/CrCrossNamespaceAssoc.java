@@ -50,7 +50,7 @@ import org.argouml.uml.cognitive.UMLDecision;
  * useful for the future when multiple models and sub-systems are
  * supported.<p>
  *
- * @see <a href=
+ * See <a href=
  * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
  * #s2.ref.critics_cross_namespace_assoc">
  * ArgoUML User Manual: Classifier not in Namespace of its Association</a>

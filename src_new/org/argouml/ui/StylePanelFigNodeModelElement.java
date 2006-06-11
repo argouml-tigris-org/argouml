@@ -96,6 +96,11 @@ public class StylePanelFigNodeModelElement
         pathCheckBox.addItemListener(this);
     }
 
+    /**
+     * Add a given checkbox to the panel.
+     * 
+     * @param cb the given checkbox
+     */
     public void addToDisplayPane(JCheckBox cb) {
         displayPane.add(cb);
     }
@@ -137,7 +142,6 @@ public class StylePanelFigNodeModelElement
             return;
         }
         FigNodeModelElement nodeTarget = (FigNodeModelElement) getPanelTarget();
-        int oldShadowSize = nodeTarget.getShadowSize();
         nodeTarget.setShadowSize(i);
         getPanelTarget().endTrans();
     }

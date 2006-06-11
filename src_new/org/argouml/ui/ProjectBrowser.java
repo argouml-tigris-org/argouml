@@ -44,7 +44,6 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
@@ -90,7 +89,6 @@ import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.IStatusBar;
@@ -1095,7 +1093,8 @@ public final class ProjectBrowser
 //            // A Fig with a null owner
 //            if (figs.size() > 0) {
 //                Fig fig = (Fig)figs.get(0);
-//                LOG.error("Setting owner of " + fig.getClass().getName() + " to null");
+//                LOG.error("Setting owner of " 
+//                    + fig.getClass().getName() + " to null");
 //                fig.setOwner(null);
 //            }
 //            // A Fig with a null layer
@@ -1264,7 +1263,7 @@ public final class ProjectBrowser
         } else {
             // Hide save action during load. Otherwise we get the
             // * appearing in title bar as models are updated
-            Action saveAction = this.saveAction;
+            Action rememberedSaveAction = this.saveAction;
             this.saveAction = null;
             ProjectManager.getManager().setSaveAction(null);
             try {
@@ -1384,10 +1383,10 @@ public final class ProjectBrowser
                 Designer.enableCritiquing();
 
                 // Make sure save action is always reinstated
-                this.saveAction = saveAction;
-                ProjectManager.getManager().setSaveAction(saveAction);
+                this.saveAction = rememberedSaveAction;
+                ProjectManager.getManager().setSaveAction(rememberedSaveAction);
                 if (success) {
-                    saveAction.setEnabled(false);
+                    rememberedSaveAction.setEnabled(false);
                 }
             }
         }
@@ -1419,7 +1418,7 @@ public final class ProjectBrowser
      * @param message the message to display.
      * @param showUI true if an error message may be shown to the user,
      *               false if run in commandline mode
-     * @param ex The exception that was thrown.
+     * @param error the error
      * 
      * TODO: This appears to have been cloned from the method below
      * without updating the Javadoc. Not sure what the difference

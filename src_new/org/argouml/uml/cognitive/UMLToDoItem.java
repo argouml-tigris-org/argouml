@@ -120,7 +120,7 @@ public class UMLToDoItem extends ToDoItem {
      * Action jumps to the diagram containing all or most of the
      * offenders and calls {@link #deselect()}, {@link #select()}
      * around the call to
-     * {@link ProjectBrowser#jumpToDiagramShowing(Vector)}.
+     * {@link ProjectBrowser#jumpToDiagramShowing(java.util.Vector)}.
      */
     public void action() {
         deselect();

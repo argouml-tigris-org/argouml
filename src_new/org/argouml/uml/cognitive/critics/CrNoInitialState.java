@@ -69,7 +69,6 @@ public class CrNoInitialState extends CrUML {
 	if (peers == null) {
 	    return PROBLEM_FOUND;
 	}
-	int size = peers.size();
 	for (Iterator iter = peers.iterator(); iter.hasNext();) {
 	    Object sv = iter.next();
 	    if (Model.getFacade().isAPseudostate(sv)

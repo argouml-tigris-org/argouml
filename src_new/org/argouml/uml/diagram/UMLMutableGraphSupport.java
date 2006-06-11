@@ -206,7 +206,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * java.lang.Object, java.lang.Class)
      */
     public Object connect(Object fromPort, Object toPort, Class edgeClass) {
-        return connect(fromPort, toPort, (Object)edgeClass);
+        return connect(fromPort, toPort, (Object) edgeClass);
     }
 
     /**

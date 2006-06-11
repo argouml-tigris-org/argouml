@@ -44,7 +44,6 @@ import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.GUI;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.cmd.GenericArgoMenuBar;
 
 /**
  * Action that loads the project.

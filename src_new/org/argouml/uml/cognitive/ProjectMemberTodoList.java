@@ -121,7 +121,7 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
                     continue;
                 }
     	    } catch (ClassCastException e) {
-        		continue;
+    	        continue;
     	    }
     	    out.addElement(new ResolvedCriticXMLHelper(rci));
     	}
