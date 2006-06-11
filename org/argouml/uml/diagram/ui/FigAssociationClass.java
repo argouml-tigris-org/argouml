@@ -24,44 +24,31 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.beans.PropertyChangeListener;
-import java.beans.VetoableChangeListener;
-
-import org.argouml.kernel.DelayedVChangeListener;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 
 
 /**
- * Class to display an association edge in an Association Class.
- * It is considered the main Fig in the group of Figs that composes
- * an Association Class. It must be associated with a FigEdgeAssociationClass
- * and a FigClassAssociationClass. <p>
+ * An Association Class is represented by 3 seperate Figs
+ * FigAssociationClass is the association edge drawn between two classifiers
+ * this displays that association properties of the association class.
+ * FigClassAssociationClass is the classifier box that displays the class
+ * properties of the association class.
+ * FigEdgeAssociationClass is the dashed line that joins these two.
+ * 
+ * Whenever the user attempts to remove or delete one of these parts then all
+ * parts must go.
+ * Delete would be handled because the model element is deleted and all parts
+ * are listening for such an event and will remove themselves.
+ * However if the user attempts to just remove from diagram one of these parts
+ * then there is no such event. Hence the removeFromDiagram method is
+ * overridden to delegate removal from a single removeFromDiagram method on
+ * FigAssociationClass.
  *
- * The Association Class is composed of a FigAssociationClass (edge),
- * a FigEdgeAssociationClass (linking edge) and
- * a FigClassAssociationClass (node).
- * The whole fig is built as an edge but is handled as a node
- * to allow for example that an Association Class is bound to
- * a Class with a simple association. The three Figs have the same rank. <p>
- *
- * To handle it, the restriction that must be fulfilled is
- * that the FigClassAssociationClass must be always the first
- * in the Editor's layer, and several methods are overridden and implemented:
- * removeFromDiagram, damage, figdamaged, etc.
- *
- * @author pepargouml
+ * @author bob.tarling@gmail.com
  */
-public class FigAssociationClass
-        extends FigAssociation
-        implements VetoableChangeListener,
-        DelayedVChangeListener,
-        MouseListener,
-        KeyListener,
-        PropertyChangeListener {
+public class FigAssociationClass extends FigAssociation {
 
     /**
      * The UID.
@@ -69,128 +56,17 @@ public class FigAssociationClass
     private static final long serialVersionUID = 3643715304027095083L;
 
     /**
-     * Construct a new AssociationClass. Use the same layout as for
-     * other edges.
+     * Construct a new FigAssociationClass during load from PGML.
      */
     public FigAssociationClass() {
         super();
         setBetweenNearestPoints(true);
         ((FigPoly) getFig()).setRectilinear(false);
         setDashed(false);
-        // Remove this and the inner class
-        // Build all the figs and connect them in ModeCreateAssociationClass
-//        SwingUtilities.invokeLater(new RunFigAssociation(this));
     }
 
-//    /**
-//     * Class to finish the initialization of this fig.
-//     */
-//    class RunFigAssociation implements Runnable {
-//        /**
-//         * The fig to initialize.
-//         */
-//        private FigAssociationClass thisFig;
-//
-//        /**
-//         * Constructor.
-//         *
-//         * @param fac The fig to initialize.
-//         */
-//        RunFigAssociation(FigAssociationClass fac) {
-//            thisFig = fac;
-//        }
-//
-//        /**
-//         * @see java.lang.Runnable#run()
-//         */
-//        public void run() {
-//            Layer lay = thisFig.getLayer();
-//
-//            Editor editor = Globals.curEditor();
-//
-//            if (thisFig.getOwner() == null) {
-//                thisFig.removeFromDiagram();
-//                lay.remove(thisFig);
-//                editor.remove(thisFig);
-//            } else {
-//                thisFig.removePathItem(getMiddleGroup());
-//
-//                GraphModel graphModel = editor.getGraphModel();
-//
-//                MutableGraphModel mutableGraphModel =
-//                    (MutableGraphModel) graphModel;
-//                mutableGraphModel.addNode(thisFig.getOwner());
-//
-//                Rectangle drawingArea =
-//                    ProjectBrowser.getInstance()
-//                    	.getEditorPane().getBounds();
-//                Iterator nodes = lay.getContents().iterator();
-//                while (nodes.hasNext()) {
-//                    Fig auxFig = (Fig) nodes.next();
-//                    if (thisFig.getOwner().equals(auxFig.getOwner())) {
-//                        if (auxFig instanceof FigClassAssociationClass) {
-//                            figNode = (FigClassAssociationClass) auxFig;
-//                            figNode.setMainFig(thisFig);
-//                        } else if (auxFig
-//                            instanceof FigAssociationClassTee) {
-//                            tee = (FigAssociationClassTee) auxFig;
-//                            addPathItem(tee,
-//                                    new PathConvPercent(thisFig, 50, 0));
-//                        } else if (auxFig
-//                            instanceof FigEdgeAssociationClass) {
-//                            dashedEdge = (FigEdgeAssociationClass) auxFig;
-//                            dashedEdge.setMainFig(thisFig);
-//                            // addPathItem(tee,
-//                            //         new PathConvPercent(thisFig, 50, 0));
-//                        }
-//                        if (tee != null && figNode != null
-//                            && dashedEdge != null) {
-//                            break;
-//                        }
-//                    }
-//                }
-//
-//                if (tee == null) {
-//                    tee = new FigAssociationClassTee();
-//                    lay.add(tee);
-//                    tee.setOwner(thisFig.getOwner());
-//                    addPathItem(tee, new PathConvPercent(thisFig, 50, 0));
-//                    thisFig.calcBounds();
-//                }
-//
-//                int x = tee.getX();
-//                int y = tee.getY();
-//
-//                if (figNode == null) {
-//                    figNode = new FigClassAssociationClass(thisFig);
-//                    figNode.setOwner(thisFig.getOwner());
-//                    y = y - DISTANCE;
-//                    if (y < 0) {
-//                        y = tee.getY() + figNode.getHeight() + DISTANCE;
-//                    }
-//                    if (x + figNode.getWidth() > drawingArea.getWidth()) {
-//                        x = tee.getX() - DISTANCE;
-//                    }
-//                    figNode.setLocation(x, y);
-//                    lay.add(figNode);
-//                }
-//
-//                if (dashedEdge == null) {
-//                    dashedEdge =
-//                        new FigEdgeAssociationClass(tee, figNode, thisFig);
-//                    dashedEdge.setOwner(thisFig.getOwner());
-//                    lay.add(dashedEdge);
-//                }
-//
-//                dashedEdge.damage();
-//                figNode.damage();
-//            }
-//        }
-//    }
-
     /**
-     * Construct a new AssociationClass. Use the same layout as for
-     * other edges.
+     * Construct a new FigAssociationClass from user interaction.
      *
      * @param ed the edge
      * @param lay the layer
@@ -200,24 +76,25 @@ public class FigAssociationClass
         setLayer(lay);
         setOwner(ed);
     }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
+    
+    /**
+     * Discover the attached FigEdgeAssociationClass and the
+     * FigClassAssociationClass attached to that. Remove them from the diagram
+     * before removing this.
+     */
+    public void removeFromDiagram() {
+        // TODO implement as described above.
+        super.removeFromDiagram();
+    }
 
     /**
      * @see org.tigris.gef.presentation.FigEdge#setFig(
      *         org.tigris.gef.presentation.Fig)
+     * TODO: Is this required? Why would the fig already be dashed?
      */
     public void setFig(Fig f) {
         super.setFig(f);
         getFig().setDashed(false);
     }
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(
-     *         org.tigris.gef.presentation.Fig)
-     */
-    protected boolean canEdit(Fig f) { return true; }
-
 } /* end class FigAssociationClass */
 
