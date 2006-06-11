@@ -770,17 +770,8 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object newOwner) {
-        Object oldOwner = getOwner();
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
+        super.updateListeners(newOwner);
         if (newOwner != null) {
-            addElementListener(newOwner,
-                    new String[] {
-                        "name",
-                        "stereotype",
-                        "base",
-                    });
             Iterator it = Model.getFacade().getBases(newOwner).iterator();
             while (it.hasNext()) {
                 Object base = it.next();
@@ -845,7 +836,7 @@ public class FigClassifierRole extends FigNodeModelElement
         lifeLineFig.removeFig(fmp);
         updateNodeStates();
     }
-
+    
     /**
      * Update an array of booleans to set node indexes that have associated
      * FigMessagePort to false.
