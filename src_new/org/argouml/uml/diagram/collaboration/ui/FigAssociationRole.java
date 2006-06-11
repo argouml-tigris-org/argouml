@@ -242,7 +242,7 @@ class FigMessageGroup extends FigGroup {
     /**
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
-    public void removeFromDiagram() {
+    protected void removeFromDiagramImpl() {
         Collection figs = getFigs();
         if (figs != null) {
             Iterator it = figs.iterator();

@@ -128,13 +128,22 @@ public class FigEdgeAssociationClass
     }
 
     /**
-     * It is used to remove itself without removing its
-     * associated FigAssociationClass.
+     * If the user requests deletion of this FIg then delgate to the attached
+     * FigAssociationClass
+     * @return the attached FigAssociationClass
      */
-    public void removeThisFromDiagram() {
-        super.removeFromDiagram();
-        TargetManager.getInstance().removeHistoryElement(this);
+    protected Fig getRemoveDelegate() {
+        FigNode node = getDestFigNode();
+        if (!(node instanceof FigEdgePort)) {
+            node = getSourceFigNode();
+        }
+        if (!(node instanceof FigEdgePort)) {
+            return null;
+        }
+        // Actually return the FigEdge that the FigEdgePort is part of.
+        return node.getAnnotationOwner();
     }
+
 
     public void setDestFigNode(FigNode fn) {
         if (!(fn instanceof FigClassAssociationClass)) {
