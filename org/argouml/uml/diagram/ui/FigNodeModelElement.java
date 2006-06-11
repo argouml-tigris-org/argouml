@@ -1497,7 +1497,25 @@ public abstract class FigNodeModelElement
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     final public void removeFromDiagram() {
-        removeFromDiagramImpl();
+        Fig delegate = getRemoveDelegate();
+        if (delegate instanceof FigNodeModelElement) {
+            ((FigNodeModelElement)delegate).removeFromDiagramImpl();
+        } else if (delegate instanceof FigEdgeModelElement) {
+            ((FigEdgeModelElement)delegate).removeFromDiagramImpl();
+        } else if (delegate != null) {
+            removeFromDiagramImpl();
+        }
+    }
+    
+    /**
+     * Subclasses should override this to redirect a remove request from
+     * one Fig to another.
+     * e.g. FigClassAssociationClass uses this to delegate the remove to
+     * its attached FigAssociationClass.
+     * @return
+     */
+    protected Fig getRemoveDelegate() {
+        return this;
     }
     
     protected void removeFromDiagramImpl() {

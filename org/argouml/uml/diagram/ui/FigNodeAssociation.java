@@ -283,7 +283,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
      */
     protected void removeFromDiagramImpl() {
         Object owner = getOwner();
-        super.removeFromDiagram();
+        super.removeFromDiagramImpl();
         Editor editor = Globals.curEditor();
         GraphModel gm = editor.getGraphModel();
         if (gm instanceof MutableGraphModel) {
