@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,8 +35,9 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 /**
  * The list model for the connections of the association. <p>
  * 
- * The specialty of this list model, is that it need to be aware of name changes 
- * in the ends connected to the association. Most other listmodels only listen to 
+ * The specialty of this list model, is that it need to be aware 
+ * of name changes in the ends connected to the association. 
+ * Most other listmodels only listen to 
  * model changes in one UML element, but in this case, we also have to listen to
  * changes in some related elements. <p>
  * 
@@ -50,7 +51,7 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 public class UMLAssociationConnectionListModel
     extends UMLModelElementOrderedListModel2 {
 
-    Collection others;
+    private Collection others;
 
     /**
      * Constructor for UMLModelElementClientDependencyListModel.
