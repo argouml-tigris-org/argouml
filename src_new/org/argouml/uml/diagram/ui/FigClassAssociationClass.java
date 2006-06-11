@@ -41,6 +41,12 @@ public class FigClassAssociationClass extends FigClass {
     
     /**
      * The constructor.
+     *
+     * @param owner the UML object
+     * @param x the x of the initial location
+     * @param y the y of the initial location
+     * @param w the initial width
+     * @param h the initial height
      */
     public FigClassAssociationClass(Object owner, int x, int y, int w, int h) {
         super(owner, x, y, w, h);
@@ -50,7 +56,7 @@ public class FigClassAssociationClass extends FigClass {
     /**
      * The constructor.
      *
-     * @param ownerFig the owner fig
+     * @param owner the owner UML object
      */
     public FigClassAssociationClass(Object owner) {
         super(null, owner);
