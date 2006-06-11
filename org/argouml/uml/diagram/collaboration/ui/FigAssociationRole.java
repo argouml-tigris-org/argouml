@@ -127,7 +127,7 @@ public class FigAssociationRole extends FigAssociation {
     /**
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
-    public void removeFromDiagram() {
+    protected void removeFromDiagramImpl() {
         super.removeFromDiagram();
         messages.removeFromDiagram();
     }
