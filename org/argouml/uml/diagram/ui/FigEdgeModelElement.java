@@ -563,6 +563,7 @@ public abstract class FigEdgeModelElement
         }
 
         if (Model.getFacade().isAModelElement(src) 
+                && getOwner() != null
                 && !Model.getUmlFactory().isRemoved(getOwner())) {
             /* If the source of the event is an UML object,
              * then the UML model has been changed.*/
