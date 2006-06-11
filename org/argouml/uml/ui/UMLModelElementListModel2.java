@@ -116,8 +116,12 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      */
     public void propertyChange(PropertyChangeEvent e) {
         if (e instanceof AttributeChangeEvent) {
-            if (isValidEvent(e)) {
-                rebuildModelList();
+            try {
+                if (isValidEvent(e)) {
+                    rebuildModelList();
+                }
+            } catch (InvalidElementException iee) {
+                return;
             }
         } else if (e instanceof AddAssociationEvent) {
             if (isValidEvent(e)) {
@@ -245,7 +249,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
             return ((AssociationChangeEvent) e).getChangedValue();
         }
         if (e instanceof AttributeChangeEvent) {
-          return ((AttributeChangeEvent) e).getSource();
+            return ((AttributeChangeEvent) e).getSource();
         }
         return e.getNewValue();
     }
