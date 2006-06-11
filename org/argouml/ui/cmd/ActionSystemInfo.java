@@ -41,6 +41,9 @@ import org.tigris.swidgets.ActionUtilities;
  */
 class ActionSystemInfo extends AbstractAction {
 
+    /**
+     * The Constructor.
+     */
     public ActionSystemInfo() {
         super(Translator.localize("action.system-information"),
                 ResourceLoaderWrapper.lookupIcon("action.system-information"));

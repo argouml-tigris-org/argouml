@@ -164,7 +164,6 @@ public class ProjectSettingsTabProperties extends JPanel implements
      * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
      */
     public void handleResetToDefault() {
-        Project p = ProjectManager.getManager().getCurrentProject();
         userFullname.setText(Configuration.getString(Argo.KEY_USER_FULLNAME));
         userEmail.setText(Configuration.getString(Argo.KEY_USER_EMAIL));
         // There is no default description.

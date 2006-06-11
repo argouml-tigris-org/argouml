@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
-import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -47,7 +46,6 @@ import org.tigris.gef.persistence.pgml.Container;
 import org.tigris.gef.persistence.pgml.FigEdgeHandler;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
 import org.tigris.gef.persistence.pgml.HandlerStack;
-import org.tigris.gef.persistence.pgml.InitialHandler;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigGroup;
@@ -110,7 +108,7 @@ public class PGMLStackParser
 
         // Handle ItemUID in container contents
         if (qname.equals("private") && (container instanceof Container)) {
-        	return new PrivateHandler(this, (Container) container);
+            return new PrivateHandler(this, (Container) container);
         }
 
         DefaultHandler handler =
@@ -261,7 +259,7 @@ public class PGMLStackParser
     }
     
     public Diagram readDiagram(InputStream is, boolean closeStream)
-            throws SAXException {
+        throws SAXException {
         Diagram d = super.readDiagram(is, closeStream);
         
         // Loop through all edges read and attach them to nodes
@@ -304,15 +302,16 @@ public class PGMLStackParser
     }
     
     // TODO: Move to GEF
-    public void addFigEdge(FigEdge figEdge, String sourcePortFig, String destPortFig, String sourceFigNode, String destFigNode) {
-        figEdges.add(new EdgeData(figEdge, sourcePortFig, destPortFig, sourceFigNode, destFigNode));
+    public void addFigEdge(FigEdge figEdge, String sourcePortFig, 
+            String destPortFig, String sourceFigNode, String destFigNode) {
+        figEdges.add(new EdgeData(figEdge, sourcePortFig, destPortFig, 
+                sourceFigNode, destFigNode));
     }
     
     // TODO: Move to GEF
     /**
      * Get the FigNode that the fig id represents.
      *
-     * @param parser The parser to use.
      * @param figId (In the form Figx.y.z)
      * @return the FigNode with the given id
      */
@@ -329,7 +328,8 @@ public class PGMLStackParser
         figId = figId.substring(0, figId.indexOf('.'));
         FigEdgeModelElement edge = (FigEdgeModelElement) findFig(figId);
         if (edge == null) {
-            throw new IllegalStateException("Can't find a FigNode with id " + figId);
+            throw new IllegalStateException(
+                    "Can't find a FigNode with id " + figId);
         }
         edge.makeEdgePort();
         return edge.getEdgePort();
@@ -360,12 +360,13 @@ public class PGMLStackParser
         String sourceFigNode;
         String destFigNode;
         
-        public EdgeData(FigEdge figEdge, String sourcePortFig, String destPortFig, String sourceFigNode, String destFigNode) {
-            this.edge = figEdge;
-            this.sourcePortFig = sourcePortFig;
-            this.destPortFig = destPortFig;
-            this.sourceFigNode = sourceFigNode;
-            this.destFigNode = destFigNode;
+        public EdgeData(FigEdge edge, String sourcePort, 
+                String destPort, String sourceNode, String destNode) {
+            this.edge = edge;
+            this.sourcePortFig = sourcePort;
+            this.destPortFig = destPort;
+            this.sourceFigNode = sourceNode;
+            this.destFigNode = destNode;
         }
         
         public String getDestFigNode() {

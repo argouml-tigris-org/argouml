@@ -94,7 +94,8 @@ class InitMenusLater implements Runnable {
      * @param reorder
      * @param nudge
      */
-    public static void initMenus(JMenu align, JMenu distribute, JMenu reorder, JMenu nudge) {
+    public static void initMenus(JMenu align, JMenu distribute, 
+            JMenu reorder, JMenu nudge) {
 	initAlignMenu(align);
         initDistributeMenu(distribute);
         initReorderMenu(reorder);

@@ -82,10 +82,10 @@ public class ActivityDiagramLayouter implements Layouter {
 
     /**
      * Construct a new layout engine for an ActivityDiagram.
-     * @param diagram the ActivityDiagram to be laid out.
+     * @param d the ActivityDiagram to be laid out.
      */
-    public ActivityDiagramLayouter(UMLDiagram diagram)  {
-        this.diagram = diagram;
+    public ActivityDiagramLayouter(UMLDiagram d)  {
+        this.diagram = d;
     }
 
     /**

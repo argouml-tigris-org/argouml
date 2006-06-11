@@ -224,6 +224,8 @@ public class ArgoDiagram extends Diagram {
      * Before a save takes place we repair the model in order to
      * be as certain as possible that the saved file will reload.
      * TODO: Split into small inner classes for each fix.
+     *
+     * @return A text that explains what is repaired.
      */
     public String repair() {
         StringBuffer report = new StringBuffer(500);

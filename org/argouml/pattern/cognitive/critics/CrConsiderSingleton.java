@@ -105,7 +105,7 @@ public class CrConsiderSingleton extends CrUML {
         // with a name...
         if (Model.getFacade().getName(dm) == null
                 || "".equals(Model.getFacade().getName(dm))) {
-                return NO_PROBLEM;
+            return NO_PROBLEM;
         }
 
         // ... and not incompletely imported

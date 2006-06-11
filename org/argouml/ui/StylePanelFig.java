@@ -397,7 +397,6 @@ public class StylePanelFig
         if (target == null || c == null) {
             return;
         }
-        Color oldColor = target.getFillColor();
         if (c instanceof Color) {
             target.setFillColor((Color) c);
         }
@@ -414,7 +413,6 @@ public class StylePanelFig
         if (target == null || c == null) {
             return;
         }
-        Color oldColor = target.getLineColor();
         if (c instanceof Color) {
             target.setLineColor((Color) c);
         }

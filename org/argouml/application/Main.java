@@ -629,7 +629,7 @@ public class Main {
         if (!EventQueue.isDispatchThread()
                 && Runtime.getRuntime().availableProcessors() == 1) {
             synchronized (splash) {
-                while (!splash.paintCalled) {
+                while (!splash.isPaintCalled()) {
                     try {
                         splash.wait();
                     } catch (InterruptedException e) {

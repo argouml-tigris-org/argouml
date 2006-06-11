@@ -266,16 +266,16 @@ public final class ProjectManager implements MementoCreationObserver {
     /**
      * Set the save action.
      * 
-     * @param saveAction the action to be used
+     * @param save the action to be used
      */
-    public void setSaveAction(Action saveAction) {
-        this.saveAction = saveAction;
+    public void setSaveAction(Action save) {
+        this.saveAction = save;
         // Register with the save action with other subsystems so that
         // any changes in those subsystems will enable the
         // save button/menu item etc.
-        Designer.setSaveAction(saveAction);
-        Model.getPump().setSaveAction(saveAction);
-        MutableGraphSupport.setSaveAction(saveAction);
+        Designer.setSaveAction(save);
+        Model.getPump().setSaveAction(save);
+        MutableGraphSupport.setSaveAction(save);
     }
 
     /**

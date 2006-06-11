@@ -53,7 +53,7 @@ public class GenDescendantClasses implements ChildGenerator {
     public Enumeration gen(Object o) {
 	Vector res = new Vector();
 	if (!(Model.getFacade().isAGeneralizableElement(o))) {
-                return res.elements();
+	    return res.elements();
         }
 
 	Object cls = /*(MGeneralizableElement)*/ o;

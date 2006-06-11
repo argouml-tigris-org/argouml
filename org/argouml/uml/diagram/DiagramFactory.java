@@ -128,8 +128,8 @@ public final class DiagramFactory {
              * The diagram are always owned by the model
              * in this first implementation.
              */
-            DiDiagram dd =
-                GraphChangeAdapter.getInstance().createDiagram(diType, namespace);
+            DiDiagram dd = GraphChangeAdapter.getInstance()
+                .createDiagram(diType, namespace);
             ((UMLMutableGraphSupport) diagram.getGraphModel()).setDiDiagram(dd);
         }
 

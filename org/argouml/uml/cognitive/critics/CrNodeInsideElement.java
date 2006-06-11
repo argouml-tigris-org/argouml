@@ -100,7 +100,6 @@ public class CrNodeInsideElement extends CrUML {
     public ListSet computeOffenders(UMLDeploymentDiagram dd) {
 	Collection figs = dd.getLayer().getContents();
 	ListSet offs = null;
-	int size = figs.size();
         Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();

@@ -67,7 +67,7 @@ public final class ExplorerEventAdaptor
      */
     public static ExplorerEventAdaptor getInstance() {
         if (instance == null) {
-            return instance = new ExplorerEventAdaptor();
+            instance = new ExplorerEventAdaptor();
 	}
 	return instance;
     }

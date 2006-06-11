@@ -224,6 +224,8 @@ public class DetailsPane
      * the owner(model element) of a selected fig.<p>
      *
      * Decides which panels to enable.
+     *
+     * @param target the target object
      */
     private void setTarget(Object target) {
         enableTabs(target);
@@ -614,6 +616,8 @@ public class DetailsPane
     /**
      * Enables/disables the tabs on the tabbed card. Also selects the tab to
      * show.
+     *
+     * @param target the target object
      */
     private void enableTabs(Object target) {
 

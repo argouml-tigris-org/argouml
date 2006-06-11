@@ -101,7 +101,6 @@ public class CrNodeInstanceInsideElement extends CrUML {
 	Collection figs = dd.getLayer().getContents();
         Iterator figIter = figs.iterator();
 	ListSet offs = null;
-	int size = figs.size();
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
 	    if (!(obj instanceof FigMNodeInstance)) {

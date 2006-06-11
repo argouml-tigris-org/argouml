@@ -51,6 +51,9 @@ class ActionFind extends UndoableAction {
 
     private String name;
     
+    /**
+     * The constructor.
+     */
     public ActionFind() {
         // Set the name:
         super(Translator.localize("action.find"));

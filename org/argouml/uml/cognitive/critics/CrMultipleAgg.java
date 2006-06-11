@@ -44,7 +44,7 @@ import org.argouml.uml.cognitive.UMLDecision;
  * separate critic (see {@link org.argouml.uml.cognitive.critics.CrNWayAgg})
  * which deals with 3- or more-way assocations.<p>
  *
- * @see <a href=
+ * See <a href=
  * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
  * #s2.ref.critics_multiple_agg">ArgoUML
  * User Manual: Two Aggregate ends (roles) in binary Association</a>

@@ -40,7 +40,6 @@ import org.argouml.cognitive.ui.WizStepCue;
 public class WizCueCards extends UMLWizard {
 
     private Vector cues = new Vector();
-    private WizStepCue[] steps = null;
 
     /**
      * The constructor.

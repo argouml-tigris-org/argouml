@@ -153,10 +153,6 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
     /**
      * Sets the target of the TabToDo.
      *
-     * @deprecated As of ArgoUml version 0.13.5,
-     *             the visibility of this method will change to private
-     *             in the future, replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager}.
      * @param item the new target
      */
     public void setTarget(Object item) {

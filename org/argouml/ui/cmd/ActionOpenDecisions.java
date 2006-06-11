@@ -36,6 +36,9 @@ import org.tigris.gef.undo.UndoableAction;
 
 class ActionOpenDecisions extends UndoableAction {
 
+    /**
+     * The constructor.
+     */
     public ActionOpenDecisions() {
         super(Translator.localize("action.design-issues"), null);
         // Set the tooltip string:

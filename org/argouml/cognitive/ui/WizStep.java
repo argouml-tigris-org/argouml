@@ -161,11 +161,6 @@ public class WizStep extends JPanel
     // accessors
 
     /**
-     * @deprecated since 0.15.3. The method in TabToDoTarget has been
-     * 		   deprecated, the visibility of this method will change
-     *             to protected in the future, and replaced by
-     * 		   {@link org.argouml.ui.targetmanager.TargetManager}.
-     *
      * @param item the target item
      */
     public void setTarget(Object item) {

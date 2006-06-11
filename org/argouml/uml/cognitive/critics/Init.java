@@ -227,17 +227,17 @@ public class Init {
     // from UML 1.1 Semantics spec
 
     // common coding conventions
-    private static Critic
-	crUnconventionalOperName = new CrUnconventionalOperName();
+    private static Critic crUnconventionalOperName = 
+        new CrUnconventionalOperName();
 
-    private static Critic
-	crUnconventionalAttrName = new CrUnconventionalAttrName();
+    private static Critic crUnconventionalAttrName = 
+        new CrUnconventionalAttrName();
 
-    private static Critic
-	crUnconventionalClassName = new CrUnconventionalClassName();
+    private static Critic crUnconventionalClassName = 
+        new CrUnconventionalClassName();
 
-    private static Critic
-	crUnconventionalPackName = new CrUnconventionalPackName();
+    private static Critic crUnconventionalPackName = 
+        new CrUnconventionalPackName();
 
     // Java specific
     private static Critic crClassMustBeAbstract = new CrClassMustBeAbstract();

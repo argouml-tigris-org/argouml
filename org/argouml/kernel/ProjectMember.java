@@ -66,6 +66,8 @@ public interface ProjectMember {
     /**
      * Repair any corruptions in the project member. Executed before a save in
      * order to ensure persistence is robust.
+     *
+     * @return A text that explains what is repaired.
      */
     String repair();
 }

@@ -61,7 +61,7 @@ public class ActionSettings extends AbstractAction {
         if (dialog == null) {
             dialog = new SettingsDialog();
         }
-        dialog.show();
+        dialog.setVisible(true);
     }
 
 

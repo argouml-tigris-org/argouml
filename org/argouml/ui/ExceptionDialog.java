@@ -179,8 +179,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
      * @param f   the <code>Frame</code> from which the dialog is displayed
      * @param message
      *            the message
-     * @param e   the exception
-     * @param highlightCause
+     * @param error
      *            give priority to Throwable.cause in display. Use this if the
      *            main exception is mostly boilerplate and the really useful
      *            information is in the enclosed cause.
@@ -214,10 +213,10 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         });
 
         // TODO: i18n
-        error = "An inconsistency has been detected when saving the model." +
-        "These have been repaired and are reported below. " +
-        "The save will continue with the model having been " +
-        "amended as described.\n" + error;
+        error = "An inconsistency has been detected when saving the model."
+            + "These have been repaired and are reported below. "
+            + "The save will continue with the model having been "
+            + "amended as described.\n" + error;
         
         // These shouldn't really be <br> instead of <p> elements, but
         // the lines all get run together when pasted into a browser window.
@@ -266,6 +265,8 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
     /**
      * Copy the textpane's contents to the clipboard.
+     *
+     * @param e the actionEvent
      */
     private void copyActionPerformed(ActionEvent e) {
         assert e.getSource() == copyButton;
@@ -285,6 +286,8 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
     /**
      * Handle link activation for our hyperlink.
+     *
+     * @param e the event
      */
     private void linkEvent(HyperlinkEvent e) {
         if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {

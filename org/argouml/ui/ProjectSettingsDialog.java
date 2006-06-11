@@ -24,7 +24,6 @@
 
 package org.argouml.ui;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,8 +59,7 @@ class ProjectSettingsDialog extends ArgoDialog implements WindowListener {
      * The constructor for this dialog of settings with project scope.
      */
     public ProjectSettingsDialog() {
-        super(ProjectBrowser.getInstance(),
-                Translator.localize("dialog.file.properties"),
+        super(Translator.localize("dialog.file.properties"),
                 ArgoDialog.OK_CANCEL_OPTION,
                 true);
         
@@ -115,7 +113,7 @@ class ProjectSettingsDialog extends ArgoDialog implements WindowListener {
     }
 
     /**
-     * Replacement of {@link Component#setVisible(boolean)}
+     * Replacement of {@link java.awt.Component#setVisible(boolean)}
      */
     public void showDialog() {
         // If a recursive call from setVisible(), just return

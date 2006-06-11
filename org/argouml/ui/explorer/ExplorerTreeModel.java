@@ -224,8 +224,11 @@ public class ExplorerTreeModel extends DefaultTreeModel
     }
 
     /**
-     * Traverses the children, finds those affected by node, and notifies
-     * them that they are modified.
+     * Traverses the children, finds those affected by the given node, 
+     * and notifies them that they are modified.
+     *
+     * @param start the node to start from
+     * @param node the given node
      */
     private void traverseModified(TreeNode start, Object node) {
 	Enumeration children = start.children();
@@ -668,6 +671,8 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
     /**
      * Map all nodes in the subtree rooted at node.
+     *
+     * @param node the node to be added
      */
     private void addNodesToMap(TreeNode node) {
 	Enumeration children = node.children();
@@ -683,7 +688,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
     }
 
     /**
-     * Unmap all nodes in the subtree rooted at node.
+     * Unmap all nodes in the subtree rooted at the given node.
+     *
+     * @param node the given node
      */
     private void removeNodesFromMap(TreeNode node) {
 	Enumeration children = node.children();
@@ -699,9 +706,12 @@ public class ExplorerTreeModel extends DefaultTreeModel
     }
 
     /**
-     * adds a new tree node and model element to the map.
+     * Adds a new tree node and model element to the map.
      * nodes are removed from the map when a {@link #modelElementRemoved(Object)
      * modelElementRemoved} event is received.
+     *
+     * @param modelElement the modelelement to be added
+     * @param node the node to be added
      */
     private void addToMap(Object modelElement, TreeNode node) {
 	Object value = modelElementMap.get(modelElement);
@@ -717,6 +727,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
     /**
      * removes a new tree node and model element from the map.
+     *
+     * @param modelElement the modelelement to be removed
+     * @param node the node to be removed
      */
     private void removeFromMap(Object modelElement, TreeNode node) {
 	Object value = modelElementMap.get(modelElement);
@@ -731,7 +744,10 @@ public class ExplorerTreeModel extends DefaultTreeModel
     }
 
     /**
-     * node lookup for a given model element.
+     * Node lookup for a given model element.
+     *
+     * @param modelElement the given modelelement
+     * @return the nodes sought
      */
     private Collection findNodes(Object modelElement) {
 	Collection nodes = (Collection) modelElementMap.get(modelElement);

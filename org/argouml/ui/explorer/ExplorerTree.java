@@ -44,11 +44,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.argouml.application.api.Configuration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
-import org.argouml.notation.Notation;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -234,7 +232,7 @@ public class ExplorerTree
         public void treeWillExpand(TreeExpansionEvent tee) {
             Project p = ProjectManager.getManager().getCurrentProject();
             ProjectSettings ps = p.getProjectSettings();
-            showStereotype = ps.getShowStereotypesValue();
+            setShowStereotype(ps.getShowStereotypesValue());
 
             if (getModel() instanceof ExplorerTreeModel) {
 
@@ -282,6 +280,8 @@ public class ExplorerTree
 
     /**
      * Sets the selection state for a given set of targets.
+     *
+     * @param targets the targets
      */
     private void setSelection(Object[] targets) {
         updatingSelectionViaTreeSelection = true;
@@ -413,6 +413,8 @@ public class ExplorerTree
 
         /**
          * Actions a change in targets received from the TargetManager.
+         *
+         * @param targets the targets
          */
         private void setTargets(Object[] targets) {
 
