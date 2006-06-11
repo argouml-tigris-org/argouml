@@ -24,8 +24,11 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.util.Iterator;
+
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 
 
@@ -83,7 +86,25 @@ public class FigAssociationClass extends FigAssociation {
      * before removing this.
      */
     protected void removeFromDiagramImpl() {
-        // TODO implement as described above.
+        FigEdgePort figEdgePort = getEdgePort();
+        
+        FigEdgeAssociationClass figEdgeLink = null;
+        Iterator it = figEdgePort.getFigEdges().iterator();
+        while(it.hasNext() && figEdgeLink == null) {
+            Object o = it.next();
+            if (o instanceof FigEdgeAssociationClass) {
+                figEdgeLink = (FigEdgeAssociationClass)o;
+                
+            }
+        }
+        if (figEdgeLink != null) {
+            FigNode figClassBox = figEdgeLink.getDestFigNode();
+            if (!(figClassBox instanceof FigClassAssociationClass)) {
+                figClassBox = figEdgeLink.getSourceFigNode();
+            }
+            figEdgeLink.removeFromDiagramImpl();
+            ((FigClassAssociationClass)figClassBox).removeFromDiagramImpl();
+        }
         super.removeFromDiagramImpl();
     }
 
