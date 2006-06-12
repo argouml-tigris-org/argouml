@@ -557,7 +557,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(removeItem, "Remove from Diagram");
         setAccelerator(removeItem, delKey);
 
-        JMenuItem deleteItem = edit.add(new ActionDeleteModelElements());
+        JMenuItem deleteItem =
+            edit.add(TargetManager.getInstance().getDeleteAction());
         setMnemonic(deleteItem, "Delete from Model");
         setAccelerator(deleteItem, ctrlDel);
 
