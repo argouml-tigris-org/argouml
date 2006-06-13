@@ -2160,9 +2160,9 @@ Build the pdf version of the documentation.
           <para>
 This is done using the command
 <programlisting>
-cd argouml/documentation &amp;&amp; ./build.sh docbook-xsl-get
+( cd argouml/documentation &amp;&amp; ../tools/ant-1.6.2/bin/ant docbook-xsl-get )
 cp ../argouml/tools/lib/JimiProClasses.zip argouml/tools/lib
-cd argouml/documentation &amp;&amp; ./build.sh pdf
+( cd argouml/documentation &amp;&amp; ../tools/ant-1.6.2/bin/ant pdf )
 </programlisting>
 provided that you have JimiProClasses.zip located in that spot.
 </para>
@@ -2275,8 +2275,6 @@ What the persons responsible for the installers do is described in
 </para>
       <para>
 After this, the work continues with the installers.
-For 0.21.1 and 0.21.2, the installers are not in place so
-the old pack-release.sh and parts of build-release.sh will be used.
 </para>
 </sect2>
 
@@ -2609,7 +2607,7 @@ The following command will do it for you:
 <programlisting>
 for pdffile in VERSION_<replaceable>0_21_2</replaceable>_F/argouml/build/documentation/pdf/*/*.pdf
 do
-    mv $pdffile ../../svn/argouml-downloads/argouml-<replaceable>RELEASE NAME</replaceable>/`basename $pdffile .pdf`-<replaceable>RELEASE NAME</replaceable>.pdf
+    mv $pdffile ../svn/argouml-downloads/www/argouml-<replaceable>RELEASE NAME</replaceable>/`basename $pdffile .pdf`-<replaceable>RELEASE NAME</replaceable>.pdf
 done
 </programlisting>
 </para>
@@ -2631,7 +2629,7 @@ and give the version number.
 The file is created in 
 <filename class="directory">argoumlinstaller/build</filename>.
 Copy it to 
-<filename class="directory">svn/argouml-downloads/argouml-<replaceable>RELEASE NAME</replaceable>/</filename>.
+<filename class="directory">svn/argouml-downloads/www/argouml-<replaceable>RELEASE NAME</replaceable>/</filename>.
 </para>
 	</listitem>
 
@@ -2732,14 +2730,19 @@ the java web start file at
 	</listitem>
 
 	<listitem>
-	  <para>Commit the release in the argouml-downloads project</para>
+	  <para>
+Add and commit the release in the argouml-downloads project
+</para>
 	  <para>
 The following command will do it for you:
 <programlisting>
-(
-cd ../svn/argouml-downloads/www &amp;&amp;
+cd ../svn/argouml-downloads/www
+svn add argouml-<replaceable>RELEASE NAME</replaceable>
+svn propset svn:mime-types application/octet-stream argouml-<replaceable>RELEASE NAME</replaceable>/*.pdf
+svn add jws/argouml-<replaceable>RELEASE NAME</replaceable>.jnlp
+svn status www/maven2
+svn add www/maven2 <replaceable>the directories that show up.</replaceable>
 svn commit -m'The release <replaceable>RELEASE NAME</replaceable>.'
-)
 </programlisting>
 </para>
 	</listitem>
