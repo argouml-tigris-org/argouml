@@ -39,6 +39,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.RepaintManager;
 import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
@@ -184,6 +185,12 @@ public class TabDiagram
         UMLDiagram newTarget = (UMLDiagram) t;
 
         setToolBar(newTarget.getJToolBar());
+        // This call fixes a seemingly-harmless NPE when we switch to a
+        // sequence diagram; I have no idea why
+        // --Michael MacDonald
+        // See issue 4245 - Bob
+        RepaintManager.currentManager(this).paintDirtyRegions();
+        
         graph.removeGraphSelectionListener(this);
         graph.setDiagram(newTarget);
         graph.addGraphSelectionListener(this);
