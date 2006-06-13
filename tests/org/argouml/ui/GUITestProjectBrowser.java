@@ -128,6 +128,7 @@ public class GUITestProjectBrowser extends TestCase {
 	assertEquals("Diagram2 should be the target", diagram2, tm.getTarget());
 
 	p.moveToTrash(package2);
+        Model.getPump().flushModelEvents();
 	assertEquals("The target is not reset to the first diagram",
             p.getDiagrams().get(0), tm.getTarget());
     }
