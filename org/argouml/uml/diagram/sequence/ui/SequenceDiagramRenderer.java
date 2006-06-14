@@ -22,9 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
-
-
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.util.Map;

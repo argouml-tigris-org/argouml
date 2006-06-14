@@ -37,9 +37,6 @@ import org.argouml.model.Model;
  * This class is a Go Rule for the "Class - centric" Navigation perspective.
  * Rule for Class->Summary.
  *
- * $Revision$
- *
- * @author  alexb, $Author$
  * @since argo 0.13.4, Created on 21 March 2003, 23:18
  */
 public class GoClassToSummary extends AbstractPerspectiveRule {
