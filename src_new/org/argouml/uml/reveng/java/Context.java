@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
-
 /*
   JavaRE - Code generation and reverse engineering for UML and Java
   Copyright (C) 2000 Marcus Andersson andersson@users.sourceforge.net
