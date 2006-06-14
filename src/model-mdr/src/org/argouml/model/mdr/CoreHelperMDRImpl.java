@@ -288,6 +288,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         try {
             if (cls instanceof Classifier && feature instanceof Feature) {
                 ((Classifier) cls).getFeature().remove(feature);
+                return;
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
