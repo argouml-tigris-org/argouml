@@ -102,6 +102,8 @@ public abstract class ActionBaseDelete extends UndoableAction {
             size = figs.size();
         } catch (Exception e) {
 	    // Ignore
+            // TODO: Why are these being ignored? - tfm
+            LOG.warn("Exception ignored", e);
         }
         if (size > 0) {
             return true;
@@ -167,7 +169,7 @@ public abstract class ActionBaseDelete extends UndoableAction {
                     }
                     if (Model.getFacade().isAConcurrentRegion(target)) {
                         new ActionDeleteConcurrentRegion()
-                            .actionPerformed(ae);
+                        .actionPerformed(ae);
                     } else {
                         p.moveToTrash(target);
                     }

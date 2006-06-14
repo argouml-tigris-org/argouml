@@ -223,7 +223,7 @@ public final class ImportClassLoader extends URLClassLoader {
             try {
 		urlList.add(new File(token).toURL());
             } catch (Exception e) {
-		e.printStackTrace();
+		LOG.error(e);
 	    }
         }
 
