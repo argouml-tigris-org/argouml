@@ -76,22 +76,19 @@ are provided in org.argouml.uml.ui.
 
     <para> Typically the constructor for the new proppanel class invokes the 
       parent constructor, and then builds the fields required on the property 
-      tab. The parent constructor may need an icon. If you need a new icon, it 
-      should be placed in <literal>org/argouml/Images</literal> and a call to 
-      <literal>lookupIcon()</literal> made (note that this is a utility method 
+      tab. The parent constructor may need an icon. If you need a new icon, 
+      a call to <literal>lookupIcon()</literal> should be 
+      made (note that this is a utility method 
       of the parent PropPanel class). For our example we had to add 
       <literal>Extend.gif</literal>. </para>
       
     <para id="iconformat">
-      From the ArgoUML V0.7 cookbook (updated to mention the current path):
-      <quote>
-        You will need to make an icon, in .gif format, 18 X 19 pixels, 
+        You will need to make an icon, in .gif format, 16 X 16 pixels, 
         with the transparent background color set to white. 
         Place this file in the org.argouml.Images directory 
         (it must be named like Name.gif). 
         This icon will automatically be used in the toolbar 
         and in the Navigation pane.
-      </quote>
     </para>
 
     <para> Finally the property panel must be added to the list of property 
