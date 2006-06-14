@@ -285,9 +285,15 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public void removeFeature(Object cls, Object feature) {
-        if (cls instanceof Classifier && feature instanceof Feature) {
-            ((Classifier) cls).getFeature().remove(feature);
+        try {
+            if (cls instanceof Classifier && feature instanceof Feature) {
+                ((Classifier) cls).getFeature().remove(feature);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
+        throw new IllegalArgumentException("classifier: " + cls
+                + " or feature: " + feature);
     }
 
     /**
@@ -1930,13 +1936,17 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object, java.lang.Object)
      */
     public void removeClientDependency(Object handle, Object dep) {
-        if (handle instanceof ModelElement && dep instanceof Dependency) {
-            ModelElement me = (ModelElement) handle;
-            Collection deps = me.getClientDependency();
-            if (deps != null && deps.contains(dep)) {
-                deps.remove(dep);
+        try {
+            if (handle instanceof ModelElement && dep instanceof Dependency) {
+                ModelElement me = (ModelElement) handle;
+                Collection deps = me.getClientDependency();
+                if (deps != null && deps.contains(dep)) {
+                    deps.remove(dep);
+                }
+                return;
             }
-            return;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException();
     }
@@ -1946,17 +1956,22 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public void removeConnection(Object handle, Object connection) {
-        if (handle instanceof UmlAssociation
-                && connection instanceof AssociationEnd) {
-            ((UmlAssociation) handle).getConnection().remove(connection);
-            return;
-        }
-        if (handle instanceof Link && connection instanceof LinkEnd) {
-            ((Link) handle).getConnection().remove(connection);
-            return;
+        try {
+            if (handle instanceof UmlAssociation
+                    && connection instanceof AssociationEnd) {
+                ((UmlAssociation) handle).getConnection().remove(connection);
+                return;
+            }
+            if (handle instanceof Link && connection instanceof LinkEnd) {
+                ((Link) handle).getConnection().remove(connection);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or connection: " + connection);
+
     }
 
     /**
@@ -1964,9 +1979,13 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public void removeConstraint(Object handle, Object cons) {
-        if (handle instanceof ModelElement && cons instanceof Constraint) {
-            ((ModelElement) handle).getConstraint().remove(cons);
-            return;
+        try {
+            if (handle instanceof ModelElement && cons instanceof Constraint) {
+                ((ModelElement) handle).getConstraint().remove(cons);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle + " or cons: "
                 + cons);
@@ -1977,14 +1996,18 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public void removeOwnedElement(Object handle, Object value) {
-        if (handle instanceof Namespace && value instanceof ModelElement) {
-            ModelElement elem = (ModelElement) value;
-            if (!(elem.getNamespace().equals(handle))) {
-                throw new IllegalStateException(
-                        "ModelElement isn't in Namespace");
+        try {
+            if (handle instanceof Namespace && value instanceof ModelElement) {
+                ModelElement elem = (ModelElement) value;
+                if (!(elem.getNamespace().equals(handle))) {
+                    throw new IllegalStateException(
+                    "ModelElement isn't in Namespace");
+                }
+                elem.setNamespace(null);
+                return;
             }
-            elem.setNamespace(null);
-            return;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle + " or value: "
                 + value);
@@ -1995,23 +2018,29 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public void removeParameter(Object handle, Object parameter) {
-        if (parameter instanceof Parameter) {
-            if (handle instanceof ObjectFlowState) {
-                ((ObjectFlowState) handle).getParameter().remove(parameter);
+        try {
+            if (parameter instanceof Parameter) {
+                if (handle instanceof ObjectFlowState) {
+                    ((ObjectFlowState) handle).getParameter().remove(
+                            parameter);
+                    return;
+                }
+                if (handle instanceof Event) {
+                    ((Event) handle).getParameter().remove(parameter);
+                    return;
+                }
+                if (handle instanceof BehavioralFeature) {
+                    ((BehavioralFeature) handle).getParameter().remove(
+                            parameter);
+                    return;
+                }
+                if (handle instanceof Classifier) {
+                    ((Parameter) parameter).setType(null);
+                }
                 return;
             }
-            if (handle instanceof Event) {
-                ((Event) handle).getParameter().remove(parameter);
-                return;
-            }
-            if (handle instanceof BehavioralFeature) {
-                ((BehavioralFeature) handle).getParameter().remove(parameter);
-                return;
-            }
-            if (handle instanceof Classifier) {
-                ((Parameter) parameter).setType(null);
-            }
-            return;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or parameter: " + parameter);
@@ -2022,9 +2051,13 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public void removeSourceFlow(Object handle, Object flow) {
-        if (handle instanceof ModelElement && flow instanceof Flow) {
-            ((ModelElement) handle).getSourceFlow().remove(flow);
-            return;
+        try {
+            if (handle instanceof ModelElement && flow instanceof Flow) {
+                ((ModelElement) handle).getSourceFlow().remove(flow);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle + " or flow: "
                 + flow);
@@ -2035,10 +2068,14 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object, java.lang.Object)
      */
     public void removeSupplierDependency(Object supplier, Object dependency) {
-        if (supplier instanceof ModelElement
-                && dependency instanceof Dependency) {
-            ((Dependency) dependency).getSupplier().remove(supplier);
-            return;
+        try {
+            if (supplier instanceof ModelElement
+                    && dependency instanceof Dependency) {
+                ((Dependency) dependency).getSupplier().remove(supplier);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("supplier: " + supplier
                 + " or dependency: " + dependency);
@@ -2049,10 +2086,15 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.String)
      */
     public void removeTaggedValue(Object handle, String name) {
-        Object taggedValue = Model.getFacade().getTaggedValue(handle, name);
-        if (taggedValue != null) {
-            modelImpl.getExtensionMechanismsHelper().removeTaggedValue(handle,
-                    taggedValue);
+        try {
+            Object taggedValue = Model.getFacade().getTaggedValue(handle, 
+                    name);
+            if (taggedValue != null) {
+                modelImpl.getExtensionMechanismsHelper().removeTaggedValue(
+                        handle, taggedValue);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
     }
 
@@ -2061,9 +2103,13 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public void removeTargetFlow(Object handle, Object flow) {
-        if (handle instanceof ModelElement && flow instanceof Flow) {
-            ((ModelElement) handle).getTargetFlow().remove(flow);
-            return;
+        try {
+            if (handle instanceof ModelElement && flow instanceof Flow) {
+                ((ModelElement) handle).getTargetFlow().remove(flow);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle + " or flow: "
                 + flow);
@@ -2187,10 +2233,14 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public void removeElementResidence(Object handle, Object node) {
-        if (handle instanceof ModelElement
-                && node instanceof ElementResidence) {
-            ((ElementResidence) node).setResident(null);
-            return;
+        try {
+            if (handle instanceof ModelElement
+                    && node instanceof ElementResidence) {
+                ((ElementResidence) node).setResident(null);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle + " or node: "
                 + node);
@@ -3333,9 +3383,13 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object, java.lang.Object)
      */
     public void removeDeploymentLocation(Object handle, Object node) {
-        if (handle instanceof Component && node instanceof Node) {
-            ((Component) handle).getDeploymentLocation().remove(node);
-            return;
+        try {
+            if (handle instanceof Component && node instanceof Node) {
+                ((Component) handle).getDeploymentLocation().remove(node);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle + " or node: "
                 + node);
@@ -3378,16 +3432,20 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.lang.Object)
      */
     public void removeStereotype(Object modelElement, Object stereo) {
-        if (modelElement instanceof ModelElement
-                && stereo instanceof Stereotype) {
-
-            ModelElement me = (ModelElement) modelElement;
-            Stereotype stereotype = (Stereotype) stereo;
-
-            if (me.getStereotype().contains(stereo)) {
-                me.getStereotype().remove(stereotype);
+        try {
+            if (modelElement instanceof ModelElement
+                    && stereo instanceof Stereotype) {
+                
+                ModelElement me = (ModelElement) modelElement;
+                Stereotype stereotype = (Stereotype) stereo;
+                
+                if (me.getStereotype().contains(stereo)) {
+                    me.getStereotype().remove(stereotype);
+                }
+                return;
             }
-            return;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + modelElement
                 + " or stereo: " + stereo);

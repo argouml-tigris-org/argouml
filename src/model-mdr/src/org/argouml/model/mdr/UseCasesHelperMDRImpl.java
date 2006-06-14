@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import javax.jmi.reflect.InvalidObjectException;
 
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.UseCasesHelper;
 import org.omg.uml.behavioralelements.usecases.Actor;
@@ -75,7 +76,11 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
      * @see org.argouml.model.UseCasesHelper#getExtensionPoints(java.lang.Object)
      */
     public Collection getExtensionPoints(Object/* UseCase */useCase) {
-        return ((UseCase) useCase).getExtensionPoint();
+        try {
+            return ((UseCase) useCase).getExtensionPoint();
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
     /**
@@ -86,17 +91,21 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
             throw new IllegalArgumentException();
         }
 
-        Iterator it = ((Namespace) ns).getOwnedElement().iterator();
         List list = new ArrayList();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof Namespace) {
-                list.addAll(getAllUseCases(o));
+        try {
+            Iterator it = ((Namespace) ns).getOwnedElement().iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof Namespace) {
+                    list.addAll(getAllUseCases(o));
+                }
+                if (o instanceof UseCase) {
+                    list.add(o);
+                }
+                
             }
-            if (o instanceof UseCase) {
-                list.add(o);
-            }
-
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return list;
     }
@@ -109,17 +118,20 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
             throw new IllegalArgumentException();
         }
 
-        Iterator it = ((Namespace) ns).getOwnedElement().iterator();
         List list = new ArrayList();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof Namespace) {
-                list.addAll(getAllActors(o));
+        try {
+            Iterator it = ((Namespace) ns).getOwnedElement().iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof Namespace) {
+                    list.addAll(getAllActors(o));
+                }
+                if (o instanceof Actor) {
+                    list.add(o);
+                }
             }
-            if (o instanceof Actor) {
-                list.add(o);
-            }
-
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return list;
     }
@@ -131,13 +143,17 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         if (ausecase == null) {
             return new ArrayList();
         }
-        UseCase usecase = (UseCase) ausecase;
-        Iterator it = usecase.getExtend().iterator();
         List list = new ArrayList();
-        while (it.hasNext()) {
-            Extend extend = (Extend) it.next();
-            UseCase base = extend.getBase();
-            list.add(base);
+        UseCase usecase = (UseCase) ausecase;
+        try {
+            Iterator it = usecase.getExtend().iterator();
+            while (it.hasNext()) {
+                Extend extend = (Extend) it.next();
+                UseCase base = extend.getBase();
+                list.add(base);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return list;
     }
@@ -149,12 +165,16 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         if (usecase == null) {
             return new ArrayList();
         }
-        Iterator it = Model.getFacade().getExtends2(usecase).iterator();
         List list = new ArrayList();
-        while (it.hasNext()) {
-            Extend ext = (Extend) it.next();
-            UseCase extension = ext.getExtension();
-            list.add(extension);
+        try {
+            Iterator it = Model.getFacade().getExtends2(usecase).iterator();
+            while (it.hasNext()) {
+                Extend ext = (Extend) it.next();
+                UseCase extension = ext.getExtension();
+                list.add(extension);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return list;
     }
@@ -169,12 +189,16 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         }
         UseCase base = (UseCase) abase;
         UseCase extension = (UseCase) anextension;
-        Iterator it = extension.getExtend().iterator();
-        while (it.hasNext()) {
-            Extend extend = (Extend) it.next();
-            if (extend.getBase() == base) {
-                return extend;
+        try {
+            Iterator it = extension.getExtend().iterator();
+            while (it.hasNext()) {
+                Extend extend = (Extend) it.next();
+                if (extend.getBase() == base) {
+                    return extend;
+                }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return null;
     }
@@ -186,13 +210,17 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         if (!(ausecase instanceof UseCase)) {
             throw new IllegalArgumentException();
         }
-        UseCase usecase = (UseCase) ausecase;
-        Iterator it = usecase.getInclude().iterator();
         List list = new ArrayList();
-        while (it.hasNext()) {
-            Include include = (Include) it.next();
-            UseCase addition = include.getBase();
-            list.add(addition);
+        UseCase usecase = (UseCase) ausecase;
+        try {
+            Iterator it = usecase.getInclude().iterator();
+            while (it.hasNext()) {
+                Include include = (Include) it.next();
+                UseCase addition = include.getBase();
+                list.add(addition);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return list;
     }
@@ -207,12 +235,16 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         }
         UseCase base = (UseCase) abase;
         UseCase inclusion = (UseCase) aninclusion;
-        Iterator it = inclusion.getInclude().iterator();
-        while (it.hasNext()) {
-            Include include = (Include) it.next();
-            if (include.getBase() == base) {
-                return include;
+        try {
+            Iterator it = inclusion.getInclude().iterator();
+            while (it.hasNext()) {
+                Include include = (Include) it.next();
+                if (include.getBase() == base) {
+                    return include;
+                }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return null;
     }
@@ -223,17 +255,21 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
     public Collection getSpecificationPath(Object ausecase) {
         UseCase uc = (UseCase) ausecase;
         Set set = new HashSet();
-        set.addAll(nsmodel.getModelManagementHelper().
-                getAllSurroundingNamespaces(uc));
-        Set set2 = new HashSet();
-        Iterator it = set.iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof Subsystem || o instanceof UmlClass) {
-                set2.add(o);
+        try {
+            set.addAll(nsmodel.getModelManagementHelper().
+                    getAllSurroundingNamespaces(uc));
+            Set set2 = new HashSet();
+            Iterator it = set.iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof Subsystem || o instanceof UmlClass) {
+                    set2.add(o);
+                }
             }
+            return set2;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return set2;
     }
 
     /**
@@ -287,15 +323,18 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
      * @see org.argouml.model.UseCasesHelper#removeExtend(java.lang.Object, java.lang.Object)
      */
     public void removeExtend(Object elem, Object extend) {
-        if (elem instanceof UseCase && extend instanceof Extend) {
-            ((UseCase) elem).getExtend().remove(extend);
-            return;
+        try {
+            if (elem instanceof UseCase && extend instanceof Extend) {
+                ((UseCase) elem).getExtend().remove(extend);
+                return;
+            }
+            if (elem instanceof ExtensionPoint && extend instanceof Extend) {
+                ((Extend) extend).getExtensionPoint().remove(elem);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (elem instanceof ExtensionPoint && extend instanceof Extend) {
-            ((Extend) extend).getExtensionPoint().remove(elem);
-            return;
-        }
-
         throw new IllegalArgumentException("elem: " + elem + " or extend: "
                 + extend);
     }
@@ -304,15 +343,19 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
      * @see org.argouml.model.UseCasesHelper#removeExtensionPoint(java.lang.Object, java.lang.Object)
      */
     public void removeExtensionPoint(Object elem, Object ep) {
-        if (ep instanceof ExtensionPoint) {
-            if (elem instanceof UseCase) {
-                ((UseCase) elem).getExtensionPoint().remove(ep);
-                return;
+        try {
+            if (ep instanceof ExtensionPoint) {
+                if (elem instanceof UseCase) {
+                    ((UseCase) elem).getExtensionPoint().remove(ep);
+                    return;
+                }
+                if (elem instanceof Extend) {
+                    ((Extend) elem).getExtensionPoint().remove(ep);
+                    return;
+                }
             }
-            if (elem instanceof Extend) {
-                ((Extend) elem).getExtensionPoint().remove(ep);
-                return;
-            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("elem: " + elem + " or ep: " + ep);
     }
@@ -321,11 +364,14 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
      * @see org.argouml.model.UseCasesHelper#removeInclude(java.lang.Object, java.lang.Object)
      */
     public void removeInclude(Object usecase, Object include) {
-        if (usecase instanceof UseCase && include instanceof Include) {
-            ((UseCase) usecase).getInclude().remove(include);
-            return;
+        try {
+            if (usecase instanceof UseCase && include instanceof Include) {
+                ((UseCase) usecase).getInclude().remove(include);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-
         throw new IllegalArgumentException("usecase: " + usecase
                 + " or include: " + include);
     }

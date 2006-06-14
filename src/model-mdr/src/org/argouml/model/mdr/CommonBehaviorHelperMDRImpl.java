@@ -118,9 +118,13 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
      *      java.lang.Object)
      */
     public void removeActualArgument(Object handle, Object argument) {
-        if (handle instanceof Action && argument instanceof Argument) {
-            ((Action) handle).getActualArgument().remove(argument);
-            return;
+        try {
+            if (handle instanceof Action && argument instanceof Argument) {
+                ((Action) handle).getActualArgument().remove(argument);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("Unrecognized object " + handle
                 + " or " + argument);
@@ -131,9 +135,14 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
      *      java.lang.Object)
      */
     public void removeClassifier(Object handle, Object classifier) {
-        if (handle instanceof Instance && classifier instanceof Classifier) {
-            ((Instance) handle).getClassifier().remove(classifier);
-            return;
+        try {
+            if (handle instanceof Instance 
+                    && classifier instanceof Classifier) {
+                ((Instance) handle).getClassifier().remove(classifier);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("Unrecognized object " + handle
                 + " or " + classifier);
@@ -144,11 +153,16 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
      *      java.lang.Object)
      */
     public void removeContext(Object handle, Object context) {
-        if (handle instanceof Signal && context instanceof BehavioralFeature) {
-            modelImpl.getUmlPackage().getCommonBehavior().
-                getAContextRaisedSignal().remove(
-                            (BehavioralFeature) context, (Signal) handle);
-            return;
+        try {
+            if (handle instanceof Signal
+                    && context instanceof BehavioralFeature) {
+                modelImpl.getUmlPackage().getCommonBehavior()
+                        .getAContextRaisedSignal().remove(
+                                (BehavioralFeature) context, (Signal) handle);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("Unrecognized object " + handle
                 + " or " + context);
@@ -159,9 +173,13 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
      *      java.lang.Object)
      */
     public void removeReception(Object handle, Object reception) {
-        if (handle instanceof Signal && reception instanceof Reception) {
-            ((Reception) reception).setSignal(null);
-            return;
+        try {
+            if (handle instanceof Signal && reception instanceof Reception) {
+                ((Reception) reception).setSignal(null);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("Unrecognized object " + handle
                 + " or " + reception);

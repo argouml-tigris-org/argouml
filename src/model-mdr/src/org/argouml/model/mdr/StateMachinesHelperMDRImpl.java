@@ -96,8 +96,12 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      * @see org.argouml.model.StateMachinesHelper#getDestination(java.lang.Object)
      */
     public Object getDestination(Object trans) {
-        if (trans instanceof Transition) {
-            return ((Transition) trans).getTarget();
+        try {
+            if (trans instanceof Transition) {
+                return ((Transition) trans).getTarget();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("bad argument to "
                 + "getDestination() - " + trans);
@@ -107,7 +111,11 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      * @see org.argouml.model.StateMachinesHelper#getStateMachine(java.lang.Object)
      */
     public Object getStateMachine(Object handle) {
-        if (handle != null) {
+        if (handle == null) {
+            throw new IllegalArgumentException("bad argument to "
+                    + "getStateMachine() - " + handle);
+        }
+        try {
             Object container =
                 implementation.getFacade().getModelElementContainer(handle);
             while (container != null) {
@@ -122,9 +130,10 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
              * or it was not contained in a statemachine.
              */
             return null;
+
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        throw new IllegalArgumentException("bad argument to "
-                + "getStateMachine() - " + handle);
     }
 
     /**
@@ -155,11 +164,15 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      * @see org.argouml.model.StateMachinesHelper#isTopState(java.lang.Object)
      */
     public boolean isTopState(Object o) {
-        if (o instanceof CompositeState) {
-            CompositeState cs = (CompositeState) o;
-            return (cs.getContainer() == null);
+        try {
+            if (o instanceof CompositeState) {
+                CompositeState cs = (CompositeState) o;
+                return (cs.getContainer() == null);
+            }
+            return false;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return false;
     }
 
     /**
@@ -168,12 +181,16 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      */
     public Collection getAllPossibleStatemachines(Object model,
             Object oSubmachineState) {
-        if (oSubmachineState instanceof SubmachineState) {
-            Collection statemachines =
-                Model.getModelManagementHelper().
-                    getAllModelElementsOfKind(model, StateMachine.class);
-            statemachines.remove(getStateMachine(oSubmachineState));
-            return statemachines;
+        try {
+            if (oSubmachineState instanceof SubmachineState) {
+                Collection statemachines =
+                    Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(model, StateMachine.class);
+                statemachines.remove(getStateMachine(oSubmachineState));
+                return statemachines;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException(
                 "Argument must be a SubmachineState");
@@ -185,13 +202,17 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public Collection getAllPossibleSubvertices(Object oState) {
         ArrayList v = new ArrayList();
         List v2 = new ArrayList();
-        if (oState instanceof CompositeState) {
-            v.addAll(((CompositeState) oState).getSubvertex());
-            v2 = (ArrayList) v.clone();
-            Iterator it = v2.iterator();
-            while (it.hasNext()) {
-                v.addAll(getAllPossibleSubvertices(it.next()));
+        try {
+            if (oState instanceof CompositeState) {
+                v.addAll(((CompositeState) oState).getSubvertex());
+                v2 = (ArrayList) v.clone();
+                Iterator it = v2.iterator();
+                while (it.hasNext()) {
+                    v.addAll(getAllPossibleSubvertices(it.next()));
+                }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return v;
     }
@@ -219,26 +240,33 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         if (!(sm instanceof StateMachine)) {
             throw new IllegalArgumentException();
         }
-
         if (sm == null) {
             return null;
         }
-        Object top = ((StateMachine) sm).getTop();
-        return top;
+        
+        try  {
+            return ((StateMachine) sm).getTop();
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
     /**
      * @see org.argouml.model.StateMachinesHelper#getOutgoingStates(java.lang.Object)
      */
     public Collection getOutgoingStates(Object ostatevertex) {
-        if (ostatevertex instanceof StateVertex) {
-            StateVertex statevertex = (StateVertex) ostatevertex;
-            Collection col = new ArrayList();
-            Iterator it = statevertex.getOutgoing().iterator();
-            while (it.hasNext()) {
-                col.add(((Transition) it.next()).getTarget());
+        try {
+            if (ostatevertex instanceof StateVertex) {
+                StateVertex statevertex = (StateVertex) ostatevertex;
+                Collection col = new ArrayList();
+                Iterator it = statevertex.getOutgoing().iterator();
+                while (it.hasNext()) {
+                    col.add(((Transition) it.next()).getTarget());
+                }
+                return col;
             }
-            return col;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException(
                 "Argument must be a StateVertex");
@@ -252,18 +280,22 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         if (!(trans instanceof Transition)) {
             throw new IllegalArgumentException();
         }
-        Object sm = getStateMachine(trans);
-        Object ns = Model.getFacade().getNamespace(sm);
-        if (ns instanceof Classifier) {
-            Collection c = Model.getFacade().getOperations(ns);
-            Iterator i = c.iterator();
-            while (i.hasNext()) {
-                Object op = i.next();
-                String on = ((ModelElement) op).getName();
-                if (on.equals(opname)) {
-                    return op;
+        try {
+            Object sm = getStateMachine(trans);
+            Object ns = Model.getFacade().getNamespace(sm);
+            if (ns instanceof Classifier) {
+                Collection c = Model.getFacade().getOperations(ns);
+                Iterator i = c.iterator();
+                while (i.hasNext()) {
+                    Object op = i.next();
+                    String on = ((ModelElement) op).getName();
+                    if (on.equals(opname)) {
+                        return op;
+                    }
                 }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return null;
     }
@@ -272,18 +304,22 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      * @see org.argouml.model.StateMachinesHelper#getAllSubStates(java.lang.Object)
      */
     public Collection getAllSubStates(Object compState) {
-        if (compState instanceof CompositeState) {
-            List retList = new ArrayList();
-            Iterator it =
-                Model.getFacade().getSubvertices(compState).iterator();
-            while (it.hasNext()) {
-                Object subState = it.next();
-                if (subState instanceof CompositeState) {
-                    retList.addAll(getAllSubStates(subState));
+        try {
+            if (compState instanceof CompositeState) {
+                List retList = new ArrayList();
+                Iterator it =
+                    Model.getFacade().getSubvertices(compState).iterator();
+                while (it.hasNext()) {
+                    Object subState = it.next();
+                    if (subState instanceof CompositeState) {
+                        retList.addAll(getAllSubStates(subState));
+                    }
+                    retList.add(subState);
                 }
-                retList.add(subState);
+                return retList;
             }
-            return retList;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException(
                 "Argument is not a composite state");
@@ -294,10 +330,14 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      *      java.lang.Object)
      */
     public void removeSubvertex(Object handle, Object subvertex) {
-        if (handle instanceof CompositeState
-                && subvertex instanceof StateVertex) {
-            ((CompositeState) handle).getSubvertex().remove(subvertex);
-            return;
+        try {
+            if (handle instanceof CompositeState
+                    && subvertex instanceof StateVertex) {
+                ((CompositeState) handle).getSubvertex().remove(subvertex);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or subvertex: " + subvertex);
@@ -488,9 +528,13 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      * @param intTrans The internal transition to remove
      */
     public void removeTransition(Object handle, Object intTrans) {
-        if (handle instanceof State && intTrans instanceof Transition) {
-            ((State) handle).getInternalTransition().remove(intTrans);
-            return;
+        try {
+            if (handle instanceof State && intTrans instanceof Transition) {
+                ((State) handle).getInternalTransition().remove(intTrans);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or intTrans: " + intTrans);
@@ -628,16 +672,20 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      * @see org.argouml.model.StateMachinesHelper#getPath(java.lang.Object)
      */
     public String getPath(Object o) {
-        if (o instanceof StateVertex) {
-            Object o1 = o;
-            Object o2 = Model.getFacade().getContainer(o1);
-            String path = Model.getFacade().getName(o1);
-            while ((o2 != null) && (!Model.getFacade().isTop(o2))) {
-                path = Model.getFacade().getName(o2) + "::" + path;
-                o1 = o2;
-                o2 = Model.getFacade().getContainer(o1);
+        try {
+            if (o instanceof StateVertex) {
+                Object o1 = o;
+                Object o2 = Model.getFacade().getContainer(o1);
+                String path = Model.getFacade().getName(o1);
+                while ((o2 != null) && (!Model.getFacade().isTop(o2))) {
+                    path = Model.getFacade().getName(o2) + "::" + path;
+                    o1 = o2;
+                    o2 = Model.getFacade().getContainer(o1);
+                }
+                return path;
             }
-            return path;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException(
                 "Argument must be a StateVertex");
@@ -648,25 +696,33 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      *      java.lang.Object)
      */
     public Object getStatebyName(String path, Object container) {
-        if (container != null && Model.getFacade().isACompositeState(container)
-                && path != null) {
+        try {
+            // TODO: This should probably through an exception if it gets
+            // invalid arguments rather than just returning null
+            if (container != null 
+                    && Model.getFacade().isACompositeState(container)
+                    && path != null) {
 
-            Iterator it = getAllPossibleSubvertices(container).iterator();
-            int index = path.lastIndexOf("::");
-            if (index != -1) {
-                index += 2;
-            } else {
-                index += 1;
-            }
-
-            path = path.substring(index);
-            while (it.hasNext()) {
-                Object o = it.next();
-                Object oName = Model.getFacade().getName(o);
-                if (oName != null && oName.equals(path)) {
-                    return o;
+                Iterator it = getAllPossibleSubvertices(container).iterator();
+                int index = path.lastIndexOf("::");
+                if (index != -1) {
+                    index += 2;
+                } else {
+                    index += 1;
                 }
+                
+                path = path.substring(index);
+                while (it.hasNext()) {
+                    Object o = it.next();
+                    Object oName = Model.getFacade().getName(o);
+                    if (oName != null && oName.equals(path)) {
+                        return o;
+                    }
+                }
+                
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return null;
     }
@@ -697,16 +753,20 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      * @return the enclosing namespace for the event
      */
     public Object findNamespaceForEvent(Object trans, Object model) {
-        Object enclosing =
-            Model.getStateMachinesHelper().getStateMachine(trans);
-        while ((!Model.getFacade().isAPackage(enclosing))
-                && (enclosing != null)) {
-            enclosing = Model.getFacade().getNamespace(enclosing);
+        try {
+            Object enclosing =
+                Model.getStateMachinesHelper().getStateMachine(trans);
+            while ((!Model.getFacade().isAPackage(enclosing))
+                    && (enclosing != null)) {
+                enclosing = Model.getFacade().getNamespace(enclosing);
+            }
+            if (enclosing == null) {
+                enclosing = model;
+            }
+            return enclosing;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (enclosing == null) {
-            enclosing = model;
-        }
-        return enclosing;
     }
 
     /**
@@ -726,11 +786,15 @@ public class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      * @see org.argouml.model.StateMachinesHelper#removeDeferrableEvent(java.lang.Object, java.lang.Object)
      */
     public void removeDeferrableEvent(Object state, Object deferrableEvent) {
-        if (state instanceof State && deferrableEvent instanceof Event) {
-            implementation.getUmlPackage().getStateMachines()
-                    .getAStateDeferrableEvent().remove((State) state,
-                            (Event) deferrableEvent);
-            return;
+        try {
+            if (state instanceof State && deferrableEvent instanceof Event) {
+                implementation.getUmlPackage().getStateMachines()
+                        .getAStateDeferrableEvent().remove((State) state,
+                                (Event) deferrableEvent);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + state + " or evt: "
                 + deferrableEvent);

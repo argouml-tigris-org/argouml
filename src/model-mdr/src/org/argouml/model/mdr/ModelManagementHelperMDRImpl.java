@@ -34,9 +34,11 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.jmi.model.MofClass;
+import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefPackage;
 
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.behavioralelements.collaborations.Collaboration;
 import org.omg.uml.foundation.core.BehavioralFeature;
@@ -288,13 +290,17 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      */
     public Collection getAllBehavioralFeatures(Object ns) {
         // Get Classifiers in Namespace
-        Collection classifiers = getAllModelElementsOfKind(ns, nsmodel.
-                getMetaTypes().getClassifier());
         ArrayList features = new ArrayList();
-        Iterator i = classifiers.iterator();
-        // Get Features owned by those Classifiers
-        while (i.hasNext()) {
-            features.addAll(nsmodel.getFacade().getFeatures(i.next()));
+        try {
+            Collection classifiers = getAllModelElementsOfKind(ns, 
+                    nsmodel.getMetaTypes().getClassifier());
+            Iterator i = classifiers.iterator();
+            // Get Features owned by those Classifiers
+            while (i.hasNext()) {
+                features.addAll(nsmodel.getFacade().getFeatures(i.next()));
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         // Select those Features which are BehavioralFeatures
         ArrayList behavioralfeatures = new ArrayList();
@@ -499,19 +505,23 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      * @see org.argouml.model.ModelManagementHelper#removeImportedElement(java.lang.Object, java.lang.Object)
      */
     public void removeImportedElement(Object pack, Object me) {
-        if (pack instanceof UmlPackage && me instanceof ModelElement) {
-            Collection c = ((UmlPackage) pack).getElementImport();
-            ElementImport match = null;
-            Iterator it = c.iterator();
-            while (it.hasNext()) {
-                ElementImport ei = (ElementImport) it.next();
-                if (ei.getImportedElement() == me) {
-                    match = ei;
-                    break;
+        try {
+            if (pack instanceof UmlPackage && me instanceof ModelElement) {
+                Collection c = ((UmlPackage) pack).getElementImport();
+                ElementImport match = null;
+                Iterator it = c.iterator();
+                while (it.hasNext()) {
+                    ElementImport ei = (ElementImport) it.next();
+                    if (ei.getImportedElement() == me) {
+                        match = ei;
+                        break;
+                    }
                 }
+                if (match != null) c.remove(match);
+                return;
             }
-            if (match != null) c.remove(match);
-            return;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException(
                 "There must be a Package and a ModelElement"); 
@@ -563,39 +573,43 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      */
     public Collection getAllImportedElements(Object pack) {
         Collection c = new ArrayList();
-        Collection deps = nsmodel.getFacade().getClientDependencies(pack);
-        Iterator i = deps.iterator();
-        while (i.hasNext()) {
-            Object dep = i.next();
-            if (dep instanceof Permission) {
-                if (nsmodel.getExtensionMechanismsHelper()
+        try {
+            Collection deps = nsmodel.getFacade().getClientDependencies(pack);
+            Iterator i = deps.iterator();
+            while (i.hasNext()) {
+                Object dep = i.next();
+                if (dep instanceof Permission) {
+                    if (nsmodel.getExtensionMechanismsHelper()
                             .hasStereoType(dep, "friend")) {
-                    Collection mes = nsmodel.getFacade().getSuppliers(dep);
-                    Iterator mei = mes.iterator();
-                    while (mei.hasNext()) {
-                        Object o = mei.next();
-                        if (nsmodel.getFacade().isANamespace(o)) {
-                            Collection v = 
-                                nsmodel.getFacade().getOwnedElements(o);
-                            c.addAll(v);
+                        Collection mes = nsmodel.getFacade().getSuppliers(dep);
+                        Iterator mei = mes.iterator();
+                        while (mei.hasNext()) {
+                            Object o = mei.next();
+                            if (nsmodel.getFacade().isANamespace(o)) {
+                                Collection v = 
+                                    nsmodel.getFacade().getOwnedElements(o);
+                                c.addAll(v);
+                            }
                         }
-                    }
-                } else if (nsmodel.getExtensionMechanismsHelper()
-                                .hasStereoType(dep, "import") 
-                        || nsmodel.getExtensionMechanismsHelper()
-                                .hasStereoType(dep, "access")) {
-                    Collection mes = nsmodel.getFacade().getSuppliers(dep);
-                    Iterator mei = mes.iterator();
-                    while (mei.hasNext()) {
-                        Object o = mei.next();
-                        if (nsmodel.getFacade().isANamespace(o)) {
-                            Collection v = nsmodel.getCoreHelper()
-                                            .getAllVisibleElements(o);
-                            c.addAll(v);
+                    } else if (nsmodel.getExtensionMechanismsHelper()
+                            .hasStereoType(dep, "import")
+                            || nsmodel.getExtensionMechanismsHelper()
+                                    .hasStereoType(dep, "access")) {
+                        Collection mes = nsmodel.getFacade().getSuppliers(dep);
+                        Iterator mei = mes.iterator();
+                        while (mei.hasNext()) {
+                            Object o = mei.next();
+                            if (nsmodel.getFacade().isANamespace(o)) {
+                                Collection v = nsmodel.getCoreHelper()
+                                        .getAllVisibleElements(o);
+                                c.addAll(v);
+                            }
                         }
                     }
                 }
             }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return c;
     }

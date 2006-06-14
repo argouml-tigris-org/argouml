@@ -734,10 +734,14 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      *      java.lang.Object)
      */
     public void removeBase(Object handle, Object c) {
-        if (handle instanceof ClassifierRole && c instanceof Classifier) {
-            ((ClassifierRole) handle).getBase().remove(c);
-    
-            return;
+        try {
+            if (handle instanceof ClassifierRole && c instanceof Classifier) {
+                ((ClassifierRole) handle).getBase().remove(c);
+                
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException(
                 "There must be a ClassifierRole and a Classifier");
@@ -748,14 +752,17 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      *      java.lang.Object)
      */
     public void removeConstrainingElement(Object handle, Object constraint) {
-        if (handle instanceof Collaboration
-                && constraint instanceof ModelElement) {
-            Collaboration collab = (Collaboration) handle;
-            collab.getConstrainingElement().remove(constraint);
-    
-            return;
+        try {
+            if (handle instanceof Collaboration
+                    && constraint instanceof ModelElement) {
+                Collaboration collab = (Collaboration) handle;
+                collab.getConstrainingElement().remove(constraint);
+                
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-
         throw new IllegalArgumentException("handle: " + handle
                 + " or constraint: " + constraint);
     }
@@ -765,15 +772,18 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      *      java.lang.Object)
      */
     public void removeMessage(Object handle, Object message) {
-        if (handle instanceof Interaction && message instanceof Message) {
-            ((Interaction) handle).getMessage().remove(message);
-    
-            return;
-        }
-        if (handle instanceof AssociationRole && message instanceof Message) {
-            ((AssociationRole) handle).getMessage().remove(message);
-    
-            return;
+        try {
+            if (handle instanceof Interaction && message instanceof Message) {
+                ((Interaction) handle).getMessage().remove(message);
+                return;
+            }
+            if (handle instanceof AssociationRole 
+                    && message instanceof Message) {
+                ((AssociationRole) handle).getMessage().remove(message);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or message: " + message);
@@ -784,11 +794,15 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      *      java.lang.Object)
      */
     public void removeMessage3(Object handle, Object mess) {
-        if (handle instanceof Message && mess instanceof Message) {
-            nsmodel.getUmlPackage().getCollaborations().
-                getAPredecessorSuccessor().remove((Message) handle,
-                            (Message) mess);
-            return;
+        try {
+            if (handle instanceof Message && mess instanceof Message) {
+                nsmodel.getUmlPackage().getCollaborations()
+                        .getAPredecessorSuccessor().remove((Message) handle,
+                                (Message) mess);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("predecessor: " + handle
                 + " or successor: " + mess);
@@ -799,9 +813,13 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      *      java.lang.Object)
      */
     public void removePredecessor(Object handle, Object message) {
-        if (handle instanceof Message && message instanceof Message) {
-            ((Message) handle).getPredecessor().remove(message);
-            return;
+        try {
+            if (handle instanceof Message && message instanceof Message) {
+                ((Message) handle).getPredecessor().remove(message);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or message: " + message);
@@ -1013,12 +1031,17 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      *      java.lang.Object)
      */
     public void removeInteraction(Object collab, Object interaction) {
-        if (collab instanceof Collaboration
-                && interaction instanceof Interaction) {
-            nsmodel.getUmlPackage().getCollaborations().
-                 getAContextInteraction().remove((Collaboration) collab,
-                            (Interaction) interaction);
-            return;
+        try {
+            if (collab instanceof Collaboration
+                    && interaction instanceof Interaction) {
+                nsmodel.getUmlPackage().getCollaborations()
+                        .getAContextInteraction().remove(
+                                (Collaboration) collab,
+                                (Interaction) interaction);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException("collab: " + collab
                 + " or interaction: " + interaction);
