@@ -161,13 +161,11 @@ import org.omg.uml.modelmanagement.UmlPackage;
 /**
  * Model Facade implementation.
  *
- * TODO: Almost any of these methods can return an InvalidObjectException if
- * they are used with an object which has been deleted. Depending on the order
- * of deletion of a set of objects and the relative priority of different
- * threads, this could occur when trying to update a diagram while handling
- * another MDR event.
- * All methods really need to be protected by try/catch blocks,
- * not just the ones which have been demonstrated to cause problems. - tfm
+ * This class provides read-only access to model data in the repository.
+ * Factories and setters are in separate UML package specific classes.
+ * <p>
+ * Most methods in this class can throw the run-time exception
+ * {@link org.argouml.model.InvalidElementException}.
  */
 class FacadeMDRImpl implements Facade {
 
@@ -1315,8 +1313,8 @@ class FacadeMDRImpl implements Facade {
             if (handle instanceof ModelElement) {
                 Collection c =
                     implementation.getUmlPackage().getCore()
-                    .getAReferenceValueReferenceTag().getReferenceTag(
-                            (ModelElement) handle);
+                        .getAReferenceValueReferenceTag().getReferenceTag(
+                                (ModelElement) handle);
                 for (Iterator i = c.iterator(); i.hasNext();) {
                     TaggedValue tv = (TaggedValue) i.next();
                     if (GENERATED_TAG.equals(tv.getType().getTagType())) {
@@ -1549,8 +1547,8 @@ class FacadeMDRImpl implements Facade {
         try {
             if (handle instanceof Classifier) {
                 return implementation.getUmlPackage().getCore()
-                .getAParticipantAssociation().getAssociation(
-                        (Classifier) handle);
+                        .getAParticipantAssociation().getAssociation(
+                                (Classifier) handle);
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
@@ -1565,8 +1563,8 @@ class FacadeMDRImpl implements Facade {
         try {
             if (handle instanceof UmlAssociation) {
                 return implementation.getUmlPackage().getCollaborations()
-                .getABaseAssociationRole().getAssociationRole(
-                        (UmlAssociation) handle);
+                        .getABaseAssociationRole().getAssociationRole(
+                                (UmlAssociation) handle);
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
@@ -1838,13 +1836,13 @@ class FacadeMDRImpl implements Facade {
         try {
             if (handle instanceof Classifier) {
                 return implementation.getUmlPackage().getActivityGraphs()
-                .getATypeClassifierInState().getClassifierInState(
-                        (Classifier) handle);
+                        .getATypeClassifierInState().getClassifierInState(
+                                (Classifier) handle);
             }
             if (handle instanceof State) {
                 return implementation.getUmlPackage().getActivityGraphs()
-                .getAClassifierInStateInState().getClassifierInState(
-                        (State) handle);
+                        .getAClassifierInStateInState().getClassifierInState(
+                                (State) handle);
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
@@ -2458,7 +2456,8 @@ class FacadeMDRImpl implements Facade {
         try {
             if (handle instanceof Message) {
                 return implementation.getUmlPackage().getCollaborations()
-                .getAPredecessorSuccessor().getSuccessor((Message) handle);
+                        .getAPredecessorSuccessor().getSuccessor(
+                                (Message) handle);
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
