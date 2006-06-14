@@ -34,6 +34,7 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -184,9 +185,20 @@ public class FigEdgeNote
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {
-        if (e instanceof RemoveAssociationEvent &&
-                e.getOldValue() == annotatedElement) {
-            owner.delete();
+        if (e instanceof RemoveAssociationEvent
+                && e.getOldValue() == annotatedElement) {
+            try {
+                owner.delete();
+            } catch (InvalidElementException ex) {
+                /*
+                 * Depending on the order of deletion of elements, the order of
+                 * delivery of events and the speed of the event delivery thread
+                 * relative to other threads, we may hit this condition. In the
+                 * absence of synchronization, it's not really an error. Just
+                 * ignore it.
+                 */
+                LOG.debug("Tried to delete an already deleted comment", ex);
+            }
             removeFromDiagram();
         }
     }
@@ -195,7 +207,7 @@ public class FigEdgeNote
      * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
      */
     public String getTipString(MouseEvent me) {
-        return "Comment Edge"; // TODO get tip string from comment
+        return "Comment Edge"; // TODO: get tip string from comment
     }
 
     
@@ -208,7 +220,7 @@ public class FigEdgeNote
             // the whole model yet in XMI
             newOwner = new CommentEdge(comment, annotatedElement);
         }
-        owner = (CommentEdge)newOwner;
+        owner = (CommentEdge) newOwner;
     }
 
     /**
@@ -257,6 +269,9 @@ public class FigEdgeNote
         return;
     }
     
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
+     */
     protected void updateListeners(Object newOwner) {
     }
     
@@ -283,9 +298,9 @@ public class FigEdgeNote
      * @return MModelElement
      */
     protected Object getSource() {
-        Object owner = getOwner();
-        if (owner != null) {
-            return ((CommentEdge) owner).getSource();
+        Object theOwner = getOwner();
+        if (theOwner != null) {
+            return ((CommentEdge) theOwner).getSource();
         }
         return null;
     }
@@ -297,13 +312,16 @@ public class FigEdgeNote
      * @return Object
      */
     protected Object getDestination() {
-        Object owner = getOwner();
-        if (owner != null) {
-            return ((CommentEdge) owner).getDestination();
+        Object theOwner = getOwner();
+        if (theOwner != null) {
+            return ((CommentEdge) theOwner).getDestination();
         }
         return null;
     }
     
+    /**
+     * @see org.tigris.gef.presentation.FigEdge#setDestFigNode(org.tigris.gef.presentation.FigNode)
+     */
     public void setDestFigNode(FigNode fn) {
         if (fn != null && Model.getFacade().isAComment(fn.getOwner())) {
             Object oldComment = comment;
@@ -315,16 +333,19 @@ public class FigEdgeNote
                 addElementListener(comment);
             }
             
-            ((CommentEdge)getOwner()).setComment(comment);
-        } else if (fn != null &&
-                !Model.getFacade().isAComment(fn.getOwner())) {
+            ((CommentEdge) getOwner()).setComment(comment);
+        } else if (fn != null 
+                && !Model.getFacade().isAComment(fn.getOwner())) {
             annotatedElement = fn.getOwner();
-            ((CommentEdge)getOwner()).setAnnotatedElement(annotatedElement);
+            ((CommentEdge) getOwner()).setAnnotatedElement(annotatedElement);
         }
 
         super.setDestFigNode(fn);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.FigEdge#setSourceFigNode(org.tigris.gef.presentation.FigNode)
+     */
     public void setSourceFigNode(FigNode fn) {
         if (fn != null && Model.getFacade().isAComment(fn.getOwner())) {
             Object oldComment = comment;
@@ -335,11 +356,11 @@ public class FigEdgeNote
             if (comment != null) {
                 addElementListener(comment);
             }
-            ((CommentEdge)getOwner()).setComment(comment);
-        } else if (fn != null &&
-                !Model.getFacade().isAComment(fn.getOwner())) {
+            ((CommentEdge) getOwner()).setComment(comment);
+        } else if (fn != null 
+                && !Model.getFacade().isAComment(fn.getOwner())) {
             annotatedElement = fn.getOwner();
-            ((CommentEdge)getOwner()).setAnnotatedElement(annotatedElement);
+            ((CommentEdge) getOwner()).setAnnotatedElement(annotatedElement);
         }
         super.setSourceFigNode(fn);
     }

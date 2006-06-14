@@ -1914,7 +1914,11 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public void removeAnnotatedElement(Object handle, Object me) {
         if (handle instanceof Comment && me instanceof ModelElement) {
-            ((Comment) handle).getAnnotatedElement().remove(me);
+            try {
+                ((Comment) handle).getAnnotatedElement().remove(me);
+            } catch (InvalidObjectException e) {
+                throw new InvalidElementException(e);
+            }
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
