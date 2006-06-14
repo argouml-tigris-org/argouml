@@ -279,7 +279,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         super.addNodeRelatedEdges(node);
 
         if (Model.getFacade().isAStateVertex(node)) {
-            Collection transen = new ArrayList(Model.getFacade().getOutgoings(node));
+            Collection transen = 
+                new ArrayList(Model.getFacade().getOutgoings(node));
             transen.addAll(Model.getFacade().getIncomings(node));
             Iterator iter = transen.iterator();
             while (iter.hasNext()) {
@@ -361,7 +362,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
                 addEdge(connection);
                 return connection;
             } catch (Exception ex) {
-                // fail silently
+                LOG.error("buildConnection() failed", ex);
             }
             return null;
         } else {

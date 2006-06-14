@@ -29,6 +29,7 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
@@ -46,6 +47,8 @@ import org.tigris.gef.presentation.FigText;
  */
 
 public class FigStubState extends FigStateVertex {
+    
+    private static final Logger LOG = Logger.getLogger(FigStubState.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -331,6 +334,7 @@ public class FigStubState extends FigStateVertex {
         try {
             text = facade.getReferenceState(getOwner());
         } catch (Exception e) {
+            LOG.error(e);
         }
         if (text != null) {
             referenceFig.setText((String) text);

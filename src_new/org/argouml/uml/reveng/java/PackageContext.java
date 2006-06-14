@@ -24,6 +24,7 @@
 
 package org.argouml.uml.reveng.java;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.uml.reveng.ImportClassLoader;
@@ -34,6 +35,9 @@ import org.argouml.uml.reveng.ImportClassLoader;
  * @author Marcus Andersson
  */
 class PackageContext extends Context {
+    
+    private static final Logger LOG = Logger.getLogger(PackageContext.class);
+    
     /** The package this context represents. */
     private Object mPackage;
 
@@ -107,6 +111,8 @@ class PackageContext extends Context {
                 }
                 catch (Exception e1) {
 		    // Ignore.
+                    // TODO: Why are these being ignored?
+                    LOG.warn("Exception ignored", e1);
                 }
 	    }
 	}
@@ -194,6 +200,8 @@ class PackageContext extends Context {
                 }
                 catch (Exception e1) {
 		    // Ignore
+                    // TODO: Why are these being ignored? - tfm
+                    LOG.warn("Exception ignored", e1);
                 }
             }
 	}

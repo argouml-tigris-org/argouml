@@ -193,8 +193,7 @@ public class ConfigLoader {
 		}
 		catch (ClassNotFoundException cnfe) { }
 		catch (Exception e) {
-		    LOG.error("Unanticipated exception, skipping " + tabName);
-		    LOG.error(e);
+		    LOG.error("Unanticipated exception, skipping " + tabName, e);
 		}
 		if (res != null) {
 		    return res;

@@ -89,7 +89,7 @@ public class JavaImport extends FileImportSupport {
                 LOG.error(e.getClass().getName()
 			  + " Exception in file: "
 			  + f.getCanonicalPath() + " "
-			  + f.getName());
+			  + f.getName(), e);
                 throw e;
             }
 	    in.close();

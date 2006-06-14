@@ -24,6 +24,7 @@
 
 package org.argouml.uml.reveng.java;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.reveng.ImportClassLoader;
 
@@ -33,6 +34,10 @@ import org.argouml.uml.reveng.ImportClassLoader;
  * @author Marcus Andersson
  */
 class OuterClassifierContext extends Context {
+    
+    private static final Logger LOG = 
+        Logger.getLogger(OuterClassifierContext.class);
+    
     /** The classifier this context represents. */
     private Object mClassifier;
 
@@ -124,6 +129,10 @@ class OuterClassifierContext extends Context {
 
                 }
                 catch (Exception e1) {
+                    // TODO: This too broad an exception catch to just continue
+                    // with - narrow to specific expected errors that can be
+                    // ignored
+                    LOG.warn(e1);
                     // Continue the search through the rest of the model
                     if (getContext() != null) {
                         mInterface = getContext().getInterface(name);
@@ -205,7 +214,11 @@ class OuterClassifierContext extends Context {
 
                 }
                 catch (Exception e1) {
-
+                    // TODO: This too broad an exception catch to just continue
+                    // with - narrow to specific expected errors that can be
+                    // ignored - tfm
+                    LOG.warn(e1);
+                    
                     // Continue the search through the rest of the model
                     if (getContext() != null) {
                         iClassifier = getContext().get(name);

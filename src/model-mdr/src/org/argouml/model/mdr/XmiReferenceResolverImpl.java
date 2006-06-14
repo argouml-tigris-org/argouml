@@ -386,6 +386,7 @@ class XmiReferenceResolverImpl extends XmiContext {
             stream = url.openStream();
             stream.close();
         } catch (Exception e) {
+            // TODO: What kinds of exceptions are expected here? - tfm
             url = null;
         } finally {
             stream = null;

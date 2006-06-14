@@ -366,7 +366,7 @@ public class ModuleLoader {
         try {
 	    return loadModules(new FileInputStream(moduleFile), moduleFile);
 	} catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
         return false;
     }

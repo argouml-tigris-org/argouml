@@ -154,7 +154,10 @@ public class RESequenceDiagramDialog
         model = ProjectManager.getManager().getCurrentProject().getModel();
         try {
             modeller = new Modeller(model, null, null, true, true, null);
-        } catch (Exception ex) { }
+        } catch (Exception ex) { 
+            // TODO: Why are these being ignored? - tfm
+            LOG.warn("Exception ignored", ex);
+        }
 
         classifier = Model.getFacade().getOwner(operation);
         if (figMessage != null) {
@@ -547,7 +550,10 @@ public class RESequenceDiagramDialog
             parser = new JavaRecognizer(lexer);
             parser.setModeller(modeller);
             parser.setParserMode(JavaRecognizer.MODE_REVENG_SEQUENCE);
-        } catch (Exception ex) { }
+        } catch (Exception ex) { 
+            // TODO: Why are these being ignored?
+            LOG.warn("Exception ignored", ex);
+        }
         if (modeller != null && parser != null) {
             try {
                 parser.compoundStatement();
@@ -667,7 +673,7 @@ public class RESequenceDiagramDialog
         Editor ce = Globals.curEditor();
         Hashtable args = new Hashtable();
         args.put("action", callType);
-        Mode mode = (Mode) ce.getModeManager().top();
+        Mode mode = ce.getModeManager().top();
         mode.setArgs(args);
         Object newEdge = graphModel.connect(startPort, foundPort, edgeType);
         if (null != newEdge) {

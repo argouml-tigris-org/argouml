@@ -348,7 +348,7 @@ public class DiagramInterface {
 	    try {
 		d.setName(diagramName);
 	    } catch (Exception e) {
-		LOG.error("Failed to set diagram name.");
+		LOG.error("Failed to set diagram name.", e);
 	    }
 	    p.addMember(d);
 	    setCurrentDiagram(d);
