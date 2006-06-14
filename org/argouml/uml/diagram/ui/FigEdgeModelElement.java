@@ -944,9 +944,9 @@ public abstract class FigEdgeModelElement
     final public void removeFromDiagram() {
         Fig delegate = getRemoveDelegate();
         if (delegate instanceof FigNodeModelElement) {
-            ((FigNodeModelElement)delegate).removeFromDiagramImpl();
+            ((FigNodeModelElement) delegate).removeFromDiagramImpl();
         } else if (delegate instanceof FigEdgeModelElement) {
-            ((FigEdgeModelElement)delegate).removeFromDiagramImpl();
+            ((FigEdgeModelElement) delegate).removeFromDiagramImpl();
         } else if (delegate != null) {
             removeFromDiagramImpl();
         }
@@ -982,9 +982,8 @@ public abstract class FigEdgeModelElement
         // GEF does not take into account the multiple diagrams we have
         // therefore we loop through our diagrams and delete each and every
         // occurence on our own
-        it =
-        ProjectManager.getManager().getCurrentProject()
-            .getDiagrams().iterator();
+        it = ProjectManager.getManager().getCurrentProject().getDiagrams()
+                .iterator();
         while (it.hasNext()) {
             ArgoDiagram diagram = (ArgoDiagram) it.next();
             diagram.damage();
@@ -1032,28 +1031,8 @@ public abstract class FigEdgeModelElement
             currentDestination = currentDestFig.getOwner();
         }
         if (newSource != currentSource || newDest != currentDestination) {
-            Fig newSourceFig = null;
-            if (newSource != null) {
-                List contents = getLayer().getContentsNoEdges();
-                int figCount = contents.size();
-                for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-                    Fig fig = (Fig)contents.get(figIndex);
-                    if(fig.getOwner() == newSource) {
-                        newSourceFig = fig;
-                    }
-                }
-            }
-            Fig newDestFig = null;
-            if (newDest != null) {
-                List contents = getLayer().getContentsNoEdges();
-                int figCount = contents.size();
-                for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-                    Fig fig = (Fig)contents.get(figIndex);
-                    if(fig.getOwner() == newDest) {
-                        newDestFig = fig;
-                    }
-                }
-            }
+            Fig newSourceFig = getNoEdgePresentationFor(newSource);
+            Fig newDestFig = getNoEdgePresentationFor(newDest);
             if (newSourceFig == null || newDestFig == null) {
                 removeFromDiagram();
                 return false;
@@ -1087,6 +1066,29 @@ public abstract class FigEdgeModelElement
 
         return true;
     }
+
+    /**
+     * A version of GEF's presentationFor() method which 
+     * @param element ModelElement to return presentation for
+     * @return the Fig representing the presentation
+     */
+    private Fig getNoEdgePresentationFor(Object element) {
+        Fig result = null;
+        if (element != null) {
+            List contents = getLayer().getContentsNoEdges();
+            int figCount = contents.size();
+            for (int figIndex = 0; figIndex < figCount; ++figIndex) {
+                Fig fig = (Fig) contents.get(figIndex);
+                if (fig.getOwner() == element) {
+                    // TODO: Why doesn't this stop searching after
+                    // the first figure found? - tfm
+                    result = fig;
+                }
+            }
+        }
+        return result;
+    }
+
 
     /**
      * helper method for updateClassifiers() in order to automatically
