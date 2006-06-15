@@ -562,14 +562,12 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 nsmodel.getUmlFactory().delete(it.next());
             }
         }
-        
-        // TODO: ?Delete Stimulii where this is the sender or receiver?
-        // (or leave them since they contain other info the user might
-        // want to reuse even though they are temporarily invalid?)
-//        nsmodel.getUmlHelper().deleteCollection(
-//                cbPackage.getAStimulusSender().getStimulus((Instance) elem));
-//        nsmodel.getUmlHelper().deleteCollection(
-//                cbPackage.getAReceiverStimulus().getStimulus((Instance) elem));
+
+        // Delete Stimuli which have this as a Sender or Receiver
+        nsmodel.getUmlHelper().deleteCollection(
+                cbPackage.getAStimulusSender().getStimulus((Instance) elem));
+        nsmodel.getUmlHelper().deleteCollection(
+                cbPackage.getAReceiverStimulus().getStimulus((Instance) elem));
 
     }
 

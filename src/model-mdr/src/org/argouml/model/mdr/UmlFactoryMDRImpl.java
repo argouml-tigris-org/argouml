@@ -129,6 +129,7 @@ import org.omg.uml.foundation.core.Stereotype;
 import org.omg.uml.foundation.core.StructuralFeature;
 import org.omg.uml.foundation.core.TagDefinition;
 import org.omg.uml.foundation.core.TaggedValue;
+import org.omg.uml.foundation.core.TemplateArgument;
 import org.omg.uml.foundation.core.TemplateParameter;
 import org.omg.uml.foundation.core.UmlAssociation;
 import org.omg.uml.foundation.core.UmlClass;
@@ -668,7 +669,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         nsmodel.getRepository().beginTrans(true);
         try {
             // TODO: Encountering a deleted object during
-            // any part of this traversal while
+            // any part of this traversal will
             // abort the rest of the traversal.
             // We probably should do the whole traversal
             // in a single MDR transaction.
@@ -752,8 +753,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 }
             } else if (elem instanceof TemplateParameter) {
                 getCore().deleteTemplateParameter(elem);
+            } else if (elem instanceof TemplateArgument) {
+                getCore().deleteTemplateArgument(elem);
             }
-            // TODO: Add TemplateArgument
 
             if (elem instanceof Partition) {
                 getActivityGraphs().deletePartition(elem);
