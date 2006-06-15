@@ -1293,6 +1293,13 @@ public final class ProjectBrowser
                     }
                 }
 
+                // Let's save this project in the mru list
+                this.addFileSaved(file);
+                // Let's save this project as the last used one
+                // in the configuration file
+                Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
+                        file.getCanonicalPath());
+                
                 ProjectBrowser.getInstance().showStatus(
                         Translator.localize(
                                 "label.open-project-status-read",
