@@ -1073,20 +1073,17 @@ public abstract class FigEdgeModelElement
      * @return the Fig representing the presentation
      */
     private Fig getNoEdgePresentationFor(Object element) {
-        Fig result = null;
         if (element != null) {
             List contents = getLayer().getContentsNoEdges();
             int figCount = contents.size();
             for (int figIndex = 0; figIndex < figCount; ++figIndex) {
                 Fig fig = (Fig) contents.get(figIndex);
                 if (fig.getOwner() == element) {
-                    // TODO: Why doesn't this stop searching after
-                    // the first figure found? - tfm
-                    result = fig;
+                    return fig;
                 }
             }
         }
-        return result;
+        return null;
     }
 
 
