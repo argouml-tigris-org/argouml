@@ -25,13 +25,8 @@
 package org.argouml.uml.cognitive.checklist;
 
 import org.apache.log4j.Logger;
-
-
-
 import org.argouml.cognitive.checklist.CheckItem;
-//
-//  slightly different from its GEF counterpart
-//
+import org.argouml.model.InvalidElementException;
 import org.argouml.ocl.CriticOclEvaluator;
 import org.argouml.ocl.OCLEvaluator;
 import org.tigris.gef.ocl.ExpansionException;
@@ -89,7 +84,11 @@ public class UMLCheckItem extends CheckItem {
 	    } catch (ExpansionException e) {
 	        // Really ought to have a CriticException to throw here.
 	        LOG.error("Failed to evaluate critic expression", e);
-	    }
+	    } catch (InvalidElementException e) {
+                /* The modelelement must have been 
+                 * deleted - ignore this - it will pass. */
+                evalStr = "(deleted)";
+            }
 	    LOG.debug("expr='" + expr + "' = '" + evalStr + "'");
 	    res = res.substring(0, matchPos) + evalStr
 	        + res.substring(endExpr + OCLEvaluator.OCL_END.length());
