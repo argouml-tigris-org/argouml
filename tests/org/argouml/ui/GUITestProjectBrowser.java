@@ -24,12 +24,17 @@
 
 package org.argouml.ui;
 
+import java.beans.PropertyVetoException;
+
+import javax.swing.Action;
+
 import junit.framework.TestCase;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.cmd.ActionNew;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
@@ -106,7 +111,6 @@ public class GUITestProjectBrowser extends TestCase {
 
     /**
      * Testing the setTarget method in ProjectBrowser.
-     * The method has been deprecated.
      */
     public void testSetTarget() {
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -124,12 +128,60 @@ public class GUITestProjectBrowser extends TestCase {
         tm.setTarget(diagram1);
 	assertEquals("Diagram1 should be the target", diagram1, tm.getTarget());
 
-        TargetManager.getInstance().setTarget(diagram2);
+        tm.setTarget(diagram2);
 	assertEquals("Diagram2 should be the target", diagram2, tm.getTarget());
 
 	p.moveToTrash(package2);
         Model.getPump().flushModelEvents();
 	assertEquals("The target is not reset to the first diagram",
             p.getDiagrams().get(0), tm.getTarget());
+    }
+
+    /**
+     * Testing the Window Title of the ProjectBrowser.
+     */
+    public void testSetTitle() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectBrowser pb = ProjectBrowser.getInstance();
+        TargetManager tm = TargetManager.getInstance();
+
+        Object package1 =
+            Model.getModelManagementFactory().buildPackage("test1", null);
+        Object package2 =
+            Model.getModelManagementFactory().buildPackage("test2", null);
+        UMLClassDiagram diagram1 = new UMLClassDiagram(package1);
+        UMLClassDiagram diagram2 = new UMLClassDiagram(package2);
+        try {
+            diagram1.setName("diagram1");
+            diagram2.setName("diagram2");
+        } catch (PropertyVetoException e) {
+            assertNotNull("PropertyVetoException " + e, e);
+        }
+
+        p.addMember(diagram1);
+        p.addMember(diagram2);
+
+        Model.getPump().flushModelEvents();
+
+        tm.setTarget(diagram1);
+        assertTrue("Title should contain diagram1 name", 
+                pb.getTitle().contains(diagram1.getName()));
+
+        tm.setTarget(diagram2);
+        assertTrue("Title should contain diagram2 name", 
+                pb.getTitle().contains(diagram2.getName()));
+        
+        assertTrue("Title should contain application name", 
+                pb.getTitle().contains("Gurkburk"));
+
+        assertTrue("Title should contain *", 
+                pb.getTitle().contains("*"));
+
+        Action a = new ActionNew();
+        a.putValue("non-interactive", Boolean.TRUE);
+        a.actionPerformed(null);
+        
+        assertTrue("Title should not contain *", 
+                !pb.getTitle().contains("*"));
     }
 }

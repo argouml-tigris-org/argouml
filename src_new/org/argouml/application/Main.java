@@ -312,10 +312,6 @@ public class Main {
 
         st.mark("perspectives");
 
-        if (urlToOpen == null) {
-            pb.buildTitle(Translator.localize("label.projectbrowser-title"));
-	}
-
         if (splash != null) {
             splash.getStatusBar().showProgress(75);
         }
