@@ -182,9 +182,9 @@ public final class ProjectBrowser
     private ToDoPane todoPane;
 
     /**
-     * The title of this frame without any extending * to indicate save status.
+     * A class that handles the title of this frame, e.g. to indicate save status.
      */
-    private String title = "";
+    private TitleHandler titleHandler = new TitleHandler();
 
     /**
      * The action to save the current project.
@@ -519,84 +519,79 @@ public final class ProjectBrowser
 	//        }
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
     /**
-     * The ArgoUML application should not call this method directly from
-     * outside of ProjectBrowser. The title should be set instead by
-     * calling buildTitle. (TODO: but I think it does).
-     * The setTitle method is overridden here only to extend the standard
-     * setTitle method by displaying an asterisk to signify save status
-     * @see java.awt.Frame#setTitle(java.lang.String)
+     * Handle the title-bar of the window.
+     * 
+     * @author michiel
      */
-    public void setTitle(final String titleArg) {
-        title = titleArg;
-        String changeIndicator = "";
-        if (saveAction != null && saveAction.isEnabled()) {
-            changeIndicator = " *";
-        }
-        super.setTitle(titleArg + changeIndicator);
-    }
+    private class TitleHandler implements PropertyChangeListener {
+        
+        private ArgoDiagram monitoredDiagram = null;
 
-    /**
-     * @return the title of the frame that was set with
-     * {@link #setTitle(String)}.
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * Create a title for the main window's title.
-     *
-     * @param titleArg
-     */
-    public void buildTitle(final String titleArg) {
-        if (titleArg == null || "".equals(titleArg)) {
-            buildTitle(getAppName());
-        } else {
-            ArgoDiagram activeDiagram =
-                ProjectManager.getManager()
-                    .getCurrentProject().getActiveDiagram();
-            if (activeDiagram != null) {
-                setTitle(titleArg + " - " + activeDiagram.getName()
-                    + " - " + getAppName());
-            } else {
-                setTitle(titleArg + " - " + getAppName());
+        /**
+         * Create a title for the main window's title.
+         *
+         * @param projectFileName the project-file name
+         * @param activeDiagram the (new) current diagram
+         */
+        protected void buildTitle(String projectFileName, 
+                ArgoDiagram activeDiagram) {
+            if (projectFileName == null || "".equals(projectFileName)) {
+                if (ProjectManager.getManager().getCurrentProject() != null) {
+                    projectFileName = ProjectManager.getManager()
+                        .getCurrentProject().getName();
+                }
             }
-            setTitle(titleArg);
+            if (activeDiagram == null) {
+                activeDiagram = ProjectManager.getManager()
+                    .getCurrentProject().getActiveDiagram();
+            }
+            String changeIndicator = "";
+            if (saveAction != null && saveAction.isEnabled()) {
+                changeIndicator = " *";
+            }
+            if (activeDiagram != null) {
+                if (monitoredDiagram != null) {
+                    monitoredDiagram.removePropertyChangeListener("name", this);
+                }
+                activeDiagram.addPropertyChangeListener("name", this);
+                monitoredDiagram = activeDiagram;
+                setTitle(projectFileName + " - " + activeDiagram.getName()
+                        + " - " + getAppName() + changeIndicator);
+            } else {
+                setTitle(projectFileName + " - " + getAppName() 
+                        + changeIndicator);
+            }
+        }
+        /**
+         * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+         */
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (evt.getPropertyName().equals("name")
+                    && evt.getSource() instanceof ArgoDiagram) {
+                buildTitle(
+                    ProjectManager.getManager().getCurrentProject().getName(), 
+                    (ArgoDiagram) evt.getSource());
+            }            
         }
     }
-
     /**
      * Set the save indicator (the * after the title) to appear depending on
      * the curreny save action enabled status.
      */
     public void showSaveIndicator() {
-        setTitle(title);
+        titleHandler.buildTitle(null, null);
     }
 
     /**
-     * Updates the window title to contain the latest values for
-     * project name, active diagram, and save status.
-     */
-    protected void updateTitle() {
-        if (ProjectManager.getManager().getCurrentProject() != null) {
-            buildTitle(
-                    ProjectManager.getManager().getCurrentProject().getName());
-        }
-    }
-
-    /**
-     * @return the application name as shown in the titlebar
+     * @return the application name ("ArgoUML") as shown in the titlebar
      */
     public String getAppName() {
         return appName;
     }
 
     /**
-     * @param n the application name as shown in the titlebar
+     * @param n the application name ("ArgoUML") as shown in the titlebar
      */
     public void setAppName(String n) {
         appName = n;
@@ -962,24 +957,18 @@ public final class ProjectBrowser
             .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
             Project p = (Project) evt.getNewValue();
             if (p != null) {
-                buildTitle(p.getName());
+                titleHandler.buildTitle(p.getName(), null);
                 //Designer.TheDesigner.getToDoList().removeAllElements();
                 Designer.setCritiquingRoot(p);
                 // update all panes
                 TargetManager.getInstance().setTarget(p.getInitialTarget());
             }
-        } else if (evt.getPropertyName()
-            .equals(ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
-            // the save state changed
-            // TODO: remove after 0.20. We don't need to listen for this
-            // but now is not a good time to change.
-            updateTitle();
         }
     }
 
     /////////////////////////////////////////////////////////////////////////
     // TargetListener methods implemented so notified when selected
-    // diagram changes. Uses this to update the window title.
+    // diagram changes. Used to update the window title.
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
@@ -987,7 +976,7 @@ public final class ProjectBrowser
     public void targetAdded(TargetEvent e) {
         Object target = e.getNewTarget();
         if (target instanceof ArgoDiagram) {
-            updateTitle();
+            titleHandler.buildTitle(null, (ArgoDiagram) target);
         }
         determineRemoveEnabled();
     }
@@ -998,7 +987,7 @@ public final class ProjectBrowser
     public void targetRemoved(TargetEvent e) {
         Object target = e.getNewTarget();
         if (target instanceof ArgoDiagram) {
-            updateTitle();
+            titleHandler.buildTitle(null, (ArgoDiagram) target);
         }
         determineRemoveEnabled();
     }
@@ -1009,7 +998,7 @@ public final class ProjectBrowser
     public void targetSet(TargetEvent e) {
         Object target = e.getNewTarget();
         if (target instanceof ArgoDiagram) {
-            updateTitle();
+            titleHandler.buildTitle(null, (ArgoDiagram) target);
         }
         determineRemoveEnabled();
     }
@@ -1540,8 +1529,9 @@ public final class ProjectBrowser
 
         boolean success = ProjectBrowser.getInstance().trySave(overwrite, f);
         if (success) {
-            ProjectBrowser.getInstance().buildTitle(
-                ProjectManager.getManager().getCurrentProject().getName());
+            titleHandler.buildTitle(
+                    ProjectManager.getManager().getCurrentProject().getName(),
+                    null);
         }
         return success;
     }

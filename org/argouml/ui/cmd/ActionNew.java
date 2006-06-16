@@ -41,7 +41,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 /**
  * Action to trigger creation of a new project.
  */
-class ActionNew extends AbstractAction {
+public class ActionNew extends AbstractAction {
 
     /**
      * The constructor.
@@ -67,8 +67,10 @@ class ActionNew extends AbstractAction {
         Model.getPump().flushModelEvents();
         Project p = ProjectManager.getManager().getCurrentProject();
 
-        if (!ProjectBrowser.getInstance().askConfirmationAndSave()) {
-            return;
+        if (getValue("non-interactive") == null) {
+            if (!ProjectBrowser.getInstance().askConfirmationAndSave()) {
+                return;
+            }
         }
 
         ProjectBrowser.getInstance().clearDialogs();
