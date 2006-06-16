@@ -80,7 +80,7 @@ public class ActionSaveProject extends AbstractAction {
             ProjectManager.getManager().getCurrentProject() != null
             ? ProjectManager.getManager().getCurrentProject().getURL() : null;
         if (url == null) {
-            ProjectBrowser.getInstance().trySaveAs(true);
+            ProjectBrowser.getInstance().trySaveAs(false);
         } else {
             ProjectBrowser.getInstance().trySave(true);
         }
