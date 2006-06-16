@@ -70,8 +70,6 @@ public abstract class SAXParserBase extends DefaultHandler {
      */
     protected static final boolean DBG = false;
 
-    //protected static  boolean       _verbose       = false;
-
     /**
      * This acts as a stack of elements.<p>
      *
@@ -98,11 +96,6 @@ public abstract class SAXParserBase extends DefaultHandler {
 
     private   static  boolean       stats         = true;
     private   static  long          parseTime     = 0;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
-//    private         boolean       startElement  = false;
 
     ////////////////////////////////////////////////////////////////
     // accessors
@@ -264,13 +257,15 @@ public abstract class SAXParserBase extends DefaultHandler {
      */
     public void characters(char[] ch, int start, int length)
         throws SAXException {
+        // TODO: Why does the text get added to ALL the elements on the stack?
         for (int i = 0; i < nElements; i++) {
             XMLElement e = elements[i];
-            String test = e.getText();
-            if (test.length() > 0) {
+            if (e.length() > 0) {
+                // TODO: This seems wrong since this method can be called
+                // multiple times at the parser's discretion - tfm
                 e.addText(RETURNSTRING);
             }
-            e.addText(new String(ch, start, length));
+            e.addText(ch, start, length);
         }
     }
 

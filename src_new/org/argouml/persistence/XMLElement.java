@@ -68,6 +68,16 @@ public class XMLElement {
     public void   addText(String t) { text = text.append(t); }
 
     /**
+     * Append text to the end of the element.
+     * @param c character array containing the text to be appended
+     * @param offset starting offset of text
+     * @param len length of text to append
+     */
+    public void addText(char[] c, int offset, int len) {
+        text = text.append(c, offset, len);
+    }
+    
+    /**
      * @param t the new text
      */
     public void   setText(String t) { text = new StringBuffer(t); }
@@ -81,6 +91,12 @@ public class XMLElement {
      * @return the text of this element
      */
     public String getText()            { return text.toString(); }
+
+    /**
+     * Get the length of the text in the element.
+     * @return the length of the text in this element
+     */
+    public int length()            { return text.length(); }
 
     /**
      * Change the attributes for this element.
