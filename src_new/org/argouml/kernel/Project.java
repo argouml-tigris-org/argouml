@@ -1242,6 +1242,13 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void remove() {
 
+        if (diagrams != null) {
+            for (Iterator it = diagrams.iterator(); it.hasNext();) {
+                Diagram diagram = (Diagram) it.next();
+                diagram.remove();
+            }
+        }
+        
         if (members != null) {
             members.clear();
         }
