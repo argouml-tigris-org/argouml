@@ -29,7 +29,6 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -44,13 +43,9 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigTextEditor;
 import org.tigris.gef.undo.UndoableAction;
@@ -83,53 +78,6 @@ public abstract class ActionBaseDelete extends UndoableAction {
                 Translator.localize("action.delete-from-model"));
         putValue(Action.SMALL_ICON,
                 ResourceLoaderWrapper.lookupIcon("Delete"));
-    }
-
-
-    /**
-     * Disabled when nothing is selected or the selected element
-     * is the top level model, the last diagram, or the top state
-     * of a StateMachine.
-     * Necessary to use since this option works via the menu too. 
-     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
-     */
-    public boolean isEnabled() {
-        super.isEnabled();
-        int size = 0;
-        try {
-            Editor ce = Globals.curEditor();
-            Vector figs = ce.getSelectionManager().getFigs();
-            size = figs.size();
-        } catch (Exception e) {
-	    // Ignore
-            // TODO: Why are these being ignored? - tfm
-            LOG.warn("Exception ignored", e);
-        }
-        if (size > 0) {
-            return true;
-        }
-        Object target = TargetManager.getInstance().getTarget();
-        if (target instanceof Diagram) { // we cannot delete the last diagram
-            return (ProjectManager.getManager().getCurrentProject()
-		    .getDiagrams().size()
-		    > 1);
-        }
-        if (Model.getFacade().isAModel(target)
-	    // we cannot delete the model itself
-            && target.equals(ProjectManager.getManager().getCurrentProject()
-			     .getModel())) {
-            return false;
-        }
-        if (Model.getFacade().isAAssociationEnd(target)) {
-            return Model.getFacade().getOtherAssociationEnds(target).size() > 1;
-        }
-        if (Model.getStateMachinesHelper().isTopState(target)) {
-            /* we can not delete a "top" state,
-             * it comes and goes with the statemachine. Issue 2655.
-             */
-            return false;
-        }
-        return target != null;
     }
 
     /**

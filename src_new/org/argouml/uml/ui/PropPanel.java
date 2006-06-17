@@ -437,19 +437,23 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /**
      * Remove this element.
      */
-    public void removeElement() {
-        Object theTarget = getTarget();
-        if (Model.getFacade().isAModelElement(theTarget)) {
-            Object newTarget = Model.getFacade().getModelElementContainer(
-                    theTarget);
-            Object base = theTarget;
-            TargetManager.getInstance().setTarget(base);
-            ActionEvent event = new ActionEvent(this, 1, "delete");
-            new ActionDeleteSingleModelElement().actionPerformed(event);
-            if (newTarget != null) {
-                TargetManager.getInstance().setTarget(newTarget);
-            }
-        }
+//final public void removeElement() {
+//        Object theTarget = getTarget();
+//        if (Model.getFacade().isAModelElement(theTarget)) {
+//            Object newTarget = Model.getFacade().getModelElementContainer(
+//                    theTarget);
+//            Object base = theTarget;
+//            TargetManager.getInstance().setTarget(base);
+//            ActionEvent event = new ActionEvent(this, 1, "delete");
+//            new ActionDeleteSingleModelElement().actionPerformed(event);
+//            if (newTarget != null) {
+//                TargetManager.getInstance().setTarget(newTarget);
+//            }
+//        }
+//    }
+    
+    final protected Action getDeleteAction() {
+        return TargetManager.getInstance().getDeleteAction();
     }
 
     /**

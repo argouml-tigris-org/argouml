@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -86,7 +85,7 @@ public class PropPanelClass extends PropPanelClassifier {
         addAction(new ActionNewInnerClass());
         addAction(new ActionNewClass());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 
 } /* end class PropPanelClass */

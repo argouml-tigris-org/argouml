@@ -36,7 +36,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateOwner;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -104,7 +103,7 @@ public class PropPanelMethod extends PropPanelFeature {
         addField(Translator.localize("label.body"), pane);
 
         addAction(new ActionNavigateOwner());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 
     /**

@@ -40,7 +40,6 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -102,7 +101,7 @@ public class PropPanelClassifierInState extends PropPanelClassifier {
                 statesScroll);
 
         addAction(new ActionNavigateNamespace());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
     
     protected JComboBox getClassifierInStateTypeSelector() {

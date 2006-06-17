@@ -28,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
@@ -66,7 +65,7 @@ public class PropPanelChangeEvent extends PropPanelEvent {
                 false));
         add(changePanel);
         
-        addAction(new ActionDeleteSingleModelElement());;
+        addAction(getDeleteAction());
     }
 
 }

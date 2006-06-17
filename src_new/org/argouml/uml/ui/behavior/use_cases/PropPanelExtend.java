@@ -35,7 +35,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLConditionExpressionModel;
 import org.argouml.uml.ui.UMLExpressionBodyField;
@@ -117,7 +116,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewExtensionPoint());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 
     /**
