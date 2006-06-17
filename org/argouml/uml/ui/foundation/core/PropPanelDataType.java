@@ -36,7 +36,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -92,7 +91,7 @@ public class PropPanelDataType extends PropPanelClassifier {
         addEnumerationButtons();
         addAction(new ActionAddQueryOperation());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 
     /**

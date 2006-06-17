@@ -28,7 +28,6 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -114,7 +113,7 @@ public class PropPanelStateMachine extends PropPanelModelElement {
 
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 
     protected UMLComboBoxModel2 getContextComboBoxModel() {

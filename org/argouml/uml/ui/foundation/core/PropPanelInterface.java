@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -46,35 +45,35 @@ public class PropPanelInterface extends PropPanelClassifier {
      * Construct a property panel for UML Interface elements.
      */
     public PropPanelInterface() {
-	super("Interface", ConfigLoader.getTabPropsOrientation());
-
-	addField(Translator.localize("label.name"), getNameTextField());
-	addField(Translator.localize("label.namespace"),
-            getNamespaceSelector());
-
-	add(getModifiersPanel());
-	add(getNamespaceVisibilityPanel());
-
-	addSeparator();
-
-	addField(Translator.localize("label.generalizations"),
-            getGeneralizationScroll());
-	addField(Translator.localize("label.specializations"),
-            getSpecializationScroll());
-
-	addSeparator();
-
-	addField(Translator.localize("label.association-ends"),
-            getAssociationEndScroll());
-	addField(Translator.localize("label.operations"),
-            getFeatureScroll());
-
-	addAction(new ActionNavigateNamespace());
-	addAction(TargetManager.getInstance().getAddOperationAction());
-	addAction(getActionNewReception());
-	addAction(new ActionNewInterface());
-	addAction(new ActionNewStereotype());
-	addAction(new ActionDeleteSingleModelElement());
+        super("Interface", ConfigLoader.getTabPropsOrientation());
+        
+        addField(Translator.localize("label.name"), getNameTextField());
+        addField(Translator.localize("label.namespace"),
+                getNamespaceSelector());
+        
+        add(getModifiersPanel());
+        add(getNamespaceVisibilityPanel());
+        
+        addSeparator();
+        
+        addField(Translator.localize("label.generalizations"),
+                getGeneralizationScroll());
+        addField(Translator.localize("label.specializations"),
+                getSpecializationScroll());
+        
+        addSeparator();
+        
+        addField(Translator.localize("label.association-ends"),
+                getAssociationEndScroll());
+        addField(Translator.localize("label.operations"),
+                getFeatureScroll());
+        
+        addAction(new ActionNavigateNamespace());
+        addAction(TargetManager.getInstance().getAddOperationAction());
+        addAction(getActionNewReception());
+        addAction(new ActionNewInterface());
+        addAction(new ActionNewStereotype());
+        addAction(getDeleteAction());
     }
 
 } /* end class PropPanelInterface */

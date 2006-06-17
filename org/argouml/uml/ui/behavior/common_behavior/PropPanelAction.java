@@ -37,7 +37,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
@@ -127,7 +126,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionCreateArgument());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
 
     }
 

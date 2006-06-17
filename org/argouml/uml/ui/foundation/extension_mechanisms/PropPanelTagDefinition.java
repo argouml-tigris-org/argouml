@@ -41,7 +41,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -123,7 +122,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
         
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewTagDefinition());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 
     protected JComponent getTDNamespaceSelector() {

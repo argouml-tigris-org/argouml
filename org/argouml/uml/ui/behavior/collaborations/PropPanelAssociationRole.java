@@ -30,7 +30,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -85,7 +84,7 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
 
         addAction(new ActionNavigateContainerElement());
         addAction(ActionAddMessage.getSingleton());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 
 } /* end class PropPanelAssociationRole */

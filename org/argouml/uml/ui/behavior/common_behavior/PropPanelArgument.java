@@ -29,7 +29,6 @@ import javax.swing.JTextArea;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateAction;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionExpressionModel;
@@ -69,7 +68,7 @@ public class PropPanelArgument extends PropPanelModelElement {
                 new UMLExpressionLanguageField(expressionModel, true));
 
         addAction(new ActionNavigateAction());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
 
     }
 

@@ -34,7 +34,6 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.OneRowLinkedList;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -68,7 +67,7 @@ public class PropPanelEnumerationLiteral extends PropPanelModelElement {
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionAddLiteral());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 } /* end class PropPanelAttribute */
 

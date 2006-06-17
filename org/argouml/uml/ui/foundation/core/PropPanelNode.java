@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
@@ -79,7 +78,7 @@ public class PropPanelNode extends PropPanelClassifier {
         addAction(new ActionNavigateContainerElement());
         addAction(getActionNewReception());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 
 

@@ -31,7 +31,6 @@ import javax.swing.JTextArea;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateTransition;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionExpressionModel;
@@ -85,7 +84,7 @@ public class PropPanelGuard extends PropPanelModelElement {
         add(exprPanel);
         addAction(new ActionNavigateTransition());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
     
 } /* end class PropPanelGuard */

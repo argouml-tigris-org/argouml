@@ -30,7 +30,6 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLExpressionBodyField;
@@ -100,7 +99,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         addAction(new ActionAddDataType());
         addAction(new ActionAddEnumeration());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 
 

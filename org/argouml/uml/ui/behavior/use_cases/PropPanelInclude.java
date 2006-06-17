@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -81,7 +80,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         // Add the toolbar buttons:
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 
     /**

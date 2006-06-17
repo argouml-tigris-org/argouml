@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -92,6 +91,6 @@ public class PropPanelReception extends PropPanelModelElement {
 
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 }

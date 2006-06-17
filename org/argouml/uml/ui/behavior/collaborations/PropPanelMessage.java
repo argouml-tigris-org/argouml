@@ -36,7 +36,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import org.argouml.uml.ui.ActionDeleteSingleModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -99,7 +98,7 @@ public class PropPanelMessage extends PropPanelModelElement {
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionToolNewAction());
         addAction(new ActionNewStereotype());
-        addAction(new ActionDeleteSingleModelElement());
+        addAction(getDeleteAction());
     }
 
     private static class ActionToolNewAction
