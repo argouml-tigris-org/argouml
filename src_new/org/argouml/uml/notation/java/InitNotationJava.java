@@ -57,6 +57,9 @@ public class InitNotationJava {
         npf.addNotationProvider(
                 NotationProviderFactory2.TYPE_OPERATION,
                 name, OperationNotationJava.class);
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME,
+                name, AssociationEndNameNotationJava.class);
     }
 
 }
