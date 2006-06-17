@@ -453,4 +453,16 @@ public class ArgoDiagram extends Diagram {
 
         return presentations;
     }
+
+    // TODO: Move to GEF
+    public void remove() {
+        List contents = new ArrayList(getLayer().getContents());
+        int size = contents.size();
+        for (int i=0; i < size; ++i) {
+            Fig f = (Fig) contents.get(i);
+            f.removeFromDiagram();
+        }
+        super.remove();
+    }
+    
 } /* end class ArgoDiagram */
