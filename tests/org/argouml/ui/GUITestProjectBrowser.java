@@ -165,23 +165,23 @@ public class GUITestProjectBrowser extends TestCase {
 
         tm.setTarget(diagram1);
         assertTrue("Title should contain diagram1 name", 
-                pb.getTitle().contains(diagram1.getName()));
+                pb.getTitle().indexOf(diagram1.getName()) != -1);
 
         tm.setTarget(diagram2);
         assertTrue("Title should contain diagram2 name", 
-                pb.getTitle().contains(diagram2.getName()));
+                pb.getTitle().indexOf(diagram2.getName()) != -1);
         
         assertTrue("Title should contain application name", 
-                pb.getTitle().contains("Gurkburk"));
+                pb.getTitle().indexOf("Gurkburk") != -1);
 
         assertTrue("Title should contain *", 
-                pb.getTitle().contains("*"));
+                pb.getTitle().indexOf("*") != -1);
 
         Action a = new ActionNew();
         a.putValue("non-interactive", Boolean.TRUE);
         a.actionPerformed(null);
         
         assertTrue("Title should not contain *", 
-                !pb.getTitle().contains("*"));
+                pb.getTitle().indexOf("*") == -1);
     }
 }
