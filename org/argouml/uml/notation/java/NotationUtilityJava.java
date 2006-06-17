@@ -43,6 +43,9 @@ public class NotationUtilityJava {
      * for a model element,
      * because if it is a Feature, then the tag 'src_visibility' is to be
      * taken into account for generating language dependent visibilities.
+     *
+     * @param o the object which may be a VisibilityKind or a ModelElelement
+     * @return the generated visibility string
      */
     static String generateVisibility(Object o) {
         if (Model.getFacade().isAFeature(o)) {

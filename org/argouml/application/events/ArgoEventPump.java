@@ -75,7 +75,7 @@ public final class ArgoEventPump {
     }
 
     /**
-     * @param event the event to what the listener will listen (?)
+     * @param event the event-type to what the listener will listen
      * @param listener the listener to be added
      */
     public static void addListener(int event, ArgoEventListener listener) {
