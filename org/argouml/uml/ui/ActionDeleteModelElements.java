@@ -105,6 +105,8 @@ public class ActionDeleteModelElements extends UndoableAction {
 
         Project p = ProjectManager.getManager().getCurrentProject();
         Object[] targets = TargetManager.getInstance().getTargets().toArray();
+        /* This next line fixes issue 4276: */
+        TargetManager.getInstance().setTarget(null);
         Object target = null;
         for (int i = targets.length - 1; i >= 0; i--) {
             target = targets[i];
