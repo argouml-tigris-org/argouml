@@ -188,14 +188,6 @@ public abstract class FigEdgeModelElement
     public FigEdgeModelElement(Object edge) {
         this();
         setOwner(edge);
-        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-    }
-
-    /**
-     * @see java.lang.Object#finalize()
-     */
-    protected void finalize() {
-        ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
     /**
