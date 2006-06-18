@@ -142,7 +142,7 @@ public class TestProject extends TestCase {
     public void testDeletePackageWithClassDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        assertEquals(Translator.localize("misc-untitled-model"), 
+        assertEquals(Translator.localize("misc.untitled-model"), 
                 Model.getFacade().getName(p.getModel()));
         assertEquals(p.getRoot(), p.getModel());
 
