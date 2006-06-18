@@ -38,6 +38,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
@@ -77,7 +78,7 @@ public class ZipFilePersister extends XmiFilePersister {
      * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
-        return "XMI compressed project file";
+        return Translator.localize("combobox.filefilter.zip");
     }
 
     /**

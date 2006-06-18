@@ -28,6 +28,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
@@ -56,7 +57,8 @@ public class TestProject extends TestCase {
     public void testMakeUntitledProject() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        assertEquals("untitledModel", Model.getFacade().getName(p.getModel()));
+        assertEquals(Translator.localize("misc.untitled-model"), 
+                Model.getFacade().getName(p.getModel()));
         // maybe next test is going to change in future
         assertEquals(p.getRoot(), p.getModel());
     }
@@ -140,7 +142,8 @@ public class TestProject extends TestCase {
     public void testDeletePackageWithClassDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        assertEquals("untitledModel", Model.getFacade().getName(p.getModel()));
+        assertEquals(Translator.localize("misc-untitled-model"), 
+                Model.getFacade().getName(p.getModel()));
         assertEquals(p.getRoot(), p.getModel());
 
         int sizeMembers = p.getMembers().size();

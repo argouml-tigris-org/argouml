@@ -49,6 +49,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.uml.ProjectMemberModel;
@@ -119,7 +120,7 @@ public class UmlFilePersister extends AbstractFilePersister
      * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
-        return "ArgoUML project file";
+        return Translator.localize("combobox.filefilter.uml");
     }
 
     /**

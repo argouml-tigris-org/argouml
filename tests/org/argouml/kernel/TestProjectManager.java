@@ -27,6 +27,7 @@ package org.argouml.kernel;
 
 import junit.framework.TestCase;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
 /**
@@ -50,6 +51,7 @@ public class TestProjectManager extends TestCase {
     public void testMakeEmptyProject() {
 	Project p = ProjectManager.getManager().makeEmptyProject();
 	assertEquals(2, p.getDiagrams().size());
-        assertEquals("untitledModel", Model.getFacade().getName(p.getModel()));
+        assertEquals(Translator.localize("misc.untitled-model"), 
+                Model.getFacade().getName(p.getModel()));
     }
 }

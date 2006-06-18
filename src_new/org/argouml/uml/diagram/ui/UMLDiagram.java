@@ -28,7 +28,6 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
-import java.util.Enumeration;
 
 import javax.swing.Action;
 import javax.swing.ButtonModel;
@@ -37,9 +36,9 @@ import javax.swing.JToolBar;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
-import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.CmdCreateNode;
@@ -57,7 +56,6 @@ import org.tigris.gef.base.ModeCreateFigSpline;
 import org.tigris.gef.base.ModeCreateFigText;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.base.ModeSelect;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbar.ToolBarManager;
 import org.tigris.toolbar.toolbutton.ToolButton;
@@ -310,6 +308,8 @@ public abstract class UMLDiagram
 	    ToolBarFactory.createToolBar(true /*rollover*/,
 					 getActions(),
 					 false /*floating*/);
+        toolBar.putClientProperty("ToolBar.toolTipSelectTool", 
+                Translator.localize("action.select"));
     }
 
     /**
