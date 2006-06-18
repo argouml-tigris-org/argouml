@@ -27,6 +27,7 @@ package org.argouml.ui.explorer;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
@@ -40,10 +41,12 @@ public class ActionPerspectiveConfig extends AbstractAction {
      * The constructor. Translate the name and set icon.
      */
     public ActionPerspectiveConfig() {
-        // this is not a "global" action, since it is never downlighted...
         super(Translator.localize("action.configure-perspectives"),
                 ResourceLoaderWrapper
                         .lookupIcon("action.configure-perspectives"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION,
+                Translator.localize("action.configure-perspectives"));
     }
 
     /**
