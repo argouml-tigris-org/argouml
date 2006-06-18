@@ -495,7 +495,7 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="package" depends="jar"
           description="Prepare all jar files, both built and just delivered.">
-    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar log4j.jar ocl-argo.jar toolbar.jar swidgets.jar commons-logging.jar argouml-model.jar"/>
+
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
@@ -506,9 +506,8 @@ Property files to be searched:
     <!-- End of name synch area in this file. -->
 
     <copy file="${argo.src.dir}/README.txt" tofile="${argo.build.dir}/README.txt"/>
-    <!--
     <copy file="${argo.src.dir}/bin/argouml.sh" todir="${argo.build.dir}"/>
-  	-->
+    <copy file="${argo.src.dir}/bin/argouml.bat" todir="${argo.build.dir}"/>
   </target>
 
 
@@ -642,13 +641,14 @@ Property files to be searched:
     <delete file="${argo.src.dir}/${version.package}/ArgoVersion.java"/>
 
     <!-- TODO: Some of these are obsolete -->
-    <delete quiet="true">
+    <delete>
         <fileset dir="${argo.build.dir}">
             <include name="*.jar"/>
             <include name="Fop.java"/>
             <include name="Fop.class"/>
             <include name="README.txt"/>
             <include name="argouml.sh"/>
+            <include name="argouml.bat"/>
         </fileset>
     </delete>
 
