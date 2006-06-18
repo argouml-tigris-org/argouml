@@ -33,6 +33,7 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
+import org.argouml.i18n.Translator;
 import org.argouml.model.MementoCreationObserver;
 import org.argouml.model.Model;
 import org.argouml.model.ModelMemento;
@@ -235,7 +236,8 @@ public final class ProjectManager implements MementoCreationObserver {
         Project oldProject = currentProject;
         currentProject = new Project();
         Object model = Model.getModelManagementFactory().createModel();
-        Model.getCoreHelper().setName(model, "untitledModel");
+        Model.getCoreHelper().setName(model, 
+                Translator.localize("misc.untitled-model"));
         currentProject.setRoot(model);
         currentProject.setCurrentNamespace(model);
         currentProject.addMember(model);

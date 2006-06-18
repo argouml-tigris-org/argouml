@@ -46,6 +46,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.util.FileConstants;
@@ -88,7 +89,7 @@ public class ZargoFilePersister extends UmlFilePersister {
      * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
-        return "ArgoUML compressed project file";
+        return Translator.localize("combobox.filefilter.zargo");
     }
 
     /**

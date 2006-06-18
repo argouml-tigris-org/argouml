@@ -41,6 +41,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import org.argouml.application.modules.ModuleLoader;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.GUISettingsTabInterface;
 
 /**
@@ -68,7 +69,8 @@ class SettingsTabModules extends JPanel
      * The names of the columns in the table.
      */
     private String[] columnNames = {
-	"Module", "Enabled",
+	Translator.localize("misc.column-name.module"), 
+        Translator.localize("misc.column-name.enabled"),
     };
 
     /**
