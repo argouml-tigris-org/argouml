@@ -13,3 +13,5 @@ javadocs
 junit*.properties
 test.zargo
 tests
+argouml.log.*
+classycle
