@@ -2738,7 +2738,7 @@ The following command will do it for you:
 <programlisting>
 cd ../svn/argouml-downloads/www
 svn add argouml-<replaceable>RELEASE NAME</replaceable>
-svn propset svn:mime-types application/octet-stream argouml-<replaceable>RELEASE NAME</replaceable>/*.pdf
+svn propset svn:mime-type application/octet-stream argouml-<replaceable>RELEASE NAME</replaceable>/*.pdf
 svn add jws/argouml-<replaceable>RELEASE NAME</replaceable>.jnlp
 svn status www/maven2
 svn add www/maven2 <replaceable>the directories that show up.</replaceable>
