@@ -580,7 +580,7 @@ Please use branches sparingly and announce your intentions on the mailing list.
 
     <para>
 There are some tips on how to work with branches in CVS in
-<xref linkend="branches"></xref>.
+<xref linkend="howdoi_cvs"></xref>.
 </para>
   </sect1>
 
@@ -1414,6 +1414,95 @@ Leave the two other fields empty.
 </para>
     </sect2>
 
+    <sect2 id="eclipse-running-junit">
+      <title>Running JUnit test cases from within Eclipse</title>
+      <para>
+Most of the JUnit test cases belong to the argouml-core-tests Eclipse project.
+The argouml-core-tests Eclipse project has its compile time dependencies
+set up to include the things needed to compile the test cases.
+This means that it is possible to compile the test cases and
+nobody will create tests that uses the insides of some subsystem that
+is supposed to be hidden.
+</para>
+      <para>
+The Model subsystem is separated in two parts:
+        <itemizedlist>
+	  <listitem>
+	    <para>
+The interfaces and some bootstrap code
+in the argouml-core-model Eclipse project.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+The MDR implementation in the argouml-core-model-mdr Eclipse project.
+</para>
+	  </listitem>
+	</itemizedlist>
+There is also for test purposes a partly implemented
+Mock implementation of the model subsystem in the 
+<classname>org.argouml.model.MockModelImplementation</classname>-class
+for the purpose of testing the interfaces and the bootstrap code 
+but it requires the test cases to be written especially for that.
+</para>
+      <para>
+The tests are never to be compiled against the MDR-implementation but
+against the interfaces.
+This means that the MDR-implementation is not included in the project
+dependencies.
+</para>
+      <para>
+When it comes to running the tests,
+most of the tests require the Model subsystem working to succeed.
+To run the application with a working Model subsystem, a working
+implementation is needed so the tests require the MDR-implementation.
+</para>
+      <para>
+The simplest way to solve this is to:
+        <orderedlist>
+	  <listitem>
+	    <para>
+Create the test (by right-clicking on any of the test classes
+and select Run as JUnit Test or Debug as JUnit Test).
+</para>
+	    <para>
+The test fails with a
+<exceptionname>java.lang.ExceptionInInitializerError</exceptionname>
+on the first reference to Model.
+If it doesn't then the perhaps the test case doesn't use the Model.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Select Debug... or Run... to get the configuration editing box.
+It has remembered the test case and it is selected.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Add the argouml-core-model-mdr to the classpath.
+</para>
+
+	    <para>
+Classpath tab,
+Select User Entries,
+Add Projects,
+Check argouml-core-model-mdr,
+make sure 
+Add exported entries of selected projects
+and
+Add required projects of selected projects are checked,
+Press OK,
+Press Debug or Run.
+Eclipse will remember these changes to that configuration
+but you will have to do it all over again once for each new test case.
+</para>
+	  </listitem>
+	</orderedlist>
+</para>
+    </sect2>
   </sect1>
 
 </chapter>

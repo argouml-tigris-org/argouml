@@ -55,7 +55,7 @@ responsibilities or functions of the subsystems.
 
       <tbody valign="top">
         <row>
-          <entry>2006-05-14</entry>
+          <entry>2006-06-19</entry>
           <entry>
 Change to XXX.
 (See <xref linkend="xxx"/>).
@@ -64,6 +64,18 @@ Change to XXX.
         </row>
       </tbody>
       -->
+
+      <tbody valign="top">
+        <row>
+          <entry>2006-06-19</entry>
+          <entry>
+Added a description on how to run JUnit tests from within Eclipse.
+(See <xref linkend="eclipse-running-junit"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
 
       <tbody valign="top">
         <row>
