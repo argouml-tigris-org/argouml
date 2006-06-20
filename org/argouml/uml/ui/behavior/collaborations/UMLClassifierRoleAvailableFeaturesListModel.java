@@ -26,6 +26,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Iterator;
 
 import org.argouml.model.AddAssociationEvent;
@@ -104,23 +105,26 @@ public class UMLClassifierRoleAvailableFeaturesListModel
      */
     public void setTarget(Object target) {
         if (getTarget() != null) {
-            Collection bases = Model.getFacade().getBases(getTarget());
-            Iterator it = bases.iterator();
-            while (it.hasNext()) {
-                Object base = it.next();
+            Enumeration enumeration = elements();
+            while (enumeration.hasMoreElements()) {
+                Object base = enumeration.nextElement();
                 Model.getPump().removeModelEventListener(
-			this,
-			base,
-			"feature");
+                    this,
+                    base,
+                    "feature");
             }
             Model.getPump().removeModelEventListener(
-		this,
-		getTarget(),
-		"base");
+                this,
+                getTarget(),
+                "base");
         }
+        
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (!Model.getFacade().isAModelElement(target))
+            // TODO - isn't this an error condition? Should we not throw
+            // an exception or at least log.
             return;
+        
         setListTarget(target);
         if (getTarget() != null) {
             Collection bases = Model.getFacade().getBases(getTarget());
@@ -128,15 +132,15 @@ public class UMLClassifierRoleAvailableFeaturesListModel
             while (it.hasNext()) {
                 Object base = it.next();
                 Model.getPump().addModelEventListener(
-			this,
-			base,
-			"feature");
+                    this,
+                    base,
+                    "feature");
             }
             // make sure we know it when a classifier is added as a base
             Model.getPump().addModelEventListener(
-			this,
-			getTarget(),
-			"base");
+                this,
+                getTarget(),
+                "base");
             removeAllElements();
             setBuildingModel(true);
             buildModelList();
