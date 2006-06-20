@@ -425,6 +425,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         if (oldOwner != null) {
             removeAllElementListeners();
         }
+        super.updateListeners(newOwner);
         /* Now, let's register for all events from all modelelements
          * that may change the text: 
          */
