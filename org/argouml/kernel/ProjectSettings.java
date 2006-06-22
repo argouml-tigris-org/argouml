@@ -376,7 +376,7 @@ public class ProjectSettings {
      * @param width The Shadow Width.
      */
     public void setDefaultShadowWidth(int width) {
-        int oldValue = width;
+        int oldValue = defaultShadowWidth;
         defaultShadowWidth = width;
         fireEvent(Notation.KEY_DEFAULT_SHADOW_WIDTH, oldValue,
                 defaultShadowWidth);
