@@ -24,10 +24,15 @@
 
 package org.argouml.kernel;
 
-import org.argouml.application.api.Configuration;
-import org.argouml.notation.Notation;
+import java.beans.PropertyChangeEvent;
 
 import junit.framework.TestCase;
+
+import org.argouml.application.api.Configuration;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.events.ArgoNotationEventListener;
+import org.argouml.notation.Notation;
 
 /**
  * Tests for the ProjectSettings.
@@ -35,6 +40,8 @@ import junit.framework.TestCase;
  * @author michiel
  */
 public class TestProjectSettings extends TestCase {
+
+    private ArgoNotationEvent rxdEvent;
 
     /**
      * Constructor.
@@ -54,13 +61,13 @@ public class TestProjectSettings extends TestCase {
     public void testProjectSettingsCreation() {
         Configuration.setInteger(
                 Notation.KEY_DEFAULT_SHADOW_WIDTH, 2);
-        Project p1 = ProjectManager.getManager().getCurrentProject();
+        Project p1 = ProjectManager.getManager().makeEmptyProject();
         assertTrue("Default Setting is not copied", 
                 p1.getProjectSettings().getDefaultShadowWidthValue() == 2);
         Configuration.setInteger(
                 Notation.KEY_DEFAULT_SHADOW_WIDTH, 3);
         assertTrue("Project Setting is altered", 
-                p1.getProjectSettings().getDefaultShadowWidthValue() == 2);
+                p1.getProjectSettings().getDefaultShadowWidth().equals("2"));
         ProjectManager.getManager().removeProject(p1);
 
         /* In the next line, replacing makeEmptyProject 
@@ -75,12 +82,223 @@ public class TestProjectSettings extends TestCase {
                 Configuration.getInteger(
                         Notation.KEY_DEFAULT_SHADOW_WIDTH) == 3);
     }
+    
+    /**
+     * Test the use of Guillemots.
+     */
+    public void testGuillemots() {
+        Configuration.setBoolean(Notation.KEY_USE_GUILLEMOTS, false);
+        Project p = ProjectManager.getManager().makeEmptyProject();
+        assertTrue("Guillemots not correct", 
+                !p.getProjectSettings().getUseGuillemotsValue());
+        assertTrue("Guillemots string not set correctly", 
+                "<<".equals(p.getProjectSettings().getLeftGuillemot()));
+        assertTrue("Guillemots string not set correctly", 
+                ">>".equals(p.getProjectSettings().getRightGuillemot()));
+
+        p.getProjectSettings().setUseGuillemots(true);
+        assertTrue("Guillemots not correct", 
+                p.getProjectSettings().getUseGuillemotsValue());
+        assertTrue("Guillemots string not set correctly", 
+                "\u00ab".equals(p.getProjectSettings().getLeftGuillemot()));
+        assertTrue("Guillemots string not set correctly", 
+                "\u00bb".equals(p.getProjectSettings().getRightGuillemot()));
+    }
+    
+    /**
+     * Test the project setting for showing Visibility.
+     */
+    public void testVisibility() {
+        Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY, false);
+        Project p = ProjectManager.getManager().makeEmptyProject();
+        
+        assertTrue("Visibility not correct", 
+                !p.getProjectSettings().getShowVisibilityValue());
+        String showem = p.getProjectSettings().getShowVisibility(); 
+        assertTrue("Visibility string not set correctly", 
+                !Boolean.valueOf(showem).booleanValue());
+
+        p.getProjectSettings().setShowVisibility(true);
+        assertTrue("Visibility not correct", 
+                p.getProjectSettings().getShowVisibilityValue());
+        showem = p.getProjectSettings().getShowVisibility(); 
+        assertTrue("Visibility string not set correctly", 
+                Boolean.valueOf(showem).booleanValue());
+
+        p.getProjectSettings().setShowVisibility(Boolean.toString(false));
+        assertTrue("Visibility not correct", 
+                !p.getProjectSettings().getShowVisibilityValue());
+    }
+
+    /**
+     * Test the project setting for showing Multiplicity.
+     */
+    public void testMultiplicity() {
+        Configuration.setBoolean(Notation.KEY_SHOW_MULTIPLICITY, false);
+        Project p = ProjectManager.getManager().makeEmptyProject();
+        
+        assertTrue("Multiplicity not correct", 
+                !p.getProjectSettings().getShowMultiplicityValue());
+        String showem = p.getProjectSettings().getShowMultiplicity(); 
+        assertTrue("Multiplicity string not set correctly", 
+                !Boolean.valueOf(showem).booleanValue());
+
+        p.getProjectSettings().setShowMultiplicity(true);
+        assertTrue("Multiplicity not correct", 
+                p.getProjectSettings().getShowMultiplicityValue());
+        showem = p.getProjectSettings().getShowMultiplicity(); 
+        assertTrue("Multiplicity string not set correctly", 
+                Boolean.valueOf(showem).booleanValue());
+
+        p.getProjectSettings().setShowMultiplicity(Boolean.toString(false));
+        assertTrue("Multiplicity not correct", 
+                !p.getProjectSettings().getShowMultiplicityValue());
+    }
+
+    /**
+     * Test the project setting for showing Visibility.
+     */
+    public void testVisibilityEvents() {
+        Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY, false);
+        Project p = ProjectManager.getManager().makeEmptyProject();
+
+        ArgoEventPump.addListener(new EventCatcher());
+        
+        rxdEvent = null;
+        p.getProjectSettings().setShowVisibility(true);
+        /* This assumes events are dispatched on the same thread. */
+        assertTrue("Got no notation event", rxdEvent != null);
+
+        rxdEvent = null;
+        p.getProjectSettings().setShowVisibility(Boolean.toString(false));
+        /* This assumes events are dispatched on the same thread. */
+        assertTrue("Got no notation event", rxdEvent != null);
+        
+        PropertyChangeEvent pce = (PropertyChangeEvent) rxdEvent.getSource();
+        assertTrue("Wrong event name", 
+                pce.getPropertyName().equals(
+                        Notation.KEY_SHOW_VISIBILITY.getKey()));
+        assertTrue("Wrong old event value", Boolean.valueOf(
+                (String) pce.getOldValue()).booleanValue());
+        assertTrue("Wrong new event value", !Boolean.valueOf(
+                (String) pce.getNewValue()).booleanValue());
+    }
+    
+    /**
+     * Test the events generated by project settings changes.
+     */
+    public void testMoreEvents() {
+        PropertyChangeEvent pce;
+        
+        Configuration.setBoolean(Notation.KEY_SHOW_INITIAL_VALUE, false);
+        Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES, false);
+        Configuration.setBoolean(Notation.KEY_SHOW_TYPES, false);
+        Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
+        Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 4);
+        
+        Project p = ProjectManager.getManager().makeEmptyProject();
+        ArgoEventPump.addListener(new EventCatcher());
+        
+        rxdEvent = null;
+        p.getProjectSettings().setShowInitialValue(true);
+        /* This assumes events are dispatched on the same thread. */
+        assertTrue("Got no notation event", rxdEvent != null);
+        pce = (PropertyChangeEvent) rxdEvent.getSource();
+        assertTrue("Wrong event name", 
+                pce.getPropertyName().equals(
+                        Notation.KEY_SHOW_INITIAL_VALUE.getKey()));
+        assertTrue("Wrong old event value", !Boolean.valueOf(
+                (String) pce.getOldValue()).booleanValue());
+        assertTrue("Wrong new event value", Boolean.valueOf(
+                (String) pce.getNewValue()).booleanValue());
+        
+        rxdEvent = null;
+        p.getProjectSettings().setShowProperties(true);
+        /* This assumes events are dispatched on the same thread. */
+        assertTrue("Got no notation event", rxdEvent != null);
+        pce = (PropertyChangeEvent) rxdEvent.getSource();
+        assertTrue("Wrong event name", 
+                pce.getPropertyName().equals(
+                        Notation.KEY_SHOW_PROPERTIES.getKey()));
+        assertTrue("Wrong old event value", !Boolean.valueOf(
+                (String) pce.getOldValue()).booleanValue());
+        assertTrue("Wrong new event value", Boolean.valueOf(
+                (String) pce.getNewValue()).booleanValue());
+
+        rxdEvent = null;
+        p.getProjectSettings().setShowTypes(true);
+        /* This assumes events are dispatched on the same thread. */
+        assertTrue("Got no notation event", rxdEvent != null);
+        pce = (PropertyChangeEvent) rxdEvent.getSource();
+        assertTrue("Wrong event name", 
+                pce.getPropertyName().equals(
+                        Notation.KEY_SHOW_TYPES.getKey()));
+        assertTrue("Wrong old event value", !Boolean.valueOf(
+                (String) pce.getOldValue()).booleanValue());
+        assertTrue("Wrong new event value", Boolean.valueOf(
+                (String) pce.getNewValue()).booleanValue());
+
+        rxdEvent = null;
+        p.getProjectSettings().setShowStereotypes(true);
+        /* This assumes events are dispatched on the same thread. */
+        assertTrue("Got no notation event", rxdEvent != null);
+        pce = (PropertyChangeEvent) rxdEvent.getSource();
+        assertTrue("Wrong event name", 
+                pce.getPropertyName().equals(
+                        Notation.KEY_SHOW_STEREOTYPES.getKey()));
+        assertTrue("Wrong old event value", !Boolean.valueOf(
+                (String) pce.getOldValue()).booleanValue());
+        assertTrue("Wrong new event value", Boolean.valueOf(
+                (String) pce.getNewValue()).booleanValue());
+        
+        rxdEvent = null;
+        p.getProjectSettings().setDefaultShadowWidth(2);
+        /* This assumes events are dispatched on the same thread. */
+        assertTrue("Got no notation event", rxdEvent != null);
+        pce = (PropertyChangeEvent) rxdEvent.getSource();
+        assertTrue("Wrong event name", 
+                pce.getPropertyName().equals(
+                        Notation.KEY_DEFAULT_SHADOW_WIDTH.getKey()));
+        String value = (String) pce.getOldValue();
+        int i = Integer.parseInt(value);
+        assertTrue("Wrong old event value", i == 4);
+        assertTrue("Wrong new event value", 
+                ((String) pce.getNewValue()).equals("2"));
+    }
 
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ProjectManager.getManager().setCurrentProject(null);
+        /* Needed for initialisations: */
+        ProjectManager.getManager().getCurrentProject();
+    }
+    
+    /**
+     * Catcher of Events.
+     * 
+     * @author michiel
+     */
+    protected class EventCatcher implements ArgoNotationEventListener {
+        public void notationChanged(ArgoNotationEvent e) {
+            rxdEvent = e;
+        }
+
+        public void notationAdded(ArgoNotationEvent e) {
+            rxdEvent = e;
+        }
+
+        public void notationRemoved(ArgoNotationEvent e) {
+            rxdEvent = e;  
+        }
+
+        public void notationProviderAdded(ArgoNotationEvent e) {
+            rxdEvent = e;  
+        }
+
+        public void notationProviderRemoved(ArgoNotationEvent e) {
+            rxdEvent = e;
+        }
     }
 }
