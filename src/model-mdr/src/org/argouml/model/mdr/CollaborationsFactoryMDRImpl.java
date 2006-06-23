@@ -479,6 +479,10 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *      java.lang.Object)
      */
     public Object buildMessage(Object acollab, Object arole) {
+        if (!(arole instanceof AssociationRole)) {
+            throw new IllegalArgumentException(
+                    "An association role must be supplied - got " + arole);
+        }
         try {
             if (acollab instanceof Collaboration) {
                 return buildMessageCollab((Collaboration) acollab,
@@ -510,8 +514,8 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *      java.lang.Object)
      */
     public Object buildActivator(Object owner, Object interaction) {
-        if (owner == null || !(owner instanceof Message)) {
-            throw new IllegalArgumentException();
+        if (!(owner instanceof Message)) {
+            throw new IllegalArgumentException("A message must be supplied as the owner");
         }
 
         if (interaction == null) {
