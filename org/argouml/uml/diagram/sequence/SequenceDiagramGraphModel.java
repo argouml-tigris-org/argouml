@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.sequence;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -34,6 +35,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
@@ -52,7 +54,7 @@ import org.tigris.gef.base.ModeManager;
  */
 public class SequenceDiagramGraphModel
     extends UMLMutableGraphSupport
-    implements VetoableChangeListener {
+    implements VetoableChangeListener, PropertyChangeListener {
     
     /**
      * Logger.
@@ -490,6 +492,7 @@ public class SequenceDiagramGraphModel
             interaction =
                 Model.getCollaborationsFactory().buildInteraction(
                     collaboration);
+            Model.getPump().addModelEventListener(this, interaction);
         }
         return interaction;
     }
@@ -561,4 +564,14 @@ public class SequenceDiagramGraphModel
      * The UID.
      */
     private static final long serialVersionUID = -3799402191353570488L;
+
+    public void propertyChange(PropertyChangeEvent evt) {
+        
+        if (evt instanceof DeleteInstanceEvent && evt.getSource() == interaction) {
+            Model.getPump().removeModelEventListener(this, interaction);
+            interaction = null;
+        }
+        // TODO Auto-generated method stub
+        
+    }
 }
