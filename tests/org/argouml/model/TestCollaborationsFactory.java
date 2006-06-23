@@ -114,18 +114,18 @@ public class TestCollaborationsFactory extends TestCase {
         Object inter =
 	    Model.getCollaborationsFactory().buildInteraction(collab);
         assertNotNull("Failed to build interaction", inter);
-        Object message = 
+        Object message =
             Model.getCollaborationsFactory().buildMessage(inter, role);
         assertNotNull("Failed to build message", message);
 
         Model.getUmlFactory().delete(cr1);
         Model.getPump().flushModelEvents();
 
-        assertTrue("ClassifierRole not removed", 
+        assertTrue("ClassifierRole not removed",
                 Model.getUmlFactory().isRemoved(cr1));
-        assertTrue("AssociationRole not removed", 
+        assertTrue("AssociationRole not removed",
                 Model.getUmlFactory().isRemoved(role));
-        assertTrue("Message not removed", 
+        assertTrue("Message not removed",
                 Model.getUmlFactory().isRemoved(message));
         /*
          * This comment was included in a previous version (before 1/2005)
@@ -141,7 +141,7 @@ public class TestCollaborationsFactory extends TestCase {
          * doing the right thing by removing it in this case where we only
          * have a single message, which then gets deleted. - tfm
          */
-        assertTrue("Interaction not removed", 
+        assertTrue("Interaction not removed",
                 Model.getUmlFactory().isRemoved(inter));
     }
 
@@ -150,5 +150,41 @@ public class TestCollaborationsFactory extends TestCase {
      */
     static String[] getAllModelElements() {
         return allModelElements;
+    }
+
+    /**
+     * Test that IllegalArgumentException is thrown when a null is sent.
+     */
+    public void testExpectedIllegalArgumentException() {
+        try {
+            Model.getCollaborationsFactory().buildActivator(null, null);
+            fail("Exception missing");
+        } catch (IllegalArgumentException e) {
+            // Correct Exception was thrown.
+        }
+
+        try {
+            Model.getCollaborationsFactory().buildMessage(null, null);
+            fail("Exception missing");
+        } catch (IllegalArgumentException e) {
+            // Correct Exception was thrown.
+        }
+
+        Object collab = Model.getCollaborationsFactory().createCollaboration();
+        try {
+            Model.getCollaborationsFactory().buildMessage(collab, null);
+            fail("Exception missing");
+        } catch (IllegalArgumentException e) {
+            // Correct Exception was thrown.
+        }
+
+        Object inter = Model.getCollaborationsFactory().createInteraction();
+        try {
+            Model.getCollaborationsFactory().buildMessage(inter, null);
+            fail("Exception missing");
+        } catch (IllegalArgumentException e) {
+            // Correct Exception was thrown.
+        }
+
     }
 }
