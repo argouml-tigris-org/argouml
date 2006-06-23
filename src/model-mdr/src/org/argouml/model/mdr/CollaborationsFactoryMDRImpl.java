@@ -27,7 +27,10 @@ package org.argouml.model.mdr;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.jmi.reflect.InvalidObjectException;
+
 import org.argouml.model.CollaborationsFactory;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.omg.uml.behavioralelements.collaborations.AssociationEndRole;
 import org.omg.uml.behavioralelements.collaborations.AssociationRole;
@@ -395,9 +398,8 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     private Message buildMessageInteraction(Interaction inter,
             AssociationRole role) {
-        if (inter == null || role == null) {
-            throw new IllegalArgumentException();
-        }
+        assert inter != null : "An interaction must be provided";
+        assert role != null : "An association role must be provided";
 
         Message message = (Message) createMessage();
 
@@ -477,15 +479,19 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *      java.lang.Object)
      */
     public Object buildMessage(Object acollab, Object arole) {
-        if (acollab instanceof Collaboration) {
-            return buildMessageCollab((Collaboration) acollab,
-                    (AssociationRole) arole);
+        try {
+            if (acollab instanceof Collaboration) {
+                return buildMessageCollab((Collaboration) acollab,
+                        (AssociationRole) arole);
+            }
+            if (acollab instanceof Interaction) {
+                return buildMessageInteraction((Interaction) acollab,
+                        (AssociationRole) arole);
+            }
+            throw new IllegalArgumentException("No valid object " + acollab);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        if (acollab instanceof Interaction) {
-            return buildMessageInteraction((Interaction) acollab,
-                    (AssociationRole) arole);
-        }
-        throw new IllegalArgumentException("No valid object " + acollab);
     }
 
     private Object buildMessageCollab(Collaboration collab,
