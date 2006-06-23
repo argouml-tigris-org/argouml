@@ -103,6 +103,10 @@ public class TestProjectSettings extends TestCase {
                 "\u00ab".equals(p.getProjectSettings().getLeftGuillemot()));
         assertTrue("Guillemots string not set correctly", 
                 "\u00bb".equals(p.getProjectSettings().getRightGuillemot()));
+
+        p.getProjectSettings().setUseGuillemots(Boolean.toString(false));
+        assertTrue("Guillemots not correct", 
+                !p.getProjectSettings().getUseGuillemotsValue());
     }
     
     /**
@@ -165,7 +169,7 @@ public class TestProjectSettings extends TestCase {
         ArgoEventPump.addListener(new EventCatcher());
         
         rxdEvent = null;
-        p.getProjectSettings().setShowVisibility(true);
+        p.getProjectSettings().setShowVisibility(Boolean.toString(true));
         /* This assumes events are dispatched on the same thread. */
         assertTrue("Got no notation event", rxdEvent != null);
 
@@ -195,6 +199,7 @@ public class TestProjectSettings extends TestCase {
         Configuration.setBoolean(Notation.KEY_SHOW_TYPES, false);
         Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
         Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 4);
+        Configuration.setString(Notation.KEY_DEFAULT_NOTATION, "UML 1.4");
         
         Project p = ProjectManager.getManager().makeEmptyProject();
         ArgoEventPump.addListener(new EventCatcher());
@@ -264,6 +269,19 @@ public class TestProjectSettings extends TestCase {
         assertTrue("Wrong old event value", i == 4);
         assertTrue("Wrong new event value", 
                 ((String) pce.getNewValue()).equals("2"));
+        
+        rxdEvent = null;
+        p.getProjectSettings().setNotationLanguage("Java");
+        /* This assumes events are dispatched on the same thread. */
+        assertTrue("Got no notation event", rxdEvent != null);
+        pce = (PropertyChangeEvent) rxdEvent.getSource();
+        assertTrue("Wrong event name", 
+                pce.getPropertyName().equals(
+                        Notation.KEY_DEFAULT_NOTATION.getKey()));
+        value = (String) pce.getOldValue();
+        assertTrue("Wrong old event value", "UML 1.4".equals(value));
+        value = (String) pce.getNewValue();
+        assertTrue("Wrong new event value", "Java".equals(value));
     }
 
     /**
