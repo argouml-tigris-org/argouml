@@ -92,7 +92,7 @@ and discontinued branches on the mailing list to know what branches are
 interesting.
 </para>
       </listitem>
-      <listitem id="branches">
+      <listitem>
         <para>
 ...create a branch for my work on <replaceable>xxxyyy</replaceable> 
 and start work on that branch?
