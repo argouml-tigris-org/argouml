@@ -80,30 +80,4 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
         }
         return null;
     }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#setTarget(java.lang.Object)
-     */
-    protected void setTarget(Object target) {
-        if (Model.getFacade().isAMessage(getTarget())) {
-            Object inter = Model.getFacade().getInteraction(getTarget());
-            if (inter != null) {
-                Model.getPump().removeModelEventListener(
-                    this,
-                    inter,
-                    "message");
-            }
-        }
-        super.setTarget(target);
-        if (Model.getFacade().isAMessage(target)) {
-            Object inter = Model.getFacade().getInteraction(target);
-            if (inter != null) {
-                Model.getPump().addModelEventListener(
-                    this,
-                    inter,
-                    "message");
-            }
-        }
-    }
-
 }
