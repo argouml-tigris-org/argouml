@@ -67,6 +67,17 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2006-06-24</entry>
+          <entry>
+Added explanation on different kinds of releases and how we work with them.
+(See <xref linkend="proc-create-stable-releases"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2006-06-19</entry>
           <entry>
 Added a description on how to run JUnit tests from within Eclipse.

@@ -994,9 +994,412 @@ and close the bugs registered in the dependency bug reporting tool.
 </para>
         </listitem>
       </orderedlist>
-    </sect1>
+  </sect1>
 
-  </chapter>
+  <sect1 id="proc-create-stable-releases">
+    <title>How to Create Stable Release</title>
+
+    <para>
+We have two kinds of releases of ArgoUML:
+</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>
+Development releases.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+Stable releases.
+</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>
+Stable releases are supposed to be better quality-wise and are
+always advertised to the users community
+on the first page and
+as a news announcement.
+</para>
+
+    <para>
+Development releases are not supposed to be used by users and
+are only advertised to users for the purpose of recruiting developers
+or soliciting help with implementation and test of new features. 
+</para>
+
+    <para>
+To increase the quality of a stable release, it is preambled by
+period during which a sequence of releases with increased quality
+standards.
+The whole release schedule leading up to a stable release with
+patches looks like this:
+</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>
+Development period.
+</para>
+	<para>
+A period of one to several months where no special restrictions apply.
+</para>
+	<para>
+During this period we attempt to release one development release per month.
+The releases are named x.y.z where
+y is an odd number and
+z is counting upwards from 1.
+</para>
+	<para>
+The releases are checkpoints where:
+</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>Everything compiles (including the subprojects).</para>
+	  </listitem>
+	  <listitem>
+	    <para>The release script works.</para>
+	  </listitem>
+	  <listitem>
+	    <para>No JUnit tests are failing.</para>
+	  </listitem>
+	  <listitem>
+	    <para>There are no P1 issues.</para>
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+The releases are used:
+</para>
+
+	<itemizedlist>
+	  <listitem>
+	    <para>As reference points when reporting bugs.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>As reference points when verifying issues.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>As reference points for persons working with modules.</para>
+	  </listitem>
+
+	</itemizedlist>
+      </listitem>
+
+      <listitem>
+	<para>
+First alpha.
+</para>
+	<para>
+This is the enhancement freeze point.
+All enhancements that are not done before this point will not be
+included in the stable release.
+</para>
+	<para>
+The first alpha release is named x.y.alpha1 or x.y.ALPHA_1 depending on
+the context.
+It marks the end of the Development period and 
+the start of the Alpha period.
+</para>
+	<para>
+Otherwise it works just like a development release.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+The Alpha period.
+</para>
+	<para>
+A period of a couple of weeks where special restrictions apply 
+when commiting into the main trunk:
+</para>
+
+	<itemizedlist>
+	  <listitem>
+	    <para>Only buggfixes are allowed in the code.</para>
+	    <para>
+Put the number of the DEFECT you are addressing by the commit in the message.
+</para>
+	    <para>
+Exceptions are requested and approved before commit
+by the Release Responsible.
+</para>
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+During the period we attempt to release at least one alpha release
+each week.
+The releases are named x.y.alphaz where
+y is an even number and
+z is counting upwards from 1 that is the first alpha.
+</para>
+
+	<para>
+The purpose of the releases and their use are the same as during
+the development period.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+First beta.
+</para>
+	<para>
+This is the bug fixes freeze point.
+All enhancements and bug fixes that are not done before this point
+will not be included in the stable release.
+A known problems list could be compiled at this point.
+</para>
+	<para>
+The first beta release is named x.y.beta1 or x.y.BETA_1 depending on
+the context.
+It marks the end of the Alpha period and 
+the start of the Beta period.
+</para>
+	<para>
+It is the first release candidate for the stable release.
+Because of this it is required that:
+</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>Everything compiles (including the subprojects).</para>
+	  </listitem>
+	  <listitem>
+	    <para>The release script works.</para>
+	  </listitem>
+	  <listitem>
+	    <para>No JUnit tests are failing.</para>
+	  </listitem>
+	  <listitem>
+	    <para>There are no P1 or P2 issues.</para>
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+Otherwise it works just like a development release.
+</para>
+      </listitem>
+
+      <listitem>
+
+	<para>
+The Beta period.
+</para>
+	<para>
+A period of a couple of weeks where the focus is quality assurance.
+Every developer should strive to:
+</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+Test ArgoUML as thoroughly as possible.
+Especially the areas that are new or changed since the last release.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Verify issues that has been solved.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Scrutinize the commits in the main trunk to see that no new bugs
+are introduced.
+</para>
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+Extreme caution applies when commiting into the main trunk.
+Only under the following conditions are commits allowed:
+</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+It is a fix to some DEFECT that was previously fixed
+but it was found during the verification that the solution was not
+correct or complete.
+</para>
+	    <para>
+Reopen the DEFECT when the problem is found with a statement of what is
+still the problem.
+Put the number of the DEFECT you are addressing by the commit in the message
+together with the statement of the part of the problem.
+Resolve the DEFECT as FIXED and update the target milestone with 
+the release name of the next beta.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+All JUnit test cases are run from a cleaned checked out copy
+at the commit and no problems are found.
+</para>
+	  </listitem>
+	</itemizedlist>
+	<para>
+Exceptions are requested and approved before commit
+by the Release Responsible.
+</para>
+
+	<para>
+If a new problem is found the following needs to be done before
+commiting the solution:
+</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+The problem is registered as a DEFECT.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+The solution is implemented.
+</para>
+	    <para>
+Here the requirement is a high on the quality and low impact of the solution.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+A request is made to the Release Responsible to allow this change.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+This is granted by the Release Responsible.
+</para>
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+During the period we attempt to release at least one beta release
+each week.
+The releases are named x.y.betaz where
+y is an even number and
+z is counting upwards from 1 that is the first beta.
+</para>
+
+	<para>
+Each release is a release candidate.
+When we have reached the point where no more issues are verified
+and we are confident that there are no more problems in this release
+we make the stable release without code changes compared to the last beta.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+The stable release.
+</para>
+
+	<para>
+This marks the end of the alpha and beta period and 
+the start of the next development period.
+</para>
+
+	<para>
+The release is named x.y where
+y is an even number.
+</para>
+
+	<para>
+The release is used:
+</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>By all users.</para>
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+It can also be used as a development release.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+A stable patch release.
+</para>
+
+	<para>
+If we find a serious problem in the stable release
+we can decide to make a patched stable release.
+</para>
+
+	<para>
+The following needs to be done before commiting the solution:
+</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+The problem is registered as a DEFECT stating that it is a problem in the
+stable release.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+A working branch is created against the release tag of the stable release
+and the solution is implemented in that branch.
+</para>
+	    <para>
+Here the requirement is a high on the quality and low impact of the solution.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+We decide that it is a serious problem and that we are going to do a
+patched stable release.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Several developers scrutinize the solution, testing and verifying
+in the branch.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+The Release Responsible creates a branch.
+If this is the second stable patch release the same branch is reused.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+The Release Responsible merges the solution into the branch.
+</para>
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+The release is named x.y.z where
+y is an even number, and
+z is counting upwards from 1.
+</para>
+
+	<para>
+The release is used:
+</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>By all users.</para>
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+After the release is completed the person working with the solution
+commits his solution also in the main trunk if still applicable there.
+</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
+</chapter>
 
 
 
