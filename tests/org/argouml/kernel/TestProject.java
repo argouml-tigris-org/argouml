@@ -446,9 +446,23 @@ public class TestProject extends TestCase {
         assertEquals(sizeMembers, p.getMembers().size());
     }
 
-
-
-
+    /**
+     * Check that there is only one searchPath. 
+     * See issue 1671.
+     */
+    public void testAddSearchPath() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        assertNotNull(p.getSearchpath());
+        assertTrue(p.getSearchpath().size() == 1);
+        
+        p.addSearchPath("PROJECT_DIR");
+        assertTrue(p.getSearchpath().size() == 1);
+        
+        p.addSearchPath("foo");
+        p.addSearchPath("foo");
+        assertTrue(p.getSearchpath().size() == 2);
+        
+    }
 
 
     /**
