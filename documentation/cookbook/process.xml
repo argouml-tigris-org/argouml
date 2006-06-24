@@ -131,7 +131,7 @@ Exceptions logged.
               <para>
 Examples:
 Incorrect help texts and documentation;
-Inconsistant behavior;
+Inconsistent behavior;
 UI not updated; and
 Incorrect javadoc.
 </para>
@@ -170,7 +170,7 @@ some special upcoming and planned-for event has happened.
 The event in question is noted in the target milestone.
 </para>
 	    <para>
-Events can be things like, dropping support for a jdk version,
+Events can be things like, dropping support for a JDK version,
 changing the version of UML that we support, or
 replacing some central mechanism within ArgoUML.
 Once they have a target milestone registered,
@@ -203,7 +203,7 @@ Rationale: Each issue have basically four states:
 The statistics is based on this and persons looking for 
 issues to resolve look among the "To be resolved"-group
 (the web pages to help in this are set up in this way).
-This is also in synch with our release process.
+This is also in sync with our release process.
 </para>
 	      <para>
 Looking at it from a single persons perspective an issue is either a
@@ -448,12 +448,12 @@ If applicable, write test cases
             </listitem>
             <listitem>
               <para>
-Set the issue in the end on "Resolved".
+Set the issue in the end on "RESOLVED".
 </para>
               <para>
 When the resolver is finished with the issue, 
-he puts it in "Resolved" status, and indicates the
-"resolution" is Fixed, Worksforme, Invalid, Wontfix, or Duplicate.
+he puts it in "RESOLVED" status, and indicates the
+"resolution" is FIXED, WORKSFORME, INVALID, WONTFIX, or DUPLICATE.
 </para>
             </listitem>
           </itemizedlist>
@@ -527,7 +527,7 @@ He doesn't need to know how it is actually solved.
 This can be performed by any member of the project (any role).
 Persons without the Developer role need a person 
 with the Developer role to actually commit the work if the resolution 
-involves changing some artefact.
+involves changing some artifact.
 There might be special skills involved but it differs widely depending
 on the nature of the Issue.
 </para>
@@ -603,7 +603,7 @@ This is just a change of plan.
           <para>
 If you, at this point, feel that your personal plans have changed
 so that you won't have time to pursue the work,
-change the Issue back to "NEW" with your experiences sofar
+change the Issue back to "NEW" with your experiences so far
 stated in the comment.
 This means that you are giving up and giving the Issue back to
 anyone.
@@ -742,15 +742,15 @@ Do this as many times as you like until there are no Issues left.
       </indexterm>
       <indexterm>
         <primary>Issues</primary>
-        <secondary>Resolving Invalid</secondary>
+        <secondary>Resolving INVALID</secondary>
       </indexterm>
       <indexterm>
         <primary>Issues</primary>
-        <secondary>Resolving Wontfix</secondary>
+        <secondary>Resolving WONTFIX</secondary>
       </indexterm>
       <indexterm>
         <primary>Issues</primary>
-        <secondary>Resolving Duplicate</secondary>
+        <secondary>Resolving DUPLICATE</secondary>
       </indexterm>
       <indexterm>
         <primary>Resolving</primary>
@@ -762,11 +762,11 @@ Do this as many times as you like until there are no Issues left.
       </indexterm>
       <indexterm>
         <primary>Resolving</primary>
-        <secondary>Wontfix Issues</secondary>
+        <secondary>WONTFIX Issues</secondary>
       </indexterm>
       <indexterm>
         <primary>Resolving</primary>
-        <secondary>Duplicate Issues</secondary>
+        <secondary>DUPLICATE Issues</secondary>
       </indexterm>
       <para>
 This can be performed by any member of the project (any role).
@@ -829,7 +829,7 @@ This is performed by the person that originally raised the Issue
 or by the QA responsible for that area.
 You need to be a member of the project (any role).
 This can also be done by someone who would raise the issue but
-did not because it was already present in Issuesilla.
+did not because it was already present in Issuezilla.
 </para>
       <orderedlist>
         <listitem>
@@ -885,8 +885,8 @@ with.
       </indexterm>
       <para>
 ArgoUML uses products internally and is very 
-dependant on that these products are functioning well.
-This are products like GEF, NS-UML, ocl, log4j, xerces, jre, ...
+dependent on that these products are functioning well.
+This are products like GEF, NS-UML, OCL, log4j, Xerxes, JRE, ...
 </para>
       <para>
 Occasionally a problem found in ArgoUML is found to be a problem in one
@@ -899,7 +899,7 @@ If this happens this is the way to handle this problem.
       <para>
 This can be performed by any member of the project (any role).
 There might be special skills involved depending on the nature of the problem.
-In this description "issue" means a issue in issuezilla,
+In this description "issue" means a issue in Issuezilla,
 "bug report" means a bug report in some other project,
 and "problem" denotes the conceptual problem.
 </para>
@@ -910,7 +910,7 @@ Do the following:
         <listitem>
           <para>
 During your examination of an issue you find that the problem
-is in one of the ArgoUML dependencies (GEF, NS-UML, ocl, jre, ...).
+is in one of the ArgoUML dependencies (GEF, NS-UML, OCL, JRE, ...).
 </para>
         </listitem>
         <listitem>
@@ -977,7 +977,7 @@ the planned releases of the dependency with promises to
 solve other bug reports,
 and
 the current release plan of ArgoUML.
-From this you decide wether it is time to do the update of 
+From this you decide whether it is time to do the update of 
 the dependency within ArgoUML or to wait.
 </para>
         </listitem>
@@ -1019,7 +1019,7 @@ Stable releases.
     <para>
 Stable releases are supposed to be better quality-wise and are
 always advertised to the users community
-on the first page and
+on the main ArgoUML home page and
 as a news announcement.
 </para>
 
@@ -1030,23 +1030,26 @@ or soliciting help with implementation and test of new features.
 </para>
 
     <para>
-To increase the quality of a stable release, it is preambled by
+To increase the quality of a stable release, it is preceded by
 period during which a sequence of releases with increased quality
 standards.
-The whole release schedule leading up to a stable release with
-patches looks like this:
+</para>
+
+    <para>
+The whole release schedule leading up to a stable release and
+patched stable release looks like this:
 </para>
 
     <itemizedlist>
       <listitem>
 	<para>
-Development period.
+Development Period.
 </para>
 	<para>
 A period of one to several months where no special restrictions apply.
 </para>
 	<para>
-During this period we attempt to release one development release per month.
+During this period we attempt to make one development release per month.
 The releases are named x.y.z where
 y is an odd number and
 z is counting upwards from 1.
@@ -1056,7 +1059,7 @@ The releases are checkpoints where:
 </para>
 	<itemizedlist>
 	  <listitem>
-	    <para>Everything compiles (including the subprojects).</para>
+	    <para>Everything compiles (including the sub-projects).</para>
 	  </listitem>
 	  <listitem>
 	    <para>The release script works.</para>
@@ -1083,7 +1086,9 @@ The releases are used:
 	  </listitem>
 
 	  <listitem>
-	    <para>As reference points for persons working with modules.</para>
+	    <para>
+As reference points and convenient downloads for persons working with modules.
+</para>
 	  </listitem>
 
 	</itemizedlist>
@@ -1091,18 +1096,19 @@ The releases are used:
 
       <listitem>
 	<para>
-First alpha.
+First Alpha.
 </para>
 	<para>
 This is the enhancement freeze point.
-All enhancements that are not done before this point will not be
+All enhancements that are not completed and committed in the main trunk
+before this point will not be
 included in the stable release.
 </para>
 	<para>
-The first alpha release is named x.y.alpha1 or x.y.ALPHA_1 depending on
+The First Alpha release is named x.y.alpha1 or x.y.ALPHA_1 depending on
 the context.
-It marks the end of the Development period and 
-the start of the Alpha period.
+It marks the end of the Development Period and 
+the start of the Alpha Period.
 </para>
 	<para>
 Otherwise it works just like a development release.
@@ -1111,28 +1117,29 @@ Otherwise it works just like a development release.
 
       <listitem>
 	<para>
-The Alpha period.
+Alpha Period.
 </para>
 	<para>
 A period of a couple of weeks where special restrictions apply 
-when commiting into the main trunk:
+when committing into the main trunk:
 </para>
 
 	<itemizedlist>
 	  <listitem>
-	    <para>Only buggfixes are allowed in the code.</para>
+	    <para>Only bug fixes are allowed in the code.</para>
 	    <para>
 Put the number of the DEFECT you are addressing by the commit in the message.
 </para>
-	    <para>
-Exceptions are requested and approved before commit
-by the Release Responsible.
-</para>
 	  </listitem>
 	</itemizedlist>
+	<para>
+Exceptions to this are requested to and approved
+by the Release Responsible
+before commit.
+</para>
 
 	<para>
-During the period we attempt to release at least one alpha release
+During this period we attempt to make at least one Alpha Release
 each week.
 The releases are named x.y.alphaz where
 y is an even number and
@@ -1147,19 +1154,20 @@ the development period.
 
       <listitem>
 	<para>
-First beta.
+First Beta.
 </para>
 	<para>
 This is the bug fixes freeze point.
-All enhancements and bug fixes that are not done before this point
+All enhancements and bug fixes that are not 
+completed and committed in the main trunk before this point
 will not be included in the stable release.
 A known problems list could be compiled at this point.
 </para>
 	<para>
 The first beta release is named x.y.beta1 or x.y.BETA_1 depending on
 the context.
-It marks the end of the Alpha period and 
-the start of the Beta period.
+It marks the end of the Alpha Period and 
+the start of the Beta Period.
 </para>
 	<para>
 It is the first release candidate for the stable release.
@@ -1167,7 +1175,7 @@ Because of this it is required that:
 </para>
 	<itemizedlist>
 	  <listitem>
-	    <para>Everything compiles (including the subprojects).</para>
+	    <para>Everything compiles (including the sub-projects).</para>
 	  </listitem>
 	  <listitem>
 	    <para>The release script works.</para>
@@ -1186,9 +1194,8 @@ Otherwise it works just like a development release.
       </listitem>
 
       <listitem>
-
 	<para>
-The Beta period.
+Beta Period.
 </para>
 	<para>
 A period of a couple of weeks where the focus is quality assurance.
@@ -1203,7 +1210,7 @@ Especially the areas that are new or changed since the last release.
 	  </listitem>
 	  <listitem>
 	    <para>
-Verify issues that has been solved.
+Verify issues that are resolved.
 </para>
 	  </listitem>
 	  <listitem>
@@ -1215,7 +1222,7 @@ are introduced.
 	</itemizedlist>
 
 	<para>
-Extreme caution applies when commiting into the main trunk.
+Extreme caution applies when committing into the main trunk.
 Only under the following conditions are commits allowed:
 </para>
 	<itemizedlist>
@@ -1243,13 +1250,14 @@ at the commit and no problems are found.
 	  </listitem>
 	</itemizedlist>
 	<para>
-Exceptions are requested and approved before commit
-by the Release Responsible.
+Exceptions to this are requested and approved
+by the Release Responsible
+before commit.
 </para>
 
 	<para>
 If a new problem is found the following needs to be done before
-commiting the solution:
+committing the solution:
 </para>
 	<itemizedlist>
 	  <listitem>
@@ -1295,12 +1303,12 @@ we make the stable release without code changes compared to the last beta.
 
       <listitem>
 	<para>
-The stable release.
+Stable Release.
 </para>
 
 	<para>
-This marks the end of the alpha and beta period and 
-the start of the next development period.
+This marks the end of the Alpha and Beta Period and 
+the start of the next Development Period.
 </para>
 
 	<para>
@@ -1324,27 +1332,28 @@ It can also be used as a development release.
 
       <listitem>
 	<para>
-A stable patch release.
+A Stable Patch Release.
 </para>
 
 	<para>
 If we find a serious problem in the stable release
-we can decide to make a patched stable release.
+we can decide to make a Stable Patch Release.
 </para>
 
 	<para>
-The following needs to be done before commiting the solution:
+The following needs to be done before committing the solution:
 </para>
 	<itemizedlist>
 	  <listitem>
 	    <para>
 The problem is registered as a DEFECT stating that it is a problem in the
-stable release.
+Stable Release or a previous Stable Patch Release.
 </para>
 	  </listitem>
 	  <listitem>
 	    <para>
-A working branch is created against the release tag of the stable release
+A working branch is created against the release tag of the 
+Stable Release or Stable Patch Release
 and the solution is implemented in that branch.
 </para>
 	    <para>
@@ -1354,24 +1363,35 @@ Here the requirement is a high on the quality and low impact of the solution.
 	  <listitem>
 	    <para>
 We decide that it is a serious problem and that we are going to do a
-patched stable release.
+Stable Patch Release.
 </para>
 	  </listitem>
 	  <listitem>
 	    <para>
 Several developers scrutinize the solution, testing and verifying
-in the branch.
+in the branch of the issue.
 </para>
 	  </listitem>
 	  <listitem>
 	    <para>
 The Release Responsible creates a branch.
-If this is the second stable patch release the same branch is reused.
+If this is not the first Stable Patch Release the branch is reused.
 </para>
 	  </listitem>
 	  <listitem>
 	    <para>
 The Release Responsible merges the solution into the branch.
+</para>
+
+	    <para>
+A Stable Patch Release could contain several issues resolved.
+In that case they are all merged.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Several developers scrutinize the merge, testing and verifying
+in the release branch.
 </para>
 	  </listitem>
 	</itemizedlist>
