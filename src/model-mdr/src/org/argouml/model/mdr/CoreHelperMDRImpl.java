@@ -1531,8 +1531,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
                         || modelElement instanceof Constraint
                         || modelElement instanceof Dependency
                         || modelElement instanceof Collaboration
-                        // TODO: StateMachine was added recently,
-                        // but I don't find it in the spec
+                        // TODO: Having StateMachine here is non-standard
+                        // see issue 4284
                         || modelElement instanceof StateMachine
                         || modelElement instanceof DataType
                         || modelElement instanceof Interface)) {
