@@ -310,7 +310,9 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param searchPathElement the element to be added to the searchpath
      */
     public void addSearchPath(String searchPathElement) {
-        this.searchpath.addElement(searchPathElement);
+        if (!this.searchpath.contains(searchPathElement)) {
+            this.searchpath.addElement(searchPathElement);
+        }
     }
 
     /**
