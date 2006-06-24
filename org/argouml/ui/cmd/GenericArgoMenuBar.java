@@ -62,7 +62,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionDeploymentDiagram;
 import org.argouml.uml.ui.ActionGenerateAll;
 import org.argouml.uml.ui.ActionGenerateOne;
@@ -460,8 +459,13 @@ public class GenericArgoMenuBar extends JMenuBar implements
         JMenuItem saveGraphicsItem = file.add(new ActionSaveGraphics());
         file.add(new ActionSaveAllGraphics());
         setMnemonic(saveGraphicsItem, "SaveGraphics");
+
         file.addSeparator();
 
+        JMenu notation =
+            (JMenu) file.add(new ActionNotation().getMenu());
+        setMnemonic(notation, "Notation");
+        
         JMenuItem propertiesItem = file.add(new ActionProjectSettings());
         setMnemonic(propertiesItem, "Properties");
         
@@ -615,11 +619,6 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(adjustGuide, "Adjust Guide");
         JMenuItem adjustPageBreaks = view.add(new CmdAdjustPageBreaks());
         setMnemonic(adjustPageBreaks, "Adjust Pagebreaks");
-
-        view.addSeparator();
-        JMenu notation =
-            (JMenu) view.add(ActionNotation.getInstance().getMenu());
-        setMnemonic(notation, "Notation");
 
         view.addSeparator();
         JMenuItem showSaved = view.add(new ActionShowXMLDump());

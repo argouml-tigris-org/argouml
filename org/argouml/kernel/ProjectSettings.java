@@ -115,6 +115,13 @@ public class ProjectSettings {
         notationLanguage = language;
         fireEvent(Notation.KEY_DEFAULT_NOTATION, oldValue, notationLanguage);
     }
+    
+    /**
+     * @param nn the new notation language
+     */
+    public void setNotationLanguage(NotationName nn) {
+        setNotationLanguage(nn.getConfigurationValue());
+    }
 
     /**
      * Used by "argo.tee".
