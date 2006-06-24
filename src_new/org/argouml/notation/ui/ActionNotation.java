@@ -36,13 +36,15 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.tigris.gef.undo.UndoableAction;
 
 
 /**
- * Allows selection of a default notation.
+ * Allows selection of the notation used in the current project.
  *
  * @author Thierry Lach
  * @since  ARGO0.9.4
@@ -50,24 +52,15 @@ import org.tigris.gef.undo.UndoableAction;
 public class ActionNotation extends UndoableAction
     implements MenuListener {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
-     * The instance of this action.
-     */
-    private static final ActionNotation SINGLETON = new ActionNotation();
-
-    /**
-     * The popup menu with all notations. It gets filled the first time this
-     * action is performed (see {@link #actionPerformed(ActionEvent ae)}).
+     * The popup menu with all notations. It gets filled
+     * every time the menu is opened 
+     * (see {@link #menuSelected(MenuEvent me)}),
+     * since it depends on the current project,
+     * and notation languages may be added or removed
+     * by plugins.
      */
     private JMenu menu;
-
-    /**
-     * @return The instance.
-     */
-    public static final ActionNotation getInstance() { return SINGLETON; }
 
     /**
      * Constructor - adds the Notation menu.
@@ -96,7 +89,8 @@ public class ActionNotation extends UndoableAction
             if (o instanceof NotationName) {
                 NotationName nn = (NotationName) o;
                 if (key.equals(nn.getTitle())) {
-                    Notation.setDefaultNotation(nn);
+                    Project p = ProjectManager.getManager().getCurrentProject();
+                    p.getProjectSettings().setNotationLanguage(nn);
                     break;
                 }
             }
@@ -112,7 +106,8 @@ public class ActionNotation extends UndoableAction
      * @see javax.swing.event.MenuListener#menuSelected(javax.swing.event.MenuEvent)
      */
     public void menuSelected(MenuEvent me) {
-        NotationName dflt = Notation.getConfigueredNotation();
+        Project p = ProjectManager.getManager().getCurrentProject();
+        NotationName current = p.getProjectSettings().getNotationName();
         menu.removeAll();
         List list = Notation.getAvailableNotations();
         ListIterator iterator = list.listIterator();
@@ -128,7 +123,7 @@ public class ActionNotation extends UndoableAction
                 }
                 mi.addActionListener(this);
                 b.add(mi);
-                mi.setSelected(dflt.sameNotationAs(nn));
+                mi.setSelected(current.sameNotationAs(nn));
                 menu.add(mi);
             }
         }
