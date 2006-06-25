@@ -9,7 +9,7 @@ PROJECTS="argouml \
     argouml-csharp \
     argouml-idl \
     argouml-php \
-    argouml-de argouml-es argouml-en-gb argouml-fr argouml-nb \
+    argouml-de argouml-es argouml-en-gb argouml-fr argouml-it argouml-nb \
     argouml-pt argouml-ru \
     argouml-i18n-zh
     argoumlinstaller"
