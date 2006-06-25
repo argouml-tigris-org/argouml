@@ -8095,7 +8095,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           (see <xref linkend="s2.ref.menu_settings"/>).</para>
 
         </sect2>
-
+        
         <sect2 id="s2.ref.menu_notation">
 
           <title>Notation</title>
@@ -9492,7 +9492,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </warning>
 
         </sect2>
-        
+
       </sect1>
 
       <sect1 id="s1.ref.create.diagram.menu">
@@ -12284,8 +12284,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/sequence_expand.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Add vertical space to diagram</literal>.  
-              (to be written).</para>
+              <literal>Add Vertical Space to Diagram</literal>.  
+              Add vertical space to a diagram by moving all messages
+              below this down.  Click the mouse at the point where you 
+              want the space to be added and drag down the screen vertically
+              the distance which matches the height of the space you'd 
+              like to have added.
+              </para>
 
             </listitem>
 
@@ -12296,7 +12301,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/sequence_contract.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Remove Vertical Space in Diagram</literal>. 
-              (to be written).</para>
+              Remove vertical space from diagram and move all elements
+              below up vertically.  Click and drag the mouse vertically
+              over the space that you want deleted.
+              </para>
 
             </listitem>
 
