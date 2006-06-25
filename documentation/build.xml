@@ -32,16 +32,19 @@ What tools do I need to use this build file?
 
 <project name="ArgoDocs" default="defaulthtml" basedir=".">
 
+  <!-- we really need an absolute path for argo.root.dir -->
   <property name="argo.root.dir" value="${basedir}/.."/>
   
   <!-- Property files read highest priority first -->
   <!-- (properties are immutable once set) -->
   <property file="build.properties"/>
   <property file="${user.home}/argouml.build.properties"/>
-  <property file="${argo.root.dir}/src_new/default.properties"/>
+  <property file="${override.build.properties}"/>
+  <!-- Fallback definition for argo.src.dir - won't override current value -->
+  <property name="argo.src.dir" value="${argo.root.dir}/src_new"/>
+  <property file="${argo.src.dir}/default.properties"/>
   <!-- our defaults depend on and don't override main props, so they go 2nd -->
   <property file="default.properties"/>
-
 
   <property name="documentation.dir" value="${basedir}"/>
 
@@ -196,7 +199,7 @@ It is not possible to generate the documentation without it.
 
 To get it, call ant with target - docbook-xsl-get 
           
-          build docbock-xsl-get
+          build docbook-xsl-get
           
       </fail>
   </target>
