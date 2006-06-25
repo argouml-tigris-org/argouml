@@ -30,14 +30,20 @@ What tools do I need to use this build file?
 
  -->
 
-<project name="ArgoDocs" default="defaulthtml" basedir="..">
+<project name="ArgoDocs" default="defaulthtml" basedir=".">
 
-  <property name="argo.root.dir" value="${basedir}"/>
-  <property file="${argo.root.dir}/src_new/default.properties"/>
-  <property file="${argo.root.dir}/documentation/build.properties"/>
+  <property name="argo.root.dir" value="${basedir}/.."/>
+  
+  <!-- Property files read highest priority first -->
+  <!-- (properties are immutable once set) -->
+  <property file="build.properties"/>
   <property file="${user.home}/argouml.build.properties"/>
-  <property file="${argo.root.dir}/documentation/default.properties"/>
-  <property name="documentation.dir" value="${argo.root.dir}/documentation"/>
+  <property file="${argo.root.dir}/src_new/default.properties"/>
+  <!-- our defaults depend on and don't override main props, so they go 2nd -->
+  <property file="default.properties"/>
+
+
+  <property name="documentation.dir" value="${basedir}"/>
 
   <property name="docbook-xsl-root" 
 	    value="${documentation.dir}/docbook-setup/docbook-xsl"/>
