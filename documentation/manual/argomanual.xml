@@ -7430,9 +7430,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               like e.g. selecting. This menu is not intended for 
               diagram layout functions. Most functions here do 
               something with the selected modelelement and diagram. The 
-              item &quot;Settings...&quot; is an exception to this rule, 
-              logically it might belong better under the File menu, but 
-              people are used to find it here.</para>
+              items &quot;Configure Perspectives...&quot;
+              and &quot;Settings...&quot; are a bit different,
+              since they adjust the way ArgoUML works - but they do not 
+              belong in the File menu, since their settings are not
+              stored in the project.</para>
 
             </listitem>
 
@@ -7440,9 +7442,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para>The <emphasis>View</emphasis> menu is for functions 
               that do never alter the model, nor the diagram layout, 
-              only the way you view the diagram. Good examples are 
-              &quot;zoom&quot; and &quot;notation&quot;. Also 
-              navigational functions belong here, e.g. &quot;Find&quot; 
+              only the way you view the diagram. A good example is
+              &quot;zoom&quot;. 
+              Also navigational functions belong here, e.g. &quot;Find&quot; 
               and &quot;Goto Diagram...&quot;. All changes of settings 
               in this menu apply to all diagrams (e.g. zoom).</para>
 
@@ -7451,9 +7453,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para>The <emphasis>Create</emphasis> menu contains all 
-              possible diagrams that can be created. Downlighting is 
-              context dependend, since these functions work on the 
-              selected modelelement.</para>
+              possible diagrams that can be created. 
+              These functions are
+              context dependend, since they work on the 
+              selected modelelement.
+              </para>
 
             </listitem>
 
@@ -7477,8 +7481,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para>The <emphasis>Critique</emphasis> menu is specific 
-              for settings related to critics, which apply for all 
-              projects.</para>
+              for settings related to critics, 
+              which apply for all  projects.</para>
 
             </listitem>
 
@@ -8065,13 +8069,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>The graphics format that is selected by default
           is set in the dialog under the menu entry Edit - Settings...</para>
 
-          <caution>
-            <!-- TODO: Is this still true? -->
+          <!--caution>
+            TODO: Is this still true?
+
             <para>The PNG graphics does not support shadows very well, 
             so maybe it is better to either save in GIF format, or 
             switch shadows off before saving in PNG format.</para>
 
-          </caution>
+          </caution-->
 
         </sect2>
         
@@ -8090,7 +8095,143 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           (see <xref linkend="s2.ref.menu_settings"/>).</para>
 
         </sect2>
+
+        <sect2 id="s2.ref.menu_notation">
+
+          <title>Notation</title>
+
+          <para>This sub-menu presents a radio button selection for 
+          notation, i.e. the language in which all textual adornments 
+          are shown on the diagrams. 
+          </para>
+
+          <para>This feature defines the project&apos;s notation language.
+          </para>
+
+          <para>There are 2 ways to set the notation language:</para>
+
+          <itemizedlist>
+
+            <listitem>
+
+              <para>In the Edit menu,
+              see <xref linkend="s3.ref.menu_settings_notations"/>
+              in the notation tab of the settings dialog,
+              which defines the default notation language for new projects.
+              This choice is stored in the 
+              <filename>argouml.properties</filename> file.
+              </para>
+
+            </listitem>
+
+            <listitem>
+
+              <para>In the File menu, item Notation. This determines  
+              how all textual adornments of figures 
+              on all diagrams 
+              of the current project are shown.
+              This choice is stored in the project file.
+              </para>
+
+            </listitem>
+
+          </itemizedlist>
+
+          <para>The following 2 notations are build in ArgoUML:</para>
+
+          <itemizedlist>
+
+            <listitem>
+
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/uml_notation.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>UML 1.4</literal>. Uses UML notation as the 
+              default notation for every modelelement on any diagram.</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/java_notation.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Java</literal>. Uses Java notation as the 
+              default notation for every modelelement on any diagram.</para>
+
+            </listitem>
+
+          </itemizedlist>
+
+          <para>The following choices are only available if the 
+          corresponding plugin languages are installed.</para>
+
+          <itemizedlist>
+
+            <listitem>
+
+              <para><literal>Cpp</literal>.</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><literal>CSharp</literal>.</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><literal>PHP</literal>.</para>
+
+            </listitem>
+
+          </itemizedlist>
+
+          <remark>Besides UML, 
+          only Java is partly implemented in V0.22 of ArgoUML.</remark>
+
+        </sect2>
         
+        <sect2 id="s2.ref.menu_properties">
+        
+          <title><guiicon><inlinemediaobject><imageobject>
+          <imagedata align="center" fileref="images/icons/settings.gif"
+           format="GIF"/></imageobject></inlinemediaobject></guiicon>
+           Properties</title>
+
+          <para>This menu entry brings up a dialog box, which allows 
+          the user to set various options
+          of the currently loaded project.</para>
+          
+          <figure float="1" id="fig.ref.menu_properties_user">
+
+            <title>The dialog for <literal>Properties - 
+            Notation</literal>: The User tab.</title>
+
+            <screenshot><mediaobject><imageobject>
+            <imagedata align="center"
+             fileref="images/reference/properties-user.gif"
+             format="GIF"/></imageobject></mediaobject></screenshot>
+          </figure>
+          
+          <figure float="1" id="fig.ref.menu_properties_notations">
+
+            <title>The dialog for <literal>Properties - 
+            Notation</literal>: The Notations tab.</title>
+
+            <screenshot><mediaobject><imageobject>
+            <imagedata align="center"
+             fileref="images/reference/properties-notations.gif"
+             format="GIF"/></imageobject></mediaobject></screenshot>
+          </figure>
+          
+          <para>(To be written)</para>
+
+        </sect2>
+
         <sect2 id="s2.ref.menu_save_config">
 
           <title>Save Configuration</title>
@@ -8431,6 +8572,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </figure>
 
         </sect2>
+
+		<sect2>
+		
+		<title><guiicon><inlinemediaobject><imageobject>
+          <imagedata align="center"
+           fileref="images/icons/nav_config.gif"
+           format="GIF"/></imageobject></inlinemediaobject></guiicon>
+           Configure Perspectives...</title>
+		
+		<para>This menu-item invokes the same dialog 
+		  as the button at the top of the explorer.
+		  See 
+          <xref linkend="s1.ref.configure_perspectives"/>.
+          for a complete description.</para>
+		
+		</sect2>
 
         <sect2 id="s2.ref.menu_settings">
 
@@ -9335,96 +9492,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </warning>
 
         </sect2>
-
-        <sect2 id="s2.ref.menu_notation">
-
-          <title>Notation</title>
-
-          <para>This sub-menu presents a radio button selection for 
-          notation, i.e. the language in which all textual adornments 
-          are shown on the diagrams. See also 
-          <xref linkend="s3.ref.menu_settings_notations"/>).</para>
-
-          <para>This feature defines the user&apos;s default notation. 
-          </para>
-
-          <para>There are 2 ways to set the notation for the 
-          diagrams:</para>
-
-          <itemizedlist>
-
-            <listitem>
-
-              <para>In the settings dialog, by choosing &quot;Use only 
-              UML notation&quot; which overrides the other method.</para>
-
-            </listitem>
-
-            <listitem>
-
-              <para>In the View menu, item Notation. This determines  
-              how all textual adornments of figures on all diagrams are shown.
-              </para>
-
-            </listitem>
-
-          </itemizedlist>
-
-          <para>The following 2 notations are build in ArgoUML:</para>
-
-          <itemizedlist>
-
-            <listitem>
-
-              <para><guiicon><inlinemediaobject><imageobject>
-              <imagedata align="center"
-               fileref="images/icons/uml_notation.gif"
-               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>UML 1.4</literal>. Uses UML notation as the 
-              default notation for every modelelement on any diagram.</para>
-
-            </listitem>
-
-            <listitem>
-
-              <para><guiicon><inlinemediaobject><imageobject>
-              <imagedata align="center"
-               fileref="images/icons/java_notation.gif"
-               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Java</literal>. Uses Java notation as the 
-              default notation for every modelelement on any diagram.</para>
-
-            </listitem>
-
-          </itemizedlist>
-
-          <para>The following choices are only available if the 
-          corresponding plugin languages are installed.</para>
-
-          <itemizedlist>
-
-            <listitem>
-
-              <para><literal>Cpp</literal>.</para>
-
-            </listitem>
-
-            <listitem>
-
-              <para><literal>CSharp</literal>.</para>
-
-            </listitem>
-
-            <listitem>
-
-              <para><literal>PHP</literal>.</para>
-
-            </listitem>
-
-          </itemizedlist>
-
-        </sect2>
-
+        
       </sect1>
 
       <sect1 id="s1.ref.create.diagram.menu">
@@ -10909,7 +10977,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       </sect1>
 
-      <sect1>
+      <sect1 id="s1.ref.configure_perspectives">
 
         <title>Configuring Perspectives</title>
 
