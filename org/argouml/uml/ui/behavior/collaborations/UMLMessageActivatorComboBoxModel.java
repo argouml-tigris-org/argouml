@@ -36,7 +36,7 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  */
 public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
 
-
+    private Object interaction = null;
 
     /**
      * Constructor for UMLMessageActivatorComboBoxModel.
@@ -79,5 +79,26 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
             return Model.getFacade().getActivator(getTarget());
         }
         return null;
+    }
+    
+    protected void setTarget(Object target) {
+        if (Model.getFacade().isAMessage(getTarget())) {
+            if (interaction != null) {
+                Model.getPump().removeModelEventListener(
+                    this,
+                    interaction,
+                    "message");
+            }
+        }
+        super.setTarget(target);
+        if (Model.getFacade().isAMessage(target)) {
+            interaction = Model.getFacade().getInteraction(target);
+            if (interaction != null) {
+                Model.getPump().addModelEventListener(
+                    this,
+                    interaction,
+                    "message");
+            }
+        }
     }
 }
