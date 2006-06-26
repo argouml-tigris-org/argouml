@@ -52,19 +52,19 @@ public class PropPanelStereotype extends PropPanelModelElement {
     private static final long serialVersionUID = 8038077991746618130L;
 
     private static UMLGeneralizableElementSpecializationListModel
-        specializationListModel =
+    specializationListModel =
             new UMLGeneralizableElementSpecializationListModel();
 
     private static UMLGeneralizableElementGeneralizationListModel
-        generalizationListModel =
+    generalizationListModel =
             new UMLGeneralizableElementGeneralizationListModel();
 
-    private static UMLTagDefinitionListModel
-        tagDefinitionListModel =
-            new UMLTagDefinitionListModel();
+    private static UMLStereotypeTagDefinitionListModel
+    tagDefinitionListModel =
+            new UMLStereotypeTagDefinitionListModel();
 
     private static UMLExtendedElementsListModel
-        extendedElementsListModel =
+    extendedElementsListModel =
             new UMLExtendedElementsListModel();
 
     private JScrollPane generalizationScroll;
