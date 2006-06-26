@@ -117,7 +117,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
         typeComboBoxNav.setEnabled(false);
         addField(Translator.localize("label.type"), typeComboBoxNav);
 
-        addField(Translator.localize("label.tagged-values"),
+        addField(Translator.localize("label.typed-values"),
                 getTypedValuesScroll());
         
         addAction(new ActionNavigateContainerElement());
