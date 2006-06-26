@@ -72,7 +72,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
 
     
     private static UMLTagDefinitionOwnerComboBoxModel 
-        ownerComboBoxModel = 
+    ownerComboBoxModel = 
             new UMLTagDefinitionOwnerComboBoxModel();
     private UMLComboBoxModel2 tdNamespaceComboBoxModel = 
         new UMLTagDefinitionNamespaceComboBoxModel();
@@ -148,7 +148,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
                     Translator.localize("label.owner.navigate.tooltip"),
                     new UMLComboBox2(ownerComboBoxModel,
                             new ActionSetTagDefinitionOwner())
-                    ));
+            ));
         }
         return ownerSelector;
     }
@@ -181,11 +181,15 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
             if (typeComboBoxModel == null) {
                 typeComboBoxModel =
                     new UMLStructuralFeatureTypeComboBoxModel();
+                // TODO: Replace by:
+//                new UMLTagDefinitionTypedValueListModel();
             }
             typeComboBox =
                 new UMLComboBox2(
                                  typeComboBoxModel,
                                  ActionSetStructuralFeatureType.getInstance());
+            // TODO: Replace by:
+//                        new ActionSetTagDefinitionTypedValue();
             typeComboBox.setEnabled(false);
         }
         return typeComboBox;
@@ -248,7 +252,8 @@ class UMLTagDefinitionNamespaceComboBoxModel
                         || evt instanceof AssociationChangeEvent)) {
             // allow the evt.getNewValue() to be null (see parent class)
             buildModelList();
-            setSelectedItem(getSelectedModelElement()); // what is this doing? - tfm
+            // TODO: what is this next line doing? - tfm
+            setSelectedItem(getSelectedModelElement()); 
         }
     }
 }
