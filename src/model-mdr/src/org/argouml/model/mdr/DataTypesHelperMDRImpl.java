@@ -219,19 +219,22 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
             throw new IllegalArgumentException("Unrecognized object: "
                     + multiplicity);
         }
-
-        String rc = "";
-        Iterator i = ((Multiplicity) multiplicity).getRange().iterator();
-        boolean first = true;
-        while (i.hasNext()) {
-            if (first) {
-                first = false;
-            } else {
-                rc += ",";
+        try {
+            String rc = "";
+            Iterator i = ((Multiplicity) multiplicity).getRange().iterator();
+            boolean first = true;
+            while (i.hasNext()) {
+                if (first) {
+                    first = false;
+                } else {
+                    rc += ",";
+                }
+                rc += multiplicityRangeToString((MultiplicityRange) i.next());
             }
-            rc += multiplicityRangeToString((MultiplicityRange) i.next());
+            return rc;
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
-        return rc;
     }
 
     /**

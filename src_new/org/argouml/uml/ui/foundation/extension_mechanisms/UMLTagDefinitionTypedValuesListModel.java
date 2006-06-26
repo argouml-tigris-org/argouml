@@ -37,7 +37,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author tfmorris
  * @since 12 Jan 2005
  */
-public class UMLTagDefinitionTypedValuesListModel
+class UMLTagDefinitionTypedValuesListModel
     extends UMLModelElementListModel2 {
 
     /**
