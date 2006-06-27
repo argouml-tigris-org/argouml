@@ -125,7 +125,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<rectangle name="<ocl>self.id</ocl>"
+<rectangle name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
   <ocl>self.bounds</ocl>
 
@@ -145,7 +145,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<rectangle name="<ocl>self.id</ocl>"
+<rectangle name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
   <ocl>self.bounds</ocl>
 
@@ -167,7 +167,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<ellipse name="<ocl>self.id</ocl>"
+<ellipse name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
   x="<ocl>self.center.x.intValue</ocl>"
 
@@ -193,7 +193,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<text name="<ocl>self.id</ocl>"
+<text name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
   x="<ocl>self.x.intValue</ocl>"
 
@@ -221,7 +221,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<path name="<ocl>self.id</ocl>"
+<path name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
   description="<ocl>self.class.name</ocl>"
 
@@ -251,7 +251,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<path name="<ocl>self.id</ocl>"
+<path name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
   description="<ocl>self.class.name</ocl>"
 
@@ -279,7 +279,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<path name="<ocl>self.id</ocl>"
+<path name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
   description="<ocl>self.class.name</ocl>"
 
@@ -307,7 +307,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<path name="<ocl>self.id</ocl>"
+<path name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
   description="<ocl>self.class.name</ocl>"
 
@@ -341,7 +341,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<group name="<ocl>self.id</ocl>"
+<group name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
      description="<ocl>self.classNameAndBounds</ocl>"
 
@@ -372,7 +372,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<group name="<ocl>self.id</ocl>"
+<group name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
      description="<ocl>self.classNameAndBounds</ocl>"
      href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self)</ocl>"
      FILL_AND_STROKE
@@ -402,7 +402,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<group name="<ocl>self.id</ocl>"
+<group name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
      description="<ocl>self.class.name</ocl>"
 
@@ -444,7 +444,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<group name="<ocl>self.id</ocl>"
+<group name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
      description="<ocl>self.class.name</ocl>"
 
@@ -485,7 +485,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<group name="<ocl>self.id</ocl>"
+<group name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
      description="<ocl>self.class.name</ocl>"
 
@@ -528,7 +528,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<rectangle name="<ocl>self.id</ocl>"
+<rectangle name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
   <ocl>self.bounds</ocl>
 
@@ -545,7 +545,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<rectangle name="<ocl>self.id</ocl>"
+<rectangle name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
 
   <ocl>self.bounds</ocl>
 
