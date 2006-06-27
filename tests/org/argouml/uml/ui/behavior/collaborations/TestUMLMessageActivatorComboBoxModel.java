@@ -133,8 +133,10 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
     public void testRemoveBase() {
         Model.getUmlFactory().delete(activators[NO_OF_ELEMENTS - 1]);
         Model.getPump().flushModelEvents();
-        assertEquals(NO_OF_ELEMENTS - 1, model.getSize());
-        assertTrue(!model.contains(activators[NO_OF_ELEMENTS - 1]));
+        assertEquals("The element count should have reduced",
+                NO_OF_ELEMENTS - 1, model.getSize());
+        assertTrue("The model should no longer contain the delete element",
+                !model.contains(activators[NO_OF_ELEMENTS - 1]));
     }
 
 }
