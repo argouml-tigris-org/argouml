@@ -351,7 +351,7 @@ height="<ocl>self.height.intValue</ocl>"
 >
 
   <private>
-    enclosingFig="<ocl ignoreNull>self.enclosingFig.id</ocl>"
+    enclosingFig="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getId(self.enclosingFig)</ocl>"
   </private>
 
   
@@ -381,7 +381,7 @@ height="<ocl>self.height.intValue</ocl>"
   <private>
 
     ItemUID="<ocl ignoreNull>self.ItemUID</ocl>"
-    enclosingFig="<ocl ignoreNull>self.enclosingFig.id</ocl>"
+    enclosingFig="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getId(self.enclosingFig)</ocl>"
 
   </private>
 
@@ -416,13 +416,13 @@ height="<ocl>self.height.intValue</ocl>"
 
   <private>
 
-    sourcePortFig="<ocl>self.sourcePortFig.id</ocl>"
+    sourcePortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourcePortFig)</ocl>"
 
-    destPortFig="<ocl>self.destPortFig.id</ocl>"
+    destPortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destPortFig)</ocl>"
 
-    sourceFigNode="<ocl>self.sourceFigNode.id</ocl>"
+    sourceFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourceFigNode)</ocl>"
 
-    destFigNode="<ocl>self.destFigNode.id</ocl>"
+    destFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destFigNode)</ocl>"
 
   </private>
 
@@ -457,13 +457,13 @@ height="<ocl>self.height.intValue</ocl>"
   <private>
 
     ItemUID="<ocl ignoreNull>self.ItemUID</ocl>"
-    sourcePortFig="<ocl>self.sourcePortFig.id</ocl>"
+    sourcePortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourcePortFig)</ocl>"
 
-    destPortFig="<ocl>self.destPortFig.id</ocl>"
+    destPortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destPortFig)</ocl>"
 
-    sourceFigNode="<ocl>self.sourceFigNode.id</ocl>"
+    sourceFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourceFigNode)</ocl>"
 
-    destFigNode="<ocl>self.destFigNode.id</ocl>"
+    destFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destFigNode)</ocl>"
 
   </private>
 
@@ -500,13 +500,13 @@ height="<ocl>self.height.intValue</ocl>"
   <private>
 
     ItemUID="<ocl ignoreNull>self.ItemUID</ocl>"
-    sourcePortFig="<ocl>self.sourcePortFig.id</ocl>"
+    sourcePortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourcePortFig)</ocl>"
 
-    destPortFig="<ocl>self.destPortFig.id</ocl>"
+    destPortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destPortFig)</ocl>"
 
-    sourceFigNode="<ocl>self.sourceFigNode.id</ocl>"
+    sourceFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourceFigNode)</ocl>"
 
-    destFigNode="<ocl>self.destFigNode.id</ocl>"
+    destFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destFigNode)</ocl>"
 
   </private>
 
