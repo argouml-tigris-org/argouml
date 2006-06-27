@@ -351,7 +351,7 @@ height="<ocl>self.height.intValue</ocl>"
 >
 
   <private>
-    enclosingFig="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getId(self.enclosingFig)</ocl>"
+    enclosingFig="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getEnclosingId(self)</ocl>"
   </private>
 
   
@@ -381,7 +381,7 @@ height="<ocl>self.height.intValue</ocl>"
   <private>
 
     ItemUID="<ocl ignoreNull>self.ItemUID</ocl>"
-    enclosingFig="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getId(self.enclosingFig)</ocl>"
+    enclosingFig="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getEnclosingId(self)</ocl>"
 
   </private>
 

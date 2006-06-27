@@ -136,6 +136,23 @@ public final class PgmlUtility {
      * @param f the Fig to generate the id for
      * @return a unique string
      */
+    public static String getEnclosingId(Fig f) {
+        
+        Fig encloser = f.getEnclosingFig();
+        if (encloser == null) {
+            return null;
+        }
+        
+        return getId(encloser);
+    }
+
+
+    /**
+     * Generate an identifier for this Fig which is unique within the 
+     * diagram.
+     * @param f the Fig to generate the id for
+     * @return a unique string
+     */
     public static String getId(Fig f) {
         if (f == null) {
             throw new IllegalArgumentException("A fig must be supplied");
