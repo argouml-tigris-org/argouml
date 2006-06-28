@@ -13666,6 +13666,130 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       </sect1>
 
+      <sect1>
+
+        <title>Notation</title>
+
+        <para>Notation is the textual representation 
+        on the diagram of a modelelement or its properties.
+        </para>
+
+        <sect2>
+        <title>Notation Languages</title>
+        <para>ArgoUML supports showing notation in different languages.
+        By default, all text is shown in UML notation, 
+        but the menus contain an item to select between
+        Java and UML.
+        With plugin modules, 
+        it is even possible to select other languages, 
+        such as C++ and PHP,
+        but the current (0.22) version of ArgoUML 
+        does not show any difference.
+        </para>
+        
+        <para><xref linkend="fig.ref.notation_uml"/>
+        shows a class in UML notation, while
+        <xref linkend="fig.ref.notation_java"/>
+        shows the same class in Java notation. 
+        </para>
+
+        <figure float="1" id="fig.ref.notation_uml">
+
+          <title>A class in UML notation</title>
+
+          <screenshot><mediaobject><imageobject>
+          <imagedata align="center"
+           fileref="images/reference/notation_uml.png"
+           format="PNG"/></imageobject></mediaobject></screenshot>
+        </figure>
+        
+        <figure float="1" id="fig.ref.notation_java">
+
+          <title>A class in Java notation</title>
+
+          <screenshot><mediaobject><imageobject>
+          <imagedata align="center"
+           fileref="images/reference/notation_java.png"
+           format="PNG"/></imageobject></mediaobject></screenshot>
+        </figure>
+
+        </sect2>
+
+        <sect2>
+        <title>Notation Editing on the diagram</title>
+
+        <para>Most text shown on a diagram may be edited by
+        double-clicking button 1 on the text. 
+        This causes a edit box to be shown, 
+        with the previous text selected,
+        ready for amending.</para>
+
+        <para>Also, the status bar of ArgoUML 
+        (i.e. the small area at the bottom of the ArgoUML window),
+        shows an help text that indicates the syntax of the text to be entered.
+        Text entry can be concluded by pressing F2, 
+        or for single-line fields, by pressing the enter key.
+        Additionally, editing can be concluded by 
+        clicking somewhere in the diagram outside the edit area.
+        </para>
+        
+        <para>Editing notation on the diagram is a very powerful way
+        to enter a lot of model-information in a very compact way. 
+        It is e.g. possible to create an operation, 
+        its stereotype,
+        all parameters and their types, 
+        and operation properties (visibility, concurrency), all
+        at once by typing:</para>
+        
+        <programlisting>+Order(customerID : int,items : List) : void {sequential}</programlisting>
+        
+        <para>An association (e.g. between two classes) is showing many
+        texts close to its middle and ends, 
+        so its deserves some extra explanation.
+        <xref linkend="fig.ref.notation_association"/> shows two associations
+        to clarify the following:
+        </para>
+
+        <figure float="1" id="fig.ref.notation_association">
+
+          <title>A couple of associations with adornments</title>
+
+          <screenshot><mediaobject><imageobject>
+          <imagedata align="center"
+           fileref="images/reference/notation_association.png"
+           format="PNG"/></imageobject></mediaobject></screenshot>
+        </figure>        
+
+        <para>The association on the right shows that 
+        invisible fields where text can be entered
+        become visible once the modelelement is selected.
+        The fields are indicated by blue rectangles - 
+        double-click on them with mouse button 1 to start editing.</para>
+        
+        <para>The visibility (the +, -, # or ~) is shown 
+        together with the association-end name, 
+        but it is not shown 
+        for an unnamed association end.</para>
+        
+        <para>Likewise, the multiplicity is not shown if it is 1.</para>
+        
+        <para>The example figure does not demonstrate this, but 
+        stereotypes of an association are shown on the diagram, 
+        but are not editable. 
+        And stereotypes of association-ends are shown
+        together with the association-end name.
+        </para>
+        
+        </sect2>
+
+        <sect2>
+        <title>Notation Parsing</title>
+        <para>(to be written)</para>
+        <!-- TODO: Describe all Notation providers' syntax. -->
+        </sect2>
+
+      </sect1>
+
     </chapter>
 
     <chapter id="ch.ref.detpane">
