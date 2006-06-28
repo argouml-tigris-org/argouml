@@ -2057,8 +2057,7 @@ to not include the "PRE-" part.
           <para>
 This is done in the <filename>default.properties</filename>-file
 in <filename>src_new</filename>
-and <filename>documentation</filename>
-and then, commit the files.
+and then, commit the file.
 </para>
         </listitem>
  
@@ -2080,7 +2079,6 @@ Open the repository for commits toward the next version.
 This is done by setting the <methodname>argo.core.version</methodname>
 in <filename>default.properties</filename>
 in <filename>src_new</filename>
-and <filename>documentation</filename>
 to PRE-<replaceable>Number of next release</replaceable>, committing
 and telling everyone on the developers mailing list.
 </para>
