@@ -27,6 +27,8 @@ package org.argouml.uml.util.namespace;
 import java.util.Iterator;
 import java.util.Stack;
 
+import org.apache.log4j.Logger;
+
 /**
  * A StringNamespace is a string based namespace (StringNamespaceElement)
  * object. It faciliates creation of these objects via a number of helper
@@ -36,6 +38,8 @@ import java.util.Stack;
  */
 public class StringNamespace implements Namespace, Cloneable {
 
+    private static final Logger LOG = Logger.getLogger(StringNamespace.class);
+    
     private Stack ns = new Stack();
 
     private String token = JAVA_NS_TOKEN;
@@ -150,7 +154,7 @@ public class StringNamespace implements Namespace, Cloneable {
         try {
             result = (StringNamespace) this.clone();
         } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            LOG.debug(e);
             return null;
         }
         result.popNamespaceElement();

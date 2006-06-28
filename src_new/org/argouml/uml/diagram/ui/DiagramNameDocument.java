@@ -31,6 +31,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
+import org.apache.log4j.Logger;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -48,6 +49,9 @@ import org.argouml.ui.targetmanager.TargetManager;
  */
 class DiagramNameDocument implements DocumentListener, TargetListener {
 
+    private static final Logger LOG = 
+        Logger.getLogger(DiagramNameDocument.class);
+    
     private JTextField field;
     private boolean stopEvents = false;
 
@@ -140,9 +144,9 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
                         d.setName(newName);
                     }
                 } catch (PropertyVetoException pe) {
-                    pe.printStackTrace();
+                    LOG.debug(pe);
                 } catch (BadLocationException ble) {
-                    ble.printStackTrace();
+                    LOG.debug(ble);
                 }
             }
         }

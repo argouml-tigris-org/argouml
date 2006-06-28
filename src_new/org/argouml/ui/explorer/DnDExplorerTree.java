@@ -334,9 +334,9 @@ public class DnDExplorerTree
                 }
             }
         } catch (UnsupportedFlavorException e) {
-            e.printStackTrace();
+            LOG.debug(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.debug(e);
         }
         LOG.debug("No valid Drag: not a valid namespace.");
         return false;
