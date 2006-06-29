@@ -8205,11 +8205,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>This menu entry brings up a dialog box, which allows 
           the user to set various options
           of the currently loaded project.</para>
+
+          <para>All settings in this dialog 
+          are stored in the project-file 
+          together with the model.</para>
           
           <figure float="1" id="fig.ref.menu_properties_user">
 
-            <title>The dialog for <literal>Properties - 
-            Notation</literal>: The User tab.</title>
+            <title>The dialog for Properties - 
+            Notation: The User tab.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -8217,10 +8221,46 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
              format="GIF"/></imageobject></mediaobject></screenshot>
           </figure>
           
+          <para>In the User tab, 
+          you are able to set the following fields:
+          </para>
+          
+          <itemizedlist>
+
+          <listitem>
+          <para>The first field contains 
+          the name of the author or responsible 
+          for the current project.
+          By default the name and email of the creator
+          are filled in, 
+          so probably you will never need to edit this, 
+          but it is possible.
+          </para>
+          </listitem>
+          
+          <listitem>
+          <para>The Project Description field may contain any text
+          that you need to describe the project.
+          By default it is empty.</para>
+          </listitem>
+          
+          <listitem>
+          <para>The "Last saved with ArgoUML" field 
+          indicates the version of ArgoUML 
+          that was used to save this project 
+          (the last time it was saved).
+          This may be usefull if multiple designers have different 
+          versions of ArgoUML, 
+          which may not be backwards compatible all the time.
+          </para>
+          </listitem>
+
+          </itemizedlist>
+
           <figure float="1" id="fig.ref.menu_properties_notations">
 
-            <title>The dialog for <literal>Properties - 
-            Notation</literal>: The Notations tab.</title>
+            <title>The dialog for Properties - 
+            Notation: The Notations tab.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -8228,7 +8268,116 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
              format="GIF"/></imageobject></mediaobject></screenshot>
           </figure>
           
-          <para>(To be written)</para>
+          <para>In the Notations tab, 
+          you are able to set the following fields:
+          </para>
+        
+        <itemizedlist>
+
+          <listitem>
+            <para>The first field is a combobox that allows
+            selection of the project's Notation language.
+            By default, it lists UML and Java, 
+            but other languages may be added by plugins.
+            See the chapter on Notation for more explanation:
+            <xref linkend="s1.ref.notation"/>.
+            </para>
+
+          </listitem>
+
+          <listitem>
+            <para><literal>Use guillemots</literal> (« ») for 
+                stereotypes (clear by default). By default ArgoUML uses 
+                pairs of <emphasis>less than</emphasis> and 
+                <emphasis>greater than</emphasis> (&lt;&lt; &gt;&gt;) 
+                characters for stereotypes. If this box is checked 
+                stereotypes on diagrams are shown between true 
+                guillemots (« »).</para>
+
+            <para>This feature is presumably added to ArgoUML 
+                because guillemots are poorly supported by various 
+                fonts, and if they are present, then they are quite 
+                small and poorly visible.</para>
+          </listitem>
+          
+          <listitem>
+            <para><literal>Show visibility</literal> (clear by 
+                default). If this is selected, then ArgoUML will
+                show the visibility indicators in front of e.g. attributes
+                in the diagram.
+                In UML the notation is "+" for public, "-" for private,
+                "#" for protected, and "~" for package. 
+                E.g. for an attribute, it may show:
+                <literal>+newAttr : int</literal>.
+            </para>
+          </listitem>
+          
+          <listitem>
+                <para><literal>Show multiplicity</literal> (clear by 
+                default). If this is selected, then ArgoUML will show 
+                the multiplicity of e.g. attributes in the diagram. 
+                In UML notation, the multiplicity is shown between [], such as: 
+                <literal>+newAttr [0..*] : int</literal>.
+                This setting has no impact on showing multiplicity 
+                near associationends.
+                </para>
+              </listitem>
+
+              <listitem>
+                <para><literal>Show initial value</literal> (clear by 
+                default). If this is selected, then ArgoUML will show
+                the initial value of e.g. attributes in the diagram.
+                In UML notation, the initial value is shown e.g. like this:
+                <literal>+newAttr : int = 1</literal>.
+              </para>
+              </listitem>
+
+              <listitem>
+                <para><literal>Show properties</literal> (clear by 
+                default). If this is selected, then ArgoUML will show
+                various properties between braces {}.
+                E.g. for an attribute, it may show:
+                <literal>+newAttr : int { frozen }</literal>.
+                </para>
+              </listitem>
+
+              <listitem>
+                <para><literal>Show types and parameters</literal> 
+                (set by default). When this checkbox is unmarked, 
+                attributes in classes are shown without type indication, 
+                and operations are shown without parameters.
+                This feature may be usefull during 
+                the analysis phase of your project.
+                If all checkmarks in 
+                the Notation Tab are unchecked, then
+                e.g. for an attribute, ArgoUML may show:
+                <literal>newAttr</literal>. And for an operation: 
+                <literal>newOperation()</literal>.
+                </para>
+              </listitem>
+
+              <listitem>
+                <para><literal>Show stereotypes in explorer</literal> 
+                (clear by default). If this is selected, then ArgoUML will show
+                stereotypes next to the icons of the modelelements 
+                in the Explorer, i.e. the tree structure at the left hand side.
+                </para>
+              </listitem>
+
+              <listitem>
+                <para><literal>Default shadow width</literal> (set to 1 
+                by default). ArgoUML is able to draw all elements 
+                on a diagram with a shadow,
+                for esthetical reasons. 
+                Use this setting to adjust the 
+                size of the shadow, used when the modelelement is created.
+                The details tab "Presentation" allows to set the shadow per
+                modelelement, after they are created, but ArgoUML V0.22 does
+                not retain this latter change after save and load.
+                </para>
+              </listitem>
+
+        </itemizedlist>
 
         </sect2>
 
@@ -13666,7 +13815,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       </sect1>
 
-      <sect1>
+      <sect1 id="s1.ref.notation">
 
         <title>Notation</title>
 
