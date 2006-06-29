@@ -2732,14 +2732,14 @@ the java web start file at
 Add and commit the release in the argouml-downloads project
 </para>
 	  <para>
-The following command will do it for you:
+The following commands will do it for you:
 <programlisting>
 cd ../svn/argouml-downloads/www
 svn add argouml-<replaceable>RELEASE NAME</replaceable>
 svn propset svn:mime-type application/octet-stream argouml-<replaceable>RELEASE NAME</replaceable>/*.pdf
 svn add jws/argouml-<replaceable>RELEASE NAME</replaceable>.jnlp
-svn status www/maven2
-svn add www/maven2 <replaceable>the directories that show up.</replaceable>
+svn status maven2
+svn add maven2/<replaceable>the directories that show up.</replaceable>
 svn commit -m'The release <replaceable>RELEASE NAME</replaceable>.'
 </programlisting>
 </para>
