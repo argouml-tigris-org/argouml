@@ -11121,6 +11121,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             transitions.</para>
 
           </listitem>
+          
+          <listitem>
+
+            <para><literal>Composition-centric</literal>. In this 
+            view, all modelelements are shown
+            according their composition in the UML metamodel.</para>
+
+            <para>This perspective shows far more modelelements 
+            then all others - it does not hide anything. 
+            Hence, this view is not so user-friendly, but very suited
+            for the UML specialist.</para>
+
+          </listitem>
 
         </itemizedlist>
 
@@ -12169,9 +12182,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <literal>Class</literal>. Add a class to the diagram. For 
               convenience, when the mouse is over a selected class it 
               displays two handles to left and right which may be 
+              clicked or
               dragged to form association relationships (or composition 
               in case SHIFT has been pressed) and two handles top and 
-              bottom which may be dragged to form generalization and 
+              bottom which may be dragged or clicked
+              to form generalization and 
               specialization relationships respectively.</para>
 
             </listitem>
@@ -12342,6 +12357,42 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               Add a new association class 
               between two artifacts selected using button 1 motion 
               (from the first artifact to the second).</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/datatype.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Datatype</literal>. 
+              Add a datatype to the 
+              diagram. For convenience, when the mouse is over a 
+              selected datatype it displays handles 
+              at the top and at the bottom 
+              which may be clicked or dragged 
+              to form a generalization relationship 
+              (the target being another datatype).
+              There are 2 other elements available here, 
+              <guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/enumeration.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Enumeration</literal>
+              and
+              <guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/stereotype.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Stereotype</literal>.
+              These two have similar handles, 
+              except the one at the top of a stereotype: 
+              when clicked, it creates a metaclass, 
+              connected by a dependency marked with «stereotype».
+              This eases the creation of "stereotype declaration" diagrams - 
+              see the literature on the subject.
+              </para>
 
             </listitem>
 
@@ -12886,7 +12937,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               </caution>
 
             </listitem>
+            
+            <listitem>
 
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/callstate.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>CallState</literal>. Add a callstate to the 
+              diagram. 
+              A call state is an action state that calls a single operation.
+              Hence, the name of the operation being called 
+              is put in the symbol, 
+              along with the name of the classifier that
+              hosts the operation in parentheses under it.
+              </para>
+
+            </listitem>
+            
             <listitem>
 
               <para><guiicon><inlinemediaobject><imageobject>
@@ -12894,7 +12962,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/objectflowstate.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>ObjectFlowState</literal>. Add a objectflowstate to the 
-              diagram.</para>
+              diagram.
+              An objectflowstate is 
+              an object that is input to or output from 
+              an action.</para>
 
             </listitem>
 
@@ -13558,6 +13629,23 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             </listitem>
 
+            <listitem>
+
+              <para><literal>Hide Enumeration Literal Compartment</literal>. Only 
+              appears when the enumeration literal compartment 
+              of an enumeration 
+              is displayed. Hides the compartment.</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><literal>Show Enumeration Literal Compartment</literal>. Only 
+              appears when the enumeration literal compartment of an enumeration
+              is hidden. Displays the compartment.</para>
+
+            </listitem>
+            
             <listitem>
 
               <para><literal>Show All Edges</literal>. Only appears on 
