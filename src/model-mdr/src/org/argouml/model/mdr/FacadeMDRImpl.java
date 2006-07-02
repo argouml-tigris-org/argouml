@@ -4017,6 +4017,9 @@ class FacadeMDRImpl implements Facade {
             if (handle instanceof ClassifierInState) {
                 return ((ClassifierInState) handle).getType();
             }
+            if (handle instanceof TaggedValue) {
+                return ((TaggedValue) handle).getType();
+            }
             // ...
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);

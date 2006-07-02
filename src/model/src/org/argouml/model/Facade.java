@@ -2429,11 +2429,11 @@ public interface Facade {
     Object getTrigger(Object handle);
 
     /**
-     * The type of a StructuralFeature, AssociationEnd, Parameter or
-     * ObjectFlowState.
+     * The type of a StructuralFeature, AssociationEnd, Parameter,
+     * ObjectFlowState, TagDefinition, TaggedValue or ClassifierInState.
      *
-     * @param handle the StructuralFeature, AssociationEnd, Parameter or
-     *  ObjectFlowState
+     * @param handle the StructuralFeature, AssociationEnd, Parameter,
+     *  ObjectFlowState, TagDefinition, TaggedValue or ClassifierInState
      * @return the type
      */
     Object getType(Object handle);

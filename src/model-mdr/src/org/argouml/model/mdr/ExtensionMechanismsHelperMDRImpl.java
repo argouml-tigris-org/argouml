@@ -619,6 +619,21 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
     /**
+     * @see org.argouml.model.ExtensionMechanismsHelper#setType(
+     *          java.lang.Object, java.lang.Object)
+     */
+    public void setType(Object handle, Object type) {
+        if (type == null || type instanceof TagDefinition) {
+            if (handle instanceof TaggedValue) {
+                ((TaggedValue) handle).setType((TagDefinition) type);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle + " or type: "
+                + type);
+    }
+
+    /**
      * @see org.argouml.model.ExtensionMechanismsHelper#hasStereoType(java.lang.Object, java.lang.String)
      */
     public boolean hasStereoType(Object handle, String name) {

@@ -201,6 +201,13 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
     }
 
     /**
+     * @see org.argouml.model.ExtensionMechanismsHelper#setType(
+     *          java.lang.Object, java.lang.Object)
+     */
+    public void setType(Object handle, Object type) {
+        impl.setType(handle, type);
+    }
+    /**
      * @see org.argouml.model.ExtensionMechanismsHelper#setValueOfTag(
      *         java.lang.Object,
      *         java.lang.String)

@@ -191,6 +191,14 @@ public interface ExtensionMechanismsHelper {
      * @param tag String
      */
     void setTag(Object handle, Object tag);
+    
+    /**
+     * Set the type of a taggedvalue.
+     * 
+     * @param handle the taggedValue
+     * @param type the tagDefinition
+     */
+    void setType(Object handle, Object type);
 
     /**
      * Sets a value of some taggedValue.
