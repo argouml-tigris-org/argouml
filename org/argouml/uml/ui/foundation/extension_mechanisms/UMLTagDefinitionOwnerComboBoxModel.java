@@ -24,8 +24,7 @@
 
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
-import java.util.Collection;
-
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -58,11 +57,19 @@ public class UMLTagDefinitionOwnerComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object elem = getTarget();
-        Collection models =
-            ProjectManager.getManager().getCurrentProject().getModels();
-        setElements(Model.getExtensionMechanismsHelper()
-	        .getAllPossibleStereotypes(models, elem));
+        /* TODO: Ths following code does not work. 
+         * But we still need to support multiple models in a similar way,
+         * to be able to pull in stereotypes from a profile model. */
+//        Object elem = getTarget();
+//        Collection models =
+//            ProjectManager.getManager().getCurrentProject().getModels();
+//        setElements(Model.getExtensionMechanismsHelper()
+//	        .getAllPossibleStereotypes(models, elem));
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Object model = p.getRoot();
+        setElements(Model.getModelManagementHelper()
+                .getAllModelElementsOfKindWithModel(model, 
+                        Model.getMetaTypes().getStereotype()));
     }
 
     /**
