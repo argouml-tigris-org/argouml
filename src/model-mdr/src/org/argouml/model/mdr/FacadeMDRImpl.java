@@ -2551,6 +2551,9 @@ class FacadeMDRImpl implements Facade {
             if (handle instanceof ElementImport) {
                 return ((ElementImport) handle).getImportedElement();
             }
+            if (handle instanceof TaggedValue) {
+                return ((TaggedValue) handle).getModelElement();
+            }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }

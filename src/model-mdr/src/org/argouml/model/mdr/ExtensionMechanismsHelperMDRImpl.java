@@ -579,7 +579,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 && taggedValue instanceof TaggedValue
                 && ((ModelElement) handle).getTaggedValue()
                     .contains(taggedValue)) {
-            nsmodel.getUmlFactory().delete(taggedValue);
+            ((ModelElement) handle).getTaggedValue().remove(taggedValue);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle

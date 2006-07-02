@@ -1679,8 +1679,7 @@ public class Modeller {
                             getStereotype(st.nextToken().trim()));
                 }
             }
-            Model.getExtensionMechanismsHelper().removeTaggedValue(
-                    modelElement, tv);
+            Model.getUmlFactory().delete(tv);
         }
     }
 

@@ -1712,7 +1712,7 @@ public interface Facade {
     Object getModel(Object handle);
 
     /**
-     * @param handle an Element Import.
+     * @param handle an Element Import or TaggedValue.
      * @return the model element
      */
     Object getModelElement(Object handle);
