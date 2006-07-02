@@ -48,8 +48,7 @@ import org.tigris.gef.undo.UndoableAction;
  * 
  * TODO: Complete this panel - it needs to show fields for: 
  * list of dataValue, 
- * 1 modelElement, 
- * 1 type and 
+ * and 
  * the list of referenceValue.
  * See issue 2906.
  * And buttons for navigate up, new taggedValue, delete.
@@ -59,6 +58,7 @@ import org.tigris.gef.undo.UndoableAction;
 public class PropPanelTaggedValue extends PropPanelModelElement {
     
     private JComponent modelElementSelector;
+    private JComponent typeSelector;
     
     /**
      * The constructor.
@@ -70,6 +70,8 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
                 getNameTextField());
         addField(Translator.localize("label.modelelement"),
                 getModelElementSelector());
+        addField(Translator.localize("label.type"),
+                getTypeSelector());
 
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewTagDefinition());
@@ -77,7 +79,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
     }
 
     /**
-     * Returns the modelelement selecter. 
+     * Returns the modelelement selector. 
      * This is a component which allows the
      * user to select a single item as the modelelement.
      *
@@ -95,7 +97,27 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
         }
         return modelElementSelector;
     }
-    
+
+    /**
+     * Returns the type selector. 
+     * This is a component which allows the
+     * user to select a single taggedValue as the type.
+     *
+     * @return the modelelement selecter
+     */
+    protected JComponent getTypeSelector() {
+        if (typeSelector == null) {
+            typeSelector = new Box(BoxLayout.X_AXIS);
+            typeSelector.add(new UMLComboBoxNavigator(this,
+                    Translator.localize("label.type.navigate.tooltip"),
+                    new UMLComboBox2(
+                            new UMLTaggedValueTypeComboBoxModel(),
+                            new ActionSetTaggedValueType())
+            ));
+        }
+        return typeSelector;
+    }
+
     class ActionSetTaggedValueModelElement extends UndoableAction {
 
         /**
@@ -118,7 +140,8 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
                 final Object taggedValue = combo.getTarget();
                 if (Model.getFacade().isAModelElement(o)
                         && Model.getFacade().isATaggedValue(taggedValue)) {
-                    Object oldME = Model.getFacade().getModelElement(taggedValue);
+                    Object oldME = 
+                        Model.getFacade().getModelElement(taggedValue);
                     Model.getExtensionMechanismsHelper()
                         .removeTaggedValue(oldME, taggedValue);
                     Model.getExtensionMechanismsHelper()
@@ -175,4 +198,78 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
         }
         
     }
+
+    class ActionSetTaggedValueType extends UndoableAction {
+
+        /**
+         * Construct this action.
+         */
+        public ActionSetTaggedValueType() {
+            super();
+        }
+
+        /**
+         * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object source = e.getSource();
+            if (source instanceof UMLComboBox2
+                    && e.getModifiers() == AWTEvent.MOUSE_EVENT_MASK) {
+                UMLComboBox2 combo = (UMLComboBox2) source;
+                Object o = combo.getSelectedItem();
+                final Object taggedValue = combo.getTarget();
+                if (Model.getFacade().isAModelElement(o)
+                        && Model.getFacade().isATaggedValue(taggedValue)) {
+                    Model.getExtensionMechanismsHelper()
+                        .setType(taggedValue, o);
+                }
+            }
+        }
+        
+    }
+    
+    class UMLTaggedValueTypeComboBoxModel 
+        extends UMLComboBoxModel2 {
+        
+        /**
+         * Constructor for UMLModelElementStereotypeComboBoxModel.
+         */
+        public UMLTaggedValueTypeComboBoxModel() {
+            super("type", true);
+        }
+        
+        /**
+         * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+         */
+        protected void buildModelList() {
+            Project p = ProjectManager.getManager().getCurrentProject();
+            Object model = p.getRoot();
+            setElements(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKindWithModel(model, 
+                            Model.getMetaTypes().getTagDefinition()));
+        }
+        
+        /**
+         * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+         */
+        protected Object getSelectedModelElement() {
+            Object me = null;
+            if (getTarget() != null 
+                    && Model.getFacade().isATaggedValue(getTarget())) {
+                me = Model.getFacade().getType(getTarget());
+            }
+            return me;
+        }
+        
+        /**
+         * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
+         */
+        protected boolean isValidElement(Object element) {
+            return Model.getFacade().isATagDefinition(element);
+        }
+        
+    }
+
+
 }
