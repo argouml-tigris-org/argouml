@@ -2621,6 +2621,7 @@ public interface Facade {
      * Return the owner of a feature or its
      * association end if it is a
      * qualified attribute.
+     * Returns the stereotype that owns a TagDefinition.
      *
      * @param handle is the feature
      * @return classifier
