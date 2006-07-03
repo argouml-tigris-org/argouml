@@ -139,8 +139,7 @@ public class FigMNode extends FigNodeModelElement {
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
-    protected void updateListeners(Object newOwner) {
-        Object oldOwner = getOwner();
+    protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeAllElementListeners();
         }
