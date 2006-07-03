@@ -4651,6 +4651,36 @@ class FacadeMDRImpl implements Facade {
         }
         return illegalArgumentString(handle);
     }
+    
+    /**
+     * @see org.argouml.model.Facade#getReferenceValue(java.lang.Object)
+     */
+    public Collection getReferenceValue(Object taggedValue) {
+        try {
+            if (taggedValue instanceof TaggedValue) {
+                TaggedValue tv = (TaggedValue) taggedValue;
+                return tv.getReferenceValue();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        return illegalArgumentCollection(taggedValue);
+    }
+
+    /**
+     * @see org.argouml.model.Facade#getDataValue(java.lang.Object)
+     */
+    public Collection getDataValue(Object taggedValue) {
+        try {
+            if (taggedValue instanceof TaggedValue) {
+                TaggedValue tv = (TaggedValue) taggedValue;
+                return tv.getDataValue();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        return illegalArgumentCollection(taggedValue);
+    }
 
     /**
      * @see org.argouml.model.Facade#getUUID(java.lang.Object)

@@ -30,6 +30,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -39,6 +41,8 @@ import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.undo.UndoableAction;
@@ -46,10 +50,7 @@ import org.tigris.gef.undo.UndoableAction;
 /**
  * The properties panel for a TaggedValue. <p>
  * 
- * TODO: Complete this panel - it needs to show fields for: 
- * list of dataValue, 
- * and 
- * the list of referenceValue.
+ * TODO: Complete this panel.
  * See issue 2906.
  * And buttons for navigate up, new taggedValue, delete.
  * 
@@ -59,6 +60,8 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
     
     private JComponent modelElementSelector;
     private JComponent typeSelector;
+    private JScrollPane referenceValuesScroll;
+    private JScrollPane dataValuesScroll;
     
     /**
      * The constructor.
@@ -72,10 +75,34 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
                 getModelElementSelector());
         addField(Translator.localize("label.type"),
                 getTypeSelector());
+        
+        addSeparator();
+
+        addField(Translator.localize("label.reference-values"),
+                getReferenceValuesScroll());
+
+        addField(Translator.localize("label.data-values"),
+                getDataValuesScroll());
 
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewTagDefinition());
         addAction(getDeleteAction());
+    }
+
+    protected JScrollPane getReferenceValuesScroll() {
+        if (referenceValuesScroll == null) {
+            JList list = new UMLLinkedList(new UMLReferenceValueListModel());
+            referenceValuesScroll = new JScrollPane(list);
+        }
+        return referenceValuesScroll;
+    }
+
+    protected JScrollPane getDataValuesScroll() {
+        if (dataValuesScroll == null) {
+            JList list = new UMLLinkedList(new UMLDataValueListModel());
+            dataValuesScroll = new JScrollPane(list);
+        }
+        return dataValuesScroll;
     }
 
     /**
@@ -170,7 +197,6 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
          * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
          */
         protected void buildModelList() {
-            Object elem = getTarget();
             Project p = ProjectManager.getManager().getCurrentProject();
             Object model = p.getRoot();
             setElements(Model.getModelManagementHelper()
@@ -271,5 +297,66 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
         
     }
 
+    class UMLReferenceValueListModel
+        extends UMLModelElementListModel2 {
+    
+        /**
+         * Constructor for UMLExtendedElementsListModel.
+         */
+        public UMLReferenceValueListModel() {
+            super("referenceValue");
+        }
+        
+        /**
+         * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+         */
+        protected void buildModelList() {
+            if (getTarget() != null) {
+                setAllElements(
+                        Model.getFacade().getReferenceValue(getTarget()));
+            }
+        }
+        
+        /**
+         * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
+         */
+        protected boolean isValidElement(Object element) {
+            return Model.getFacade().isAModelElement(element)
+                && Model.getFacade().getReferenceValue(
+                        getTarget()).contains(element);
+        }
+
+    }
+
+    class UMLDataValueListModel
+        extends UMLModelElementListModel2 {
+    
+        /**
+         * Constructor for UMLExtendedElementsListModel.
+         */
+        public UMLDataValueListModel() {
+            super("dataValue");
+        }
+        
+        /**
+         * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+         */
+        protected void buildModelList() {
+            if (getTarget() != null) {
+                setAllElements(
+                        Model.getFacade().getDataValue(getTarget()));
+            }
+        }
+        
+        /**
+         * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
+         */
+        protected boolean isValidElement(Object element) {
+            return Model.getFacade().isAModelElement(element)
+                && Model.getFacade().getDataValue(
+                        getTarget()).contains(element);
+        }
+
+    }
 
 }

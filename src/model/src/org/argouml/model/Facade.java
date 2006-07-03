@@ -2700,6 +2700,22 @@ public interface Facade {
     String getValueOfTag(Object handle);
 
     /**
+     * Return the referenceValue collection for a taggedValue.
+     * 
+     * @param taggedValue
+     * @return
+     */
+    Collection getReferenceValue(Object taggedValue);
+
+    /**
+     * Return the dataValue collection for a taggedValue.
+     * 
+     * @param taggedValue
+     * @return
+     */
+    Collection getDataValue(Object taggedValue);
+    
+    /**
      * Return the ID of this element.
      * 
      * This is guaranteed to always return a value, but the
