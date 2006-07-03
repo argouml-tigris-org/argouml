@@ -1008,6 +1008,7 @@ public abstract class FigEdgeModelElement
     protected boolean updateClassifiers() {
         Object owner = getOwner();
         if (owner == null || getLayer() == null) {
+            LOG.error("The FigEdge has no owner or its layer is null");
             return false;
         }
 
@@ -1025,25 +1026,17 @@ public abstract class FigEdgeModelElement
         if (newSource != currentSource || newDest != currentDestination) {
             Fig newSourceFig = getNoEdgePresentationFor(newSource);
             Fig newDestFig = getNoEdgePresentationFor(newDest);
-            if (newSourceFig == null || newDestFig == null) {
-                removeFromDiagram();
-                return false;
-            }
-            if (newSourceFig != null && newSourceFig != currentSourceFig) {
+            if (newSourceFig != currentSourceFig) {
                 setSourceFigNode((FigNode) newSourceFig);
                 setSourcePortFig(newSourceFig);
 
             }
-            if (newDestFig != null && newDestFig != currentDestFig) {
+            if (newDestFig != currentDestFig) {
                 setDestFigNode((FigNode) newDestFig);
                 setDestPortFig(newDestFig);
             }
-            if (newDestFig != null && newSourceFig != null) {
-                ((FigNode) newSourceFig).updateEdges();
-            }
-            if (newSourceFig != null && newDestFig != null) {
-                ((FigNode) newDestFig).updateEdges();
-            }
+            ((FigNode) newSourceFig).updateEdges();
+            ((FigNode) newDestFig).updateEdges();
             calcBounds();
 
             // adapted from SelectionWButtons from line 280
@@ -1065,17 +1058,19 @@ public abstract class FigEdgeModelElement
      * @return the Fig representing the presentation
      */
     private Fig getNoEdgePresentationFor(Object element) {
-        if (element != null) {
-            List contents = getLayer().getContentsNoEdges();
-            int figCount = contents.size();
-            for (int figIndex = 0; figIndex < figCount; ++figIndex) {
-                Fig fig = (Fig) contents.get(figIndex);
-                if (fig.getOwner() == element) {
-                    return fig;
-                }
+        if (element == null) {
+            throw new IllegalArgumentException("Can't search for a null owner");
+        }
+        List contents = getLayer().getContentsNoEdges();
+        int figCount = contents.size();
+        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
+            Fig fig = (Fig) contents.get(figIndex);
+            if (fig.getOwner().equals(element)) {
+                return fig;
             }
         }
-        return null;
+        throw new IllegalStateException("Can't find a FigNode representing "
+                + Model.getFacade().getName(element));
     }
 
 
