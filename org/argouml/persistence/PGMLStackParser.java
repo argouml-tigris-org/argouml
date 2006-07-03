@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -67,6 +68,8 @@ public class PGMLStackParser
         Logger.getLogger(PGMLStackParser.class);
 
     private List figEdges = new ArrayList(50);
+    
+    private LinkedHashMap modelElementsByFigEdge = new LinkedHashMap(50);
     
     /**
      * Constructor.
@@ -127,9 +130,8 @@ public class PGMLStackParser
     /**
      * @see org.tigris.gef.persistence.pgml.PGMLStackParser#setAttrs(
      *         org.tigris.gef.presentation.Fig, org.xml.sax.Attributes)
-     * TODO: Change to protected here and in GEF
      */
-    public final void setAttrs(Fig f, Attributes attrList) throws SAXException {
+    protected final void setAttrs(Fig f, Attributes attrList) throws SAXException {
         if (f instanceof FigGroup) {
             FigGroup group = (FigGroup) f;
             String clsNameBounds = attrList.getValue("description");
@@ -158,13 +160,7 @@ public class PGMLStackParser
             }
         }
 
-        // TODO: Code within these comments should be removed and replaced with
-        // the commented out line once issue
-        // http://argouml.tigris.org/issues/show_bug.cgi?id=4020 and
-        // http://argouml.tigris.org/issues/show_bug.cgi?id=4021 have been
-	// resolved
-
-        super.setAttrs(f, attrList);
+        // TODO: Attempt to move the following code to GEF
 
         String name = attrList.getValue("name");
         if (name != null && !name.equals("")) {
@@ -182,7 +178,12 @@ public class PGMLStackParser
 				       + " with no matching element in model");
             }
             if (f.getOwner() != modelElement) {
-                f.setOwner(modelElement);
+                // Assign nodes immediately but edges later. See issue 4310.
+                if (f instanceof FigEdge) {
+                    modelElementsByFigEdge.put(f, modelElement);
+                } else {
+                    f.setOwner(modelElement);
+                }
             } else {
                 LOG.debug("Ignoring href on " + f.getClass().getName()
 			 + " as it's already set");
@@ -262,16 +263,19 @@ public class PGMLStackParser
         throws SAXException {
         Diagram d = super.readDiagram(is, closeStream);
         
-        // Loop through all edges read and attach them to nodes
+        // Loop through all edges previously read. Set their owners
+        // and attach them to nodes.
         Iterator it = figEdges.iterator();
         while (it.hasNext()) {
+            EdgeData edgeData = (EdgeData) it.next();
+            FigEdge edge = edgeData.getEdge();
+            
+            edge.setOwner(modelElementsByFigEdge.get(edge));
+            
             Fig spf = null;
             Fig dpf = null;
             FigNode sfn = null;
             FigNode dfn = null;
-            
-            EdgeData edgeData = (EdgeData) it.next();
-            FigEdge edge = edgeData.getEdge();
             
             spf = findFig(edgeData.getSourcePortFig());
             dpf = findFig(edgeData.getDestPortFig());
