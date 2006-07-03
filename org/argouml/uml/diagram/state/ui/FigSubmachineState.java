@@ -337,7 +337,7 @@ public class FigSubmachineState extends FigState {
             if ((mee.getPropertyName()).equals("submachine")) {
                 updateInclude();
                 if (mee.getOldValue() != null) {
-                    updateListeners(getOwner(), mee.getOldValue());
+                    updateListenersX(getOwner(), mee.getOldValue());
                 }
             }
         } else {
@@ -379,7 +379,7 @@ public class FigSubmachineState extends FigState {
         }
     }
 
-    private void updateListeners(Object newOwner, Object oldV) {
+    private void updateListenersX(Object newOwner, Object oldV) {
         this.updateListeners(newOwner);
         if (oldV != null) {
             removeElementListener(oldV);
