@@ -781,7 +781,7 @@ public abstract class FigEdgeModelElement
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
-        if (newOwner != null && !Model.getFacade().isAModelElement(newOwner)) {
+        if (!Model.getFacade().isAModelElement(newOwner)) {
             throw new IllegalArgumentException(
                     "The owner must be a model element - got a "
                     + newOwner.getClass().getName());
@@ -1065,7 +1065,7 @@ public abstract class FigEdgeModelElement
         int figCount = contents.size();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig fig = (Fig) contents.get(figIndex);
-            if (fig.getOwner().equals(element)) {
+            if (fig.getOwner() == element) {
                 return fig;
             }
         }
