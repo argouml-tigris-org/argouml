@@ -256,8 +256,6 @@ class UMLTagDefinitionNamespaceComboBoxModel
                         || evt instanceof AssociationChangeEvent)) {
             // allow the evt.getNewValue() to be null (see parent class)
             buildModelList();
-            // TODO: what is this next line doing? - tfm
-            setSelectedItem(getSelectedModelElement()); 
         }
     }
 }
