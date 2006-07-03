@@ -1362,8 +1362,7 @@ public abstract class FigNodeModelElement
      *          the latter that they have to be set.
      *          TODO: Should this not be boolean, to clarify?
      */
-    protected void updateListeners(Object newOwner) {
-        Object oldOwner = getOwner();
+    protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeElementListener(oldOwner);
         }
@@ -1371,6 +1370,9 @@ public abstract class FigNodeModelElement
             addElementListener(newOwner);
         }
 
+    }
+    
+    final protected void updateListeners(Object newOwner) {
     }
 
     /**

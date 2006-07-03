@@ -358,7 +358,7 @@ public class FigSubmachineState extends FigState {
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
-    protected void updateListeners(Object newOwner) {
+    protected void updateListeners(Object oldOwner, Object newOwner) {
         super.updateListeners(newOwner);
         if (newOwner == getOwner()) {
             return;
@@ -369,7 +369,6 @@ public class FigSubmachineState extends FigState {
                 addElementListener(newSm);
             }
         } else {
-            Object oldOwner = getOwner();
             if (oldOwner != null) {
                 Object oldSm = Model.getFacade().getSubmachine(oldOwner);
                 if (oldSm != null) {
