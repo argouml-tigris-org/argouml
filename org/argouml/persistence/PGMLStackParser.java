@@ -270,7 +270,10 @@ public class PGMLStackParser
             EdgeData edgeData = (EdgeData) it.next();
             FigEdge edge = edgeData.getEdge();
             
-            edge.setOwner(modelElementsByFigEdge.get(edge));
+            Object modelElement = modelElementsByFigEdge.get(edge);
+            if (modelElement != null) {
+                edge.setOwner(modelElement);
+            }
             
             Fig spf = null;
             Fig dpf = null;
