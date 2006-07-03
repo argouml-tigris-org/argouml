@@ -260,7 +260,7 @@ public class FigStubState extends FigStateVertex {
                     oldRef = stateMHelper.getStatebyName(
                             (String) mee.getOldValue(), top);
                 }
-                updateListeners(getOwner(), oldRef);
+                updateListenersX(getOwner(), oldRef);
             } else if ((mee.getPropertyName().equals("container")
                     && facade.isASubmachineState(container))) {
                 removeListeners();
@@ -287,7 +287,7 @@ public class FigStubState extends FigStateVertex {
                                 .getReferenceState(getOwner()), top);
                     }
                     stateMHelper.setReferenceState(getOwner(), null);
-                    updateListeners(getOwner(), oldRef);
+                    updateListenersX(getOwner(), oldRef);
                     updateReferenceText();
                 }
 
@@ -436,7 +436,7 @@ public class FigStubState extends FigStateVertex {
      * @param oldV
      *            the old owner UML object
      */
-    protected void updateListeners(Object newOwner, Object oldV) {
+    protected void updateListenersX(Object newOwner, Object oldV) {
         Object container = null;
         if (oldV != null) {
             removeElementListener(oldV);
