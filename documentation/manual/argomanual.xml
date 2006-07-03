@@ -2122,12 +2122,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <title>Using the Mouse Keys</title>
 
                 <para>Select the elements you want to move. By holding 
-                down the control key you can select several.</para>
+                down the Ctrl key while selecting you can select several
+                elements to move at the same time.</para>
 
                 <para>Now hit your arrow keys. Your elements move a 
                 little with every key stroke.</para>
 
-                <para>If you also hold down the shift key, they move a 
+                <para>If you also hold down the Shift key, they move a 
                 bit faster.</para>
 
               </sect5>
@@ -6617,7 +6618,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         ArgoUML window.</para>
 
         <para>The titlebar of the window shows the following 4 parts of 
-        information, seperated from each other by a dash.</para>
+        information, separated from each other by a dash.</para>
 
         <itemizedlist>
 
@@ -6755,7 +6756,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>Here button 1 is used to choose (select) an artifact 
             (in a list or tree or on a diagram) on which subsequent 
             operations will take place. Multiple artifacts may be 
-            selected by using Shift and/or Control in combination with 
+            selected by using Shift and/or Ctrl in combination with 
             button 1, see <xref linkend="s2.ref.mouse.shift_control"/>. 
             Selection is always clearly indicated by a colored 
             background.</para>
@@ -6875,7 +6876,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="s2.ref.mouse.shift_control">
 
-          <title>Shift and Control with Button 1</title>
+          <title>Shift and Ctrl modifiers with Button 1</title>
 
           <sect3>
 
@@ -6891,7 +6892,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             the original button 1 selection to the current 
             position.</para>
 
-            <para>Similarly the CONTROL key with button 1 is used to 
+            <para>Similarly the CTRL key with button 1 is used to 
             add individual items to the current selection. Where 
             Ctrl-button 1 is used on an item already selected, that 
             item is removed from the selection.</para>
@@ -6899,11 +6900,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <caution>
 
               <para>Users of Microsoft Windows might be familiar with 
-              the use of SHIFT-CONTROL-Click (i.e. holding both the 
-              Shift and Control key down when clicking), to add 
+              the use of SHIFT-CTRL-Click (i.e. holding both the 
+              Shift and Ctrl key down when clicking), to add 
               sub-lists to an existing selection. ArgoUML does not 
-              support this. SHIFT-CONTROL-Click will behave as 
-              CONTROL-Click.</para>
+              support this. SHIFT-CTRL-Click will behave as 
+              CTRL-Click.</para>
 
             </caution>
 
@@ -6932,6 +6933,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           diagram, movement of the mouse pans the drawing area. The 
           function is indicated by the mousepointer which turns into a 
           crosshair with arrows.</para>
+
+        </sect2>
+        
+        <sect2 id="s2.ref.mouse.ctrl">
+
+          <title>Ctrl with Button 1: Constrained Drag</title>
+
+          <para>When holding down the Ctrl key while dragging with 
+          mouse button 1 down on a diagram, the movement of the dragged
+          element element will be constrained to one of eight 
+          cardinal directions : North, South, East, West, NE, SE, SW, NW.
+          </para>
 
         </sect2>
 
@@ -11198,7 +11211,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           perspective.</para>
 
           <para>If you hover the mouse over the horizontal line that 
-          seperates the two halves of the dialog, then you see it 
+          separates the two halves of the dialog, then you see it 
           change shape, to indicate that you can grab this line and 
           drag it up or down.</para>
 
@@ -11649,7 +11662,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Shift and Control with Button 1</title>
+          <title>Shift and Ctrl modifiers with Button 1</title>
 
           <para>Where multiple selections are to be made, the CTRL key 
           is used with button 1 to <emphasis>add</emphasis> unselected 
@@ -15124,7 +15137,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           provide standard templates for OCL that, when selected, will 
           be inserted into the constraint being edited.</para>
 
-          <para>The syntax assistant can be made floating in a seperate 
+          <para>The syntax assistant can be made floating in a separate 
           window by button 1 motion on the small divider area to the 
           left of the row of drop-down menus.</para>
 
@@ -30858,7 +30871,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                   <para>This field shows the name of the transition, 
                   while on the diagram the name of the trigger is 
-                  shown, seperated with a <literal>/</literal> from
+                  shown, separated with a <literal>/</literal> from
                   the effect script.</para>
 
                 </note>
@@ -31388,7 +31401,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         concurrency to be constructed.</para>
 
         <para>A concurrent region is represented on the diagram by a 
-        tile of a composite state, seperated from other regions by a 
+        tile of a composite state, separated from other regions by a 
         dashed line.</para>
 
         <para>ArgoUML currently only supports a horizontal division of 
@@ -31421,7 +31434,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>The submachine state is depicted as a normal state with 
         the additional <emphasis>include</emphasis>
-         declaration above (and seperated by a 
+         declaration above (and separated by a 
         line from) its internal transitions compartment. The expression 
         following the <literal>include</literal> reserved word is the 
         name of the invoked submachine.</para>
