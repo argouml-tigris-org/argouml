@@ -412,7 +412,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         if (mee instanceof AddAssociationEvent
                 || mee instanceof AttributeChangeEvent) {
             renderingChanged();
-            updateListeners(getOwner());
+            updateListeners(getOwner(), getOwner());
             damage();
         }
     }
@@ -424,7 +424,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         if (oldOwner != null) {
             removeAllElementListeners();
         }
-        super.updateListeners(newOwner);
+        super.updateListeners(oldOwner, newOwner);
         /* Now, let's register for all events from all modelelements
          * that may change the text: 
          */

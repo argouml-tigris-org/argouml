@@ -154,7 +154,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         renderingChanged();
-        updateListeners(getOwner());
+        updateListeners(getOwner(), getOwner());
     }
 
     /**

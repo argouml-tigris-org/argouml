@@ -1235,8 +1235,7 @@ public abstract class FigNodeModelElement
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object own) {
-        // call this before the owner is set:
-        updateListeners(own);
+        Object oldOwner = getOwner();
         super.setOwner(own);
         initNotationProviders(own);
         readyToEdit = true;
@@ -1245,6 +1244,7 @@ public abstract class FigNodeModelElement
         }
         updateBounds();
         bindPort(own, bigPort);
+        updateListeners(oldOwner, own);
     }
 
     /**
@@ -1372,9 +1372,6 @@ public abstract class FigNodeModelElement
 
     }
     
-    final protected void updateListeners(Object newOwner) {
-    }
-
     /**
      * Returns the notation name for this fig. First start to
      * implement notations on a per fig basis.

@@ -134,7 +134,7 @@ public class FigComponent extends FigNodeModelElement {
         if (mee instanceof AssociationChangeEvent 
                 || mee instanceof AttributeChangeEvent) {
             renderingChanged();
-            updateListeners(getOwner());
+            updateListeners(getOwner(), getOwner());
             damage();
         }
     }

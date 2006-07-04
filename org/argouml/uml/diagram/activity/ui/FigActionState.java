@@ -235,7 +235,7 @@ public class FigActionState extends FigStateVertex {
         if (mee instanceof AddAssociationEvent
                 || mee instanceof AttributeChangeEvent) {
             renderingChanged();
-            updateListeners(getOwner());
+            updateListeners(getOwner(), getOwner());
             damage();
         }
     }

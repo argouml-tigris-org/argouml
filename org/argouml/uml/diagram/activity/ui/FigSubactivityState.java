@@ -262,7 +262,7 @@ public class FigSubactivityState extends FigStateVertex {
         if (mee instanceof AssociationChangeEvent 
                 || mee instanceof AttributeChangeEvent) {
             renderingChanged();
-            updateListeners(getOwner());
+            updateListeners(getOwner(), getOwner());
         }
     }
 
