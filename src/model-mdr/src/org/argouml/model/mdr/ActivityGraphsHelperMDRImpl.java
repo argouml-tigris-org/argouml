@@ -68,6 +68,9 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         CompositeState cs = ((ObjectFlowState) ofs).getContainer();
         StateMachine sm = cs.getStateMachine();
         ModelElement ns = sm.getContext();
+        if (ns == null) {
+            return null;
+        }
         if (!(ns instanceof Namespace)) {
             ns = ns.getNamespace();
         }
