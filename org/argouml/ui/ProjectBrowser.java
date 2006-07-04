@@ -35,7 +35,6 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -182,7 +181,8 @@ public final class ProjectBrowser
     private ToDoPane todoPane;
 
     /**
-     * A class that handles the title of this frame, e.g. to indicate save status.
+     * A class that handles the title of this frame, 
+     * e.g. to indicate save status.
      */
     private TitleHandler titleHandler = new TitleHandler();
 
@@ -907,12 +907,9 @@ public final class ProjectBrowser
                 return;
             }
             if (response == JOptionPane.YES_OPTION) {
-                if (saveAction.isEnabled()) {
-                    trySave (true);
-                }
-                if (saveAction.isEnabled()) {
-                    trySaveAs(false);
-                }
+                trySave(ProjectManager.getManager().getCurrentProject() != null
+                        && ProjectManager.getManager().getCurrentProject()
+                                .getURL() != null);
                 if (saveAction.isEnabled()) {
                     return;
                 }
@@ -1035,15 +1032,80 @@ public final class ProjectBrowser
     }
 
     /**
-     * Try to save the project.
+     * Try to save the project, possibly not creating a new file
      * @param overwrite if true, then we overwrite without asking
      * @return true if successful
      */
     public boolean trySave(boolean overwrite) {
-        URL url = ProjectManager.getManager().getCurrentProject().getURL();
-        return url != null && trySave(overwrite, new File(url.getFile()));
+        return this.trySave(overwrite, false);
     }
+    
+    
+    /**
+     * Try to save the project.
+     * @param overwrite if true, then we overwrite without asking
+     * @param saveNewFile if true, we'll ask for a new file even if
+     *                    the current project already had one  
+     * @return true if successful
+     */
+    public boolean trySave(boolean overwrite, boolean saveNewFile) {
+        URL url = ProjectManager.getManager().getCurrentProject().getURL();
 
+        File file = null;
+
+        // this method is invoked from several places, so we have to check
+        // whether if the project url is set or not
+        if (url != null && !saveNewFile) {
+            file = new File(url.getFile());
+
+            // does the file really exists?
+            if (!file.exists()) {
+                // project file doesn't exist. let's pop up a message dialog..
+                int response = JOptionPane.showConfirmDialog(
+                        this,
+                        Translator.localize(
+                                "optionpane.save-project-file-not-found"),
+                        Translator.localize(
+                                "optionpane.save-project-file-not-found-title"),
+                        JOptionPane.YES_NO_OPTION);
+
+                // ..and let's ask the user whether he wants to save the actual
+                // project into a new file or not
+                if (response == JOptionPane.YES_OPTION) {
+                    saveNewFile = true;
+                } else {
+                    // save action has been cancelled
+                    return false;
+                }
+            }
+        } else {
+            // Attempt to save this project under a new name.
+            saveNewFile = true;
+        }
+
+        // Prompt the user for the new name.
+        if (saveNewFile) {
+            file = getNewFile();
+
+            // if the user cancelled the operation,
+            // we don't have to save anything
+            if (file == null) {
+                return false;
+            }
+        }
+
+        // let's call the real save method
+        boolean success = trySave(overwrite, file);
+
+        // we have succesfully saved a new file: let's update the title bar
+        if (success && saveNewFile) {
+            titleHandler.buildTitle(ProjectManager.getManager()
+                    .getCurrentProject().getName(), null);
+        }
+        return success;
+    }
+    
+    
     /**
      * Try to save the project.
      * @param overwrite if true, then we overwrite without asking
@@ -1126,18 +1188,6 @@ public final class ProjectBrowser
                         file.getCanonicalPath());
 
             return true;
-        } catch (FileNotFoundException fnfe) {
-            String sMessage =
-                MessageFormat.format(Translator.localize(
-                    "optionpane.save-project-file-not-found"),
-                         new Object[] {fnfe.getMessage()});
-
-            JOptionPane.showMessageDialog(this, sMessage,
-                    Translator.localize(
-                    "optionpane.save-project-file-not-found-title"),
-                          JOptionPane.ERROR_MESSAGE);
-
-            LOG.error(sMessage, fnfe);
         } catch (Exception ex) {
             String sMessage =
                 MessageFormat.format(Translator.localize(
@@ -1201,12 +1251,9 @@ public final class ProjectBrowser
             }
             if (response == JOptionPane.YES_OPTION) {
 
-                if (saveAction.isEnabled()) {
-                    trySave(true);
-                }
-                if (saveAction.isEnabled()) {
-                    trySaveAs(false);
-                }
+                trySave(ProjectManager.getManager().getCurrentProject() != null
+                        && ProjectManager.getManager().getCurrentProject()
+                                .getURL() != null);
                 if (saveAction.isEnabled()) {
                     return false;
                 }
@@ -1511,29 +1558,6 @@ public final class ProjectBrowser
      */
     public Action getRemoveFromDiagramAction() {
         return removeFromDiagram;
-    }
-
-
-    /**
-     * Attempt to save this project under a new name.  Prompt the user for
-     * the new name.
-     *
-     * @param overwrite true to allow overwrite of an existing file
-     * @return true if operation succeeded
-     */
-    public boolean trySaveAs(boolean overwrite) {
-        File f = getNewFile();
-        if (f == null) {
-            return false;
-        }
-
-        boolean success = ProjectBrowser.getInstance().trySave(overwrite, f);
-        if (success) {
-            titleHandler.buildTitle(
-                    ProjectManager.getManager().getCurrentProject().getName(),
-                    null);
-        }
-        return success;
     }
 
     /**

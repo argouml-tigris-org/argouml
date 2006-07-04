@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
-import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -76,14 +75,10 @@ public class ActionSaveProject extends AbstractAction {
      */
     public void actionPerformed(ActionEvent e) {
         LOG.info("Performing save action");
-        URL url =
-            ProjectManager.getManager().getCurrentProject() != null
-            ? ProjectManager.getManager().getCurrentProject().getURL() : null;
-        if (url == null) {
-            ProjectBrowser.getInstance().trySaveAs(false);
-        } else {
-            ProjectBrowser.getInstance().trySave(true);
-        }
+        ProjectBrowser.getInstance().trySave(
+                ProjectManager.getManager().getCurrentProject() != null
+                        && ProjectManager.getManager().getCurrentProject()
+                                .getURL() != null);
     }
 
     /**
