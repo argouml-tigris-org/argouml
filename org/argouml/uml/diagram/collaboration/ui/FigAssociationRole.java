@@ -104,8 +104,8 @@ public class FigAssociationRole extends FigAssociation {
      * @see org.argouml.uml.diagram.ui.FigAssociation#updateListeners(
      * java.lang.Object)
      */
-    public void updateListeners(Object newOwner) {
-        super.updateListeners(newOwner);
+    public void updateListeners(Object oldOwner, Object newOwner) {
+        super.updateListeners(oldOwner, newOwner);
         if (newOwner != null) {
             /* Also listen to the base: */
             Object assoc = Model.getFacade().getBase(newOwner);

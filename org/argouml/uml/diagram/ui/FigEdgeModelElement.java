@@ -786,12 +786,13 @@ public abstract class FigEdgeModelElement
                     "The owner must be a model element - got a "
                     + newOwner.getClass().getName());
         }
-        updateListeners(newOwner);
+        Object oldOwner = getOwner();
         super.setOwner(newOwner);
         initNotationProviders(newOwner);
         if (newOwner != null) {
             renderingChanged();
         }
+        updateListeners(oldOwner, newOwner);
     }
 
     /**
@@ -829,8 +830,7 @@ public abstract class FigEdgeModelElement
      * 
      * @param newOwner the new owner for the listeners
      */
-    protected void updateListeners(Object newOwner) {
-        Object oldOwner = getOwner();
+    protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeElementListener(oldOwner);
         }
