@@ -145,7 +145,7 @@ public class FigEnumeration extends FigDataType
         if (mee instanceof AssociationChangeEvent 
                 || mee instanceof AttributeChangeEvent) {
             renderingChanged();
-            updateListeners(getOwner());
+            updateListeners(getOwner(), getOwner());
         }
     }
 

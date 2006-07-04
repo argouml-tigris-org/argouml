@@ -770,7 +770,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        super.updateListeners(newOwner);
+        super.updateListeners(oldOwner, newOwner);
         if (newOwner != null) {
             Iterator it = Model.getFacade().getBases(newOwner).iterator();
             while (it.hasNext()) {
@@ -817,7 +817,7 @@ public class FigClassifierRole extends FigNodeModelElement
             updateStereotypeText();
         } else if (mee.getPropertyName().equals("base")) {
             updateBaseNames();
-            updateListeners(getOwner());
+            updateListeners(getOwner(), getOwner());
             nameChanged = true;
         }
         if (nameChanged) {

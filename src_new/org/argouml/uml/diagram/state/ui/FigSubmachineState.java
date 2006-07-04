@@ -349,7 +349,7 @@ public class FigSubmachineState extends FigState {
                 }
                 // The Machine State has been deleted from model
                 if (mee.getPropertyName().equals("top")) {
-                    updateListeners(null);
+                    updateListeners(getOwner(), null);
                 }
             }
         }
@@ -359,7 +359,7 @@ public class FigSubmachineState extends FigState {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        super.updateListeners(newOwner);
+        super.updateListeners(oldOwner, newOwner);
         if (newOwner == getOwner()) {
             return;
         }
@@ -379,7 +379,7 @@ public class FigSubmachineState extends FigState {
     }
 
     private void updateListenersX(Object newOwner, Object oldV) {
-        this.updateListeners(newOwner);
+        this.updateListeners(getOwner(), newOwner);
         if (oldV != null) {
             removeElementListener(oldV);
         }

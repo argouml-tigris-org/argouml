@@ -269,7 +269,7 @@ public class FigStubState extends FigStateVertex {
                     removeElementListener(o);
                 }
                 stateMHelper.setReferenceState(getOwner(), null);
-                updateListeners(getOwner());
+                updateListeners(getOwner(), getOwner());
                 updateReferenceText();
             }
         } else {
@@ -350,7 +350,7 @@ public class FigStubState extends FigStateVertex {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        super.updateListeners(newOwner);
+        super.updateListeners(oldOwner, newOwner);
         if (newOwner == getOwner()) {
             return;
         }
@@ -446,6 +446,6 @@ public class FigStubState extends FigStateVertex {
                 container = facade.getContainer(container);
             }
         }
-        updateListeners(newOwner);
+        updateListeners(getOwner(), newOwner);
     }
 } /* end class FigStubState */

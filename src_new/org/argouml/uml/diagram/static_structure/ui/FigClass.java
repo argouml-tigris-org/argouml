@@ -539,7 +539,7 @@ public class FigClass extends FigClassifierBox
         if (mee instanceof AssociationChangeEvent 
                 || mee instanceof AttributeChangeEvent) {
             renderingChanged();
-            updateListeners(getOwner());
+            updateListeners(getOwner(), getOwner());
         }
     }
 
