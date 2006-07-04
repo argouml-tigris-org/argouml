@@ -142,8 +142,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
-    public void updateListeners(Object newOwner) {
-        Object oldOwner = getOwner();
+    public void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeAllElementListeners();
         }
@@ -236,7 +235,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         if (e instanceof AttributeChangeEvent
                 || e instanceof AssociationChangeEvent) {
             renderingChanged();
-            updateListeners(getOwner());
+            updateListeners(getOwner(), getOwner());
         }
     }
 

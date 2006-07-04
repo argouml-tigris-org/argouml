@@ -272,7 +272,7 @@ public class FigEdgeNote
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
-    protected void updateListeners(Object newOwner) {
+    protected void updateListeners(Object oldOwner, Object newOwner) {
     }
     
     /**
