@@ -32,6 +32,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.Designer;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.ocl.OCLExpander;
@@ -104,9 +105,12 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
 
         if (indent == null) {
             try {
+                Designer.disableCritiquing();
                 expander.expand(writer, member);
             } catch (ExpansionException e) {
                 throw new SaveException(e);
+            } finally {
+                Designer.enableCritiquing();
             }
         } else {
             try {
