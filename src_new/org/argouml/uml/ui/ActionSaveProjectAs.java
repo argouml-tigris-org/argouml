@@ -59,7 +59,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
      */
     public void actionPerformed(ActionEvent e) {
         LOG.info("Performing saveas action");
-        ProjectBrowser.getInstance().trySaveAs(false);
+        ProjectBrowser.getInstance().trySave(false, true);
     }
 
     /**
