@@ -91,7 +91,6 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                 association = oldFigAssociation.getOwner();
                 associationEnds =
                     Model.getFacade().getConnections(association);
-                oldFigAssociation.setOwner(null);
                 newFigNodeAssociation = placeTempNode(me);
                 underMouse = newFigNodeAssociation;
                 setSourceFigNode(newFigNodeAssociation);
@@ -159,7 +158,6 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                 GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
                 Layer lay = editor.getLayerManager().getActiveLayer();
                 mutableGraphModel.removeEdge(association);
-                destFig.setOwner(null);
                 destFig.removeFromDiagram();
                 mutableGraphModel.addNode(association);
                 FigNode figNode = (FigNode) lay.presentationFor(association);
