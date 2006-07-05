@@ -276,21 +276,6 @@ public class FigNodeAssociation extends FigNodeModelElement {
         firePropChange("bounds", oldBounds, getBounds());
         updateEdges();
     }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
-     * TODO: Why does this behaviour differ from standard? Please javadoc.
-     */
-    protected void removeFromDiagramImpl() {
-        Object owner = getOwner();
-        super.removeFromDiagramImpl();
-        Editor editor = Globals.curEditor();
-        GraphModel gm = editor.getGraphModel();
-        if (gm instanceof MutableGraphModel) {
-            MutableGraphModel mutableGraphModel = (MutableGraphModel) gm;
-            mutableGraphModel.removeEdge(owner);
-        }
-    }
 } /* end class FigNodeAssociation */
 
 
