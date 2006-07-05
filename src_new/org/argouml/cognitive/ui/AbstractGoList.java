@@ -59,12 +59,14 @@ public abstract class AbstractGoList implements TreeModel {
      * @see javax.swing.tree.TreeModel#getRoot()
      */
     public Object getRoot() {
-    throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     /**
      * @param r ignored
      */
-    public void setRoot(Object r) { }
+    public void setRoot(Object r) { 
+        // does nothing
+    }
 
 }
