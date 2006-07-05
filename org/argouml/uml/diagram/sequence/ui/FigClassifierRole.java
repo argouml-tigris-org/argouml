@@ -146,12 +146,16 @@ public class FigClassifierRole extends FigNodeModelElement
             new FigLifeLine(MIN_HEAD_WIDTH / 2 - WIDTH / 2, MIN_HEAD_HEIGHT);
         linkPositions.add(new MessageNode(this));
         for (int i = 0;
-                i <= lifeLineFig.getHeight() / SequenceDiagramLayer.LINK_DISTANCE;
+                i <= lifeLineFig.getHeight() 
+                            / SequenceDiagramLayer.LINK_DISTANCE;
                 i++) {
             linkPositions.add(new MessageNode(this));
         }
+        addFig(getBigPort());
         addFig(lifeLineFig);
         addFig(headFig);
+        addFig(getStereotypeFig());
+        addFig(getNameFig());
     }
 
     public FigClassifierRole(Object node, int x, int y, int w, int h) {
@@ -188,6 +192,7 @@ public class FigClassifierRole extends FigNodeModelElement
         String nameText =
             (classifierRoleName + ":" + baseNames).trim();
         getNameFig().setText(nameText);
+        calcBounds();
         damage();
     }
 
@@ -770,12 +775,18 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
+        removeAllElementListeners();
         super.updateListeners(oldOwner, newOwner);
         if (newOwner != null) {
             Iterator it = Model.getFacade().getBases(newOwner).iterator();
             while (it.hasNext()) {
                 Object base = it.next();
                 addElementListener(base, "name");
+            }
+            it = Model.getFacade().getStereotypes(newOwner).iterator();
+            while (it.hasNext()) {
+                Object stereo = it.next();
+                addElementListener(stereo, "name");
             }
         }
     }
@@ -805,23 +816,23 @@ public class FigClassifierRole extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
-        boolean nameChanged = false;
         if (mee.getPropertyName().equals("name")) {
             if (mee.getSource() == getOwner()) {
             	updateClassifierRoleName();
+            } else if (Model.getFacade().isAStereotype(mee.getSource())) {
+                updateStereotypeText();
             } else {
             	updateBaseNames();
             }
-            nameChanged = true;
+            renderingChanged();
         } else if (mee.getPropertyName().equals("stereotype")) {
             updateStereotypeText();
+            updateListeners(getOwner(), getOwner());
+            renderingChanged();
         } else if (mee.getPropertyName().equals("base")) {
             updateBaseNames();
             updateListeners(getOwner(), getOwner());
-            nameChanged = true;
-        }
-        if (nameChanged) {
-            updateNameText();
+            renderingChanged();
         }
     }
 
