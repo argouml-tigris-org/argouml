@@ -151,11 +151,14 @@ public class FigClassifierRole extends FigNodeModelElement
                 i++) {
             linkPositions.add(new MessageNode(this));
         }
-        addFig(getBigPort());
+        
+        // TODO: Why does this give loading problems?
+//        addFig(getBigPort());
         addFig(lifeLineFig);
         addFig(headFig);
-        addFig(getStereotypeFig());
-        addFig(getNameFig());
+        // TODO: Why does this give loading problems?
+//        addFig(getStereotypeFig());
+//        addFig(getNameFig());
     }
 
     public FigClassifierRole(Object node, int x, int y, int w, int h) {
