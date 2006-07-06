@@ -1118,6 +1118,17 @@ public final class ProjectBrowser
         PersistenceManager pm = PersistenceManager.getInstance();
 
         try {
+            if (file != null && !file.canWrite()) {
+                JOptionPane.showMessageDialog(this, 
+                        Translator.localize(
+                                "optionpane.save-project-cant-write"),
+                        Translator.localize(
+                                "optionpane.save-project-cant-write-title"),
+                              JOptionPane.INFORMATION_MESSAGE);
+                
+                return false;
+            }
+            
             if (!PersistenceManager.getInstance()
                     .confirmOverwrite(overwrite, file)) {
                 return false;
