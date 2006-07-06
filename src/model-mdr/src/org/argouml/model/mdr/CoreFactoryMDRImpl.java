@@ -1705,8 +1705,10 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             }
         }
 
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getFacade().getBehaviors(elem));
+        /* Do not delete behaviors here! 
+         * The behavior-context relation in the UML model 
+         * is an aggregate, not composition. See issue 4281. */
+
         nsmodel.getUmlHelper().deleteCollection(
                 corePackage
                         .getAModelElementTemplateArgument()

@@ -28,7 +28,6 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
-import java.util.Collection;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -118,7 +117,7 @@ public class ActionDeleteModelElements extends UndoableAction {
                     }
                     if (Model.getFacade().isAConcurrentRegion(target)) {
                         new ActionDeleteConcurrentRegion()
-                        .actionPerformed(ae);
+                            .actionPerformed(ae);
                     } else {
                         p.moveToTrash(target);
                     }
@@ -150,13 +149,13 @@ public class ActionDeleteModelElements extends UndoableAction {
                 // he/she is sure
                 String confirmStr =
                     MessageFormat.format(Translator.localize(
-                "optionpane.remove-from-model-confirm-delete"),
-                     new Object[] {
-                         diagram.getName(), "",
-                     });
-        String text =
-            Translator.localize(
-            "optionpane.remove-from-model-confirm-delete-title");
+                        "optionpane.remove-from-model-confirm-delete"),
+                        new Object[] {
+                            diagram.getName(), "",
+                        });
+                String text =
+                    Translator.localize(
+                        "optionpane.remove-from-model-confirm-delete-title");
                 int response =
                     JOptionPane.showConfirmDialog(ProjectBrowser.getInstance(),
                           confirmStr,
@@ -184,7 +183,6 @@ public class ActionDeleteModelElements extends UndoableAction {
      * An utility method that asks the user if he is sure to remove a selected
      * model element.
      *
-     * @see ActionBaseDelete#sureRemove(Object)
      * @param me the modelelement that may be removed
      * @return boolean
      */
@@ -197,19 +195,17 @@ public class ActionDeleteModelElements extends UndoableAction {
         boolean doAsk = false;
         String confirmStr = "";
         if (count > 1) {
-            confirmStr +=
-        Translator.localize(
-            "optionpane.remove-from-model-will-remove-from-diagrams");
+            confirmStr += Translator.localize(
+                "optionpane.remove-from-model-will-remove-from-diagrams");
             doAsk = true;
         }
 
-        Collection beh = Model.getFacade().getBehaviors(me);
-        if (beh != null && beh.size() > 0) {
+        /* TODO: If a namespace with sub-classdiagrams is deleted, then { 
             confirmStr +=
-        Translator.localize(
-            "optionpane.remove-from-model-will-remove-subdiagram");
+                Translator.localize(
+                    "optionpane.remove-from-model-will-remove-subdiagram");
             doAsk = true;
-        }
+        }*/
 
         if (!doAsk) {
             return true;
@@ -217,25 +213,23 @@ public class ActionDeleteModelElements extends UndoableAction {
 
         String name = Model.getFacade().getName(me);
         if (name == null || name.equals("")) {
-            name =
-        Translator.localize(
-            "optionpane.remove-from-model-anon-element-name");
+            name = Translator.localize(
+                "optionpane.remove-from-model-anon-element-name");
         }
 
         confirmStr =
-            MessageFormat.format(
-                    Translator.localize(
+            MessageFormat.format(Translator.localize(
                 "optionpane.remove-from-model-confirm-delete"),
-            new Object[] {
-            name, confirmStr,
-            });
+                new Object[] {
+                    name, confirmStr,
+                });
         int response =
             JOptionPane.showConfirmDialog(
-            pb,
-            confirmStr,
-            Translator.localize(
-            "optionpane.remove-from-model-confirm-delete-title"),
-            JOptionPane.YES_NO_OPTION);
+                    pb,
+                    confirmStr,
+                    Translator.localize(
+                    "optionpane.remove-from-model-confirm-delete-title"),
+                    JOptionPane.YES_NO_OPTION);
 
         return (response == JOptionPane.YES_OPTION);
     }
