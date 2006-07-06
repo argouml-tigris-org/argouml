@@ -315,6 +315,9 @@ public final class ProjectManager implements MementoCreationObserver {
      * @see org.argouml.model.MementoCreationObserver#mementoCreated(org.argouml.model.ModelMemento)
      */
     public void mementoCreated(final ModelMemento memento) {
+        if (saveAction != null) {
+            saveAction.setEnabled(true);
+        }
         Memento wrappedMemento = new Memento() {
             private ModelMemento modelMemento = memento;
             public void undo() {
