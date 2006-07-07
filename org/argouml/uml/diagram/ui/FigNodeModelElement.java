@@ -1474,6 +1474,17 @@ public abstract class FigNodeModelElement
     }
 
     /**
+     * @deprecated do not use. Delete as soon as its single reference is gone.
+     * @param size
+     */
+    protected void setShadowSizeFriend(int size) {
+        if (size == shadowSize) {
+            return;
+        }
+        shadowSize = size;
+    }
+
+    /**
      * @return the current shadow size
      */
     public int getShadowSize() {

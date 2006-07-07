@@ -166,11 +166,27 @@ public class ShadowComboBox extends JComboBox {
         public void setName(String text) {
             getNameFig().setText(text);
         }
+        
+        /**
+         * TODO: Bob says - This is a really nasty horrible hack.
+         * ShadowFig should not extend FigNodeModelElement. Instead
+         * we require a base class FigNode with common behaviour of ALL
+         * nodes in ArgoUML. ShadowFig should extend that and
+         * FigNodeModelElement should extend that same base class adding
+         * common functionality for FigNode that represent model element.
+         * @see org.argouml.uml.diagram.ui.FigNodeModelElement#setShadowSize(int)
+         */
+        public void setShadowSize(int size) {
+            super.setShadowSizeFriend(size);
+        }
+        
 
         /**
          * The UID.
          */
         private static final long serialVersionUID = 4999132551417131227L;
+
+
     }
 
     /**
