@@ -1105,6 +1105,21 @@ public final class ProjectBrowser
         return success;
     }
     
+    /**
+     * Checks if the given file is writable or read-only
+     * @param file the file to be checked
+     * @return true if the given file is read-only
+     */
+    private boolean isFileReadonly(File file) {
+        try {
+            return (file == null) 
+                || (file.exists() && !file.canWrite()) 
+                || (!file.exists() && !file.createNewFile());
+        
+        } catch (IOException ioExc) {
+            return true;
+        }
+    }
     
     /**
      * Try to save the project.
@@ -1118,7 +1133,12 @@ public final class ProjectBrowser
         PersistenceManager pm = PersistenceManager.getInstance();
 
         try {
-            if (file != null && !file.canWrite()) {
+            if (!PersistenceManager.getInstance()
+                    .confirmOverwrite(overwrite, file)) {
+                return false;
+            }
+
+            if (this.isFileReadonly(file)) {
                 JOptionPane.showMessageDialog(this, 
                         Translator.localize(
                                 "optionpane.save-project-cant-write"),
@@ -1126,11 +1146,6 @@ public final class ProjectBrowser
                                 "optionpane.save-project-cant-write-title"),
                               JOptionPane.INFORMATION_MESSAGE);
                 
-                return false;
-            }
-            
-            if (!PersistenceManager.getInstance()
-                    .confirmOverwrite(overwrite, file)) {
                 return false;
             }
 
