@@ -85,6 +85,7 @@ public class TodoParser extends SAXParserBase {
      * Creates a new TodoParser.
      */
     public TodoParser() {
+        // Empty constructor
     }
 
 
@@ -413,6 +414,7 @@ public class TodoParser extends SAXParserBase {
                         try {
                             sb.append((char) Integer.parseInt(ent));
                         } catch (NumberFormatException nfe) {
+                            // Ignore any parse exceptions
                         }
                     }
                 }
