@@ -582,6 +582,9 @@ public class FigClass extends FigClassifierBox
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
+        if (encloser == getEncloser()) {
+            return;
+        }
         if (encloser == null
                 || (encloser != null
                 && !Model.getFacade().isAInstance(encloser.getOwner()))) {
@@ -592,10 +595,10 @@ public class FigClass extends FigClassifierBox
         }
         if (encloser != null
                 && (Model.getFacade().isAComponent(encloser.getOwner()))) {
-            Object component = /*(MComponent)*/ encloser.getOwner();
-            Object in = /*(MInterface)*/ getOwner();
+            Object component = encloser.getOwner();
+            Object anInterface = getOwner();
             Model.getCoreHelper().setContainer(resident, component);
-            Model.getCoreHelper().setResident(resident, in);
+            Model.getCoreHelper().setResident(resident, anInterface);
         } else {
             Model.getCoreHelper().setContainer(resident, null);
             Model.getCoreHelper().setResident(resident, null);
