@@ -24,6 +24,9 @@
 
 package org.argouml.model;
 
+import java.util.Collection;
+import java.util.List;
+
 
 /**
  * This Decorator is responsible for generating mementos for any
@@ -260,28 +263,32 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setKindToIn(java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setKindToIn(
+     * java.lang.Object)
      */
     public void setKindToIn(Object handle) {
         setKind(handle, Model.getDirectionKind().getInParameter());
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setKindToInOut(java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setKindToInOut(
+     * java.lang.Object)
      */
     public void setKindToInOut(Object handle) {
         setKind(handle, Model.getDirectionKind().getInOutParameter());
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setKindToOut(java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setKindToOut(
+     * java.lang.Object)
      */
     public void setKindToOut(Object handle) {
         setKind(handle, Model.getDirectionKind().getOutParameter());
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setKindToReturn(java.lang.Object)
+     * @see org.argouml.model.CoreHelper#setKindToReturn(
+     * java.lang.Object)
      */
     public void setKindToReturn(Object handle) {
         setKind(handle, Model.getDirectionKind().getReturnParameter());
@@ -437,5 +444,558 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
             }
         }, visibility, Model.getFacade().getVisibility(handle));
     }
-}
 
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addAllStereotypes(java.lang.Object, java.util.Collection)
+     */
+    public void addAllStereotypes(Object modelElement, Collection stereotypes) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addAnnotatedElement(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addAnnotatedElement(Object comment, Object annotatedElement) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addClient(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addClient(Object handle, Object element) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addClientDependency(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addClientDependency(Object handle, Object dependency) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addComment(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addComment(Object element, Object comment) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addConnection(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addConnection(Object handle, Object connection) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addConstraint(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addConstraint(Object handle, Object mc) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addDeploymentLocation(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addDeploymentLocation(Object handle, Object node) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addElementResidence(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addElementResidence(Object handle, Object residence) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addFeature(
+     * java.lang.Object, int, java.lang.Object)
+     */
+    public void addFeature(Object handle, int index, Object f) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addFeature(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addFeature(Object handle, Object f) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addLink(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addLink(Object handle, Object link) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addMethod(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addMethod(Object handle, Object m) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addOwnedElement(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addOwnedElement(Object handle, Object me) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addParameter(
+     * java.lang.Object, int, java.lang.Object)
+     */
+    public void addParameter(Object handle, int index, Object parameter) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addParameter(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addParameter(Object handle, Object parameter) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addRaisedSignal(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addRaisedSignal(Object handle, Object sig) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addSourceFlow(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addSourceFlow(Object handle, Object flow) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addStereotype(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addStereotype(Object modelElement, Object stereotype) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addSupplier(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addSupplier(Object handle, Object element) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addSupplierDependency(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addSupplierDependency(Object supplier, Object dependency) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addTaggedValue(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addTaggedValue(Object handle, Object taggedValue) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addTargetFlow(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void addTargetFlow(Object handle, Object flow) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#clearStereotypes(
+     * java.lang.Object)
+     */
+    public void clearStereotypes(Object modelElement) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeAnnotatedElement(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeAnnotatedElement(Object handle, Object me) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeClientDependency(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeClientDependency(Object handle, Object dep) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeConnection(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeConnection(Object handle, Object connection) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeConstraint(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeConstraint(Object handle, Object cons) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeDeploymentLocation(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeDeploymentLocation(Object handle, Object node) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeElementResidence(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeElementResidence(Object handle, Object residence) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeFeature(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeFeature(Object cls, Object feature) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeOwnedElement(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeOwnedElement(Object handle, Object value) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeParameter(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeParameter(Object handle, Object parameter) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeSourceFlow(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeSourceFlow(Object handle, Object flow) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeStereotype(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeStereotype(Object modelElement, Object stereotype) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeSupplierDependency(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeSupplierDependency(Object supplier, Object dependency) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeTaggedValue(
+     * java.lang.Object, java.lang.String)
+     */
+    public void removeTaggedValue(Object handle, String name) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeTargetFlow(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeTargetFlow(Object handle, Object flow) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setAnnotatedElements(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setAnnotatedElements(Object handle, Collection elems) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setAssociation(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setAssociation(Object handle, Object association) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setAttributes(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setAttributes(Object classifier, Collection attributes) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setBody(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setBody(Object handle, Object expr) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setChild(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setChild(Object handle, Object child) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setConnections(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setConnections(Object handle, Collection elems) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setContainer(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setContainer(Object handle, Object component) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setDefaultValue(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setDefaultValue(Object handle, Object expr) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setDiscriminator(
+     * java.lang.Object, java.lang.String)
+     */
+    public void setDiscriminator(Object handle, String discriminator) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see 
+     * org.argouml.model.AbstractCoreHelperDecorator#setEnumerationLiterals(
+     * java.lang.Object, java.util.List)
+     */
+    public void setEnumerationLiterals(Object enumeration, List literals) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setFeature(
+     * java.lang.Object, int, java.lang.Object)
+     */
+    public void setFeature(Object elem, int i, Object feature) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setFeatures(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setFeatures(Object handle, Collection features) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see 
+     * org.argouml.model.AbstractCoreHelperDecorator#setImplementationLocation(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setImplementationLocation(Object handle, Object component) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setInitialValue(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setInitialValue(Object at, Object expr) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see
+     * org.argouml.model.AbstractCoreHelperDecorator#setModelElementContainer(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setModelElementContainer(Object handle, Object container) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setNamespace(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setNamespace(Object handle, Object ns) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setOperations(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setOperations(Object classifier, Collection operations) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setOwner(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setOwner(Object handle, Object owner) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setOwnerScope(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setOwnerScope(Object handle, Object os) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setParameters(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setParameters(Object handle, Collection parameters) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setParent(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setParent(Object handle, Object parent) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setQualifiers(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setQualifiers(Object handle, Collection elems) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setRaisedSignals(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setRaisedSignals(Object handle, Collection raisedSignals) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setResident(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setResident(Object handle, Object resident) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setResidents(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setResidents(Object handle, Collection residents) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setSources(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setSources(Object handle, Collection specifications) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setSpecifications(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setSpecifications(Object handle, Collection specifications) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setTaggedValue(
+     * java.lang.Object, java.lang.String, java.lang.String)
+     */
+    public void setTaggedValue(Object handle, String tag, String value) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setTaggedValues(
+     * java.lang.Object, java.util.Collection)
+     */
+    public void setTaggedValues(Object handle, Collection taggedValues) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setType(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void setType(Object handle, Object type) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#setUUID(
+     * java.lang.Object, java.lang.String)
+     */
+    public void setUUID(Object handle, String uuid) {
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+}
