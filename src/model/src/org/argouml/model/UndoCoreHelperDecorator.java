@@ -548,7 +548,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addLink(Object handle, Object link) {
-        super.addFeature(handle, link);
+        super.addLink(handle, link);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -965,7 +965,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setParameters(Object handle, Collection parameters) {
-        super.setBody(handle, parameters);
+        super.setParameters(handle, parameters);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
