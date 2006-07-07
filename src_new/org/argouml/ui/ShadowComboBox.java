@@ -149,6 +149,10 @@ public class ShadowComboBox extends JComboBox {
         private static final long serialVersionUID = 5939340501470674464L;
     }
 
+    /**
+     * This Fig is never placed on a diagram. It is only used by the call
+     * renderer so that pick list items look like diagram Figs.
+     */
     private static class ShadowFig extends FigNodeModelElement {
         /**
          * Constructor.
