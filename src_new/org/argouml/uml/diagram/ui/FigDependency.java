@@ -126,7 +126,7 @@ public class FigDependency extends FigEdgeModelElement {
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
-    public void renderingChanged() {
+    protected void renderingChanged() {
         updateStereotypeText();
         super.renderingChanged();
         middleGroup.calcBounds();

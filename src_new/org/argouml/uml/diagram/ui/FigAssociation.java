@@ -361,7 +361,7 @@ public class FigAssociation extends FigEdgeModelElement {
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
-    public void renderingChanged() {
+    protected void renderingChanged() {
         Object association = getOwner();
         if (association == null) {
             return;
@@ -377,7 +377,6 @@ public class FigAssociation extends FigEdgeModelElement {
         destGroup.calcBounds();
         middleGroup.calcBounds();
         super.renderingChanged(); // last, since it calls damage()
-        computeRoute(); //very last, since otherwise exception :-(
     }
 
     /**

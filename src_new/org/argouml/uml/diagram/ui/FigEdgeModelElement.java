@@ -698,10 +698,11 @@ public abstract class FigEdgeModelElement
      * 
      * NOTE: If you override this method you probably also want to 
      * override the modelChanged() method
+     * TODO: Call this method something sensible. What it does rather than
+     * one example of when it is called. Its purpose seems to be to update
+     * everything if anything has changed. Not very efficient.
      */
-    public void renderingChanged() {
-        // updateAnnotationPositions();
-        updateClassifiers();
+    protected void renderingChanged() {
         updateNameText();
         updateStereotypeText();
         damage();
@@ -789,9 +790,7 @@ public abstract class FigEdgeModelElement
         Object oldOwner = getOwner();
         super.setOwner(newOwner);
         initNotationProviders(newOwner);
-        if (newOwner != null) {
-            renderingChanged();
-        }
+        renderingChanged();
         updateListeners(oldOwner, newOwner);
     }
 
