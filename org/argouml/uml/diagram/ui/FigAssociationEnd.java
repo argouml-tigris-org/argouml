@@ -238,7 +238,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
-    public void renderingChanged() {
+    protected void renderingChanged() {
         updateEnd(srcMult, srcOrdering);
         if (notationProviderSrcRole != null) {
             srcRole.setText(notationProviderSrcRole.toString());

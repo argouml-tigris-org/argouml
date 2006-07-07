@@ -220,7 +220,7 @@ public class FigExtend extends FigEdgeModelElement {
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
-    public void renderingChanged() {
+    protected void renderingChanged() {
         if (getOwner() != null) {
             updateConditionText();
             updateLabel();
