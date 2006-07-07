@@ -449,6 +449,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * @see org.argouml.model.AbstractCoreHelperDecorator#addAllStereotypes(java.lang.Object, java.util.Collection)
      */
     public void addAllStereotypes(Object modelElement, Collection stereotypes) {
+        super.addAllStereotypes(modelElement, stereotypes);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -457,6 +458,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addAnnotatedElement(Object comment, Object annotatedElement) {
+        super.addAnnotatedElement(comment, annotatedElement);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -465,6 +467,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addClient(Object handle, Object element) {
+        super.addClient(handle, element);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -473,6 +476,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addClientDependency(Object handle, Object dependency) {
+        super.addClientDependency(handle, dependency);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -481,6 +485,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addComment(Object element, Object comment) {
+        super.addComment(element, comment);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -489,6 +494,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addConnection(Object handle, Object connection) {
+        super.addConnection(handle, connection);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -497,6 +503,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addConstraint(Object handle, Object mc) {
+        super.addConstraint(handle, mc);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -505,6 +512,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addDeploymentLocation(Object handle, Object node) {
+        super.addDeploymentLocation(handle, node);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -513,6 +521,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addElementResidence(Object handle, Object residence) {
+        super.addElementResidence(handle, residence);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -521,6 +530,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, int, java.lang.Object)
      */
     public void addFeature(Object handle, int index, Object f) {
+        super.addFeature(handle, index, f);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -529,6 +539,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addFeature(Object handle, Object f) {
+        super.addFeature(handle, f);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -537,6 +548,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addLink(Object handle, Object link) {
+        super.addFeature(handle, link);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -545,6 +557,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addMethod(Object handle, Object m) {
+        super.addMethod(handle, m);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -553,6 +566,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addOwnedElement(Object handle, Object me) {
+        super.addOwnedElement(handle, me);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -561,6 +575,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, int, java.lang.Object)
      */
     public void addParameter(Object handle, int index, Object parameter) {
+        super.addParameter(handle, index, parameter);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -569,6 +584,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addParameter(Object handle, Object parameter) {
+        super.addParameter(handle, parameter);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -577,6 +593,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addRaisedSignal(Object handle, Object sig) {
+        super.addRaisedSignal(handle, sig);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -585,6 +602,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addSourceFlow(Object handle, Object flow) {
+        super.addSourceFlow(handle, flow);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -593,6 +611,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addStereotype(Object modelElement, Object stereotype) {
+        super.addStereotype(modelElement, stereotype);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -601,6 +620,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addSupplier(Object handle, Object element) {
+        super.addSupplier(handle, element);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -609,6 +629,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addSupplierDependency(Object supplier, Object dependency) {
+        super.addSupplierDependency(supplier, dependency);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -617,6 +638,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addTaggedValue(Object handle, Object taggedValue) {
+        super.addTaggedValue(handle, taggedValue);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -625,6 +647,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void addTargetFlow(Object handle, Object flow) {
+        super.addTargetFlow(handle, flow);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -633,6 +656,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object)
      */
     public void clearStereotypes(Object modelElement) {
+        super.clearStereotypes(modelElement);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -641,6 +665,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeAnnotatedElement(Object handle, Object me) {
+        super.removeAnnotatedElement(handle, me);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -649,6 +674,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeClientDependency(Object handle, Object dep) {
+        super.removeClientDependency(handle, dep);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -657,6 +683,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeConnection(Object handle, Object connection) {
+        super.removeConnection(handle, connection);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -665,6 +692,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeConstraint(Object handle, Object cons) {
+        super.removeConstraint(handle, cons);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -673,6 +701,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeDeploymentLocation(Object handle, Object node) {
+        super.removeDeploymentLocation(handle, node);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -681,6 +710,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeElementResidence(Object handle, Object residence) {
+        super.removeElementResidence(handle, residence);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -689,6 +719,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeFeature(Object cls, Object feature) {
+        super.removeFeature(cls, feature);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -697,6 +728,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeOwnedElement(Object handle, Object value) {
+        super.removeOwnedElement(handle, value);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -705,6 +737,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeParameter(Object handle, Object parameter) {
+        super.removeParameter(handle, parameter);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -713,6 +746,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeSourceFlow(Object handle, Object flow) {
+        super.removeSourceFlow(handle, flow);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -721,6 +755,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeStereotype(Object modelElement, Object stereotype) {
+        super.removeStereotype(modelElement, stereotype);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -729,6 +764,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeSupplierDependency(Object supplier, Object dependency) {
+        super.removeSupplierDependency(supplier, dependency);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -737,6 +773,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.String)
      */
     public void removeTaggedValue(Object handle, String name) {
+        super.removeTaggedValue(handle, name);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -745,6 +782,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void removeTargetFlow(Object handle, Object flow) {
+        super.removeTargetFlow(handle, flow);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -753,6 +791,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setAnnotatedElements(Object handle, Collection elems) {
+        super.setAnnotatedElements(handle, elems);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -761,6 +800,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setAssociation(Object handle, Object association) {
+        super.setAssociation(handle, association);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -769,6 +809,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setAttributes(Object classifier, Collection attributes) {
+        super.setAttributes(classifier, attributes);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -777,6 +818,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setBody(Object handle, Object expr) {
+        super.setBody(handle, expr);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -785,6 +827,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setChild(Object handle, Object child) {
+        super.setChild(handle, child);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -793,6 +836,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setConnections(Object handle, Collection elems) {
+        super.setConnections(handle, elems);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -801,6 +845,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setContainer(Object handle, Object component) {
+        super.setContainer(handle, component);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -809,6 +854,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setDefaultValue(Object handle, Object expr) {
+        super.setDefaultValue(handle, expr);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -817,6 +863,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.String)
      */
     public void setDiscriminator(Object handle, String discriminator) {
+        super.setDiscriminator(handle, discriminator);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -826,6 +873,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.List)
      */
     public void setEnumerationLiterals(Object enumeration, List literals) {
+        super.setEnumerationLiterals(enumeration, literals);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -834,6 +882,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, int, java.lang.Object)
      */
     public void setFeature(Object elem, int i, Object feature) {
+        super.setFeature(elem, i, feature);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -842,6 +891,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setFeatures(Object handle, Collection features) {
+        super.setFeatures(handle, features);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -851,6 +901,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setImplementationLocation(Object handle, Object component) {
+        super.setImplementationLocation(handle, component);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -859,6 +910,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setInitialValue(Object at, Object expr) {
+        super.setInitialValue(at, expr);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -868,6 +920,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setModelElementContainer(Object handle, Object container) {
+        super.setModelElementContainer(handle, container);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -876,6 +929,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setNamespace(Object handle, Object ns) {
+        super.setNamespace(handle, ns);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -884,6 +938,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setOperations(Object classifier, Collection operations) {
+        super.setOperations(classifier, operations);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -892,6 +947,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setOwner(Object handle, Object owner) {
+        super.setOwner(handle, owner);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -900,6 +956,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setOwnerScope(Object handle, Object os) {
+        super.setOwnerScope(handle, os);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -908,6 +965,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setParameters(Object handle, Collection parameters) {
+        super.setBody(handle, parameters);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -916,6 +974,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setParent(Object handle, Object parent) {
+        super.setParent(handle, parent);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -924,6 +983,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setQualifiers(Object handle, Collection elems) {
+        super.setQualifiers(handle, elems);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -932,6 +992,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setRaisedSignals(Object handle, Collection raisedSignals) {
+        super.setRaisedSignals(handle, raisedSignals);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -940,6 +1001,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setResident(Object handle, Object resident) {
+        super.setResident(handle, resident);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -948,6 +1010,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setResidents(Object handle, Collection residents) {
+        super.setResidents(handle, residents);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -956,6 +1019,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setSources(Object handle, Collection specifications) {
+        super.setSources(handle, specifications);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -964,6 +1028,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setSpecifications(Object handle, Collection specifications) {
+        super.setSpecifications(handle, specifications);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -972,6 +1037,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.String, java.lang.String)
      */
     public void setTaggedValue(Object handle, String tag, String value) {
+        super.setTaggedValue(handle, tag, value);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -980,6 +1046,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.util.Collection)
      */
     public void setTaggedValues(Object handle, Collection taggedValues) {
+        super.setTaggedValues(handle, taggedValues);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -988,6 +1055,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.Object)
      */
     public void setType(Object handle, Object type) {
+        super.setType(handle, type);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -996,6 +1064,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * java.lang.Object, java.lang.String)
      */
     public void setUUID(Object handle, String uuid) {
+        super.setUUID(handle, uuid);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 }
