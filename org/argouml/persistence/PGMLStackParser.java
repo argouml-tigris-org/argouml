@@ -265,6 +265,11 @@ public class PGMLStackParser
         
         // Loop through all edges previously read. Set their owners
         // and attach them to nodes.
+        // TODO: We need 3 iterations of the following.
+        // Loop round first doing this for everything except
+        // FigEdgeAssociationClass and FigEdgeNote.
+        // Loop round 2nd time for FigEdgeAssociationClass only
+        // Finally loop for FigEdgeNote only.
         Iterator it = figEdges.iterator();
         while (it.hasNext()) {
             EdgeData edgeData = (EdgeData) it.next();
