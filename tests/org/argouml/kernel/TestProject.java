@@ -360,10 +360,14 @@ public class TestProject extends TestCase {
         Model.getPump().flushModelEvents();
 
         assertTrue("Operation not in trash", p.isInTrash(oper));
-        assertTrue("Statemachine not in trash",
-                Model.getUmlFactory().isRemoved(machine));
-        assertEquals(sizeDiagrams, p.getDiagrams().size());
-        assertEquals(sizeMembers, p.getMembers().size());
+        /* Changed by issue 4281: */
+        assertTrue("Statemachine in trash",
+                !Model.getUmlFactory().isRemoved(machine));
+        assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
+        assertEquals(sizeMembers + 1, p.getMembers().size());
+        /* After issue 4284 will be solved, we
+         * may even delete the class, and the diagram
+         * should still exist. */
     }
 
 
