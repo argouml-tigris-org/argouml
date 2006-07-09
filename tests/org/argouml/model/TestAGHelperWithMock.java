@@ -57,6 +57,8 @@ public class TestAGHelperWithMock extends TestCase {
 
         mockModelImplementation = MockModelImplementation.getLatest();
 
+        assertNotNull("MockModelImplementation not created", mockModelImplementation);
+
         // Must be called after setImplementation.
         mockModelImplementation.reset();
     }
