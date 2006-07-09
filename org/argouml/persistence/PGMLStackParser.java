@@ -34,8 +34,10 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer;
+import org.argouml.uml.diagram.ui.FigEdgeAssociationClass;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigEdgePort;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
@@ -51,6 +53,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.util.Predicate;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -263,54 +266,78 @@ public class PGMLStackParser
         throws SAXException {
         Diagram d = super.readDiagram(is, closeStream);
         
-        // Loop through all edges previously read. Set their owners
-        // and attach them to nodes.
-        // TODO: We need 3 iterations of the following.
-        // Loop round first doing this for everything except
-        // FigEdgeAssociationClass and FigEdgeNote.
-        // Loop round 2nd time for FigEdgeAssociationClass only
-        // Finally loop for FigEdgeNote only.
+        for (int pass = 0; pass < 3; ++pass) {
+            attachEdges(pass);
+        }
+        
+        return d;
+    }
+    
+    /**
+     * This is called three times with the pass number incrementing
+     * First attaching all edges except FigEdgeAssociationClass and
+     * FigEdgeNote.
+     * Second for FigEdgeAssociationClass only and lastly for FigEdgeNote
+     * only.
+     * TODO: This was hacked up rather hurredly to fix a bug.
+     * A better implementation would be to pass through testing each
+     * edge to see if it is possible to attach and only attaching if so.
+     * The method should be called iteratively until all have been attached.
+     * If an iteration results in no attachments then an error has occured.
+     */
+    private void attachEdges(int pass) throws SAXException {
         Iterator it = figEdges.iterator();
         while (it.hasNext()) {
             EdgeData edgeData = (EdgeData) it.next();
             FigEdge edge = edgeData.getEdge();
             
-            Object modelElement = modelElementsByFigEdge.get(edge);
-            if (modelElement != null) {
-                edge.setOwner(modelElement);
+            boolean process = false;
+            if (pass == 0 && 
+                    !(edge instanceof FigEdgeAssociationClass) && 
+                    !(edge instanceof FigEdgeNote)) {
+                process = true;
+            } else if (pass == 1 && edge instanceof FigEdgeAssociationClass) {
+                process = true;
+            } else if (pass == 2 && edge instanceof FigEdgeNote) {
+                process = true;
             }
             
-            Fig spf = null;
-            Fig dpf = null;
-            FigNode sfn = null;
-            FigNode dfn = null;
-            
-            spf = findFig(edgeData.getSourcePortFig());
-            dpf = findFig(edgeData.getDestPortFig());
-            sfn = getFigNode(edgeData.getSourceFigNode());
-            dfn = getFigNode(edgeData.getDestFigNode());
-            
-            if (spf == null && sfn != null) {
-                spf = getPortFig(sfn);
-            }
+            if (process) {
+                Object modelElement = modelElementsByFigEdge.get(edge);
+                if (modelElement != null) {
+                    edge.setOwner(modelElement);
+                }
+                
+                Fig spf = null;
+                Fig dpf = null;
+                FigNode sfn = null;
+                FigNode dfn = null;
+                
+                spf = findFig(edgeData.getSourcePortFig());
+                dpf = findFig(edgeData.getDestPortFig());
+                sfn = getFigNode(edgeData.getSourceFigNode());
+                dfn = getFigNode(edgeData.getDestFigNode());
+                
+                if (spf == null && sfn != null) {
+                    spf = getPortFig(sfn);
+                }
 
-            if (dpf == null && dfn != null) {
-                dpf = getPortFig(dfn);
-            }
+                if (dpf == null && dfn != null) {
+                    dpf = getPortFig(dfn);
+                }
 
-            if (spf == null || dpf == null || sfn == null || dfn == null) {
-                throw new SAXException("Can't find nodes for FigEdge: "
-                        + edge.getId() + ":"
-                        + edge.toString());
-            } else {
-                edge.setSourcePortFig(spf);
-                edge.setDestPortFig(dpf);
-                edge.setSourceFigNode(sfn);
-                edge.setDestFigNode(dfn);
+                if (spf == null || dpf == null || sfn == null || dfn == null) {
+                    throw new SAXException("Can't find nodes for FigEdge: "
+                            + edge.getId() + ":"
+                            + edge.toString());
+                } else {
+                    edge.setSourcePortFig(spf);
+                    edge.setDestPortFig(dpf);
+                    edge.setSourceFigNode(sfn);
+                    edge.setDestFigNode(dfn);
+                }
             }
         }
-        
-        return d;
     }
     
     // TODO: Move to GEF
