@@ -51,14 +51,18 @@ public class NotationUtilityJava {
         if (Model.getFacade().isAFeature(o)) {
             Object tv = Model.getFacade().getTaggedValue(o, "src_visibility");
             if (tv != null) {
-                String tagged = (String) Model.getFacade().getValue(tv);
-                if (tagged != null) {
-                    if (tagged.trim().equals("")
-                        || tagged.trim().toLowerCase().equals("package")
-                        || tagged.trim().toLowerCase().equals("default")) {
-                        return "";
+                Object tvValue = Model.getFacade().getValue(tv);
+                /* Not all taggedvalues are string - see issue 4322: */
+                if (tvValue instanceof String) {
+                    String tagged = (String) tvValue;
+                    if (tagged != null) {
+                        if (tagged.trim().equals("")
+                            || tagged.trim().toLowerCase().equals("package")
+                            || tagged.trim().toLowerCase().equals("default")) {
+                            return "";
+                        }
+                        return tagged + " ";
                     }
-                    return tagged + " ";
                 }
             }
         }
