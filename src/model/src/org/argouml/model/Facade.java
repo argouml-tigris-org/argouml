@@ -2625,7 +2625,6 @@ public interface Facade {
      *
      * @param handle is the feature
      * @return classifier
-     * @throws InvalidElementException if the supplied feature has been removed
      * from the repository.
      */
     Object getOwner(Object handle);
