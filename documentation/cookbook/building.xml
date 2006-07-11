@@ -51,8 +51,8 @@ run it.  If you using Unix/Linux, the comparable commands modified slightly for
 your particular shell will do work.
 <programlisting>
 C:\Work&gt;set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
-C:\Work&gt;cvs login   (use guest as password)
-C:\Work&gt;cvs checkout argouml/src argouml/src_new argouml/tools argouml/lib argouml-mdr
+C:\Work&gt;cvs login   (no password)
+C:\Work&gt;cvs checkout argouml/src argouml/src_new argouml/tools argouml/lib
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml\src_new
 C:\Work\argouml\src_new&gt;build run
@@ -140,7 +140,7 @@ JDK, at least version 1.4.2 (includes the Java compiler)
 
     <para>
 For building the documentation from DocBook format, 
-you furthermore needs these tools:
+you also need the following tools:
 </para>
     <itemizedlist>
       <listitem>
@@ -484,7 +484,7 @@ the corresponding directory
 
       <para>
 If you don't want to acquire a Tigris login to do this you can use the
-"guest" account with the password "guest".
+"guest" account with an empty password.
 Since the checked out copy remembers the login you used to do the
 check out, if you do this, you will have to remember to delete this
 copy and start over if you get a developer role in the project and
@@ -850,7 +850,7 @@ C:\Work&gt;mkdir argouml\build
 Download and unpack the latest release of ArgoUML into this directory.
 <programlisting>
 C:\Work&gt;set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
-C:\Work&gt;cvs login   (use guest as password)
+C:\Work&gt;cvs login   (no password)
 C:\Work&gt;cvs checkout argouml-<replaceable>XX</replaceable>
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml-<replaceable>XX</replaceable>
@@ -1657,41 +1657,53 @@ to the class itself.
   <sect1 id="generating_documentation">
     <title>Generating documentation</title>
     <para>
-This describes how the documentation is generated
-i.e. both what to do and how the setup works.
+This describes how to generate the documentation for ArgoUML.
 </para>
     <para>
-If you are in a hurry:
+If you are in a hurry, here's the quick version:
 <programlisting>
 C:\Work&gt;set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
-C:\Work&gt;cvs login   (use guest as password)
-C:\Work&gt;cvs checkout argouml/documentation argouml/tools argouml/lib
+C:\Work&gt;cvs login   (no password)
+C:\Work&gt;cvs checkout argouml/src_new/default.properties
+C:\Work&gt;cvs checkout argouml/documentation argouml/tools
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml\documentation
+C:\Work\argouml\documentation&gt;build docbook-xsl-get   (first time only)
 C:\Work\argouml\documentation&gt;build defaulthtml
 </programlisting>
-The HTML version of the Cookbook, Quick Guide, and User Manual are
-built and the result end up in.
+The chunked HTML versions of the Cookbook, Quick Guide, and User Manual are
+built and the results are placed in:
 <filename class="directory">C:\Work\argouml\build\documentation\defaulthtml\cookbook</filename>,
 <filename class="directory">C:\Work\argouml\build\documentation\defaulthtml\quick-guide</filename>,
 and
 <filename class="directory">C:\Work\argouml\build\documentation\defaulthtml\manual</filename>
 respectively.
 </para>
+
+      <sect2 id="publishing_release_documentation">
+      <title>Publishing docs to the ArgoUML Web site</title>
+      <indexterm>
+	<primary>Web Site</primary>
+	<secondary>maintaining</secondary>
+      </indexterm>
+
     <note>
       <para>
 From here on it is the old text that is more or less "Publishing ArgoUML"
-to be reworked.
+to be reworked.  In particular, the publication locations are no longer
+accurate.
 </para>
     </note>
-    <sect2 id="how_the_web_site_works">
+    
+    <sect3 id="how_the_web_site_works">
       <title>How the ArgoUML web site works</title>
       <indexterm>
 	<primary>Web Site</primary>
 	<secondary>maintaining</secondary>
       </indexterm>
+
       <para>
-Tigris provides the ArgoUML site to be edited through CVS. Everything
+Tigris allows the ArgoUML web site to be edited through CVS. Everything
 that is checked in under <filename>argouml/www</filename>
 becomes immediately available at the URL 
 <ulink url="http://argouml.tigris.org/">http://argouml.tigris.org/</ulink>
@@ -1702,12 +1714,9 @@ Example: The file <filename>argouml/www/project.html</filename> is
 available at 
 <ulink url="http://argouml.tigris.org/project.html">http://argouml.tigris.org/project.html</ulink>.
 </para>
-      <para>
-This is the way the site is maintained and updated.
-</para>
-    </sect2>
-    <sect2>
-      <title>The ArgoUML documentation</title>
+    </sect3>
+    <sect3>
+      <title>Building and publishing ArgoUML documentation</title>
       <indexterm>
 	<primary>Documentation</primary>
       </indexterm>
@@ -1716,16 +1725,12 @@ This is the way the site is maintained and updated.
 	<secondary>documentation</secondary>
       </indexterm>
       <para>
-For the ArgoUML project the same documentation shall be available in both
-HTML, PDF and JavaHelp. To this end the documentation is written in
-DocBook XML and generated into two versions of HTML 
-(one page per chapter and one page for the whole book),
-PDF and JavaHelp.
-</para>
-      <para>
-We have tools that does the conversion from DocBook XML to HTML and PDF.
-The conversion is done whenever you need to look at the result or when 
-you want to present the final result on the web site.
+All documentation is written in DocBook XML and multiple output
+formats are generated from this single source.  Currently the
+supported output formats include HTML (two variants: single page
+per book for downloading or printing and chunked for online
+access) and PDF.  This could also be used to generate JavaHelp
+online documentation, but this isn't currently being used.
 </para>
       <para>
 There are currently three different books generated in this way,
@@ -1735,17 +1740,18 @@ exact same way except for the name of the directory that is one
 of <filename class="directory">cookbook</filename>,
 <filename class="directory">manual</filename> or 
 <filename class="directory">quick-guide</filename>.
-Below I will reference these directories using
-<filename class="directory"><replaceable>book</replaceable></filename>.
+Below these directories are referenced using
+<filename class="directory"><replaceable>book</replaceable></filename>
+placeholder which should be replaced with the appropriate name.
 </para>
       <para>
-When a new version of the documentation is to be made available on the
-web site the responsible document release person does the following:
+To generate a new version of the documentation to be made available
+on the web site do the following:
 </para>
       <orderedlist>
 	<listitem>
 	  <para>
-He checks out everything needed
+Check out everything needed
 and a copy of the <filename class="directory">argouml/www</filename>.
 </para>
 	  <para>
@@ -1838,34 +1844,27 @@ The PDF book is uploaded to the download page.
 </para>
 	</listitem>
       </orderedlist>
+    </sect3>
     </sect2>
+
     <sect2>
-      <title>How we work with documentation</title>
+      <title>Building documentation</title>
       <indexterm>
 	<primary>Documentation</primary>
 	<secondary>work with</secondary>
       </indexterm>
       <para>
-The developers or authors that work with the documentation or with the tools 
-to generate the documentation (or anyone else interested in how it works)
-can generate the documentation like described above and examine
-the result in
-<filename class="directory">argouml/build</filename>.
-It is only the last part about checking in and uploading the result
-under
-<filename class="directory">argouml/www/documentation</filename>
-that requires write access in the CVS and 
-some configuration management since it more or less is
-releasing the manual.
-</para>
-      <para>
-In order to do this you need to check out the whole of the
+To build the documentation, you will need to check out the whole
 <filename class="directory">argouml/documentation</filename> directory.
-You also need the directory
-<filename class="directory">argouml/lib</filename> and
-<filename class="directory">argouml/tools</filename>
-that contain the tools used: Ant, FOP, Saxon, ...
+as well as the 
+<filename class="directory">argouml/tools</filename> directory
+which contains the tools needed (Ant, FOP, Saxon, etc) and the file 
+<filename>argouml/src_new/default.properties</filename>
+which contains the current version and other project-wide settings.
+None of the other ArgoUML source directories are needed if you are just
+building the documentation.
 </para>
+
       <para>
 The subdirectories of
 <filename class="directory">argouml/documentation</filename>,
@@ -1883,10 +1882,31 @@ The subdirectory
 contains all the required pictures for all the books.
 </para>
       <para>
-When, in the <filename class="directory">documentation</filename> you run
-<command>./build.sh defaulthtml</command> or one of the other targets that
-builds the documentation,
+There are separate build targets available for each output format,
+as well as a target that builds all possible output formats.
+Use the command <command>build -p</command> to get a complete list
+of targets.
+</para>
+      <para>
+For testing purposes while editing a manual, you probably want to
+build just a single output format for the one manual that you are
+working with.  To suppress the building of the other manuals,
+you can define the following properties in your 
+<filename>build.properties</filename> file:
+<programlisting>
+skip-cookbook=true
+skip-quickguide=true
+skip-argomanual=true
+</programlisting>
+
+</para>
+      <para>
+When, in the <filename class="directory">documentation</filename> directory,
+you run <command>./build.sh defaulthtml</command> or one of the other targets
+that builds the documentation,
 all books are built.
+</para>
+      <para>
 What happens is (the target internal-dispatcher):
 </para>
       <itemizedlist>
@@ -1917,8 +1937,8 @@ XSL script that generates a list of included images.
 All included images are copied.
 </para>
 	  <para>
-The purpose of this is to only get the images actually used copied
-with the document that uses them and not all images.
+The purpose of this is to avoid copying images not actually
+used in the document.
 </para>
 	</listitem>
 
@@ -1933,12 +1953,10 @@ The HTML is generated by processing the file
 The file
 <filename><replaceable>manual</replaceable>/<replaceable>argomanual-generated.xml</replaceable></filename>
 is a temporary file that only exists while processing the XML.
-If editing the XML with a DocBook editors 
-you open the file
+If you are editing the XML be sure to edit 
+the file
 <filename><replaceable>manual</replaceable>/<replaceable>argomanual.xml</replaceable></filename>
-and edit the unsubstituted file.
-The differences between the unsubstituted file and the substituted file
-are so small that it shouldn't make any difference.
+and not the temporary file.
 </para>
 
     </sect2>
@@ -2586,10 +2604,9 @@ VERSION_<replaceable>0_21_2</replaceable>_F/argoumlinstaller/tarzip/doit.sh
 </programlisting>
 You must give the version number.
 </para>
-
 	  <para>
 The files end up in a newly created directory called
-<filename class="directory">svn/argouml-downloads/argouml-<replaceable>RELEASE NAME</replaceable>/</filename>.
+<filename class="directory">svn/argouml-downloads/argouml-<replaceable>RELEASENAME</replaceable>/</filename>.
 An <filename>index.html</filename>-file is created at the same time
 from the template in
 <filename><replaceable>WORKING&nbsp;PLACE</replaceable>/cvs.tigris.org/VERSION_<replaceable>0_21_2</replaceable>_F/argouml/src_new/templates/release_html.template</filename>.
@@ -2644,13 +2661,12 @@ and not
 <filename>argoumlinstaller/javawebstart</filename>
 which makes sense only if you remember that any updates to the LAYOUT
 file should be included also for subsequent releases
-and if you use the same directory layout.
+and if you use the same directorylayout.
  </para>
 	    <para>
 There is more work to be done here to make these scripts aligned.
 </para>
 	  </warning>
-
 	  <para>
 This is what you need to do for this:
 </para>
@@ -2710,7 +2726,7 @@ Examine the index file for the release.
 	  <para>
 The file should have been created in the newly created directory and 
 have the name
-<filename>svn/argouml-downloads/argouml-<replaceable>RELEASE NAME</replaceable>/index.html</filename>.
+<filename>svn/argouml-downloads/argouml-<replaceable>RELEASENAME</replaceable>/index.html</filename>.
 </para>
 	</listitem>
 
@@ -2721,9 +2737,9 @@ Update the index file for the downloads project to point out the new release.
 
 	  <para>
 It should point out the release at 
-<filename>/argouml-<replaceable>RELEASE NAME</replaceable>/</filename>,
+<filename>/argouml-<replaceable>RELEASENAME</replaceable>/</filename>,
 the java web start file at
-<filename>/jws/argouml-<replaceable>RELEASE NAME</replaceable>.jnlp</filename>.
+<filename>/jws/argouml-<replaceable>RELEASENAME</replaceable>.jnlp</filename>.
 </para>
 	</listitem>
 
