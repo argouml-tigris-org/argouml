@@ -84,6 +84,25 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
         Object item = theComboBox.getSelectedItem();
         setButtonEnabled(item);
     }
+    
+    /**
+     * Enforce that the preferred height is the minimum height.
+     * This works around a bug in Windows LAF of JRE5 where a change
+     * in the preferred/min size of a combo has changed and has a knock
+     * on effect here.
+     * If the layout manager for prop panels finds the preferred
+     * height is greater than the minimum height then it will allow
+     * this component to resize in error.
+     * See issue 4333 - Sun has now fixed this bug in JRE6 and so this
+     * method can be removed once JRE5 is no longer supported.
+     */
+    public Dimension getPreferredSize() {
+        return new Dimension(
+                super.getPreferredSize().width,
+                getMinimumSize().height);
+    }
+
+
 
     /**
      * Fired when the button is pushed. Navigates to the currently selected item
