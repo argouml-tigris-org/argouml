@@ -187,6 +187,9 @@ public class FigGeneralization extends FigEdgeModelElement {
             // due to errors in earlier releases of argouml it can
             // happen that there is a generalization without a child
             // or parent.
+            // TODO: Move into XSL. We should not remove from the graph model
+            // while we're writing to it or we have a possible cause of
+            // concurrent modification exception.
             if (subType == null || superType == null) {
                 // TODO: We should warn the user we have removed something - tfm
                 removeFromDiagram();
