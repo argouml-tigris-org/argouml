@@ -246,6 +246,5 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         srcMult.calcBounds();
         srcGroup.calcBounds();
         super.renderingChanged();
-        computeRoute();
     }
 }  /* end class FigAssociationEnd */
