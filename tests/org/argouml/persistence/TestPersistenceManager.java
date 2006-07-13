@@ -24,6 +24,11 @@
 
 package org.argouml.persistence;
 
+import java.io.File;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+
 import junit.framework.TestCase;
 
 /**
@@ -78,4 +83,27 @@ public class TestPersistenceManager extends TestCase {
         assertNotNull(testPersister);
     }
     
+    public void testSetSaveFileChooserFilters() {
+        JFileChooser chooser = new JFileChooser();
+        PersistenceManager persistence = PersistenceManager.getInstance();
+        persistence.setSaveFileChooserFilters(chooser, null);
+        
+        FileFilter[] fileFilters = chooser.getChoosableFileFilters();
+        assertNotNull(fileFilters);
+        assertTrue(fileFilters.length == 4);
+        FileFilter defaultFileFilter = chooser.getFileFilter();
+        assertNotNull(defaultFileFilter);
+        assertTrue(defaultFileFilter.accept(new File(
+                "foo."
+                + new ZargoFilePersister().getExtension())));
+        
+        chooser.resetChoosableFileFilters();
+        persistence.setSaveFileChooserFilters(chooser, 
+                "foo." + new UmlFilePersister().getExtension());
+        defaultFileFilter = chooser.getFileFilter();
+        assertNotNull(defaultFileFilter);
+        assertTrue(defaultFileFilter.accept(new File(
+                "others_foo." 
+                + new UmlFilePersister().getExtension())));        
+    }
 }

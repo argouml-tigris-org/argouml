@@ -1614,7 +1614,8 @@ public final class ProjectBrowser
         chooser.setFileView(ProjectFileView.getInstance());
 
         chooser.setAcceptAllFileFilterUsed(false);
-        PersistenceManager.getInstance().setSaveFileChooserFilters(chooser);
+        PersistenceManager.getInstance().setSaveFileChooserFilters(chooser, 
+                url != null ? url.getFile() : null);
 
         int retval = chooser.showSaveDialog(pb);
         if (retval == JFileChooser.APPROVE_OPTION) {
