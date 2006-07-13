@@ -161,38 +161,42 @@ for downloading this correctly.
 </para>
       </listitem>
 
-      <listitem id="download-jimi">
-	<para>
+	<listitem id="download-jimi">
+	  <para>
           <indexterm>
 	    <primary id="download-jimi-name">Jimi</primary>
-	  </indexterm>
+          </indexterm>
 Jimi
 </para>
-	<para>
+	  <para>
 Used by FOP for including PNG pictures.
 </para>
-	<para>
+	  <para>
 Detailed instructions:
-          <orderedlist>
-	    <listitem>
-	      <para>
+            <orderedlist>
+	      <listitem>
+		<para>
 Download the file 
-<filename>jimi1_0.zip</filename>
-from
+<filename>jimi1_0.zip</filename> from
 <ulink url="http://java.sun.com/products/jimi/">java.sun.com</ulink>.
-It contains a file: 
-<filename>"JimiProClasses.zip"</filename>.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
-Copy this file into the
+	      </listitem>
+	      <listitem>
+		<para>
+Extract the file <code>JimiProClasses.zip</code>.
+Most unzip applications allow you to specify the output location.
+If you are using one of these, this step can be combined with the next.
+</para>
+	      </listitem>
+	      <listitem>
+		<para>
+If the previous step put the extracted file elsewhere, copy or move this file into the
 <filename>argouml\tools\lib</filename> directory.
 </para>
-	    </listitem>
-	  </orderedlist>
+	      </listitem>
+	    </orderedlist>
 </para>
-      </listitem>
+	</listitem>
     </itemizedlist>
       </sect2>
       <sect2>

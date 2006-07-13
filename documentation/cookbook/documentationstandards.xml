@@ -133,7 +133,7 @@ Spelling is US English.
 	<para>
 Use full URLs throughout all documents!
 Rationale: 
-These documents may also be published in other formats then 
+These documents may also be published in other formats than 
 html on the &argouml; web site.
 </para>
       </listitem>
@@ -359,7 +359,7 @@ Make a new line after each sentence or before expressions.
 The Docbook source is source that is handled by CVS.
 When structuring the text the parts are paragraphs, sentences and words.
 By having each sentence on a line of its own it is easier to see
-what sentences has been changed and what has not in the <literal>diff</literal>
+which sentences have been changed and which have not in the <literal>diff</literal>
 reports from CVS.
 The contributions that Jeremy Bennet did for the 0.10 User Manual
 are not written like this.
