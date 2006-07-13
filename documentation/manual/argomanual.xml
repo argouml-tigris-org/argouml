@@ -542,8 +542,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         final project build and deployment.</para>
 
         <para>As each UML concept is encountered, its use is explained. 
-        Its use within ArgoUML is then described. Finally the a study 
-        is used to give examples of the concepts in use.</para>
+        Its use within ArgoUML is then described.
+        Finally a case study is used to give examples of the concepts in use.</para>
 
       </sect2>
 
@@ -553,11 +553,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para><xref linkend="ch.ref.ui"/> is an overview of the user 
         interface and provides a summary of the support for the various 
-        UML diagram types in ArgoUML. Separate chapters 
-        <xref linkend="ch.ref.navpane"/> through 
-        <xref linkend="ch.ref.menu"/> describe each of the sub-windows 
-        of the user interface, known as <emphasis>Panes</emphasis>, and 
-        the menu bar.</para>
+        UML diagram types in ArgoUML.
+        <xref linkend="ch.ref.menu"/> and <xref linkend="ch.ref.navpane"/>  
+        describe the menu bar, and each of the sub-windows of the user interface, known as <emphasis>Panes</emphasis>.</para>
 
         <para><xref linkend="ch.ref.critics"/> gives details of all the 
         cognitive critics within the system. Eventually ArgoUML will 
@@ -581,8 +579,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <xref linkend="app.legal"/> is a copy of the GNU Free 
         Documentation License.</para>
 
-        <para>A future ambition is to provide a comprehensive 
-        index</para>
+        <para>A future ambition is to provide a comprehensive index.</para>
 
       </sect2>
 
@@ -595,15 +592,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <indexterm><primary>Contributing</primary><secondary>to the 
         User Manual</secondary></indexterm>
         <para>Please tell us what you think about this User Manual. 
-        Your comments will help us make improvements. Email your 
+        Your comments will help us make improvements.
+        Email your 
         thoughts to the <ulink url="mailto:users@argouml.tigris.org">
-        ArgoUML Users Mailing List</ulink>. In case you would like to 
-        add to the missing chapters you should contact the 
-        <ulink url="mailto:dev@argouml.tigris.org">ArgoUML Developer 
-        Mailing List</ulink> to check whether noone else is working on 
-        this part. You can subscribe to either of the mailinglists via 
-        the <ulink url="http://argouml.tigris.org">ArgoUML web 
-        site</ulink>.</para>
+        ArgoUML Users Mailing List</ulink>.
+        In case you would like to add to the missing chapters you should contact the 
+        <ulink url="mailto:dev@argouml.tigris.org">ArgoUML Developer Mailing List</ulink>
+        to check whether anyone else is working on this part.
+        You can subscribe to either of the mailing lists via the
+        <ulink url="http://argouml.tigris.org">ArgoUML web site</ulink>.</para>
 
       </sect2>
 
