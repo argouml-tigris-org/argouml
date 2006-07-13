@@ -222,7 +222,8 @@ public class AboutBox extends JDialog {
         buf.append(localize("aboutbox.module-owners"));
         buf.append(":\n");
 
-        buf.append("+ Diagrams, GUI, Persistence: Bob Tarling\n");
+        buf.append("+ UML Model, Diagrams, GUI, Persistence: Bob Tarling\n");
+	buf.append("+ MDR Implementation: Tom Morris\n");
         buf.append("+ Sequence Diagrams: Michael A. MacDonald\n");
         buf.append("+ C++: Luis Sergio Oliveira\n");
         buf.append("+ Csharp: Jan Magne Andersen\n");
@@ -248,17 +249,21 @@ public class AboutBox extends JDialog {
                 }));
         buf.append("\n");
 
+        buf.append("+ Andrea Nironi\n");
         buf.append("+ Bob Tarling\n");
         buf.append("+ Hans Fredrik Nordhaug\n");
         buf.append("+ Harald Braun\n");
+        buf.append("+ Jeff Liu\n");
         buf.append("+ Linus Tolke\n");
         buf.append("+ Luis Sergio Oliveira\n");
         buf.append("+ Ludovic Maitre\n");
         buf.append("+ Markus Klink\n");
         buf.append("+ Michiel van der Wulp\n");
         buf.append("+ Sergio Agostinho\n");
+        buf.append("+ Stewart Munoz\n");
         buf.append("+ Thomas Neustupny\n");
         buf.append("+ Tom Morris (tfmorris@gmail.com)\n");
+
         buf.append("\n");
 
         buf.append(Translator.messageFormat(
@@ -279,20 +284,8 @@ public class AboutBox extends JDialog {
         buf.append("+ Kai Schroeder\n");
         buf.append("+ Michael A. MacDonald\n");
         buf.append("+ Yayan" + cpbi + "\n");
-        buf.append("\n");
-
-        buf.append(Translator.messageFormat(
-                "aboutbox.contrib-developers-for-release",
-                new Object[] {
-                    "0.18",
-                }));
 
         buf.append("\n");
-
-        // Alphabetic order!
-        buf.append("+ Michael Stockman\n");
-        buf.append("+ Jaap Branderhorst\n");
-        buf.append("+ Stewart Munoz\n\n");
 
         buf.append(localize("aboutbox.past-developers"));
         buf.append("\n");
@@ -317,6 +310,7 @@ public class AboutBox extends JDialog {
         buf.append("+ Frank Finger\n");
         buf.append("+ Frank Wienberg\n");
         buf.append("+ Grzegorz Prokopski\n");
+        buf.append("+ Jaap Branderhorst\n");
         buf.append("+ Jason Robbins (Project founder, researcher)\n");
         buf.append("+ Jean-Hugues de Raigniac\n");
         buf.append("+ Jeremy Jones\n");
@@ -324,6 +318,7 @@ public class AboutBox extends JDialog {
         buf.append("+ Luc Maisonobe\n");
         buf.append("+ Marcus Andersson\n");
         buf.append("+ Marko Boger (GentleWare) (UML Diagrams)\n");
+        buf.append("+ Michael Stockman\n");
         buf.append("+ Nick Santucci\n");
         buf.append("+ Phil Sager\n");
         buf.append("+ Philippe Vanpeperstraete (User Manual)\n");
@@ -340,6 +335,7 @@ public class AboutBox extends JDialog {
         buf.append("+ Will Howery\n");
         buf.append("+ ICS 125 team Spring 1996\n");
         buf.append("+ ICS 125 teams Spring 1998\n");
+
         return buf.toString();
     }
 
