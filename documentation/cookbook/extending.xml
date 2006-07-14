@@ -31,10 +31,10 @@
   <para> This section explains some general concepts which come in handy, when
     developing additions to ArgoUML. </para>
   <warning>
-  <para> There are two module loading mechanisms, "the old one", and "the new one".
+    <para> There are two module loading mechanisms, "the old one", and "the new one".
     This is so because we have made a change of the design used for this in order to
     simplify the writing of modules. </para>
-  <para> Eventually "the old module loader" will be removed so for all new
+    <para> Eventually "the old module loader" will be removed so for all new
     additions, the new module loader shall be used. </para> </warning>
   
   <sect1 id="howdoi_general">
@@ -146,10 +146,11 @@ Run ArgoUML and check if the module appears in Edit -> Settings -> Modules
               name</replaceable>/build.xml</filename>. </para>
             <para> Edit <filename class="directory">
               argouml/modules/<replaceable>your name</replaceable>
-              /module.properties</filename> </para>
+              /module.properties</filename>
+            </para>
             <para> Edit <filename>argouml/modules/<replaceable>your
               name</replaceable>/src/org/manifest.mf</filename>.
-              </para>
+            </para>
             <para> Reorganize the source files as necessary. Remove the
               directory <filename class="directory">
               argouml/modules/<replaceable>your name</replaceable>
@@ -162,7 +163,7 @@ Run ArgoUML and check if the module appears in Edit -> Settings -> Modules
           </listitem>
           <listitem>
             <para> ...get Argo to use a plug-in? </para> <note>
-            <para> This description is for the old module loader. </para>
+              <para> This description is for the old module loader. </para>
             </note>
             <para> Once you've created a jar file with a plug-in in it, you need to
               make sure that Argo can find the jar to be able to execute it. </para>
@@ -186,10 +187,10 @@ Run ArgoUML and check if the module appears in Edit -> Settings -> Modules
                   required by it into that directory. </para></listitem>
                 <listitem><para> Start up ArgoUML again, and you should see the
                   plug-in's startup banner (if it has one, of course). </para>
-                  </listitem>
+                </listitem>
                 
               </itemizedlist>
-              </para>
+            </para>
           </listitem>
         </itemizedlist> </para>
     </sect2>

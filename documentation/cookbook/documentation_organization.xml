@@ -32,13 +32,13 @@
 This chapter describes what goes into which
 part of the documentation. These ideas are formulated by Linus Tolke.
 </para>
-      </abstract>
-      <authorgroup>
-	<author>
-	  <firstname>Linus</firstname>
-	  <surname>Tolke</surname>
-	</author>
-      </authorgroup>
+    </abstract>
+    <authorgroup>
+      <author>
+        <firstname>Linus</firstname>
+        <surname>Tolke</surname>
+      </author>
+    </authorgroup>
   </appendixinfo>
   <title>Organization of ArgoUML documentation</title>
   <para>
@@ -74,87 +74,87 @@ developed alongside the product and that has a persistent value.
 These different bits have all different purpose and audience and
 the purpose of this chapter is to try to define that.
 </para>
-    <table>
-      <title>Bits of documentation</title>
-      <tgroup cols="4">
-        <colspec colnum="1" colname="Bit" colwidth="1*"/>
-        <colspec colnum="2" colname="Audience" colwidth="2*"/>
-        <colspec colnum="3" colname="Main Purpose" colwidth="3*"/>
-        <colspec colnum="4" colname="Contains" colwidth="3*"/>
-	<thead>
-	  <row>
-	    <entry>Bit</entry>
-	    <entry>Audience</entry>
-	    <entry>Main purpose</entry>
-	    <entry>Contains</entry>
-	  </row>
-	</thead>
-	<tbody valign="top">
-	  <row>
-	    <!-- Bit -->
-	    <entry>Source Code</entry>
+  <table>
+    <title>Bits of documentation</title>
+    <tgroup cols="4">
+      <colspec colnum="1" colname="Bit" colwidth="1*"/>
+      <colspec colnum="2" colname="Audience" colwidth="2*"/>
+      <colspec colnum="3" colname="Main Purpose" colwidth="3*"/>
+      <colspec colnum="4" colname="Contains" colwidth="3*"/>
+      <thead>
+        <row>
+          <entry>Bit</entry>
+          <entry>Audience</entry>
+          <entry>Main purpose</entry>
+          <entry>Contains</entry>
+        </row>
+      </thead>
+      <tbody valign="top">
+        <row>
+          <!-- Bit -->
+          <entry>Source Code</entry>
 
-	    <!-- Audience -->
-	    <entry>
+          <!-- Audience -->
+          <entry>
 <orderedlist>
-		<listitem>
-		  <para>
+              <listitem>
+                <para>
 Other developers that will maintain and improve on the code.
 </para>
-		</listitem>
-		<listitem>
-		  <para>
+              </listitem>
+              <listitem>
+                <para>
 The compiler.
 </para>
-		</listitem>
-	      </orderedlist>
+              </listitem>
+            </orderedlist>
 </entry>
 
-	    <!-- Purpose -->
-	    <entry>
+          <!-- Purpose -->
+          <entry>
 Implement ArgoUML in a maintainable and understandable way.
 </entry>
 
-	    <!-- Contains -->
-	    <entry>
+          <!-- Contains -->
+          <entry>
 See <xref linkend="standards"/> for details on how to write the code.
 </entry>
-	  </row>
+        </row>
 
-	  <row>
-	    <!-- Bit -->
-	    <entry>Javadoc</entry>
+        <row>
+          <!-- Bit -->
+          <entry>Javadoc</entry>
 
-	    <!-- Audience -->
-	    <entry>
+          <!-- Audience -->
+          <entry>
 Developers writing code that communicates or in other ways interact
 with this class.
 </entry>
 
-	    <!-- Purpose -->
-	    <entry>
+          <!-- Purpose -->
+          <entry>
 Make it easy to see what the functions of every class are and how
 to use them.
 </entry>
 
-	    <!-- Contains -->
-	    <entry>
+          <!-- Contains -->
+          <entry>
 Description of the functions of all classes,
 all public and protected methods, variables, and constants.
 </entry>
-	  </row>
+        </row>
 
-	  <row>
-	    <!-- Bit -->
-	    <entry>Cookbook</entry>
+        <row>
+          <!-- Bit -->
+          <entry>Cookbook</entry>
 
-	    <!-- Audience -->
-	    <entry>
+          <!-- Audience -->
+          <entry>
 Developers writing code, maintaining the documentation or the web site.
 </entry>
 
-	    <!-- Purpose -->
-	    <entry>
+          <!-- Purpose -->
+          <entry>
 Make it easy to learn how ArgoUML works and how to extend it.
 Be a collection of knowledge around how everything is set up.
 Be a store of the agreed solution around fundamental design decisions
@@ -164,8 +164,8 @@ Be a collection of knowledge around how and why the project makes
 certain decisions.
 </entry>
 
-	    <!-- Contains -->
-	    <entry>
+          <!-- Contains -->
+          <entry>
 Instructions on how to add new functions and behavior.
 Instructions on how to do the chores around maintenance
 (build a release, publish a release,
@@ -174,29 +174,29 @@ test ArgoUML, test the documentation, ...).
 Agreed project rules like what level of quality is aimed for and
 description of processes that achieves that level.
 </entry>
-	  </row>
+        </row>
 
-	  <row>
-	    <!-- Bit -->
-	    <entry>Web site in CVS</entry>
+        <row>
+          <!-- Bit -->
+          <entry>Web site in CVS</entry>
 
-	    <!-- Audience -->
-	    <entry>
+          <!-- Audience -->
+          <entry>
 Everyone, i.e. developers in the project, users of the product,
 people searching for UML tools for the purpose of trying, testing,
 evaluating, and using the tools.
 </entry>
 
-	    <!-- Purpose -->
-	    <entry>
+          <!-- Purpose -->
+          <entry>
 Be an entry point for the other parts of the documentation.
 Be the main download area for the ArgoUML product.
 Be the central point of the ArgoUML user community.
 Be the central point of the ArgoUML development project.
 </entry>
 
-	    <!-- Contains -->
-	    <entry>
+          <!-- Contains -->
+          <entry>
 References to all the other parts of the documentation.
 Current project information like the contents of the upcoming releases
 and the plan for the nearest future.
@@ -206,80 +206,80 @@ parts of the documentation.
 This is done as a complement to the other parts. 
 Examples, tours.
 </entry>
-	  </row>
+        </row>
 
-	  <row>
-	    <!-- Bit -->
-	    <entry>Manual and quick-guide</entry>
+        <row>
+          <!-- Bit -->
+          <entry>Manual and quick-guide</entry>
 
-	    <!-- Audience -->
-	    <entry>
+          <!-- Audience -->
+          <entry>
 Users of ArgoUML.
 Persons that want to evaluate ArgoUML for the purpose of starting to use it.
 Persons that are training to use UML and ArgoUML.
 </entry>
 
-	    <!-- Purpose -->
-	    <entry>
+          <!-- Purpose -->
+          <entry>
 Describe how ArgoUML is installed and used.
 Describe how UML is used with ArgoUML.
 </entry>
 
-	    <!-- Contains -->
-	    <entry>
+          <!-- Contains -->
+          <entry>
 Complete installation instructions for all supported installation schemes.
 Complete description on how to use ArgoUML in your project.
 Complete reference on how to use ArgoUML.
 </entry>
-	  </row>
+        </row>
 
-	  <row>
-	    <!-- Bit -->
-	    <entry>Help text in ArgoUML</entry>
+        <row>
+          <!-- Bit -->
+          <entry>Help text in ArgoUML</entry>
 
-	    <!-- Audience -->
-	    <entry>
+          <!-- Audience -->
+          <entry>
 Users of ArgoUML.
 </entry>
 
-	    <!-- Purpose -->
-	    <entry>
+          <!-- Purpose -->
+          <entry>
 Give a quick help with a specific feature or button.
 Give short explanations of all commands and actions.
 </entry>
 
-	    <!-- Contains -->
-	    <entry>
+          <!-- Contains -->
+          <entry>
 A complete set of quick help and explanations.
 </entry>
-	  </row>
+        </row>
 
-	  <row>
-	    <!-- Bit -->
-	    <entry>FAQ</entry>
+        <row>
+          <!-- Bit -->
+          <entry>FAQ</entry>
 
-	    <!-- Audience -->
-	    <entry>
+          <!-- Audience -->
+          <entry>
 Users of ArgoUML.
 Members of the users mailing list.
 </entry>
 
-	    <!-- Purpose -->
-	    <entry>
+          <!-- Purpose -->
+          <entry>
 Cope for shortcomings in ArgoUML, the help text, 
 the Manual and quick-guide and the web site.
 </entry>
 
-	    <!-- Contains -->
-	    <entry>
+          <!-- Contains -->
+          <entry>
 A list of issues that are not addressed in the other part of the documentation.
 It is written in questions-answers-format and the contents is governed by
 the issues discussed recently in the user community.
 </entry>
-	  </row>
-	</tbody>
-      </tgroup>
-    </table>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
   <para>
 The Cookbook, the User Manual, and the Quick Guide, 
 are all written in docbook and generated into HTML and PDF 

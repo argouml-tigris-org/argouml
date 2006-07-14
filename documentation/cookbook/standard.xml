@@ -751,7 +751,7 @@ We should then be able to wish that and eventually get that included.
 </para>
       </listitem>
     </itemizedlist>
-  <para>
+    <para>
 Notice that we should not and don't need to do this in a passive way.
 We should explain to the dependency team what we want and why.
 Especially for dependency that we have already in ArgoUML but also
@@ -1318,7 +1318,7 @@ Unused code => Parameter is never read: Warning.
               <para>
 Unused code => Unused or unread private members: Warning.
 </para>
-</listitem>
+            </listitem>
             <listitem>
               <para>
 Unused code => Unnecessary semicolon: Warning.
@@ -1376,7 +1376,7 @@ It enables style checking according the rules set for the ArgoUML project.
       not necessary to install it separately, but the web site is 
               <ulink url="http://checkstyle.sourceforge.net/"/> 
      for reference.)
-    </para>
+      </para>
       <para>
       In the Java perspective, select the project argouml, 
       i.e. the icon at the top of the Package Explorer.

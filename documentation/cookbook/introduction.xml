@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -69,7 +69,7 @@ but they are released together.
   <sect1 id="contributing">
     <title>How to contribute</title>
     <para> You can help, there are big tasks and small tasks waiting for you.
-      </para>
+    </para>
     <para> Here is a suggestion on how you could become part of the ArgoUML Project.
       This could be perceived as a ladder to climb but remember that if so it is
       firstly a ladder of levels of commitment and time spent by you. You get no
@@ -227,7 +227,7 @@ discussed where you have an opinion, jump right in!
         <listitem>
           <para>Familiarize yourself with the code.</para>
           <para>For this a good knowledge of Java is more or less a prerequisite.
-            </para>
+          </para>
           <para> Suggestion on how to go about this:
             <orderedlist numeration="loweralpha">
               <listitem>
@@ -364,7 +364,7 @@ need to know about how to contribute.
     <sect2>
       <title>In this Cookbook, you will not find...</title>
       <para> You will not find information on how to install and use ArgoUML.
-        </para>
+      </para>
       <para> You will not find information on what UML is and if or how you should use
         it in your project. </para>
       <para> You will not find information on how to convince your project to use
@@ -373,22 +373,30 @@ need to know about how to contribute.
   </sect1>
   
   <sect1 id="mailing_lists">
-    <title>Mailing Lists</title> <indexterm><primary>Mailing
-    lists</primary></indexterm> <indexterm><primary>Developers' Mailing
-    List</primary></indexterm>
+    <title>Mailing Lists</title>
+    <indexterm>
+      <primary>Mailing lists</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Developers' Mailing List</primary>
+    </indexterm>
     <para> All developers <emphasis>MUST</emphasis> subscribe to the mailing
       list for developers. Please find the details at: <ulink
         url="http://argouml.tigris.org/servlets/ProjectMailingListList">
       http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>
-      </para> <indexterm>
-    <primary>CVS</primary>
-    <secondary>Mailing list</secondary> </indexterm> <indexterm>
-    <primary>Issues</primary>
-    <secondary>Mailing list</secondary> </indexterm>
+</para>
+    <indexterm>
+      <primary>CVS</primary>
+      <secondary>Mailing list</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Issues</primary>
+      <secondary>Mailing list</secondary>
+    </indexterm>
     <para> It is also recommended to join the CVS and Issues mailing lists. Both
       give you a good idea of what is going on. Developers should also work with
       Issuezilla registering or fixing problems found by themselves and others.
-      </para>
+</para>
   </sect1>
   
 </chapter>

@@ -26,48 +26,48 @@
 -->
 
 <sect1 id="modules_and_plugins">
-<!--
-<sect1info>
-<authorgroup>
-<author>
-  <firstname>Thierry</firstname>
-  <surname>Lach</surname>
-  <affiliation>
-    <address>
-      <email>thierry.lach@pentamark.com</email>
+  <!--
+  <sect1info>
+    <authorgroup>
+      <author>
+        <firstname>Thierry</firstname>
+        <surname>Lach</surname>
+        <affiliation>
+          <address>
+  <email>thierry.lach@pentamark.com</email>
     </address>
-  </affiliation>
-</author>
-<author>
-  <firstname>Will</firstname>
-  <surname>Howery</surname>
-  <affiliation>
-    <address>
-      <email>whowery@hotmail.com</email>
+        </affiliation>
+      </author>
+      <author>
+        <firstname>Will</firstname>
+        <surname>Howery</surname>
+        <affiliation>
+          <address>
+  <email>whowery@hotmail.com</email>
     </address>
-  </affiliation>
-</author>
-<author>
-  <firstname>Thomas</firstname>
-  <surname>Neustupny</surname>
-  <affiliation>
-    <address>
-      <email>thn-d@gmx.de</email>
+        </affiliation>
+      </author>
+      <author>
+        <firstname>Thomas</firstname>
+        <surname>Neustupny</surname>
+        <affiliation>
+          <address>
+  <email>thn-d@gmx.de</email>
     </address>
-  </affiliation>
-</author>
-<author>
-  <firstname>Linus</firstname>
-  <surname>Tolke</surname>
-  <affiliation>
-    <address>
-      <email>linus@epact.se</email>
+        </affiliation>
+      </author>
+      <author>
+        <firstname>Linus</firstname>
+        <surname>Tolke</surname>
+        <affiliation>
+          <address>
+  <email>linus@epact.se</email>
     </address>
-  </affiliation>
-</author>
-</authorgroup>
-</sect1info>
--->
+        </affiliation>
+      </author>
+    </authorgroup>
+  </sect1info>
+  -->
   <title>Modules and PlugIns</title>
   <para>
 The ArgoUML tool provides a basis
@@ -91,18 +91,18 @@ In the old moduleloader implementation the classes within the modules
 that attach to ArgoUML core are called plugins.
 In the new moduleloader implementation they don't have any special name.
 </para>
-<para>
+    <para>
 <itemizedlist>
-<listitem>
-<para>Modules</para>
-<para>
+        <listitem>
+          <para>Modules</para>
+          <para>
 A module is a collection of classes and resource files that can
 be enabled and disabled in ArgoUML.
 Currently this is decided by the modules' availability when ArgoUML starts 
 but in the future it could be made possible to enable modules from within 
 a running ArgoUML.
 </para>
-<para>
+          <para>
 This module system is the extension capability to the ArgoUML tool. 
 It will give developers of ArgoUML and 
 developers of applications running within the ArgoUML architecture
@@ -114,7 +114,7 @@ additional open source and/or commercial involvement
 with the open source UML tool.  
 </para>
 
-<para>
+          <para>
 The module extensions will load when ArgoUML starts.
 When the modules are loaded
 they have the capability of attaching
@@ -124,27 +124,27 @@ the plugins will receive calls at the right moment and
 can perform the correct action at that point.
 </para>
 
-<para>
+          <para>
 Modules can be internal and external.
 The only difference is that the internal modules are part of
 the <filename>argouml.jar</filename> and the external are
 delivered as separate jar-files.
 </para>
-</listitem>
+        </listitem>
 
-<listitem>
-<para>Plugins</para>
+        <listitem>
+          <para>Plugins</para>
           <note>
             <para>
 This description is for the old moduleloader.
 </para>
           </note>
-<para>
+          <para>
 A plug-in in ArgoUML is a module
 that implements the
 <classname>org.argouml.application.api.Pluggable</classname> interface.
 </para>
-<para>
+          <para>
 The <classname>Pluggable</classname> interface
 acts as a passive dynamic component,
 i.e. it provides methods to simplify the attaching
@@ -154,13 +154,13 @@ that each simplify the addition of one kind of object.
 Examples <classname>PluggableMenu</classname>, 
 <classname>PluggableNotation</classname>.
 </para>
-<para>
+          <para>
 One Module can implement several <classname>Pluggable</classname> interfaces.
 </para>
-</listitem>
-</itemizedlist>
+        </listitem>
+      </itemizedlist>
 </para>
-<para>
+    <para>
 This is essentially and implementation of the Dynamic Linkage pattern 
 as described in
 Patterns in Java Volume 1 by Mark Grand ISBN 0-471-25839-3.
@@ -169,15 +169,15 @@ the classes inheriting <classname>Pluggable</classname> are the
 AbstractLoadableClass.
 </para>
 
-</sect2>
+  </sect2>
 
 
-<sect2 id="modules">
-<title>Modules</title>
+  <sect2 id="modules">
+    <title>Modules</title>
 
-<sect3 id="architecture_modules">
-<title>Module Architecture for the old implementation</title>
-<para>
+    <sect3 id="architecture_modules">
+      <title>Module Architecture for the old implementation</title>
+      <para>
 The controlling class of the module/plugin extension
 is <classname>org.argouml.application.modules.ModuleLoader</classname>.
 <classname>ModuleLoader</classname> is a singleton
@@ -189,85 +189,87 @@ This module file will contain the fully qualified class names
 designating the module to load into ArgoUML.
 -->
 </para>
-<para>
+      <para>
 <classname>ModuleLoader</classname> will:
 
 <itemizedlist>
-<listitem>
-<para>read in the property file</para>
-</listitem>
-<listitem>
-<para>for each of the classes found</para>
-<orderedlist>
-<listitem>
-<para>create the specified classes</para>
-</listitem>
-<listitem>
-<para>call <methodname>initializeModule</methodname> on this class</para>
-</listitem>
-<listitem>
-<para>place the class object into the
-internal list of modules</para>
-</listitem>
-</orderedlist>
-</listitem>
-</itemizedlist>
+          <listitem>
+            <para>read in the property file</para>
+          </listitem>
+          <listitem>
+            <para>for each of the classes found</para>
+            <orderedlist>
+              <listitem>
+                <para>create the specified classes</para>
+              </listitem>
+              <listitem>
+                <para>call <methodname>initializeModule</methodname> on this class</para>
+              </listitem>
+              <listitem>
+                <para>
+place the class object into the
+internal list of modules
 </para>
-</sect3>
+              </listitem>
+            </orderedlist>
+          </listitem>
+        </itemizedlist>
+</para>
+    </sect3>
 
-<sect3 id="argomodule_interface">
-<title>The ArgoModule interface - used in the old implementation</title>
-<para>
+    <sect3 id="argomodule_interface">
+      <title>The ArgoModule interface - used in the old implementation</title>
+      <para>
 Each class must derive from the <classname>ArgoModule</classname> interface.
 This interface provides the following methods:
 <itemizedlist>
-<listitem>
-<funcsynopsis>
-<funcprototype>
-<funcdef>
+          <listitem>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
 String <function>getModuleName</function>
 </funcdef>
-<void/>
-</funcprototype>
-</funcsynopsis>
-<funcsynopsis>
-<funcprototype>
-<funcdef>
+                <void/>
+              </funcprototype>
+            </funcsynopsis>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
 String <function>getModuleDescription</function>
 </funcdef>
-<void/>
-</funcprototype>
-</funcsynopsis>
-<funcsynopsis>
-<funcprototype>
-<funcdef>
+                <void/>
+              </funcprototype>
+            </funcsynopsis>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
 String <function>getModuleVersion</function>
 </funcdef>
-<void/>
-</funcprototype>
-</funcsynopsis>
-<funcsynopsis>
-<funcprototype>
-<funcdef>
+                <void/>
+              </funcprototype>
+            </funcsynopsis>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
 String <function>getModuleAuthor</function>
 </funcdef>
-<void/>
-</funcprototype>
-</funcsynopsis>
-<para>provides information about the ArgoUML module.  
+                <void/>
+              </funcprototype>
+            </funcsynopsis>
+            <para>provides information about the ArgoUML module.  
 </para>
-</listitem>
+          </listitem>
 
-<listitem>
-<funcsynopsis>
-<funcprototype>
-<funcdef>
+          <listitem>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
 boolean <function>initializeModule</function>
 </funcdef>
-<void/>
-</funcprototype>
-</funcsynopsis>
-<para><function>initializeModule</function> is called
+                <void/>
+              </funcprototype>
+            </funcsynopsis>
+            <para><function>initializeModule</function> is called
 when the class loader has created the module,
 and before it is added into the modules list.
 <function>initializeModule</function> should
@@ -279,40 +281,40 @@ Any menu modifications or system level resources
 should already be available
 when the module initialization process is called.  
 </para>
-<para>
+            <para>
 <function>initializeModule</function>
 should return <returnvalue>true</returnvalue>
 if the initialization is successful
 (or if no initialization is necessary).
 </para>
-<para>
+            <para>
 The only available mechanism for handling dependencies between
 modules is the order in which they are read from the file.
 </para>
-</listitem>
+          </listitem>
 
-<listitem>
-<funcsynopsis>
-<funcprototype>
-<funcdef>
+          <listitem>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
 void <function>shutdownModule</function>
 </funcdef>
-<void/>
-</funcprototype>
-</funcsynopsis>
-<para>
+                <void/>
+              </funcprototype>
+            </funcsynopsis>
+            <para>
 The <function>shutdownModule</function> method is called
 when the module is removed.
 It provides each module the capability
 to clean up or save any required information
 before being cleared from memory.  
 </para>
-</listitem>
+          </listitem>
 
-<!--
-<listitem>
-<para>getPopUpActions</para>
-<para>The getPopUpActions method is called
+          <!--
+          <listitem>
+            <para>getPopUpActions</para>
+            <para>The getPopUpActions method is called
 when a user right clicks on a context item.
 The parameters passed into the pop-up actions method
 are the current list of menu items for the context
@@ -336,70 +338,70 @@ If that menu item is selected in the pop-up menu
 then the actionPerformed method within the action will be called.
 When the actionPerformed is called the module will do its work.
 </para>
-</listitem>
--->
+          </listitem>
+          -->
 
-<listitem>
-<funcsynopsis>
-<funcprototype>
-<funcdef>
+          <listitem>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
 void <function>setModuleEnabled</function>
 </funcdef>
-<paramdef>boolean <parameter>tf</parameter></paramdef>
-<!--
-<funcparams>boolean tf</funcparams>
--->
-</funcprototype>
-</funcsynopsis>
-<funcsynopsis>
-<funcprototype>
-<funcdef>
+                <paramdef>boolean <parameter>tf</parameter></paramdef>
+                <!--
+                <funcparams>boolean tf</funcparams>
+                -->
+              </funcprototype>
+            </funcsynopsis>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
 boolean <function>isModuleEnabled</function>
 </funcdef>
-<void/>
-</funcprototype>
-</funcsynopsis>
-<para>
+                <void/>
+              </funcprototype>
+            </funcsynopsis>
+            <para>
         Reserved for future implementation.
 </para>
-</listitem>
+          </listitem>
 
-<listitem>
-<funcsynopsis>
-<funcprototype>
-<funcdef>
+          <listitem>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
 Vector <function>getModulePopUpActions</function>
 </funcdef>
-<void/>
-</funcprototype>
-</funcsynopsis>
-<para>
+                <void/>
+              </funcprototype>
+            </funcsynopsis>
+            <para>
         Reserved for future implementation.
 </para>
-<para>
+            <para>
 The plan is to have this called for each module when
 the module should add its entries in PopUpActions.
 </para>
 
-</listitem>
+          </listitem>
 
-<listitem>
-<funcsynopsis>
-<funcprototype>
-<funcdef>
+          <listitem>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
 String <function>getModuleKey</function>
 </funcdef>
-<void/>
-</funcprototype>
-</funcsynopsis>
-<para>Returns a string that identifies the module.
+                <void/>
+              </funcprototype>
+            </funcsynopsis>
+            <para>Returns a string that identifies the module.
 </para>
-</listitem>
+          </listitem>
 
-</itemizedlist>
+        </itemizedlist>
 </para>
 
-</sect3>
+    </sect3>
 
     <sect3>
       <title>Module Architecture for the new implementation</title>
@@ -471,17 +473,17 @@ part of the core ArgoUML.
 
 
 
-<sect3 id="using_modules">
-<title>Using Modules</title>
-<para>
+    <sect3 id="using_modules">
+      <title>Using Modules</title>
+      <para>
 When modules are used they can't be distinguished from the
 rest of the ArgoUML environment.
 </para>
-</sect3>
+    </sect3>
 
-<sect3 id="howdoi_modules">
-<title>How do I ...?</title>
-<para>
+    <sect3 id="howdoi_modules">
+      <title>How do I ...?</title>
+      <para>
 <itemizedlist>
 
           <listitem>
@@ -500,23 +502,23 @@ to determine if they are enabled.
             </note>
           </listitem>
 
-</itemizedlist>
+        </itemizedlist>
 </para>
 
-</sect3>
-</sect2>
+    </sect3>
+  </sect2>
 
-<sect2 id="plugins">
-<title>Plugins</title>
+  <sect2 id="plugins">
+    <title>Plugins</title>
     <note>
       <para>
 This description is for the old moduleloader.
 </para>
     </note>
 
-<sect3 id="architecture_plugins">
-<title>Plugin Architecture</title>
-<para>
+    <sect3 id="architecture_plugins">
+      <title>Plugin Architecture</title>
+      <para>
 Each class must derive from the <classname>Pluggable</classname> interface.
 In addition to the methods declared in <classname>ArgoModule</classname>,
 which <classname>Pluggable</classname> extends
@@ -524,26 +526,26 @@ which <classname>Pluggable</classname> extends
 the interface provides the following method:
 
 <itemizedlist>
-<listitem>
-<funcsynopsis>
-<funcprototype>
-<funcdef>
+          <listitem>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
 boolean <function>inContext</function>
 </funcdef>
-<paramdef>Object[] <parameter>context</parameter></paramdef>
-<!--
-<funcparams>boolean tf</funcparams>
--->
-</funcprototype>
-</funcsynopsis>
-<para>
+                <paramdef>Object[] <parameter>context</parameter></paramdef>
+                <!--
+                <funcparams>boolean tf</funcparams>
+                -->
+              </funcprototype>
+            </funcsynopsis>
+            <para>
 <function>inContext</function> allows a plug-in to decide
 if it is available under a specific context. 
 </para>
-</listitem>
-</itemizedlist>
+          </listitem>
+        </itemizedlist>
 </para>
-<para>
+      <para>
 One example of a plugin with multiple criteria is the PluggableMenu.
 PluggableMenu requires the first context to be a JMenuItem
 which wants the PluggableMenu attached to as the context,
@@ -552,29 +554,29 @@ second context is an internal (non-localized) description
 of the menu such as "File" or "View"
 so that the plugin can further decide.
 </para>
-</sect3>
+    </sect3>
 
-<sect3 id="howdoi_plugins">
-<title>How do I ...?</title>
+    <sect3 id="howdoi_plugins">
+      <title>How do I ...?</title>
 
-<para>
+      <para>
 
-<itemizedlist>
-<!--
-<listitem><para>...create a plugin project?</para>
-<para>...</para>
-</listitem>
--->
-<listitem><para>...create a pluggable settings tab?</para>
-<para>...</para>
-</listitem>
+        <itemizedlist>
+          <!--
+          <listitem><para>...create a plugin project?</para>
+            <para>...</para>
+          </listitem>
+          -->
+          <listitem><para>...create a pluggable settings tab?</para>
+            <para>...</para>
+          </listitem>
 
-<listitem><para>...create a pluggable menu item?</para>
-<para>
+          <listitem><para>...create a pluggable menu item?</para>
+            <para>
 Look at the modules junit and menutest for examples of how to add to
 menus using the PluggableMenu interface.
 </para>
-<para>
+            <para>
 The implementation of inContext() that you provide should be similar to: 
 <programlisting>
     public boolean inContext(Object[] o) { 
@@ -587,7 +589,7 @@ The implementation of inContext() that you provide should be similar to:
     }
 </programlisting>
 </para>
-<para>
+            <para>
 The string "Create Diagrams" is a non-localized key string passed in
 ProjectLoader at about line 440 in the statement
 <programlisting>
@@ -598,14 +600,14 @@ There is no restriction on a single class implementing multiple
 plugins - quite the contrary, that is one of the reasons for providing
 the generic Pluggable interface that PluggableThings extend.
 </para>
-</listitem>
+          </listitem>
 
-<listitem><para>...create a pluggable notation?</para>
-<para>...</para>
-</listitem>
+          <listitem><para>...create a pluggable notation?</para>
+            <para>...</para>
+          </listitem>
 
-<listitem><para>...create a pluggable diagram?</para>
-<para>
+          <listitem><para>...create a pluggable diagram?</para>
+            <para>
 Let's say we want to enable a new diagram type as a plug-in.
 We use the interface PluggableDiagram that uses a
 method that returns an JMenuItem object:
@@ -617,7 +619,7 @@ method that returns an JMenuItem object:
 The returned menu item will be added to the diagrams menu
 to allow to open a new diagram of this type.
 </para>
-<para>
+            <para>
 In this example we do this by creating a helper class in the package
 org.argouml.application.helpers that implements the created
 plug-in interface PluggableDiagram, and call it DiagramHelper:
@@ -665,39 +667,39 @@ The extension of ArgoDiagram is specific to this example;
 the plug-in will provide a new ArgoUML diagram.
 
 <important>
-<para>
+                <para>
 Don't forget to do the localization stuff, because the
 plug-in might be used in all languages ArgoUML offers!
 </para>
-</important>
+              </important>
 
 </para>
-</listitem>
-<listitem>
-<para>
+          </listitem>
+          <listitem>
+            <para>
 ...do the localization stuff (not plug-in specific, but important)?
 </para>
-<para>...</para>
-</listitem>
+            <para>...</para>
+          </listitem>
 
-<listitem><para>...create a pluggable resource bundle?</para>
-<para>...</para>
-</listitem>
+          <listitem><para>...create a pluggable resource bundle?</para>
+            <para>...</para>
+          </listitem>
 
-<listitem><para>...create a new pluggable type?</para>
-<para>
+          <listitem><para>...create a new pluggable type?</para>
+            <para>
 <orderedlist>
-<listitem>
-<para>
+                <listitem>
+                  <para>
 Create the plug-ins interface
 </para>
-<para>
+                  <para>
 
 In the package org.argouml.application.api, create an
 interface that extends <classname>Pluggable</classname> (in the same package).
 The class name must begin with 'Pluggable'.
 <note>
-<para>
+                      <para>
 One of the main purposes of a plugin is
 to provide the capability to add an externally defined class
 that will be used by ArgoUML in the same way as a similar internal class.
@@ -706,9 +708,9 @@ in order to call the pluggable interface.
 Therefore this must be done in ArgoUML itself and 
 cannot be done in any module.
 </para>
-</note>
+                    </note>
 </para>
-<para>
+                  <para>
 It now inherits from <classname>ArgoModule</classname> the methods
 <programlisting>
     public boolean initializeModule();
@@ -742,35 +744,35 @@ and from <classname>Pluggable</classname> the methods
 
 and thus provides the basic mechanism that plug-ins need.
 </para>
-</listitem>
+                </listitem>
 
-<listitem>
-<para>
+                <listitem>
+                  <para>
 Decide in what context this is to be enabled and add calls there
 </para>
 
-<para>
+                  <para>
 It is useful for those plugins which actually use context
 to provide a helper method
 
 <funcsynopsis>
-<funcprototype>
-<funcdef>
+                      <funcprototype>
+                        <funcdef>
 Object[] <function>buildContext</function>
 </funcdef>
-<paramdef>classtype1 <parameter>parameter1</parameter></paramdef>
-<paramdef>classtype2 <parameter>parameter2</parameter></paramdef>
-</funcprototype>
-</funcsynopsis>
+                        <paramdef>classtype1 <parameter>parameter1</parameter></paramdef>
+                        <paramdef>classtype2 <parameter>parameter2</parameter></paramdef>
+                      </funcprototype>
+                    </funcsynopsis>
 which will serve two purposes.
 </para>
-<para>
+                  <para>
 First, it will provide a simple way of creating the Object[] parameter.
 </para>
-<para>
+                  <para>
 Second, it helps to document the context parameters within the class itself.
 </para>
-<para>
+                  <para>
 Again using <classname>PluggableMenu</classname> as an example,
 it contains the function
 
@@ -788,35 +790,35 @@ which is used as follows:
     }
 </programlisting>
 </para>
-</listitem>
-</orderedlist>
+                </listitem>
+              </orderedlist>
 
 </para>
-</listitem>
+          </listitem>
 
-</itemizedlist>
+        </itemizedlist>
 
 </para>
 
-</sect3>
+    </sect3>
 
-</sect2>
+  </sect2>
 
-<sect2>
-        <title>Tip for creating new modules (from Florent de Lamotte)</title>
-        <indexterm>
-          <primary>Modules</primary>
-          <secondary>understanding</secondary>
-        </indexterm>
+  <sect2>
+    <title>Tip for creating new modules (from Florent de Lamotte)</title>
+    <indexterm>
+      <primary>Modules</primary>
+      <secondary>understanding</secondary>
+    </indexterm>
     <note>
       <para>
 This description is for the old moduleloader.
 </para>
     </note>
 
-        <para>Florent wrote a small tutorial for creating modules. It can be found on the <ulink url="http://argopno.tigris.org/documentation/argouml.html">ArgoPNO website</ulink>.
+    <para>Florent wrote a small tutorial for creating modules. It can be found on the <ulink url="http://argopno.tigris.org/documentation/argouml.html">ArgoPNO website</ulink>.
 </para>
-</sect2>
+  </sect2>
 
 </sect1>
 

@@ -182,7 +182,7 @@ the document is deployed.
 There
 are some old references to "current" or "currently" also. If you encounter
 them, try to remove them!
-        </para>
+</para>
       </listitem>
       
       <listitem>
@@ -196,7 +196,7 @@ useing indexterms at all.
 They have been added 
 generously on certain parts but that makes the index
 strangely biased.
-        </para>
+</para>
 
         <para>
 Capitalize the part of the indexterms that are terms.
@@ -239,7 +239,9 @@ is in <filename>documentname.xml</filename>.
 Each chapter (or
         preface, glossary, appendix etc) is a separate file, defined as a
         system entity and included from this top level
-        file.</para></listitem>
+        file.
+</para>
+        </listitem>
 
       <listitem><para>There are some useful entities defined for common terms
         in the beginning of 
@@ -259,13 +261,20 @@ into <replaceable>0.16</replaceable>.
 </para>
       </listitem>
 
-      <listitem><para>XML comments are used throughout to explain what various
-        sections are trying to achieve.</para></listitem>
+      <listitem>
+        <para>
+XML comments are used throughout to explain what various
+sections are trying to achieve.
+</para>
+      </listitem>
 
-      <listitem><para>Cross-referencing requires use of <literal>id.</literal>
+      <listitem>
+        <para>
+Cross-referencing requires use of <literal>id.</literal>
         attributes. 
         Many of these used in the manual are of the following format, but the
-        use of this format is not obligatory any more.</para>
+        use of this format is not obligatory any more.
+</para>
         
         <para>
         To avoid confusion, use
@@ -276,7 +285,8 @@ into <replaceable>0.16</replaceable>.
         <sgmltag>sect5</sgmltag>, <literal>fig.</literal> for
         <sgmltag>figure</sgmltag>, <literal>tab.</literal> for
         <sgmltag>table</sgmltag> and <literal>gl</literal> for
-        <sgmltag>glossentry</sgmltag>.</para>
+        <sgmltag>glossentry</sgmltag>.
+</para>
 
         <para>A second prefix of <literal>tut.</literal> or
           <literal>ref.</literal> is allowed
@@ -286,7 +296,8 @@ into <replaceable>0.16</replaceable>.
           remainder should correspond to the file name. For example
           <literal>fig.ref.navigation_pane</literal> for a figure showing the
           explorer, with the diagram in
-          <literal>navigation_pane.gif</literal></para>
+          <literal>navigation_pane.gif</literal>
+</para>
 
 	<para>
 There is one exception to this and that is the 
@@ -315,12 +326,16 @@ class.
 </para>
       </listitem>
 
-      <listitem><para>Only use <sgmltag>glossterm</sgmltag> (for the term
+      <listitem>
+        <para>
+Only use <sgmltag>glossterm</sgmltag> (for the term
         <emphasis>or</emphasis> its abbreviation/acronym),
         <sgmltag>glossdef</sgmltag> and <sgmltag>glossseealso</sgmltag>
         within <sgmltag>glossentry</sgmltag>. Other entries are not
         implemented in the style sheets and so do not appear in the
-        glossary!</para></listitem>
+        glossary!
+</para>
+      </listitem>
 
       <listitem>
 	<para>
@@ -332,7 +347,7 @@ editors use 6 spaces), making documents unreadable between users.
       </listitem>
 
       <!--listitem>
-	<para>
+      <para>
 Indent only the tags, not the text.
 The Docbook source is kept in CVS that is a line-oriented tool. 
 This means that reindentation will be a major thing in CVS making
@@ -345,12 +360,12 @@ The contributions that Jeremy Bennet did for the 0.10 User Manual
 are not indented like this.
 Change it while changing the paragraphs.
 </para>
-      </listitem-->
+    </listitem-->
 
       <listitem>
 	<para>
-    The indentation size is 2.
-  </para>
+The indentation size is 2.
+</para>
       </listitem>
 
       <listitem>
@@ -367,31 +382,43 @@ Change it while changing the paragraphs.
 </para>
       </listitem>
 
-      <listitem><para>All block graphics should be encapsulated within
+      <listitem>
+        <para>
+All block graphics should be encapsulated within
         <sgmltag>figure</sgmltag>, allowing reference from around the
         text. Set attribute <sgmltag>float</sgmltag> to 1 to allow the figure
-        to float (makes life easier for printed version).</para></listitem>
+        to float (makes life easier for printed version).
+</para>
+      </listitem>
 
-      <listitem><para>All block graphics should be provided through
+      <listitem>
+        <para>
+All block graphics should be provided through
         <sgmltag>mediaobject</sgmltag> and provided with both an
         <sgmltag>imageobject</sgmltag> and comprehensive description in a
         <sgmltag>textobject</sgmltag>. This gives the potential of meaningful
         content where a diagram cannot be displayed for any
         reason. Where appropriate the <sgmltag>mediaobject</sgmltag> should be
-        wrapped by <sgmltag>screenshot</sgmltag>.</para></listitem>
+        wrapped by <sgmltag>screenshot</sgmltag>.
+</para>
+      </listitem>
 
-      <listitem><para>Inline graphics can be done through
+      <listitem>
+        <para>
+Inline graphics can be done through
         <sgmltag>inlinegraphic</sgmltag>, rather
         <sgmltag>inlinemediaobject</sgmltag>. A textual alternative is of
         little value in these circumstances. Where appropriate the
         <sgmltag>mediaobject</sgmltag> should be wrapped by
-        <sgmltag>guiicon</sgmltag></para></listitem>
+        <sgmltag>guiicon</sgmltag>
+</para>
+      </listitem>
 
       <!--listitem><para>In general use <sgmltag>literal</sgmltag> for computer
         related text (input and output). There are a huge number of possible
         specialist tags, but I suggest restriction to the following list:
-        <sgmltag>filename</sgmltag> and <sgmltag>application</sgmltag>.
-      </para></listitem-->
+      <sgmltag>filename</sgmltag> and <sgmltag>application</sgmltag>.
+    </para></listitem-->
     </itemizedlist>
   </sect1>
 
@@ -415,8 +442,6 @@ Change it while changing the paragraphs.
       so it does not have this problem.
     </para>
     
-    <para></para>
-
   </sect1>
   
   <!-- Conventions relating to use of emacs -->
@@ -426,7 +451,8 @@ Change it while changing the paragraphs.
 
     <para>If you use the psgml library within emacs, then editing and
       verifying XML gets easier. Information on using this facility is
-      inluded with psgml.</para>
+      inluded with psgml.
+</para>
 
     <itemizedlist>
       <listitem>
@@ -437,15 +463,23 @@ Please don't delete these!
 </para>
       </listitem>
 
-      <listitem><para>Adding
+      <listitem>
+        <para>
+Adding
         <literal>(setq&nbsp;sgml-set-face&nbsp;t)</literal> to your
         <filename>.emacs</filename> file will cause all tags and entities to
-        appear in boldface.</para></listitem>
+        appear in boldface.
+</para>
+      </listitem>
 
-      <listitem><para>Adding
+      <listitem>
+        <para>
+Adding
         <literal>(setq&nbsp;sgml-auto-activate-dtd&nbsp;t)</literal> to your
         <filename>.emacs</filename> file will ensure the DocBook DTD is
-        parsed as soon as the file is loaded.</para></listitem>
+        parsed as soon as the file is loaded.
+</para>
+      </listitem>
     </itemizedlist>
   </sect1>
         
@@ -541,7 +575,7 @@ is a good start particularly towards
 the second of these goals.
 </para>
 
-    <!-- Non-Goals -->
+      <!-- Non-Goals -->
 
       <sect3>
         <title>What the User Manual is not (currently)</title>
@@ -885,7 +919,7 @@ relating to additional &argouml; cognitive design features.
         </orderedlist>
       </sect3>
 
-        <!-- What questions still need answering -->
+      <!-- What questions still need answering -->
 
       <sect3>
         <title>Remaining Questions</title>

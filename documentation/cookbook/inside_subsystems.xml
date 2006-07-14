@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,9 +27,9 @@
 
 <chapter id="inside_subsystems">
   <title>Inside the subsystems</title> <warning>
-  <para> This chapter is currently under rework with new subsystem organization.
+    <para> This chapter is currently under rework with new subsystem organization.
     </para>
-  <para> Things that are not actually in place are: TargetManager </para>
+    <para> Things that are not actually in place are: TargetManager </para>
   </warning>
   <para>...</para>
   
@@ -50,7 +50,7 @@
   
   <sect1 id="reverseengineering">
     <title>Reverse Engineering Subsystem</title> <indexterm>
-    <primary>Reverse Engineering</primary> </indexterm>
+      <primary>Reverse Engineering</primary> </indexterm>
     <para> Purpose: Point where the different languages register that they know
       how to do reverse engineering and common reverse engineering functions for
       all languages. </para>
@@ -86,7 +86,7 @@
       <classname>org.argouml.language</classname>. </para>
     <para> At boot time, each language registers their interfaces in the
       <classname>org.argouml.language.Language</classname> register.
-      </para>
+    </para>
     <itemizedlist>
       <listitem>
         <para> Languages that generates a Notation implement the
@@ -252,10 +252,10 @@
     <title>Other languages</title>
     <para> Each other language supported by ArgoUML has its own subsystem. They
       are each different in level of support and implementation language.
-      </para>
+    </para>
     <para> Currently C++ has no reverse engineering but only code generation (and
       a very simple one at that). Java class files has only reverse engineering.
-      </para>
+    </para>
     <para>
       <mediaobject>
         <imageobject>
@@ -277,9 +277,9 @@
 
     <para> Purpose - Provide an infrastructure with menus, tabs and panes
       available for the other subsystems to fill with actions and contents.
-      </para>
+    </para>
     <para> This subsystem has no knowledge of UML, Critics, Diagrams, or Model.
-      </para>
+    </para>
     <para> The GUI Framework is located in
       <classname>org.argouml.ui</classname>.
     </para>
@@ -306,7 +306,7 @@
           <para>The TargetManager</para>
           <para> Located in
             <classname>org.argouml.ui.targetmanager</classname>.
-            </para>
+          </para>
           <para> Thanks to the architecture of ArgoUML of Modelelements and
             Figs, one rule has been decided upon (by mvw@tigris.org):
             <emphasis>The list of targets shall not contain any Fig that has an
@@ -359,7 +359,7 @@
         ArgoParser.SINGLETON.getProject() in
         org.argouml.xml.argo.ArgoParser) or a newly generated project (see
         Project.makeEmptyProject()).
-        </para>
+      </para>
     </sect2>
     
     <sect2>
@@ -370,7 +370,7 @@
         (See <xref linkend="critics"></xref>), Documentation, Style,
         Source, Constraints (an OCL constraints of the current object) (See
           <xref linkend="ocl"></xref>), and Tagged values. <warning>
-        <para> It is not clear in what subsystem Documentation, Style, Source,
+          <para> It is not clear in what subsystem Documentation, Style, Source,
           and Tagged values belong. </para> </warning> </para>
       
       <sect3 id="howdoi_detailspanel">
@@ -390,7 +390,7 @@
                 <programlisting>
 south: 	TabXXX
 </programlisting>
-                </para>
+              </para>
             </listitem>
             <listitem>
               <para>...remove a tab from the Details Panel?</para>
@@ -404,7 +404,7 @@ south: 	TabXXX
   
   <sect1 id="help">
     <title>Help System</title> <indexterm>
-    <primary>Help system</primary> </indexterm>
+      <primary>Help system</primary> </indexterm>
     <para> Purpose - to provide the menu actions that start the help and other
       documentation. To provide infrastructure that makes context sensitive
       help possible. </para>
@@ -416,7 +416,8 @@ south: 	TabXXX
       <!--
       TODO: It however violates the layer concept by providing menu items that fit
       into the GUI Framework.
-      --> </para>
+      -->
+</para>
     <para> Javahelp or some other help function will probably be used. </para>
     
   </sect1>
@@ -432,7 +433,7 @@ south: 	TabXXX
       ArgoUML but considered to be a precondition in the same respect as the user's
       host. </para>
     <para> This is a Java3 JRE so swing and awt can be used together with reflection.
-      </para>
+    </para>
   </sect1>
   
   <sect1 id="todoitems">
@@ -445,7 +446,7 @@ south: 	TabXXX
       removed automatically by the critics. They could also be created by other
       means. </para>
     <para> The To do items are located in <classname>org.argouml.?</classname>
-      </para>
+    </para>
     <para> The To do items is a Model subsystem. See <xref
         linkend="model_subsystems"></xref>. </para>
   </sect1>
@@ -466,7 +467,7 @@ south: 	TabXXX
       other objects. Note: the Explorer used to be called the Navigator. </para>
     <para> The Explorer is located in
       <classname>org.argouml.ui.explorer</classname> and sub-packages.
-      </para>
+    </para>
     <para> The Explorer is a Layer 2 subsystem. See <xref
         linkend="view_control_subsystems"></xref>. </para>
     
@@ -481,7 +482,7 @@ south: 	TabXXX
           </listitem>
           <listitem>
             <para> R2: right click on a node, which brings up a pop-up menu.
-              </para>
+            </para>
           </listitem>
           <listitem>
             <para> R3: selection of another perspective in the Combo box, which
@@ -582,7 +583,7 @@ south: 	TabXXX
           <listitem>
             <para> SPI2: New PerspectiveRules can be defined and registered
               with the 'library' of available rules. Status: not implemented
-              </para>
+            </para>
           </listitem>
           <listitem>
             <para> SPI3: New Orderings can be defined and registered with the
@@ -660,7 +661,7 @@ south: 	TabXXX
         the Icon), and the text is produced in the
         <methodname>convertValueToText(...)</methodname> method in
         <classname>org.argouml.ui.explorer.ExplorerTree</classname>.
-        </para>
+      </para>
     </sect2>
     
     <sect2>
@@ -677,7 +678,8 @@ south: 	TabXXX
                     by the User. The changes to the pre-defined built-in
                     defaults are stored in the
                     <filename>argo.user.properties</filename>
-                    file.</para>
+                    file.
+</para>
                 </listitem>
                 <listitem>
                   <para> If you want to do this as part of an extension to ArgoUML
@@ -691,7 +693,7 @@ south: 	TabXXX
             <para>...improve the PopUp menu?</para>
             <para> There is no way of doing this currently without modifying the
               core of ArgoUML. You could use SPI1 when it gets implemented.
-              </para>
+            </para>
           </listitem>
           <listitem>
             <para>...extend the Explorer in other ways?</para>
@@ -699,7 +701,7 @@ south: 	TabXXX
               implemented then it would be best to implement them and feedback
               your improvements to the ArgoUML project so that your code works on
               a recognized public API that will be maintained in the future.
-              </para>
+            </para>
           </listitem>
           
           <listitem>
@@ -707,24 +709,32 @@ south: 	TabXXX
             <para> You should create a GoRule/PerspectiveRule in
               <address>org/argouml/ui/explorer/rules</address>. There
               are plenty of examples to look at. The important things to get right
-              is of course that:</para>
+              is of course that:
+            </para>
             <para>
               <itemizedlist>
                 <listitem><para> you return the right children</para>
-                  </listitem>
-                <listitem><para> return the objects that the TreeModel must
+                </listitem>
+                <listitem>
+                  <para> return the objects that the TreeModel must
                   listen to to know when to update the node (and the list of
                   immediate children) After that you must register your GoRule
-                  in org/argouml/ui/explorer/PerspectiveManager</para>
-                  </listitem>
+                  in org/argouml/ui/explorer/PerspectiveManager
+                  </para>
+                </listitem>
                 <listitem><para> add it to the list in loadRules()</para>
-                  </listitem>
-                <listitem><para> perhaps add it to some of the default
+                </listitem>
+                <listitem>
+                  <para>
+perhaps add it to some of the default
                   perspectives in oldLoadDefaultPerspectives(), I guess And
                   then I think it should just be a matter of recompiling and
                   possibly switching to the perspective you added your rule
-                  to.</para></listitem>
-              </itemizedlist> </para>
+to.
+</para>
+                </listitem>
+              </itemizedlist>
+            </para>
           </listitem>
           
           <listitem>
@@ -739,7 +749,8 @@ south: 	TabXXX
           
           <listitem>
             <para>...navigate programmatically to a certain explorer element
-              so that its path is exploded?</para>
+              so that its path is exploded?
+            </para>
             <para>In general you can't. The Explorer tree is lazy in that it only
               explores the parts of the tree that the user has opened. And since
               the GoRules are general navigating to them would require a
@@ -845,7 +856,7 @@ south: 	TabXXX
               </itemizedlist> Just as in the old solution, whenever a module
               needs to do something to ArgoUML, there needs to be implemented an
               API, possibly with registration/deregistration and callbacks.
-              </para>
+            </para>
           </listitem>
           
           <listitem>
@@ -853,7 +864,7 @@ south: 	TabXXX
               be enabled and disabled individually from a special available
               modules window but have a default state that applies if the user
               hasn't taken action. Currently the default state is "enabled".
-              </para>
+            </para>
           </listitem>
           
           <listitem>
@@ -862,7 +873,7 @@ south: 	TabXXX
               to be enabled first or because some part of ArgoUML needs to be
               initialized first this is a problem. This is because the initial
               implementation is such that we have no register of dependencies.
-              </para>
+            </para>
             <para> The solution suggested is that the module loader persists in
               it's attempts to enable a module so that the order among the modules
               is not important. For this to work the modules needs to signal when
@@ -897,7 +908,7 @@ south: 	TabXXX
             <para> The scope of the modules. </para>
             <para> Modules are always enabled and disabled on a per-application
               (per jvm) basis and not on a per-project or per-frame basis.
-              </para>
+            </para>
           </listitem>
         </itemizedlist> </para>
     </sect2>
@@ -914,7 +925,7 @@ south: 	TabXXX
 
     <para> Purpose - To allow for editing of strings in the OCL language. </para>
     <para> The OCL is located in <classname>org.argouml.ocl</classname>.
-      </para>
+    </para>
     <para> The OCL is a Layer 3 subsystem. See <xref
         linkend="loadable_subsystems"></xref>. </para>
     <para> The OCL editor GUI interface is
@@ -929,10 +940,15 @@ south: 	TabXXX
       doesn't have anything to do with OCL constraints in your UML model. </para>
     <para> <classname>ArgoFacade</classname> is reused by
       <classname>GeneratorJava</classname> and
-      <classname>TabConstraints</classname>. </para>
-    <para> <indexterm>
-      <primary>Dresden OCL Toolkit</primary> </indexterm> Currently this
-      subsystem is more or less only Dresden OCL Toolkit and adaptation. </para>
+      <classname>TabConstraints</classname>.
+</para>
+    <para>
+      <indexterm>
+        <primary>Dresden OCL Toolkit</primary>
+      </indexterm>
+Currently this
+subsystem is more or less only Dresden OCL Toolkit and adaptation.
+</para>
     <para> Because of a problem with the interpretation of the UML specification
       and the OCL specification, the implementation of constraints in ArgoUML is
       only possible for Classes, Interfaces and Features (Attributes and

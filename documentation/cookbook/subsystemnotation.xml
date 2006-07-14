@@ -76,11 +76,11 @@
     <title>Notation subsystem part 1.</title>
 
     <screenshot><mediaobject>
-      <imageobject>
-        <imagedata format="PNG" align="center"
+        <imageobject>
+          <imagedata format="PNG" align="center"
                    fileref="images/cookbook/notation1.png"/>
-      </imageobject>
-    </mediaobject></screenshot>
+        </imageobject>
+      </mediaobject></screenshot>
   </figure>
 
   <para>
@@ -101,11 +101,11 @@
     <title>Notation subsystem part 2.</title>
 
     <screenshot><mediaobject>
-      <imageobject>
-        <imagedata format="PNG" align="center"
+        <imageobject>
+          <imagedata format="PNG" align="center"
                    fileref="images/cookbook/notation2.png"/>
-      </imageobject>
-    </mediaobject></screenshot>
+        </imageobject>
+      </mediaobject></screenshot>
   </figure>
 
 </sect1>

@@ -34,23 +34,23 @@
   <para id="comp-logging-purpose">
 Purpose - to provide an api for debug log and trace messages.
 </para>
-<para>
+  <para>
 The purpose of debug log and trace messages is:
 To provide a mechanism that allows the developer to
 enable output of minor events focused on a specific problem area
 and
 to follow what is going on inside ArgoUML.
 </para>
-<para>
+  <para>
 The Logging is located in <classname>org.argouml.???</classname>
 </para>
-<para>
+  <para>
 The Logging is a Layer 0 subsystem.
 </para>
-<para>
+  <para>
 Logging is currently implemented using log4j.
 </para>
-<para>
+  <para>
         <application>ArgoUML</application> uses the standard 
         <ulink url="http://jakarta.apache.org/log4j/">log4j</ulink>
         logging facility. The following sections deal with the current
@@ -58,98 +58,98 @@ Logging is currently implemented using log4j.
         default, logging is turned off and only the version
         information of all used libraries are shown on
         the console.
-    </para>
+  </para>
  
-    <sect2>
-        <title>What to Log in ArgoUML</title>
-        <para>
+  <sect2>
+    <title>What to Log in ArgoUML</title>
+    <para>
             Logging entries in log4j
             belong to exactly <emphasis>one</emphasis> level.
-            <itemizedlist>
-                <listitem>
-                  <para>
+      <itemizedlist>
+        <listitem>
+          <para>
                 The FATAL level designates very severe error events that 
                 will presumably lead the application to abort.
 Everything known about the reasons for the abortion of the application
 shall be logged.
 </para>
-                </listitem>
-                <listitem>
-                  <para>
+        </listitem>
+        <listitem>
+          <para>
                 The ERROR level designates error events that might still 
                 allow the application to continue running.
 Everything known about the reasons for this error condition shall be
 logged.
 </para>
-                </listitem>
-                <listitem>
-                  <para>
+        </listitem>
+        <listitem>
+          <para>
                 The WARN level designates potentially harmful situations.
 This is if CG can't find all the information required 
 and has to make something up.
 </para>
-                </listitem>
-                <listitem>
-                  <para>
+        </listitem>
+        <listitem>
+          <para>
                 The INFO level designates informational messages that 
                 highlight the progress of the application at coarse-grained 
                 level.
 This typically involves creating modules, subsystems, and singletons,
 loading and saving of files, imported files, opening and closing files.
 </para>
-                </listitem>
-                <listitem>
-                  <para>
+        </listitem>
+        <listitem>
+          <para>
                 The DEBUG Level designates fine-grained informational 
                 events that are most useful to debug an application.
 This could be everything happening within the application.
 </para>
-                </listitem>
-            </itemizedlist>
+        </listitem>
+      </itemizedlist>
 
             This list is ordered according to the priority of these
             logging entries i.e. if logging on level WARN is enabled
             for a particular class/package,
             all logging entries that belong to the above levels ERROR
             and FATAL are logged as well.
-        </para>
-        <para>
+    </para>
+    <para>
 For performance reasons, it is advised to do a check before 
 frequently passed DEBUG
 and INFO log4j messages (see <xref linkend="example.log4j.speed"/>).
 The purpose of this test is to avoid the creation of the argument.
-        </para>
-    </sect2>
+    </para>
+  </sect2>
     
-    <sect2>
-        <title>How to Create Log Entries...</title>
+  <sect2>
+    <title>How to Create Log Entries...</title>
     <indexterm>
       <primary>LOG</primary>
     </indexterm>
     <indexterm>
       <primary>Logger</primary>
     </indexterm>
-            <para>
+    <para>
                 You should <emphasis>not</emphasis> use
                 <function>System.out.println</function> in 
                 <application>ArgoUML</application> 
                 Java Code.
 The only exception of this rule is for output in non-GUI mode
 like to print the usage message in <filename>Main.java</filename>.
-            </para>
+    </para>
         
-        <para>
+    <para>
             To make log entries from within your own classes, you just
             need to follow the three steps below:
-            <orderedlist>
-                <listitem><para>Import the org.apache.log4j.Logger class</para></listitem>
-                <listitem><para>Get a Logger</para></listitem>
-                <listitem><para>Start Logging...</para></listitem>
-            </orderedlist>
-        </para>
-        <example>
-            <title>For log4j version 1.2.x</title>
-            <programlisting>
+      <orderedlist>
+        <listitem><para>Import the org.apache.log4j.Logger class</para></listitem>
+        <listitem><para>Get a Logger</para></listitem>
+        <listitem><para>Start Logging...</para></listitem>
+      </orderedlist>
+    </para>
+    <example>
+      <title>For log4j version 1.2.x</title>
+      <programlisting>
 import org.apache.log4j.Logger;
 ...
 public class <replaceable>theClass</replaceable> {
@@ -167,7 +167,7 @@ public class <replaceable>theClass</replaceable> {
         LOG.fatal("This is fatal. The program stops now working...");
     }
             </programlisting>
-        </example>
+    </example>
     <para>
 Notice that we in the ArgoUML project have decided to have all loggers
 private static final with a static initializer.
@@ -186,15 +186,15 @@ The reason for having a static initializer is that then all classes can
 do this in the same way and we don't ever risk to forgot to create the
 Logger.
 </para>
-        <para>
+    <para>
         For performance reasons, a check before the actual logging statement 
         saves the overhead of all the concatenations, data conversions and
         temporary objects that would be created otherwise. Even if logging 
         is turned off for DEBUG and/or INFO level.
-        </para>
-        <example id="example.log4j.speed">
-            <title>Improving on speed/performance</title>
-            <programlisting>
+    </para>
+    <example id="example.log4j.speed">
+      <title>Improving on speed/performance</title>
+      <programlisting>
     if (LOG.isDebugEnabled()) {
         LOG.debug("Entry number: " + i + " is " + entry[i]);
     }
@@ -202,23 +202,23 @@ Logger.
         LOG.info("Entry number: " + i + " is " + entry[i]);
     }
             </programlisting>
-        </example>
-        <warning>
-          <para>
+    </example>
+    <warning>
+      <para>
 Since this has a big impact also on the readability, 
 only use it where it is really needed 
 (like places passed several times per second or hundreds of times
 for every key the user presses).
 </para>
-        </warning>
-        <para>
+    </warning>
+    <para>
             For more information go to the log4j homepage at
             <ulink url="http://jakarta.apache.org/log4j/">http://jakarta.apache.org/log4j</ulink>.
-        </para>
+    </para>
 
-        <sect3>
-          <title>Reasoning around the performance issues</title>
-          <para>
+    <sect3>
+      <title>Reasoning around the performance issues</title>
+      <para>
 Most of the log statements passed in ArgoUML are passed with logging
 turned off.
 This means that the only thing log4j should do is to determine that
@@ -226,7 +226,7 @@ logging is off and return.
 Log4j has a really quick algorithm to determine if logging is on for
 a certain level so that is not a problem.
 </para>
-          <para>
+      <para>
 The problem is instead explained by noticing
 the following log statement:
             <programlisting>
@@ -253,57 +253,63 @@ If the toString() methods are simple you are still
 stuck with the overhead of creating a <classname>StringBuffer</classname>
 (and a <classname>String</classname> from the sb.toString()-statement.
 </para>
-      </sect3>
-    </sect2>
+    </sect3>
+  </sect2>
     
-    <sect2>
-        <title>How to Enable Logging...</title>
-        <para>
+  <sect2>
+    <title>How to Enable Logging...</title>
+    <para>
             log4j uses the command line parameter
             <parameter>-Dlog4j.configuration = URL</parameter>
             to configure itself where URL points to the location of
             your log4j configuration file.
-        </para>
-        <example>
-            <title>Various URLs</title>
-            <programlisting>
+    </para>
+    <example>
+      <title>Various URLs</title>
+      <programlisting>
 org/argouml/resource/<emphasis>filename.lcf</emphasis>              <co id="ex.url.package"/>
 
 http://localhost/shared/argouml/<emphasis>filename.lcf</emphasis>   <co id="ex.url.link"/>
 
 file://home/username/<emphasis>filename.lcf</emphasis>              <co id="ex.url.file"/>
             </programlisting>
-            <calloutlist>
-                    <callout arearefs="ex.url.package"><para>
+      <calloutlist>
+        <callout arearefs="ex.url.package"><para>
                         Reference to a configuration file <emphasis>filename.lcf</emphasis> 
-                        within argouml.jar.</para>
-                    </callout>
-                    <callout arearefs="ex.url.link"><para>
+                        within argouml.jar.
+</para>
+        </callout>
+        <callout arearefs="ex.url.link"><para>
                         Reference to a configuration file <emphasis>filename.lcf</emphasis> 
-                        on a remote server/localhost.</para>
-                    </callout>
-                    <callout arearefs="ex.url.file"><para>
+                        on a remote server/localhost.
+</para>
+        </callout>
+        <callout arearefs="ex.url.file"><para>
                         Reference to a configuration file <emphasis>filename.lcf</emphasis>
-                        on your localmachine.</para>
-                    </callout>
-            </calloutlist>
-        </example>
-        <sect3>
-            <title>...when running ArgoUML from the command line</title>
-            <para>
+                        on your localmachine.
+</para>
+        </callout>
+      </calloutlist>
+    </example>
+    <sect3>
+      <title>...when running ArgoUML from the command line</title>
+      <para>
                 There are currently two possibilities of running
                 <application>ArgoUML</application> from the command
                 line:
-                <orderedlist>
-                    <listitem><para>
-                        Run <application>ArgoUML</application> using
-                        <filename>argouml.jar</filename></para>
-                    </listitem>
-                    <listitem><para>
-                        Run <application>ArgoUML</application> using
-                        the ant script</para>
-                    </listitem>                    
-                </orderedlist>
+        <orderedlist>
+          <listitem>
+            <para>
+Run <application>ArgoUML</application> using
+<filename>argouml.jar</filename>
+</para>
+          </listitem>
+          <listitem>
+            <para>
+Run <application>ArgoUML</application> using the ant script
+</para>
+          </listitem>                    
+        </orderedlist>
 
                 In the first case, the configuration file is specified
                 directly on the command line, whereas in the latter
@@ -312,16 +318,16 @@ file://home/username/<emphasis>filename.lcf</emphasis>              <co id="ex.u
                 needs to be modified).
                 <application>ArgoUML</application> is then started as
                 usual with <command>./build run</command>.
-             </para>
-             <example>
-                <title>Command Line for argouml.jar</title>
-                <programlisting>
+      </para>
+      <example>
+        <title>Command Line for argouml.jar</title>
+        <programlisting>
 [localhost:~] billy% java -Dlog4j.configuration=URL -jar argouml.jar                        
                 </programlisting>
-            </example>
-            <example>
-                <title>Modification of build.xml</title>
-                <programlisting>
+      </example>
+      <example>
+        <title>Modification of build.xml</title>
+        <programlisting>
 &lt;!-- =================================================================== --&gt;
 &lt;!-- Run ArgoUML from compiled sources                                   --&gt;
 &lt;!-- =================================================================== --&gt;
@@ -336,74 +342,76 @@ file://home/username/<emphasis>filename.lcf</emphasis>              <co id="ex.u
     &lt;/java&gt;
 &lt;/target&gt;
                 </programlisting>
-            </example>
+      </example>
 
-        </sect3>
+    </sect3>
         
-        <sect3>
-            <title>...when running ArgoUML from WebStart</title>
-            <para>
+    <sect3>
+      <title>...when running ArgoUML from WebStart</title>
+      <para>
                 To view the console output, the WebStart user has to
                 set <parameter>Enable Java Console</parameter> in the
                 Java WebStart preferences.  In the same dialog, there
                 is also an option to save the Console Output to a
                 file.
-            </para>
-            <para>
+      </para>
+      <para>
                 As you cannot provide any userspecific parameters to a
                 WebStart Application from within WebStart,
 it is currently not possible to choose log4j configuration
 when running ArgoUML from Java Web Start.
-            </para>
-</sect3>
+      </para>
+    </sect3>
         
-        <sect3>
-            <title>...when running ArgoUML from NetBeans</title>
-            <para>
+    <sect3>
+      <title>...when running ArgoUML from NetBeans</title>
+      <para>
                 At the time of writing this paragraph, it is not possible to 
                 set the logging configuration file on a per project basis in
                 NetBeans.
                 Instead, the Global Options of 
                 [Debbuging and Execution/Execution Types/External 
                 Execution/External Process] need to be changed.
-            </para>
-            <example>
-                <title>External Execution Property (Arguments)</title>
-                <programlisting>
+      </para>
+      <example>
+        <title>External Execution Property (Arguments)</title>
+        <programlisting>
 -cp {filesystems}{:}{classpath}{:}{library} <emphasis>-Dlog4j.configuration=URL</emphasis>
     {classname} {arguments}
                 </programlisting>
-            </example>
-        </sect3>
-    </sect2>
+      </example>
+    </sect3>
+  </sect2>
     
-    <sect2>
-        <title>How to Customize Logging...</title>
-        <para>
+  <sect2>
+    <title>How to Customize Logging...</title>
+    <para>
             There are some sample configuration files provided in 
             <parameter>org.argouml.resource</parameter>. Modify these according
             to your needs.
             Or alternatively, you can try <ulink url="http://www.japhy.de/configLog4j">
             configLog4j</ulink> to assist yourself in creating a log4j configuration file.
-        </para>    
-    </sect2>
+    </para>    
+  </sect2>
     
-    <sect2>
-        <title>References</title>
-        <itemizedlist>
-            <listitem><para>
+  <sect2>
+    <title>References</title>
+    <itemizedlist>
+      <listitem><para>
                 The log4j project homepage at 
                     <ulink url="http://jakarta.apache.org/log4j/">http://jakarta.apache.org/log4j</ulink>
-            </para></listitem>
-            <listitem><para>
+        </para>
+      </listitem>
+      <listitem><para>
                 The configlog4j homepage at
                     <ulink url="http://www.japhy.de/configLog4j/">http://www.japhy.de/configLog4j</ulink>
-            </para></listitem>
-            <!-- TO DO
+        </para>
+      </listitem>
+      <!-- TO DO
                 ... add links to other log4j tutorials etc.
             -->
-        </itemizedlist>
-</sect2>
+    </itemizedlist>
+  </sect2>
 </sect1> <!-- End of logging -->
 
 <!-- Local stuff for Emacs - please do not delete

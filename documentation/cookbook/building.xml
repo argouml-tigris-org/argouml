@@ -97,26 +97,26 @@ instead it is the complete development environment for
 all work within the ArgoUML project.
 </para>
 
-      <sect2>
-        <title>Which tools do I need to build ArgoUML?</title>
-        <indexterm>
-          <primary>Building</primary>
-          <secondary>tools</secondary>
-        </indexterm>
-        <indexterm>
-          <primary>Tools</primary>
-          <secondary>needed for building</secondary>
-        </indexterm>
-        <para>
+    <sect2>
+      <title>Which tools do I need to build ArgoUML?</title>
+      <indexterm>
+        <primary>Building</primary>
+        <secondary>tools</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Tools</primary>
+        <secondary>needed for building</secondary>
+      </indexterm>
+      <para>
 These are the tools not included in the CVS repository that
 you need to work with ArgoUML.
 </para>
-        <itemizedlist>
-          <listitem>
-            <para>
+      <itemizedlist>
+        <listitem>
+          <para>
 A computer with an Internet connection and free disk space for your work.
 </para>
-            <para>
+          <para>
 100MB is enough to download everything from the repository.
 (Currently March 2003 it is 68MB).
 150MB is enough to download all and build the tool and the documentation.
@@ -124,48 +124,48 @@ A computer with an Internet connection and free disk space for your work.
 250MB is enough to build it all 
 (Javadocs, documentation, classes, packages, ...).
 </para>
-          </listitem>
-          <listitem>
-            <para>
+        </listitem>
+        <listitem>
+          <para>
 CVS for getting the files
 and committing source code updates (or an IDE with a CVS client built-in).
 </para>
-          </listitem>
-          <listitem>
-            <para>
+        </listitem>
+        <listitem>
+          <para>
 JDK, at least version 1.4.2 (includes the Java compiler)
 </para>
-          </listitem>
-        </itemizedlist>
+        </listitem>
+      </itemizedlist>
 
-    <para>
+      <para>
 For building the documentation from DocBook format, 
 you also need the following tools:
 </para>
-    <itemizedlist>
-      <listitem>
-        <para>
-          <indexterm>
-            <primary>DocBook</primary>
-          </indexterm>
-          <indexterm>
-            <primary>XSL style sheets</primary>
-          </indexterm>
+      <itemizedlist>
+        <listitem>
+          <para>
+            <indexterm>
+              <primary>DocBook</primary>
+            </indexterm>
+            <indexterm>
+              <primary>XSL style sheets</primary>
+            </indexterm>
 DocBook XSL style sheets.
 </para>
 
-        <para>
+          <para>
 There exists rules in the
 <filename>argouml/documentation/build.xml</filename>
 for downloading this correctly.
 </para>
-      </listitem>
+        </listitem>
 
         <listitem id="download-jimi">
           <para>
-          <indexterm>
-            <primary id="download-jimi-name">Jimi</primary>
-          </indexterm>
+            <indexterm>
+              <primary id="download-jimi-name">Jimi</primary>
+            </indexterm>
 Jimi
 </para>
           <para>
@@ -197,113 +197,113 @@ If the previous step put the extracted file elsewhere, copy or move this file in
 	    </orderedlist>
 </para>
 	</listitem>
-    </itemizedlist>
-      </sect2>
-      <sect2>
-	<title>
+      </itemizedlist>
+    </sect2>
+    <sect2>
+      <title>
 Which tools are part of the ArgoUML development environment?
 </title>
-	<indexterm>
-	  <primary>Tools</primary>
-	  <secondary>used</secondary>
-	</indexterm>
-	<para>
+      <indexterm>
+        <primary>Tools</primary>
+        <secondary>used</secondary>
+      </indexterm>
+      <para>
 These tools are provided by the development environment that you
 get when you check out from CVS.
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>
+      <itemizedlist>
+        <listitem>
+          <para>
 	    <indexterm>
 	      <primary>Ant</primary>
 	    </indexterm>
 Ant, the tool to manage compiling and packaging.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+        </listitem>
+        <listitem>
+          <para>
 mdrant, the integration allowing to run mdr from ant.
 </para>
 	</listitem>
 
-	  <listitem>
-	    <para>
+        <listitem>
+          <para>
 	    <indexterm>
 	      <primary>ANTLR</primary>
 	    </indexterm>
 ANTLR, for regenerating the built-in parser.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+        </listitem>
+        <listitem>
+          <para>
 	    <indexterm>
 	      <primary>JUnit</primary>
 	    </indexterm>
 JUnit, for running the JUnit test cases.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+        </listitem>
+        <listitem>
+          <para>
 	    <indexterm>
 	      <primary>JDepend</primary>
 	    </indexterm>
 JDepend, for examining the code.
 </para>
-	  </listitem>
-	</itemizedlist>
-	<para>
+        </listitem>
+      </itemizedlist>
+      <para>
 For building the documentation from DocBook format, 
 these tools are also provided with the development environment that
 you get when you check out from CVS.
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>
+      <itemizedlist>
+        <listitem>
+          <para>
 Saxon for building documentation from DocBook format.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+        </listitem>
+        <listitem>
+          <para>
 	    <indexterm>
 	      <primary>fop</primary>
 	    </indexterm>
 fop for generating PDF versions of the DocBook format.
 </para>
-	    <para>
+          <para>
 To build a PDF file with the pictures included you need Jimi
 that is downloaded separately.
 See 
 <xref linkend="download-jimi" endterm="download-jimi-name"/>.
 </para>
-	  </listitem>
-	</itemizedlist>
-      </sect2>
-      <sect2>
-	<title>What libraries are needed and used by ArgoUML?</title>
-	<para>
+        </listitem>
+      </itemizedlist>
+    </sect2>
+    <sect2>
+      <title>What libraries are needed and used by ArgoUML?</title>
+      <para>
 These libraries are provided in the development environment that
 you get when you check out CVS.
 They are checked by the Java compiler when compiling, 
 needed for running ArgoUML and therefore distributed with ArgoUML.
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>
+      <itemizedlist>
+        <listitem>
+          <para>
 	    <indexterm>
 	      <primary>MDR</primary>
 	    </indexterm>
 MDR, the Netbeans Model Data Repository.
 </para>
-	    <para>
+          <para>
 This library provides services to manipulate both the UML
 metamodel and the users model.  It includes services to
 serial/deserialize to/from XMI.
 </para>
 
-	  </listitem>
+        </listitem>
 
-	  <listitem>
-	    <para>
+        <listitem>
+          <para>
 	    <indexterm>
 	      <primary>GEF</primary>
 	    </indexterm>
@@ -311,7 +311,7 @@ serial/deserialize to/from XMI.
 GEF graph editing framework, available from 
 <ulink url="http://gef.tigris.org">gef.tigris.org</ulink>.
 </para>
-	    <para>
+          <para>
 It is also recommended that you check out GEF at the same time as you
 check out ArgoUML because many things in Argo relate to GEF and it is
 quite handy to have the source code available.
@@ -320,32 +320,32 @@ GEF is also residing at Tigris so you can do a simple
 (with the same checkout arguments you had when you checked out ArgoUML)
 to get it.
 </para>
-	  </listitem>
+        </listitem>
 
-	  <listitem>
-	    <para>
+        <listitem>
+          <para>
 The OCL package to parse and run the Object Constraint Language things.
 </para>
-	    <para>
+          <para>
 Details about the package are available from SourceForge
 <ulink url="http://dresden-ocl.sourceforge.net/">OCL Compiler</ulink>.
 </para>
-	  </listitem>
+        </listitem>
 
-	  <listitem>
-	    <para>
+        <listitem>
+          <para>
 	    <indexterm>
 	      <primary>log4j</primary>
 	    </indexterm>
 log4j, a library with infrastructure for logs.
 </para>
-	  </listitem>
+        </listitem>
 
-	  <listitem>
-	    <para>
+        <listitem>
+          <para>
 antlrall, the run-time part of the ANTLR tool.
 </para>
-	  </listitem>
+        </listitem>
 
 
 
@@ -359,30 +359,30 @@ This is included in the files
 jmi.jar, jmiutils.jar, mdrapi.jar, mof.jar, nbmdr.jar, openide-util.jar.
 </para>
 	</listitem>
-	</itemizedlist>
-      </sect2>
+      </itemizedlist>
+    </sect2>
 
- </sect1>
-    <sect1 id="cvs_checkout">
-      <title id="cvs_checkout_term">Download from the CVS repository</title>
-      <indexterm>
-	<primary>CVS</primary>
-	<secondary>checking out from</secondary>
-      </indexterm>
-      <indexterm>
-	<primary>Checking out from CVS</primary>
-      </indexterm>
-      <para>
+  </sect1>
+  <sect1 id="cvs_checkout">
+    <title id="cvs_checkout_term">Download from the CVS repository</title>
+    <indexterm>
+      <primary>CVS</primary>
+      <secondary>checking out from</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Checking out from CVS</primary>
+    </indexterm>
+    <para>
 The CVS repository at Tigris is accessible using the pserver protocol.
 The CVS root is <filename>/cvs</filename> at cvs.tigris.org.
 You use your Tigris login and Tigris password.
 </para>
-      <para>
+    <para>
         The first thing you will need to do, is select the CVS client. 
         Most of the description below is about the command line CVS tool, 
         which is available for most operating systems.
-      </para>
-      <para>
+</para>
+    <para>
         Whatever tool you use, 
         do not checkout into a directory that contains spaces 
         in a directory name somewhere in the path!
@@ -390,70 +390,70 @@ You use your Tigris login and Tigris password.
         violates this advise 3 times.
         Reason: You can not build the documentation.
         (BTW: Building ArgoUML itself works.)
-      </para>
-      <para>
+</para>
+    <para>
         In case you use the command-line CVS client, the above
         means that you will set the <varname>CVSROOT</varname>-variable to
         <parameter>:pserver:<replaceable>login</replaceable>@cvs.tigris.org:/cvs</parameter>
         where <replaceable>login</replaceable> is your Tigris login.
         This needs to be done before the first checkout.
         After that the root will be remembered by the checked out copy.
-      </para>
+</para>
 
-      <para>
+    <para>
         If you use one of the CVS clients with a graphical user interface,
         (like WinCVS, TortoiseCVS, ...),
         or an IDE with a built-in CVS client (like Eclipse or NetBeans)
         then configuration will be done by filling in fields. These fields mean
         the following:
-      </para>
-      <itemizedlist>
-        <listitem>
-          <para>
+</para>
+    <itemizedlist>
+      <listitem>
+        <para>
             Type: pserver
-          </para>
-        </listitem>
-        <listitem>
-          <para>
+</para>
+      </listitem>
+      <listitem>
+        <para>
             User: Your Tigris login name
-          </para>
-        </listitem>
-        <listitem>
-          <para>
+</para>
+      </listitem>
+      <listitem>
+        <para>
             Host: cvs.tigris.org
-          </para>
-        </listitem>
-        <listitem>
-          <para>
+</para>
+      </listitem>
+      <listitem>
+        <para>
             Repository: /cvs
-          </para>
-        </listitem>
-      </itemizedlist>
+</para>
+      </listitem>
+    </itemizedlist>
       
-      <para>
+    <para>
         If you used the command line CVS client before, then your Tigris password 
         is stored in the file <filename>~/.cvspass</filename>. 
         Some graphical UI CVS clients are
         able to use this password, in others you'll have to enter it again.
-      </para>
+</para>
 
-      <para>
+    <para>
 The next thing to do is to login. It is done using the command:
 <command>cvs login</command>.
 This only needs to be done once and then the account on your machine
 remembers this.
 </para>
-      <para>
+    <para>
 Then you do the actual checking out.
 <command>cvs checkout <replaceable>directory</replaceable></command>.
 </para>
 
-      <para>
+    <para>
 The easiest thing to do now, is
 just check out the top-level 
 <parameter>argouml</parameter> project.  
 </para>
-<para>This triples the size of the download, 
+    <para>This triples the size of the download, 
 mainly due to the images in the
 <filename class="directory">argouml/documentation</filename>
 and
@@ -464,7 +464,7 @@ to check out "argouml" completely.
 Describe the details as: "If you want to limit the download size,..." -->
 </para>
 
-      <para>Alternatively, if you want to limit the download size,
+    <para>Alternatively, if you want to limit the download size,
 the CVS repository directories you need to check out to work with ArgoUML are
 <filename class="directory">argouml/lib</filename>,
 <filename class="directory">argouml/tools</filename>,
@@ -473,20 +473,20 @@ the CVS repository directories you need to check out to work with ArgoUML are
 and
 <filename class="directory">argouml/tests</filename>.
 </para>
-      <para>
+    <para>
 If you just want to build the documentation you check out the directories
 <filename class="directory">argouml/lib</filename>,
 <filename class="directory">argouml/tools</filename>
 and
 <filename class="directory">argouml/documentation</filename>.
 </para>
-      <para>
+    <para>
 If you want to work with the web site you check out 
 the corresponding directory
 <parameter>argouml/www</parameter>.
 </para>
 
-      <para>
+    <para>
 If you don't want to acquire a Tigris login to do this you can use the
 "guest" account with an empty password.
 Since the checked out copy remembers the login you used to do the
@@ -494,7 +494,7 @@ check out, if you do this, you will have to remember to delete this
 copy and start over if you get a developer role in the project and
 want to do commits directly.
 </para>
-    </sect1>
+  </sect1>
 
 
   <sect1 id="Build">
@@ -513,16 +513,16 @@ Some developers use the integrated build tools of Eclipse and NetBeans, but alwa
 make sure that your work compiles with the standard Ant build process.
 There are also some Java files generated by magic scripts in Ant that
 you need to create before opening with the IDE.
-     </para>
-      <para>
+</para>
+    <para>
 Ant is a tool written in Java developed for Apache that reads an XML-file
 with rules telling what to compile to what result and what files to include
 in what jar-file.
 </para>
-      <indexterm>
-	<primary><filename>build.xml</filename></primary>
-      </indexterm>
-      <para>
+    <indexterm>
+      <primary><filename>build.xml</filename></primary>
+    </indexterm>
+    <para>
 The rule file is named <filename>build.xml</filename>.
 There is one of those in every separate build directory
 (<filename class="directory">argouml/src_new</filename>,
@@ -531,18 +531,18 @@ There is one of those in every separate build directory
 <filename class="directory">argouml/modules/<replaceable>whatever</replaceable></filename>).
 </para>
 
-      <sect2>
-	<title>How ANT is run from the ArgoUML development environment</title>
-	<indexterm>
-	  <primary>ANT</primary>
-	  <secondary>how it is used</secondary>
-	</indexterm>
-	<para>
+    <sect2>
+      <title>How ANT is run from the ArgoUML development environment</title>
+      <indexterm>
+        <primary>ANT</primary>
+        <secondary>how it is used</secondary>
+      </indexterm>
+      <para>
 For your convenience the ant tool of the correct version is present in the
 CVS repository of ArgoUML in the file
 <filename class="libraryfile">argouml/tools/ant-1.6.2/lib/ant.jar</filename>.
 </para>
-	<para>
+      <para>
 It is possible to start ant with the command
 <command>../tools/ant-1.6.2/bin/ant <replaceable>arg</replaceable></command>
 and in the modules
@@ -553,7 +553,7 @@ On windows the command
 <command>..\tools\ant-1.6.2\bin\ant <replaceable>arg</replaceable></command>
 runs the program <filename>ant.bat</filename>.
 </para>
-	<para>
+      <para>
 To keep you from having to write this and keeping track if you are
 working with a module or not
 there are two scripts (one for Unix and one for
@@ -562,11 +562,11 @@ Windows) that are called <filename>build.sh</filename> and
 of the directories that contain a <filename>build.xml</filename> file.
 These two scripts run the equivalence of the above paths.
 </para>
-	<para>
+      <para>
 By setting JAVA_HOME to different values you can at different times
 build with different versions of JDK and Java.
 </para>
-	<para>
+      <para>
 To use different versions of ANT,
 you are responsible for installing your own version.
 Also, you must execute
@@ -575,55 +575,57 @@ rather than
 <command>build <replaceable>target</replaceable></command>.
 </para>
 
-	<sect3>
-	  <title>Compiling for Unix</title>
-	  <indexterm>
-	    <primary>Compiling</primary>
-	    <secondary>Unix</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Unix</primary>
-	    <secondary>compilation</secondary>
-	  </indexterm>
-	  <para>
+      <sect3>
+        <title>Compiling for Unix</title>
+        <indexterm>
+          <primary>Compiling</primary>
+          <secondary>Unix</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Unix</primary>
+          <secondary>compilation</secondary>
+        </indexterm>
+        <para>
 Here is what you need to do in order to compile and run
 your checked out copy of ArgoUML under Unix.
 </para>
-	  <orderedlist>
-	    <listitem>
-	      <para><command>JAVA_HOME=<replaceable>/where/you/have/installed/jdk</replaceable></command></para>
-	      <para><command>export JAVA_HOME</command></para>
-	      <para>
+        <orderedlist>
+          <listitem>
+            <para><command>JAVA_HOME=<replaceable>/where/you/have/installed/jdk</replaceable></command></para>
+            <para><command>export JAVA_HOME</command></para>
+            <para>
 This is for sh-style shells like sh, ksh, zsh and bash. If you use
 csh-style shells like csh and tcsh you will instead have to write
 <command>setenv JAVA_HOME <replaceable>/where/you/have/installed/jdk</replaceable></command>.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>After checking out with CVS, the shell files (build.sh,...) 
+          </listitem>
+          <listitem>
+            <para>After checking out with CVS, the shell files (build.sh,...) 
 	      and executables (ant,...) have the wrong attributes. 
 	      The CVS documentation says: "Files also lose
           their ownerships and permissions during repository transactions." 
 	      Hence, you have to make such files executable 
 	      before you will be able to run them.
 	      </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+          </listitem>
+          <listitem>
+            <para>
 Change the current directory to the directory you are building
 </para>
-	      <para>
+            <para>
 <command>cd <replaceable>/your/checked/out/copy/of/argouml/src_new</replaceable></command>
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>Start Ant with no parameters to get a list of build targets 
-          with descriptions</para>
-          <para> <command>./build.sh</command></para>
-	    </listitem>
-	    <listitem>
+          </listitem>
+          <listitem>
+            <para>
+Start Ant with no parameters to get a list of build targets 
+with descriptions
+</para>
+            <para> <command>./build.sh</command></para>
+          </listitem>
+          <listitem>
       	      
-      	      <para>
+            <para>
               <indexterm>
                 <primary>Ant target</primary>
                 <secondary>run</secondary>
@@ -633,9 +635,9 @@ Change the current directory to the directory you are building
               </indexterm>
 Run ArgoUML using <command>./build.sh run</command>
 </para>
-	    </listitem>
-	  </orderedlist>
-	      <para>
+          </listitem>
+        </orderedlist>
+        <para>
 If you change something, running the run target again will
 build
 and run.
@@ -648,92 +650,94 @@ you need to use the clean target
 to re-compile everything,
 since we have not set up dependencies correctly.
 </para>
-	</sect3>
-	<sect3>
-	  <title>Compiling for Windows</title>
-	  <indexterm>
-	    <primary>Compiling</primary>
-	    <secondary>Windows</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Windows</primary>
-	    <secondary>Compilation</secondary>
-	  </indexterm>
+      </sect3>
+      <sect3>
+        <title>Compiling for Windows</title>
+        <indexterm>
+          <primary>Compiling</primary>
+          <secondary>Windows</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Windows</primary>
+          <secondary>Compilation</secondary>
+        </indexterm>
 
-  	  <indexterm>
-	    <primary>Compiling</primary>
-	    <secondary>Cygwin</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Cygwin Compilation</primary>
-	  </indexterm>
-	  <para>
+        <indexterm>
+          <primary>Compiling</primary>
+          <secondary>Cygwin</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Cygwin Compilation</primary>
+        </indexterm>
+        <para>
 If you do this from Cygwin you work just like for Unix.
 </para>
 
-	  <orderedlist>
-	    <listitem>
-	      <para>
+        <orderedlist>
+          <listitem>
+            <para>
 <command>set JAVA_HOME=<replaceable>\where\you\have\installed\jdk</replaceable></command>
 <!-- TODO: MVW: My setting includes a "\" at the end, and works. 
 Does it matter? -->
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+          </listitem>
+          <listitem>
+            <para>
 Change the current directory to the directory you are building
 </para>
-	      <para>
+            <para>
 <command>cd <replaceable>\your\checked\out\copy\of\argouml\src_new</replaceable></command>
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>Start Ant with "-p" parameter to get a list of build targets 
-          with descriptions</para>
-	      <para><command>build -p</command></para>
-	    </listitem>
-	    <listitem>
+          </listitem>
+          <listitem>
+            <para>
+Start Ant with "-p" parameter to get a list of build targets 
+with descriptions
+</para>
+            <para><command>build -p</command></para>
+          </listitem>
+          <listitem>
 
-      	      <para>
+            <para>
 Run ArgoUML using <command>build run</command>
 </para>
-	    </listitem>
-	  </orderedlist>
+          </listitem>
+        </orderedlist>
 
 
 
-	</sect3>
-	<sect3>
-	  <title>Customizing and configuring your build</title>
-	  <indexterm>
-	    <primary>Compiling</primary>
-	    <secondary>customized</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>build.properties</primary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>default.properties</primary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>argouml.build.properties</primary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Ant target</primary>
-            <secondary>list-property-files</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>list-property-files ant target</primary>
-	  </indexterm>
-	  <para>
+      </sect3>
+      <sect3>
+        <title>Customizing and configuring your build</title>
+        <indexterm>
+          <primary>Compiling</primary>
+          <secondary>customized</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>build.properties</primary>
+        </indexterm>
+        <indexterm>
+          <primary>default.properties</primary>
+        </indexterm>
+        <indexterm>
+          <primary>argouml.build.properties</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Ant target</primary>
+          <secondary>list-property-files</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>list-property-files ant target</primary>
+        </indexterm>
+        <para>
 It is possible to customize your compilation of ArgoUML.
 </para>
-	  <para>
+        <para>
 If you issue the command
 <command>build list-property-files</command>
 you can see what files are searched for properties.
 </para>
-	  <para>
+        <para>
 Don't change the
 <filename class="libraryfile">argouml/src_new/default.properties</filename>
 file (unless you are working with updating the development environment
@@ -742,7 +746,7 @@ Instead create one of the other files locally on you machine.
 The properties in these files have precedence over the properties in
 <filename class="libraryfile">argouml/src_new/default.properties</filename>.
 </para>
-	  <para>
+        <para>
 Remember that if you do this, you have modified your development
 environment.
 To be sure that you will not break anything for
@@ -751,93 +755,93 @@ developed using this modified environment,
 remove these files temporarily for the compiling and testing
 you do just before you commit.
 	  </para>
-	</sect3>
-	<sect3>
-	  <title>Building Javadoc</title>
-	  <indexterm>
-	    <primary>Javadoc building</primary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Building</primary>
-	    <secondary>Javadoc</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Ant target</primary>
-            <secondary>prepare-docs</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>prepare-docs ant target</primary>
-	  </indexterm>
-	  <para>
+      </sect3>
+      <sect3>
+        <title>Building Javadoc</title>
+        <indexterm>
+          <primary>Javadoc building</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Building</primary>
+          <secondary>Javadoc</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Ant target</primary>
+          <secondary>prepare-docs</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>prepare-docs ant target</primary>
+        </indexterm>
+        <para>
 By running ANT again using <command>build prepare-docs</command>
 the Javadoc documentation is generated and put into
 <filename class="directory">argouml/build/javadocs</filename>.
 </para>
-	</sect3>
-        <sect3>
-          <title>Building one of the modules</title>
-          <para>
+      </sect3>
+      <sect3>
+        <title>Building one of the modules</title>
+        <para>
 If you want to run ArgoUML with modules enabled the 
 <filename>build.xml</filename>s are set up to do this in two ways:
-            <orderedlist>
-              <listitem>
-                <para>Test just one module</para>
-                <orderedlist>
-                  <listitem>
-                    <para>Build ArgoUML, the package</para>
-                    <para>
+          <orderedlist>
+            <listitem>
+              <para>Test just one module</para>
+              <orderedlist>
+                <listitem>
+                  <para>Build ArgoUML, the package</para>
+                  <para>
 This is done with <command>ant package</command>
 in the <filename class="directory">argouml/src_new</filename>-directory.
 </para>
-                  </listitem>
-                  <listitem>
-                    <para>Run the module</para>
-                    <para>
+                </listitem>
+                <listitem>
+                  <para>Run the module</para>
+                  <para>
 This is done with <command>ant run</command>-command 
 in the 
 <filename class="directory">
 argouml/modules/<replaceable>whatever</replaceable>
 </filename>-directory.
 </para>
-                  </listitem>
-                </orderedlist>
-              </listitem>
-              <listitem>
-                <para>Test several modules together</para>
-                <orderedlist>
-                  <listitem>
-                    <para>Build ArgoUML, the package</para>
-                    <para>
+                </listitem>
+              </orderedlist>
+            </listitem>
+            <listitem>
+              <para>Test several modules together</para>
+              <orderedlist>
+                <listitem>
+                  <para>Build ArgoUML, the package</para>
+                  <para>
 This is done with <command>ant package</command>
 in the <filename class="directory">argouml/src_new</filename>-directory.
 </para>
-                  </listitem>
-                  <listitem>
-                    <para>Compile and install the modules</para>
-                    <para>
+                </listitem>
+                <listitem>
+                  <para>Compile and install the modules</para>
+                  <para>
 This is done with <command>ant install</command>-command
 in each of the 
 <filename class="directory">
 argouml/modules/<replaceable>whatever</replaceable>
 </filename>-directories.
 </para>
-                  </listitem>
-                  <listitem>
-                    <para>Start ArgoUML</para>
-                    <para>
+                </listitem>
+                <listitem>
+                  <para>Start ArgoUML</para>
+                  <para>
 This is done with <command>ant run</command>
 in the <filename class="directory">argouml/src_new</filename>-directory.
 </para>
-                  </listitem>
-                </orderedlist>
-                <para>
+                </listitem>
+              </orderedlist>
+              <para>
 This will start ArgoUML with all modules available.
 </para>
-              </listitem>
-            </orderedlist>         
+            </listitem>
+          </orderedlist>         
 </para>
-        </sect3>
-      </sect2>
+      </sect3>
+    </sect2>
 
     <sect2>
       <title>Developing in a subproject</title>
@@ -1070,15 +1074,15 @@ from the argouml project.
 
 
 
-      <sect2>
-	<title>Troubleshooting the development build</title>
-	<indexterm>
-	  <primary>Troubleshooting</primary>
-	  <secondary>development build</secondary>
-	</indexterm>
-	<sect3>
-	  <title>Compiling failed. Any suggestions?</title>
-	  <para>
+    <sect2>
+      <title>Troubleshooting the development build</title>
+      <indexterm>
+        <primary>Troubleshooting</primary>
+        <secondary>development build</secondary>
+      </indexterm>
+      <sect3>
+        <title>Compiling failed. Any suggestions?</title>
+        <para>
 It might be that some other developer has made a mistake in checking
 in things that contain errors, or forgotten to check in some files
 in a change.
@@ -1087,14 +1091,14 @@ Look at the last couple of hours on the
 developers mailing list</ulink>!
 It is probably on fire.
 </para>
-          <indexterm>
-            <primary>Ant target</primary>
-            <secondary>clean</secondary>
-          </indexterm>
-          <indexterm>
-            <primary>clean ant target</primary>
-          </indexterm>
-	  <para>
+        <indexterm>
+          <primary>Ant target</primary>
+          <secondary>clean</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>clean ant target</primary>
+        </indexterm>
+        <para>
 Another reason for problems is an unclean local source tree.
 This means that if you have updated different parts of your source
 tree at different times it might contain inconsistencies.
@@ -1104,32 +1108,32 @@ before trying to build again.
 If that doesn't work remove your checked out copy completely and 
 get it all again through CVS.
 </para>
-	  <para>
+        <para>
 Another reason might be that you have an 
 <filename>build.properties</filename> or
 <filename>argouml.build.properties</filename>
 file that you have been working with earlier
 and that is doing something. If in doubt, remove those files.
 </para>
-	  <para>
+        <para>
 If nothing helps, ask the 
 <ulink url="mailto:dev@argouml.tigris.org">developers mailing list</ulink>!
 </para>
-	</sect3>
-	<sect3>
-	  <title>Can't commit my changes?</title>
-	  <indexterm>
-	    <primary>Troubleshooting</primary>
-	    <secondary>committing changes</secondary>
-	  </indexterm>
-	  <para>
+      </sect3>
+      <sect3>
+        <title>Can't commit my changes?</title>
+        <indexterm>
+          <primary>Troubleshooting</primary>
+          <secondary>committing changes</secondary>
+        </indexterm>
+        <para>
 You need to have a developer role in the ArgoUML project.
 If you don't then you cannot do commit yourself.
 Discuss what you have done and how best to test it on the
 <ulink url="mailto:dev@argouml.tigris.org">developers mailing list</ulink>!
 Eventually someone will commit it for you.
 </para>
-	  <para>
+        <para>
 Furthermore the checkout of your copy needs to be done with your
 Tigris id that has the Developer role.
 If you for some reason have earlier checked out
@@ -1143,28 +1147,28 @@ The Observer role is probably granted within a couple of days
 This means that when you eventually are granted a Developer role you
 can continue working with the same checked out copy.
 </para>
-	</sect3>
-      </sect2>
+      </sect3>
+    </sect2>
   </sect1>
 
-    <sect1 id="junittests">
-      <title>The JUnit test cases</title>
-      <indexterm>
-	<primary>JUnit testing</primary>
-      </indexterm>
-      <indexterm>
-	<primary>Unit testing of ArgoUML</primary>
-      </indexterm>
-      <indexterm>
-	<primary>Testing ArgoUML</primary>
-      </indexterm>
-      <para>
+  <sect1 id="junittests">
+    <title>The JUnit test cases</title>
+    <indexterm>
+      <primary>JUnit testing</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Unit testing of ArgoUML</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Testing ArgoUML</primary>
+    </indexterm>
+    <para>
 ArgoUML has a set of automatic test cases using JUnit-framework
 for testing the insides of the code.
 The purpose of these are to help in pin-pointing problems with
 code changes before even starting ArgoUML.
 </para>
-      <para>
+    <para>
 The JUnit test cases are residing in a separate directory and
 run from ant targets in the
 <filename>src_new/build.xml</filename>.
@@ -1172,67 +1176,67 @@ They are never distributed with ArgoUML but merely a tool for
 developers.
 </para>
 
-        <indexterm>
-          <primary>Ant target</primary>
-          <secondary>tests</secondary>
-        </indexterm>
-        <indexterm>
-          <primary>tests ant target</primary>
-        </indexterm>
-        <indexterm>
-          <primary>Ant target</primary>
-          <secondary>guitests</secondary>
-        </indexterm>
-        <indexterm>
-          <primary>guitests ant target</primary>
-        </indexterm>
-	<para>
+    <indexterm>
+      <primary>Ant target</primary>
+      <secondary>tests</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>tests ant target</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Ant target</primary>
+      <secondary>guitests</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>guitests ant target</primary>
+    </indexterm>
+    <para>
 By running the command
 <command>build tests guitests</command>
 in <filename>src_new</filename>
 these test cases are started, each in their own JVM.
 </para>
-	<para>
+    <para>
 Each test case writes its result on the Ant log.
 </para>
-	<para>
+    <para>
 The result is also generated into a set of files that can be found at
 <filename>build/test/reports/junit/output/html/index.html</filename>.
 </para>
 
-        <para>
+    <para>
 The test cases' Java source code is located under
 <filename>argouml/tests/org/argouml</filename>.
 </para>
 
-	<sect2>
-	  <title>How to write a test case</title>
-	  <indexterm>
-	    <primary>Unit testing of ArgoUML</primary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Testing ArgoUML</primary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Test cases</primary>
-	    <secondary>writing</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Writing test cases</primary>
-	  </indexterm>
-	  <para>
+    <sect2>
+      <title>How to write a test case</title>
+      <indexterm>
+        <primary>Unit testing of ArgoUML</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Testing ArgoUML</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Test cases</primary>
+        <secondary>writing</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Writing test cases</primary>
+      </indexterm>
+      <para>
 Now this will make all you Java enthusiasts go nuts!
 We have both class names and method names with a special syntax.
 </para>
-          <indexterm>
-            <primary>Ant target</primary>
-            <secondary>run-with-test-panel</secondary>
-          </indexterm>
-          <indexterm>
-            <primary>run-with-test-panel ant target</primary>
-          </indexterm>
-          <sect3><title>About the Test case Class</title>
-  	  <para>
+      <indexterm>
+        <primary>Ant target</primary>
+        <secondary>run-with-test-panel</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>run-with-test-panel ant target</primary>
+      </indexterm>
+      <sect3><title>About the Test case Class</title>
+        <para>
 The name of the test case class starts with "Test" (i.e. Capital T, then
 small e, s and t) or 
 "GUITest" (i.e. Capital G, U, I, T then small e, s, t).
@@ -1256,17 +1260,17 @@ To make sure that this works, always run your newly developed
 test cases with <command>build tests</command> using 
 JDK 1.4 or later.
 </para>
-      <para>
+        <para>
 Test case classes that do require GUI components in place
 have filenames like
 <filename>GUITest<replaceable>*</replaceable>.java</filename>.
 </para>
-      <para>
+        <para>
 We should try to get as many tests from a GUITest* class to 
 the corresponding Test* class because the latter are run by automatic 
 builds regularly.
 </para>
-      <para>
+        <para>
 Every class
 <classname>org.argouml.<replaceable>x.y</replaceable>.<replaceable>z</replaceable></classname>
 stored in the file
@@ -1283,7 +1287,7 @@ do need GUI components to run should be part of a class named
 stored in the file
 <filename class="directory">tests/org/argouml/<replaceable>x/y</replaceable>/GUITest<replaceable>z</replaceable>.java</filename>
 </para>
-	  <para>
+        <para>
 If you only want to run your newly written test cases and not
 all the test cases, you could start with the command
 <command>build run-with-test-panel</command>
@@ -1297,24 +1301,24 @@ You could run all tests in this way by specifying the special test suite
 in the same way.
 </para>
 
-	  <para>
+        <para>
 Every test case class imports the JUnit framework: 
 <blockquote>
-	      <para>
+            <para>
 import junit.framework.*;
 </para>
-	    </blockquote>
+          </blockquote>
 and it inherits <classname>TestCase</classname>
 (i.e. <classname>junit.framework.TestCase</classname>).
 </para>
-    </sect3>
-    <sect3><title>About the Test case Method</title>
-	  <para>
+      </sect3>
+      <sect3><title>About the Test case Method</title>
+        <para>
 Methods that are tests must have names that start with "test"
 (i.e. all small t, e, s, t). This is a requirement of the JUnit
 framework.
 </para>
-	  <para>
+        <para>
 Try to keep the test cases as short as possible.
 There is no need in cluttering them up just to beautify the output.
 Prefer
@@ -1340,7 +1344,7 @@ public void testIndexOutOfBoundsExceptionNotRaised() {
 because the code is shorter, easier to maintain and you get a better
 error message from the JUnit framework.
 </para>
-	  <para>
+        <para>
 A lot of times it is useful just to run the compiler to verify that
 the signatures are correct on the interfaces. Therefor Linus has
 thought it is a good idea to add methods called
@@ -1356,13 +1360,13 @@ never lose any of the functionality provided by its signature in an
 uncontrolled way in just the same way as the test-methods serve as a
 guarantee that no features will ever be lost.
 </para>
-	  <example>
-	    <title>An example without Javadoc comments</title>
-	    <indexterm>
-	      <primary>Test cases</primary>
-	      <secondary>an example</secondary>
-	    </indexterm>
-	    <para>
+        <example>
+          <title>An example without Javadoc comments</title>
+          <indexterm>
+            <primary>Test cases</primary>
+            <secondary>an example</secondary>
+          </indexterm>
+          <para>
 <programlisting>
 package org.argouml.uml.ui;
 import junit.framework.*;
@@ -1422,14 +1426,14 @@ public class TestUMLAction extends TestCase {
 }
 </programlisting>
 </para>
-	  </example>
-    </sect3>
-      </sect2>
-    </sect1>
+        </example>
+      </sect3>
+    </sect2>
+  </sect1>
 
-    <sect1 id="manual_tests">
-      <title>Manual Test Cases</title>
-      <para>
+  <sect1 id="manual_tests">
+    <title>Manual Test Cases</title>
+    <para>
 The manual test cases are here to help us test ArgoUML in order to 
 cover things that are not testable with the JUnit test cases.
 Since it is a little bit more cumbersome to run them, 
@@ -1446,15 +1450,15 @@ On the other hand,
 there are several things that cannot possibly be tested with JUnit tests,
 so there probably are a lot of Manual Test Cases to be written.
 </para>
-      <sect2>
-        <title>Running the manual tests</title>
-        <para>
+    <sect2>
+      <title>Running the manual tests</title>
+      <para>
 Anyone can run the manual tests on any version of ArgoUML.
 If it doesn't work, i.e. the expected result is not seen,
 then this is a defect in that version of ArgoUML and should
 be reported using Issuezilla.
 </para>
-        <para>
+      <para>
 At every release, 
 the ambition is to run through all manual tests.
 Initially, when the amount of manual tests is small, 
@@ -1472,11 +1476,11 @@ together with their Issuezilla DEFECT number,
 the host type, OS, JDK version, ArgoUML version, ...
 shall be mailed to the dev list when these tests are completed.
 </para>
-      </sect2>
+    </sect2>
 
-      <sect2>
-        <title>Writing the manual tests</title>
-        <para>
+    <sect2>
+      <title>Writing the manual tests</title>
+      <para>
 Adding a new manual test to the group of already existing manual tests
 or improving one of the existing tests helps the project forward.
 Remember that the first priority is to test things with the JUnit
@@ -1484,103 +1488,103 @@ tests because they can be, to some extent, run automatically and
 have their result reported automatically but then manual tests
 are the next big improvement.
 </para>
-        <para>
+      <para>
 Every test has several attributes to make sure that we can identify
 the test and help the developers and testers.
-          <itemizedlist>
-            <listitem>
-              <para>A name</para>
-              <para>
+        <itemizedlist>
+          <listitem>
+            <para>A name</para>
+            <para>
 This name is the title of the subsection where the test is described.
 </para>
-            </listitem>
+          </listitem>
 
-            <listitem>
-              <para>A number</para>
-              <para>
+          <listitem>
+            <para>A number</para>
+            <para>
 These start with TEST1 and are allocated in sequence
 and maintained manually in this document
 (TEST2, TEST3, TEST4, ...).
 They are never reused when made available by removing
 a test case.
 </para>
-            </listitem>
+          </listitem>
 
-            <listitem>
-              <para>A revision</para>
-              <para>
+          <listitem>
+            <para>A revision</para>
+            <para>
 Every test case has a revision.
 These start with REVa and are increased with one every time
 the test case is changed.
 </para>
-            </listitem>
+          </listitem>
 
-            <listitem>
-              <para>A list of requirements tested</para>
-              <para>
+          <listitem>
+            <para>A list of requirements tested</para>
+            <para>
 This list is references to the requirements as stated in
 <xref linkend="requirements"/>.
 </para>
-            </listitem>
+          </listitem>
 
-            <listitem>
-              <para>Preparations i.e. what to do before the test</para>
-              <para>
+          <listitem>
+            <para>Preparations i.e. what to do before the test</para>
+            <para>
 This is Optional. The default is that you have just started ArgoUML.
 </para>
-            </listitem>
+          </listitem>
 
-            <listitem>
-              <para>A description on what to do an what to expect</para>
-              <para>
+          <listitem>
+            <para>A description on what to do an what to expect</para>
+            <para>
 This is a description in plain English telling the tester
 exactly what to do and what to expect.
 If this description doesn't work or is ambiguous in any way the tester
 should consider the test to be DEFECT and report it in Issuezilla.
 </para>
-              <para>
+            <para>
 This is probably best written like this:
 </para>
-              <para>
+            <para>
 <emphasis>Do:</emphasis>
 whatever
 </para>
-              <para>
+            <para>
 <emphasis>Expected output:</emphasis>
 whatever
 </para>
-              <para>
+            <para>
 <emphasis>Do:</emphasis>
 whatever
 </para>
-              <para>
+            <para>
 <emphasis>Expected output:</emphasis>
 whatever
 </para>
-            </listitem>
-          </itemizedlist>
+          </listitem>
+        </itemizedlist>
 </para>
-      </sect2>
+    </sect2>
 
-      <sect2>
-        <title>The list of tests</title>
-        <para>
+    <sect2>
+      <title>The list of tests</title>
+      <para>
 This section contains all the tests each in a subsection of its own.
 </para>
-        <sect3>
-          <title>Modules are enabled</title>
-          <para>
+      <sect3>
+        <title>Modules are enabled</title>
+        <para>
 TEST1 REVa (Does not test any current requirements.)
 </para>
-          <para>
+        <para>
 <emphasis>Preparations:</emphasis>
 Download and install ArgoUML together with the modules.
 </para>
-          <para>
+        <para>
 <emphasis>Do:</emphasis>
 Start in a window that allows you to see the output on Stdout.
 </para>
-          <para>
+        <para>
 <emphasis>Expected output:</emphasis>
 <programlisting>
 Loaded Module: Java from classes
@@ -1589,34 +1593,34 @@ Loaded Module: GeneratorCSharp
 Loaded Module: GeneratorPHP
 </programlisting>
 </para>
-          <para>
+        <para>
 <emphasis>Do:</emphasis>
 Press F7 (or select menu Generation => Generate All Classes...)
 </para>
-          <para>
+        <para>
 <emphasis>Expected output:</emphasis>
 A window pops up with Class Name, Java, Cpp, CSharp, and PHP.
 </para>
-          <para>
+        <para>
 <emphasis>Do:</emphasis>
 Select menu File => Import sources, 
 then open the drop-down box Select language for import: to the far right.
 </para>
-          <para>
+        <para>
 <emphasis>Expected output:</emphasis>
 The drop-down box contains Java and Java from classes.
 </para>
-        </sect3>
+      </sect3>
 
-        <sect3>
-          <title>Class diagram</title>
-          <para>
+      <sect3>
+        <title>Class diagram</title>
+        <para>
 TEST2 REVa
 (Requirements tested: 
 <xref linkend="REQ5"/> and
 <xref linkend="REQ6"/>) 
 </para>
-          <para>
+        <para>
 <emphasis>Do:</emphasis>
 Select the Class Diagram.
 Click the Package symbol on the Edit pane tool-bar.
@@ -1626,14 +1630,14 @@ Click on the diagram.
 Click the Interface symbol on the Edit pane tool-bar.
 Click on the diagram.
 </para>
-          <para>
+        <para>
 <emphasis>Expected output:</emphasis>
 The Class diagram and the explorer now contains
 one package,
 one class, and
 one interface.
 </para>
-          <para>
+        <para>
 <emphasis>Do:</emphasis>
 Select the class.
 Drag from the four quick-buttons located along the sides of the class
@@ -1643,7 +1647,7 @@ Select the interface.
 Drag from the quick-button located along the bottom of the interface symbol
 and release somewhere on the diagram.
 </para>
-          <para>
+        <para>
 <emphasis>Expected output:</emphasis>
 When releases on the diagram a new class is created 
 both on the diagram, where released
@@ -1652,11 +1656,11 @@ The type of the association corresponds with the quick-button type.
 The association created when clicking the fifth quick-button goes back
 to the class itself.
 </para>
-        </sect3>
+      </sect3>
 
-      </sect2>
+    </sect2>
 
-    </sect1>
+  </sect1>
 
   <sect1 id="generating_documentation">
     <title>Generating documentation</title>
@@ -1781,7 +1785,7 @@ used in the document.
 	</listitem>
 
 	<listitem>
-	    <para>
+          <para>
 The HTML is generated by processing the file
 <filename><replaceable>manual</replaceable>/<replaceable>argomanual-generated.xml</replaceable></filename>.
 </para>
@@ -1799,51 +1803,51 @@ and not the temporary file.
 
     </sect2>
     
-          <sect2 id="publishing_release_documentation">
+    <sect2 id="publishing_release_documentation">
       <title>Publishing docs to the ArgoUML Web site</title>
       <indexterm>
 	<primary>Web Site</primary>
 	<secondary>maintaining</secondary>
       </indexterm>
 
-    <note>
-      <para>
+      <note>
+        <para>
 From here on it is the old text that is more or less "Publishing ArgoUML"
 to be reworked.  In particular, the publication locations are no longer
 accurate.
 </para>
-    </note>
+      </note>
     
-    <sect3 id="how_the_web_site_works">
-      <title>How the ArgoUML web site works</title>
-      <indexterm>
-	<primary>Web Site</primary>
-	<secondary>maintaining</secondary>
-      </indexterm>
+      <sect3 id="how_the_web_site_works">
+        <title>How the ArgoUML web site works</title>
+        <indexterm>
+          <primary>Web Site</primary>
+          <secondary>maintaining</secondary>
+        </indexterm>
 
-      <para>
+        <para>
 Tigris allows the ArgoUML web site to be edited through CVS. Everything
 that is checked in under <filename>argouml/www</filename>
 becomes immediately available at the URL 
 <ulink url="http://argouml.tigris.org/">http://argouml.tigris.org/</ulink>
 with some added decorations.
 </para>
-      <para>
+        <para>
 Example: The file <filename>argouml/www/project.html</filename> is
 available at 
 <ulink url="http://argouml.tigris.org/project.html">http://argouml.tigris.org/project.html</ulink>.
 </para>
-    </sect3>
-    <sect3>
-      <title>Building and publishing ArgoUML documentation</title>
-      <indexterm>
-	<primary>Documentation</primary>
-      </indexterm>
-      <indexterm>
-	<primary>Web Site</primary>
-	<secondary>documentation</secondary>
-      </indexterm>
-      <para>
+      </sect3>
+      <sect3>
+        <title>Building and publishing ArgoUML documentation</title>
+        <indexterm>
+          <primary>Documentation</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Web Site</primary>
+          <secondary>documentation</secondary>
+        </indexterm>
+        <para>
 All documentation is written in DocBook XML and multiple output
 formats are generated from this single source.  Currently the
 supported output formats include HTML (two variants: single page
@@ -1851,7 +1855,7 @@ per book for downloading or printing and chunked for online
 access) and PDF.  This could also be used to generate JavaHelp
 online documentation, but this isn't currently being used.
 </para>
-      <para>
+        <para>
 There are currently three different books generated in this way,
 each into its own directory. They are cookbook (this document), 
 manual and quick-guide. They are all generated and stored in the
@@ -1863,82 +1867,82 @@ Below these directories are referenced using
 <filename class="directory"><replaceable>book</replaceable></filename>
 placeholder which should be replaced with the appropriate name.
 </para>
-      <para>
+        <para>
 To generate a new version of the documentation to be made available
 on the web site do the following:
 </para>
-      <orderedlist>
-	<listitem>
-	  <para>
+        <orderedlist>
+          <listitem>
+            <para>
 Check out everything needed
 and a copy of the <filename class="directory">argouml/www</filename>.
 </para>
-	  <para>
+            <para>
 If wanted, the CVS repository could be tagged and then the tag
 can be checked out. This makes it possible to know exactly
 how a certain version of the documentation was generated.
 </para>
-	</listitem>
-	<listitem>
-	  <indexterm>
-	    <primary>Ant target</primary>
-	    <secondary>docs</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>docs ant target</primary>
-	  </indexterm>
-	  <para>
+          </listitem>
+          <listitem>
+            <indexterm>
+              <primary>Ant target</primary>
+              <secondary>docs</secondary>
+            </indexterm>
+            <indexterm>
+              <primary>docs ant target</primary>
+            </indexterm>
+            <para>
 The documentation is generated using <command>build docs</command>.
 </para>
-	  <para>
+            <para>
 This generates all three books and the result appears in
 <filename class="directory">argouml/build/documentation/defaulthtml/<replaceable>book</replaceable></filename>,
 <filename class="directory">argouml/build/documentation/printablehtml/<replaceable>book</replaceable></filename>, and
 <filename class="directory">argouml/build/documentation/pdf/<replaceable>book</replaceable></filename>.
 </para>
-	  <para>
+            <para>
 This has been done several times before while preparing the release so
 no problems are expected. If there are problems then the preparations
 were not good enough and the process is best stopped right here.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+          </listitem>
+          <listitem>
+            <para>
 All the old files are removed from the checked out copy of 
 <filename class="directory">argouml/www/documentation/defaulthtml/<replaceable>book</replaceable></filename>, 
 <filename class="directory">argouml/www/documentation/printablehtml/<replaceable>book</replaceable></filename>.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+          </listitem>
+          <listitem>
+            <para>
 New files are copied into the checked out copy of <filename class="directory">www</filename>
 on top of the previous files there replacing them.
 </para>
-	  <para>
+            <para>
 All the files are copied from
 <filename class="directory">argouml/build/documentation/defaulthtml/<replaceable>book</replaceable></filename> to
 <filename class="directory">argouml/www/documentation/defaulthtml/<replaceable>book</replaceable></filename>. 
 The same for <filename class="directory">printablehtml</filename> and 
 <filename class="directory">pdf</filename>.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+          </listitem>
+          <listitem>
+            <para>
 No longer used files in 
 <filename class="directory">argouml/www/documentation</filename>
 are removed from CVS and new files are added.
 </para>
-	  <para><command>cvs -n update</command></para>
-	  <para>Watch for "Missing" and "Unknown" files.</para>
-	  <para>
+            <para><command>cvs -n update</command></para>
+            <para>Watch for "Missing" and "Unknown" files.</para>
+            <para>
 The missing files are scheduled to be removed by:
 <command>cvs remove <replaceable>each of the missing files</replaceable></command>
 </para>
-	  <para>
+            <para>
 The "Unknown" files are scheduled to be added by:
 <command>cvs add <replaceable>each of the added files</replaceable></command>
 </para>
-	  <para>
+            <para>
 This removing of missing files and adding of unknown files may seem
 backward but it is from the perspective of CVS.
 The missing files are the ones that were present in the previous
@@ -1948,31 +1952,31 @@ generates filenames differently.
 The Unknown files are files with filenames that for the same reason
 appear from one version of the documentation to the next.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+          </listitem>
+          <listitem>
+            <para>
 Commit the changes thus publishing it on the web site.
 </para>
-	  <para>
+            <para>
 <command>cvs commit -m'New version of the documentation published'</command>
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+          </listitem>
+          <listitem>
+            <para>
 The PDF book is uploaded to the download page.
 </para>
-	</listitem>
-      </orderedlist>
-    </sect3>
+          </listitem>
+        </orderedlist>
+      </sect3>
     </sect2>
     
   </sect1>
 
-    <sect1 id="release_process">
-      <title>Making a release</title>
-      <indexterm>
-	<primary>Making a release</primary>
-      </indexterm>
+  <sect1 id="release_process">
+    <title>Making a release</title>
+    <indexterm>
+      <primary>Making a release</primary>
+    </indexterm>
     <para>
 The purpose of this chapter is
 to simplify for the person that is actually doing the release work and
@@ -2072,55 +2076,55 @@ Here are the steps to be done when one actually does a release:
 
     <sect2>
       <title>New (from 0.21.1) way of doing the release </title>
-    <para>
-      <orderedlist>
-	<listitem>
-	  <para>Set the <methodname>argo.core.version</methodname>
+      <para>
+        <orderedlist>
+          <listitem>
+            <para>Set the <methodname>argo.core.version</methodname>
 to not include the "PRE-" part.
 </para>
-          <para>
+            <para>
 This is done in the <filename>default.properties</filename>-file
 in <filename>src_new</filename>
 and then, commit the file.
 </para>
-        </listitem>
+          </listitem>
  
-	<listitem>
-	  <para>Tag the CVS repository with the freeze tag!</para>
-	  <para>
+          <listitem>
+            <para>Tag the CVS repository with the freeze tag!</para>
+            <para>
 Normally this tag is "VERSION_<replaceable>X_Y_Z</replaceable>_F",
 e.g. VERSION_0_9_7_F.
 The according command line CVS command is 
 <command>argouml/tools/bin/do-for-projects.sh cvs tag VERSION_<replaceable>X_Y_Z</replaceable>_F</command>.
 </para>
-	</listitem>
+          </listitem>
 
-	<listitem>
-	  <para>
+          <listitem>
+            <para>
 Open the repository for commits toward the next version.
 </para>
-	  <para>
+            <para>
 This is done by setting the <methodname>argo.core.version</methodname>
 in <filename>default.properties</filename>
 in <filename>src_new</filename>
 to PRE-<replaceable>Number of next release</replaceable>, committing
 and telling everyone on the developers mailing list.
 </para>
-	</listitem>
+          </listitem>
 
-	<listitem>
-	  <para>
+          <listitem>
+            <para>
 Create the directory where the release will reside.
 </para>
-          <para>
+            <para>
 <programlisting>
 mkdir VERSION_<replaceable>X_Y_Z</replaceable>_F
 </programlisting>
 </para>
-        </listitem>
+          </listitem>
 
-	<listitem>
-	  <para>
+          <listitem>
+            <para>
 Check out the source in a new directory.
 <programlisting>
 export CVSROOT=:pserver:<replaceable>guest</replaceable>@cvs.tigris.org:/cvs
@@ -2134,43 +2138,43 @@ cvs login
 </programlisting>
 </para>
 
-	</listitem>
+          </listitem>
 
-	<listitem>
-	  <para>
+          <listitem>
+            <para>
 Make the <command>ant</command> executable.
 </para>
-	</listitem>
+          </listitem>
 
-	<listitem>
-	  <para>
+          <listitem>
+            <para>
 Build the core ArgoUML.
 </para>
-	  <para>
+            <para>
 This is done in the
 <filename class="directory">argouml/src_new</filename>
 directory of the newly created copy
 by using the <command>package</command> ant target!
 </para>
-	  <para>
+            <para>
 You must have set JAVA_HOME for this to work.
 </para>
-	</listitem>
+          </listitem>
 
-	<listitem>
-	  <para>
+          <listitem>
+            <para>
 Build the sub-projects and modules to be included in the release.
 </para>
-          <para>
+            <para>
 This is done using the command
 <programlisting>
 argouml/tools/bin/do-for-projects.sh `pwd`/argouml/tools/ant-1.6.2/bin/ant install
 </programlisting>
 </para>
-	</listitem>
+          </listitem>
 
-	<listitem>
-	  <para>
+          <listitem>
+            <para>
 Run the tests. Both automatic and manual.
 </para>
 	  </listitem>
@@ -2179,7 +2183,7 @@ Run the tests. Both automatic and manual.
 	    <para>
 Build the pdf version of the documentation.
 </para>
-          <para>
+            <para>
 This is done using the command
 <programlisting>
 ( cd argouml/documentation &amp;&amp; ../tools/ant-1.6.2/bin/ant docbook-xsl-get )
@@ -2194,33 +2198,33 @@ provided that you have JimiProClasses.zip located in that spot.
 	    <para>
 Set the release tag.
 </para>
-	  <para>
+            <para>
 The following command will do it for you:
 <programlisting>
 argouml/tools/bin/do-for-projects.sh cvs tag VERSION_<replaceable>X_Y_Z</replaceable>
 </programlisting>
 </para>
-        </listitem>
+          </listitem>
 
-	<listitem id="issuezilla_release_maintenance">
-	  <para>
+          <listitem id="issuezilla_release_maintenance">
+            <para>
 Go through Issuezilla and check things.
 </para>
-	  <para>
+            <para>
 Things to check are:
 </para>
-	  <orderedlist>
-	    <listitem>
-	      <para>
+            <orderedlist>
+              <listitem>
+                <para>
 That there is a Version created in Issuezilla for the newly created release.
 </para>
-	      <para>
+                <para>
 The purpose of this is to make it possible for everyone 
 to report bugs on the new release.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+              </listitem>
+              <listitem>
+                <para>
 Make sure that the upcoming releases have 
 target milestones created for them.
 This needs to be done for all components that has the same
@@ -2229,48 +2233,48 @@ Also see that the numbering is the same in all components and
 that it is in the correct chronological order
 except for the not yet done releases that come before the already completed.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+              </listitem>
+              <listitem>
+                <para>
 Change the target milestones of all the not yet resolved issues 
 for this release to ---.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+              </listitem>
+              <listitem>
+                <para>
 Change the target milestones of
 any fixed issue
 in component argouml
 with target milestone ---
 to that of the current release.
 </para>
-	      <para>
+                <para>
 This is probably some developer that has fixed an issue but forgotten to
 set the target milestone correctly.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+              </listitem>
+              <listitem>
+                <para>
 Move all issues reported on 'current' to this release
 (for the component argouml).
 </para>
-	      <para>
+                <para>
 These items were reported between the previous version and this version.
 Since 'current' will be reused for the next release, they need to be
 locked to the closest release to where they were found.
 </para>
-	    </listitem>
-	    <listitem id="reopen_remind_and_later">
-	      <para>Reopen RESOLVED/REMIND</para>
-	      <para>
+              </listitem>
+              <listitem id="reopen_remind_and_later">
+                <para>Reopen RESOLVED/REMIND</para>
+                <para>
 This can also be a good time to change all 
 RESOLVED/REMIND.
 Search for them and Reopen them.
 </para>
-	    </listitem>
-	    <listitem id="check_for_later">
-	      <para>Check RESOLVED/LATER</para>
-	      <para>
+              </listitem>
+              <listitem id="check_for_later">
+                <para>Check RESOLVED/LATER</para>
+                <para>
 It could also be good to check that all
 RESOLVED/LATER has a valid target milestone (must be an upcoming milestone).
 Search for them and Reopen the ones that haven't.
@@ -2278,13 +2282,13 @@ Also, if the milestone denotes or is going to be resolved in
 the upcoming release, Reopen them with a comment that they are now
 active.
 </para>
-	    </listitem>
-	  </orderedlist>
-	</listitem>
+              </listitem>
+            </orderedlist>
+          </listitem>
 	  
-	<listitem>
-	  <para>Notify persons responsible for installers</para>
-	  <para>
+          <listitem>
+            <para>Notify persons responsible for installers</para>
+            <para>
 This is done by sending a mail on the
 <ulink url="mailto:dev@argoumlinstaller.tigris.org">
   installers mailing list
@@ -2292,100 +2296,100 @@ This is done by sending a mail on the
 What the persons responsible for the installers do is described in
 <xref linkend="running_installers"/>.
 </para>
-   	</listitem>
-      </orderedlist>
+          </listitem>
+        </orderedlist>
 </para>
       <para>
 After this, the work continues with the installers.
 </para>
-</sect2>
+    </sect2>
 
-      <sect2 id="release_process_test_failed">
-	<title>The release did not work</title>
-	<indexterm>
-	  <primary>Troubleshooting</primary>
-	  <secondary>during the release work</secondary>
-	</indexterm>
-	<para>
+    <sect2 id="release_process_test_failed">
+      <title>The release did not work</title>
+      <indexterm>
+        <primary>Troubleshooting</primary>
+        <secondary>during the release work</secondary>
+      </indexterm>
+      <para>
 This shouldn't happen! This really shouldn't happen!
 </para>
-	<para>
+      <para>
 The reason that this has happened is that one of the developers 
 has made a mistake.
 You now must decide a way forward.
 </para>
-	<sect3 id="release_work_fix_problem_yourself">
-	  <title>Fix the problem yourself.</title>
-	  <para>
+      <sect3 id="release_work_fix_problem_yourself">
+        <title>Fix the problem yourself.</title>
+        <para>
 If the problem is obvious to you and you can fix it quickly, do so.
 This is done by doing the following:
 <itemizedlist>
-	      <listitem>
-		<para>Make the release tag into a branch</para>
-		<para>
+            <listitem>
+              <para>Make the release tag into a branch</para>
+              <para>
 <command>cvs rtag -b -r VERSION_<replaceable>X_Y_Z</replaceable>_F BRANCH_<replaceable>X_Y_Z</replaceable></command>
 </para>
-	      </listitem>
-	      <listitem>
-		<para>Update your checked out copy to be on that branch</para>
-		<para>
+            </listitem>
+            <listitem>
+              <para>Update your checked out copy to be on that branch</para>
+              <para>
 <command>cvs update -r BRANCH_<replaceable>X_Y_Z</replaceable></command>
 </para>
-	      </listitem>
-	      <listitem>
-		<para>Fix the problem in your checked out copy</para>
-	      </listitem>
-	      <listitem>
-		<para>Commit the problem in the branch</para>
-		<para>
+            </listitem>
+            <listitem>
+              <para>Fix the problem in your checked out copy</para>
+            </listitem>
+            <listitem>
+              <para>Commit the problem in the branch</para>
+              <para>
 <command>cvs commit -m'Fix of problem blabla'</command>
 </para>
-	      </listitem>
-	      <listitem>
-		<para>Continue the build process</para>
-		<para>
+            </listitem>
+            <listitem>
+              <para>Continue the build process</para>
+              <para>
 This is done by restarting the <command>build dist-release</command>-command
 and from that point on working in the branch instead of at the tag.
 </para>
-	      </listitem>
-	      <listitem>
-		<para>
+            </listitem>
+            <listitem>
+              <para>
 Explain to the culprit what mistakes he has made and how to fix it.
 </para>
-		<para>
+              <para>
 It is now his responsibility to make sure that the problem will not
 appear in the next version.
 He can do this either by merging in your fix or by fixing the problem
 in some other way.
 </para>
-		<para>
+              <para>
 At this point an in-detail description of how poor programming skills
 the culprit has and how ugly his mother is, is probably in place but
 please keep it constructive!
 Remember, you might be mistaken when you guess who the responsible is.
 </para>
-	      </listitem>
-	    </itemizedlist>
+            </listitem>
+          </itemizedlist>
 </para>
-	</sect3>
+      </sect3>
 
-	<sect3>
-	  <title>
+      <sect3>
+        <title>
 Delay the release waiting for someone to fix the problem.
 </title>
-	  <para>
+        <para>
 Create the branch as described in 
 <xref linkend="release_work_fix_problem_yourself"/>.
 Then tell the culprit and everyone on the developer list
 what the problem is and that it is to be fixed in the
 release branch a.s.a.p.
 </para>
-	  <para>
+        <para>
 Monitor the changes made to the branch to verify that
 no one commits anything else but the solutions to the
 problems.
 </para>
-	  <para>
+        <para>
 When you get notified that it is completed, 
 update your checked out copy and continue the release work.
 </para>
@@ -2638,7 +2642,7 @@ done
 	  <para>
 Build the appbund file for Mac.
 </para>
-	      <para>
+          <para>
 This is how this is done:
 <programlisting>
 ( cd argoumlinstaller/appbund &amp;&amp; ./doit.sh )
@@ -2668,7 +2672,7 @@ and not
 which makes sense only if you remember that any updates to the LAYOUT
 file should be included also for subsequent releases
 and if you use the same directorylayout.
- </para>
+</para>
 	    <para>
 There is more work to be done here to make these scripts aligned.
 </para>

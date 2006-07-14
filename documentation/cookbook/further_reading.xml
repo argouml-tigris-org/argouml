@@ -29,8 +29,8 @@
   <title>Further Reading</title>
   <sect1 id="robbins">
     <title>Jason Robbins Dissertation</title> <indexterm>
-    <primary>Jason Robbins</primary>
-    <secondary>Dissertation</secondary> </indexterm>
+      <primary>Jason Robbins</primary>
+      <secondary>Dissertation</secondary> </indexterm>
     <para> Cognitive Support Features for Software Development Tools </para>
     <para> The dissertation of Jason Robbins is a <emphasis>MUST
       READ</emphasis> for everyone concerned about ArgoUML. Be careful though,
@@ -68,8 +68,8 @@
   </sect1>
   <sect1 id="skinner">
     <title>Martin Skinners Dissertation</title> <indexterm>
-    <primary>Martin Skinner</primary>
-    <secondary>Dissertation</secondary> </indexterm>
+      <primary>Martin Skinner</primary>
+      <secondary>Dissertation</secondary> </indexterm>
     <para> Enhancing an UML Modeling Tool with Context-Based Constraints for
       Components </para>
     <sect2>
