@@ -26,6 +26,8 @@ package org.argouml.ocl;
 
 import java.util.Iterator;
 
+
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ocl.ExpansionException;
@@ -63,14 +65,14 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
                 && Model.getFacade().isAModelElement(self)) {
             res = Model.getFacade().getName(self);
             if (res == null || "".equals(res)) {
-                res = "(anon)";
+                res = Translator.localize("misc.name.anon");
             }
         }
         if (GET_NAME_EXPR_2.equals(expr)
                 && Model.getFacade().isAModelElement(self)) {
             res = Model.getFacade().getName(self);
             if (res == null || "".equals(res)) {
-                res = "(anon)";
+                res = Translator.localize("misc.name.anon");
             }
         }
         if (GET_OWNER_EXPR.equals(expr) && Model.getFacade().isAFeature(self)) {
@@ -78,26 +80,26 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
             if (owner != null) {
                 res = Model.getFacade().getName(owner);
                 if (res == null || "".equals(res)) {
-                    res = "(anon)";
+                    res = Translator.localize("misc.name.anon");
                 }
             }
         }
         if (GET_NAME_EXPR_1.equals(expr) && self instanceof Diagram) {
             res = ((Diagram) self).getName();
             if (res == null || "".equals(res)) {
-                res = "(anon)";
+                res = Translator.localize("misc.name.anon");
             }
         }
         if (GET_NAME_EXPR_2.equals(expr) && self instanceof Diagram) {
             res = ((Diagram) self).getName();
             if (res == null || "".equals(res)) {
-                res = "(anon)";
+                res = Translator.localize("misc.name.anon");
             }
         }
     /*
         if (GET_OWNER_EXPR.equals(expr) && self instanceof Diagram) {
             res = ((Diagram)self).getOwner().getName();
-            if (res == null || "".equals(res)) res = "(anon)";
+            if (res == null || "".equals(res)) res = Translator.localize("misc.name.anon");
         }
     */
         if (res == null) {
@@ -123,7 +125,7 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
             if (Model.getFacade().isAModelElement(v)) {
                 v = Model.getFacade().getName(v);
                 if ("".equals(v)) {
-                    v = "(anon)";
+                    v = Translator.localize("misc.name.anon");
                 }
             }
             if (Model.getFacade().isAExpression(v)) {

@@ -103,7 +103,7 @@ public class NameOrder
                 try {
                     name = Model.getFacade().getName(obj);
                 } catch (InvalidElementException e) {
-                    name = "(*deleted*)";
+                    name = Translator.localize("misc.name.deleted");
                 }
             }
             name = "??";

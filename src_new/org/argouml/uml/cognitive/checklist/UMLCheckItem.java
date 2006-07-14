@@ -26,6 +26,7 @@ package org.argouml.uml.cognitive.checklist;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.checklist.CheckItem;
+import org.argouml.i18n.Translator;
 import org.argouml.model.InvalidElementException;
 import org.argouml.ocl.CriticOclEvaluator;
 import org.argouml.ocl.OCLEvaluator;
@@ -87,7 +88,7 @@ public class UMLCheckItem extends CheckItem {
 	    } catch (InvalidElementException e) {
                 /* The modelelement must have been 
                  * deleted - ignore this - it will pass. */
-                evalStr = "(deleted)";
+                evalStr = Translator.localize("misc.name.deleted");
             }
 	    LOG.debug("expr='" + expr + "' = '" + evalStr + "'");
 	    res = res.substring(0, matchPos) + evalStr

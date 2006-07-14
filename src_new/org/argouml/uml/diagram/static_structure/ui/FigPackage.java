@@ -743,7 +743,7 @@ public class FigPackage extends FigNodeModelElement
                 && Model.getFacade().getName(namespace) != null) {
             namespaceDescr = Model.getFacade().getName(namespace);
         } else {
-            namespaceDescr = "(anon)";
+            namespaceDescr = Translator.localize("misc.name.anon");
         }
 
         String dialogText = "Add new class diagram to " + namespaceDescr + "?";
