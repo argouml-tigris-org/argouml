@@ -90,7 +90,7 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
-	    String ins = "Change the name of this package.";
+	    String ins = super.getInstructions();
 	    String nameStr = Model.getFacade().getName(me);
 	    String sug = computeSuggestion(nameStr);
 	    ((WizMEName) w).setInstructions(ins);

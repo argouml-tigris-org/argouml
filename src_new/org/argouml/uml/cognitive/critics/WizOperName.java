@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepCue;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
 /**
@@ -70,10 +71,12 @@ public class WizOperName extends WizMEName {
 
     private boolean stereotypePathChosen;
 
-    private String option0 = "This is really a constructor.";
+    private String option0 = 
+        Translator.localize("critics.WizOperName-options1");
 
-    private String option1 = "This is not a constructor.";
-
+    private String option1 = 
+        Translator.localize("critics.WizOperName-options2"); 
+        
     private WizStepChoice step1;
 
     private WizStepCue step2;
@@ -136,8 +139,8 @@ public class WizOperName extends WizMEName {
             if (stereotypePathChosen) {
                 if (step2 == null) {
                     step2 =
-                        new WizStepCue(this,
-                                "The operator is now a constructor.");
+                        new WizStepCue(this, Translator.localize(
+                                "critics.WizOperName-stereotype"));
                     step2.setTarget(getToDoItem());
                 }
                 return step2;

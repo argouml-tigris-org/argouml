@@ -202,9 +202,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 	    Object me =
 		/*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String sug = computeSuggestion(Model.getFacade().getName(me));
-	    String ins =
-	        "Change the attribute name to start with a "
-	        + "lowercase letter.";
+	    String ins = super.getInstructions();
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	}

@@ -164,13 +164,12 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
 	    String sug = Model.getFacade().getName(me);
 	    sug = computeSuggestion(sug);
 	    boolean cand = candidateForConstructor(me);
-	    String ins =
-	        "Change the operation name to start with a "
-		+ "lowercase letter";
-	    if (cand) {
-	        ins = ins + " or make it a constructor";
-	    }
-	    ins = ins + ".";
+	    String ins;
+            if (cand) {
+	        ins = super.getLocalizedString("-ins-ext");
+	    } else {
+                ins = super.getInstructions();       
+            }
 	    ((WizOperName) w).setInstructions(ins);
 	    ((WizOperName) w).setSuggestion(sug);
 	    ((WizOperName) w).setPossibleConstructor(cand);

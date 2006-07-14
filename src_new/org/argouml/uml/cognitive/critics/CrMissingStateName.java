@@ -98,8 +98,8 @@ public class CrMissingStateName extends CrUML {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
-	    String ins = "Set the name of this state.";
-	    String sug = "StateName";
+	    String ins = super.getInstructions();
+	    String sug = super.getDefaultSuggestion();
 	    if (Model.getFacade().isAStateVertex(me)) {
 		Object sv = /*(MStateVertex)*/ me;
 		int count = 1;

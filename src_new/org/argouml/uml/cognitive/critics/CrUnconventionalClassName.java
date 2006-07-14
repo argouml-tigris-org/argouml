@@ -90,9 +90,7 @@ public class CrUnconventionalClassName extends AbstractCrUnconventionalName {
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String sug = Model.getFacade().getName(me);
 	    sug = computeSuggestion(sug);
-	    String ins =
-	        "Change the class name to start with an "
-		+ "uppercase letter.";
+	    String ins = super.getInstructions();
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	}

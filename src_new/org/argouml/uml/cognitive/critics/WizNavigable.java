@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
 /**
@@ -43,11 +44,14 @@ public class WizNavigable extends UMLWizard {
      */
     private static final Logger LOG = Logger.getLogger(WizNavigable.class);
 
-    private String instructions =
-	"Please select one of the following navigability options.";
-    private String option0 = "Navigable Toward Start";
-    private String option1 = "Navigable Toward End";
-    private String option2 = "Navigable Both Ways";
+    private String instructions = 
+        Translator.localize("critics.WizNavigable-ins");
+    private String option0 = 
+        Translator.localize("critics.WizNavigable-option1");
+    private String option1 = 
+        Translator.localize("critics.WizNavigable-option2");
+    private String option2 = 
+        Translator.localize("critics.WizNavigable-option3");
 
     private WizStepChoice step1 = null;
 
@@ -73,11 +77,13 @@ public class WizNavigable extends UMLWizard {
 	Object cls1 = Model.getFacade().getType(ae1);
 
 	if (cls0 != null && !"".equals(Model.getFacade().getName(cls0))) {
-	    option0 = "Navigable Toward " + Model.getFacade().getName(cls0);
+	    option0 = Translator.localize("critics.WizNavigable-option4") 
+                + Model.getFacade().getName(cls0);
         }
 
 	if (cls1 != null && !"".equals(Model.getFacade().getName(cls1))) {
-	    option1 = "Navigable Toward " + Model.getFacade().getName(cls1);
+	    option1 = Translator.localize("critics.WizNavigable-option5") 
+                + Model.getFacade().getName(cls1);
         }
 
 	res.addElement(option0);

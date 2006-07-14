@@ -277,7 +277,7 @@ public class CrReservedName extends CrUML {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    String sug =
 	        Model.getFacade().getName(item.getOffenders().elementAt(0));
-	    String ins = "Change the name to something different.";
+	    String ins = super.getInstructions();
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	    ((WizMEName) w).setMustEdit(true);

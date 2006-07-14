@@ -40,8 +40,7 @@ import org.argouml.model.Model;
 public class WizMEName extends UMLWizard {
     private static final Logger LOG = Logger.getLogger(WizMEName.class);
 
-    private String instructions =
-	"Please change the name of the offending model element.";
+    private String instructions = Translator.localize("critics.WizMEName-ins");
     private String label = Translator.localize("label.name");
     private boolean mustEdit = false;
 

@@ -124,8 +124,8 @@ public class CrNoOperations extends CrUML {
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddOperation) {
-	    String ins = "Set the name of the new operation.";
-	    String sug = "newOperation";
+	    String ins = super.getInstructions();
+	    String sug = super.getDefaultSuggestion();
 	    ((WizAddOperation) w).setInstructions(ins);
 	    ((WizAddOperation) w).setSuggestion(sug);
 	}
