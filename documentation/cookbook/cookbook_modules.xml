@@ -134,11 +134,11 @@ delivered as separate jar-files.
 
 <listitem>
 <para>Plugins</para>
-	  <note>
-	    <para>
+          <note>
+            <para>
 This description is for the old moduleloader.
 </para>
-	  </note>
+          </note>
 <para>
 A plug-in in ArgoUML is a module
 that implements the
@@ -360,7 +360,7 @@ boolean <function>isModuleEnabled</function>
 </funcprototype>
 </funcsynopsis>
 <para>
-	Reserved for future implementation.
+        Reserved for future implementation.
 </para>
 </listitem>
 
@@ -374,7 +374,7 @@ Vector <function>getModulePopUpActions</function>
 </funcprototype>
 </funcsynopsis>
 <para>
-	Reserved for future implementation.
+        Reserved for future implementation.
 </para>
 <para>
 The plan is to have this called for each module when
@@ -484,21 +484,21 @@ rest of the ArgoUML environment.
 <para>
 <itemizedlist>
 
-	  <listitem>
-	    <para>...tell when a module is enabled?</para>
-	    <para>
+          <listitem>
+            <para>...tell when a module is enabled?</para>
+            <para>
 The method <methodname>isEnabled</methodname>
 in <classname>ModuleLoader2</classname>
 returns true if the module with that name is enabled and false otherwise.
 </para>
-	    <note>
-	      <para>
+            <note>
+              <para>
 This only works for modules enabled in the new module loader.
 For modules loaded using the old module loader, it is not possible
 to determine if they are enabled.
 </para>
-	    </note>
-	  </listitem>
+            </note>
+          </listitem>
 
 </itemizedlist>
 </para>
@@ -803,18 +803,18 @@ which is used as follows:
 </sect2>
 
 <sect2>
-	<title>Tip for creating new modules (from Florent de Lamotte)</title>
-	<indexterm>
-	  <primary>Modules</primary>
-	  <secondary>understanding</secondary>
-	</indexterm>
+        <title>Tip for creating new modules (from Florent de Lamotte)</title>
+        <indexterm>
+          <primary>Modules</primary>
+          <secondary>understanding</secondary>
+        </indexterm>
     <note>
       <para>
 This description is for the old moduleloader.
 </para>
     </note>
 
-	<para>Florent wrote a small tutorial for creating modules. It can be found on the <ulink url="http://argopno.tigris.org/documentation/argouml.html">ArgoPNO website</ulink>.
+        <para>Florent wrote a small tutorial for creating modules. It can be found on the <ulink url="http://argopno.tigris.org/documentation/argouml.html">ArgoPNO website</ulink>.
 </para>
 </sect2>
 
@@ -826,6 +826,7 @@ Local Variables:
 mode: xml
 sgml-doctype: "cookbook.xml"
 sgml-parent-document: ("cookbook.xml" "sect1" nil)
+indent-tabs-mode: nil
 End:
 
 -->

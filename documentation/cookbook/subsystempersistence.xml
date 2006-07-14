@@ -70,6 +70,7 @@ sgml-doctype: "cookbook.xml"
 sgml-parent-document: ("cookbook.xml" "sect1" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   cookbook.xml"
+indent-tabs-mode: nil
 End:
 
 -->

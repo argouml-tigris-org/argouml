@@ -385,100 +385,100 @@ of causing someone else problems.
 When you have done all the work, and all the testing and
 are about to commit something please do:
       <orderedlist>
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Compile ArgoUML 
 (<command>build run</command> or <command>build package</command>).
 </para>
-	  <para>
+          <para>
 This goes for all changes, even changes in comments.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 If your changes include removing files make a clean compile.
 (<command>build clean</command> followed by
 <command>build run</command> or <command>build package</command>).
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 If your changes include removing public or protected operations and
 attributes make a clean compile
 (<command>build clean</command> followed by
 <command>build run</command> or <command>build package</command>).
 </para>
-	  <para>
+          <para>
 The build mechanism does not yet have reliable 
 dependency checker enabled so this is the best way to make sure.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 If your changes include adding abstract operations make a clean compile
 (<command>build clean</command> followed by
 <command>build run</command> or <command>build package</command>).
 </para>
-	  <para>
+          <para>
 The build mechanism does not yet have reliable 
 dependency checker enabled so this is the best way to make sure.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 If you have changed anything that has the potential of affecting
 something in a totally different part of the code like internal
 data structure, handling of exceptions, 
 run all JUnit test cases
 and start the tool and do some more testing.
 </para>
-	  <para>
+          <para>
 If in doubt, run all JUnit test cases.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Do a <command>cvs update</command> in src_new to make sure that 
 you do not forget to commit any file and to make sure that no one 
 else has committed anything in the mean time.
 </para>
-	  <para>
+          <para>
 Remember that if you do not commit all the files from src_new
 that <command>cvs update</command> found (marked A, R, and M)
 in the same commit then you would better remove those file
 from the checked out copy, update to get the original version
 from the repository and start over with the compilation.
 </para>
-	  <para>
+          <para>
 If someone else have updated a file 
 (<command>cvs update </command> shown U, or no longer pertinent)
 please compile again.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Commit all files that are included in a change at the same time.
 </para>
-	  <para>
+          <para>
 This reduces the chance of anyone getting an inconsistent set of files
 by updating in the middle of your commit.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Commit often.
 </para>
-	  <para>
+          <para>
 Remember that the repository is also a backup copy of your work.
 </para>
-	  <para>
+          <para>
 If your change is so big and involves so many files that you would
 like to commit it for backup reasons but it doesn't compile or
 doesn't work or for some other reason should not confuse the main 
@@ -486,7 +486,7 @@ branch in CVS, create a branch to work in.
 Then when your work is complete, you merge the branch into 
 the main branch.
 </para>
-	</listitem>
+        </listitem>
       </orderedlist>
 </para>
     <para>
@@ -528,48 +528,48 @@ We use the following standards in ArgoUML:
     </para>
     <itemizedlist>
       <listitem>
-	<para>
+        <para>
 Released versions get the tag
 <emphasis>VERSION_<replaceable>X_X_X</replaceable></emphasis>.
 </para>
       </listitem>
       <listitem>
-	<para>
+        <para>
 Freezed versions (just before the release) get the tag
 <emphasis>VERSION_<replaceable>X_X_X</replaceable>_F</emphasis>.
 </para>
       </listitem>
       <listitem>
-	<para>
+        <para>
 Release branches get the tag
 <emphasis>BRANCH_<replaceable>X_X</replaceable></emphasis>.
 </para>
       </listitem>
       <listitem>
-	<para>
+        <para>
 Developers working on code, with an unspecified due date are requested
 to put the code into a branch if it is deemed useful that the code can
 be shared. Developer branches follow the scheme:
 <emphasis>work_<replaceable>explanation</replaceable>_<replaceable>owner</replaceable></emphasis>, where
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>
+        <itemizedlist>
+          <listitem>
+            <para>
 <replaceable>explanation</replaceable> is something like
 javahelp,
 propertypanel,
 cppcodegeneration,
 issue12345
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 <replaceable>owner</replaceable> is the uid for the
 developer that started the branch,
 e.g. tlach (Thierry Lach) or mkl (Markus Klink).
 </para>
-	  </listitem>
-	</itemizedlist>
+          </listitem>
+        </itemizedlist>
       </listitem>
     </itemizedlist>
 
@@ -941,8 +941,8 @@ These style guides correspond to the default Java settings in Emacs:
   <sect1 id="eclipse3">
     <sect1info>
       <author>
-	<firstname>Linus</firstname>
-	<surname>Tolke</surname>
+        <firstname>Linus</firstname>
+        <surname>Tolke</surname>
       </author>
     </sect1info>
     <title>Setting up Eclipse 3</title>
@@ -985,35 +985,35 @@ Then enter the following information.
 </para>
 
       <itemizedlist>
-	<listitem>
-	  <para>Host:
+        <listitem>
+          <para>Host:
 cvs.tigris.org
 </para>
-	</listitem>
-	<listitem>
-	  <para>Repository path:
+        </listitem>
+        <listitem>
+          <para>Repository path:
 /cvs
 </para>
-	</listitem>
-	<listitem>
-	  <para>User:
+        </listitem>
+        <listitem>
+          <para>User:
 <replaceable>Your Tigris user name.</replaceable>
 </para>
-	</listitem>
-	<listitem>
-	  <para>Password:
+        </listitem>
+        <listitem>
+          <para>Password:
 <replaceable>Your Tigris password.</replaceable>
 </para>
-	</listitem>
-	<listitem>
-	  <para>Connection type:
+        </listitem>
+        <listitem>
+          <para>Connection type:
 pserver
 (default)
 </para>
-	</listitem>
-	<listitem>
-	  <para>Use Default Port. (default)</para>
-	</listitem>
+        </listitem>
+        <listitem>
+          <para>Use Default Port. (default)</para>
+        </listitem>
       </itemizedlist>
 
       <para>
@@ -1021,35 +1021,35 @@ Do the following.
 </para>
 
       <orderedlist>
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Download the initial Team Project Set file and save it somewhere.
 </para>
-	  <para>
+          <para>
 This is only needed the first time and if you don't already 
 happen to have an updated checked out copy of argouml laying around.
 </para>
-	  <para>
+          <para>
 The file can be found through the repository browsing function at Tigris
 at
 <ulink url="http://argouml.tigris.org/source/browse/*checkout*/argouml/tools/eclipse/argouml-core-projectset.psf"/>.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Do File => Import and select Team Project Set and press Next.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Browse to the file
 <filename>argouml-core-projectset.psf</filename>
 and press Finish.
 </para>
 
-	  <para>
+          <para>
 Now everything is automatic even though it takes a while. What happens is:
 </para>
           <orderedlist>
@@ -1077,16 +1077,16 @@ Eclipse finds the Configurations that are also checked out.
 </para>
             </listitem>
           </orderedlist>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Verify that you can start ArgoUML from the debugger within Eclipse. 
 You can do this by clicking on the little down-arrow close to the
 Debug icon in the tool bar
 and finding ArgoUML in the list.
 </para>
-	</listitem>
+        </listitem>
 
       </orderedlist>
     </sect2>
@@ -1111,8 +1111,8 @@ Eclipse Workspace separate from your other projects.
 </para>
 
       <itemizedlist>
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Code conventions.
 </para>
           <orderedlist>
@@ -1149,10 +1149,10 @@ Once Eclipse 3.2 is out and the Eclipse-built-in bug
 (<ulink url="https://bugs.eclipse.org/bugs/show_bug.cgi?id=104765"/>)
 is fixed you could use "Java conventions [build-in]" instead.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 New file templates.
 </para>
 
@@ -1186,7 +1186,7 @@ This will set up templates to be used when using the Eclipse functions
 for creating files, functions, types and javadoc...
 </para>
 
-	</listitem>
+        </listitem>
       </itemizedlist>
     </sect2>
 
@@ -1211,31 +1211,31 @@ Consider this only if you want more information or to understand
 why you get warnings.
 </para>
       <itemizedlist>
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Compiler compliance level.
 </para>
-	  <para>
+          <para>
       See in the menu Window => Preferences.
       Then select
       Java => Compiler.
       At the right hand side, select the tab
 Compliance and classfiles => Compiler compliance level: 1.4.
 </para>
-	  <para>
+          <para>
 In the ArgoUML project we have decided to keep source compliance to JDK 1.4.
 (See <xref linkend="REQ7"/>).
 This setting enables Eclipse to tell you where some
 JDK 1.5
 features have crept in.
 </para>
-	</listitem>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Find forgotten and incorrect Javadoc comments.
 </para>
-	  <para>
+          <para>
 In the menu select Window => Preferences.
 Then select
 Java => Compiler.
@@ -1243,30 +1243,30 @@ Suggested settings for these tabs
 (Only things diverting from the Eclipse defaults are listed):
 </para>
           <itemizedlist>
-	    <listitem>
-	      <para>
+            <listitem>
+              <para>
 Javadoc => Malformed javadoc comments: Warning, Private, Report errors in tags.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 Javadoc => Missing javadoc tags: Warning, Protected,
 Check overriding and implementing methods.
 </para>
-	      <para>
+              <para>
 These problems are also found by Checkstyle so if you are
 running Checkclipse (See <xref linkend="checkclipse"/>)
 put this in Ignore instead.
 </para>
-	    </listitem>
-	  </itemizedlist>
-	</listitem>
+            </listitem>
+          </itemizedlist>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Code that hides other code.
 </para>
-	  <para>
+          <para>
 In the menu select Window => Preferences.
 Then select
 Java => Compiler.
@@ -1274,29 +1274,29 @@ Suggested settings for these tabs
 (Only things diverting from the Eclipse defaults are listed):
 </para>
           <itemizedlist>
-	    <listitem>
-	      <para>
+            <listitem>
+              <para>
 Style => Possible accidental boolean assignment: Warning.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 Advanced => Local variable declaration hides another field or variable:
 Warning.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 Advanced => Field declaration hides another field or variable: Warning.
 </para>
-	    </listitem>
-	  </itemizedlist>
-	</listitem>
-	<listitem>
-	  <para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+        <listitem>
+          <para>
 Find Code that shall be removed.
 </para>
-	  <para>
+          <para>
 In the menu select Window => Preferences.
 Then select
 Java => Compiler.
@@ -1304,62 +1304,62 @@ Suggested settings for these tabs
 (Only things diverting from the Eclipse defaults are listed):
 </para>
           <itemizedlist>
-	    <listitem>
-	      <para>
+            <listitem>
+              <para>
 Unused code => Local variable is never read: Warning.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 Unused code => Parameter is never read: Warning.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 Unused code => Unused or unread private members: Warning.
 </para>
 </listitem>
-	    <listitem>
-	      <para>
+            <listitem>
+              <para>
 Unused code => Unnecessary semicolon: Warning.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 Unused code => Unnecessary cast or 'instanceof' operation: Warning.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 Unused code => Unnecessary declaration of thrown checked exception: Warning.
 </para>
-	    </listitem>
-	  </itemizedlist>
-	</listitem>
+            </listitem>
+          </itemizedlist>
+        </listitem>
 
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Serialization
 </para>
-	  <para>
+          <para>
 In the menu select Window => Preferences.
 Then select
 Java => Compiler => Errors/Warnings
 Suggested settings for these tabs
 (Only things diverting from the Eclipse defaults are listed):
 </para>
-	  <itemizedlist>
-	    <listitem>
-	      <para>
+          <itemizedlist>
+            <listitem>
+              <para>
 Potential programming problems => Serializable class without serialVersionUID:
 Ignore
 </para>
-	      <para>
+              <para>
 We don't use serialization in the ArgoUML project anyway.
 </para>
-	    </listitem>
-	  </itemizedlist>
-	</listitem>
+            </listitem>
+          </itemizedlist>
+        </listitem>
       </itemizedlist>
     </sect2>
 
@@ -1385,29 +1385,29 @@ select Checkclipse (appears only if Checkclipse is correctly installed)
 and then fill the fields like this:
 </para>
       <itemizedlist>
-	<listitem>
-	  <para>Enable Checkstyle - 
+        <listitem>
+          <para>Enable Checkstyle - 
 Checked.
 </para>
-	</listitem>
-	<listitem>
-	  <para>Checkstyle Configuration File: 
+        </listitem>
+        <listitem>
+          <para>Checkstyle Configuration File: 
 <filename>tools/checkstyle/checkstyle_argouml.xml</filename>
 in the argouml-core-tools project.
 </para>
-	</listitem>
-	<listitem>
-	  <para>Checkstyle Properties File: 
+        </listitem>
+        <listitem>
+          <para>Checkstyle Properties File: 
 <filename>tools/checkstyle/checkstyle.properties</filename>
 in the argouml-core-tools project.
 </para>
-	</listitem>
-	<listitem>
-	  <para>File Filter Definition: 
+        </listitem>
+        <listitem>
+          <para>File Filter Definition: 
 <filename>tools/checkstyle/checkclipse.filefilters</filename>
 in the argouml-core-tools project.
 </para>
-	</listitem>
+        </listitem>
       </itemizedlist>
       <para>
 Leave the two other fields empty.
@@ -1427,18 +1427,18 @@ is supposed to be hidden.
       <para>
 The Model subsystem is separated in two parts:
         <itemizedlist>
-	  <listitem>
-	    <para>
+          <listitem>
+            <para>
 The interfaces and some bootstrap code
 in the argouml-core-model Eclipse project.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 The MDR implementation in the argouml-core-model-mdr Eclipse project.
 </para>
-	  </listitem>
-	</itemizedlist>
+          </listitem>
+        </itemizedlist>
 There is also for test purposes a partly implemented
 Mock implementation of the model subsystem in the 
 <classname>org.argouml.model.MockModelImplementation</classname>-class
@@ -1460,32 +1460,32 @@ implementation is needed so the tests require the MDR-implementation.
       <para>
 The simplest way to solve this is to:
         <orderedlist>
-	  <listitem>
-	    <para>
+          <listitem>
+            <para>
 Create the test (by right-clicking on any of the test classes
 and select Run as JUnit Test or Debug as JUnit Test).
 </para>
-	    <para>
+            <para>
 The test fails with a
 <exceptionname>java.lang.ExceptionInInitializerError</exceptionname>
 on the first reference to Model.
 If it doesn't then the perhaps the test case doesn't use the Model.
 </para>
-	  </listitem>
+          </listitem>
 
-	  <listitem>
-	    <para>
+          <listitem>
+            <para>
 Select Debug... or Run... to get the configuration editing box.
 It has remembered the test case and it is selected.
 </para>
-	  </listitem>
+          </listitem>
 
-	  <listitem>
-	    <para>
+          <listitem>
+            <para>
 Add the argouml-core-model-mdr to the classpath.
 </para>
 
-	    <para>
+            <para>
 Classpath tab,
 Select User Entries,
 Add Projects,
@@ -1499,8 +1499,8 @@ Press Debug or Run.
 Eclipse will remember these changes to that configuration
 but you will have to do it all over again once for each new test case.
 </para>
-	  </listitem>
-	</orderedlist>
+          </listitem>
+        </orderedlist>
 </para>
     </sect2>
   </sect1>
@@ -1517,6 +1517,7 @@ sgml-doctype: "cookbook.xml"
 sgml-parent-document: ("cookbook.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   cookbook.xml"
+indent-tabs-mode: nil
 End:
 
 -->

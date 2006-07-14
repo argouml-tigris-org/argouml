@@ -93,8 +93,8 @@ Because the same interface is used internally
 each implementation must provide objects for each of these interfaces.
 </para>
       <sect2 id="model_factories">
-	<title>Factories</title>
-	<para>
+        <title>Factories</title>
+        <para>
 The factories contain in most cases a create method for each model element.
 Example: <methodname>createClass</methodname>
 resides in <classname>CoreFactory</classname>-interface.
@@ -103,15 +103,15 @@ resides in <classname>CoreFactory</classname>-interface.
 Besides that, there are several build methods to build classes.
 The build methods have a signature like
 <methodsynopsis>
-	<modifier>public</modifier>
-	<type>Object</type>
-	<methodname>build<replaceable>MODELELEMENTNAME</replaceable></methodname>
-	<methodparam>
-	  <parameter><replaceable>params</replaceable></parameter>
-	</methodparam>
+        <modifier>public</modifier>
+        <type>Object</type>
+        <methodname>build<replaceable>MODELELEMENTNAME</replaceable></methodname>
+        <methodparam>
+          <parameter><replaceable>params</replaceable></parameter>
+        </methodparam>
       </methodsynopsis>.
 </para>
-	<para>
+        <para>
 Each build method verifies the wellformedness rules
 as defined in the UML spec 1.3.
 The reason for this is that NS-UML does not enforce
@@ -119,7 +119,7 @@ the wellformedness rules even though non-well-formed UML can lead to
 non-well-formed XMI which leads to saving/loading issues and
 all kinds of illegal states of ArgoUML.
 </para>
-	<para>
+        <para>
 If you want to create an element you shall use the build or create methods
 in the factories.
 You are strongly advised to use a build method or, if there is
@@ -135,15 +135,15 @@ so don't!
 </para>
       </sect2>
       <sect2 id="model_helpers">
-	<title>Helpers</title>
-	<para>
+        <title>Helpers</title>
+        <para>
 The helpers contain all utility methods for manipulating model elements.
 For example, they contain methods to get all model elements
 of a certain class out of the model
 (see <methodname>getAllModelelementsOfKind</methodname> in 
 <classname>ModelManagementHelper</classname>).
 </para>
-	<para>
+        <para>
 To find a utility method you need to know where it is.
 As a rule of thumb, a utility method for some model element 
 is defined in the helper that corresponds with the section
@@ -151,7 +151,7 @@ in the UML specification.
 For example, all utility methods for manipulating classes 
 are defined in <classname>CoreHelper</classname>.
 </para>
-	<para>
+        <para>
 There are a few exceptions to this rule, mainly if 
 the utility method deals with two model elements 
 that correspond to different sections in the UML
@@ -168,39 +168,39 @@ so don't!
 
 
       <sect2>
-	<title>The model event pump</title>
-	<sect3>
-	  <title>Introduction</title>
-	  <para>
+        <title>The model event pump</title>
+        <sect3>
+          <title>Introduction</title>
+          <para>
 Late 2002, the ArgoUML community decided for the introduction of a clean
 interface between the NSUML model and the rest of ArgoUML.
 This interface consists of three parts:
 <orderedlist>
-	      <listitem>
-		<para>
+              <listitem>
+                <para>
 The model factories, responsible for creation and deletion of model elements
 </para>
-	      </listitem>
-	      <listitem>
-		<para>
+              </listitem>
+              <listitem>
+                <para>
 The model helpers, responsible for utility functions to manipulate the
 model elements and
 </para>
-	      </listitem>
-	      <listitem>
-		<para>
+              </listitem>
+              <listitem>
+                <para>
 The model event pump, responsible for sending model events to the rest
 of ArgoUML.
 </para>
-	      </listitem>
-	    </orderedlist>
+              </listitem>
+            </orderedlist>
 </para>
-	  <para>
+          <para>
 The model factories and the model helpers are described in 
 <xref linkend="model_factories"/> and
 <xref linkend="model_helpers"/> respectively.
 </para>
-	  <para>
+          <para>
 In the beginning of 2003, in the work to replace NSUML, the need 
 was seen for this interface to not use any NSUML classes.
 The <classname>ModelFacade</classname> was introduced to wrap
@@ -213,7 +213,7 @@ was introduced to wrap
 the <classname>UmlModelEventPump</classname>
 using <classname>PropertyChangeEvent</classname>s.
 </para>
-	  <para>
+          <para>
 The model event pump is the gateway between the model elements and the
 rest of ArgoUML.
 Events fired by the model elements are caught by the pump and then
@@ -223,43 +223,43 @@ is concentrated in one place (see picture *).
 This makes it easier to change the interface between the model and the
 rest of ArgoUML.
 </para>
-	  <para>
+          <para>
 Besides this, there are some improvements to the performance of the
 pump made in comparison to the situation without the pump.
 The main improvement is that you can register for just one type of
 event and not for all events fired by some model element.
 In this respect the pump works as a filter.
 </para>
-	  <para>
+          <para>
 <mediaobject>
-	      <imageobject>
-		<imagedata fileref="images/cookbook/eventsbeforepump.gif" format="GIF"/>
-	      </imageobject>
-	    </mediaobject>
+              <imageobject>
+                <imagedata fileref="images/cookbook/eventsbeforepump.gif" format="GIF"/>
+              </imageobject>
+            </mediaobject>
 </para>
-	  <para>
+          <para>
 <mediaobject>
-	      <imageobject>
-		<imagedata fileref="images/cookbook/eventsafterpump.gif" format="GIF"/>
-	      </imageobject>
-	    </mediaobject>
+              <imageobject>
+                <imagedata fileref="images/cookbook/eventsafterpump.gif" format="GIF"/>
+              </imageobject>
+            </mediaobject>
 </para>
 
-	  <para>
+          <para>
 The model event pump will replace all other event mechanisms for model
 events in the future.
 These mechanisms (like UMLChangeDispatch and ThirdPartyEventlisteners
 for those who are interested) are DEPRECATED.
 Do not use them therefore and do not use classes that use them.
 </para>
-	</sect3>
-	<sect3>
-	  <title>Public API</title>
-	  <para>
+        </sect3>
+        <sect3>
+          <title>Public API</title>
+          <para>
 You might wonder: how does this all work?
 Well, very simple in fact.
 </para>
-	  <para>
+          <para>
 A model event (from now on a Event) has a name that uniquely
 identifies the type of the event.
 
@@ -278,13 +278,13 @@ TODO: What thread will I receive my event in?
 What locks will be held by the Model while I receive my event i.e.
 is there something I cannot do from the event thread?
 </para>
-	  <para>
+          <para>
 In the case described above (the most common one) you only have to
 subscribe with the pump for that type of event.
 This is explained in section <xref linkend="pump-register-listener-for-type"/>
 and <xref linkend="pump-remove-listener-for-event"/>
 </para>
-	  <para>
+          <para>
 Besides the case that you are interested in only one type of event (or
 a set of types), there are occasions that you are interested in all
 events fired by a certain model element or even for all events fired by
@@ -295,11 +295,11 @@ For these cases, the pump has functionality too.
 This is described in section 
 <xref linkend="pump-methods-for-adding-and-removing"/>.
 </para>
-	  <sect4 id="pump-register-listener-for-type">
-	    <title>
+          <sect4 id="pump-register-listener-for-type">
+            <title>
 How do I register a listener for a certain type event
 </title>
-	    <para>
+            <para>
 This is really very simple. Use the model
 <programlisting>
 addModelEventListener(PropertyChangeListener listener, Object modelelement, String eventName)
@@ -312,10 +312,10 @@ Now your object this gets only the <classname>Events</classname>
 fired by modelElementIAmInterestedIn that have the name
 "IamInterestedInThisEventnameType".
 </para>
-	  </sect4>
-	  <sect4 id="pump-remove-listener-for-event">
-	    <title>How do I remove a listener for a certain event</title>
-	    <para>
+          </sect4>
+          <sect4 id="pump-remove-listener-for-event">
+            <title>How do I remove a listener for a certain event</title>
+            <para>
 This is the opposite of registering a listener. It all works with the
 method
 <programlisting>
@@ -327,12 +327,12 @@ Model.getPump().removeModelEventListener(this, modelelementIAmInterestedIn, "Iam
 </programlisting>
 Now your object is not registered any more for this event type. 
 </para>
-	  </sect4>
-	  <sect4 id="pump-methods-for-adding-and-removing">
-	    <title>
+          </sect4>
+          <sect4 id="pump-methods-for-adding-and-removing">
+            <title>
 Hey, I saw some other methods for adding and removing?
 </title>
-	    <para>
+            <para>
 Yes there are some other method for adding and removing. 
 
 You can add a listener that is interested in ALL events fired by a
@@ -344,7 +344,7 @@ addModelEventListener(PropertyChangeListener listener, Object modelelement)
 </programlisting>
 As you can see no names of events you can register for here.
 </para>
-	    <para>
+            <para>
 Furthermore, you can add a listener that is interested in several
 types of events but coming from 1 model element.
 
@@ -358,11 +358,11 @@ It works via:
 addModelEventListener(PropertyChangeListener listener, Object modelelement, String[] eventNames)
 </programlisting>
 </para>
-	    <para>
+            <para>
 You can pass the method an array of strings with event names in which
 your listener is interested.
 </para>
-	    <para>
+            <para>
 Thirdly there is a very powerful method to register your listener to
 ALL events fired by a ALL model elements of a certain class.
 
@@ -379,28 +379,28 @@ event fired by all model elements of a certain class and to register
 for a set of types of events fired by all mod elements of a certain
 class.
 </para>
-	    <para>
+            <para>
 Of course you can remove your listeners from the event pump. 
 This works with methods starting with remove instead of add.
 </para>
-	  </sect4>
-	</sect3>
-	<sect3>
-	  <title>Tips</title>
-	  <orderedlist>
-	    <listitem>
-	      <para>
+          </sect4>
+        </sect3>
+        <sect3>
+          <title>Tips</title>
+          <orderedlist>
+            <listitem>
+              <para>
 Don't forget to remove your listener from the event pump if it's not
 interested in some event any more.
 </para>
-	      <para>
+              <para>
 If you do not remove it, that's gonna cost performance and it will
 give you a hard time to debug all the logical bugs you see in your
 listener.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 When you implement your listener, it is wise to NOT DO the following:
 <programlisting>
 propertyChanged(MElementEvent event) {
@@ -410,24 +410,24 @@ propertyChanged(MElementEvent event) {
 }
 </programlisting>
 </para>
-	    <para>
+            <para>
 This will cause the things that need to be done for event type 1 to be
 fired when event type 2 do arrive.
 </para>
-	      <para>
+              <para>
 This still happens at a lot of places in the code of ArgoUML, most
 notably in the modelChanged method of the children of
 FigEdgeModelElement.
 </para>
-	    </listitem>
-	  </orderedlist>
-	</sect3>
-	<sect3>
-	  <title>Possible investigation points and improvements</title>
-	  <para>
+            </listitem>
+          </orderedlist>
+        </sect3>
+        <sect3>
+          <title>Possible investigation points and improvements</title>
+          <para>
 Should we use our own event types?
 </para>
-	    <para>
+            <para>
 Should we replace
 the <classname>MElementListener</classname>
 with <classname>PropertyChangeListener</classname> and
@@ -437,26 +437,26 @@ with <classname>PropertyChangeEvent</classname>?
 One reason we havn't done so yet is that it involves a lot of work and
 testing.
 </para>
-	    <para>
+            <para>
 Change the implementation of the Event pump
 itself?
 
 Not the API but the implementation!
 </para>
-	    <para>
+            <para>
 At the moment the event pump does not use the AWT Event Thread for
 dispatching events.
 
 This can make ArgoUML slow (in the perception of the user). 
 </para>
-	    <para>
+            <para>
 Use the standard
 data structure that Swing uses for event registration
 (i.e. <classname>javax.swing.EventListenerList</classname>).
 
 Would this be an improvement?
 </para>
-	</sect3>
+        </sect3>
       </sect2>
 
 
@@ -510,128 +510,128 @@ come up with would provide the implementation of those interfaces.
           </row>
         </thead>
 
-	<tbody>
-	  <row>
-	    <entry>Test that an Object o has a certain type</entry>
-	    <entry>
+        <tbody>
+          <row>
+            <entry>Test that an Object o has a certain type</entry>
+            <entry>
 o instanceof M<replaceable>modelelementtype</replaceable> &rarr; boolean
 </entry>
-	    <entry>
+            <entry>
 ???CLASSNAME???&#8203;.isInstanceOf(&#8203;RefObject toTest, String className) &rarr; boolean
 </entry>
-	    <entry>
+            <entry>
 Model.getFacade()&#8203;.isA<replaceable>modelelementtype</replaceable>(o) &rarr; boolean
 </entry>
-	  </row>
+          </row>
 
-	  <row>
-	    <entry>Get a single valued model element from an Object o</entry>
-	    <entry>
+          <row>
+            <entry>Get a single valued model element from an Object o</entry>
+            <entry>
 ((M<replaceable>modelelementtype</replaceable>)o)&#8203;.get<replaceable>property</replaceable>()
 &rarr; model element
 </entry>
-	    <entry>
+            <entry>
 ((RefFeatured)obj)&#8203;.refGetValue(&#8203;String propName) &rarr; ???Type???
 </entry>
-	    <entry>
+            <entry>
 Model.getFacade()&#8203;.get<replaceable>property</replaceable>(o) &rarr; Object
 </entry>
-	  </row>
-	  <row>
-	    <entry>Get a multi valued property from an Object o</entry>
-	    <entry>
+          </row>
+          <row>
+            <entry>Get a multi valued property from an Object o</entry>
+            <entry>
 ((M<replaceable>modelelementtype</replaceable>)o)&#8203;.get<replaceable>property</replaceable>()
 &rarr; Collection
 </entry>
-	    <entry>
+            <entry>
 ((RefFeatured)obj)&#8203;.refGetValue(String propName) &rarr; Collection
 </entry>
-	    <entry>
+            <entry>
 Model.getFacade()&#8203;.get<replaceable>property</replaceable>(o)
 &rarr; Iterator or Collection (total confusion!)
 </entry>
-	  </row>
-	  <row>
-	    <entry>Create a new model element of type Type:</entry>
-	    <entry>
+          </row>
+          <row>
+            <entry>Create a new model element of type Type:</entry>
+            <entry>
 MFactory&#8203;.getDefaultFactory()&#8203;.create<replaceable>Type</replaceable>()
 </entry>
-	    <entry>
+            <entry>
 ???CLASSNAME???&#8203;.creatInstance(&#8203;String "<replaceable>Type</replaceable>", 
                               List argument)
 &rarr; RefObject 
 </entry>
-	    <entry>
+            <entry>
 Model&#8203;.get<replaceable>ModelElementDomain?</replaceable>Factory&#8203;.build<replaceable>modelelementtype</replaceable>(args)
 or
 Model&#8203;.get<replaceable>ModelElementDomain?</replaceable>Factory&#8203;.create<replaceable>modelelementtype</replaceable>()
 to create them completely empty.
 </entry>
-	  </row>
-	  <row>
-	    <entry>Delete a model element</entry>
-	    <entry>
+          </row>
+          <row>
+            <entry>Delete a model element</entry>
+            <entry>
         &nbsp;
-  		</entry>
-	    <entry>
+                </entry>
+            <entry>
         &nbsp;
-  		</entry>
+                </entry>
       <entry>
 Model&#8203;.getUmlFactory()&#8203;.delete(&#8203;<replaceable>object</replaceable>) 
       </entry>
-	  </row>
-	  <row>
-	    <entry>
+          </row>
+          <row>
+            <entry>
 Register for notification that a model element Object o has changed:
 </entry>
-	    <entry>
+            <entry>
 ((MBase) o)&#8203;.addMElementListener(&#8203;MElementListener el)
 </entry>
-	    <entry>
+            <entry>
 ((MDRChangeSource) obj)&#8203;.addChangeListener(???)
 </entry>
-	    <entry>
+            <entry>
 Model.getPump()&#8203;.addModelEventListener(&#8203;(PropertyChangeListener)li,
                                       Object o, String[] eventnames)
 </entry>
-	  </row>
-	  <row>
-	    <entry>
+          </row>
+          <row>
+            <entry>
 Register for notification on all model elements of a certain type Type:
 </entry>
-	    <entry>
+            <entry>
 Not possible!
 </entry>
-	    <entry>
+            <entry>
 ((MDRChangeSource)obj&#8203;.refClass())&#8203;.addChangeListener(???)
 </entry>
-	    <entry>
+            <entry>
 Model.getPump()&#8203;.addModelEventListener(&#8203;(PropertyChangeListener)li,
                                       (Object)Model&#8203;.getMetaTypes()&#8203;.getMODELELEMENTTYPE(),
                                       String[] eventnames)
 </entry>
-	  </row>
-	  <row>
-	    <entry>How do I get the model as XMI on the stream Stream:</entry>
-	    <entry>
+          </row>
+          <row>
+            <entry>How do I get the model as XMI on the stream Stream:</entry>
+            <entry>
 (new XMIWriter(MModel m, Writer Stream)).gen()
 </entry>
-	    <entry>
+            <entry>
 new XMIWriter(???)
 </entry>
-	    <entry>
+            <entry>
 Handled by the Persistence subsystem.
 </entry>
-	  </row>
-	</tbody>
+          </row>
+        </tbody>
       </tgroup>
     </table>
   </sect2>
 
 <!--
       <sect2>
-	<title>Collaborations for Model</title>
-	<para>
+        <title>Collaborations for Model</title>
+        <para>
 The Model does not use much of the other parts of ArgoUML.
 It is provided for use of others.
 </para>
@@ -639,11 +639,11 @@ It is provided for use of others.
 -->
 
       <sect2 id="howdoi_model">
-	<title>How do I...?</title>
-	<itemizedlist>
-	  <listitem>
-	    <para>...add a new model element?</para>
-	    <para>
+        <title>How do I...?</title>
+        <itemizedlist>
+          <listitem>
+            <para>...add a new model element?</para>
+            <para>
 <!-- TODO: This needs to be updated for Model subsystem -->
 Make a parameterless build method for your  model element in one of
 the UML Factories (for instance <classname>CoreFactory</classname>).
@@ -662,7 +662,7 @@ don't need other model elements.
 In the UML spec you can read which elements you need to initialize.
 See for example <methodname>buildAttribute()</methodname> for an example.
 </para>
-	    <para>
+            <para>
 If you need to attach other already existing model elements to your
 model element make a 
 <methodname>build<replaceable>XXXX</replaceable>(MModelelement 
@@ -681,19 +681,19 @@ and
 a Fig object (See <xref linkend="howto_createnewfig_2"></xref>).
 </para>
           </listitem>
-	  <listitem>
-	    <para>...create a new create method?</para>
-	    <para>
+          <listitem>
+            <para>...create a new create method?</para>
+            <para>
 Create it in the correct factory.
 </para>
           </listitem>
-	  <listitem>
-	    <para>...create a new utility method?</para>
-	    <para>
+          <listitem>
+            <para>...create a new utility method?</para>
+            <para>
 Create it in the correct helper.
 </para>
-	  </listitem>
-	</itemizedlist>
+          </listitem>
+        </itemizedlist>
       </sect2>
     </sect1>
 
@@ -706,6 +706,7 @@ sgml-doctype: "cookbook.xml"
 sgml-parent-document: ("cookbook.xml" "sect1" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   cookbook.xml"
+indent-tabs-mode: nil
 End:
 
 -->

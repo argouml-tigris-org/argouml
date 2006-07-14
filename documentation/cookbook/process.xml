@@ -162,50 +162,50 @@ Missing javadoc.
         </indexterm>
         <para>
 <itemizedlist>
-	  <listitem>
-	    <para>LATER</para>
-	    <para>
+          <listitem>
+            <para>LATER</para>
+            <para>
 Used to denote that a certain issue cannot be resolved until
 some special upcoming and planned-for event has happened.
 The event in question is noted in the target milestone.
 </para>
-	    <para>
+            <para>
 Events can be things like, dropping support for a JDK version,
 changing the version of UML that we support, or
 replacing some central mechanism within ArgoUML.
 Once they have a target milestone registered,
 they are considered events.
 </para>
-	  </listitem>
+          </listitem>
 
             <listitem>
               <para>REMIND</para>
               <para>
 Not used.
 </para>
-	      <sidebar>
-	        <para>
+              <sidebar>
+                <para>
 Rationale: Each issue have basically four states:
 <orderedlist>
-		  <listitem>
-		    <para>NEW/STARTED/REOPENED - To be resolved</para>
-		  </listitem>
-		  <listitem>
-		    <para>RESOLVED - To be verified</para>
-		  </listitem>
-		  <listitem>
-		    <para>VERIFIED - To be closed</para>
-		  </listitem>
-		  <listitem>
-		    <para>CLOSED - Finished.</para>
-		  </listitem>
-		</orderedlist>
+                  <listitem>
+                    <para>NEW/STARTED/REOPENED - To be resolved</para>
+                  </listitem>
+                  <listitem>
+                    <para>RESOLVED - To be verified</para>
+                  </listitem>
+                  <listitem>
+                    <para>VERIFIED - To be closed</para>
+                  </listitem>
+                  <listitem>
+                    <para>CLOSED - Finished.</para>
+                  </listitem>
+                </orderedlist>
 The statistics is based on this and persons looking for 
 issues to resolve look among the "To be resolved"-group
 (the web pages to help in this are set up in this way).
 This is also in sync with our release process.
 </para>
-	      <para>
+              <para>
 Looking at it from a single persons perspective an issue is either a
 "I could work with this issue but I currently don't",
 "I work with this one", or
@@ -217,7 +217,7 @@ For a verifier this corresponds to
 RESOLVED for the first group and
 VERIFIED for the third group.
 </para>
-	      <para>
+              <para>
 The RESOLVED/REMIND does not fit this.
 They risk to be verified because the rest of our process urges
 people to resolve issues that are RESOLVED
@@ -232,17 +232,17 @@ Someone risk to think that there is nothing left to do since it is resolved
 and if so his options of doing work are reduced which could lead to that 
 he actually does less with ArgoUML than he else would.
 </para>
-	      <para>
+              <para>
 To amend this we have made two things:
 <orderedlist>
-		  <listitem>
-		    <para>Decided that we don't use the
+                  <listitem>
+                    <para>Decided that we don't use the
 RESOLVED/REMIND
 states.
 </para>
-		  </listitem>
-		  <listitem>
-		    <para>At every release,
+                  </listitem>
+                  <listitem>
+                    <para>At every release,
 as part of the release process,
 clean up issues that for some mysterious reason ended up
 in these states
@@ -250,10 +250,10 @@ in these states
 <xref linkend="issuezilla_release_maintenance"/>,
 <xref linkend="reopen_remind_and_later"/>)
 </para>
-		  </listitem>
-		</orderedlist>
+                  </listitem>
+                </orderedlist>
 </para>
-	      <para>
+              <para>
 If you plan to solve an issue now,
 assign it to you,
 start it, and 
@@ -261,24 +261,24 @@ set the target milestone to the release you plan to have it solved.
 This will signal to everyone that you have the responsibility,
 will pursue it, and your time plan.
 </para>
-	      <para>
+              <para>
 If you don't plan to solve this now,
 leave it in the "up for grabs"-pile (as not resolved).
 Somebody else might want to work with it.
 </para>
-	      <para>
+              <para>
 If you know that an issue cannot be resolved now because it requires
 that another issue is solved before,
 register the other issue as "depends on" and leave the issue in the 
 "up for grabs"-pile (as not resolved).
 </para>
-	      <para>
+              <para>
 If you know that an issue cannot be resolved now because it requires
 some big event to take place,
 put the milestone for that event in the target milestone and
 resolve the issue as RESOLVED/LATER.
 </para>
-	    </sidebar>
+            </sidebar>
             </listitem>
             <listitem>
               <para>WORKSFORME</para>
@@ -1005,12 +1005,12 @@ We have two kinds of releases of ArgoUML:
 
     <itemizedlist>
       <listitem>
-	<para>
+        <para>
 Development releases.
 </para>
       </listitem>
       <listitem>
-	<para>
+        <para>
 Stable releases.
 </para>
       </listitem>
@@ -1042,103 +1042,103 @@ patched stable release looks like this:
 
     <itemizedlist>
       <listitem>
-	<para>
+        <para>
 Development Period.
 </para>
-	<para>
+        <para>
 A period of one to several months where no special restrictions apply.
 </para>
-	<para>
+        <para>
 During this period we attempt to make one development release per month.
 The releases are named x.y.z where
 y is an odd number and
 z is counting upwards from 1.
 </para>
-	<para>
+        <para>
 The releases are checkpoints where:
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>Everything compiles (including the sub-projects).</para>
-	  </listitem>
-	  <listitem>
-	    <para>The release script works.</para>
-	  </listitem>
-	  <listitem>
-	    <para>No JUnit tests are failing.</para>
-	  </listitem>
-	  <listitem>
-	    <para>There are no P1 issues.</para>
-	  </listitem>
-	</itemizedlist>
+        <itemizedlist>
+          <listitem>
+            <para>Everything compiles (including the sub-projects).</para>
+          </listitem>
+          <listitem>
+            <para>The release script works.</para>
+          </listitem>
+          <listitem>
+            <para>No JUnit tests are failing.</para>
+          </listitem>
+          <listitem>
+            <para>There are no P1 issues.</para>
+          </listitem>
+        </itemizedlist>
 
-	<para>
+        <para>
 The releases are used:
 </para>
 
-	<itemizedlist>
-	  <listitem>
-	    <para>As reference points when reporting bugs.</para>
-	  </listitem>
+        <itemizedlist>
+          <listitem>
+            <para>As reference points when reporting bugs.</para>
+          </listitem>
 
-	  <listitem>
-	    <para>As reference points when verifying issues.</para>
-	  </listitem>
+          <listitem>
+            <para>As reference points when verifying issues.</para>
+          </listitem>
 
-	  <listitem>
-	    <para>
+          <listitem>
+            <para>
 As reference points and convenient downloads for persons working with modules.
 </para>
-	  </listitem>
+          </listitem>
 
-	</itemizedlist>
+        </itemizedlist>
       </listitem>
 
       <listitem>
-	<para>
+        <para>
 First Alpha.
 </para>
-	<para>
+        <para>
 This is the enhancement freeze point.
 All enhancements that are not completed and committed in the main trunk
 before this point will not be
 included in the stable release.
 </para>
-	<para>
+        <para>
 The First Alpha release is named x.y.alpha1 or x.y.ALPHA_1 depending on
 the context.
 It marks the end of the Development Period and 
 the start of the Alpha Period.
 </para>
-	<para>
+        <para>
 Otherwise it works just like a development release.
 </para>
       </listitem>
 
       <listitem>
-	<para>
+        <para>
 Alpha Period.
 </para>
-	<para>
+        <para>
 A period of a couple of weeks where special restrictions apply 
 when committing into the main trunk:
 </para>
 
-	<itemizedlist>
-	  <listitem>
-	    <para>Only bug fixes are allowed in the code.</para>
-	    <para>
+        <itemizedlist>
+          <listitem>
+            <para>Only bug fixes are allowed in the code.</para>
+            <para>
 Put the number of the DEFECT you are addressing by the commit in the message.
 </para>
-	  </listitem>
-	</itemizedlist>
-	<para>
+          </listitem>
+        </itemizedlist>
+        <para>
 Exceptions to this are requested to and approved
 by the Release Responsible
 before commit.
 </para>
 
-	<para>
+        <para>
 During this period we attempt to make at least one Alpha Release
 each week.
 The releases are named x.y.alphaz where
@@ -1146,93 +1146,93 @@ y is an even number and
 z is counting upwards from 1 that is the first alpha.
 </para>
 
-	<para>
+        <para>
 The purpose of the releases and their use are the same as during
 the development period.
 </para>
       </listitem>
 
       <listitem>
-	<para>
+        <para>
 First Beta.
 </para>
-	<para>
+        <para>
 This is the bug fixes freeze point.
 All enhancements and bug fixes that are not 
 completed and committed in the main trunk before this point
 will not be included in the stable release.
 A known problems list could be compiled at this point.
 </para>
-	<para>
+        <para>
 The first beta release is named x.y.beta1 or x.y.BETA_1 depending on
 the context.
 It marks the end of the Alpha Period and 
 the start of the Beta Period.
 </para>
-	<para>
+        <para>
 It is the first release candidate for the stable release.
 Because of this it is required that:
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>Everything compiles (including the sub-projects).</para>
-	  </listitem>
-	  <listitem>
-	    <para>The release script works.</para>
-	  </listitem>
-	  <listitem>
-	    <para>No JUnit tests are failing.</para>
-	  </listitem>
-	  <listitem>
-	    <para>There are no P1 or P2 issues.</para>
-	  </listitem>
-	</itemizedlist>
+        <itemizedlist>
+          <listitem>
+            <para>Everything compiles (including the sub-projects).</para>
+          </listitem>
+          <listitem>
+            <para>The release script works.</para>
+          </listitem>
+          <listitem>
+            <para>No JUnit tests are failing.</para>
+          </listitem>
+          <listitem>
+            <para>There are no P1 or P2 issues.</para>
+          </listitem>
+        </itemizedlist>
 
-	<para>
+        <para>
 Otherwise it works just like a development release.
 </para>
       </listitem>
 
       <listitem>
-	<para>
+        <para>
 Beta Period.
 </para>
-	<para>
+        <para>
 A period of a couple of weeks where the focus is quality assurance.
 Every developer should strive to:
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>
+        <itemizedlist>
+          <listitem>
+            <para>
 Test ArgoUML as thoroughly as possible.
 Especially the areas that are new or changed since the last release.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 Verify issues that are resolved.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 Scrutinize the commits in the main trunk to see that no new bugs
 are introduced.
 </para>
-	  </listitem>
-	</itemizedlist>
+          </listitem>
+        </itemizedlist>
 
-	<para>
+        <para>
 Extreme caution applies when committing into the main trunk.
 Only under the following conditions are commits allowed:
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>
+        <itemizedlist>
+          <listitem>
+            <para>
 It is a fix to some DEFECT that was previously fixed
 but it was found during the verification that the solution was not
 correct or complete.
 </para>
-	    <para>
+            <para>
 Reopen the DEFECT when the problem is found with a statement of what is
 still the problem.
 Put the number of the DEFECT you are addressing by the commit in the message
@@ -1240,52 +1240,52 @@ together with the statement of the part of the problem.
 Resolve the DEFECT as FIXED and update the target milestone with 
 the release name of the next beta.
 </para>
-	  </listitem>
+          </listitem>
 
-	  <listitem>
-	    <para>
+          <listitem>
+            <para>
 All JUnit test cases are run from a cleaned checked out copy
 at the commit and no problems are found.
 </para>
-	  </listitem>
-	</itemizedlist>
-	<para>
+          </listitem>
+        </itemizedlist>
+        <para>
 Exceptions to this are requested and approved
 by the Release Responsible
 before commit.
 </para>
 
-	<para>
+        <para>
 If a new problem is found the following needs to be done before
 committing the solution:
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>
+        <itemizedlist>
+          <listitem>
+            <para>
 The problem is registered as a DEFECT.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 The solution is implemented.
 </para>
-	    <para>
+            <para>
 Here the requirement is a high on the quality and low impact of the solution.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 A request is made to the Release Responsible to allow this change.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 This is granted by the Release Responsible.
 </para>
-	  </listitem>
-	</itemizedlist>
+          </listitem>
+        </itemizedlist>
 
-	<para>
+        <para>
 During the period we attempt to release at least one beta release
 each week.
 The releases are named x.y.betaz where
@@ -1293,7 +1293,7 @@ y is an even number and
 z is counting upwards from 1 that is the first beta.
 </para>
 
-	<para>
+        <para>
 Each release is a release candidate.
 When we have reached the point where no more issues are verified
 and we are confident that there are no more problems in this release
@@ -1302,116 +1302,116 @@ we make the stable release without code changes compared to the last beta.
       </listitem>
 
       <listitem>
-	<para>
+        <para>
 Stable Release.
 </para>
 
-	<para>
+        <para>
 This marks the end of the Alpha and Beta Period and 
 the start of the next Development Period.
 </para>
 
-	<para>
+        <para>
 The release is named x.y where
 y is an even number.
 </para>
 
-	<para>
+        <para>
 The release is used:
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>By all users.</para>
-	  </listitem>
-	</itemizedlist>
+        <itemizedlist>
+          <listitem>
+            <para>By all users.</para>
+          </listitem>
+        </itemizedlist>
 
-	<para>
+        <para>
 It can also be used as a development release.
 </para>
       </listitem>
 
       <listitem>
-	<para>
+        <para>
 A Stable Patch Release.
 </para>
 
-	<para>
+        <para>
 If we find a serious problem in the stable release
 we can decide to make a Stable Patch Release.
 </para>
 
-	<para>
+        <para>
 The following needs to be done before committing the solution:
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>
+        <itemizedlist>
+          <listitem>
+            <para>
 The problem is registered as a DEFECT stating that it is a problem in the
 Stable Release or a previous Stable Patch Release.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 A working branch is created against the release tag of the 
 Stable Release or Stable Patch Release
 and the solution is implemented in that branch.
 </para>
-	    <para>
+            <para>
 Here the requirement is a high on the quality and low impact of the solution.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 We decide that it is a serious problem and that we are going to do a
 Stable Patch Release.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 Several developers scrutinize the solution, testing and verifying
 in the branch of the issue.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 The Release Responsible creates a branch.
 If this is not the first Stable Patch Release the branch is reused.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 The Release Responsible merges the solution into the branch.
 </para>
 
-	    <para>
+            <para>
 A Stable Patch Release could contain several issues resolved.
 In that case they are all merged.
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 Several developers scrutinize the merge, testing and verifying
 in the release branch.
 </para>
-	  </listitem>
-	</itemizedlist>
+          </listitem>
+        </itemizedlist>
 
-	<para>
+        <para>
 The release is named x.y.z where
 y is an even number, and
 z is counting upwards from 1.
 </para>
 
-	<para>
+        <para>
 The release is used:
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>By all users.</para>
-	  </listitem>
-	</itemizedlist>
+        <itemizedlist>
+          <listitem>
+            <para>By all users.</para>
+          </listitem>
+        </itemizedlist>
 
-	<para>
+        <para>
 After the release is completed the person working with the solution
 commits his solution also in the main trunk if still applicable there.
 </para>
@@ -1431,6 +1431,7 @@ sgml-doctype: "cookbook.xml"
 sgml-parent-document: ("cookbook.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   cookbook.xml"
+indent-tabs-mode: nil
 End:
 
 -->

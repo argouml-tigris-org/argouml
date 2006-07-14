@@ -70,34 +70,34 @@ diagrams in mind).
 
 
       <sect2>
-	<title>Multi editor pane</title>
-	<para>
+        <title>Multi editor pane</title>
+        <para>
 The multi editor pane is the pane with the diagram editor in it.
 Normally it is placed in the upper right corner of the application.
 One of the feature requests is to make the pane dockable so maybe 
 it won't be there in the future.
 </para>
-	<para>
+        <para>
 The multi editor pane consists of tabs that hold editors as you can see
 in the class diagram.
         <mediaobject>
-	  <imageobject>
-	    <imagedata fileref="images/cookbook/multieditorpane.gif" 
-		       format="GIF"/>
-	  </imageobject>
+          <imageobject>
+            <imagedata fileref="images/cookbook/multieditorpane.gif" 
+                       format="GIF"/>
+          </imageobject>
         </mediaobject>
 </para>
-	<para>
+        <para>
 At the moment there is only one editor tab in place.
 This is the <classname>TabDiagram</classname> that shows an UMLDiagram, 
 the target.
 </para>
-	<para>
+        <para>
 The <classname>TabDiagram</classname> is spawn-able.
 This means that the user can double click the tab and the diagram will
 spawn as a separate window.
 </para>
-	<para>
+        <para>
 The target of the <classname>MultiEditorPane</classname> is set via the 
 <methodname>setTarget</methodname> method 
 of the pane.
@@ -113,54 +113,54 @@ This selects the new target on a tab. This probably belongs in
 the <methodname>setTarget</methodname> method of the individual tabs and diagrams but 
 that's how it's implemented at the moment.
 </para>
-	<sect3>
-	  <title>How do I ...?</title>
-	  <para>
+        <sect3>
+          <title>How do I ...?</title>
+          <para>
 <itemizedlist>
-	      <listitem>
-		<para>...add a new tab to the <classname>MultiEditorPane</classname>?</para>
-		<para>
+              <listitem>
+                <para>...add a new tab to the <classname>MultiEditorPane</classname>?</para>
+                <para>
 Create a new class that's a child of <classname>JPanel</classname> 
 and put the following 
 line in argo.ini:
 <programlisting>
-multi:	<replaceable>fully classified name of new tab class</replaceable>
+multi:  <replaceable>fully classified name of new tab class</replaceable>
 </programlisting>
 </para>
-	      </listitem>
-	    </itemizedlist>
+              </listitem>
+            </itemizedlist>
 </para>
-	</sect3>
+        </sect3>
       </sect2>
 
       <sect2 id="howdoi_diagrams">
-	<title>How do I add a new element to a diagram?</title>
+        <title>How do I add a new element to a diagram?</title>
 
-	<para>
+        <para>
 To add a new element to a diagram, two main things have to be done.
 </para>
 
-	<orderedlist>
-	  <listitem>
-	    <para>
+        <orderedlist>
+          <listitem>
+            <para>
 Create new Fig classes to represent the element on the
 diagram and add them to the graph model 
 (org.argouml.uml.diagram.xxxx.XxxxDiagramGraphModel.java)
 and renderer
 (org.argouml.uml.diagram.xxxx.ui.XxxxDiagramRenderer.java).
 </para>
-	  </listitem>
+          </listitem>
 
-	  <listitem>
-	    <para>
+          <listitem>
+            <para>
 Create a new property panel class that will be displayed in
 the property tab window on the details pane.
 This is described in <xref linkend="propertypanels"></xref>.
 </para>
-	  </listitem>
-	</orderedlist>
+          </listitem>
+        </orderedlist>
 
-	<para>
+        <para>
 Throughout we shall use the example of adding the UML Extend
 relationship to a use case diagram. This allows two Use Cases to be
 joined by a dotted arrow labeled
@@ -168,7 +168,7 @@ joined by a dotted arrow labeled
 behavior of the other.
 </para>
 
-	<para>
+        <para>
 The classes involved in this particular example have all been well
 commented and have full Javadoc descriptions, to help when examining
 the code. 
@@ -179,18 +179,18 @@ with looking at the code.
       </sect2>
 
       <sect2>
-	<title>How to add a new Fig</title>
+        <title>How to add a new Fig</title>
 
-	  <para>
+          <para>
 The new item must be added to the tool-bar. Both the graph model and
 diagram renderer for the diagram will need modifying for any new fig
 object.
 </para>
 
-	<sect3>
-	  <title>Adding to the tool-bar of the diagram</title>
+        <sect3>
+          <title>Adding to the tool-bar of the diagram</title>
 
-	    <para>
+            <para>
 Find the diagram object in
 <filename>uml/diagram/<replaceable>XXXX</replaceable>/ui/UML<replaceable>YYYY</replaceable>Diagram.java</filename>, 
 where
@@ -201,7 +201,7 @@ This will be a subclass of UMLDiagram (in
 <filename>uml/diagram/ui/UMLDiagram.java</filename>).
 </para>
 
-	    <para>
+            <para>
 Each tool-bar action is declared as a private static field of class
 <classname>Action</classname>, initiated as a 
 <literal>new CmdCreateNode</literal> (for nodal UML elements) or a
@@ -209,14 +209,14 @@ Each tool-bar action is declared as a private static field of class
 UML elements). These classes are part of the GEF library.
 </para>
 
-	    <para>
+            <para>
 The common ones (select, broom, graphic annotations) are inherited
 from UMLDiagram, the diagram specific ones in the class itself. For
 example in UMLUseCaseDiagram.java we have the following for creating
 Use Case nodes.
 </para>
 
-	    <para><programlisting>
+            <para><programlisting>
 private static Action actionUseCase; 
 </programlisting>
 which is then created as follows:
@@ -231,7 +231,7 @@ which is then created as follows:
 </programlisting>
 </para>
 
-	    <para>
+            <para>
 The first argument of the CmdCreateNode() function
  is the class of the node to create from 
 the Model subsystem Metatypes interface, the
@@ -239,14 +239,14 @@ second a textual tool tip.
 </para>
 
 
-	    <para>
+            <para>
 The tool-bar is actually created by defining a method,
 <methodname>UMLDiagram.initToolBar()</methodname> 
 which adds the tools in turn to the
 tool-bar (a private member named <literal>toolBar</literal>).
 </para>
 
-	    <para>
+            <para>
 The default constructor for the diagram is declared public, despite that it
 must not be called directly - it is needed for loading projects from files. 
 The desired constructor takes a name-space
@@ -255,12 +255,12 @@ as an argument, and sets up a graph model
 renderer (<classname>UseCaseDigramRenderer</classname>) for nodes and
 edges.
 </para>
-	</sect3>
+        </sect3>
 
-	<sect3>
-	  <title>Changing the graph model</title>
+        <sect3>
+          <title>Changing the graph model</title>
 
-	    <para>
+            <para>
 The graph model is the bridge between the UML meta-model
 representation of the design and the graph model of GEF. They are
 found in the parent directory of the corresponding diagram class, and
@@ -271,19 +271,19 @@ example the use case diagram graph model is in
 <filename>uml/diagram/use_case/UseCaseDiagramGraphModel.java</filename>
 </para>
 
-	    <para>
+            <para>
 The graph model is defined as 
 <classname>UMLMutableGraphSupport</classname>,
 a child of the GEF class
 <classname>MutableGraphSupport</classname>, and should implement
 <classname>MutableGraphModel</classname> (GEF).
 </para>
-	</sect3>
+        </sect3>
 
-	<sect3>
-	  <title>Changing the renderer</title>
+        <sect3>
+          <title>Changing the renderer</title>
 
-	    <para>
+            <para>
 The renderer is responsible for creating graphic figs as required on
 the diagram. It is found in the same directory of the corresponding
 diagram class, and has the general name
@@ -293,31 +293,31 @@ the use case diagram graph model is in
 <filename>uml/diagram/use_case/ui/UseCaseDiagramRenderer.java</filename>
 </para>
 
-	    <para>
+            <para>
 This provides two routines, <methodname>getFigNodeFor()</methodname>, which
 provides a fig object to represent a given UML node object and
 <methodname>getFigEdgeFor()</methodname>, which provides a fig object to
 represent a given UML edge object.
 </para>
 
-	    <para>
+            <para>
 In our example, we must extend <methodname>getFigEdgeFor()</methodname> so
 it can handle UML Extend objects (producing a
 <classname>FigExtend</classname>).
 </para>
-	</sect3>
+        </sect3>
 
-	<sect3>
-	  <title>Creating a new Fig (explanation 1)</title>
+        <sect3>
+          <title>Creating a new Fig (explanation 1)</title>
 
-	    <para>
+            <para>
 New objects that are to appear on a diagram will require new Fig
 classes to represent them. In our example we have created
 FigExtend. They are placed in the same directory as the diagram that
 uses them.
 </para>
 
-	    <para>
+            <para>
 The implementation of a Fig must provide constructors for both a generic fig,
 (i.e. without setting the owner - which is used for loading from files)
 and one representing a specific Model subsystem object. It should provide a
@@ -326,12 +326,12 @@ should provide a method canEdit() to indicate whether the Fig can be
 edited. It should provide an event handler modelChanged() to cope with
 advice that the UML model has changed.
 </para>
-	</sect3>
+        </sect3>
 
-	<sect3 id="howto_createnewfig_2">
-	  <title>Creating a new Fig (explanation 2)</title>
+        <sect3 id="howto_createnewfig_2">
+          <title>Creating a new Fig (explanation 2)</title>
 
-	  <para>
+          <para>
 Assuming you have your model element already defined in the model
 and your PropPanel for that model element
 you should make the Fig class. 
@@ -452,9 +452,9 @@ In case of the <classname>PropPanel</classname>s,
 use <classname>UndoableAction</classname>.
 </para>
               </listitem>
-	    </orderedlist>
+            </orderedlist>
           </para>
-	</sect3>
+        </sect3>
       </sect2>
     </sect1>
 
@@ -467,6 +467,7 @@ sgml-doctype: "cookbook.xml"
 sgml-parent-document: ("cookbook.xml" "sect1" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   cookbook.xml"
+indent-tabs-mode: nil
 End:
 
 -->

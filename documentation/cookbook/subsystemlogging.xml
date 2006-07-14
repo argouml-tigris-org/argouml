@@ -67,7 +67,7 @@ Logging is currently implemented using log4j.
             belong to exactly <emphasis>one</emphasis> level.
             <itemizedlist>
                 <listitem>
-		  <para>
+                  <para>
                 The FATAL level designates very severe error events that 
                 will presumably lead the application to abort.
 Everything known about the reasons for the abortion of the application
@@ -75,7 +75,7 @@ shall be logged.
 </para>
                 </listitem>
                 <listitem>
-		  <para>
+                  <para>
                 The ERROR level designates error events that might still 
                 allow the application to continue running.
 Everything known about the reasons for this error condition shall be
@@ -83,14 +83,14 @@ logged.
 </para>
                 </listitem>
                 <listitem>
-		  <para>
+                  <para>
                 The WARN level designates potentially harmful situations.
 This is if CG can't find all the information required 
 and has to make something up.
 </para>
                 </listitem>
                 <listitem>
-		  <para>
+                  <para>
                 The INFO level designates informational messages that 
                 highlight the progress of the application at coarse-grained 
                 level.
@@ -99,7 +99,7 @@ loading and saving of files, imported files, opening and closing files.
 </para>
                 </listitem>
                 <listitem>
-		  <para>
+                  <para>
                 The DEBUG Level designates fine-grained informational 
                 events that are most useful to debug an application.
 This could be everything happening within the application.
@@ -203,20 +203,20 @@ Logger.
     }
             </programlisting>
         </example>
-	<warning>
-	  <para>
+        <warning>
+          <para>
 Since this has a big impact also on the readability, 
 only use it where it is really needed 
 (like places passed several times per second or hundreds of times
 for every key the user presses).
 </para>
-	</warning>
+        </warning>
         <para>
             For more information go to the log4j homepage at
             <ulink url="http://jakarta.apache.org/log4j/">http://jakarta.apache.org/log4j</ulink>.
         </para>
 
-	<sect3>
+        <sect3>
           <title>Reasoning around the performance issues</title>
           <para>
 Most of the log statements passed in ArgoUML are passed with logging
@@ -229,23 +229,23 @@ a certain level so that is not a problem.
           <para>
 The problem is instead explained by noticing
 the following log statement:
-	    <programlisting>
+            <programlisting>
         int i;
 ...
         LOG.debug("Entry number: " + i + " is " + entry[i]);
-	    </programlisting>
+            </programlisting>
 It is quite innocent looking isn't it?
 Well that is because the java compiler is very helpful 
 when it comes to handling strings 
 and will convert it to the equivalent of:
-	    <programlisting>
-	StringBuffer sb = new StringBuffer();
-	sb.append("Entry number: ");
-	sb.append(i);
-	sb.append(" is ");
-	sb.append(entry[i].toString());
+            <programlisting>
+        StringBuffer sb = new StringBuffer();
+        sb.append("Entry number: ");
+        sb.append(i);
+        sb.append(" is ");
+        sb.append(entry[i].toString());
         LOG.debug(sb.toString());
-	    </programlisting>
+            </programlisting>
 If the entry[i] is some object with a lot of calculations 
 when toString() is called and the logging statement is passed
 often some action needs to be taken.
@@ -412,6 +412,7 @@ Local Variables:
 mode: xml
 sgml-doctype: "cookbook.xml"
 sgml-parent-document: ("cookbook.xml" "sect1" nil)
+indent-tabs-mode: nil
 End:
 
 -->

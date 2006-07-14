@@ -61,10 +61,10 @@ A newly compiled ArgoUML will open in a new window.
 </para>
     <para>Notes:
       <tip>
-	<para>JDK 1.4 or later is required</para>
+        <para>JDK 1.4 or later is required</para>
       </tip>
       <tip>
-	<para>
+        <para>
 On Windows, the directory path for the JDK installation directory
 must not contain any spaces.
 <!-- MVW: This is not required, 
@@ -98,25 +98,25 @@ all work within the ArgoUML project.
 </para>
 
       <sect2>
-	<title>Which tools do I need to build ArgoUML?</title>
-	<indexterm>
-	  <primary>Building</primary>
-	  <secondary>tools</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Tools</primary>
-	  <secondary>needed for building</secondary>
-	</indexterm>
-	<para>
+        <title>Which tools do I need to build ArgoUML?</title>
+        <indexterm>
+          <primary>Building</primary>
+          <secondary>tools</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Tools</primary>
+          <secondary>needed for building</secondary>
+        </indexterm>
+        <para>
 These are the tools not included in the CVS repository that
 you need to work with ArgoUML.
 </para>
-	<itemizedlist>
-	  <listitem>
-	    <para>
+        <itemizedlist>
+          <listitem>
+            <para>
 A computer with an Internet connection and free disk space for your work.
 </para>
-	    <para>
+            <para>
 100MB is enough to download everything from the repository.
 (Currently March 2003 it is 68MB).
 150MB is enough to download all and build the tool and the documentation.
@@ -124,19 +124,19 @@ A computer with an Internet connection and free disk space for your work.
 250MB is enough to build it all 
 (Javadocs, documentation, classes, packages, ...).
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 CVS for getting the files
 and committing source code updates (or an IDE with a CVS client built-in).
 </para>
-	  </listitem>
-	  <listitem>
-	    <para>
+          </listitem>
+          <listitem>
+            <para>
 JDK, at least version 1.4.2 (includes the Java compiler)
 </para>
-	  </listitem>
-	</itemizedlist>
+          </listitem>
+        </itemizedlist>
 
     <para>
 For building the documentation from DocBook format, 
@@ -144,34 +144,34 @@ you also need the following tools:
 </para>
     <itemizedlist>
       <listitem>
-	<para>
-	  <indexterm>
-	    <primary>DocBook</primary>
-	  </indexterm>
+        <para>
           <indexterm>
-	    <primary>XSL style sheets</primary>
-	  </indexterm>
+            <primary>DocBook</primary>
+          </indexterm>
+          <indexterm>
+            <primary>XSL style sheets</primary>
+          </indexterm>
 DocBook XSL style sheets.
 </para>
 
-	<para>
+        <para>
 There exists rules in the
 <filename>argouml/documentation/build.xml</filename>
 for downloading this correctly.
 </para>
       </listitem>
 
-	<listitem id="download-jimi">
-	  <para>
+        <listitem id="download-jimi">
+          <para>
           <indexterm>
-	    <primary id="download-jimi-name">Jimi</primary>
+            <primary id="download-jimi-name">Jimi</primary>
           </indexterm>
 Jimi
 </para>
-	  <para>
+          <para>
 Used by FOP for including PNG pictures.
 </para>
-	  <para>
+          <para>
 Detailed instructions:
             <orderedlist>
 	      <listitem>
@@ -2782,6 +2782,7 @@ sgml-doctype: "cookbook.xml"
 sgml-parent-document: ("cookbook.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   cookbook.xml"
+indent-tabs-mode: nil
 End:
 
 -->
