@@ -31,6 +31,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
+import org.argouml.i18n.Translator;
 import org.argouml.swingext.SpacerPanel;
 
 
@@ -43,7 +44,7 @@ import org.argouml.swingext.SpacerPanel;
  */
 public class WizStepTextField extends WizStep {
     private JTextArea instructions = new JTextArea();
-    private JLabel label = new JLabel("Value:");
+    private JLabel label = new JLabel(Translator.localize("label.value"));
     private JTextField field = new JTextField(20);
 
     /**

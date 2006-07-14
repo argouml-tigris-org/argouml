@@ -245,7 +245,7 @@ public abstract class FigEdgeModelElement
                 // We moused over an object just as it was deleted
                 // transient condition - doesn't require I18N
                 LOG.warn("A deleted element still exists on the diagram");
-                return "*deleted element*";
+                return Translator.localize("misc.name.deleted");
             }
         } else {
             tip = toString();

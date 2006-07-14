@@ -29,7 +29,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.i18n.Translator;
+import org.argouml.cognitive.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -66,58 +66,57 @@ public class CrUML extends Critic {
      * @param key is the class name.
      */
     public void setResource(String key) {
-        // String head = Translator.localize("Cognitive", key + "_head");
-        String head = Translator.localize("critics." + key + "-head");
-        super.setHeadline(head);
-        // String desc = Translator.localize("Cognitive", key + "_desc");
-        String desc = Translator.localize("critics." + key + "-desc");
-        super.setDescription(desc);
+        super.setHeadline(getLocalizedString(key, "-head"));
+        super.setDescription(getLocalizedString(key, "-desc"));
     }
     
     /**
-     * Loads the localized wizard's instruction 
+     * Returns a localized string for the current critic class.
      * 
      * @param suffix the suffix of the key
-     * @return the instructions
+     * @return the localized string
      */
     protected String getLocalizedString(String suffix) {
-        // TODO: The logic below could be replaced by getClass().getSimpleName()
-        // (when Argo will support only java versions > 1.5)
-        String className = getClass().getName();
-        return Translator.localize("critics."
-                + className.substring(className.lastIndexOf('.') + 1) + suffix);
+        return getLocalizedString(getClassSimpleName(), suffix);
+    }
+
+    /**
+     * Returns a localized string for the given key and suffix.
+     * 
+     * @param key the main key
+     * @param suffix the suffix of the key
+     * @return the localized string
+     */
+    protected String getLocalizedString(String key, String suffix) {
+        return Translator.localize("critics." + key + suffix);
     }
     
     /**
-     * Loads the localized wizard's instruction 
+     * Loads the localized wizard's instruction.
      * 
      * @return the instructions
      */
     protected String getInstructions() {
-        return this.getLocalizedString("-ins");
+        return getLocalizedString("-ins");
     }
     
     /**
-     * Loads the localized wizard's default suggestion
+     * Loads the localized wizard's default suggestion.
      * 
      * @return the default suggestion
      */
     protected String getDefaultSuggestion() {
-        // TODO: The logic below could be replaced by getClass().getSimpleName()
-        // (when Argo will support only java versions > 1.5)
-        String className = getClass().getName();
-        return Translator.localize("critics."
-                + className.substring(className.lastIndexOf('.') + 1) + "-sug");
+        return getLocalizedString("-sug");
     }
 
     /**
      * @see org.argouml.cognitive.critics.Critic#setHeadline(java.lang.String)
-     *
-     * Set up the locale specific text for the critic headline
+     * 
+     * Set up the locale specific text for the critic headline 
      * (the one liner that appears in the to-do pane)
      * and the critic description (the detailed explanation that
      * appears in the to-do tab of the details pane).
-     *
+     * 
      * MVW: Maybe we can make it part of the constructor CrUML()?
      */
     public final void setHeadline(String s) {
@@ -131,10 +130,8 @@ public class CrUML extends Critic {
      * appears in the to-do tab of the details pane).
      */
     public final void setupHeadAndDesc() {
-        String className = getClass().getName();
-        setResource(className.substring(className.lastIndexOf('.') + 1));
+        setResource(getClassSimpleName());
     }
-
 
     /**
      * @see org.argouml.cognitive.critics.Critic#predicate(
@@ -209,15 +206,15 @@ public class CrUML extends Critic {
                 LOG.error("Failed to evaluate critic expression", e);
             }
             if (expr.endsWith("") && evalStr.equals("")) {
-                evalStr = "(anon)";
+                evalStr = Translator.localize("misc.name.anon");
             }
             beginning.append(evalStr);
             res = res.substring(endExpr + OCL_END.length());
             matchPos = res.indexOf(OCL_START);
         }
         if (beginning.length() == 0) {
-            // This is just to avoid creation of a new
-            return res;		// string when not needed.
+            // return original string if no replacements made
+            return res;
         } else {
             return beginning.append(res).toString();
         }
@@ -229,6 +226,19 @@ public class CrUML extends Critic {
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	return new UMLToDoItem(this, dm, dsgr);
     }
+    
+    /**
+     * Get the name of the current class.
+     * 
+     * @return the name of the current class without any leading packages
+     */
+    private final String getClassSimpleName() {
+        // TODO: This method can be replaced by getClass().getSimpleName()
+        // when Argo drops support for Java versions < 1.5
+        String className = getClass().getName();
+        return className.substring(className.lastIndexOf('.') + 1);
+    }
+
 
     /**
      * The UID.

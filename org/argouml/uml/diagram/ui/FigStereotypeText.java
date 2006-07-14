@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
@@ -131,8 +132,9 @@ public class FigStereotypeText extends FigGroup {
         singleStereotype.setFont(FigNodeModelElement.getLabelFont());
         singleStereotype.setTextColor(Color.black);
         // TODO: Use message formatting here
-        singleStereotype
-                .setText("<<" + (text == null ? "(anon)" : text) + ">>");
+        singleStereotype.setText("<<"
+                + (text == null ? Translator.localize("misc.name.anon") : text)
+                + ">>");
         LOG.info("Adding " + singleStereotype.getText() + " to Fig");
         addFig(singleStereotype);
     }

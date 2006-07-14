@@ -36,6 +36,7 @@ import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
@@ -226,8 +227,7 @@ public class DisplayTextTree extends JTree {
                     }
                 }
             } catch (InvalidElementException e) {
-                // TODO: Localize
-                name = "*deleted element*";
+                name = Translator.localize("misc.name.deleted");
             }
 
             return name;
@@ -246,8 +246,7 @@ public class DisplayTextTree extends JTree {
                 }
                 return name;
             } catch (InvalidElementException e) {
-                // TODO: Localize
-                return "*deleted expression*";
+                return Translator.localize("misc.name.deleted");
             }
         }
 
@@ -257,7 +256,7 @@ public class DisplayTextTree extends JTree {
                 return "Multiplicity: "
                     + Model.getDataTypesHelper().multiplicityToString(value);
             } catch (InvalidElementException e) {
-                return "*deleted multiplicity*";
+                return Translator.localize("misc.name.deleted");
             }
         }
 

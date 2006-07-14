@@ -155,8 +155,8 @@ public class WizAssocComposite extends UMLWizard {
         // currently anonymous), use the ArgoUML convention of "(anon)" for the
         // names
 
-        String start = "(anon)";
-        String end   = "(anon)";
+        String start = Translator.localize("misc.name.anon");
+        String end   = Translator.localize("misc.name.anon");
 
         if ((cls0 != null)
                 && (Model.getFacade().getName(cls0) != null)
