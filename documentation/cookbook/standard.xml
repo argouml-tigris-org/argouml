@@ -1502,6 +1502,150 @@ but you will have to do it all over again once for each new test case.
           </listitem>
         </orderedlist>
 </para>
+
+      <sect3 id="running-all-junit-from-within-eclipse">
+        <title>Running all JUnit test cases from within Eclipse</title>
+        <para>
+The description so far describes how to do this for a single test case
+at the time.
+If you want to run all test cases in one go from within Eclipse
+it is also possible.
+We have not prepared that for three reasons:
+          <itemizedlist>
+            <listitem>
+              <para>
+Some of the tests fail when run in this way.
+</para>
+              <para>
+The guess (Linus July 2006) is that this depends on the fact that
+Eclipse doesn't start each test in its own JVM and some of the tests
+relies on a fresh environment (empty models...).
+Let's hope that an upcoming version of Eclipse includes a function
+to allow us to specify that the tests are to be run each in its own JVM.
+</para>
+
+              <para>
+Another cause might be that the tests relies on certain other files being
+in specified places and that the Eclipse set up doesn't provide that.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>
+Maintaining the Configuration.
+</para>
+              <para>
+Since we have an Eclipse setup with a mismatch between the 
+compile time dependenies and the run time dependencies
+this Configuration contains references to specific jar-files.
+This means a maintenance problem whenever changing version of
+a dependency.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>
+Selection of tests.
+</para>
+              <para>
+In the project we keep all tests in the same tree, 
+whether they are working or not.
+We distinguish between test classes with names starting with "Test", "GUITest",
+and neither of them.
+The ones starting with "Test" or "GUITest" are official tests
+that should be working.
+All others are tests that are never run automatically.
+They are perhaps used for other purposes.
+In Eclipse, there is no way to specify this so the description below
+will run all tests.
+</para>
+              <para>
+Such a test is the DoAllTests-test suite that runs all tests so
+tests risk to be run twice.
+</para>
+            </listitem>
+          </itemizedlist>
+</para>
+        <para>
+If you want to test this, this is what you do:
+</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>
+Right-click on the project argouml-core-tests.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+On the multilevel popup that opens, select
+Run As... JUnit Test or
+Degug As... JUnit Test.
+</para>
+          </listitem>
+          <listitem>
+            <para>
+A Configuration is created on that project with the
+Run all tests in the selected project, package or source folder:
+checked
+and the configuration is started/launched.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Stop the running Configuration.
+</para>
+            <para>
+The newly Configuration has the same problem as every single
+test above with the model subsystem so it won't work.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Press Debug... or Run... to open the Configuration editor.
+</para>
+            <para>
+The newly created Configuration argouml-core-test is selected.
+</para>
+          </listitem>
+          <listitem>
+            <para>
+Add the argouml-core-model-mdr project to the classpath.
+</para>
+            <para>
+This is done by:
+              <itemizedlist>
+                <listitem>
+                  <para>selecting the Classpath tab,</para>
+                </listitem>
+
+                <listitem>
+                  <para>selecting argouml-core-tests under User Entries,</para>
+                </listitem>
+
+                <listitem>
+                  <para>clicking Add projects, and</para>
+                </listitem>
+
+                <listitem>
+                  <para>
+selecting the argouml-core-model-mdr project and press OK.
+</para>
+                </listitem>
+              </itemizedlist>
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Run all the tests by pressing Debug or Run.
+</para>
+          </listitem>
+        </itemizedlist>
+      </sect3>
     </sect2>
   </sect1>
 
