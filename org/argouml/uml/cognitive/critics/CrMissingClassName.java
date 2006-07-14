@@ -80,8 +80,8 @@ public class CrMissingClassName extends CrUML {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
-	    String ins = "Set the name of this class.";
-	    String sug = "ClassName";
+	    String ins = super.getInstructions();
+	    String sug = super.getDefaultSuggestion();
 	    int count = 1;
 	    if (Model.getFacade().getNamespace(me) != null) {
 		count =

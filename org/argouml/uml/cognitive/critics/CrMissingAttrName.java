@@ -77,8 +77,8 @@ public class CrMissingAttrName extends CrUML {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
-	    String ins = "Set the name of this attribute.";
-	    String sug = "AttributeName";
+	    String ins = super.getInstructions();
+	    String sug = super.getDefaultSuggestion();
 	    if (Model.getFacade().isAAttribute(me)) {
 		Object a = /*(MAttribute)*/ me;
 		int count = 1;

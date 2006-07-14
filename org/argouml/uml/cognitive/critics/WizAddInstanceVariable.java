@@ -41,8 +41,8 @@ public class WizAddInstanceVariable extends UMLWizard {
 
     private WizStepTextField step1 = null;
     private String label = Translator.localize("label.name");
-    private String instructions =
-	"Please change the name of the offending model element.";
+    private String instructions = 
+        Translator.localize("critics.WizAddInstanceVariable-ins");
 
     /**
      * Creates a new instance of WizAddInstanceVariable.

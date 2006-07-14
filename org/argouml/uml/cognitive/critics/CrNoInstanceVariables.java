@@ -142,8 +142,8 @@ public class CrNoInstanceVariables extends CrUML {
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddInstanceVariable) {
-	    String ins = "Set the name of the new variable.";
-	    String sug = "newAttr";
+	    String ins = super.getInstructions();
+	    String sug = super.getDefaultSuggestion();
 	    ((WizAddInstanceVariable) w).setInstructions(ins);
 	    ((WizAddInstanceVariable) w).setSuggestion(sug);
 	}

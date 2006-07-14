@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ui.WizStepTextField;
+import org.argouml.i18n.Translator;
 
 /** 
  * A wizard which adjust the threshold for critics. <p>
@@ -42,10 +43,9 @@ import org.argouml.cognitive.ui.WizStepTextField;
  */
 public class WizTooMany extends UMLWizard {
 
-    private String instructions =
-        "Please adjust the threshold according to your needs. "
-        + "This lets you adjust when the critic creates a particular ToDoItem.";
-
+    private String instructions = 
+        Translator.localize("critics.WizTooMany-ins");
+        
     private WizStepTextField step1;
 
     /**

@@ -37,6 +37,7 @@ import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepConfirm;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
 /**
@@ -47,18 +48,14 @@ public class WizBreakCircularComp extends UMLWizard {
     private static final Logger LOG =
 	Logger.getLogger(WizBreakCircularComp.class);
 
-    private String instructions1 =
-	"Please select one of the following classes. "
-	+ "In the next two steps a association of that class will "
-	+ "be made non-aggregate.";
+    private String instructions1 = 
+        Translator.localize("critics.WizBreakCircularComp-ins1");
 
-    private String instructions2 =
-	"Please select one of the following associations. "
-	+ "In the next step that association will "
-	+ "be made non-aggregate.";
+    private String instructions2 = 
+        Translator.localize("critics.WizBreakCircularComp-ins2");
 
-    private String instructions3 =
-	"Are you sure you want to make this association non-aggregate?";
+    private String instructions3 = 
+        Translator.localize("critics.WizBreakCircularComp-ins3");
 
     private WizStepChoice step1 = null;
     private WizStepChoice step2 = null;
@@ -116,7 +113,14 @@ public class WizBreakCircularComp extends UMLWizard {
 		Object toType = Model.getFacade().getType(toEnd);
 		String ascName = Model.getFacade().getName(asc);
 		String toName = Model.getFacade().getName(toType);
-		String s = ascName + " from " + fromName + " to " + toName;
+		String s = ascName 
+                    + " " 
+                    + Translator.localize("critics.WizTooMany-from") 
+                    + fromName
+                    + " "
+                    + Translator.localize("critics.WizTooMany-to")
+                    + " "
+                    + toName;
 		res.addElement(s);
 	    }
 	}

@@ -119,7 +119,7 @@ public class CrDisambigClassName extends CrUML {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String sug = Model.getFacade().getName(me);
-	    String ins = "Change the name to something different.";
+	    String ins = super.getInstructions();
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	    ((WizMEName) w).setMustEdit(true);

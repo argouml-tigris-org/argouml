@@ -151,12 +151,13 @@ public class CrConstructorNeeded extends CrUML {
 	if (w instanceof WizAddConstructor) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
-	    String ins = "Set the name of the new constructor.";
+	    String ins = super.getInstructions();
 	    String sug = null;
 	    if (me != null)
 		sug = Model.getFacade().getName(me);
-	    if ("".equals(sug))
-		sug = "newOperation";
+	    if ("".equals(sug)) {
+		sug = super.getDefaultSuggestion();
+            }
 	    ((WizAddConstructor) w).setInstructions(ins);
 	    ((WizAddConstructor) w).setSuggestion(sug);
 	}

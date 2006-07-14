@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
 /**
@@ -57,8 +58,8 @@ public class WizAssocComposite extends UMLWizard {
      * The initial instructions on the Step 1 screen. May be set to a
      * different string through {@link #setInstructions(String)}.<p>
      */
-    private String instructions =
-        "Please select one of the following aggregation options:";
+    private String instructions = 
+        Translator.localize("critics.WizAssocComposite-ins");
 
 
     /**
@@ -171,13 +172,22 @@ public class WizAssocComposite extends UMLWizard {
 
         // Now create the five options
 
-        res.addElement (start + " is a composite aggregation of " + end);
-        res.addElement (start + " is a shared aggregation of " + end);
+        res.addElement (start 
+                + Translator.localize("critics.WizAssocComposite-option1") 
+                + end);
+        res.addElement (start 
+                + Translator.localize("critics.WizAssocComposite-option2") 
+                + end);
 
-        res.addElement (end + " is a composite aggregation of " + start);
-        res.addElement (end + " is a shared aggregation of " + start);
+        res.addElement (end 
+                + Translator.localize("critics.WizAssocComposite-option1") 
+                + start);
+        res.addElement (end 
+                + Translator.localize("critics.WizAssocComposite-option2") 
+                + start);
 
-        res.addElement ("No aggregation");
+        res.addElement(Translator.localize(
+                "critics.WizAssocComposite-option3"));
 
         return res;
     }

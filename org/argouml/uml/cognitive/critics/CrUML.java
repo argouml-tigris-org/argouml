@@ -73,6 +73,42 @@ public class CrUML extends Critic {
         String desc = Translator.localize("critics." + key + "-desc");
         super.setDescription(desc);
     }
+    
+    /**
+     * Loads the localized wizard's instruction 
+     * 
+     * @param suffix the suffix of the key
+     * @return the instructions
+     */
+    protected String getLocalizedString(String suffix) {
+        // TODO: The logic below could be replaced by getClass().getSimpleName()
+        // (when Argo will support only java versions > 1.5)
+        String className = getClass().getName();
+        return Translator.localize("critics."
+                + className.substring(className.lastIndexOf('.') + 1) + suffix);
+    }
+    
+    /**
+     * Loads the localized wizard's instruction 
+     * 
+     * @return the instructions
+     */
+    protected String getInstructions() {
+        return this.getLocalizedString("-ins");
+    }
+    
+    /**
+     * Loads the localized wizard's default suggestion
+     * 
+     * @return the default suggestion
+     */
+    protected String getDefaultSuggestion() {
+        // TODO: The logic below could be replaced by getClass().getSimpleName()
+        // (when Argo will support only java versions > 1.5)
+        String className = getClass().getName();
+        return Translator.localize("critics."
+                + className.substring(className.lastIndexOf('.') + 1) + "-sug");
+    }
 
     /**
      * @see org.argouml.cognitive.critics.Critic#setHeadline(java.lang.String)
