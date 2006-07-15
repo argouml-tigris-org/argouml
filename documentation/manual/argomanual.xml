@@ -182,7 +182,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
     <ulink url="http://www.omg.org/cgi-bin/doc?formal/02-01-01">
     XMI</ulink> (XML Metadata Interchange format) (for model 
     information) and <ulink url="http://www.w3.org/TR/1998/NOTE-PGML">
-    PGML</ulink> (Portable Graphics Markup Language) (for graph 
+    PGML</ulink> (Precision Graphics Markup Language) (for graph 
     information) for storage. When ArgoUML implements UML 2.0, PGML
     will be replaced by the UML Diagram Interchange specification.</para>
 
@@ -216,17 +216,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
     <para>The manual is written in DocBook/XML and available as both 
     HTML and PDF.</para>
 
-    <para>The ArgoUML project welcomes those who want to get more 
-    involved. Look at the <ulink url="http://argouml.tigris.org/">
-    project website</ulink> to find out more.</para>
+    <para>
+    	The ArgoUML project welcomes those who want to get more
+    	involved. Look at the
+    	<ulink url="http://argouml.tigris.org/">project website</ulink>
+    	to find out more.
+    </para>
 
-    <para>Tell us what you think about this User Manual! Your comments 
-    will help us improve things. Email your thoughts to the 
-    <ulink url="mailto:users@argouml.tigris.org">ArgoUML Users Mailing 
-    List</ulink> or if you have found errors or omissions, enter a 
-    defect in <ulink url="http://argouml.tigris.org/project_bugs.html">
-    Issuezilla</ulink> the bug tracking tool for the ArgoUML 
-    project.</para>
+    <para>
+    	Tell us what you think about this User Manual! Your comments
+    	will help us improve things. See
+    	<xref linkend="s2.intro.user.feedback" />
+    	.
+    </para>
 
   </preface>
 
@@ -338,14 +340,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </orderedlist>
 
-        <para>UML is the most prevalent OO modeling language and Java 
-        is one of the most productive OO development platforms. Jason 
-        Robbins and the rest of his research team at the University of 
-        California, Irvine leveraged these benefits in creating the 
-        ArgoUML. The result is a solid development tool and environment 
-        for OO systems design. Further, it provides a test bed for the 
-        evolution of object oriented CASE tools development and 
-        research.</para>
+        <para>
+        	UML is the most prevalent OO modeling language and Java is
+        	one of the most productive OO development platforms. Jason
+        	Robbins and the rest of his research team at the University
+        	of California, Irvine leveraged these benefits in creating
+        	ArgoUML. The result is a solid development tool and
+        	environment for OO systems design. Further, it provides a
+        	test bed for the evolution of object oriented CASE tools
+        	development and research.
+        </para>
 
         <para>A first release of ArgoUML was available in 1998 and more 
         than 100,000 downloads by mid-2001 show the impact that this 
@@ -375,13 +379,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           with a couple of dozen of those forming the core development 
           group.</para>
 
-          <para>This is the place where all the discussion on the 
-          latest tasks takes place, and developers discuss the 
-          directions the project should take. Although controversial at 
-          times, these discussions are always kept nice and friendly 
-          (no flame-wars and such), so newbies should not hesitate and 
-          participate in them. You&apos;ll always get a warm welcome 
-          there.</para>
+          <para>
+          	The developer mailing list is the place where all the
+          	discussion on the latest tasks takes place, and developers
+          	discuss the directions the project should take. Although
+          	controversial at times, these discussions are always kept
+          	nice and friendly (no flame-wars and such), so newbies
+          	should not hesitate and participate in them. You&apos;ll
+          	always get a warm welcome there.
+          </para>
 
           <indexterm><primary>Contributing</primary><secondary>to 
           ArgoUML</secondary></indexterm>
@@ -389,12 +395,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <indexterm><primary>Developers&apos; Cookbook, 
           The</primary></indexterm>
           <indexterm><primary>Developer Zone</primary></indexterm>
-          <para>If you want to learn some details about how the project 
-          is run and how you should go about to contribute go the the 
-          <ulink url="http://argouml.tigris.org/dev.html">ArgoUML Web 
-          Site Developer Zone</ulink> and read through the 
-          documentation there. The Cookbook is an important 
-          document.</para>
+          <para>
+          	If you want to learn how the project is run and how to
+          	contribute to it, go the the
+          	<ulink url="http://argouml.tigris.org/dev.html">
+          		ArgoUML Web Site Developer Zone
+          	</ulink>
+          	and read through the documentation there. The
+          	Developers&apos; Cookbook was written specifically for
+          	this purpose.
+          </para>
 
         </sect3>
 
@@ -403,13 +413,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>More on Infrastructure</title>
 
           <indexterm><primary>Mailing lists</primary></indexterm>
-          <para>Besides the developer mailing list, there&apos;s also a 
-          mailing for users (see 
-          <ulink url="http://argouml.tigris.org/servlets/ProjectMailingListList">
-          The ArgoUML Mailing List List</ulink>), where we can discuss 
-          problems from a user perspective. Developers also read this 
-          list, so there&apos;s a good chance to get qualified 
-          help.</para>
+          <para>
+          	Besides the developer mailing list, there&apos;s also a
+          	mailing for users (see
+          	<ulink
+          		url="http://argouml.tigris.org/servlets/ProjectMailingListList">
+          		The ArgoUML Mailing List List
+          	</ulink>
+          	), where we can discuss problems from a user perspective.
+          	Developers also read this list, so highly qualified help
+          	will generally be provided.
+          </para>
 
           <indexterm><primary>FAQ</primary></indexterm>
           <para>Before posting to this list, you should take a look at 
@@ -476,8 +490,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </itemizedlist>
 
-        <para>The current version of the document has achieved the 
-        second of these.</para>
+        <para>
+        	Version 0.22 of the document achieved the second of these.
+        </para>
 
         <para>In this guide there are some things you will not find, 
         because they are covered elsewhere.</para>
@@ -583,7 +598,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       </sect2>
 
-      <sect2>
+      <sect2 id="s2.intro.user.feedback">
 
         <title>User Feedback</title>
 
