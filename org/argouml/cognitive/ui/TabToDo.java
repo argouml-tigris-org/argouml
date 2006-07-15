@@ -37,6 +37,7 @@ import org.argouml.ui.cmd.ActionEmailExpert;
 import org.argouml.ui.cmd.ActionNewToDoItem;
 import org.argouml.ui.cmd.ActionResolve;
 import org.argouml.ui.cmd.ActionSnooze;
+import org.argouml.ui.cmd.ToDoItemAction;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.undo.UndoableAction;
@@ -56,7 +57,7 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
 
     private static UndoableAction actionNewToDoItem = new ActionNewToDoItem();
     private static UndoableAction actionResolve = new ActionResolve();
-    private static UndoableAction actionEmailExpert = new ActionEmailExpert();
+    private static ToDoItemAction actionEmailExpert = new ActionEmailExpert();
     private static UndoableAction actionSnooze = new ActionSnooze();
     //public static UMLAction _actionRecordFix = Actions.RecordFix;
     //public static UMLAction _actionReplayFix = Actions.ReplayFix;
@@ -169,7 +170,7 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
         } else {
             showDescription();
         }
-        updateActionsEnabled();
+        updateActionsEnabled(item);
     }
 
    /**
@@ -193,9 +194,10 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
 	 * Update the "enabled" state of the resolve, emailExpert and snooze
 	 * actions.
 	 */
-    protected static void updateActionsEnabled() {
+    protected static void updateActionsEnabled(Object item) {
         actionResolve.setEnabled(actionResolve.isEnabled());
         actionEmailExpert.setEnabled(actionEmailExpert.isEnabled());
+        actionEmailExpert.updateEnabled(item);
         actionSnooze.setEnabled(actionSnooze.isEnabled());
     }
 
