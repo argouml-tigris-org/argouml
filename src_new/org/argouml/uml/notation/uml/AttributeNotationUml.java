@@ -218,13 +218,15 @@ public class AttributeNotationUml extends AttributeNotation {
 
         text = text.trim();
         if (text.length() > 0 
-                && NotationUtilityUml.VISIBILITYCHARS.indexOf(text.charAt(0)) >= 0) {
+                && NotationUtilityUml.VISIBILITYCHARS.indexOf(text.charAt(0)) 
+                    >= 0) {
             visibility = text.substring(0, 1);
             text = text.substring(1);
         }
 
         try {
-            st = new MyTokenizer(text, " ,\t,<<,>>,[,],:,=,{,},\\,",
+            st = new MyTokenizer(text, 
+                    " ,\t,<<,\u00AB,\u00BB,>>,[,],:,=,{,},\\,",
                     NotationUtilityUml.attributeCustomSep);
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
@@ -233,7 +235,7 @@ public class AttributeNotationUml extends AttributeNotation {
                     if (hasEq) {
                         value += token;
                     }
-                } else if ("<<".equals(token)) {
+                } else if ("<<".equals(token) || "\u00AB".equals(token)) {
                     if (hasEq) {
                         value += token;
                     } else {
@@ -246,7 +248,7 @@ public class AttributeNotationUml extends AttributeNotation {
                         stereotype = "";
                         while (true) {
                             token = st.nextToken();
-                            if (">>".equals(token)) {
+                            if (">>".equals(token) || "\u00BB".equals(token)) {
                                 break;
                             }
                             stereotype += token;
