@@ -201,20 +201,21 @@ public class OperationNotationUml extends OperationNotation {
         s = s.trim();
 
         if (s.length() > 0 
-                && NotationUtilityUml.VISIBILITYCHARS.indexOf(s.charAt(0)) >= 0) {
+                && NotationUtilityUml.VISIBILITYCHARS.indexOf(s.charAt(0)) 
+                    >= 0) {
             visibility = s.substring(0, 1);
             s = s.substring(1);
         }
 
         try {
-            st = new MyTokenizer(s, " ,\t,<<,>>,:,=,{,},\\,",
+            st = new MyTokenizer(s, " ,\t,<<,\u00AB,\u00BB,>>,:,=,{,},\\,",
                     NotationUtilityUml.operationCustomSep);
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
                 if (" ".equals(token) || "\t".equals(token)
                         || ",".equals(token)) {
                     ;// Do nothing
-                } else if ("<<".equals(token)) {
+                } else if ("<<".equals(token) || "\u00AB".equals(token)) {
                     if (stereotype != null) {
                         String msg = "parsing.error.operation.stereotypes";
                         throw new ParseException(Translator.localize(msg), 
@@ -223,7 +224,7 @@ public class OperationNotationUml extends OperationNotation {
                     stereotype = "";
                     while (true) {
                         token = st.nextToken();
-                        if (">>".equals(token)) {
+                        if (">>".equals(token) || "\u00BB".equals(token)) {
                             break;
                         }
                         stereotype += token;

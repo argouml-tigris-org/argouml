@@ -28,6 +28,9 @@ import java.awt.Color;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
@@ -122,6 +125,9 @@ public class FigStereotypeText extends FigGroup {
     }
 
     private void addStereotypeText(String text, int xPosn, int yPosn) {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        
         FigSingleLineText singleStereotype = new FigSingleLineText(xPosn,
                 yPosn, getWidth(), STEREOHEIGHT, true);
         singleStereotype.setEditable(false);
@@ -132,9 +138,9 @@ public class FigStereotypeText extends FigGroup {
         singleStereotype.setFont(FigNodeModelElement.getLabelFont());
         singleStereotype.setTextColor(Color.black);
         // TODO: Use message formatting here
-        singleStereotype.setText("<<"
+        singleStereotype.setText(ps.getLeftGuillemot()
                 + (text == null ? Translator.localize("misc.name.anon") : text)
-                + ">>");
+                + ps.getRightGuillemot());
         LOG.info("Adding " + singleStereotype.getText() + " to Fig");
         addFig(singleStereotype);
     }
