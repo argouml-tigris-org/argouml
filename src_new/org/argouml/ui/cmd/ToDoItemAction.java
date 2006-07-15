@@ -33,7 +33,11 @@ import org.tigris.gef.undo.UndoableAction;
 
 
 
-abstract class ToDoItemAction extends UndoableAction {
+/**
+ * A base class for Actions related to ToDoItems.
+ *
+ */
+public abstract class ToDoItemAction extends UndoableAction {
 
     private Object rememberedTarget = null;
 
