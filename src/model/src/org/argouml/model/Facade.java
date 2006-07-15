@@ -2701,16 +2701,16 @@ public interface Facade {
     /**
      * Return the referenceValue collection for a taggedValue.
      * 
-     * @param taggedValue
-     * @return
+     * @param taggedValue the tagged value to read from
+     * @return collection of referenceValues for the given TaggedValue
      */
     Collection getReferenceValue(Object taggedValue);
 
     /**
      * Return the dataValue collection for a taggedValue.
      * 
-     * @param taggedValue
-     * @return
+     * @param taggedValue taggedValue the tagged value to read from
+     * @return a collection of dataValues for the given TaggedValue
      */
     Collection getDataValue(Object taggedValue);
     
