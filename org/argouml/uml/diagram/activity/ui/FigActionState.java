@@ -251,7 +251,7 @@ public class FigActionState extends FigStateVertex {
          * that change the body text: 
          */
         if (newOwner != null) {
-            addElementListener(newOwner, "entry");
+            addElementListener(newOwner, new String[] {"entry", "remove"} );
             Object entry = Model.getFacade().getEntry(newOwner);
             if (entry != null) {
                 addElementListener(entry, "script");

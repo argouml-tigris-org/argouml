@@ -166,8 +166,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
         }
         if (newOwner != null) {
             /* Let's NOT do this: addElementListener(newOwner);
-             * We only need to listen to its "type". */
-            addElementListener(newOwner, "type");
+             * We only need to listen to its "type", and "remove". */
+            addElementListener(newOwner, new String[] {"type", "remove"});
             // register for events from the type
             Object type = Model.getFacade().getType(newOwner);
             if (Model.getFacade().isAClassifier(type)) {
