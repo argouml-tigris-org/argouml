@@ -104,7 +104,8 @@ public class FigCallState extends FigActionState {
             // register for events from all modelelements
             // that change the name and body text
             // i.e. when the CallAction is replaced:
-            addElementListener(newOwner, new String[] {"entry", "name"});
+            addElementListener(newOwner, 
+                    new String[] {"entry", "name", "remove"});
             Object entryAction = Model.getFacade().getEntry(newOwner);
             if (Model.getFacade().isACallAction(entryAction)) {
                 // and when the Operation is replaced:

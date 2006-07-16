@@ -781,6 +781,7 @@ public class FigClassifierRole extends FigNodeModelElement
         removeAllElementListeners();
         super.updateListeners(oldOwner, newOwner);
         if (newOwner != null) {
+            addElementListener(newOwner);
             Iterator it = Model.getFacade().getBases(newOwner).iterator();
             while (it.hasNext()) {
                 Object base = it.next();

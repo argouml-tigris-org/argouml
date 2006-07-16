@@ -429,7 +429,7 @@ public class FigClassifierRole extends FigNodeModelElement {
          * that may change the text: 
          */
         if (newOwner != null) {
-            addElementListener(newOwner, new String[] {"name", "base"});
+            addElementListener(newOwner, new String[] {"name", "base", "remove"});
             Collection bases = Model.getFacade().getBases(newOwner);
             Iterator i = bases.iterator();
             while (i.hasNext()) {

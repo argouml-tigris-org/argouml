@@ -360,20 +360,10 @@ public class FigSubmachineState extends FigState {
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         super.updateListeners(oldOwner, newOwner);
-        if (newOwner == getOwner()) {
-            return;
-        }
         if (newOwner != null) {
             Object newSm = Model.getFacade().getSubmachine(newOwner);
             if (newSm != null) {
                 addElementListener(newSm);
-            }
-        } else {
-            if (oldOwner != null) {
-                Object oldSm = Model.getFacade().getSubmachine(oldOwner);
-                if (oldSm != null) {
-                    removeElementListener(oldSm);
-                }
             }
         }
     }
