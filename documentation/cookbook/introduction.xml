@@ -79,13 +79,36 @@ but they are released together.
           <para>Use ArgoUML.</para>
         </listitem>
         <listitem>
-          <para> Report found bugs. </para>
-          <para> There are bugs in ArgoUML. When you use ArgoUML you might
-            encounter them where you least expect it. To help, make sure they are
-            known about i.e. that there exists an issue in Issuezilla describing
-            the problem. You need to be a registered user at Tigris to report bugs
-            but notice that to add further comments to the issue you also need to
-            have gotten a Role in the ArgoUML project. </para>
+          <para>
+Report bugs &amp; suggest enhancements.
+</para>
+          <para>
+There are bugs in ArgoUML. When you use ArgoUML you might
+encounter them where you least expect it. To help, make sure they are
+known about i.e. that there exists an issue in Issuezilla describing
+the problem. You need to be a registered user at Tigris to report bugs
+but notice that to add further comments to the issue you also need to
+have gotten a Role in the ArgoUML project.
+</para>
+
+          <para>
+Like all good open-source projects,
+ArgoUML is evolving to meet the needs of its users.
+We can only do this if we know what users need,
+so please file enhancement requests.
+</para>
+    	
+          <para>
+To help the developers prioritise work on bugs and enhancements,
+vote for the ones that you really care about.
+</para>
+            
+          <para>
+You need to be a registered user at Tigris
+to report bugs and enhancements (and to vote for them)
+but notice that to add further comments to the issue you also need to
+have gotten a Role in the ArgoUML project.
+</para>
         </listitem>
         
         <listitem>
