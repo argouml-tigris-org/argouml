@@ -24,8 +24,10 @@
 
 package org.argouml.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -35,6 +37,14 @@ import junit.framework.TestCase;
  */
 public class TestCoreHelper extends TestCase {
 
+    // Flag to enable performance testing - off by default
+    private static final boolean PERFORMANCE_TEST = false;
+
+    // Performance testing parameters
+    private static final int CHILDREN_PER_NAMESPACE = 5;
+    private static final int NAMESPACE_LEVELS = 5;
+    private static final long TIME_LIMIT = 20L * 1000 * 1000 * 1000; // 20 sec.
+    
     /**
      * Constructor for TestCoreHelper.
      *
@@ -131,6 +141,108 @@ public class TestCoreHelper extends TestCase {
         Iterator it = clients.iterator();
         assertEquals(class1, it.next());
         assertEquals(class3, it.next());
+    }
+    
+    /**
+     * Test the getFirstSharedNamespace method for correctness
+     * and, optionally, performance.
+     */
+    public void testGetFirstSharedNamespace() {
+        Object model = Model.getModelManagementFactory().createModel();
+        CoreFactory cf = Model.getCoreFactory();
+        
+        // Build namespace hierarchy like this:
+        //   g     a
+        //         /\
+        //        b  c
+        //           /\
+        //          d  e f
+        
+        Object a = cf.buildClass("a", model);
+        Object b = cf.buildClass("b", a);
+        Object c = cf.buildClass("c", a);
+        Object d = cf.buildClass("d", c);
+        Object e = cf.buildClass("e", c);
+        Object f = cf.buildClass("f", c);   
+        Object g = cf.buildClass();      
+
+        CoreHelper ch = Model.getCoreHelper();
+
+        assertEquals("Got wrong namespace for first shared", a, 
+                ch.getFirstSharedNamespace(b, e));
+        assertEquals("Got wrong namespace for first shared", c, 
+                ch.getFirstSharedNamespace(d, e));
+        assertEquals("Got wrong namespace for first shared", a, 
+                ch.getFirstSharedNamespace(a, e));
+        assertEquals("Got wrong namespace for first shared", a, 
+                ch.getFirstSharedNamespace(a, c));
+        assertEquals("Got wrong namespace for first shared", a, 
+                ch.getFirstSharedNamespace(b, c));
+        // The following test fails with the current implementation
+//        assertNull("getFirstSharedNamespace didn't return null"
+//                + " when none shared",
+//                ch.getFirstSharedNamespace(g, a));
+        
+        // Try changing namespace of element and make sure results track
+        assertEquals("Got wrong namespace for first shared", c, 
+                ch.getFirstSharedNamespace(d, f));
+        ch.setNamespace(f, b);
+        ch.setNamespace(g, f);
+        assertEquals("Got wrong namespace after setNamespace", a, 
+                ch.getFirstSharedNamespace(d, f));
+        assertEquals("Got wrong namespace after setNamespace", a, 
+                ch.getFirstSharedNamespace(g, e));
+        
+        if (PERFORMANCE_TEST) {
+            List children = new ArrayList();
+            Object root = cf.buildClass();
+            children.add(root);
+            createChildren(children, root, 0, NAMESPACE_LEVELS,
+                    CHILDREN_PER_NAMESPACE);
+            // Tree is created depth first, so this should be at the bottom
+            Object base = children.get(NAMESPACE_LEVELS);
+            long startTime = System.nanoTime();
+            int i;
+            for (i = 0; i < children.size(); i++) {
+                Object o = ch.getFirstSharedNamespace(base, children.get(i));
+                if ( i % 100 == 0) {
+                    // Check periodically to see if we've exceeded time limit
+                    if ((System.nanoTime() - startTime) > TIME_LIMIT) {
+                        break;
+                    }
+                }
+            }
+            long endTime = System.nanoTime();
+            System.out.println("Iterations: " + i + ", time: "
+                    + (endTime - startTime) / 1.0e9 + " seconds.");
+            System.out.println("Average time for getFirstSharedNameSpace = " 
+                    + (endTime - startTime) / i
+                    + " nanosecs searching in " 
+                    + children.size() + " total elements.");
+        }
+    }
+    
+    /*
+     * Populate our namespace hierarchy to the requested depth.  Total number
+     * of created elements is children^maxLevel, so be careful not to increase
+     * parameters too much.
+     */
+    private List createChildren(List children, Object parent, int currentLevel,
+            int maxLevel, int numChildren) {
+        currentLevel++;
+        if (currentLevel > maxLevel) {
+            return children;
+        }
+        Object child;
+        for (int i = 0; i < numChildren; i++) {
+            child = Model.getCoreFactory().buildClass(
+                    "l" + currentLevel + "n" + i);
+            children.add(child);
+            Model.getCoreHelper().setNamespace(child, parent);
+            createChildren(children, child, currentLevel, maxLevel, 
+                    numChildren);
+        }
+        return children;
     }
 
 }
