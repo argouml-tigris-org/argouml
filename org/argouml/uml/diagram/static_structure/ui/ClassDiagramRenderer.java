@@ -158,9 +158,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         }
         FigEdgeModelElement newEdge = null;
         if (Model.getFacade().isAAssociationClass(edge)) {
-            FigAssociationClass ascCFig = new FigAssociationClass(edge, lay);
-            // TODO: check why we are returning early for an association class.
-            return ascCFig;
+            newEdge = new FigAssociationClass(edge, lay);
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
             FigAssociationEnd asend = new FigAssociationEnd(edge, lay);
             Model.getFacade().getAssociation(edge);
@@ -275,6 +273,12 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         newEdge.setDiElement(
             GraphChangeAdapter.getInstance().createElement(gm, edge));
 
+        assert newEdge != null : "There has been no FigEdge created";
+        assert (newEdge.getDestFigNode() != null) : "The FigEdge has no dest node";
+        assert (newEdge.getDestPortFig() != null) : "The FigEdge has no dest port";
+        assert (newEdge.getSourceFigNode() != null) : "The FigEdge has no source node";;
+        assert (newEdge.getSourcePortFig() != null) : "The FigEdge has no source port";;
+        
         return newEdge;
     }
 
