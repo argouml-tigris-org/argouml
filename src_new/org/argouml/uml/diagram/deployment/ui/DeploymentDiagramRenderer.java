@@ -52,6 +52,9 @@ import org.tigris.gef.presentation.FigNode;
  *
  */
 public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
+    
+    static final long serialVersionUID = 8002278834226522224L;
+
     /**
      * Logger.
      */
@@ -105,13 +108,13 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             Layer lay,
             Object edge,
             Map styleAttributes) {
+        
+        FigEdge newEdge = null;
         if (Model.getFacade().isAAssociationClass(edge)) {
-            FigAssociationClass ascCFig = new FigAssociationClass(edge, lay);
-            return ascCFig;
+            newEdge = new FigAssociationClass(edge, lay);
         } else if (Model.getFacade().isAAssociation(edge)) {
             Object asc = /*(MAssociation)*/ edge;
-            FigAssociation ascFig = new FigAssociation(asc, lay);
-            return ascFig;
+            newEdge = new FigAssociation(asc, lay);
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
             FigAssociationEnd asend = new FigAssociationEnd(edge, lay);
             Model.getFacade().getAssociation(edge);
@@ -126,16 +129,11 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             asend.setSourceFigNode(associationFN);
             asend.setDestPortFig(classifierFN);
             asend.setDestFigNode(classifierFN);
-            return asend;
-        }
-
-        if (Model.getFacade().isALink(edge)) {
+            newEdge = asend;
+        } else if (Model.getFacade().isALink(edge)) {
             Object lnk = /*(MLink)*/ edge;
             FigLink lnkFig = new FigLink(lnk);
             Collection linkEnds = Model.getFacade().getConnections(lnk);
-            if (linkEnds == null) {
-		LOG.debug("null linkRoles....");
-	    }
             Object[] leArray = linkEnds.toArray();
             Object fromEnd = leArray[0];
             Object fromInst = Model.getFacade().getInstance(fromEnd);
@@ -147,16 +145,15 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             lnkFig.setSourceFigNode(fromFN);
             lnkFig.setDestPortFig(toFN);
             lnkFig.setDestFigNode(toFN);
-            return lnkFig;
-        }
-        if (Model.getFacade().isADependency(edge)) {
+            newEdge = lnkFig;
+        } else if (Model.getFacade().isADependency(edge)) {
             Object dep = /*(MDependency)*/ edge;
             FigDependency depFig = new FigDependency(dep);
 
             Object supplier =
-        	 ((Model.getFacade().getSuppliers(dep).toArray())[0]);
+                ((Model.getFacade().getSuppliers(dep).toArray())[0]);
             Object client =
-        	 ((Model.getFacade().getClients(dep).toArray())[0]);
+                ((Model.getFacade().getClients(dep).toArray())[0]);
 
             FigNode supFN = (FigNode) lay.presentationFor(supplier);
             FigNode cliFN = (FigNode) lay.presentationFor(client);
@@ -166,20 +163,63 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             depFig.setDestPortFig(supFN);
             depFig.setDestFigNode(supFN);
             depFig.getFig().setDashed(true);
-            return depFig;
-        }
-        if (Model.getFacade().isAGeneralization(edge)) {
+            newEdge = depFig;
+        } else if (Model.getFacade().isAGeneralization(edge)) {
             Object gen = /*(MGeneralization)*/ edge;
-            FigGeneralization genFig = new FigGeneralization(gen, lay);
-            return genFig;
+            newEdge = new FigGeneralization(gen, lay);
+        } else if (edge instanceof CommentEdge) {
+            newEdge = new FigEdgeNote(edge, lay);
         }
-        if (edge instanceof CommentEdge) {
-            return new FigEdgeNote(edge, lay);
+        if (newEdge == null) {
+            throw new IllegalArgumentException(
+                    "Don't know how to create FigEdge for model type "
+                    + edge.getClass().getName());
         }
 
-        return null;
+        if (newEdge.getSourcePortFig() == null) {
+            Object source;
+            if (edge instanceof CommentEdge) {
+                source = ((CommentEdge) edge).getSource();
+            } else {
+                source = Model.getUmlHelper().getSource(edge);
+            }
+            setSourcePort(newEdge, (FigNode) lay.presentationFor(source));
+        }
+
+        if (newEdge.getDestPortFig() == null) {
+            Object dest;
+            if (edge instanceof CommentEdge) {
+                dest = ((CommentEdge) edge).getDestination();
+            } else {
+                dest = Model.getUmlHelper().getDestination(edge);
+            }
+            setDestPort(newEdge, (FigNode) lay.presentationFor(dest));
+        }
+
+        if (newEdge.getSourcePortFig() == null
+                || newEdge.getDestPortFig() == null) {
+            throw new IllegalStateException("Edge of type "
+                    + newEdge.getClass().getName()
+                    + " created with no source or destination port");
+        }
+
+        assert newEdge != null : "There has been no FigEdge created";
+        assert (newEdge.getDestFigNode() != null) : "The FigEdge has no dest node";
+        assert (newEdge.getDestPortFig() != null) : "The FigEdge has no dest port";
+        assert (newEdge.getSourceFigNode() != null) : "The FigEdge has no source node";;
+        assert (newEdge.getSourcePortFig() != null) : "The FigEdge has no source port";;
+        
+        return newEdge;
+    }
+    
+
+    private void setSourcePort(FigEdge edge, FigNode source) {
+        edge.setSourcePortFig(source);
+        edge.setSourceFigNode(source);
     }
 
-    static final long serialVersionUID = 8002278834226522224L;
-
+    private void setDestPort(FigEdge edge, FigNode dest) {
+        edge.setDestPortFig(dest);
+        edge.setDestFigNode(dest);
+    }
 }
