@@ -4605,7 +4605,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       </sect1>
 
-      <sect1>
+      <sect1 id="s3.tut.req_case_study">
 
         <title>Case Study</title>
 
@@ -4907,9 +4907,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <title>Analysis</title>
 
-      <sect1>
-
-        <title>Introduction</title>
 
         <para>Analysis is the process of taking the 
         <quote>customer</quote> requirements and re-casting them in the 
@@ -4932,56 +4929,158 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         will come back to the Analysis phase many times in the 
         future.</para>
 
-      </sect1>
-
       <sect1>
 
-        <title>The Analysis Process (To be written)</title>
+        <title>The Analysis Process</title>
 
-        <remark>Include CRC cards. To be written...</remark>
+        <para>
+          There are three schools of thought on how Analysis
+          should be approached.
+          The ontologist defines the data (actually the metadata)
+          first and worries about processes later.
+          The true ontologist would prefer not to have to think
+          about processes at all.
+          The phenomenonologist reverses this and favors
+          process over data.
+          The panparadigmist considers both process and data to be
+          equally important and addresses both from the start.
+        </para>
+
+        <para>
+          When it comes to being a purist the ontologist has
+          the upper hand.
+          It is possible to define and build a database into
+          which data can be entered and retrieved without concern for
+          what happens to it or is done with it.
+          On the other hand implementing a process without having any
+          data structures for it to operate on is not very meaningful.
+        </para>
+
         <sect2>
 
-          <title>Output of the Analysis Process (To be written)</title>
+          <title>Class, Responsibilities, and Collaborators (CRC) Cards</title>
 
-          <remark>To be written...</remark>
-          <sect3>
+          <para>
+            The CRC methodology favors the phenomenonologists
+            preference for analysis.
+            It is the equivalent of starting with the use cases,
+            the process aspects (operations) of the class diagrams,
+            and scenarios from which sequence diagrams can be initiated.
+          </para>
 
-            <title>Concept Diagram (To be written)</title>
+          <para>
+            CRC cards and the associated methodology are described
+            in detail in <xref linkend="app.crc"/>.
+            They are used again in the design phase and are further
+            discussed in <xref linkend="ch.tut.design"/>.
+          </para>
 
-            <remark>To be written...</remark>
-          </sect3>
+          <para>
+            The strength of CRC cards during analysis.
+          <itemizedlist>
+            <listitem><para>Common Project Vocabulary -</para></listitem>
+            <listitem><para>Spread Domain Knowledge -</para></listitem>
+            <listitem><para>Making the Paradigm Shift -</para></listitem>
+            <listitem><para>Live Prototyping -</para></listitem>
+            <listitem><para>Identifying Holes in Requirements -</para></listitem>
+          </itemizedlist>
+          </para>
 
-          <sect3>
+          <para>
+            In this phase the group should consist of two or
+            three domain experts, one object-oriented technology
+            facilitator, and the rest of the group made up of people
+            who are responsible for delivering the system.
+          </para>
 
-            <title>System Sequence Diagram (To be written)</title>
+          <para>
+            The first time that the Analysis phase occurs a special
+            case of the CRC session happens as there are no classes
+            or scenarios to choose from to define a CRC session.
+            At this point a special type of session known
+            as brainstorming is held.
+            During this session you identify the initial set of
+            classes in the problem domain by using the problem statement
+            or requirements document or whatever you know about the
+            desired result for a starting point.
+            The nouns that are found in whatever you are starting from are
+            a good key to an initial set of classes in the system.
+            In a brainstorming session there should be little or no
+            discussion of the ideas.
+            Record them and filter the results after the brainstorming.
+            At this stage the distinction between class and object
+            is blurred.
+          </para>
 
-            <remark>To be written...</remark>
-          </sect3>
+          <para>
+            Once a reasonable set of classes has been defined
+            by the group, responsibilities can be added.
+            Add responsibilities that are obvious from the requirements
+            or the name of the class.
+            You don't need to find them all (or any for that matter).
+            The scenarios will make them more obvious.
+            The advantage of finding some in the beginning is that
+            it helps provide a starting place.
+          </para>
 
-          <sect3>
+          <para>
+            Select the initial scenarios from the requirements document
+            by examining it's verbs in much the same way that we scanned
+            its nouns earlier.
+            Then as many walk through sessions as necessary to complete
+            the analysis phase are performed.
+          </para>
 
-            <title>System Statechart Diagram (To be written)</title>
-
-            <remark>To be written...</remark>
-          </sect3>
-
-          <sect3>
-
-            <title>Realization Use Case Diagram (To be written)</title>
-
-            <remark>To be written...</remark>
-          </sect3>
-
-          <sect3>
-
-            <title>Documents (To be written)</title>
-
-            <remark>Use Case Specifications and Supplementary 
-            Requirements Specifications recast in solution language. To 
-            be written...</remark>
-          </sect3>
+          <para>
+            When is enough of the analysis complete that design can begin?
+            When all the different responsibilities are in place
+            and the system has become stable.
+            After all the normal behavior has been covered, exceptional
+            behavior needs to be simulated.
+            When you notice that the responsibilities are all in place to
+            support the new scenarios, and there is little change to the
+            cards, this is a sign the you are ready to start design.
+          </para>
 
         </sect2>
+
+        <sect2>
+
+          <title>Concept Diagram (To be written)</title>
+
+          <remark>To be written...</remark>
+        </sect2>
+
+        <sect2>
+
+          <title>System Sequence Diagram (To be written)</title>
+
+          <remark>To be written...</remark>
+        </sect2>
+
+        <sect2>
+
+          <title>System Statechart Diagram (To be written)</title>
+
+          <remark>To be written...</remark>
+        </sect2>
+
+        <sect2>
+
+          <title>Realization Use Case Diagram (To be written)</title>
+
+          <remark>To be written...</remark>
+        </sect2>
+
+        <sect2>
+
+          <title>Documents (To be written)</title>
+
+          <remark>Use Case Specifications and Supplementary 
+          Requirements Specifications recast in solution language. To 
+          be written...</remark>
+        </sect2>
+
 
       </sect1>
 
@@ -5301,6 +5400,51 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Case Study (To be written)</title>
 
+        <para>
+
+          Regardless of which methodology you use, at this time you are
+          undoubtedly going to take the problem statement from
+          <xref linkend="s3.tut.req_case_study"/>
+          and extract the nouns from it.
+          This list should be compacted to contain only those nouns that are
+          expected to result in a class.
+          This effort results in the following.
+
+          <itemizedlist>
+            <listitem><para>Account</para></listitem>
+            <listitem><para>Audit trail</para></listitem>
+            <listitem><para>Bank</para></listitem>
+            <listitem><para>Cash</para></listitem>
+            <listitem><para>Customer</para></listitem>
+          </itemizedlist>
+          
+        </para>
+
+        <sect2>
+
+          <title>CRC Cards</title>
+
+          <para>
+            The project manager convenes a CRC session at which the initial
+            set of classes are to be defined.
+            The facilitator reminds the participants that we are in the
+            analysis phase and are only interested in what needs to be done
+            (at the business level) and are to leave out anything that smacks
+            of how to do it.
+            As a general rule of thumb this means a subset of
+            the nouns from the problem statement (see above).
+            The group starts with a complete list of all of the nouns in the
+            statement, examines each one, and decides which are inappropriate
+            crossing them off the list.
+            Each class is then assigned to one of the participants.
+          </para>
+
+          <para>
+            <remark>to be continued</remark>...
+          </para>
+
+        </sect2>
+
         <sect2>
 
           <title>Concept Class Diagrams (To be written)</title>
@@ -5358,82 +5502,149 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <title>Design</title>
 
-      <sect1>
+      <para>
+        We now have the problem we are trying to solve specified 
+        in the language of a putative solution.
+        In the Design Phase, we 
+        construct all the details of that solution.
+      </para>
 
-        <title>Introduction</title>
-
-        <para>We now have the problem we are trying to solve specified 
-        in the language of a putative solution. In the Design Phase, we 
-        construct all the details of that solution.</para>
-
-        <para>The blurred boundary between Analysis and Design is 
-        reflected in their use of many of the same UML tools. In this 
-        chapter we will mostly be reusing UML technology we have 
-        already met once. The big step is casting everything into 
+      <para>
+        The blurred boundary between Analysis and Design is 
+        reflected in their use of many of the same UML tools.
+        In this chapter we will mostly be reusing UML technology we have 
+        already met once.
+        The big step is casting everything into 
         concrete terms. We move from the abstract concepts of analysis 
-        to their concrete realization.</para>
+        to their concrete realization.
+      </para>
 
-        <para>Once again the <emphasis>recursive</emphasis>, and 
+      <para>
+        Once again the <emphasis>recursive</emphasis>, and 
         <emphasis>iterative</emphasis> nature of our process means we 
         will come back to the Design phase many times in the 
-        future.</para>
-
-      </sect1>
+        future.
+      </para>
 
       <sect1>
 
         <title>The Design Process (To be written)</title>
 
         <remark>To be written...</remark>
+
         <sect2>
 
-          <title>Output of the Design Process (To be written)</title>
+          <title>Class, Responsibilities, and Collaborators (CRC) Cards</title>
+          <para>
+            Strength of CRC cards during Design
+            <itemizedlist>
+              <listitem><para>Spreading Objet-Oriented Design Expertise</para></listitem>
+              <listitem><para>Design Reviews</para></listitem>
+              <listitem><para>Framework for Implementation</para></listitem>
+              <listitem><para>Informal Notation</para></listitem>
+              <listitem><para>Choice of supporting software components</para></listitem>
+              <listitem><para>Performance Requirements</para></listitem>
+            </itemizedlist>
+          </para>
+
+          <para>
+            In this phase developers replace some of the domain experts
+            in the group, but there should always be at least one domain
+            expert in the group.
+          </para>
+
+          <para>
+            The focus of the group moves from what is to be done to
+            how to do it.
+            The classes from the solution domain are added to
+            those defined in the analysis phase.
+            Think about what classes are needed to make the system work.
+            Do you need a List class to hold objects?
+            Do you need classes to handle exceptions?
+            Do you need wrapper classes for other subsystems?
+            New classes that are looked for in this part, are classes
+            that support the implementation of the system.
+          </para>
+
+          <para>
+            During the design phase the distinction between class and object
+            becomes important.
+            Think about the objects in your scenarios.
+            Who creates the objects?
+            What happens when it is created and destroyed?
+            What is the lifetime of the object vs. the lifetime of the
+            information held be the object?
+          </para>
+
+          <para>
+            Now is the time to look at what information the objects hold
+            compared to what is requested from other classes or computed
+            on the fly.
+            Use the back of the card to record the attributes found for
+            the classes.
+            Break you responsibilities into subresponsibilities and list the
+            subresponsibilities indented under the main responsibilities.
+            Move the collaborators next to the subresponsibilities
+            that use them.
+          </para>
+
+          <para>
+            After the Collaborator class on your card list the responsibility
+            of the used class that is used in the collaboration.
+            After the collaborating responsibilities on your cards, list the
+            data passed back by the collaborating object in parenthesis.
+          </para>
+
+          <para>
+            Redo the scenarios you did in the analysis phase, but know take
+            into consideration all of the design heuristics discussed.
+            Make up your own scenarios and try them.
+          </para>
+
+        </sect2>
+
+        <sect2>
+
+          <title>Package Diagram (To be written)</title>
 
           <remark>To be written...</remark>
-          <sect3>
+        </sect2>
 
-            <title>Package Diagram (To be written)</title>
+        <sect2>
 
-            <remark>To be written...</remark>
-          </sect3>
+          <title>Realization Class Diagrams (To be written)</title>
 
-          <sect3>
+          <remark>To be written...</remark>
+        </sect2>
 
-            <title>Realization Class Diagrams (To be written)</title>
+        <sect2>
 
-            <remark>To be written...</remark>
-          </sect3>
+          <title>Sequence Diagrams and Collaboration Diagrams (To be 
+          written)</title>
 
-          <sect3>
+          <remark>To be written...</remark>
+        </sect2>
 
-            <title>Sequence Diagrams and Collaboration Diagrams (To be 
-            written)</title>
+        <sect2>
 
-            <remark>To be written...</remark>
-          </sect3>
+          <title>Statechart Diagrams and Activity Diagrams (To be 
+          written)</title>
 
-          <sect3>
+          <remark>To be written...</remark>
+        </sect2>
 
-            <title>Statechart Diagrams and Activity Diagrams (To be 
-            written)</title>
+        <sect2>
 
-            <remark>To be written...</remark>
-          </sect3>
+          <title>Deployment Diagram (To be written)</title>
 
-          <sect3>
+          <remark>To be written...</remark>
+        </sect2>
 
-            <title>Deployment Diagram (To be written)</title>
+        <sect2>
 
-            <remark>To be written...</remark>
-          </sect3>
+          <title>Documents (To be written)</title>
 
-          <sect3>
-
-            <title>Documents (To be written)</title>
-
-            <remark>System Architecture. To be written...</remark>
-          </sect3>
-
+          <remark>System Architecture. To be written...</remark>
         </sect2>
 
       </sect1>
@@ -6144,6 +6355,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       <sect1>
 
         <title>Case Study (To be written)</title>
+
+        <sect2>
+
+          <title>CRC Cards (To be written)</title>
+
+          <remark>To be written...</remark>
+        </sect2>
 
         <sect2>
 
@@ -38632,6 +38850,23 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       </glossentry>
 
+      <glossentry id="gl.collaboration">
+
+        <glossterm>Collaboration</glossterm>
+
+        <glossdef>
+
+          <indexterm><primary>Collaboration</primary></indexterm>
+          <para>
+            The process whereby several objects cooperate to provide some
+            higher level behavior that is greater than the sum of the
+            behaviors of the objects.
+          </para>
+
+        </glossdef>
+
+      </glossentry>
+
       <glossentry id="gl.collabdiag">
 
         <glossterm>Collaboration Diagram</glossterm>
@@ -38647,6 +38882,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <emphasis>Sequence Diagram</emphasis>. Which representation 
           is appropriate depends on the problem under 
           consideration.</para>
+
+        </glossdef>
+
+      </glossentry>
+
+      <glossentry id="gl.collaborator">
+
+        <glossterm>Collaborator</glossterm>
+
+        <glossdef>
+
+          <indexterm><primary>Collaborator</primary></indexterm>
+          <para>
+            An object that participates in a Collaboration.
+          </para>
 
         </glossdef>
 
@@ -39122,11 +39372,43 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       </glossentry>
 
+      <glossentry id="gl.responsibility">
+
+        <glossterm>Responsibility</glossterm>
+
+        <glossdef>
+
+          <indexterm><primary>Responsibility</primary></indexterm>
+          <para>S
+            ome behavior for which an object is held accountable.
+            A responsibility denotes the obligation of an object to provide a
+            certain behavior.
+          </para>
+
+        </glossdef>
+
+      </glossentry>
+
     </glossdiv>
 
     <glossdiv>
 
       <title>S</title>
+
+      <glossentry id="gl.scenario">
+
+        <glossterm>Scenario</glossterm>
+
+        <glossdef>
+
+          <indexterm><primary>Scenario</primary></indexterm>
+          <para>
+            A specific sequence of actions that illustrates behavior.
+          </para>
+
+        </glossdef>
+
+      </glossentry>
 
       <glossentry id="gl.seqdiag">
 
@@ -40133,12 +40415,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
   <appendix id="app.legal">
 
-    <title>Open Publication Licence</title>
+    <title>Open Publication License</title>
 
-    <sect1 label="I">
+    <sect1>
 
-      <title>REQUIREMENTS ON BOTH UNMODIFIED AND MODIFIED 
-      VERSIONS</title>
+      <title>Requirements On Both Unmodified And Modified 
+      Versions</title>
 
       <para>The Open Publication works may be reproduced and 
       distributed in whole or in part, in any medium physical or 
@@ -40177,18 +40459,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     </sect1>
 
-    <sect1 label="II">
+    <sect1>
 
-      <title>COPYRIGHT</title>
+      <title>Copyright</title>
 
       <para>The copyright to each Open Publication is owned by its 
       author(s) or designee.</para>
 
     </sect1>
 
-    <sect1 label="III">
+    <sect1>
 
-      <title>SCOPE OF LICENSE</title>
+      <title>Scope Of License</title>
 
       <para>The following license terms apply to all Open Publication 
       works, unless otherwise explicitly stated in the document.</para>
@@ -40212,9 +40494,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     </sect1>
 
-    <sect1 label="IV">
+    <sect1>
 
-      <title>REQUIREMENTS ON MODIFIED WORKS</title>
+      <title>Requirements On Modified Works</title>
 
       <para>All modified versions of documents covered by this license, 
       including translations, anthologies, compilations and partial 
@@ -40263,9 +40545,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     </sect1>
 
-    <sect1 label="V">
+    <sect1>
 
-      <title>GOOD-PRACTICE RECOMMENDATIONS</title>
+      <title>Good-Practice Recommendations</title>
 
       <para>In addition to the requirements of this license, it is 
       requested from and strongly recommended of redistributors 
@@ -40305,9 +40587,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     </sect1>
 
-    <sect1 label="VI">
+    <sect1>
 
-      <title>LICENSE OPTIONS</title>
+      <title>License Options</title>
 
       <para>The author(s) and/or publisher of an Open 
       Publication-licensed document may elect certain options by 
@@ -40339,9 +40621,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     </sect1>
 
-    <sect1 label="">
+    <sect1>
 
-      <title>OPEN PUBLICATION POLICY APPENDIX:</title>
+      <title>Open Publication Policy Appendix:</title>
 
       <para>(This is not considered part of the license.)</para>
 
@@ -40373,6 +40655,200 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       Publication Authors&apos; List: Send E-mail to 
       opal-request@opencontent.org with the word 
       <quote>unsubscribe</quote> in the body.</para>
+
+    </sect1>
+
+  </appendix>
+
+  <appendix id="app.crc">
+
+    <title>The CRC Card Methodology</title>
+
+    <para>
+      A CRC card is ostensibly an index card that is used to represent
+      classes, their responsibilities, and the interactions between them.
+      The term CRC card is also used to refer to a methodology for object
+      oriented modeling based on their use.
+    </para>
+
+    <para>
+      Kent Beck and Ward Cunningham introduced CRC cards in a paper
+      "A Laboratory for Teaching Object-Oriented Thinking" that was presented at
+      the OOPSLA (Object-Oriented Programming, Systems, Languages &amp; Applications)
+      conference in 1989.
+      A tutorial on the subject can be found at
+      <ulink url="http://www.csc.calpoly.edu/~dbutler/tutorials/winter96/crc_b/"/>.
+      The CRC card methodology was originally designed as a teaching tool but
+      has proved useful as a modeling tool as well.
+    </para>
+
+    <para>
+      The three parts of the CRC acronym were felt by the authors of the
+      paper to represent the essential dimensions of object oriented modeling.
+      The term Responsibilities refers to the contract that the class
+      under discussion offers to the rest of the world (Interface and
+      Contract are similar concepts).
+      Responsibilities model the things that a class can do.
+      Services, Methods, or Operations will result from these.
+      The term Collaborators refers to the classes whose services
+      the class under discussion will use.
+      Kent Beck tried unsuccessfully to use ther term Helpers instead of
+      Collaborators to indicate classes that were supporting the class under
+      discussion.
+      It is widely believed that the terminology was chosen because CRC are
+      the initials of Ward Cunningham's son.
+    </para>
+
+    <para>
+      Why use CRC cards?
+      <itemizedlist>
+        <listitem><para>
+          They are portable.
+          No computers are required so they can be used anywhere.
+          Even away from the office.</para>
+        </listitem>
+        <listitem><para>
+          They allow the participants to experience first hand
+          how the system will work.
+          No computer tool can replace the interaction that happens by
+          physically picking up the cards and playing the role of that object.</para>
+        </listitem>
+        <listitem><para>
+          They are a useful tool for teaching people the object-oriented
+          paradigm.</para>
+        </listitem>
+        <listitem><para>
+          They can be used as a methodology themselves or as a front end to a
+          more formal methodology such as Booch, Wirfs-Brock, Jacobson, etc.
+          Although CRC cards were created for teaching, they have proven
+          useful for much more.</para>
+        </listitem>
+        <listitem><para>
+          They have become an accepted method for analysis and design.
+          The biggest contributing factor to their success is the fact that they
+          provide an informal and non threatening environment that is
+          productive to working and learning.</para>
+        </listitem>
+      </itemizedlist>
+    </para>
+
+    <sect1>
+
+      <title>The Card</title>
+
+      <para>
+        The exact format of the card can be customized to the preferences of
+        the group, but the minimal required information is the name of the
+        class, it's subclasses and superclasses, it's responsibilities
+        and the collaborators for each of those responsibilities.
+        The back of the card can be used for a description of the class.
+        During the design phase attributes of the class can be recorded on
+        the back as well.
+        One way to think of the card is that the front contains
+        the public information, and the back contains the encapsulated,
+        implementation details.
+        As a class is defined a card is made for that class with
+        its name entered.
+        When a class is assigned to an individual that has only a class name
+        on it, the individual (or the group) selects an initial set of
+        responsibilities for the class.
+        This initial set should be whatever (if anything) is
+        immediately obvious.
+      </para>
+
+    </sect1>
+
+    <sect1>
+
+      <title>The Group</title>
+
+      <para>
+        Whether they are implicitly or explicitly defined the requirements
+        for the system need to be familiar to the people participating
+        in the group.
+      </para>
+
+      <para>
+        The ideal group size for a CRC card session is five or six people.
+        This size generally allows everyone to productively participate.
+        In groups of larger size productivity is cut by more disagreements and
+        the amount of participation by each is lower.
+        If there are more than six people, one solution is to have the extra
+        people be present strictly as observers.
+      </para>
+
+      <para>
+        The group five or six people in the core group should be composed of
+        developers, domain experts, and an object-oriented
+        technology facilitator.
+      </para>
+
+    </sect1>
+
+    <sect1>
+
+      <title>The Session</title>
+
+      <para>
+        Before starting a session a part of the problem needs to be selected
+        for the session to focus on.
+        Essentially, this means picking the set of classes that are
+        to be used.
+      </para>
+
+      <para>
+        Pick the scenarios that are to be walked through that use the classes
+        picked above.
+        Start with scenarios that are part of the systems normal operation
+        first, and then exceptional scenarios, like error recover, later.
+      </para>
+
+      <para>
+        Assign each class to a member of the group.
+        Each person should be responsible for at least one class.
+        They are the owner of that class for the session.
+        Each person records the name of their class on a card.
+        One class per card.
+      </para>
+
+      <para>
+        Walk-throughs are the heart of the CRC card session.
+        To walk through a scenario address each action in it one at a time.
+        First decide which class is responsible for this function.
+        The owner of the class then picks up his card and
+        holds it up in the air.
+        When a card is up in the air it is an object and can do things.
+        The owner announces that he needs to fulfill his responsibility.
+        The responsibility is refined into smaller tasks if possible.
+        These smaller tasks can be fulfilled by the object is appropriate or
+        they can be fulfilled by interacting with other objects
+        (collaborators).
+        If no other appropriate class exists, you may need to make one
+        and assign it to someone.
+        This is the fundamental procedure of the scenario execution.
+      </para>
+
+    </sect1>
+
+    <sect1>
+
+      <title>The Process</title>
+
+
+      <para>
+        CRC Cards are used in the Analysis and Design phases.
+        The process for these phases differ primarily in how the classes
+        and scenarios are chosen.
+      </para>
+
+      <para>
+        In the Analysis phase the classes and scenarios are in the problem
+        space and generally derive from the requirements.
+        In the Design phase solution space classes and scenarios are added.
+        Additionally in the Analysis phase the very first session starts with
+        no classes or scenarios to select from so a special session creates
+        them.
+      </para>
 
     </sect1>
 
