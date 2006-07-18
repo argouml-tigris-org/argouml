@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -1699,9 +1700,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (ns1 == null || ns2 == null) {
             throw new IllegalArgumentException("null argument");
         }
-        if (ns1 == ns2) {
-            return ns1;
-        }
         if (!(ns1 instanceof Namespace)) {
             throw new IllegalArgumentException(
                     "Expecting a Namespace argument. Got a "
@@ -1712,22 +1710,44 @@ public class CoreHelperMDRImpl implements CoreHelper {
                     "Expecting a Namespace argument. Got a "
                             + ns2.getClass().getName());
         }
+        if (ns1 == ns2) {
+            return ns1;
+        }
 
         try {
-            ModelManagementHelper mmh = modelImpl.getModelManagementHelper();
-            boolean ns1Owner = mmh.getAllNamespaces(ns1).contains(ns2);
-            boolean ns2Owner = mmh.getAllNamespaces(ns2).contains(ns1);
-            if (ns1Owner) {
-                return ns1;
+            // Get the namespace hierarchy for each element
+            Iterator path1 = getPath((ModelElement) ns1).iterator();
+            Iterator path2 = getPath((ModelElement) ns2).iterator();
+
+            // Traverse the lists looking for the last (innermost) match
+            Object lastMatch = null;
+            while (path1.hasNext() && path2.hasNext()) {
+                Object element = path1.next();
+                if (element != path2.next()) {
+                    return lastMatch;
+                }
+                lastMatch = element;
             }
-            if (ns2Owner) {
-                return ns2;
-            }
-            return getFirstSharedNamespace(((ModelElement) ns1).getNamespace(),
-                    ((ModelElement) ns2).getNamespace());
+            return lastMatch;
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
+    }
+    
+
+    /*
+     * Return a list of namespaces enclosing this element.
+     * The list is ordered outer to inner. i.e. it starts at the root model.
+     */
+    private List getPath(ModelElement element) {
+        LinkedList path = new LinkedList();
+        path.add(element);
+        Namespace ns = element.getNamespace();
+        while (ns != null) {
+            path.addFirst(ns);
+            ns = ns.getNamespace();
+        }
+        return path;
     }
 
     /**
