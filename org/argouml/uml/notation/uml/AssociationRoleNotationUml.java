@@ -120,13 +120,13 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
             } else if (hasSlash) {
                 if (rolestr != null) {
                     String msg = 
-                		"parsing.error.association-role.extra-text";
+                		"parsing.error.association-role.association-extra-text";
                     throw new ParseException(Translator.localize(msg), st
                                     .getTokenIndex());
                 }
                 rolestr = token;
             } else {
-            	String msg = "parsing.error.association-role.extra-text";
+            	String msg = "parsing.error.association-role.association-extra-text";
                 throw new ParseException(Translator.localize(msg), 
                 		st.getTokenIndex());
             }

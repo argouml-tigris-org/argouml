@@ -484,7 +484,7 @@ public class MessageNotationUml extends MessageNotation {
                     }
                 } else if ("[".equals(token)) {
                     if (mustBePre) {
-                    	String msg = "parsing.error.message.predec-unqualified";
+                    	String msg = "parsing.error.message.pred-unqualified";
                         throw new ParseException(Translator.localize(msg), 
                                 st.getTokenIndex());
                     }
@@ -506,7 +506,7 @@ public class MessageNotationUml extends MessageNotation {
                     }
                 } else if ("*".equals(token)) {
                     if (mustBePre) {
-                    	String msg = "parsing.error.message.predec-unqualified";
+                    	String msg = "parsing.error.message.pred-unqualified";
                         throw new ParseException(Translator.localize(msg), 
                                 st.getTokenIndex());
                     }
