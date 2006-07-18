@@ -43,7 +43,7 @@ public class TestCoreHelper extends TestCase {
     // Performance testing parameters
     private static final int CHILDREN_PER_NAMESPACE = 5;
     private static final int NAMESPACE_LEVELS = 5;
-    private static final long TIME_LIMIT = 20L * 1000 * 1000 * 1000; // 20 sec.
+    private static final long TIME_LIMIT = 20L * 1000; // 20 sec.
     
     /**
      * Constructor for TestCoreHelper.
@@ -201,23 +201,23 @@ public class TestCoreHelper extends TestCase {
                     CHILDREN_PER_NAMESPACE);
             // Tree is created depth first, so this should be at the bottom
             Object base = children.get(NAMESPACE_LEVELS);
-            long startTime = System.nanoTime();
+            long startTime = System.currentTimeMillis();
             int i;
             for (i = 0; i < children.size(); i++) {
                 Object o = ch.getFirstSharedNamespace(base, children.get(i));
                 if ( i % 100 == 0) {
                     // Check periodically to see if we've exceeded time limit
-                    if ((System.nanoTime() - startTime) > TIME_LIMIT) {
+                    if ((System.currentTimeMillis() - startTime) > TIME_LIMIT) {
                         break;
                     }
                 }
             }
-            long endTime = System.nanoTime();
+            long endTime = System.currentTimeMillis();
             System.out.println("Iterations: " + i + ", time: "
-                    + (endTime - startTime) / 1.0e9 + " seconds.");
+                    + (endTime - startTime) / 1.0e3 + " seconds.");
             System.out.println("Average time for getFirstSharedNameSpace = " 
-                    + (endTime - startTime) / i
-                    + " nanosecs searching in " 
+                    + (endTime - startTime) * 1.0 / i
+                    + " millisecs searching in " 
                     + children.size() + " total elements.");
         }
     }
