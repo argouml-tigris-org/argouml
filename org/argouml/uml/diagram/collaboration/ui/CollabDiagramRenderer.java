@@ -104,24 +104,67 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay,
 				 Object edge, Map styleAttributes) {
-	if (Model.getFacade().isAAssociationRole(edge)) {
-	    FigAssociationRole asrFig = new FigAssociationRole(edge, lay);
-	    return asrFig;
-	} else
-	    if (Model.getFacade().isAGeneralization(edge)) {
-		FigGeneralization genFig = new FigGeneralization(edge, lay);
-		return genFig;
-	    }
-	if (Model.getFacade().isADependency(edge)) {
-	    FigDependency depFig = new FigDependency(edge , lay);
-	    return depFig;
-	}
-	if (edge instanceof CommentEdge) {
-            return new FigEdgeNote(edge, lay);
+        
+        FigEdge newEdge = null;
+        if (Model.getFacade().isAAssociationRole(edge)) {
+            newEdge = new FigAssociationRole(edge, lay);
+        } else if (Model.getFacade().isAGeneralization(edge)) {
+            newEdge = new FigGeneralization(edge, lay);
+        } else if (Model.getFacade().isADependency(edge)) {
+            newEdge = new FigDependency(edge , lay);
+        } else if (edge instanceof CommentEdge) {
+            newEdge = new FigEdgeNote(edge, lay);
+        }
+    
+        if (newEdge == null) {
+            throw new IllegalArgumentException(
+                    "Don't know how to create FigEdge for model type "
+                    + edge.getClass().getName());
         }
 
-	LOG.debug("TODO: CollabDiagramRenderer getFigEdgeFor");
-	return null;
+        if (newEdge.getSourcePortFig() == null) {
+            Object source;
+            if (edge instanceof CommentEdge) {
+                source = ((CommentEdge) edge).getSource();
+            } else {
+                source = Model.getUmlHelper().getSource(edge);
+            }
+            setSourcePort(newEdge, (FigNode) lay.presentationFor(source));
+        }
+
+        if (newEdge.getDestPortFig() == null) {
+            Object dest;
+            if (edge instanceof CommentEdge) {
+                dest = ((CommentEdge) edge).getDestination();
+            } else {
+                dest = Model.getUmlHelper().getDestination(edge);
+            }
+            setDestPort(newEdge, (FigNode) lay.presentationFor(dest));
+        }
+
+        if (newEdge.getSourcePortFig() == null
+                || newEdge.getDestPortFig() == null) {
+            throw new IllegalStateException("Edge of type "
+                    + newEdge.getClass().getName()
+                    + " created with no source or destination port");
+        }
+
+        assert newEdge != null : "There has been no FigEdge created";
+        assert (newEdge.getDestFigNode() != null) : "The FigEdge has no dest node";
+        assert (newEdge.getDestPortFig() != null) : "The FigEdge has no dest port";
+        assert (newEdge.getSourceFigNode() != null) : "The FigEdge has no source node";;
+        assert (newEdge.getSourcePortFig() != null) : "The FigEdge has no source port";;
+        
+        return newEdge;
+    }
+    
+    private void setSourcePort(FigEdge edge, FigNode source) {
+        edge.setSourcePortFig(source);
+        edge.setSourceFigNode(source);
     }
 
+    private void setDestPort(FigEdge edge, FigNode dest) {
+        edge.setDestPortFig(dest);
+        edge.setDestFigNode(dest);
+    }
 } /* end class CollabDiagramRenderer */
