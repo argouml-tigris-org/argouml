@@ -115,10 +115,10 @@ public class WizBreakCircularComp extends UMLWizard {
 		String toName = Model.getFacade().getName(toType);
 		String s = ascName 
                     + " " 
-                    + Translator.localize("critics.WizTooMany-from") 
+                    + Translator.localize("critics.WizBreakCircularComp-from") 
                     + fromName
                     + " "
-                    + Translator.localize("critics.WizTooMany-to")
+                    + Translator.localize("critics.WizBreakCircularComp-to")
                     + " "
                     + toName;
 		res.addElement(s);
