@@ -198,6 +198,11 @@ public class UseCaseDiagramGraphModel
      *              this graph, <code>false</code> otherwise.
      */
     public boolean canAddNode(Object node) {
+        if (Model.getFacade().isAAssociation(node)
+                && !Model.getFacade().isANaryAssociation(node)) {
+            // A binary association is not a node so reject.
+            return false;
+        }
         if (super.canAddNode(node)) {
             return true;
         }

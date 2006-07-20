@@ -191,6 +191,10 @@ public class DeploymentDiagramGraphModel
         if (node == null) {
             return false;
         }
+        if (Model.getFacade().isAAssociation(node) && !Model.getFacade().isANaryAssociation(node)) {
+            // A binary association is not a node so reject.
+            return false;
+        }
         if (containsNode(node)) {
             return false;
         }

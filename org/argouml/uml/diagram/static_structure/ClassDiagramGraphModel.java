@@ -220,9 +220,16 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return true if the given object is a valid node in this graph.
      */
     public boolean canAddNode(Object node) {
+        if (Model.getFacade().isAAssociation(node)
+                && !Model.getFacade().isANaryAssociation(node)) {
+            // A binary association is not a node so reject.
+            return false;
+        }
+        
         if (super.canAddNode(node) && !containsNode(node)) {
             return true;
         }
+        
     	if (containsNode(node)) {
             LOG.error("Addition of node of type " 
                     + node.getClass().getName()
@@ -414,7 +421,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         }
 
         getEdges().add(edge);
-
+        
         // TODO: assumes public
         if (Model.getFacade().isAModelElement(edge)
                 && Model.getFacade().getNamespace(edge) == null
