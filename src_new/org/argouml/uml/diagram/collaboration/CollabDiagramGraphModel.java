@@ -137,9 +137,14 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
-	if (node == null) {
+        if (node == null) {
             return false;
         }
+        if (Model.getFacade().isAAssociation(node) && !Model.getFacade().isANaryAssociation(node)) {
+            // A binary association is not a node so reject.
+            return false;
+        }
+    
 	if (containsNode(node)) {
             return false;
         }
