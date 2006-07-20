@@ -54,6 +54,7 @@ import org.tigris.gef.presentation.ArrowHeadComposite;
 import org.tigris.gef.presentation.ArrowHeadDiamond;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadNone;
+import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 
 
@@ -657,6 +658,36 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     protected FigTextGroup getMiddleGroup() {
         return middleGroup;
+    }
+    
+    /**
+     * Lays out the association edges as any other edge except for
+     * special rules for an association that loops back to the same
+     * class. For this it is snapped back to the bottom right corner
+     * if it resized to the point of not being visible.
+     * @see org.tigris.gef.presentation.FigEdgePoly#layoutEdge()
+     */
+    protected void layoutEdge() {
+        FigNode sourceFigNode = getSourceFigNode();
+        Point[] points = getPoints();
+        if (points.length < 3
+                && sourceFigNode != null
+                && getDestFigNode() == sourceFigNode) {
+            Rectangle rect = new Rectangle(
+                    sourceFigNode.getX() + sourceFigNode.getWidth() - 20,
+                    sourceFigNode.getY() + sourceFigNode.getHeight() - 20,
+                    40,
+                    40);
+            points = new Point[5];
+            points[0] = new Point(rect.x, rect.y + rect.height / 2);
+            points[1] = new Point(rect.x, rect.y + rect.height);
+            points[2] = new Point(rect.x + rect.width , rect.y + rect.height);
+            points[3] = new Point(rect.x + rect.width , rect.y);
+            points[4] = new Point(rect.x + rect.width / 2, rect.y);
+            setPoints(points);
+        } else {
+            super.layoutEdge();
+        }
     }
 
     /**
