@@ -111,6 +111,7 @@ public class FigTransition extends FigEdgeModelElement {
                         Model.getFacade().getSource(newOwner))
                     || Model.getFacade().isAObjectFlowState(
                             Model.getFacade().getTarget(newOwner));
+            getFig().setDashed(dashed);
         }
     }
 
