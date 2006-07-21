@@ -1130,6 +1130,10 @@ when committing into the main trunk:
             <para>
 Put the number of the DEFECT you are addressing by the commit in the message.
 </para>
+            <para>
+Test case code can be added.
+Documentation, web site and other things can be added.
+</para>
           </listitem>
         </itemizedlist>
         <para>
@@ -1141,9 +1145,12 @@ before commit.
         <para>
 During this period we attempt to make at least one Alpha Release
 each week.
-The releases are named x.y.alphaz where
-y is an even number and
-z is counting upwards from 1 that is the first alpha.
+The releases are named
+<replaceable>x</replaceable>.<replaceable>y</replaceable>.alpha<replaceable>z</replaceable>
+where
+<replaceable>y</replaceable> is an even number and
+<replaceable>z</replaceable> is
+counting upwards from 1 that is the first alpha.
 </para>
 
         <para>
@@ -1164,8 +1171,10 @@ will not be included in the stable release.
 A known problems list could be compiled at this point.
 </para>
         <para>
-The first beta release is named x.y.beta1 or x.y.BETA_1 depending on
-the context.
+The first beta release is named
+<replaceable>x</replaceable>.<replaceable>y</replaceable>.beta1 or
+<replaceable>x</replaceable>.<replaceable>y</replaceable>.BETA_1
+depending on the context.
 It marks the end of the Alpha Period and 
 the start of the Beta Period.
 </para>
@@ -1240,6 +1249,10 @@ together with the statement of the part of the problem.
 Resolve the DEFECT as FIXED and update the target milestone with 
 the release name of the next beta.
 </para>
+            <para>
+Test case code can still be added.
+Final documentation and web site updates for the release are done.
+</para>
           </listitem>
 
           <listitem>
@@ -1288,9 +1301,11 @@ This is granted by the Release Responsible.
         <para>
 During the period we attempt to release at least one beta release
 each week.
-The releases are named x.y.betaz where
-y is an even number and
-z is counting upwards from 1 that is the first beta.
+The releases are named
+<replaceable>x</replaceable>.<replaceable>y</replaceable>.beta<replaceable>z</replaceable>
+where
+<replaceable>y</replaceable> is an even number and
+<replaceable>z</replaceable> is counting upwards from 1 that is the first beta.
 </para>
 
         <para>
@@ -1312,8 +1327,10 @@ the start of the next Development Period.
 </para>
 
         <para>
-The release is named x.y where
-y is an even number.
+The release is named
+<replaceable>x</replaceable>.<replaceable>y</replaceable>
+where
+<replaceable>y</replaceable> is an even number.
 </para>
 
         <para>
@@ -1397,9 +1414,11 @@ in the release branch.
         </itemizedlist>
 
         <para>
-The release is named x.y.z where
-y is an even number, and
-z is counting upwards from 1.
+The release is named
+<replaceable>x</replaceable>.<replaceable>y</replaceable>.<replaceable>z</replaceable>
+where
+<replaceable>y</replaceable> is an even number, and
+<replaceable>z</replaceable> is counting upwards from 1.
 </para>
 
         <para>
