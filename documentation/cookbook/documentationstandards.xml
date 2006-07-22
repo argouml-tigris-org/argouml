@@ -42,7 +42,7 @@ The documentation
       (currently manual, cookbook, and quickguide)
       is written using
       <ulink url="http://www.oasis-open.org/docbook"><application>DocBook
-        XML&nbsp;V4.1.2</application></ulink>. This section covers some
+        XML V4.1.2</application></ulink>. This section covers some
       conventions for use of DocBook and for the documentation in general. It
 also includes some information 
 for tooling configuration, e.g. 
@@ -237,18 +237,23 @@ The top level document
 of the document
 is in <filename>documentname.xml</filename>. 
 Each chapter (or
-        preface, glossary, appendix etc) is a separate file, defined as a
+        preface, glossary, appendix etc) 
+        of the cookbook and the quickguide
+        is a separate file, defined as a
         system entity and included from this top level
         file.
+        The manual is one big file: <filename>manual.xml</filename>
 </para>
         </listitem>
 
-      <listitem><para>There are some useful entities defined for common terms
+      <listitem><para>There may be some useful entities defined 
+        for common terms
         in the beginning of 
 this top level document.
 </para>
         <para>
-        E.g. use of
+        E.g. for the cookbook: 
+        The use of
         <sgmltag>&amp;argouml;</sgmltag> will ensure consistent naming of the
 product (ArgoUML) and allow us to change it later (to Argo/UML,
         Argouml or whatever).
@@ -348,6 +353,8 @@ editors use 6 spaces), making documents unreadable between users.
 
       <!--listitem>
       <para>
+      This does not apply to the manual any more 
+      (it now uses standard formatting as supported by most xml editors):
 Indent only the tags, not the text.
 The Docbook source is kept in CVS that is a line-oriented tool. 
 This means that reindentation will be a major thing in CVS making
