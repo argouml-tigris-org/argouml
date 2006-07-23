@@ -99,6 +99,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <title>Preface</title>
 
+    <indexterm><primary>Design</primary></indexterm>
     <para>Software design is a cognitively challenging task. Designers 
     must manually enter designs, but the primary difficulty is 
     decision-making rather than data-entry. If designers improved their 
@@ -135,18 +136,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <listitem>
 
+          <indexterm><primary>Reflection-in-Action</primary></indexterm>
           <para>reflection-in-action;</para>
 
         </listitem>
 
         <listitem>
 
+          <indexterm><primary>Opportunistic Design</primary></indexterm>
           <para>opportunistic design; and</para>
 
         </listitem>
 
         <listitem>
 
+          <indexterm><primary>Comprehension</primary></indexterm>
+          <indexterm><primary>Problem Solving</primary></indexterm>
           <para>comprehension and problem solving.</para>
 
         </listitem>
@@ -162,6 +167,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
     by the OMG.</para>
 
     <para>Furthermore, it is our goal to provide comprehensive support 
+    <indexterm><primary>XMI</primary></indexterm>
     for OCL (the Object Constraint Language) and XMI (the XML Model 
     Interchange format).</para>
 
@@ -179,6 +185,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
     standard</ulink>). It is written in Java and runs on every computer 
     which provides a Java 2 platform of Java 1.4 or newer. It uses the 
     open file formats 
+    <indexterm><primary>XML</primary></indexterm>
     <ulink url="http://www.omg.org/cgi-bin/doc?formal/02-01-01">
     XMI</ulink> (XML Metadata Interchange format) (for model 
     information) and <ulink url="http://www.w3.org/TR/1998/NOTE-PGML">
@@ -213,8 +220,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
     familiarity with UML, but eventually it will support those new to 
     UML.</para>
 
-    <para>The manual is written in DocBook/XML and available as both 
-    HTML and PDF.</para>
+    <para>
+      The manual is written in DocBook/XML and available as both 
+      <indexterm><primary>XML</primary></indexterm>
+      HTML and PDF.
+    </para>
 
     <para>
     	The ArgoUML project welcomes those who want to get more
@@ -244,6 +254,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Object Oriented Analysis and Design</title>
 
+        <indexterm><primary>Analysis</primary></indexterm> 
+        <indexterm><primary>Design</primary></indexterm>
         <para>Over the past decade, Object Oriented Analysis and Design 
         (OOA&amp;D) has become <emphasis>the</emphasis> dominant 
         software development paradigm. With it has come a major shift 
@@ -645,14 +657,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <title>UML Based OOA&amp;D</title>
 
-      <sect1>
-
-        <title>Introduction</title>
-
-        <para>In this chapter, we look at how UML as a notation is used 
-        within OOA&amp;D.</para>
-
-      </sect1>
+      <para>
+        In this chapter, we look at how UML as a notation is used 
+        within OOA&amp;D.
+      </para>
 
       <sect1>
 
@@ -731,11 +739,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>UML Based Processes for OOA&amp;D</title>
 
-        <para>It is important to understand that UML is a notation for 
-        OOA&amp;D. It does not prescribe any particular process.</para>
-
-        <para>Whatever process is adopted, it must take the system 
-        being constructed through a number of phases.</para>
+        <para>
+          It is important to understand that UML is a notation for OOA&amp;D.
+          It does not prescribe any particular process.
+          Whatever process is adopted, it must take the system 
+          being constructed through a number of phases.
+        </para>
 
         <orderedlist>
 
@@ -751,6 +760,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <listitem>
 
+            <indexterm><primary>Analysis</primary></indexterm> 
             <para>Analysis. We take the requirements and start to 
             recast them in the language of a putative solution—the 
             <emphasis>solution domain</emphasis>. At this stage, 
@@ -763,6 +773,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <listitem>
 
+            <indexterm><primary>Design</primary></indexterm>
             <para>Design. We take the specification from the Analysis 
             phase and construct the solution in full detail. We are 
             moving from <emphasis>abstraction</emphasis> of the problem 
@@ -812,7 +823,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <figure float="1" id="fig.waterfallsteps">
 
-              <title>The waterfall process</title>
+              <title>The Waterfall Process</title>
 
               <screenshot><mediaobject><imageobject>
               <imagedata align="center"
@@ -844,8 +855,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <figure float="1" id="fig.waterfall">
 
-              <title>Effort involved in the steps of the waterfall 
-              process</title>
+              <title>Effort Involved in the Steps of the Waterfall 
+              Process</title>
 
               <screenshot><mediaobject><imageobject>
               <imagedata align="center"
@@ -864,6 +875,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <sect3>
 
             <title>Iterative Development Processes</title>
+            <indexterm><primary>Iterative Processes</primary></indexterm>
 
             <para>In recent years a new approach has been used, which 
             aims to get at least part of the code up and running as 
@@ -884,18 +896,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Again further feedback can be applied to the 
             requirements.</para>
 
-            <para>The process is repeated, until eventually all 
-            requirements have been implemented and the product is 
-            complete. It is this <emphasis>iteration</emphasis> that 
-            gives these processes their name. 
-            <xref linkend="fig.iterative"/> shows how this process 
-            compares to the pyramid structure of the Waterfall 
-            Process.</para>
+            <para>
+              The process is repeated, until eventually all 
+              requirements have been implemented and the product is 
+              complete.
+              <indexterm><primary>Iteration</primary></indexterm>
+              It is this <emphasis>iteration</emphasis> that 
+              gives these processes their name. 
+              <xref linkend="fig.iterative"/> shows how this process 
+              compares to the pyramid structure of the Waterfall 
+              Process.
+            </para>
 
             <figure float="1" id="fig.iterative">
 
-              <title>Effort involved in the steps of an iterative 
-              process</title>
+              <title>Effort Involved in the Steps of an Iterative 
+              Process</title>
 
               <screenshot><mediaobject><imageobject>
               <imagedata align="center"
@@ -988,28 +1004,32 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <sect4>
 
-              <title>How Big is an Iteration?</title>
+              <title>Iteration Size</title>
 
-              <para>A good rule of thumb is that an iteration should 
-              take between six and ten weeks for typical commercial 
-              projects. Any longer and you have probably bitten off too 
-              many requirements to do in one go. You also lose focus on 
-              getting the next working iteration completed. Any shorter 
-              and you probably haven&apos;t got enough requirements to 
-              make a significant advance, and will struggle to get all 
-              the work done.</para>
+              <para>
+                A good rule of thumb is that an iteration should take
+                between six and ten weeks for typical commercial projects.
+                Any longer and you have probably bitten off too many
+                requirements to do in one go. You also lose focus on
+                getting the next working iteration completed.
+                Any shorter and you probably haven&apos;t got enough
+                requirements to make a significant advance.
+                In this case the additional overhead associated with an
+                interation will become a problem.
+              </para>
 
-              <para>This then begs the question of how many iterations 
-              in total. This depends on the size of project. Take the 
-              estimated time (and working out/guessing that is a whole 
-              subject on its own), and divided it into 8 week chunks. 
-              Experience seems to suggest that the iterations will 
-              divide in the ratio of around 1:2:3:3 into RUP style 
-              inception, elaboration, construction and deployment 
-              phases. A project that has great vagueness in its 
-              specification (some advanced research projects for 
-              example) will tend to be heavier on the early 
-              phases.</para>
+              <para>
+                The total number of iterations depends on the size of project.
+                Take the estimated time (working out/guessing that is a
+                whole subject on its own), and divide it into 8 week chunks. 
+                Experience seems to suggest that the iterations will 
+                divide in the ratio of around 1:2:3:3 into RUP style 
+                inception, elaboration, construction and deployment 
+                phases. A project that has great vagueness in its 
+                specification (some advanced research projects for 
+                example) will tend to be heavier on the early 
+                phases.
+              </para>
 
               <para>When building a product to contract for a customer 
               the end point is well defined. However when developing a 
@@ -1098,6 +1118,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Analysis</title>
 
+            <indexterm><primary>Analysis</primary></indexterm> 
             <para>During the analysis stage, we will introduce the UML 
             concept of <emphasis>classes</emphasis> to allow us to 
             build a top level view of the objects that will make up the 
@@ -1121,6 +1142,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Design</title>
 
+            <indexterm><primary>Design</primary></indexterm>
             <para>We use the UML <emphasis>package diagram</emphasis> 
             to organize the components of the project. We then revisit 
             the class diagram, sequence diagram and statechart diagram, 
@@ -1149,6 +1171,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Build</title>
 
+            <indexterm><primary>Build</primary></indexterm>
             <para>UML is not really concerned with code writing. 
             However at this stage we will show how ArgoUML can be used 
             for code generation.</para>
@@ -1189,6 +1212,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Reflection-in-Action</title>
 
+              <indexterm><primary>Reflection-in-Action</primary></indexterm>
               <para>This theory observes that designers of complex 
               systems do not conceive a design fully-formed. Instead, 
               they must construct a partial design, evaluate, reflect 
@@ -1205,6 +1229,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Opportunistic Design</title>
 
+              <indexterm><primary>Opportunistic Design</primary></indexterm>
               <para>A theory within cognitive psychology suggesting 
               that although designers plan and describe their work in 
               an ordered, hierarchical fashion, in reality, they choose 
@@ -1221,6 +1246,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Comprehension and Problem Solving</title>
 
+              <indexterm><primary>Comprehension</primary></indexterm>
+              <indexterm><primary>Problem Solving</primary></indexterm>
               <para>A design visualization theory within cognitive 
               psychology. The theory notes that designers must bridge a 
               gap between their mental model of the problem or 
@@ -1262,8 +1289,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Practical Application in ArgoUML</title>
 
-            <para>The implementation of these theories within ArgoUML 
-            is through a number of techniques.</para>
+            <para>
+              ArgoUML implements these theories using a number of techniques.
+            </para>
+
 
             <orderedlist>
 
@@ -1315,14 +1344,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>UML is itself an open standard. ArgoUML throughout has 
           tried to use open standards for all its interfaces.</para>
 
-          <para>The key advantage of open standards is that it permits 
-          easy inter-working between applications, and the ability to 
-          move from one application to another as necessary.</para>
+          <para>
+            The key advantage of adherence to open standards is that it
+            permits easy inter-working between applications, and the ability
+            to move from one application to another as necessary.
+          </para>
 
           <sect3>
 
             <title>XML Metadata Interchange (XMI)</title>
 
+            <indexterm><primary>XMI</primary></indexterm>
             <para><emphasis>XML Metadata Interchange (XMI)</emphasis> 
             is the standard for saving the meta-data that make up a 
             particular UML model. In principle this will allow you to 
@@ -1344,38 +1376,72 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <sect3>
 
-            <title>Graphics Formats - SVG, PNG, JPEG</title>
+            <title>Graphics Formats - EPS, GIF, PGML, PNG, PS, SVG</title>
 
-            <para><emphasis>Scalable Vector Graphics (SVG)</emphasis> 
-            is a W3C standard 
-            (<ulink url="http://www.w3.org/TR/SVG/">
-            http://www.w3.org/TR/SVG/</ulink>) 
-            for graphical data that is based on vectors 
-            (i.e. lines) rather than bitmaps.</para>
+            <itemizedlist>
 
-            <para>For now ArgoUML saves diagrams using an earlier 
-            proposed standard, <emphasis>Portable Graphics Markup 
-            Language (PGML)</emphasis>. However it has the option to 
-            export graphical data as SVG for those who can make use of 
-            it.</para>
-            
-            <para>When ArgoUML supports UML 2.0, it will store
-            diagrams using the UML 2.0 Diagram Interchange format.</para>
+              <listitem><para>
+                <indexterm><primary>EPS</primary></indexterm>
+                <ulink url="http://en.wikipedia.org/wiki/Encapsulated_PostScript"><emphasis>Encapsulated
+                PostScript (EPS)</emphasis></ulink> file is a
+                PostScript file which satisfies additional restrictions.
+                These restrictions are intended to make it easier for software
+                to embed an EPS file within another PostScript document.
+              </para></listitem>
 
-          </sect3>
+              <listitem><para>
+                <indexterm><primary>GIF</primary></indexterm>
+                <ulink url="http://en.wikipedia.org/wiki/GIF"><emphasis>Graphics
+                Interchange Format (GIF)</emphasis></ulink> is a patent
+                encumbered format, although the patents will run out
+                in August of 2006.
+              </para></listitem>
 
-          <sect3>
+              <listitem><para>
+                <indexterm><primary>PGML</primary></indexterm>
+                <ulink url="http://en.wikipedia.org/wiki/PGML">
+                Precision Graphics Markup Language (PGML)</ulink>is an XML-based
+                language for representing vector graphics.
+                It was a W3C draft, but was not adopted as a recommendation.
+                PGML and VML, another XML-based vector graphics language, were
+                later joined and improved upon to create SVG.
+              </para></listitem>
+                
+              <listitem><para>
+                <indexterm><primary>PNG</primary></indexterm>
+                <ulink url="http://en.wikipedia.org/wiki/PNG"><emphasis>Portable
+                Network Graphics (PNG)</emphasis></ulink> is an
+                ISO/IEC standard (15948:2004) and is also a W3C recommendation.
+                PNG is a bitmap image format that employs lossless data
+                compression. PNG was created to both improve upon and replace
+                the GIF format with an image file format that does not require
+                a patent license to use.
+                PNG is officially pronounced "ping" but it is often just
+                spelled out — probably to avoid confusion with the
+                network tool ping.
+                PNG is supported by the libpng reference library,
+                a platform-independent library that contains C functions for
+                handling PNG images.
+              </para></listitem>
 
-            <title>Object Constraint Language (OCL)</title>
+              <listitem><para>
+                <indexterm><primary>PS</primary></indexterm>
+                <ulink url="http://en.wikipedia.org/wiki/PostScript/"><emphasis>PostScript
+                (PS)</emphasis></ulink> is a page description language and
+                programming language used primarily in the electronic and
+                desktop publishing areas.
+              </para></listitem>
 
-            <para><emphasis>Object Constraint Language (OCL)</emphasis> 
-            is the UML standard for expressing constraints within 
-            diagrams that express the dynamic behavior of a 
-            design.</para>
+              <listitem><para>
+                <indexterm><primary>SVG</primary></indexterm>
+                <ulink url="http://www.w3.org/TR/SVG/"><emphasis>Scalable
+                Vector Graphics (SVG)</emphasis></ulink>
+                is a W3C standard for graphical data that is based on vectors 
+                (i.e. lines) rather than bitmaps.
+                See PGML above.
+              </para></listitem>
 
-            <para>At present OCL is quite new and not widely available. 
-            ArgoUML is one of the few CASE tools to provide 
-            comprehensive support.</para>
+            </itemizedlist>
 
           </sect3>
 
@@ -1465,7 +1531,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <sect3>
 
-            <title>System requirements</title>
+            <title>System Requirements</title>
 
             <para>Since ArgoUML is written in 100% pure Java, it should 
             run on any machine with Java installed. Java, version 1.4
@@ -1488,7 +1554,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <sect3>
 
-            <title>Downloading options</title>
+            <title>Downloading Options</title>
 
             <para>You have three options for obtaining ArgoUML.</para>
 
@@ -1511,6 +1577,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
+                <indexterm><primary>Build</primary></indexterm>
                 <para>Download the source code using CVS and build your 
                 own version. Choose this option if you want to look at 
                 the internal workings of ArgoUML, or want to join in as 
@@ -1528,7 +1595,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <sect3>
 
-            <title>ArgoUML using Java Web Start</title>
+            <title>ArgoUML Using Java Web Start</title>
 
             <para>There are two steps to this.</para>
 
@@ -1569,7 +1636,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <sect3>
 
-            <title>Downloading the binary executable</title>
+            <title>Downloading the Binary Executable</title>
 
             <para>If you choose to download the binary executable, you 
             will have a choice of downloading the latest stable version 
@@ -2174,14 +2241,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <sect4>
 
-              <title>The Start-up Window</title>
+              <title>The Start-Up Window</title>
 
               <para><xref linkend="fig.tut.startup"/> shows the ArgoUML 
               main window as it appears as right after start-up</para>
 
               <figure float="1" id="fig.tut.startup">
 
-                <title>ArgoUML window at start-up</title>
+                <title>ArgoUML Window at Start-Up</title>
 
                 <screenshot><mediaobject><imageobject>
                 <imagedata align="center"
@@ -2222,7 +2289,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <sect4>
 
-              <title>Saving a project - The File Menu</title>
+              <title>Saving a Project - The File Menu</title>
+
+              <para>
+                For now ArgoUML; saves diagrams using an earlier
+                proposed standard, <emphasis>Precision Graphics Markup 
+                Language (PGML)</emphasis>.
+                However it has the option to export graphical data as SVG
+                for those who can make use of it.
+                When ArgoUML; supports UML 2.0, it will store
+                diagrams using the UML 2.0 Diagram Interchange format.
+              </para>
 
               <para>First, let&apos;s save the model in it&apos;s 
               current (empty and unnamed) state. On the menu bar, click 
@@ -2232,8 +2309,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <figure float="1" id="fig.tut.saveas">
 
-                <title>Invoking <literal>
-                Save Project As...</literal></title>
+                <title>Invoking
+                <literal>Save Project As...</literal></title>
 
                 <screenshot><mediaobject><imageobject>
                 <imagedata align="center"
@@ -2275,7 +2352,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <figure float="1" id="fig.tut.filechoose">
 
-                <title>File chooser dialog</title>
+                <title>File Chooser Dialog</title>
 
                 <screenshot><mediaobject><imageobject>
                 <imagedata align="center"
@@ -2405,6 +2482,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Saving XMI files in ArgoUML</title>
 
+              <indexterm><primary>XMI</primary></indexterm>
               <para>ArgoUML saves the diagram information in a PGML 
               file (with extension <literal>.pgml</literal>, the model 
               information in an XMI file (with extension <literal>
@@ -2550,6 +2628,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>XMI</title>
 
+            <indexterm><primary>XMI</primary></indexterm>
             <para>ArgoUML supports XMI 1.0, 1.1, and 1.2 files which
             contain UML 1.3 and UML 1.4 models.  For best compatibility
             with ArgoUML, export your models using UML 1.4 and XMI 1.1
@@ -2577,6 +2656,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Using Models Created by Poseidon</title>
 
+              <indexterm><primary>XMI</primary></indexterm>
               <para>In the <literal>Export project to XMI</literal> dialog, but sure
               to clear the selection of <literal>Save with diagram data</literal>literal>.</para>
 
@@ -2602,12 +2682,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               need to return to an older version of ArgoUML you should
               be careful to save a backup of your old projects.</para>
               
-              <para>Additionally, if you write XMI files which 
-              need to be read by other tools, you should take into
-              account the different versions.  Most modern UML
-              modelling tools should read UML 1.4, but you may
-              have in-house code generators or other tools which
-              are tied to UML 1.3.</para>
+              <para>
+                Additionally, if you write XMI files which 
+                need to be read by other tools, you should take into
+                account the different versions.
+                Most modern UML
+                modelling tools should read UML 1.4, but you may
+                have in-house code generators or other tools which
+                are tied to UML 1.3.
+              </para>
 
             </sect4>
 
@@ -2689,8 +2772,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <figure float="1" id="fig.tut.critstart">
 
-              <title>ArgoUML window having saved <literal>
-              FirstProject.argo</literal></title>
+              <title>
+                ArgoUML Window Having Saved
+                <literal>FirstProject.zargo</literal>
+              </title>
 
               <screenshot><mediaobject><imageobject>
               <imagedata align="center"
@@ -2742,7 +2827,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <figure float="1" id="fig.tut.critrevname">
 
-              <title>ArgoUML window showing the critic item <literal>
+              <title>ArgoUML Window Showing the Critic Item <literal>
               Revise Package Name UntitledModel</literal></title>
 
               <screenshot><mediaobject><imageobject>
@@ -2796,8 +2881,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <figure float="1" id="fig.tut.critwiz">
 
-              <title>ArgoUML window showing the critic wizard to rename 
-              the package</title>
+              <title>ArgoUML Window Showing the Critic Wizard to Rename 
+              the Package</title>
 
               <screenshot><mediaobject><imageobject>
               <imagedata align="center"
