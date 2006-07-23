@@ -9173,6 +9173,25 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               </listitem>
 
+              <listitem>
+
+                <para><literal>Strip  (non-standard) diagrams 
+                from XMI file during import</literal>
+                (clear by default). Check this item 
+                if your XMI files from another tool 
+                are not according the UML or XMI standard, 
+                and hence fail to load correctly by ArgoUML.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><literal>UML Profile file</literal> (
+                /org/argouml/model/mdr/mof/default-uml14.xmi 
+                by default). </para>
+                <para>(to be written).</para>
+
+              </listitem>
             </itemizedlist>
 
           </sect3>
@@ -9324,6 +9343,61 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </sect3>
 
+          <sect3 id="s3.ref.menu_settings_appearance">
+
+            <title>Appearance Tab</title>
+
+            <para>This tab allows the user to specify the LAF (Look And 
+            Feel) and theme, i.e. what the complete ArgoUML UI looks 
+            like. It comprises the following settings.</para>
+
+            <figure float="1">
+
+              <title>The dialog for <literal>Settings - 
+              Appearance</literal>.</title>
+
+              <screenshot><mediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/reference/menu_settings_appearance.png"
+               format="PNG"/></imageobject></mediaobject></screenshot>
+            </figure>
+
+            <itemizedlist>
+
+              <listitem>
+
+                <para><literal>Look and Feel</literal>. The choice made 
+                here influences the complete User Interface. It only 
+                becomes effective when ArgoUML is exited and 
+                restarted.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><literal>Metal Theme</literal>. This item is 
+                downlighted if the Metal LAF is not chosen. The choice 
+                made here influences the complete User Interface. It 
+                only becomes effective when ArgoUML is exited and 
+                restarted.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><literal>Smooth edges of diagram lines and 
+                text</literal>. This feature is known as 
+                <quote>anti-aliasing</quote> on certain platforms. It 
+                causes diagonal lines to look much less jagged, by 
+                making use of several shades of gray. This feature only 
+                works if the operating system supports it.</para>
+
+              </listitem>
+
+            </itemizedlist>
+
+          </sect3>
+
           <sect3 id="s3.ref.menu_settings_notations">
 
             <title>Notation Tab</title>
@@ -9331,6 +9405,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>This tab allows the user to specify certain notation 
             settings, i.e. how things are shown on diagrams. It 
             comprises the following check boxes.</para>
+            
+            <para>All settings here, only define the defaults used for new projects.
+            If you want to change the way 
+            the diagrams in your current project look, 
+            then see the File - Properties menu.</para>
 
             <figure float="1">
 
@@ -9347,25 +9426,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><literal>Use only UML notation</literal> (clear 
-                by default). This feature allows changing the notation 
-                (i.e. language: UML, Java,...) used on the diagrams. 
-                Suppose that a 
-                designer creates a diagram and indicates that the 
-                notation of the diagram is Java. Someone viewing the 
-                diagram with &quot;Use only UML notation&quot; checked 
-                will <emphasis>only</emphasis> see UML notation in the 
-                classes no matter what notation the 
-                designer has used. See also 
+                <para><literal>Notation Language</literal> (
+                UML 1.4
+                by default). This feature allows changing the default notation 
+                (i.e. language: UML, Java,...) used on the diagrams 
+                for new projects. 
+                Suppose that a designer indicates that the 
+                default notation of a project is Java.
+                When he saves the project, 
+                the choice for Java is stored inside the project file.
+                If someone else is viewing the 
+                diagram, he will see the Java notation, too.
+                This person can select the UML notation in the 
+                File - Notation menu, and see all diagrams in UML language.
+                See
                 <xref linkend="s2.ref.menu_notation"/>).</para>
-
-                <warning>
-
-                  <para>If this setting is checkmarked, then the 
-                  menuitem View-&gt;Notation remains available, but 
-                  changing it has no effect.</para>
-
-                </warning>
 
               </listitem>
 
@@ -9383,6 +9458,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 because guillemots are poorly supported by various 
                 fonts, and if they are present, then they are quite 
                 small and poorly visible.</para>
+                
+                <para>Independent of the way they are shown, 
+                when entering stereotypes, you can always type
+                real guillemots (if your keyboard supports it)
+                or their &lt;&lt; &gt;&gt; equivalents.</para>
 
               </listitem>
 
@@ -9478,61 +9558,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </sect3>
 
-          <sect3 id="s3.ref.menu_settings_appearance">
-
-            <title>Appearance Tab</title>
-
-            <para>This tab allows the user to specify the LAF (Look And 
-            Feel) and theme, i.e. what the complete ArgoUML UI looks 
-            like. It comprises the following settings.</para>
-
-            <figure float="1">
-
-              <title>The dialog for <literal>Settings - 
-              Appearance</literal>.</title>
-
-              <screenshot><mediaobject><imageobject>
-              <imagedata align="center"
-               fileref="images/reference/menu_settings_appearance.png"
-               format="PNG"/></imageobject></mediaobject></screenshot>
-            </figure>
-
-            <itemizedlist>
-
-              <listitem>
-
-                <para><literal>Look and Feel</literal>. The choice made 
-                here influences the complete User Interface. It only 
-                becomes effective when ArgoUML is exited and 
-                restarted.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <para><literal>Metal Theme</literal>. This item is 
-                downlighted if the Metal LAF is not chosen. The choice 
-                made here influences the complete User Interface. It 
-                only becomes effective when ArgoUML is exited and 
-                restarted.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <para><literal>Smooth edges of diagram lines and 
-                text</literal>. This feature is known as 
-                <quote>anti-aliasing</quote> on certain platforms. It 
-                causes diagonal lines to look much less jagged, by 
-                making use of several shades of gray. This feature only 
-                works if the operating system supports it.</para>
-
-              </listitem>
-
-            </itemizedlist>
-
-          </sect3>
-
           <sect3 id="s3.ref.menu_settings_modules">
 
             <title>Modules Tab</title>
@@ -9547,6 +9572,28 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>Notice also that this is a &quot;new&quot; modules 
             concept so the old Pluggable modules do not work this way, 
             and are not listed.</para>
+
+          </sect3>
+
+          <sect3 id="s3.ref.menu_settings_plugins">
+
+            <title>Extra Tabs added by Plugins</title>
+
+            <para>A plug-in module has the possibility to add 
+            extra tabs. 
+            One example is C++; it adds the following tab.
+            </para>
+
+            <figure float="1">
+
+              <title>The dialog for <literal>Settings - 
+              C++</literal>.</title>
+
+              <screenshot><mediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/reference/menu_settings_cpp.png"
+               format="PNG"/></imageobject></mediaobject></screenshot>
+            </figure>
 
           </sect3>
 
@@ -9617,7 +9664,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <warning>
 
-            <para>The V0.20 implementation of ArgoUML does not 
+            <para>The V0.22 implementation of ArgoUML does not 
             inmediately update the dialog box with changes made to 
             diagrams: change of name, addition of diagrams, deletion of 
             diagrams.<!-- This is issue 2475. -->
@@ -9651,7 +9698,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <literal>Name and Location</literal>, <literal>
           Last Modified</literal>, <literal>Tagged Values</literal> and 
           <literal>Constraints</literal>. Of these all but the first 
-          are grayed out in the V0.20 version of ArgoUML (because they 
+          are grayed out in the V0.22 version of ArgoUML (because they 
+          <!-- This is issue 2501 -->
           are not imlemented yet), so the first tab is always 
           selected.</para>
 
@@ -9803,11 +9851,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>This dialog box is not modal, which allows it to 
             remain open while editing the model for easy navigation. 
-            But the V0.20 implementation of ArgoUML does not inmediately 
+            But the V0.22 implementation of ArgoUML does not inmediately 
             update the dialog box with changes made to the found 
             artifacts: change of artifact name, change of diagram name. 
             Deletion of a diagram does not stop the possibility to 
-            navigate to it.</para>
+            navigate to it.
+            <!-- This is issue 4376. -->
+            </para>
 
           </warning>
 
@@ -9841,7 +9891,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>Zoom In</literal>. Shortcut (Ctrl-=). 
+              <para><literal>Zoom In</literal>. Shortcut (Ctrl-Equals). 
+              <!-- The shortcut does not work - this is issue 4377. -->
               Makes the items on the drawings bigger.</para>
 
             </listitem>
@@ -9937,12 +9988,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <caution>
 
-            <para>In the V0.20 version of ArgoUML this is not actually 
+            <para>In the V0.22 version of ArgoUML this is not actually 
             a true snap to grid. It just defines the increments by 
             which artifacts are moved around. Thus if an item has an X 
             coordinate of 4 and Grid Snap is set to 8, moving will take 
             it to X coordinates of 12, 20, 28 etc, 
             <emphasis>not</emphasis> 8, 16, 24 etc</para>
+            <!-- This is issue 603. -->
 
             <para>If you wish to align on true grid snap boundaries, 
             you can use the <literal>
@@ -9961,11 +10013,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           diagram (as white dotted lines).</para>
 
           <warning>
-
-            <para>This menu-item is incorrectly implemented in the 
-            V0.20 version of ArgoUML, since it should be a tick box 
-            toggle.</para>
-
+            <para>This menu item does not work in ArgoUML V0.22.</para>
+            <!-- This menu-item is incorrectly implemented in the 
+            V0.22 version of ArgoUML, since it should be a tick box 
+            toggle.  This is issue  604.
+            Also, the lines are reported to be incorrect 
+            regarding the chosen paper format and orientation.
+            This is issue 1874. 
+            And the lines are reported not visible at all in ArgoUML V0.22.
+            This is mentioned in issue 604 and in issue 1874. 
+            -->
           </warning>
 
         </sect2>
@@ -10046,14 +10103,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           New Sequence Diagram</title>
 
           <para>This menu entry creates a blank sequence diagram, and 
-          selects that diagram in the editing pane. If a class is 
-          currently selected, the sequence diagram will be created within 
-          that class. 
-          This means that it will be shown within the class on the 
+          selects that diagram in the editing pane. 
+          It also creates a <literal>
+          Collaboration</literal> UML element, 
+          which is a container for the elements shown on the new diagram.
+          If a class is 
+          currently selected, a sequence diagram and a collaboration
+          will be created
+          that represent the behaviour of that class. 
+          This means that the created elements 
+          will be shown within the class in the 
           explorer hierarchy (under Package-centric view) and artifacts 
           created on the diagram will be created within the namespace 
-          of the package. This does not only apply to a class, but 
-          also to any other classifier, such as interface, use case, etc.
+          of the collaboration. A sequence diagram may 
+          not only represent the behavior of a class, but 
+          also of any other classifier, such as interface, use case, etc.
           It is also possible to make sequence diagrams for an operation.
           </para>
 
@@ -10068,12 +10132,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           New Collaboration Diagram</title>
 
           <para>This menu entry creates a blank collaboration diagram, 
-          and selects that. Within the package hierarchy, collaboration 
-          diagrams are always created within a <literal>
-          Collaboration</literal>, within the package or model, rather 
-          than within the package or model directly itself. If a 
-          package is currently selected, the collaboration diagram will 
-          be created within a collaboration within that package, it 
+          and selects that diagram. 
+          It also creates a <literal>
+          Collaboration</literal> UML element, 
+          which is a container for the elements shown on the new diagram.
+          If a 
+          package is selected when this menu item is activated, 
+          the collaboration diagram will 
+          be created within a collaboration within that package.
+          This means that it 
           will be shown within the collaboration within the package on 
           the explorer hierarchy (under Package-centric view) and 
           artifacts created on the diagram will be created within the 
@@ -10083,8 +10150,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>This does not prevent artifacts from other 
             namespaces/packages appearing on the diagram. They can 
-            added from the explorer using <literal>Add to 
-            Diagram</literal> from the button 2 pop-up menu.</para>
+            added from the explorer by 
+            dragging or by 
+            using <literal>Add to Diagram</literal> 
+            from the button 2 pop-up menu.</para>
 
           </tip>
 
@@ -10100,22 +10169,28 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>This menu entry creates a blank statechart diagram 
           associated with the currently selected class, and selects 
-          that diagram in the editing pane. Artifacts created on the 
-          diagram will be created within the namespace of the owning 
-          class.</para>
+          that diagram in the editing pane. 
+          It also creates a <literal>
+          Statemachine</literal> UML element, 
+          which is a container for the elements shown on the new diagram.
+          </para>
 
-          <tip>
-
-            <para>Statechart diagrams <emphasis>must</emphasis> be 
-            associated with a model element capable of dynamic 
-            behavior, such as classifier or a behavioral feature, which 
-            provides the context for the state machine it represents. 
-            Suitable model elements are e.g. a class, an operation, and 
-            a use case. The <literal>New Statechart Diagram</literal> 
-            menu entry is grayed out if such element is not 
-            selected.</para>
-
-          </tip>
+          <para>Statechart diagrams are
+            associated with a model element capable of dynamic behavior, such as
+            a classifier or a behavioral feature, 
+            which provides the context for the
+            state machine it represents. 
+            Suitable model elements are e.g. a class,
+            an operation, and a use case. 
+            If such element is not selected at the time the
+           <literal>New Statechart Diagram</literal> 
+            menu is activated,
+            then an unattached  
+            statemachine is created.
+            To obtain a well-formed UML model, 
+            you have to set the context of the statemachine 
+            on its details pane.
+            </para>
 
         </sect2>
 
@@ -10129,20 +10204,26 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>This menu entry creates a blank activity diagram 
           associated with the currently selected class, and selects 
-          that diagram in the editing pane. Artifacts created on the 
-          diagram will be created within the namespace of the owning 
-          class.</para>
+          that diagram in the editing pane. 
+          It also creates a <literal>
+          ActivityGraph</literal> UML element, 
+          which is a container for the elements shown on the new diagram.
+          </para>
 
-          <tip>
-
-            <para>Activity diagrams <emphasis>must</emphasis> be 
-            associated to packages, classifiers (including use cases) 
+          <para>Activity diagrams are 
+            associated with a model element capable of dynamic behavior, such as
+            packages, classifiers (including use cases) 
             and behavioral features. Suitable model elements are e.g. a 
-            class, a use case, an operation, and a package. The 
-            <literal>Activity Diagram</literal> menu entry is grayed 
-            out if such element is not selected.</para>
-
-          </tip>
+            class, a use case, an operation, and a package. 
+            If such element is not selected at the time the
+           <literal>New Activity Diagram</literal> 
+            menu is activated,
+            then an unattached  
+            ActivityGraph is created.
+            To obtain a well-formed UML model, 
+            you have to set the context of the ActivityGraph 
+            on its details pane.
+          </para>
 
         </sect2>
 
@@ -10155,19 +10236,23 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           New Deployment Diagram</title>
 
           <para>This menu entry creates a blank deployment diagram, and 
-          selects that diagram in the editing pane. If a package is 
+          selects that diagram in the editing pane. 
+          <!--If a package is 
           currently selected, the deployment diagram will be created 
           within that package, it will be shown within the package on 
           the explorer hierarchy (under Package-centric view) and 
           artifacts created on the diagram will be created within the 
-          namespace of the package.</para>
+          namespace of the package.-->
+          </para>
 
           <tip>
 
-            <para>This does not prevent artifacts from other 
-            namespaces/packages appearing on the diagram. They can 
-            added from the explorer using <literal>Add to 
-            Diagram</literal> from the button 2 pop-up menu.</para>
+            <para>Artifacts from other 
+            namespaces/packages can be
+            added from the explorer by
+            dragging or by
+            using <literal>Add to Diagram</literal> 
+            from the button 2 pop-up menu.</para>
 
           </tip>
 
