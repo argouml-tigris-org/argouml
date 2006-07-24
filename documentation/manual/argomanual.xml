@@ -9175,12 +9175,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><literal>Strip  (non-standard) diagrams 
+                <para><literal>Strip (non-standard) diagrams 
                 from XMI file during import</literal>
-                (clear by default). Check this item 
-                if your XMI files from another tool 
-                are not according the UML or XMI standard, 
-                and hence fail to load correctly by ArgoUML.</para>
+                (clear by default). Checking this item will tell
+                ArgoUML to ignore the "Diagram" elements when 
+                importing XMI files. </para> 
+                
+                <para>You only need to use this setting, if
+                ArgoUML gives an error while importing your
+                XMI file saying that it encountered unrecognized
+                elements named "Diagram."  Some versions of Poseidon
+                are known to create this type of file by default
+                although there's usually an export option to
+                force them to create standard XMI files.</para>
 
               </listitem>
 
@@ -9189,7 +9196,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <para><literal>UML Profile file</literal> (
                 /org/argouml/model/mdr/mof/default-uml14.xmi 
                 by default). </para>
-                <para>(to be written).</para>
+                <para>This is a read-only field which shows the current
+                profile being used by ArgoUML.  If you specified an alternate
+                profile at startup time or a plugin-module installed a
+                different profile, it will display here.</para>
+                
+                <para>In the future this will be a settable field that
+                allows you to select different profiles to match different
+                modeling environments (Java, C++, AndroMDA, etc).</para>
 
               </listitem>
             </itemizedlist>
