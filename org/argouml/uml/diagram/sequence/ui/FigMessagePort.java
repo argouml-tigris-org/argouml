@@ -127,13 +127,6 @@ public class FigMessagePort extends FigGroup {
         return node;
     }
 
-    void clearNode() {
-        Fig parent = getGroup();
-        if (parent instanceof FigLifeLine) {
-            ((FigClassifierRole) parent.getGroup()).removeFigMessagePort(this);
-        }
-    }
-
     void setNode(MessageNode n) {
         node = n;
     }

@@ -391,7 +391,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * Start or stop a rectangle when the state changes.
      *
      */
-    private void updateNodeStates() {
+    void updateNodeStates() {
         int lastState = MessageNode.INITIAL;
         ArrayList callers = null;
         int nodeCount = linkPositions.size();
@@ -849,7 +849,6 @@ public class FigClassifierRole extends FigNodeModelElement
         fmp.getNode().setFigMessagePort(null);
         fmp.setNode(null);
         lifeLineFig.removeFig(fmp);
-        updateNodeStates();
     }
     
     /**
