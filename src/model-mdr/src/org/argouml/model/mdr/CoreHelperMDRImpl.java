@@ -40,7 +40,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.model.ModelManagementHelper;
 import org.argouml.model.NotImplementedException;
 import org.omg.uml.behavioralelements.activitygraphs.ActivityGraph;
 import org.omg.uml.behavioralelements.activitygraphs.ClassifierInState;
@@ -1942,7 +1941,9 @@ public class CoreHelperMDRImpl implements CoreHelper {
     public void removeAnnotatedElement(Object handle, Object me) {
         if (handle instanceof Comment && me instanceof ModelElement) {
             try {
-                ((Comment) handle).getAnnotatedElement().remove(me);
+                if (((Comment) handle).getAnnotatedElement().contains(me)) {
+                    ((Comment) handle).getAnnotatedElement().remove(me);
+                }
             } catch (InvalidObjectException e) {
                 throw new InvalidElementException(e);
             }
@@ -2110,6 +2111,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         try {
             Object taggedValue = Model.getFacade().getTaggedValue(handle, 
                     name);
+            // TODO: This removes the first only.  Should we remove all?
             if (taggedValue != null) {
                 modelImpl.getExtensionMechanismsHelper().removeTaggedValue(
                         handle, taggedValue);
