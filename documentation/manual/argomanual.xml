@@ -655,6 +655,66 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <chapter id="ch.tut.uml">
 
+      <title>Introduction (being written)</title>
+
+      <para>
+        This tutorial will be taking you through a tour of the use of
+        ArgoUML to model a system.
+      </para>
+
+      <para>
+        An ATM (automated teller machine) project has been chosen as a case study
+        to demonstrate the various aspects of modeling that ArgoUML offers.
+        In subsequent sections we are going to develop the ATM example into
+        a complete description in UML.
+        The tutorial, however, will only walk you through part of it.
+      </para>
+
+      <para>
+        At this point you should create a directory to contain your project.
+        Name the directory anything you feel is consistent with the rest of your
+        file system.
+        You should name the contents and any subdirectories as directed for reasons
+        that will become apparent.
+      </para>
+
+      <para>
+        The state of the model at the end of key sections will be available in
+        .zargo files.
+        These are available so that you can play with various alternatives and
+        restore yourself back to the proper state of the model in your work area.
+        These .zargo files will be identified at the end of the sections whose
+        work they represent.
+      </para>
+
+      <para>
+        The case study will be an ATM system.
+        Your company is FlyByNight Industries.
+        You are going to play two roles.
+        That of the Project Manager and that of the Designer Analyst.
+      </para>
+
+      <para>
+        We are not going to build a physical ATM, of course.
+      </para>
+
+      <para>
+        First you will become familiar with the feel of the product and then
+        we will go through an analysis and development process for a test case.
+      </para>
+
+      <para>
+        How your company arranges its work into projects is usually determined as
+        much by politics as anything else and is, therefore, out of the scope of
+        this document.
+        We will go into how you structure the project itself once one has been
+        defined.
+      </para>
+
+    </chapter>
+
+    <chapter>
+
       <title>UML Based OOA&amp;D</title>
 
       <para>
@@ -758,9 +818,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </listitem>
 
+          <indexterm><primary>Analysis</primary></indexterm> 
           <listitem>
 
-            <indexterm><primary>Analysis</primary></indexterm> 
             <para>Analysis. We take the requirements and start to 
             recast them in the language of a putative solution—the 
             <emphasis>solution domain</emphasis>. At this stage, 
@@ -771,9 +831,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </listitem>
 
+          <indexterm><primary>Design</primary></indexterm>
           <listitem>
 
-            <indexterm><primary>Design</primary></indexterm>
             <para>Design. We take the specification from the Analysis 
             phase and construct the solution in full detail. We are 
             moving from <emphasis>abstraction</emphasis> of the problem 
@@ -1208,80 +1268,84 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             opportunistic design iii) and comprehension and problem 
             solving.</para>
 
-            <sect4>
+            <itemizedlist>
 
-              <title>Reflection-in-Action</title>
+              <listitem><emphasis>Reflection-in-Action</emphasis>
 
-              <indexterm><primary>Reflection-in-Action</primary></indexterm>
-              <para>This theory observes that designers of complex 
-              systems do not conceive a design fully-formed. Instead, 
-              they must construct a partial design, evaluate, reflect 
-              on, and revise it, until they are ready to extend it 
-              further.</para>
+                <indexterm><primary>Reflection-in-Action</primary></indexterm>
+                <para>
+                  This theory observes that designers of complex systems do not
+                  conceive a design fully-formed. Instead, 
+                  they must construct a partial design, evaluate, reflect 
+                  on, and revise it, until they are ready to extend it further.
+                </para>
 
-              <para>As developers work hands-on with the design, their 
-              mental model of the problem situation improves, hence 
-              improving their design.</para>
+                <para>
+                  As developers work hands-on with the design, their mental model
+                  of the problem situation improves, hence improving their design.
+                </para>
+              </listitem>
 
-            </sect4>
+              <listitem><emphasis>Opportunistic Design</emphasis>
 
-            <sect4>
+                <indexterm><primary>Opportunistic Design</primary></indexterm>
+                <para>
+                  A theory within cognitive psychology suggesting that although
+                  designers plan and describe their work in an ordered, hierarchical
+                  fashion, in reality, they choose successive tasks based on the
+                  criteria of cognitive cost.
+                </para>
 
-              <title>Opportunistic Design</title>
+                <para>
+                  Simply stated, designers do not follow even their own plans in
+                  order, but choose steps that are mentally least expensive among
+                  alternatives.
+                </para>
+              </listitem>
 
-              <indexterm><primary>Opportunistic Design</primary></indexterm>
-              <para>A theory within cognitive psychology suggesting 
-              that although designers plan and describe their work in 
-              an ordered, hierarchical fashion, in reality, they choose 
-              successive tasks based on the criteria of cognitive 
-              cost.</para>
+              <listitem><emphasis>Comprehension and Problem Solving</emphasis>
 
-              <para>Simply stated, designers do not follow even their 
-              own plans in order, but choose steps that are mentally 
-              least expensive among alternatives.</para>
+                <indexterm><primary>Comprehension</primary></indexterm>
+                <indexterm><primary>Problem Solving</primary></indexterm>
+                <para>
+                  A design visualization theory within cognitive psychology.
+                  The theory notes that designers must bridge a gap between their
+                  mental model of the problem or situation and the formal model of
+                  a solution or system.
+                </para>
 
-            </sect4>
+                <para>
+                  This theory suggests that programmers will benefit from:
+                </para>
 
-            <sect4>
+                <orderedlist>
 
-              <title>Comprehension and Problem Solving</title>
+                  <listitem>
 
-              <indexterm><primary>Comprehension</primary></indexterm>
-              <indexterm><primary>Problem Solving</primary></indexterm>
-              <para>A design visualization theory within cognitive 
-              psychology. The theory notes that designers must bridge a 
-              gap between their mental model of the problem or 
-              situation and the formal model of a solution or 
-              system.</para>
+                    <para>
+                      Multiple representations such as program syntactic
+                      decomposition, state transitions, control flow, and data flow.
+                      These allow the programmer to better identify elements and
+                      relationships in the problem and solution and thus more
+                      readily create a mapping between their situation models and
+                      working system models.
+                    </para>
 
-              <para>This theory suggests that programmers will benefit 
-              from:</para>
+                  </listitem>
 
-              <orderedlist>
+                  <listitem>
 
-                <listitem>
+                    <para>
+                      Familiar aspects of a situation model, which improve
+                      designers&apos; abilities to formulate solutions.
+                    </para>
 
-                  <para>Multiple representations such as program 
-                  syntactic decomposition, state transitions, control 
-                  flow, and data flow. These allow the programmer to 
-                  better identify elements and relationships in the 
-                  problem and solution and thus more readily create a 
-                  mapping between their situation models and working 
-                  system models.</para>
+                  </listitem>
 
-                </listitem>
+                </orderedlist>
 
-                <listitem>
-
-                  <para>Familiar aspects of a situation model, which 
-                  improve designers&apos; abilities to formulate 
-                  solutions.</para>
-
-                </listitem>
-
-              </orderedlist>
-
-            </sect4>
+              </listitem>
+            </itemizedlist>
 
           </sect3>
 
@@ -1365,12 +1429,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             its goal of being a standard for communication between 
             designers.</para>
 
-            <para>The reality is not quite this good. Prior to UML 2.0
-            the XMI file includes no information about the graphical 
-            representation of the models, so diagram layout is lost. 
-            ArgoUML gets round this by saving graphical information 
-            separately with the model (see <xref linkend="s3.tut.loadsave"/>
-            ).</para>
+            <para>
+              The reality is not quite this good.
+              Prior to UML 2.0 the XMI file includes no information about the
+              graphical representation of the models, so diagram layout is lost.
+              ArgoUML gets round this by saving graphical information separate
+              from the model
+              (see <xref linkend="s3.tut.loadsave"/>).
+            </para>
 
           </sect3>
 
@@ -1400,7 +1466,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem><para>
                 <indexterm><primary>PGML</primary></indexterm>
                 <ulink url="http://en.wikipedia.org/wiki/PGML">
-                Precision Graphics Markup Language (PGML)</ulink>is an XML-based
+                <emphasis>Precision Graphics Markup Language (PGML)</emphasis></ulink>
+                is an XML-based
                 language for representing vector graphics.
                 It was a W3C draft, but was not adopted as a recommendation.
                 PGML and VML, another XML-based vector graphics language, were
@@ -1409,8 +1476,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 
               <listitem><para>
                 <indexterm><primary>PNG</primary></indexterm>
-                <ulink url="http://en.wikipedia.org/wiki/PNG"><emphasis>Portable
-                Network Graphics (PNG)</emphasis></ulink> is an
+                <ulink url="http://en.wikipedia.org/wiki/PNG">
+                <emphasis>Portable Network Graphics (PNG)</emphasis></ulink> is an
                 ISO/IEC standard (15948:2004) and is also a W3C recommendation.
                 PNG is a bitmap image format that employs lossless data
                 compression. PNG was created to both improve upon and replace
@@ -1434,14 +1501,43 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem><para>
                 <indexterm><primary>SVG</primary></indexterm>
-                <ulink url="http://www.w3.org/TR/SVG/"><emphasis>Scalable
-                Vector Graphics (SVG)</emphasis></ulink>
-                is a W3C standard for graphical data that is based on vectors 
-                (i.e. lines) rather than bitmaps.
+                <ulink url="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">
+                <emphasis>Scalable Vector Graphics (SVG)</emphasis></ulink>
+                is an XML markup language for describing two-dimensional
+                vector graphics, both static and animated, and either declarative
+                or scripted.
+                It is an open standard created by the World Wide Web Consortium.
+                The use of SVG on the web is in its infancy.
+                There is a great deal of inertia due to the long-time use of pure
+                raster formats and other formats like Macromedia Flash or Java
+                applets, but also browser support is still uneven, with native
+                support in Opera and Firefox, but Safari and Internet Explorer
+                require a plugin.
                 See PGML above.
               </para></listitem>
 
             </itemizedlist>
+
+          </sect3>
+
+          <sect3>
+
+            <title>Object Constraint Language (OCL)</title>
+            <para>
+              <ulink url="[http://en.wikipedia.org/wiki/Object_Constraint_Language">
+              <emphasis>Object Constraint Language (OCL)</emphasis></ulink>
+              is a declarative language for describing rules that apply
+              to UML models.
+              It was developed at IBM and is now part of the UML standard.
+              Initially OCL was only a formal specification language
+              extension to UML.
+              OCL may now be used with any Meta-Object Facility (MOF) compliant
+              metamodel, including UML.
+              The Object Constraint Language is a precise text language
+              that provides constraint and object query expressions on any
+              MOF model or metamodel that cannot otherwise be expressed by
+              diagrammatic notation.
+            </para>
 
           </sect3>
 
@@ -1529,7 +1625,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Getting Started</title>
 
-          <sect3>
+          <sect3 id="s3.tut.system.requirements">
 
             <title>System Requirements</title>
 
@@ -1577,11 +1673,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <indexterm><primary>Build</primary></indexterm>
-                <para>Download the source code using CVS and build your 
-                own version. Choose this option if you want to look at 
-                the internal workings of ArgoUML, or want to join in as 
-                a developer.</para>
+                <para>
+                  <indexterm><primary>Build</primary></indexterm>
+                  Download the source code using CVS and build your own version.
+                  Choose this option if you want to look at the internal
+                  workings of ArgoUML, or want to join in as a developer.
+                  This option does require the whole JDK 
+                  (see <xref linkend="s3.tut.system.requirements"/>).
+                </para>
 
               </listitem>
 
@@ -1722,26 +1821,32 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>On Windows. Start a MSDOS shell window by e.g. 
-                useing Start/Run with the default 
-                <quote>command</quote>. In the window change to the 
-                directory holding your ArgoUML files and type <literal>
-                java -jar argouml.jar</literal></para>
-
-                <para>The above method has the advantage that progress 
-                and debugging information is visible in the DOS window. 
-                Alternative ways are creating a batchfile containing 
-                the above command, with a shortcut to it on the 
-                desktop, or simply (double) clicking on the <literal>
-                argouml.jar</literal> file works on modern 
-                systems.</para>
+                <para>
+                  On Windows. Start an MSDOS shell window by e.g. 
+                  using Start/Run with <quote>command</quote> in the text window.
+                  In the window change to the directory holding your ArgoUML files
+                  and type <literal>java -jar argouml.jar</literal>.
+                  This method has the advantage that progress and debugging
+                  information is visible in the DOS window. 
+                  Alternatively create a batch file (.bat) containing the above
+                  command, with a shortcut to it on the desktop.
+                  The batch file should end with a "pause" statement in case any
+                  debugging information is created during a run.
+                  On some systems, simply (double) clicking on the
+                  <literal>argouml.jar</literal> file works.
+                  On others doing so initiates a zip utility.
+                  Refer to you operating system instructions or help facility
+                  to determine how to configure this.
+                </para>
 
               </listitem>
 
               <listitem>
 
-                <para>On Unix. Start a shell window and type <literal>
-                java -jar argouml.jar</literal></para>
+                <para>
+                  On Unix. Start a shell window and type
+                  <literal>java -jar argouml.jar</literal>
+                </para>
 
               </listitem>
 
@@ -1753,49 +1858,70 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Problems Running ArgoUML</title>
 
-            <para>It&apos;s unusual to encounter problems if you have 
-            made a successful download. Most common issue is not having 
-            a new enough Java Runtime Environment (it must be 1.4 or 
-            later).</para>
-
-            <para>If you can&apos;t solve the problem. Try the 
-            users&apos; mailing list (see 
-            <xref linkend="s4.probsolving"/>).</para>
+            <para>
+              It&apos;s unusual to encounter problems if you have made a successful
+              download.
+              If you can&apos;t solve the problem. Try the users&apos; mailing list
+              (see <xref linkend="s4.probsolving"/>).
+            </para>
 
             <itemizedlist>
 
               <listitem>
 
-                <para>Wrong language. ArgoUML attempts to find the 
-                language from the environment of the operating system 
-                and uses that. If this language is not desired, another 
-                language can be chosen at startup of ArgoUML. you will 
-                have to force ArgoUML to think that the environment is 
-                set to another language. Normally ArgoUML is started 
-                with: <literal>java -jar argouml.jar</literal></para>
+            <para>
+              Wrong JRE.
+              The most common issue is not having a new enough
+              Java Runtime Environment (it must be 1.4 or  later).
+            </para>
 
-                <para>ArgoUML can be forced into thinking that the 
-                environment is set to another language as 
-                follows:</para>
+              </listitem>
+
+              <listitem>
 
                 <para>
-                <literal>java -Duser.language=en -jar argouml.jar</literal></para>
-
-                <para>Currently, the languages German (de), English 
-                (en), Spanish (es), French (fr) and Russian (ru) are 
-                supported. Selecting any other language will lead to 
-                the default language English.</para>
-
-                <para>Additionally, the country may be set to the US as 
-                follows:</para>
-
-                <para>
-                <literal>java -Duser.language=en -Duser.country=US -jar argouml.jar</literal></para>
+                  Wrong language.
+                  If the product came up in a language you can&apos;t read or just
+                  don&apos;t want, go to the second leftmost menu item in the
+                  menu bar at the top of the screen.
+                  Select the bottom most menu entry in the drop down.
+                  <xref linkend="fig.prob.run.02"/> show this in Russian.
+                  Then click on the second tab from the bottom in the column of
+                  tabs on the left.
+                  Drop down the list as shown in 
+                  <xref linkend="fig.prob.run.02"/>.
+                  and select a language.
+                  Note that the languages are listed in themselves.
+                  The language shown as being selected is German in which the
+                  word for <quote>German</quote> is <quote>Deutsch</quote>.
+                  You will have to exit ArgoUML and restart it for the change to
+                  take effect.
+                  Use the X button at the upper right.
+                </para>
 
               </listitem>
 
             </itemizedlist>
 
+            <figure float="1" id="fig.prob.run.01">
+
+              <title>Finding the Settings Wizard</title>
+
+              <screenshot><mediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/tutorial/langprob01.png"
+               format="PNG"/></imageobject></mediaobject></screenshot>
+            </figure>
+
+            <figure float="1" id="fig.prob.run.02">
+
+              <title>Setting Language in the Appearance Pane</title>
+
+              <screenshot><mediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/tutorial/langprob02.png"
+               format="PNG"/></imageobject></mediaobject></screenshot>
+            </figure>
           </sect3>
 
         </sect2>
@@ -1804,50 +1930,94 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>The ArgoUML User Interface</title>
 
-          <para><xref linkend="fig.tut.guioverview"/> shows the main 
-          ArgoUML window.</para>
+          <para>
+            Before beginning the Case Study, you need to become familiar with the
+            user interface.
+            Start by reading the introduction to the User Interface Reference.
+            See <xref linkend="ch.ref.ui"/>.
+          </para>
 
-          <figure float="1" id="fig.tut.guioverview">
+          <para>
+            As you go through this tutorial you will be told what to do, and when
+            to do it but how to do it will often be left to the
+            User Interface Reference.
+            It is not necessary at this point to read all of the Reference, but you
+            should leaf through enough of it to become familiar with how to find
+            things in it.
+            Every attempt will be made to direct you to the appropriate part of the
+            Reference at those points in the tutorial where they apply.
+          </para>
 
-            <title>Overview of the ArgoUML window</title>
+          <para>
+            <xref linkend="fig.tut.startup"/>, shows the main ArgoUML window as it
+            appears when ArgoUML is first entered.
+          </para>
+
+          <figure float="1" id="fig.tut.startup">
+
+            <title>Initial ArgoUML window</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
-             fileref="images/tutorial/guioverview.gif"
+             fileref="images/tutorial/startup.gif"
              format="GIF"/></imageobject></mediaobject></screenshot>
+
           </figure>
 
-          <para>At the top of screen is a <emphasis>menu 
-          bar</emphasis>. Under that there are Toolbars. Then the bulk 
-          of the window comprises four sub-windows or 
-          <emphasis>Panes</emphasis>. Clockwise from top left these are 
-          the <emphasis>Explorer</emphasis>, <emphasis>Editing 
-          Pane</emphasis>, <emphasis>Details Pane</emphasis> and 
-          <emphasis>To-Do Pane</emphasis>. At the top of the Editing 
-          Pane is another <emphasis>toolbar</emphasis> called the Edit 
-          Pane Toolbar. Finally at the bottom of the window is a 
-          <emphasis>status bar</emphasis>.</para>
+          <para>
+            Grab the vertical divider bars and move them back and forth.
+            Grab the horizontal divider bar and move it up and down.
+            Play around a little with the little arrows at the left or top of the
+            divider bars.
+            See <xref linkend="s1.ref.panes"/>;.
+          </para>
 
           <sect3>
 
-            <title>The Explorer</title>
+            <title>The Explorer Pane</title>
 
-            <para><xref linkend="fig.tut.exploreroverview"/> shows the 
-            Explorer.</para>
+            <para>
+              At this time you should take the time to read
+              <xref linkend="ch.ref.navpane"/>.
+              There is not a lot that you can do at this point with the
+              Explorer Pane as there is nothing in it but the root of the tree
+              (currently "untitledModel") and two empty diagrams.
+              However, the Explorer Pane is fundamental to almost everything
+              that you do and we will be coming back to it again and again in what
+              follows.
+            </para>
 
-            <figure float="1" id="fig.tut.exploreroverview">
+            <para>
+              There is an expand or contract control in front of the package
+              symbol for <quote>untitledModel</quote> in the Explorer Pand and the
+              package symbol for <quote>Medium</quote> in the To-Do Pane.
+              Click on these controls and observe that these panes are tree widgets
+              that behave pretty much as you would expect them to.
+              The expand or contract control is either plus (+)/minus (-) sign
+              or knob with a right or bottom pointer depending upon the look and
+              feel that you have chosen for an appearance.
+            </para>
 
-              <title>Overview of the Explorer</title>
+            <para>
+              At this point you should try the various choices available for a
+              look and feel.
+              You used the editor that establishes the look and feel when you
+              were selecting a language, however, you only saw it in Russian.
+              It you look at an English rendition
+              <xref linkend="s3.ref.menu_settings_appearance"/> you will see that
+              the topmost combobox is for selecting the look and feel.
+              When the panel is first opened the box contains the current value.
+              Select another one, exit from ArgoUML and restart it.
+            </para>
 
-              <screenshot><mediaobject><imageobject>
-              <imagedata align="center"
-               fileref="images/tutorial/exploreroverview.gif"
-               format="GIF"/></imageobject></mediaobject></screenshot>
-            </figure>
-
-            <para>This is the explorer, where we can navigate through 
-            our model. This pane list all the classes, interfaces and 
-            data types of our model as a tree view.</para>
+            <para>
+              Select alternately Class Diagram 1 and Use Case Diagram 1  observing
+              that the detail pane changes to track to the selected item in the
+              Explorer.
+              The detail pane is described in Chapter 12.
+              It is not necessary to read Chapter 12 at this point, but it
+              couldn&apos;t hurt.
+            </para>
 
           </sect3>
 
@@ -1855,7 +2025,34 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>The Editing Pane</title>
 
-            <para><xref linkend="fig.tut.editoverview"/> shows the 
+            <note>
+
+              <itemizedlist>
+
+                <listitem>Reading assignment.</listitem>
+
+                <listitem>Walk through a couple of changes.</listitem>
+
+                <listitem>Add some stuff.</listitem>
+
+                <listitem>Delete some stuff.</listitem>
+
+                <listitem>Resize things.</listitem>
+
+                <listitem>Select stuff with click and drag.</listitem>
+
+                <listitem>Select stuff with click and ctrl click.</listitem>
+
+                <listitem>Edit names inline.</listitem>
+
+                <listitem>Remove "images/tutorial/editoverview.gif"
+                from file system.</listitem>
+
+              </itemizedlist>
+
+            </note>
+
+            <!--para><xref linkend="fig.tut.editoverview"/> shows the 
             Editing Pane.</para>
 
             <figure float="1" id="fig.tut.editoverview">
@@ -1869,7 +2066,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             </figure>
 
             <para>This is the Editing Pane, where we can edit our 
-            diagram in a graphical way.</para>
+            diagram in a graphical way.</para-->
 
           </sect3>
 
@@ -1877,7 +2074,42 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>The Details Pane</title>
 
-            <para><xref linkend="fig.tut.detailsoverview"/> shows the 
+            <note>
+
+              <itemizedlist>
+
+                <listitem>Reading assignment.</listitem>
+
+                <listitem>To-Do Item.
+                  Discuss differences with other tabs about locations of
+                  items selected.
+                  Hold particulars for discussion of To-Do Pane.</listitem>
+
+                <listitem>Properties,</listitem>
+
+                <listitem>Documentation,</listitem>
+
+                <listitem>Presentation,</listitem>
+
+                <listitem>Source,</listitem>
+
+                <listitem>Constraints,</listitem>
+
+                <listitem>Stereotype,</listitem>
+
+                <listitem>Tagged Values,</listitem>
+
+                <listitem>Checklist.</listitem>
+
+                <listitem>
+                  Remove "images/tutorial/detailsoverview.gif" from file system.
+                </listitem>
+
+              </itemizedlist>
+
+            </note>
+
+            <!--para><xref linkend="fig.tut.detailsoverview"/> shows the 
             Details Pane.</para>
 
             <figure float="1" id="fig.tut.detailsoverview">
@@ -1891,7 +2123,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             </figure>
 
             <para>This is the Details Pane, that allows us to edit 
-            various details of our model.</para>
+            various details of our model.</para-->
 
           </sect3>
 
@@ -1899,7 +2131,27 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>The To-Do Pane</title>
 
-            <para><xref linkend="fig.tut.todooverview"/> shows the 
+            <note>
+
+              <itemizedlist>
+
+                <listitem>Reading assignment.</listitem>
+
+                <listitem>Describe priorities.</listitem>
+
+                <listitem>Resolving items.</listitem>
+
+                <listitem>Relation to ToDo Item tab in details pane.</listitem>
+
+                <listitem>
+                  Remove "images/tutorial/todooverview.gif" from file system.
+                </listitem>
+
+              </itemizedlist>
+
+            </note>
+
+            <!--para><xref linkend="fig.tut.todooverview"/> shows the 
             To-Do Pane.</para>
 
             <figure float="1" id="fig.tut.todooverview">
@@ -1915,7 +2167,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>The To-Do Pane displays the items on the models to-do 
             list in a tree which sorts the list in a number of 
             different ways. A drop down selection box at the top of the 
-            pane determines the layout of the tree.</para>
+            pane determines the layout of the tree.</para-->
 
           </sect3>
 
@@ -2246,7 +2498,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <para><xref linkend="fig.tut.startup"/> shows the ArgoUML 
               main window as it appears as right after start-up</para>
 
-              <figure float="1" id="fig.tut.startup">
+              <!--figure float="1" id="fig.tut.startup">
 
                 <title>ArgoUML Window at Start-Up</title>
 
@@ -2254,7 +2506,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <imagedata align="center"
                  fileref="images/tutorial/startup.gif"
                  format="GIF"/></imageobject></mediaobject></screenshot>
-              </figure>
+              </figure-->
 
               <para>The main window&apos;s client area, below the menu 
               and toolbar, is subdivided into four panes. Starting at 
