@@ -24,13 +24,8 @@
 
 package org.argouml.persistence;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -45,7 +40,6 @@ import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiExtensionWriter;
 import org.argouml.model.XmiWriter;
-import org.argouml.ocl.ArgoFacade;
 import org.argouml.ocl.OCLExpander;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
