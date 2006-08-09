@@ -33,6 +33,7 @@ import javax.swing.JFileChooser;
 import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.uml.ui.ProjectFileView;
 
 /**
  * Exports the xmi of a project to a file choosen by the user.
@@ -58,6 +59,7 @@ public final class ActionExportXMI extends AbstractAction {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle(Translator.localize(
 				       "action.export-project-as-xmi"));
+        chooser.setFileView(ProjectFileView.getInstance());
         chooser.setApproveButtonText(Translator.localize(
 					     "filechooser.export"));
         chooser.setAcceptAllFileFilterUsed(true);
