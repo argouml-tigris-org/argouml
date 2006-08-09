@@ -284,8 +284,8 @@ public final class PersistenceManager {
     public String getQuickViewDump(Project project) {
         OutputStream stream = new ByteArrayOutputStream();
         try {
-            quickViewDump.writeProject(project, stream);
-        } catch (SaveException e) {
+            quickViewDump.writeProject(project, stream, null);
+        } catch (Exception e) {
             // If anything goes wrong return the stack
             // trace as a string so that we get some
             // useful feedback.

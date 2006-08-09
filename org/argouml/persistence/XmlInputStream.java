@@ -385,43 +385,6 @@ public class XmlInputStream extends BufferedInputStream {
     }
 
     private int superRead() throws IOException {
-        int read = super.read();
-        if (read != -1 && eventSpacing != 0
-                && ++readCount % eventSpacing == 0) {
-            fireProgressEvent();
-        }
-        return read;
-    }
-
-    private void fireProgressEvent() {
-        LOG.info("firing sub-progress event " + readCount + " of " + length);
-        ProgressEvent event = null;
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == ProgressListener.class) {
-                // Lazily create the event:
-                if (event == null) {
-                    event = new ProgressEvent(this, readCount, length);
-                }
-                ((ProgressListener) listeners[i + 1]).progress(event);
-            }
-        }
-    }
-
-    /**
-     * @param listener the progress listener
-     */
-    public void addProgressListener(ProgressListener listener) {
-        listenerList.add(ProgressListener.class, listener);
-    }
-
-    /**
-     * @param listener the progress listener
-     */
-    public void removeProgressListener(ProgressListener listener) {
-        listenerList.remove(ProgressListener.class, listener);
+        return super.read();
     }
 }

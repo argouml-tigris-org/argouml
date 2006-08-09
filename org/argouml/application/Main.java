@@ -294,7 +294,7 @@ public class Main {
             System.err.println("The filename is " + filename);
             System.err.println("The file is " + file);
             System.err.println("File.exists = " + file.exists());
-            projectLoaded = pb.loadProject(file, true);
+            projectLoaded = pb.loadProject(file, true, null);
         }
         
         if (!projectLoaded) {

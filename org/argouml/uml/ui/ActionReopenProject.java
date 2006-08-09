@@ -83,6 +83,7 @@ public class ActionReopenProject extends AbstractAction {
         File toOpen = new File(filename);;
         // load of the new project
         // just reuse of the ActionOpen object
-        ProjectBrowser.getInstance().loadProject(toOpen, true);
+        ProjectBrowser.getInstance().loadProjectWithProgressMonitor(
+                toOpen, true);
     }
 }

@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,19 +22,24 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.persistence;
-
-import java.util.EventListener;
+package org.argouml.util;
 
 /**
- * A listener to be implemented by those interested in ProgressEvents.
- * @author Bob Tarling
+ * Utility class for threading
+ * 
+ * @author niro
  */
-public interface ProgressListener extends EventListener {
+public class ThreadUtils {
+    
     /**
-     * Called when a ProgressEvent is fired.
-     * @param event the ProgressEvent
-     * @throws InterruptedException     if thread is interrupted
+     * Checks if the current thread 
+     * 
+     * @throws InterruptedException	  if the current thread was interrupted
      */
-    void progress(ProgressEvent event) throws InterruptedException;
+    public static void checkIfInterrupted() throws InterruptedException {
+    	// make this thread interruptible, if called from SwingWorker
+    	if (Thread.interrupted()) {
+    		throw new InterruptedException();
+    	}
+    }
 }

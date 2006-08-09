@@ -26,14 +26,12 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -42,7 +40,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.ui.GUI;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -54,11 +51,6 @@ import org.argouml.ui.ProjectBrowser;
  */
 public class ActionOpenProject extends AbstractAction
     implements CommandLineInterface {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(ActionOpenProject.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -92,83 +84,76 @@ public class ActionOpenProject extends AbstractAction
             return;
         }
 
-        try {
-            // next line does give user.home back but this is not
-            // compliant with how the project.url works and therefore
-            // open and save project as give different starting
-            // directories.  String directory =
-            // Globals.getLastDirectory();
-            JFileChooser chooser = null;
-            if (p != null && p.getURL() != null) {
-                File file = new File(p.getURL().getFile());
-                if (file.getParentFile() != null) {
-                    chooser = new JFileChooser(file.getParent());
+        // next line does give user.home back but this is not
+        // compliant with how the project.url works and therefore
+        // open and save project as give different starting
+        // directories.  String directory =
+        // Globals.getLastDirectory();
+        JFileChooser chooser = null;
+        if (p != null && p.getURL() != null) {
+            File file = new File(p.getURL().getFile());
+            if (file.getParentFile() != null) {
+                chooser = new JFileChooser(file.getParent());
+            }
+        } else {
+            chooser = new JFileChooser();
+        }
+
+        if (chooser == null) {
+            chooser = new JFileChooser();
+        }
+
+        chooser.setDialogTitle(
+                Translator.localize("filechooser.open-project"));
+
+        chooser.setAcceptAllFileFilterUsed(false);
+
+        // adding project files icon
+        chooser.setFileView(ProjectFileView.getInstance());
+        
+        pm.setOpenFileChooserFilter(chooser);
+
+        String fn = Configuration.getString(
+                PersistenceManager.KEY_OPEN_PROJECT_PATH);
+        if (fn.length() > 0) {
+            chooser.setSelectedFile(new File(fn));
+        }
+
+        int retval = chooser.showOpenDialog(pb);
+        if (retval == JFileChooser.APPROVE_OPTION) {
+            File theFile = chooser.getSelectedFile();
+
+            if (!theFile.canRead()) {
+                /* Try adding the extension from the chosen filter. */
+                FileFilter ffilter = chooser.getFileFilter();
+                if (ffilter instanceof AbstractFilePersister) {
+                    AbstractFilePersister afp = 
+                        (AbstractFilePersister) ffilter;
+                    File m =
+                        new File(theFile.getPath() + "."
+                                + afp.getExtension());
+                    if (m.canRead()) {
+                        theFile = m;
+                    }
                 }
-            } else {
-                chooser = new JFileChooser();
-            }
-
-            if (chooser == null) {
-                chooser = new JFileChooser();
-            }
-
-            chooser.setDialogTitle(
-                    Translator.localize("filechooser.open-project"));
-
-            chooser.setAcceptAllFileFilterUsed(false);
-
-            // adding project files icon
-            chooser.setFileView(ProjectFileView.getInstance());
-            
-            pm.setOpenFileChooserFilter(chooser);
-
-            String fn = Configuration.getString(
-                    PersistenceManager.KEY_OPEN_PROJECT_PATH);
-            if (fn.length() > 0) {
-                chooser.setSelectedFile(new File(fn));
-            }
-
-            int retval = chooser.showOpenDialog(pb);
-            if (retval == JFileChooser.APPROVE_OPTION) {
-                File theFile = chooser.getSelectedFile();
-
                 if (!theFile.canRead()) {
-                    /* Try adding the extension from the chosen filter. */
-                    FileFilter ffilter = chooser.getFileFilter();
-                    if (ffilter instanceof AbstractFilePersister) {
-                        AbstractFilePersister afp = 
-                            (AbstractFilePersister) ffilter;
-                        File m =
-                            new File(theFile.getPath() + "."
-                                    + afp.getExtension());
-                        if (m.canRead()) {
-                            theFile = m;
-                        }
-                    }
-                    if (!theFile.canRead()) {
-                        /* Try adding the default extension. */
-                        File n =
-                            new File(theFile.getPath() + "."
-                                    + pm.getDefaultExtension());
-                        if (n.canRead()) {
-                            theFile = n;
-                        }
-                    }
-                }
-                if (theFile != null) {
-                    Configuration.setString(
-                            PersistenceManager.KEY_OPEN_PROJECT_PATH,
-                            theFile.getPath());
-
-                    if (ProjectBrowser.getInstance()
-                            .loadProject(theFile, true)) {
-                        // notification of menu bar
-                        GUI.getInstance().addFileSaved(theFile);
+                    /* Try adding the default extension. */
+                    File n =
+                        new File(theFile.getPath() + "."
+                                + pm.getDefaultExtension());
+                    if (n.canRead()) {
+                        theFile = n;
                     }
                 }
             }
-        } catch (IOException ignore) {
-            LOG.error("got an IOException in ActionOpenProject", ignore);
+            if (theFile != null) {
+                Configuration.setString(
+                        PersistenceManager.KEY_OPEN_PROJECT_PATH,
+                        theFile.getPath());
+
+                ProjectBrowser.getInstance().loadProjectWithProgressMonitor(
+                		theFile, true);
+            }
         }
     }
 
@@ -181,7 +166,7 @@ public class ActionOpenProject extends AbstractAction
      */
     public boolean doCommand(String argument) {
         return ProjectBrowser.getInstance()
-            .loadProject(new File(argument), false);
+            .loadProject(new File(argument), false, null);
     }
 
 } /* end class ActionOpenProject */

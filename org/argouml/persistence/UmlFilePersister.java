@@ -55,6 +55,7 @@ import org.argouml.kernel.ProjectMember;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.util.ThreadUtils;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
@@ -64,8 +65,7 @@ import org.tigris.gef.ocl.TemplateReader;
  *
  * @author Bob Tarling
  */
-public class UmlFilePersister extends AbstractFilePersister
-        implements ProgressListener {
+public class UmlFilePersister extends AbstractFilePersister {
 
     /**
      * The PERSISTENCE_VERSION is increased every time the persistence format
@@ -74,31 +74,18 @@ public class UmlFilePersister extends AbstractFilePersister
      * converted to the current one, keeping ArgoUML backwards compatible.
      */
     protected static final int PERSISTENCE_VERSION = 5;
-
+    
+    /**
+     * The TOTAL_PHASES_LOAD constant is the number of phases used by the load
+     * process.
+     */
+    protected static final int UML_PHASES_LOAD = 2;
+    
     /**
      * Logger.
      */
     private static final Logger LOG =
         Logger.getLogger(UmlFilePersister.class);
-
-    /**
-     * The percentage completeness of phases complete.
-     * Does not include part-completed phases.
-     */
-    private int percentPhasesComplete;
-
-    /**
-     * The sections complete of a load or save.
-     */
-    private int phasesCompleted;
-
-    /**
-     * The number of equals phases the progress will measure.
-     * It is assumed each phase will be of equal time.
-     * There is one phase for each upgrade from a previous
-     * version and one pahse for the final load.
-     */
-    private int progressPhaseCount;
 
     private static final String ARGO_TEE =
 	"/org/argouml/persistence/argo2.tee";
@@ -131,13 +118,18 @@ public class UmlFilePersister extends AbstractFilePersister
      * @param file The file to write.
      * @param project the project to save
      * @throws SaveException when anything goes wrong
+     * @throws InterruptedException     if the thread is interrupted
      *
      * @see org.argouml.persistence.ProjectFilePersister#save(
      * org.argouml.kernel.Project, java.io.File)
      */
     public void doSave(Project project, File file)
-        throws SaveException {
+        throws SaveException, InterruptedException {
 
+        ProgressMgr progressMgr = new ProgressMgr();
+        progressMgr.setNumberOfPhases(4);
+        progressMgr.nextPhase();
+        
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
 
@@ -152,7 +144,6 @@ public class UmlFilePersister extends AbstractFilePersister
         }
 
         try {
-
             project.setFile(file);
             project.setVersion(ArgoVersion.getVersion());
             project.setPersistenceVersion(PERSISTENCE_VERSION);
@@ -160,9 +151,11 @@ public class UmlFilePersister extends AbstractFilePersister
             FileOutputStream stream =
                 new FileOutputStream(file);
 
-            writeProject(project, stream);
+            writeProject(project, stream, progressMgr);
 
             stream.close();
+
+            progressMgr.nextPhase();
 
             String path = file.getParent();
             if (LOG.isInfoEnabled()) {
@@ -181,6 +174,9 @@ public class UmlFilePersister extends AbstractFilePersister
             if (tempFile.exists()) {
                 tempFile.delete();
             }
+            
+            progressMgr.nextPhase();
+            
         } catch (Exception e) {
             LOG.error("Exception occured during save attempt", e);
 
@@ -189,8 +185,13 @@ public class UmlFilePersister extends AbstractFilePersister
             // this is the "rollback" to old file
             file.delete();
             tempFile.renameTo(file);
-            // we have to give a message to user and set the system to unsaved!
-            throw new SaveException(e);
+            if (e instanceof InterruptedException) {
+                throw (InterruptedException) e;
+            } else {
+                // we have to give a message to user and set the system 
+                // to unsaved!
+                throw new SaveException(e);
+            }
         }
     }
 
@@ -200,9 +201,12 @@ public class UmlFilePersister extends AbstractFilePersister
      * @param project The project to output.
      * @param stream The stream to write to.
      * @throws SaveException If something goes wrong.
+     * @throws InterruptedException     if the thread is interrupted
      */
-    void writeProject(Project project, OutputStream stream)
-        throws SaveException {
+    void writeProject(Project project, 
+            OutputStream stream, 
+            ProgressMgr progressMgr) throws SaveException, 
+            InterruptedException {
         OutputStreamWriter outputStreamWriter;
         try {
             outputStreamWriter = new OutputStreamWriter(stream, "UTF-8");
@@ -245,6 +249,10 @@ public class UmlFilePersister extends AbstractFilePersister
                 }
             }
 
+            if (progressMgr != null) {
+                progressMgr.nextPhase();
+            }
+
             // Write out all non-XMI sections
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember =
@@ -272,20 +280,26 @@ public class UmlFilePersister extends AbstractFilePersister
     /**
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
-    public Project doLoad(File file) throws OpenException {
-        return doLoad(file, file);
+    public Project doLoad(File file) throws OpenException, 
+    InterruptedException {
+        // let's initialize the progressMgr
+        ProgressMgr progressMgr = new ProgressMgr();
+        progressMgr.setNumberOfPhases(UML_PHASES_LOAD);
+        
+        ThreadUtils.checkIfInterrupted();
+        return doLoad(file, file, progressMgr);
     }
 
     /**
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
-    public Project doLoad(File originalFile, File file)
-        throws OpenException {
+    public Project doLoad(File originalFile, File file, ProgressMgr progressMgr)
+        throws OpenException, InterruptedException {
 
         XmlInputStream inputStream = null;
         try {
             Project p = new Project(file.toURL());
-
+            
             // Run through any stylesheet upgrades
             int fileVersion = getPersistenceVersionFromFile(file);
 
@@ -309,13 +323,7 @@ public class UmlFilePersister extends AbstractFilePersister
                     originalFile,
                     new File(originalFile.getAbsolutePath() + '~' + release));
             }
-
-            // The progress is split into equal sections, 1 for
-            // the load of the .uml file plus one for each
-            // version upgrade file
-            progressPhaseCount = (PERSISTENCE_VERSION - fileVersion) + 1;
-            phasesCompleted = 0;
-
+           
             LOG.info("Loading uml file of version " + fileVersion);
             while (fileVersion < PERSISTENCE_VERSION) {
                 ++fileVersion;
@@ -326,23 +334,18 @@ public class UmlFilePersister extends AbstractFilePersister
                 LOG.info("Upgrading took "
                         + ((endTime - startTime) / 1000)
                         + " seconds");
-                ++phasesCompleted;
-                percentPhasesComplete =
-                    (phasesCompleted * 100) / progressPhaseCount;
-                fireProgressEvent(percentPhasesComplete);
             }
+            progressMgr.nextPhase();
 
-            inputStream =
-                new XmlInputStream(
+            inputStream = new XmlInputStream(
                         file.toURL().openStream(),
                         "argo",
                         file.length(),
                         100000);
-            inputStream.addProgressListener(this);
 
             ArgoParser parser = new ArgoParser();
             parser.readProject(p, inputStream);
-
+            
             List memberList = parser.getMemberList();
 
             LOG.info(memberList.size() + " members");
@@ -355,20 +358,24 @@ public class UmlFilePersister extends AbstractFilePersister
                 inputStream.reopen(persister.getMainTag());
                 persister.load(p, inputStream);
             }
+            
+            // let's update the progress
+            progressMgr.nextPhase();
+            ThreadUtils.checkIfInterrupted();
             inputStream.realClose();
             p.postLoad();
             return p;
+        } catch (InterruptedException e) {
+            throw e;
         } catch (OpenException e) {
             throw e;
         } catch (Exception e) {
             throw new OpenException(e);
-        } finally {
-            if (inputStream != null) {
-                inputStream.removeProgressListener(this);
-            }
         }
     }
 
+
+    
     /**
      * Transform a string of XML data according to the service required.
      *
@@ -524,17 +531,6 @@ public class UmlFilePersister extends AbstractFilePersister
             version = "1";
         }
         return version;
-    }
-
-    /**
-     * @see org.argouml.persistence.ProgressListener#progress(org.argouml.persistence.ProgressEvent)
-     */
-    public void progress(ProgressEvent event) {
-        int percentPhasesLeft = 100 - percentPhasesComplete;
-        long position = event.getPosition();
-        long length = event.getLength();
-        long proportion = (position * percentPhasesLeft) / length;
-        fireProgressEvent(percentPhasesComplete + proportion);
     }
 
     /**

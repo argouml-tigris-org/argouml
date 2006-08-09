@@ -75,6 +75,9 @@ import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.persistence.UmlVersionException;
 import org.argouml.persistence.VersionException;
 import org.argouml.persistence.XmiFormatException;
+import org.argouml.swingext.ProgressMonitorWindow;
+import org.argouml.swingext.LoadSwingWorker;
+import org.argouml.swingext.SaveSwingWorker;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -85,6 +88,7 @@ import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ProjectFileView;
 import org.argouml.uml.ui.TabProps;
+import org.argouml.util.ThreadUtils;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -1034,10 +1038,9 @@ public final class ProjectBrowser
     /**
      * Try to save the project, possibly not creating a new file
      * @param overwrite if true, then we overwrite without asking
-     * @return true if successful
      */
-    public boolean trySave(boolean overwrite) {
-        return this.trySave(overwrite, false);
+    public void trySave(boolean overwrite) {
+        this.trySave(overwrite, false);
     }
     
     
@@ -1046,9 +1049,8 @@ public final class ProjectBrowser
      * @param overwrite if true, then we overwrite without asking
      * @param saveNewFile if true, we'll ask for a new file even if
      *                    the current project already had one  
-     * @return true if successful
      */
-    public boolean trySave(boolean overwrite, boolean saveNewFile) {
+    public void trySave(boolean overwrite, boolean saveNewFile) {
         URL url = ProjectManager.getManager().getCurrentProject().getURL();
 
         File file = null;
@@ -1075,7 +1077,7 @@ public final class ProjectBrowser
                     saveNewFile = true;
                 } else {
                     // save action has been cancelled
-                    return false;
+                    return;
                 }
             }
         } else {
@@ -1090,19 +1092,12 @@ public final class ProjectBrowser
             // if the user cancelled the operation,
             // we don't have to save anything
             if (file == null) {
-                return false;
+                return;
             }
         }
 
         // let's call the real save method
-        boolean success = trySave(overwrite, file);
-
-        // we have succesfully saved a new file: let's update the title bar
-        if (success && saveNewFile) {
-            titleHandler.buildTitle(ProjectManager.getManager()
-                    .getCurrentProject().getName(), null);
-        }
-        return success;
+        trySaveWithProgressMonitor(overwrite, file);
     }
     
     /**
@@ -1120,18 +1115,44 @@ public final class ProjectBrowser
             return true;
         }
     }
+
+    /**
+     * Loads a project displaying a nice ProgressMonitor
+     * 
+     * @param overwrite if true, the file is going to be overwritten
+     * @param file      the target file
+     */
+    public void trySaveWithProgressMonitor(boolean overwrite, File file) {
+        SaveSwingWorker worker = new SaveSwingWorker(overwrite, file);
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        worker.start();
+    }
+    
+    /**
+     * Rebuild the title using the name of the current project.
+     *
+     */
+    public void buildTitleWithCurrentProjectName() {
+        titleHandler.buildTitle(
+                ProjectManager.getManager().getCurrentProject().getName(), 
+                null);
+    }
     
     /**
      * Try to save the project.
      * @param overwrite if true, then we overwrite without asking
      * @param file the File to save to
+     * @param pmw       the ProgressMonitorWindow to be updated;  
      * @return true if successful
      */
-    public boolean trySave(boolean overwrite, File file) {
+    public boolean trySave(boolean overwrite, 
+            File file, 
+            ProgressMonitorWindow pmw) {
         LOG.info("Saving the project");
         Project project = ProjectManager.getManager().getCurrentProject();
         PersistenceManager pm = PersistenceManager.getInstance();
-
+        ProjectFilePersister persister = null;
+        
         try {
             if (!PersistenceManager.getInstance()
                     .confirmOverwrite(overwrite, file)) {
@@ -1155,8 +1176,7 @@ public final class ProjectBrowser
                          new Object[] {file});
             this.showStatus (sStatus);
 
-            ProjectFilePersister persister =
-                    pm.getPersisterFromFileName(file.getName());
+            persister = pm.getPersisterFromFileName(file.getName());
             if (persister == null) {
                 throw new IllegalStateException("Filename " + project.getName()
                             + " is not of a known file type");
@@ -1192,6 +1212,12 @@ public final class ProjectBrowser
                 reportError(
                         Translator.localize("dialog.repair"), true, report);
             }
+            
+            if (pmw != null) {
+                pmw.progress(25);
+                persister.addProgressListener(pmw);
+            }
+            
             project.preSave();
             persister.save(project, file);
             project.postSave();
@@ -1243,7 +1269,7 @@ public final class ProjectBrowser
      * @param file The file.
      * @throws IOException if we cannot get the file name from the file.
      */
-    void addFileSaved(File file) throws IOException {
+    public void addFileSaved(File file) throws IOException {
         GenericArgoMenuBar menu = (GenericArgoMenuBar) getJMenuBar();
         menu.addFileSaved(file.getCanonicalPath());
     }
@@ -1289,16 +1315,31 @@ public final class ProjectBrowser
     }
 
     /**
+     * Loads a project displaying a nice ProgressMonitor
+     * 
+     * @param file      the project to be opened
+     * @param showUI    whether to show the GUI or not
+     */
+    public void loadProjectWithProgressMonitor(File file, boolean showUI) {
+        LoadSwingWorker worker = new LoadSwingWorker(file, showUI);
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        worker.start();
+    }
+    	
+    /**
      * Loads the project file and opens all kinds of error message windows
      * if it doesn't work for some reason. In those cases it preserves
      * the old project.
      *
      * @param file the file to open.
-     * @return true if the file was successfully opened
      * @param showUI true if an error message may be shown to the user,
      *               false if run in commandline mode
+     * @param pmw 	the ProgressMonitorWindow to be updated;  
+     * 				if not needed, use null 
+     * @return true if the file was successfully opened
      */
-    public boolean loadProject(File file, boolean showUI) {
+    public boolean loadProject(File file, boolean showUI, 
+    		ProgressMonitorWindow pmw) {
         LOG.info("Loading project.");
 
         PersistenceManager pm = PersistenceManager.getInstance();
@@ -1338,10 +1379,19 @@ public final class ProjectBrowser
                             + " is not of a known file type");
                 }
 
+                if (pmw != null) {
+                    persister.addProgressListener(pmw);
+                }
+                
                 DiagramFactory.getInstance().getDiagram().clear();
 
                 project = persister.doLoad(file);
-
+                
+                if (pmw != null) {
+                    persister.removeProgressListener(pmw);
+                }
+                ThreadUtils.checkIfInterrupted();
+                
                 if (Model.getDiagramInterchangeModel() != null) {
                     Collection diagrams =
                         DiagramFactory.getInstance().getDiagram();
@@ -1381,6 +1431,10 @@ public final class ProjectBrowser
                 reportError(
                         Translator.localize("dialog.error.memory.limit.error"),
                         showUI);
+            } catch (java.lang.InterruptedException ex) {
+                project = oldProject;
+                success = false;
+                LOG.error("Project loading interrupted by user");
             } catch (UmlVersionException ex) {
                 project = oldProject;
                 success = false;

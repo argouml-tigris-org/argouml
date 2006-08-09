@@ -38,14 +38,32 @@ public interface ProjectFilePersister {
      * @param project the project to save
      * @param file The file to write.
      * @throws SaveException if anything goes wrong.
+     * @throws InterruptedException     if the thread is interrupted
      */
-    void save(Project project, File file) throws SaveException;
+    void save(Project project, File file) throws SaveException, 
+    InterruptedException;
 
     /**
      * @param file the file of the project to load.
      * @return the Project
      *
      * @throws OpenException when we fail to open from this url
+     * @throws InterruptedException     if the thread is interrupted
      */
-    Project doLoad(File file) throws OpenException;
+    Project doLoad(File file) throws OpenException, InterruptedException;
+    
+    /**
+     * Add any object interested in listening to persistence progress.
+     *
+     * @param listener the interested listener.
+     */
+    public void addProgressListener(ProgressListener listener);
+    
+    /**
+     * Remove any object no longer interested in listening to persistence
+     * progress.
+     *
+     * @param listener the listener to remove.
+     */
+    public void removeProgressListener(ProgressListener listener);    
 }
