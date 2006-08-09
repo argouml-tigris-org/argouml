@@ -25,8 +25,13 @@
 package org.argouml.ui;
 
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 import org.argouml.i18n.Translator;
 import org.tigris.swidgets.Dialog;
@@ -44,6 +49,11 @@ public class ArgoDialog extends Dialog {
     private static final String MNEMONIC_KEY_SUFFIX = ".mnemonic";
 
     /**
+     * The key for the escape action
+     */
+    private static final String ACTION_KEY_ESCAPE = "escapeAction";
+    
+    /**
      * Creates a new ArgoDialog with the default optionType.
      *
      * @param title The title String for the dialog.
@@ -52,6 +62,7 @@ public class ArgoDialog extends Dialog {
      */
     public ArgoDialog(String title, boolean modal) {
         super(ProjectBrowser.getInstance(), title, modal);
+        this.loadCommonKeyMap();
     }
 
     /**
@@ -64,6 +75,7 @@ public class ArgoDialog extends Dialog {
      */
     public ArgoDialog(String title, int optionType, boolean modal) {
         super(ProjectBrowser.getInstance(), title, optionType, modal);
+        this.loadCommonKeyMap();
     }
 
     /**
@@ -76,6 +88,7 @@ public class ArgoDialog extends Dialog {
      */
     public ArgoDialog(Frame owner, String title, boolean modal) {
         super(owner, title, modal);
+        this.loadCommonKeyMap();
     }
 
     /**
@@ -89,6 +102,7 @@ public class ArgoDialog extends Dialog {
     public ArgoDialog(Frame owner,
                       String title, int optionType, boolean modal) {
         super(owner, title, optionType, modal);
+        this.loadCommonKeyMap();
     }
 
     /**
@@ -118,5 +132,22 @@ public class ArgoDialog extends Dialog {
                 button.setMnemonic(mnemonic.charAt(0));
             }
         }
+    }
+
+    /**
+     * This method enables exiting the dialog by pressing the escape key 
+     *
+     */
+    private void loadCommonKeyMap() {
+        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), 
+                ACTION_KEY_ESCAPE);
+        // Add the action to the component
+        this.getRootPane().getActionMap().put(ACTION_KEY_ESCAPE,
+            new AbstractAction() {
+                public void actionPerformed(ActionEvent evt) {
+                    setVisible(false);
+                }
+            });
     }
 }

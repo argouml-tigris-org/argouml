@@ -43,6 +43,8 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.ToolTipManager;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
@@ -671,6 +673,15 @@ public class Main {
         int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
         pb.setLocation(x, y);
         pb.setSize(w, h);
+        
+        UIManager.put("Button.focusInputMap", new UIDefaults.LazyInputMap(
+                new Object[] {
+                    "ENTER", "pressed",
+                    "released ENTER", "released",
+                    "SPACE", "pressed",
+                    "released SPACE", "released"
+                })
+        );         
     }
 
 
