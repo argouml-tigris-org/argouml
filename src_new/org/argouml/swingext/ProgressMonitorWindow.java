@@ -65,7 +65,7 @@ public class ProgressMonitorWindow implements ProgressListener {
      */
     public void progress(final ProgressEvent event) {
     	if (this.pbar != null) {
-            int currentUpdate = Long.valueOf(event.getPosition()).intValue();
+            int currentUpdate = new Long(event.getPosition()).intValue();
             pbar.setProgress(currentUpdate);
             Object[] args = new Object[]{String.valueOf(currentUpdate)};
             pbar.setNote(Translator.localize("dialog.progress.note", args));
