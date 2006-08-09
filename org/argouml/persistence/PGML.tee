@@ -48,11 +48,6 @@ visibility="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getVisibility(se
 <template class="org.tigris.gef.base.Diagram">
 
 <![CDATA[
-
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<!DOCTYPE pgml SYSTEM "pgml.dtd">
-
 <pgml description="<ocl>self.classAndModelID</ocl>"
 
       name="<ocl>self.name</ocl>"

@@ -33,21 +33,27 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.ArgoVersion;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
+import org.argouml.model.XmiExtensionWriter;
 import org.argouml.model.XmiWriter;
 import org.argouml.uml.ProjectMemberModel;
+import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.xml.sax.InputSource;
 
 /**
  * The file persister for the UML model.
  * @author Bob Tarling
  */
-public class ModelMemberFilePersister extends MemberFilePersister {
+public class ModelMemberFilePersister extends MemberFilePersister implements XmiExtensionWriter, XmiExtensionParser {
 
     /**
      * Logger.
@@ -141,13 +147,18 @@ public class ModelMemberFilePersister extends MemberFilePersister {
                         new OutputStreamWriter(
                                 new FileOutputStream(tempFile), "UTF-8"));
                 //writer = new FileWriter(tempFile);
-                XmiWriter xmiWriter = Model.getXmiWriter(model, writer);
+                LOG.info("Creating XmiWriter");
+                XmiWriter xmiWriter = Model.getXmiWriter(model, writer, ArgoVersion.getVersion() + "(" + UmlFilePersister.PERSISTENCE_VERSION + ")");
+                LOG.info("Registering extension writer to XmiWriter");
+                xmiWriter.setXmiExtensionWriter(this);
                 xmiWriter.write();
                 addXmlFileToWriter((PrintWriter) w, tempFile,
                                    indent.intValue());
             } else {
-                // Othewise we are writing into a zip writer.
-                XmiWriter xmiWriter = Model.getXmiWriter(model, w);
+                // Otherwise we are writing into a zip writer.
+                XmiWriter xmiWriter = Model.getXmiWriter(model, w, ArgoVersion.getVersion() + "(" + UmlFilePersister.PERSISTENCE_VERSION + ")");
+                LOG.info("Registering extension writer to XmiWriter");
+                xmiWriter.setXmiExtensionWriter(this);
                 xmiWriter.write();
             }
         } catch (IOException e) {
@@ -156,5 +167,58 @@ public class ModelMemberFilePersister extends MemberFilePersister {
             throw new SaveException(e);
         }
 
+    }
+    
+
+    public void write(Writer writer) throws IOException {
+        writer.write("<XMI.extensions xmi.extender='ArgoUML'>\n");
+        
+        Project project = ProjectManager.getManager().getCurrentProject();
+        
+        for (Iterator it = project.getMembers().iterator(); it.hasNext(); ) {
+            ProjectMember projectMember = (ProjectMember) it.next();
+            
+            
+            if (!projectMember.getType().equalsIgnoreCase("xmi")) {
+                writer.write("<XMI.extension xmi.extender='ArgoUML' xmi.label='"
+                        + projectMember.getType().toLowerCase() + "'>\n");
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Saving member of type: "
+                          + projectMember.getType());
+                }
+                MemberFilePersister persister
+                    = getMemberFilePersister(projectMember);
+                try {
+                    persister.save(projectMember, writer, null);
+                } catch (Exception e) {
+                    throw new IOException(e.getMessage());
+                }
+                writer.write("</XMI.extension>\n");
+            }
+        }
+        
+        writer.write("</XMI.extensions>\n");
+    }
+    
+    /**
+     * Get a MemberFilePersister based on a given ProjectMember.
+     *
+     * @param pm the project member
+     * @return the persister
+     */
+    protected MemberFilePersister getMemberFilePersister(ProjectMember pm) {
+        MemberFilePersister persister = null;
+        if (pm instanceof ProjectMemberDiagram) {
+            persister =
+                PersistenceManager.getInstance()
+                .getDiagramMemberFilePersister();
+        } else if (pm instanceof ProjectMemberTodoList) {
+            persister = new TodoListMemberFilePersister();
+        }
+        return persister;
+    }
+
+    public void parse(String label, String xmiExtensionString) {
+        LOG.info("Parsing an extension for " + label);
     }
 }
