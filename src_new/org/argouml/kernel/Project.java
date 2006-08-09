@@ -349,7 +349,10 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void addMember(Object m) {
 
-        if (m instanceof ArgoDiagram) {
+        if (m == null) {
+            throw new IllegalArgumentException(
+                    "A model member must be suppleid");
+        } else if (m instanceof ArgoDiagram) {
             LOG.info("Adding diagram member");
             addDiagramMember((ArgoDiagram) m);
         } else if (m instanceof ProjectMemberTodoList) {

@@ -649,7 +649,7 @@ class MockModelImplementation implements ModelImplementation {
     /**
      * @see org.argouml.model.ModelImplementation#getXmiWriter(java.lang.Object, java.io.Writer)
      */
-    public XmiWriter getXmiWriter(Object model, Writer writer)
+    public XmiWriter getXmiWriter(Object model, Writer writer, String version)
         throws UmlException {
         throw new NotImplementedException();
     }

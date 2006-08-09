@@ -122,12 +122,12 @@ public class XMIParser {
      * @param url the URL
      * @throws OpenException when there is an IO error
      */
-    public synchronized void readModels(Project p, URL url)
+    public synchronized void readModels(Project p, URL url, XmiExtensionParser xmiExtensionParser)
         throws OpenException {
         LOG.info("=======================================");
         LOG.info("== READING MODEL " + url);
         try {
-            InputSource source = new InputSource(url.openStream());
+            InputSource source = new InputSource(new XmiInputStream(url.openStream(), xmiExtensionParser, 10000000, 100000));
             source.setSystemId(url.toString());
             readModels(p, source);
         } catch (Exception ex) {
@@ -145,8 +145,6 @@ public class XMIParser {
         throws OpenException {
 
         proj = p;
-        
-
 
         XmiReader reader = null;
         try {

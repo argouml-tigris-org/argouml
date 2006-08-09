@@ -285,10 +285,11 @@ public interface ModelImplementation {
      *
      * @param model the project member model
      * @param writer the writer
+     * @param the version of ArgoUML
      * @return the object implementing the XmiWriter interface
      * @throws UmlException on any error while writing
      */
-    XmiWriter getXmiWriter(Object model, Writer writer) throws UmlException;
+    XmiWriter getXmiWriter(Object model, Writer writer, String version) throws UmlException;
 
     /**
      * Allows an external system to register itself to recieve mementos created

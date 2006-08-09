@@ -96,7 +96,7 @@ public class TestXmiFilePersister extends TestCase {
         } catch (OpenException e) {
             fail("Load resulted in an exception");
         } catch (InterruptedException e) {
-            fail("Load interrupted");
+            fail("Load resulted in an exception");
         }
     }
 }

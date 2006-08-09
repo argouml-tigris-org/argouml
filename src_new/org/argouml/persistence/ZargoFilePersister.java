@@ -37,9 +37,6 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Hashtable;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -51,8 +48,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.util.FileConstants;
 import org.argouml.util.ThreadUtils;
-import org.tigris.gef.ocl.OCLExpander;
-import org.tigris.gef.ocl.TemplateReader;
 
 /**
  * To persist to and from zargo (zipped file) storage.
@@ -65,13 +60,6 @@ public class ZargoFilePersister extends UmlFilePersister {
      */
     private static final Logger LOG =
 	Logger.getLogger(ZargoFilePersister.class);
-
-    /**
-     * This is the old version of the ArgoUML tee file which does not contain
-     * the detail of member elements.
-     */
-    private static final String ARGO_MINI_TEE =
-        "/org/argouml/persistence/argo.tee";
 
     /**
      * The constructor.
@@ -140,58 +128,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             writer =
                 new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
 
-            ZipEntry zipEntry =
-                new ZipEntry(project.getBaseName()
-			     + FileConstants.UNCOMPRESSED_FILE_EXT);
-            stream.putNextEntry(zipEntry);
-
-            Hashtable templates =
-                TemplateReader.getInstance().read(ARGO_MINI_TEE);
-            OCLExpander expander = new OCLExpander(templates);
-            expander.expand(writer, project);
-
-            writer.flush();
-
-            stream.closeEntry();
-
-            progressMgr.nextPhase();
-
-            // First we save all objects that are not XMI objects i.e. the
-            // diagrams (first for loop).
-            // Then we save all XMI objects (second for loop).
-            // This is because order is important on saving.
-            // Bob - Why not do it the other way around? Surely
-            // when reloading it is better to load XMI first
-            // then the diagrams.
-            Collection names = new ArrayList();
-            int counter = 0;
             int size = project.getMembers().size();
-            for (int i = 0; i < size; i++) {
-                ProjectMember projectMember =
-                    (ProjectMember) project.getMembers().get(i);
-                if (!(projectMember.getType().equalsIgnoreCase("xmi"))) {
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member: "
-                                + ((ProjectMember) project.getMembers()
-                                        .get(i)).getZipName());
-                    }
-                    String name = projectMember.getZipName();
-                    String originalName = name;
-                    while (names.contains(name)) {
-                        name = ++counter + originalName;
-                    }
-                    names.add(name);
-                    stream.putNextEntry(new ZipEntry(name));
-                    MemberFilePersister persister =
-                        getMemberFilePersister(projectMember);
-                    persister.save(projectMember, writer, null);
-                    writer.flush();
-                    stream.closeEntry();
-                }
-            }
-
-            progressMgr.nextPhase();
-
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember =
                     (ProjectMember) project.getMembers().get(i);

@@ -35,21 +35,19 @@ import org.netbeans.lib.jmi.xmi.XMIHeaderProvider;
  * version, etc.
  */
 public class XmiHeaderProviderImpl implements XMIHeaderProvider {
-
-    // TODO: we need a version string which is accessible from here
-    //private static final String ARGO_VERSION = ArgoVersion.getVersion();
-    private static final String ARGO_VERSION = "0.20.x";
-        
     
     private static final String UML_VERSION = "1.4";
     private static final Logger LOG = Logger
             .getLogger(XmiHeaderProviderImpl.class);
 
+    private String version;
+    
     /**
      * Constructor.
+     * @param version the version of ArgoUML that saved the XMI
      */
-    public XmiHeaderProviderImpl() {
-        super();
+    public XmiHeaderProviderImpl(String version) {
+        this.version = version;
     }
 
     /**
@@ -63,7 +61,7 @@ public class XmiHeaderProviderImpl implements XMIHeaderProvider {
                     + " (using "  + WriterBase.EXPORTER_NAME 
                     + " version " + WriterBase.EXPORTER_VERSION 
                     + ")</XMI.exporter>\n"
-            + "      <XMI.exporterVersion>" + ARGO_VERSION
+            + "      <XMI.exporterVersion>" + version
                     + "</XMI.exporterVersion>\n"
             + "    </XMI.documentation>\n"
             + "    <XMI.metamodel xmi.name=\"UML\" xmi.version=\""

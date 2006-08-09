@@ -25,12 +25,16 @@
 package org.argouml.persistence;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
@@ -38,6 +42,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
+import org.argouml.model.UmlException;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 
 /**
@@ -45,13 +50,17 @@ import org.argouml.uml.cognitive.ProjectMemberTodoList;
  *
  * @author Bob Tarling
  */
-public class XmiFilePersister extends AbstractFilePersister {
+public class XmiFilePersister extends AbstractFilePersister implements XmiExtensionParser {
     /**
      * Logger.
      */
     private static final Logger LOG =
         Logger.getLogger(XmiFilePersister.class);
 
+    private ArrayList pgmlStrings = new ArrayList();
+    
+    private String todoString;
+    
     /**
      * The constructor.
      */
@@ -189,14 +198,15 @@ public class XmiFilePersister extends AbstractFilePersister {
 
         try {
             Project p = new Project();
-            XMIParser.getSingleton().readModels(p, file.toURL());
+            XMIParser.getSingleton().readModels(p, file.toURL(), this);
             Object model = XMIParser.getSingleton().getCurModel();
             progressMgr.nextPhase();
-            XMIParser.getSingleton().registerDiagrams(p);            
             Model.getUmlHelper().addListenersToModel(model);
             p.setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
-            p.addMember(new ProjectMemberTodoList("", p));
             p.addMember(model);
+            parseXmiExtensions(p);
+            XMIParser.getSingleton().registerDiagrams(p);
+            
             p.setRoot(model);
             progressMgr.nextPhase();
             ProjectManager.getManager().setSaveEnabled(false);
@@ -215,4 +225,42 @@ public class XmiFilePersister extends AbstractFilePersister {
         return true;
     }
 
+    /**
+     * Parse a string of XML that is the XMI.extension contents.
+     * This implementation simply stores the xml strings to process
+     * in one hit after all the standard XMI has been read.
+     * @see org.argouml.persistence.XmiExtensionParser#parse(java.lang.String, java.lang.String)
+     */
+    public void parse(String label, String xmiExtensionString) {
+        if (label.equals("pgml")) {
+            pgmlStrings.add(xmiExtensionString);
+        } else if (label.equals("todo")) {
+            todoString = xmiExtensionString;
+        }
+    }
+
+    /**
+     * Parse all the extensions that were found when reading XMI
+     */
+    public void parseXmiExtensions(Project project) throws OpenException {
+        
+        for (Iterator it = pgmlStrings.iterator(); it.hasNext(); ) {
+            String pgml = (String) it.next();
+            LOG.info("Parsing pgml " + pgml.length());
+            InputStream inputStream = new ByteArrayInputStream(pgml.getBytes());
+            MemberFilePersister persister =
+                PersistenceManager.getInstance()
+                        .getDiagramMemberFilePersister();
+            persister.load(project, inputStream);
+        }
+        if (todoString != null) {
+            LOG.info("Parsing todoString " + todoString.length());
+            InputStream inputStream = new ByteArrayInputStream(todoString.getBytes());
+            MemberFilePersister persister = null;
+            persister = new TodoListMemberFilePersister();
+            persister.load(project, inputStream);
+        } else {
+            project.addMember(new ProjectMemberTodoList("", project));
+        }
+    }
 }

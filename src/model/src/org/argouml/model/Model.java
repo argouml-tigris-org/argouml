@@ -495,9 +495,9 @@ public final class Model {
      * @return the object implementing the XmiWriter interface
      * @throws UmlException on any error while writing
      */
-    public static XmiWriter getXmiWriter(Object model, Writer writer)
+    public static XmiWriter getXmiWriter(Object model, Writer writer, String version)
         throws UmlException {
-        return impl.getXmiWriter(model, writer);
+        return impl.getXmiWriter(model, writer, version);
     }
 
     /**

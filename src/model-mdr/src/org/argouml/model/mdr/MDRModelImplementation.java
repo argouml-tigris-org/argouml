@@ -603,11 +603,11 @@ public class MDRModelImplementation implements ModelImplementation {
     }
 
     /**
-     * @see org.argouml.model.ModelImplementation#getXmiWriter(Object, Writer)
+     * @see org.argouml.model.ModelImplementation#getXmiWriter(Object, Writer, String)
      */
-    public XmiWriter getXmiWriter(Object model, Writer writer)
+    public XmiWriter getXmiWriter(Object model, Writer writer, String version)
         throws UmlException {
-        return new XmiWriterMDRImpl(this, model, writer);
+        return new XmiWriterMDRImpl(this, model, writer, version);
     }
 
     /**

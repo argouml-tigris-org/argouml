@@ -301,7 +301,7 @@ public class TestMDRModelImplementation extends TestCase {
      * @throws UmlException If an error occur
      */
     public void testGetXmiWriter() throws UmlException {
-        assertNotNull(modelImplementation.getXmiWriter(null, null));
+        assertNotNull(modelImplementation.getXmiWriter(null, null, null));
     }
 
     /**
