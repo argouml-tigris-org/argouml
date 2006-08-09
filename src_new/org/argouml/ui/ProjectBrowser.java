@@ -832,7 +832,7 @@ public final class ProjectBrowser
      * Save the positions of the screen splitters, sizes and postion
      * of main window in the properties file.
      */
-    public void saveScreenConfiguration() {
+    private void saveScreenConfiguration() {
         if (explorerPane != null) {
 	    Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH,
 				     explorerPane.getWidth());
@@ -919,6 +919,7 @@ public final class ProjectBrowser
                 }
             }
         }
+        saveScreenConfiguration();
         Configuration.save();
         System.exit(0);
     }
