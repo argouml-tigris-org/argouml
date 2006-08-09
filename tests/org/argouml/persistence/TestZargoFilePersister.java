@@ -68,7 +68,8 @@ public class TestZargoFilePersister extends TestCase {
      * @param filename of the project file to load
      * @throws OpenException if something goes wrong.
      */
-    private Project doLoad(String filename) throws OpenException {
+    private Project doLoad(String filename) 
+        throws OpenException, InterruptedException {
         URL url = TestZargoFilePersister.class.getResource(filename);
         assertTrue("Unintended failure: resource to be tested is not found: "
                 + filename + ", converted to URL: " + url, url != null);
@@ -123,6 +124,9 @@ public class TestZargoFilePersister extends TestCase {
                     !LastLoadInfo.getInstance().getLastLoadStatus());
         } catch (OpenException io) {
             // This is the normal case.
+            loaded = false;
+        } catch (InterruptedException iExc) {
+            // This should not happen!
             loaded = false;
         }
         assertTrue("No exception was thrown.", !loaded);

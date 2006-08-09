@@ -50,6 +50,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.util.FileConstants;
+import org.argouml.util.ThreadUtils;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
 
@@ -102,12 +103,18 @@ public class ZargoFilePersister extends UmlFilePersister {
      *            the project to save
      * @throws SaveException
      *             when anything goes wrong
+     * @throws InterruptedException     if the thread is interrupted
      *
      * @see org.argouml.persistence.ProjectFilePersister#save(
      *      org.argouml.kernel.Project, java.io.File)
      */
-    public void doSave(Project project, File file) throws SaveException {
+    public void doSave(Project project, File file) throws SaveException, 
+    InterruptedException {
 
+        ProgressMgr progressMgr = new ProgressMgr();
+        progressMgr.setNumberOfPhases(4);
+        progressMgr.nextPhase();
+        
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
 
@@ -147,6 +154,8 @@ public class ZargoFilePersister extends UmlFilePersister {
 
             stream.closeEntry();
 
+            progressMgr.nextPhase();
+
             // First we save all objects that are not XMI objects i.e. the
             // diagrams (first for loop).
             // Then we save all XMI objects (second for loop).
@@ -181,6 +190,8 @@ public class ZargoFilePersister extends UmlFilePersister {
                 }
             }
 
+            progressMgr.nextPhase();
+
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember =
                     (ProjectMember) project.getMembers().get(i);
@@ -209,6 +220,9 @@ public class ZargoFilePersister extends UmlFilePersister {
             if (tempFile.exists()) {
                 tempFile.delete();
             }
+
+            progressMgr.nextPhase();
+
         } catch (Exception e) {
             LOG.error("Exception occured during save attempt", e);
             try {
@@ -237,7 +251,11 @@ public class ZargoFilePersister extends UmlFilePersister {
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public Project doLoad(File file)
-        throws OpenException {
+        throws OpenException, InterruptedException {
+        
+        ProgressMgr progressMgr = new ProgressMgr();
+        progressMgr.setNumberOfPhases(3 + UML_PHASES_LOAD);
+        ThreadUtils.checkIfInterrupted();
 
         try {
             File combinedFile = File.createTempFile("combinedzargo_", ".uml");
@@ -271,6 +289,9 @@ public class ZargoFilePersister extends UmlFilePersister {
                             "Can't find an <argo> tag in the argo file");
                 }
             } while(!rootLine.startsWith("<argo"));
+
+            progressMgr.nextPhase();
+            
             // Get the version from the tag.
             String version = getVersion(rootLine);
             writer.println("<uml version=\"" + version + "\">");
@@ -333,13 +354,18 @@ public class ZargoFilePersister extends UmlFilePersister {
 
             readerToWriter(reader, writer);
 
+            progressMgr.nextPhase();
+            
             zis.close();
             reader.close();
 
             writer.println("</uml>");
             writer.close();
             LOG.info("Complated combining files");
-            Project p =  super.doLoad(file, combinedFile);
+            Project p =  super.doLoad(file, combinedFile, progressMgr);
+            
+            progressMgr.nextPhase();
+            
             p.setURL(file.toURL());
             return p;
         } catch (IOException e) {

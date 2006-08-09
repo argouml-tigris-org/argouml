@@ -86,7 +86,8 @@ public class ActionRevertToSaved extends AbstractAction {
                   JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
-            ProjectBrowser.getInstance().loadProject(new File(p.getURL().getFile()), true);
+            ProjectBrowser.getInstance().loadProjectWithProgressMonitor(
+                    new File(p.getURL().getFile()), true);
         }
     }
 }

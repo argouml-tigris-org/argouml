@@ -34,6 +34,7 @@ import javax.swing.event.EventListenerList;
 import javax.swing.filechooser.FileFilter;
 
 import org.argouml.kernel.Project;
+import org.argouml.util.ThreadUtils;
 
 /**
  * To persist to and from zargo (zipped file) storage.
@@ -188,11 +189,13 @@ public abstract class AbstractFilePersister extends FileFilter
      * @param project The project being saved.
      * @param file The file to which the save is taking place.
      * @throws SaveException when anything goes wrong
+     * @throws InterruptedException     if the thread is interrupted
      *
      * @see org.argouml.persistence.ProjectFilePersister#save(
      * org.argouml.kernel.Project, java.io.File)
      */
-    public final void save(Project project, File file) throws SaveException {
+    public final void save(Project project, File file) throws SaveException, 
+    InterruptedException {
         preSave(project, file);
         doSave(project, file);
         postSave(project, file);
@@ -232,39 +235,21 @@ public abstract class AbstractFilePersister extends FileFilter
      * @param project the project to save
      * @param file The file to write.
      * @throws SaveException when anything goes wrong
+     * @throws InterruptedException     if the thread is interrupted
      *
      * @see org.argouml.persistence.AbstractFilePersister#save(
      * org.argouml.kernel.Project, java.io.File)
      */
     protected abstract void doSave(Project project, File file)
-        throws SaveException;
+        throws SaveException, InterruptedException;
 
     /**
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
-    public abstract Project doLoad(File file) throws OpenException;
+    public abstract Project doLoad(File file)
+    	throws OpenException, InterruptedException;
 
-    /**
-     * Inform listeners of any progress notifications.
-     * @param percent the current percentage progress.
-     */
-    protected void fireProgressEvent(long percent) {
-        //LOG.info("PROGRESS " + percent + "%");
-        ProgressEvent event = null;
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == ProgressListener.class) {
-                // Lazily create the event:
-                if (event == null) {
-                    event = new ProgressEvent(this, percent, 100);
-                }
-                ((ProgressListener) listeners[i + 1]).progress(event);
-            }
-        }
-    }
+
 
     /**
      * Add any object interested in listening to persistence progress.
@@ -292,4 +277,88 @@ public abstract class AbstractFilePersister extends FileFilter
      * @return true if the persister is associated to an icon 
      */
     public abstract boolean hasAnIcon();
+    
+    class ProgressMgr implements ProgressListener {
+        
+        /**
+         * The percentage completeness of phases complete.
+         * Does not include part-completed phases.
+         */
+        private int percentPhasesComplete;
+
+        /**
+         * The sections complete of a load or save.
+         */
+        private int phasesCompleted;
+
+        /**
+         * The number of equals phases the progress will measure.
+         * It is assumed each phase will be of equal time.
+         * There is one phase for each upgrade from a previous
+         * version and one pahse for the final load.
+         */
+        private int numberOfPhases;
+        
+        public void setPercentPhasesComplete(int aPercentPhasesComplete) {
+            this.percentPhasesComplete = aPercentPhasesComplete;
+        }
+
+        public void setPhasesCompleted(int aPhasesCompleted) {
+            this.phasesCompleted = aPhasesCompleted;
+        }
+
+        public void setNumberOfPhases(int aNumberOfPhases) {
+            this.numberOfPhases = aNumberOfPhases;
+        }
+
+        public int getNumberOfPhases() {
+            return this.numberOfPhases;
+        }
+        
+        protected void nextPhase() throws InterruptedException {
+            ThreadUtils.checkIfInterrupted();
+            ++phasesCompleted;
+            percentPhasesComplete =
+                (phasesCompleted * 100) / numberOfPhases;
+            fireProgressEvent(percentPhasesComplete);
+        }
+        
+        /**
+         * Called when a ProgressEvent is fired.
+         *  
+         * @see org.argouml.persistence.ProgressListener#progress(org.argouml.persistence.ProgressEvent)
+         * @throws InterruptedException     if thread is interrupted
+         */
+        public void progress(ProgressEvent event) throws InterruptedException {
+            ThreadUtils.checkIfInterrupted();
+            int percentPhasesLeft = 100 - percentPhasesComplete;
+            long position = event.getPosition();
+            long length = event.getLength();
+            long proportion = (position * percentPhasesLeft) / length;
+            fireProgressEvent(percentPhasesComplete + proportion);
+        }
+        
+        /**
+         * Inform listeners of any progress notifications.
+         * @param percent the current percentage progress.
+         * @throws InterruptedException     if thread is interrupted
+         */
+        protected void fireProgressEvent(long percent) 
+            throws InterruptedException {
+            ProgressEvent event = null;
+            // Guaranteed to return a non-null array
+            Object[] listeners = listenerList.getListenerList();
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+            for (int i = listeners.length - 2; i >= 0; i -= 2) {
+                if (listeners[i] == ProgressListener.class) {
+                    // Lazily create the event:
+                    if (event == null) {
+                        event = new ProgressEvent(this, percent, 100);
+                    }
+                    ((ProgressListener) listeners[i + 1]).progress(event);
+                }
+            }
+        }        
+    }
 }

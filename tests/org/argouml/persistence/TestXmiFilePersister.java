@@ -74,7 +74,7 @@ public class TestXmiFilePersister extends TestCase {
             p.preSave();
             persister.save(p, file);
             p.postSave();
-        } catch (SaveException e) {
+        } catch (Exception e) {
             fail("Save resulted in an exception");
         }
     }
@@ -95,6 +95,8 @@ public class TestXmiFilePersister extends TestCase {
             persister.doLoad(file);
         } catch (OpenException e) {
             fail("Load resulted in an exception");
+        } catch (InterruptedException e) {
+            fail("Load interrupted");
         }
     }
 }

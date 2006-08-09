@@ -78,10 +78,15 @@ public class XmiFilePersister extends AbstractFilePersister {
      * @param project the project to save.
      * @param file The file to write.
      * @throws SaveException if anything goes wrong.
+     * @throws InterruptedException     if the thread is interrupted
      */
     public void doSave(Project project, File file)
-        throws SaveException {
+        throws SaveException, InterruptedException {
 
+        ProgressMgr progressMgr = new ProgressMgr();
+        progressMgr.setNumberOfPhases(4);
+        progressMgr.nextPhase();
+        
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
 
@@ -118,6 +123,7 @@ public class XmiFilePersister extends AbstractFilePersister {
                     persister.save(projectMember, writer, null);
                 }
             }
+            progressMgr.nextPhase();
 
             // if save did not raise an exception
             // and name+"#" exists move name+"#" to name+"~"
@@ -131,6 +137,8 @@ public class XmiFilePersister extends AbstractFilePersister {
             if (tempFile.exists()) {
                 tempFile.delete();
             }
+        } catch (InterruptedException exc) {
+            throw exc;
         } catch (Exception e) {
             LOG.error("Exception occured during save attempt", e);
             try {
@@ -151,6 +159,7 @@ public class XmiFilePersister extends AbstractFilePersister {
         } catch (IOException ex) {
             LOG.error("Failed to close save output writer", ex);
         }
+        progressMgr.nextPhase();
     }
 
 
@@ -167,22 +176,29 @@ public class XmiFilePersister extends AbstractFilePersister {
      * @param file The file to load the project from.
      * @return The newly loaded project.
      * @throws OpenException if the file can not be opened
+     * @throws InterruptedException     if the thread is interrupted
      *
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public Project doLoad(File file)
-        throws OpenException {
+        throws OpenException, InterruptedException {
+
+        ProgressMgr progressMgr = new ProgressMgr();
+        progressMgr.setNumberOfPhases(3);
+        progressMgr.nextPhase();
 
         try {
             Project p = new Project();
             XMIParser.getSingleton().readModels(p, file.toURL());
             Object model = XMIParser.getSingleton().getCurModel();
+            progressMgr.nextPhase();
             XMIParser.getSingleton().registerDiagrams(p);            
             Model.getUmlHelper().addListenersToModel(model);
             p.setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
             p.addMember(new ProjectMemberTodoList("", p));
             p.addMember(model);
             p.setRoot(model);
+            progressMgr.nextPhase();
             ProjectManager.getManager().setSaveEnabled(false);
             return p;
         } catch (IOException e) {
