@@ -78,6 +78,7 @@ import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.base.Globals;
+import org.tigris.swidgets.GridLayout2;
 
 /**
  * This is the main class for all import classes.<p>
@@ -187,7 +188,7 @@ public class Import {
             new JDialog(ProjectBrowser.getInstance(),
                     Translator.localize("action.import-sources"), true);
 
-        dialog.getContentPane().add(chooser, BorderLayout.WEST);
+        dialog.getContentPane().add(chooser, BorderLayout.CENTER);
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
         dialog.pack();
         int x =
@@ -250,7 +251,7 @@ public class Import {
         // build the configPanel:
         if (configPanel == null) {
             JPanel general = new JPanel();
-            general.setLayout(new GridLayout(13, 1));
+            general.setLayout(new GridLayout2(13, 1, 0, 0, GridLayout2.NONE));
 
             general.add(new JLabel(
                     Translator.localize("action.import-select-lang")));
