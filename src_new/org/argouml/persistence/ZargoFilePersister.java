@@ -211,12 +211,15 @@ public class ZargoFilePersister extends UmlFilePersister {
                     + encoding + "\" ?>");
 
             // first read the .argo file from Zip
-            ZipInputStream zis;
+            ZipInputStream zis =
+                openZipStreamAt(file.toURL(), FileConstants.PROJECT_FILE_EXT);
+            if (zis == null) {
+                ZipFilePersister zfp = new ZipFilePersister();
+                return zfp.doLoad(file);
+            }
+            
             String line;
-            BufferedReader reader;
-
-            zis = openZipStreamAt(file.toURL(), FileConstants.PROJECT_FILE_EXT);
-            reader = new BufferedReader(new InputStreamReader(zis, encoding));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(zis, encoding));
             // Keep reading till we hit the <argo> tag
             String rootLine;
             do {
@@ -331,7 +334,8 @@ public class ZargoFilePersister extends UmlFilePersister {
      *            The URL of the zip file.
      * @param ext
      *            The required extension.
-     * @return the zip stream positioned at the required location.
+     * @return the zip stream positioned at the required location or null
+     * if the requested extension is not found.
      * @throws IOException
      *             if there is a problem opening the file.
      */
@@ -341,6 +345,10 @@ public class ZargoFilePersister extends UmlFilePersister {
         ZipEntry entry = zis.getNextEntry();
         while (entry != null && !entry.getName().endsWith(ext)) {
             entry = zis.getNextEntry();
+        }
+        if (entry == null) {
+            zis.close();
+            return null;
         }
         return zis;
     }
