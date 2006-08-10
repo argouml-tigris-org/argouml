@@ -211,15 +211,17 @@ public class ZipFilePersister extends XmiFilePersister {
                         fileName.indexOf('.'),
                         fileName.lastIndexOf('.'));
             InputStream stream = openZipStreamAt(file.toURL(), extension);
-            InputSource is = new InputSource(stream);
+            InputSource is = new InputSource(new XmiInputStream(stream, this, 10000000, 100000));
             is.setSystemId(file.toURL().toExternalForm());
+            
             XMIParser.getSingleton().readModels(p, is);
-            XMIParser.getSingleton().registerDiagrams(p);            
             Object model = XMIParser.getSingleton().getCurModel();
             Model.getUmlHelper().addListenersToModel(model);
             p.setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
-            p.addMember(new ProjectMemberTodoList("", p));
             p.addMember(model);
+            parseXmiExtensions(p);
+            XMIParser.getSingleton().registerDiagrams(p);
+
             p.setRoot(model);
             ProjectManager.getManager().setSaveEnabled(false);
             return p;

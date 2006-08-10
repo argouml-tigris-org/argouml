@@ -193,6 +193,8 @@ public class XmiFilePersister extends AbstractFilePersister implements XmiExtens
     public Project doLoad(File file)
         throws OpenException, InterruptedException {
 
+        LOG.info("Loading with XMIFilePersister");
+        
         ProgressMgr progressMgr = new ProgressMgr();
         progressMgr.setNumberOfPhases(3);
         progressMgr.nextPhase();
@@ -249,7 +251,7 @@ public class XmiFilePersister extends AbstractFilePersister implements XmiExtens
         
         if (argoString != null) {
             LOG.info("Parsing argoString " + argoString.length());
-            InputStream inputStream = new ByteArrayInputStream(todoString.getBytes());
+            InputStream inputStream = new ByteArrayInputStream(argoString.getBytes());
             ArgoParser parser = new ArgoParser();
             try {
                 parser.readProject(project, inputStream);

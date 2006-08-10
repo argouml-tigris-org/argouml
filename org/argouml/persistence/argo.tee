@@ -42,22 +42,12 @@
   </settings>
   
   <searchpath href="<ocl>self.searchPath</ocl>" />
-
-  <ocl>self.members</ocl>
-
   <historyfile name="<ocl>self.historyFile</ocl>" />
 
 </argo>
 ]]>
 </template>
 
-
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="org.argouml.kernel.AbstractProjectMember">
-<![CDATA[
-<member type="<ocl>self.type</ocl>" />
-]]>
-</template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.argouml.ui.UsageStatistic">
