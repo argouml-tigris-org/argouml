@@ -30,8 +30,8 @@ import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -64,7 +64,6 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.util.Util;
 
 /**
  * The Project is a datastructure that represents the designer's
@@ -99,7 +98,7 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * TODO: should just be the directory to write.
      */
-    private URL url;
+    private URI uri;
 
     /* The preferences with project-scope: */
     private String authorname;
@@ -156,11 +155,11 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Constructor.
      *
-     * @param theProjectUrl Url to read the project from.
+     * @param theProjectUri Uri to read the project from.
      */
-    public Project(URL theProjectUrl) {
+    public Project(URI theProjectUri) {
         this();
-        url = PersistenceManager.getInstance().fixUrlExtension(theProjectUrl);
+        uri = PersistenceManager.getInstance().fixUriExtension(theProjectUri);
     }
 
     /**
@@ -219,84 +218,82 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return the name of the project
      */
     public String getName() {
-        // TODO: maybe separate name
-        if (url == null) {
+        try {
+            // TODO: maybe separate name
+            if (uri == null) {
+                return UNTITLED_FILE;
+            }
+            String name = new File(uri).getCanonicalPath();
+            int i = name.lastIndexOf('/');
+            return name.substring(i + 1);
+        } catch (IOException ioExc) {
             return UNTITLED_FILE;
         }
-        String name = url.getFile();
-        int i = name.lastIndexOf('/');
-        return name.substring(i + 1);
     }
 
     /**
-     * Set the project URL.
+     * Set the project URI.
      *
-     * @param n The new URL (as a String).
-     * @throws MalformedURLException if the argument cannot be converted to
-     *         an URL.
+     * @param n The new URI (as a String).
+     * @throws URISyntaxException if the argument cannot be converted to
+     *         an URI.
      */
     public void setName(String n)
-        throws MalformedURLException {
+        throws URISyntaxException {
         String s = "";
-        if (getURL() != null) {
-            s = getURL().toString();
+        if (getURI() != null) {
+            s = getURI().toString();
         }
         s = s.substring(0, s.lastIndexOf("/") + 1) + n;
-        setURL(new URL(s));
+        setURI(new URI(s));
     }
 
     /**
-     * Get the URL for this project.
+     * Get the URI for this project.
      *
-     * @return The URL.
+     * @return The URI.
      */
-    public URL getURL() {
-        return url;
+    public URI getURI() {
+        return uri;
     }
 
     /**
-     * Set the URL for this project.
+     * Set the URI for this project.
      *
-     * @param theUrl The URL to set.
+     * @param theUri The URI to set.
      */
-    public void setURL(URL theUrl) {
-        if (theUrl != null) {
-            theUrl = PersistenceManager.getInstance().fixUrlExtension(theUrl);
+    public void setURI(URI theUri) {
+        if (theUri != null) {
+            theUri = PersistenceManager.getInstance().fixUriExtension(theUri);
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Setting project URL from \"" + url
-                      + "\" to \"" + theUrl + "\".");
+            LOG.debug("Setting project URI from \"" + uri
+                      + "\" to \"" + theUri + "\".");
         }
 
-        url = theUrl;
+        uri = theUri;
     }
 
     /**
      * Set the project file.
      *
-     * This only works if it is possible to convert the File to an url.
+     * This only works if it is possible to convert the File to an uri.
      *
      * @param file File to set the project to.
      */
     public void setFile(File file) {
-        try {
-            URL theProjectUrl = Util.fileToURL(file);
+        URI theProjectUri = file.toURI();
 
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Setting project file name from \""
-                          + url
-                          + "\" to \""
-                          + theProjectUrl
-                          + "\".");
-            }
-
-            url = theProjectUrl;
-        } catch (MalformedURLException murle) {
-            LOG.error("problem in setFile:" + file, murle);
-        } catch (IOException ex) {
-            LOG.error("problem in setFile:" + file, ex);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Setting project file name from \""
+                      + uri
+                      + "\" to \""
+                      + theProjectUri
+                      + "\".");
         }
+
+        uri = theProjectUri;
     }
 
     /**
@@ -1123,11 +1120,11 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Returns the url.
-     * @return URL
+     * Returns the uri.
+     * @return URI
      */
-    public URL getUrl() {
-        return url;
+    public URI getUri() {
+        return uri;
     }
 
     /**
@@ -1153,14 +1150,6 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setSearchpath(Vector theSearchpath) {
         this.searchpath = theSearchpath;
-    }
-
-    /**
-     * Sets the url.
-     * @param theUrl The url to set
-     */
-    public void setUrl(URL theUrl) {
-        url = theUrl;
     }
 
     /**
@@ -1293,7 +1282,7 @@ public class Project implements java.io.Serializable, TargetListener {
         uuidRefs = null;
         defaultModelTypeCache = null;
 
-        url = null;
+        uri = null;
         authorname = null;
         authoremail = null;
         description = null;

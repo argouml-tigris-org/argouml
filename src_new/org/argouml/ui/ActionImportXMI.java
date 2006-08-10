@@ -68,8 +68,8 @@ public class ActionImportXMI extends AbstractAction {
         }
 
         JFileChooser chooser = null;
-        if (p != null && p.getURL() != null) {
-            File file = new File(p.getURL().getFile());
+        if (p != null && p.getURI() != null) {
+            File file = new File(p.getURI());
             if (file.getParentFile() != null) {
                 chooser = new JFileChooser(file.getParent());
             }
@@ -84,7 +84,7 @@ public class ActionImportXMI extends AbstractAction {
         chooser.setDialogTitle(
                 Translator.localize("filechooser.import-xmi"));
 
-            chooser.setFileView(ProjectFileView.getInstance());
+        chooser.setFileView(ProjectFileView.getInstance());
 
         chooser.setAcceptAllFileFilterUsed(true);
 

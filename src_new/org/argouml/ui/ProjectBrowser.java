@@ -38,7 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URL;
+import java.net.URI;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
@@ -75,8 +75,8 @@ import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.persistence.UmlVersionException;
 import org.argouml.persistence.VersionException;
 import org.argouml.persistence.XmiFormatException;
-import org.argouml.swingext.ProgressMonitorWindow;
 import org.argouml.swingext.LoadSwingWorker;
+import org.argouml.swingext.ProgressMonitorWindow;
 import org.argouml.swingext.SaveSwingWorker;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -98,6 +98,7 @@ import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.undo.RedoAction;
 import org.tigris.gef.undo.UndoAction;
 import org.tigris.gef.undo.UndoManager;
+import org.tigris.gef.util.Util;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Orientation;
@@ -913,7 +914,7 @@ public final class ProjectBrowser
             if (response == JOptionPane.YES_OPTION) {
                 trySave(ProjectManager.getManager().getCurrentProject() != null
                         && ProjectManager.getManager().getCurrentProject()
-                                .getURL() != null);
+                                .getURI() != null);
                 if (saveAction.isEnabled()) {
                     return;
                 }
@@ -1052,14 +1053,14 @@ public final class ProjectBrowser
      *                    the current project already had one  
      */
     public void trySave(boolean overwrite, boolean saveNewFile) {
-        URL url = ProjectManager.getManager().getCurrentProject().getURL();
+        URI uri = ProjectManager.getManager().getCurrentProject().getURI();
 
         File file = null;
 
         // this method is invoked from several places, so we have to check
-        // whether if the project url is set or not
-        if (url != null && !saveNewFile) {
-            file = new File(url.getFile());
+        // whether if the project uri is set or not
+        if (uri != null && !saveNewFile) {
+            file = new File(uri);
 
             // does the file really exists?
             if (!file.exists()) {
@@ -1226,7 +1227,7 @@ public final class ProjectBrowser
             sStatus =
                 MessageFormat.format(Translator.localize(
                     "label.save-project-status-wrote"),
-                         new Object[] {project.getURL()});
+                         new Object[] {project.getURI()});
             showStatus(sStatus);
             LOG.debug ("setting most recent project file to "
                    + file.getCanonicalPath());
@@ -1306,7 +1307,7 @@ public final class ProjectBrowser
 
                 trySave(ProjectManager.getManager().getCurrentProject() != null
                         && ProjectManager.getManager().getCurrentProject()
-                                .getURL() != null);
+                                .getURI() != null);
                 if (saveAction.isEnabled()) {
                     return false;
                 }
@@ -1649,16 +1650,18 @@ public final class ProjectBrowser
         Project p = ProjectManager.getManager().getCurrentProject();
 
         JFileChooser chooser = null;
-        URL url = p.getURL();
-        if ((url != null) && (url.getFile().length() > 0)) {
-            chooser = new JFileChooser(url.getFile());
-        }
-        if (chooser == null) {
+        URI uri = p.getURI();
+        
+        if (uri != null) {
+            File projectFile = new File(uri);
+            if (projectFile.length() > 0) {
+                chooser = new JFileChooser(projectFile);
+            } else {
+                chooser = new JFileChooser();
+            }
+            chooser.setSelectedFile(projectFile);
+        } else {
             chooser = new JFileChooser();
-        }
-
-        if (url != null) {
-            chooser.setSelectedFile(new File(url.getFile()));
         }
 
         String sChooserTitle =
@@ -1669,8 +1672,10 @@ public final class ProjectBrowser
         chooser.setFileView(ProjectFileView.getInstance());
 
         chooser.setAcceptAllFileFilterUsed(false);
-        PersistenceManager.getInstance().setSaveFileChooserFilters(chooser, 
-                url != null ? url.getFile() : null);
+        
+        PersistenceManager.getInstance().setSaveFileChooserFilters(
+                chooser, 
+                uri != null ? Util.URIToFilename(uri.toString()) : null);
 
         int retval = chooser.showSaveDialog(pb);
         if (retval == JFileChooser.APPROVE_OPTION) {

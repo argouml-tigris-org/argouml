@@ -306,7 +306,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             
             progressMgr.nextPhase();
             
-            p.setURL(file.toURL());
+            p.setURI(file.toURI());
             return p;
         } catch (IOException e) {
             throw new OpenException(e);

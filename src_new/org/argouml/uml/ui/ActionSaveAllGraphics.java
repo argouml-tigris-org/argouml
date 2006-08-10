@@ -217,12 +217,10 @@ public class ActionSaveAllGraphics extends UndoableAction {
     private JFileChooser getFileChooser(Project p) {
 	JFileChooser chooser = null;
 	try {
-	    if ( p != null && p.getURL() != null
-                    && p.getURL().getFile().length() > 0 ) {
-		String filename = p.getURL().getFile();
-		if ( !filename.startsWith( "/FILE1/+/" ) )
-		    chooser  =
-			new JFileChooser( p.getURL().getFile() );
+	    if ( p != null 
+                && p.getURI() != null
+                && p.getURI().toURL().getFile().length() > 0 ) {
+	        chooser = new JFileChooser(p.getURI().toURL().getFile());
 	    }
 	}
 	catch ( Exception ex ) {

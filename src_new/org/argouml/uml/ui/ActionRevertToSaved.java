@@ -65,7 +65,8 @@ public class ActionRevertToSaved extends AbstractAction {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
 
-        if (p == null || !ProjectBrowser.getInstance().getSaveAction().isEnabled()) {
+        if (p == null 
+                || !ProjectBrowser.getInstance().getSaveAction().isEnabled()) {
             return;
         }
 
@@ -87,7 +88,7 @@ public class ActionRevertToSaved extends AbstractAction {
 
         if (response == JOptionPane.YES_OPTION) {
             ProjectBrowser.getInstance().loadProjectWithProgressMonitor(
-                    new File(p.getURL().getFile()), true);
+                    new File(p.getURI()), true);
         }
     }
 }
