@@ -1563,7 +1563,6 @@ public abstract class FigNodeModelElement
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
     public void postLoad() {
-        super.postLoad();
         ArgoEventPump.removeListener(this);
         ArgoEventPump.addListener(this);
         Iterator it = getFigs().iterator();
