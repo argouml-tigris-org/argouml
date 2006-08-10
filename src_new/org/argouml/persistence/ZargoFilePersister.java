@@ -214,6 +214,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             ZipInputStream zis =
                 openZipStreamAt(file.toURL(), FileConstants.PROJECT_FILE_EXT);
             if (zis == null) {
+                LOG.info("There is no argo file so use ZipFilePersister");
                 ZipFilePersister zfp = new ZipFilePersister();
                 return zfp.doLoad(file);
             }
