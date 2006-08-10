@@ -24,6 +24,9 @@
 
 package org.argouml.uml.generator;
 
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+
 /**
  * Stores generation preference information entered by the user
  * per project. <p>
@@ -50,6 +53,8 @@ public class GenerationPreferences implements java.io.Serializable {
 	    //_outputDir = "c:\\temp";
             outputDir = System.getProperty("java.io.tmpdir");
         }
+        outputDir = Configuration.getString(
+                Argo.KEY_MOST_RECENT_EXPORT_DIRECTORY, outputDir);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -62,7 +67,10 @@ public class GenerationPreferences implements java.io.Serializable {
     /**
      * @param od the output directory name
      */
-    public void setOutputDir(String od) { outputDir = od; }
+    public void setOutputDir(String od) { 
+        outputDir = od;
+        Configuration.setString(Argo.KEY_MOST_RECENT_EXPORT_DIRECTORY, od);
+    }
 
     /**
      * @return the header comment string

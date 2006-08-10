@@ -94,6 +94,12 @@ public final class Argo {
 	Configuration.makeKey("project", "mostrecent", "file");
 
     /**
+     * Key for last generated class/classes directory.
+     */
+    public static final ConfigurationKey KEY_MOST_RECENT_EXPORT_DIRECTORY =
+        Configuration.makeKey("project", "mostrecent", "exportdirectory");
+
+    /**
      * Key to reload last saved project on startup.
      */
     public static final ConfigurationKey KEY_RELOAD_RECENT_PROJECT =
