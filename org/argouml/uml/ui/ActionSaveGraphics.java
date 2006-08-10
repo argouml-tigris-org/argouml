@@ -98,21 +98,17 @@ public class ActionSaveGraphics extends AbstractAction
             JFileChooser chooser = null;
 
             if (p != null
-                	&& p.getURL() != null
-                	&& p.getURL().getFile().length() > 0) {
+            	&& p.getURI() != null
+            	&& p.getURI().toURL().getFile().length() > 0) {
 
-            	String filename = p.getURL().getFile();
-                // TODO: Someone please explain this.
-            	if (!filename.startsWith("/FILE1/+/")) {
-            	    chooser = new JFileChooser(p.getURL().getFile());
-            	}
+                chooser = new JFileChooser(p.getURI().toURL().getFile());
             }
 
             if (chooser == null) {
                 chooser = new JFileChooser();
             }
 
-            Object[] s = { defaultName };
+            Object[] s = {defaultName };
             chooser.setDialogTitle(
                     Translator.messageFormat("filechooser.save-graphics", s));
             // Only specified format are allowed.

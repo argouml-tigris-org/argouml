@@ -278,7 +278,7 @@ public class UmlFilePersister extends AbstractFilePersister {
 
         XmlInputStream inputStream = null;
         try {
-            Project p = new Project(file.toURL());
+            Project p = new Project(file.toURI());
             
             // Run through any stylesheet upgrades
             int fileVersion = getPersistenceVersionFromFile(file);

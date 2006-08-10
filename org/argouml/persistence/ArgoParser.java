@@ -98,7 +98,7 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * Get the project to which the URL is to be parsed.
+     * Get the project to which the URI is to be parsed.
      * @return the project
      */
     public Project getProject() {
@@ -106,7 +106,7 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * Set the project to which the URL is to be parsed.
+     * Set the project to which the URI is to be parsed.
      * @param newProj the project
      */
     public void setProject(Project newProj) {

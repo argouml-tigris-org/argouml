@@ -78,7 +78,7 @@ public class ActionSaveProject extends AbstractAction {
         ProjectBrowser.getInstance().trySave(
                 ProjectManager.getManager().getCurrentProject() != null
                         && ProjectManager.getManager().getCurrentProject()
-                                .getURL() != null);
+                                .getURI() != null);
     }
 
     /**

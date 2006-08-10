@@ -88,7 +88,7 @@ public final class Argo {
 	Configuration.makeKey("init", "edem");
 
     /**
-     * Key for last saved project URL.
+     * Key for last saved project URI.
      */
     public static final ConfigurationKey KEY_MOST_RECENT_PROJECT_FILE =
 	Configuration.makeKey("project", "mostrecent", "file");
