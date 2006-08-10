@@ -29,6 +29,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -60,7 +61,9 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     private FigText srcMult, srcRole;
     private FigText srcOrdering;
     
-    protected NotationProvider4 notationProviderSrcRole;
+    private NotationProvider4 notationProviderSrcRole;
+    
+    private Logger LOG = Logger.getLogger(FigAssociationEnd.class);
 
     /**
      * The constructor.
@@ -139,6 +142,9 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
     public void updateListeners(Object oldOwner, Object newOwner) {
+        if (oldOwner == newOwner) {
+            LOG.warn("Listeners being added and removed from the same owner");
+        }
         if (oldOwner != null) {
             removeAllElementListeners();
         }

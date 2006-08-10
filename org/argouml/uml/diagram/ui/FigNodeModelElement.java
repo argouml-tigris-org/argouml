@@ -1223,28 +1223,41 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * In ArgoUML, for every Fig, this setOwner() function
-     * may only be called twice: Once after the fig is created, 
-     * with a non-null argument, and once at end-of-life of the Fig,
-     * with a null argument. It is not allowed in ArgoUML to change 
-     * the owner of a fig in any other way. <p>
+     * This method should only be called once for any one Fig instance that
+     * represents a model element (ie not for a FigEdgeNote).
+     * It is called either by the constructor that takes an model element as an
+     * argument or it is called by PGMLStackParser after it has created the Fig
+     * by use of the empty constructor.
+     * The assigned model element (owner) must not change during the lifetime
+     * of the Fig.
+     * TODO: It is planned to refactor so that there is only one Fig
+     * constructor. When this is achieved this method can refactored out.
      * 
-     * Hence, during the lifetime of this Fig object, 
-     * the owner shall go from null to some UML object, and to null again. 
-     * 
+     * @param owner the model element that this Fig represents.
+     * @throws IllegalArgumentException if the owner given is not a model
+     * element
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
-    public void setOwner(Object own) {
-        Object oldOwner = getOwner();
-        super.setOwner(own);
-        initNotationProviders(own);
-        readyToEdit = true;
-        if (own != null) {
-            renderingChanged();
+    public void setOwner(Object owner) {
+        if (owner == null) {
+            throw new IllegalArgumentException("An owner must be supplied");
         }
+        if (getOwner() != null) {
+            throw new IllegalStateException(
+                    "The owner cannot be changed once set");
+        }
+        if (!Model.getFacade().isAModelElement(owner)) {
+            throw new IllegalArgumentException(
+                    "The owner must be a model element - got a "
+                    + owner.getClass().getName());
+        }
+        super.setOwner(owner);
+        initNotationProviders(owner);
+        readyToEdit = true;
+        renderingChanged();
         updateBounds();
-        bindPort(own, bigPort);
-        updateListeners(oldOwner, own);
+        bindPort(owner, bigPort);
+        updateListeners(null, owner);
     }
 
     /**
@@ -1363,6 +1376,9 @@ public abstract class FigNodeModelElement
      *          TODO: Should this not be boolean, to clarify?
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
+        if (oldOwner == newOwner) {
+            LOG.warn("Listners being added and removed from the same owner");
+        }
         if (oldOwner != null) {
             removeElementListener(oldOwner);
         }

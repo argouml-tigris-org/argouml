@@ -786,20 +786,23 @@ public abstract class FigEdgeModelElement
      * element
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
-    public void setOwner(Object newOwner) {
-        if (newOwner == null) {
+    public void setOwner(Object owner) {
+        if (owner == null) {
             throw new IllegalArgumentException("An owner must be supplied");
         }
-        if (!Model.getFacade().isAModelElement(newOwner)) {
+        if (getOwner() != null) {
+            throw new IllegalStateException(
+                    "The owner cannot be changed once set");
+        }
+        if (!Model.getFacade().isAModelElement(owner)) {
             throw new IllegalArgumentException(
                     "The owner must be a model element - got a "
-                    + newOwner.getClass().getName());
+                    + owner.getClass().getName());
         }
-        Object oldOwner = getOwner();
-        super.setOwner(newOwner);
-        initNotationProviders(newOwner);
+        super.setOwner(owner);
+        initNotationProviders(owner);
         renderingChanged();
-        updateListeners(oldOwner, newOwner);
+        updateListeners(null, owner);
     }
 
     /**
@@ -838,6 +841,9 @@ public abstract class FigEdgeModelElement
      * @param newOwner the new owner for the listeners
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
+        if (oldOwner == newOwner) {
+            LOG.warn("Listeners being added and removed from the same owner");
+        }
         if (oldOwner != null) {
             removeElementListener(oldOwner);
         }

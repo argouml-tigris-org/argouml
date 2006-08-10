@@ -223,6 +223,9 @@ public class FigAssociation extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
     public void updateListeners(Object oldOwner, Object newOwner) {
+        if (oldOwner == newOwner) {
+            LOG.warn("Listeners being added and removed from the same owner");
+        }
         if (oldOwner != null) {
             removeAllElementListeners();
         }
@@ -351,10 +354,10 @@ public class FigAssociation extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {
-	super.modelChanged(e);
-	if (getOwner() == null || getLayer() == null) {
-	    return;
-	}
+        super.modelChanged(e);
+        if (getOwner() == null || getLayer() == null) {
+            return;
+        }
         renderingChanged();
         updateListeners(getOwner(), getOwner());
     }
