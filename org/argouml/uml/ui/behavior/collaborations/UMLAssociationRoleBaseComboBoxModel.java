@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -41,7 +40,7 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  */
 public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
 
-    Collection others = new ArrayList();
+    private Collection others = new ArrayList();
 
     /**
      * Constructor for UMLAssociationRoleBaseComboBoxModel.

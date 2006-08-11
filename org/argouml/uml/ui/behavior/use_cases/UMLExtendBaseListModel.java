@@ -34,10 +34,6 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  */
 public class UMLExtendBaseListModel extends UMLModelElementListModel2 {
 
-
-
-
-
     /**
      * Constructor for UMLExtendBaseComboBoxModel.
      */
@@ -48,7 +44,7 @@ public class UMLExtendBaseListModel extends UMLModelElementListModel2 {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
         if (!isEmpty())
@@ -56,9 +52,8 @@ public class UMLExtendBaseListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getBase(getTarget()));
     }
 
-
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAUseCase(element);

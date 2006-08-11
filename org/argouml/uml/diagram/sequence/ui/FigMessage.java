@@ -84,7 +84,7 @@ public abstract class FigMessage
         Vector popUpActions = super.getPopUpActions(me);
 
         // the menu item for RE a sequence into the diagram is offered always,
-        // becauase some check (does a operation with a body exist) would be
+        // because a check (e.g. does a operation with a body exist) would be
         // too expensive
         popUpActions.insertElementAt(new ActionRESequenceDiagram(this),
                 popUpActions.size() - getPopupAddOffset());
@@ -113,8 +113,8 @@ public abstract class FigMessage
         if (result instanceof FigClassifierRole.TempFig
                 && getOwner() != null) {
             result =
-                getSourceFigClassifierRole().createFigMessagePort(getOwner(),
-                        (FigClassifierRole.TempFig)result);
+                getSourceFigClassifierRole().createFigMessagePort(
+                    getOwner(), (FigClassifierRole.TempFig) result);
             setSourcePortFig(result);
         }
         return result;
@@ -128,8 +128,8 @@ public abstract class FigMessage
         if (result instanceof FigClassifierRole.TempFig
                 && getOwner() != null) {
             result =
-                getDestFigClassifierRole().createFigMessagePort(getOwner(),
-            						(FigClassifierRole.TempFig)result);
+                getDestFigClassifierRole().createFigMessagePort(
+                    getOwner(), (FigClassifierRole.TempFig) result);
             setDestPortFig(result);
         }
         return result;
