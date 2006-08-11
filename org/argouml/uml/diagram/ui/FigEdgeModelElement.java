@@ -62,7 +62,6 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
@@ -74,13 +73,11 @@ import org.argouml.notation.NotationContext;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Globals;
@@ -762,13 +759,6 @@ public abstract class FigEdgeModelElement
 
         updateStereotypeText();
 
-        if (ActionAutoResize.isAutoResizable()) {
-            CmdSetPreferredSize cmdSPS =
-                new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE);
-            cmdSPS.setFigToResize(this);
-            cmdSPS.doIt();
-        }
-
         // Update attached node figures
         // TODO: Presumably this should only happen on a add or remove event
         determineFigNodes();
@@ -978,7 +968,7 @@ public abstract class FigEdgeModelElement
     /**
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
-    final public void removeFromDiagram() {
+    public final void removeFromDiagram() {
         Fig delegate = getRemoveDelegate();
         if (delegate instanceof FigNodeModelElement) {
             ((FigNodeModelElement) delegate).removeFromDiagramImpl();

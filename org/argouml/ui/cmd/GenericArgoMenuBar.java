@@ -46,7 +46,6 @@ import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.UndoEnabler;
 import org.argouml.notation.ui.ActionNotation;
-import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionExportXMI;
 import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionProjectSettings;
@@ -693,9 +692,6 @@ public class GenericArgoMenuBar extends JMenuBar implements
             arrange.add(new CmdSetPreferredSize(
                 CmdSetPreferredSize.MINIMUM_SIZE));
         setMnemonic(preferredSize, "Preferred Size");
-
-        JMenuItem autoResize = arrange.addCheckItem(new ActionAutoResize());
-        setMnemonic(autoResize, "Toggle Auto Resize");
 
         arrange.add(new ActionLayout());
 
