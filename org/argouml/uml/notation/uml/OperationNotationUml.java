@@ -31,13 +31,11 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
-import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.notation.OperationNotation;
@@ -214,11 +212,10 @@ public class OperationNotationUml extends OperationNotation {
                 token = st.nextToken();
                 if (" ".equals(token) || "\t".equals(token)
                         || ",".equals(token)) {
-                    ;// Do nothing
+                    continue; // Do nothing
                 } else if ("<<".equals(token) || "\u00AB".equals(token)) {
                     if (stereotype != null) {
-                        String msg = "parsing.error.operation.stereotypes";
-                        throw new ParseException(Translator.localize(msg), 
+                        parseError("operation.stereotypes", 
                                 st.getTokenIndex());
                     }
                     stereotype = "";
@@ -230,57 +227,14 @@ public class OperationNotationUml extends OperationNotation {
                         stereotype += token;
                     }
                 } else if ("{".equals(token)) {
-                    String propname = "";
-                    String propvalue = null;
-
-                    if (properties == null) {
-                        properties = new Vector();
-                    }
-                    while (true) {
-                        token = st.nextToken();
-                        if (",".equals(token) || "}".equals(token)) {
-                            if (propname.length() > 0) {
-                                properties.add(propname);
-                                properties.add(propvalue);
-                            }
-                            propname = "";
-                            propvalue = null;
-
-                            if ("}".equals(token)) {
-                                break;
-                            }
-                        } else if ("=".equals(token)) {
-                            if (propvalue != null) {
-                                String msg = 
-                                    "parsing.error.operation.prop-stereotypes";
-                                Object[] args = {propname};
-                                throw new ParseException(
-                                		Translator.localize(msg, 
-                                        args), 
-                                        st.getTokenIndex());
-                            }
-                            propvalue = "";
-                        } else if (propvalue == null) {
-                            propname += token;
-                        } else {
-                            propvalue += token;
-                        }
-                    }
-                    if (propname.length() > 0) {
-                        properties.add(propname);
-                        properties.add(propvalue);
-                    }
+                    properties = tokenOpenBrace(st, properties);
                 } else if (":".equals(token)) {
                     hasColon = true;
                 } else if ("=".equals(token)) {
-                    String msg = "parsing.error.operation.default-values";
-                    throw new ParseException(Translator.localize(msg), 
-                            st.getTokenIndex());
+                    parseError("operation.default-values", st.getTokenIndex());
                 } else if (token.charAt(0) == '(' && !hasColon) {
                     if (parameterlist != null) {
-                    	String msg = 
-                    		"parsing.error.operation.two-parameter-lists";
-                        throw new ParseException(Translator.localize(msg), 
+                        parseError("operation.two-parameter-lists", 
                                 st.getTokenIndex());
                     }
 
@@ -288,46 +242,38 @@ public class OperationNotationUml extends OperationNotation {
                 } else {
                     if (hasColon) {
                         if (type != null) {
-                            String msg = "parsing.error.operation.two-types";
-                            throw new ParseException(Translator.localize(msg), 
+                            parseError("operation.two-types", 
                                     st.getTokenIndex());
                         }
 
                         if (token.length() > 0
                                 && (token.charAt(0) == '\"'
                                     || token.charAt(0) == '\'')) {
-                            String msg = "parsing.error.operation.type-quoted";
-                            throw new ParseException(Translator.localize(msg),
+                            parseError("operation.type-quoted",
                                     st.getTokenIndex());
                         }
 
                         if (token.length() > 0 && token.charAt(0) == '(') {
-                            String msg = "parsing.error.operation.type-expr";
-                            throw new ParseException(Translator.localize(msg), 
+                            parseError("operation.type-expr", 
                                     st.getTokenIndex());
                         }
 
                         type = token;
                     } else {
                         if (name != null && visibility != null) {
-                            String msg = "parsing.error.operation.extra-text";
-                            throw new ParseException(Translator.localize(msg),
+                            parseError("operation.extra-text",
                                     st.getTokenIndex());
                         }
 
                         if (token.length() > 0
                                 && (token.charAt(0) == '\"'
                                     || token.charAt(0) == '\'')) {
-                            String msg = "parsing.error.operation.name-quoted";
-                            throw new ParseException(
-                                    Translator.localize(msg),
+                            parseError("operation.name-quoted",
                                     st.getTokenIndex());
                         }
 
                         if (token.length() > 0 && token.charAt(0) == '(') {
-                            String msg = "parsing.error.operation.name-expr";
-                            throw new ParseException(
-                                    Translator.localize(msg), 
+                            parseError("operation.name-expr", 
                                     st.getTokenIndex());
                         }
 
@@ -349,10 +295,9 @@ public class OperationNotationUml extends OperationNotation {
                         }
                     }
                 }
-            }
+            } // end while loop
         } catch (NoSuchElementException nsee) {
-            String msg = "parsing.error.operation.unexpected-end-operation";
-            throw new ParseException(Translator.localize(msg), 
+            parseError("operation.unexpected-end-operation", 
                     s.length());
         } catch (ParseException pre) {
             throw pre;
@@ -361,9 +306,7 @@ public class OperationNotationUml extends OperationNotation {
         if (parameterlist != null) {
             // parameterlist is guaranteed to contain at least "("
             if (parameterlist.charAt(parameterlist.length() - 1) != ')') {
-                String msg = 
-                	"parsing.error.operation.parameter-list-incomplete";
-                throw new ParseException(Translator.localize(msg),
+                parseError("operation.parameter-list-incomplete",
                         paramOffset + parameterlist.length() - 1);
             }
 
@@ -403,6 +346,78 @@ public class OperationNotationUml extends OperationNotation {
         }
 
         NotationUtilityUml.dealWithStereotypes(op, stereotype, true);
+    }
+
+    /**
+     * Convenience method to signal a parser error.
+     * 
+     * @param message
+     *            string containing error message literal. It will be appended
+     *            to the base "parser.error." and localized.
+     * @param offset
+     *            offset to where error occurred
+     * @throws ParseException
+     */
+    private void parseError(String message, int offset)
+        throws ParseException {
+
+        throw new ParseException(
+                Translator.localize("parsing.error." + message), 
+                offset);
+    }
+
+    /**
+     * Parse tokens following an open brace (properties).
+     * 
+     * @param st tokenizer being used
+     * @param properties current properties vector
+     * @return updated vector of properties
+     * @throws ParseException
+     */
+    private Vector tokenOpenBrace(MyTokenizer st, Vector properties)
+            throws ParseException {
+        String token;
+        String propname = "";
+        String propvalue = null;
+
+        if (properties == null) {
+            properties = new Vector();
+        }
+        while (true) {
+            token = st.nextToken();
+            if (",".equals(token) || "}".equals(token)) {
+                if (propname.length() > 0) {
+                    properties.add(propname);
+                    properties.add(propvalue);
+                }
+                propname = "";
+                propvalue = null;
+
+                if ("}".equals(token)) {
+                    break;
+                }
+            } else if ("=".equals(token)) {
+                if (propvalue != null) {
+                    String msg = 
+                        "parsing.error.operation.prop-stereotypes";
+                    Object[] args = {propname};
+                    throw new ParseException(
+                    		Translator.localize(msg, 
+                            args), 
+                            st.getTokenIndex());
+                }
+                propvalue = "";
+            } else if (propvalue == null) {
+                propname += token;
+            } else {
+                propvalue += token;
+            }
+        }
+        if (propname.length() > 0) {
+            properties.add(propname);
+            properties.add(propvalue);
+        }
+        return properties;
     }
 
 
