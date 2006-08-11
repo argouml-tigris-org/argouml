@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -32,8 +33,10 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
+import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.static_structure.ui.FigFeature;
+import org.argouml.model.RemoveAssociationEvent;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
@@ -69,6 +72,8 @@ public class FigStereotypesCompartment extends FigCompartment {
      */
     private String keyword;
 
+    private int stereotypeCount = 0;
+    
     /**
      * The constructor.
      *
@@ -86,17 +91,73 @@ public class FigStereotypesCompartment extends FigCompartment {
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object own) {
-        super.setOwner(own);
-        populate();
+        if (own != null) {
+            super.setOwner(own);
+            populate();
+            Model.getPump().addModelEventListener(this, own, "stereotype");
+        }
     }
-
+    
     /**
-     * TODO: This needs more work!
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
+     */
+    public void removeFromDiagram() {
+        Model.getPump().removeModelEventListener(this, getOwner(), "stereotype");
+    }
+    
+    public void propertyChange(PropertyChangeEvent event) {
+        if (event instanceof AddAssociationEvent) {
+            AddAssociationEvent aae = (AddAssociationEvent) event;
+            Object stereotype = aae.getChangedValue();
+            if (event.getPropertyName().equals("stereotype")) {
+                Fig bigPort = this.getBigPort();
+                FigText stereotypeTextFig =
+                    new FigStereotype(
+                            bigPort.getX() + 1,
+                            bigPort.getY() + 1
+                            + (stereotypeCount++)
+                                * FigNodeModelElement.ROWHEIGHT,
+                            0,
+                            FigNodeModelElement.ROWHEIGHT - 2,
+                            bigPort,
+                            stereotype);
+                stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
+                stereotypeTextFig.setEditable(false);
+                stereotypeTextFig.setText(Model.getFacade().getName(stereotype));
+                stereotypeTextFig.setOwner(stereotype);
+                addFig(stereotypeTextFig);
+                Globals.curEditor()
+                    .getLayerManager().getActiveLayer().damageAll();
+            } else {
+                LOG.warn("Unexpected property " + event.getPropertyName());
+            }
+        }
+        if (event instanceof RemoveAssociationEvent) {
+            if (event.getPropertyName().equals("stereotype")) {
+                RemoveAssociationEvent rae = (RemoveAssociationEvent) event;
+                Object stereotype = rae.getChangedValue();
+                for (Iterator it = getFigs().iterator(); it.hasNext(); ) {
+                    Fig f = (Fig) it.next();
+                    if (f.getOwner() == stereotype) {
+                        removeFig(f);
+                        --stereotypeCount;
+                        return;
+                    }
+                }
+            } else {
+                LOG.warn("Unexpected property " + event.getPropertyName());
+            }
+        }
+    }
+    
+    /**
+     * TODO: This should become private and only called from setOwner
      *
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
      */
     public void populate() {
-        
+       
+        stereotypeCount = 0;
         Object modelElement = getOwner();
         if (modelElement == null) {
             // TODO: This block can be removed after issue 4075 is tackled
@@ -114,17 +175,15 @@ public class FigStereotypesCompartment extends FigCompartment {
         Fig bigPort = this.getBigPort();
         int xpos = bigPort.getX();
         int ypos = bigPort.getY();
-        Project project = 
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
 
         List figs = getFigs();
         CompartmentFigText stereotypeTextFig;
 
         if (keyword != null) {
             if (figs.size() <= acounter) {
+                ++stereotypeCount;
                 stereotypeTextFig =
-                    new FigFeature(
+                    new FigStereotype(
                             xpos + 1,
                             ypos + 1
                             + (acounter - 1)
@@ -141,10 +200,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                 stereotypeTextFig =
                     (CompartmentFigText) figs.get(acounter);
             }
-            stereotypeTextFig.setText(
-                    ps.getLeftGuillemot()
-                    + keyword
-                    + ps.getRightGuillemot());
+            stereotypeTextFig.setText(keyword);
             acounter++;
         }
 
@@ -154,8 +210,9 @@ public class FigStereotypesCompartment extends FigCompartment {
             while (iter.hasNext()) {
                 Object stereotype = iter.next();
                 if (figs.size() <= acounter) {
+                    ++stereotypeCount;
                     stereotypeTextFig =
-                        new FigFeature(
+                        new FigStereotype(
                                 xpos + 1,
                                 ypos + 1
                                 + (acounter - 1)
@@ -163,7 +220,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                                 0,
                                 FigNodeModelElement.ROWHEIGHT - 2,
                                 bigPort,
-                                null);
+                                stereotype);
                     // bounds not relevant here
                     stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
                     stereotypeTextFig.setEditable(false);
@@ -172,9 +229,8 @@ public class FigStereotypesCompartment extends FigCompartment {
                     stereotypeTextFig =
                         (CompartmentFigText) figs.get(acounter);
                 }
-                stereotypeTextFig.setText(ps.getLeftGuillemot()
-                        + Model.getFacade().getName(stereotype)
-                        + ps.getRightGuillemot());
+                stereotypeTextFig.setText(
+                        Model.getFacade().getName(stereotype));
                 stereotypeTextFig.setOwner(stereotype);
 
                 acounter++;

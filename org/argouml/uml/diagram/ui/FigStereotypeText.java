@@ -37,7 +37,7 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * A specialist FigText for display stereotypes.
- *
+ * @deprecated by Bob in 0.23.1 - this has not been used since UML 1.3
  * @author Bob Tarling
  */
 public class FigStereotypeText extends FigGroup {
