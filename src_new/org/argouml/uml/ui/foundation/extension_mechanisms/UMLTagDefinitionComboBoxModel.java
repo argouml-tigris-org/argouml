@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,8 +40,7 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 /**
  * A model for tagdefinitions.
  * @author lmaitre
- * @author jaap.branderhorst@xs4all.nl
- * @since Jan 5, 2003
+ * @since October 27, 2005
  */
 public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
 
@@ -127,7 +126,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
             Object owner = Model.getFacade().getOwner(tagDef);
             if (owner != null && !stereotypes.contains(owner)) {
                 notValids.add(tagDef);
-        }
+            }
         }
         availableTagDefs.removeAll(notValids);
         return availableTagDefs;
