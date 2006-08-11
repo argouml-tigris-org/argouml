@@ -375,6 +375,7 @@ public final class Argo {
      *
      * @param arg1 the name of the resource to find.
      * @return an Icon
+     * @deprecated by tfmorris for 0.22.1.  Use ResourceLoaderWrapper directly.
      */
     public static Icon lookupIconResource(String arg1) {
 	return ResourceLoaderWrapper.lookupIconResource(arg1);
@@ -386,6 +387,7 @@ public final class Argo {
      * @param arg1 the name of the resource to find.
      * @param arg2 the description of the resource
      * @return an Icon
+     * @deprecated by tfmorris for 0.22.1.  Use ResourceLoaderWrapper directly.
      */
     public static Icon lookupIconResource(String arg1, String arg2) {
 	return ResourceLoaderWrapper.lookupIconResource(arg1, arg2);
