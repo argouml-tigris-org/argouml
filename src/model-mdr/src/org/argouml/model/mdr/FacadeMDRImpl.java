@@ -3489,12 +3489,9 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getParameter(java.lang.Object, int)
      */
     public Object getParameter(Object handle, int n) {
-        try {
-            if (handle instanceof BehavioralFeature) {
-                return ((BehavioralFeature) handle).getParameter().get(n);
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
+        Collection collection = getParameters(handle);
+        if (collection instanceof List) {
+            return ((List) collection).get(n);
         }
         return illegalArgumentObject(handle);
     }
