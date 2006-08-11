@@ -49,7 +49,8 @@ import org.argouml.uml.cognitive.ProjectMemberTodoList;
  *
  * @author Bob Tarling
  */
-public class XmiFilePersister extends AbstractFilePersister implements XmiExtensionParser {
+public class XmiFilePersister extends AbstractFilePersister 
+    implements XmiExtensionParser {
     /**
      * Logger.
      */
@@ -116,7 +117,8 @@ public class XmiFilePersister extends AbstractFilePersister implements XmiExtens
 
             OutputStream stream = new FileOutputStream(file);
             OutputStream bout = new BufferedOutputStream(stream);
-            writer = new OutputStreamWriter(bout, getEncoding());
+            writer = 
+                new OutputStreamWriter(bout, PersistenceManager.getEncoding());
 
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
@@ -251,7 +253,8 @@ public class XmiFilePersister extends AbstractFilePersister implements XmiExtens
         
         if (argoString != null) {
             LOG.info("Parsing argoString " + argoString.length());
-            InputStream inputStream = new ByteArrayInputStream(argoString.getBytes());
+            InputStream inputStream = 
+                new ByteArrayInputStream(argoString.getBytes());
             ArgoParser parser = new ArgoParser();
             try {
                 parser.readProject(project, inputStream);
@@ -272,7 +275,8 @@ public class XmiFilePersister extends AbstractFilePersister implements XmiExtens
         }
         if (todoString != null) {
             LOG.info("Parsing todoString " + todoString.length());
-            InputStream inputStream = new ByteArrayInputStream(todoString.getBytes());
+            InputStream inputStream = 
+                new ByteArrayInputStream(todoString.getBytes());
             MemberFilePersister persister = null;
             persister = new TodoListMemberFilePersister();
             persister.load(project, inputStream);

@@ -230,7 +230,8 @@ public class ZargoFilePersister extends UmlFilePersister {
             }
             
             String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(zis, encoding));
+            BufferedReader reader = 
+                new BufferedReader(new InputStreamReader(zis, encoding));
             // Keep reading till we hit the <argo> tag
             String rootLine;
             do {
@@ -255,7 +256,8 @@ public class ZargoFilePersister extends UmlFilePersister {
 
             // then the xmi
             zis = openZipStreamAt(file.toURL(), ".xmi");
-            reader = new BufferedReader(new InputStreamReader(zis, encoding));
+            reader = new BufferedReader(new InputStreamReader(zis, 
+                    PersistenceManager.getEncoding()));
             // Skip 1 lines
             reader.readLine();
 
@@ -272,9 +274,9 @@ public class ZargoFilePersister extends UmlFilePersister {
             while ((currentEntry = sub.getNextEntry()) != null) {
                 if (currentEntry.getName().endsWith(".pgml")) {
 
-                    reader =
-                        new BufferedReader(
-                        	new InputStreamReader(sub, encoding));
+                    reader = new BufferedReader(
+                        new InputStreamReader(sub, 
+                                PersistenceManager.getEncoding()));
                     // Skip the 2 lines
                     //<?xml version="1.0" encoding="UTF-8" ?>
                     //<!DOCTYPE pgml SYSTEM "pgml.dtd">
@@ -294,7 +296,8 @@ public class ZargoFilePersister extends UmlFilePersister {
             // elements or figs that the todo items refer to
             // will exist before creating critics.
             zis = openZipStreamAt(file.toURL(), ".todo");
-            reader = new BufferedReader(new InputStreamReader(zis, encoding));
+            reader = new BufferedReader(new InputStreamReader(zis, 
+                    PersistenceManager.getEncoding()));
             // Skip the 2 lines
             //<?xml version = "1.0" encoding = "UTF-8" ?>
             //<!DOCTYPE todo SYSTEM "todo.dtd" >

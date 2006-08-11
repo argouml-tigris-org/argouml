@@ -123,7 +123,8 @@ public class ZipFilePersister extends XmiFilePersister {
                 new ZipEntry(fileName.substring(0, fileName.lastIndexOf(".")));
             stream.putNextEntry(xmiEntry);
             OutputStream bout = new BufferedOutputStream(stream);
-            writer = new OutputStreamWriter(bout, getEncoding());
+            writer = new OutputStreamWriter(bout, 
+                    PersistenceManager.getEncoding());
 
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
@@ -211,7 +212,8 @@ public class ZipFilePersister extends XmiFilePersister {
                         fileName.indexOf('.'),
                         fileName.lastIndexOf('.'));
             InputStream stream = openZipStreamAt(file.toURL(), extension);
-            InputSource is = new InputSource(new XmiInputStream(stream, this, 10000000, 100000));
+            InputSource is = new InputSource(
+                    new XmiInputStream(stream, this, 10000000, 100000));
             is.setSystemId(file.toURL().toExternalForm());
             
             XMIParser.getSingleton().readModels(p, is);

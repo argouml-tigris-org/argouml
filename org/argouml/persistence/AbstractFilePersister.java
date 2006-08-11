@@ -46,15 +46,6 @@ public abstract class AbstractFilePersister extends FileFilter
     private EventListenerList listenerList = new EventListenerList();
 
     /**
-     * Supply the encoding to be used throughout the persistence
-     * mechanism.
-     * @return the encoding.
-     */
-    protected String getEncoding() {
-        return "UTF-8";
-    }
-
-    /**
      * Create a temporary copy of the existing file.
      *
      * @param file the file to copy.
