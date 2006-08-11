@@ -60,7 +60,7 @@ public class FigTextGroup extends FigGroup implements MouseListener {
      * The rest of the figtexts are shown non-overlapping. The first figtext
      * added (via addFig) is shown at the bottom of the FigTextGroup.
      */
-    protected void updateFigTexts() {
+    private void updateFigTexts() {
         Iterator it = getFigs().iterator();
         int height = 0;
         while (it.hasNext()) {

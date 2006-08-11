@@ -79,20 +79,6 @@ public class FigAssociationRole extends FigAssociation {
      */
     protected void initNotationProviders(Object own) {
         if (Model.getFacade().isAAssociationRole(own)) {
-            if (Model.getFacade().isAAssociation(own)) {
-                Object[] ends = 
-                    Model.getFacade().getConnections(own).toArray(); 
-                Object ae0 = ends[0];
-                Object ae1 = ends[1];
-                notationProviderSrcRole =
-                    NotationProviderFactory2.getInstance().getNotationProvider(
-                            NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                            ae0);
-                notationProviderDestRole =
-                    NotationProviderFactory2.getInstance().getNotationProvider(
-                            NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                            ae1);
-            }
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_ASSOCIATION_ROLE, 
