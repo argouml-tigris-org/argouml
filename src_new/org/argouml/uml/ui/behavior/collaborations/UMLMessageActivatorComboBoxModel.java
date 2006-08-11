@@ -29,10 +29,6 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
  * The model behind the UMLMessageActivatorComboBox.
- * I don't use the UMLComboBoxModel
- * since this mixes the GUI and the model
- * too much and is much more maintainance
- * intensive then this implementation.
  */
 public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
 
@@ -102,3 +98,4 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
         }
     }
 }
+
