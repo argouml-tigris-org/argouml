@@ -182,6 +182,8 @@ public class XmiWriterMDRImpl implements XmiWriter {
          * @see java.io.OutputStream#write(byte[], int, int)
          */
         public void write(byte[] b, int off, int len) throws IOException {
+            // TODO: Why has this been reverted to an inefficient
+            // byte-by-byte algorithm? - tfm
             while (off < len) {
                 write(b[off++]);
             }
@@ -198,6 +200,8 @@ public class XmiWriterMDRImpl implements XmiWriter {
          * @see java.io.OutputStream#write(int)
          */
         public void write(int b) throws IOException {
+            // TODO: Is this character set independent? 
+            // Why are we reparsing the entire output? - tfm
             myWriter.write((byte) (b & 255));
             if (xmiExtensionWriter != null) {
                 if (inTag) {

@@ -157,7 +157,7 @@ public final class Model {
      * @param e The exception to be logged.
      */
     private static void reportError(Exception e) {
-        LOG.fatal("Model component not correctly initiated.", e);
+        LOG.fatal("Model component not correctly initialized.", e);
     }
 
     /**
@@ -488,15 +488,35 @@ public final class Model {
     }
 
     /**
-     * Getter for the XmiWriter object.
+     * Get the XmiWriter.
      *
      * @param model the project member model
      * @param writer the writer
      * @return the object implementing the XmiWriter interface
      * @throws UmlException on any error while writing
+     * @deprecated for 0.22.1 by Tom Morris - use three argument version
      */
-    public static XmiWriter getXmiWriter(Object model, Writer writer, String version)
+    public static XmiWriter getXmiWriter(Object model, Writer writer)
         throws UmlException {
+        return getXmiWriter(model, writer, 
+                "unknown version (0.22 or earlier)");
+    }
+
+    /**
+     * Get the XmiWriter object.
+     * 
+     * @param model
+     *            the project member model
+     * @param writer
+     *            the writer
+     * @param version
+     *            string to be written into file header as XMI writer version
+     * @return the object implementing the XmiWriter interface
+     * @throws UmlException
+     *             on any error while writing
+     */
+    public static XmiWriter getXmiWriter(Object model, Writer writer,
+            String version) throws UmlException {
         return impl.getXmiWriter(model, writer, version);
     }
 

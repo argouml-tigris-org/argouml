@@ -649,6 +649,14 @@ class MockModelImplementation implements ModelImplementation {
     /**
      * @see org.argouml.model.ModelImplementation#getXmiWriter(java.lang.Object, java.io.Writer)
      */
+    public XmiWriter getXmiWriter(Object model, Writer writer)
+        throws UmlException {
+        throw new NotImplementedException();
+    }
+    
+    /**
+     * @see org.argouml.model.ModelImplementation#getXmiWriter(java.lang.Object, java.io.Writer, java.lang.String)
+     */
     public XmiWriter getXmiWriter(Object model, Writer writer, String version)
         throws UmlException {
         throw new NotImplementedException();
@@ -687,6 +695,5 @@ class MockModelImplementation implements ModelImplementation {
     public MementoCreationObserver getMementoCreationObserver() {
         return mementoCreationObserver;
     }
-
 
 }

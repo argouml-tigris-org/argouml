@@ -44,9 +44,10 @@ public interface XmiWriter {
     void write() throws UmlException;
     
     /**
-     * Set the object to call back in order to write exentsion elements into the XMI
-     * output stream
-     * @param xmiExtensionWriter
+     * Set the object to call back in order to write extension elements into the
+     * XMI output stream.
+     * 
+     * @param xmiExtensionWriter the writer to handle XMI extensions
      */
     void setXmiExtensionWriter(XmiExtensionWriter xmiExtensionWriter);
 }
