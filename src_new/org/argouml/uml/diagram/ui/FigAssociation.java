@@ -195,31 +195,8 @@ public class FigAssociation extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
     public void updateListeners(Object oldOwner, Object newOwner) {
-//        if (oldOwner == newOwner) {
-//            LOG.warn("Listeners being added and removed from the same owner");
-//        }
-//        if (oldOwner != null) {
-//            removeAllElementListeners();
-//        }
-//        /* Now, let's register for events from all modelelements
-//         * that change the association representation: 
-//         */
-//        if (newOwner != null) {
-//            /* Many different event types are needed, 
-//             * so let's register for them all: */
-//            addElementListener(newOwner);
-//            /* Now let's collect related elements: */
-//            ArrayList connections = new ArrayList();
-//            connections.addAll(Model.getFacade().getStereotypes(newOwner));
-//            Collection ends = Model.getFacade().getConnections(newOwner);
-//            connections.addAll(ends);
-//            for (Iterator i1 = ends.iterator(); i1.hasNext();) {
-//                connections.addAll(Model.getFacade().getStereotypes(i1.next()));
-//            }
-//            for (Iterator i = connections.iterator(); i.hasNext();) {
-//                addElementListener(i.next());
-//            }
-//        }
+        // We don't want to keep adding and removing listeners on a Fig
+        // I think this methiod should be deprecated - Bob
     }
 
     // //////////////////////////////////////////////////////////////
@@ -327,20 +304,8 @@ public class FigAssociation extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
     protected void renderingChanged() {
-//        Object association = getOwner();
-//        if (association == null) {
-//            return;
-//        }
-//        Collection ends = Model.getFacade().getConnections(association);
-//        if (ends.size() < 2) {
-//            return;
-//        }
-//        updateAbstract();
-////        chooseArrowHeads(association);
-//        srcGroup.calcBounds();
-//        destGroup.calcBounds();
-//        middleGroup.calcBounds();
-//        super.renderingChanged(); // last, since it calls damage()
+        // We don't want to redraw everything everytime one things changes
+        // I think renderingChanged should be deprecated.
     }
 
     /**
