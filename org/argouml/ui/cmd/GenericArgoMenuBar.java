@@ -579,8 +579,12 @@ public class GenericArgoMenuBar extends JMenuBar implements
     private void initMenuView(int mask) {
 
         KeyStroke ctrlMinus = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, mask);
-        KeyStroke ctrlEquals = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, mask);
+        KeyStroke ctrlPlus = KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, mask);
         KeyStroke f3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
+        KeyStroke ctrlNumpadMinus = 
+            KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, mask);
+        KeyStroke ctrlNumpadPlus = 
+            KeyStroke.getKeyStroke(KeyEvent.VK_ADD, mask);
 
         view = (ArgoJMenu) add(new ArgoJMenu(MENU + prepareKey("View")));
         setMnemonic(view, "View");
@@ -597,16 +601,24 @@ public class GenericArgoMenuBar extends JMenuBar implements
         JMenu zoom = (JMenu) view.add(new JMenu(menuLocalize("Zoom")));
         setMnemonic(zoom, "Zoom");
 
-        JMenuItem zoomOut = zoom.add(new CmdZoom(ZOOM_FACTOR));
+        CmdZoom cmdZoomOut = new CmdZoom(ZOOM_FACTOR);
+        JMenuItem zoomOut = zoom.add(cmdZoomOut);
         setMnemonic(zoomOut, "Zoom Out");
-        zoomOut.setAccelerator(ctrlMinus);
+        setAccelerator(zoomOut, ctrlMinus);
+        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(
+                ctrlNumpadMinus, "zoomOutAction");
+        this.getActionMap().put("zoomOutAction", cmdZoomOut);
 
         JMenuItem zoomReset = zoom.add(new CmdZoom(0.0));
         setMnemonic(zoomReset, "Zoom Reset");
 
-        JMenuItem zoomIn = zoom.add(new CmdZoom((1.0) / (ZOOM_FACTOR)));
+        CmdZoom cmdZoomIn = new CmdZoom((1.0) / (ZOOM_FACTOR));
+        JMenuItem zoomIn = zoom.add(cmdZoomIn);
         setMnemonic(zoomIn, "Zoom In");
-        zoomIn.setAccelerator(ctrlEquals);
+        setAccelerator(zoomIn, ctrlPlus);
+        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(
+                ctrlNumpadPlus, "zoomInAction");
+        this.getActionMap().put("zoomInAction", cmdZoomIn);
 
         view.addSeparator();
         JMenuItem adjustGrid = view.add(new CmdAdjustGrid());
