@@ -183,6 +183,16 @@ public class ZargoFilePersister extends UmlFilePersister {
             LOG.error("Failed to close save output writer", ex);
         }
     }
+    
+    /**
+     * The .zargo save format is able to save. We must override
+     * UmlFilePersister which has turned this off (suggests a need for some
+     * refactoring here)
+     * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
+     */
+    public boolean isSaveEnabled() {
+        return true;
+    }
 
     /**
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)

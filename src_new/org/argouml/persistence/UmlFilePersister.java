@@ -194,6 +194,14 @@ public class UmlFilePersister extends AbstractFilePersister {
             }
         }
     }
+    
+    /**
+     * The .uml save format is no longer available to save
+     * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
+     */
+    public boolean isSaveEnabled() {
+        return false;
+    }
 
     /**
      * Write the output for a project on the given stream.

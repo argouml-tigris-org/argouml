@@ -244,6 +244,17 @@ public abstract class AbstractFilePersister extends FileFilter
         throws SaveException, InterruptedException;
 
     /**
+     * Some persisters only provide load functionality for discontinued formats
+     * but no save.
+     * This method returns true by default. Those Peristers that do not provide
+     * save must override this.
+     * @return true if this persister is able to save
+     */
+    public boolean isSaveEnabled() {
+        return true;
+    }
+
+    /**
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public abstract Project doLoad(File file)
