@@ -62,7 +62,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * @author Thierry Lach
  */
 class ModelManagementHelperMDRImpl implements ModelManagementHelper {
-
+    
     /**
      * The model implementation.
      */
@@ -88,7 +88,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
         }
-
+        
         Iterator it = ((Namespace) ns).getOwnedElement().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
@@ -112,8 +112,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      * 
      */
     public Collection getAllNamespaces(Object ns) {
+
         if (ns == null || !(ns instanceof Namespace)) {
-            return new ArrayList();
+            return Collections.EMPTY_LIST;
         }
 
         Collection namespaces = ((Namespace) ns).getOwnedElement();
@@ -125,17 +126,13 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             return Collections.EMPTY_LIST;
         }
 
-        // work with an array instead of iterator.
-        Object[] nsArray = namespaces.toArray();
-
-        for (int i = 0; i < nsArray.length; i++) {
-
-            Object o = nsArray[i];
+        for (Iterator it = namespaces.iterator(); it.hasNext();) {
+            Object o = it.next();
             if (o instanceof Namespace) {
 
                 // only build a namepace if needed, with
                 if (list == Collections.EMPTY_LIST) {
-                    list = new ArrayList(nsArray.length);
+                    list = new ArrayList(namespaces.size());
                 }
 
                 list.add(o);
