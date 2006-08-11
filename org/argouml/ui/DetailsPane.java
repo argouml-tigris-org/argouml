@@ -344,6 +344,9 @@ public class DetailsPane
      *
      * @param tabName the name of the required tab
      * @return the tab of the given name
+     * @deprecated by Andrea Nironi (0.22 August 2006). Replaced by
+     *             {@link org.argouml.ui.DetailsPane#getTab(Class tabClass)}.
+     *             See issue 3278.
      */
     public JPanel getNamedTab(String tabName) {
         for (int i = 0; i < tabPanelList.size(); i++) {
