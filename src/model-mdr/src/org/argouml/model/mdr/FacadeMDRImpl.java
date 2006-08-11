@@ -4564,7 +4564,7 @@ class FacadeMDRImpl implements Facade {
     public Object getValue(Object handle) {
         try {
             if (handle instanceof TaggedValue) {
-                return ((TaggedValue) handle).getDataValue();
+                return getValueOfTag(handle);
             }
             if (handle instanceof Argument) {
                 return ((Argument) handle).getValue();
