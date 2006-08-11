@@ -10157,8 +10157,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>Zoom In</literal>. Shortcut (Ctrl-Equals). 
-              <!-- The shortcut does not work - this is issue 4377. -->
+              <para><literal>Zoom In</literal>. Shortcut (Ctrl-Plus). 
               Makes the items on the drawings bigger.</para>
 
             </listitem>
