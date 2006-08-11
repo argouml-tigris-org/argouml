@@ -24,13 +24,12 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
+import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
@@ -39,8 +38,10 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
@@ -64,18 +65,31 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigAssociation extends FigEdgeModelElement {
 
+    /**
+     * The serial version id.
+     */
+    static final long serialVersionUID = 9100125695919853919L;
+
     // TODO: should be part of some preferences object
     private static final boolean SUPPRESS_BIDIRECTIONAL_ARROWS = true;
+
+    private static final ArrowHead NAV_AGGR =
+        new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
+                   new ArrowHeadGreater());
+
+    private static final ArrowHead NAV_COMP =
+        new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
+                   new ArrowHeadGreater());
 
     /**
      * Group for the FigTexts concerning the source association end.
      */
-    private FigTextGroup srcGroup = new FigTextGroup();
+    protected FigAssociationEndAnnotation srcGroup;
 
     /**
      * Group for the FigTexts concerning the dest association end.
      */
-    private FigTextGroup destGroup = new FigTextGroup();
+    protected FigAssociationEndAnnotation destGroup;
 
     /**
      * Group for the FigTexts concerning the name and stereotype of the
@@ -83,21 +97,33 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     private FigTextGroup middleGroup = new FigTextGroup();
 
-    private FigText srcMult, srcRole;
-    private FigText destMult, destRole;
-    private FigText srcOrdering, destOrdering;
+    private FigText srcMult;
+    private FigText destMult;
 
-    private ArrowHead sourceArrowHead, destArrowHead;
-    
-    protected NotationProvider4 notationProviderSrcRole;
-    protected NotationProvider4 notationProviderDestRole;
-    
     private static final Logger LOG = Logger.getLogger(FigAssociation.class);
 
-
+    // These are a list of arrow types. Positioning is important as we subtract
+    // 3 to convert a navigable arrow to a non navigable with the same
+    // aggregation
+    private static final int NONE = 0;
+    private static final int AGGREGATE = 1;
+    private static final int COMPOSITE = 2;
+    private static final int NAV_NONE = 3;
+    private static final int NAV_AGGREGATE = 4;
+    private static final int NAV_COMPOSITE = 5;
+    
+    private static final ArrowHead[] arrowHeads;
+    static {
+        arrowHeads = new ArrowHead[6];
+        arrowHeads[NONE] = ArrowHeadNone.TheInstance;
+        arrowHeads[AGGREGATE] = ArrowHeadDiamond.WhiteDiamond;
+        arrowHeads[COMPOSITE] = ArrowHeadDiamond.BlackDiamond;
+        arrowHeads[NAV_NONE] = new ArrowHeadGreater();
+        arrowHeads[NAV_AGGREGATE] = NAV_AGGR;
+        arrowHeads[NAV_COMPOSITE] = NAV_COMP;
+    }
+    
     /**
-     * Main constructor
-     *
      * Don't call this constructor directly. It is public since this
      * is necessary for loading. Use the FigAssociation(Object, Layer)
      * constructor instead!
@@ -112,75 +138,22 @@ public class FigAssociation extends FigEdgeModelElement {
         addPathItem(middleGroup,
                 new PathConvPercent2(this, middleGroup, 50, 25));
 
-        srcMult = new FigText(10, 10, 90, 20);
-        srcMult.setFont(getLabelFont());
-        srcMult.setTextColor(Color.black);
-        srcMult.setTextFilled(false);
-        srcMult.setFilled(false);
-        srcMult.setLineWidth(0);
-        srcMult.setReturnAction(FigText.END_EDITING);
-        srcMult.setJustification(FigText.JUSTIFY_CENTER);
-
-        srcRole = new FigText(10, 10, 90, 20);
-        srcRole.setFont(getLabelFont());
-        srcRole.setTextColor(Color.black);
-        srcRole.setTextFilled(false);
-        srcRole.setFilled(false);
-        srcRole.setLineWidth(0);
-        srcRole.setReturnAction(FigText.END_EDITING);
-        srcRole.setJustification(FigText.JUSTIFY_CENTER);
-
-        srcOrdering = new FigText(10, 10, 90, 20);
-        srcOrdering.setFont(getLabelFont());
-        srcOrdering.setTextColor(Color.black);
-        srcOrdering.setTextFilled(false);
-        srcOrdering.setFilled(false);
-        srcOrdering.setLineWidth(0);
-        srcOrdering.setReturnAction(FigText.END_EDITING);
-        srcOrdering.setJustification(FigText.JUSTIFY_CENTER);
-        srcOrdering.setEditable(false); // parsing not (yet) implemented
-
-        srcGroup.addFig(srcRole);
-        srcGroup.addFig(srcOrdering);
+        srcMult = new FigMultiplicity();
         addPathItem(srcMult, new PathConvPercentPlusConst(this, 0, 15, 15));
+        
+        srcGroup = new FigAssociationEndAnnotation();
         addPathItem(srcGroup, new PathConvPercentPlusConst(this, 0, 35, -15));
 
-        destMult = new FigText(10, 10, 90, 20);
-        destMult.setFont(getLabelFont());
-        destMult.setTextColor(Color.black);
-        destMult.setTextFilled(false);
-        destMult.setFilled(false);
-        destMult.setLineWidth(0);
-        destMult.setReturnAction(FigText.END_EDITING);
-        destMult.setJustification(FigText.JUSTIFY_CENTER);
-
-        destRole = new FigText(0, 0, 90, 20);
-        destRole.setFont(getLabelFont());
-        destRole.setTextColor(Color.black);
-        destRole.setTextFilled(false);
-        destRole.setFilled(false);
-        destRole.setLineWidth(0);
-        destRole.setReturnAction(FigText.END_EDITING);
-        destRole.setJustification(FigText.JUSTIFY_CENTER);
-
-        destOrdering = new FigText(0, 0, 90, 20);
-        destOrdering.setFont(getLabelFont());
-        destOrdering.setTextColor(Color.black);
-        destOrdering.setTextFilled(false);
-        destOrdering.setFilled(false);
-        destOrdering.setLineWidth(0);
-        destOrdering.setReturnAction(FigText.END_EDITING);
-        destOrdering.setJustification(FigText.JUSTIFY_CENTER);
-        destOrdering.setEditable(false); // parsing not (yet) implemented
-
-        destGroup.addFig(destRole);
-        destGroup.addFig(destOrdering);
+        destMult = new FigMultiplicity();
         addPathItem(destMult,
 		    new PathConvPercentPlusConst(this, 100, -15, 15));
+        
+        destGroup = new FigAssociationEndAnnotation();
         addPathItem(destGroup,
 		    new PathConvPercentPlusConst(this, 100, -35, -15));
 
         setBetweenNearestPoints(true);
+        
         // next line necessary for loading
         setLayer(ProjectManager.getManager().getCurrentProject()
 		 .getActiveDiagram().getLayer());
@@ -198,56 +171,55 @@ public class FigAssociation extends FigEdgeModelElement {
         setOwner(edge);
     }
 
-    /**
-     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
-     */
-    protected void initNotationProviders(Object own) {
-        super.initNotationProviders(own);
-        if (Model.getFacade().isAAssociation(own)) {
-            Object[] ends = 
-                Model.getFacade().getConnections(own).toArray(); 
-            Object ae0 = ends[0];
-            Object ae1 = ends[1];
-            notationProviderSrcRole =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                        ae0);
-            notationProviderDestRole =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                        ae1);
-        }
+    public void setOwner(Object owner) {
+        super.setOwner(owner);
+        
+        Object[] ends = 
+            Model.getFacade().getConnections(owner).toArray();
+        
+        Object source = ends[0];
+        Object dest = ends[1];
+        
+        srcGroup.setOwner(source);
+        srcMult.setOwner(source);
+        
+        destGroup.setOwner(dest);
+        destMult.setOwner(dest);
+        
+        applyArrowHeads();
+        
+        addElementListener(getOwner(), new String[] {"name", "isAbstract"});
     }
     
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
     public void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner == newOwner) {
-            LOG.warn("Listeners being added and removed from the same owner");
-        }
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
-        /* Now, let's register for events from all modelelements
-         * that change the association representation: 
-         */
-        if (newOwner != null) {
-            /* Many different event types are needed, 
-             * so let's register for them all: */
-            addElementListener(newOwner);
-            /* Now let's collect related elements: */
-            ArrayList connections = new ArrayList();
-            connections.addAll(Model.getFacade().getStereotypes(newOwner));
-            Collection ends = Model.getFacade().getConnections(newOwner);
-            connections.addAll(ends);
-            for (Iterator i1 = ends.iterator(); i1.hasNext();) {
-                connections.addAll(Model.getFacade().getStereotypes(i1.next()));
-            }
-            for (Iterator i = connections.iterator(); i.hasNext();) {
-                addElementListener(i.next());
-            }
-        }
+//        if (oldOwner == newOwner) {
+//            LOG.warn("Listeners being added and removed from the same owner");
+//        }
+//        if (oldOwner != null) {
+//            removeAllElementListeners();
+//        }
+//        /* Now, let's register for events from all modelelements
+//         * that change the association representation: 
+//         */
+//        if (newOwner != null) {
+//            /* Many different event types are needed, 
+//             * so let's register for them all: */
+//            addElementListener(newOwner);
+//            /* Now let's collect related elements: */
+//            ArrayList connections = new ArrayList();
+//            connections.addAll(Model.getFacade().getStereotypes(newOwner));
+//            Collection ends = Model.getFacade().getConnections(newOwner);
+//            connections.addAll(ends);
+//            for (Iterator i1 = ends.iterator(); i1.hasNext();) {
+//                connections.addAll(Model.getFacade().getStereotypes(i1.next()));
+//            }
+//            for (Iterator i = connections.iterator(); i.hasNext();) {
+//                addElementListener(i.next());
+//            }
+//        }
     }
 
     // //////////////////////////////////////////////////////////////
@@ -271,10 +243,10 @@ public class FigAssociation extends FigEdgeModelElement {
 	String msg =
 	    Translator.localize("statusmsg.bar.error.parsing.multiplicity");
 
-	if (ft == srcRole) {
-            ft.setText(notationProviderSrcRole.parse(ft.getText()));
-	} else if (ft == destRole) {
-            ft.setText(notationProviderDestRole.parse(ft.getText()));
+	if (ft == srcGroup.role) {
+            ((FigRole) ft).parse();
+	} else if (ft == destGroup.role) {
+        ((FigRole) ft).parse();
 	} else if (ft == srcMult) {
 	    Object srcAE = (conn.toArray())[0];
 	    try {
@@ -310,30 +282,15 @@ public class FigAssociation extends FigEdgeModelElement {
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp("parsing.help.fig-association-name");
-        } else if (ft == srcRole) {
-            showHelp(notationProviderSrcRole.getParsingHelp());
-        } else if (ft == destRole) {
-            showHelp(notationProviderDestRole.getParsingHelp());
+        } else if (ft == srcGroup.role) {
+            showHelp(srcGroup.role.getParsingHelp());
+        } else if (ft == destGroup.role) {
+            showHelp(destGroup.role.getParsingHelp());
         } else if (ft == srcMult) {
             showHelp("parsing.help.fig-association-source-multiplicity");
         } else if (ft == destMult) {
             showHelp("parsing.help.fig-association-destination-multiplicity");
         }
-    }
-
-    private void updateEnd(FigText multiToUpdate,
-			   FigText orderingToUpdate,
-			   Object end) {
-
-        if (!Model.getFacade().isAAssociationEnd(end)) {
-            throw new IllegalArgumentException();
-	}
-
-	Object multi = Model.getFacade().getMultiplicity(end);
-	Object order = Model.getFacade().getOrdering(end);
-
-	multiToUpdate.setText(NotationUtilityUml.generateMultiplicity(multi));
-	orderingToUpdate.setText(getOrderingName(order));
     }
 
     /**
@@ -353,56 +310,37 @@ public class FigAssociation extends FigEdgeModelElement {
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(PropertyChangeEvent e) {
-        super.modelChanged(e);
+    protected void modelAttributeChanged(AttributeChangeEvent e) {
         if (getOwner() == null || getLayer() == null) {
             return;
         }
-        renderingChanged();
-        updateListeners(getOwner(), getOwner());
+        if (e.getPropertyName().equals("isAbstract")
+            || e.getPropertyName().equals("name")) {
+            updateAbstract();
+        } else {
+            LOG.warn("Got an event with a property we're not registered for "
+                    + e.getPropertyName());
+        }
     }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
     protected void renderingChanged() {
-        Object association = getOwner();
-        if (association == null) {
-            return;
-        }
-        Collection ends = Model.getFacade().getConnections(association);
-        if (ends.size() < 2) {
-            return;
-        }
-        updateAbstract();
-        updateEnds(association);
-        chooseArrowHeads(association);
-        srcGroup.calcBounds();
-        destGroup.calcBounds();
-        middleGroup.calcBounds();
-        super.renderingChanged(); // last, since it calls damage()
-    }
-
-    /**
-     * Update the annotations on each end.
-     * 
-     * @param association
-     */
-    private void updateEnds(Object association) {
-        Object[] ends = 
-            Model.getFacade().getConnections(association).toArray();
-        if (ends.length >= 2) {
-            Object ae0 = ends[0];
-            Object ae1 = ends[1];
-            updateEnd(srcMult, srcOrdering, ae0);
-            if (notationProviderSrcRole != null) {
-                srcRole.setText(notationProviderSrcRole.toString());
-            }
-            updateEnd(destMult, destOrdering, ae1);
-            if (notationProviderDestRole != null) {
-                destRole.setText(notationProviderDestRole.toString());
-            }
-        }
+//        Object association = getOwner();
+//        if (association == null) {
+//            return;
+//        }
+//        Collection ends = Model.getFacade().getConnections(association);
+//        if (ends.size() < 2) {
+//            return;
+//        }
+//        updateAbstract();
+////        chooseArrowHeads(association);
+//        srcGroup.calcBounds();
+//        destGroup.calcBounds();
+//        middleGroup.calcBounds();
+//        super.renderingChanged(); // last, since it calls damage()
     }
 
     /**
@@ -410,70 +348,21 @@ public class FigAssociation extends FigEdgeModelElement {
      * 
      * @param association
      */
-    private void chooseArrowHeads(Object association) {
-        assert association != null;
-        Object[] ends = 
-            Model.getFacade().getConnections(association).toArray(); 
-        Object ae0 = ends[0];
-        Object ae1 = ends[1];
-
-        boolean srcNav = Model.getFacade().isNavigable(ae0);
-        boolean destNav = Model.getFacade().isNavigable(ae1);
-        if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS) {
-            srcNav = false;
-            destNav = false;
+    private void applyArrowHeads() {
+        int sourceArrowType = srcGroup.getArrowType();
+        int destArrowType = destGroup.getArrowType();
+        
+        if (SUPPRESS_BIDIRECTIONAL_ARROWS
+                && sourceArrowType > 2
+                && destArrowType > 2) {
+            sourceArrowType -= 3;
+            destArrowType -= 3;
         }
-        sourceArrowHead =
-            chooseArrowHead(Model.getFacade().getAggregation(ae0), srcNav);
-        destArrowHead =
-            chooseArrowHead(Model.getFacade().getAggregation(ae1), destNav);
-        setSourceArrowHead(sourceArrowHead);
-        setDestArrowHead(destArrowHead);
+        
+        setSourceArrowHead(arrowHeads[sourceArrowType]);
+        setDestArrowHead(arrowHeads[destArrowType]);
     }
     
-    private static final ArrowHead NAV_AGGREGATE =
-	new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
-			       new ArrowHeadGreater());
-
-    private static final ArrowHead NAV_COMP =
-	new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
-			       new ArrowHeadGreater());
-
-    /**
-     * @param ak Object of type AggregationKind
-     * @param nav the result of a Model.getFacade().isNavigable(AssociationEnd)
-     * @return the ArrowHead chosen
-     */
-    private ArrowHead chooseArrowHead(Object ak, boolean nav) {
-
-	ArrowHead arrow = ArrowHeadNone.TheInstance;
-
-	if (nav) {
-	    if (Model.getAggregationKind().getNone().equals(ak)
-	            || (ak == null)) {
-		arrow = new ArrowHeadGreater();
-            } else if (Model.getAggregationKind().getAggregate()
-                    .equals(ak)) {
-		arrow = NAV_AGGREGATE;
-            } else if (Model.getAggregationKind().getComposite()
-                    .equals(ak)) {
-		arrow = NAV_COMP;
-            }
-	} else {
-	    if (Model.getAggregationKind().getNone().equals(ak)
-	            || (ak == null)) {
-		arrow = ArrowHeadNone.TheInstance;
-	    } else if (Model.getAggregationKind().getAggregate()
-	            .equals(ak)) {
-		arrow = ArrowHeadDiamond.WhiteDiamond;
-	    } else if (Model.getAggregationKind().getComposite()
-	            .equals(ak)) {
-		arrow = ArrowHeadDiamond.BlackDiamond;
-	    }
-	}
-	return arrow;
-    }
-
     /**
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
@@ -587,28 +476,6 @@ public class FigAssociation extends FigEdgeModelElement {
     }
 
     /**
-     * Returns the name of the OrderingKind.
-     *
-     * @return "{ordered}", "{sorted}" or "" if null or "unordered"
-     */
-    private String getOrderingName(Object orderingKind) {
-	if (orderingKind == null) {
-	    return "";
-	}
-	if (Model.getFacade().getName(orderingKind) == null) {
-	    return "";
-	}
-	if ("".equals(Model.getFacade().getName(orderingKind))) {
-	    return "";
-	}
-	if ("unordered".equals(Model.getFacade().getName(orderingKind))) {
-	    return "";
-	}
-
-	return "{" + Model.getFacade().getName(orderingKind) + "}";
-    }
-
-    /**
      * Updates the name if modelchanged receives an "isAbstract" event.
      */
     protected void updateAbstract() {
@@ -630,16 +497,14 @@ public class FigAssociation extends FigEdgeModelElement {
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
-        if (sourceArrowHead == null || destArrowHead == null) {
-            if (getOwner() == null ) {
-                LOG.error("Trying to paint a FigAssociation without an owner. ");
-            } else {
-                chooseArrowHeads(getOwner()); 
-            }
+        if (getOwner() == null ) {
+            LOG.error("Trying to paint a FigAssociation without an owner. ");
+        } else {
+            applyArrowHeads(); 
         }
-        if (sourceArrowHead != null && destArrowHead != null) {
-	    sourceArrowHead.setLineColor(getLineColor());
-	    destArrowHead.setLineColor(getLineColor());
+        if (getSourceArrowHead() != null && getDestArrowHead() != null) {
+            getSourceArrowHead().setLineColor(getLineColor());
+            getDestArrowHead().setLineColor(getLineColor());
         }
         super.paint(g);
     }
@@ -650,9 +515,9 @@ public class FigAssociation extends FigEdgeModelElement {
     public void paintClarifiers(Graphics g) {
         indicateBounds(getNameFig(), g);
         indicateBounds(srcMult, g);
-        indicateBounds(srcRole, g);
+        indicateBounds(srcGroup.role, g);
         indicateBounds(destMult, g);
-        indicateBounds(destRole, g);
+        indicateBounds(destGroup.role, g);
         super.paintClarifiers(g);
     }
 
@@ -692,10 +557,269 @@ public class FigAssociation extends FigEdgeModelElement {
             super.layoutEdge();
         }
     }
+    
+    private class FigAssociationEndAnnotation extends FigTextGroup {
+
+        private static final long serialVersionUID = 1871796732318164649L;
+        
+        FigRole role;
+        FigOrdering ordering;
+        int arrowType = 0;
+        
+        public FigAssociationEndAnnotation() {
+            role = new FigRole();
+            addFig(role);
+
+            ordering = new FigOrdering();
+            addFig(ordering);
+        }
+        
+        public void setOwner(Object owner) {
+            if (owner != null) {
+                if (!Model.getFacade().isAAssociationEnd(owner)) {
+                    throw new IllegalArgumentException(
+                            "An AssociationEnd was expected");
+                }
+                super.setOwner(owner);
+                ordering.setOwner(owner);
+                role.setOwner(owner);
+                determineArrowHead();
+                Model.getPump().addModelEventListener(this, owner, new String[] {"isNavigable", "aggregation", "participant"});
+            }
+        }
+
+        /**
+         * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
+         */
+        public void removeFromDiagram() {
+            Model.getPump().removeModelEventListener(this, getOwner(), new String[] {"isNavigable", "aggregation", "participant"});
+            super.removeFromDiagram();
+        }
+        
+        public void propertyChange(PropertyChangeEvent pce) {
+            super.propertyChange(pce);
+            if (pce instanceof AttributeChangeEvent
+                && (pce.getPropertyName().equals("isNavigable")
+                    || pce.getPropertyName().equals("aggregation"))) {
+                determineArrowHead();
+                applyArrowHeads();
+            }
+            if (pce instanceof AddAssociationEvent
+                    && pce.getPropertyName().equals("participant")) {
+                FigAssociation.this.determineFigNodes();
+            }
+        }
+        
+        /**
+         * Decide which arrow head should appear
+         */
+        private void determineArrowHead() {
+            assert getOwner() != null;
+
+            Object ak =  Model.getFacade().getAggregation(getOwner());
+            boolean nav = Model.getFacade().isNavigable(getOwner());
+
+            if (nav) {
+                if (Model.getAggregationKind().getNone().equals(ak)
+                        || (ak == null)) {
+                    arrowType = NAV_NONE;
+                } else if (Model.getAggregationKind().getAggregate()
+                        .equals(ak)) {
+                    arrowType = NAV_AGGREGATE;
+                } else if (Model.getAggregationKind().getComposite()
+                        .equals(ak)) {
+                    arrowType = NAV_COMPOSITE;
+                }
+            } else {
+                if (Model.getAggregationKind().getNone().equals(ak)
+                        || (ak == null)) {
+                    arrowType = NONE;
+                } else if (Model.getAggregationKind().getAggregate()
+                        .equals(ak)) {
+                    arrowType = AGGREGATE;
+                } else if (Model.getAggregationKind().getComposite()
+                        .equals(ak)) {
+                    arrowType = COMPOSITE;
+                }
+            }
+        }
+        
+        public int getArrowType() {
+            return arrowType;
+        }
+    }
+} /* end class FigAssociation */
+
+/**
+ * A Fig representing the multiplicty of some model element.
+ * This has potential reuse for other edges showing multiplicity
+ * @author Bob Tarling
+ */
+class FigMultiplicity extends FigSingleLineText implements PropertyChangeListener {
+
+    private static final long serialVersionUID = 5385230942216677015L;
+
+    FigMultiplicity() {
+        super(10, 10, 90, 20, false);
+
+        setTextFilled(false);
+        setJustification(FigText.JUSTIFY_CENTER);
+    }
+
+    public void setOwner(Object owner) {
+        if (owner != null) {
+            super.setOwner(owner);
+            Model.getPump().addModelEventListener(this, owner, "multiplicity");
+            setText();
+        }
+    }
+    
+    public void propertyChange(PropertyChangeEvent pce) {
+        super.propertyChange(pce);
+        if (getOwner() != null && pce instanceof AttributeChangeEvent) {
+            setText();
+        }
+    }
+    
+    private void setText() {
+        assert getOwner() != null;
+        Object multi = Model.getFacade().getMultiplicity(getOwner());
+        setText(NotationUtilityUml.generateMultiplicity(multi));
+    }
 
     /**
-     * The serial version id.
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
-    static final long serialVersionUID = 9100125695919853919L;
+    public void removeFromDiagram() {
+        Model.getPump().removeModelEventListener(this, getOwner(), "multiplicity");
+        super.removeFromDiagram();
+    }
+}
 
-} /* end class FigAssociation */
+/**
+ * A Fig representing the ordering of some model element.
+ * This has potential reuse for other edges showing ordering
+ * @author Bob Tarling
+ */
+class FigOrdering extends FigSingleLineText implements PropertyChangeListener {
+
+    private static final long serialVersionUID = 5385230942216677015L;
+
+    FigOrdering() {
+        super(10, 10, 90, 20, false);
+        setTextFilled(false);
+        setJustification(FigText.JUSTIFY_CENTER);
+    }
+
+    public void setOwner(Object owner) {
+        if (owner != null) {
+            super.setOwner(owner);
+            Model.getPump().addModelEventListener(this, owner, "ordering");
+            setText();
+        }
+    }
+    
+    public void propertyChange(PropertyChangeEvent pce) {
+        super.propertyChange(pce);
+        if (getOwner() != null && pce instanceof AttributeChangeEvent) {
+            setText();
+        }
+    }
+    
+    private void setText() {
+        assert getOwner() != null;
+        setText(getOrderingName(Model.getFacade().getOrdering(getOwner())));
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
+     */
+    public void removeFromDiagram() {
+        Model.getPump().removeModelEventListener(this, getOwner(), "ordering");
+        super.removeFromDiagram();
+    }
+    
+    /**
+     * Returns the name of the OrderingKind.
+     *
+     * @return "{ordered}", "{sorted}" or "" if null or "unordered"
+     */
+    private String getOrderingName(Object orderingKind) {
+        if (orderingKind == null) {
+            return "";
+        }
+        if (Model.getFacade().getName(orderingKind) == null) {
+            return "";
+        }
+        if ("".equals(Model.getFacade().getName(orderingKind))) {
+            return "";
+        }
+        if ("unordered".equals(Model.getFacade().getName(orderingKind))) {
+            return "";
+        }
+        
+        return "{" + Model.getFacade().getName(orderingKind) + "}";
+    }
+}
+
+/**
+ * A Fig representing the ordering of some model element.
+ * This has potential reuse for other edges showing ordering
+ * @author Bob Tarling
+ */
+class FigRole extends FigSingleLineText implements PropertyChangeListener {
+
+    private static final long serialVersionUID = 5385230942216677015L;
+
+    private NotationProvider4 notationProviderRole;
+
+    FigRole() {
+        super(10, 10, 90, 20, false);
+        setTextFilled(false);
+        setJustification(FigText.JUSTIFY_CENTER);
+    }
+
+    public void setOwner(Object owner) {
+        if (owner != null) {
+            super.setOwner(owner);
+            notationProviderRole =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
+                        owner);
+            Model.getPump().addModelEventListener(this, owner, new String[] {"name", "visibility"});
+            setText();
+        }
+    }
+    
+    public void propertyChange(PropertyChangeEvent pce) {
+        super.propertyChange(pce);
+        if (getOwner() != null && pce instanceof AttributeChangeEvent) {
+            setText();
+        }
+    }
+    
+    private void setText() {
+        assert getOwner() != null;
+        assert notationProviderRole != null;
+        setText(notationProviderRole.toString());
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
+     */
+    public void removeFromDiagram() {
+        Model.getPump().removeModelEventListener(
+                this, 
+                getOwner(), 
+                new String[] {"name", "visibility"});
+        super.removeFromDiagram();
+    }
+    
+    public String getParsingHelp() {
+        return notationProviderRole.getParsingHelp();
+    }
+    
+    public void parse() {
+        setText(notationProviderRole.parse(getText()));
+    }
+}

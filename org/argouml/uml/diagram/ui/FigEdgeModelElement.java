@@ -64,6 +64,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.InvalidElementException;
@@ -562,8 +563,39 @@ public abstract class FigEdgeModelElement
              * then the UML model has been changed.*/
             modelChanged(pve);
         }
+        if (pve instanceof AttributeChangeEvent) {
+            modelAttributeChanged((AttributeChangeEvent) pve);
+        } else if (pve instanceof AddAssociationEvent) {
+            modelAssociationAdded((AddAssociationEvent) pve);
+        } else if (pve instanceof RemoveAssociationEvent) {
+            modelAssociationRemoved((RemoveAssociationEvent) pve);
+        }
         damage();  // TODO: (MVW) Is this required?
         // After all these events? I doubt it...
+    }
+    
+    /**
+     * Called whenever we receive an AttributeChangeEvent
+     * @param ace the event
+     */
+    protected void modelAttributeChanged(AttributeChangeEvent ace) {
+        
+    }
+
+    /**
+     * Called whenever we receive an AddAssociationEvent
+     * @param aae the event
+     */
+    protected void modelAssociationAdded(AddAssociationEvent aae) {
+        
+    }
+
+    /**
+     * Called whenever we receive an RemoveAssociationEvent
+     * @param rae the event
+     */
+    protected void modelAssociationRemoved(RemoveAssociationEvent rae) {
+        
     }
 
     /**
@@ -739,7 +771,7 @@ public abstract class FigEdgeModelElement
 
         // Update attached node figures
         // TODO: Presumably this should only happen on a add or remove event
-        updateClassifiers();
+        determineFigNodes();
     }
     
     /**
@@ -1012,13 +1044,19 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * <p>Updates the classifiers the edge is attached to.  <p>Calls a
-     * helper method (layoutThisToSelf) to avoid this edge
+     * <p>Determines if the FigEdge is currently connected to the correct
+     * FigNodes, if not the edges is the correct FigNodes set and the edge
+     * rerouted.
+     * <p>Typically this is used when a user has amended from the property
+     * panel a relationship from one model element to another and the graph
+     * needs to react to that change.
+     * <p>e.g. if the participant of an association end is changed.
+     * <p>Calls a helper method (layoutThisToSelf) to avoid this edge
      * disappearing if the new source and dest are the same node.
      *
      * @return boolean whether or not the update was sucessful
      */
-    protected boolean updateClassifiers() {
+    protected boolean determineFigNodes() {
         Object owner = getOwner();
         if (owner == null || getLayer() == null) {
             LOG.error("The FigEdge has no owner or its layer is null");

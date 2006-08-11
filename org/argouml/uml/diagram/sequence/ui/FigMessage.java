@@ -289,9 +289,9 @@ public abstract class FigMessage
     /**
      * This won't work, so this implementation does nothing.
      *
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateClassifiers()
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#determineFigNodes()
      */
-    protected boolean updateClassifiers() {
+    protected boolean determineFigNodes() {
         return true;
     }
 
