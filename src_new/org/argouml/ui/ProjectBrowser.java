@@ -722,6 +722,9 @@ public final class ProjectBrowser
      *
      * @param tabName The tabpage label
      * @return the tabpage
+     * @deprecated by Andrea Nironi (0.22 August 2006). Replaced by
+     *             {@link org.argouml.ui.ProjectBrowser#getTab(Class tabClass)}.
+     *             See issue 3278.
      */
     public JPanel getNamedTab(String tabName) {
         JPanel panel;

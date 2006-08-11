@@ -40,8 +40,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Vector;
 
-import javax.swing.JPanel;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -51,7 +49,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.persistence.ZargoFilePersister;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
@@ -87,7 +84,6 @@ public class TestPropertyPanels extends TestCase {
      * @see #setUp
      */
     private static DetailsPane theDetailsPane = null;
-    private JPanel propertyPane;
 
     // we need the translator to work in order to access
     // the property panels. It is also a common source for
@@ -221,45 +217,6 @@ public class TestPropertyPanels extends TestCase {
         return elem;
     }
 
-
-    /**
-     * @see junit.framework.TestCase#runTest()
-     */
-    protected void runTest() throws Throwable {
-        testPropertyTab();
-    }
-
-    /**
-     * @throws Throwable any error or exception
-     */
-    public void testPropertyTab() throws Throwable {
-        TargetEvent e =
-	    new TargetEvent(this,
-			    TargetEvent.TARGET_SET,
-			    new Object[] {
-				null,
-			    },
-			    new Object[] {
-				modelElement,
-			    });
-        theDetailsPane.targetSet(e);
-
-        propertyPane = /*TabProps */
-            theDetailsPane.getNamedTab(Translator.localize("tab.properties"));
-
-        // currently this is in this try block as it does not work
-        // _propertyPanel always has size 0,0
-        /*
-          try {
-            saveImageAsJPEG((BufferedImage)createImageFromComponent(
-                _propertyPane),
-                1000000, "/Users/mkl/argoimg/"+this.getName() + ".jpg");
-        }
-        catch (Exception ex) {
-           // System.out.println(ex);
-        }
-         */
-    }
     /*
     public static Image createImageFromComponent(Component comp) {
         BufferedImage image = new BufferedImage(comp.getWidth(),
@@ -296,7 +253,7 @@ class ChildGenModelElements implements ChildGenerator {
         if (o instanceof Project) {
             Project p = (Project) o;
             return new EnumerationComposite(p.getUserDefinedModels().elements(),
-            p.getDiagrams().elements());
+                    p.getDiagrams().elements());
         }
 
         if (o instanceof Diagram) {

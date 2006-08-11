@@ -28,12 +28,13 @@ import javax.swing.JPanel;
 
 import junit.framework.TestCase;
 
-import org.argouml.i18n.Translator;
+import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.ui.TabProps;
 import org.tigris.swidgets.Horizontal;
 
 /**
@@ -54,10 +55,8 @@ public class TestDetailsPane extends TestCase {
      */
     public void testTargetSet() {
         DetailsPane pane = new DetailsPane("detail", Horizontal.getInstance());
-        JPanel todoPane =
-            pane.getNamedTab(Translator.localize("tab.todo-item"));
-        JPanel propertyPane =
-            pane.getNamedTab(Translator.localize("tab.properties"));
+        JPanel todoPane = pane.getTab(TabToDo.class);
+        JPanel propertyPane = pane.getTab(TabProps.class);
 
         assertNotNull(todoPane);
         assertNotNull(propertyPane);
