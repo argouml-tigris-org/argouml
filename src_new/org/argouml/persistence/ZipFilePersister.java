@@ -215,6 +215,14 @@ public class ZipFilePersister extends XmiFilePersister {
             InputSource is = new InputSource(
                     new XmiInputStream(stream, this, 10000000, 100000));
             is.setSystemId(file.toURL().toExternalForm());
+
+            // Add the path of the current model to the search path, so we can
+            // find linked models relative it
+            String path = file.getParent();
+            if (path != null) {
+                System.setProperty("org.argouml.model.modules_search_path",
+                        path);
+            }
             
             XMIParser.getSingleton().readModels(p, is);
             Object model = XMIParser.getSingleton().getCurModel();
