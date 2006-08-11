@@ -32,7 +32,6 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -52,26 +51,18 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionDeleteConcurrentRegion extends UndoableAction {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-	/** logger */
-    private static final Logger LOG =
-        Logger.getLogger(ActionDeleteConcurrentRegion.class);
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    /**
+     * Construct an action to delete the concurrent region of a concurrent
+     * composite state.
+     */
     public ActionDeleteConcurrentRegion() {
         super(Translator.localize("action.delete-concurrent-region"),
-                ResourceLoaderWrapper.lookupIcon("action.delete-concurrent-region"));
+                ResourceLoaderWrapper.lookupIcon(
+                        "action.delete-concurrent-region"));
         // Set the tooltip string:
         putValue(Action.SHORT_DESCRIPTION, 
                 Translator.localize("action.delete-concurrent-region"));
     }
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
 
     /**
      * @see javax.swing.Action#isEnabled()
@@ -90,68 +81,66 @@ public class ActionDeleteConcurrentRegion extends UndoableAction {
      */
     public void actionPerformed(ActionEvent ae) {
         super.actionPerformed(ae);
-        try {
-            /*Here the actions to delete a region.
-            We assume the only figs enclosed in a concurrent composite state
-            are concurrent region figs*/
-            Fig f = (Fig) TargetManager.getInstance().getFigTarget();
-            Fig encloser = null;
 
-            int height = 0;
-            Rectangle encBound;
-            Project p = ProjectManager.getManager().getCurrentProject();
-
-            if (Model.getFacade().isAConcurrentRegion(f.getOwner()))
-                encloser = f.getEnclosingFig();
-
-            Vector nodesInside;
-            nodesInside = ((Vector) encloser.getEnclosedFigs().clone());
-            int index = nodesInside.indexOf(f);
-            Rectangle r = f.getBounds();
-            encBound = encloser.getBounds();
-            if (Model.getFacade().isAConcurrentRegion(f.getOwner()))
-                p.moveToTrash(f.getOwner());
-            //It wasnt the last region
-            if (index < nodesInside.size() - 1) {
-                Rectangle rFig =
-                    ((Fig) nodesInside.elementAt(index + 1)).getBounds();
-                height = rFig.y - r.y;
-                for (int i = ++index; i < nodesInside.size();  i++)
-                    ((FigNodeModelElement) nodesInside.elementAt(i))
+        /*
+         * Actions to delete a region. We assume the only figs enclosed in a
+         * concurrent composite state are concurrent region figs.
+         */
+        Fig f = TargetManager.getInstance().getFigTarget();
+        Fig encloser = null;
+        
+        int height = 0;
+        Rectangle encBound;
+        Project p = ProjectManager.getManager().getCurrentProject();
+        
+        if (Model.getFacade().isAConcurrentRegion(f.getOwner())) {
+            encloser = f.getEnclosingFig();
+        }
+        
+        Vector nodesInside = ((Vector) encloser.getEnclosedFigs().clone());
+        int index = nodesInside.indexOf(f);
+        Rectangle r = f.getBounds();
+        encBound = encloser.getBounds();
+        if (Model.getFacade().isAConcurrentRegion(f.getOwner())) {
+            p.moveToTrash(f.getOwner());
+        }
+        
+        // Adjust the position of the remaining nodes
+        if (index < nodesInside.size() - 1) {
+            Rectangle rFig =
+                ((Fig) nodesInside.elementAt(index + 1)).getBounds();
+            height = rFig.y - r.y;
+            for (int i = ++index; i < nodesInside.size();  i++) {
+                ((FigNodeModelElement) nodesInside.elementAt(i))
                         .displace(0, -height);
             }
-            //It was the last region
-            else
-                height = r.height + 4;
-
-            ((FigCompositeState) encloser).setBounds(encBound.height - height);
-            ((FigConcurrentRegion) ((Vector) encloser.getEnclosedFigs())
-                    .elementAt(0)).setLineColor(Color.white);
-
-            /*When only one concurrent region remains it must be erased and the
-              composite state sets non concurent*/
-            if (((Vector) encloser.getEnclosedFigs()).size() == 1) {
-                f = ((Fig) encloser.getEnclosedFigs().elementAt(0));
-                nodesInside = ((Vector) f.getEnclosedFigs());
-                Model.getStateMachinesHelper().setConcurrent(
-                        encloser.getOwner(), false);
-                if (!nodesInside.isEmpty()) {
-                    for (int i = 0; i < nodesInside.size(); i++) {
-                        FigStateVertex curFig =
-                            (FigStateVertex) nodesInside.elementAt(i);
-                        curFig.setEnclosingFig(encloser);
-                    }
-                }
-                p.moveToTrash(f.getOwner());
-
-            }
-
-
-
-        } catch (Exception ex) {
-            LOG.error(
-                ex);
+        } else {
+            height = r.height + 4;
         }
+        
+        ((FigCompositeState) encloser).setBounds(encBound.height - height);
+        ((FigConcurrentRegion) (encloser.getEnclosedFigs())
+                .elementAt(0)).setLineColor(Color.white);
+
+        // When only one concurrent region remains it must be erased and
+        // the composite state set to non-concurrent
+        
+        if ((encloser.getEnclosedFigs()).size() == 1) {
+            f = ((Fig) encloser.getEnclosedFigs().elementAt(0));
+            nodesInside = f.getEnclosedFigs();
+            Model.getStateMachinesHelper().setConcurrent(
+                    encloser.getOwner(), false);
+            if (!nodesInside.isEmpty()) {
+                for (int i = 0; i < nodesInside.size(); i++) {
+                    FigStateVertex curFig =
+                        (FigStateVertex) nodesInside.elementAt(i);
+                    curFig.setEnclosingFig(encloser);
+                }
+            }
+            p.moveToTrash(f.getOwner());
+            
+        }
+
     }
 
 }
