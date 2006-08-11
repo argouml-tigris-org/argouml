@@ -31,7 +31,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -43,7 +42,6 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.cmd.ActionOpenBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.util.osdep.StartBrowser;
 
@@ -116,17 +114,6 @@ public class WizStep extends JPanel
      * The constructor.
      */
     public WizStep() {
-        this(new ActionOpenBrowser());
-    }
-    /**
-     * The constructor.
-     * @param helpAction
-     *      an action which does the needful,
-     *      e.g. open a browser, display help,
-     *      when the according button had been pressed.
-     *
-     */
-    public WizStep(Action helpAction) {
 	setMnemonic(backButton, "mnemonic.button.back");
 	setMnemonic(nextButton, "mnemonic.button.next");
 	setMnemonic(finishButton, "mnemonic.button.finish");
@@ -154,7 +141,7 @@ public class WizStep extends JPanel
 	backButton.addActionListener(this);
 	nextButton.addActionListener(this);
 	finishButton.addActionListener(this);
-	helpButton.addActionListener(helpAction);
+	helpButton.addActionListener(this);
     }
 
     ////////////////////////////////////////////////////////////////
