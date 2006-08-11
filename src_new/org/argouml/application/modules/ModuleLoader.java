@@ -55,6 +55,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.i18n.Translator;
+import org.argouml.persistence.PersistenceManager;
 
 /**
  * Handles loading of modules and plugins for ArgoUML.
@@ -451,7 +452,8 @@ public class ModuleLoader {
     public boolean loadModules(InputStream is, String filename) {
         try {
 	    LineNumberReader lnr =
-		new LineNumberReader(new InputStreamReader(is));
+		new LineNumberReader(new InputStreamReader(is, 
+                        PersistenceManager.getEncoding()));
 	    while (true) {
 	        String realLine = lnr.readLine();
 		if (realLine == null) {

@@ -88,7 +88,8 @@ public abstract class MemberFilePersister {
             BufferedReader reader =
                 new BufferedReader(
                         new InputStreamReader(
-                                new FileInputStream(file), "UTF-8"));
+                                new FileInputStream(file), 
+                                PersistenceManager.getEncoding()));
 
             // Skip the <?xml... first line
             String line = reader.readLine();

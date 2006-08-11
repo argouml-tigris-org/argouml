@@ -51,7 +51,8 @@ import org.xml.sax.InputSource;
  * The file persister for the UML model.
  * @author Bob Tarling
  */
-public class ModelMemberFilePersister extends MemberFilePersister implements XmiExtensionWriter, XmiExtensionParser {
+public class ModelMemberFilePersister extends MemberFilePersister 
+    implements XmiExtensionWriter, XmiExtensionParser {
 
     /**
      * Logger.
@@ -82,7 +83,7 @@ public class ModelMemberFilePersister extends MemberFilePersister implements Xmi
         // of argouml if a project is corrupted. Issue 913
         // Created xmireader with method getErrors to check if parsing went well
         try {
-            source.setEncoding("UTF-8");
+            source.setEncoding(PersistenceManager.getEncoding());
             XMIParser.getSingleton().readModels(project, source);
             mmodel = XMIParser.getSingleton().getCurModel();
         } catch (OpenException e) {
@@ -130,7 +131,10 @@ public class ModelMemberFilePersister extends MemberFilePersister implements Xmi
         try {
             ProjectMemberModel pmm = (ProjectMemberModel) member;
             Object model = pmm.getModel();
-            XmiWriter xmiWriter = Model.getXmiWriter(model, w, ArgoVersion.getVersion() + "(" + UmlFilePersister.PERSISTENCE_VERSION + ")");
+            XmiWriter xmiWriter = 
+                Model.getXmiWriter(model, w, 
+                        ArgoVersion.getVersion() + "(" 
+                        + UmlFilePersister.PERSISTENCE_VERSION + ")");
             LOG.info("Registering extension writer to XmiWriter");
             xmiWriter.setXmiExtensionWriter(this);
             xmiWriter.write();
@@ -149,11 +153,13 @@ public class ModelMemberFilePersister extends MemberFilePersister implements Xmi
         for (Iterator it = project.getMembers().iterator(); it.hasNext(); ) {
             ProjectMember projectMember = (ProjectMember) it.next();
             
-            writer.write("<XMI.extension xmi.extender='ArgoUML' xmi.label='argo'>\n");
+            writer.write(
+                "<XMI.extension xmi.extender='ArgoUML' xmi.label='argo'>\n");
             
             try {
                 Hashtable templates =
-                    TemplateReader.getInstance().read("/org/argouml/persistence/argo.tee");
+                    TemplateReader.getInstance().read(
+                            "/org/argouml/persistence/argo.tee");
                 OCLExpander expander = new OCLExpander(templates);
                 expander.expand(writer, project);
             } catch (Exception e) {
@@ -195,7 +201,7 @@ public class ModelMemberFilePersister extends MemberFilePersister implements Xmi
         if (pm instanceof ProjectMemberDiagram) {
             persister =
                 PersistenceManager.getInstance()
-                .getDiagramMemberFilePersister();
+                    .getDiagramMemberFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
         }

@@ -48,6 +48,7 @@ import java.util.jar.Manifest;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
+import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.GUI;
 
 /**
@@ -497,9 +498,12 @@ public final class ModuleLoader2 {
 	    }
 
 	    try {
-		argoHome = java.net.URLDecoder.decode(argoHome, "UTF-8");
+		argoHome = java.net.URLDecoder.decode(argoHome, 
+                        PersistenceManager.getEncoding());
 	    } catch (UnsupportedEncodingException e) {
-		LOG.warn("Encoding UTF-8 is unknown.");
+		LOG.warn("Encoding " 
+                        + PersistenceManager.getEncoding() 
+                        + " is unknown.");
 	    }
 
 	    LOG.info("argoHome is " + argoHome);
