@@ -357,11 +357,17 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 addOtherModelEventListeners(comboBoxTarget);
                 
                 buildingModel = true;
-                buildModelList();
-                // Do not set buildingModel = false here, 
-                // otherwise the action for selection is performed.
-                setSelectedItem(getSelectedModelElement());
-                buildingModel = false;
+                try {
+                    buildModelList();
+                    // Do not set buildingModel = false here, 
+                    // otherwise the action for selection is performed.
+                    setSelectedItem(getSelectedModelElement());
+                } catch (InvalidElementException e) {
+                    LOG.warn("buildModelList attempted to operate on " 
+                            + "deleted element");
+                } finally {
+                    buildingModel = false;
+                }
                 
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
