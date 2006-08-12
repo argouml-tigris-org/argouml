@@ -236,9 +236,19 @@ class MyLocale {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return myLocale.toString() + " ("
-            + myLocale.getDisplayLanguage(myLocale) + " "
-            + myLocale.getDisplayCountry(myLocale) + ")";
+        StringBuffer displayString = new StringBuffer(myLocale.toString());
+        displayString.append(" (");
+        displayString.append(myLocale.getDisplayLanguage(myLocale));
+        if (myLocale.getDisplayCountry(myLocale) != null 
+                && myLocale.getDisplayCountry(myLocale).length() > 0) {
+            displayString.append(" ");
+            displayString.append(myLocale.getDisplayCountry(myLocale));
+        }
+        displayString.append(")");
+        if (myLocale.equals(Translator.getSystemDefaultLocale())) {
+            displayString.append(" - Default");
+        }
+        return displayString.toString();
     }
 
     static Collection getLocales() {
