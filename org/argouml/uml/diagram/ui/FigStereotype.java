@@ -63,7 +63,7 @@ public class FigStereotype extends CompartmentFigText {
     */
     public FigStereotype(int x, int y, int w, int h, Fig figCompartment, 
             Object owner) {
-        super(x, y, w, h, figCompartment, null);
+        super(x, y, w, h, figCompartment, "name");
         setFilled(false);
         setLineWidth(0);
         setFont(FigNodeModelElement.getLabelFont());
@@ -76,35 +76,21 @@ public class FigStereotype extends CompartmentFigText {
         setOwner(owner);
     }
 
-
-    /**
-     * The owner of a FigStereotype is a stereotype object
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object owner) {
-        if (owner != null) {
-            super.setOwner(owner);
-            Model.getPump().addModelEventListener(this, owner, "name");
-        }
-    }
-    
     public void propertyChange(PropertyChangeEvent event) {
+        super.propertyChange(event);
         if (event instanceof AttributeChangeEvent) {
             if (event.getPropertyName().equals("name")) {
-                setText(event.getNewValue().toString());
+                // TODO: Bob says - this is required to get over some bug
+                // where the diagram doesn't refresh itself. Cause to be
+                // fixed in GEF
                 Globals.curEditor()
                     .getLayerManager().getActiveLayer().damageAll();
-            } else {
-                LOG.warn("Got an unexpected property");
             }
         }
     }
     
-    /**
-     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
-     */
-    public void removeFromDiagram() {
-        Model.getPump().removeModelEventListener(this, getOwner(), "name");
+    protected void setText() {
+        setText(Model.getFacade().getName(getOwner()));
     }
     
     /**
