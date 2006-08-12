@@ -66,6 +66,7 @@ import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.ui.ArgoDialog;
+import org.tigris.swidgets.BorderSplitPane;
 
 /**
  * Dialog box to list all critics and allow editing of some of their
@@ -136,7 +137,7 @@ public class CriticBrowserDialog extends ArgoDialog
     private JTextField className = new JTextField("", NUM_COLUMNS);
     private JTextField headline = new JTextField("", NUM_COLUMNS);
     private JComboBox priority  = new JComboBox(PRIORITIES);
-    private JTextField moreInfo = new JTextField("", NUM_COLUMNS);
+    private JTextField moreInfo = new JTextField("", NUM_COLUMNS - 4);
     private JTextArea desc      = new JTextArea("", 6, NUM_COLUMNS);
     private JComboBox useClar   = new JComboBox(USE_CLAR);
 
@@ -158,11 +159,12 @@ public class CriticBrowserDialog extends ArgoDialog
      *
      */
     public CriticBrowserDialog() {
-	super(Translator.localize("dialog.browse.label.critics"), true);
+	super(Translator.localize("dialog.browse.label.critics"), false);
 
 	JPanel mainContent = new JPanel();
 	mainContent.setLayout(new BorderLayout(10, 10));
-
+        BorderSplitPane bsp = new BorderSplitPane();
+       
 	// Critics Table
 	JPanel tablePanel = new JPanel(new BorderLayout(5, 5));
 
@@ -203,15 +205,17 @@ public class CriticBrowserDialog extends ArgoDialog
 					       + descCol.getWidth()
 					       + actCol.getWidth() + 20,
 					       0));
-
-	mainContent.add(tablePanel, BorderLayout.CENTER);
-
+        bsp.add(tablePanel, BorderSplitPane.CENTER);
+        
 	// Critic Details panel
-
-	JPanel detailsPanel = new JPanel(new GridBagLayout());
-
+        JPanel detailsPanel = new JPanel(new GridBagLayout());
+        detailsPanel.setBorder(BorderFactory.createTitledBorder(
+                Translator.localize(
+                        "dialog.browse.titled-border.critic-details")));
+        
 	GridBagConstraints labelConstraints = new GridBagConstraints();
 	labelConstraints.anchor = GridBagConstraints.EAST;
+        labelConstraints.fill = GridBagConstraints.BOTH;
 	labelConstraints.gridy = 0;
 	labelConstraints.gridx = 0;
 	labelConstraints.gridwidth = 1;
@@ -220,15 +224,14 @@ public class CriticBrowserDialog extends ArgoDialog
 
 	GridBagConstraints fieldConstraints = new GridBagConstraints();
 	fieldConstraints.anchor = GridBagConstraints.WEST;
-	fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
+	fieldConstraints.fill = GridBagConstraints.BOTH;
 	fieldConstraints.gridy = 0;
 	fieldConstraints.gridx = 1;
 	fieldConstraints.gridwidth = 3;
 	fieldConstraints.gridheight = 1;
-	fieldConstraints.weightx = 1.0;
+        fieldConstraints.weightx = 1.0;
 	fieldConstraints.insets = new Insets(0, 4, 5, 10);
 
-	className.setEditable(false);
 	className.setBorder(null);
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
@@ -249,14 +252,29 @@ public class CriticBrowserDialog extends ArgoDialog
 	fieldConstraints.gridy = 3;
 	detailsPanel.add(moreInfoLabel, labelConstraints);
 	JPanel moreInfoPanel =
-	    new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-	moreInfoPanel.add(moreInfo);
-	moreInfoPanel.add(new JLabel(" ")); // spacing
-	moreInfoPanel.add(goButton);
+	    new JPanel(new GridBagLayout());
+        GridBagConstraints gridConstraints = new GridBagConstraints();
+        gridConstraints.anchor = GridBagConstraints.WEST;
+        gridConstraints.gridx = 0;
+        gridConstraints.gridy = 0;
+        gridConstraints.weightx = 100;
+        gridConstraints.fill = GridBagConstraints.BOTH;
+        gridConstraints.insets = new Insets(0, 0, 5, 0);
+	moreInfoPanel.add(moreInfo, gridConstraints);
+
+        gridConstraints.anchor = GridBagConstraints.EAST;
+        gridConstraints.gridx = 1;
+        gridConstraints.fill = GridBagConstraints.NONE;
+        gridConstraints.insets = new Insets(0, 10, 5, 0);
+        gridConstraints.weightx = 0;
+	moreInfoPanel.add(goButton, gridConstraints);
+        moreInfoPanel.setMinimumSize(new Dimension(priority.getWidth(),
+                priority.getHeight()));
 	detailsPanel.add(moreInfoPanel, fieldConstraints);
 
 	labelConstraints.gridy = 4;
 	fieldConstraints.gridy = 4;
+        fieldConstraints.weighty = 3.0;
 	labelConstraints.anchor = GridBagConstraints.NORTHEAST;
 	detailsPanel.add(descLabel, labelConstraints);
 	detailsPanel.add(new JScrollPane(desc), fieldConstraints);
@@ -267,6 +285,7 @@ public class CriticBrowserDialog extends ArgoDialog
 	labelConstraints.anchor = GridBagConstraints.EAST;
 	labelConstraints.gridy = 5;
 	fieldConstraints.gridy = 5;
+        fieldConstraints.weighty = 0;
 	detailsPanel.add(clarifierLabel, labelConstraints);
 	detailsPanel.add(useClar, fieldConstraints);
 
@@ -278,34 +297,42 @@ public class CriticBrowserDialog extends ArgoDialog
 	buttonPanel.add(networkButton);
 	detailsPanel.add(new JLabel(""), labelConstraints);
 	detailsPanel.add(buttonPanel, fieldConstraints);
+        bsp.add(detailsPanel, BorderSplitPane.EAST);
+        
+	this.addListeners();
+        this.enableFieldsAndButtons();
 
-	JPanel detailsContainer =
-	    new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-	detailsContainer.setBorder(BorderFactory.createTitledBorder(
-            Translator.localize("dialog.browse.titled-border.critic-details")));
-	detailsContainer.add(detailsPanel);
-	mainContent.add(detailsContainer, BorderLayout.EAST);
-
-	goButton.addActionListener(this);
-	networkButton.addActionListener(this);
-	wakeButton.addActionListener(this);
-	configButton.addActionListener(this);
-	headline.getDocument().addDocumentListener(this);
-	moreInfo.getDocument().addDocumentListener(this);
-	desc.getDocument().addDocumentListener(this);
-	priority.addItemListener(this);
-	useClar.addItemListener(this);
-
-	goButton.setEnabled(false);
-	wakeButton.setEnabled(false);
-	networkButton.setEnabled(false);
-	configButton.setEnabled(false);
-
+        mainContent.add(bsp);
 	setResizable(true);
 	setContent(mainContent);
 	numCriticBrowser++;
     }
 
+    private void addListeners() {
+        goButton.addActionListener(this);
+        networkButton.addActionListener(this);
+        wakeButton.addActionListener(this);
+        configButton.addActionListener(this);
+        headline.getDocument().addDocumentListener(this);
+        moreInfo.getDocument().addDocumentListener(this);
+        desc.getDocument().addDocumentListener(this);
+        priority.addItemListener(this);
+        useClar.addItemListener(this);
+    }
+
+    private void enableFieldsAndButtons() {
+        className.setEditable(false);
+        headline.setEditable(false);
+        priority.setEnabled(false);
+        desc.setEditable(false);
+        moreInfo.setEditable(false);
+        
+        goButton.setEnabled(false);
+        wakeButton.setEnabled(false);
+        networkButton.setEnabled(false);
+        configButton.setEnabled(false);
+    }
+    
     /**
      * @param t the new target
      */
