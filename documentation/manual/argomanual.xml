@@ -318,6 +318,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <listitem>
 
+            <para>
+              It is free.
+            </para>
+
+          </listitem>
+
+          <listitem>
+
             <para>ArgoUML draws on research in cognitive psychology to 
             provide novel features that increase productivity by 
             supporting the cognitive needs of object-oriented software 
@@ -663,6 +671,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       </para>
 
       <para>
+        First you will become familiar with the feel of the product and then
+        we will go through an analysis and development process for a test case.
+        Not every nook and cranny of the product will be demonstrated.
+        That amount of detail are given in the reference materials to be
+        found in subsequent parts of this document.
+      </para>
+
+      <para>
+        The state of the model at the end of key sections will be available in
+        .zargo files.
+        These are available so that you can play with various aspects not
+        specifically covered in this tutorial and then
+        restore yourself back to the proper state of the model in your work area.
+        These .zargo files will be identified at the end of the sections whose
+        work they represent.
+      </para>
+
+      <para>
         An ATM (automated teller machine) project has been chosen as a case study
         to demonstrate the various aspects of modeling that ArgoUML offers.
         In subsequent sections we are going to develop the ATM example into
@@ -679,15 +705,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       </para>
 
       <para>
-        The state of the model at the end of key sections will be available in
-        .zargo files.
-        These are available so that you can play with various alternatives and
-        restore yourself back to the proper state of the model in your work area.
-        These .zargo files will be identified at the end of the sections whose
-        work they represent.
-      </para>
-
-      <para>
         The case study will be an ATM system.
         Your company is FlyByNight Industries.
         You are going to play two roles.
@@ -696,11 +713,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <para>
         We are not going to build a physical ATM, of course.
-      </para>
-
-      <para>
-        First you will become familiar with the feel of the product and then
-        we will go through an analysis and development process for a test case.
       </para>
 
       <para>
@@ -818,8 +830,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </listitem>
 
-          <indexterm><primary>Analysis</primary></indexterm> 
           <listitem>
+            <indexterm><primary>Analysis</primary></indexterm> 
 
             <para>Analysis. We take the requirements and start to 
             recast them in the language of a putative solution—the 
@@ -831,8 +843,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </listitem>
 
-          <indexterm><primary>Design</primary></indexterm>
           <listitem>
+            <indexterm><primary>Design</primary></indexterm>
 
             <para>Design. We take the specification from the Analysis 
             phase and construct the solution in full detail. We are 
@@ -1141,9 +1153,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>A Development Process for This Manual</title>
+          <title>A Development Process for This Tutorial</title>
 
-          <para>For the purpose of this manual we will use a stripped 
+          <para>For the purpose of this tutorial we will use a stripped 
           down iterative process with recursive development, loosely 
           akin to RUP. The case study will take us through the first 
           iteration, although at the end of the tutorial section of the 
@@ -1270,9 +1282,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <itemizedlist>
 
-              <listitem><emphasis>Reflection-in-Action</emphasis>
-
+              <listitem><para><emphasis>Reflection-in-Action</emphasis>
                 <indexterm><primary>Reflection-in-Action</primary></indexterm>
+                </para>
+                
                 <para>
                   This theory observes that designers of complex systems do not
                   conceive a design fully-formed. Instead, 
@@ -1286,9 +1299,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </para>
               </listitem>
 
-              <listitem><emphasis>Opportunistic Design</emphasis>
-
+              <listitem><para><emphasis>Opportunistic Design</emphasis>
                 <indexterm><primary>Opportunistic Design</primary></indexterm>
+                </para>
+
                 <para>
                   A theory within cognitive psychology suggesting that although
                   designers plan and describe their work in an ordered, hierarchical
@@ -1303,10 +1317,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </para>
               </listitem>
 
-              <listitem><emphasis>Comprehension and Problem Solving</emphasis>
-
+              <listitem><para><emphasis>Comprehension and Problem Solving</emphasis>
                 <indexterm><primary>Comprehension</primary></indexterm>
                 <indexterm><primary>Problem Solving</primary></indexterm>
+                </para>
+
                 <para>
                   A design visualization theory within cognitive psychology.
                   The theory notes that designers must bridge a gap between their
@@ -1471,7 +1486,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 language for representing vector graphics.
                 It was a W3C draft, but was not adopted as a recommendation.
                 PGML and VML, another XML-based vector graphics language, were
-                later joined and improved upon to create SVG.
+                later joined and improved upon to create SVG (see below).
               </para></listitem>
                 
               <listitem><para>
@@ -1935,6 +1950,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             user interface.
             Start by reading the introduction to the User Interface Reference.
             See <xref linkend="ch.ref.ui"/>.
+            You should also read the <xref linkend="s1.ref.mouse"/>
           </para>
 
           <para>
@@ -2025,48 +2041,42 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>The Editing Pane</title>
 
+            <para>
+              At this point take some time to read
+              <xref linkend="ch.ref.editpane"/>.
+            </para>
+
+            <para>
+              As we go through the Editing pane changes will sometimes occur in the
+              Details and the To-Do panes.
+              Pay no attention to them for now.
+              We will attend to them when we cover those panes.
+            </para>
+
             <note>
 
               <itemizedlist>
 
-                <listitem>Reading assignment.</listitem>
+                <listitem><para>Walk through a couple of changes.</para></listitem>
 
-                <listitem>Walk through a couple of changes.</listitem>
+                <listitem><para>Add some stuff.</para></listitem>
 
-                <listitem>Add some stuff.</listitem>
+                <listitem><para>Delete some stuff.</para></listitem>
 
-                <listitem>Delete some stuff.</listitem>
+                <listitem><para>Resize things.</para></listitem>
 
-                <listitem>Resize things.</listitem>
+                <listitem><para>Select stuff with click and drag.</para></listitem>
 
-                <listitem>Select stuff with click and drag.</listitem>
+                <listitem><para>Select stuff with click and ctrl click.</para></listitem>
 
-                <listitem>Select stuff with click and ctrl click.</listitem>
+                <listitem><para>Edit names inline.</para></listitem>
 
-                <listitem>Edit names inline.</listitem>
-
-                <listitem>Remove "images/tutorial/editoverview.gif"
-                from file system.</listitem>
+                <listitem><para>Remove "images/tutorial/editoverview.gif"
+                from file system.</para></listitem>
 
               </itemizedlist>
 
             </note>
-
-            <!--para><xref linkend="fig.tut.editoverview"/> shows the 
-            Editing Pane.</para>
-
-            <figure float="1" id="fig.tut.editoverview">
-
-              <title>Overview of the Editing Pane</title>
-
-              <screenshot><mediaobject><imageobject>
-              <imagedata align="center"
-               fileref="images/tutorial/editoverview.gif"
-               format="GIF"/></imageobject></mediaobject></screenshot>
-            </figure>
-
-            <para>This is the Editing Pane, where we can edit our 
-            diagram in a graphical way.</para-->
 
           </sect3>
 
@@ -2074,56 +2084,43 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>The Details Pane</title>
 
+            <para>
+              At this point take some time to read
+              <xref linkend="ch.ref.detpane"/>.
+            </para>
+
             <note>
 
               <itemizedlist>
 
-                <listitem>Reading assignment.</listitem>
-
-                <listitem>To-Do Item.
+                <listitem><para>To-Do Item.
                   Discuss differences with other tabs about locations of
                   items selected.
-                  Hold particulars for discussion of To-Do Pane.</listitem>
+                  Hold particulars for discussion of To-Do Pane.</para></listitem>
 
-                <listitem>Properties,</listitem>
+                <listitem><para>Properties,</para></listitem>
 
-                <listitem>Documentation,</listitem>
+                <listitem><para>Documentation,</para></listitem>
 
-                <listitem>Presentation,</listitem>
+                <listitem><para>Presentation,</para></listitem>
 
-                <listitem>Source,</listitem>
+                <listitem><para>Source,</para></listitem>
 
-                <listitem>Constraints,</listitem>
+                <listitem><para>Constraints,</para></listitem>
 
-                <listitem>Stereotype,</listitem>
+                <listitem><para>Stereotype,</para></listitem>
 
-                <listitem>Tagged Values,</listitem>
+                <listitem><para>Tagged Values,</para></listitem>
 
-                <listitem>Checklist.</listitem>
+                <listitem><para>Checklist.</para></listitem>
 
-                <listitem>
+                <listitem><para>
                   Remove "images/tutorial/detailsoverview.gif" from file system.
-                </listitem>
+                </para></listitem>
 
               </itemizedlist>
 
             </note>
-
-            <!--para><xref linkend="fig.tut.detailsoverview"/> shows the 
-            Details Pane.</para>
-
-            <figure float="1" id="fig.tut.detailsoverview">
-
-              <title>Overview of the Details Pane</title>
-
-              <screenshot><mediaobject><imageobject>
-              <imagedata align="center"
-               fileref="images/tutorial/detailsoverview.gif"
-               format="GIF"/></imageobject></mediaobject></screenshot>
-            </figure>
-
-            <para>This is the Details Pane, that allows us to edit 
-            various details of our model.</para-->
 
           </sect3>
 
@@ -2131,43 +2128,29 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>The To-Do Pane</title>
 
+            <para>
+              At this point take some time to read
+              <xref linkend="ch.ref.todopane"/>.
+            </para>
+
             <note>
 
               <itemizedlist>
 
-                <listitem>Reading assignment.</listitem>
+                <listitem><para>Describe priorities.</para></listitem>
 
-                <listitem>Describe priorities.</listitem>
+                <listitem><para>Resolving items.</para></listitem>
 
-                <listitem>Resolving items.</listitem>
+                <listitem><para>Relation to ToDo Item tab in details pane.
+                </para></listitem>
 
-                <listitem>Relation to ToDo Item tab in details pane.</listitem>
-
-                <listitem>
+                <listitem><para>
                   Remove "images/tutorial/todooverview.gif" from file system.
-                </listitem>
+                </para></listitem>
 
               </itemizedlist>
 
             </note>
-
-            <!--para><xref linkend="fig.tut.todooverview"/> shows the 
-            To-Do Pane.</para>
-
-            <figure float="1" id="fig.tut.todooverview">
-
-              <title>Overview of the To-Do Pane</title>
-
-              <screenshot><mediaobject><imageobject>
-              <imagedata align="center"
-               fileref="images/tutorial/todooverview.gif"
-               format="GIF"/></imageobject></mediaobject></screenshot>
-            </figure>
-
-            <para>The To-Do Pane displays the items on the models to-do 
-            list in a tree which sorts the list in a number of 
-            different ways. A drop down selection box at the top of the 
-            pane determines the layout of the tree.</para-->
 
           </sect3>
 
@@ -2177,23 +2160,92 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <indexterm><primary>Menu Bar</primary></indexterm>
             <indexterm><primary>Toolbars</primary></indexterm>
-            <para>The menu bar and toolbars gives access to all the 
-            main features of ArgoUML. As is conventional, menu options 
-            and toolbar options that are not available are grayed out 
-            and menu items that invoke a dialog box are followed by an 
-            ellipsis (...).</para>
+            <para>
+              The menu bar and toolbars give access to all the 
+              main features of ArgoUML.
+              As is conventional, menu options and toolbar options that are not
+              available (disabled) are grayed out and menu items that invoke a
+              dialog box are followed by an ellipsis (...).
+            </para>
 
             <itemizedlist>
 
               <listitem>
 
-                <indexterm><primary>File Menu</primary></indexterm>
-                <para><emphasis>File</emphasis> menu. This allows you 
-                to create a new project, save and open projects, import 
-                sources from elsewhere, load and save the model to and 
-                from a database, print the model, save the graphics of 
-                the model, save the configuration of the model and exit 
-                ArgoUML</para>
+                <para>
+                  <emphasis>File</emphasis> menu.
+                  <indexterm><primary>File Menu</primary></indexterm>
+                  The standard file menu entries present no surprises and we
+                  will just use them when needed without first showing how they
+                  work.
+                  A number of actions are available that are peculiar to ArgoUML
+                  and we will go over them here.
+                </para>
+
+                <orderedlist>
+
+                  <listitem>
+
+                    <para>
+                      <emphasis>Export/Import.</emphasis>
+                      Select the project line at the top of the Explorer.
+                      It should say "untitledModel" unless you have changed it.
+                      Perform a <emphasis>File=&gt;Export XMI</emphasis> action
+                      using "DeleteThis" for an output name in the file chooser
+                      dialog.
+                      Select the "Properties" tab in the "Details Pane" and
+                      change the name to something else, anything will do.
+                      Perform a <emphasis>File=&gt;Import XMI</emphasis> action
+                      selecting the "DeleteThis" file that you just wrote out.
+                      Observe that the name of the model has reverted back to
+                      what you had saved.
+                      More on this later.
+                    </para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para>
+                      <emphasis>File=&gt;Import Sources.</emphasis>
+                      We will cover this later.
+                      You can't test it now unless you have some Java source
+                      code of your own handy.
+                    </para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para>
+                      <emphasis>File=&gt;Export (All) Graphics.</emphasis>
+                      Select one of the diagrams.
+                      Either "Class Diagram 1" or "Use Case Diagram 1"
+                      (assuming you haven't renamed or deleted them).
+                      Perform a <emphasis>File=&gt;Export Graphics</emphasis>
+                      action.
+                      When the file chooser opens it defaults to the last name
+                      you saved something to (even from a project no longer open).
+                      The file chooser allows you to select from a number of
+                      formats.
+                      Drop down the "Files of type" combobox and observe the
+                      choices.
+                      Cancel out as there is nothing useful to save.
+                      Perform a <emphasis>File=&gt;Export All Graphics</emphasis>
+                      action.
+                      Notice that this time you can&apos;t specify a file name and
+                      you can&apos;t select a file format.
+                      ArgoUML will allow you only to select an output directory.
+                      It will then create a file for each of your diagrams using
+                      the diagram name for the file name and an extension of .png.
+                      Actually, although you can&apos;t select file names in the
+                      browser panel, you can type one into the edit box.
+                      But, if you do that, nothing at all will happen.
+                    </para>
+
+                  </listitem>
+
+                </orderedlist>
 
               </listitem>
 
