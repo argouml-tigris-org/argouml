@@ -24,7 +24,7 @@
 
 package org.argouml.uml.notation.uml;
 
-import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
@@ -48,7 +48,7 @@ public class InitNotationUml {
             Notation.makeNotation(
                     "UML",
                     "1.4",
-                    Argo.lookupIconResource("UmlNotation"));
+                    ResourceLoaderWrapper.lookupIconResource("UmlNotation"));
 
         npf.addNotationProvider(
                 NotationProviderFactory2.TYPE_NAME,
