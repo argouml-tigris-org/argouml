@@ -187,6 +187,9 @@ public class FigAssociation extends FigEdgeModelElement {
         
         applyArrowHeads();
         
+        updateStereotypeText();
+        updateAbstract();
+        
         addElementListener(getOwner(), new String[] {"name", "isAbstract"});
     }
     
