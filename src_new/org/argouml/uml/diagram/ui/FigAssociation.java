@@ -40,7 +40,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
@@ -69,16 +68,13 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     static final long serialVersionUID = 9100125695919853919L;
 
-    // TODO: should be part of some preferences object
+    /**
+     * We suppress the arrow heads if both ends of an association
+     * are navigable.
+     */
     private static final boolean SUPPRESS_BIDIRECTIONAL_ARROWS = true;
 
-    private static final ArrowHead NAV_AGGR =
-        new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
-                   new ArrowHeadGreater());
-
-    private static final ArrowHead NAV_COMP =
-        new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
-                   new ArrowHeadGreater());
+    private static final Logger LOG = Logger.getLogger(FigAssociation.class);
 
     /**
      * Group for the FigTexts concerning the source association end.
@@ -99,7 +95,13 @@ public class FigAssociation extends FigEdgeModelElement {
     private FigText srcMult;
     private FigText destMult;
 
-    private static final Logger LOG = Logger.getLogger(FigAssociation.class);
+    private static final ArrowHead NAV_AGGR =
+        new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
+                   new ArrowHeadGreater());
+
+    private static final ArrowHead NAV_COMP =
+        new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
+                   new ArrowHeadGreater());
 
     // These are a list of arrow types. Positioning is important as we subtract
     // 3 to convert a navigable arrow to a non navigable with the same
@@ -166,8 +168,8 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     public FigAssociation(Object edge, Layer lay) {
         this();
-        setLayer(lay);
         setOwner(edge);
+        setLayer(lay);
     }
 
     public void setOwner(Object owner) {
@@ -613,39 +615,16 @@ class FigMultiplicity extends FigSingleLineText implements PropertyChangeListene
     private static final long serialVersionUID = 5385230942216677015L;
 
     FigMultiplicity() {
-        super(10, 10, 90, 20, false);
+        super(10, 10, 90, 20, false, "multiplicity");
 
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
     }
 
-    public void setOwner(Object owner) {
-        if (owner != null) {
-            super.setOwner(owner);
-            Model.getPump().addModelEventListener(this, owner, "multiplicity");
-            setText();
-        }
-    }
-    
-    public void propertyChange(PropertyChangeEvent pce) {
-        super.propertyChange(pce);
-        if (getOwner() != null && pce instanceof AttributeChangeEvent) {
-            setText();
-        }
-    }
-    
-    private void setText() {
+    protected void setText() {
         assert getOwner() != null;
         Object multi = Model.getFacade().getMultiplicity(getOwner());
         setText(NotationUtilityUml.generateMultiplicity(multi));
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
-     */
-    public void removeFromDiagram() {
-        Model.getPump().removeModelEventListener(this, getOwner(), "multiplicity");
-        super.removeFromDiagram();
     }
 }
 
@@ -659,39 +638,16 @@ class FigOrdering extends FigSingleLineText implements PropertyChangeListener {
     private static final long serialVersionUID = 5385230942216677015L;
 
     FigOrdering() {
-        super(10, 10, 90, 20, false);
+        super(10, 10, 90, 20, false, "ordering");
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
     }
 
-    public void setOwner(Object owner) {
-        if (owner != null) {
-            super.setOwner(owner);
-            Model.getPump().addModelEventListener(this, owner, "ordering");
-            setText();
-        }
-    }
-    
-    public void propertyChange(PropertyChangeEvent pce) {
-        super.propertyChange(pce);
-        if (getOwner() != null && pce instanceof AttributeChangeEvent) {
-            setText();
-        }
-    }
-    
-    private void setText() {
+    protected void setText() {
         assert getOwner() != null;
         setText(getOrderingName(Model.getFacade().getOrdering(getOwner())));
     }
 
-    /**
-     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
-     */
-    public void removeFromDiagram() {
-        Model.getPump().removeModelEventListener(this, getOwner(), "ordering");
-        super.removeFromDiagram();
-    }
-    
     /**
      * Returns the name of the OrderingKind.
      *
@@ -727,47 +683,27 @@ class FigRole extends FigSingleLineText implements PropertyChangeListener {
     private NotationProvider4 notationProviderRole;
 
     FigRole() {
-        super(10, 10, 90, 20, false);
+        super(10, 10, 90, 20, false, new String[] {"name", "visibility"});
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
     }
 
     public void setOwner(Object owner) {
         if (owner != null) {
-            super.setOwner(owner);
             notationProviderRole =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
                         owner);
-            Model.getPump().addModelEventListener(this, owner, new String[] {"name", "visibility"});
-            setText();
         }
+        super.setOwner(owner);
     }
     
-    public void propertyChange(PropertyChangeEvent pce) {
-        super.propertyChange(pce);
-        if (getOwner() != null && pce instanceof AttributeChangeEvent) {
-            setText();
-        }
-    }
-    
-    private void setText() {
+    protected void setText() {
         assert getOwner() != null;
         assert notationProviderRole != null;
         setText(notationProviderRole.toString());
     }
 
-    /**
-     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
-     */
-    public void removeFromDiagram() {
-        Model.getPump().removeModelEventListener(
-                this, 
-                getOwner(), 
-                new String[] {"name", "visibility"});
-        super.removeFromDiagram();
-    }
-    
     public String getParsingHelp() {
         return notationProviderRole.getParsingHelp();
     }
