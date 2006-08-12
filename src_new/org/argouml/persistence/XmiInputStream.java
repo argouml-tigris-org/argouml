@@ -133,14 +133,12 @@ public class XmiInputStream extends BufferedInputStream {
                     readingName = false;
                     if (parsingExtension && endTagName == null) {
                         endTagName = "/" + tagName;
-                        LOG.info("endTagName = " + endTagName);
                     } else if (tagName.equals("XMI.extension")) {
                         extensionFound = true;
                     } else if (tagName.equals(endTagName)) {
                         endFound = true;
                         xmlExtensionParser.parse(type, stringBuffer.toString());
                         stringBuffer.delete(0, stringBuffer.length());
-                        LOG.info("endFound");
                     }
                 } else {
                     tagName += (char) ch;
