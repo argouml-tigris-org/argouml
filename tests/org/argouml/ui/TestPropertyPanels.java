@@ -40,6 +40,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.JPanel;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -49,6 +51,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.persistence.ZargoFilePersister;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
@@ -84,6 +87,7 @@ public class TestPropertyPanels extends TestCase {
      * @see #setUp
      */
     private static DetailsPane theDetailsPane = null;
+    private JPanel propertyPane;
 
     // we need the translator to work in order to access
     // the property panels. It is also a common source for
@@ -156,13 +160,10 @@ public class TestPropertyPanels extends TestCase {
         if (url == null) {
             System.out.println(TestPropertyPanels.class.getName()
                     + ": WARNING: Inconclusive tests.");
-            System.out.println("For this test to succeed it must be able to"
-                    + " find the file " + TEST_PROPERTY_PANELS_ZARGO);
+            System.out.println("This test must be able to"
+                    + " find the resource " + TEST_PROPERTY_PANELS_ZARGO
+                    + " on the classpath.");
             System.out.println("Examine your set up and try again!");
-            System.out.println();
-            System.out.println("This problem was seen in June 2006"
-                    + " when running the tests from within Eclipse");
-            System.out.println("and it is registered as issue 4247.");
             return suite;
         }
 
@@ -217,6 +218,45 @@ public class TestPropertyPanels extends TestCase {
         return elem;
     }
 
+
+    /**
+     * @see junit.framework.TestCase#runTest()
+     */
+    protected void runTest() throws Throwable {
+        testPropertyTab();
+    }
+
+    /**
+     * @throws Throwable any error or exception
+     */
+    public void testPropertyTab() throws Throwable {
+        TargetEvent e =
+	    new TargetEvent(this,
+			    TargetEvent.TARGET_SET,
+			    new Object[] {
+				null,
+			    },
+			    new Object[] {
+				modelElement,
+			    });
+        theDetailsPane.targetSet(e);
+
+        propertyPane = /*TabProps */
+            theDetailsPane.getNamedTab(Translator.localize("tab.properties"));
+
+        // currently this is in this try block as it does not work
+        // _propertyPanel always has size 0,0
+    /*
+          try {
+            saveImageAsJPEG((BufferedImage)createImageFromComponent(
+                _propertyPane),
+                1000000, "/Users/mkl/argoimg/"+this.getName() + ".jpg");
+        }
+        catch (Exception ex) {
+           // System.out.println(ex);
+        }
+         */
+    }
     /*
     public static Image createImageFromComponent(Component comp) {
         BufferedImage image = new BufferedImage(comp.getWidth(),
