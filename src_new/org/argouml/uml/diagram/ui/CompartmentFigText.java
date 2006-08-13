@@ -135,7 +135,7 @@ public class CompartmentFigText extends FigSingleLineText {
      */
     public CompartmentFigText(int x, int y, int w, int h, Fig aFig, 
             String property) {
-        super(x, y, w, h, true, new String[] {property});
+        this(x, y, w, h, aFig, new String[] {property});
     }
 
     /**
@@ -165,7 +165,7 @@ public class CompartmentFigText extends FigSingleLineText {
             String[] properties) {
         super(x, y, w, h, true, properties);
         
-        if (refFig == null) {
+        if (aFig == null) {
             throw new IllegalArgumentException("A refFig must be provided");
         }
 
