@@ -150,24 +150,25 @@ public class ModelMemberFilePersister extends MemberFilePersister
         
         Project project = ProjectManager.getManager().getCurrentProject();
         
-        for (Iterator it = project.getMembers().iterator(); it.hasNext(); ) {
-            ProjectMember projectMember = (ProjectMember) it.next();
-            
-            writer.write(
+        writer.write(
                 "<XMI.extension xmi.extender='ArgoUML' xmi.label='argo'>\n");
             
-            try {
-                Hashtable templates =
-                    TemplateReader.getInstance().read(
-                            "/org/argouml/persistence/argo.tee");
-                OCLExpander expander = new OCLExpander(templates);
-                expander.expand(writer, project);
-            } catch (Exception e) {
-                LOG.error("Exception expanding argo.tee", e);
-                throw new IOException("Exception expanding argo.tee");
-            }
+        try {
+            LOG.info("Saving member of type: argo");
+            Hashtable templates =
+                TemplateReader.getInstance().read(
+                        "/org/argouml/persistence/argo.tee");
+            OCLExpander expander = new OCLExpander(templates);
+            expander.expand(writer, project);
+        } catch (Exception e) {
+            LOG.error("Exception expanding argo.tee", e);
+            throw new IOException("Exception expanding argo.tee");
+        }
 
-            writer.write("</XMI.extension>\n");
+        writer.write("</XMI.extension>\n");
+        
+        for (Iterator it = project.getMembers().iterator(); it.hasNext(); ) {
+            ProjectMember projectMember = (ProjectMember) it.next();
             
             if (!projectMember.getType().equalsIgnoreCase("xmi")) {
                 writer.write("<XMI.extension xmi.extender='ArgoUML' xmi.label='"
@@ -181,6 +182,7 @@ public class ModelMemberFilePersister extends MemberFilePersister
                 try {
                     persister.save(projectMember, writer, null);
                 } catch (Exception e) {
+                    LOG.error("Error saving", e);
                     throw new IOException(e.getMessage());
                 }
                 writer.write("</XMI.extension>\n");
@@ -188,6 +190,7 @@ public class ModelMemberFilePersister extends MemberFilePersister
         }
         
         writer.write("</XMI.extensions>\n");
+        LOG.info("Written extensions");
     }
     
     /**
