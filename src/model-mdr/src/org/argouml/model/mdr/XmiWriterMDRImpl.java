@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.jmi.reflect.RefObject;
@@ -75,6 +76,8 @@ public class XmiWriterMDRImpl implements XmiWriter {
     
     private XmiExtensionWriter xmiExtensionWriter;
 
+    private static final char[] TARGET = "/XMI.content".toCharArray();
+    
     /*
      * If true, change write semantics to write all top level model elements
      * except for the profile model(s), ignoring the model specified by the 
@@ -153,14 +156,14 @@ public class XmiWriterMDRImpl implements XmiWriter {
 
         private Writer myWriter;
         private boolean inTag = false;
-        private StringBuffer tagName = new StringBuffer(12);
+        private char tagName[] = new char[12];
+        private int tagLength = 0;
 
         /**
          * Constructor.
          * @param wrappedWriter The myWriter which will be wrapped
          */
         public WriterOuputStream(Writer wrappedWriter) {
-            LOG.info("Constructing WriterOutputStream");
             this.myWriter = wrappedWriter;
         }
 
@@ -182,10 +185,11 @@ public class XmiWriterMDRImpl implements XmiWriter {
          * @see java.io.OutputStream#write(byte[], int, int)
          */
         public void write(byte[] b, int off, int len) throws IOException {
-            // TODO: Why has this been reverted to an inefficient
-            // byte-by-byte algorithm? - tfm
-            while (off < len) {
-                write(b[off++]);
+            char[] c = new String(b, off, len, ENCODING).toCharArray();
+            if (xmiExtensionWriter != null) {
+                write(c);
+            } else {
+                myWriter.write(c, 0, c.length);
             }
         }
 
@@ -200,34 +204,49 @@ public class XmiWriterMDRImpl implements XmiWriter {
          * @see java.io.OutputStream#write(int)
          */
         public void write(int b) throws IOException {
-            // TODO: Is this character set independent? 
-            // Why are we reparsing the entire output? - tfm
-            myWriter.write((byte) (b & 255));
-            if (xmiExtensionWriter != null) {
+            write(new byte[] {(byte) (b & 255)}, 0, 1);
+        }
+        
+        /**
+         * @see java.io.OutputStream#write(int)
+         */
+        private void write(char[] ca) throws IOException {
+            
+            int len = ca.length;
+            for (int i = 0; i < len; ++i) {
+                char ch = ca[i];
                 if (inTag) {
-                    if (b == '>') {
+                    if (ch == '>') {
                         inTag = false;
-                        if (tagName.toString().equals("/XMI.content")) {
-                            LOG.info("Calling extension writer");
+                        if (Arrays.equals(tagName, TARGET)) {
+                            if (i > 0) {
+                                myWriter.write(ca, 0, i+1);
+                            }
                             xmiExtensionWriter.write(myWriter);
+                            xmiExtensionWriter = null;
+                            if (i + 1 != len -1) {
+                                myWriter.write(ca, i+1, (len - i) - 1);
+                            }
+                            return;
                         }
+                    } else if (tagLength == 12) {
+                        inTag = false;
                     } else {
-                        tagName.append((char) b);
+                        tagName[tagLength++] = ch;
                     }
                 }
                 
-                if (b == '<') {
+                if (ch == '<') {
                     inTag = true;
-                    tagName.delete(0, tagName.length());
+                    Arrays.fill(tagName, ' ');
+                    tagLength = 0;
                 }
             }
+            myWriter.write(ca, 0, ca.length);
         }
     }
 
     public void setXmiExtensionWriter(XmiExtensionWriter xmiExtensionWriter) {
-        LOG.info("Extension writer set to " + xmiExtensionWriter);
         this.xmiExtensionWriter = xmiExtensionWriter;
     }
-    
-    
 }
