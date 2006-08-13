@@ -211,11 +211,11 @@ public class ZargoFilePersister extends UmlFilePersister {
                     + combinedFile.getAbsolutePath());
             combinedFile.deleteOnExit();
 
-            String encoding = "UTF-8";
+            String encoding = PersistenceManager.getEncoding();
             FileOutputStream stream = new FileOutputStream(combinedFile);
             PrintWriter writer =
-		new PrintWriter(new BufferedWriter(
-			new OutputStreamWriter(stream, encoding)));
+                new PrintWriter(new BufferedWriter(
+                        new OutputStreamWriter(stream, encoding)));
 
             writer.println("<?xml version = \"1.0\" " + "encoding = \""
                     + encoding + "\" ?>");
@@ -296,22 +296,25 @@ public class ZargoFilePersister extends UmlFilePersister {
             // elements or figs that the todo items refer to
             // will exist before creating critics.
             zis = openZipStreamAt(file.toURL(), ".todo");
-            reader = new BufferedReader(new InputStreamReader(zis, 
-                    PersistenceManager.getEncoding()));
-            // Skip the 2 lines
-            //<?xml version = "1.0" encoding = "UTF-8" ?>
-            //<!DOCTYPE todo SYSTEM "todo.dtd" >
-            // TODO: This could be made more robust, these 2 lines should be
-            // there but what if they don't exist?
-            reader.readLine();
-            reader.readLine();
-
-            readerToWriter(reader, writer);
-
-            progressMgr.nextPhase();
             
-            zis.close();
-            reader.close();
+            if (zis != null) {
+                InputStreamReader isr = new InputStreamReader(zis, encoding);
+                reader = new BufferedReader(isr);
+                // Skip the 2 lines
+                //<?xml version = "1.0" encoding = "UTF-8" ?>
+                //<!DOCTYPE todo SYSTEM "todo.dtd" >
+                // TODO: This could be made more robust, these 2 lines should be
+                // there but what if they don't exist?
+                reader.readLine();
+                reader.readLine();
+
+                readerToWriter(reader, writer);
+
+                progressMgr.nextPhase();
+                
+                zis.close();
+                reader.close();
+            }
 
             writer.println("</uml>");
             writer.close();
