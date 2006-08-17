@@ -60,7 +60,6 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -69,8 +68,6 @@ import org.argouml.model.DiElement;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.notation.NotationContext;
-import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ActionGoToCritique;
@@ -102,7 +99,6 @@ public abstract class FigEdgeModelElement
         MouseListener,
         KeyListener,
         PropertyChangeListener,
-        NotationContext,
         ArgoNotationEventListener,
         Highlightable {
 
@@ -895,25 +891,6 @@ public abstract class FigEdgeModelElement
             ((Fig) it.next()).deleteFromModel();
         }
         super.deleteFromModel();
-    }
-
-    /**
-     * This default implementation simply requests the default notation.
-     *
-     * @see org.argouml.notation.NotationContext#getContextNotation()
-     * @deprecated by MVW in V0.21.3. Replaced by 
-     * {@link ProjectSettings#getNotationName()}
-     */
-    public NotationName getContextNotation() {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        return p.getProjectSettings().getNotationName();
-    }
-
-    /**
-     * @see org.argouml.notation.NotationContext#setContextNotation(org.argouml.notation.NotationName)
-     */
-    public void setContextNotation(NotationName nn) {
-        // not supported - see issue 3140.
     }
 
     /**

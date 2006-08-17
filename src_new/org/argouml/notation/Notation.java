@@ -217,17 +217,6 @@ public final class Notation implements PropertyChangeListener {
     }
 
     /**
-     * @param context the notation context
-     * @return the notation name
-     * @deprecated by MVW in V0.21.3. Replaced by 
-     * {@link org.argouml.kernel.ProjectSettings#getNotationName()}
-     * See issue 3140.
-     */
-    public static NotationName getNotation(NotationContext context) {
-        return context.getContextNotation();
-    }
-
-    /**
      * Called after the notation default property gets changed.
      *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
