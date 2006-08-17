@@ -35,20 +35,8 @@ import org.argouml.uml.cognitive.UMLDecision;
  * A critic to check that the classifiers associated with the ends of an
  * association are in the same namespace as the association.<p>
  *
- * With hierarchical namespaces, this would appear to allow any
- * association. However the intent would seem to be that, whilst association
- * between packages is reasonable, association between sub-systems or models
- * is not.<p>
- *
  * This is the fourth well-formedness rule for associations in the UML 1.3
  * standard (see section 2.5.3 of the standard).<p>
- *
- * Since ArgoUML currently only supports a single model, and no subsystems,
- * there is no way to trigger the critic at present. Although a deleted
- * classifier will appear in the separate "trash" namespace, this will also
- * delete the association, so the critic will not trigger. However it will be
- * useful for the future when multiple models and sub-systems are
- * supported.<p>
  *
  * See <a href=
  * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
@@ -107,7 +95,7 @@ public class CrCrossNamespaceAssoc extends CrUML {
             // classifier is in the namespace of the association. If not we
             // have a problem.
             Object clf = Model.getFacade().getType(assocEnds.next());
-            if (ns != Model.getFacade().getNamespace(clf)) {
+            if (clf != null && ns != Model.getFacade().getNamespace(clf)) {
                 return PROBLEM_FOUND;
             }
         }
