@@ -142,6 +142,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
             destFig = null;
         }
 
+        Object newAssociationEnd = null;
 
         MutableGraphModel mutableGraphModel = (MutableGraphModel) graphModel;
         // TODO: potential class cast exception
@@ -154,11 +155,18 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                     getStartPort(),
                     association);
             if (isValid) {
-                GraphModel gm = editor.getGraphModel();
-                GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
+                // Order here is very important!
+                // 1. Remove the old association FigEdge first
                 Layer lay = editor.getLayerManager().getActiveLayer();
                 mutableGraphModel.removeEdge(association);
                 destFig.removeFromDiagram();
+                
+                // 2. Add a new association end to the association
+                Object edgeType = getArg("edgeClass");
+                newAssociationEnd = mutableGraphModel.connect(
+                        getStartPort(), association, edgeType);
+                
+                // 2. Create a new FigNode representing the n-ary assoc
                 mutableGraphModel.addNode(association);
                 FigNode figNode = (FigNode) lay.presentationFor(association);
                 figNode.setLocation(
@@ -170,7 +178,11 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                 Iterator it = associationEnds.iterator();
                 mutableGraphModel.addEdge(it.next());
                 mutableGraphModel.addEdge(it.next());
-                destFig = figNode;
+                mutableGraphModel.addEdge(it.next());
+                endAttached();
+                done();
+                me.consume();
+                return;
             }
         }
 
@@ -193,19 +205,20 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                 if (foundPort != null) {
                     Fig destPortFig = destFigNode.getPortFig(foundPort);
                     FigPoly p = (FigPoly) _newItem;
-                    if (foundPort == getStartPort() && _npoints >= 4) {
-                        p.setSelfLoop(true);
-                    }
                     editor.damageAll();
                     p.setComplete(true);
 
                     Object edgeType = getArg("edgeClass");
-                    if (!mutableGraphModel.canConnect(
+                    if (newAssociationEnd == null
+                            && !mutableGraphModel.canConnect(
                            getStartPort(), foundPort, edgeType)) {
                         abort();
                     } else {
-                        setNewEdge(mutableGraphModel.connect(
-                                getStartPort(), foundPort, (Class) edgeType));
+                        if (newAssociationEnd == null) {
+                            newAssociationEnd = mutableGraphModel.connect(
+                                    getStartPort(), foundPort, edgeType);
+                        }
+                        setNewEdge(newAssociationEnd);
 
                         // Calling connect() will add the edge to the
                         // GraphModel and any LayerPersectives on that
@@ -295,6 +308,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
             if (gm instanceof MutableGraphModel) {
                 MutableGraphModel mutableGraphModel = (MutableGraphModel) gm;
                 Iterator it = associationEnds.iterator();
+                mutableGraphModel.addEdge(it.next());
                 mutableGraphModel.addEdge(it.next());
                 mutableGraphModel.addEdge(it.next());
                 editor.getSelectionManager().deselectAll();
