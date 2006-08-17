@@ -27,15 +27,10 @@ package org.argouml.persistence;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.StringTokenizer;
 
-import javax.swing.event.EventListenerList;
-
 import org.apache.log4j.Logger;
-import org.argouml.model.UmlException;
-
+import org.argouml.persistence.AbstractFilePersister.ProgressMgr;
 
 /**
  * A BufferInputStream that is aware of XML structure.
@@ -47,6 +42,8 @@ import org.argouml.model.UmlException;
  * @author Bob Tarling
  */
 public class XmiInputStream extends BufferedInputStream {
+    
+    private static final Logger LOG = Logger.getLogger(XmiInputStream.class);
 
     private String tagName;
     private String endTagName;
@@ -55,9 +52,8 @@ public class XmiInputStream extends BufferedInputStream {
     private boolean endFound;
     private boolean parsingExtension;
     private boolean readingName;
-    private EventListenerList listenerList = new EventListenerList();
     
-    private XmiExtensionParser xmlExtensionParser;
+    private XmiExtensionParser xmiExtensionParser;
     
     private StringBuffer stringBuffer;
     private String type;
@@ -77,35 +73,57 @@ public class XmiInputStream extends BufferedInputStream {
      * The expected stream length.
      */
     private long length;
-
+    
     /**
-     * Logger.
+     * The expected stream length.
      */
-    private static final Logger LOG =
-        Logger.getLogger(XmiInputStream.class);
+    private ProgressMgr progressMgr;
 
     /**
      * Construct a new XmlInputStream.
      *
-     * @param in the input stream to wrap.
-     * @param theTag the tag name from which to start reading
-     * @param theLength the expected length of the input stream
-     * @param theEventSpacing the number of characers to read before
+     * @param inputStream the input stream to wrap.
+     * @param xmiExtensionParser the parser to call to read any
+     *                           XMI.extension elements
+     * @param length the expected length of the input stream
+     * @param eventSpacing the number of characers to read before
      *        firing a progress event.
+     * @param progressMgr the progress manager
      */
     public XmiInputStream(
-            InputStream in,
-            XmiExtensionParser xmlExtensionParser,
-            long theLength,
-            long theEventSpacing) {
-        super(in);
-        this.length = theLength;
-        this.eventSpacing = theEventSpacing;
-        this.xmlExtensionParser  = xmlExtensionParser;
-        LOG.info("Constructed XmiInputStream");
+            InputStream inputStream,
+            XmiExtensionParser xmiExtensionParser,
+            long length,
+            long eventSpacing,
+            ProgressMgr progressMgr) {
+        super(inputStream);
+        this.length = length;
+        this.eventSpacing = eventSpacing;
+        this.xmiExtensionParser  = xmiExtensionParser;
+        this.progressMgr  = progressMgr;
     }
     
-    
+    /**
+     * Construct a new XmlInputStream.
+     *
+     * @param inputStream the input stream to wrap.
+     * @param xmiExtensionParser the parser to call to read any
+     *                           XMI.extension elements
+     * @param length the expected length of the input stream
+     * @param eventSpacing the number of characers to read before
+     *        firing a progress event.
+     * @deprecated use version that supplies a ProgressMgr
+     */
+    public XmiInputStream(
+            InputStream inputStream,
+            XmiExtensionParser xmiExtensionParser,
+            long length,
+            long eventSpacing) {
+        super(inputStream);
+        this.length = length;
+        this.eventSpacing = eventSpacing;
+        this.xmiExtensionParser  = xmiExtensionParser;
+    }
     
     /**
      * @see java.io.InputStream#read()
@@ -125,9 +143,22 @@ public class XmiInputStream extends BufferedInputStream {
         
         if (parsingExtension) {
             stringBuffer.append((char) ch);
-        }
+        }// else {
+        // TODO: Only progress when reading standard XMI
+        // extension parsers will continue progression.
+            ++readCount;
+            if (progressMgr != null && readCount == eventSpacing) {
+                try {
+                    readCount = 0;
+                    LOG.info("Progressing");
+                    progressMgr.nextPhase();
+                } catch (InterruptedException e) {
+                    throw new InterruptedIOException(e);
+                }
+            }
+//        }
         
-        if (xmlExtensionParser != null) {
+        if (xmiExtensionParser != null) {
             if (readingName) {
                 if (isNameTerminator((char) ch)) {
                     readingName = false;
@@ -137,7 +168,7 @@ public class XmiInputStream extends BufferedInputStream {
                         extensionFound = true;
                     } else if (tagName.equals(endTagName)) {
                         endFound = true;
-                        xmlExtensionParser.parse(type, stringBuffer.toString());
+                        xmiExtensionParser.parse(type, stringBuffer.toString());
                         stringBuffer.delete(0, stringBuffer.length());
                     }
                 } else {
@@ -227,5 +258,20 @@ public class XmiInputStream extends BufferedInputStream {
      */
     public void realClose() throws IOException {
         super.close();
+    }
+}
+
+class InterruptedIOException extends IOException {
+    
+    private static final long serialVersionUID = 5654808047803205851L;
+    
+    private InterruptedException cause;
+    
+    public InterruptedIOException(InterruptedException cause) {
+        this.cause = cause;
+    }
+    
+    public InterruptedException getInterruptedException() {
+        return cause;
     }
 }

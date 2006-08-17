@@ -26,6 +26,7 @@ package org.argouml.persistence;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.CharArrayReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -42,7 +43,10 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
+import org.argouml.persistence.AbstractFilePersister.ProgressMgr;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.util.ThreadUtils;
+import org.xml.sax.InputSource;
 
 /**
  * To persist to and from XMI file storage.
@@ -197,13 +201,25 @@ public class XmiFilePersister extends AbstractFilePersister
 
         LOG.info("Loading with XMIFilePersister");
         
-        ProgressMgr progressMgr = new ProgressMgr();
-        progressMgr.setNumberOfPhases(3);
-        progressMgr.nextPhase();
-
         try {
             Project p = new Project();
-            XMIParser.getSingleton().readModels(p, file.toURL(), this);
+            
+            
+            long length = file.length();
+            long phaseSpace = 100000;
+            int phases = (int) (length / phaseSpace);
+            if (phases < 10) {
+                phaseSpace = length / 10;
+                phases = 10;
+            }
+            LOG.info("File length is " + length + " phase space is " + phaseSpace + " phases is " + phases);
+            ProgressMgr progressMgr = new ProgressMgr();
+            progressMgr.setNumberOfPhases(phases);
+            ThreadUtils.checkIfInterrupted();
+            
+            InputSource source = new InputSource(new XmiInputStream(file.toURL().openStream(), this, length, phaseSpace, progressMgr));
+            source.setSystemId(file.toURL().toString());
+            XMIParser.getSingleton().readModels(p, source);
             Object model = XMIParser.getSingleton().getCurModel();
             progressMgr.nextPhase();
             Model.getUmlHelper().addListenersToModel(model);
@@ -268,6 +284,7 @@ public class XmiFilePersister extends AbstractFilePersister
             String pgml = (String) it.next();
             LOG.info("Parsing pgml " + pgml.length());
             InputStream inputStream = new ByteArrayInputStream(pgml.getBytes());
+            CharArrayReader car = new CharArrayReader(pgml.toCharArray());
             MemberFilePersister persister =
                 PersistenceManager.getInstance()
                         .getDiagramMemberFilePersister();
