@@ -26,12 +26,11 @@ package org.argouml.uml.cognitive.critics;
 
 import junit.framework.TestCase;
 
-import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 
 public class TestCrNoAssociations extends TestCase {
 
-    private CrNoAssociations crNoAssoc = null;
+    private CrNoAssociations critic = null;
 
     Object useCase1;
 
@@ -43,8 +42,6 @@ public class TestCrNoAssociations extends TestCase {
 
     Object actor;
 
-    Designer des;
-
     public TestCrNoAssociations(String arg0) {
         super(arg0);
     }
@@ -52,8 +49,8 @@ public class TestCrNoAssociations extends TestCase {
     // simply create 3 usecases and an actor in a package with individual names
     protected void setUp() throws Exception {
         super.setUp();
-        crNoAssoc = new CrNoAssociations();
-        des = Designer.theDesigner();
+        critic = new CrNoAssociations();
+       
         ns = Model.getModelManagementFactory().buildPackage("Test", null);
         useCase1 = Model.getUseCasesFactory().createUseCase();
         Model.getCoreHelper().setName(useCase1, "A");
@@ -75,20 +72,20 @@ public class TestCrNoAssociations extends TestCase {
     public void testUseCaseNormal() {
         // All use cases and actors require associations
         // hence all predicates evalulate to true
-        assertTrue(crNoAssoc.predicate2(useCase1, des));
-        assertTrue(crNoAssoc.predicate2(useCase2, des));
-        assertTrue(crNoAssoc.predicate2(useCase3, des));
-        assertTrue(crNoAssoc.predicate2(actor, des));
+        assertTrue(critic.predicate2(useCase1, null));
+        assertTrue(critic.predicate2(useCase2, null));
+        assertTrue(critic.predicate2(useCase3, null));
+        assertTrue(critic.predicate2(actor, null));
     }
 
     public void testUseCaseAssociation() {
         // build association
         // build association between actor and top use case.
         Model.getCoreFactory().buildAssociation(useCase1, actor);
-        assertFalse(crNoAssoc.predicate2(useCase1, des));
-        assertTrue(crNoAssoc.predicate2(useCase2, des));
-        assertTrue(crNoAssoc.predicate2(useCase3, des));
-        assertFalse(crNoAssoc.predicate2(actor, des));
+        assertFalse(critic.predicate2(useCase1, null));
+        assertTrue(critic.predicate2(useCase2, null));
+        assertTrue(critic.predicate2(useCase3, null));
+        assertFalse(critic.predicate2(actor, null));
     }
 
     public void testUseCaseExtend() {
@@ -96,10 +93,10 @@ public class TestCrNoAssociations extends TestCase {
         // these parameters seem to be in correct order
         // add an extend. We do not need an assoc on the extending use case
         Model.getUseCasesFactory().buildExtend(useCase1, useCase3);
-        assertTrue(crNoAssoc.predicate2(useCase1, des));
-        assertTrue(crNoAssoc.predicate2(useCase2, des));
-        assertFalse(crNoAssoc.predicate2(useCase3, des));
-        assertTrue(crNoAssoc.predicate2(actor, des));
+        assertTrue(critic.predicate2(useCase1, null));
+        assertTrue(critic.predicate2(useCase2, null));
+        assertFalse(critic.predicate2(useCase3, null));
+        assertTrue(critic.predicate2(actor, null));
     }
 
     public void testUseCaseInclude() {
@@ -108,10 +105,10 @@ public class TestCrNoAssociations extends TestCase {
         // round
         // add an include: we do not need to have associtions on one
         Model.getUseCasesFactory().buildInclude(useCase2, useCase1);
-        assertTrue(crNoAssoc.predicate2(useCase1, des));
-        assertFalse(crNoAssoc.predicate2(useCase2, des));
-        assertTrue(crNoAssoc.predicate2(useCase3, des));
-        assertTrue(crNoAssoc.predicate2(actor, des));
+        assertTrue(critic.predicate2(useCase1, null));
+        assertFalse(critic.predicate2(useCase2, null));
+        assertTrue(critic.predicate2(useCase3, null));
+        assertTrue(critic.predicate2(actor, null));
     }
 
 }
