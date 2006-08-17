@@ -24,6 +24,7 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
@@ -94,6 +95,23 @@ public class CrNoAssociations extends CrUML {
             return NO_PROBLEM;
         if (Model.getFacade().getSupplierDependencies(dm).size() > 0)
             return NO_PROBLEM;
+        
+        // special cases for use cases
+        // Extending use cases and use case that are being included are
+        // not required to have associations.
+        if (Model.getFacade().isAUseCase(dm)) {
+            Object usecase = dm;
+            Collection includes = Model.getFacade().getIncludes(usecase);
+            if (includes!=null && includes.size()>=1) {
+                return NO_PROBLEM;
+            }
+            Collection extend = Model.getFacade().getExtends(usecase);
+            if (extend!=null && extend.size()>=1) {
+                return NO_PROBLEM;
+            }
+        }
+        
+        
 
         //TODO: different critic or special message for classes
         //that inherit all ops but define none of their own.
