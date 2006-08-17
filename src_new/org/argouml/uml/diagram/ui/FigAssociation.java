@@ -95,35 +95,6 @@ public class FigAssociation extends FigEdgeModelElement {
     private FigText srcMult;
     private FigText destMult;
 
-    private static final ArrowHead NAV_AGGR =
-        new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
-                   new ArrowHeadGreater());
-
-    private static final ArrowHead NAV_COMP =
-        new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
-                   new ArrowHeadGreater());
-
-    // These are a list of arrow types. Positioning is important as we subtract
-    // 3 to convert a navigable arrow to a non navigable with the same
-    // aggregation
-    private static final int NONE = 0;
-    private static final int AGGREGATE = 1;
-    private static final int COMPOSITE = 2;
-    private static final int NAV_NONE = 3;
-    private static final int NAV_AGGREGATE = 4;
-    private static final int NAV_COMPOSITE = 5;
-    
-    private static final ArrowHead[] arrowHeads;
-    static {
-        arrowHeads = new ArrowHead[6];
-        arrowHeads[NONE] = ArrowHeadNone.TheInstance;
-        arrowHeads[AGGREGATE] = ArrowHeadDiamond.WhiteDiamond;
-        arrowHeads[COMPOSITE] = ArrowHeadDiamond.BlackDiamond;
-        arrowHeads[NAV_NONE] = new ArrowHeadGreater();
-        arrowHeads[NAV_AGGREGATE] = NAV_AGGR;
-        arrowHeads[NAV_COMPOSITE] = NAV_COMP;
-    }
-    
     /**
      * Don't call this constructor directly. It is public since this
      * is necessary for loading. Use the FigAssociation(Object, Layer)
@@ -142,14 +113,14 @@ public class FigAssociation extends FigEdgeModelElement {
         srcMult = new FigMultiplicity();
         addPathItem(srcMult, new PathConvPercentPlusConst(this, 0, 15, 15));
         
-        srcGroup = new FigAssociationEndAnnotation();
+        srcGroup = new FigAssociationEndAnnotation(this);
         addPathItem(srcGroup, new PathConvPercentPlusConst(this, 0, 35, -15));
 
         destMult = new FigMultiplicity();
         addPathItem(destMult,
 		    new PathConvPercentPlusConst(this, 100, -15, 15));
         
-        destGroup = new FigAssociationEndAnnotation();
+        destGroup = new FigAssociationEndAnnotation(this);
         addPathItem(destGroup,
 		    new PathConvPercentPlusConst(this, 100, -35, -15));
 
@@ -214,12 +185,12 @@ public class FigAssociation extends FigEdgeModelElement {
         if (getOwner() == null) {
             return;
         }
-	super.textEdited(ft);
-
-	Collection conn = Model.getFacade().getConnections(getOwner());
-	if (conn == null || conn.size() == 0) {
-	    return;
-	}
+        super.textEdited(ft);
+        
+        Collection conn = Model.getFacade().getConnections(getOwner());
+        if (conn == null || conn.size() == 0) {
+            return;
+        }
 
 	String msg =
 	    Translator.localize("statusmsg.bar.error.parsing.multiplicity");
@@ -303,7 +274,7 @@ public class FigAssociation extends FigEdgeModelElement {
      * 
      * @param association
      */
-    private void applyArrowHeads() {
+    protected void applyArrowHeads() {
         int sourceArrowType = srcGroup.getArrowType();
         int destArrowType = destGroup.getArrowType();
         
@@ -314,8 +285,8 @@ public class FigAssociation extends FigEdgeModelElement {
             destArrowType -= 3;
         }
         
-        setSourceArrowHead(arrowHeads[sourceArrowType]);
-        setDestArrowHead(arrowHeads[destArrowType]);
+        setSourceArrowHead(FigAssociationEndAnnotation.ARROW_HEADS[sourceArrowType]);
+        setDestArrowHead(FigAssociationEndAnnotation.ARROW_HEADS[destArrowType]);
     }
     
     /**
@@ -513,96 +484,6 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
     
-    private class FigAssociationEndAnnotation extends FigTextGroup {
-
-        private static final long serialVersionUID = 1871796732318164649L;
-        
-        FigRole role;
-        FigOrdering ordering;
-        int arrowType = 0;
-        
-        public FigAssociationEndAnnotation() {
-            role = new FigRole();
-            addFig(role);
-
-            ordering = new FigOrdering();
-            addFig(ordering);
-        }
-        
-        public void setOwner(Object owner) {
-            if (owner != null) {
-                if (!Model.getFacade().isAAssociationEnd(owner)) {
-                    throw new IllegalArgumentException(
-                            "An AssociationEnd was expected");
-                }
-                super.setOwner(owner);
-                ordering.setOwner(owner);
-                role.setOwner(owner);
-                determineArrowHead();
-                Model.getPump().addModelEventListener(this, owner, new String[] {"isNavigable", "aggregation", "participant"});
-            }
-        }
-
-        /**
-         * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
-         */
-        public void removeFromDiagram() {
-            Model.getPump().removeModelEventListener(this, getOwner(), new String[] {"isNavigable", "aggregation", "participant"});
-            super.removeFromDiagram();
-        }
-        
-        public void propertyChange(PropertyChangeEvent pce) {
-            super.propertyChange(pce);
-            if (pce instanceof AttributeChangeEvent
-                && (pce.getPropertyName().equals("isNavigable")
-                    || pce.getPropertyName().equals("aggregation"))) {
-                determineArrowHead();
-                applyArrowHeads();
-            }
-            if (pce instanceof AddAssociationEvent
-                    && pce.getPropertyName().equals("participant")) {
-                FigAssociation.this.determineFigNodes();
-            }
-        }
-        
-        /**
-         * Decide which arrow head should appear
-         */
-        private void determineArrowHead() {
-            assert getOwner() != null;
-
-            Object ak =  Model.getFacade().getAggregation(getOwner());
-            boolean nav = Model.getFacade().isNavigable(getOwner());
-
-            if (nav) {
-                if (Model.getAggregationKind().getNone().equals(ak)
-                        || (ak == null)) {
-                    arrowType = NAV_NONE;
-                } else if (Model.getAggregationKind().getAggregate()
-                        .equals(ak)) {
-                    arrowType = NAV_AGGREGATE;
-                } else if (Model.getAggregationKind().getComposite()
-                        .equals(ak)) {
-                    arrowType = NAV_COMPOSITE;
-                }
-            } else {
-                if (Model.getAggregationKind().getNone().equals(ak)
-                        || (ak == null)) {
-                    arrowType = NONE;
-                } else if (Model.getAggregationKind().getAggregate()
-                        .equals(ak)) {
-                    arrowType = AGGREGATE;
-                } else if (Model.getAggregationKind().getComposite()
-                        .equals(ak)) {
-                    arrowType = COMPOSITE;
-                }
-            }
-        }
-        
-        public int getArrowType() {
-            return arrowType;
-        }
-    }
 } /* end class FigAssociation */
 
 /**
@@ -710,5 +591,127 @@ class FigRole extends FigSingleLineText implements PropertyChangeListener {
     
     public void parse() {
         setText(notationProviderRole.parse(getText()));
+    }
+}
+
+class FigAssociationEndAnnotation extends FigTextGroup {
+
+    private static final long serialVersionUID = 1871796732318164649L;
+    
+    private static final ArrowHead NAV_AGGR =
+        new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
+                   new ArrowHeadGreater());
+
+    private static final ArrowHead NAV_COMP =
+        new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
+                   new ArrowHeadGreater());
+
+    // These are a list of arrow types. Positioning is important as we subtract
+    // 3 to convert a navigable arrow to a non navigable with the same
+    // aggregation
+    private static final int NONE = 0;
+    private static final int AGGREGATE = 1;
+    private static final int COMPOSITE = 2;
+    private static final int NAV_NONE = 3;
+    private static final int NAV_AGGREGATE = 4;
+    private static final int NAV_COMPOSITE = 5;
+    
+    public static final ArrowHead[] ARROW_HEADS = new ArrowHead[6];
+    static {
+        ARROW_HEADS[NONE] = ArrowHeadNone.TheInstance;
+        ARROW_HEADS[AGGREGATE] = ArrowHeadDiamond.WhiteDiamond;
+        ARROW_HEADS[COMPOSITE] = ArrowHeadDiamond.BlackDiamond;
+        ARROW_HEADS[NAV_NONE] = new ArrowHeadGreater();
+        ARROW_HEADS[NAV_AGGREGATE] = NAV_AGGR;
+        ARROW_HEADS[NAV_COMPOSITE] = NAV_COMP;
+    }
+    
+    FigRole role;
+    FigOrdering ordering;
+    int arrowType = 0;
+    private FigEdgeModelElement figEdge;
+    
+    public FigAssociationEndAnnotation(FigEdgeModelElement figEdge) {
+        this.figEdge = figEdge;
+        
+        role = new FigRole();
+        addFig(role);
+
+        ordering = new FigOrdering();
+        addFig(ordering);
+    }
+    
+    public void setOwner(Object owner) {
+        if (owner != null) {
+            if (!Model.getFacade().isAAssociationEnd(owner)) {
+                throw new IllegalArgumentException(
+                        "An AssociationEnd was expected");
+            }
+            super.setOwner(owner);
+            ordering.setOwner(owner);
+            role.setOwner(owner);
+            determineArrowHead();
+            Model.getPump().addModelEventListener(this, owner, new String[] {"isNavigable", "aggregation", "participant"});
+        }
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
+     */
+    public void removeFromDiagram() {
+        Model.getPump().removeModelEventListener(this, getOwner(), new String[] {"isNavigable", "aggregation", "participant"});
+        super.removeFromDiagram();
+    }
+    
+    public void propertyChange(PropertyChangeEvent pce) {
+        super.propertyChange(pce);
+        if (pce instanceof AttributeChangeEvent
+            && (pce.getPropertyName().equals("isNavigable")
+                || pce.getPropertyName().equals("aggregation"))) {
+            determineArrowHead();
+            ((FigAssociation) figEdge).applyArrowHeads();
+        }
+        if (pce instanceof AddAssociationEvent
+                && pce.getPropertyName().equals("participant")) {
+            figEdge.determineFigNodes();
+        }
+    }
+    
+    /**
+     * Decide which arrow head should appear
+     */
+    private void determineArrowHead() {
+        assert getOwner() != null;
+
+        Object ak =  Model.getFacade().getAggregation(getOwner());
+        boolean nav = Model.getFacade().isNavigable(getOwner());
+
+        if (nav) {
+            if (Model.getAggregationKind().getNone().equals(ak)
+                    || (ak == null)) {
+                arrowType = NAV_NONE;
+            } else if (Model.getAggregationKind().getAggregate()
+                    .equals(ak)) {
+                arrowType = NAV_AGGREGATE;
+            } else if (Model.getAggregationKind().getComposite()
+                    .equals(ak)) {
+                arrowType = NAV_COMPOSITE;
+            }
+        } else {
+            if (Model.getAggregationKind().getNone().equals(ak)
+                    || (ak == null)) {
+                arrowType = NONE;
+            } else if (Model.getAggregationKind().getAggregate()
+                    .equals(ak)) {
+                arrowType = AGGREGATE;
+            } else if (Model.getAggregationKind().getComposite()
+                    .equals(ak)) {
+                arrowType = COMPOSITE;
+            }
+        }
+    }
+    
+    public int getArrowType() {
+        return arrowType;
     }
 }
