@@ -224,55 +224,6 @@ public final class NotationProviderFactory2 {
     }
 
     /**
-     * @param type the provider type
-     * @param context the context (i.e. the notation name)
-     * @return the provider
-     * @param object the constructor parameter
-     * 
-     * @deprecated by MVW in V0.21.3. Replaced by 
-     * {@link #getNotationProvider(int, Object)}
-     * See issue 3140.
-     */
-    public NotationProvider4 getNotationProvider(int type,
-            NotationContext context, Object object) {
-        NotationName name = context.getContextNotation();
-        Class clazz = getNotationProviderClass(type, name);
-        if (clazz != null) {
-            Class[] p = {Object.class};
-            Constructor constructor = null;
-            try {
-                constructor = clazz.getConstructor(p);
-            } catch (SecurityException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
-            } catch (NoSuchMethodException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
-            }
-            Object[] params = {
-                object,
-            };
-
-            try {
-                return (NotationProvider4) constructor.newInstance(params);
-            } catch (IllegalArgumentException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
-            } catch (InstantiationException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
-            } catch (IllegalAccessException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
-            } catch (InvocationTargetException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
-            }
-        }
-        return null;
-    }
-
-    /**
      * This function looks for the requested notation provider type.
      * It is guaranteed to deliver:<ul>
      * <li>the requested type of the requested notation language,
