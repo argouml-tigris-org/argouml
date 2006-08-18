@@ -25,6 +25,8 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import org.argouml.model.Model;
+
 import junit.framework.TestCase;
 
 
@@ -83,4 +85,14 @@ public class TestCrUnconventionalAttrName extends TestCase {
     public void testOnlyUnderscoreName() {
         assertEquals("_", cr.computeSuggestion("_"));
     }
+    
+    public void testPredicate2() {
+        Object me = Model.getCoreFactory().createAttribute();
+        Model.getCoreHelper().setName(me, null);
+        assertFalse(cr.predicate2(me, null));
+        
+        Model.getCoreHelper().setName(me, "UpperCase");
+        assertTrue(cr.predicate2(me, null));
+    }
+
 }

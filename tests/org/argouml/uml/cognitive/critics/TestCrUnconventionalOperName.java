@@ -26,6 +26,8 @@ package org.argouml.uml.cognitive.critics;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
+
 
 /**
  * Testing the class {@link CrUnconventionalOperName}.
@@ -54,5 +56,14 @@ public class TestCrUnconventionalOperName extends TestCase {
         assertEquals("", cr.computeSuggestion(null));
         assertEquals("test", cr.computeSuggestion("Test"));
         assertEquals("t", cr.computeSuggestion("T"));
+    }
+    
+    public void testPredicate2() {
+        Object me = Model.getCoreFactory().createOperation();
+        Model.getCoreHelper().setName(me, null);
+        assertFalse(cr.predicate2(me, null));
+        
+        Model.getCoreHelper().setName(me, "UpperCase");
+        assertTrue(cr.predicate2(me, null));
     }
 }
