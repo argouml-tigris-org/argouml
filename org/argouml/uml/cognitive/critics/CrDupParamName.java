@@ -64,9 +64,6 @@ public class CrDupParamName extends CrUML {
 	Iterator params = Model.getFacade().getParameters(bf).iterator();
 	while (params.hasNext()) {
 	    Object p = /*(MParameter)*/ params.next();
-	    if (Model.getFacade().isReturn(p)) {
-		continue;
-	    }
 
 	    String pName = Model.getFacade().getName(p);
 	    if (pName == null || "".equals(pName)) {
