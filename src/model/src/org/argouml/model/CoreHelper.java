@@ -964,6 +964,7 @@ public interface CoreHelper {
      *
      * @param handle is the parameter
      * @param kind is the directionkind
+     * @see org.argouml.model.Model#getDirectionKind
      */
     void setKind(Object handle, Object kind);
 
