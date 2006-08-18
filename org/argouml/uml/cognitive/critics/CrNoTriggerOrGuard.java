@@ -56,42 +56,46 @@ public class CrNoTriggerOrGuard extends CrUML {
 	if (!(Model.getFacade().isATransition(dm))) {
             return NO_PROBLEM;
         }
-	Object tr = /*(MTransition)*/ dm;
-	Object/*MEvent*/ t = Model.getFacade().getTrigger(tr);
-	Object g = Model.getFacade().getGuard(tr);
-	Object sv = Model.getFacade().getSource(tr);
-	Object dv = Model.getFacade().getTarget(tr);
-	if (!(Model.getFacade().isAPseudostate(dv))) {
+	
+        Object transition = /*(MTransition)*/ dm;
+        Object target = Model.getFacade().getTarget(transition);
+
+        if (!(Model.getFacade().isAPseudostate(target))) {
             return NO_PROBLEM;
         }
 
+	Object trigger = Model.getFacade().getTrigger(transition);
+	Object guard = Model.getFacade().getGuard(transition);
+	Object source = Model.getFacade().getSource(transition);
+	
+	
 	//	 WFR Transitions, OMG UML 1.3
-	Object k = Model.getFacade().getPseudostateKind(dv);
+	Object k = Model.getFacade().getPseudostateKind(target);
 	if (Model.getFacade().
             equalsPseudostateKind(k,
                     Model.getPseudostateKind().getJoin())) {
             return NO_PROBLEM;
         }
-	if (!(Model.getFacade().isAState(sv))) {
+	if (!(Model.getFacade().isAState(source))) {
             return NO_PROBLEM;
         }
-	if (Model.getFacade().getDoActivity(sv) != null) {
+	if (Model.getFacade().getDoActivity(source) != null) {
             return NO_PROBLEM;
         }
 	boolean hasTrigger =
-	    (t != null
-            && Model.getFacade().getName(t) != null
-            && Model.getFacade().getName(t).length() > 0);
+	    (trigger != null
+            && Model.getFacade().getName(trigger) != null
+            && Model.getFacade().getName(trigger).length() > 0);
 	if (hasTrigger) {
             return NO_PROBLEM;
         }
 	boolean noGuard =
-            (g == null
-            || Model.getFacade().getExpression(g) == null
+            (guard == null
+            || Model.getFacade().getExpression(guard) == null
             || Model.getFacade().getBody(
-                Model.getFacade().getExpression(g)) == null
+                Model.getFacade().getExpression(guard)) == null
             || Model.getFacade().getBody(
-                Model.getFacade().getExpression(g)).toString().length() == 0);
+                Model.getFacade().getExpression(guard)).toString().length() == 0);
 	if (noGuard) {
             return PROBLEM_FOUND;
         }
