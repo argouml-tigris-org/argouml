@@ -1242,7 +1242,7 @@ public interface Facade {
      * The list of Attributes.
      *
      * @param handle classifier to examine.
-     * @return iterator with attributes.
+     * @return Collection with attributes.
      */
     Collection getAttributes(Object handle);
 
