@@ -510,11 +510,12 @@ class FigMultiplicity extends FigSingleLineText implements PropertyChangeListene
 }
 
 /**
- * A Fig representing the ordering of some model element.
- * This has potential reuse for other edges showing ordering
+ * A textual Fig representing the ordering of some model element,
+ * i.e. "{ordered}" or "{sorted}".
+ * This has potential reuse for other edges showing ordering.
  * @author Bob Tarling
  */
-class FigOrdering extends FigSingleLineText implements PropertyChangeListener {
+class FigOrdering extends FigSingleLineText {
 
     private static final long serialVersionUID = 5385230942216677015L;
 
@@ -564,7 +565,8 @@ class FigRole extends FigSingleLineText implements PropertyChangeListener {
     private NotationProvider4 notationProviderRole;
 
     FigRole() {
-        super(10, 10, 90, 20, false, new String[] {"name", "visibility"});
+        super(10, 10, 90, 20, false, 
+                new String[] {"name", "visibility", "stereotype"});
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
     }
