@@ -21,7 +21,7 @@ briefly below.</P>
   <LI><A HREF="#Standard">Standard UML 1.4 Metamodel</A></LI>
   <LI><A HREF="#XMI">XMI Support</A></LI>
   <LI><A HREF="#Export">Export Diagrams as GIF, PNG, PS, EPS, PGML and SVG</A></LI>
-  <LI><A HREF="#i18n">Available in seven languages - EN, DE, ES, RU, FR, NB, CN</A></LI>
+  <LI><A HREF="#i18n">Available in eight languages - EN, DE, ES, IT, RU, FR, NB, CN</A></LI>
   <LI><A HREF="#Editing">Advanced diagram editing and Zoom</A></LI>
   <LI><A HREF="#OCL">OCL Support</A></LI>
   <LI><A HREF="#codegen">Forward Engineering</A></LI>
@@ -60,7 +60,7 @@ briefly below.</P>
     <LI><A HREF="#criticeditor">Critic Editor (future)</A>
     <LI><A HREF="#checklisteditor">Checklist Editor (future)</A>
     <LI><A HREF="#autoeditor">Corrective Automation Editor (future)</A>
-    <LI><A HREF="#naveditor">Navigational Perspective Editor</A>
+    <LI><A HREF="#naveditor">Explorer Perspective Editor</A>
   </UL> -->
 </UL>
 
@@ -115,7 +115,7 @@ Standard for UML 1.4.
 <h3><A NAME="i18n">Internationalization</A></h3>
 
 <p>ArgoUML has been internationalized to American English, British English,
-        French, German, Spanish,  Russian,
+        French, German, Italian, Spanish,  Russian,
 	Norwegian Bokm&aring;l and Chinese.
 Portuguese and Catalan are considered.</p>
 
@@ -138,8 +138,8 @@ diagrams.</p>
 <h3><A NAME="codegen">Code Generation</A></h3>
 
 <p>
-ArgoUML provides a modular code generation framework. Currently Java is
-provided by default and there are modules for C++, C# and PHP.
+ArgoUML provides code generation for Java, C++, C#, PHP4 and PHP5.
+Other languages may be added since the code generation is a modular framework.
 
 The Java code
 generation works with the Java reverse engineering to provide basic round -
@@ -290,15 +290,18 @@ This feature is not described yet.
 various parts of their modeling project.
 
 Unlike other tools,
-Argo provides the
-      designer with a much richer set of alternative tree views
-      of the project, and allows a complete configuration of the tree view
-      by combining over 65 perspective rules in as many views as desired.
+      ArgoUML provides 9 different
+        explorer perspectives and a simple editor to customize
+        these perspectives or author new ones. Each explorer
+        perspective is made up of a set of rules. Each rule defines
+        the possible children of a given design element. When rules
+        are combined they yield the union of the children produced by
+        each rule. About 70 rules are available for designers to use
+        in explorer perspectives. A simple dialog box allows
+        designers to specify the rules that make up each
+        perspective.
 </p>
 
-<!-- , and provides a language for designers to <A
-      HREF="#naveditor">customize</A> those perspectives or add new
-      ones. -->
 
 <h3><A NAME="views">Multiple, Overlapping Views</A></h3>
 <p>Complex designs are made up of hundreds of elements with
@@ -386,20 +389,7 @@ In an upcoming version of ArgoUML,
         designers will be able to author these corrective automations
         using the same graphical editor used to author critics.
 -->
-<!--
 
-<h3><A NAME="naveditor">Navigational Perspective Editor</A></h3>
-The current version of ArgoUML provides over a dozen different
-        navigational perspectives and a simple editor to customize
-        these perspectives or author new ones. Each navigational
-        perspective is made up of a set of rules. Each rule defines
-        the possible children of a given design element. When rules
-        are combined they yield the union of the children produced by
-        each rule. About 20 rules are available for designers to use
-        in navigational perspectives. A simple dialog box allows
-        designers to specify the rules that make up each
-        perspective.
--->
 
 <HR ALIGN="CENTER">
 <p>Back to <A HREF="index.html">ArgoUML Home</A></p>
