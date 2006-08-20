@@ -31,9 +31,9 @@ import org.argouml.model.Model;
 public class TestCrNameConflict extends TestCase {
 
     private CrNameConflict critic = null;
-    
-    private Object ns1, ns2;
-    
+
+    private Object c1, c2, c3, ns1, ns2;
+
     public TestCrNameConflict(String arg0) {
         super(arg0);
     }
@@ -42,28 +42,40 @@ public class TestCrNameConflict extends TestCase {
         super.setUp();
         ns1 = Model.getModelManagementFactory().buildPackage("P1", null);
         ns2 = Model.getModelManagementFactory().buildPackage("P2", null);
-        Model.getCoreFactory().buildClass("A", ns1);
-        Model.getCoreFactory().buildClass("A", ns1);
-        Model.getCoreFactory().buildClass("B", ns1);
+        c1 = Model.getCoreFactory().buildClass("A", ns1);
+        c2 = Model.getCoreFactory().buildClass("A", ns1);
+        c3 = Model.getCoreFactory().buildClass("B", ns1);
         Model.getCoreFactory().buildClass("A", ns2);
         critic = new CrNameConflict();
-        
+
     }
 
     public void testPredicate2() {
         // {A, A} are offenders
         assertTrue(critic.predicate2(ns1, null));
         assertTrue(critic.computeOffenders(ns1).size() == 2);
-        
+
         // {} no offenders
         assertFalse(critic.predicate2(ns2, null));
         assertTrue(critic.computeOffenders(ns2).size() == 0);
-        
+
         // {A,A,B,B} are offenders
         Model.getCoreFactory().buildInterface("B", ns1);
         assertTrue(critic.predicate2(ns1, null));
         assertTrue(critic.computeOffenders(ns1).size() == 4);
-        
+
+    }
+
+    public void testGeneralizations() {
+        // generalizations are not required to have unique names within a
+        // namespace
+        Object g1 = Model.getCoreFactory().buildGeneralization(c2, c1);
+        Model.getCoreHelper().setName(g1, "gen1");
+        Object g2 = Model.getCoreFactory().buildGeneralization(c3, c1);
+        Model.getCoreHelper().setName(g1, "gen1");
+        assertFalse(critic.predicate2(ns2, null));
+        assertTrue(critic.computeOffenders(ns2).size() == 0);
+
     }
 
 }
