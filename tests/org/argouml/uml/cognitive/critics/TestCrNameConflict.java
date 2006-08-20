@@ -32,7 +32,7 @@ public class TestCrNameConflict extends TestCase {
 
     private CrNameConflict critic = null;
 
-    private Object c1, c2, c3, ns1, ns2;
+    private Object c1, c2, c3, c4, ns1, ns2;
 
     public TestCrNameConflict(String arg0) {
         super(arg0);
@@ -45,7 +45,7 @@ public class TestCrNameConflict extends TestCase {
         c1 = Model.getCoreFactory().buildClass("A", ns1);
         c2 = Model.getCoreFactory().buildClass("A", ns1);
         c3 = Model.getCoreFactory().buildClass("B", ns1);
-        Model.getCoreFactory().buildClass("A", ns2);
+        c4 = Model.getCoreFactory().buildClass("A", ns2);
         critic = new CrNameConflict();
 
     }
@@ -63,19 +63,50 @@ public class TestCrNameConflict extends TestCase {
         Model.getCoreFactory().buildInterface("B", ns1);
         assertTrue(critic.predicate2(ns1, null));
         assertTrue(critic.computeOffenders(ns1).size() == 4);
-
     }
 
     public void testGeneralizations() {
         // generalizations are not required to have unique names within a
         // namespace
+        Model.getCoreHelper().setName(c1, "C1");
+        Model.getCoreHelper().setName(c2, "C2");
+        Model.getCoreHelper().setName(c3, "C3");
+        Model.getCoreHelper().setName(c4, "C4");
         Object g1 = Model.getCoreFactory().buildGeneralization(c2, c1);
         Model.getCoreHelper().setName(g1, "gen1");
         Object g2 = Model.getCoreFactory().buildGeneralization(c3, c1);
-        Model.getCoreHelper().setName(g1, "gen1");
-        assertFalse(critic.predicate2(ns2, null));
-        assertTrue(critic.computeOffenders(ns2).size() == 0);
+        Model.getCoreHelper().setName(g2, "gen1");
+        assertFalse(critic.predicate2(ns1, null));
+        assertTrue(critic.computeOffenders(ns1).size() == 0);
 
+    }
+    
+    public void testAssociations() {
+        Model.getCoreHelper().setNamespace(c4, ns1);
+        Object a1, a2, a3;
+        Model.getCoreHelper().setName(c1, "C1");
+        Model.getCoreHelper().setName(c2, "C2");
+        Model.getCoreHelper().setName(c3, "C3");
+        Model.getCoreHelper().setName(c4, "C4");
+        a1 = Model.getCoreFactory().buildAssociation(c1, c2);
+        a2 = Model.getCoreFactory().buildAssociation(c3, c4);
+        Model.getCoreHelper().setName(a1, "A1");
+        Model.getCoreHelper().setName(a2, "A2");
+        
+        // everything ok
+        assertFalse(critic.predicate2(ns1, null));
+        assertTrue(critic.computeOffenders(ns1).size() == 0);
+        
+        // same name, different classes, everything ok
+        Model.getCoreHelper().setName(a1, "A2");
+        assertFalse(critic.predicate2(ns1, null));
+        assertTrue(critic.computeOffenders(ns1).size() == 0);
+        
+        // same name, same participants, two offenders
+        a3 = Model.getCoreFactory().buildAssociation(c3, c4);
+        Model.getCoreHelper().setName(a3, "A2");
+        assertTrue(critic.predicate2(ns1, null));
+        assertTrue(critic.computeOffenders(ns1).size() == 2);
     }
 
 }
