@@ -133,11 +133,11 @@ public class FigNodeAssociation extends FigNodeModelElement {
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (mee == null || mee.getPropertyName().equals("isAbstract")) {
+        if (mee == null || "isAbstract".equals(mee.getPropertyName())) {
             updateAbstract();
             damage();
         }
-        if (mee.getPropertyName().equals("connection")) {
+        if ("connection".equals(mee.getPropertyName())) {
             if (mee instanceof RemoveAssociationEvent) {
                 Object association =
                     ((RemoveAssociationEvent) mee).getSource();
