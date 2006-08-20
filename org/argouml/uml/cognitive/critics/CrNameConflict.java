@@ -36,8 +36,8 @@ import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
- * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
- * Semantics. OMG document ad/97-08-04.
+ * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1 Semantics.
+ * OMG document ad/97-08-04.
  */
 public class CrNameConflict extends CrUML {
 
@@ -54,23 +54,24 @@ public class CrNameConflict extends CrUML {
 
     /**
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         return computeOffenders(dm).size() > 1;
     }
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
+     *      org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	ListSet offs = computeOffenders(dm);
-	return new UMLToDoItem(this, offs, dsgr);
+        ListSet offs = computeOffenders(dm);
+        return new UMLToDoItem(this, offs, dsgr);
     }
 
     /**
-     * @param dm the object to check
+     * @param dm
+     *            the object to check
      * @return the set of offenders
      */
     protected ListSet computeOffenders(Object dm) {
@@ -80,11 +81,13 @@ public class CrNameConflict extends CrUML {
             HashMap names = new HashMap();
             while (it.hasNext()) {
                 Object name1Object = it.next();
+                if (Model.getFacade().isAGeneralization(name1Object))
+                    continue;
                 String name = Model.getFacade().getName(name1Object);
-		if (name == null)
-		    continue;
-		if ("".equals(name))
-		    continue;
+                if (name == null)
+                    continue;
+                if ("".equals(name))
+                    continue;
                 if (names.containsKey(name)) {
                     Object offender = names.get(name);
                     if (!offenderResult.contains(offender)) {
@@ -98,24 +101,24 @@ public class CrNameConflict extends CrUML {
         return offenderResult;
     }
 
-
     /**
      * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
-	ListSet offs = i.getOffenders();
+        if (!isActive())
+            return false;
+        ListSet offs = i.getOffenders();
 
         // first element is e.g. the class, but we need to have its namespace
         // to recompute the offenders.
-	Object f = offs.firstElement();
+        Object f = offs.firstElement();
         Object ns = Model.getFacade().getNamespace(f);
-	if (!predicate(ns, dsgr)) return false;
-	ListSet newOffs = computeOffenders(ns);
-	boolean res = offs.equals(newOffs);
-	return res;
+        if (!predicate(ns, dsgr))
+            return false;
+        ListSet newOffs = computeOffenders(ns);
+        boolean res = offs.equals(newOffs);
+        return res;
     }
 
 } /* end class CrNameConflict.java */
-
