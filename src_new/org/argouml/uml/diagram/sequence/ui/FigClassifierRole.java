@@ -682,13 +682,6 @@ public class FigClassifierRole extends FigNodeModelElement
             setBounds(x, y, w, h);
         }
         PGMLStackParser.setCommonAttrs(this, attributes);
-        String ownerRef = attributes.getValue("href");
-        if (ownerRef != null) {
-            Object owner = parser.findOwner(ownerRef);
-            if (owner != null) {
-		setOwner(owner);
-	    }
-        }
         parser.registerFig(this, attributes.getValue("name"));
         ((Container) container).addObject(this);
         return new FigClassifierRoleHandler(parser, this);
