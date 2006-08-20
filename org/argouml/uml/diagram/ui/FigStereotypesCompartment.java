@@ -30,13 +30,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
@@ -60,6 +58,11 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigStereotypesCompartment extends FigCompartment {
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1696363445893406130L;
+    
     /**
      * Logger.
      */
@@ -126,8 +129,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                 stereotypeTextFig.setText(Model.getFacade().getName(stereotype));
                 stereotypeTextFig.setOwner(stereotype);
                 addFig(stereotypeTextFig);
-                Globals.curEditor()
-                    .getLayerManager().getActiveLayer().damageAll();
+                damage();
             } else {
                 LOG.warn("Unexpected property " + event.getPropertyName());
             }
@@ -273,9 +275,17 @@ public class FigStereotypesCompartment extends FigCompartment {
     public void setKeyword(String word) {
         keyword = word;
     }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -1696363445893406130L;
+    
+    // TODO: Delete after GEF 0.12.1 commited
+    public void damage() {
+        Layer lay = getLayer();
+        Fig group = getGroup();
+        while (lay == null && group != null) {
+            lay = group.getLayer();
+            group = group.getGroup();
+        }
+        if (lay != null) {
+            lay.damageAll();
+        }
+    }
 }
