@@ -176,7 +176,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
     special, but it does not implement all the features that commercial 
     CASE tools provide.</para>
 
-    <para>The current V0.20 release of ArgoUML implements all the 
+    <para>The current version (@VERSION@) of ArgoUML implements all the 
     diagram types of the 
     
     <ulink url="http://www.omg.org/cgi-bin/doc?formal/01-09-67">UML 1.4 
@@ -1267,7 +1267,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         psychology, ii) it is based on open standards; iii) it is 100% 
         pure Java; and iv) it is an open source project.</para>
 
-        <sect2>
+        <sect2 id="tut.cog.psych">
 
           <title>Cognitive Psychology</title>
 
@@ -1599,12 +1599,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           can&apos;t do varies from project to project, but the 
           principle is the same.</para>
 
-          <para>The advantage is that a small project like ArgoUML 
-          suddenly is open to a lot of additional help from those who 
-          can chip in their ideas for how the program might be 
-          improved. At any one time their may be 10, 15, 20 or more 
-          people making significant contributions to ArgoUML. To do 
-          that commercially would cost $1m+ per year.</para>
+          <para>
+            The advantage is that a small project like ArgoUML 
+            suddenly is open to a lot of additional help from those who 
+            can chip in their ideas for how the program might be 
+            improved.
+            At any one time there may be 10, 15, 20 or more 
+            people making significant contributions to ArgoUML.
+            To do that commercially would cost $1m+ per year.
+          </para>
 
           <para>Its not just a spirit of pure altruism. Contributing is 
           a way of learning <quote>hands-on</quote> about leading edge 
@@ -1900,11 +1903,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   don&apos;t want, go to the second leftmost menu item in the
                   menu bar at the top of the screen.
                   Select the bottom most menu entry in the drop down.
-                  <xref linkend="fig.prob.run.02"/> show this in Russian.
+                  <xref linkend="fig.prob.run.02"/> shows this in Russian.
                   Then click on the second tab from the bottom in the column of
                   tabs on the left.
                   Drop down the list as shown in 
-                  <xref linkend="fig.prob.run.02"/>.
+                  <xref linkend="fig.prob.run.02"/>
                   and select a language.
                   Note that the languages are listed in themselves.
                   The language shown as being selected is German in which the
@@ -1985,9 +1988,407 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Grab the horizontal divider bar and move it up and down.
             Play around a little with the little arrows at the left or top of the
             divider bars.
-            See <xref linkend="s1.ref.panes"/>;.
+            See <xref linkend="s1.ref.panes"/>.
           </para>
 
+          <sect3>
+
+            <title>The Menu Bar and Toolbars</title>
+
+            <indexterm><primary>Menu Bar</primary></indexterm>
+            <indexterm><primary>Toolbars</primary></indexterm>
+            <para>
+              The menu bar and toolbars give access to all the 
+              main features of ArgoUML.
+              As is conventional, menu options and toolbar options that are not
+              available (disabled) are grayed out and menu items that invoke a
+              dialog box are followed by an ellipsis (...).
+              At this time you should read <xref linkend="ch.ref.toolbar"/>
+              and <xref linkend="ch.ref.menu"/>.
+            </para>
+
+            <itemizedlist>
+
+              <listitem>
+
+                <para>
+                  <emphasis>File</emphasis> menu.
+                  <indexterm><primary>File Menu</primary></indexterm>
+                  The standard file menu entries present no surprises and we
+                  will just use them when needed without first showing how they
+                  work.
+                  A number of other actions are available that are peculiar
+                  to ArgoUML and we will go over them here.
+                </para>
+
+                <orderedlist>
+
+                  <listitem>
+
+                    <para>
+                      <emphasis>File=&gt;Revert to Saved.</emphasis>
+                      This has the same effect as File=&gt;Open Project selecting the
+                      current project.
+                    </para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para>
+                      <emphasis>Export/Import.</emphasis>
+                      Select the project line at the top of the Explorer.
+                      It should say "untitledModel" unless you have
+                      changed it.
+                      Perform a
+                      <emphasis>File=&gt;Export XMI</emphasis> action
+                      using "DeleteThis" for an output name in the file
+                      chooser dialog.
+                      Select the "Properties" tab in the "Details Pane" and
+                      change the name to something else, anything will do.
+                      Perform a
+                      <emphasis>File=&gt;Import XMI</emphasis> action.
+                      It will ask you whether you want to save the changes
+                      you have just made.
+                      Click on "No" and then in the file choosed that
+                      comes up select the "DeleteThis.xmi" file that you
+                      just wrote out.
+                      Observe that the name of the model has reverted back
+                      to what you had saved.
+                    </para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para>
+                      <emphasis>File=&gt;Import Sources.</emphasis>
+                      We will cover this later.
+                      You can&apos;t test it now unless you have some Java
+                      source code of your own handy.
+                    </para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para>
+                      <emphasis>File=&gt;Export (All) Graphics.</emphasis>
+                      In the Explorer Pane select one of the diagrams.
+                      Either "Class Diagram 1" or "Use Case Diagram 1"
+                      (assuming you haven&apos;t renamed or deleted them).
+                      Perform a
+                      <emphasis>File=&gt;Export Graphics</emphasis> action.
+                      When the file chooser opens it defaults to the last
+                      name you saved something to
+                      (even from a project no longer open).
+                      The file chooser allows you to select from a number
+                      of formats.
+                      Drop down the "Files of type" combobox and observe
+                      the choices.
+                      Cancel out as there is nothing useful to save.
+                      Perform a
+                      <emphasis>File=&gt;Export All Graphics</emphasis>
+                      action.
+                      Notice that this time you can&apos;t specify a file
+                      name and you can&apos;t select a file format.
+                      ArgoUML will allow you only to select an output
+                      directory.
+                      It will then create a file for each of your diagrams
+                      using the diagram name for the file name and an
+                      extension determined by the default graphics format.
+                      Actually, although you can&apos;t select file names
+                      in the browser panel, you can type one into the
+                      edit box.
+                      But, if you do that, nothing at all will happen.
+                      You will learn more about the default graphics format
+                      when we get to the <emphasis>Edit</emphasis> menu.
+                    </para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para>
+                      <emphasis>File=&gt;Notation.</emphasis>
+                      We are going to get a little ahead of ourselves here
+                      and do a little class diagram work so you can see
+                      what notation is all about.
+                      In the Explorer Pane select or create a class diagram.
+                      See <xref linkend="s1.ref.create.diagram.menu"/> and
+                      <xref linkend="s2.ref.edit_pane_drawing_tools"/>.
+                      Create a class in the diagram.
+                      Go to the Detail Pane and create an attribute
+                      in the class.
+                      See <xref linkend="s2.ref.class_property_toolbar"/>.
+                      In the Properties tab of the Detail Pane change the
+                      multiplicity to "1..*".
+                      Now go the the <emphasis>File Menu</emphasis>
+                      and select <emphasis>Notation</emphasis>.
+                      Go back and forth between UML and Java observing
+                      the changes in the display in the Edit Pane.
+                    </para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para>
+                      <emphasis>File=&gt;Properties.</emphasis>
+                      You can change the Notation language in the
+                      Properties dialog as well.
+                      Click on
+                      <emphasis>File=&gt;Properties</emphasis> and select
+                      the Notations tab.
+                      Set the Notation Language to UML1.4.
+                      Turn on all of the options and click Apply.
+                      Then turn off all of the options and click Apply
+                      observing the changes in the diagram.
+                      Set the Default Shadow Width to 8 and click Apply.
+                      Notice that nothing happens.
+                      This is because you are not setting the Shadow Width,
+                      but its default.
+                      The next time you create a class in a diagram, this
+                      new shadow value will apply.
+                    </para>
+
+                  </listitem>
+
+                </orderedlist>
+
+              </listitem>
+
+              <listitem>
+
+                <para>
+                  <emphasis>Edit</emphasis> menu.
+                  <indexterm><primary>Edit Menu</primary></indexterm>
+                  The edit menu does not look like what you are used to
+                  in other products.
+                  There are no "Cut", "Copy", or "Paste" actions.
+                  All of the choices are peculiar to ArgoUML so we are
+                  going to cover all of them in detail.
+                </para>
+                <orderedlist>
+                  <listitem>
+                    <para>
+                      Select a class diagram in the Explorer.
+                      If there is none there create one using
+                      <emphasis>Create=&gt;New Class Diagram</emphasis>.
+                      Create three classes using the class tool described
+                      in the User Interface Reference section on
+                      Class Diagram Specific Tools.
+                      Double click on it and then click in the Edit Pane
+                      for the class diagram in three different locations.
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>
+                      Undo the current mode by clicking on the "Select" tool.
+                      See <xref linkend="s2.ref.edit_layout"/>.
+                      This allows you to do things in the Edit Pane other
+                      than creating classes.
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>
+                      Each of the classes in the diagram has three vertically
+                      spaced sections.
+                      Double click in the top section of each class and
+                      enter a name for the class then hit the enter key.
+                      Just name the classes "A", "B", and "C".
+                      Select class A, then class B, and then class C either
+                      in the Edit Pane or in the Explorer Pane.
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>
+                      Now do an
+                      <emphasis>Edit=&gt;Select=&gt;Navigate Back</emphasis>.
+                      Class B should now be selected.
+                      Do another
+                      <emphasis>Edit=&gt;Select=&gt;Navigate Back</emphasis>.
+                      Class A should now be selected.
+                      Finally, do an
+                      <emphasis>Edit=&gt;Select=&gt;Navigate Forward</emphasis>.
+                      Class B should be selected again.
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>
+                      Do an
+                      <emphasis>Edit=&gt;Select=&gt;Invert Selection</emphasis>.
+                      Classes A and C should now be selected.
+                      Do another
+                      <emphasis>Edit=&gt;Select=&gt;Invert Selection</emphasis>.
+                      Class B should be selected again.
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>
+                      Do an
+                      <emphasis>Edit=&gt;Select=&gt;Remove From Diagram</emphasis>.
+                      Notice that class B is gone from the diagram but still
+                      exists in the Explorer Pane.
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>
+                      Select class B in the Explorer Pane, right click on it
+                      and choose "Add to Diagram".
+                      Move the cursor back onto the Edit Pane and left click on
+                      some part of the diagram where you think it will fit.
+                      You should be pretty much right back where you were before
+                      you removed it from the diagram.
+                      Do an
+                      <emphasis>Edit=&gt;Select=&gt;Delete From Model</emphasis>.
+                      Now class B should be gone both from the diagram and from
+                      the Explorer Pane.
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>
+                      <emphasis>Edit=&gt;Configure Perspectives</emphasis>...
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>
+                      <emphasis>Edit=&gt;Settings</emphasis>...
+                    </para>
+                    <para>
+                      ...
+                    </para>
+                    <para>
+                      At this point you should try the various choices
+                      available for a look and feel.
+                      You used the editor that establishes the look and feel
+                      when you were selecting a language, however, you only
+                      saw it in Russian.
+                      It you look at an English rendition
+                      <xref linkend="s3.ref.menu_settings_appearance"/> you
+                      will see that the topmost combobox is for selecting
+                      the look and feel.
+                      When the panel is first opened the box contains the
+                      current value.
+                      Select another one, exit from ArgoUML and restart it.
+                    </para>
+                  </listitem>
+                </orderedlist>
+
+              </listitem>
+
+              <listitem>
+
+                <para><emphasis>View</emphasis> menu. This allows you 
+                <indexterm><primary>View Menu</primary></indexterm>
+                to switch between diagrams, find artifacts in the 
+                model, zoom in a diagram, select a particular diagram 
+                representation (although at present there is only one), 
+                select a particular tab in the details menu, adjust the 
+                grid, view buttons on a selection, and switch between 
+                UML and Java notation.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><emphasis>Create Diagram</emphasis> menu. This 
+                <indexterm><primary>Create Diagram Menu</primary></indexterm>
+                allows you to create any one of the seven UML diagram 
+                types (class, use case, state, activity, collaboration, 
+                deployment and sequence) supported by ArgoUML.</para>
+
+                <para>State and activity diagrams can only be created 
+                when a class or actor is selected, even though the 
+                relevant menu entries are <emphasis>not</emphasis> 
+                grayed out if this has not been done (nothing will 
+                happen under this circumstance).</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><emphasis>Arrange</emphasis> menu. This allows 
+                <indexterm><primary>Arrange Menu</primary></indexterm>
+                you to align, distribute, reorder and nudge artifacts 
+                on a diagram and set the layout strategy for the 
+                diagram.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><emphasis>Generation</emphasis> menu. This allows 
+                <indexterm><primary>Generation Menu</primary></indexterm>
+                you to generate Java code for selected classes or all 
+                classes.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><emphasis>Critique</emphasis> menu. This allows 
+                <indexterm><primary>Critique Menu</primary></indexterm>
+                you to toggle the auto-critique on and off, set the 
+                level of importance of design issues and design goals 
+                and browse the critics available.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><emphasis>Tools</emphasis> menu. This menu is 
+                <indexterm><primary>Tools Menu</primary></indexterm>
+                permanently grayed out unless there is some tool 
+                available in your version of ArgoUML.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <indexterm><primary>Help Menu</primary></indexterm>
+                <para><emphasis>Help</emphasis> menu. This menu gives 
+                access to details of those who authored the system, and 
+                where additional help may be found.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <indexterm><primary>File Toolbar</primary></indexterm>
+                <para>File Toolbar. This toolbar contains some of the 
+                tools from the File menu.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <indexterm><primary>Edit Toolbar</primary></indexterm>
+                <para>Edit Toolbar. This toolbar contains some of the 
+                tools from the Edit menu.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <indexterm><primary>View Toolbar</primary></indexterm>
+                <para>View Toolbar. This toolbar contains some of the 
+                tools from the View menu.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <indexterm><primary>Create Diagram 
+                Toolbar</primary></indexterm>
+                <para>Create Diagram Toolbar. This toolbar contains 
+                some of the tools from the Create Diagram menu.</para>
+
+              </listitem>
+
+            </itemizedlist>
+
+          </sect3>
           <sect3>
 
             <title>The Explorer Pane</title>
@@ -1995,35 +2396,20 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>
               At this time you should take the time to read
               <xref linkend="ch.ref.navpane"/>.
-              There is not a lot that you can do at this point with the
-              Explorer Pane as there is nothing in it but the root of the tree
-              (currently "untitledModel") and two empty diagrams.
-              However, the Explorer Pane is fundamental to almost everything
-              that you do and we will be coming back to it again and again in what
-              follows.
+              The Explorer Pane is fundamental to almost everything that you do
+              and we will be coming back to it again and again in what follows.
+              In fact you will recall we have had to use it already.
             </para>
 
             <para>
               There is an expand or contract control in front of the package
-              symbol for <quote>untitledModel</quote> in the Explorer Pand and the
-              package symbol for <quote>Medium</quote> in the To-Do Pane.
+              symbol for <quote>untitledModel</quote> in the Explorer Pane and
+              the package symbol for <quote>Medium</quote> in the To-Do Pane.
               Click on these controls and observe that these panes are tree widgets
               that behave pretty much as you would expect them to.
               The expand or contract control is either plus (+)/minus (-) sign
               or knob with a right or bottom pointer depending upon the look and
               feel that you have chosen for an appearance.
-            </para>
-
-            <para>
-              At this point you should try the various choices available for a
-              look and feel.
-              You used the editor that establishes the look and feel when you
-              were selecting a language, however, you only saw it in Russian.
-              It you look at an English rendition
-              <xref linkend="s3.ref.menu_settings_appearance"/> you will see that
-              the topmost combobox is for selecting the look and feel.
-              When the panel is first opened the box contains the current value.
-              Select another one, exit from ArgoUML and restart it.
             </para>
 
             <para>
@@ -2047,36 +2433,46 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             </para>
 
             <para>
-              As we go through the Editing pane changes will sometimes occur in the
-              Details and the To-Do panes.
+              As we go through the Editing pane changes will sometimes occur
+              in the Details and the To-Do panes.
               Pay no attention to them for now.
               We will attend to them when we cover those panes.
             </para>
-
-            <note>
-
-              <itemizedlist>
-
-                <listitem><para>Walk through a couple of changes.</para></listitem>
-
-                <listitem><para>Add some stuff.</para></listitem>
-
-                <listitem><para>Delete some stuff.</para></listitem>
-
-                <listitem><para>Resize things.</para></listitem>
-
-                <listitem><para>Select stuff with click and drag.</para></listitem>
-
-                <listitem><para>Select stuff with click and ctrl click.</para></listitem>
-
-                <listitem><para>Edit names inline.</para></listitem>
-
-                <listitem><para>Remove "images/tutorial/editoverview.gif"
-                from file system.</para></listitem>
-
-              </itemizedlist>
-
-            </note>
+            <para>
+              Select "Class Diagram 1" in the Explorers Pane.
+              The name is unimportant, if you have changed it, just select
+              the new name.
+              If you have deleted it, first perform a 
+              Create=&gt;New Class Diagram action.
+              Click on the "New Package" button in the Edit Pane tool bar.
+              Click somewhere in the edit pane.
+              In the Explorer notice that a package appears named
+              (unnamed Package).
+            </para>
+            <para>
+              Double click on the "New Class" button in Edit Pane the tool bar.
+              Click first within the package and once outside of it.
+              Notice that within the Explorer, two classes appear in the tree
+              both named (unnamed Class) one of them attached to the model node
+              and the other attached to the (unnamed Package) node.
+            </para>
+            <para>
+              Click the Select button in the Edit Pane tool bar so you can do
+              things in the Edit Pane without adding new Classes.
+              In the Explorer select the class that is not subordinate to the
+              package.
+              This selects the corresponding class in the diagram.
+              Grab this class and move it into the package.
+              Notice that in the Explorer this class is now also subordinate
+              to the package node.
+            </para>
+            <para>
+              In the diagram select the other class.
+              Notice that in the Explorer, the selected node
+              changes correspondingly.
+              Grab this class and move it outside of the package and watch
+              what happens in the Explorer.
+            </para>
 
           </sect3>
 
@@ -2154,227 +2550,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </sect3>
 
-          <sect3>
-
-            <title>The Menu Bar and Toolbars</title>
-
-            <indexterm><primary>Menu Bar</primary></indexterm>
-            <indexterm><primary>Toolbars</primary></indexterm>
-            <para>
-              The menu bar and toolbars give access to all the 
-              main features of ArgoUML.
-              As is conventional, menu options and toolbar options that are not
-              available (disabled) are grayed out and menu items that invoke a
-              dialog box are followed by an ellipsis (...).
-            </para>
-
-            <itemizedlist>
-
-              <listitem>
-
-                <para>
-                  <emphasis>File</emphasis> menu.
-                  <indexterm><primary>File Menu</primary></indexterm>
-                  The standard file menu entries present no surprises and we
-                  will just use them when needed without first showing how they
-                  work.
-                  A number of actions are available that are peculiar to ArgoUML
-                  and we will go over them here.
-                </para>
-
-                <orderedlist>
-
-                  <listitem>
-
-                    <para>
-                      <emphasis>Export/Import.</emphasis>
-                      Select the project line at the top of the Explorer.
-                      It should say "untitledModel" unless you have changed it.
-                      Perform a <emphasis>File=&gt;Export XMI</emphasis> action
-                      using "DeleteThis" for an output name in the file chooser
-                      dialog.
-                      Select the "Properties" tab in the "Details Pane" and
-                      change the name to something else, anything will do.
-                      Perform a <emphasis>File=&gt;Import XMI</emphasis> action
-                      selecting the "DeleteThis" file that you just wrote out.
-                      Observe that the name of the model has reverted back to
-                      what you had saved.
-                      More on this later.
-                    </para>
-
-                  </listitem>
-
-                  <listitem>
-
-                    <para>
-                      <emphasis>File=&gt;Import Sources.</emphasis>
-                      We will cover this later.
-                      You can't test it now unless you have some Java source
-                      code of your own handy.
-                    </para>
-
-                  </listitem>
-
-                  <listitem>
-
-                    <para>
-                      <emphasis>File=&gt;Export (All) Graphics.</emphasis>
-                      Select one of the diagrams.
-                      Either "Class Diagram 1" or "Use Case Diagram 1"
-                      (assuming you haven't renamed or deleted them).
-                      Perform a <emphasis>File=&gt;Export Graphics</emphasis>
-                      action.
-                      When the file chooser opens it defaults to the last name
-                      you saved something to (even from a project no longer open).
-                      The file chooser allows you to select from a number of
-                      formats.
-                      Drop down the "Files of type" combobox and observe the
-                      choices.
-                      Cancel out as there is nothing useful to save.
-                      Perform a <emphasis>File=&gt;Export All Graphics</emphasis>
-                      action.
-                      Notice that this time you can&apos;t specify a file name and
-                      you can&apos;t select a file format.
-                      ArgoUML will allow you only to select an output directory.
-                      It will then create a file for each of your diagrams using
-                      the diagram name for the file name and an extension of .png.
-                      Actually, although you can&apos;t select file names in the
-                      browser panel, you can type one into the edit box.
-                      But, if you do that, nothing at all will happen.
-                    </para>
-
-                  </listitem>
-
-                </orderedlist>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>Edit Menu</primary></indexterm>
-                <para><emphasis>Edit</emphasis> menu. This allows you 
-                to select one or more UML items on a diagram, undo and 
-                redo edits, remove items from diagrams or the whole 
-                model, empty the trash and change settings.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>View Menu</primary></indexterm>
-                <para><emphasis>View</emphasis> menu. This allows you 
-                to switch between diagrams, find artifacts in the 
-                model, zoom in a diagram, select a particular diagram 
-                representation (although at present there is only one), 
-                select a particular tab in the details menu, adjust the 
-                grid, view buttons on a selection, and switch between 
-                UML and Java notation.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>Create Diagram 
-                Menu</primary></indexterm>
-                <para><emphasis>Create Diagram</emphasis> menu. This 
-                allows you to create any one of the seven UML diagram 
-                types (class, use case, state, activity, collaboration, 
-                deployment and sequence) supported by ArgoUML.</para>
-
-                <para>State and activity diagrams can only be created 
-                when a class or actor is selected, even though the 
-                relevant menu entries are <emphasis>not</emphasis> 
-                grayed out if this has not been done (nothing will 
-                happen under this circumstance).</para>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>Arrange Menu</primary></indexterm>
-                <para><emphasis>Arrange</emphasis> menu. This allows 
-                you to align, distribute, reorder and nudge artifacts 
-                on a diagram and set the layout strategy for the 
-                diagram.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>Generation 
-                Menu</primary></indexterm>
-                <para><emphasis>Generation</emphasis> menu. This allows 
-                you to generate Java code for selected classes or all 
-                classes.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>Critique Menu</primary></indexterm>
-                <para><emphasis>Critique</emphasis> menu. This allows 
-                you to toggle the auto-critique on and off, set the 
-                level of importance of design issues and design goals 
-                and browse the critics available.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>Tools Menu</primary></indexterm>
-                <para><emphasis>Tools</emphasis> menu. This menu is 
-                permanently grayed out unless there is some tool 
-                available in your version of ArgoUML.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>Help Menu</primary></indexterm>
-                <para><emphasis>Help</emphasis> menu. This menu gives 
-                access to details of those who authored the system, and 
-                where additional help may be found.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>File Toolbar</primary></indexterm>
-                <para>File Toolbar. This toolbar contains some of the 
-                tools from the File menu.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>Edit Toolbar</primary></indexterm>
-                <para>Edit Toolbar. This toolbar contains some of the 
-                tools from the Edit menu.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>View Toolbar</primary></indexterm>
-                <para>View Toolbar. This toolbar contains some of the 
-                tools from the View menu.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <indexterm><primary>Create Diagram 
-                Toolbar</primary></indexterm>
-                <para>Create Diagram Toolbar. This toolbar contains 
-                some of the tools from the Create Diagram menu.</para>
-
-              </listitem>
-
-            </itemizedlist>
-
-          </sect3>
-
-          <sect3 id="s3.tut.mouse">
+          <!-- sect3 id="s3.tut.mouse">
 
             <title>The Mouse</title>
 
@@ -2469,7 +2645,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             encountered under the specific cases where they are 
             used.</para>
 
-          </sect3>
+          </sect3-->
 
           <sect3>
 
@@ -2477,9 +2653,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>In general diagrams are drawn by using the edit pane 
             toolbar to select the artifact desired and clicking in the 
-            diagram at the position required as described in 
-            <xref linkend="s3.tut.mouse"/>. That section also explains 
-            the use of the mouse for re-sizing artifacts.</para>
+            diagram at the position required.</para>
 
             <para>Artifacts that are already in the model, but not on a 
             diagram, may be added to a diagram by selecting the 
@@ -2910,7 +3084,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               anything about rendering beautiful SVG let us know.</para>
 
               <para>Most modern browsers support SVG.  If yours
-              doesn't try <ulink url="http://www.mozilla.com/firefox/">
+              doesn&apos;t try <ulink url="http://www.mozilla.com/firefox/">
               Firefox</ulink> or get a plugin for your 
               current browser from 
               <ulink url="http://www.adobe.com">
@@ -2937,7 +3111,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             contain UML 1.3 and UML 1.4 models.  For best compatibility
             with ArgoUML, export your models using UML 1.4 and XMI 1.1
             or 1.2.  Be sure to turn off any proprietary extensions
-            (such as Poseidon's diagram data).</para>
+            (such as Poseidon&apos;s diagram data).</para>
             
             <para>With UML versions earlier than UML 2.0, it isn't
             possible to save diagram information, so no diagrams
@@ -3063,14 +3237,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Working With Design Critics</title>
 
+          <para>
+            Design critics are part of the practical application of the
+            theories of Cognitive Psychology that are implemented in ArgoUML.
+            See <xref linkend="tut.cog.psych"/>
+          </para>
+
           <sect3>
 
-            <title>The To-Do Pane—Messages From the Design 
-            Critics</title>
+            <title>Messages From the Design Critics</title>
 
             <para>Where do we stand now? A new project has been 
-            created, and is connected to the file <literal>
-            FirstProject.argo</literal>. 
+            created, and is stored in the file <literal>
+            FirstProject.zargo</literal>. 
             <xref linkend="fig.tut.critstart"/> shows how your ArgoUML 
             window should look at this stage.</para>
 
@@ -3092,7 +3271,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             diagram and a use case diagram.</para>
 
             <para>If we look carefully at the screen, we can see that 
-            the &quot;Medium&quot; folder in the To Do pane (the lower 
+            the &quot;Medium&quot; folder in the To-Do Pane (the lower 
             left pane) must contain some items, since its activation 
             icon <guiicon>
             <inlinegraphic fileref="images/tutorial/guitreefoldercloseicon.gif"
@@ -3228,7 +3407,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>The Case Study (To be written)</title>
 
-        <remark>To be written...</remark>
+        <para>
+          Here is where we are going to start the Case Study.
+          It is at this point that you define your project;
+          not your product, but your project.
+          It can be argued that modeling concepts should apply here as well
+          but this has not been well established.
+          If you can take the time to look into the ArgoUML project, you will
+          find that there are a large number of "lines of code" and lines of
+          documentation that are part of the project, but not part of the
+          product.
+          For example, this document is part of the product while the Cookbook
+          and the build.xml files are part of the project only.
+          At a minimum the file structure of the project could be shown in a
+          package diagram.
+        </para>
+        <para>
+          ...
+        </para>
       </sect1>
 
     </chapter>
@@ -3614,9 +3810,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             service the machine. However if the ATM detects a fault, it 
             may summon the engineer to fix it.</para>
 
-            <para>The use of arrows on associations is referred to as 
-            the <emphasis>navigation</emphasis> of the association. We 
-            shall see this used elsewhere in UML later on.</para>
+            <para>
+              The use of arrows on associations is referred to as 
+              the <emphasis>navigation</emphasis> of the association.
+              We shall see this used elsewhere in UML later on.
+              The choice, by the OMG, of zero vice two arrowheads to show
+              a bidirectional association is unfortunate.
+              Under this convention you cannot distinguish between an
+              association whose navigation has yet to be determined and one
+              that is bidirectional.
+            </para>
 
             <para>
             <xref linkend="fig.tut.atm_use_case_diagram_navigation"/> 
@@ -3809,30 +4012,30 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Case</primary></indexterm>
             <indexterm><primary>Specializations</primary><secondary>of 
             Use Case</secondary></indexterm>
-            <para>Use cases may be linked together in one other way. 
-            One use case may be a <emphasis>generalization</emphasis> 
-            of a subsidiary use case (or alternatively the subsidiary 
-            is a <emphasis>specialization</emphasis> of the main use 
-            case).</para>
+            <para>
+              Use cases may be linked together in one other way. 
+              One use case may be a <emphasis>generalization</emphasis>
+              of a subsidiary use case (or alternatively the subsidiary 
+              is a <emphasis>specialization</emphasis> of the main use 
+              case).
+              This is very like the extends relationship, but 
+              without the constraint of specific extension points at 
+              which the main use case may be extended, and with no 
+              condition on when the subsidiary use case may be 
+              used.</para>
 
-            <para>This is very like the extends relationship, but 
-            without the constraint of specific extension points at 
-            which the main use case may be extended, and with no 
-            condition on when the subsidiary use case may be 
-            used.</para>
-
-            <para>Generalization is shown on a use case diagram by an 
-            arrow with solid line and solid white head from the 
-            subsidiary to the main use case.</para>
-
-            <para>This may be useful when a subsidiary use case 
-            specializes the behavior of the main use case at a large 
-            number of positions and under a wide range of 
-            circumstances.</para>
-
-            <para>However the lack of any restriction makes 
-            generalization very hard to specify precisely. In general 
-            use an extend relationship instead.</para>
+            <para>
+              Generalization is shown on a use case diagram by an 
+              arrow with solid line and solid white head from the 
+              subsidiary to the main use case.
+              This may be useful when a subsidiary use case 
+              specializes the behavior of the main use case at a large 
+              number of positions and under a wide range of 
+              circumstances.
+              However the lack of any restriction makes 
+              generalization very hard to specify precisely.
+              In general use an extend relationship instead.
+            </para>
 
           </sect3>
 
@@ -3847,14 +4050,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <indexterm><primary>Specification</primary><secondary>of Use 
           Case</secondary></indexterm>
           <indexterm><primary>Use Case Scenario</primary></indexterm>
-          <para>Each use case must be documented to explain in detail 
-          the behavior it is specifying. This document is known by 
-          different names in different processes: <emphasis>use case 
-          specification</emphasis>,<emphasis>use case 
-          scenario</emphasis> or even (confusingly) just <emphasis>use 
-          case</emphasis>.</para>
+          <para>
+            Each use case must be documented to explain in detail 
+            the behavior it is specifying.
+            ArgoUML assists in this area through the generation of graphic
+            files for inclusion in this documentation.
+            This document is known by different names in different processes:
+            <emphasis>use case specification</emphasis>,
+            <emphasis>use case scenario</emphasis> or even (confusingly) just
+            <emphasis>use case</emphasis>.
+          </para>
 
-          <para>A typical use case will include the following 
+          <para>A typical use case specification will include the following 
           sections.</para>
 
           <itemizedlist>
@@ -4260,13 +4467,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             specification, containing the non-functional requirements 
             relevant to the use case.</para>
 
-            <para>I don&apos;t like this for two reasons. First key 
-            non-functional requirements (for example about performance) 
-            may need to appear in many use cases and it is bad practice 
-            to replicate information. Secondly there are invariably 
-            some non-functional requirements that are system wide and 
-            need a system wide document. Hence my preference for a 
-            single supplementary requirements specification.</para>
+            <para>
+              This can cause some problems.
+              First key non-functional requirements (for example about
+              performance) may need to appear in many use cases and it is bad
+              practice to replicate information.
+              Secondly there are invariably some non-functional requirements
+              that are system wide and need a system wide document.
+              Hence my preference for a single supplementary requirements
+              specification.
+            </para>
 
           </note>
 
@@ -4728,6 +4938,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           Cases</primary></indexterm>
           <indexterm><primary>Use Case, 
           Hierarchical</primary></indexterm>
+
+          <para>
+            UML as originally designed allowed use cases to be organized by
+            grouping them in packages as well as by specifying relations among
+            them.
+            In ArgoUML only the relations mechanism is supported.
+            All Three of the relations that apply to use cases are supported.
+            These are <emphasis>include</emphasis>, <emphasis>extend</emphasis>
+            and <emphasis>generalization</emphasis>.
+          </para>
+
           <sect3>
 
             <title>Includes</title>
@@ -4869,15 +5090,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <indexterm><primary>Stereotype</primary><secondary>in Use 
           Case Diagrams</secondary></indexterm>
-          <para>UML has the concept of 
-          <emphasis>stereotyping</emphasis> as a way of extending the 
-          basic notation. It may prove useful for example to model a 
-          problem at both the business level and the engineering level. 
-          For both of these we will need use cases, but the use cases 
-          at the business level hold a different sort of information to 
-          those at the engineering level. Very likely they use 
-          different language and notation in their underlying use case 
-          specifications.</para>
+          <para>
+            UML has the concept of <emphasis>stereotyping</emphasis> as a way
+            of extending the basic notation.
+            It may prove useful for example to model a problem at both the
+            business level and the engineering level. 
+            It is for this reason that the OMG distinguishes between a PIM
+            and a PSM.
+            For both of these we will need use cases, but the use cases 
+            at the business level hold a different sort of information to 
+            those at the engineering level.
+            Very likely they use different language and notation in their
+            underlying use case specifications.
+          </para>
 
           <para><emphasis>Stereotypes</emphasis> are used to label UML 
           artifacts such as use cases, to indicate that they belong to 
@@ -5133,10 +5358,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             copy of the audit trail to a diskette for transporting to 
             the central computer.</para>
 
-            <para>Both dialup and leased line support will be provided. 
-            The ATM will continue to provide services to customers when 
-            communications with the central computer is not 
-            available.</para>
+            <para>
+              Both dialup and leased line support will be provided. 
+              The ATM will continue to provide services to customers when 
+              communication with the central computer is not available.
+            </para>
 
           </sect3>
 
@@ -5406,7 +5632,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             by the group, responsibilities can be added.
             Add responsibilities that are obvious from the requirements
             or the name of the class.
-            You don't need to find them all (or any for that matter).
+            You don&apos;t need to find them all (or any for that matter).
             The scenarios will make them more obvious.
             The advantage of finding some in the beginning is that
             it helps provide a starting place.
@@ -5414,7 +5640,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>
             Select the initial scenarios from the requirements document
-            by examining it's verbs in much the same way that we scanned
+            by examining it&apos;s verbs in much the same way that we scanned
             its nouns earlier.
             Then as many walk through sessions as necessary to complete
             the analysis phase are performed.
@@ -5562,9 +5788,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             are not fully functional and liable to cause you a little 
             frustration.</para>
 
-            <para>In fact, it would be interesting to see if you can 
-            type stereotypes write in the class attribute box for 
-            generating XML diagrams.</para>
+            <para>
+              In fact, it would be interesting to see if you can 
+              type stereotypes right into the class attribute box for 
+              generating XML diagrams.
+            </para>
 
           </sect3>
 
@@ -5919,7 +6147,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>The Design Process (To be written)</title>
 
-        <remark>To be written...</remark>
+        <para>
+          The design process extends the modeling effort beyond the business
+          concerns and into the solutions space.
+          It is during this effort that you decide whether you are going to use
+          Java, C++, J2EE, CORBA, SOAP, Dial up line, internet connection
+          dedicated line, XML, etc.
+          Many of these decisions will impact directly the PSM model, others
+          may only be reflected in the documents produced.
+        </para>
+
+        <para>
+          ...
+        </para>
 
         <sect2>
 
