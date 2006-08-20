@@ -68,6 +68,6 @@ public class UMLOperationRaisedSignalsListModel
         if (Model.getFacade().isAOperation(target)) {
             signals = Model.getFacade().getRaisedSignals(target);
         }
-        return signals.contains(element);
+        return (signals!=null) && signals.contains(element);
     }
 }

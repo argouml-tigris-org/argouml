@@ -68,7 +68,7 @@ public class UMLOperationMethodsListModel
         if (Model.getFacade().isAOperation(target)) {
             methods = Model.getFacade().getMethods(target);
         }
-        return methods.contains(element);
+        return (methods != null) && methods.contains(element);
     }
 
     /**
