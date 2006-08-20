@@ -226,9 +226,8 @@ public final class Designer
         toDoList.spawnValidityChecker(this);
         // TODO: make this configurable
         emailAddr = "users@argouml.tigris.org";
-        //TheDesigner = this; // already done above
         userWorking = false;
-
+        
         critiquingInterval = 8000;
         critiqueCPUPercent = 10;
 
