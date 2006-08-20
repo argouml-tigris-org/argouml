@@ -50,8 +50,6 @@ public class Init {
 
     // UML specific
 
-    private static Critic crAssocNameConflict = new CrAssocNameConflict();
-
     private static Critic crAttrNameConflict = new CrAttrNameConflict();
 
     private static Critic crOperNameConflict = new CrOperNameConflict();
@@ -311,7 +309,6 @@ public class Init {
 
 	// TODO: Agency should allow registration by interface
 	// useful for MAssociation.
-	Agency.register(crAssocNameConflict, namespaceCls);
 	Agency.register(crAttrNameConflict, classifierCls);
 	Agency.register(crOperNameConflict, classifierCls);
 	Agency.register(crCircularAssocClass, assocClassCls);
