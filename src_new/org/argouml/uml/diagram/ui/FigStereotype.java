@@ -36,6 +36,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
@@ -80,11 +81,7 @@ public class FigStereotype extends CompartmentFigText {
         super.propertyChange(event);
         if (event instanceof AttributeChangeEvent) {
             if (event.getPropertyName().equals("name")) {
-                // TODO: Bob says - this is required to get over some bug
-                // where the diagram doesn't refresh itself. Cause to be
-                // fixed in GEF
-                Globals.curEditor()
-                    .getLayerManager().getActiveLayer().damageAll();
+                damage();
             }
         }
     }
@@ -102,5 +99,18 @@ public class FigStereotype extends CompartmentFigText {
             ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = project.getProjectSettings();
         super.setText(ps.getLeftGuillemot() + text + ps.getRightGuillemot());
+    }
+    
+    // TODO: Delete after GEF 0.12.1 commited
+    public void damage() {
+        Layer lay = getLayer();
+        Fig group = getGroup();
+        while (lay == null && group != null) {
+            lay = group.getLayer();
+            group = group.getGroup();
+        }
+        if (lay != null) {
+            lay.damageAll();
+        }
     }
 }
