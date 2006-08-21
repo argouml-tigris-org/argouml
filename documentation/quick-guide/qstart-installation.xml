@@ -212,6 +212,8 @@ Options include:
   -command <arg>  command to perform on startup
   -batch          don't start GUI
   -locale <arg>   set the locale (e.g. 'en_GB')
+  -open <arg>     open given file on startup
+  -print <arg>    print given file on startup (and exit)
 
 You can also set java settings which influence the behaviour of ArgoUML:
   -Xms250M -Xmx500M  [makes ArgoUML reserve more memory for large projects]]]>
