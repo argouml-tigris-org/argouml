@@ -58,7 +58,7 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
     private static UndoableAction actionNewToDoItem = new ActionNewToDoItem();
     private static ToDoItemAction actionResolve = new ActionResolve();
     private static ToDoItemAction actionEmailExpert = new ActionEmailExpert();
-    private static UndoableAction actionSnooze = new ActionSnooze();
+    private static ToDoItemAction actionSnooze = new ActionSnooze();
     //public static UMLAction _actionRecordFix = Actions.RecordFix;
     //public static UMLAction _actionReplayFix = Actions.ReplayFix;
     //public static UMLAction _actionFixItNext = Actions.FixItNext;
@@ -200,6 +200,7 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
         actionEmailExpert.setEnabled(actionEmailExpert.isEnabled());
         actionEmailExpert.updateEnabled(item);
         actionSnooze.setEnabled(actionSnooze.isEnabled());
+        actionSnooze.updateEnabled(item);
     }
 
     /**
