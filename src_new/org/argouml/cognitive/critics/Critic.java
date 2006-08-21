@@ -27,6 +27,7 @@ package org.argouml.cognitive.critics;
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Observable;
 import java.util.Vector;
 
 import javax.swing.Icon;
@@ -59,7 +60,7 @@ import org.argouml.cognitive.ui.Wizard;
  *
  * @author Jason Robbins
  */
-public class Critic implements Poster, Serializable {
+public class Critic extends Observable implements Poster, Serializable {
 
     /**
      * Logger.
@@ -637,8 +638,10 @@ public class Critic implements Poster, Serializable {
     public void beActive() {
 	if (!isActive) {
 	    Configuration.setBoolean(getCriticKey(), true);
+            isActive = true;
+            setChanged();
+            notifyObservers(this);
 	}
-	isActive = true;
     }
 
     /**
@@ -648,9 +651,13 @@ public class Critic implements Poster, Serializable {
     public void beInactive() {
 	if (isActive) {
 	    Configuration.setBoolean(getCriticKey(), false);
+            isActive = false;
+            setChanged();
+            notifyObservers(this);
 	}
-	isActive = false;
     }
+    
+    
 
     /**
      * Add some attribute used by ControlMech to determine if this
@@ -689,6 +696,10 @@ public class Critic implements Poster, Serializable {
      * @return true if enabled
      */
     public boolean isEnabled() {
+        if (this.getCriticName() != null 
+                && this.getCriticName().equals("CrNoGuard")) {
+            System.currentTimeMillis();
+        }
 	return  ((Boolean) getControlRec(ENABLED)).booleanValue();
     }
 
@@ -718,6 +729,14 @@ public class Critic implements Poster, Serializable {
      * Lift any previous SnoozeOrder.
      */
     public void unsnooze() { snoozeOrder().unsnooze(); }
+
+    /**
+     * Checks if the critic is currently snoozed.
+     * @return true if the critic is snoozed
+     */
+    public boolean isSnoozed() { 
+        return snoozeOrder().getSnoozed(); 
+    }
 
     /**
      * Reply true if this Critic is relevant to the decisions that

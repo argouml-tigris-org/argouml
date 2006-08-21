@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -56,6 +58,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.text.Document;
@@ -79,7 +83,9 @@ public class CriticBrowserDialog extends ArgoDialog
     implements ActionListener,
 	       ListSelectionListener,
 	       ItemListener,
-	       DocumentListener {
+	       DocumentListener,
+               TableModelListener,
+               Observer {
     private static final Logger LOG =
 	Logger.getLogger(CriticBrowserDialog.class);
 
@@ -180,6 +186,7 @@ public class CriticBrowserDialog extends ArgoDialog
 	table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	table.setShowVerticalLines(false);
 	table.getSelectionModel().addListSelectionListener(this);
+        table.getModel().addTableModelListener(this);
 	table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 	TableColumn checkCol = table.getColumnModel().getColumn(0);
 	TableColumn descCol = table.getColumnModel().getColumn(1);
@@ -338,11 +345,7 @@ public class CriticBrowserDialog extends ArgoDialog
      */
     private void setTarget(Object t) {
 	target = (Critic) t;
-	goButton.setEnabled(false);
-	networkButton.setEnabled(false);
-	wakeButton.setEnabled(target != null
-			       && target.snoozeOrder().getSnoozed());
-	configButton.setEnabled(false);
+        updateButtonsEnabled();
 	className.setText(target.getClass().getName());
 	headline.setText(target.getHeadline());
 
@@ -363,6 +366,19 @@ public class CriticBrowserDialog extends ArgoDialog
 	useClar.repaint();
     }
 
+    /**
+     * Updates the states of the buttons
+     *
+     */
+    protected void updateButtonsEnabled() {
+        this.configButton.setEnabled(false);
+        this.goButton.setEnabled(false);
+        this.networkButton.setEnabled(false);
+        this.wakeButton.setEnabled(this.target != null
+                               && (this.target.isSnoozed() 
+                                       || !this.target.isEnabled()));
+    }
+    
     private void setTargetHeadline() {
 	if (target == null) return;
 	String h = headline.getText();
@@ -419,7 +435,9 @@ public class CriticBrowserDialog extends ArgoDialog
 	    return;
 	}
 	if (e.getSource() == wakeButton) {
-	    target.unsnooze();
+            target.unsnooze();
+            target.setEnabled(true);
+            table.repaint();
 	    return;
 	}
 	LOG.debug("unknown src in CriticBrowserDialog: " + e.getSource());
@@ -437,9 +455,25 @@ public class CriticBrowserDialog extends ArgoDialog
 	}
 	LOG.debug("got valueChanged from " + src);
 	int row = table.getSelectedRow();
+        if (this.target != null) {
+            this.target.deleteObserver(this);
+        }
 	setTarget(critics.get(row));
+        if (this.target != null) {
+            this.target.addObserver(this);
+        }
     }
 
+    /**
+     * Updates the button if the current row changes
+     * 
+     * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
+     */
+    public void tableChanged(TableModelEvent e) {
+        updateButtonsEnabled();
+        table.repaint();
+    }
+    
     /**
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */
@@ -479,6 +513,15 @@ public class CriticBrowserDialog extends ArgoDialog
 	} else {
 	    LOG.debug("unknown itemStateChanged src: " + src);
 	}
+    }
+
+    /**
+     * Refresh the table when a critique is enabled/disabled
+     * 
+     * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+     */
+    public void update(Observable o, Object arg) {
+        table.repaint();
     }
 
 } /* end class CriticBrowserDialog */
