@@ -172,15 +172,28 @@ public final class Translator {
     }
     
     private static void loadDefaultLocale() {
+        // let's try to load the locale with language and country parameters
         systemDefaultLocale = new Locale(Locale.getDefault().getLanguage(), 
                 Locale.getDefault().getCountry());
+        if (!isLocaleAvailable(systemDefaultLocale)) {
+            // the country parameter wasn't found. retrying to load the locale 
+            // without it
+            systemDefaultLocale = new Locale(Locale.getDefault().getLanguage());
+            if (!isLocaleAvailable(systemDefaultLocale)) {
+                // the default locale is not present. so the default is english
+                systemDefaultLocale = Locale.ENGLISH;
+            }
+        }
+    }
+    
+    private static boolean isLocaleAvailable(Locale locale) {
         Locale[] availableLocales = getLocales();
         for (int i = 0; i < availableLocales.length; i++) {
             if (systemDefaultLocale.equals(availableLocales[i])) {
-                break;
+                return true;
             }
         }
-        systemDefaultLocale = new Locale(Locale.getDefault().getLanguage());
+        return false;
     }
     
     /**
