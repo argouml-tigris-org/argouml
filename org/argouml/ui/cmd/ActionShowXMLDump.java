@@ -46,6 +46,8 @@ import org.argouml.ui.ProjectBrowser;
  */
 class ActionShowXMLDump extends AbstractAction {
     
+    private static final long serialVersionUID = -7942597779499060380L;
+
     /**
      * The key for the escape action
      */
