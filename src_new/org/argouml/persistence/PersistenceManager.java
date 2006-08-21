@@ -67,7 +67,7 @@ public final class PersistenceManager {
 
     private AbstractFilePersister defaultPersister;
     private List otherPersisters = new ArrayList();
-    private UmlFilePersister quickViewDump;
+    private XmiFilePersister quickViewDump;
     private XmiFilePersister xmiPersister;
     private XmiFilePersister xmlPersister;
     private ZipFilePersister zipPersister;
@@ -109,7 +109,7 @@ public final class PersistenceManager {
     private PersistenceManager() {
         // These are the file formats I know about:
         defaultPersister = new ZargoFilePersister();
-        quickViewDump = new UmlFilePersister();
+        quickViewDump = new XmiFilePersister();
         otherPersisters.add(quickViewDump);
         xmiPersister = new XmiFilePersister();
         otherPersisters.add(xmiPersister);

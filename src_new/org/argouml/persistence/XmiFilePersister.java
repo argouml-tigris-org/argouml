@@ -24,9 +24,8 @@
 
 package org.argouml.persistence;
 
-import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
-import java.io.CharArrayReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -34,6 +33,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -43,7 +44,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
-import org.argouml.persistence.AbstractFilePersister.ProgressMgr;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.util.ThreadUtils;
 import org.xml.sax.InputSource;
@@ -115,15 +115,68 @@ public class XmiFilePersister extends AbstractFilePersister
                     "Failed to archive the previous file version", e);
         }
 
-        OutputStreamWriter writer = null;
+        OutputStream stream = null;
         try {
-            //project.setFile(file);
+            stream = new FileOutputStream(file);
+            writeProject(project, stream, progressMgr);
+            stream.close();
 
-            OutputStream stream = new FileOutputStream(file);
-            OutputStream bout = new BufferedOutputStream(stream);
-            writer = 
-                new OutputStreamWriter(bout, PersistenceManager.getEncoding());
+            // if save did not raise an exception
+            // and name+"#" exists move name+"#" to name+"~"
+            // this is the correct backup file
+            if (lastArchiveFile.exists()) {
+                lastArchiveFile.delete();
+            }
+            if (tempFile.exists() && !lastArchiveFile.exists()) {
+                tempFile.renameTo(lastArchiveFile);
+            }
+            if (tempFile.exists()) {
+                tempFile.delete();
+            }
+        } catch (InterruptedException exc) {
+            try {
+                stream.close();
+            } catch (IOException ex) { }
+            throw exc;
+        } catch (Exception e) {
+            LOG.error("Exception occured during save attempt", e);
+            try {
+                stream.close();
+            } catch (IOException ex) { }
 
+            // frank: in case of exception
+            // delete name and mv name+"#" back to name if name+"#" exists
+            // this is the "rollback" to old file
+            file.delete();
+            tempFile.renameTo(file);
+            // we have to give a message to user and set the system to unsaved!
+            throw new SaveException(e);
+        }
+        progressMgr.nextPhase();
+    }
+    
+    /**
+     * Write the output for a project on the given stream.
+     *
+     * @param project The project to output.
+     * @param stream The stream to write to.
+     * @throws SaveException If something goes wrong.
+     * @throws InterruptedException     if the thread is interrupted
+     */
+    void writeProject(Project project, 
+            OutputStream stream, 
+            ProgressMgr progressMgr) throws SaveException, 
+            InterruptedException {
+        OutputStreamWriter outputStreamWriter;
+        try {
+            outputStreamWriter = new OutputStreamWriter(stream, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new SaveException(e);
+        }
+        PrintWriter writer =
+            new PrintWriter(new BufferedWriter(outputStreamWriter));
+
+        try {
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember =
@@ -139,43 +192,15 @@ public class XmiFilePersister extends AbstractFilePersister
                     persister.save(projectMember, writer, null);
                 }
             }
-            progressMgr.nextPhase();
-
-            // if save did not raise an exception
-            // and name+"#" exists move name+"#" to name+"~"
-            // this is the correct backup file
-            if (lastArchiveFile.exists()) {
-                lastArchiveFile.delete();
+            
+            if (progressMgr != null) {
+                progressMgr.nextPhase();
             }
-            if (tempFile.exists() && !lastArchiveFile.exists()) {
-                tempFile.renameTo(lastArchiveFile);
-            }
-            if (tempFile.exists()) {
-                tempFile.delete();
-            }
-        } catch (InterruptedException exc) {
-            throw exc;
-        } catch (Exception e) {
-            LOG.error("Exception occured during save attempt", e);
-            try {
-                writer.close();
-            } catch (IOException ex) { }
 
-            // frank: in case of exception
-            // delete name and mv name+"#" back to name if name+"#" exists
-            // this is the "rollback" to old file
-            file.delete();
-            tempFile.renameTo(file);
-            // we have to give a message to user and set the system to unsaved!
-            throw new SaveException(e);
-        }
-
-        try {
+            writer.flush();
+        } finally {
             writer.close();
-        } catch (IOException ex) {
-            LOG.error("Failed to close save output writer", ex);
         }
-        progressMgr.nextPhase();
     }
 
 
@@ -284,7 +309,6 @@ public class XmiFilePersister extends AbstractFilePersister
             String pgml = (String) it.next();
             LOG.info("Parsing pgml " + pgml.length());
             InputStream inputStream = new ByteArrayInputStream(pgml.getBytes());
-            CharArrayReader car = new CharArrayReader(pgml.toCharArray());
             MemberFilePersister persister =
                 PersistenceManager.getInstance()
                         .getDiagramMemberFilePersister();
