@@ -65,6 +65,7 @@ import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.argouml.ui.cmd.ActionExit;
+import org.argouml.ui.cmd.PrintManager;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
 
@@ -188,6 +189,22 @@ public class Main {
                     i++;
                 } else if (args[i].equalsIgnoreCase("-batch")) {
                     batch = true;
+                } else if (args[i].equalsIgnoreCase("-open") 
+                        && i + 1 < args.length) {
+                    projectName = args[++i];
+                } else if (args[i].equalsIgnoreCase("-print") 
+                        && i + 1 < args.length) {
+                    // let's load the project
+                    String projectToBePrinted = 
+                        PersistenceManager.getInstance().fixExtension(
+                                args[++i]);
+                    URL urlToBePrinted = projectUrl(projectToBePrinted, null);
+                    ProjectBrowser.getInstance().loadProject(
+                            new File(urlToBePrinted.getFile()), true, null);
+                    // now, let's print it
+                    PrintManager.getInstance().print();
+                    // nothing else to do (?)
+                    System.exit(0);
                 } else {
                     System.err.println(
                         "Ignoring unknown/incomplete option '" + args[i] + "'");
