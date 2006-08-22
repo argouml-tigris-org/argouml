@@ -244,14 +244,18 @@ public class XmiFilePersister extends AbstractFilePersister
             
             InputSource source = new InputSource(new XmiInputStream(file.toURL().openStream(), this, length, phaseSpace, progressMgr));
             source.setSystemId(file.toURL().toString());
-            XMIParser.getSingleton().readModels(p, source);
-            Object model = XMIParser.getSingleton().getCurModel();
+            
+            ModelMemberFilePersister modelPersister =
+                new ModelMemberFilePersister();
+            
+            modelPersister.readModels(p, source);
+            Object model = modelPersister.getCurModel();
             progressMgr.nextPhase();
             Model.getUmlHelper().addListenersToModel(model);
-            p.setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
+            p.setUUIDRefs(modelPersister.getUUIDRefs());
             p.addMember(model);
             parseXmiExtensions(p);
-            XMIParser.getSingleton().registerDiagrams(p);
+            modelPersister.registerDiagrams(p);
             
             p.setRoot(model);
             progressMgr.nextPhase();

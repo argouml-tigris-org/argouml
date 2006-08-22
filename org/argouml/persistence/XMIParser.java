@@ -54,6 +54,8 @@ import org.xml.sax.InputSource;
  * TODO: This is set up as a singleton, but it's retaining project
  * specific state (eg UUID map)in an uncoordinated manner which
  * will be a problem when we attempt to support multiple projects. - tfm
+ * @deprecated in 0.23.1, this class is no longer used. All functionality is
+ * now contained in ModelMemberFilePersister
  */
 public class XMIParser {
 
