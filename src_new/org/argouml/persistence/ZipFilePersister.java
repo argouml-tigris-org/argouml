@@ -224,13 +224,16 @@ public class ZipFilePersister extends XmiFilePersister {
                         path);
             }
             
-            XMIParser.getSingleton().readModels(p, is);
-            Object model = XMIParser.getSingleton().getCurModel();
+            ModelMemberFilePersister modelPersister =
+                new ModelMemberFilePersister();
+            
+            modelPersister.readModels(p, is);
+            Object model = modelPersister.getCurModel();
             Model.getUmlHelper().addListenersToModel(model);
-            p.setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
+            p.setUUIDRefs(modelPersister.getUUIDRefs());
             p.addMember(model);
             parseXmiExtensions(p);
-            XMIParser.getSingleton().registerDiagrams(p);
+            modelPersister.registerDiagrams(p);
 
             p.setRoot(model);
             ProjectManager.getManager().setSaveEnabled(false);
