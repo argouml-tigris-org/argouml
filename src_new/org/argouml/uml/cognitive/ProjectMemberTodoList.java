@@ -73,6 +73,7 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
 
     /**
      * @return a vector containing the to do list
+     * @deprecated in 0.23.1 This is no longer used
      */
     public Vector getToDoList() {
         Vector in, out;
@@ -102,6 +103,7 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
 
     /**
      * @return Vector conaining the resolved critics list
+     * @deprecated int 0.23.1 This is no longer used
      */
     public Vector getResolvedCriticsList() {
     	Set in;
