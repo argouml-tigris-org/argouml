@@ -47,7 +47,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.Action;
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -194,12 +194,12 @@ public final class ProjectBrowser
     /**
      * The action to save the current project.
      */
-    private Action saveAction;
+    private AbstractAction saveAction;
 
     /**
      * The action to redo the last undone action.
      */
-    private final Action redoAction =
+    private final AbstractAction redoAction =
         new RedoAction(Translator.localize("action.redo"));
 
     /**
@@ -1371,7 +1371,7 @@ public final class ProjectBrowser
         } else {
             // Hide save action during load. Otherwise we get the
             // * appearing in title bar as models are updated
-            Action rememberedSaveAction = this.saveAction;
+            AbstractAction rememberedSaveAction = this.saveAction;
             this.saveAction = null;
             ProjectManager.getManager().setSaveAction(null);
             try {
@@ -1617,7 +1617,7 @@ public final class ProjectBrowser
      * Get the action that can undo the last user interaction on this project.
      * @return the undo action.
      */
-    public Action getUndoAction() {
+    public AbstractAction getUndoAction() {
         return undoAction;
     }
 
@@ -1625,7 +1625,7 @@ public final class ProjectBrowser
      * Get the action that can redo the last undone action.
      * @return the redo action.
      */
-    public Action getRedoAction() {
+    public AbstractAction getRedoAction() {
         return redoAction;
     }
 
@@ -1633,7 +1633,7 @@ public final class ProjectBrowser
      * Get the action that can save the current project.
      * @return the save action.
      */
-    public Action getSaveAction() {
+    public AbstractAction getSaveAction() {
         return saveAction;
     }
 
@@ -1641,7 +1641,7 @@ public final class ProjectBrowser
      * Get the action that removes selected figs from the diagram.
      * @return the remove from diagram action.
      */
-    public Action getRemoveFromDiagramAction() {
+    public AbstractAction getRemoveFromDiagramAction() {
         return removeFromDiagram;
     }
 

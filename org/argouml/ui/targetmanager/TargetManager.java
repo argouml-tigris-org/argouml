@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.event.EventListenerList;
 
@@ -398,7 +399,7 @@ public final class TargetManager {
 
     private Action addOperationAction = new ActionAddOperation();
     
-    private Action deleteAction = new ActionDeleteModelElements();
+    private AbstractAction deleteAction = new ActionDeleteModelElements();
 
     private Action addEnumerationLiteralAction = 
         new ActionAddEnumerationLiteral();
@@ -934,7 +935,7 @@ public final class TargetManager {
      * Get the Action for deleting the target list.
      * @return the action
      */
-    public Action getDeleteAction() {
+    public AbstractAction getDeleteAction() {
         return deleteAction;
     }
 

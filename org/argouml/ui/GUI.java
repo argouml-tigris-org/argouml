@@ -75,6 +75,7 @@ public final class GUI {
         addSettingsTab(new SettingsTabEnvironment());
         addSettingsTab(new SettingsTabUser());
         addSettingsTab(new SettingsTabAppearance());
+        addSettingsTab(new SettingsTabShortcuts());
         addSettingsTab(new SettingsTabNotation(
                 GUI.SCOPE_APPLICATION));
 
