@@ -49,7 +49,6 @@ import java.util.jar.Manifest;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.ArgoModule;
-import org.argouml.application.api.ArgoSingletonModule;
 import org.argouml.application.api.Pluggable;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -418,18 +417,6 @@ public class ModuleLoader {
                     LOG.info("Loaded Module: " + aModule.getModuleName());
                     moduleClasses.add(aModule);
 		    fireEvent(ArgoEventTypes.MODULE_LOADED, aModule);
-		    if (aModule instanceof ArgoSingletonModule) {
-			ArgoSingletonModule sModule =
-			    (ArgoSingletonModule) aModule;
-		        try {
-			    Class moduleType = sModule.getSingletonType();
-		            if (!(singletons.containsKey(moduleType))) {
-			        requestNewSingleton(moduleType, sModule);
-		            }
-		        } catch (Exception e) {
-		            LOG.debug ("Exception", e);
-		        }
-		    }
                 }
 	    } else {
 	        LOG.warn ("Key '" + key
@@ -604,42 +591,6 @@ public class ModuleLoader {
 	}
     }
 
-    /**
-     * Requests the passed singleton to become the current singleton
-     * of the module type requested.
-     *
-     * Singletons may refuse to be activated.  In this case,
-     * requestNewSingleton returns false and does not deactivate the
-     * current singleton.
-     *
-     * @param modClass class which identifies the singleton
-     * @param moduleInstance the module to make the singleton
-     * @return true if the singleton is activated
-     */
-    public static boolean requestNewSingleton(Class modClass,
-					      ArgoSingletonModule
-					              moduleInstance) {
-	ArgoSingletonModule currentSingleton;
-	if (!moduleInstance.canActivateSingleton()) {
-	    return false;
-	}
-	try {
-	    currentSingleton =
-		(ArgoSingletonModule) getCurrentSingleton(modClass);
-	    if (currentSingleton.canDeactivateSingleton()) {
-		currentSingleton.deactivateSingleton();
-		singletons.remove(modClass);
-	    } else {
-		// The current singleton refused to relinquish control.
-		return false;
-	    }
-	} catch (Exception e) {
-	    currentSingleton = moduleInstance;
-	}
-	singletons.put(modClass, currentSingleton);
-	currentSingleton.activateSingleton();
-	return true;
-    }
 
     /**
      * Returns a plug-in of a given type.
