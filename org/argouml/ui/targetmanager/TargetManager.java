@@ -892,8 +892,7 @@ public final class TargetManager {
         Object target = TargetManager.getInstance().getTarget();
         if (target instanceof Diagram) { // we cannot delete the last diagram
             return (ProjectManager.getManager().getCurrentProject()
-            .getDiagrams().size()
-            > 1);
+                .getDiagrams().size() > 1);
         }
         if (Model.getFacade().isAModel(target)
         // we cannot delete the model itself
