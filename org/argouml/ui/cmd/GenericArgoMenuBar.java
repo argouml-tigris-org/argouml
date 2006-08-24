@@ -26,8 +26,6 @@ package org.argouml.ui.cmd;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.List;
-import java.util.ListIterator;
 
 import javax.swing.Action;
 import javax.swing.JMenu;
@@ -36,12 +34,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
-import org.argouml.application.api.Argo;
-import org.argouml.application.api.PluggableMenu;
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoModuleEvent;
-import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.UndoEnabler;
 import org.argouml.notation.ui.ActionNotation;
@@ -109,11 +101,10 @@ import org.tigris.toolbar.ToolBar;
  *    e.g:                    menu.item.new.mnemonic
  * </pre>
  * 
- * TODO: Add registration for new menu items. TODO: Once the old module loader
- * is removed from ArgoUML, the {@link ArgoModuleEventListener} can be removed.
+ * TODO: Add registration for new menu items.
  */
-public class GenericArgoMenuBar extends JMenuBar implements TargetListener,
-        ArgoModuleEventListener {
+public class GenericArgoMenuBar extends JMenuBar implements
+        TargetListener {
 
     /**
      * The zooming factor.
@@ -248,91 +239,6 @@ public class GenericArgoMenuBar extends JMenuBar implements TargetListener,
         return Translator.localize(MENU + prepareKey(key));
     }
 
-    /**
-     * Scans through all loaded modules to see if it has an item to add in this
-     * diagram.
-     * 
-     * @param menuitem
-     *            The menuitem which this menuitem would attach to.
-     * @param key
-     *            Non-localized string that tells the module where we are.
-     */
-    private void appendPluggableMenus(JMenuItem menuitem, String key) {
-        Object[] context = { menuitem, key, };
-        List arraylist = Argo.getPlugins(PluggableMenu.class, context);
-        ListIterator iterator = arraylist.listIterator();
-        while (iterator.hasNext()) {
-            PluggableMenu module = (PluggableMenu) iterator.next();
-            menuitem.add(module.getMenuItem(context));
-            menuitem.setEnabled(true);
-        }
-    }
-
-    /**
-     * @see ArgoModuleEventListener#moduleLoaded(ArgoModuleEvent)
-     */
-    public void moduleLoaded(ArgoModuleEvent event) {
-        if (event.getSource() instanceof PluggableMenu) {
-            PluggableMenu module = (PluggableMenu) event.getSource();
-            Object[] context = new Object[] { tools, "Tools", };
-            if (module.inContext(context)) {
-                tools.add(module.getMenuItem(context));
-                tools.setEnabled(true);
-            }
-            // context = new Object[] { _import, "File:Import" };
-            // if (module.inContext(context)) {
-            // _import.add(module.getMenuItem(context));
-            // }
-            context = new Object[] { generate, "Generate", };
-            if (module.inContext(context)) {
-                generate.add(module.getMenuItem(context));
-            }
-            context = new Object[] { edit, "Edit", };
-            if (module.inContext(context)) {
-                edit.add(module.getMenuItem(context));
-            }
-            context = new Object[] { view, "View", };
-            if (module.inContext(context)) {
-                view.add(module.getMenuItem(context));
-            }
-            context = new Object[] { createDiagrams, "Create Diagrams", };
-            if (module.inContext(context)) {
-                createDiagrams.add(module.getMenuItem(context));
-            }
-            context = new Object[] { arrange, "Arrange", };
-            if (module.inContext(context)) {
-                arrange.add(module.getMenuItem(context));
-            }
-            context = new Object[] { help, "Help", };
-            if (module.inContext(context)) {
-                if (help.getItemCount() == 1) {
-                    help.insertSeparator(0);
-                }
-                help.insert(module.getMenuItem(context), 0);
-            }
-        }
-    }
-
-    /**
-     * @see ArgoModuleEventListener#moduleUnloaded(ArgoModuleEvent)
-     */
-    public void moduleUnloaded(ArgoModuleEvent event) {
-        // TODO: Disable menu
-    }
-
-    /**
-     * @see ArgoModuleEventListener#moduleEnabled(ArgoModuleEvent)
-     */
-    public void moduleEnabled(ArgoModuleEvent event) {
-        // TODO: Enable menu
-    }
-
-    /**
-     * @see ArgoModuleEventListener#moduleDisabled(ArgoModuleEvent)
-     */
-    public void moduleDisabled(ArgoModuleEvent event) {
-        // TODO: Disable menu
-    }
 
     /**
      * Construct the ordinary all purpose Argo Menu Bar.
@@ -364,8 +270,6 @@ public class GenericArgoMenuBar extends JMenuBar implements TargetListener,
 
         // ------------------------------------- Help Menu
         initMenuHelp();
-
-        ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
     }
 
     /**
@@ -604,8 +508,6 @@ public class GenericArgoMenuBar extends JMenuBar implements TargetListener,
         setMnemonic(showSaved, "Show Saved");
         ShortcutMgr.assignAccelerator(showSaved,
                 ShortcutMgr.ACTION_SHOW_XML_DUMP);
-
-        appendPluggableMenus(view, PluggableMenu.KEY_VIEW);
     }
 
     /**
@@ -666,8 +568,6 @@ public class GenericArgoMenuBar extends JMenuBar implements TargetListener,
         createDiagramToolbar.add((new ActionDeploymentDiagram()));
         ShortcutMgr.assignAccelerator(deploymentDiagram,
                 ShortcutMgr.ACTION_DEPLOYMENT_DIAGRAM);
-
-        appendPluggableMenus(createDiagrams, PluggableMenu.KEY_CREATE_DIAGRAMS);
     }
 
     /**
@@ -694,8 +594,6 @@ public class GenericArgoMenuBar extends JMenuBar implements TargetListener,
                 ShortcutMgr.ACTION_PREFERRED_SIZE);
 
         arrange.add(new ActionLayout());
-
-        appendPluggableMenus(arrange, PluggableMenu.KEY_ARRANGE);
 
         // This used to be deferred, but it's only 30-40 msec of work.
         InitMenusLater.initMenus(align, distribute, reorder, nudge);
@@ -728,14 +626,14 @@ public class GenericArgoMenuBar extends JMenuBar implements TargetListener,
         ShortcutMgr.assignAccelerator(generationSettings,
                 ShortcutMgr.ACTION_GENERATION_SETTINGS);
         // generate.add(Actions.GenerateWeb);
-        appendPluggableMenus(generate, PluggableMenu.KEY_GENERATE);
     }
 
     /**
      * Build the menu "Critique".
      */
     private void initMenuCritique() {
-        critique = (ArgoJMenu) add(new ArgoJMenu(MENU + prepareKey("Critique")));
+        critique =
+            (ArgoJMenu) add(new ArgoJMenu(MENU + prepareKey("Critique")));
         setMnemonic(critique, "Critique");
         JMenuItem toggleAutoCritique = critique
                 .addCheckItem(new ActionAutoCritique());
@@ -764,7 +662,6 @@ public class GenericArgoMenuBar extends JMenuBar implements TargetListener,
         tools = new JMenu(menuLocalize("Tools"));
         setMnemonic(tools, "Tools");
 
-        appendPluggableMenus(tools, PluggableMenu.KEY_TOOLS);
         add(tools);
     }
 
@@ -774,7 +671,6 @@ public class GenericArgoMenuBar extends JMenuBar implements TargetListener,
     private void initMenuHelp() {
         help = new JMenu(menuLocalize("Help"));
         setMnemonic(help, "Help");
-        appendPluggableMenus(help, PluggableMenu.KEY_HELP);
         if (help.getItemCount() > 0) {
             help.insertSeparator(0);
         }
