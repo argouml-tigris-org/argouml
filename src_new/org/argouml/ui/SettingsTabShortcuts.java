@@ -63,7 +63,7 @@ import org.argouml.util.KeyEventUtils;
  * 
  * @author andrea.nironi@gmail
  */
-public class SettingsTabShortcuts extends JPanel implements
+class SettingsTabShortcuts extends JPanel implements
         GUISettingsTabInterface, ActionListener, ListSelectionListener,
         ShortcutChangedListener {
 
