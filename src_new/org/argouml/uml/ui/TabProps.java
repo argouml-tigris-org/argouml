@@ -26,21 +26,13 @@ package org.argouml.uml.ui;
 
 import java.awt.BorderLayout;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.ListIterator;
 
 import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
-import org.argouml.application.api.PluggablePropertyPanel;
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoModuleEvent;
-import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.model.Model;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.ArgoDiagram;
@@ -163,7 +155,7 @@ import org.tigris.swidgets.Orientation;
  */
 public class TabProps
     extends AbstractArgoJPanel
-    implements TabModelTarget, ArgoModuleEventListener {
+    implements TabModelTarget {
 
     /**
      * Logger.
@@ -206,24 +198,6 @@ public class TabProps
         setOrientation(ConfigLoader.getTabPropsOrientation());
         panelClassBaseName = panelClassBase;
         setLayout(new BorderLayout());
-
-        ArrayList list = Argo.getPlugins(PluggablePropertyPanel.class);
-        ListIterator iterator = list.listIterator();
-        while (iterator.hasNext()) {
-            Object o = iterator.next();
-            PluggablePropertyPanel ppp = (PluggablePropertyPanel) o;
-            panels.put(ppp.getClassForPanel(), ppp.getPropertyPanel());
-        }
-
-        ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
-    }
-
-    /**
-     * @see java.lang.Object#finalize()
-     */
-    protected void finalize() throws Throwable {
-        super.finalize();
-        ArgoEventPump.removeListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
     }
 
     /**
@@ -735,37 +709,6 @@ public class TabProps
         }
 
         return shouldBeEnabled;
-    }
-
-    /**
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleLoaded(org.argouml.application.events.ArgoModuleEvent)
-     *
-     * TODO: Replace by another registration procedure.
-     */
-    public void moduleLoaded(ArgoModuleEvent event) {
-        if (event.getSource() instanceof PluggablePropertyPanel) {
-            PluggablePropertyPanel p =
-                (PluggablePropertyPanel) event.getSource();
-            panels.put(p.getClassForPanel(), p.getPropertyPanel());
-
-        }
-    }
-    /**
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleUnloaded(org.argouml.application.events.ArgoModuleEvent)
-     */
-    public void moduleUnloaded(ArgoModuleEvent event) {
-    }
-
-    /**
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleEnabled(org.argouml.application.events.ArgoModuleEvent)
-     */
-    public void moduleEnabled(ArgoModuleEvent event) {
-    }
-
-    /**
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleDisabled(org.argouml.application.events.ArgoModuleEvent)
-     */
-    public void moduleDisabled(ArgoModuleEvent event) {
     }
 
     /**

@@ -172,62 +172,6 @@ public abstract class PropPanelModelElement extends PropPanel {
     }
 
 
-    //
-    // Pluggable Property Panel support
-    //
-    // THIS CLASS MUST NOT IMPLEMENT PluggablePropertyPanel. These
-    // are present to provide default implementations for any
-    // property panel that extends this class.
-    /**
-     * @see org.argouml.application.api.PluggablePropertyPanel#getPropertyPanel()
-     */
-    public PropPanel getPropertyPanel() {
-        return this;
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
-     */
-    public boolean isModuleEnabled() {
-        return true;
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
-     *         Vector, Object)
-     */
-    public Vector getModulePopUpActions(Vector v, Object o) {
-        return null;
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#shutdownModule()
-     */
-    public boolean shutdownModule() {
-        return true;
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#initializeModule()
-     */
-    public boolean initializeModule() {
-        LOG.debug("initializeModule()");
-        return true;
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
-     */
-    public void setModuleEnabled(boolean enabled) {
-    }
-
-    /**
-     * @see org.argouml.application.api.Pluggable#inContext(Object[])
-     */
-    public boolean inContext(Object[] o) {
-        return true;
-    }
-
     /**
      * @return a scrollpane for the namespace
      */
