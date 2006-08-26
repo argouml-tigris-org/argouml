@@ -53,7 +53,6 @@ import org.argouml.model.DataTypesFactory;
 import org.argouml.model.DataTypesHelper;
 import org.argouml.model.DiagramInterchangeModel;
 import org.argouml.model.DirectionKind;
-import org.argouml.model.EventAdapter;
 import org.argouml.model.ExtensionMechanismsFactory;
 import org.argouml.model.ExtensionMechanismsHelper;
 import org.argouml.model.Facade;
@@ -613,13 +612,6 @@ public class MDRModelImplementation implements ModelImplementation {
     public XmiWriter getXmiWriter(Object model, Writer writer, String version)
         throws UmlException {
         return new XmiWriterMDRImpl(this, model, writer, version);
-    }
-
-    /**
-     * @see org.argouml.model.ModelImplementation#getEventAdapter()
-     */
-    public EventAdapter getEventAdapter() {
-        return theModelEventPump;
     }
 
     /**

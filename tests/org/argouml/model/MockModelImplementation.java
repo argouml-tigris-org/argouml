@@ -514,13 +514,6 @@ class MockModelImplementation implements ModelImplementation {
     }
 
     /**
-     * @see org.argouml.model.ModelImplementation#getEventAdapter()
-     */
-    public EventAdapter getEventAdapter() {
-        throw new NotImplementedException();
-    }
-
-    /**
      * @see org.argouml.model.ModelImplementation#getModelManagementFactory()
      */
     public ModelManagementFactory getModelManagementFactory() {

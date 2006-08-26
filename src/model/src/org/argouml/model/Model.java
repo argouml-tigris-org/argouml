@@ -312,17 +312,6 @@ public final class Model {
     }
 
     /**
-     * Getter for EventAdapter.
-     *
-     * @return the event adapter
-     * @deprecated for 0.21.2 by tfmorris.
-     *         Use {@link #getPump()} and {@link ModelEventPump} methods
-     */
-    public static EventAdapter getEventAdapter() {
-        return impl.getEventAdapter();
-    }
-
-    /**
      * Getter for ModelManagementFactory.
      *
      * @return the factory

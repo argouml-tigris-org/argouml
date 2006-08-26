@@ -305,12 +305,5 @@ public class TestMDRModelImplementation extends TestCase {
         assertNotNull(modelImplementation.getXmiWriter(null, null));
         assertNotNull(modelImplementation.getXmiWriter(null, null, null));
     }
-
-    /**
-     * 
-     */
-    public void testGetEventAdapter() {
-        assertNotNull(modelImplementation.getEventAdapter());
-    }
 }
 

@@ -52,7 +52,6 @@ import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
-import org.argouml.model.EventAdapter;
 import org.argouml.model.ModelEventPump;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
@@ -80,7 +79,7 @@ import org.netbeans.api.mdr.events.TransactionEvent;
  * @author Tom Morris
  */
 class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
-        EventAdapter, ModelEventPump, MDRPreChangeListener {
+        ModelEventPump, MDRPreChangeListener {
 
     /**
      * Logger.
@@ -580,35 +579,6 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         } catch (InterruptedException e) {
             LOG.error("Interrupted while waiting in flushModelEvents");
         }
-    }
-
-    /**
-     * Event adapter interface implementation
-     *
-     * TODO: Deprecated. Remove after release of 0.22.
-     */
-
-
-    /**
-     * @see org.argouml.model.EventAdapter#addPropertyChangeListener(java.beans.PropertyChangeListener)
-     */
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Add property listener '" + pcl + "'.");
-        }
-        addClassModelEventListener(pcl, ModelElement.class, (String[]) null);
-    }
-
-
-    /**
-     * @see org.argouml.model.EventAdapter#removePropertyChangeListener(java.beans.PropertyChangeListener)
-     */
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Remove property listener '" + pcl + "'.");
-        }
-        removeClassModelEventListener(pcl, ModelElement.class,
-                (String[]) null);
     }
 
     /**

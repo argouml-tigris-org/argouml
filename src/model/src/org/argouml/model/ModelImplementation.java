@@ -139,16 +139,6 @@ public interface ModelImplementation {
     ExtensionMechanismsHelper getExtensionMechanismsHelper();
 
     /**
-     * Getter for EventAdapter.
-     *
-     * @return the event adapter
-     * @deprecated for 0.21.2 by tfmorris.
-     *         Use {@link #getModelEventPump()} methods and
-     *         {@link ModelEventPump}.
-     */
-    EventAdapter getEventAdapter();
-
-    /**
      * Getter for ModelManagementFactory.
      *
      * @return the factory
