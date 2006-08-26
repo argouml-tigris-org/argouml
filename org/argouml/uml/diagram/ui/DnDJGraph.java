@@ -115,6 +115,16 @@ class DnDJGraph
     }
 
     /**
+     * Overriding JGraph's initKeys in order to avoid unconfigurable key 
+     * bindings from gef
+     * 
+     * @see org.tigris.gef.graph.presentation.JGraph#initKeys()
+     */
+    public void initKeys() {
+        // do nothing - key bindings are user-configurable
+    }
+    
+    /**
      * @see java.awt.dnd.DropTargetListener#dragEnter(
      *         java.awt.dnd.DropTargetDragEvent)
      */
