@@ -1102,16 +1102,6 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Returns the cgPrefs.
-     *
-     * @deprecated use getGenerationPrefs() instead
-     * @return GenerationPreferences
-     */
-    public GenerationPreferences getCgPrefs() {
-        return cgPrefs;
-    }
-
-    /**
      * Returns the searchpath.
      * @return Vector
      */
@@ -1133,15 +1123,6 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public HashMap getUUIDRefs() {
         return uuidRefs;
-    }
-
-    /**
-     * Sets the cgPrefs.
-     * @deprecated use setGenerationPrefs() instead
-     * @param theCgPrefs The cgPrefs to set
-     */
-    public void setCgPrefs(GenerationPreferences theCgPrefs) {
-        this.cgPrefs = theCgPrefs;
     }
 
     /**

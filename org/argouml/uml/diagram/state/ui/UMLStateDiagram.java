@@ -332,14 +332,6 @@ public class UMLStateDiagram extends UMLDiagram {
     }
 
     /**
-     * @return Returns the actionBranchPseudoState.
-     * @deprecated use getActionChoicePseudoState
-     */
-    protected Action getActionBranchPseudoState() {
-        return getActionChoicePseudoState();
-    }
-
-    /**
      * @return Returns the actionChoicePseudoState.
      */
     protected Action getActionChoicePseudoState() {

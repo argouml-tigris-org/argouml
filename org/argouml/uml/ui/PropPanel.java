@@ -265,14 +265,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     }
     
     /**
-     * @deprecated before 0.21.2 by tfm - use addSeparator 
-     * (ie the correct spelling)
-     */
-    protected final void addSeperator() {
-        addSeparator();
-    }
-    
-    /**
      * Set the target to be associated with a particular property panel.
      * <p>
      * This involves resetting the third party listeners.

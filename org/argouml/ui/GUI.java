@@ -141,16 +141,4 @@ public final class GUI {
     public List getProjectSettingsTabs() {
         return Collections.unmodifiableList(projectSettingsTabs);
     }
-    
-    /**
-     * Register a file in the menubar.
-     *
-     * @param file The File.
-     * @throws IOException if we cannot get the filename.
-     * @deprecated before 0.21.3 by tfmorris.  Use 
-     * ProjectBrowser.addFileSaved() directly.
-     */
-    public void addFileSaved(File file) throws IOException {
-        ProjectBrowser.getInstance().addFileSaved(file);
-    }
 }
