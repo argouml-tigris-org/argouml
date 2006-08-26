@@ -54,13 +54,6 @@ public abstract class AbstractUmlHelperDecorator implements UmlHelper {
     }
 
     /**
-     * @see org.argouml.model.UmlHelper#getOwner(java.lang.Object)
-     */
-    public Object getOwner(Object handle) {
-        return impl.getOwner(handle);
-    }
-
-    /**
      * @see org.argouml.model.UmlHelper#deleteCollection(java.util.Collection)
      */
     public void deleteCollection(Collection col) {

@@ -352,27 +352,6 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     }
 
     /**
-     * @see org.argouml.model.XmiReader#parseToModel(org.xml.sax.InputSource)
-     */
-    public Object parseToModel(InputSource is) throws UmlException {
-        Model model = null;
-        Collection newElements = parse(is);
-        if (newElements != null && !newElements.isEmpty()) {
-            Object current;
-            Iterator elements = newElements.iterator();
-            while (elements.hasNext()) {
-                current = elements.next();
-                if (current instanceof Model) {
-                    Model currentModel = (Model) current;
-                    LOG.info("Loaded model '" + currentModel.getName() + "'");
-                    model = currentModel;
-                }
-            }
-        }
-        return model;
-    }
-
-    /**
      * @return the map
      */
     public Map getXMIUUIDToObjectMap() {

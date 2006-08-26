@@ -298,29 +298,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getFeatureName(java.lang.Object)
-     */
-    public String getFeatureName(Object o) {
-        return modelImpl.getFacade().getName(o);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#isMethod(java.lang.Object)
-     * There is a duplicate method Model.getFacade().isAMethod(Object)
-     */
-    public boolean isMethod(Object o) {
-        return (o instanceof Method);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#isOperation(java.lang.Object)
-     * There is a duplicate method Model.getFacade().isAOperation(Object)
-     */
-    public boolean isOperation(Object o) {
-        return (o instanceof Operation);
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#getOperations(java.lang.Object)
      */
     public Collection getOperations(Object classifier) {
@@ -2769,13 +2746,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setImplementationLocation(java.lang.Object, java.lang.Object)
-     */
-    public void setImplementationLocation(Object handle, Object component) {
-        setContainer(handle, component);
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#setContainer(java.lang.Object, java.lang.Object)
      */
     public void setContainer(Object handle, Object container) {
@@ -2818,50 +2788,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
         throw new IllegalArgumentException("handle: " + handle + " or kind: "
                 + kind);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToIn(java.lang.Object)
-     */
-    public void setKindToIn(Object handle) {
-        if (handle instanceof Parameter) {
-            ((Parameter) handle).setKind(ParameterDirectionKindEnum.PDK_IN);
-            return;
-        }
-        throw new IllegalArgumentException("handle: " + handle);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToInOut(java.lang.Object)
-     */
-    public void setKindToInOut(Object handle) {
-        if (handle instanceof Parameter) {
-            ((Parameter) handle).setKind(ParameterDirectionKindEnum.PDK_INOUT);
-            return;
-        }
-        throw new IllegalArgumentException("handle: " + handle);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToOut(java.lang.Object)
-     */
-    public void setKindToOut(Object handle) {
-        if (handle instanceof Parameter) {
-            ((Parameter) handle).setKind(ParameterDirectionKindEnum.PDK_OUT);
-            return;
-        }
-        throw new IllegalArgumentException("handle: " + handle);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToReturn(java.lang.Object)
-     */
-    public void setKindToReturn(Object handle) {
-        if (handle instanceof Parameter) {
-            ((Parameter) handle).setKind(ParameterDirectionKindEnum.PDK_RETURN);
-            return;
-        }
-        throw new IllegalArgumentException("handle: " + handle);
     }
 
     /**

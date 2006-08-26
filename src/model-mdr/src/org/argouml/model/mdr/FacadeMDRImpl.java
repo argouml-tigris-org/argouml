@@ -347,13 +347,6 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
-     * @see org.argouml.model.Facade#isABase(java.lang.Object)
-     */
-    public boolean isABase(Object handle) {
-        return (handle instanceof ModelElement);
-    }
-
-    /**
      * @see org.argouml.model.Facade#isABehavioralFeature(java.lang.Object)
      */
     public boolean isABehavioralFeature(Object handle) {
@@ -2214,13 +2207,6 @@ class FacadeMDRImpl implements Facade {
             throw new InvalidElementException(e);
         }
         return illegalArgumentObject(handle);
-    }
-
-    /**
-     * @see org.argouml.model.Facade#getImplementationLocation(java.lang.Object)
-     */
-    public Object getImplementationLocation(Object handle) {
-        return getContainer(handle);
     }
 
     /*

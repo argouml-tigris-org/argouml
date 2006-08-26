@@ -27,7 +27,6 @@ package org.argouml.model.mdr;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.argouml.model.NotImplementedException;
 import org.argouml.model.UmlHelper;
 import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.foundation.core.AssociationEnd;
@@ -68,13 +67,6 @@ class UmlHelperMDRImpl implements UmlHelper {
      */
     public void addListenersToModel(Object model) {
         // Nothing to do - we get all events automatically
-    }
-
-    /**
-     * @see org.argouml.model.UmlHelper#getOwner(java.lang.Object)
-     */
-    public Object getOwner(Object handle) {
-        throw new NotImplementedException("Not implemented");
     }
 
     /**

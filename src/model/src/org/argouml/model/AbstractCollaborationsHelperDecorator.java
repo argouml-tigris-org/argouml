@@ -81,14 +81,6 @@ public abstract class AbstractCollaborationsHelperDecorator
     }
 
     /**
-     * @see org.argouml.model.CollaborationsHelper#getAssocationRole(
-     *         java.lang.Object, java.lang.Object)
-     */
-    public Object getAssocationRole(Object afrom, Object ato) {
-        return impl.getAssocationRole(afrom, ato);
-    }
-
-    /**
      * @see org.argouml.model.CollaborationsHelper#getAssociationRole(
      *         java.lang.Object, java.lang.Object)
      */

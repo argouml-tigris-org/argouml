@@ -211,17 +211,6 @@ public interface Facade {
     boolean isAActivityGraph(Object handle);
 
     /**
-     * Recognizer for an object that is some form of
-     * an element in the model. MBase was the Novosoft term.<p>
-     * 
-     * @deprecated use isAModelElement or a more specific recognizer
-     *             for all new code
-     * @param handle candidate
-     * @return true if handle is a base.
-     */
-    boolean isABase(Object handle);
-
-    /**
      * Recognizer for behavioral features.
      *
      * @param handle candidate
@@ -1567,15 +1556,6 @@ public interface Facade {
      * @return the Icon
      */
     Object getIcon(Object handle);
-
-    /**
-     * Gets the component of some element residence.
-     *
-     * @param handle is an element residence
-     * @return component
-     * @deprecated use getContainer
-     */
-    Object getImplementationLocation(Object handle);
 
     /**
      * Returns the includers for some use case.<p>

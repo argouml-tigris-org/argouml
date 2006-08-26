@@ -66,7 +66,7 @@ public class TestReadCompressedFilesAndHref extends
                     (RefPackage) modelImplementation.getMofPackage());
             try {
                 //persister.doLoad(new File(testModel));
-                reader.parseToModel(new InputSource(new FileInputStream(
+                reader.parse(new InputSource(new FileInputStream(
                         testModel)));
             } catch (Exception e) {
                 e.printStackTrace();

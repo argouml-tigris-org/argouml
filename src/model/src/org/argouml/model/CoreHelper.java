@@ -92,39 +92,6 @@ public interface CoreHelper {
     void removeFeature(Object cls, Object feature);
 
     /**
-     * This method returns the name of a feature.
-     * 
-     * @param o
-     *            is the feature
-     * @return name
-     * @deprecated before 0.21.3 by tfmorris -
-     *             use {@link Facade#getName(Object)}
-     */
-    String getFeatureName(Object o);
-
-    /**
-     * This method returns if the object is a method.
-     *
-     * @param o object
-     * @return true if it's a method, false if not
-     * @deprecated by Bob in 0.21.1.
-     * There is a duplicate method Model.getFacade().isAMethod(Object)
-     * @see Facade#isAMethod(Object)
-     */
-    boolean isMethod(Object o);
-
-    /**
-     * This method returns if the object is an operation.
-     *
-     * @param o object
-     * @return true if it's an operation, false if not
-     * @deprecated by Bob in 0.21.1.
-     * There is a duplicate method Model.getFacade().isAOperation(Object)
-     * @see Facade#isAOperation(Object)
-     */
-    boolean isOperation(Object o);
-
-    /**
      * This method returns all operations of a given Classifier.
      *
      * @param classifier the classifier you want to have the operations for
@@ -932,17 +899,6 @@ public interface CoreHelper {
     void setFeatures(Object handle, Collection features);
 
     /**
-     * Set the ImplementationLocation of the given ElementResidence
-     * to the given Component.
-     *
-     * @param handle the ElementResidence
-     * @param component the Component
-     * @deprecated by tfmorris before 0.20 - use setContainer
-     * @see #setContainer(Object, Object)
-     */
-    void setImplementationLocation(Object handle, Object component);
-
-    /**
      * Set the Container of the given ElementResidence
      * to the given Component.
      *
@@ -967,43 +923,6 @@ public interface CoreHelper {
      * @see org.argouml.model.Model#getDirectionKind
      */
     void setKind(Object handle, Object kind);
-
-    /**
-     * Set some parameters kind to 'in'.
-     *
-     * @param handle is the parameter
-     * @deprecated before 0.19.3 by bobtarling - use
-     *             {@link #setKind(Object, Object)}
-     */
-    void setKindToIn(Object handle);
-
-    /**
-     * Set some parameters kind to 'in/out'.
-     *
-     * @param handle is the parameter
-     * @deprecated before 0.19.3 by bobtarling - use
-     *             {@link #setKind(Object, Object)}
-     */
-    void setKindToInOut(Object handle);
-
-    /**
-     * Set some parameters kind to 'out'.
-     * 
-     * @param handle
-     *            is the parameter
-     * @deprecated before 0.19.3 by bobtarling - use
-     *             {@link #setKind(Object, Object)}
-     */
-    void setKindToOut(Object handle);
-
-    /**
-     * Set some parameters kind to 'return'.
-     *
-     * @param handle is the parameter
-     * @deprecated before 0.19.3 by bobtarling - use
-     *             {@link #setKind(Object, Object)}
-     */
-    void setKindToReturn(Object handle);
 
     /**
      * Sets the container that owns the handle.<p>

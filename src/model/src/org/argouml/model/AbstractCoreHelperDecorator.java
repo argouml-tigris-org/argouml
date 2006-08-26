@@ -110,27 +110,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getFeatureName(java.lang.Object)
-     */
-    public String getFeatureName(Object o) {
-        return impl.getFeatureName(o);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#isMethod(java.lang.Object)
-     */
-    public boolean isMethod(Object o) {
-        return impl.isMethod(o);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#isOperation(java.lang.Object)
-     */
-    public boolean isOperation(Object o) {
-        return impl.isOperation(o);
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#getOperations(java.lang.Object)
      */
     public Collection getOperations(Object classifier) {
@@ -795,14 +774,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setImplementationLocation(
-     *         java.lang.Object, java.lang.Object)
-     */
-    public void setImplementationLocation(Object handle, Object component) {
-        impl.setImplementationLocation(handle, component);
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#setContainer(
      *         java.lang.Object, java.lang.Object)
      */
@@ -1005,34 +976,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      */
     public void setKind(Object handle, Object kind) {
         impl.setKind(handle, kind);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToIn(java.lang.Object)
-     */
-    public void setKindToIn(Object handle) {
-        impl.setKindToIn(handle);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToInOut(java.lang.Object)
-     */
-    public void setKindToInOut(Object handle) {
-        impl.setKindToInOut(handle);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToOut(java.lang.Object)
-     */
-    public void setKindToOut(Object handle) {
-        impl.setKindToOut(handle);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToReturn(java.lang.Object)
-     */
-    public void setKindToReturn(Object handle) {
-        impl.setKindToReturn(handle);
     }
 
     /**

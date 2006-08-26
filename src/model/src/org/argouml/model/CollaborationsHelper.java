@@ -72,15 +72,6 @@ public interface CollaborationsHelper {
     Object getAssociationRole(Object afrom, Object ato);
 
     /**
-     * @param afrom the first classifierrole
-     * @param ato the second classifierrole
-     * @return associationrole
-     * @deprecated for 0.21.2 by tfmorris, use getAssociationRole
-     * @see #getAssociationRole(Object, Object)
-     */
-    Object getAssocationRole(Object afrom, Object ato);
-
-    /**
      * Returns all possible activators for some message mes. The
      * possible activators are all messages in the same interaction as
      * the given message that are not part of the predecessors of the

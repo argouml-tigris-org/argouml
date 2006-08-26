@@ -78,7 +78,7 @@ public class TestMDRModelImplementationCreate extends TestCase {
         File fileModel = new File(model);
         assertTrue(fileModel.exists());
         InputSource source = new InputSource(new FileInputStream(fileModel));
-        Model aLittleBit = (Model) xmiReader.parseToModel(source);
+        Model aLittleBit = (Model) xmiReader.parse(source);
         assertNotNull(aLittleBit);
     }
 

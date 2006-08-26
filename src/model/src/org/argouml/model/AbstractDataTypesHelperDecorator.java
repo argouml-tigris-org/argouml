@@ -98,13 +98,6 @@ public abstract class AbstractDataTypesHelperDecorator
     }
 
     /**
-     * @see org.argouml.model.DataTypesHelper#equalsBRANCHKind(java.lang.Object)
-     */
-    public boolean equalsBRANCHKind(Object kind) {
-        return impl.equalsBRANCHKind(kind);
-    }
-
-    /**
      * @see org.argouml.model.DataTypesHelper#equalsCHOICEKind(java.lang.Object)
      */
     public boolean equalsCHOICEKind(Object kind) {

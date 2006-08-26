@@ -42,21 +42,6 @@ public interface UmlHelper {
     void addListenersToModel(Object model);
 
     /**
-     * Returns the owner of some modelelement object. In most cases this will be
-     * the owning namespace but in some cases it will be null (the root model)
-     * or for instance the owning class with an attribute.
-     * 
-     * @param handle
-     *            the modelelement
-     * @return Object the owner
-     * @deprecated for 0.21 by tfmorris - use getModelElementContainer - this
-     *             was never implemented for MDR, so any use would throw a run
-     *             time exception. Will be removed quickly because of this.
-     * @see Facade#getModelElementContainer(Object)
-     */
-    Object getOwner(Object handle);
-
-    /**
      * Utility method to quickly delete a collection of modelelements. This
      * method should only be called from within the model component. The only
      * reason it is public is that the other helpers/factories are in other

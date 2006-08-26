@@ -210,13 +210,6 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
     }
     
     /**
-     * @see org.argouml.model.CollaborationsHelper#getAssocationRole(java.lang.Object, java.lang.Object)
-     */
-    public Object getAssocationRole(Object afrom, Object ato) {
-        return getAssociationRole(afrom, ato);
-    }
-
-    /**
      * @see org.argouml.model.CollaborationsHelper#getAllPossibleActivators(java.lang.Object)
      */
     public Collection getAllPossibleActivators(Object ames) {

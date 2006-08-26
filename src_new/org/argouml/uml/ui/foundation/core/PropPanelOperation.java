@@ -155,29 +155,6 @@ public class PropPanelOperation extends PropPanelFeature {
         }
     }
 
-    /**
-     * @deprecated before 0.21.2 by tfmorris - use the argumentless version of
-     *             this method
-     * @param index
-     *            ignored
-     */
-    public void addRaisedSignal(Integer index) {
-        LOG.warn("Ignoring index parameter to addRaisedSignal: " + index);
-        addRaisedSignal();
-    }
-    
-    /**
-     * @deprecated before 0.21.2 by tfmorris - use the argumentless version of
-     *             this method
-     * @param index
-     *            ignored
-     */
-    public void addMethod(Integer index) {
-        LOG.warn("Ignoring index parameter to addMethod: " + index);
-        addMethod();
-    }
-
-
     private class ActionNewRaisedSignal extends AbstractActionNewModelElement {
 
         /**

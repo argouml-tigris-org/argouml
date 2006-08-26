@@ -74,13 +74,6 @@ public class KindsMDRImpl implements ChangeableKind, AggregationKind,
     }
 
     /**
-     * @see org.argouml.model.PseudostateKind#getBranch()
-     */
-    public Object getBranch() {
-        return getChoice();
-    }
-
-    /**
      * @see org.argouml.model.PseudostateKind#getChoice()
      */
     public Object getChoice() {

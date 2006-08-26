@@ -263,38 +263,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#setKindToIn(
-     * java.lang.Object)
-     */
-    public void setKindToIn(Object handle) {
-        setKind(handle, Model.getDirectionKind().getInParameter());
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToInOut(
-     * java.lang.Object)
-     */
-    public void setKindToInOut(Object handle) {
-        setKind(handle, Model.getDirectionKind().getInOutParameter());
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToOut(
-     * java.lang.Object)
-     */
-    public void setKindToOut(Object handle) {
-        setKind(handle, Model.getDirectionKind().getOutParameter());
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setKindToReturn(
-     * java.lang.Object)
-     */
-    public void setKindToReturn(Object handle) {
-        setKind(handle, Model.getDirectionKind().getReturnParameter());
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#setMultiplicity(
      *         java.lang.Object, java.lang.Object)
      */
@@ -892,16 +860,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      */
     public void setFeatures(Object handle, Collection features) {
         super.setFeatures(handle, features);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
-    }
-
-    /**
-     * @see 
-     * org.argouml.model.AbstractCoreHelperDecorator#setImplementationLocation(
-     * java.lang.Object, java.lang.Object)
-     */
-    public void setImplementationLocation(Object handle, Object component) {
-        super.setImplementationLocation(handle, component);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 

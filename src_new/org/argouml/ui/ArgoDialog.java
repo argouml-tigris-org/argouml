@@ -79,19 +79,6 @@ public class ArgoDialog extends Dialog {
     }
 
     /**
-     * @see Dialog#Dialog(Frame, String, boolean)
-     *
-     * Creates a new ArgoDialog with the default optionType.
-     *
-     * @deprecated in 0.21.3 by Linus Tolke.
-     *         Use {@link #ArgoDialog(String, boolean)}.
-     */
-    public ArgoDialog(Frame owner, String title, boolean modal) {
-        super(owner, title, modal);
-        this.loadCommonKeyMap();
-    }
-
-    /**
      * @see Dialog#Dialog(Frame, String, int, boolean)
      *
      * Creates a new ArgoDialog with the specified optionType.
