@@ -674,7 +674,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         First you will become familiar with the feel of the product and then
         we will go through an analysis and development process for a test case.
         Not every nook and cranny of the product will be demonstrated.
-        That amount of detail are given in the reference materials to be
+        That degree of detail is given in the reference materials to be
         found in subsequent parts of this document.
       </para>
 
@@ -713,6 +713,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <para>
         We are not going to build a physical ATM, of course.
+        The product that we will build as a case study will be an ATM simulator
+        to be used for testing the design of a physical ATM.
       </para>
 
       <para>
@@ -725,7 +727,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     </chapter>
 
-    <chapter>
+    <chapter id="ch.tut.ooad">
 
       <title>UML Based OOA&amp;D</title>
 
@@ -1508,8 +1510,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem><para>
                 <indexterm><primary>PS</primary></indexterm>
-                <ulink url="http://en.wikipedia.org/wiki/PostScript/"><emphasis>PostScript
-                (PS)</emphasis></ulink> is a page description language and
+                <ulink url="http://en.wikipedia.org/wiki/PostScript/">
+                  <emphasis>PostScript (PS)</emphasis>
+                </ulink> is a page description language and
                 programming language used primarily in the electronic and
                 desktop publishing areas.
               </para></listitem>
@@ -1612,7 +1615,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Its not just a spirit of pure altruism. Contributing is 
           a way of learning <quote>hands-on</quote> about leading edge 
           software. Its a way of getting a lot of visibility (over 
-          100,000 people had downloaded ArgoUML by the spring of 2001). 
+          1,125,000 people had downloaded ArgoUML by the end of 2005). 
           That&apos;s a lot of good experience on a resumé and a lot of 
           potential employers seeing you!</para>
 
@@ -1631,7 +1634,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       </sect1>
 
-      <sect1>
+      <sect1 id="tut.basics">
 
         <title>ArgoUML Basics</title>
 
@@ -1944,7 +1947,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </sect2>
 
-        <sect2>
+        <sect2 id="tut.user.iface">
 
           <title>The ArgoUML User Interface</title>
 
@@ -1991,7 +1994,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             See <xref linkend="s1.ref.panes"/>.
           </para>
 
-          <sect3>
+          <sect3 id="tut.menu.toolbars">
 
             <title>The Menu Bar and Toolbars</title>
 
@@ -2007,23 +2010,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               and <xref linkend="ch.ref.menu"/>.
             </para>
 
-            <itemizedlist>
-
-              <listitem>
-
-                <para>
-                  <emphasis>File</emphasis> menu.
+            <para>
+              <emphasis>File</emphasis> menu.
                   <indexterm><primary>File Menu</primary></indexterm>
                   The standard file menu entries present no surprises and we
                   will just use them when needed without first showing how they
                   work.
                   A number of other actions are available that are peculiar
                   to ArgoUML and we will go over them here.
-                </para>
+            </para>
 
-                <orderedlist>
+            <orderedlist>
 
-                  <listitem>
+              <listitem>
 
                     <para>
                       <emphasis>File=&gt;Revert to Saved.</emphasis>
@@ -2031,9 +2030,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                       current project.
                     </para>
 
-                  </listitem>
+              </listitem>
 
-                  <listitem>
+              <listitem>
 
                     <para>
                       <emphasis>Export/Import.</emphasis>
@@ -2057,9 +2056,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                       to what you had saved.
                     </para>
 
-                  </listitem>
+              </listitem>
 
-                  <listitem>
+              <listitem>
 
                     <para>
                       <emphasis>File=&gt;Import Sources.</emphasis>
@@ -2068,9 +2067,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                       source code of your own handy.
                     </para>
 
-                  </listitem>
+              </listitem>
 
-                  <listitem>
+              <listitem>
 
                     <para>
                       <emphasis>File=&gt;Export (All) Graphics.</emphasis>
@@ -2105,9 +2104,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                       when we get to the <emphasis>Edit</emphasis> menu.
                     </para>
 
-                  </listitem>
+              </listitem>
 
-                  <listitem>
+              <listitem>
 
                     <para>
                       <emphasis>File=&gt;Notation.</emphasis>
@@ -2129,9 +2128,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                       the changes in the display in the Edit Pane.
                     </para>
 
-                  </listitem>
+              </listitem>
 
-                  <listitem>
+              <listitem>
 
                     <para>
                       <emphasis>File=&gt;Properties.</emphasis>
@@ -2152,27 +2151,31 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                       new shadow value will apply.
                     </para>
 
-                  </listitem>
-
-                </orderedlist>
-
               </listitem>
 
-              <listitem>
+            </orderedlist>
 
-                <para>
-                  <emphasis>Edit</emphasis> menu.
+            <para>
+              <emphasis>Edit</emphasis> menu.
                   <indexterm><primary>Edit Menu</primary></indexterm>
                   The edit menu does not look like what you are used to
                   in other products.
                   There are no "Cut", "Copy", or "Paste" actions.
                   All of the choices are peculiar to ArgoUML so we are
-                  going to cover all of them in detail.
+              going to cover all of them in detail.
+            </para>
+
+            <orderedlist>
+
+              <listitem>
+
+                <para>
+                  <emphasis>Edit=&gt;Select.</emphasis>
                 </para>
-                <orderedlist>
+                <itemizedlist>
                   <listitem>
                     <para>
-                      Select a class diagram in the Explorer.
+                      Select a class diagram in the Explorer Pane.
                       If there is none there create one using
                       <emphasis>Create=&gt;New Class Diagram</emphasis>.
                       Create three classes using the class tool described
@@ -2246,51 +2249,191 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                       the Explorer Pane.
                     </para>
                   </listitem>
-                  <listitem>
-                    <para>
-                      <emphasis>Edit=&gt;Configure Perspectives</emphasis>...
-                    </para>
-                  </listitem>
-                  <listitem>
-                    <para>
-                      <emphasis>Edit=&gt;Settings</emphasis>...
-                    </para>
-                    <para>
-                      ...
-                    </para>
-                    <para>
-                      At this point you should try the various choices
-                      available for a look and feel.
-                      You used the editor that establishes the look and feel
-                      when you were selecting a language, however, you only
-                      saw it in Russian.
-                      It you look at an English rendition
-                      <xref linkend="s3.ref.menu_settings_appearance"/> you
-                      will see that the topmost combobox is for selecting
-                      the look and feel.
-                      When the panel is first opened the box contains the
-                      current value.
-                      Select another one, exit from ArgoUML and restart it.
-                    </para>
-                  </listitem>
-                </orderedlist>
-
+                </itemizedlist>
               </listitem>
-
               <listitem>
-
-                <para><emphasis>View</emphasis> menu. This allows you 
-                <indexterm><primary>View Menu</primary></indexterm>
-                to switch between diagrams, find artifacts in the 
-                model, zoom in a diagram, select a particular diagram 
-                representation (although at present there is only one), 
-                select a particular tab in the details menu, adjust the 
-                grid, view buttons on a selection, and switch between 
-                UML and Java notation.</para>
-
+                <para>
+                  <emphasis>Edit=&gt;Configure Perspectives</emphasis>.
+                  Read <xref linkend="s1.ref.configure_perspectives"/>.
+                  We aren't going to go into this at this point as it needs
+                  much larger projects to be displayed than we have available
+                  at this point.
+                </para>
               </listitem>
-
               <listitem>
+                <para>
+                  <emphasis>Edit=&gt;Settings=&gt;Preferences</emphasis>.
+                  Enter Help=&gt;About ArgoUML.
+                  Look at the panel in the "splash" tab.
+                  This is known as the Splash Panel.
+                  Go to Edit=&gt;Settings=&gt;Preferences.
+                  Turn off the "Show Splash Panel" and the "Preload Common Classes"
+                  check buttons.
+                  Exit from ArgoUML and restart it.
+                  Note that the splash panel does not show during the load.
+                </para>
+              </listitem>
+              <listitem><para>
+                <emphasis>Edit=&gt;Settings=&gt;Environment</emphasis>.
+                Do <emphasis>File=&gt;Export Graphics</emphasis> and observe
+                the file extension that shows at the bottom of the file chooser
+                dialog in the "Files of type" combobox.
+                Go to the <emphasis>Edit=&gt;Settings=&gt;Environment</emphasis>
+                editor and pick some other value for Default graphics format.
+                Click "Apply" and then "OK".  Go back to the
+                <emphasis>File=&gt;Export Graphics</emphasis> dialog and notice
+                that the new format is now the default.
+              </para></listitem>
+              <listitem><para>
+                <emphasis>Edit=&gt;Settings=&gt;User</emphasis>.
+                Enter your name and email address.
+              </para></listitem>
+              <listitem><para>
+                <emphasis>Edit=&gt;Settings=&gt;Appearance</emphasis>.
+                Change the "Look and Feel:" to Metal."
+                Note that the "Metal Theme:" editor becomes anabled.
+                Change the theme to "Very Large Fonts."
+                Click on "Apply" and then "OK."
+                Notice that nothing has happened.
+                Exit from ArgoUML and reopen it.
+                The display should be markedly different.
+                You can change it back or leave it that way as you prefer. 
+              </para></listitem>
+              <listitem><para>
+                <emphasis>Edit=&gt;Settings=&gt;Notations</emphasis>.
+                We played around with this earlier with the
+                <emphasis>File=&gt;Notation</emphasis> and
+                <emphasis>File=&gt;Properties</emphasis> menu items.
+                Start another copy of ArgoUML resize each copy so they can
+                be seen at the same time next to each other.
+                On one of them set the Notation Language to UML
+                (the actual choice will have a version number with it).
+                On the other  set the Notation Language to Java.
+              </para>
+              <para>
+                On both of them do the following.
+                Turn all of the check boxes on.
+                Do a <emphasis>File=&gt;New</emphasis>, create a class in
+                a class diagram.
+                Double click in the attributes section to create an attribute.
+                Double click in the operation section to create a method.
+                Observe the difference in the displays.
+              </para></listitem>
+              <listitem><para>
+                <emphasis>Edit=&gt;Settings=&gt;Modules</emphasis>.
+                This is work in progress.
+                We are not going to mess with it in this version of the
+                tutorial.
+              </para></listitem>
+            </orderedlist>
+
+            <para>
+              <emphasis>View</emphasis> menu.
+              <indexterm><primary>View Menu</primary></indexterm>
+              This allows you 
+              to switch between diagrams, find artifacts in the 
+              model, zoom in a diagram, adjust the 
+              grid, toggle page break display, and show an XML
+              representation of the project.
+              Do a <emphasis>File=&gt;New</emphasis> to get back to a
+              known point.
+              Create an example of each diagram type not already in the
+              Explorer Pane.
+              Click on the (+) sign widgets in the Explorer Pane to expand
+              the tree nodes.
+              Select the class diagram and give it a name.
+            </para>
+
+            <orderedlist>
+              <listitem><para>
+                <emphasis>View=&gt;Goto Diagram</emphasis> brings up a
+                Go To Diagram panel.
+                Select the class diagram entry in this panel and click on
+                the "Go to Selection" button.
+                There should be 0 nodes and 0 edges in the leftmost column.
+                Click on the "Close" button.
+                In the Details Pane (Properties tab) enter the name as "Blort".
+                Create two classes (See ...) in the class diagram and go
+                back to <emphasis>View=&gt;Goto Diagram</emphasis>.
+                You should now see 2 nodes and 0 edges shown.
+                Click on the "Close" button again and link the classes with
+                one of the "line" items like association or generalization.
+                Go back to <emphasis>View=&gt;Goto Diagram</emphasis> and you
+                should see 2 nodes and 1 edge(s).
+                Click on the "Close" button again and create a third class.
+                Run the mouse over the icons in the toolbar until you find the
+                one with the tooltip "New Association Class."
+                Click on this tool and then connect the new class to one
+                of the others.
+                Having clicked on the "New Association Class" tool move the
+                mouse over the new class.
+                Press and hold down button 1.
+                Move the mouse over one of the other classes and
+                release button 1.
+                Go back to <emphasis>View=&gt;Goto Diagram</emphasis> and you
+                should see 3 nodes and 2 edge(s).
+                Even though it is a class and has a two dimensional
+                representation, it counts as an edge not a node.
+                Select other entries in this panel and click on
+                the "Go to Selection" button in the Go To Diagram panel.
+                Observe the changes in the Explorer Panel.
+              </para></listitem>
+              <listitem><para>
+                <emphasis>View=&gt;Find.</emphasis>
+                At this point you should have three normal classes and an
+                association class in the Explorer Pane.
+                Name them "AA", "AB", "B", and "C".
+                Perform a <emphasis>View=&gt;Find</emphasis> operation.
+                Click on the "Find" button.
+                Notice that an "* in *" tab is created below.
+                This tab should show pretty much everything.
+                In the "In Diagram" editor change the "*" to "B*" and
+                click on the "Find Button" observing the contents of the
+                new tab with "* in B*" as a tab label.
+                You should see the three classes, the link (such as an
+                association), and the association class.
+                In the Element Type drop down box select "Interface" and click
+                on the Find button.
+                The new tab "* in B* Inte..." should have no entries in it
+                as we have defined no interfaces.
+                In the Element Type drop down box select "Class" and click
+                on the Find button.
+                The new tab "* in B* Class" should have one fewer entries
+                in it than the "* in B*" tab.
+                Switch back and forth between these two
+                observing the difference.
+                In various of these tabs select an item and click on the
+                "Go To Selection" button observing the change in the selection
+                shown in the diagram and in the Explorer Pane.
+              </para></listitem>
+              <listitem><para>
+                <emphasis>View=&gt;Zoom.</emphasis>
+                As an exeption to a general rule the toolbar equivalent of
+                <emphasis>View=&gt;Zoom</emphasis> does not operate in the
+                same way as the correspinding menu item.
+                Highlight <emphasis>View=&gt;Zoom.</emphasis> and a submenu
+                will appear that contains "Zoom Out", "Zoom Reset" and
+                "Zoom In".
+                Click on these a few times observing the effect on the
+                diagram then click on the Zoom tool bar icon.
+                This is a magnifying glass next to a down arrow head.
+                You should see a graduated slider bar tool.
+                Grab the pointer in this tool and move it up and down
+                observing the effect on the diagram.
+              </para></listitem>
+              <listitem><para>
+                <emphasis>View=&gt;Adjust Grid.</emphasis>
+              </para></listitem>
+              <listitem><para>
+                <emphasis>View=&gt;Adjust Grid Snap.</emphasis>
+              </para></listitem>
+              <listitem><para>
+                <emphasis>View=&gt;Page Breaks.</emphasis>
+              </para></listitem>
+              <listitem><para>
+                <emphasis>View=&gt;XML Dump.</emphasis>
+              </para></listitem>
+            </orderedlist>
 
                 <para><emphasis>Create Diagram</emphasis> menu. This 
                 <indexterm><primary>Create Diagram Menu</primary></indexterm>
@@ -2304,28 +2447,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 grayed out if this has not been done (nothing will 
                 happen under this circumstance).</para>
 
-              </listitem>
-
-              <listitem>
-
                 <para><emphasis>Arrange</emphasis> menu. This allows 
                 <indexterm><primary>Arrange Menu</primary></indexterm>
                 you to align, distribute, reorder and nudge artifacts 
                 on a diagram and set the layout strategy for the 
                 diagram.</para>
 
-              </listitem>
-
-              <listitem>
-
                 <para><emphasis>Generation</emphasis> menu. This allows 
                 <indexterm><primary>Generation Menu</primary></indexterm>
                 you to generate Java code for selected classes or all 
                 classes.</para>
-
-              </listitem>
-
-              <listitem>
 
                 <para><emphasis>Critique</emphasis> menu. This allows 
                 <indexterm><primary>Critique Menu</primary></indexterm>
@@ -2333,60 +2464,40 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 level of importance of design issues and design goals 
                 and browse the critics available.</para>
 
-              </listitem>
-
-              <listitem>
-
                 <para><emphasis>Tools</emphasis> menu. This menu is 
                 <indexterm><primary>Tools Menu</primary></indexterm>
                 permanently grayed out unless there is some tool 
                 available in your version of ArgoUML.</para>
 
-              </listitem>
-
-              <listitem>
-
+                <para><emphasis>Help</emphasis> menu.
                 <indexterm><primary>Help Menu</primary></indexterm>
-                <para><emphasis>Help</emphasis> menu. This menu gives 
+                This menu gives 
                 access to details of those who authored the system, and 
                 where additional help may be found.</para>
 
-              </listitem>
-
-              <listitem>
-
+                <para>File Toolbar.
                 <indexterm><primary>File Toolbar</primary></indexterm>
-                <para>File Toolbar. This toolbar contains some of the 
+                This toolbar contains some of the 
                 tools from the File menu.</para>
 
-              </listitem>
-
-              <listitem>
-
+                <para>Edit Toolbar.
                 <indexterm><primary>Edit Toolbar</primary></indexterm>
-                <para>Edit Toolbar. This toolbar contains some of the 
+                This toolbar contains some of the 
                 tools from the Edit menu.</para>
 
-              </listitem>
-
-              <listitem>
-
+                <para>View Toolbar.
                 <indexterm><primary>View Toolbar</primary></indexterm>
-                <para>View Toolbar. This toolbar contains some of the 
+                This toolbar contains some of the 
                 tools from the View menu.</para>
 
-              </listitem>
 
-              <listitem>
-
-                <indexterm><primary>Create Diagram 
-                Toolbar</primary></indexterm>
-                <para>Create Diagram Toolbar. This toolbar contains 
-                some of the tools from the Create Diagram menu.</para>
-
-              </listitem>
-
-            </itemizedlist>
+                <para>Create Diagram Toolbar.
+                  <indexterm>
+                    <primary>Create Diagram Toolbar</primary>
+                  </indexterm>
+                  This toolbar contains 
+                  some of the tools from the Create Diagram menu.
+                </para>
 
           </sect3>
           <sect3>
