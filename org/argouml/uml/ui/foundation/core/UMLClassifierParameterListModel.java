@@ -68,9 +68,9 @@ public class UMLClassifierParameterListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#swap(int, int)
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
-    public void swap(int index1, int index2) {
+    protected void moveTo(int index1, int index2) {
         Object classifier = getTarget();
         List c = new ArrayList(Model.getFacade().getParameters(classifier));
         // TODO: Verify that the following works now with MDR
