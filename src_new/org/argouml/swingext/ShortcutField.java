@@ -31,7 +31,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Logger;
 import org.argouml.ui.cmd.ShortcutChangedEvent;
 import org.argouml.ui.cmd.ShortcutChangedListener;
 import org.argouml.ui.cmd.ShortcutMgr;
@@ -48,8 +47,6 @@ public class ShortcutField extends JTextField {
      * The UID
      */
     private static final long serialVersionUID = -62483698420802557L;
-
-    private static final Logger LOG = Logger.getLogger(ShortcutField.class);
 
     private EventListenerList listenerList = new EventListenerList();
 
@@ -221,7 +218,6 @@ public class ShortcutField extends JTextField {
             break;
         }
         displayText();
-        LOG.error("pressedKeys: " + pressedKeys);
     }
 
     /**
@@ -243,8 +239,6 @@ public class ShortcutField extends JTextField {
 
         KeyStroke keyStroke = ShortcutMgr.decodeKeyStroke(this.getText());
 
-        LOG.error("Created KeyStroke: ");
-        
         // Process the listeners last to first, notifying
         // those that are interested in this event
         for (int i = listeners.length - 2; i >= 0; i -= 2) {

@@ -36,6 +36,7 @@ import java.util.StringTokenizer;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
@@ -70,9 +71,13 @@ import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.CmdAdjustGrid;
 import org.tigris.gef.base.CmdAdjustGuide;
 import org.tigris.gef.base.CmdAdjustPageBreaks;
+import org.tigris.gef.base.CmdGroup;
 import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.base.CmdSelectAll;
 import org.tigris.gef.base.CmdSelectInvert;
+import org.tigris.gef.base.CmdSelectNear;
+import org.tigris.gef.base.CmdSelectNext;
+import org.tigris.gef.base.CmdUngroup;
 import org.tigris.gef.base.CmdZoom;
 import org.tigris.gef.base.DistributeAction;
 import org.tigris.gef.base.NudgeAction;
@@ -303,6 +308,54 @@ public class ShortcutMgr {
 
     /** Action key for nudge down */
     public static final String ACTION_NUDGE_DOWN = "nudgeDown";
+
+    /** Action key for select next element */
+    public static final String ACTION_SELECT_NEXT = "selectNext";
+
+    /** Action key for select previous element */
+    public static final String ACTION_SELECT_PREVIOUS = "selectPrevious";
+
+    /** Action key for group selected elements */
+    public static final String ACTION_GROUP = "group";
+
+    /** Action key for ungroup selected elements */
+    public static final String ACTION_UNGROUP = "ungroup";
+
+    /** Action key for select left */
+    public static final String ACTION_SELECT_LEFT = "selectLeft";
+
+    /** Action key for select left */
+    public static final String ACTION_SELECT_RIGHT = "selectRight";
+
+    /** Action key for select left */
+    public static final String ACTION_SELECT_UP = "selectUp";
+
+    /** Action key for select left */
+    public static final String ACTION_SELECT_DOWN = "selectDown";
+
+    /** Action key for nudge left 2x */
+    public static final String ACTION_NUDGE_LEFT_2X = "nudgeLeft2x";
+
+    /** Action key for nudhe right 2x */
+    public static final String ACTION_NUDGE_RIGHT_2X = "nudgeRight2x";
+
+    /** Action key for nudge up 2x */
+    public static final String ACTION_NUDGE_UP_2X = "nudgeUp2x";
+
+    /** Action key for nudge down 2x */
+    public static final String ACTION_NUDGE_DOWN_2X = "nudgeDown2x";
+
+    /** Action key for nudge left 4x */
+    public static final String ACTION_NUDGE_LEFT_4X = "nudgeLeft4x";
+
+    /** Action key for nudhe right 4x */
+    public static final String ACTION_NUDGE_RIGHT_4X = "nudgeRight4x";
+
+    /** Action key for nudge up 4x */
+    public static final String ACTION_NUDGE_UP_4X = "nudgeUp4x";
+
+    /** Action key for nudge down 4x */
+    public static final String ACTION_NUDGE_DOWN_4X = "nudgeDown4x";
     
     
     /** 
@@ -340,10 +393,23 @@ public class ShortcutMgr {
      */
     private static final Logger LOG = Logger.getLogger(ShortcutMgr.class);
 
-    private static final int MASK = Toolkit.getDefaultToolkit()
+    private static final int DEFAULT_MASK = Toolkit.getDefaultToolkit()
             .getMenuShortcutKeyMask();
 
-    private static HashMap shortcutHash = new HashMap(50);
+    private static final int SHIFTED_DEFAULT_MASK = Toolkit.getDefaultToolkit()
+            .getMenuShortcutKeyMask() | KeyEvent.SHIFT_DOWN_MASK;
+
+    private static final int META_MASK = KeyEvent.META_DOWN_MASK;
+
+    private static final int SHIFT_MASK = KeyEvent.SHIFT_DOWN_MASK;
+
+    private static final int ALT_MASK = KeyEvent.ALT_DOWN_MASK;
+    
+    // TODO: should this two be internationalized?
+    private static final String SUFFIX_2X = " 2x";
+    private static final String SUFFIX_4X = " 4x";
+
+    private static HashMap shortcutHash = new HashMap(90);
 
     private static HashMap duplicate = new HashMap(10);
 
@@ -370,10 +436,10 @@ public class ShortcutMgr {
      * @param menuItem
      *            the menu item
      * @param shortcutKey
-     *            the shortcut (nullable)
+     *            the shortcut key
      */
     public static void assignAccelerator(JMenuItem menuItem, 
-            Object shortcutKey) {
+            String shortcutKey) {
         Action shortcut = (Action) shortcutHash.get(shortcutKey);
 
         if (shortcut != null) {
@@ -395,6 +461,48 @@ public class ShortcutMgr {
     }
 
     /**
+     * Assign a shortcut to the given JPanel (only when focused)
+     * 
+     * @param panel
+     *            the panel
+     * @param shortcutKey
+     *            the shortcut key
+     */
+    public static void assignAccelerator(JPanel panel, 
+            String shortcutKey) {
+        Action shortcut = (Action) shortcutHash.get(shortcutKey);
+
+        if (shortcut != null) {
+            KeyStroke keyStroke = shortcut.getCurrentShortcut();
+            if (keyStroke != null) {
+                panel.registerKeyboardAction(shortcut.getActionInstance(), 
+                        keyStroke, JComponent.WHEN_FOCUSED);
+            }
+            KeyStroke alternativeKeyStroke = (KeyStroke) duplicate
+                    .get(keyStroke);
+            if (alternativeKeyStroke != null) {
+                String actionName = (String) 
+                    shortcut.getActionInstance().getValue(AbstractAction.NAME);
+
+                panel.getInputMap(JComponent.WHEN_FOCUSED).put(
+                        alternativeKeyStroke, actionName);
+                panel.getActionMap().put(actionName, 
+                        shortcut.getActionInstance());
+            }
+        }
+    }
+    
+    /**
+     * Search for the duplicate of a given KeyStroke
+     * 
+     * @param keyStroke         the KeyStroke to search for
+     * @return                  the duplicate, or null if not present
+     */
+    public static KeyStroke getDuplicate(KeyStroke keyStroke) {
+        return (KeyStroke) duplicate.get(keyStroke);
+    }
+    
+    /**
      * Returns a shortcut for the given action id
      * 
      * @param actionId
@@ -406,7 +514,13 @@ public class ShortcutMgr {
     }
 
     private static void putDefaultShortcut(String shortcutKey,
-            KeyStroke defaultKeyStroke, AbstractAction action) {
+        KeyStroke defaultKeyStroke, AbstractAction action) {
+        putDefaultShortcut(shortcutKey, defaultKeyStroke, action, 
+                getActionDefaultName(action));
+    }
+
+    private static void putDefaultShortcut(String shortcutKey,
+        KeyStroke defaultKeyStroke, AbstractAction action, String actionName) {
         // let's load the current shortcut from the configuration (as a string)
         String confCurrentShortcut = Configuration.getString(Configuration
                 .makeKey(shortcutKey), null);
@@ -424,7 +538,7 @@ public class ShortcutMgr {
         }
 
         Action currentShortcut = new Action(shortcutKey, currentKeyStroke,
-                defaultKeyStroke, action);
+                defaultKeyStroke, action, actionName);
         shortcutHash.put(shortcutKey, currentShortcut);
     }
 
@@ -468,10 +582,16 @@ public class ShortcutMgr {
         for (int i = 0; i < newActions.length; i++) {
             Action oldAction = (Action) shortcutHash
                     .get(newActions[i].getKey());
-            if (newActions[i].getCurrentShortcut() != null
+            if (newActions[i].getCurrentShortcut() == null
+                    && newActions[i].getDefaultShortcut() != null) {
+                // if a default action was voided then we have to save it
+                Configuration.setString(Configuration.makeKey(oldAction
+                        .getKey()), "");
+            } else if (newActions[i].getCurrentShortcut() != null
                     && !newActions[i].getCurrentShortcut().equals(
                             newActions[i].getDefaultShortcut())) {
-
+                // if a not-default current shortcut was added, then we have to
+                // save it
                 Configuration.setString(Configuration.makeKey(oldAction
                         .getKey()), KeyEventUtils.formatKeyStroke(newActions[i]
                         .getCurrentShortcut()));
@@ -504,25 +624,33 @@ public class ShortcutMgr {
         }
     }
 
+    private static String getActionDefaultName(AbstractAction action) {
+        return (String) action.getValue(AbstractAction.NAME);
+    }
+    
     // let's load the default shortcut for every action
     static {
         // First of all, let's set up the duplicate hash. This hash contains
-        // all the duplicate key for another key. This could be used to make
-        // possible, e.g., to make a
+        // all the duplicate key for another key. 
         //
-        //
-        duplicate.put(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, MASK),
-                KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, MASK));
-        duplicate.put(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, MASK), KeyStroke
-                .getKeyStroke(KeyEvent.VK_ADD, MASK));
+        // TODO: every duplicate.put() is done twice - but how to avoid this?
+        duplicate.put(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, DEFAULT_MASK),
+                KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, DEFAULT_MASK));
+        duplicate.put(KeyStroke.getKeyStroke(
+                KeyEvent.VK_SUBTRACT, DEFAULT_MASK),
+                KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, DEFAULT_MASK));
+        duplicate.put(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, DEFAULT_MASK), 
+                KeyStroke.getKeyStroke(KeyEvent.VK_ADD, DEFAULT_MASK));
+        duplicate.put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, DEFAULT_MASK), 
+                KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, DEFAULT_MASK));
 
         // file menu
         putDefaultShortcut(ACTION_NEW_PROJECT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_N, MASK), new ActionNew());
+                KeyEvent.VK_N, DEFAULT_MASK), new ActionNew());
         putDefaultShortcut(ACTION_OPEN_PROJECT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_O, MASK), new ActionOpenProject());
+                KeyEvent.VK_O, DEFAULT_MASK), new ActionOpenProject());
         putDefaultShortcut(ACTION_SAVE_PROJECT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_S, MASK), ProjectBrowser.getInstance()
+                KeyEvent.VK_S, DEFAULT_MASK), ProjectBrowser.getInstance()
                 .getSaveAction());
         putDefaultShortcut(ACTION_SAVE_PROJECT_AS, null,
                 new ActionSaveProjectAs());
@@ -541,15 +669,15 @@ public class ShortcutMgr {
                 new ActionSaveAllGraphics());
         putDefaultShortcut(ACTION_NOTATION, null, new ActionNotation());
         putDefaultShortcut(ACTION_PRINT, KeyStroke.getKeyStroke(KeyEvent.VK_P,
-                MASK), new ActionPrint());
+                DEFAULT_MASK), new ActionPrint());
 
         // edit menu
         putDefaultShortcut(ACTION_SELECT_ALL, KeyStroke.getKeyStroke(
-                KeyEvent.VK_A, MASK), new CmdSelectAll());
+                KeyEvent.VK_A, DEFAULT_MASK), new CmdSelectAll());
         putDefaultShortcut(ACTION_REDO, KeyStroke.getKeyStroke(KeyEvent.VK_Y,
-                MASK), ProjectBrowser.getInstance().getRedoAction());
+                DEFAULT_MASK), ProjectBrowser.getInstance().getRedoAction());
         putDefaultShortcut(ACTION_UNDO, KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-                MASK), ProjectBrowser.getInstance().getUndoAction());
+                DEFAULT_MASK), ProjectBrowser.getInstance().getUndoAction());
         putDefaultShortcut(ACTION_NAVIGATE_FORWARD, null,
                 new NavigateTargetForwardAction());
         putDefaultShortcut(ACTION_NAVIGATE_BACK, null,
@@ -562,7 +690,7 @@ public class ShortcutMgr {
                 KeyEvent.VK_DELETE, 0), ProjectBrowser.getInstance()
                 .getRemoveFromDiagramAction());
         putDefaultShortcut(ACTION_DELETE_MODEL_ELEMENTS, KeyStroke
-                .getKeyStroke(KeyEvent.VK_DELETE, MASK), TargetManager
+                .getKeyStroke(KeyEvent.VK_DELETE, DEFAULT_MASK), TargetManager
                 .getInstance().getDeleteAction());
 
         // view menu
@@ -574,10 +702,10 @@ public class ShortcutMgr {
                 new CmdAdjustPageBreaks());
         putDefaultShortcut(ACTION_SHOW_XML_DUMP, null, new ActionShowXMLDump());
         putDefaultShortcut(ACTION_ZOOM_IN, KeyStroke.getKeyStroke(
-                KeyEvent.VK_MINUS, MASK), new CmdZoom(
+                KeyEvent.VK_MINUS, DEFAULT_MASK), new CmdZoom(
                 (1.0) / (GenericArgoMenuBar.ZOOM_FACTOR)));
         putDefaultShortcut(ACTION_ZOOM_OUT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_PLUS, MASK), new CmdZoom(
+                KeyEvent.VK_PLUS, DEFAULT_MASK), new CmdZoom(
                 GenericArgoMenuBar.ZOOM_FACTOR));
         putDefaultShortcut(ACTION_FIND, KeyStroke.getKeyStroke(KeyEvent.VK_F3,
                 0), new ActionFind());
@@ -631,10 +759,11 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_ALIGN_BOTTOMS, null, new AlignAction(
                 AlignAction.ALIGN_BOTTOMS));
         putDefaultShortcut(ACTION_ALIGN_RIGHTS, KeyStroke.getKeyStroke(
-                KeyEvent.VK_R, MASK), 
+                KeyEvent.VK_R, DEFAULT_MASK), 
                 new AlignAction(AlignAction.ALIGN_RIGHTS));
         putDefaultShortcut(ACTION_ALIGN_LEFTS, KeyStroke.getKeyStroke(
-                KeyEvent.VK_L, MASK), new AlignAction(AlignAction.ALIGN_LEFTS));
+                KeyEvent.VK_L, DEFAULT_MASK), 
+                new AlignAction(AlignAction.ALIGN_LEFTS));
         putDefaultShortcut(ACTION_ALIGN_H_CENTERS, null, new AlignAction(
                 AlignAction.ALIGN_H_CENTERS));
         putDefaultShortcut(ACTION_ALIGN_V_CENTERS, null, new AlignAction(
@@ -653,24 +782,94 @@ public class ShortcutMgr {
                 new DistributeAction(DistributeAction.V_CENTERS));
 
         // reorder submenu
-        putDefaultShortcut(ACTION_REORDER_FORWARD, null, new CmdReorder(
+        putDefaultShortcut(ACTION_REORDER_FORWARD, KeyStroke.getKeyStroke(
+                KeyEvent.VK_F, DEFAULT_MASK), new CmdReorder(
                 CmdReorder.BRING_FORWARD));
-        putDefaultShortcut(ACTION_REORDER_BACKWARD, null, new CmdReorder(
+        putDefaultShortcut(ACTION_REORDER_BACKWARD, KeyStroke.getKeyStroke(
+                KeyEvent.VK_B, DEFAULT_MASK), new CmdReorder(
                 CmdReorder.SEND_BACKWARD));
-        putDefaultShortcut(ACTION_REORDER_TO_FRONT, null, new CmdReorder(
+        putDefaultShortcut(ACTION_REORDER_TO_FRONT, KeyStroke.getKeyStroke(
+                KeyEvent.VK_F, SHIFTED_DEFAULT_MASK), new CmdReorder(
                 CmdReorder.BRING_TO_FRONT));
-        putDefaultShortcut(ACTION_REORDER_TO_BACK, null, new CmdReorder(
+        putDefaultShortcut(ACTION_REORDER_TO_BACK, KeyStroke.getKeyStroke(
+                KeyEvent.VK_B, SHIFTED_DEFAULT_MASK), new CmdReorder(
                 CmdReorder.SEND_TO_BACK));
 
         // nudge submenu
-        putDefaultShortcut(ACTION_NUDGE_LEFT, null, new NudgeAction(
+        putDefaultShortcut(ACTION_NUDGE_LEFT, KeyStroke.getKeyStroke(
+                KeyEvent.VK_LEFT, DEFAULT_MASK), new NudgeAction(
                 NudgeAction.LEFT));
-        putDefaultShortcut(ACTION_NUDGE_RIGHT, null, new NudgeAction(
+        putDefaultShortcut(ACTION_NUDGE_RIGHT, KeyStroke.getKeyStroke(
+                KeyEvent.VK_RIGHT, DEFAULT_MASK), new NudgeAction(
                 NudgeAction.RIGHT));
-        putDefaultShortcut(ACTION_NUDGE_UP, null, new NudgeAction(
+        putDefaultShortcut(ACTION_NUDGE_UP, KeyStroke.getKeyStroke(
+                KeyEvent.VK_UP, DEFAULT_MASK), new NudgeAction(
                 NudgeAction.UP));
-        putDefaultShortcut(ACTION_NUDGE_DOWN, null, new NudgeAction(
+        putDefaultShortcut(ACTION_NUDGE_DOWN, KeyStroke.getKeyStroke(
+                KeyEvent.VK_DOWN, DEFAULT_MASK), new NudgeAction(
                 NudgeAction.DOWN));
-    }
+        
+        // JGraph editor
+        putDefaultShortcut(ACTION_SELECT_NEXT, KeyStroke.getKeyStroke(
+                KeyEvent.VK_TAB, 0), new CmdSelectNext(true));
 
+        putDefaultShortcut(ACTION_SELECT_PREVIOUS, KeyStroke.getKeyStroke(
+                KeyEvent.VK_TAB, KeyEvent.SHIFT_MASK), 
+                new CmdSelectNext(false));
+
+        putDefaultShortcut(ACTION_GROUP, KeyStroke.getKeyStroke(
+                KeyEvent.VK_G, DEFAULT_MASK), new CmdGroup());
+
+        putDefaultShortcut(ACTION_UNGROUP, KeyStroke.getKeyStroke(
+                KeyEvent.VK_U, DEFAULT_MASK), new CmdUngroup());
+
+        putDefaultShortcut(ACTION_SELECT_LEFT, KeyStroke.getKeyStroke(
+                KeyEvent.VK_LEFT, META_MASK), 
+                new CmdSelectNear(CmdSelectNear.LEFT));
+        putDefaultShortcut(ACTION_SELECT_RIGHT, KeyStroke.getKeyStroke(
+                KeyEvent.VK_RIGHT, META_MASK), 
+                new CmdSelectNear(CmdSelectNear.RIGHT));
+        putDefaultShortcut(ACTION_SELECT_UP, KeyStroke.getKeyStroke(
+                KeyEvent.VK_UP, META_MASK), 
+                new CmdSelectNear(CmdSelectNear.UP));
+        putDefaultShortcut(ACTION_SELECT_DOWN, KeyStroke.getKeyStroke(
+                KeyEvent.VK_DOWN, META_MASK), 
+                new CmdSelectNear(CmdSelectNear.DOWN));
+        
+        AbstractAction leftAction2x = new NudgeAction(NudgeAction.LEFT, 8);
+        AbstractAction rightAction2x = new NudgeAction(NudgeAction.RIGHT, 8);
+        AbstractAction upAction2x = new NudgeAction(NudgeAction.UP, 8);
+        AbstractAction downAction2x = new NudgeAction(NudgeAction.DOWN, 8);
+        
+        putDefaultShortcut(ACTION_NUDGE_LEFT_2X, KeyStroke.getKeyStroke(
+                KeyEvent.VK_LEFT, SHIFT_MASK), leftAction2x, 
+                getActionDefaultName(leftAction2x) + SUFFIX_2X);
+        putDefaultShortcut(ACTION_NUDGE_RIGHT_2X, KeyStroke.getKeyStroke(
+                KeyEvent.VK_RIGHT, SHIFT_MASK), rightAction2x,
+                getActionDefaultName(rightAction2x) + SUFFIX_2X);
+        putDefaultShortcut(ACTION_NUDGE_UP_2X, KeyStroke.getKeyStroke(
+                KeyEvent.VK_UP, SHIFT_MASK), upAction2x,
+                getActionDefaultName(upAction2x) + SUFFIX_2X);
+        putDefaultShortcut(ACTION_NUDGE_DOWN_2X, KeyStroke.getKeyStroke(
+                KeyEvent.VK_DOWN, SHIFT_MASK), downAction2x,        
+                getActionDefaultName(downAction2x) + SUFFIX_2X);
+        
+        AbstractAction leftAction4x = new NudgeAction(NudgeAction.LEFT, 18);
+        AbstractAction rightAction4x = new NudgeAction(NudgeAction.RIGHT, 18);
+        AbstractAction upAction4x = new NudgeAction(NudgeAction.UP, 18);
+        AbstractAction downAction4x = new NudgeAction(NudgeAction.DOWN, 18);
+        
+        putDefaultShortcut(ACTION_NUDGE_LEFT_4X, KeyStroke.getKeyStroke(
+                KeyEvent.VK_LEFT, ALT_MASK), leftAction4x,
+                getActionDefaultName(leftAction4x) + SUFFIX_4X);
+        putDefaultShortcut(ACTION_NUDGE_RIGHT_4X, KeyStroke.getKeyStroke(
+                KeyEvent.VK_RIGHT, ALT_MASK), rightAction4x,
+                getActionDefaultName(rightAction4x) + SUFFIX_4X);
+        putDefaultShortcut(ACTION_NUDGE_UP_4X, KeyStroke.getKeyStroke(
+                KeyEvent.VK_UP, ALT_MASK), upAction4x,
+                getActionDefaultName(upAction4x) + SUFFIX_4X);
+        putDefaultShortcut(ACTION_NUDGE_DOWN_4X, KeyStroke.getKeyStroke(
+                KeyEvent.VK_DOWN, ALT_MASK), downAction4x,
+                getActionDefaultName(downAction4x) + SUFFIX_4X);
+    }
 }

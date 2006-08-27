@@ -29,7 +29,7 @@ import javax.swing.KeyStroke;
 
 /**
  * This class represents a "shortcuttable" action
- *
+ * 
  * @author andrea.nironi@gmail.com
  */
 public class Action {
@@ -42,6 +42,8 @@ public class Action {
 
     private AbstractAction actionInstance;
 
+    private String actionInstanceName;
+
     /**
      * Constructor for Action class
      * 
@@ -53,13 +55,17 @@ public class Action {
      *            the default shortcut for this action, if present
      * @param action
      *            the AbstractAction that represents the real class
+     * @param actionName
+     *            the name of the action
      */
     protected Action(String actionKey, KeyStroke currentKeyStroke,
-            KeyStroke defaultKeyStroke, AbstractAction action) {
+            KeyStroke defaultKeyStroke, AbstractAction action, 
+            String actionName) {
         this.key = actionKey;
         this.currentShortcut = currentKeyStroke;
         this.defaultShortcut = defaultKeyStroke;
         this.actionInstance = action;
+        this.actionInstanceName = actionName;
     }
 
     /**
@@ -105,6 +111,15 @@ public class Action {
      * @return the name of the Action
      */
     public String getActionName() {
-        return (String) this.actionInstance.getValue(AbstractAction.NAME);
+        return actionInstanceName;
+    }
+
+    /**
+     * Getter for Action instance
+     * 
+     * @return the Action
+     */
+    public AbstractAction getActionInstance() {
+        return this.actionInstance;
     }
 }

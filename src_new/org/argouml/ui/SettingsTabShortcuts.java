@@ -48,7 +48,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.ShortcutField;
 import org.argouml.ui.cmd.Action;
@@ -71,9 +70,6 @@ class SettingsTabShortcuts extends JPanel implements
      * The UID.
      */
     private static final long serialVersionUID = -2033414439459450620L;
-
-    private static final Logger LOG = Logger
-            .getLogger(SettingsTabShortcuts.class);
 
     private static final String NONE_NAME = Translator
             .localize("label.shortcut-none");
@@ -386,6 +382,19 @@ class SettingsTabShortcuts extends JPanel implements
                 return actions[i];
             }
         }
+        // duplicate shortcut not found; let's check for duplicates
+        KeyStroke duplicate = ShortcutMgr.getDuplicate(keyStroke);
+        if (duplicate != null) {
+            // there's a duplicate: let's recheck if there is a conflict
+            for (int i = 0; i < actions.length; i++) {
+                if (actions[i].getCurrentShortcut() != null
+                        && actions[i].getCurrentShortcut().equals(duplicate)
+                        && !actions[i].getActionName().equals(
+                                target.getActionName())) {
+                    return actions[i];
+                }
+            }            
+        }
         return null;
     }
 
@@ -447,7 +456,6 @@ class SettingsTabShortcuts extends JPanel implements
      * @see org.argouml.ui.cmd.ShortcutChangedListener#shortcutChange(org.argouml.ui.cmd.ShortcutChangedEvent)
      */
     public void shortcutChange(ShortcutChangedEvent event) {
-        LOG.error("shortcutChange");
         checkShortcutAlreadyAssigned(event.getKeyStroke());
         setKeyStrokeValue(event.getKeyStroke());
     }
