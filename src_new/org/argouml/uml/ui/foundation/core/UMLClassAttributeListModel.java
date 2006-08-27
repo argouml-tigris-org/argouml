@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
@@ -38,6 +39,7 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 public class UMLClassAttributeListModel
     extends UMLModelElementOrderedListModel2 {
 
+    private static final Logger LOG = Logger.getLogger(UMLClassAttributeListModel.class);
     /**
      * Constructor for UMLClassifierStructuralFeatureListModel.
      */
@@ -63,20 +65,13 @@ public class UMLClassAttributeListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#swap(int, int)
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
-    public void swap(int index1, int index2) {
+    protected void moveTo(int index1, int index2) {
         Object clss = getTarget();
         List c = new ArrayList(Model.getFacade().getAttributes(clss));
         Object mem1 = c.get(index1);
-        Object mem2 = c.get(index2);
-        List cc = new ArrayList(c);
-        cc.remove(mem1);
-        cc.remove(mem2);
-        Model.getCoreHelper().setAttributes(clss, cc);
-        c.set(index1, mem2);
-        c.set(index2, mem1);
-        Model.getCoreHelper().setAttributes(clss, c);
-        buildModelList();
+        Model.getCoreHelper().removeFeature(clss, mem1);
+        Model.getCoreHelper().addFeature(clss, index2, mem1);
     }
 }

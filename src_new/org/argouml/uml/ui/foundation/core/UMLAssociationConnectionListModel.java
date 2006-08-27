@@ -106,9 +106,9 @@ public class UMLAssociationConnectionListModel
 
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#swap(int, int)
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
-    public void swap(int index1, int index2) {
+    protected void moveTo(int index1, int index2) {
         Object assoc = getTarget();
         List c = new ArrayList(Model.getFacade().getConnections(assoc));
         Object mem1 = c.get(index1);
