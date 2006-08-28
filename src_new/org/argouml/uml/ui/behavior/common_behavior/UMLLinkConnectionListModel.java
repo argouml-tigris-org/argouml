@@ -36,6 +36,8 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 public class UMLLinkConnectionListModel
     extends UMLModelElementOrderedListModel2 {
 
+    private static final long serialVersionUID = 4459749162218567926L;
+
     /**
      * Constructor for UMLInstanceLinkEndListModel.
      */
@@ -60,9 +62,10 @@ public class UMLLinkConnectionListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
      */
-    protected void moveTo(int index1, int index2) {
+    protected void moveDown(int index1) {
+        int index2 = index1 + 1;
         Object link = getTarget();
         List c = new ArrayList(Model.getFacade().getConnections(link));
         Object mem1 = c.get(index1);

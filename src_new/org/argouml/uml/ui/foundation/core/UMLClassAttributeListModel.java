@@ -67,7 +67,8 @@ public class UMLClassAttributeListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
-    protected void moveTo(int index1, int index2) {
+    protected void moveDown(int index1) {
+        int index2 = index1 + 1;
         Object clss = getTarget();
         List c = new ArrayList(Model.getFacade().getAttributes(clss));
         Object mem1 = c.get(index1);
