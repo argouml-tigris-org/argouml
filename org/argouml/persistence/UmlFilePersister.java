@@ -65,7 +65,7 @@ import org.tigris.gef.ocl.TemplateReader;
  *
  * @author Bob Tarling
  */
-public class UmlFilePersister extends AbstractFilePersister {
+class UmlFilePersister extends AbstractFilePersister {
 
     /**
      * The PERSISTENCE_VERSION is increased every time the persistence format

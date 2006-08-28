@@ -49,7 +49,7 @@ import org.xml.sax.SAXException;
  * Currently, there are three possibilities: ArgoDiagram,
  * FigNode, FigEdge
  */
-public class PrivateHandler
+class PrivateHandler
     extends org.tigris.gef.persistence.pgml.PrivateHandler {
 
     private Container container;

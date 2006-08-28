@@ -53,7 +53,7 @@ import org.xml.sax.InputSource;
  *
  * @author Bob Tarling
  */
-public class XmiFilePersister extends AbstractFilePersister 
+class XmiFilePersister extends AbstractFilePersister 
     implements XmiExtensionParser {
     /**
      * Logger.

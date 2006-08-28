@@ -43,7 +43,7 @@ import org.tigris.gef.ocl.TemplateReader;
  * The file persister for the diagram members.
  * @author Bob Tarling
  */
-public class DiagramMemberFilePersister extends MemberFilePersister {
+class DiagramMemberFilePersister extends MemberFilePersister {
     /**
      * The tee file for persistence.
      */

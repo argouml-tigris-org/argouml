@@ -57,7 +57,7 @@ import org.xml.sax.InputSource;
  * @deprecated in 0.23.1, this class is no longer used. All functionality is
  * now contained in ModelMemberFilePersister
  */
-public class XMIParser {
+class XMIParser {
 
     ////////////////////////////////////////////////////////////////
     // static variables

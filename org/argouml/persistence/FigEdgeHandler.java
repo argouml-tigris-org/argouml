@@ -40,7 +40,7 @@ import org.xml.sax.SAXException;
  * to nodes inside other edges.
  * @author Bob Tarling
  */
-public class FigEdgeHandler
+class FigEdgeHandler
     extends org.tigris.gef.persistence.pgml.FigEdgeHandler {
 
     /**

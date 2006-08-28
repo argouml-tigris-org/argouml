@@ -43,7 +43,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Jim Holt
  */
 
-public abstract class SAXParserBase extends DefaultHandler {
+abstract class SAXParserBase extends DefaultHandler {
     /**
      * Logger.
      */

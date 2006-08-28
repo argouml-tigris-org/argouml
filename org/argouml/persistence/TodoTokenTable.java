@@ -31,7 +31,7 @@ package org.argouml.persistence;
  *
  * @author Michael Stockman
  */
-public class TodoTokenTable extends XMLTokenTableBase {
+class TodoTokenTable extends XMLTokenTableBase {
 
     private static final String STRING_TO_DO                = "todo";
     private static final String STRING_TO_DO_LIST           = "todolist";

@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
  *
  * @author	Michael Stockman
  */
-public class TodoParser extends SAXParserBase {
+class TodoParser extends SAXParserBase {
     /**
      * Logger.
      */

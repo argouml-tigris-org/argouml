@@ -63,7 +63,7 @@ import org.xml.sax.InputSource;
  * The file persister for the UML model.
  * @author Bob Tarling
  */
-public class ModelMemberFilePersister extends MemberFilePersister 
+class ModelMemberFilePersister extends MemberFilePersister 
     implements XmiExtensionWriter, XmiExtensionParser {
 
     /**

@@ -30,7 +30,7 @@ import org.xml.sax.helpers.AttributesImpl;
 /**
  * @author Jim Holt
  */
-public class XMLElement {
+class XMLElement {
 
     ////////////////////////////////////////////////////////////////
     // instance variables

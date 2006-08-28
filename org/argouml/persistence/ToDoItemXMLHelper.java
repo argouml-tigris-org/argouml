@@ -31,6 +31,8 @@ import org.argouml.cognitive.ToDoItem;
  * It provides a view of A ToDoItem particularly suited for saving in an
  * XML file by encoding strings to preserve graphic characters and allow
  * lines to be broken and still be able to regain the original contents.
+ * Used by todo.tee
+ * This is not to be considered as part of the peristence interface.
  *
  * @see	ToDoItem
  * @author Michael Stockman
