@@ -99,8 +99,8 @@ class ModelMemberFilePersister extends MemberFilePersister
             readModels(project, source);
             mmodel = getCurModel();
         } catch (OpenException e) {
-            LastLoadInfo.getInstance().setLastLoadStatus(false);
-            LastLoadInfo.getInstance().setLastLoadMessage(
+            PersistenceManager.getInstance().setLastLoadStatus(false);
+            PersistenceManager.getInstance().setLastLoadMessage(
                     "UmlException parsing XMI.");
             LOG.error("UmlException caught", e);
             throw new OpenException(e);

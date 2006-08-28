@@ -72,6 +72,10 @@ public final class PersistenceManager {
     private XmiFilePersister xmlPersister;
     private ZipFilePersister zipPersister;
 
+    private boolean lastLoadStatus = true;
+
+    private String lastLoadMessage;
+
     /**
      * The configuration key for the project file location.
      */
@@ -348,6 +352,40 @@ public final class PersistenceManager {
      */
     public static String getEncoding() {
         return "UTF-8";
+    }
+    
+    /**
+     * Get the last message which caused loading to fail. Used for junit tests.
+     *
+     * @return the last message which caused loading to fail
+     */
+    public String getLastLoadMessage() {
+        return lastLoadMessage;
+    }
+
+    /**
+     * Set the last load message. Used for junit tests.
+     *
+     * @param msg the last load message
+     */
+    public void setLastLoadMessage(String msg) {
+        lastLoadMessage = msg;
+    }
+
+    /**
+     * @return the status of the last load attempt. Used for junit tests.
+     */
+    public boolean getLastLoadStatus() {
+        return lastLoadStatus;
+    }
+
+    /**
+     * Set the status of the last load attempt. Used for junit tests.
+     *
+     * @param status the status of the last load attempt
+     */
+    public void setLastLoadStatus(boolean status) {
+        lastLoadStatus = status;
     }
 }
 

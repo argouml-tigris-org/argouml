@@ -25,13 +25,10 @@ package org.argouml.persistence;
 
 /**
  * The results of the last project load.
+ * @deprecated in 0.22.1 use PersistenceManager
  * @author Bob Tarling
  */
 public class LastLoadInfo {
-
-    private boolean lastLoadStatus = true;
-
-    private String lastLoadMessage;
 
     private static final LastLoadInfo INSTANCE = new LastLoadInfo();
 
@@ -53,7 +50,7 @@ public class LastLoadInfo {
      * @return the last message which caused loading to fail
      */
     public String getLastLoadMessage() {
-        return lastLoadMessage;
+        return PersistenceManager.getInstance().getLastLoadMessage();
     }
 
     /**
@@ -62,14 +59,14 @@ public class LastLoadInfo {
      * @param msg the last load message
      */
     public void setLastLoadMessage(String msg) {
-        lastLoadMessage = msg;
+        PersistenceManager.getInstance().setLastLoadMessage(msg);
     }
 
     /**
      * @return the status of the last load attempt. Used for junit tests.
      */
     public boolean getLastLoadStatus() {
-        return lastLoadStatus;
+        return PersistenceManager.getInstance().getLastLoadStatus();
     }
 
     /**
@@ -78,6 +75,6 @@ public class LastLoadInfo {
      * @param status the status of the last load attempt
      */
     public void setLastLoadStatus(boolean status) {
-        lastLoadStatus = status;
+        PersistenceManager.getInstance().setLastLoadStatus(status);
     }
 }
