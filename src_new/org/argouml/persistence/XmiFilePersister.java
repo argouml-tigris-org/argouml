@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -298,8 +299,7 @@ class XmiFilePersister extends AbstractFilePersister
         
         if (argoString != null) {
             LOG.info("Parsing argoString " + argoString.length());
-            InputStream inputStream = 
-                new ByteArrayInputStream(argoString.getBytes());
+            StringReader inputStream = new StringReader(argoString);
             ArgoParser parser = new ArgoParser();
             try {
                 parser.readProject(project, inputStream);
