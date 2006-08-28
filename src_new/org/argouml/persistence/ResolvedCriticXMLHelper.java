@@ -33,6 +33,8 @@ import org.argouml.cognitive.ResolvedCritic;
 /**
  * A helper class to provide a view of a ResolvedCritic that is particularly
  * suited for saving to an XML file.
+ * Used by todo.tee
+ * This is not to be considered as part of the peristence interface.
  *
  * @see	ResolvedCritic
  * @author Michael Stockman

@@ -31,7 +31,7 @@ package org.argouml.persistence;
  * @author Jim Holt
  */
 
-public class ArgoTokenTable extends XMLTokenTableBase {
+class ArgoTokenTable extends XMLTokenTableBase {
 
     /**
      * The constructor.

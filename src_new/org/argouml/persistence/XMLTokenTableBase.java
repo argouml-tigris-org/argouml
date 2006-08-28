@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * @author Jim Holy
  */
 
-public abstract class XMLTokenTableBase {
+abstract class XMLTokenTableBase {
     private static final Logger LOG = Logger.getLogger(XMLTokenTableBase.class);
 
     ////////////////////////////////////////////////////////////////

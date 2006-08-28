@@ -29,7 +29,7 @@ package org.argouml.persistence;
  *
  * @author Bob Tarling
  */
-public class PersistenceException extends Exception {
+class PersistenceException extends Exception {
     /**
      * Constructor.
      */

@@ -41,7 +41,7 @@ import org.argouml.kernel.ProjectMember;
  * A base class file persister for project members.
  * @author Bob Tarling
  */
-public abstract class MemberFilePersister {
+abstract class MemberFilePersister {
     /**
      * Load the member based on instance variables
      * which should have been setup in the constructor.

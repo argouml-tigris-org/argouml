@@ -54,7 +54,7 @@ import org.xml.sax.InputSource;
  * @author Bob Tarling
  * @author Ludovic Ma&icirc;tre
  */
-public class ZipFilePersister extends XmiFilePersister {
+class ZipFilePersister extends XmiFilePersister {
     /**
      * Logger.
      */

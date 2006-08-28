@@ -61,7 +61,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * The PGML Parser.
  */
-public class PGMLStackParser
+class PGMLStackParser
     extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
     /**

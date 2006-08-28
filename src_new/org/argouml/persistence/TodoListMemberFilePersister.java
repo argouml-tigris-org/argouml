@@ -45,7 +45,7 @@ import org.xml.sax.SAXException;
  * The file persister for the Todo members.
  * @author Bob Tarling
  */
-public class TodoListMemberFilePersister extends MemberFilePersister {
+class TodoListMemberFilePersister extends MemberFilePersister {
 
     private static final Logger LOG =
         Logger.getLogger(ProjectMemberTodoList.class);

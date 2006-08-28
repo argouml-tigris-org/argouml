@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  * The tag is not expected to be an empty tag.
  * @author Bob Tarling
  */
-public class XmlInputStream extends BufferedInputStream {
+class XmlInputStream extends BufferedInputStream {
 
     private boolean xmlStarted;
     private boolean inTag;

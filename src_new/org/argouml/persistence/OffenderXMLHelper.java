@@ -30,6 +30,8 @@ package org.argouml.persistence;
  * An offender is a subject that is (partly) responsible for trigging a
  * critic. These need to be saved to keep track of in which contexts a
  * critic has been resolved.
+ * Used by todo.tee
+ * This is not to be considered as part of the peristence interface.
  *
  * @author	Michael Stockman
  */

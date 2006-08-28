@@ -38,7 +38,7 @@ import org.xml.sax.SAXException;
 /**
  * @stereotype singleton
  */
-public class ArgoParser extends SAXParserBase {
+class ArgoParser extends SAXParserBase {
 
     /**
      * Logger.

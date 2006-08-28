@@ -30,7 +30,7 @@ package org.argouml.persistence;
  *
  * @author tfmorris
  */
-public class XmlFilePersister extends XmiFilePersister {
+class XmlFilePersister extends XmiFilePersister {
 
     /**
      * @see org.argouml.persistence.AbstractFilePersister#getExtension()
