@@ -25,6 +25,7 @@
 package org.argouml.persistence;
 
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,10 +69,10 @@ class ArgoParser extends SAXParserBase {
 
     /**
      * @param theProject the project to populate
-     * @param is the inputStream
+     * @param is the reader
      * @throws SAXException on error when parsing xml
      */
-    public void readProject(Project theProject, InputStream is)
+    public void readProject(Project theProject, Reader is)
     	throws SAXException {
 
         if (is == null) {

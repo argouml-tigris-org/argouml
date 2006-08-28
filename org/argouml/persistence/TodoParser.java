@@ -24,7 +24,7 @@
 
 package org.argouml.persistence;
 
-import java.io.InputStream;
+import java.io.Reader;
 import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
@@ -97,7 +97,7 @@ class TodoParser extends SAXParserBase {
      * @throws SAXException on any error
      */
     public synchronized void readTodoList(
-            InputStream is) throws SAXException {
+            Reader is) throws SAXException {
 
         LOG.info("=======================================");
         LOG.info("== READING TO DO LIST");

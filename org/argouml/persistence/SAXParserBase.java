@@ -27,6 +27,7 @@ package org.argouml.persistence;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.net.URL;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -116,7 +117,7 @@ abstract class SAXParserBase extends DefaultHandler {
      * @param is the inputstream of the project to read
      * @throws SAXException when parsing xml
      */
-    public void parse(InputStream is) throws SAXException {
+    public void parse(Reader is) throws SAXException {
 
         long start, end;
 

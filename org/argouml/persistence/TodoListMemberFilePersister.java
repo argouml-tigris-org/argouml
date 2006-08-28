@@ -28,7 +28,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.Writer;
 
 import org.apache.log4j.Logger;
@@ -39,7 +41,6 @@ import org.argouml.ocl.OCLExpander;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.TemplateReader;
-import org.xml.sax.SAXException;
 
 /**
  * The file persister for the Todo members.
@@ -62,10 +63,11 @@ class TodoListMemberFilePersister extends MemberFilePersister {
 
         try {
             TodoParser parser = new TodoParser();
-            parser.readTodoList(inputStream);
+            Reader reader = new InputStreamReader(inputStream, PersistenceManager.getEncoding());
+            parser.readTodoList(reader);
             ProjectMemberTodoList pm = new ProjectMemberTodoList("", project);
             project.addMember(pm);
-        } catch (SAXException e) {
+        } catch (Exception e) {
             throw new OpenException(e);
         }
     }
