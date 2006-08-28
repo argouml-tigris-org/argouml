@@ -80,8 +80,8 @@ class ArgoParser extends SAXParserBase {
                     "An input stream must be supplied");
         }
 
-        LastLoadInfo.getInstance().setLastLoadMessage("OK");
-        LastLoadInfo.getInstance().setLastLoadStatus(true);
+        PersistenceManager.getInstance().setLastLoadMessage("OK");
+        PersistenceManager.getInstance().setLastLoadStatus(true);
 
         try {
             LOG.info("=======================================");
@@ -90,10 +90,10 @@ class ArgoParser extends SAXParserBase {
             ps = project.getProjectSettings();
             parse(is);
         } catch (SAXException e) {
-            LastLoadInfo.getInstance().setLastLoadStatus(false);
+            PersistenceManager.getInstance().setLastLoadStatus(false);
             LOG.error("Exception reading project================");
             LOG.error(is.toString());
-            LastLoadInfo.getInstance().setLastLoadMessage(e.toString());
+            PersistenceManager.getInstance().setLastLoadMessage(e.toString());
             throw e;
         }
     }
