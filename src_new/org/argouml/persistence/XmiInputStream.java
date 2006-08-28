@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
 import org.argouml.persistence.AbstractFilePersister.ProgressMgr;
 
 /**
@@ -41,10 +40,8 @@ import org.argouml.persistence.AbstractFilePersister.ProgressMgr;
  * The tag is not expected to be an empty tag.
  * @author Bob Tarling
  */
-public class XmiInputStream extends BufferedInputStream {
+class XmiInputStream extends BufferedInputStream {
     
-    private static final Logger LOG = Logger.getLogger(XmiInputStream.class);
-
     private String tagName;
     private String endTagName;
     private String attributes;
@@ -150,7 +147,6 @@ public class XmiInputStream extends BufferedInputStream {
             if (progressMgr != null && readCount == eventSpacing) {
                 try {
                     readCount = 0;
-                    LOG.info("Progressing");
                     progressMgr.nextPhase();
                 } catch (InterruptedException e) {
                     throw new InterruptedIOException(e);
