@@ -70,7 +70,8 @@ public class UMLClassifierParameterListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
-    protected void moveTo(int index1, int index2) {
+    protected void moveDown(int index1) {
+        int index2 = index1 + 1;
         Object classifier = getTarget();
         List c = new ArrayList(Model.getFacade().getParameters(classifier));
         // TODO: Verify that the following works now with MDR

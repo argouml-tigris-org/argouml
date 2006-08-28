@@ -108,7 +108,8 @@ public class UMLAssociationConnectionListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
-    protected void moveTo(int index1, int index2) {
+    protected void moveDown(int index1) {
+        int index2 = index1 + 1;
         Object assoc = getTarget();
         List c = new ArrayList(Model.getFacade().getConnections(assoc));
         Object mem1 = c.get(index1);

@@ -65,7 +65,8 @@ public class UMLAssociationEndQualifiersListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
-    protected void moveTo(int index1, int index2) {
+    protected void moveDown(int index1) {
+        int index2 = index1 + 1;
         Object assocEnd = getTarget();
         List c = new ArrayList(Model.getFacade().getQualifiers(assocEnd));
         Object mem1 = c.get(index1);
