@@ -129,8 +129,6 @@ class DnDJGraph
         ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_SELECT_NEXT);
         ShortcutMgr.assignAccelerator(panel, 
                 ShortcutMgr.ACTION_SELECT_PREVIOUS);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_GROUP);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_UNGROUP);
         ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_NUDGE_LEFT_2X);
         ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_NUDGE_RIGHT_2X);
         ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_NUDGE_DOWN_2X);
