@@ -71,13 +71,11 @@ import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.CmdAdjustGrid;
 import org.tigris.gef.base.CmdAdjustGuide;
 import org.tigris.gef.base.CmdAdjustPageBreaks;
-import org.tigris.gef.base.CmdGroup;
 import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.base.CmdSelectAll;
 import org.tigris.gef.base.CmdSelectInvert;
 import org.tigris.gef.base.CmdSelectNear;
 import org.tigris.gef.base.CmdSelectNext;
-import org.tigris.gef.base.CmdUngroup;
 import org.tigris.gef.base.CmdZoom;
 import org.tigris.gef.base.DistributeAction;
 import org.tigris.gef.base.NudgeAction;
@@ -314,12 +312,6 @@ public class ShortcutMgr {
 
     /** Action key for select previous element */
     public static final String ACTION_SELECT_PREVIOUS = "selectPrevious";
-
-    /** Action key for group selected elements */
-    public static final String ACTION_GROUP = "group";
-
-    /** Action key for ungroup selected elements */
-    public static final String ACTION_UNGROUP = "ungroup";
 
     /** Action key for select left */
     public static final String ACTION_SELECT_LEFT = "selectLeft";
@@ -816,12 +808,6 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_SELECT_PREVIOUS, KeyStroke.getKeyStroke(
                 KeyEvent.VK_TAB, KeyEvent.SHIFT_MASK), 
                 new CmdSelectNext(false));
-
-        putDefaultShortcut(ACTION_GROUP, KeyStroke.getKeyStroke(
-                KeyEvent.VK_G, DEFAULT_MASK), new CmdGroup());
-
-        putDefaultShortcut(ACTION_UNGROUP, KeyStroke.getKeyStroke(
-                KeyEvent.VK_U, DEFAULT_MASK), new CmdUngroup());
 
         putDefaultShortcut(ACTION_SELECT_LEFT, KeyStroke.getKeyStroke(
                 KeyEvent.VK_LEFT, META_MASK), 
