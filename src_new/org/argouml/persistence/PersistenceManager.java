@@ -70,6 +70,7 @@ public final class PersistenceManager {
     private XmiFilePersister quickViewDump;
     private XmiFilePersister xmiPersister;
     private XmiFilePersister xmlPersister;
+    private UmlFilePersister umlPersister;
     private ZipFilePersister zipPersister;
 
     private boolean lastLoadStatus = true;
@@ -119,6 +120,8 @@ public final class PersistenceManager {
         otherPersisters.add(xmiPersister);
         xmlPersister = new XmlFilePersister();
         otherPersisters.add(xmlPersister);
+        umlPersister = new UmlFilePersister();
+        otherPersisters.add(umlPersister);
         zipPersister = new ZipFilePersister();
         otherPersisters.add(zipPersister);
     }
