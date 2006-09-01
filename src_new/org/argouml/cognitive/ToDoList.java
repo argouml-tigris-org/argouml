@@ -35,6 +35,7 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.i18n.Translator;
 
 
 /**
@@ -513,9 +514,9 @@ public class ToDoList extends Observable implements Runnable {
         }
 
         if (!(item.getPoster() instanceof Critic)) {
-            throw new UnresolvableException("Unable to resolve with poster "
-					    + "of type: "
-					    + item.getPoster().getClass());
+            throw new UnresolvableException(Translator.localize(
+                    "misc.todo-unresolvable", 
+                    new Object[]{item.getPoster().getClass()}));
 	}
 
         ResolvedCritic rc =
