@@ -133,6 +133,10 @@ public class JXButtonGroupPanel extends JPanel {
 
 
     /**
+     * Add the given component to the given group of the panel.
+     * If the component is a JRadioButton, it's also added to the button 
+     * group.
+     * 
      * @see java.awt.Container#add(java.awt.Component, int)
      */
     public Component add(Component c, int index, int groupIndex) {
@@ -141,6 +145,10 @@ public class JXButtonGroupPanel extends JPanel {
     }
 
     /**
+     * Add the given component to the first group of the panel.
+     * If the component is a JRadioButton, it's also added to the button 
+     * group.
+     * 
      * @see java.awt.Container#add(java.awt.Component, int)
      */
     public Component add(Component c, int index) {
@@ -148,6 +156,10 @@ public class JXButtonGroupPanel extends JPanel {
     }
     
     /**
+     * Add the given component to the given group of the panel.
+     * If the component is a JRadioButton, it's also added to the button 
+     * group.
+     * 
      * @see java.awt.Container#add(java.awt.Component, java.lang.Object, int)
      */
     public void add(Component c, Object constraints, int index, 
@@ -156,6 +168,10 @@ public class JXButtonGroupPanel extends JPanel {
     }
     
     /**
+     * Add the given component to the first group of the panel.
+     * If the component is a JRadioButton, it's also added to the button 
+     * group.
+     * 
      * @see java.awt.Container#add(java.awt.Component, java.lang.Object, int)
      */
     public void add(Component c, Object constraints, int index) {
@@ -163,7 +179,7 @@ public class JXButtonGroupPanel extends JPanel {
     }
 
     /**
-     * Add the given component to the panel.
+     * Add the given component to the first group of the panel.
      * If the component is a JRadioButton, it's also added to the button 
      * group.
      * 
@@ -175,7 +191,7 @@ public class JXButtonGroupPanel extends JPanel {
     }
 
     /**
-     * Add the given component to the panel.
+     * Add the given component to the first group of the panel.
      * If the component is a JRadioButton, it's also added to the button 
      * group.
      * 
@@ -186,7 +202,7 @@ public class JXButtonGroupPanel extends JPanel {
     }
     
     /**
-     * Remove the given button from the group
+     * Remove the given button from the given group
      * 
      * @see java.awt.Container#remove(int)
      */
@@ -200,7 +216,7 @@ public class JXButtonGroupPanel extends JPanel {
     }
     
     /**
-     * Remove the given button from the group
+     * Remove the given button from the first group
      * 
      * @see java.awt.Container#remove(int)
      */
@@ -209,7 +225,7 @@ public class JXButtonGroupPanel extends JPanel {
     }
 
     /**
-     * Remove every button from the group
+     * Remove every button from the given group
      * 
      * @see java.awt.Container#removeAll()
      */
@@ -219,7 +235,7 @@ public class JXButtonGroupPanel extends JPanel {
     }
 
     /**
-     * Remove every button from the group
+     * Remove every button from the first group
      * 
      * @see java.awt.Container#removeAll()
      */
@@ -228,7 +244,7 @@ public class JXButtonGroupPanel extends JPanel {
     }
     
     /**
-     * Counts the number of the buttons for the group
+     * Counts the number of buttons of the given group
      * 
      * @param groupIndex        the index of the group
      * @return  the number of the buttons
@@ -238,7 +254,7 @@ public class JXButtonGroupPanel extends JPanel {
     }
 
     /**
-     * Counts the number of the buttons for the group
+     * Counts the number of buttons of the first group
      * 
      * @return  the number of the buttons
      */
@@ -247,7 +263,7 @@ public class JXButtonGroupPanel extends JPanel {
     }
     
     /**
-     * Getter for a button of the group
+     * Getter for a button of the given group
      * 
      * @param i                 the index of the button
      * @param groupIndex        the index of the group
@@ -258,7 +274,7 @@ public class JXButtonGroupPanel extends JPanel {
     }
     
     /**
-     * Getter for a button of the group
+     * Getter for a button of the first group
      * 
      * @param i         the index of the button
      * @return          the JRadioButton
@@ -268,7 +284,7 @@ public class JXButtonGroupPanel extends JPanel {
     }
 
     /**
-     * Clear selection of all buttons in the panel
+     * Clear selection of all buttons of the given group from the panel
      *
      * @param groupIndex        the index of the group
      */
@@ -277,14 +293,16 @@ public class JXButtonGroupPanel extends JPanel {
     }
 
     /**
-     * Clear selection of all buttons in the panel
+     * Clear selection of all buttons of the first group from the panel
      */
     public void clearSelection() {
         this.clearSelection(0);
     }
     
     /**
-     * Selects the radiobutton with the given actionCommand
+     * Selects the radiobutton belonging to the given group with the given 
+     * actionCommand
+     * 
      * @param actionCommand The actionCommand of the button that should be
      * selected.
      * @param groupIndex        the index of the group
@@ -302,7 +320,9 @@ public class JXButtonGroupPanel extends JPanel {
     }
     
     /**
-     * Selects the radiobutton with the given actionCommand
+     * Selects the radiobutton belonging to the first group with the given 
+     * actionCommand
+     * 
      * @param actionCommand The actionCommand of the button that should be
      * selected.
      */
