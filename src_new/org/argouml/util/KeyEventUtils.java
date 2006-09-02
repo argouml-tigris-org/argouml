@@ -151,7 +151,7 @@ public class KeyEventUtils {
     public static String getKeyText(int keyCode) {
         int expectedModifiers = 
             (Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL);
-
+        
         Field[] fields = KeyEvent.class.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
             try {
@@ -159,6 +159,7 @@ public class KeyEventUtils {
                         && fields[i].getType() == Integer.TYPE
                         && fields[i].getName().startsWith("VK_")
                         && fields[i].getInt(KeyEvent.class) == keyCode) {
+
                     return fields[i].getName().substring(3);
                 }
             } catch (IllegalAccessException e) {
@@ -168,26 +169,32 @@ public class KeyEventUtils {
         return "UNKNOWN";
     }
     
-    private static String getModifiersText(int modifiers) {
+    /**
+     * Returns a unique text for the given key modifiers 
+     * 
+     * @param modifiers   the modifiers to be "translated"
+     * @return          the corrisponding text for the keyCode 
+     */
+    public static String getModifiersText(int modifiers) {
         StringBuffer buf = new StringBuffer();
 
-        if ((modifiers & InputEvent.SHIFT_DOWN_MASK) != 0) {
+        if ((modifiers & InputEvent.SHIFT_MASK) != 0) {
             buf.append(ShortcutMgr.SHIFT_MODIFIER).append(
                     ShortcutMgr.MODIFIER_JOINER);
         }
-        if ((modifiers & InputEvent.CTRL_DOWN_MASK) != 0) {
+        if ((modifiers & InputEvent.CTRL_MASK) != 0) {
             buf.append(ShortcutMgr.CTRL_MODIFIER).append(
                     ShortcutMgr.MODIFIER_JOINER);
         }
-        if ((modifiers & InputEvent.META_DOWN_MASK) != 0) {
+        if ((modifiers & InputEvent.META_MASK) != 0) {
             buf.append(ShortcutMgr.META_MODIFIER).append(
                     ShortcutMgr.MODIFIER_JOINER);
         }
-        if ((modifiers & InputEvent.ALT_DOWN_MASK) != 0) {
+        if ((modifiers & InputEvent.ALT_MASK) != 0) {
             buf.append(ShortcutMgr.ALT_MODIFIER).append(
                     ShortcutMgr.MODIFIER_JOINER);
         }
-        if ((modifiers & InputEvent.ALT_GRAPH_DOWN_MASK) != 0) {
+        if ((modifiers & InputEvent.ALT_GRAPH_MASK) != 0) {
             buf.append(ShortcutMgr.ALT_GRAPH_MODIFIER).append(
                     ShortcutMgr.MODIFIER_JOINER);
         }

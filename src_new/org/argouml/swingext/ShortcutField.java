@@ -24,8 +24,10 @@
 
 package org.argouml.swingext;
 
-import java.awt.event.InputEvent;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Collections;
 
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -50,174 +52,76 @@ public class ShortcutField extends JTextField {
 
     private EventListenerList listenerList = new EventListenerList();
 
-    private boolean shortcutCreated = false;
-
-    private String lastValidKey = "";
-
-    private int modifiers;
-
-    private int pressedKeys;
-
     /**
-     * Instantiate a ShortcutField object
+     * Main constructor for ShortcutField
      * 
      * @param text      the initial text of the field
      * @param columns   the number of columns
      */
     public ShortcutField(String text, int columns) {
-        super(text, columns);
-    }
-
-    /**
-     * Makes the tab key work.
-     * 
-     * @return  always false
-     */
-    public boolean getFocusTraversalKeysEnabled() {
-        return false;
-    }
-
-    /**
-     * Reset the lastValidKey and modifiers fields
-     *
-     */
-    public void resetLastValidKey() {
-        this.lastValidKey = "";
-        modifiers = 0;
-    }
-
-    private void displayText() {
-        int modifiersCopy = modifiers;
-        StringBuffer textBuffer = new StringBuffer();
-        if (modifiersCopy >= InputEvent.ALT_GRAPH_DOWN_MASK) {
-            modifiersCopy &= ~InputEvent.ALT_GRAPH_DOWN_MASK;
-            textBuffer.append(ShortcutMgr.ALT_GRAPH_MODIFIER);
-            textBuffer.append(ShortcutMgr.MODIFIER_JOINER);
-        }
-        if (modifiersCopy >= InputEvent.ALT_DOWN_MASK) {
-            modifiersCopy &= ~InputEvent.ALT_DOWN_MASK;
-            textBuffer.append(ShortcutMgr.ALT_MODIFIER);
-            textBuffer.append(ShortcutMgr.MODIFIER_JOINER);
-        }
-        if (modifiersCopy >= InputEvent.CTRL_DOWN_MASK) {
-            modifiersCopy &= ~InputEvent.CTRL_DOWN_MASK;
-            textBuffer.append(ShortcutMgr.CTRL_MODIFIER);
-            textBuffer.append(ShortcutMgr.MODIFIER_JOINER);
-        }
-        if (modifiersCopy >= InputEvent.SHIFT_DOWN_MASK) {
-            modifiersCopy &= ~InputEvent.SHIFT_DOWN_MASK;
-            textBuffer.append(ShortcutMgr.SHIFT_MODIFIER);
-            textBuffer.append(ShortcutMgr.MODIFIER_JOINER);
-        }
-        if (modifiersCopy >= InputEvent.META_DOWN_MASK) {
-            modifiersCopy &= ~InputEvent.META_DOWN_MASK;
-            textBuffer.append(ShortcutMgr.META_MODIFIER);
-            textBuffer.append(ShortcutMgr.MODIFIER_JOINER);
-        }
-        textBuffer.append(lastValidKey != null ? lastValidKey : "");
-        this.setText(textBuffer.toString());
-    }
-
-    /**lastValidKey
-     * Overrides processKeyEvent
-     * 
-     * @see javax.swing.JComponent#processKeyEvent(java.awt.event.KeyEvent)
-     */
-    protected void processKeyEvent(KeyEvent evt) {
-        int keyCode = evt.getKeyCode();
-
-        if (pressedKeys == 0) {
-            lastValidKey = "";
-            modifiers = 0;
-            shortcutCreated = false;
-        }
-
-        switch (evt.getID()) {
-        case KeyEvent.KEY_PRESSED:
-            // get rid of keys we never need to handle
-            switch (keyCode) {
-            // case '\0':
-            // return;
-            case KeyEvent.VK_ALT:
-                if ("".equals(lastValidKey)) {
-                    shortcutCreated = false;
-                }
-                modifiers |= InputEvent.ALT_DOWN_MASK;
-                break;
-            case KeyEvent.VK_ALT_GRAPH:
-                if ("".equals(lastValidKey)) {
-                    shortcutCreated = false;
-                }
-                modifiers |= InputEvent.ALT_GRAPH_DOWN_MASK;
-                break;
-            case KeyEvent.VK_CONTROL:
-                if ("".equals(lastValidKey)) {
-                    shortcutCreated = false;
-                }
-                modifiers |= InputEvent.CTRL_DOWN_MASK;
-                break;
-            case KeyEvent.VK_SHIFT:
-                if ("".equals(lastValidKey)) {
-                    shortcutCreated = false;
-                }
-                modifiers |= InputEvent.SHIFT_DOWN_MASK;
-                break;
-            case KeyEvent.VK_META:
-                if ("".equals(lastValidKey)) {
-                    shortcutCreated = false;
-                }
-                modifiers |= InputEvent.META_DOWN_MASK;
-                break;
-            default:
-                // if the event is an action or a modifier was pressed
-                // then we can assign the shortcut
-                if (KeyEventUtils.isActionEvent(evt) || modifiers != 0) {
-                    lastValidKey = KeyEventUtils.getKeyText(evt.getKeyCode());
-                    shortcutCreated = true;
-                    displayText();
-                    fireShortcutChangedEvent();
-                }
-                break;
-            }
-            pressedKeys++;
-            break;
-        case KeyEvent.KEY_RELEASED:
-            // get rid of keys we never need to handle
-            switch (keyCode) {
-            // case '\0':
-            // return;
-            case KeyEvent.VK_ALT:
-                if (!shortcutCreated) modifiers &= ~InputEvent.ALT_DOWN_MASK;
-                break;
-            case KeyEvent.VK_ALT_GRAPH:
-                if (!shortcutCreated) {
-                    modifiers &= ~InputEvent.ALT_GRAPH_DOWN_MASK;
-                }
-                break;
-            case KeyEvent.VK_CONTROL:
-                if (!shortcutCreated) { 
-                    modifiers &= ~InputEvent.CTRL_DOWN_MASK;
-                }
-                break;
-            case KeyEvent.VK_SHIFT:
-                if (!shortcutCreated) { 
-                    modifiers &= ~InputEvent.SHIFT_DOWN_MASK;
-                }
-                break;
-            case KeyEvent.VK_META:
-                if (!shortcutCreated) { 
-                    modifiers &= ~InputEvent.META_DOWN_MASK;
-                }
-                break;
-            default:
-                break;
-            }
-            pressedKeys--;
-            break;
-        default:
-            break;
-        }
-        displayText();
+        super(null, text, columns);
+        
+        // trap focus traversal keys also 
+        this.setFocusTraversalKeys(
+                KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, 
+                Collections.EMPTY_SET); 
+        this.setFocusTraversalKeys(
+                KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, 
+                Collections.EMPTY_SET); 
+ 
+        // let's add the key printing logic
+        this.addKeyListener(new KeyListener() { 
+            private int currentKeyCode = 0; 
+            public void keyPressed(KeyEvent ke) { 
+                ke.consume(); 
+                JTextField tf = (JTextField) ke.getSource(); 
+                tf.setText(toString(ke)); 
+            } 
+ 
+            public void keyReleased(KeyEvent ke) { 
+                ke.consume(); 
+                JTextField tf = (JTextField) ke.getSource(); 
+                switch(currentKeyCode) { 
+                case KeyEvent.VK_ALT: 
+                case KeyEvent.VK_ALT_GRAPH: 
+                case KeyEvent.VK_CONTROL: 
+                case KeyEvent.VK_SHIFT: 
+                    tf.setText(""); 
+                    return; 
+                } 
+            } 
+ 
+            public void keyTyped(KeyEvent ke) { 
+                ke.consume(); 
+            } 
+            
+            private String toString(KeyEvent ke) { 
+                int keyCode = currentKeyCode = ke.getKeyCode(); 
+                String modifText = 
+                    KeyEventUtils.getModifiersText(ke.getModifiers());
+                
+                if ("".equals(modifText)) {
+                    // no modifiers - let's check if the key is valid
+                    if (KeyEventUtils.isActionEvent(ke)) {
+                        return KeyEventUtils.getKeyText(keyCode);
+                    } else {
+                        return "";
+                    }
+                } else {
+                    switch(keyCode) { 
+                    case KeyEvent.VK_ALT: 
+                    case KeyEvent.VK_ALT_GRAPH: 
+                    case KeyEvent.VK_CONTROL: 
+                    case KeyEvent.VK_SHIFT: 
+                        return modifText; // middle of shortcut 
+                    default: 
+                        modifText += KeyEventUtils.getKeyText(ke.getKeyCode());
+                        fireShortcutChangedEvent(modifText);
+                        return modifText;
+                    }
+                } 
+            } 
+        });
     }
 
     /**
@@ -231,13 +135,15 @@ public class ShortcutField extends JTextField {
 
     /**
      * Inform listeners of any shortcut notifications.
+     * 
+     * @param text      the text of the field
      */
-    protected void fireShortcutChangedEvent() {
+    protected void fireShortcutChangedEvent(String text) {
         ShortcutChangedEvent event = null;
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
 
-        KeyStroke keyStroke = ShortcutMgr.decodeKeyStroke(this.getText());
+        KeyStroke keyStroke = ShortcutMgr.decodeKeyStroke(text);
 
         // Process the listeners last to first, notifying
         // those that are interested in this event
