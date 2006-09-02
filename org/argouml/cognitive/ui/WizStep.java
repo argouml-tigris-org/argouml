@@ -40,6 +40,7 @@ import javax.swing.event.DocumentListener;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
+import org.argouml.swingext.JXButtonGroupPanel;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -66,7 +67,7 @@ public class WizStep extends JPanel
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private JPanel  mainPanel = new JPanel();
+    private JXButtonGroupPanel  mainPanel = new JXButtonGroupPanel();
     private JButton backButton =
         new JButton(Translator.localize("button.back"));
     private JButton nextButton =

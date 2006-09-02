@@ -28,19 +28,15 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.swing.AbstractButton;
 import javax.swing.Action;
-import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.model.Model;
+import org.argouml.swingext.JXButtonGroupPanel;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -56,10 +52,10 @@ import org.tigris.gef.presentation.Fig;
  * @since Jan 4, 2003
  */
 public abstract class UMLRadioButtonPanel
-    extends JPanel
+    extends JXButtonGroupPanel
     implements TargetListener, PropertyChangeListener {
 
-	private static Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
+    private static Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
 
     /**
      * The target object of which some attribute is shown via this panel.
@@ -73,13 +69,7 @@ public abstract class UMLRadioButtonPanel
     private String propertySetName;
 
     /**
-     * The group of buttons
-     */
-    private ButtonGroup buttonGroup = new ButtonGroup();
-
-    /**
      * Constructs a new UMLRadioButtonPanel.
-     * @param isDoubleBuffered @see JPanel
      * @param title The title of the titledborder around the buttons. If the
      * title is null, there is no border shown.
      * @param labeltextsActioncommands A map of keys containing the texts for
@@ -92,43 +82,21 @@ public abstract class UMLRadioButtonPanel
      * @param horizontal when true the buttons should be layed out horizontaly.
      */
     public UMLRadioButtonPanel(
-			       boolean isDoubleBuffered,
 			       String title,
 			       Map labeltextsActioncommands,
 			       String thePropertySetName,
 			       Action setAction,
 			       boolean horizontal) {
-        super(isDoubleBuffered);
+        super();
         setLayout(horizontal ? new GridLayout() : new GridLayout(0, 1));
         setDoubleBuffered(true);
         if (title != null) {
-        	TitledBorder border = new TitledBorder(title);
-        	border.setTitleFont(smallFont);
+            TitledBorder border = new TitledBorder(title);
+            border.setTitleFont(smallFont);
             setBorder(border);
         }
         setButtons(labeltextsActioncommands, setAction);
         setPropertySetName(thePropertySetName);
-    }
-
-    /**
-     * Constructs a new UMLRadioButtonPanel.
-     * @param title The title of the titledborder around the buttons.
-     * @param labeltextsActioncommands A map of keys containing the texts for
-     * the buttons and values containing the actioncommand that permits the
-     * setAction to logically recognize the button.
-     * @param thePropertySetName the name of the MEvent that is fired when the
-     * property that is showns changes value.
-     * @param setAction the action that should be registred with the buttons and
-     * that's executed when one of the buttons is pressed
-     * @param horizontal when true the buttons should be layed out horizontaly.
-     */
-    public UMLRadioButtonPanel(String title,
-			       Map labeltextsActioncommands,
-			       String thePropertySetName,
-			       Action setAction,
-			       boolean horizontal) {
-        this(true, title, labeltextsActioncommands,
-	     thePropertySetName, setAction, horizontal);
     }
 
     /**
@@ -145,12 +113,7 @@ public abstract class UMLRadioButtonPanel
      * changed to allow the UI designer to specify the order. - tfm
      */
     private void setButtons(Map labeltextsActioncommands, Action setAction) {
-        Enumeration en = buttonGroup.getElements();
-        while (en.hasMoreElements()) {
-            AbstractButton button = (AbstractButton) en.nextElement();
-            buttonGroup.remove(button);
-        }
-        removeAll();
+        super.removeAll();
         Iterator it = labeltextsActioncommands.keySet().iterator();
         while (it.hasNext()) {
             String keyAndLabel = (String) it.next();
@@ -160,8 +123,7 @@ public abstract class UMLRadioButtonPanel
 		(String) labeltextsActioncommands.get(keyAndLabel);
             button.setActionCommand(actionCommand);
             button.setFont(LookAndFeelMgr.getInstance().getSmallFont());
-            buttonGroup.add(button);
-            add(button);
+            super.add(button);
         }
     }
 
@@ -225,23 +187,6 @@ public abstract class UMLRadioButtonPanel
      * compliant with for example UMLModelElementListModel2
      */
     public abstract void buildModel();
-
-    /**
-     * Selects the radiobutton with the given actionCommand
-     * @param actionCommand The actionCommand of the button that should be
-     * selected.
-     */
-    public void setSelected(String actionCommand) {
-        Enumeration en = buttonGroup.getElements();
-        ButtonModel model = null;
-        while (en.hasMoreElements()) {
-            model = ((AbstractButton) en.nextElement()).getModel();
-            if (actionCommand.equals(model.getActionCommand())) {
-                model.setSelected(true);
-                break;
-            }
-        }
-    }
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
