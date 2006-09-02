@@ -414,12 +414,10 @@ class SettingsTabShortcuts extends JPanel implements
             shortcutField.requestFocus();
         } else if (e.getSource() == defaultButton) {
             setKeyStrokeValue(target.getDefaultShortcut());
-            shortcutField.resetLastValidKey();
             shortcutField.setEnabled(false);
             checkShortcutAlreadyAssigned(target.getDefaultShortcut());
         } else if (e.getSource() == noneButton) {
             setKeyStrokeValue(null);
-            shortcutField.resetLastValidKey();
             shortcutField.setEnabled(false);
         }
     }
