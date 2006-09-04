@@ -124,6 +124,7 @@ public final class PersistenceManager {
         otherPersisters.add(umlPersister);
         zipPersister = new ZipFilePersister();
         otherPersisters.add(zipPersister);
+        otherPersisters.add(new OldZargoFilePersister());
     }
 
     /**
@@ -168,7 +169,9 @@ public final class PersistenceManager {
         Iterator iter = otherPersisters.iterator();
         while (iter.hasNext()) {
             AbstractFilePersister fp = (AbstractFilePersister) iter.next();
-            if (!fp.equals(xmiPersister) && !fp.equals(xmlPersister)) {
+            if (fp.isSaveEnabled()
+                    && !fp.equals(xmiPersister)
+                    && !fp.equals(xmlPersister)) {
                 chooser.addChoosableFileFilter(fp);
                 if (fileName != null 
                         && fp.isFileExtensionApplicable(fileName)) {
@@ -190,8 +193,10 @@ public final class PersistenceManager {
         Iterator iter = otherPersisters.iterator();
         while (iter.hasNext()) {
             AbstractFilePersister ff = (AbstractFilePersister) iter.next();
-            mf.add(ff);
-            chooser.addChoosableFileFilter(ff);
+            if (ff.isLoadEnabled()) {
+                mf.add(ff);
+                chooser.addChoosableFileFilter(ff);
+            }
         }
         chooser.setFileFilter(mf);
     }
@@ -398,6 +403,7 @@ public final class PersistenceManager {
  */
 class MultitypeFileFilter extends FileFilter {
     private ArrayList filters;
+    private ArrayList extensions;
     private String desc;
 
     /**
@@ -406,6 +412,7 @@ class MultitypeFileFilter extends FileFilter {
     public MultitypeFileFilter() {
         super();
         filters = new ArrayList();
+        extensions = new ArrayList();
     }
 
     /**
@@ -415,11 +422,15 @@ class MultitypeFileFilter extends FileFilter {
      */
     public void add(AbstractFilePersister filter) {
         filters.add(filter);
-        desc =
-            ((desc == null)
-                ? ""
-                : desc + ", ")
-            + "*." + filter.getExtension();
+        String extension = filter.getExtension();
+        if (!extensions.contains(extension)) {
+            extensions.add(filter.getExtension());
+            desc =
+                ((desc == null)
+                    ? ""
+                    : desc + ", ")
+                + "*." + extension;
+        }
     }
 
     /**

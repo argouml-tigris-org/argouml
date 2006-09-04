@@ -246,6 +246,17 @@ public abstract class AbstractFilePersister extends FileFilter
     }
 
     /**
+     * Some persisters only provide save functionality for deprecated formats.
+     * Other persisters with the same extension will manage loading.
+     * This method returns true by default. Those Peristers that do not provide
+     * load must override this.
+     * @return true if this persister is able to load
+     */
+    public boolean isLoadEnabled() {
+        return true;
+    }
+
+    /**
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public abstract Project doLoad(File file)
