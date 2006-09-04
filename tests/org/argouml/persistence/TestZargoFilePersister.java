@@ -77,7 +77,7 @@ public class TestZargoFilePersister extends TestCase {
         String name = url.getFile();
         Project p = persister.doLoad(new File(name));
         assertTrue("Load Status for " + filename + ".",
-               LastLoadInfo.getInstance().getLastLoadStatus());
+               PersistenceManager.getInstance().getLastLoadStatus());
         return p;
     }
 
@@ -121,7 +121,7 @@ public class TestZargoFilePersister extends TestCase {
             ZargoFilePersister persister = new ZargoFilePersister();
             persister.doLoad(file);
             assertTrue("Load Status",
-                    !LastLoadInfo.getInstance().getLastLoadStatus());
+                    !PersistenceManager.getInstance().getLastLoadStatus());
         } catch (OpenException io) {
             // This is the normal case.
             loaded = false;
