@@ -74,11 +74,8 @@ import org.tigris.gef.base.CmdAdjustPageBreaks;
 import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.base.CmdSelectAll;
 import org.tigris.gef.base.CmdSelectInvert;
-import org.tigris.gef.base.CmdSelectNear;
-import org.tigris.gef.base.CmdSelectNext;
 import org.tigris.gef.base.CmdZoom;
 import org.tigris.gef.base.DistributeAction;
-import org.tigris.gef.base.NudgeAction;
 
 /**
  * This class manages all Argo's shortcuts
@@ -294,61 +291,6 @@ public class ShortcutMgr {
 
     /** Action key for reorder to back */
     public static final String ACTION_REORDER_TO_BACK = "reorderToBack";
-
-    /** Action key for nudge left */
-    public static final String ACTION_NUDGE_LEFT = "nudgeLeft";
-
-    /** Action key for nudhe right */
-    public static final String ACTION_NUDGE_RIGHT = "nudgeRight";
-
-    /** Action key for nudge up */
-    public static final String ACTION_NUDGE_UP = "nudgeUp";
-
-    /** Action key for nudge down */
-    public static final String ACTION_NUDGE_DOWN = "nudgeDown";
-
-    /** Action key for select next element */
-    public static final String ACTION_SELECT_NEXT = "selectNext";
-
-    /** Action key for select previous element */
-    public static final String ACTION_SELECT_PREVIOUS = "selectPrevious";
-
-    /** Action key for select left */
-    public static final String ACTION_SELECT_LEFT = "selectLeft";
-
-    /** Action key for select left */
-    public static final String ACTION_SELECT_RIGHT = "selectRight";
-
-    /** Action key for select left */
-    public static final String ACTION_SELECT_UP = "selectUp";
-
-    /** Action key for select left */
-    public static final String ACTION_SELECT_DOWN = "selectDown";
-
-    /** Action key for nudge left 2x */
-    public static final String ACTION_NUDGE_LEFT_2X = "nudgeLeft2x";
-
-    /** Action key for nudhe right 2x */
-    public static final String ACTION_NUDGE_RIGHT_2X = "nudgeRight2x";
-
-    /** Action key for nudge up 2x */
-    public static final String ACTION_NUDGE_UP_2X = "nudgeUp2x";
-
-    /** Action key for nudge down 2x */
-    public static final String ACTION_NUDGE_DOWN_2X = "nudgeDown2x";
-
-    /** Action key for nudge left 4x */
-    public static final String ACTION_NUDGE_LEFT_4X = "nudgeLeft4x";
-
-    /** Action key for nudhe right 4x */
-    public static final String ACTION_NUDGE_RIGHT_4X = "nudgeRight4x";
-
-    /** Action key for nudge up 4x */
-    public static final String ACTION_NUDGE_UP_4X = "nudgeUp4x";
-
-    /** Action key for nudge down 4x */
-    public static final String ACTION_NUDGE_DOWN_4X = "nudgeDown4x";
-    
     
     /** 
      * The expression between modifier/modifier and between modifier/text 
@@ -390,16 +332,6 @@ public class ShortcutMgr {
 
     private static final int SHIFTED_DEFAULT_MASK = Toolkit.getDefaultToolkit()
             .getMenuShortcutKeyMask() | KeyEvent.SHIFT_DOWN_MASK;
-
-    private static final int META_MASK = KeyEvent.META_DOWN_MASK;
-
-    private static final int SHIFT_MASK = KeyEvent.SHIFT_DOWN_MASK;
-
-    private static final int ALT_MASK = KeyEvent.ALT_DOWN_MASK;
-    
-    // TODO: should this two be internationalized?
-    private static final String SUFFIX_2X = " 2x";
-    private static final String SUFFIX_4X = " 4x";
 
     private static HashMap shortcutHash = new HashMap(90);
 
@@ -786,76 +718,5 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_REORDER_TO_BACK, KeyStroke.getKeyStroke(
                 KeyEvent.VK_B, SHIFTED_DEFAULT_MASK), new CmdReorder(
                 CmdReorder.SEND_TO_BACK));
-
-        // nudge submenu
-        putDefaultShortcut(ACTION_NUDGE_LEFT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_LEFT, DEFAULT_MASK), new NudgeAction(
-                NudgeAction.LEFT));
-        putDefaultShortcut(ACTION_NUDGE_RIGHT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_RIGHT, DEFAULT_MASK), new NudgeAction(
-                NudgeAction.RIGHT));
-        putDefaultShortcut(ACTION_NUDGE_UP, KeyStroke.getKeyStroke(
-                KeyEvent.VK_UP, DEFAULT_MASK), new NudgeAction(
-                NudgeAction.UP));
-        putDefaultShortcut(ACTION_NUDGE_DOWN, KeyStroke.getKeyStroke(
-                KeyEvent.VK_DOWN, DEFAULT_MASK), new NudgeAction(
-                NudgeAction.DOWN));
-        
-        // JGraph editor
-        putDefaultShortcut(ACTION_SELECT_NEXT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_TAB, 0), new CmdSelectNext(true));
-
-        putDefaultShortcut(ACTION_SELECT_PREVIOUS, KeyStroke.getKeyStroke(
-                KeyEvent.VK_TAB, KeyEvent.SHIFT_MASK), 
-                new CmdSelectNext(false));
-
-        putDefaultShortcut(ACTION_SELECT_LEFT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_LEFT, META_MASK), 
-                new CmdSelectNear(CmdSelectNear.LEFT));
-        putDefaultShortcut(ACTION_SELECT_RIGHT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_RIGHT, META_MASK), 
-                new CmdSelectNear(CmdSelectNear.RIGHT));
-        putDefaultShortcut(ACTION_SELECT_UP, KeyStroke.getKeyStroke(
-                KeyEvent.VK_UP, META_MASK), 
-                new CmdSelectNear(CmdSelectNear.UP));
-        putDefaultShortcut(ACTION_SELECT_DOWN, KeyStroke.getKeyStroke(
-                KeyEvent.VK_DOWN, META_MASK), 
-                new CmdSelectNear(CmdSelectNear.DOWN));
-        
-        AbstractAction leftAction2x = new NudgeAction(NudgeAction.LEFT, 8);
-        AbstractAction rightAction2x = new NudgeAction(NudgeAction.RIGHT, 8);
-        AbstractAction upAction2x = new NudgeAction(NudgeAction.UP, 8);
-        AbstractAction downAction2x = new NudgeAction(NudgeAction.DOWN, 8);
-        
-        putDefaultShortcut(ACTION_NUDGE_LEFT_2X, KeyStroke.getKeyStroke(
-                KeyEvent.VK_LEFT, SHIFT_MASK), leftAction2x, 
-                getActionDefaultName(leftAction2x) + SUFFIX_2X);
-        putDefaultShortcut(ACTION_NUDGE_RIGHT_2X, KeyStroke.getKeyStroke(
-                KeyEvent.VK_RIGHT, SHIFT_MASK), rightAction2x,
-                getActionDefaultName(rightAction2x) + SUFFIX_2X);
-        putDefaultShortcut(ACTION_NUDGE_UP_2X, KeyStroke.getKeyStroke(
-                KeyEvent.VK_UP, SHIFT_MASK), upAction2x,
-                getActionDefaultName(upAction2x) + SUFFIX_2X);
-        putDefaultShortcut(ACTION_NUDGE_DOWN_2X, KeyStroke.getKeyStroke(
-                KeyEvent.VK_DOWN, SHIFT_MASK), downAction2x,        
-                getActionDefaultName(downAction2x) + SUFFIX_2X);
-        
-        AbstractAction leftAction4x = new NudgeAction(NudgeAction.LEFT, 18);
-        AbstractAction rightAction4x = new NudgeAction(NudgeAction.RIGHT, 18);
-        AbstractAction upAction4x = new NudgeAction(NudgeAction.UP, 18);
-        AbstractAction downAction4x = new NudgeAction(NudgeAction.DOWN, 18);
-        
-        putDefaultShortcut(ACTION_NUDGE_LEFT_4X, KeyStroke.getKeyStroke(
-                KeyEvent.VK_LEFT, ALT_MASK), leftAction4x,
-                getActionDefaultName(leftAction4x) + SUFFIX_4X);
-        putDefaultShortcut(ACTION_NUDGE_RIGHT_4X, KeyStroke.getKeyStroke(
-                KeyEvent.VK_RIGHT, ALT_MASK), rightAction4x,
-                getActionDefaultName(rightAction4x) + SUFFIX_4X);
-        putDefaultShortcut(ACTION_NUDGE_UP_4X, KeyStroke.getKeyStroke(
-                KeyEvent.VK_UP, ALT_MASK), upAction4x,
-                getActionDefaultName(upAction4x) + SUFFIX_4X);
-        putDefaultShortcut(ACTION_NUDGE_DOWN_4X, KeyStroke.getKeyStroke(
-                KeyEvent.VK_DOWN, ALT_MASK), downAction4x,
-                getActionDefaultName(downAction4x) + SUFFIX_4X);
     }
 }

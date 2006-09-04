@@ -36,13 +36,10 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.swing.JPanel;
-
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.TransferableModelElements;
-import org.argouml.ui.cmd.ShortcutMgr;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -115,32 +112,6 @@ class DnDJGraph
         new DropTarget(this,
                 DnDConstants.ACTION_COPY_OR_MOVE,
                 this);
-    }
-
-    /**
-     * Overriding JGraph's initKeys in order to set configurable key 
-     * bindings for some actions.
-     * 
-     * @see org.tigris.gef.graph.presentation.JGraph#initKeys()
-     */
-    public void initKeys() {
-        JPanel panel = (JPanel) this.getEditor().getJComponent();
-        
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_SELECT_NEXT);
-        ShortcutMgr.assignAccelerator(panel, 
-                ShortcutMgr.ACTION_SELECT_PREVIOUS);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_NUDGE_LEFT_2X);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_NUDGE_RIGHT_2X);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_NUDGE_DOWN_2X);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_NUDGE_UP_2X);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_NUDGE_LEFT_4X);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_NUDGE_RIGHT_4X);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_NUDGE_DOWN_4X);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_NUDGE_UP_4X);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_SELECT_LEFT);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_SELECT_RIGHT);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_SELECT_DOWN);
-        ShortcutMgr.assignAccelerator(panel, ShortcutMgr.ACTION_SELECT_UP);
     }
     
     /**
