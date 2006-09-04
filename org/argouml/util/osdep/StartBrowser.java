@@ -71,15 +71,7 @@ public class StartBrowser {
 		}
 	    }
 	    else {
-		Process proc =
-		    Runtime.getRuntime().exec("netscape -remote (" + url + ")");
-		try {
-		    if (proc.waitFor() != 0) {
-			Runtime.getRuntime().exec("netscape " + url);
-		    }
-		} catch (InterruptedException ie) {
-                    LOG.error(ie);
-		}
+                Runtime.getRuntime().exec("firefox " + url);
 	    }
 	}
 	catch (IOException ioe) {
