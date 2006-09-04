@@ -48,20 +48,6 @@ public interface Poster {
     // accessors
 
     /**
-     * Get some contact information on the Poster.
-     *
-     * @return the email address of the poster
-     */
-    String getExpertEmail();
-
-    /**
-     * Update the Poster's contact info. Is this needed?
-     *
-     * @param addr the emailaddress
-     */
-    void setExpertEmail(String addr);
-
-    /**
      * Reply true if the given item should be kept on the Designer's
      * ToDoList, false if it is no longer valid.
      *
