@@ -308,7 +308,6 @@ public final class ResourceLoaderWrapper {
         images.put("action.resolve-item", "Resolve Item...");
         images.put("action.save-project", "Save Project");
         images.put("action.save-project-as", "Save Project As...");
-        images.put("action.send-email-to-expert", "Send Email To Expert...");
         images.put("action.settings", "Settings...");
         images.put("action.snooze-critic", "Snooze Critic");
         images.put("action.system-information", "System Information");

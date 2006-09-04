@@ -176,11 +176,6 @@ public class Critic extends Observable implements Poster, Serializable {
     // instance variables
 
     /**
-     * The email address of the author/maintainer of this critic.
-     */
-    private String emailAddr;
-
-    /**
      * The priority of the ToDoItem produced.
      */
     private int priority;
@@ -281,9 +276,6 @@ public class Critic extends Observable implements Poster, Serializable {
 	criticType = "correctness";
 	knowledgeTypes.addElement(KT_CORRECTNESS);
 	decisionCategory = "Checking";
-
-	// TODO: make this configurable
-	emailAddr = "users@argouml.tigris.org";
 
 	moreInfoURL = defaultMoreInfoURL();
 	description = "no description is availible";
@@ -862,22 +854,6 @@ public class Critic extends Observable implements Poster, Serializable {
      * @return the critic knowledge type
      */
     public String getCriticType() { return criticType; }
-
-    /**
-     * Reply the email address of the person who is the author or
-     * maintainer of this critic.
-     *
-     * @see org.argouml.cognitive.Poster#getExpertEmail()
-     */
-    public String getExpertEmail() { return emailAddr; }
-
-    /**
-     * Set the email address of the person who is the author or
-     * maintainer of this critic.
-     *
-     * @see org.argouml.cognitive.Poster#setExpertEmail(java.lang.String)
-     */
-    public void setExpertEmail(String addr) { emailAddr = addr; }
 
     /**
      * Reply the headline used in feedback produced by this Critic.

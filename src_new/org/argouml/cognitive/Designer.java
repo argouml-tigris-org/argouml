@@ -114,12 +114,6 @@ public final class Designer
     private Properties prefs;
 
     /**
-     * The email address where other designers can send this designer
-     * email. This is not used yet.
-     */
-    private String emailAddr;
-
-    /**
      * The designerName is the name of the current user, as he can enter in the
      * menuitem Edit->Settings...->User->Full Name.<p>
      *
@@ -224,8 +218,6 @@ public final class Designer
         toDoList = ToDoList.getInstance();
 
         toDoList.spawnValidityChecker(this);
-        // TODO: make this configurable
-        emailAddr = "users@argouml.tigris.org";
         userWorking = false;
         
         critiquingInterval = 8000;
@@ -782,16 +774,6 @@ public final class Designer
      * @param goal the goal that is not desired any more
      */
     public void stopDesiring(String goal) { goals.stopDesiring(goal); }
-
-    /**
-     * @see org.argouml.cognitive.Poster#getExpertEmail()
-     */
-    public String getExpertEmail() { return emailAddr; }
-
-    /**
-     * @see org.argouml.cognitive.Poster#setExpertEmail(java.lang.String)
-     */
-    public void setExpertEmail(String addr) { emailAddr = addr; }
 
     /**
      * @see org.argouml.cognitive.Poster#snooze()
