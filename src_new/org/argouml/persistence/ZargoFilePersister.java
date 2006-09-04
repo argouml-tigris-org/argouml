@@ -54,7 +54,7 @@ import org.argouml.util.ThreadUtils;
  *
  * @author Bob Tarling
  */
-public class ZargoFilePersister extends UmlFilePersister {
+class ZargoFilePersister extends UmlFilePersister {
     /**
      * Logger.
      */

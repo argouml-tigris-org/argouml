@@ -50,7 +50,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.persistence.ZargoFilePersister;
+import org.argouml.persistence.AbstractFilePersister;
+import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
 import org.tigris.gef.base.Diagram;
@@ -169,7 +170,9 @@ public class TestPropertyPanels extends TestCase {
 
         File testfile = new File(url.getFile());
 
-        ZargoFilePersister persister = new ZargoFilePersister();
+        AbstractFilePersister persister =
+            PersistenceManager.getInstance().getPersisterFromFileName(
+                TEST_PROPERTY_PANELS_ZARGO);
         p = persister.doLoad(testfile);
         ProjectManager.getManager().setCurrentProject(p);
         Object model = p.getRoot();
