@@ -30,7 +30,6 @@ import javax.swing.JMenuItem;
 import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.base.DistributeAction;
-import org.tigris.gef.base.NudgeAction;
 
 /**
  * Thread to initialize the submenus of the main menu of argouml (only third
@@ -52,7 +51,7 @@ import org.tigris.gef.base.NudgeAction;
  * e.g: menu.item.new.mnemonic
  */
 class InitMenusLater implements Runnable {
-    private JMenu align, distribute, reorder, nudge;
+    private JMenu align, distribute, reorder;
 
     /**
      * Constructs this new runnable to initialize the submenus.
@@ -63,14 +62,11 @@ class InitMenusLater implements Runnable {
      *            the distribution submenu
      * @param r
      *            the reorder submenu
-     * @param n
-     *            the nudge submenu
      */
-    public InitMenusLater(JMenu a, JMenu d, JMenu r, JMenu n) {
+    public InitMenusLater(JMenu a, JMenu d, JMenu r) {
         this.align = a;
         this.distribute = d;
         this.reorder = r;
-        this.nudge = n;
     }
 
     /**
@@ -79,7 +75,7 @@ class InitMenusLater implements Runnable {
      * @see java.lang.Runnable#run()
      */
     public void run() {
-        initMenus(this.align, this.distribute, this.reorder, this.nudge);
+        initMenus(this.align, this.distribute, this.reorder);
     }
 
     /**
@@ -88,14 +84,11 @@ class InitMenusLater implements Runnable {
      * @param align
      * @param distribute
      * @param reorder
-     * @param nudge
      */
-    public static void initMenus(JMenu align, JMenu distribute, JMenu reorder,
-            JMenu nudge) {
+    public static void initMenus(JMenu align, JMenu distribute, JMenu reorder) {
         initAlignMenu(align);
         initDistributeMenu(distribute);
         initReorderMenu(reorder);
-        initNudgeMenu(nudge);
     }
 
     /**
@@ -219,30 +212,4 @@ class InitMenusLater implements Runnable {
         ShortcutMgr.assignAccelerator(reorderSendToBack,
                 ShortcutMgr.ACTION_REORDER_TO_BACK);
     }
-
-    /**
-     * Initialize submenus of the Nudge menu.
-     * 
-     * @param nudge
-     *            the Nudge menu
-     */
-    private static void initNudgeMenu(JMenu nudge) {
-        JMenuItem nudgeLeft = nudge.add(new NudgeAction(NudgeAction.LEFT));
-        GenericArgoMenuBar.setMnemonic(nudgeLeft, "nudge left");
-        ShortcutMgr.assignAccelerator(nudgeLeft, ShortcutMgr.ACTION_NUDGE_LEFT);
-
-        JMenuItem nudgeRight = nudge.add(new NudgeAction(NudgeAction.RIGHT));
-        GenericArgoMenuBar.setMnemonic(nudgeRight, "nudge right");
-        ShortcutMgr.assignAccelerator(nudgeRight,
-                ShortcutMgr.ACTION_NUDGE_RIGHT);
-
-        JMenuItem nudgeUp = nudge.add(new NudgeAction(NudgeAction.UP));
-        GenericArgoMenuBar.setMnemonic(nudgeUp, "nudge up");
-        ShortcutMgr.assignAccelerator(nudgeUp, ShortcutMgr.ACTION_NUDGE_UP);
-
-        JMenuItem nudgeDown = nudge.add(new NudgeAction(NudgeAction.DOWN));
-        GenericArgoMenuBar.setMnemonic(nudgeDown, "nudge down");
-        ShortcutMgr.assignAccelerator(nudgeDown, ShortcutMgr.ACTION_NUDGE_DOWN);
-    }
-
 } /* end class InitMenusLater */
