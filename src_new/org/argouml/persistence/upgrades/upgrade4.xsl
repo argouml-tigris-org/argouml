@@ -5,6 +5,11 @@
 	<xsl:preserve-space elements="uml"/>
 
 
+<!-- Remove collaboration diagrams containing no items with no namespace (issue 3311) -->
+	<xsl:template match='pgml[@description = "org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram" and count(./group) = 0]' />
+	
+
+
 <!-- Make sure pgml members appear immediately after xmi -->
     <!-- First remove all pgml members from wherever they are-->
 	<xsl:template match='member[./@type = "pgml"]'>
@@ -13,7 +18,7 @@
     <!-- Now reintroduce pgml members after xmi member -->
 	<xsl:template match='member[./@type = "xmi"]'>
         <member type="{@type}" name="{@name}"/>
-        <xsl:for-each select="/uml/pgml">
+        <xsl:for-each select='/uml/pgml[@description != "org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram" or count(./group) != 0]'>
             <member type="pgml" name="diagram"/>
         </xsl:for-each>
     </xsl:template>
