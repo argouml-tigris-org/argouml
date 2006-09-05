@@ -20,6 +20,11 @@ Remove href attribute from any FigEdgeNote groups (issue 4021)
 		</group>
 	</xsl:template>
 	
+<!--
+Remove any non comment-edge group with no href (issue 4386)
+-->
+	<xsl:template match='pgml/group[count(./@href) = 0 and ./@description != "org.argouml.uml.diagram.static_structure.ui.FigEdgeNote"]' />
+	
 	
 <!--
 Remove top level groups that have no positional data (issue 4228)
