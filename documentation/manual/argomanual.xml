@@ -2449,7 +2449,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para><emphasis>Arrange</emphasis> menu. This allows 
                 <indexterm><primary>Arrange Menu</primary></indexterm>
-                you to align, distribute, reorder and nudge artifacts 
+                you to align, distribute and reorder artifacts 
                 on a diagram and set the layout strategy for the 
                 diagram.</para>
 
@@ -2818,7 +2818,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <title>Arranging Elements</title>
 
               <para>The menu item <literal>Arrange</literal> allows you 
-              to align, group, or nudge elements.</para>
+              to align or group elements.</para>
 
             </sect4>
 
@@ -3445,9 +3445,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             the working of critics).</para>
 
             <para>At this point, you can choose to change the package 
-            name manually, to impose silence on the design critic for 
-            some time or permanently, or to request a more 
-            comprehensive explanation by Email from an expert.</para>
+            name manually or to impose silence on the design critic for 
+            some time or permanently</para>
 
             <para>We will do nothing of this (we&apos;ll come back to 
             it when we talk about the design critics in more detail) 
@@ -11179,64 +11178,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Nudge</title>
-
-          <para>This sub-menu provides fine adjustment to the 
-          positioning of selected artifacts. There are four nudge 
-          options provided.</para>
-
-          <itemizedlist>
-
-            <listitem>
-
-              <para><guiicon><inlinemediaobject><imageobject>
-              <imagedata align="center"
-               fileref="images/icons/nudge_left.gif"
-               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Nudge Left</literal>. The selected artifacts are 
-              moved one pixel to the left.</para>
-
-            </listitem>
-
-            <listitem>
-
-              <para><guiicon><inlinemediaobject><imageobject>
-              <imagedata align="center"
-               fileref="images/icons/nudge_right.gif"
-               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Nudge Right</literal>. The selected artifacts 
-              are moved one pixel to the right.</para>
-
-            </listitem>
-
-            <listitem>
-
-              <para><guiicon><inlinemediaobject><imageobject>
-              <imagedata align="center"
-               fileref="images/icons/nudge_up.gif"
-               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Nudge Up</literal>. The selected artifacts are 
-              moved up one pixel.</para>
-
-            </listitem>
-
-            <listitem>
-
-              <para><guiicon><inlinemediaobject><imageobject>
-              <imagedata align="center"
-               fileref="images/icons/nudge_down.gif"
-               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Nudge Down</literal>. The selected artifacts are 
-              moved up one pixel.</para>
-
-            </listitem>
-
-          </itemizedlist>
-
-        </sect2>
-
-        <sect2>
-
           <title>Set Preferred Size</title>
 
           <para>This menu-item acts on all selected items on the 
@@ -12794,6 +12735,37 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       </sect1>
 
+      <sect1 id="s1.ref.edit_pane_keyboard">
+
+        <title>Keyboard Behavior in the Editing Pane</title>
+
+        <para>Many keyboard shortcuts can be used when the editing pane
+        is active, mainly to change the selection or to move across the
+        artifacts.</para>
+
+        <sect2>
+
+          <title>Nudging an artifact</title>
+
+          <para>You can nudge a fig by selecting an element and using
+          arrow keys. Keeping the shift or the alt key pressed will produce
+          a wider movement.</para>
+
+        </sect2>
+
+        <sect2>
+
+          <title>Moving across the artifacts</title>
+
+          <para>You can select the artifact nearer to the selected one by 
+          using the arrow keys while clicking the right button of the mouse.
+          You can also select the next artifact using the tab key, or the
+          previous using the ctrl+tab keys.</para>
+
+        </sect2>
+
+      </sect1>
+      
       <sect1 id="s1.ref.edit_pane_tool_bar">
 
         <title>The tool bar</title>
@@ -15272,20 +15244,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               the object that triggered the critic).</para>
 
             </warning>
-
-          </listitem>
-
-          <listitem>
-
-            <para><guiicon><inlinemediaobject><imageobject>
-            <imagedata align="center"
-             fileref="images/icons/send_email.gif"
-             format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-            <literal>Send Email To Expert...</literal> Activating this 
-            tool allows the user to send an Email to an expert asking 
-            for advice. This works like clicking a 
-            &quot;mailto:users@argouml.tigris.org?subject=[critic 
-            header]&quot; link in your webbrowser.</para>
 
           </listitem>
 
