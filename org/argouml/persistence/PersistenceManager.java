@@ -73,6 +73,8 @@ public final class PersistenceManager {
     private UmlFilePersister umlPersister;
     private ZipFilePersister zipPersister;
 
+    private AbstractFilePersister savePersister;
+    
     private boolean lastLoadStatus = true;
 
     private String lastLoadMessage;
@@ -395,6 +397,14 @@ public final class PersistenceManager {
     public void setLastLoadStatus(boolean status) {
         lastLoadStatus = status;
     }
+    
+    public void setSavePersister(AbstractFilePersister persister) {
+        savePersister = persister;
+    }
+    
+    public AbstractFilePersister getSavePersister() {
+        return savePersister;
+    }
 }
 
 /**
@@ -464,5 +474,4 @@ class MultitypeFileFilter extends FileFilter {
         Object[] s = {desc};
         return Translator.messageFormat("filechooser.all-types-desc", s);
     }
-
 }
