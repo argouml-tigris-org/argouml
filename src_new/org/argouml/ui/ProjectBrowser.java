@@ -68,7 +68,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.persistence.AbstractFilePersister;
-import org.argouml.persistence.LastLoadInfo;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
@@ -1181,7 +1180,11 @@ public final class ProjectBrowser
                          new Object[] {file});
             this.showStatus (sStatus);
 
-            persister = pm.getPersisterFromFileName(file.getName());
+            persister = pm.getSavePersister();
+            pm.setSavePersister(null);
+            if (persister == null) {
+                persister = pm.getPersisterFromFileName(file.getName());
+            }
             if (persister == null) {
                 throw new IllegalStateException("Filename " + project.getName()
                             + " is not of a known file type");
@@ -1467,7 +1470,7 @@ public final class ProjectBrowser
                         showUI, ex);
             } finally {
 
-                if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
+                if (!PersistenceManager.getInstance().getLastLoadStatus()) {
                     project = oldProject;
                     success = false;
                     // TODO: This seems entirely redundant
@@ -1478,7 +1481,7 @@ public final class ProjectBrowser
                             + file.getName()
                             + "\n"
                             + "Error message:\n"
-                            + LastLoadInfo.getInstance().getLastLoadMessage()
+                            + PersistenceManager.getInstance().getLastLoadMessage()
                             + "\n"
                             + "Some (or all) information may be missing "
                             + "from the project.\n"
@@ -1698,6 +1701,7 @@ public final class ProjectBrowser
                             name + "." + filter.getExtension());
                 }
             }
+            PersistenceManager.getInstance().setSavePersister(filter);
             return theFile;
         }
         return null;
