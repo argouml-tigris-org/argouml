@@ -25,6 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
@@ -32,12 +33,11 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
- * Provide a dialog which helps the user to select one event
+ * Provide a dialog which helps the user to select events
  * out of an existing list,
- * which will be used as the trigger of the transition.
+ * which will be used as the deferrable events of the state.
  *
  * @author MarkusK
- *
  */
 public class ActionAddEventAsDeferrableEvent
     extends AbstractActionAddModelElement {
@@ -53,7 +53,7 @@ public class ActionAddEventAsDeferrableEvent
      */
     protected ActionAddEventAsDeferrableEvent() {
         super();
-        setMultiSelect(false);
+        setMultiSelect(true);
     }
 
     /**
@@ -100,9 +100,23 @@ public class ActionAddEventAsDeferrableEvent
      */
     protected void doIt(Vector selected) {
         Object state = getTarget();
-        if (selected != null && selected.size() != 0) {
-            Model.getStateMachinesHelper().addDeferrableEvent(state,
-                    selected.get(0));
+        if (!Model.getFacade().isAState(state)) return;
+        Collection oldOnes = new Vector(Model.getFacade()
+                .getDeferrableEvents(state));
+        Collection toBeRemoved = new Vector(oldOnes);
+        Iterator i = selected.iterator();
+        while (i.hasNext()) {
+            Object o = i.next();
+            if (oldOnes.contains(o)) {
+                toBeRemoved.remove(o);
+            } else {
+                Model.getStateMachinesHelper().addDeferrableEvent(state, o);
+            }
+        }
+        i = toBeRemoved.iterator();
+        while (i.hasNext()) {
+            Object o = i.next();
+            Model.getStateMachinesHelper().removeDeferrableEvent(state, o);
         }
     }
 
