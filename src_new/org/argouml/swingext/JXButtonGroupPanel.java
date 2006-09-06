@@ -24,13 +24,20 @@
 
 package org.argouml.swingext;
 
-import javax.swing.*;
-
-import java.awt.*;
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Iterator;
+
+import javax.swing.ButtonModel;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.KeyStroke;
+import javax.swing.LayoutFocusTraversalPolicy;
 
 /**
  * Container which makes it easy to manage button groups
@@ -94,8 +101,8 @@ public class JXButtonGroupPanel extends JPanel {
         for (int i = 0; i < numberOfGroups; i++) {
             group[i] = new JXButtonGroup();
         }
-            
-        setFocusTraversalPolicyProvider(true);
+        
+//        setFocusTraversalPolicyProvider(true);
         setFocusTraversalPolicy(new JXButtonPanelFocusTraversalPolicy());
 
         ActionListener actionHandler = new ActionHandler(this);
