@@ -187,8 +187,8 @@ public class UMLAddDialog extends JPanel implements ActionListener {
             choicesList.setCellRenderer(renderer);
         }
         if (multiselectAllowed) {
-            choicesList
-                    .setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            choicesList.setSelectionMode(
+                    ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         } else {
             choicesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
