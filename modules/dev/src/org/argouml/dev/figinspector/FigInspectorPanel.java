@@ -106,6 +106,10 @@ public final class FigInspectorPanel
             FigEdge fe = (FigEdge) f;
             Fig lineFig = fe.getFig();
             addNode(tn, lineFig);
+            addNode(tn, fe.getSourceFigNode());
+            addNode(tn, fe.getSourcePortFig());
+            addNode(tn, fe.getDestFigNode());
+            addNode(tn, fe.getDestPortFig());
             for (Iterator it = fe.getPathItemFigs().iterator(); it.hasNext(); ) {
                 Fig pathFig = (Fig) it.next();
                 addNode(tn, pathFig);
@@ -130,7 +134,7 @@ public final class FigInspectorPanel
         if (!f.isVisible()) {
             descr += " - INVISIBLE";
         }
-        descr = descr + " - lay=" + f.getLayer() + " - grp=" + f.getGroup();
+        descr += " - lay=" + f.getLayer() + " - grp=" + f.getGroup();
         return descr;
     }
 }
