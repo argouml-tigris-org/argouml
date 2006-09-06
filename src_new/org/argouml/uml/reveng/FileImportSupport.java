@@ -53,7 +53,6 @@ import org.tigris.gef.base.Globals;
  * for other input sources.
  *
  * @author Alexander Lepekhine
- * @version $Revision$
  */
 public abstract class FileImportSupport implements PluggableImport {
 
