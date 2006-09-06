@@ -112,7 +112,7 @@ public abstract class AbstractActionAddModelElement extends UndoableAction {
     protected abstract String getDialogTitle();
 
     /**
-     * The action that has to be done by Argouml after the user clicks ok in the
+     * The action that has to be done by ArgoUml after the user clicks ok in the
      * UMLAddDialog.
      * @param selected The choices the user has selected in the UMLAddDialog
      */
