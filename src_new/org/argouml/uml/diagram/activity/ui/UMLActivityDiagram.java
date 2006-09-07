@@ -207,6 +207,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
     public Object getOwner() {
+        if (!(getGraphModel() instanceof ActivityDiagramGraphModel)) {
+            throw new IllegalStateException(
+                    "Incorrect graph model of "
+                    + getGraphModel().getClass().getName());
+        }
         ActivityDiagramGraphModel gm =
             (ActivityDiagramGraphModel) getGraphModel();
         return gm.getMachine();
