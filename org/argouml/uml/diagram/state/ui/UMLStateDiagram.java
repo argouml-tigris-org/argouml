@@ -53,6 +53,11 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  */
 public class UMLStateDiagram extends UMLDiagram {
     /**
+     * 
+     */
+    private static final long serialVersionUID = -1541136327444703151L;
+
+    /**
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(UMLStateDiagram.class);
@@ -173,6 +178,11 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
     public Object getOwner() {
+        if (!(getGraphModel() instanceof StateDiagramGraphModel)) {
+            throw new IllegalStateException(
+                    "Incorrect graph model of "
+                    + getGraphModel().getClass().getName());
+        }
         StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
         return gm.getMachine();
     }
