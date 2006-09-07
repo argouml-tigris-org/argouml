@@ -571,6 +571,12 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     public Collection getAllImportedElements(Object pack) {
         Collection c = new ArrayList();
         try {
+            /* TODO: This is not according the contract for this function, but
+             * it is used in several places, and I (MVW) presume that 
+             * we need this generally.
+             * This part (1) is about drawing an <<import>> permission
+             * between packages.
+             * The part (2) below is about ModelManagement.ElementImport. */
             Collection deps = nsmodel.getFacade().getClientDependencies(pack);
             Iterator i = deps.iterator();
             while (i.hasNext()) {
@@ -605,6 +611,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                     }
                 }
             }
+            /* TODO: This is the 2nd part of this method: */
+            Collection imports = nsmodel.getFacade().getImportedElements(pack);
+            c.addAll(imports);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
