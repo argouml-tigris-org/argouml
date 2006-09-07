@@ -132,6 +132,14 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
                 while (i.hasNext()) {
                     ops.addAll(Model.getFacade().getOperations(i.next()));
                 }
+                c = Model.getModelManagementHelper().getAllImportedElements(ns);
+                i = c.iterator();
+                while (i.hasNext()) {
+                    Object obj = i.next();
+                    if (Model.getFacade().isAClassifier(obj)) {
+                        ops.addAll(Model.getFacade().getOperations(obj));
+                    }
+                }
             }
         }
         setElements(ops);
