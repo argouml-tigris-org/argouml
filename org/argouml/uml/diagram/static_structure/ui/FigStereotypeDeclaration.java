@@ -52,8 +52,13 @@ import org.tigris.gef.graph.GraphModel;
  *
  * TODO: This is just a placeholder right now! - tfm
  */
-public class FigStereotypeDeclaration extends FigClassifierBox {
+public class FigStereotypeDeclaration extends FigCompartmentBox {
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -2702539988691983863L;
+    
     /**
      * Create a new Fig for a stereotype declaration.
      */
@@ -131,8 +136,10 @@ public class FigStereotypeDeclaration extends FigClassifierBox {
         while (i.hasNext()) {
             showMenu.add((Action) i.next());
         }
-        popUpActions.insertElementAt(showMenu,
-            popUpActions.size() - getPopupAddOffset());
+        if (showMenu.getComponentCount() > 0) {
+            popUpActions.insertElementAt(showMenu,
+                    popUpActions.size() - getPopupAddOffset());
+        }
 
         // Modifiers ...
         popUpActions.insertElementAt(
@@ -293,21 +300,4 @@ public class FigStereotypeDeclaration extends FigClassifierBox {
             /* TODO: constraints, ... */
         }
     }
-
-
-    /**
-     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#setOperationsVisible(boolean)
-     *
-     * TODO: This needs to be generalized.
-     * Map to Constraints compartment until then.
-     */
-    public void setOperationsVisible(boolean visible) {
-        // TODO: Auto-generated method stub
-
-    }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -2702539988691983863L;
 } /* end class FigClass */
