@@ -5,10 +5,8 @@ import java.awt.Rectangle;
 import org.apache.log4j.Logger;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 
@@ -26,9 +24,11 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
         FigAssociationClass thisFig =
             (FigAssociationClass) lay.presentationFor(getNewEdge());
         createMemento(thisFig);
+        buildParts(editor, thisFig, lay);
+    }
+    
+    public static void buildParts(Editor editor, FigAssociationClass thisFig, Layer lay) {
         
-        Editor editor = Globals.curEditor();
-
         thisFig.removePathItem(thisFig.getMiddleGroup());
 
         GraphModel graphModel = editor.getGraphModel();
@@ -40,28 +40,6 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
         Rectangle drawingArea =
             ProjectBrowser.getInstance()
                 .getEditorPane().getBounds();
-//            Iterator nodes = lay.getContents().iterator();
-//            while (nodes.hasNext()) {
-//                Fig auxFig = (Fig) nodes.next();
-//                if (thisFig.getOwner().equals(auxFig.getOwner())) {
-//                    if (auxFig instanceof FigClassAssociationClass) {
-//                        figNode = (FigClassAssociationClass) auxFig;
-//                        figNode.setMainFig(thisFig);
-//                    } else if (auxFig instanceof FigAssociationClassTee) {
-//                        tee = (FigAssociationClassTee) auxFig;
-//                        addPathItem(tee,
-//                                new PathConvPercent(thisFig, 50, 0));
-//                    } else if (auxFig instanceof FigEdgeAssociationClass) {
-//                        edge = (FigEdgeAssociationClass) auxFig;
-//                        edge.setMainFig(thisFig);
-//                        // addPathItem(tee,
-//                        //         new PathConvPercent(thisFig, 50, 0));
-//                    }
-//                    if (tee != null && figNode != null && edge != null) {
-//                        break;
-//                    }
-//                }
-//            }
         
         thisFig.makeEdgePort();
         FigEdgePort tee = thisFig.getEdgePort();

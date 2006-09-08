@@ -28,8 +28,12 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -38,6 +42,8 @@ import org.tigris.gef.undo.UndoableAction;
 */
 public class ActionAddExistingEdge extends UndoableAction {
 
+    private static final long serialVersionUID = 736094733140639882L;
+    
     private Object edge = null;
 
     /**
@@ -70,6 +76,13 @@ public class ActionAddExistingEdge extends UndoableAction {
             getCurrentProject().getActiveDiagram().getGraphModel();
         if (gm.canAddEdge(edge)) { // situation 1
             gm.addEdge(edge);
+            if (Model.getFacade().isAAssociationClass(edge)) {
+                Editor editor = Globals.curEditor();
+                Layer lay = editor.getLayerManager().getActiveLayer();
+                FigAssociationClass fig =
+                    (FigAssociationClass) lay.presentationFor(edge);
+                ModeCreateAssociationClass.buildParts(editor, fig, lay);
+            }
         }
     }
 
