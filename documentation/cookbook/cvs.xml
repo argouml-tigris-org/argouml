@@ -356,9 +356,12 @@ This is good for jars, GIFs, and other such files.
 </appendix>
 
 <appendix id="repository-contents">
-  <title>CVS repository contents</title>
+  <title>Repository Contents</title>
   <indexterm>
-    <primary>CVS repository contents</primary>
+    <primary>CVS Repository Contents</primary>
+  </indexterm>
+  <indexterm>
+    <primary>SVN Repository Contents</primary>
   </indexterm>
   <indexterm>
     <primary>Repository contents</primary>
@@ -366,9 +369,12 @@ This is good for jars, GIFs, and other such files.
   <indexterm>
     <primary>Contents of the CVS repository at Tigris</primary>
   </indexterm>
+  <indexterm>
+    <primary>Contents of the SVN repository at Tigris</primary>
+  </indexterm>
 
   <para>
-This appendix describes what parts of the CVS repository is used for
+This appendix describes what parts of the repository is used for
 what purpose.
 This is a rather terse collection.
 Further details on specific parts can sometimes be found elsewhere in
@@ -384,26 +390,143 @@ This is not yet described here.
 </para>
   </note>
 
+  <note>
+    <para>
+This explanation was first written when it was a CVS repository. 
+This repository is then converted to a SVN repository with the exact
+same structure so the choice of version control system should not
+matter.
+However, the descriptions might include the incorrect name of the tool
+since this description is unlikely to be updated exactly when the
+conversion is done.
+</para>
+  </note>
+
   <para>
-This chapter is organized as the CVS repository itself and
+This chapter is organized as the repository itself and
 everything is in alphabetical order.
 </para>
   <para>
-This is what the main argouml project looks like:
+This is the normal structure for any argouml jar file and project.
 </para>
   <itemizedlist>
     <listitem>
-      <para><filename class="directory">build</filename></para>
-      <para>Directory where the built things end up.</para>
+      <para><filename>build.xml</filename></para>
       <para>
-There is actually no real need to keep this in CVS.
-It is there just as a place holder.
+The file controlling the build of that subsystem.
+</para>
+      <para>
+When built, the result end up in a newly created build directory.
+</para>
+    </listitem>
+
+    <listitem>
+      <para><filename class="directory">build</filename></para>
+      <para>
+Directory where the built things end up when building with ant.
+</para>
+      <para>
+This is not kept in the repository. It is created by the build.
+For historic reasons this actually exists in the CVS repository
+of some of the projects.
+This will be fixed after the move to SVN.
 </para>
     </listitem>
     <listitem>
-      <para><filename class="directory">conf</filename></para>
-      <para>Not used. Empty.</para>
+      <para><filename class="directory">build-eclipse</filename></para>
+      <para>
+Directory where the built things end up when building with Eclipse.
+</para>
+      <para>
+This is not kept in the repository. It is created by the build.
+</para>
     </listitem>
+    <listitem>
+      <para><filename class="directory">lib</filename></para>
+      <para>jar files used by the project.</para>
+      <para>
+This directory contains the jar files of products that are shipped with
+the project i.e. needed to run the project.
+For ArgoUML this is things like log4j, gef, ...
+</para>
+      <para>
+These are distributed with ArgoUML and have licenses that allow this.
+For clarity the README files and licenses and other distribution
+details of each used jar will also be stored in this directory.
+(Quick summary: BSD License, Apache License, LGPL are OK, GPL is not.)
+Don't forget to arrange for the modules version and license information
+to appear when starting ArgoUML and in the About box.
+</para>
+      <para>
+Take care also to make the versions of these libraries explicit,
+so as to allow people building from sources to figure out
+exact dependencies. Easiest way is to rename the files to
+include version informations, the same way as shared
+libraries in Unix world: foo-x.y.z.jar, bar-x.y.z.jar,
+etc...
+</para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">src</filename></para>
+      <para>
+Source code.
+</para>
+      <para>
+This directory contains exactly one java class tree
+that is build into exactly one jar file.
+</para>
+    </listitem>
+
+    <listitem>
+      <para><filename class="directory">tests</filename></para>
+      <para>
+Source code for JUnit tests of everything that is in the src directory.
+See <xref linkend="junittests"/>.
+</para>
+      <para>
+This directory contains exactly one java class tree.
+</para>
+    </listitem>
+
+    <listitem>
+      <para><filename class="directory">tools</filename></para>
+      <para>
+Tools used during the build process.
+</para>
+      <para>
+Tools also have the readme files, licenses and other distribution files
+stored in this directory in much the same way as the libraries in
+<filename class="directory">lib</filename>.
+However the requirement on the license is different.
+The tools are never distributed with ArgoUML but merely used in the
+development of ArgoUML so it is enough to have a license that does not
+allow distribution.
+(Quick summary: BSD License, Apache license, LGPL, GPL, Freeware are OK.)
+</para>
+    </listitem>
+  </itemizedlist>
+
+
+  <para>
+Because of they way the Tigris site works there is also the following:
+</para>
+
+  <itemizedlist>
+    <listitem>
+      <para><filename class="directory">www</filename></para>
+      <para>
+This is all the static contents of the web site.
+See <xref linkend="how_the_web_site_works"/>.
+</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>
+For historic reasons the argouml project i.e. the main project
+looks a little bit different.
+</para>
+
+  <itemizedlist>
     <listitem>
       <para><filename class="directory">documentation</filename></para>
       <para>Directory where the source of the documentation is.</para>
@@ -436,226 +559,56 @@ the documentation from the XML-source to HTML and PDF.
           <para>XML-source code for the Quick Guide.</para>
         </listitem>
       </itemizedlist>
-    </listitem>
-    <listitem>
-      <para><filename class="directory">extra</filename></para>
-      <para>Not used. Empty.</para>
-    </listitem>
-    <listitem>
-      <para><filename class="directory">lib</filename></para>
-      <para>A set of jar files.</para>
+
       <para>
-This directory contains the jar files of products shipped with ArgoUML
-(such as log4j, MDR).
+It is not yet decided how to handle the User Manual in other languages.
+It is probably best if they reside in the documentation directory in
+the subproject for that language.
+That would make the correct group of developers get access to the files
+without special features.
 </para>
+
       <para>
-These are distributed with ArgoUML and have licenses that allow this.
-For clarity the README files and licenses and other distribution
-details of each used jar will also be stored in this directory.
-(Quick summary: BSD License, Apache License, LGPL are OK, GPL is not.)
-Don't forget to arrange for the modules version and license information
-to appear when starting ArgoUML and in the About box.
-</para>
-      <para>
-Take care also to make the versions of these libraries explicit,
-so as to allow people building from sources to figure out
-exact dependencies. Easiest way is to rename the files to
-include version informations, the same way as shared
-libraries in Unix world: foo-x.y.z.jar, bar-x.y.z.jar,
-etc...
-</para>
-      <para>
-When separating ArgoUML into modules, the jar files connected to a
-specific module is instead stored together with the module.
+Documentation for features and functions provided by other projects
+are, for the time being, best kept in the one big User Manual.
 </para>
     </listitem>
+
+
     <listitem>
       <para><filename class="directory">modules</filename></para>
-      <para>Contains source level modules of ArgoUML.</para>
-      <para>
-Source level modules are modules that can be compiled and deployed
-independently (after) the rest of ArgoUML.
-Each module is located in its own subdirectory.
-This is the list as it looks now (March 2003).
-</para>
-      <itemizedlist>
-        <listitem>
-          <para><filename class="directory">jscheme</filename></para>
-          <para>
-Module that allows to extend ArgoUML using scheme.
-</para>
-        </listitem>
-        <listitem>
-          <para><filename class="directory">junit</filename></para>
-          <para>
-Old directory with JUnit tests.
-These should be migrated to and all new JUnit tests should be created in
-the directory <filename class="directory">tests</filename>.
-</para>
-        </listitem>
-        <listitem>
-          <para><filename class="directory">menutest</filename></para>
-          <para>
-Test module that tests the plug-in interface for the menus.
-</para>
-        </listitem>
-        <listitem>
-          <para><filename class="directory">php</filename></para>
-          <para>
-Language generating, Notation and reverse engineering for PHP.
-</para>
-        </listitem>
-        <listitem>
-          <para><filename class="directory">cpp</filename></para>
-          <para>
-Code generation for C++.
-</para>
-        </listitem>
-        <listitem>
-          <para><filename class="directory">csharp</filename></para>
-          <para>
-Code generation for C#.
-</para>
-          <para>
-This is now moved to a subproject so this will eventually be removed.
-</para>
-        </listitem>
-      </itemizedlist>
+      <para>Old module structure. To be removed.</para>
     </listitem>
+
     <listitem>
       <para><filename class="directory">src</filename></para>
       <para>
-Source code.
+In conflict with the description above
+this directory contains one directory for each subsystem within ArgoUML.
+Each directory is a complete tree as described above.
 </para>
-      <para>
-This contains one directory for each subsystem within
-ArgoUML.
-</para>
-      <para>
-Each subsystem will have a subdirectory with the same structure:
-</para>
-
-      <itemizedlist>
-        <listitem>
-          <para><filename class="directory">lib</filename> - optional</para>
-          <para>
-jar files with products shipped with ArgoUML.
-</para>
-        </listitem>
-        <listitem>
-          <para><filename>build.xml</filename></para>
-          <para>
-The file controlling the build of that subsystem.
-</para>
-        </listitem>
-        <listitem>
-          <para><filename class="directory">src</filename></para>
-          <para>
-The source code.
-</para>
-        </listitem>
-        <listitem>
-          <para><filename class="directory">tests</filename> - optional</para>
-          <para>
-The JUnit test cases for that subsystem.
-</para>
-        </listitem>
-      </itemizedlist>
     </listitem>
+
     <listitem>
       <para><filename class="directory">src_new</filename></para>
       <para>
 All source code for ArgoUML including pictures of icons.
 </para>
-    </listitem>
-
-    <listitem>
-      <para><filename class="directory">tests</filename></para>
       <para>
-Source code for JUnit tests of everything that is in the src_new
-directory.
-See <xref linkend="junittests"/>.
+This is replacing the <filename class="directory">src</filename> directory
+above with the exception that it also contains the build.xml file.
 </para>
     </listitem>
 
-    <listitem>
-      <para><filename class="directory">tools</filename></para>
-      <para>
-All tools used during the build process.
-</para>
-      <para>
-Tools also have the readme files, licenses and other distribution files
-stored in this directory in much the same way as the libraries in
-<filename class="directory">lib</filename>.
-However the requirement on the license is different.
-The tools are never distributed with ArgoUML but merely used in the
-development of ArgoUML so it is enough to have a license that does not
-allow distribution.
-(Quick summary: BSD License, Apache license, LGPL, GPL, Freeware are OK.)
-</para>
-    </listitem>
-    <listitem>
-      <para><filename class="directory">www</filename></para>
-      <para>
-This is all the static contents of the web site.
-See <xref linkend="how_the_web_site_works"/>.
-</para>
-    </listitem>
   </itemizedlist>
 
   <para>
 The ArgoUML subprojects are projects on Tigris that belong to the
 ArgoUML project.
-To simplify the administration, they are all set up in a similar way
-and also similar to the src and modules directories.
-</para>
-  <para>
-This is what their cvs repository looks like:
+To simplify the administration, they are all set up in the same way, i.e.
+as describe above.
 </para>
 
-  <itemizedlist>
-    <listitem>
-      <para><filename>build.xml</filename></para>
-      <para>
-The file controlling the build of that subsystem.
-</para>
-      <para>
-When built, the result end up in a newly created build directory.
-</para>
-    </listitem>
-    <listitem>
-      <para><filename class="directory">lib</filename> - optional</para>
-      <para>
-jar files with products shipped with the module in that subproject.
-</para>
-    </listitem>
-    <listitem>
-      <para><filename class="directory">src</filename></para>
-      <para>
-The source code.
-</para>
-    </listitem>
-    <listitem>
-      <para><filename class="directory">tests</filename> - optional</para>
-      <para>
-The JUnit test cases for that subproject.
-</para>
-    </listitem>
-    <listitem>
-      <para><filename class="directory">tools</filename> - optional</para>
-      <para>
-Any special tools needed to build that subproject.
-The tools from the argouml tools directory can also be used
-so this is just the new ones.
-</para>
-    </listitem>
-    <listitem>
-      <para><filename class="directory">www</filename></para>
-      <para>
-The web pages for that subproject.
-</para>
-    </listitem>
-  </itemizedlist>
 </appendix>
 
 
