@@ -42,8 +42,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.notation.uml.NotationUtilityUml;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
 import org.tigris.gef.base.Diagram;
@@ -151,24 +151,24 @@ public class DisplayTextTree extends JTree {
                 // Jeremy Bennett patch
                 if (Model.getFacade().isATransition(value)) {
                     name = Model.getFacade().getName(value);
-                    NotationProvider4 notationProvider =
+                    NotationProvider notationProvider =
                         NotationProviderFactory2.getInstance()
                             .getNotationProvider(
                                     NotationProviderFactory2.TYPE_TRANSITION,
                                     value);
-                    String signature = notationProvider.toString();
+                    String signature = notationProvider.toString(value, null);
                     if (name != null && name.length() > 0) {
                         name += ": " + signature;
                     } else {
                         name = signature;
                     }
                 } else if (Model.getFacade().isAExtensionPoint(value)) {
-                    NotationProvider4 notationProvider =
+                    NotationProvider notationProvider =
                         NotationProviderFactory2.getInstance()
                             .getNotationProvider(
                                 NotationProviderFactory2.TYPE_EXTENSION_POINT,
                                 value);
-                    name = notationProvider.toString();
+                    name = notationProvider.toString(value, null);
                 } else if (Model.getFacade().isAComment(value)) {
                     /*
                      * From UML 1.4 onwards, the text of the comment

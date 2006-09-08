@@ -27,6 +27,7 @@ package org.argouml.uml.notation.uml;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
@@ -58,12 +59,12 @@ public class OperationNotationUml extends OperationNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseOperationFig(Model.getFacade().getOwner(myOperation), 
-                    myOperation, text);
+            parseOperationFig(Model.getFacade().getOwner(modelElement), 
+                    modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.operation";
             Object[] args = {
@@ -73,7 +74,6 @@ public class OperationNotationUml extends OperationNotation {
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
         }
-        return toString();
     }
 
     /**
@@ -375,7 +375,7 @@ public class OperationNotationUml extends OperationNotation {
      * @throws ParseException
      */
     private Vector tokenOpenBrace(MyTokenizer st, Vector properties)
-            throws ParseException {
+        throws ParseException {
         String token;
         String propname = "";
         String propvalue = null;
@@ -424,6 +424,9 @@ public class OperationNotationUml extends OperationNotation {
     /**
      * Sets the return parameter of op to be of type type. If there is none, one
      * is created. If there are many, all but one are removed.
+     *
+     * @param op the operation
+     * @param type the type of the return parameter
      */
     private void setReturnParameter(Object op, Object type) {
         Object param = null;
@@ -456,9 +459,8 @@ public class OperationNotationUml extends OperationNotation {
         Model.getCoreHelper().setType(param, type);
     }
 
-
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.operation";
@@ -475,20 +477,21 @@ public class OperationNotationUml extends OperationNotation {
      * properties are shown/not shown.
      *
      * @author jaap.branderhorst@xs4all.nl
-     * @see java.lang.Object#toString()
+     *
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
         
         String stereoStr = NotationUtilityUml.generateStereotype(
-                Model.getFacade().getStereotypes(myOperation));
-        String visStr = NotationUtilityUml.generateVisibility(myOperation);
-        String nameStr = Model.getFacade().getName(myOperation);
+                Model.getFacade().getStereotypes(modelElement));
+        String visStr = NotationUtilityUml.generateVisibility(modelElement);
+        String nameStr = Model.getFacade().getName(modelElement);
 
         // the parameters
         StringBuffer parameterListBuffer = new StringBuffer();
-        Collection coll = Model.getFacade().getParameters(myOperation);
+        Collection coll = Model.getFacade().getParameters(modelElement);
         Iterator it = coll.iterator();
         int counter = 0;
         while (it.hasNext()) {
@@ -510,7 +513,7 @@ public class OperationNotationUml extends OperationNotation {
         parameterStr.append("(").append(parameterListBuffer).append(")");
 
         // the returnparameters
-        coll = Model.getCoreHelper().getReturnParameters(myOperation);
+        coll = Model.getCoreHelper().getReturnParameters(modelElement);
         StringBuffer returnParasSb = new StringBuffer();
         if (coll != null && coll.size() > 0) {
             returnParasSb.append(": ");
@@ -530,21 +533,21 @@ public class OperationNotationUml extends OperationNotation {
         // the properties
         StringBuffer propertySb = new StringBuffer().append("{");
         // the query state
-        if (Model.getFacade().isQuery(myOperation)) {
+        if (Model.getFacade().isQuery(modelElement)) {
             propertySb.append("query,");
         }
-        if (Model.getFacade().isRoot(myOperation)) {
+        if (Model.getFacade().isRoot(modelElement)) {
             propertySb.append("root,");
         }
-        if (Model.getFacade().isLeaf(myOperation)) {
+        if (Model.getFacade().isLeaf(modelElement)) {
             propertySb.append("leaf,");
         }
-        if (Model.getFacade().getConcurrency(myOperation) != null) {
+        if (Model.getFacade().getConcurrency(modelElement) != null) {
             propertySb.append(Model.getFacade().getName(
-                    Model.getFacade().getConcurrency(myOperation)));
+                    Model.getFacade().getConcurrency(modelElement)));
             propertySb.append(',');
         }
-        Iterator it3 = Model.getFacade().getTaggedValues(myOperation);
+        Iterator it3 = Model.getFacade().getTaggedValues(modelElement);
         StringBuffer taggedValuesSb = new StringBuffer();
         if (it3 != null && it3.hasNext()) {
             while (it3.hasNext()) {

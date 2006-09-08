@@ -35,16 +35,20 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.notation.uml.NotationUtilityUml;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
@@ -165,9 +169,9 @@ public class FigAssociation extends FigEdgeModelElement {
         
         addElementListener(getOwner(), new String[] {"name", "isAbstract"});
     }
-    
+
     /**
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     public void updateListeners(Object oldOwner, Object newOwner) {
         // We don't want to keep adding and removing listeners on a Fig
@@ -198,7 +202,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	if (ft == srcGroup.role) {
             ((FigRole) ft).parse();
 	} else if (ft == destGroup.role) {
-        ((FigRole) ft).parse();
+            ((FigRole) ft).parse();
 	} else if (ft == srcMult) {
 	    Object srcAE = (conn.toArray())[0];
 	    try {
@@ -271,8 +275,6 @@ public class FigAssociation extends FigEdgeModelElement {
 
     /**
      * Choose the arrowhead style for each end.
-     * 
-     * @param association
      */
     protected void applyArrowHeads() {
         int sourceArrowType = srcGroup.getArrowType();
@@ -285,8 +287,10 @@ public class FigAssociation extends FigEdgeModelElement {
             destArrowType -= 3;
         }
         
-        setSourceArrowHead(FigAssociationEndAnnotation.ARROW_HEADS[sourceArrowType]);
-        setDestArrowHead(FigAssociationEndAnnotation.ARROW_HEADS[destArrowType]);
+        setSourceArrowHead(FigAssociationEndAnnotation
+                .ARROW_HEADS[sourceArrowType]);
+        setDestArrowHead(FigAssociationEndAnnotation
+                .ARROW_HEADS[destArrowType]);
     }
     
     /**
@@ -491,7 +495,8 @@ public class FigAssociation extends FigEdgeModelElement {
  * This has potential reuse for other edges showing multiplicity
  * @author Bob Tarling
  */
-class FigMultiplicity extends FigSingleLineText implements PropertyChangeListener {
+class FigMultiplicity extends FigSingleLineText 
+    implements PropertyChangeListener {
 
     private static final long serialVersionUID = 5385230942216677015L;
 
@@ -533,6 +538,7 @@ class FigOrdering extends FigSingleLineText {
     /**
      * Returns the name of the OrderingKind.
      *
+     * @param orderingKind the kind of ordering
      * @return "{ordered}", "{sorted}" or "" if null or "unordered"
      */
     private String getOrderingName(Object orderingKind) {
@@ -558,41 +564,102 @@ class FigOrdering extends FigSingleLineText {
  * This has potential reuse for other edges showing ordering
  * @author Bob Tarling
  */
-class FigRole extends FigSingleLineText implements PropertyChangeListener {
+class FigRole extends FigSingleLineText 
+    implements ArgoNotationEventListener {
 
     private static final long serialVersionUID = 5385230942216677015L;
 
-    private NotationProvider4 notationProviderRole;
+    private NotationProvider notationProviderRole;
 
     FigRole() {
-        super(10, 10, 90, 20, false, 
-                new String[] {"name", "visibility", "stereotype"});
+        super(10, 10, 90, 20, false/*, 
+                new String[] {"name", "visibility", "stereotype"}*/);
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
+        ArgoEventPump.addListener(
+                ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
     public void setOwner(Object owner) {
-        if (owner != null) {
-            notationProviderRole =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                        owner);
-        }
         super.setOwner(owner);
+        if (owner != null) {
+            getNewNotation();
+        }
+    }
+
+    private void getNewNotation() {
+        if (notationProviderRole != null) {
+            notationProviderRole.removeListener(this, getOwner());
+        }
+        notationProviderRole = 
+            NotationProviderFactory2.getInstance().getNotationProvider(
+                    NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
+                    getOwner(),
+                    this);
     }
     
     protected void setText() {
         assert getOwner() != null;
         assert notationProviderRole != null;
-        setText(notationProviderRole.toString());
+        setText(notationProviderRole.toString(getOwner(), null));
     }
 
+    /**
+     * @return the help-text for parsing
+     */
     public String getParsingHelp() {
         return notationProviderRole.getParsingHelp();
     }
     
+    /**
+     * Parse the edited text to adapt the UML model.
+     */
     public void parse() {
-        setText(notationProviderRole.parse(getText()));
+        notationProviderRole.parse(getOwner(), getText());
+        setText();
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigSingleLineText#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent pce) {
+        notationProviderRole.updateListener(this, getOwner(), pce);
+        setText();
+        damage();
+        super.propertyChange(pce);  // do we need this?
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
+     */
+    public void removeFromDiagram() {
+        notationProviderRole.removeListener(this, getOwner());
+        super.removeFromDiagram();
+    }
+
+    public void notationAdded(ArgoNotationEvent e) {
+        getNewNotation();
+        setText();
+    }
+
+    public void notationChanged(ArgoNotationEvent e) {
+        getNewNotation();
+        setText();
+    }
+
+    public void notationProviderAdded(ArgoNotationEvent e) {
+        getNewNotation();
+        setText();
+    }
+
+    public void notationProviderRemoved(ArgoNotationEvent e) {
+        getNewNotation();
+        setText();
+    }
+
+    public void notationRemoved(ArgoNotationEvent e) {
+        getNewNotation();
+        setText();
     }
 }
 
@@ -653,7 +720,8 @@ class FigAssociationEndAnnotation extends FigTextGroup {
             ordering.setOwner(owner);
             role.setOwner(owner);
             determineArrowHead();
-            Model.getPump().addModelEventListener(this, owner, new String[] {"isNavigable", "aggregation", "participant"});
+            Model.getPump().addModelEventListener(this, owner, 
+                    new String[] {"isNavigable", "aggregation", "participant"});
         }
     }
 
@@ -661,7 +729,9 @@ class FigAssociationEndAnnotation extends FigTextGroup {
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public void removeFromDiagram() {
-        Model.getPump().removeModelEventListener(this, getOwner(), new String[] {"isNavigable", "aggregation", "participant"});
+        Model.getPump().removeModelEventListener(this, 
+                getOwner(), 
+                new String[] {"isNavigable", "aggregation", "participant"});
         super.removeFromDiagram();
     }
     

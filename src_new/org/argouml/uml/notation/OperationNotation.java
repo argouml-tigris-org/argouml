@@ -33,10 +33,7 @@ import org.argouml.model.Model;
  *
  * @author mvw@tigris.org
  */
-public abstract class OperationNotation extends ValueHandler {
-
-    protected Object myOperation;
-    protected Object myClass;
+public abstract class OperationNotation extends NotationProvider {
 
     /**
      * The constructor.
@@ -47,8 +44,6 @@ public abstract class OperationNotation extends ValueHandler {
         if (!Model.getFacade().isAOperation(operation)) {
             throw new IllegalArgumentException("This is not an Operation.");
         }
-        myOperation = operation;
-        myClass = Model.getFacade().getOwner(operation);
     }
 
 }

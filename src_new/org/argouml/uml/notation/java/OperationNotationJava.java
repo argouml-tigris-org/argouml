@@ -25,6 +25,7 @@
 package org.argouml.uml.notation.java;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -56,30 +57,30 @@ public class OperationNotationJava extends OperationNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         ProjectBrowser.getInstance().getStatusBar().showStatus(
             "Parsing in Java not yet supported");
-        return toString();
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "Parsing in Java not yet supported";
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         StringBuffer sb = new StringBuffer(80);
         String nameStr = null;
         boolean constructor = false;
 
-        Iterator its = Model.getFacade().getStereotypes(myOperation).iterator();
+        Iterator its = 
+            Model.getFacade().getStereotypes(modelElement).iterator();
         String name = "";
         while (its.hasNext()) {
             Object o = its.next();
@@ -91,21 +92,21 @@ public class OperationNotationJava extends OperationNotation {
         if ("create".equals(name)) {
             // constructor
             nameStr = Model.getFacade().getName(
-                    Model.getFacade().getOwner(myOperation));
+                    Model.getFacade().getOwner(modelElement));
             constructor = true;
         } else {
-            nameStr = Model.getFacade().getName(myOperation);
+            nameStr = Model.getFacade().getName(modelElement);
         }
 
-        sb.append(generateConcurrency(myOperation));
-        sb.append(generateAbstractness(myOperation));
-        sb.append(NotationUtilityJava.generateChangeability(myOperation));
-        sb.append(NotationUtilityJava.generateScope(myOperation));
-        sb.append(NotationUtilityJava.generateVisibility(myOperation));
+        sb.append(generateConcurrency(modelElement));
+        sb.append(generateAbstractness(modelElement));
+        sb.append(NotationUtilityJava.generateChangeability(modelElement));
+        sb.append(NotationUtilityJava.generateScope(modelElement));
+        sb.append(NotationUtilityJava.generateVisibility(modelElement));
 
         // pick out return type
         Collection returnParams = 
-            Model.getCoreHelper().getReturnParameters(myOperation);
+            Model.getCoreHelper().getReturnParameters(modelElement);
         Object rp;
         if (returnParams.size() == 0) {
             rp = null;
@@ -115,7 +116,7 @@ public class OperationNotationJava extends OperationNotation {
         if (returnParams.size() > 1)  {
             LOG.warn("Java generator only handles one return parameter"
                     + " - Found " + returnParams.size()
-                    + " for " + Model.getFacade().getName(myOperation));
+                    + " for " + Model.getFacade().getName(modelElement));
         }
         if (rp != null && !constructor) {
             Object/*MClassifier*/ returnType = Model.getFacade().getType(rp);
@@ -129,7 +130,7 @@ public class OperationNotationJava extends OperationNotation {
 
         // name and params
         Vector params = new Vector(
-                Model.getFacade().getParameters(myOperation));
+                Model.getFacade().getParameters(modelElement));
         params.remove(rp);
 
         sb.append(nameStr).append('(');
@@ -146,7 +147,7 @@ public class OperationNotationJava extends OperationNotation {
 
         sb.append(')');
 
-        Collection c = Model.getFacade().getRaisedSignals(myOperation);
+        Collection c = Model.getFacade().getRaisedSignals(modelElement);
         if (!c.isEmpty()) {
             Iterator it = c.iterator();
             boolean first = true;
@@ -188,6 +189,9 @@ public class OperationNotationJava extends OperationNotation {
 
     /**
      * Generate "abstract" keyword for an abstract operation.
+     *
+     * @param op the operation
+     * @return the generated string
      */
     private static String generateAbstractness(Object op) {
         if (Model.getFacade().isAbstract(op)) {

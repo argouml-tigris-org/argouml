@@ -34,10 +34,10 @@ import java.util.Iterator;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
+import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
@@ -63,7 +63,7 @@ public class FigActionState extends FigStateVertex {
     /**
      * The notation provider for the textfield.
      */
-    protected NotationProvider4 notationProvider;
+    protected NotationProvider notationProvider;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -265,7 +265,7 @@ public class FigActionState extends FigStateVertex {
      */
     protected void updateNameText() {
         if (notationProvider != null) {
-            getNameFig().setText(notationProvider.toString());
+            getNameFig().setText(notationProvider.toString(getOwner(), null));
         }
     }
 
@@ -274,7 +274,8 @@ public class FigActionState extends FigStateVertex {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        ft.setText(notationProvider.parse(ft.getText()));
+        notationProvider.parse(getOwner(), ft.getText());
+        ft.setText(notationProvider.toString(getOwner(), null));
     }
 
     /**

@@ -201,8 +201,8 @@ public class FigPackage extends FigNodeModelElement
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAPackage(own)) {
-            notationProviderName.putValue("visibilityVisible",
-                Boolean.valueOf(isVisibilityVisible()));
+            npArguments.put("visibilityVisible",
+                    Boolean.valueOf(isVisibilityVisible()));
         }
     }
 
@@ -800,8 +800,8 @@ public class FigPackage extends FigNodeModelElement
     public void setVisibilityVisible(boolean isVisible) {
         visibilityVisible = isVisible;
         if (notationProviderName != null) {
-            notationProviderName.putValue("visibilityVisible",
-                Boolean.valueOf(isVisible));
+            npArguments.put("visibilityVisible",
+                    Boolean.valueOf(isVisible));
         }
         renderingChanged();
         damage();

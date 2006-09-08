@@ -24,6 +24,7 @@
 
 package org.argouml.notation;
 
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.notation.java.InitNotationJava;
 import org.argouml.uml.notation.uml.InitNotationUml;
 
@@ -183,7 +185,7 @@ public final class NotationProviderFactory2 {
      * @return the provider
      * @param object the constructor parameter
      */
-    public NotationProvider4 getNotationProvider(int type,
+    public NotationProvider getNotationProvider(int type,
             Object object) {
         Project proj = ProjectManager.getManager().getCurrentProject();
         NotationName name = proj.getProjectSettings().getNotationName();
@@ -205,7 +207,7 @@ public final class NotationProviderFactory2 {
             };
 
             try {
-                return (NotationProvider4) constructor.newInstance(params);
+                return (NotationProvider) constructor.newInstance(params);
             } catch (IllegalArgumentException e) {
                 // TODO: Auto-generated catch block
                 LOG.error(e);
@@ -221,6 +223,20 @@ public final class NotationProviderFactory2 {
             }
         }
         return null;
+    }
+
+    /**
+     * @param type the provider type
+     * @return the provider
+     * @param object the constructor parameter
+     * @param listener the fig
+     * that refreshes after the NotationProvider has changed
+     */
+    public NotationProvider getNotationProvider(int type,
+            Object object, PropertyChangeListener listener) {
+        NotationProvider p = getNotationProvider(type, object);
+        p.addListener(listener, object);
+        return p;
     }
 
     /**

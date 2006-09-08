@@ -24,6 +24,7 @@
 
 package org.argouml.uml.notation.uml;
 
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import org.argouml.kernel.ProjectManager;
@@ -48,13 +49,14 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         /* TODO: This try-catch will be needed 
          * once the code below is improved. */
 //        try {
-            parseExtensionPointFig(Model.getFacade().getUseCase(myEP), myEP, text);
+        parseExtensionPointFig(Model.getFacade()
+                    .getUseCase(modelElement), modelElement, text);
 //        } catch (ParseException pe) {
 //            String msg = "statusmsg.bar.error.parsing.extensionpoint";
 //            Object[] args = {
@@ -64,7 +66,6 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
 //            ProjectBrowser.getInstance().getStatusBar().showStatus(
 //                    Translator.messageFormat(msg, args));
 //        }
-        return toString();
     }
     /**
      * Parse an extension point.<p>
@@ -195,9 +196,9 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
 
         return ep;
     }
-    
+
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-extensionpoint";
@@ -209,17 +210,17 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
      * The representation is "name: location". 
      * The "name: " is omitted if there
      * is no name given.
-     * 
-     * @see java.lang.Object#toString()
+     *
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
 
         // The string to build
         String s = "";
 
         // Get the fields we want
-        String epName = Model.getFacade().getName(myEP);
-        String epLocation = Model.getFacade().getLocation(myEP);
+        String epName = Model.getFacade().getName(modelElement);
+        String epLocation = Model.getFacade().getLocation(modelElement);
 
         // Put in the name field if it's there
         if ((epName != null) && (epName.length() > 0)) {

@@ -27,6 +27,7 @@ package org.argouml.uml.notation.uml;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
@@ -67,18 +68,18 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-classifierrole";
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseClassifierRole(myClassifierRole, text);
+            parseClassifierRole(modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.classifierrole";
             Object[] args = {pe.getLocalizedMessage(),
@@ -86,7 +87,6 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
         }
-        return toString();
     }
     
     /**
@@ -127,7 +127,7 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
                 if (" ".equals(token) || "\t".equals(token)) {
-                    /* Do nothing. */
+                    /* Do nothing. */;
                 } else if ("/".equals(token)) {
                     hasSlash = true;
                     hasColon = false;
@@ -253,17 +253,17 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
-        String nameString = Model.getFacade().getName(myClassifierRole);
+    public String toString(Object modelElement, HashMap args) {
+        String nameString = Model.getFacade().getName(modelElement);
         if (nameString == null) nameString = "";
         nameString = nameString.trim();
         String baseString = "";
 
         // Loop through all base classes, building a comma separated list
 
-        Collection c = Model.getFacade().getBases(myClassifierRole);
+        Collection c = Model.getFacade().getBases(modelElement);
         if (c != null && c.size() > 0) {
             Vector bases = new Vector(c);
             baseString += Model.getFacade().getName(bases.elementAt(0));

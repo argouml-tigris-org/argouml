@@ -33,18 +33,18 @@ import org.argouml.model.Model;
  * 
  * @author michiel
  */
-public abstract class AssociationEndNameNotation extends ValueHandler {
+public abstract class AssociationEndNameNotation extends NotationProvider {
 
-    protected Object myAssociationEnd;
-    
     /**
      * The constructor. 
+     *
+     * @param assocEnd the UML element
      */
     public AssociationEndNameNotation(Object assocEnd) {
         if (!Model.getFacade().isAAssociationEnd(assocEnd)) {
-            throw new IllegalArgumentException("This is not an AssociationEnd.");
+            throw new IllegalArgumentException(
+                    "This is not an AssociationEnd.");
         }
-        myAssociationEnd = assocEnd;
     }
 
 }

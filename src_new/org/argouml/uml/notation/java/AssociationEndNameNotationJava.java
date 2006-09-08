@@ -24,6 +24,8 @@
 
 package org.argouml.uml.notation.java;
 
+import java.util.HashMap;
+
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.AssociationEndNameNotation;
@@ -46,7 +48,7 @@ public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
 //        return "parsing.help.fig-association-end-name";
@@ -54,24 +56,23 @@ public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         ProjectBrowser.getInstance().getStatusBar().showStatus(
             "Parsing in Java not yet supported");
-        return toString();
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
-        String name = Model.getFacade().getName(myAssociationEnd);
+    public String toString(Object modelElement, HashMap args) {
+        String name = Model.getFacade().getName(modelElement);
         if (name == null) {
             name = "";
         }
 
-        Object visi = Model.getFacade().getVisibility(myAssociationEnd);
+        Object visi = Model.getFacade().getVisibility(modelElement);
         String visibility = "";
         if (visi != null) {
             visibility = NotationUtilityJava.generateVisibility(visi);
@@ -82,7 +83,7 @@ public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
         }
 
         String stereoString = 
-            NotationUtilityUml.generateStereotype(myAssociationEnd);
+            NotationUtilityUml.generateStereotype(modelElement);
 
         return stereoString + visibility + name;
     }

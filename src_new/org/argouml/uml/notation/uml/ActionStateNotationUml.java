@@ -24,11 +24,15 @@
 
 package org.argouml.uml.notation.uml;
 
+import java.util.HashMap;
+
 import org.argouml.model.Model;
 import org.argouml.uml.notation.ActionStateNotation;
 
 
 /**
+ * The Notation for an ActionState.
+ * 
  * @author mvw@tigris.org
  */
 public class ActionStateNotationUml extends ActionStateNotation {
@@ -43,15 +47,15 @@ public class ActionStateNotationUml extends ActionStateNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
-        Object entry = Model.getFacade().getEntry(myActionState);
+    public void parse(Object modelElement, String text) {
+        Object entry = Model.getFacade().getEntry(modelElement);
         String language = "";
         if (entry == null) {
             entry =
                 Model.getCommonBehaviorFactory()
-                        .buildUninterpretedAction(myActionState);
+                        .buildUninterpretedAction(modelElement);
         } else {
             Object script = Model.getFacade().getScript(entry);
             if (script != null) {
@@ -61,27 +65,25 @@ public class ActionStateNotationUml extends ActionStateNotation {
         Object actionExpression =
             Model.getDataTypesFactory().createActionExpression(language, text);
         Model.getCommonBehaviorHelper().setScript(entry, actionExpression);
-        return toString();
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-actionstate";
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         String ret = "";
-        Object action = Model.getFacade().getEntry(myActionState);
+        Object action = Model.getFacade().getEntry(modelElement);
         if (action != null) {
             Object expression = Model.getFacade().getScript(action);
             if (expression != null) {
                 ret = (String) Model.getFacade().getBody(expression);
-//                ret = Model.getDataTypesHelper().getBody(expression);
             }
         }
         return (ret == null) ? "" : ret;

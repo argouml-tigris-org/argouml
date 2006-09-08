@@ -32,9 +32,9 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.InvalidElementException;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.static_structure.ui.FigFeature;
+import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 
@@ -187,7 +187,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                     }
                 }
                 
-                NotationProvider4 np = 
+                NotationProvider np = 
                     NotationProviderFactory2.getInstance()
                         .getNotationProvider(getNotationType(), umlObject);
 
@@ -221,7 +221,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                 
                 // Now put the text in
                 // We must handle the case where the text is null
-                String ftText = comp.getNotationProvider().toString();
+                String ftText = comp.getNotationProvider().toString(umlObject, null);
                 if (ftText == null) {
                     ftText = "";
                 }

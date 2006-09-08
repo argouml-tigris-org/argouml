@@ -38,6 +38,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -68,7 +69,6 @@ import org.argouml.model.DiElement;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
@@ -76,6 +76,7 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -134,7 +135,8 @@ public abstract class FigEdgeModelElement
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    protected NotationProvider4 notationProviderName;
+    protected NotationProvider notationProviderName;
+    private HashMap npArguments = new HashMap();
 
     /**
      * The Fig that displays the name of this model element.
@@ -473,11 +475,16 @@ public abstract class FigEdgeModelElement
     
     /**
      * Get the Rectangle in which the model elements name is displayed
+     *
+     * @return the bounds of the namefig
      */
     public Rectangle getNameBounds() {
         return nameFig.getBounds();
     }
     
+    /**
+     * @return the text of the namefig
+     */
     public String getName() {
         return nameFig.getText();
     }
@@ -605,7 +612,7 @@ public abstract class FigEdgeModelElement
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp(notationProviderName.getParsingHelp());
-            ft.setText(notationProviderName.toString());
+            ft.setText(notationProviderName.toString(getOwner(), npArguments));
         }
     }
 
@@ -636,7 +643,8 @@ public abstract class FigEdgeModelElement
         if (ft == nameFig) {
             if (getOwner() == null)
                 return;
-            ft.setText(notationProviderName.parse(ft.getText()));
+            notationProviderName.parse(getOwner(), ft.getText());
+            ft.setText(notationProviderName.toString(getOwner(), npArguments));
         }
     }
 
@@ -769,7 +777,8 @@ public abstract class FigEdgeModelElement
             return;
         }
         if (notationProviderName != null) {
-            String nameStr = notationProviderName.toString();
+            String nameStr = notationProviderName.toString(
+                    getOwner(), npArguments);
             nameFig.setText(nameStr);
             calcBounds();
             setBounds(getBounds());
@@ -833,7 +842,6 @@ public abstract class FigEdgeModelElement
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_NAME, own);
-            notationProviderName.putValue("edge", Boolean.TRUE);
         }
     }
     
@@ -857,6 +865,7 @@ public abstract class FigEdgeModelElement
      * In this case, it IS imperative that all listeners get removed / added.
      * 
      * @param newOwner the new owner for the listeners
+     * @param oldOwner the previous owner
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner == newOwner) {
@@ -961,7 +970,7 @@ public abstract class FigEdgeModelElement
      * one Fig to another.
      * e.g. FigEdgeAssociationClass uses this to delegate the remove to
      * its attached FigAssociationClass.
-     * @return
+     * @return the fig handling the remove
      */
     protected Fig getRemoveDelegate() {
         return this;

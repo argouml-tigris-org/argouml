@@ -32,9 +32,7 @@ import org.argouml.model.Model;
  *
  * @author mvw@tigris.org
  */
-public abstract class StateBodyNotation extends ValueHandler {
-
-    protected Object myState;
+public abstract class StateBodyNotation extends NotationProvider {
 
     /**
      * The constructor.
@@ -45,7 +43,6 @@ public abstract class StateBodyNotation extends ValueHandler {
         if (!Model.getFacade().isAState(state)) {
             throw new IllegalArgumentException("This is not a State.");
         }
-        myState = state;
     }
 
 }

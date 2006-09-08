@@ -27,6 +27,7 @@ package org.argouml.uml.notation.uml;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
@@ -37,7 +38,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.MessageNotation;
 import org.argouml.util.MyTokenizer;
@@ -103,11 +103,11 @@ public class MessageNotationUml extends MessageNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseMessage(myMessage, text);
+            parseMessage(modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.message";
             Object[] args = {pe.getLocalizedMessage(),
@@ -115,30 +115,21 @@ public class MessageNotationUml extends MessageNotation {
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
         }
-        return toString();
     }
-    
+
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-message";
     }
 
     /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return generateMessage(myMessage);
-    }
-    
-    /**
      * Generates a textual description for a MMessage m.
-     *
-     * @param m A MMessage to generate a description for.
-     * @return A String suitable to show in a collaboration diagram.
+     * 
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    private String generateMessage(Object m) {
+    public String toString(Object modelElement, HashMap args) {
         Iterator it;
         Collection pre;
         Object act;
@@ -150,15 +141,15 @@ public class MessageNotationUml extends MessageNotation {
         String predecessors = "";
         int lpn;
 
-        if (m == null) {
+        if (modelElement == null) {
             return "";
         }
 
         ptr = new MsgPtr();
-        lpn = recCountPredecessors(m, ptr) + 1;
-        rt = Model.getFacade().getActivator(m);
+        lpn = recCountPredecessors(modelElement, ptr) + 1;
+        rt = Model.getFacade().getActivator(modelElement);
 
-        pre = Model.getFacade().getPredecessors(m);
+        pre = Model.getFacade().getPredecessors(modelElement);
         it = (pre != null) ? pre.iterator() : null;
         if (it != null && it.hasNext()) {
             MsgPtr ptr2 = new MsgPtr();
@@ -188,9 +179,9 @@ public class MessageNotationUml extends MessageNotation {
             }
         }
 
-        number = generateMessageNumber(m, ptr.message, lpn);
+        number = generateMessageNumber(modelElement, ptr.message, lpn);
 
-        act = Model.getFacade().getAction(m);
+        act = Model.getFacade().getAction(modelElement);
         if (act != null) {
             if (Model.getFacade().getRecurrence(act) != null) {
                 number =

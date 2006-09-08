@@ -35,10 +35,10 @@ import java.util.Iterator;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
+import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -50,7 +50,7 @@ import org.tigris.gef.presentation.FigText;
  * diagram.<p>
  *
  * Stereotype (if there is one) and name are displayed in the centre of the
- * box.<p>
+ * box.
  *
  * @author 10 Apr 2002. Jeremy Bennett (mail@jeremybennett.com). Modifications
  *         to ensure stereotypes are handled correctly.
@@ -60,11 +60,11 @@ import org.tigris.gef.presentation.FigText;
 public class FigClassifierRole extends FigNodeModelElement {
 
     /**
-     * The minimum padding top and bottom.<p>
+     * The minimum padding top and bottom.
      */
     private static final int PADDING = 5;
 
-    private NotationProvider4 notationProvider;
+    private NotationProvider notationProvider;
 
     /**
      * The fig that is used for the complete classifier role.
@@ -147,7 +147,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
 
     /**
-     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
@@ -380,7 +380,8 @@ public class FigClassifierRole extends FigNodeModelElement {
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig()) {
-            ft.setText(notationProvider.parse(ft.getText()));
+            notationProvider.parse(getOwner(), ft.getText());
+            ft.setText(notationProvider.toString(getOwner(), null));
         }
     }
 
@@ -400,7 +401,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      */
     protected void updateNameText() {
         if (notationProvider != null) {
-            getNameFig().setText(notationProvider.toString());
+            getNameFig().setText(notationProvider.toString(getOwner(), null));
         }
     }
 
@@ -416,9 +417,9 @@ public class FigClassifierRole extends FigNodeModelElement {
             damage();
         }
     }
-    
+
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
@@ -429,7 +430,8 @@ public class FigClassifierRole extends FigNodeModelElement {
          * that may change the text: 
          */
         if (newOwner != null) {
-            addElementListener(newOwner, new String[] {"name", "base", "remove"});
+            addElementListener(newOwner, 
+                    new String[] {"name", "base", "remove"});
             Collection bases = Model.getFacade().getBases(newOwner);
             Iterator i = bases.iterator();
             while (i.hasNext()) {

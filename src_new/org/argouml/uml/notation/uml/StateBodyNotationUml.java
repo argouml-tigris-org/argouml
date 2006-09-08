@@ -27,6 +27,7 @@ package org.argouml.uml.notation.uml;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -37,6 +38,8 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.StateBodyNotation;
 
 /**
+ * UML notation for the body of a state.
+ * 
  * @author mvw@tigris.org
  */
 public class StateBodyNotationUml extends StateBodyNotation {
@@ -51,11 +54,11 @@ public class StateBodyNotationUml extends StateBodyNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseStateBody(myState, text);
+            parseStateBody(modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.statebody";
             Object[] args = {
@@ -65,25 +68,24 @@ public class StateBodyNotationUml extends StateBodyNotation {
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
         }
-        return toString();
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-statebody";
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         StringBuffer s = new StringBuffer();
 
-        Object entryAction = Model.getFacade().getEntry(myState);
-        Object exitAction = Model.getFacade().getExit(myState);
-        Object doAction = Model.getFacade().getDoActivity(myState);
+        Object entryAction = Model.getFacade().getEntry(modelElement);
+        Object exitAction = Model.getFacade().getExit(modelElement);
+        Object doAction = Model.getFacade().getDoActivity(modelElement);
         if (entryAction != null) {
             String entryStr = generateAction(entryAction);
             s.append("entry /").append(entryStr);
@@ -104,7 +106,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
             s.append("exit /").append(exitStr);
         }
         Collection internaltrans =
-            Model.getFacade().getInternalTransitions(myState);
+            Model.getFacade().getInternalTransitions(modelElement);
         if (internaltrans != null) {
             Iterator iter = internaltrans.iterator();
             while (iter.hasNext()) {
@@ -113,7 +115,8 @@ public class StateBodyNotationUml extends StateBodyNotation {
                 }
                 Object trans = iter.next();
                 /* TODO: Is this a good way of handling nested notation? */
-                s.append((new TransitionNotationUml(trans)).toString());
+                s.append((new TransitionNotationUml(trans))
+                            .toString(trans, null));
             }
         }
         return s.toString();
@@ -515,7 +518,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
         return s + " (" + p + ")";
     }
 
-    public String generateExpression(Object expr) {
+    private String generateExpression(Object expr) {
         if (Model.getFacade().isAExpression(expr)) {
             return generateUninterpreted(
                     (String) Model.getFacade().getBody(expr));

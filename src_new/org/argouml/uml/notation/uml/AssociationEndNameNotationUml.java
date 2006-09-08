@@ -24,11 +24,18 @@
 
 package org.argouml.uml.notation.uml;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.ParseException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.AssociationEndNameNotation;
 import org.argouml.util.MyTokenizer;
@@ -50,18 +57,86 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#addListener(java.beans.PropertyChangeListener, java.lang.Object)
+     */
+    public void addListener(PropertyChangeListener listener, 
+            Object modelElement) {
+        Model.getPump().addModelEventListener(
+                listener, 
+                modelElement, 
+                new String[] {"name", "visibility", "stereotype"});
+        Collection st = Model.getFacade().getStereotypes(modelElement);
+        Iterator iter = st.iterator();
+        while (iter.hasNext()) {
+            Object o = iter.next();
+            Model.getPump().addModelEventListener(
+                    listener, 
+                    o, 
+                    new String[] {"name", "remove"});
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.notation.NotationProvider#removeListener(java.beans.PropertyChangeListener, java.lang.Object)
+     */
+    public void removeListener(PropertyChangeListener listener, 
+            Object modelElement) {
+        Model.getPump().removeModelEventListener(
+                listener, 
+                modelElement, 
+                new String[] {"name", "visibility", "stereotype"});
+        Collection st = Model.getFacade().getStereotypes(modelElement);
+        Iterator iter = st.iterator();
+        while (iter.hasNext()) {
+            Object o = iter.next();
+            Model.getPump().removeModelEventListener(
+                    listener, 
+                    o, 
+                    new String[] {"name", "remove"});
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.notation.NotationProvider#updateListener(java.beans.PropertyChangeListener, java.lang.Object, java.beans.PropertyChangeEvent)
+     */
+    public void updateListener(PropertyChangeListener listener, 
+            Object modelElement,
+            PropertyChangeEvent pce) {
+        Object obj = pce.getSource();
+        if ((obj == modelElement) 
+                && "stereotype".equals(pce.getPropertyName())) {
+            if (pce instanceof AddAssociationEvent 
+                    && Model.getFacade().isAStereotype(pce.getNewValue())) {
+                // new stereotype
+                Model.getPump().addModelEventListener(
+                        listener, 
+                        pce.getNewValue(), 
+                        new String[] {"name", "remove"});
+            }
+            if (pce instanceof RemoveAssociationEvent 
+                    && Model.getFacade().isAStereotype(pce.getOldValue())) {
+                // removed stereotype
+                Model.getPump().removeModelEventListener(
+                        listener, 
+                        pce.getOldValue(), 
+                        new String[] {"name", "remove"});
+            }
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-association-end-name";
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseAssociationEnd(myAssociationEnd, text);
+            parseAssociationEnd(modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.association-end-name";
             Object[] args = {
@@ -71,7 +146,6 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                 Translator.messageFormat(msg, args));
         }
-        return toString();
     }
 
     /**
@@ -160,15 +234,15 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
-        String name = Model.getFacade().getName(myAssociationEnd);
+    public String toString(Object modelElement, HashMap args) {
+        String name = Model.getFacade().getName(modelElement);
         if (name == null) {
             name = "";
         }
 
-        Object visi = Model.getFacade().getVisibility(myAssociationEnd);
+        Object visi = Model.getFacade().getVisibility(modelElement);
         String visibility = "";
         if (visi != null) {
             visibility = NotationUtilityUml.generateVisibility(visi);
@@ -179,9 +253,9 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
         }
 
         String stereoString = 
-            NotationUtilityUml.generateStereotype(myAssociationEnd);
+            NotationUtilityUml.generateStereotype(modelElement);
 
         return stereoString + visibility + name;
     }
-    
+
 }

@@ -25,6 +25,7 @@
 package org.argouml.uml.notation.uml;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -49,13 +50,13 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
     /**
      * Parse a line of the form: "name : base-node".
      *
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         // strip any trailing semi-colons
         String s = text.trim();
         if (s.length() == 0) {
-            return toString();
+            return;
         }
         if (s.charAt(s.length() - 1) == ';') {
             s = s.substring(0, s.length() - 2);
@@ -75,7 +76,7 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
         tokenizer = new StringTokenizer(bases, ",");
 
         Vector v = new Vector();
-        Object ns = Model.getFacade().getNamespace(myNodeInstance);
+        Object ns = Model.getFacade().getNamespace(modelElement);
         if (ns != null) {
             while (tokenizer.hasMoreElements()) {
                 String newBase = tokenizer.nextToken();
@@ -86,30 +87,28 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
             }
         }
 
-        Model.getCommonBehaviorHelper().setClassifiers(myNodeInstance, v);
-        Model.getCoreHelper().setName(myNodeInstance, name);
-
-        return toString();
+        Model.getCommonBehaviorHelper().setClassifiers(modelElement, v);
+        Model.getCoreHelper().setName(modelElement, name);
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-nodeinstance";
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         String nameStr = "";
-        if (Model.getFacade().getName(myNodeInstance) != null) {
-            nameStr = Model.getFacade().getName(myNodeInstance).trim();
+        if (Model.getFacade().getName(modelElement) != null) {
+            nameStr = Model.getFacade().getName(modelElement).trim();
         }
         // construct bases string (comma separated)
         String baseStr = "";
-        Collection col = Model.getFacade().getClassifiers(myNodeInstance);
+        Collection col = Model.getFacade().getClassifiers(modelElement);
         if (col != null && col.size() > 0) {
             Iterator it = col.iterator();
             baseStr = Model.getFacade().getName(it.next());

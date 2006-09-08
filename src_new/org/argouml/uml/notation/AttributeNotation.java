@@ -33,10 +33,7 @@ import org.argouml.model.Model;
  *
  * @author mvw@tigris.org
  */
-public abstract class AttributeNotation extends ValueHandler {
-
-    protected Object myAttribute;
-    protected Object myClass;
+public abstract class AttributeNotation extends NotationProvider {
 
     /**
      * The constructor.
@@ -47,8 +44,6 @@ public abstract class AttributeNotation extends ValueHandler {
         if (!Model.getFacade().isAAttribute(attribute)) {
             throw new IllegalArgumentException("This is not an Attribute.");
         }
-        myAttribute = attribute;
-        myClass = Model.getFacade().getOwner(attribute);
     }
 
 }

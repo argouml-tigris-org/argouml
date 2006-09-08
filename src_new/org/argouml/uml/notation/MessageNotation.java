@@ -33,21 +33,17 @@ import org.argouml.model.Model;
  * 
  * @author michiel
  */
-public abstract class MessageNotation extends ValueHandler {
-
-    /**
-     * The message we handle the notation of.
-     */
-    protected Object myMessage;
+public abstract class MessageNotation extends NotationProvider {
     
     /**
      * The constructor.
+     *
+     * @param message the UML element
      */
     public MessageNotation(Object message) {
         if (!Model.getFacade().isAMessage(message)) {
             throw new IllegalArgumentException("This is not an Message.");
         }
-        myMessage = message;
     }
 
 }

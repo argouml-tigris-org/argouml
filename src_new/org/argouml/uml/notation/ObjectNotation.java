@@ -33,18 +33,17 @@ import org.argouml.model.Model;
  *
  * @author mvw@tigris.org
  */
-public abstract class ObjectNotation extends ValueHandler {
-
-    protected Object myObject;
+public abstract class ObjectNotation extends NotationProvider {
 
     /**
      * The constructor.
+     *
+     * @param theObject the UML element
      */
     public ObjectNotation(Object theObject) {
         if (!Model.getFacade().isAObject(theObject)) {
             throw new IllegalArgumentException("This is not an Object.");
         }
-        myObject = theObject;
     }
 
 }

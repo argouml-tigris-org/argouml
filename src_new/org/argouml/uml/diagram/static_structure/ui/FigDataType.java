@@ -348,8 +348,10 @@ public class FigDataType extends FigClassifierBox {
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
-            ft.setText(highlightedFigText.getNotationProvider()
-                    .parse(ft.getText()));
+            highlightedFigText.getNotationProvider()
+                .parse(highlightedFigText.getOwner(), ft.getText());
+            ft.setText(highlightedFigText.getNotationProvider().toString(
+                highlightedFigText.getOwner(), null));
         }
     }
 

@@ -412,18 +412,22 @@ public class FigClass extends FigClassifierBox
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
-            
-            ft.setText(highlightedFigText.getNotationProvider()
-                    .parse(ft.getText()));
+
+            highlightedFigText.getNotationProvider()
+                .parse(highlightedFigText.getOwner(), ft.getText());
+            ft.setText(highlightedFigText.getNotationProvider().toString(
+                    highlightedFigText.getOwner(), null));
             return;
         }
         i = new Vector(getOperationsFig().getFigs()).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
-            
-            ft.setText(highlightedFigText.getNotationProvider()
-                    .parse(ft.getText()));
+
+            highlightedFigText.getNotationProvider()
+                .parse(highlightedFigText.getOwner(), ft.getText());
+            ft.setText(highlightedFigText.getNotationProvider().toString(
+                highlightedFigText.getOwner(), null));
             return;
         }
     }
@@ -760,7 +764,7 @@ public class FigClass extends FigClassifierBox
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {

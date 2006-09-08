@@ -33,10 +33,8 @@ import org.argouml.model.Model;
  * 
  * @author Michiel
  */
-public abstract class ObjectFlowStateStateNotation extends ValueHandler {
+public abstract class ObjectFlowStateStateNotation extends NotationProvider {
 
-    protected Object myObjectFlowState;
-    
     /**
      * The constructor.
      * 
@@ -44,9 +42,9 @@ public abstract class ObjectFlowStateStateNotation extends ValueHandler {
      */
     public ObjectFlowStateStateNotation(Object objectflowstate) {
         if (!Model.getFacade().isAObjectFlowState(objectflowstate)) {
-            throw new IllegalArgumentException("This is not a ObjectFlowState.");
+            throw new IllegalArgumentException(
+                    "This is not a ObjectFlowState.");
         }
-        myObjectFlowState = objectflowstate;
     }
 
 }

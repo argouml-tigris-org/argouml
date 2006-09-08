@@ -26,6 +26,7 @@ package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -61,11 +62,11 @@ public class CallStateNotationUml extends CallStateNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseCallState(myCallState, text);
+            parseCallState(modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.callstate";
             Object[] args = {pe.getLocalizedMessage(),
@@ -73,7 +74,6 @@ public class CallStateNotationUml extends CallStateNotation {
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
         }
-        return toString();
     }
 
     private Object parseCallState(Object callState, String s1)
@@ -103,7 +103,7 @@ public class CallStateNotationUml extends CallStateNotation {
         /* Secondly we check the previous model structure: */
         String oldOperationName = null;
         String oldClassName = null;
-        Object entry = Model.getFacade().getEntry(myCallState);
+        Object entry = Model.getFacade().getEntry(callState);
         Object operation = null;
         Object clazz = null;
         if (Model.getFacade().isACallAction(entry)) {
@@ -171,14 +171,17 @@ public class CallStateNotationUml extends CallStateNotation {
                     Object op = io.next();
                     if (newOperationName.equals(
                             Model.getFacade().getName(op))) {
-                        /* Here we located the new classifier with its operation. */
+                        /* Here we located the new classifier 
+                         * with its operation. */
                         found = true;
                         if (!Model.getFacade().isACallAction(entry)) {
                             entry = Model.getCommonBehaviorFactory()
                                 .buildCallAction(op, "ca");
-                            Model.getStateMachinesHelper().setEntry(myCallState, entry);
+                            Model.getStateMachinesHelper().setEntry(
+                                    callState, entry);
                         } else {
-                            Model.getCommonBehaviorHelper().setOperation(entry, op);
+                            Model.getCommonBehaviorHelper().setOperation(
+                                    entry, op);
                         }
                         break;
                     }
@@ -199,18 +202,18 @@ public class CallStateNotationUml extends CallStateNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-callstate";
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         String ret = "";
-        Object action = Model.getFacade().getEntry(myCallState);
+        Object action = Model.getFacade().getEntry(modelElement);
         if (Model.getFacade().isACallAction(action)) {
             Object operation = Model.getFacade().getOperation(action);
             if (operation != null) {

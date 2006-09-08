@@ -32,18 +32,17 @@ import org.argouml.model.Model;
  *
  * @author mvw@tigris.org
  */
-public abstract class TransitionNotation extends ValueHandler {
-
-    protected Object myTransition;
+public abstract class TransitionNotation extends NotationProvider {
 
     /**
      * The constructor.
+     *
+     * @param transition the UML element
      */
     public TransitionNotation(Object transition) {
         if (!Model.getFacade().isATransition(transition)) {
             throw new IllegalArgumentException("This is not a Transition.");
         }
-        myTransition = transition;
     }
 
 }

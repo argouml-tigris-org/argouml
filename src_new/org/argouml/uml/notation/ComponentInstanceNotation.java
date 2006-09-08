@@ -33,9 +33,7 @@ import org.argouml.model.Model;
  *
  * @author mvw@tigris.org
  */
-public abstract class ComponentInstanceNotation extends ValueHandler {
-
-    protected Object myComponentInstance;
+public abstract class ComponentInstanceNotation extends NotationProvider {
 
     /**
      * The constructor.
@@ -48,7 +46,6 @@ public abstract class ComponentInstanceNotation extends ValueHandler {
             throw new IllegalArgumentException(
                     "This is not a ComponentInstance.");
         }
-        myComponentInstance = componentInstance;
     }
 
 }

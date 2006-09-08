@@ -24,6 +24,7 @@
 
 package org.argouml.uml.notation.uml;
 
+import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -47,19 +48,19 @@ public class ObjectNotationUml extends ObjectNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-object";
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         String s = text.trim();
         if (s.length() == 0) {
-            return toString();
+            return;
         }
         // strip any trailing semi-colons
         if (s.charAt(s.length() - 1) == ';') {
@@ -78,36 +79,38 @@ public class ObjectNotationUml extends ObjectNotation {
             name = s;
         }
 
-        Model.getCommonBehaviorHelper().setClassifiers(myObject, new Vector());
+        Model.getCommonBehaviorHelper().setClassifiers(modelElement, 
+                new Vector());
         if (baseTokens != null) {
             while (baseTokens.hasMoreElements()) {
                 String typeString = baseTokens.nextToken();
                 Object type =
                 /* (MClassifier) */ProjectManager.getManager()
                         .getCurrentProject().findType(typeString);
-                Model.getCommonBehaviorHelper().addClassifier(myObject, type);
+                Model.getCommonBehaviorHelper().addClassifier(modelElement, 
+                        type);
             }
         }
         /* This updates the diagram - hence as last statement: */
-        Model.getCoreHelper().setName(myObject, name);
-        return toString();
+        Model.getCoreHelper().setName(modelElement, name);
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         String nameStr = "";
-        if (Model.getFacade().getName(myObject) != null) {
-            nameStr = Model.getFacade().getName(myObject).trim();
+        if (Model.getFacade().getName(modelElement) != null) {
+            nameStr = Model.getFacade().getName(modelElement).trim();
         }
 
-        Vector bases = new Vector(Model.getFacade().getClassifiers(myObject));
+        Vector bases = new Vector(
+                Model.getFacade().getClassifiers(modelElement));
 
         String baseString = "";
 
-        if (Model.getFacade().getClassifiers(myObject) != null
-                && Model.getFacade().getClassifiers(myObject).size() > 0) {
+        if (Model.getFacade().getClassifiers(modelElement) != null
+                && Model.getFacade().getClassifiers(modelElement).size() > 0) {
 
             baseString += Model.getFacade().getName(bases.elementAt(0));
             for (int i = 1; i < bases.size(); i++) {

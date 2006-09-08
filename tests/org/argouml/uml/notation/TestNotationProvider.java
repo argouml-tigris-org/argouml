@@ -1,4 +1,4 @@
-// $Id$
+// $Id $
 // Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,51 +24,65 @@
 
 package org.argouml.uml.notation;
 
+import java.util.HashMap;
+
 import junit.framework.TestCase;
 
 /**
  * @author Michiel
  */
-public class TestValueHandler extends TestCase {
+public class TestNotationProvider extends TestCase {
 
-    public void testValueHandler() {
-        ValueHandler vh = new ValueHandlerImpl();
-        vh.putValue("testBoolTrue", true);
-        vh.putValue("testBoolFalse", false);
-        Object a = new Object();
-        Object b = new Object();
-        vh.putValue("testObject1", a);
-        vh.putValue("testObject2", b);
-        vh.putValue("testObject1", null);
-        
-        assertTrue("Test boolean true", vh.isValue("testBoolTrue"));
-        assertTrue("Test boolean false", !vh.isValue("testBoolFalse"));
-
-        assertTrue("Test nonexisting key", !vh.isValue("non-existing"));
-        assertTrue("Test non-boolean value retrieved with isValue", 
-                !vh.isValue("testObject2"));
-        
-        assertTrue("Test object retrieval", vh.getValue("testObject2") == b);
-        assertTrue("Test object removal", null == vh.getValue("testObject1"));
-        
-        assertTrue("Test boolean retrieval", 
-                vh.getValue("testBoolTrue") instanceof Boolean);
+    /**
+     * Test the existence of the 
+     * toString(Object modelElement, HashMap args) method.
+     * TODO: Need to find a more usefull test.
+     */
+    public void testToString() {
+        NotationProvider np = new NPImpl();
+        HashMap args = new HashMap();
+        args.put("b", "c");
+        assertTrue("Test toString()", "a1".equals(np.toString("a", args)));
+        args.put("d", "e");
+        assertTrue("Test toString()", "f2".equals(np.toString("f", args)));
+    }
+    
+    /**
+     * Test the isValue utility function.
+     */
+    public void testIsValue() {
+        HashMap args = new HashMap();
+        args.put("not a boolean", "c");
+        args.put("true", Boolean.TRUE);
+        args.put("false", Boolean.FALSE);
+        args.put("null", null);
+        assertTrue("Not a boolean", 
+                !NotationProvider.isValue("not a boolean", args));
+        assertTrue("Finding true", 
+                NotationProvider.isValue("true", args));
+        assertTrue("Finding false", 
+                !NotationProvider.isValue("false", args));
+        assertTrue("Finding null", 
+                !NotationProvider.isValue("null", args));
+        assertTrue("Not encountered", 
+                !NotationProvider.isValue("xyz", args));
     }
 
-    private class ValueHandlerImpl extends ValueHandler {
+    private class NPImpl extends NotationProvider {
 
         /**
-         * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+         * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
          */
         public String getParsingHelp() {
             return null;
         }
 
-        /**
-         * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
-         */
-        public String parse(String text) {
-            return null;
+        public String toString(Object modelElement, HashMap args) {
+            return modelElement.toString() + args.size();
+        }
+
+        public void parse(Object modelElement, String text) {
+
         }
         
     }
