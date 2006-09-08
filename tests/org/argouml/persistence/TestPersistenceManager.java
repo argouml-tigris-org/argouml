@@ -97,13 +97,5 @@ public class TestPersistenceManager extends TestCase {
                 "foo."
                 + new ZargoFilePersister().getExtension())));
         
-        chooser.resetChoosableFileFilters();
-        persistence.setSaveFileChooserFilters(chooser, 
-                "foo." + new UmlFilePersister().getExtension());
-        defaultFileFilter = chooser.getFileFilter();
-        assertNotNull(defaultFileFilter);
-        assertTrue(defaultFileFilter.accept(new File(
-                "others_foo." 
-                + new UmlFilePersister().getExtension())));        
     }
 }
