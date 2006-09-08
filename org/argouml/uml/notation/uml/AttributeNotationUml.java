@@ -26,6 +26,7 @@ package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
@@ -63,12 +64,12 @@ public class AttributeNotationUml extends AttributeNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseAttributeFig(Model.getFacade().getOwner(myAttribute), 
-                    myAttribute, text);
+            parseAttributeFig(Model.getFacade().getOwner(modelElement), 
+                    modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.attribute";
             Object[] args = {
@@ -78,7 +79,6 @@ public class AttributeNotationUml extends AttributeNotation {
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
         }
-        return toString();
     }
 
     /**
@@ -458,9 +458,8 @@ public class AttributeNotationUml extends AttributeNotation {
         NotationUtilityUml.dealWithStereotypes(attribute, stereotype, true);
     }
 
-
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.attribute";
@@ -474,37 +473,37 @@ public class AttributeNotationUml extends AttributeNotation {
      * Depending on settings in Notation, visibility, multiplicity,
      * type-expression, initial value and properties are shown/not shown.
      * 
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
         
-        String visibility = NotationUtilityUml.generateVisibility(myAttribute);
+        String visibility = NotationUtilityUml.generateVisibility(modelElement);
         // generateStereotype accepts a collection, despite its name
         String stereo = NotationUtilityUml.generateStereotype(
-                Model.getFacade().getStereotypes(myAttribute));
-        String name = Model.getFacade().getName(myAttribute);
+                Model.getFacade().getStereotypes(modelElement));
+        String name = Model.getFacade().getName(modelElement);
         String multiplicity = generateMultiplicity(
-                Model.getFacade().getMultiplicity(myAttribute));
+                Model.getFacade().getMultiplicity(modelElement));
         String type = ""; // fix for loading bad projects
-        if (Model.getFacade().getType(myAttribute) != null) {
+        if (Model.getFacade().getType(modelElement) != null) {
             type = Model.getFacade().getName(
-                    Model.getFacade().getType(myAttribute));
+                    Model.getFacade().getType(modelElement));
         }
         String initialValue = "";
-        if (Model.getFacade().getInitialValue(myAttribute) != null) {
+        if (Model.getFacade().getInitialValue(modelElement) != null) {
             initialValue =
                 (String) Model.getFacade().getBody(
-                        Model.getFacade().getInitialValue(myAttribute));
+                        Model.getFacade().getInitialValue(modelElement));
         }
         String changeableKind = "";
-        if (Model.getFacade().getChangeability(myAttribute) != null) {
+        if (Model.getFacade().getChangeability(modelElement) != null) {
             if (Model.getChangeableKind().getFrozen().equals(
-                    Model.getFacade().getChangeability(myAttribute))) {
+                    Model.getFacade().getChangeability(modelElement))) {
                 changeableKind = "frozen";
             } else if (Model.getChangeableKind().getAddOnly().equals(
-                    Model.getFacade().getChangeability(myAttribute))) {
+                    Model.getFacade().getChangeability(modelElement))) {
                 changeableKind = "addOnly";
             }
         }

@@ -26,6 +26,7 @@ package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -51,11 +52,11 @@ public class TransitionNotationUml extends TransitionNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseTransition(myTransition, text);
+            parseTransition(modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.transition";
             Object[] args = {
@@ -65,7 +66,6 @@ public class TransitionNotationUml extends TransitionNotation {
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
         }
-        return toString();
     }
 
     /**
@@ -160,6 +160,7 @@ public class TransitionNotationUml extends TransitionNotation {
      *
      * @param trans the transition which is triggered by the given event
      * @param trigger the given trigger
+     * @throws ParseException
      */
     private void parseTrigger(Object trans, String trigger)
         throws ParseException {
@@ -279,7 +280,7 @@ public class TransitionNotationUml extends TransitionNotation {
         } else {
             // case 3 and 4
             if (evt == null) {
-                // case 3
+                /* case 3 */;
             } else {
                 // case 4
                 delete(evt); // erase it
@@ -350,7 +351,7 @@ public class TransitionNotationUml extends TransitionNotation {
             }
         } else {
             if (g == null) {
-                // case 3
+                /* case 3 */;
             } else {
                 // case 4
                 delete(g); // erase it
@@ -425,19 +426,19 @@ public class TransitionNotationUml extends TransitionNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-transition";
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
-        Object trigger = Model.getFacade().getTrigger(myTransition);
-    	Object guard = Model.getFacade().getGuard(myTransition);
-        Object effect = Model.getFacade().getEffect(myTransition);
+    public String toString(Object modelElement, HashMap args) {
+        Object trigger = Model.getFacade().getTrigger(modelElement);
+    	Object guard = Model.getFacade().getGuard(modelElement);
+        Object effect = Model.getFacade().getEffect(modelElement);
         String t = generateEvent(trigger);
         String g = generateGuard(guard);
         String e = generateAction(effect);
@@ -455,8 +456,6 @@ public class TransitionNotationUml extends TransitionNotation {
      *
      * @param m Object of any MEvent kind
      * @return the string representing the event
-     *
-     * @see org.argouml.notation.NotationProvider2#generateEvent(java.lang.Object)
      */
     private String generateEvent(Object m) {
         if (m == null) {
@@ -482,9 +481,6 @@ public class TransitionNotationUml extends TransitionNotation {
         return event.toString();
     }
 
-    /**
-     * @see org.argouml.notation.NotationProvider2#generateGuard(java.lang.Object)
-     */
     private String generateGuard(Object m) {
         if (m != null) {
             if (Model.getFacade().getExpression(m) != null) {
@@ -494,6 +490,10 @@ public class TransitionNotationUml extends TransitionNotation {
         return "";
     }
 
+    /**
+     * @param m the action
+     * @return the generated text
+     */
     public String generateAction(Object m) {
         Collection c;
         Iterator it;
@@ -593,7 +593,8 @@ public class TransitionNotationUml extends TransitionNotation {
      *
      * kind name : type-expression = default-value
      *
-     * @see org.argouml.notation.NotationProvider2#generateParameter(java.lang.Object)
+     * @param parameter the parameter
+     * @return the generated text
      */
     public String generateParameter(Object parameter) {
         StringBuffer s = new StringBuffer();
@@ -633,7 +634,10 @@ public class TransitionNotationUml extends TransitionNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateClassifierRef(Object)
+     * Generate the type of a parameter, i.e. a reference to a classifier.
+     * 
+     * @param cls the classifier
+     * @return the generated text
      */
     private String generateClassifierRef(Object cls) {
         if (cls == null) {

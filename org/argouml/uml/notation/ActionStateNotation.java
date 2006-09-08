@@ -33,18 +33,17 @@ import org.argouml.model.Model;
  *
  * @author mvw@tigris.org
  */
-public abstract class ActionStateNotation extends ValueHandler {
-
-    protected Object myActionState;
+public abstract class ActionStateNotation extends NotationProvider {
 
     /**
      * The constructor.
+     *
+     * @param actionState the uml element
      */
     public ActionStateNotation(Object actionState) {
         if (!Model.getFacade().isAActionState(actionState)) {
             throw new IllegalArgumentException("This is not an ActionState.");
         }
-        myActionState = actionState;
     }
 
 }

@@ -27,6 +27,7 @@ package org.argouml.uml.notation.uml;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -37,8 +38,9 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.ObjectFlowStateStateNotation;
 
 /**
+ * Notation for the State of an ObjectFlowState.
+ * 
  * @author Michiel
- *
  */
 public class ObjectFlowStateStateNotationUml extends
         ObjectFlowStateStateNotation {
@@ -54,18 +56,18 @@ public class ObjectFlowStateStateNotationUml extends
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-objectflowstate2";
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseObjectFlowState2(myObjectFlowState, text);
+            parseObjectFlowState2(modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.objectflowstate";
             Object[] args = {pe.getLocalizedMessage(),
@@ -73,7 +75,6 @@ public class ObjectFlowStateStateNotationUml extends
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
         }
-        return toString();
     }
 
     /**
@@ -189,7 +190,7 @@ public class ObjectFlowStateStateNotationUml extends
                 Object cis =
                     Model.getActivityGraphsFactory()
                         .buildClassifierInState(c, statesToBeAdded);
-                Model.getCoreHelper().setType(myObjectFlowState, cis);
+                Model.getCoreHelper().setType(objectFlowState, cis);
                 // the model is changed - our job is done
             }
         } else {
@@ -217,11 +218,11 @@ public class ObjectFlowStateStateNotationUml extends
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         StringBuffer theNewText = new StringBuffer("");
-        Object cis = Model.getFacade().getType(myObjectFlowState);
+        Object cis = Model.getFacade().getType(modelElement);
         if (Model.getFacade().isAClassifierInState(cis)) {
             theNewText.append("[ ");
             Collection states = Model.getFacade().getInStates(cis);

@@ -26,6 +26,7 @@ package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.argouml.i18n.Translator;
@@ -51,18 +52,18 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-association-role";
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseRole(myAssociationRole, text);
+            parseRole(modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.association-end-name";
             Object[] args = {
@@ -72,8 +73,6 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                 Translator.messageFormat(msg, args));
         }
-        return toString();
-
     }
 
     /**
@@ -100,7 +99,7 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
         while (st.hasMoreTokens()) {
             token = st.nextToken();
             if (" ".equals(token) || "\t".equals(token)) {
-                /* Do nothing. */
+                /* Do nothing. */;
             } else if ("/".equals(token)) {
                 hasSlash = true;
                 hasColon = false;
@@ -120,13 +119,14 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
             } else if (hasSlash) {
                 if (rolestr != null) {
                     String msg = 
-                		"parsing.error.association-role.association-extra-text";
+                        "parsing.error.association-role.association-extra-text";
                     throw new ParseException(Translator.localize(msg), st
                                     .getTokenIndex());
                 }
                 rolestr = token;
             } else {
-            	String msg = "parsing.error.association-role.association-extra-text";
+            	String msg = 
+                    "parsing.error.association-role.association-extra-text";
                 throw new ParseException(Translator.localize(msg), 
                 		st.getTokenIndex());
             }
@@ -185,16 +185,16 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
      * Remark: 
      * So, if both names are empty, then nothing is shown! 
      * See issue 2712.
-     *  
-     * @see java.lang.Object#toString()
+     * 
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         //get the associationRole name
-        String name = Model.getFacade().getName(myAssociationRole);
+        String name = Model.getFacade().getName(modelElement);
         if (name == null) name = "";
         if (name.length() > 0) name = "/" + name;
         //get the base association name
-        Object assoc = Model.getFacade().getBase(myAssociationRole);
+        Object assoc = Model.getFacade().getBase(modelElement);
         if (assoc != null) {
             String baseName = Model.getFacade().getName(assoc);
             if (baseName != null && baseName.length() > 0) {

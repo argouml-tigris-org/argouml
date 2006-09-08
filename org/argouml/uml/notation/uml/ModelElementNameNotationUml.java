@@ -26,6 +26,7 @@ package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Stack;
@@ -52,6 +53,8 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
 
     /**
      * The constructor.
+     *
+     * @param name the uml object
      */
     public ModelElementNameNotationUml(Object name) {
         super(name);
@@ -62,11 +65,11 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
      * the stereotype, visibility and name,
      * and assigns the properties to the passed MModelElement.
      *
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseModelElement(myModelElement, text);
+            parseModelElement(modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.node-modelelement";
             Object[] args = {
@@ -76,45 +79,39 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                 Translator.messageFormat(msg, args));
         }
-        return toString();
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
-        if (Model.getFacade().isAStateVertex(myModelElement)) {
-            return "parsing.help.fig-statename";
-        }
-        if (Model.getFacade().isAUseCase(myModelElement)) {
-            return "parsing.help.fig-usecase";
-        }
-        Boolean b = (Boolean) getValue("edge");
-        if (b != null && b.booleanValue()) {
-            return "parsing.help.fig-edgemodelelement";
-        }
         return "parsing.help.fig-nodemodelelement";
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
-        String name = Model.getFacade().getName(myModelElement);
+    public String toString(Object modelElement, HashMap args) {
+        String name = Model.getFacade().getName(modelElement);
         StringBuffer sb = new StringBuffer("");
-        if (isValue("fullyHandleStereotypes")) {
-            sb.append(generateStereotypes());
+        if (isValue("fullyHandleStereotypes", args)) {
+            sb.append(generateStereotypes(modelElement, args));
         }
-        sb.append(generateVisibility());
-        sb.append(generatePath());
+        sb.append(generateVisibility(modelElement, args));
+        sb.append(generatePath(modelElement, args));
         if (name != null) {
             sb.append(name);
         }
         return sb.toString();
     }
 
-    protected String generateStereotypes() {
-        Collection c = Model.getFacade().getStereotypes(myModelElement);
+    /**
+     * @param modelElement the UML element to generate for
+     * @param args arguments that influence the generation
+     * @return a string which represents the stereotypes
+     */
+    protected String generateStereotypes(Object modelElement, HashMap args) {
+        Collection c = Model.getFacade().getStereotypes(modelElement);
         StringBuffer sb = new StringBuffer(50);
         Iterator i = c.iterator();
         boolean first = true;
@@ -137,13 +134,14 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
     }
 
     /**
-     *
+     * @param modelElement the UML element to generate for
+     * @param args arguments that influence the generation
      * @return a string which represents the path
      */
-    protected String generatePath() {
+    protected String generatePath(Object modelElement, HashMap args) {
         String s = "";
-        if (isValue("pathVisible")) {
-            Object p = myModelElement;
+        if (isValue("pathVisible", args)) {
+            Object p = modelElement;
             Stack stack = new Stack();
             Object ns = Model.getFacade().getNamespace(p);
             while (ns != null && !Model.getFacade().isAModel(ns)) {
@@ -162,12 +160,14 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
     }
 
     /**
+     * @param modelElement the UML element to generate for
+     * @param args arguments that influence the generation
      * @return a string representing the visibility
      */
-    protected String generateVisibility() {
+    protected String generateVisibility(Object modelElement, HashMap args) {
         String s = "";
-        if (isValue("visibilityVisible")) {
-            Object v = Model.getFacade().getVisibility(myModelElement);
+        if (isValue("visibilityVisible", args)) {
+            Object v = Model.getFacade().getVisibility(modelElement);
             if (v == null) {
                 /* Initially, the visibility is not set in the model.
                  * Still, we want to show the default, i.e. public.
@@ -266,7 +266,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
 
         if (path != null && (name == null || "".equals(name))) {
             String msg = "parsing.error.model-element-name.must-end-with-name";
-			throw new ParseException(Translator.localize(msg), 0);
+            throw new ParseException(Translator.localize(msg), 0);
         }
 
         if (name != null && name.startsWith("+")) {
@@ -293,8 +293,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             Model.getCoreHelper().setName(me, name);
         }
 
-        NotationUtilityUml.dealWithStereotypes(me, stereotype,
-                isValue("fullyHandleStereotypes"));
+        NotationUtilityUml.dealWithStereotypes(me, stereotype, false);
 
         if (path != null) {
             Object nspe =

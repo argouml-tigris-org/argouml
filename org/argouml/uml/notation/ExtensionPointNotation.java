@@ -33,12 +33,7 @@ import org.argouml.model.Model;
  * 
  * @author michiel
  */
-public abstract class ExtensionPointNotation extends ValueHandler {
-
-    /**
-     * The Extension Point.
-     */
-    protected Object myEP;
+public abstract class ExtensionPointNotation extends NotationProvider {
 
     /**
      * The constructor.
@@ -50,7 +45,6 @@ public abstract class ExtensionPointNotation extends ValueHandler {
             throw new IllegalArgumentException(
                     "This is not an ExtensionPoint.");
         }
-        myEP = ep;
     }
 
 }

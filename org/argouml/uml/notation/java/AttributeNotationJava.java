@@ -24,6 +24,8 @@
 
 package org.argouml.uml.notation.java;
 
+import java.util.HashMap;
+
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.AttributeNotation;
@@ -43,7 +45,7 @@ public class AttributeNotationJava extends AttributeNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
 //        return "parsing.java.help.attribute";
@@ -51,24 +53,23 @@ public class AttributeNotationJava extends AttributeNotation {
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         ProjectBrowser.getInstance().getStatusBar().showStatus(
             "Parsing in Java not yet supported");
-        return toString();
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         StringBuffer sb = new StringBuffer(80);
-        sb.append(NotationUtilityJava.generateVisibility(myAttribute));
-        sb.append(NotationUtilityJava.generateScope(myAttribute));
-        sb.append(NotationUtilityJava.generateChangeability(myAttribute));
-        Object type = Model.getFacade().getType(myAttribute);
-        Object multi = Model.getFacade().getMultiplicity(myAttribute);
+        sb.append(NotationUtilityJava.generateVisibility(modelElement));
+        sb.append(NotationUtilityJava.generateScope(modelElement));
+        sb.append(NotationUtilityJava.generateChangeability(modelElement));
+        Object type = Model.getFacade().getType(modelElement);
+        Object multi = Model.getFacade().getMultiplicity(modelElement);
         // handle multiplicity here since we need the type
         // actually the API of generator is buggy since to generate
         // multiplicity correctly we need the attribute too
@@ -84,8 +85,8 @@ public class AttributeNotationJava extends AttributeNotation {
             }
         }
 
-        sb.append(Model.getFacade().getName(myAttribute));
-        Object init = Model.getFacade().getInitialValue(myAttribute);
+        sb.append(Model.getFacade().getName(modelElement));
+        Object init = Model.getFacade().getInitialValue(modelElement);
         if (init != null) {
             String initStr = 
                 NotationUtilityJava.generateExpression(init).trim();

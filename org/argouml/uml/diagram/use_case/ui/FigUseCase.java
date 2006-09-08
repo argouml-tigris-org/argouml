@@ -44,7 +44,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -54,6 +53,7 @@ import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -1041,7 +1041,8 @@ public class FigUseCase extends FigNodeModelElement
 
         // Parse the text
         CompartmentFigText hlft = (CompartmentFigText) ft;
-        ft.setText(hlft.getNotationProvider().parse(ft.getText()));
+        hlft.getNotationProvider().parse(hlft.getOwner(), ft.getText());
+        ft.setText(hlft.getNotationProvider().toString(hlft.getOwner(), null));
     }
 
     /**
@@ -1141,7 +1142,7 @@ public class FigUseCase extends FigNodeModelElement
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
@@ -1241,7 +1242,7 @@ public class FigUseCase extends FigNodeModelElement
                 // If we don't have a fig for this EP, we'll need to add
                 // one. We set the bounds, but they will be reset later.
                 if (epFig == null) {
-                    NotationProvider4 np = 
+                    NotationProvider np = 
                         NotationProviderFactory2.getInstance()
                             .getNotationProvider(
                                 NotationProviderFactory2.TYPE_EXTENSION_POINT, 
@@ -1270,7 +1271,7 @@ public class FigUseCase extends FigNodeModelElement
 
                 // Now put the text in
                 // We must handle the case where the text is null
-                String epText = epFig.getNotationProvider().toString();
+                String epText = epFig.getNotationProvider().toString(ep, null);
                 if (epText == null) {
                     epText = "";
                 }

@@ -33,18 +33,17 @@ import org.argouml.model.Model;
  *
  * @author mvw@tigris.org
  */
-public abstract class CallStateNotation extends ValueHandler {
-
-    protected Object myCallState;
+public abstract class CallStateNotation extends NotationProvider {
 
     /**
      * The constructor.
+     *
+     * @param callState the UML element
      */
     public CallStateNotation(Object callState) {
         if (!Model.getFacade().isACallState(callState)) {
             throw new IllegalArgumentException("This is not an CallState.");
         }
-        myCallState = callState;
     }
 
 }

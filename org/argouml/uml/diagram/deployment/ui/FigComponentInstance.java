@@ -38,10 +38,10 @@ import java.util.List;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -70,7 +70,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     private FigRect upperRect;
     private FigRect lowerRect;
 
-    private NotationProvider4 notationProvider;
+    private NotationProvider notationProvider;
 
     /**
      * Constructor.
@@ -159,7 +159,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
@@ -340,7 +340,8 @@ public class FigComponentInstance extends FigNodeModelElement {
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig()) {
-            ft.setText(notationProvider.parse(ft.getText()));
+            notationProvider.parse(getOwner(), ft.getText());
+            ft.setText(notationProvider.toString(getOwner(), null));
         }
     }
 
@@ -365,7 +366,7 @@ public class FigComponentInstance extends FigNodeModelElement {
      */
     protected void updateNameText() {
         if (isReadyToEdit()) {
-            getNameFig().setText(notationProvider.toString());
+            getNameFig().setText(notationProvider.toString(getOwner(), null));
         }
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);

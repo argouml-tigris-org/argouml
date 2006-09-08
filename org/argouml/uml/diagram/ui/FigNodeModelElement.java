@@ -46,6 +46,7 @@ import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -74,7 +75,6 @@ import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
@@ -82,6 +82,7 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -127,7 +128,8 @@ public abstract class FigNodeModelElement
     private static final Font LABEL_FONT;
     private static final Font ITALIC_LABEL_FONT;
 
-    protected NotationProvider4 notationProviderName;
+    protected NotationProvider notationProviderName;
+    protected HashMap npArguments = new HashMap();
     
     /**
      * True of a subclass of FigNodeModelElement is allowed to be
@@ -972,16 +974,16 @@ public abstract class FigNodeModelElement
      *
      * It is also possible to alter the text to be edited
      * already here, e.g. by adding the stereotype in front of the name,
-     * by calling 
-     * <code>notationProviderName.putValue("fullyHandleStereotypes", 
-     * true);</code>, but that seems not user-friendly. See issue 3838.
+     * by adding ["fullyHandleStereotypes", true] in the arguments 
+     * HashMap of the NotationProvider.toString() function, 
+     * but that seems not user-friendly. See issue 3838.
      *
      * @param ft the FigText that will be edited and contains the start-text
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp(notationProviderName.getParsingHelp());
-            ft.setText(notationProviderName.toString());
+            ft.setText(notationProviderName.toString(getOwner(), npArguments));
         }
     }
 
@@ -1016,7 +1018,8 @@ public abstract class FigNodeModelElement
             if (getOwner() == null) {
                 return;
             }
-            ft.setText(notationProviderName.parse(ft.getText()));
+            notationProviderName.parse(getOwner(), ft.getText());
+            ft.setText(notationProviderName.toString(getOwner(), npArguments));
         }
     }
 
@@ -1267,8 +1270,7 @@ public abstract class FigNodeModelElement
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_NAME, own);
-            notationProviderName.putValue(
-                    "pathVisible", Boolean.valueOf(isPathVisible()));
+            npArguments.put("pathVisible", Boolean.valueOf(isPathVisible()));
         }
     }
 
@@ -1300,7 +1302,8 @@ public abstract class FigNodeModelElement
                 return;
             }
             if (notationProviderName != null) {
-                nameFig.setText(notationProviderName.toString());
+                nameFig.setText(notationProviderName.toString(
+                        getOwner(), npArguments));
                 updateBounds();
             }
         }
@@ -1323,7 +1326,7 @@ public abstract class FigNodeModelElement
         MutableGraphSupport.enableSaveAction();
         pathVisible = visible;
         if (notationProviderName != null) {
-            notationProviderName.putValue("pathVisible", Boolean.valueOf(visible));
+            npArguments.put("pathVisible", Boolean.valueOf(visible));
         }
         if (readyToEdit) {
             renderingChanged();
@@ -1337,10 +1340,10 @@ public abstract class FigNodeModelElement
      * visibility.
      */
     public String classNameAndBounds() {
-        return getClass().getName() +
-            "[" + getX() + ", " + getY() + ", " +
-            getWidth() + ", " + getHeight() + "]" +
-            "pathVisible=" + isPathVisible() + ";";
+        return getClass().getName()
+            + "[" + getX() + ", " + getY() + ", "
+            + getWidth() + ", " + getHeight() + "]"
+            + "pathVisible=" + isPathVisible() + ";";
     }
 
     /**
@@ -1371,6 +1374,7 @@ public abstract class FigNodeModelElement
      *          The former means that listeners have to be removed, 
      *          the latter that they have to be set.
      *          TODO: Should this not be boolean, to clarify?
+     * @param oldOwner the previous owner
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner == newOwner) {
@@ -1500,12 +1504,12 @@ public abstract class FigNodeModelElement
     /**
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
-    final public void removeFromDiagram() {
+    public final void removeFromDiagram() {
         Fig delegate = getRemoveDelegate();
         if (delegate instanceof FigNodeModelElement) {
-            ((FigNodeModelElement)delegate).removeFromDiagramImpl();
+            ((FigNodeModelElement) delegate).removeFromDiagramImpl();
         } else if (delegate instanceof FigEdgeModelElement) {
-            ((FigEdgeModelElement)delegate).removeFromDiagramImpl();
+            ((FigEdgeModelElement) delegate).removeFromDiagramImpl();
         } else if (delegate != null) {
             removeFromDiagramImpl();
         }
@@ -1516,7 +1520,7 @@ public abstract class FigNodeModelElement
      * one Fig to another.
      * e.g. FigClassAssociationClass uses this to delegate the remove to
      * its attached FigAssociationClass.
-     * @return
+     * @return the fig that handles the remove request
      */
     protected Fig getRemoveDelegate() {
         return this;
@@ -1643,7 +1647,8 @@ public abstract class FigNodeModelElement
     
     public void setVisible(boolean visible) {
         if (!visible && !invisibleAllowed) {
-            throw new IllegalArgumentException("Visibility of a FigNode should never be false");
+            throw new IllegalArgumentException(
+                    "Visibility of a FigNode should never be false");
         }
     }
 
@@ -1718,10 +1723,10 @@ public abstract class FigNodeModelElement
      * Should a subclass of FigNodeModelElement not desire this behaviour
      * then it should call setEditable(false) in its constructor.
      * 
-     * @param editable new state, false = editing disabled.
+     * @param canEdit new state, false = editing disabled.
      */
-    protected void setEditable(boolean editable) {
-        this.editable = editable;
+    protected void setEditable(boolean canEdit) {
+        this.editable = canEdit;
     }
 
     /**

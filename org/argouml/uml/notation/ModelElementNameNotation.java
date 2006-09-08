@@ -33,13 +33,7 @@ import org.argouml.model.Model;
  *
  * @author mvw@tigris.org
  */
-public abstract class ModelElementNameNotation extends ValueHandler {
-
-    /**
-     * The modelelement we represent.
-     */
-    protected Object myModelElement;
-
+public abstract class ModelElementNameNotation extends NotationProvider {
 
     /**
      * The constructor.
@@ -50,7 +44,6 @@ public abstract class ModelElementNameNotation extends ValueHandler {
         if (!Model.getFacade().isAModelElement(modelElement)) {
             throw new IllegalArgumentException("This is not a ModelElement.");
         }
-        myModelElement = modelElement;
     }
 
 

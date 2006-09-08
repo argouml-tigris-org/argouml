@@ -24,6 +24,7 @@
 
 package org.argouml.uml.notation.java;
 
+import java.util.HashMap;
 import java.util.Stack;
 
 import org.argouml.model.Model;
@@ -31,56 +32,59 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.ModelElementNameNotation;
 
 /**
+ * Java notation for the name of a modelelement.
+ * 
  * @author mvw@tigris.org
  */
 public class ModelElementNameNotationJava extends ModelElementNameNotation {
 
     /**
      * The constructor.
+     *
+     * @param name the modelelement
      */
     public ModelElementNameNotationJava(Object name) {
         super(name);
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         ProjectBrowser.getInstance().getStatusBar().showStatus(
             "Parsing in Java not yet supported");
-        return toString();
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
-        if (Model.getFacade().isAStateVertex(myModelElement)) {
-            return "parsing.help.fig-statename";
-        }
         return "parsing.help.fig-nodemodelelement";
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
+    public String toString(Object modelElement, HashMap args) {
         String name;
-        name = Model.getFacade().getName(myModelElement);
+        name = Model.getFacade().getName(modelElement);
         if (name == null) name = "";
-        return generateVisibility() + generatePath() + name;
+        return generateVisibility(modelElement, args) 
+            + generatePath(modelElement, args) + name;
     }
 
     /**
-     *
+     * @param modelElement the UML element
+     * @param args a set of arguments that may influence 
+     * the generated notation
      * @return a string which represents the path
      */
-    protected String generatePath() {
+    protected String generatePath(Object modelElement, 
+            HashMap args) {
         String s = "";
-        if (isValue("pathVisible")) {
-            Object p = myModelElement;
+        if (isValue("pathVisible", args)) {
             Stack stack = new Stack();
-            Object ns = Model.getFacade().getNamespace(p);
+            Object ns = Model.getFacade().getNamespace(modelElement);
             while (ns != null && !Model.getFacade().isAModel(ns)) {
                 stack.push(Model.getFacade().getName(ns));
                 ns = Model.getFacade().getNamespace(ns);
@@ -97,12 +101,16 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
     }
 
     /**
+     * @param modelElement the UML element
+     * @param args a set of arguments that may influence 
+     * the generated notation
      * @return a string which represents the visibility
      */
-    protected String generateVisibility() {
+    protected String generateVisibility(Object modelElement, 
+            HashMap args) {
         String s = "";
-        if (isValue("visibilityVisible")) {
-            s = NotationUtilityJava.generateVisibility(myModelElement);
+        if (isValue("visibilityVisible", args)) {
+            s = NotationUtilityJava.generateVisibility(modelElement);
         }
         return s;
     }

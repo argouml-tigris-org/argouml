@@ -34,8 +34,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.notation.uml.NotationUtilityUml;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
@@ -61,7 +61,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     private FigText srcMult, srcRole;
     private FigText srcOrdering;
     
-    private NotationProvider4 notationProviderSrcRole;
+    private NotationProvider notationProviderSrcRole;
     
     private Logger LOG = Logger.getLogger(FigAssociationEnd.class);
 
@@ -194,7 +194,8 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         super.textEdited(ft);
 
         if (ft == srcRole) {
-            ft.setText(notationProviderSrcRole.parse(ft.getText()));
+            notationProviderSrcRole.parse(getOwner(), ft.getText());
+            ft.setText(notationProviderSrcRole.toString(getOwner(), null));
         } else if (ft == srcMult) {
             Object multi =
                 Model.getDataTypesFactory()
@@ -247,7 +248,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     protected void renderingChanged() {
         updateEnd(srcMult, srcOrdering);
         if (notationProviderSrcRole != null) {
-            srcRole.setText(notationProviderSrcRole.toString());
+            srcRole.setText(notationProviderSrcRole.toString(getOwner(), null));
         }
         srcMult.calcBounds();
         srcGroup.calcBounds();

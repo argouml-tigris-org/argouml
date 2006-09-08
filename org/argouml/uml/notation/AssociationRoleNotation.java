@@ -33,9 +33,7 @@ import org.argouml.model.Model;
  * 
  * @author michiel
  */
-public abstract class AssociationRoleNotation extends ValueHandler {
-
-    protected Object myAssociationRole;
+public abstract class AssociationRoleNotation extends NotationProvider {
     
     /**
      * The constructor.
@@ -44,9 +42,9 @@ public abstract class AssociationRoleNotation extends ValueHandler {
      */
     public AssociationRoleNotation(Object role) {
         if (!Model.getFacade().isAAssociationRole(role)) {
-            throw new IllegalArgumentException("This is not an AssociationRole.");
+            throw new IllegalArgumentException(
+                    "This is not an AssociationRole.");
         }
-        myAssociationRole = role;
     }
 
 }

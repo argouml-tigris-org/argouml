@@ -36,10 +36,10 @@ import java.util.Iterator;
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
+import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
@@ -80,8 +80,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
     private static final int WIDTH = 70;
     private static final int HEIGHT = 50;
 
-    private NotationProvider4 notationProviderType;
-    private NotationProvider4 notationProviderState;
+    private NotationProvider notationProviderType;
+    private NotationProvider notationProviderState;
     
     private FigRect cover;
     private FigText state;      // the state name
@@ -158,7 +158,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
@@ -275,7 +275,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
     private void updateClassifierText() {
         if (isReadyToEdit()) {
             if (notationProviderType != null) {
-                getNameFig().setText(notationProviderType.toString());
+                getNameFig().setText(
+                        notationProviderType.toString(getOwner(), null));
             }
         }
     }
@@ -285,7 +286,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     private void updateStateText() {
         if (isReadyToEdit()) {
-            state.setText(notationProviderState.toString());
+            state.setText(notationProviderState.toString(getOwner(), null));
         }
     }
 
@@ -365,9 +366,11 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig()) {
-            ft.setText(notationProviderType.parse(ft.getText()));
+            notationProviderType.parse(getOwner(), ft.getText());
+            ft.setText(notationProviderType.toString(getOwner(), null));
         } else if (ft == state) {
-            ft.setText(notationProviderState.parse(ft.getText()));
+            notationProviderState.parse(getOwner(), ft.getText());
+            ft.setText(notationProviderState.toString(getOwner(), null));
         }
     }
 

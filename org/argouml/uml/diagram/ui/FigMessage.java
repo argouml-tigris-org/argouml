@@ -34,9 +34,9 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider4;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
+import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -68,7 +68,7 @@ public class FigMessage extends FigNodeModelElement {
     /**
      * The notation provider for the textfield.
      */
-    protected NotationProvider4 notationProvider;
+    protected NotationProvider notationProvider;
 
     /**
      * The main constructor.
@@ -293,7 +293,8 @@ public class FigMessage extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        ft.setText(notationProvider.parse(ft.getText()));
+        notationProvider.parse(getOwner(), ft.getText());
+        ft.setText(notationProvider.toString(getOwner(), null));
     }
 
     /**
@@ -363,7 +364,7 @@ public class FigMessage extends FigNodeModelElement {
      */
     protected void updateNameText() {
         if (notationProvider != null) {
-            getNameFig().setText(notationProvider.toString());
+            getNameFig().setText(notationProvider.toString(getOwner(), null));
         }
     }
 

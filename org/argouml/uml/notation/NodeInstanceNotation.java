@@ -33,9 +33,7 @@ import org.argouml.model.Model;
  * 
  * @author mvw@tigris.org
  */
-public abstract class NodeInstanceNotation extends ValueHandler {
-
-    protected Object myNodeInstance;
+public abstract class NodeInstanceNotation extends NotationProvider {
     
     /**
      * The constructor.
@@ -46,7 +44,6 @@ public abstract class NodeInstanceNotation extends ValueHandler {
         if (!Model.getFacade().isANodeInstance(nodeInstance)) {
             throw new IllegalArgumentException("This is not a NodeInstance.");
         }
-        myNodeInstance = nodeInstance;
     }
 
 }

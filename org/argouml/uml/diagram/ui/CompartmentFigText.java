@@ -27,7 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 
 import org.apache.log4j.Logger;
-import org.argouml.notation.NotationProvider4;
+import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -60,7 +60,7 @@ public class CompartmentFigText extends FigSingleLineText {
     /**
      * The notation provider for the text shown in this compartment.
      */
-    private NotationProvider4 notationProvider;
+    private NotationProvider notationProvider;
     
     /**
      * Record whether we are currently highlighted.<p>
@@ -92,7 +92,7 @@ public class CompartmentFigText extends FigSingleLineText {
      *                      See NotationProviderFactory2.
      */
     public CompartmentFigText(int x, int y, int w, int h, Fig aFig, 
-            NotationProvider4 np) {
+            NotationProvider np) {
         super(x, y, w, h, true);
 
         if (np == null) {
@@ -231,14 +231,14 @@ public class CompartmentFigText extends FigSingleLineText {
     /**
      * @return Returns the notationProvider for the text in this compartment.
      */
-    public NotationProvider4 getNotationProvider() {
+    public NotationProvider getNotationProvider() {
         return notationProvider;
     }
 
     /**
      * @param np The notationProvider to set.
      */
-    void setNotationProvider(NotationProvider4 np) {
+    void setNotationProvider(NotationProvider np) {
         this.notationProvider = np;
     }
 } /* End of class CompartmentFigText */

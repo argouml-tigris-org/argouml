@@ -25,6 +25,7 @@
 package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
+import java.util.HashMap;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -47,11 +48,11 @@ public class ObjectFlowStateTypeNotationUml
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#parse(java.lang.String)
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public String parse(String text) {
+    public void parse(Object modelElement, String text) {
         try {
-            parseObjectFlowState1(myObjectFlowState, text);
+            parseObjectFlowState1(modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.objectflowstate";
             Object[] args = {
@@ -61,7 +62,6 @@ public class ObjectFlowStateTypeNotationUml
             ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
         }
-        return toString();
     }
 
     /**
@@ -80,7 +80,7 @@ public class ObjectFlowStateTypeNotationUml
         if (c != null) {
             Model.getCoreHelper().setType(objectFlowState, c);
         } else {
-        	String msg = "parsing.error.object-flow-type.classifier-not-found";
+            String msg = "parsing.error.object-flow-type.classifier-not-found";
             Object[] args = {s};
             throw new ParseException(
                     Translator.localize(msg, args), 
@@ -90,17 +90,17 @@ public class ObjectFlowStateTypeNotationUml
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider4#getParsingHelp()
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-objectflowstate1";
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString() {
-        Object classifier = Model.getFacade().getType(myObjectFlowState);
+    public String toString(Object modelElement, HashMap args) {
+        Object classifier = Model.getFacade().getType(modelElement);
         if (Model.getFacade().isAClassifierInState(classifier)) {
             classifier = Model.getFacade().getType(classifier);
         }

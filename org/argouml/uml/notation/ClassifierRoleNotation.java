@@ -33,18 +33,17 @@ import org.argouml.model.Model;
  * 
  * @author Michiel
  */
-public abstract class ClassifierRoleNotation extends ValueHandler {
-
-    protected Object myClassifierRole;
+public abstract class ClassifierRoleNotation extends NotationProvider {
     
     /**
      * The Constructor. 
+     *
+     * @param classifierRole the UML element
      */
     public ClassifierRoleNotation(Object classifierRole) {
         if (!Model.getFacade().isAClassifierRole(classifierRole)) {
             throw new IllegalArgumentException("This is not a ClassifierRole.");
         }
-        myClassifierRole = classifierRole;
     }
 
 }
