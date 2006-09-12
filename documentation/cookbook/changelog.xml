@@ -55,7 +55,7 @@ responsibilities or functions of the subsystems.
 
       <tbody valign="top">
         <row>
-          <entry>2006-07-</entry>
+          <entry>2006-09-</entry>
           <entry>
 Change to XXX.
 (See <xref linkend="xxx"/>).
@@ -64,6 +64,19 @@ Change to XXX.
         </row>
       </tbody>
       -->
+
+      <tbody valign="top">
+        <row>
+          <entry>2006-09-12</entry>
+          <entry>
+Removed the manual tests.
+Removed the description on how to publish the documentation.
+Updated the download and build section for Subversion.
+(See <xref linkend="buildingandtools"/>).
+          </entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
 
       <tbody valign="top">
         <row>
