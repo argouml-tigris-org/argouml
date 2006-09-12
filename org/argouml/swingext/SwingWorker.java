@@ -32,7 +32,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ArgoFrame;
 
 /**
  * This is the 3rd version of SwingWorker (also known as
@@ -115,7 +115,7 @@ public abstract class SwingWorker {
     	activateGlassPane();
         pmw = initProgressMonitorWindow();
 
-        ProjectBrowser.getInstance().setCursor(
+        ArgoFrame.getInstance().setCursor(
         		Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         Object retVal = null;
@@ -132,7 +132,7 @@ public abstract class SwingWorker {
         } finally {
             pmw.close();
         }
-	    return retVal;
+        return retVal;
     }
     
     /**
@@ -154,7 +154,7 @@ public abstract class SwingWorker {
      */
     protected void activateGlassPane() {
         // Mount the glasspane on the component window
-        GlassPane aPane = GlassPane.mount(ProjectBrowser.getInstance(), true);
+        GlassPane aPane = GlassPane.mount(ArgoFrame.getInstance(), true);
 
         // keep track of the glasspane as an instance variable
         setGlassPane(aPane);
@@ -181,7 +181,7 @@ public abstract class SwingWorker {
      */
     public void finished() {
     	deactivateGlassPane();
-    	ProjectBrowser.getInstance().setCursor(Cursor.getPredefinedCursor(
+    	ArgoFrame.getInstance().setCursor(Cursor.getPredefinedCursor(
                 Cursor.DEFAULT_CURSOR));
     }
     

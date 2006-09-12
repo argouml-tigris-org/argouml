@@ -1534,7 +1534,7 @@ public final class ProjectBrowser
     private void reportError(String message, boolean showUI) {
         if (showUI) {
             JOptionPane.showMessageDialog(
-                      ProjectBrowser.getInstance(),
+                      ArgoFrame.getInstance(),
                       message,
                       "Error",
                       JOptionPane.ERROR_MESSAGE);
@@ -1559,7 +1559,7 @@ public final class ProjectBrowser
         if (showUI) {
             JDialog dialog =
                 new ExceptionDialog(
-                        ProjectBrowser.getInstance(),
+                        ArgoFrame.getInstance(),
                         message,
                         error);
             dialog.setVisible(true);
@@ -1584,7 +1584,7 @@ public final class ProjectBrowser
         if (showUI) {
             JDialog dialog =
                 new ExceptionDialog(
-                        ProjectBrowser.getInstance(),
+                        ArgoFrame.getInstance(),
                         message,
                         ex,
                         ex instanceof OpenException);

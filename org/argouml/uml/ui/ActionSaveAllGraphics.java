@@ -42,6 +42,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.CmdSaveGraphics;
@@ -172,9 +173,8 @@ public class ActionSaveAllGraphics extends UndoableAction {
         if (fn.length() > 0) {
             chooser.setSelectedFile(new File(fn));
         }
-	ProjectBrowser pb = ProjectBrowser.getInstance();
 
-        int retval = chooser.showSaveDialog( pb );
+        int retval = chooser.showSaveDialog(ArgoFrame.getInstance());
 
         if ( retval == JFileChooser.APPROVE_OPTION ) {
             File theFile = chooser.getSelectedFile();
@@ -189,10 +189,9 @@ public class ActionSaveAllGraphics extends UndoableAction {
 
     private boolean saveGraphicsToFile(File theFile, CmdSaveGraphics cmd,
             boolean overwrite) throws IOException {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
 	if ( theFile.exists() && !overwrite ) {
 	    int response =
-		JOptionPane.showConfirmDialog(pb,
+		JOptionPane.showConfirmDialog(ArgoFrame.getInstance(),
                     Translator.messageFormat("optionpane.confirm-overwrite",
                             new Object[] {theFile}),
                     Translator.localize("optionpane.confirm-overwrite-title"),

@@ -42,7 +42,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ArgoFrame;
 import org.tigris.gef.util.UnexpectedException;
 
 
@@ -342,7 +342,7 @@ public final class PersistenceManager {
                     new Object[] {file});
             int nResult =
                 JOptionPane.showConfirmDialog(
-                        ProjectBrowser.getInstance(),
+                        ArgoFrame.getInstance(),
                         sConfirm,
                         Translator.localize(
                             "optionpane.confirm-overwrite-title"),

@@ -28,6 +28,7 @@ import java.io.File;
 import javax.swing.UIManager;
 
 import org.argouml.i18n.Translator;
+import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -73,7 +74,7 @@ public class LoadSwingWorker extends SwingWorker {
         UIManager.put("ProgressMonitor.progressText", 
                 Translator.localize("filechooser.open-project"));
         Object[] msgArgs = new Object[] {this.file.getPath()};
-        return new ProgressMonitorWindow(ProjectBrowser.getInstance(),
+        return new ProgressMonitorWindow(ArgoFrame.getInstance(),
                 Translator.messageFormat("dialog.openproject.title", msgArgs));
     }
     
