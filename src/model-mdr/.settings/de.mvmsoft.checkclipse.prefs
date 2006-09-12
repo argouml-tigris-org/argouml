@@ -1,0 +1,7 @@
+#Sun May 28 04:38:11 EDT 2006
+filenames.properties=/argouml-core-tools/checkstyle/checkstyle.properties
+enabled=false
+file_filter=in\:\\.java$\nin\:\\.properties$\nex\:build/java/org/omg/uml/\nex\:build/java/javax/jmi\n
+projectclassloader=false
+filenames.config=/argouml-core-tools/checkstyle/checkstyle_argouml.xml
+filenames.filter=/argouml-core-tools/checkstyle/checkclipse.filefilters
