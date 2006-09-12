@@ -414,7 +414,7 @@ class TodoParser extends SAXParserBase {
                         try {
                             sb.append((char) Integer.parseInt(ent));
                         } catch (NumberFormatException nfe) {
-                            // Ignore any parse exceptions
+                            // TODO: handle parse error
                         }
                     }
                 }
@@ -432,6 +432,9 @@ class TodoParser extends SAXParserBase {
      * saved properly in an XML file and regained filtering out any noice
      * that an XML framework might have seen fit to add.
      *
+     * TODO: Why are we doing this ourselves?  Surely encoding information
+     * for XML serialization is a well known task - tfm
+     * 
      * @param	str	The String to encode.
      * @return	The encoded String.
      */
