@@ -72,5 +72,14 @@
   	<xsl:message>Removing Classifier.feature namespace</xsl:message>
     -->
   </xsl:template>
-  
+
+  <!--
+    * Fix multiplicity ranges with 'unlimited' encoded using asterisk (*)
+   -->
+  <xsl:template match="Foundation.Data_Types.MultiplicityRange.upper[node()='*']" >
+    <xsl:element  name = "Foundation.Data_Types.MultiplicityRange.upper">
+      <xsl:text>-1</xsl:text>
+    </xsl:element>
+  </xsl:template>
+
 </xsl:stylesheet>
