@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,19 +58,21 @@
   <!-- Copy xmi.uuid to xmi.id to support GEF/PGML references -->
   <xsl:include href="UuidToXmiId.xsl"/>
   
-  <xsl:template match="/">
+  <!-- Write out header info at the root -->
+  <xsl:template match="/" name="root">
     <xsl:text>&#xa;</xsl:text>
     <xsl:comment>
       Converted from UML 1.3 to UML 1.4 on: <xsl:value-of select="date:toString($now)"/>
       Converter version <xsl:value-of select="$version"/> by Ludovic Maitre and Tom Morris
-</xsl:comment>
+    </xsl:comment>
     <xsl:text>&#xa;</xsl:text>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="/XMI">
+  <!-- Write out top level XMI element with -->
+  <xsl:template match="/XMI" name="xmi">
     <XMI xmi.version="1.2" xmlns:UML="org.omg.xmi.namespace.UML">
       <xsl:attribute name="timestamp">
         <xsl:value-of select="date:toString($now)"/>
@@ -79,14 +81,13 @@
     </XMI>
   </xsl:template>
 
-  <xsl:template name="removed-from-uml14"/>
-
-  <xsl:template match="*">
+  <!-- Main template that matches everything -->
+  <xsl:template match="*" name="process-elements">
     <xsl:choose>
       <xsl:when test="name()='XMI.metamodel'"/>
-	<!-- TODO: preserve old XMI exporter info in comments at a minimum -->
-	<xsl:when test="name()='XMI.exporter'"><XMI.exporter>UML 1.3 to UML 1.4 stylesheets</XMI.exporter></xsl:when>
-	<xsl:when test="name()='XMI.exporterVersion'"><XMI.exporterVersion><xsl:value-of select="$version"/> </XMI.exporterVersion></xsl:when>
+      <!-- TODO: preserve old XMI exporter info in comments at a minimum -->
+      <xsl:when test="name()='XMI.exporter'"><XMI.exporter>UML 1.3 to UML 1.4 stylesheets</XMI.exporter></xsl:when>
+      <xsl:when test="name()='XMI.exporterVersion'"><XMI.exporterVersion><xsl:value-of select="$version"/> </XMI.exporterVersion></xsl:when>
       <xsl:when test="starts-with(name(.),'XMI')">
         <xsl:copy>
           <xsl:apply-templates select="@*|node()"/>
@@ -351,6 +352,8 @@
       <!-- Copy all other attributes unchanged -->
         <xsl:apply-templates select="@*"/>
         <xsl:value-of select="text()"/>
+        <!-- *** this recurses for nested elements of different types *** -->
+        <!-- see if this can be done with a predicate instead of recursion -->
         <xsl:for-each select="*[not(@xmi.value) and not(contains(substring(name(.),string-length(name(.))-4),'.name'))]">
           <xsl:apply-templates select="."/>
         </xsl:for-each>
