@@ -149,28 +149,31 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
-        if (node == null) {
-            return false;
-        }
-        if (containsNode(node)) {
+        if (node == null 
+                || !Model.getFacade().isAModelElement(node)
+                || containsNode(node)) {
             return false;
         }
 
-        /* The next solves issue 3665:
-         * Do not allow to add an element to a statemachine that is contained
-         * by another statemachine then the one represented by this diagram.
-         */
-        Object nodeMachine =
-            Model.getStateMachinesHelper().getStateMachine(node);
-        if (nodeMachine != null) {
-            if (nodeMachine != getMachine()) {
-                return false;
+        if (Model.getFacade().isAComment(node)) {
+            return true;
+        }
+        
+        if (Model.getFacade().isAStateVertex(node)
+                || Model.getFacade().isAPartition(node)) {
+            /*
+             * The next solves issue 3665: Do not allow addition of an element
+             * to a statemachine that is contained by a statemachine other than
+             * the one represented by this diagram.
+             */
+            Object nodeMachine =
+                Model.getStateMachinesHelper().getStateMachine(node);
+            if (nodeMachine == null || nodeMachine == getMachine()) {
+                return true;
             }
         }
 
-        return (Model.getFacade().isAStateVertex(node)
-                || Model.getFacade().isAPartition(node)
-                || Model.getFacade().isAComment(node));
+        return false;
     }
 
     /**
