@@ -32,7 +32,7 @@ import javax.swing.JFrame;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.AboutBox;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ArgoFrame;
 
 
 /**
@@ -52,7 +52,7 @@ class ActionAboutArgoUML extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	JFrame jframe = ((JFrame) (ProjectBrowser.getInstance()));
+	JFrame jframe = ArgoFrame.getInstance();
 	AboutBox box = new AboutBox(jframe, true);
 
 	box.setLocationRelativeTo(jframe);
