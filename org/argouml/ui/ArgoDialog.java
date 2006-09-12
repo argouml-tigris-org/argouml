@@ -43,7 +43,7 @@ public class ArgoDialog extends Dialog {
      * Suffix to calculate the mnemonic key from the key.
      */
     private static final String MNEMONIC_KEY_SUFFIX = ".mnemonic";
-   
+
     /**
      * Creates a new ArgoDialog with the default optionType.
      *
@@ -52,10 +52,10 @@ public class ArgoDialog extends Dialog {
      * @see Dialog#Dialog(Frame, String, boolean)
      */
     public ArgoDialog(String title, boolean modal) {
-        super(ProjectBrowser.getInstance(), title, modal);
+        super(ArgoFrame.getInstance(), title, modal);
         init();
     }
-    
+
     /**
      * Creates a new ArgoDialog with the specified optionType.
      *
@@ -114,5 +114,5 @@ public class ArgoDialog extends Dialog {
 
     private void init() {
         UIUtils.loadCommonKeyMap(this);
+                }
     }
-}

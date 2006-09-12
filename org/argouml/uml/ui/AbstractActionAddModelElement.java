@@ -31,7 +31,7 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ArgoFrame;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -84,7 +84,7 @@ public abstract class AbstractActionAddModelElement extends UndoableAction {
 	    new UMLAddDialog(getChoices(), getSelected(), getDialogTitle(),
 			     isMultiSelect(),
 			     isExclusive());
-        int result = dialog.showDialog(ProjectBrowser.getInstance());
+        int result = dialog.showDialog(ArgoFrame.getInstance());
         if (result == JOptionPane.OK_OPTION) {
             doIt(dialog.getSelected());
         }

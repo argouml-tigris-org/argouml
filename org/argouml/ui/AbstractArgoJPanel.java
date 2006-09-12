@@ -172,7 +172,7 @@ public abstract class AbstractArgoJPanel extends JPanel
      */
     public AbstractArgoJPanel spawn() {
 
-        JDialog f = new JDialog(ProjectBrowser.getInstance());
+        JDialog f = new JDialog(ArgoFrame.getInstance());
         f.getContentPane().setLayout(new BorderLayout());
         f.setTitle(Translator.localize(title));
         AbstractArgoJPanel newPanel = (AbstractArgoJPanel) clone();
