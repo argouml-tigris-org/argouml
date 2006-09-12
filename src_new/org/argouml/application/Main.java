@@ -61,6 +61,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
@@ -345,7 +346,7 @@ public class Main {
 
         updateProgress(splash, 95, "statusmsg.bar.open-project-browser");
 
-        pb.setVisible(true);
+        ArgoFrame.getInstance().setVisible(true);
 
         st.mark("close splash");
         if (splash != null) {
@@ -380,7 +381,8 @@ public class Main {
         LOG.info("");
 
         st = null;
-        pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        ArgoFrame.getInstance().setCursor(
+                Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
         //ToolTipManager.sharedInstance().setInitialDelay(500);
         ToolTipManager.sharedInstance().setDismissDelay(50000000);

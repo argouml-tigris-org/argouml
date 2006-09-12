@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -62,7 +63,6 @@ public class ActionRevertToSaved extends AbstractAction {
      * @param e an event
      */
     public void actionPerformed(ActionEvent e) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
 
         if (p == null 
@@ -80,7 +80,7 @@ public class ActionRevertToSaved extends AbstractAction {
 
         int response =
             JOptionPane.showConfirmDialog(
-                  pb,
+                  ArgoFrame.getInstance(),
                   message,
                   Translator.localize(
                       "optionpane.revert-to-saved-confirm-title"),

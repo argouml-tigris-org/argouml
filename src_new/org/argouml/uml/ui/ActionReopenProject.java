@@ -80,7 +80,7 @@ public class ActionReopenProject extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         if (!ProjectBrowser.getInstance().askConfirmationAndSave()) return;
 
-        File toOpen = new File(filename);;
+        File toOpen = new File(filename);
         // load of the new project
         // just reuse of the ActionOpen object
         ProjectBrowser.getInstance().loadProjectWithProgressMonitor(

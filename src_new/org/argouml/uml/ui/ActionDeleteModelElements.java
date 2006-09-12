@@ -41,7 +41,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
@@ -80,7 +80,7 @@ public class ActionDeleteModelElements extends UndoableAction {
 
     /**
      * Deletes the selected target.
-
+     * 
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -157,7 +157,7 @@ public class ActionDeleteModelElements extends UndoableAction {
                     Translator.localize(
                         "optionpane.remove-from-model-confirm-delete-title");
                 int response =
-                    JOptionPane.showConfirmDialog(ProjectBrowser.getInstance(),
+                    JOptionPane.showConfirmDialog(ArgoFrame.getInstance(),
                           confirmStr,
                           text,
                           JOptionPane.YES_NO_OPTION);
@@ -187,7 +187,6 @@ public class ActionDeleteModelElements extends UndoableAction {
      * @return boolean
      */
     protected static boolean sureRemoveModelElement(Object me) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
 
         int count = p.getPresentationCountFor(me);
@@ -225,7 +224,7 @@ public class ActionDeleteModelElements extends UndoableAction {
                 });
         int response =
             JOptionPane.showConfirmDialog(
-                    pb,
+                    ArgoFrame.getInstance(),
                     confirmStr,
                     Translator.localize(
                     "optionpane.remove-from-model-confirm-delete-title"),

@@ -36,6 +36,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.UIUtils;
 
@@ -62,14 +63,14 @@ class ActionShowXMLDump extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project project = ProjectManager.getManager().getCurrentProject();
 
 	String data =
 	    PersistenceManager.getInstance().getQuickViewDump(project);
 
-	JDialog pw = new JDialog(pb, Translator.localize("action.show-saved"),
-            false);
+	JDialog pw = new JDialog(ArgoFrame.getInstance(), 
+                Translator.localize("action.show-saved"), 
+                false);
 
 	JTextArea a = new JTextArea(data, 50, 80);
 	a.setEditable(false);
@@ -82,7 +83,7 @@ class ActionShowXMLDump extends AbstractAction {
 
 	pw.setSize(400, 500);
 
-	pw.setLocationRelativeTo(pb);
+	pw.setLocationRelativeTo(ArgoFrame.getInstance());
         
         init(pw);
         

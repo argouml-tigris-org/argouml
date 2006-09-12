@@ -29,6 +29,7 @@ import java.io.File;
 import javax.swing.UIManager;
 
 import org.argouml.i18n.Translator;
+import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -77,7 +78,7 @@ public class SaveSwingWorker extends SwingWorker {
         Object[] msgArgs = new Object[] {this.file.getPath()};
         UIManager.put("ProgressMonitor.progressText", 
                 Translator.localize("filechooser.save-as-project"));
-        return new ProgressMonitorWindow(ProjectBrowser.getInstance(),
+        return new ProgressMonitorWindow(ArgoFrame.getInstance(),
                 Translator.messageFormat("dialog.saveproject.title", msgArgs));
     }
     

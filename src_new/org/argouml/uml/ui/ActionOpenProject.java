@@ -40,6 +40,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -76,7 +77,6 @@ public class ActionOpenProject extends AbstractAction
      * @param e an event
      */
     public void actionPerformed(ActionEvent e) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
         PersistenceManager pm = PersistenceManager.getInstance();
 
@@ -119,7 +119,7 @@ public class ActionOpenProject extends AbstractAction
             chooser.setSelectedFile(new File(fn));
         }
 
-        int retval = chooser.showOpenDialog(pb);
+        int retval = chooser.showOpenDialog(ArgoFrame.getInstance());
         if (retval == JFileChooser.APPROVE_OPTION) {
             File theFile = chooser.getSelectedFile();
 

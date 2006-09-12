@@ -65,7 +65,7 @@ public class ArgoDialog extends Dialog {
      * @see Dialog#Dialog(Frame, String, int, boolean)
      */
     public ArgoDialog(String title, int optionType, boolean modal) {
-        super(ProjectBrowser.getInstance(), title, optionType, modal);
+        super(ArgoFrame.getInstance(), title, optionType, modal);
         init();
     }
 
@@ -114,5 +114,5 @@ public class ArgoDialog extends Dialog {
 
     private void init() {
         UIUtils.loadCommonKeyMap(this);
-                }
     }
+}
