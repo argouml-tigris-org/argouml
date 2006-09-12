@@ -225,9 +225,13 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                     unknownElement = false;
                     // InputSource xformedInput =
                     //        chainedTransform(transformFiles, pIs);
-                    InputSource xformedInput =
-                        serialTransform(transformFiles,
-                            new InputSource(new FileInputStream(tmpFile)));
+                    InputSource originalInput = 
+                        new InputSource(new FileInputStream(tmpFile));
+                    // Use the original file for the system ID
+                    // so any references resolve correctly
+                    originalInput.setSystemId(pIs.getSystemId());
+                    InputSource xformedInput = 
+                        serialTransform(transformFiles, originalInput);
                     newElements =
                         xmiReader.read(xformedInput.getByteStream(),
                             xformedInput.getSystemId(), extent);
