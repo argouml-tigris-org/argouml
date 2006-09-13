@@ -89,9 +89,12 @@ public abstract class FigStateVertex extends FigNodeModelElement {
                     Model.getStateMachinesHelper()
                             .getStateMachine(stateVertex));
         }
-        if (compositeState != null)
-            Model.getStateMachinesHelper().setContainer(stateVertex,
-                    compositeState);
+        if (compositeState != null) {
+            /* Do not change the model if not needed - this prevents issue 4446: */
+            if (Model.getFacade().getContainer(stateVertex) != compositeState)
+                Model.getStateMachinesHelper().setContainer(stateVertex,
+                        compositeState);
+        }
     }
 
     /**
