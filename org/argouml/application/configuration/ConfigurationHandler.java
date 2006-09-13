@@ -91,7 +91,7 @@ public abstract class ConfigurationHandler {
      * Anonymous constructor allows configuration changes.
      */
     public ConfigurationHandler() {
-	this(true);
+        this(true);
     }
 
     /**
@@ -100,8 +100,8 @@ public abstract class ConfigurationHandler {
      * @param c indicates if the configuration can be changed
      */
     public ConfigurationHandler(boolean c) {
-	super();
-	changeable = c;
+        super();
+        changeable = c;
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class ConfigurationHandler {
      *
      * @return the default configuration path or url.
      */
-    abstract String getDefaultPath();
+    public abstract String getDefaultPath();
 
     /**
      * Internal worker which is called prior to any getValue
@@ -119,9 +119,9 @@ public abstract class ConfigurationHandler {
      * loaded previously.
      */
     private void loadIfNecessary() {
-	if (!loaded) {
-	    loadDefault();
-	}
+        if (!loaded) {
+            loadDefault();
+        }
     }
 
     /**
@@ -134,17 +134,17 @@ public abstract class ConfigurationHandler {
      * @see #isLoaded
      */
     public final boolean loadDefault() {
-	// Only allow one load
-	if (loaded) {
-	    return false;
-	}
+        // Only allow one load
+        if (loaded) {
+            return false;
+        }
 
-	boolean status = load(new File(getDefaultPath()));
-	if (!status) {
-	    status = loadUnspecified();
-	}
-	loaded = true;
-	return status;
+        boolean status = load(new File(getDefaultPath()));
+        if (!status) {
+            status = loadUnspecified();
+        }
+        loaded = true;
+        return status;
     }
 
     /**
@@ -155,7 +155,7 @@ public abstract class ConfigurationHandler {
      * attempted or encountered an error.
      */
     public final boolean saveDefault() {
-	return saveDefault(false);
+        return saveDefault(false);
     }
 
     /**
@@ -166,25 +166,25 @@ public abstract class ConfigurationHandler {
      * attempted or encountered an error.
      */
     public final boolean saveDefault(boolean force) {
-	if (force) {
-	    File toFile = new File(getDefaultPath());
-	    boolean saved = saveFile(toFile);
-	    if (saved) {
-		loadedFromFile = toFile;
-	    }
-	    return saved;
-	}
-	if (!loaded) {
-	    return false;
-	}
+        if (force) {
+            File toFile = new File(getDefaultPath());
+            boolean saved = saveFile(toFile);
+            if (saved) {
+                loadedFromFile = toFile;
+            }
+            return saved;
+        }
+        if (!loaded) {
+            return false;
+        }
 
-	if (loadedFromFile != null) {
-	    return saveFile(loadedFromFile);
-	}
-	if (loadedFromURL != null) {
-	    return saveURL(loadedFromURL);
-	}
-	return false;
+        if (loadedFromFile != null) {
+            return saveFile(loadedFromFile);
+        }
+        if (loadedFromURL != null) {
+            return saveURL(loadedFromURL);
+        }
+        return false;
     }
 
     /**
@@ -210,14 +210,14 @@ public abstract class ConfigurationHandler {
      * error or a previously loaded configuration.
      */
     public final boolean load(File file) {
-	boolean status = loadFile(file);
-	if (status) {
-	    if (pcl != null) {
-		pcl.firePropertyChange(Configuration.FILE_LOADED, null, file);
-	    }
-	    loadedFromFile = file;
-	}
-	return status;
+        boolean status = loadFile(file);
+        if (status) {
+            if (pcl != null) {
+                pcl.firePropertyChange(Configuration.FILE_LOADED, null, file);
+            }
+            loadedFromFile = file;
+        }
+        return status;
     }
 
     /**
@@ -229,14 +229,14 @@ public abstract class ConfigurationHandler {
      * error or a previously loaded configuration.
      */
     public final boolean load(URL url) {
-	boolean status = loadURL(url);
-	if (status) {
-	    if (pcl != null) {
-		pcl.firePropertyChange(Configuration.URL_LOADED, null, url);
-	    }
-	    loadedFromURL = url;
-	}
-	return status;
+        boolean status = loadURL(url);
+        if (status) {
+            if (pcl != null) {
+                pcl.firePropertyChange(Configuration.URL_LOADED, null, url);
+            }
+            loadedFromURL = url;
+        }
+        return status;
     }
 
     /**
@@ -247,16 +247,16 @@ public abstract class ConfigurationHandler {
      * otherwise false.
      */
     public final boolean save(File file) {
-	if (!loaded) {
-	    return false;
-	}
-	boolean status = saveFile(file);
-	if (status) {
-	    if (pcl != null) {
-		pcl.firePropertyChange(Configuration.FILE_SAVED, null, file);
-	    }
-	}
-	return status;
+        if (!loaded) {
+            return false;
+        }
+        boolean status = saveFile(file);
+        if (status) {
+            if (pcl != null) {
+                pcl.firePropertyChange(Configuration.FILE_SAVED, null, file);
+            }
+        }
+        return status;
     }
 
     /**
@@ -267,16 +267,16 @@ public abstract class ConfigurationHandler {
      * otherwise false.
      */
     public final boolean save(URL url) {
-	if (!loaded) {
-	    return false;
-	}
-	boolean status = saveURL(url);
-	if (status) {
-	    if (pcl != null) {
-		pcl.firePropertyChange(Configuration.URL_SAVED, null, url);
-	    }
-	}
-	return status;
+        if (!loaded) {
+            return false;
+        }
+        boolean status = saveURL(url);
+        if (status) {
+            if (pcl != null) {
+                pcl.firePropertyChange(Configuration.URL_SAVED, null, url);
+            }
+        }
+        return status;
     }
 
     /**
@@ -290,8 +290,8 @@ public abstract class ConfigurationHandler {
      * if the key does not exist.
      */
     public final String getString(ConfigurationKey key, String defaultValue) {
-	loadIfNecessary();
-	return getValue(key.getKey(), defaultValue);
+        loadIfNecessary();
+        return getValue(key.getKey(), defaultValue);
     }
 
     /**
@@ -305,13 +305,13 @@ public abstract class ConfigurationHandler {
      * if the key does not exist.
      */
     public final int getInteger(ConfigurationKey key, int defaultValue) {
-	loadIfNecessary();
-	try {
-	    String s = getValue(key.getKey(), Integer.toString(defaultValue));
-	    return Integer.parseInt(s);
-	} catch (NumberFormatException nfe) {
-	    return defaultValue;
-	}
+        loadIfNecessary();
+        try {
+            String s = getValue(key.getKey(), Integer.toString(defaultValue));
+            return Integer.parseInt(s);
+        } catch (NumberFormatException nfe) {
+            return defaultValue;
+        }
     }
 
     /**
@@ -325,13 +325,13 @@ public abstract class ConfigurationHandler {
      * if the key does not exist.
      */
     public final double getDouble(ConfigurationKey key, double defaultValue) {
-	loadIfNecessary();
-	try {
-	    String s = getValue(key.getKey(), Double.toString(defaultValue));
-	    return Double.parseDouble(s);
-	} catch (NumberFormatException nfe) {
-	    return defaultValue;
-	}
+        loadIfNecessary();
+        try {
+            String s = getValue(key.getKey(), Double.toString(defaultValue));
+            return Double.parseDouble(s);
+        } catch (NumberFormatException nfe) {
+            return defaultValue;
+        }
     }
 
     /**
@@ -345,14 +345,14 @@ public abstract class ConfigurationHandler {
      * if the key does not exist.
      */
     public final boolean getBoolean(ConfigurationKey key,
-				    boolean defaultValue) {
-	loadIfNecessary();
-	Boolean dflt = Boolean.valueOf(defaultValue);
-	Boolean b =
-	    key != null
-	    ? Boolean.valueOf(getValue(key.getKey(), dflt.toString()))
-	    : dflt;
-	return b.booleanValue();
+                                    boolean defaultValue) {
+        loadIfNecessary();
+        Boolean dflt = Boolean.valueOf(defaultValue);
+        Boolean b =
+            key != null
+            ? Boolean.valueOf(getValue(key.getKey(), dflt.toString()))
+            : dflt;
+        return b.booleanValue();
     }
 
     /**
@@ -364,14 +364,14 @@ public abstract class ConfigurationHandler {
      * @param newValue the new value of the key.
      */
     private synchronized void workerSetValue(ConfigurationKey key,
-					     String newValue) {
-	loadIfNecessary();
+                                             String newValue) {
+        loadIfNecessary();
 
-	String oldValue = getValue(key.getKey(), "");
-	setValue(key.getKey(), newValue);
-	if (pcl != null) {
-	    pcl.firePropertyChange(key.getKey(), oldValue, newValue);
-	}
+        String oldValue = getValue(key.getKey(), "");
+        setValue(key.getKey(), newValue);
+        if (pcl != null) {
+            pcl.firePropertyChange(key.getKey(), oldValue, newValue);
+        }
     }
 
     /**
@@ -381,7 +381,7 @@ public abstract class ConfigurationHandler {
      * @param newValue the value to set the key to.
      */
     public final void setString(ConfigurationKey key, String newValue) {
-	workerSetValue(key, newValue);
+        workerSetValue(key, newValue);
     }
 
     /**
@@ -391,7 +391,7 @@ public abstract class ConfigurationHandler {
      * @param value the value to set the key to.
      */
     public final void setInteger(ConfigurationKey key, int value) {
-	workerSetValue(key, Integer.toString(value));
+        workerSetValue(key, Integer.toString(value));
     }
 
     /**
@@ -401,7 +401,7 @@ public abstract class ConfigurationHandler {
      * @param value the value to set the key to.
      */
     public final void setDouble(ConfigurationKey key, double value) {
-	workerSetValue(key, Double.toString(value));
+        workerSetValue(key, Double.toString(value));
     }
 
     /**
@@ -411,8 +411,8 @@ public abstract class ConfigurationHandler {
      * @param value the value to set the key to.
      */
     public final void setBoolean(ConfigurationKey key, boolean value) {
-	Boolean bool = Boolean.valueOf(value);
-	workerSetValue(key, bool.toString());
+        Boolean bool = Boolean.valueOf(value);
+        workerSetValue(key, bool.toString());
     }
 
     /**
@@ -421,11 +421,11 @@ public abstract class ConfigurationHandler {
      * @param p The class which will listen for property changes.
      */
     public final void addListener(PropertyChangeListener p) {
-	if (pcl == null) {
-	    pcl = new PropertyChangeSupport(this);
-	}
-	LOG.debug("addPropertyChangeListener(" + p + ")");
-	pcl.addPropertyChangeListener(p);
+        if (pcl == null) {
+            pcl = new PropertyChangeSupport(this);
+        }
+        LOG.debug("addPropertyChangeListener(" + p + ")");
+        pcl.addPropertyChangeListener(p);
     }
 
     /**
@@ -434,10 +434,10 @@ public abstract class ConfigurationHandler {
      * @param p The class to remove as a property change listener.
      */
     public final void removeListener(PropertyChangeListener p) {
-	if (pcl != null) {
-	    LOG.debug("removePropertyChangeListener()");
-	    pcl.removePropertyChangeListener(p);
-	}
+        if (pcl != null) {
+            LOG.debug("removePropertyChangeListener()");
+            pcl.removePropertyChangeListener(p);
+        }
     }
 
     /**
@@ -447,13 +447,13 @@ public abstract class ConfigurationHandler {
      * @param p The class which will listen for property changes.
      */
     public final void addListener(ConfigurationKey key,
-				  PropertyChangeListener p) {
-	if (pcl == null) {
-	    pcl = new PropertyChangeSupport(this);
-	}
-	LOG.debug("addPropertyChangeListener("
-				+ key.getKey() + ")");
-	pcl.addPropertyChangeListener(key.getKey(), p);
+                                  PropertyChangeListener p) {
+        if (pcl == null) {
+            pcl = new PropertyChangeSupport(this);
+        }
+        LOG.debug("addPropertyChangeListener("
+                                + key.getKey() + ")");
+        pcl.addPropertyChangeListener(key.getKey(), p);
     }
 
     /**
@@ -463,12 +463,12 @@ public abstract class ConfigurationHandler {
      * @param p The class to remove as a property change listener.
      */
     public final void removeListener(ConfigurationKey key,
-				     PropertyChangeListener p) {
-	if (pcl != null) {
-	    LOG.debug("removePropertyChangeListener("
-				    + key.getKey() + ")");
-	    pcl.removePropertyChangeListener(key.getKey(), p);
-	}
+                                     PropertyChangeListener p) {
+        if (pcl != null) {
+            LOG.debug("removePropertyChangeListener("
+                                    + key.getKey() + ")");
+            pcl.removePropertyChangeListener(key.getKey(), p);
+        }
     }
 
     /**
@@ -477,7 +477,7 @@ public abstract class ConfigurationHandler {
      * @return true if the load was successful, otherwise false.
      */
     boolean loadUnspecified() {
-	return false;
+        return false;
     }
 
     /**
@@ -486,7 +486,7 @@ public abstract class ConfigurationHandler {
      * @return true if the save was successful, otherwise false.
      */
     boolean saveUnspecified() {
-	return false;
+        return false;
     }
 
     /**
@@ -496,7 +496,7 @@ public abstract class ConfigurationHandler {
      *
      * @return true if the load was successful, otherwise false.
      */
-    abstract boolean loadFile(File file);
+    public abstract boolean loadFile(File file);
 
     /**
      * Internal processing to load a <code>URL</code>.
@@ -505,7 +505,7 @@ public abstract class ConfigurationHandler {
      *
      * @return true if the load was successful, otherwise false.
      */
-    abstract boolean loadURL(URL url);
+    public abstract boolean loadURL(URL url);
 
     /**
      * Internal processing to save a <code>File</code>.
@@ -514,7 +514,7 @@ public abstract class ConfigurationHandler {
      *
      * @return true if the save was successful, otherwise false.
      */
-    abstract boolean saveFile(File file);
+    public abstract boolean saveFile(File file);
 
     /**
      * Internal processing to save a <code>URL</code>.
@@ -523,7 +523,7 @@ public abstract class ConfigurationHandler {
      *
      * @return true if the save was successful, otherwise false.
      */
-    abstract boolean saveURL(URL url);
+    public abstract boolean saveURL(URL url);
 
     /**
      * Allows query for the existence of a configuration property.
@@ -535,8 +535,8 @@ public abstract class ConfigurationHandler {
      * @return true if the key exists, otherwise false.
      */
     public boolean hasKey(ConfigurationKey key) {
-	return getValue(key.getKey(), "true").equals(getValue(key.getKey(),
-							      "false"));
+        return getValue(key.getKey(), "true").equals(getValue(key.getKey(),
+                                                              "false"));
     }
 
     /**
@@ -548,7 +548,7 @@ public abstract class ConfigurationHandler {
      * @return the value of the key or the default value
      * if the key does not exist.
      */
-    abstract String getValue(String key, String defaultValue);
+    public abstract String getValue(String key, String defaultValue);
 
     /**
      * Sets the string value of a configuration property.
@@ -556,7 +556,7 @@ public abstract class ConfigurationHandler {
      * @param key the configuration key to modify.
      * @param value the value to set the key to.
      */
-    abstract void setValue(String key, String value);
+    public abstract void setValue(String key, String value);
 
     /**
      * Remove the property and the assotiated value.

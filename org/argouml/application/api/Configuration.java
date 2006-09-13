@@ -31,6 +31,7 @@ import java.net.URL;
 import org.argouml.application.configuration.ConfigurationFactory;
 import org.argouml.application.configuration.ConfigurationHandler;
 import org.argouml.application.configuration.ConfigurationKeyImpl;
+import org.argouml.application.configuration.IConfigurationFactory;
 
 /**
  * This class provides the core user configuration implementation
@@ -76,6 +77,7 @@ public final class Configuration {
      * Private constructor so it cannot be instantiated.
      */
     private Configuration() {
+        // Don't allow instantiation
     }
 
     /**
@@ -97,7 +99,7 @@ public final class Configuration {
      *
      * @return the configuration factory
      */
-    public static ConfigurationFactory getFactory() {
+    public static IConfigurationFactory getFactory() {
 	return ConfigurationFactory.getInstance();
     }
 
