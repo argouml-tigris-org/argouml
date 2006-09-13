@@ -2610,9 +2610,10 @@ public interface Facade {
     Object getOwner(Object handle);
 
     /**
-     * Return the tag of a tagged value.
+     * Return the tag of a tagged value, i.e. the name 
+     * of the TagDefinition of the given tagged value.
      *
-     * @param handle The tagged value belongs to this.
+     * @param handle the given tagged value
      * @return The found tag as a String.
      */
     String getTag(Object handle);
