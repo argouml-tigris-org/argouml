@@ -27,6 +27,7 @@ package org.argouml.ui;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JTree;
@@ -177,12 +178,26 @@ public class DisplayTextTree extends JTree {
                     name = (String) Model.getFacade().getBody(value);
                 
                 } else if (Model.getFacade().isATaggedValue(value)) {
-                    String tagName = Model.getFacade().getTagOfTag(value);
+                    String tagName = Model.getFacade().getTag(value);
                     if (tagName == null || tagName.equals("")) {
                         // TODO: Localize
                         tagName = "(unnamed)";
                     }
-                    name = ("1-" + tagName);
+                    Collection referenceValues = 
+                        Model.getFacade().getReferenceValue(value);
+                    Collection dataValues = 
+                        Model.getFacade().getDataValue(value);
+                    Iterator i;
+                    if (referenceValues.size() > 0) {
+                        i = referenceValues.iterator();
+                    } else {
+                        i = dataValues.iterator();
+                    }
+                    String theValue = "";
+                    if (i.hasNext()) theValue = i.next().toString();
+                    if (i.hasNext()) theValue += " , ...";
+                    name = (tagName + " = " + theValue);
+
                 } else {
                     name = Model.getFacade().getName(value);
                 }
