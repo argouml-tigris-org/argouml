@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -70,8 +71,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.swingext.JXButtonGroupPanel;
-import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
@@ -187,18 +186,18 @@ public class Import {
         }
         JComponent chooser = module.getChooser(this);
         dialog =
-            new JDialog(ArgoFrame.getInstance(),
+            new JDialog(ProjectBrowser.getInstance(),
                     Translator.localize("action.import-sources"), true);
 
         dialog.getContentPane().add(chooser, BorderLayout.CENTER);
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
         dialog.pack();
         int x =
-            (ArgoFrame.getInstance().getSize().width
+            (ProjectBrowser.getInstance().getSize().width
              - dialog.getSize().width)
             / 2;
         int y =
-            (ArgoFrame.getInstance().getSize().height
+            (ProjectBrowser.getInstance().getSize().height
              - dialog.getSize().height)
             / 2;
         dialog.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
@@ -255,7 +254,7 @@ public class Import {
 
         // build the configPanel:
         if (configPanel == null) {
-            JXButtonGroupPanel general = new JXButtonGroupPanel();
+            JPanel general = new JPanel();
             general.setLayout(new GridLayout2(13, 1, 0, 0, GridLayout2.NONE));
 
             general.add(new JLabel(
@@ -317,19 +316,23 @@ public class Import {
             JLabel importDetailLabel =
                 new JLabel(Translator.localize(
                         "action.import-level-of-import-detail"));
+            ButtonGroup detailButtonGroup = new ButtonGroup();
 
             classOnly =
                 new JRadioButton(Translator.localize(
                         "action.import-option-classfiers"));
+            detailButtonGroup.add(classOnly);
 
             classAndFeatures =
                 new JRadioButton(Translator.localize(
                         "action.import-option-classifiers-plus-specs"));
+            detailButtonGroup.add(classAndFeatures);
 
             fullImport =
                 new JRadioButton(Translator.localize(
                         "action.import-option-full-import"));
             fullImport.setSelected(true);
+            detailButtonGroup.add(fullImport);
 
             general.add(importDetailLabel);
             general.add(classOnly);
@@ -446,7 +449,7 @@ public class Import {
 
         diagramInterface = getCurrentDiagram();
 
-        ArgoFrame.getInstance().setCursor(
+        ProjectBrowser.getInstance().setCursor(
                 Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         // now start importing (with an empty problem list)
@@ -739,7 +742,7 @@ public class Import {
                 }
 
                 iss.done();
-                ArgoFrame.getInstance().setCursor(
+                ProjectBrowser.getInstance().setCursor(
                         Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
                 // if errors occured, display the collected messages here
@@ -1125,7 +1128,7 @@ class ImportClasspathDialog extends JDialog {
                 }
             });
 
-            chooser.showOpenDialog(ArgoFrame.getInstance());
+            chooser.showOpenDialog(ProjectBrowser.getInstance());
         }
     }
 
