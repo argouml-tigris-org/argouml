@@ -37,13 +37,12 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoFrame;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.UIUtils;
 
 /**
  * Action that shows an XML dump of the current project contents.
  */
-class ActionShowXMLDump extends AbstractAction {
+public class ActionShowXMLDump extends AbstractAction {
     
     private static final long serialVersionUID = -7942597779499060380L;
 

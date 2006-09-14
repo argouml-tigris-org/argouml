@@ -38,7 +38,7 @@ import org.tigris.gef.undo.UndoableAction;
 /**
  * Stops critiquing and the TodoList validity checking thread in ToDoList.
  */
-class ActionAutoCritique extends UndoableAction {
+public class ActionAutoCritique extends UndoableAction {
 
     /**
      * The constructor.

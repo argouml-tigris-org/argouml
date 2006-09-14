@@ -38,7 +38,7 @@ import org.argouml.ui.ArgoFrame;
 /**
  * The action to show the About ArgoUML dialog.
  */
-class ActionAboutArgoUML extends AbstractAction {
+public class ActionAboutArgoUML extends AbstractAction {
 
     /**
      * Constructor.
