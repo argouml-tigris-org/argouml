@@ -3,5 +3,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry excluding=".settings/|bin/|build-eclipse/|src/" kind="src" path=""/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-tools"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>

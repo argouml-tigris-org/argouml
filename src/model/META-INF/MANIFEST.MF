@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.argouml.core.model
+Bundle-Version: 0.23.1
+Bundle-ClassPath: argouml-core-model.jar
+Bundle-Localization: plugin
+Bundle-Vendor: %pluginProvider
+Require-Bundle: org.argouml.core.lib
+Export-Package: org.argouml.model
