@@ -159,7 +159,7 @@ public final class ProjectManager implements MementoCreationObserver {
      * @param newValue The new value.
      */
     private void firePropertyChanged(String propertyName,
-				     Object oldValue, Object newValue) {
+                                     Object oldValue, Object newValue) {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
@@ -197,13 +197,13 @@ public final class ProjectManager implements MementoCreationObserver {
         Project oldProject = currentProject;
         currentProject = newProject;
         if (currentProject != null
-	    && currentProject.getActiveDiagram() == null) {
+            && currentProject.getActiveDiagram() == null) {
             Vector diagrams = currentProject.getDiagrams();
             if (diagrams != null && !diagrams.isEmpty()) {
-		ArgoDiagram activeDiagram =
-		    (ArgoDiagram) currentProject.getDiagrams().get(0);
+                ArgoDiagram activeDiagram =
+                    (ArgoDiagram) currentProject.getDiagrams().get(0);
                 currentProject.setActiveDiagram(activeDiagram);
-	    }
+            }
         }
         firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
                 oldProject, newProject);
@@ -223,32 +223,37 @@ public final class ProjectManager implements MementoCreationObserver {
         }
         return currentProject;
     }
-
+    
     /**
-     * Makes an empty project with two standard diagrams.
-     * @return Project
+     * Makes an empty project.
+     * @return Project the empty project
      */
     public Project makeEmptyProject() {
+        return makeEmptyProject(true);
+    }
+
+    /**
+     * Make a new empty project optionally including default diagrams.
+     * <p>
+     * Historically new projects have been created with two default diagrams
+     * (Class and Use Case). NOTE: ArgoUML currently requires at least one
+     * diagram for proper operation.
+     * 
+     * @param addDefaultDiagrams
+     *            if true the project will be be created with the two standard
+     *            default diagrams (Class and Use Case)
+     * @return Project the newly created project
+     */
+    public Project makeEmptyProject(boolean addDefaultDiagrams) {    
         Model.getPump().stopPumpingEvents();
         
         creatingCurrentProject = true;
         LOG.info("making empty project");
         Project oldProject = currentProject;
         currentProject = new Project();
-        Object model = Model.getModelManagementFactory().createModel();
-        Model.getCoreHelper().setName(model, 
-                Translator.localize("misc.untitled-model"));
-        currentProject.setRoot(model);
-        currentProject.setCurrentNamespace(model);
-        currentProject.addMember(model);
-        ArgoDiagram d =
-            DiagramFactory.getInstance()
-                .createDiagram(UMLClassDiagram.class, model, null);
-        currentProject.addMember(d);
-        currentProject.addMember(DiagramFactory.getInstance()
-                .createDiagram(UMLUseCaseDiagram.class, model, null));
-        currentProject.addMember(new ProjectMemberTodoList("", currentProject));
-        currentProject.setActiveDiagram(d);
+        if (addDefaultDiagrams) {
+            createDefaultDiagrams();
+        }
         firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
                             oldProject, currentProject);
         creatingCurrentProject = false;
@@ -263,6 +268,23 @@ public final class ProjectManager implements MementoCreationObserver {
             saveAction.setEnabled(false);
         }
         return currentProject;
+    }
+
+    private void createDefaultDiagrams() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Model.getCoreHelper().setName(model,
+                Translator.localize("misc.untitled-model"));
+        currentProject.setRoot(model);
+        currentProject.setCurrentNamespace(model);
+        currentProject.addMember(model);
+        ArgoDiagram d = DiagramFactory.getInstance().createDiagram(
+                UMLClassDiagram.class, model, null);
+        currentProject.addMember(d);
+        currentProject.addMember(DiagramFactory.getInstance()
+                .createDiagram(UMLUseCaseDiagram.class, model, null));
+        currentProject.addMember(new ProjectMemberTodoList("",
+                currentProject));
+        currentProject.setActiveDiagram(d);
     }
     
     /**
