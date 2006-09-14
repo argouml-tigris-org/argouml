@@ -29,11 +29,12 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -48,7 +49,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.JXButtonGroupPanel;
 import org.argouml.swingext.ShortcutField;
 import org.argouml.ui.cmd.Action;
 import org.argouml.ui.cmd.ShortcutChangedEvent;
@@ -63,7 +63,7 @@ import org.argouml.util.KeyEventUtils;
  * @author andrea.nironi@gmail
  */
 class SettingsTabShortcuts extends JPanel implements
-        GUISettingsTabInterface, ListSelectionListener,
+        GUISettingsTabInterface, ActionListener, ListSelectionListener,
         ShortcutChangedListener {
 
     /**
@@ -157,43 +157,11 @@ class SettingsTabShortcuts extends JPanel implements
             add(tableContainer, panelConstraints);
 
             // now, let's set up the "selected action" container
-            customButton.addItemListener(new ItemListener() {
-                public void itemStateChanged(ItemEvent e) {
-                    if (e.getStateChange() == ItemEvent.SELECTED) {
-                        resetKeyStrokeConflict();
-                
-                        setKeyStrokeValue(
-                                ShortcutMgr.decodeKeyStroke(shortcutField
-                                .getText()));
-                        shortcutField.setEnabled(true);
-                        shortcutField.requestFocus();
-                    }
-                }                
-            });
-            defaultButton.addItemListener(new ItemListener() {
-                public void itemStateChanged(ItemEvent e) {
-                    if (e.getStateChange() == ItemEvent.SELECTED) {
-                        resetKeyStrokeConflict();
-                
-                        setKeyStrokeValue(target.getDefaultShortcut());
-                        shortcutField.setEnabled(false);
-                        checkShortcutAlreadyAssigned(
-                                target.getDefaultShortcut());
-                    }
-                }                
-            });
-            noneButton.addItemListener(new ItemListener() {
-                public void itemStateChanged(ItemEvent e) {
-                    if (e.getStateChange() == ItemEvent.SELECTED) {
-                        resetKeyStrokeConflict();
-                
-                        setKeyStrokeValue(null);
-                        shortcutField.setEnabled(false);
-                    }
-                }                
-            });
+            customButton.addActionListener(this);
+            defaultButton.addActionListener(this);
+            noneButton.addActionListener(this);
 
-            selectedContainer = new JXButtonGroupPanel(new GridBagLayout());
+            selectedContainer = new JPanel(new GridBagLayout());
             selectedContainer.setBorder(
                     BorderFactory.createTitledBorder(
                             Translator.localize(
@@ -206,7 +174,13 @@ class SettingsTabShortcuts extends JPanel implements
             noneButton.setActionCommand(NONE_NAME);
             defaultButton.setActionCommand(DEFAULT_NAME);
             customButton.setActionCommand(CUSTOM_NAME);
-
+            noneButton.addActionListener(this);
+            defaultButton.addActionListener(this);
+            customButton.addActionListener(this);
+            ButtonGroup radioButtonGroup = new ButtonGroup();
+            radioButtonGroup.add(noneButton);
+            radioButtonGroup.add(defaultButton);
+            radioButtonGroup.add(customButton);
             selectedContainer.add(noneButton, constraints);
             constraints.gridx = 1;
             constraints.insets = new Insets(0, 5, 10, 0);
@@ -420,6 +394,30 @@ class SettingsTabShortcuts extends JPanel implements
             }            
         }
         return null;
+    }
+
+    /**
+     * This is called every time a panel button (custom / default / none) is
+     * pressed.
+     * 
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        resetKeyStrokeConflict();
+
+        if (e.getSource() == customButton) {
+            setKeyStrokeValue(ShortcutMgr.decodeKeyStroke(shortcutField
+                    .getText()));
+            shortcutField.setEnabled(true);
+            shortcutField.requestFocus();
+        } else if (e.getSource() == defaultButton) {
+            setKeyStrokeValue(target.getDefaultShortcut());
+            shortcutField.setEnabled(false);
+            checkShortcutAlreadyAssigned(target.getDefaultShortcut());
+        } else if (e.getSource() == noneButton) {
+            setKeyStrokeValue(null);
+            shortcutField.setEnabled(false);
+        }
     }
 
     /**

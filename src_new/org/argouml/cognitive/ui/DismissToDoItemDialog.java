@@ -29,11 +29,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -44,7 +44,6 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.UnresolvableException;
-import org.argouml.swingext.JXButtonGroupPanel;
 import org.argouml.ui.ArgoDialog;
 import org.tigris.swidgets.Dialog;
 
@@ -53,11 +52,6 @@ import org.tigris.swidgets.Dialog;
  *
  */
 public class DismissToDoItemDialog extends ArgoDialog {
-
-    /**
-     * The UID
-     */
-    private static final long serialVersionUID = 2701407911674619977L;
 
     private static final Logger LOG =
         Logger.getLogger(DismissToDoItemDialog.class);
@@ -68,6 +62,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
     private JRadioButton    badGoalButton;
     private JRadioButton    badDecButton;
     private JRadioButton    explainButton;
+    private ButtonGroup     actionGroup;
     private JTextArea       explanation;
     private ToDoItem        target;
 
@@ -105,7 +100,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
             Translator.localize("button.reason-given-below.mnemonic").charAt(
                 0));
 
-        JXButtonGroupPanel content = new JXButtonGroupPanel();
+        JPanel content = new JPanel();
 
         GridBagLayout gb = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -168,32 +163,30 @@ public class DismissToDoItemDialog extends ArgoDialog {
             }
         });
 
-        content.setSelected(explainButton.getModel(), true);
-        
+        actionGroup = new ButtonGroup();
+        actionGroup.add(badGoalButton);
+        actionGroup.add(badDecButton);
+        actionGroup.add(explainButton);
+        actionGroup.setSelected(explainButton.getModel(), true);
+
         explanation.setText(
             Translator.localize("label.enter-rationale-here"));
 
-        badGoalButton.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    explanation.setEnabled(false);
-                }
+        badGoalButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                explanation.setEnabled(false);
             }
         });
-        badDecButton.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    explanation.setEnabled(false);
-                }
+        badDecButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                explanation.setEnabled(false);
             }
         });
-        explainButton.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    explanation.setEnabled(true);
-                    explanation.requestFocus();
-                    explanation.selectAll();
-                }
+        explainButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                explanation.setEnabled(true);
+                explanation.requestFocus();
+                explanation.selectAll();
             }
         });
     }
