@@ -39,7 +39,7 @@ import org.tigris.swidgets.ActionUtilities;
 /**
  * System information dialog.
  */
-class ActionSystemInfo extends AbstractAction {
+public class ActionSystemInfo extends AbstractAction {
 
     /**
      * The Constructor.

@@ -34,7 +34,7 @@ import org.argouml.i18n.Translator;
 /**
  * Page setup for printing.
  */
-class ActionPageSetup extends AbstractAction {
+public class ActionPageSetup extends AbstractAction {
 
     /**
      * Constructor.

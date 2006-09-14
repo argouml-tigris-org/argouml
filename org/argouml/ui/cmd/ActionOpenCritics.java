@@ -36,7 +36,7 @@ import org.tigris.gef.undo.UndoableAction;
 /**
  * Action to open the Browse Critics dialog.
  */
-class ActionOpenCritics extends UndoableAction {
+public class ActionOpenCritics extends UndoableAction {
 
     /**
      * The constructor.
