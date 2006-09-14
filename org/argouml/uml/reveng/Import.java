@@ -71,6 +71,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
@@ -186,18 +187,18 @@ public class Import {
         }
         JComponent chooser = module.getChooser(this);
         dialog =
-            new JDialog(ProjectBrowser.getInstance(),
+            new JDialog(ArgoFrame.getInstance(),
                     Translator.localize("action.import-sources"), true);
 
         dialog.getContentPane().add(chooser, BorderLayout.CENTER);
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
         dialog.pack();
         int x =
-            (ProjectBrowser.getInstance().getSize().width
+            (ArgoFrame.getInstance().getSize().width
              - dialog.getSize().width)
             / 2;
         int y =
-            (ProjectBrowser.getInstance().getSize().height
+            (ArgoFrame.getInstance().getSize().height
              - dialog.getSize().height)
             / 2;
         dialog.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
@@ -449,7 +450,7 @@ public class Import {
 
         diagramInterface = getCurrentDiagram();
 
-        ProjectBrowser.getInstance().setCursor(
+        ArgoFrame.getInstance().setCursor(
                 Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         // now start importing (with an empty problem list)
@@ -742,7 +743,7 @@ public class Import {
                 }
 
                 iss.done();
-                ProjectBrowser.getInstance().setCursor(
+                ArgoFrame.getInstance().setCursor(
                         Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
                 // if errors occured, display the collected messages here
@@ -1128,7 +1129,7 @@ class ImportClasspathDialog extends JDialog {
                 }
             });
 
-            chooser.showOpenDialog(ProjectBrowser.getInstance());
+            chooser.showOpenDialog(ArgoFrame.getInstance());
         }
     }
 
