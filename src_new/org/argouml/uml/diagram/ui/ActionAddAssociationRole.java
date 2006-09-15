@@ -27,10 +27,11 @@ package org.argouml.uml.diagram.ui;
 import javax.swing.Action;
 import javax.swing.Icon;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.util.ResourceLoader;
+
 
 /**
  * The ActionAddAssociation class is for creating a dummy link with a
@@ -86,7 +87,8 @@ public class ActionAddAssociationRole extends CmdSetMode {
                 name);
         _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", Boolean.valueOf(unidirectional));
-        Icon icon = ResourceLoader.lookupIconResource(iconName, iconName);
+        Icon icon = ResourceLoaderWrapper.lookupIconResource(iconName, 
+                iconName);
         if (icon != null) {
             putValue(Action.SMALL_ICON, icon);
         }
