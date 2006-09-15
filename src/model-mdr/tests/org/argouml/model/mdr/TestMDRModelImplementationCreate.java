@@ -26,9 +26,11 @@ package org.argouml.model.mdr;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
 import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.modelmanagement.Model;
@@ -53,10 +55,13 @@ public class TestMDRModelImplementationCreate extends TestCase {
     /**
      * Tests the constructor.
      * 
-     * @throws Exception
-     *             if something goes terribly wrong.
+     * @throws UmlException
+     *             if model subsystem initialization fails.
+     * @throws FileNotFoundException
+     *             If the test XMI file can't be found.
      */
-    public void testMDRModelImplementation() throws Exception {
+    public void testMDRModelImplementation() throws UmlException,
+            FileNotFoundException {
         System.setProperty("argouml.model.implementation",
                 "org.argouml.model.mdr.MDRModelImplementation");
         MDRModelImplementation mi = new MDRModelImplementation();

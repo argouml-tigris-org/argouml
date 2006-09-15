@@ -24,14 +24,9 @@
 
 package org.argouml.model.mdr;
 
-import java.io.IOException;
-
-import javax.jmi.xmi.MalformedXMIException;
-
 import junit.framework.TestCase;
 
 import org.argouml.model.UmlException;
-import org.netbeans.api.mdr.CreationFailedException;
 
 /**
  * Testing the MDRModelImplementation.
@@ -49,11 +44,7 @@ public class TestMDRModelImplementation extends TestCase {
     static {
         try {
             modelImplementation = new MDRModelImplementation();
-        } catch (CreationFailedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (MalformedXMIException e) {
+        } catch (UmlException e) {
             e.printStackTrace();
         }
     }

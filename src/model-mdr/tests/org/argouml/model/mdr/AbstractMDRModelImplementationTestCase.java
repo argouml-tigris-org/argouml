@@ -31,6 +31,7 @@ import javax.jmi.xmi.MalformedXMIException;
 import junit.framework.TestCase;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.argouml.model.UmlException;
 import org.netbeans.api.mdr.CreationFailedException;
 
 public abstract class AbstractMDRModelImplementationTestCase extends TestCase {
@@ -61,11 +62,7 @@ public abstract class AbstractMDRModelImplementationTestCase extends TestCase {
             System.setProperty("org.netbeans.mdr.Logger", "0");
             modelImplementation = new MDRModelImplementation();
             initialized = true;
-        } catch (CreationFailedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (MalformedXMIException e) {
+        } catch (UmlException e) {
             e.printStackTrace();
         }
     }

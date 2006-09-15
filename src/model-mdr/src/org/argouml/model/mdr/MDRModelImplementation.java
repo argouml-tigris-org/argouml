@@ -214,12 +214,15 @@ public class MDRModelImplementation implements ModelImplementation {
     /**
      * Constructor.
      *
-     * @throws CreationFailedException If the creation of the Extend fail
-     * @throws MalformedXMIException If the XMI is bad formed
-     * @throws IOException If there is a problem opening a file
+     * @throws UmlException if construction fails.  Some possible nested exceptions
+     * include:
+     * <ul>
+     * <el>CreationFailedException - If the creation of the Extend fail</el>
+     * <el>MalformedXMIException If the XMI is bad formed</el>
+     * <el>IOException If there is a problem opening a file</el>
+     * </ul>
      */
-    public MDRModelImplementation() throws CreationFailedException,
-            IOException, MalformedXMIException {
+    public MDRModelImplementation() throws UmlException {
 
         LOG.debug("Starting MDR system initialization");
 
@@ -251,16 +254,28 @@ public class MDRModelImplementation implements ModelImplementation {
         mofExtent = (ModelPackage) repository.getExtent(MOF_EXTENT_NAME);
         LOG.debug("MDR Init - tried to get MOF extent");
 
+
         // Create an extent and read in our metamodel (M2 model)
         if (mofExtent == null) {
-            mofExtent = (ModelPackage) repository.createExtent(MOF_EXTENT_NAME);
+
+            try {
+                mofExtent = (ModelPackage) repository.createExtent(MOF_EXTENT_NAME);
+            } catch (CreationFailedException e) {
+                throw new UmlException(e);
+            }
             LOG.debug("MDR Init - created MOF extent");
             XMIReader reader = XMIReaderFactory.getDefault().createXMIReader();
             LOG.debug("MDR Init - created XMI reader");
             String metafacade =
                 System.getProperty("argouml.model.mdr.facade", METAMODEL_URL);
             URL resource = getClass().getResource(metafacade);
-            reader.read(resource.toString(), mofExtent);
+            try {
+                reader.read(resource.toString(), mofExtent);
+            } catch (IOException e) {
+                throw new UmlException(e);
+            } catch (MalformedXMIException e) {
+                throw new UmlException(e);
+            }
             LOG.debug("MDR Init - read UML metamodel");
         }
 
@@ -279,9 +294,13 @@ public class MDRModelImplementation implements ModelImplementation {
         umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);
         LOG.debug("MDR Init - tried to get UML extent");
         if (umlPackage == null) {
-            umlPackage =
-                (UmlPackage) repository.createExtent(
-                        MODEL_EXTENT_NAME, mofPackage);
+            try {
+                umlPackage =
+                    (UmlPackage) repository.createExtent(
+                            MODEL_EXTENT_NAME, mofPackage);
+            } catch (CreationFailedException e) {
+                throw new UmlException(e);
+            }
             LOG.debug("MDR Init - created UML extent");
         }
 
