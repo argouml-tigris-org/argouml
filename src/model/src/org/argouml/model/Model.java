@@ -122,6 +122,7 @@ public final class Model {
         try {
             Class implType = Class.forName(className);
             impl = (ModelImplementation) implType.newInstance();
+            installDecorators();
         } catch (ClassNotFoundException e) {
             reportError(e);
         } catch (InstantiationException e) {
@@ -129,8 +130,13 @@ public final class Model {
         } catch (IllegalAccessException e) {
             reportError(e);
         }
+        
+    }
 
-	// Install the decorators
+    /*
+     * Install undo decorators 
+     */
+    private static void installDecorators() {
         activityGraphsHelper =
             new UndoActivityGraphsHelperDecorator(
                     impl.getActivityGraphsHelper());
@@ -145,7 +151,7 @@ public final class Model {
             new UndoDataTypesHelperDecorator(impl.getDataTypesHelper());
         extensionMechanismsHelper =
             new UndoExtensionMechanismsHelperDecorator(
-		impl.getExtensionMechanismsHelper());
+                    impl.getExtensionMechanismsHelper());
         stateMachinesHelper =
             new UndoStateMachinesHelperDecorator(impl.getStateMachinesHelper());
         umlHelper = new UndoUmlHelperDecorator(impl.getUmlHelper());
@@ -171,6 +177,7 @@ public final class Model {
      */
     static void setImplementation(ModelImplementation newImpl) {
         impl = newImpl;
+        installDecorators();
     }
 
     /**
