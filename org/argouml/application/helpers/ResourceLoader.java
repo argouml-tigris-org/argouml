@@ -36,10 +36,8 @@ import javax.swing.ImageIcon;
  * Already loaded resources are cached. The resources can be searched in
  * different locations.
  * <p>
- * Derived from org.tigris.gef.util.ResourceLoader with the following changes:
- * 1) invalid characters are no longer stripped from names.  The caller is
- * required to pass a valid name.  2) Formatting and variable naming changed
- * to conform to ArgoUML coding standard.
+ * Derived from org.tigris.gef.util.ResourceLoader with formatting and
+ * variable naming changed to conform to ArgoUML coding standard.
  * <p>
  * We use a local copy to reduce coupling to GEF and so that GEF isn't trying
  * to do uplevel accesses to the application resources (which won't work in
@@ -82,6 +80,7 @@ class ResourceLoader {
      */
     public static ImageIcon lookupIconResource(String resource, String desc,
             ClassLoader loader) {
+        resource = toJavaIdentifier(resource);
         if (isInCache(resource)) {
             return (ImageIcon) resourceCache.get(resource);
         }
@@ -191,6 +190,36 @@ class ResourceLoader {
 
     public static boolean isInCache(String resource) {
         return resourceCache.containsKey(resource);
+    }
+    
+    /*
+     * Strip all characters out of <var>s</var> that could not be part of a
+     * valid Java identifier. Return either the given string (if all characters
+     * were valid), or a new string with all invalid characters stripped out.
+     * This allows automatic conversion of strings containing punctuation and
+     * spaces to a resource name that can be looked up.
+     */
+    public static final String toJavaIdentifier(String s) {
+        int len = s.length();
+        int pos = 0;
+        for (int i = 0; i < len; i++, pos++) {
+            if (!Character.isJavaIdentifierPart(s.charAt(i))) break;
+        }
+        if (pos == len) {
+            return s;
+        }
+
+        StringBuffer buf = new StringBuffer(len);
+        buf.append(s.substring(0, pos));
+
+        // skip pos, we know it's not a valid char from above
+        for (int i = pos + 1; i < len; i++) {
+            char c = s.charAt(i);
+            if (Character.isJavaIdentifierPart(c)) {
+                buf.append(c);
+            }
+        }
+        return buf.toString();
     }
 } /* end class ResourceLoader */
 
