@@ -37,7 +37,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.DataTypesHelper;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.tigris.gef.util.ResourceLoader;
 
 /**
  * Wrapper around org.tigris.gef.util.ResourceLoader.<p>
@@ -45,7 +44,8 @@ import org.tigris.gef.util.ResourceLoader;
  * Necessary since ArgoUML needs some extra init.
  *
  * @since Nov 24, 2002
- * @author jaap.branderhorst@xs4all.nl @stereotype singleton
+ * @author jaap.branderhorst@xs4all.nl 
+ * @stereotype singleton
  */
 public final class ResourceLoaderWrapper {
 
