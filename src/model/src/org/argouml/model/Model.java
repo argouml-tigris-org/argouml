@@ -169,13 +169,13 @@ public final class Model {
     /**
      * Selects the implementation.<p>
      *
-     * This is used for testing purposes only when a fake implementation
-     * is used. Normally this is set when loading the Model subsystem.
+     * Normally this is set when loading the Model subsystem, but this
+     * allows the implementation to be set externally.
      *
      * @param newImpl The ModelImplementation object of the selected
      * 		      implementation.
      */
-    static void setImplementation(ModelImplementation newImpl) {
+    public static void setImplementation(ModelImplementation newImpl) {
         impl = newImpl;
         installDecorators();
     }
