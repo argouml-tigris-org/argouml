@@ -634,6 +634,8 @@ class FigRole extends FigSingleLineText
      */
     public void removeFromDiagram() {
         notationProviderRole.removeListener(this, getOwner());
+        ArgoEventPump.removeListener(
+                ArgoEventTypes.ANY_NOTATION_EVENT, this);
         super.removeFromDiagram();
     }
 
