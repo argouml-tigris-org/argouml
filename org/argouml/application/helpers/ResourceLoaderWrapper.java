@@ -38,6 +38,7 @@ import org.argouml.model.DataTypesHelper;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 
+
 /**
  * Wrapper around org.tigris.gef.util.ResourceLoader.<p>
  *
@@ -141,6 +142,26 @@ public final class ResourceLoaderWrapper {
 	ResourceLoader.addResourceLocation("/org/argouml/Images");
 	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 
+        // Initialze GEF's version of the loader too
+        // TODO: We should probably be passing icons that we loaded ourselves
+        // but there doesn't seem to be a way to do that with GEF - tfm
+        org.tigris.gef.util.ResourceLoader.addResourceExtension("gif");
+        org.tigris.gef.util.ResourceLoader.addResourceExtension("png");
+        org.tigris.gef.util.ResourceLoader
+                .addResourceLocation(lookAndFeelGeneralImagePath);
+        org.tigris.gef.util.ResourceLoader
+                .addResourceLocation(lookAndFeelNavigationImagePath);
+        org.tigris.gef.util.ResourceLoader
+                .addResourceLocation(lookAndFeelDiagramImagePath);
+        org.tigris.gef.util.ResourceLoader
+                .addResourceLocation(lookAndFeelElementImagePath);
+        org.tigris.gef.util.ResourceLoader
+                .addResourceLocation(lookAndFeelArgoUmlImagePath);
+        org.tigris.gef.util.ResourceLoader
+                .addResourceLocation("/org/argouml/Images");
+        org.tigris.gef.util.ResourceLoader
+                .addResourceLocation("/org/tigris/gef/Images");
+        
         initialStateIcon = ResourceLoader.lookupIconResource("Initial");
         deepIcon = ResourceLoader.lookupIconResource("DeepHistory");
         shallowIcon = ResourceLoader.lookupIconResource("ShallowHistory");
