@@ -222,6 +222,7 @@ class ZargoFilePersister extends UmlFilePersister {
                     + encoding + "\" ?>");
             
             int pgmlCount = getPgmlCount(file);
+            boolean containsToDo = containsTodo(file);
 
             // first read the .argo file from Zip
             ZipInputStream zis =
@@ -252,19 +253,26 @@ class ZargoFilePersister extends UmlFilePersister {
             String version = getVersion(rootLine);
             writer.println("<uml version=\"" + version + "\">");
             writer.println(rootLine);
+            LOG.info("Transfering argo contents");
             int memberCount = 0;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().equals("<member")) {
                     ++memberCount;
                 }
-                if (line.trim().equals("</pgml>") && memberCount == 0) {
-                    writer.println("<member type = 'xmi' name='.xmi' />");
+                if (line.trim().equals("</argo>") && memberCount == 0) {
+                    LOG.info("Inserting member info");
+                    writer.println("<member type='xmi' name='.xmi' />");
                     for (int i=0; i < pgmlCount; ++i) {
-                        writer.println("<member type = 'pgml' name='.pgml' />");
+                        writer.println("<member type='pgml' name='.pgml' />");
                     }
-                    writer.println("<member type = 'todo' name='.todo' />");
+                    if (containsToDo) {
+                        writer.println("<member type='todo' name='.todo' />");
+                    }
                 }
                 writer.println(line);
+            }
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Member count = " + memberCount);
             }
             zis.close();
             reader.close();
@@ -298,8 +306,13 @@ class ZargoFilePersister extends UmlFilePersister {
                     // TODO: This could be made more robust, 
                     // these 2 lines should be
                     // there but what if they don't exist?
-                    reader.readLine();
-                    reader.readLine();
+                    String firstLine = reader.readLine();
+                    if (firstLine.startsWith("?xml")) {
+                        reader.readLine();
+                    } else {
+                        writer.println(firstLine);
+                    }
+                    
                     readerToWriter(reader, writer);
                     sub.close();
                     reader.close();
@@ -434,5 +447,17 @@ class ZargoFilePersister extends UmlFilePersister {
         }
         zis.close();
         return pgmlCount;
+    }
+    
+    private boolean containsTodo(File file) throws IOException {
+        ZipInputStream zis = new ZipInputStream(file.toURL().openStream());
+        ZipEntry entry = zis.getNextEntry();
+        while (entry != null) {
+            if (entry.getName().endsWith(".todo")) {
+                return true;
+            }
+            entry = zis.getNextEntry();
+        }
+        return false;
     }
 }
