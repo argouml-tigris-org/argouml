@@ -112,7 +112,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         table.getSelectionModel().addListSelectionListener(this);
 
         JScrollPane sp = new JScrollPane(table);
-        Font labelFont = LookAndFeelMgr.getInstance().getSmallFont();
+        Font labelFont = LookAndFeelMgr.getInstance().getStandardFont();
         table.setFont(labelFont);
 
         titleLabel = new JLabel("none");

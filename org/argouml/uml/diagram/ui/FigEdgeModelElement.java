@@ -121,7 +121,13 @@ public abstract class FigEdgeModelElement
     private static final Font ITALIC_LABEL_FONT;
 
     static {
-        LABEL_FONT = new Font("Dialog", Font.PLAIN, 10);
+        LABEL_FONT =
+        /* TODO: Why is this different from the FigNodeModelElement?
+         * Should we not use one of the following? 
+         * LookAndFeelMgr.getInstance().getStandardFont();
+         * new javax.swing.plaf.metal.DefaultMetalTheme().getSubTextFont();
+         * new javax.swing.plaf.metal.DefaultMetalTheme().getUserTextFont(); */
+            new Font("Dialog", Font.PLAIN, 10);
         ITALIC_LABEL_FONT =
             new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
     }

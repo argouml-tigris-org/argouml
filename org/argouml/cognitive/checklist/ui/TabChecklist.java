@@ -77,7 +77,7 @@ public class TabChecklist extends AbstractArgoJPanel
 	tableModel = new TableModelChecklist(this);
 	table.setModel(tableModel);
 
-	Font labelFont = LookAndFeelMgr.getInstance().getSmallFont();
+	Font labelFont = LookAndFeelMgr.getInstance().getStandardFont();
 	table.setFont(labelFont);
 
 	table.setIntercellSpacing(new Dimension(0, 1));

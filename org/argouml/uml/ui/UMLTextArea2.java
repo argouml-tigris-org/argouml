@@ -52,7 +52,7 @@ public class UMLTextArea2 extends JTextArea
      */
     public UMLTextArea2(UMLDocument doc) {
         super(doc);
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addCaretListener(ActionCopy.getInstance());
         addCaretListener(ActionCut.getInstance());
         addCaretListener(ActionPaste.getInstance());

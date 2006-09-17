@@ -61,7 +61,7 @@ public abstract class UMLCheckBox2 extends JCheckBox
      */
     public UMLCheckBox2(String text, Action a, String name) {
         super(text);
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        setFont(LookAndFeelMgr.getInstance().getStandardFont());
         propertySetName = name;
         addActionListener(a);
 

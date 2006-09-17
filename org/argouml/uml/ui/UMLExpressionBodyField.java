@@ -65,7 +65,7 @@ public class UMLExpressionBodyField extends JTextArea
         notifyModel = n;
         getDocument().addDocumentListener(this);
         setToolTipText(Translator.localize("label.body.tooltip"));
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        setFont(LookAndFeelMgr.getInstance().getStandardFont());
     }
 
     /**

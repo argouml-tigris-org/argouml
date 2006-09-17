@@ -181,6 +181,10 @@ public abstract class FigNodeModelElement
 
     static {
         LABEL_FONT =
+        /* TODO: Why is this different from the FigEdgeModelElement?
+         * Should we not use one of the following? 
+         * LookAndFeelMgr.getInstance().getStandardFont();
+         * new javax.swing.plaf.metal.DefaultMetalTheme().getUserTextFont(); */
             new javax.swing.plaf.metal.DefaultMetalTheme().getSubTextFont();
         ITALIC_LABEL_FONT =
             new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());

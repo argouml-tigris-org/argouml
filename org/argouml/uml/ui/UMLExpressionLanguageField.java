@@ -54,7 +54,7 @@ public class UMLExpressionLanguageField
         notifyModel = n;
         getDocument().addDocumentListener(this);
         setToolTipText(Translator.localize("label.language.tooltip"));
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        setFont(LookAndFeelMgr.getInstance().getStandardFont());
     }
 
     /**

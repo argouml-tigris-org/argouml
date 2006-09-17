@@ -91,7 +91,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     private JLabel titleLabel;
 
-    protected static Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
+    protected static Font stdFont = LookAndFeelMgr.getInstance().getStandardFont();
 
     /**
      * Construct new PropPanel using LabelledLayout.
@@ -188,8 +188,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public JLabel addField(String label, Component component) {
         JLabel jlabel = new JLabel(label);
-        jlabel.setFont(smallFont);
-        component.setFont(smallFont);
+        jlabel.setFont(stdFont);
+        component.setFont(stdFont);
         jlabel.setLabelFor(component);
         add(jlabel);
         add(component);
@@ -214,8 +214,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         for (int i = 0; i < nComponent; ++i) {
             if (getComponent(i) == afterComponent) {
                 JLabel jlabel = new JLabel(label);
-                jlabel.setFont(smallFont);
-                component.setFont(smallFont);
+                jlabel.setFont(stdFont);
+                component.setFont(stdFont);
                 jlabel.setLabelFor(component);
                 add(jlabel, ++i);
                 add(component, ++i);
@@ -244,8 +244,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         for (int i = 0; i < nComponent; ++i) {
             if (getComponent(i) == beforeComponent) {
                 JLabel jlabel = new JLabel(label);
-                jlabel.setFont(smallFont);
-                component.setFont(smallFont);
+                jlabel.setFont(stdFont);
+                component.setFont(stdFont);
                 jlabel.setLabelFor(component);
                 add(jlabel, i - 1);
                 add(component, i++);
@@ -533,7 +533,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     protected void setTitleLabel(JLabel theTitleLabel) {
         this.titleLabel = theTitleLabel;
-        titleLabel.setFont(smallFont);
+        titleLabel.setFont(stdFont);
     }
 
     /**
@@ -546,7 +546,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     protected JPanel createBorderPanel(String title) {
     	JPanel panel = new JPanel(new GridLayout2());
     	TitledBorder border = new TitledBorder(title);
-    	border.setTitleFont(smallFont);
+    	border.setTitleFont(stdFont);
     	panel.setBorder(border);
     	return panel;
     }

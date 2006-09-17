@@ -60,7 +60,7 @@ public class PropPanelArgument extends PropPanelModelElement {
             new UMLExpressionExpressionModel(
                 this, "expression");
         JTextArea ebf = new UMLExpressionBodyField(expressionModel, true);
-        ebf.setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        ebf.setFont(LookAndFeelMgr.getInstance().getStandardFont());
         ebf.setRows(3); // make it take up all remaining height
         addField(Translator.localize("label.value"),
                 new JScrollPane(ebf));

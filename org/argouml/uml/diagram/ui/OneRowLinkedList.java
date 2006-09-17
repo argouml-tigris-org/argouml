@@ -52,7 +52,7 @@ public class OneRowLinkedList extends JList {
         setForeground(Color.blue);
         setSelectionForeground(Color.blue.darker());
         UMLLinkMouseListener mouseListener = new UMLLinkMouseListener(this);
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addMouseListener(mouseListener);
         setVisibleRowCount(1);
     }
