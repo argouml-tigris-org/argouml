@@ -300,14 +300,11 @@ class ZargoFilePersister extends UmlFilePersister {
                     reader = new BufferedReader(
                         new InputStreamReader(sub, 
                                 PersistenceManager.getEncoding()));
-                    // Skip the 2 lines
-                    //<?xml version="1.0" encoding="UTF-8" ?>
-                    //<!DOCTYPE pgml SYSTEM "pgml.dtd">
-                    // TODO: This could be made more robust, 
-                    // these 2 lines should be
-                    // there but what if they don't exist?
                     String firstLine = reader.readLine();
-                    if (firstLine.startsWith("?xml")) {
+                    if (firstLine.startsWith("<?xml")) {
+                        // Skip the 2 lines
+                        //<?xml version="1.0" encoding="UTF-8" ?>
+                        //<!DOCTYPE pgml SYSTEM "pgml.dtd">
                         reader.readLine();
                     } else {
                         writer.println(firstLine);
