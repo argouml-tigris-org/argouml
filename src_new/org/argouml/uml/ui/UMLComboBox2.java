@@ -54,7 +54,7 @@ public class UMLComboBox2
      */
     protected UMLComboBox2(UMLComboBoxModel2 arg0) {
         super(arg0);
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addActionListener(this);
     }
 
@@ -68,7 +68,7 @@ public class UMLComboBox2
     public UMLComboBox2(UMLComboBoxModel2 arg0, Action action,
 			boolean showIcon) {
         super(arg0);
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addActionListener(action);
         // setDoubleBuffered(true);
         setRenderer(new UMLListCellRenderer2(showIcon));

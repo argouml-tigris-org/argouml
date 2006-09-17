@@ -84,7 +84,7 @@ public class PropPanelReception extends PropPanelModelElement {
                 new UMLReceptionSpecificationDocument());
         specText.setLineWrap(true);
         specText.setRows(5);
-        specText.setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        specText.setFont(LookAndFeelMgr.getInstance().getStandardFont());
         JScrollPane specificationScroll = new JScrollPane(specText);
         addField(Translator.localize("label.specification"),
                 specificationScroll);

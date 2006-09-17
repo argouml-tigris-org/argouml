@@ -98,7 +98,7 @@ public class PropPanelMethod extends PropPanelFeature {
         UMLTextArea2 bodyArea = new UMLTextArea2(uptd);
         bodyArea.setLineWrap(true);
         bodyArea.setRows(5);
-        bodyArea.setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        bodyArea.setFont(LookAndFeelMgr.getInstance().getStandardFont());
         JScrollPane pane = new JScrollPane(bodyArea);
         addField(Translator.localize("label.body"), pane);
 

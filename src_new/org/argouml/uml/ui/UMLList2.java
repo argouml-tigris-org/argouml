@@ -65,7 +65,7 @@ public abstract class UMLList2
         if (renderer != null) {
             setCellRenderer(renderer);
         }
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addMouseListener(this);
     }
 

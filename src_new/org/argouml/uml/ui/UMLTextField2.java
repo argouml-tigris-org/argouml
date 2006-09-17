@@ -53,7 +53,7 @@ public class UMLTextField2
      */
     public UMLTextField2(UMLDocument doc) {
         super(doc, null, 0);
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addCaretListener(ActionCopy.getInstance());
         addCaretListener(ActionCut.getInstance());
         addCaretListener(ActionPaste.getInstance());

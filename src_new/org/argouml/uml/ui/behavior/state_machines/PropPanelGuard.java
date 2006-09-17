@@ -76,7 +76,7 @@ public class PropPanelGuard extends PropPanelModelElement {
         UMLExpressionModel2 expressionModel = new UMLExpressionExpressionModel(
                 this, "expression");
         JTextArea ebf = new UMLExpressionBodyField(expressionModel, true);
-        ebf.setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        ebf.setFont(LookAndFeelMgr.getInstance().getStandardFont());
         ebf.setRows(1);
         exprPanel.add(new JScrollPane(ebf));
         exprPanel.add(new UMLExpressionLanguageField(expressionModel, true));
