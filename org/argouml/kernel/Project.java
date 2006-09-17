@@ -1069,8 +1069,11 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setRoot(Object root) {
 
+        if (root == null) {
+            throw new IllegalArgumentException("A root model element is required");
+        }
         if (!Model.getFacade().isAModel(root)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("The root model element must be a model - got " + root.getClass().getName());
         }
 
         Object treeRoot = Model.getModelManagementFactory().getRootModel();
