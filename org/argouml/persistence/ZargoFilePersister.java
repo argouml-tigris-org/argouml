@@ -99,6 +99,7 @@ class ZargoFilePersister extends UmlFilePersister {
     public void doSave(Project project, File file) throws SaveException, 
     InterruptedException {
 
+        LOG.info("Saving");
         ProgressMgr progressMgr = new ProgressMgr();
         progressMgr.setNumberOfPhases(4);
         progressMgr.nextPhase();
@@ -219,10 +220,13 @@ class ZargoFilePersister extends UmlFilePersister {
 
             writer.println("<?xml version = \"1.0\" " + "encoding = \""
                     + encoding + "\" ?>");
+            
+            int pgmlCount = getPgmlCount(file);
 
             // first read the .argo file from Zip
             ZipInputStream zis =
                 openZipStreamAt(file.toURL(), FileConstants.PROJECT_FILE_EXT);
+            
             if (zis == null) {
                 LOG.info("There is no argo file so use ZipFilePersister");
                 ZipFilePersister zfp = new ZipFilePersister();
@@ -248,7 +252,18 @@ class ZargoFilePersister extends UmlFilePersister {
             String version = getVersion(rootLine);
             writer.println("<uml version=\"" + version + "\">");
             writer.println(rootLine);
+            int memberCount = 0;
             while ((line = reader.readLine()) != null) {
+                if (line.trim().equals("<member")) {
+                    ++memberCount;
+                }
+                if (line.trim().equals("</pgml>") && memberCount == 0) {
+                    writer.println("<member type = 'xmi' name='.xmi' />");
+                    for (int i=0; i < pgmlCount; ++i) {
+                        writer.println("<member type = 'pgml' name='.pgml' />");
+                    }
+                    writer.println("<member type = 'todo' name='.todo' />");
+                }
                 writer.println(line);
             }
             zis.close();
@@ -318,7 +333,7 @@ class ZargoFilePersister extends UmlFilePersister {
 
             writer.println("</uml>");
             writer.close();
-            LOG.info("Complated combining files");
+            LOG.info("Completed combining files");
             Project p =  super.doLoad(file, combinedFile, progressMgr);
             
             progressMgr.nextPhase();
@@ -405,5 +420,19 @@ class ZargoFilePersister extends UmlFilePersister {
         public ZipEntry getNextEntry() throws IOException {
             return in.getNextEntry();
         }
+    }
+    
+    private int getPgmlCount(File file) throws IOException {
+        int pgmlCount = 0;
+        ZipInputStream zis = new ZipInputStream(file.toURL().openStream());
+        ZipEntry entry = zis.getNextEntry();
+        while (entry != null) {
+            if (entry.getName().endsWith(".pgml")) {
+                ++pgmlCount;
+            }
+            entry = zis.getNextEntry();
+        }
+        zis.close();
+        return pgmlCount;
     }
 }
