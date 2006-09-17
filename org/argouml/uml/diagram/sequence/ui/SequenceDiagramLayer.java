@@ -294,10 +294,10 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
             FigMessagePort source = (FigMessagePort) fm.getSourcePortFig();
             FigMessagePort dest = (FigMessagePort) fm.getDestPortFig();
             
-            removeFigMessagePort(source);
-            removeFigMessagePort(dest);
-            updateNodeStates(source);
-            if (fm.getSourceFigNode() != fm.getDestFigNode()) {
+            if (source != null) removeFigMessagePort(source);
+            if (dest != null) removeFigMessagePort(dest);
+            if (source != null) updateNodeStates(source);
+            if (dest != null && fm.getSourceFigNode() != fm.getDestFigNode()) {
                 updateNodeStates(dest);
             }
         }
