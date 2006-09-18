@@ -582,20 +582,20 @@ class FigRole extends FigSingleLineText
 
     public void setOwner(Object owner) {
         super.setOwner(owner);
-        if (owner != null) {
-            getNewNotation();
-        }
+        getNewNotation();
     }
 
     private void getNewNotation() {
         if (notationProviderRole != null) {
             notationProviderRole.removeListener(this, getOwner());
         }
-        notationProviderRole = 
-            NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                    getOwner(),
-                    this);
+        if (getOwner() != null) {
+            notationProviderRole = 
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
+                        getOwner(),
+                        this);
+        }
     }
     
     protected void setText() {
