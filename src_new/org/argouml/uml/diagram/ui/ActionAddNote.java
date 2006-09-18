@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Iterator;
@@ -36,7 +35,6 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.Diagram;
@@ -176,26 +174,27 @@ public class ActionAddNote extends UndoableAction {
             // TODO: We need a better algorithm.
             point.x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
             point.y = elemFig.getY();
-            Rectangle drawingArea =
-                ProjectBrowser.getInstance().getEditorPane().getBounds();
-            if (point.x + noteFig.getWidth() > drawingArea.getX()) {
-                point.x = elemFig.getX() - noteFig.getWidth() - DISTANCE;
-
-                if (point.x >= 0) {
-                    return point;
-                }
-
-                point.x = elemFig.getX();
-                point.y = elemFig.getY() - noteFig.getHeight() - DISTANCE;
-                if (point.y >= 0) {
-                    return point;
-                }
-
-                point.y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
-                if (point.y + noteFig.getHeight() > drawingArea.getHeight()) {
-                    return new Point(0, 0);
-                }
-            }
+            // TODO: Decouple this from ProjectBrowser
+//            Rectangle drawingArea =
+//                ProjectBrowser.getInstance().getEditorPane().getBounds();
+//            if (point.x + noteFig.getWidth() > drawingArea.getX()) {
+//                point.x = elemFig.getX() - noteFig.getWidth() - DISTANCE;
+//
+//                if (point.x >= 0) {
+//                    return point;
+//                }
+//
+//                point.x = elemFig.getX();
+//                point.y = elemFig.getY() - noteFig.getHeight() - DISTANCE;
+//                if (point.y >= 0) {
+//                    return point;
+//                }
+//
+//                point.y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
+//                if (point.y + noteFig.getHeight() > drawingArea.getHeight()) {
+//                    return new Point(0, 0);
+//                }
+//            }
         }
 
         return point;

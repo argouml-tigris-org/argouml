@@ -66,7 +66,7 @@ public class GUITestProjectBrowser extends TestCase {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	assertNotNull(pb.getLocale());
 	assertNotNull(pb.getAppName());
-	assertNotNull(pb.getTabProps());
+//	assertNotNull(pb.getTabProps());
 	assertNotNull(pb.getStatusBar());
 	assertNotNull(pb.getJMenuBar());
 	assertNotNull(pb.getEditorPane());

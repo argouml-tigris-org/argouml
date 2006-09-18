@@ -31,7 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.Actions;
 import org.argouml.uml.ui.ActionNavigateAssociation;
 import org.argouml.uml.ui.ActionNavigateOppositeAssocEnd;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -220,7 +220,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         addAction(new ActionNavigateAssociation());
         addAction(new ActionNavigateOppositeAssocEnd());
         addAction(
-                TargetManager.getInstance().getAddAttributeAction(),
+                Actions.getInstance().getAddAttributeAction(),
                 Translator.localize("button.new-qualifier"));
         addAction(new ActionNewStereotype());
         addAction(getDeleteAction());

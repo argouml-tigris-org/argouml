@@ -42,12 +42,12 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ProjectBrowser;
+//import org.argouml.ui.ProjectBrowser;
 
 
 /**
  * UMLToDoItem is the preferred class for newly created ToDoItems within
- * ArgoUML. It knows more about possible designmaterial and can for example
+ * ArgoUML. It knows more about possible design material and can for example
  * highlight offenders when they are ModelElements by finding the according Fig
  * in the current diagram for them.
  *
@@ -125,11 +125,12 @@ public class UMLToDoItem extends ToDoItem {
     public void action() {
         deselect();
         // this also sets the target as a convenient side effect
-        ProjectBrowser.getInstance()
-            .jumpToDiagramShowing(getOffenders().asVector());
+        // TODO: Break this dependency - send event instead?
+//        ProjectBrowser.getInstance()
+//            .jumpToDiagramShowing(getOffenders().asVector());
         select();
     }
-
+    
     /**
      * @see org.argouml.cognitive.ToDoItem#deselect()
      */

@@ -66,6 +66,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.PluggableImport;
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -193,6 +194,8 @@ public class Import {
         dialog.getContentPane().add(chooser, BorderLayout.CENTER);
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
         dialog.pack();
+        
+        // TODO: The dialog should come up centered by default
         int x =
             (ArgoFrame.getInstance().getSize().width
              - dialog.getSize().width)
@@ -202,7 +205,7 @@ public class Import {
              - dialog.getSize().height)
             / 2;
         dialog.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
-        
+
         UIUtils.loadCommonKeyMap(dialog);
         
         dialog.setVisible(true);
@@ -450,6 +453,9 @@ public class Import {
 
         diagramInterface = getCurrentDiagram();
 
+//        ProjectBrowser.getInstance().setCursor(
+//                Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        // TODO: Verify this does the desired thing
         ArgoFrame.getInstance().setCursor(
                 Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -488,8 +494,7 @@ public class Import {
 
         // Is this file a Java source file?
         if (module.isParseable(f)) {
-            ProjectBrowser.getInstance()
-                .showStatus("Parsing " + f.toString() + "...");
+            StatusMonitor.notify(this, "Parsing " + f.toString() + "...");
             module.parseFile(project, f, diagramInterface, this);
             // set the lastModified value
             String fn = ((File) f).getAbsolutePath();
@@ -651,7 +656,7 @@ public class Import {
 
                     try {
                         st.mark(curFile.toString());
-                        ProjectBrowser.getInstance().showStatus(
+                        StatusMonitor.notify(this, 
                                 "Importing " + curFile.toString());
                         parseFile(
                                 ProjectManager.getManager()
@@ -670,8 +675,9 @@ public class Import {
                             - filesLeft.size()
                             - nextPassFiles.size();
                         iss.setValue(act);
-                        ProjectBrowser.getInstance().getStatusBar()
-                                .showProgress(100 * act / tot);
+                        // TODO: Convert to send progress events
+//                        ProjectBrowser.getInstance().getStatusBar()
+//                                .showProgress(100 * act / tot);
                     } catch (Exception e1) {
 
                         nextPassFiles.addElement(curFile);
@@ -720,7 +726,8 @@ public class Import {
                 // Do post load processings.
                 st.mark("postprocessings");
 
-                ProjectBrowser.getInstance().showStatus("Import done");
+                // TODO: I18N
+                StatusMonitor.notify(this, "Import done");
 
                 // Layout the modified diagrams.
                 if (!isCancelled() && doLayout) {
@@ -743,9 +750,11 @@ public class Import {
                 }
 
                 iss.done();
+//                ProjectBrowser.getInstance().setCursor(
+//                        Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 ArgoFrame.getInstance().setCursor(
                         Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
+                
                 // if errors occured, display the collected messages here
                 if (problems != null && problems.length() > 0) {
                     ProblemsDialog pd = new ProblemsDialog();
@@ -760,7 +769,8 @@ public class Import {
                 ExplorerEventAdaptor.getInstance().structureChanged();
 
                 LOG.info(st);
-                ProjectBrowser.getInstance().getStatusBar().showProgress(0);
+                // TODO: Convert to send progress events
+//                ProjectBrowser.getInstance().getStatusBar().showProgress(0);
             } finally {
                 // Be sure event pump gets turned back on again.
                 // Note: this doesn't deal with the critics

@@ -32,11 +32,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -49,8 +45,6 @@ import org.argouml.util.ConfigLoader;
  *
  */
 public class PropPanelDiagram extends PropPanel {
-    
-    private static final Logger LOG = Logger.getLogger(PropPanelDiagram.class);
 
     /**
      * Constructs a proppanel with a given name.
@@ -67,7 +61,7 @@ public class PropPanelDiagram extends PropPanel {
         addField(Translator.localize("label.home-model"), new JScrollPane(lst));
 
         addAction(new ActionNavigateUpFromDiagram());
-        addAction(TargetManager.getInstance().getDeleteAction());
+        addAction(Actions.getDeleteAction());
     }
 
     /**

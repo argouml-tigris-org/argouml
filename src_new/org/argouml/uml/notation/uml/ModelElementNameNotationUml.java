@@ -32,12 +32,12 @@ import java.util.NoSuchElementException;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.ModelElementNameNotation;
 import org.argouml.util.MyTokenizer;
 
@@ -54,7 +54,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
     /**
      * The constructor.
      *
-     * @param name the uml object
+     * @param name the name of the element we represent
      */
     public ModelElementNameNotationUml(Object name) {
         super(name);
@@ -76,7 +76,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
                 pe.getLocalizedMessage(),
                 new Integer(pe.getErrorOffset()),
             };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
+            StatusMonitor.notify(this, 
                 Translator.messageFormat(msg, args));
         }
     }
@@ -266,7 +266,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
 
         if (path != null && (name == null || "".equals(name))) {
             String msg = "parsing.error.model-element-name.must-end-with-name";
-            throw new ParseException(Translator.localize(msg), 0);
+			throw new ParseException(Translator.localize(msg), 0);
         }
 
         if (name != null && name.startsWith("+")) {

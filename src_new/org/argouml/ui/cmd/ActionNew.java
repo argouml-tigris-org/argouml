@@ -35,7 +35,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectLoadSave;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
@@ -68,12 +68,13 @@ public class ActionNew extends AbstractAction {
         Project p = ProjectManager.getManager().getCurrentProject();
 
         if (getValue("non-interactive") == null) {
-            if (!ProjectBrowser.getInstance().askConfirmationAndSave()) {
+            if (!ProjectLoadSave.askConfirmationAndSave()) {
                 return;
-            }
+        }
         }
 
-        ProjectBrowser.getInstance().clearDialogs();
+        // TODO: Break this dependency on ProjectBrowser
+//        ProjectBrowser.getInstance().clearDialogs();
         Designer.disableCritiquing();
         Designer.clearCritiquing();
         // clean the history

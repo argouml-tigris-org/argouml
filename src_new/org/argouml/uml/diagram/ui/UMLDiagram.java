@@ -108,7 +108,7 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  */
 public abstract class UMLDiagram
     extends ArgoDiagram
-    implements PropertyChangeListener, Relocatable {
+    implements PropertyChangeListener, Relocatable, UMLDiagramInterface {
     /**
      * Logger.
      */

@@ -35,6 +35,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectLoadSave;
 
 /**
  * Action that saves the project.
@@ -75,11 +76,11 @@ public class ActionSaveProject extends AbstractAction {
      */
     public void actionPerformed(ActionEvent e) {
         LOG.info("Performing save action");
-        ProjectBrowser.getInstance().trySave(
-                ProjectManager.getManager().getCurrentProject() != null
+        ProjectLoadSave.trySave(
+            ProjectManager.getManager().getCurrentProject() != null
                         && ProjectManager.getManager().getCurrentProject()
                                 .getURI() != null);
-    }
+        }
 
     /**
      * Set the enabled state of the save action.
@@ -92,6 +93,7 @@ public class ActionSaveProject extends AbstractAction {
             return;
         }
         super.setEnabled(enabled);
+        // TODO: Have the title bar register for enabled events?
         ProjectBrowser.getInstance().showSaveIndicator();
     }
 

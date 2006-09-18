@@ -114,7 +114,8 @@ class PGMLStackParser
 
         // Handle ItemUID in container contents
         if (qname.equals("private") && (container instanceof Container)) {
-            return new PrivateHandler(this, (Container) container);
+            // TODO: Dependency cycle?
+//        	return new PrivateHandler(this, (Container) container);
         }
 
         DefaultHandler handler =

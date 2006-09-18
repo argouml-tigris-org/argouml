@@ -31,10 +31,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.StateBodyNotation;
 
 /**
@@ -65,8 +65,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
                 pe.getLocalizedMessage(),
                 new Integer(pe.getErrorOffset()),
             };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
+            StatusMonitor.notify(this, Translator.messageFormat(msg, args));
         }
     }
 

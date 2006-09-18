@@ -41,7 +41,8 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
 import org.argouml.swingext.SpacerPanel;
-import org.argouml.ui.ProjectBrowser;
+// TODO: Work still needed to remove this dependency
+//import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.util.osdep.StartBrowser;
 
@@ -250,13 +251,14 @@ public class WizStep extends JPanel
      * Set the target and make visible.
      */
     protected void updateTabToDo() {
-	TabToDo ttd =
-	    (TabToDo) ProjectBrowser.getInstance().getTab(TabToDo.class);
+        // TODO: Update ToDo tab using event notification
+//	TabToDo ttd =
+//	    (TabToDo) ProjectBrowser.getInstance().getTab(TabToDo.class);
 	JPanel ws = getWizard().getCurrentPanel();
 	if (ws instanceof WizStep) {
 	    ((WizStep) ws).setTarget(target);
         }
-	ttd.showStep(ws);
+//	ttd.showStep(ws);
     }
 
     ////////////////////////////////////////////////////////////////

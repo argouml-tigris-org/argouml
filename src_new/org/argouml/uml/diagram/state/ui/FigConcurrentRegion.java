@@ -39,9 +39,9 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
+import org.argouml.uml.diagram.ui.Actions;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -155,7 +155,7 @@ public class FigConcurrentRegion extends FigState
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         popUpActions.remove(
-                ProjectBrowser.getInstance().getRemoveFromDiagramAction());
+                Actions.getRemoveFromDiagramAction());
         popUpActions.add(new JSeparator());
         popUpActions.addElement(
                 new ActionAddConcurrentRegion());
@@ -205,7 +205,7 @@ public class FigConcurrentRegion extends FigState
             w = oldBounds.width;
             FigCompositeState f = ((FigCompositeState) getEnclosingFig());
             regionsVector = f.getEnclosedFigs();
-            index = regionsVector.indexOf((Object) this, 0);
+            index = regionsVector.indexOf(this, 0);
 
             /* if curHandle.index is 0 or 2,
              * the adjacent region is the previous region

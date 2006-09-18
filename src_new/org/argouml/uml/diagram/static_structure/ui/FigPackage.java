@@ -36,19 +36,14 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
@@ -202,7 +197,7 @@ public class FigPackage extends FigNodeModelElement
         super.initNotationProviders(own);
         if (Model.getFacade().isAPackage(own)) {
             npArguments.put("visibilityVisible",
-                    Boolean.valueOf(isVisibilityVisible()));
+                Boolean.valueOf(isVisibilityVisible()));
         }
     }
 
@@ -715,7 +710,10 @@ public class FigPackage extends FigNodeModelElement
 		    me.consume();
 		    super.mouseClicked(me);
 		    try {
-		        createClassDiagram(lNS, lsDefaultName, lP);
+                        // TODO:  Do this using an Action 
+                        // to break the dependency cycle?
+                        // Increases largest cycle from 95 to 258
+//		        createClassDiagram(lNS, lsDefaultName, lP);
 		    } catch (Exception ex) {
 		        LOG.error(ex);
 		    }
@@ -738,37 +736,37 @@ public class FigPackage extends FigNodeModelElement
             String defaultName,
             Project project) throws PropertyVetoException {
 
-        String namespaceDescr;
-        if (namespace != null
-                && Model.getFacade().getName(namespace) != null) {
-            namespaceDescr = Model.getFacade().getName(namespace);
-        } else {
-            namespaceDescr = Translator.localize("misc.name.anon");
-        }
-
-        String dialogText = "Add new class diagram to " + namespaceDescr + "?";
-        int option =
-            JOptionPane.showConfirmDialog(
-                null,
-                dialogText,
-                "Add new class diagram?",
-                JOptionPane.YES_NO_OPTION);
-
-        if (option == JOptionPane.YES_OPTION) {
-
-            ArgoDiagram classDiagram =
-                DiagramFactory.getInstance().
-                    createDiagram(UMLClassDiagram.class, namespace, null);
-
-            String diagramName = defaultName + "_" + classDiagram.getName();
-
-            project.addMember(classDiagram);
-
-            TargetManager.getInstance().setTarget(classDiagram);
-            /* change prefix */
-            classDiagram.setName(diagramName);
-            ExplorerEventAdaptor.getInstance().structureChanged();
-        }
+//        String namespaceDescr;
+//        if (namespace != null
+//                && Model.getFacade().getName(namespace) != null) {
+//            namespaceDescr = Model.getFacade().getName(namespace);
+//        } else {
+//            namespaceDescr = Translator.localize("misc.name.anon");
+//        }
+//
+//        String dialogText = "Add new class diagram to " + namespaceDescr + "?";
+//        int option =
+//            JOptionPane.showConfirmDialog(
+//                null,
+//                dialogText,
+//                "Add new class diagram?",
+//                JOptionPane.YES_NO_OPTION);
+//
+//        if (option == JOptionPane.YES_OPTION) {
+//
+//            ArgoDiagram classDiagram =
+//                DiagramFactory.getInstance().
+//                    createDiagram(UMLClassDiagram.class, namespace, null);
+//
+//            String diagramName = defaultName + "_" + classDiagram.getName();
+//
+//            project.addMember(classDiagram);
+//
+//            TargetManager.getInstance().setTarget(classDiagram);
+//            /* change prefix */
+//            classDiagram.setName(diagramName);
+//            ExplorerEventAdaptor.getInstance().structureChanged();
+//        }
     }
 
     /**
@@ -801,7 +799,7 @@ public class FigPackage extends FigNodeModelElement
         visibilityVisible = isVisible;
         if (notationProviderName != null) {
             npArguments.put("visibilityVisible",
-                    Boolean.valueOf(isVisible));
+                Boolean.valueOf(isVisible));
         }
         renderingChanged();
         damage();

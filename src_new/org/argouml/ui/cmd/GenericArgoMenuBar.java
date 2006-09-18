@@ -41,13 +41,14 @@ import org.argouml.ui.ActionExportXMI;
 import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ActionSettings;
+import org.argouml.ui.ArgoActions;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.ZoomSliderButton;
 import org.argouml.ui.explorer.ActionPerspectiveConfig;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.Actions;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
@@ -67,9 +68,11 @@ import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
+import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.CmdAdjustGrid;
 import org.tigris.gef.base.CmdAdjustGuide;
 import org.tigris.gef.base.CmdAdjustPageBreaks;
+import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.base.CmdSelectAll;
 import org.tigris.gef.base.CmdSelectInvert;
 import org.tigris.gef.base.CmdZoom;
@@ -79,28 +82,28 @@ import org.tigris.toolbar.ToolBar;
  * GenericArgoMenuBar defines the menubar for all operating systems which do not
  * explicitely ask for a different kind of menu bar, such as Mac OS X.
  * <p>
- * 
+ *
  * Menu's and the mnemonics of menu's and the menuitems are separated in the
  * PropertyResourceBundle <em>menu.properties</em>.
  * <p>
- * 
+ *
  * menuitems are separated in the PropertyResourceBundle
  * <em>action.properties</em>.
  * <p>
- * 
+ *
  * The key's in menu.properties have the following structure:
- * 
+ *
  * <pre>
- *   menu:                    [file].[name of menu]
- *    e.g:                    menu.file
- * 
- *   mnemonics of menu's:     [file].[name of menu].mnemonic
- *    e.g:                    menu.file.mnemonic
- * 
- *   mnemonics of menuitems:  [file].[flag for item].[name of menuitem].mnemonic
- *    e.g:                    menu.item.new.mnemonic
+ *  menu:                    [file].[name of menu]
+ *   e.g:                    menu.file
+ *
+ *  mnemonics of menu's:     [file].[name of menu].mnemonic
+ *   e.g:                    menu.file.mnemonic
+ *
+ *  mnemonics of menuitems:  [file].[flag for item].[name of menuitem].mnemonic
+ *   e.g:                    menu.item.new.mnemonic
  * </pre>
- * 
+ *
  * TODO: Add registration for new menu items.
  */
 public class GenericArgoMenuBar extends JMenuBar implements
@@ -187,7 +190,6 @@ public class GenericArgoMenuBar extends JMenuBar implements
     private JMenu help;
 
     private Action navigateTargetForwardAction;
-
     private Action navigateTargetBackAction;
 
     /**
@@ -203,12 +205,11 @@ public class GenericArgoMenuBar extends JMenuBar implements
         navigateTargetBackAction = new NavigateTargetBackAction();
         TargetManager.getInstance().addTargetListener(this);
     }
-
     /**
      * This should be a user specified option. New laws for handicapped people
      * who cannot use the mouse require software developers in US to make all
      * components of User interface accessible through keyboard
-     * 
+     *
      * @param item
      *            is the JMenuItem to do this for.
      * @param key
@@ -292,12 +293,12 @@ public class GenericArgoMenuBar extends JMenuBar implements
         fileToolbar.add(new ActionOpenProject());
         file.addSeparator();
 
-        JMenuItem saveProjectItem = file.add(ProjectBrowser.getInstance()
+        JMenuItem saveProjectItem = file.add(ArgoActions
                 .getSaveAction());
         setMnemonic(saveProjectItem, "Save");
         ShortcutMgr.assignAccelerator(saveProjectItem,
                 ShortcutMgr.ACTION_SAVE_PROJECT);
-        fileToolbar.add((ProjectBrowser.getInstance().getSaveAction()));
+        fileToolbar.add((ArgoActions.getSaveAction()));
         JMenuItem saveProjectAsItem = file.add(new ActionSaveProjectAs());
         setMnemonic(saveProjectAsItem, "SaveAs");
         ShortcutMgr.assignAccelerator(saveProjectAsItem,
@@ -344,12 +345,12 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
         JMenu notation = (JMenu) file.add(new ActionNotation().getMenu());
         setMnemonic(notation, "Notation");
-
+        
         JMenuItem propertiesItem = file.add(new ActionProjectSettings());
         setMnemonic(propertiesItem, "Properties");
         ShortcutMgr.assignAccelerator(propertiesItem,
                 ShortcutMgr.ACTION_PROJECT_SETTINGS);
-
+        
         file.addSeparator();
 
         // add last recently used list _before_ exit menu
@@ -372,14 +373,13 @@ public class GenericArgoMenuBar extends JMenuBar implements
         edit = add(new JMenu(menuLocalize("Edit")));
         setMnemonic(edit, "Edit");
 
-        JMenuItem undoItem = edit.add(ProjectBrowser.getInstance()
-                .getUndoAction());
+        JMenuItem undoItem = edit.add(ArgoActions.getUndoAction());
         setMnemonic(undoItem, "Undo");
         ShortcutMgr.assignAccelerator(undoItem, ShortcutMgr.ACTION_UNDO);
         undoItem.setVisible(UndoEnabler.enabled);
 
-        JMenuItem redoItem = edit.add(ProjectBrowser.getInstance()
-                .getRedoAction());
+        JMenuItem redoItem = edit.add(ArgoActions.getRedoAction());
+
         setMnemonic(redoItem, "Redo");
         ShortcutMgr.assignAccelerator(redoItem, ShortcutMgr.ACTION_REDO);
         redoItem.setVisible(UndoEnabler.enabled);
@@ -428,16 +428,14 @@ public class GenericArgoMenuBar extends JMenuBar implements
         //
         // edit.addSeparator();
 
-        Action removeFromDiagram = ProjectBrowser.getInstance()
-                .getRemoveFromDiagramAction();
+        Action removeFromDiagram = Actions.getRemoveFromDiagramAction();
         JMenuItem removeItem = edit.add(removeFromDiagram);
 
         setMnemonic(removeItem, "Remove from Diagram");
         ShortcutMgr.assignAccelerator(removeItem,
                 ShortcutMgr.ACTION_REMOVE_FROM_DIAGRAM);
 
-        JMenuItem deleteItem = edit.add(TargetManager.getInstance()
-                .getDeleteAction());
+        JMenuItem deleteItem = edit.add(Actions.getDeleteAction());
         setMnemonic(deleteItem, "Delete from Model");
         ShortcutMgr.assignAccelerator(deleteItem,
                 ShortcutMgr.ACTION_DELETE_MODEL_ELEMENTS);
@@ -515,7 +513,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * build together to guarantee that the same items are present in both, and
      * in the same sequence.
      * <p>
-     * 
+     *
      * The sequence of these items was determined by issue 1821.
      */
     private void initMenuCreate() {
@@ -594,8 +592,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
         arrange.add(new ActionLayout());
 
         // This used to be deferred, but it's only 30-40 msec of work.
+        // TODO: pull this method in to this class
         InitMenusLater.initMenus(align, distribute, reorder);
     }
+    
 
     /**
      * Build the menu "Generation".
@@ -689,7 +689,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
     /**
      * Get the create diagram toolbar.
-     * 
+     *
      * @return Value of property _createDiagramToolbar.
      */
     public JToolBar getCreateDiagramToolbar() {
@@ -698,7 +698,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
     /**
      * Get the edit toolbar.
-     * 
+     *
      * @return the edit toolbar.
      */
     public JToolBar getEditToolbar() {
@@ -708,7 +708,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
             // editToolbar.add(ActionCopy.getInstance());
             // editToolbar.add(ActionPaste.getInstance());
             editToolbar.addFocusListener(ActionPaste.getInstance());
-            editToolbar.add(ProjectBrowser.getInstance()
+            editToolbar.add(Actions
                     .getRemoveFromDiagramAction());
             editToolbar.add(navigateTargetBackAction);
             editToolbar.add(navigateTargetForwardAction);
@@ -718,9 +718,9 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
     /**
      * Getter for the file toolbar.
-     * 
+     *
      * @return the file toolbar.
-     * 
+     *
      */
     public JToolBar getFileToolbar() {
         return fileToolbar;
@@ -728,7 +728,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
     /**
      * Getter for the view toolbar.
-     * 
+     *
      * @return the view toolbar.
      */
     public JToolBar getViewToolbar() {
@@ -743,10 +743,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
     /**
      * Prepares one part of the key for menu- or/and menuitem-mnemonics used in
      * menu.properties.
-     * 
+     *
      * The method changes the parameter str to lower cases. Spaces in the
      * parameter str are changed to hyphens.
-     * 
+     *
      * @param str
      * @return the prepared str
      */
@@ -762,7 +762,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
     /**
      * Adds the entry to the lru list.
-     * 
+     *
      * @param filename
      *            of the project
      */
@@ -772,7 +772,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
     /**
      * Getter for the Tools menu.
-     * 
+     *
      * @return The Tools menu.
      */
     public JMenu getTools() {
@@ -814,4 +814,5 @@ public class GenericArgoMenuBar extends JMenuBar implements
     public void targetSet(TargetEvent e) {
         setTarget();
     }
+
 }

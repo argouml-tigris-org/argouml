@@ -55,8 +55,8 @@ import org.argouml.cognitive.ToDoListListener;
 import org.argouml.cognitive.Translator;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.PerspectiveSupport;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.SplashScreen;
+import org.argouml.ui.StatusBar;
+
 
 /**
  * The lower-left pane of the main ArgoUML window, which shows the list
@@ -126,9 +126,9 @@ public class ToDoPane extends JPanel
     /**
      * The constructor.
      *
-     * @param splash if true, then we have to show progress in the splash
+     * @param statusBar statusBar to use to update status
      */
-    public ToDoPane(SplashScreen splash) {
+    public ToDoPane(StatusBar statusBar) {
 
         setLayout(new BorderLayout());
 
@@ -157,10 +157,10 @@ public class ToDoPane extends JPanel
         setRoot(Designer.theDesigner().getToDoList());
         Designer.theDesigner().getToDoList().addToDoListListener(this);
 
-        if (splash != null) {
-            splash.getStatusBar().showStatus(
+        if (statusBar != null) {
+            statusBar.showStatus(
 	            Translator.localize("statusmsg.bar.making-todopane"));
-            splash.getStatusBar().showProgress(25);
+            statusBar.showProgress(25);
         }
 
         setPerspectives(buildPerspectives());
@@ -297,10 +297,11 @@ public class ToDoPane extends JPanel
      */
     public void valueChanged(TreeSelectionEvent e) {
         LOG.debug("ToDoPane valueChanged");
+
+        Object sel = getSelectedObject();
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        Object sel = getSelectedObject();
-        ProjectBrowser.getInstance().setToDoItem(sel);
+        //ProjectBrowser.getInstance().setToDoItem(sel);
         LOG.debug("lastselection: " + lastSel);
 	LOG.debug("sel: " + sel);
         if (lastSel instanceof ToDoItem) {

@@ -63,13 +63,13 @@ public class ActionShowXMLDump extends AbstractAction {
      */
     public void actionPerformed(ActionEvent e) {
 	Project project = ProjectManager.getManager().getCurrentProject();
-
+        
 	String data =
 	    PersistenceManager.getInstance().getQuickViewDump(project);
 
 	JDialog pw = new JDialog(ArgoFrame.getInstance(), 
-                Translator.localize("action.show-saved"), 
-                false);
+                Translator.localize("action.show-saved"),
+            false);
 
 	JTextArea a = new JTextArea(data, 50, 80);
 	a.setEditable(false);
@@ -82,8 +82,9 @@ public class ActionShowXMLDump extends AbstractAction {
 
 	pw.setSize(400, 500);
 
+        // TODO: Isn't this redundant? - tfm
 	pw.setLocationRelativeTo(ArgoFrame.getInstance());
-        
+
         init(pw);
         
 	pw.setVisible(true);
@@ -92,5 +93,5 @@ public class ActionShowXMLDump extends AbstractAction {
     private void init(JDialog pw) {
         UIUtils.loadCommonKeyMap(pw);
     }
-}
+}    
 

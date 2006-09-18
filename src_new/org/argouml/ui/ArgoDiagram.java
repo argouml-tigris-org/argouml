@@ -36,6 +36,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.Utilities;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.graph.MutableGraphSupport;
@@ -230,6 +231,8 @@ public class ArgoDiagram extends Diagram {
     public String repair() {
         StringBuffer report = new StringBuffer(500);
 
+        // TODO: check if there's still a dependency cycle
+        // with get*Contents
         boolean faultFixed;
         do {
             faultFixed = false;
@@ -253,7 +256,7 @@ public class ArgoDiagram extends Diagram {
     }
     
     private boolean repairFig(Fig f, StringBuffer report) {
-        LOG.info("Checking " + figDescription(f) + f.getOwner());
+        LOG.info("Checking " + Utilities.debugDescription(f) + f.getOwner());
         boolean faultFixed = false;
         String figDescription = null;
         
@@ -261,7 +264,7 @@ public class ArgoDiagram extends Diagram {
         // that layer.
         if (!getLayer().equals(f.getLayer())) {
             if (figDescription == null) {
-                figDescription = figDescription(f);
+                figDescription = Utilities.debugDescription(f);
                 report.append(figDescription);
             }
 
@@ -279,7 +282,7 @@ public class ArgoDiagram extends Diagram {
         // 2. Make sure that all Figs are visible
         if (!f.isVisible()) {
             if (figDescription == null) {
-                figDescription = figDescription(f);
+                figDescription = Utilities.debugDescription(f);
                 report.append(figDescription);
             }
             // The report
@@ -295,10 +298,10 @@ public class ArgoDiagram extends Diagram {
             FigEdge fe = (FigEdge) f;
             FigNode destFig = fe.getDestFigNode();
             FigNode sourceFig = fe.getSourceFigNode();
-
+            
             if (destFig == null) {
                 if (figDescription == null) {
-                    figDescription = figDescription(f);
+                    figDescription = Utilities.debugDescription(f);
                     report.append(figDescription);
                 }
                 faultFixed = true;
@@ -306,7 +309,7 @@ public class ArgoDiagram extends Diagram {
                 f.removeFromDiagram();
             } else if (sourceFig == null) {
                 if (figDescription == null) {
-                    figDescription = figDescription(f);
+                    figDescription = Utilities.debugDescription(f);
                     report.append(figDescription);
                 }
                 faultFixed = true;
@@ -314,7 +317,7 @@ public class ArgoDiagram extends Diagram {
                 f.removeFromDiagram();
             } else if (sourceFig.getOwner() == null) {
                 if (figDescription == null) {
-                    figDescription = figDescription(f);
+                    figDescription = Utilities.debugDescription(f);
                     report.append(figDescription);
                 }
                 faultFixed = true;
@@ -322,7 +325,7 @@ public class ArgoDiagram extends Diagram {
                 f.removeFromDiagram();
             } else if (destFig.getOwner() == null) {
                 if (figDescription == null) {
-                    figDescription = figDescription(f);
+                    figDescription = Utilities.debugDescription(f);
                     report.append(figDescription);
                 }
                 faultFixed = true;
@@ -332,28 +335,28 @@ public class ArgoDiagram extends Diagram {
             } else if (Model.getUmlFactory().isRemoved(
                     sourceFig.getOwner())) {
                 if (figDescription == null) {
-                    figDescription = figDescription(f);
+                    figDescription = Utilities.debugDescription(f);
                     report.append(figDescription);
                 }
                 faultFixed = true;
                 report.append("-- Removed: as its source Figs owner is no "
-                    + "longer in the repository\n");
+                        + "longer in the repository\n");
                 f.removeFromDiagram();
             } else if (Model.getUmlFactory().isRemoved(
                     destFig.getOwner())) {
                 if (figDescription == null) {
-                    figDescription = figDescription(f);
+                    figDescription = Utilities.debugDescription(f);
                     report.append(figDescription);
                 }
                 faultFixed = true;
                 report.append("-- Removed: as its destination Figs owner "
-                    + "is no longer in the repository\n");
+                        + "is no longer in the repository\n");
                 f.removeFromDiagram();
             }
         } else if ((f instanceof FigNode || f instanceof FigEdge)
                 && f.getOwner() == null) {
             if (figDescription == null) {
-                figDescription = figDescription(f);
+                figDescription = Utilities.debugDescription(f);
                 report.append(figDescription);
             }
             // 4. Make sure all FigNodes and FigEdges have an owner
@@ -366,7 +369,7 @@ public class ArgoDiagram extends Diagram {
                 &&  Model.getFacade().isAModelElement(f.getOwner())
                 &&  Model.getUmlFactory().isRemoved(f.getOwner())) {
             if (figDescription == null) {
-                figDescription = figDescription(f);
+                figDescription = Utilities.debugDescription(f);
                 report.append(figDescription);
             }
             // 5. Make sure all FigNodes and FigEdges have a valid owner
@@ -378,7 +381,7 @@ public class ArgoDiagram extends Diagram {
             f.removeFromDiagram();
         } else if (f instanceof FigGroup && !(f instanceof FigNode)) {
             if (figDescription == null) {
-                figDescription = figDescription(f);
+                figDescription = Utilities.debugDescription(f);
                 report.append(figDescription);
             }
             // 4. Make sure the only FigGroups on a diagram are also
@@ -394,47 +397,6 @@ public class ArgoDiagram extends Diagram {
         return faultFixed;
     }
 
-    /**
-     * Generate a description of a Fig that would be most meaningful to a
-     * developer and the user.
-     * This is used by the repair routines to describe the Fig that was repaired
-     * <ul>
-     * <li>FigComment - the text within body compartment of the Fig
-     * <li>FigNodeModelElement -
-     *        the text within the name compartment of the FigNode
-     * <li>FigEdgeModelElement -
-     *        the text within name compartment of the FigEdge and the
-     *        descriptions of the adjoining FigNodes
-     * </ul>
-     * @param f the Fig to describe
-     * @return The description as a String.
-     */
-    private String figDescription(Fig f) {
-        String description = "\n" + f.getClass().getName();
-        if (f instanceof FigComment) {
-            description += " \"" + ((FigComment) f).getBody() + "\"";
-        } else if (f instanceof FigNodeModelElement) {
-            description += " \"" + ((FigNodeModelElement) f).getName() + "\"";
-        } else if (f instanceof FigEdgeModelElement) {
-            FigEdgeModelElement fe = (FigEdgeModelElement) f;
-            description += " \"" + fe.getName() + "\"";
-            String source;
-            if (fe.getSourceFigNode() == null) {
-                source = "(null)";
-            } else {
-                source =
-                    ((FigNodeModelElement) fe.getSourceFigNode()).getName();
-            }
-            String dest;
-            if (fe.getDestFigNode() == null) {
-                dest = "(null)";
-            } else {
-                dest = ((FigNodeModelElement) fe.getDestFigNode()).getName();
-            }
-            description += " [" + source + "=>" + dest + "]";
-        }
-        return description + "\n";
-    }
 
     /**
      * Find the all Figs that visualise the given model element in

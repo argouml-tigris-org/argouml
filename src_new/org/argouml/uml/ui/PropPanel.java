@@ -28,7 +28,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
 import javax.swing.Action;
@@ -51,9 +50,9 @@ import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.ui.targetmanager.TargettableModelView;
 import org.argouml.uml.Profile;
+import org.argouml.uml.diagram.ui.Actions;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.LabelledLayout;
@@ -445,7 +444,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 //    }
     
     final protected Action getDeleteAction() {
-        return TargetManager.getInstance().getDeleteAction();
+        return Actions.getDeleteAction();
     }
 
     /**

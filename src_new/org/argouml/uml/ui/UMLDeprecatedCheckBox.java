@@ -40,7 +40,7 @@ public class UMLDeprecatedCheckBox extends UMLCheckBox2 {
      *
      */
     public UMLDeprecatedCheckBox() {
-        super(null, new ActionBooleanTaggedValue("deprecated"), "deprecated");
+        super(null, new ActionBooleanTaggedValue("deprecated"), "taggedValue");
     }
 
     /**

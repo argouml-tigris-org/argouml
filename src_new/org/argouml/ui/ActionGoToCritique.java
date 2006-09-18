@@ -60,7 +60,9 @@ public class ActionGoToCritique extends UndoableAction {
      */
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
-	ProjectBrowser.getInstance().getTodoPane().selectItem(item);
+        // TODO: Send event to ToDo pane instead of calling directly
+        // Uncommenting this increases largest dependency from 95 to 588 classes
+	//ProjectBrowser.getInstance().getTodoPane().selectItem(item);
     }
 
 } /* end class ActionGoToCritique */

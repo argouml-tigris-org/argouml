@@ -24,10 +24,10 @@
 
 package org.argouml.uml.notation.java;
 
+import org.argouml.application.events.StatusMonitor;
 import java.util.HashMap;
 
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.AttributeNotation;
 
 /**
@@ -56,7 +56,7 @@ public class AttributeNotationJava extends AttributeNotation {
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
-        ProjectBrowser.getInstance().getStatusBar().showStatus(
+        StatusMonitor.notify(this, 
             "Parsing in Java not yet supported");
     }
 

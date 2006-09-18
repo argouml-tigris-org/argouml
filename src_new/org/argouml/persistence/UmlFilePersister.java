@@ -212,7 +212,7 @@ class UmlFilePersister extends AbstractFilePersister {
      * @throws SaveException If something goes wrong.
      * @throws InterruptedException     if the thread is interrupted
      */
-    void writeProject(Project project, 
+    public void writeProject(Project project, 
             OutputStream stream, 
             ProgressMgr progressMgr) throws SaveException, 
             InterruptedException {

@@ -35,14 +35,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.ui.ArgoFrame;
 import org.tigris.gef.util.UnexpectedException;
 
 
@@ -291,7 +289,7 @@ public final class PersistenceManager {
 
     /**
      * Generates a String dump of the current model for quick viewing.
-     *
+     * 
      * @param project The project to generate.
      * @return The whole model in a String.
      */
@@ -328,34 +326,6 @@ public final class PersistenceManager {
     }
 
     /**
-     * Returns true if we are allowed to overwrite the given file.
-     *
-     * @param overwrite if true, then the user is not asked
-     * @param file the given file
-     * @return true if we are allowed to overwrite the given file
-     */
-    public boolean confirmOverwrite(boolean overwrite, File file) {
-        if (file.exists() && !overwrite) {
-            String sConfirm =
-                Translator.messageFormat(
-                    "optionpane.confirm-overwrite",
-                    new Object[] {file});
-            int nResult =
-                JOptionPane.showConfirmDialog(
-                        ArgoFrame.getInstance(),
-                        sConfirm,
-                        Translator.localize(
-                            "optionpane.confirm-overwrite-title"),
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
-            if (nResult != JOptionPane.YES_OPTION) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * Supply the encoding to be used throughout the persistence
      * mechanism.
      * @return the encoding.
@@ -373,7 +343,7 @@ public final class PersistenceManager {
         return lastLoadMessage;
     }
 
-    /**
+/**
      * Set the last load message. Used for junit tests.
      *
      * @param msg the last load message
@@ -401,7 +371,7 @@ public final class PersistenceManager {
     public void setSavePersister(AbstractFilePersister persister) {
         savePersister = persister;
     }
-    
+
     public AbstractFilePersister getSavePersister() {
         return savePersister;
     }
@@ -474,4 +444,5 @@ class MultitypeFileFilter extends FileFilter {
         Object[] s = {desc};
         return Translator.messageFormat("filechooser.all-types-desc", s);
     }
+
 }

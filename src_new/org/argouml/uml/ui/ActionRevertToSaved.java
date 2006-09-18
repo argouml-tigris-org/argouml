@@ -34,8 +34,9 @@ import javax.swing.JOptionPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ArgoActions;
 import org.argouml.ui.ArgoFrame;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectLoadSave;
 
 /**
  * Action that reverts to the previously saved version of the project.
@@ -66,7 +67,7 @@ public class ActionRevertToSaved extends AbstractAction {
         Project p = ProjectManager.getManager().getCurrentProject();
 
         if (p == null 
-                || !ProjectBrowser.getInstance().getSaveAction().isEnabled()) {
+                || !ArgoActions.getSaveAction().isEnabled()) {
             return;
         }
 
@@ -87,7 +88,7 @@ public class ActionRevertToSaved extends AbstractAction {
                   JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
-            ProjectBrowser.getInstance().loadProjectWithProgressMonitor(
+            ProjectLoadSave.loadProjectWithProgressMonitor(
                     new File(p.getURI()), true);
         }
     }

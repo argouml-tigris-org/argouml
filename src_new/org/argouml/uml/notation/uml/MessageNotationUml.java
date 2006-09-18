@@ -33,12 +33,13 @@ import java.util.NoSuchElementException;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.notation.Notation;
 import org.argouml.uml.notation.MessageNotation;
 import org.argouml.util.MyTokenizer;
 
@@ -112,11 +113,10 @@ public class MessageNotationUml extends MessageNotation {
             String msg = "statusmsg.bar.error.parsing.message";
             Object[] args = {pe.getLocalizedMessage(),
                 new Integer(pe.getErrorOffset()), };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
+            StatusMonitor.notify(this, Translator.messageFormat(msg, args));
         }
     }
-
+    
     /**
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
@@ -126,7 +126,7 @@ public class MessageNotationUml extends MessageNotation {
 
     /**
      * Generates a textual description for a MMessage m.
-     * 
+     *
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {
@@ -988,7 +988,7 @@ public class MessageNotationUml extends MessageNotation {
             }
 
             if (compareMsgNumbers(mname, gname)) {
-                ;// Do nothing
+                // Do nothing
             } else if (isMsgNumberStartOf(gname, mname)) {
             	String msg = "parsing.error.message.subtree-rooted-self";
                 throw new ParseException(Translator.localize(msg), 0);

@@ -30,9 +30,11 @@
 
 package org.argouml.ui;
 
+import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.DefaultMetalTheme;
@@ -75,8 +77,8 @@ public final class LookAndFeelMgr {
      * The Metal look and feel class name.
      */
     private static final String                 METAL_LAF_CLASS_NAME =
-	"javax.swing.plaf.metal.MetalLookAndFeel";
-
+                            //UIManager.getCrossPlatformLookAndFeelClassName();
+                            UIManager.getSystemLookAndFeelClassName();
     /**
      * Display name and configuration key for default look and feel and theme.
      */
@@ -314,15 +316,15 @@ public final class LookAndFeelMgr {
         if (lafClass == null && currentLookAndFeel == null) {
             return;
         }
-        /* Disabled since it gives various problems: e.g. the toolbar icons
-         * get too wide. Also the default does not give the new java 5.0 looks.
-        if (!(lafClass != null && !lafClass.equals(currentLookAndFeel))) {
+        
+        if (lafClass == null || !lafClass.equals(currentLookAndFeel)) {
             setLookAndFeel(lafClass);
-            Component tree = ProjectBrowser.getInstance();
+            // TODO: Check whether this works
+            Component tree = ArgoFrame.getInstance();
             SwingUtilities.updateComponentTreeUI(
                     SwingUtilities.getRootPane(tree));
         }
-        */
+
 
         if (lafClass == null) {
             lafClass = DEFAULT_KEY;
@@ -389,7 +391,7 @@ public final class LookAndFeelMgr {
 
         /* Disabled since it gives various problems: e.g. the toolbar icons
          * get too wide. Also the default does not give the new java 5.0 looks.
-        Component tree = ProjectBrowser.getInstance();
+        Component tree = ArgoFrame.getInstance();
         SwingUtilities.updateComponentTreeUI(SwingUtilities.getRootPane(tree));
         */
 

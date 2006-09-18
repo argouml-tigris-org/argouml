@@ -38,7 +38,7 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.Actions;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
@@ -129,8 +129,7 @@ public class FigEnumeration extends FigDataType
 
         // Add ...
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
-        addMenu.add(TargetManager.getInstance()
-                .getAddEnumerationLiteralAction());
+        addMenu.add(Actions.getInstance().getAddEnumerationLiteralAction());
         popUpActions.insertElementAt(addMenu,
                 popUpActions.size() - getPopupAddOffset());
 
@@ -241,16 +240,22 @@ public class FigEnumeration extends FigDataType
     }
     
     /**
-     * Sets the bounds of all components, but the size will be at least the one returned by
-     * {@link #getMinimumSize()}, unless checking of size is disabled.<p>
+     * Sets the bounds of all components, but the size will be at least the one
+     * returned by {@link #getMinimumSize()}, unless checking of size is
+     * disabled.
+     * <p>
      * 
-     * @param x  Desired X coordinate of upper left corner
-     *
-     * @param y  Desired Y coordinate of upper left corner
-     *
-     * @param w  Desired width of the figure
-     *
-     * @param h  Desired height of the figure
+     * @param x
+     *            Desired X coordinate of upper left corner
+     * 
+     * @param y
+     *            Desired Y coordinate of upper left corner
+     * 
+     * @param w
+     *            Desired width of the figure
+     * 
+     * @param h
+     *            Desired height of the figure
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(final int x, final int y, final int w,

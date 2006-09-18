@@ -91,17 +91,21 @@ public class UMLModelElementTaggedValueProxy implements UMLDocument {
         if (evt instanceof AddAssociationEvent) {
             Object tv = evt.getNewValue();
             Object td = Model.getFacade().getTagDefinition(tv);
-            String name = (String) Model.getFacade().getType(td);
-            if (tagName != null && tagName.equals(name)) {
-                document.setTarget(tv);
+            if (td != null) {
+                String name = (String) Model.getFacade().getType(td);
+                if (tagName != null && tagName.equals(name)) {
+                    document.setTarget(tv);
+                }
             }
         } else if (evt instanceof RemoveAssociationEvent) {
             Object tv = evt.getOldValue();
             Object td = Model.getFacade().getTagDefinition(tv);
-            String name = (String) Model.getFacade().getType(td);
-            if (tagName != null && tagName.equals(name)) {
-                document.setTarget(null);
-            }            
+            if (td != null) {
+                String name = (String) Model.getFacade().getType(td);
+                if (tagName != null && tagName.equals(name)) {
+                    document.setTarget(null);
+                }      
+            }
         } else {
             document.propertyChange(evt);
         }
@@ -147,7 +151,7 @@ public class UMLModelElementTaggedValueProxy implements UMLDocument {
                 }
                 panelTarget = target;
                 eventPump.addModelEventListener(this, panelTarget, EVENT_NAME);
-                // TODO: see if the new target has a taggedvalue that we can proxy
+                // TODO: see if the new target has a TV that we can proxy
                 document.setTarget(Model.getFacade().getTaggedValue(
                         panelTarget, tagName));
             }
@@ -222,46 +226,80 @@ public class UMLModelElementTaggedValueProxy implements UMLDocument {
         return document.getText(offset, length);
     }
 
+    /**
+     * @see javax.swing.text.Document#addDocumentListener(javax.swing.event.DocumentListener)
+     */
     public void addDocumentListener(DocumentListener listener) {
         document.addDocumentListener(listener);
     }
 
+    /**
+     * @see javax.swing.text.Document#removeDocumentListener(javax.swing.event.DocumentListener)
+     */
     public void removeDocumentListener(DocumentListener listener) {
         document.removeDocumentListener(listener);
     }
 
+    /**
+     * @see javax.swing.text.Document#addUndoableEditListener(javax.swing.event.UndoableEditListener)
+     */
     public void addUndoableEditListener(UndoableEditListener listener) {
         document.addUndoableEditListener(listener);
     }
 
+    /**
+     * @see javax.swing.text.Document#removeUndoableEditListener(javax.swing.event.UndoableEditListener)
+     */
     public void removeUndoableEditListener(UndoableEditListener listener) {
         document.removeUndoableEditListener(listener);
     }
 
+    /**
+     * @see javax.swing.text.Document#getRootElements()
+     */
     public Element[] getRootElements() {
         return document.getRootElements();
     }
 
+    /**
+     * @see javax.swing.text.Document#getEndPosition()
+     */
     public Position getEndPosition() {
         return document.getEndPosition();
     }
 
+    /**
+     * @see javax.swing.text.Document#getStartPosition()
+     */
     public Position getStartPosition() {
         return document.getStartPosition();
     }
 
+    /**
+     * @see javax.swing.text.Document#createPosition(int)
+     */
     public Position createPosition(int offs) throws BadLocationException {
         return document.createPosition(offs);
     }
 
-    public void getText(int offset, int length, Segment txt) throws BadLocationException {
+    /**
+     * @see javax.swing.text.Document#getText(int, int, javax.swing.text.Segment)
+     */
+    public void getText(int offset, int length, Segment txt)
+            throws BadLocationException {
         document.getText(offset, length, txt);
     }
 
+    /**
+     * @see javax.swing.text.Document#getProperty(java.lang.Object)
+     */
     public Object getProperty(Object key) {
         return document.getProperty(key);
     }
 
+    /**
+     * @see javax.swing.text.Document#putProperty(java.lang.Object, java.lang.Object)
+     */
     public void putProperty(Object key, Object value) {
         document.putProperty(key, value);
     }

@@ -31,6 +31,7 @@ import javax.swing.UIManager;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectLoadSave;
 
 /**
  * The specialized SwingWorker used for saving projects 
@@ -64,7 +65,7 @@ public class SaveSwingWorker extends SwingWorker {
         // saves the project
         this.result = 
             new Boolean(
-                    ProjectBrowser.getInstance().trySave(overwrite, file, pmw));
+                    ProjectLoadSave.trySave(overwrite, file, pmw));
         return null;
     }
 

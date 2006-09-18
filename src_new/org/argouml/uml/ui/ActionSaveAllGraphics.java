@@ -38,12 +38,12 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoFrame;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.CmdSaveGraphics;
 import org.tigris.gef.base.Diagram;
@@ -89,7 +89,7 @@ public class ActionSaveAllGraphics extends UndoableAction {
      */
     public void actionPerformed( ActionEvent ae ) {
         super.actionPerformed(ae);
-        trySave( false );
+	trySave( false );
     }
 
     /**
@@ -109,24 +109,24 @@ public class ActionSaveAllGraphics extends UndoableAction {
      * @return success save status
      */
     public boolean trySave(boolean overwrite, File directory) {
-        Project p =  ProjectManager.getManager().getCurrentProject();
-        TargetManager tm = TargetManager.getInstance();
-        Vector  targets = p.getDiagrams();
-        Iterator it = targets.iterator();        
+	Project p =  ProjectManager.getManager().getCurrentProject();
+	TargetManager tm = TargetManager.getInstance();
+	Vector  targets = p.getDiagrams();
+	Iterator it = targets.iterator();
         File saveDir = (directory != null) ? directory : getSaveDir(p);
         if (saveDir == null) {
             /* The user cancelled! */
             return false;
         }
-        boolean okSoFar = true;
-        ArgoDiagram activeDiagram = p.getActiveDiagram();
-        while (it.hasNext() && okSoFar) {
-            ArgoDiagram d = (ArgoDiagram) it.next();
-            tm.setTarget(d);
-            okSoFar = trySaveDiagram(overwrite, d, saveDir);
-        }
-        tm.setTarget(activeDiagram);
-        return okSoFar;
+	boolean okSoFar = true;
+	ArgoDiagram activeDiagram = p.getActiveDiagram();
+	while (it.hasNext() && okSoFar) {
+	    ArgoDiagram d = (ArgoDiagram) it.next();
+	    tm.setTarget(d);
+	    okSoFar = trySaveDiagram(overwrite, d, saveDir);
+	}
+	tm.setTarget(activeDiagram);
+	return okSoFar;
     }
 
     /**
@@ -137,39 +137,41 @@ public class ActionSaveAllGraphics extends UndoableAction {
      */
     protected boolean trySaveDiagram(boolean overwrite, Object target,
             File saveDir) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
-        if ( target instanceof Diagram ) {
-            String defaultName = ((Diagram) target).getName();
-            defaultName = Util.stripJunk(defaultName);
-            // FIX - It's probably worthwhile to abstract and factor
-            // this chooser and directory stuff. More file handling is
-            // coming, I'm sure.
-            try {
-                File theFile = new File(saveDir, defaultName + "."
-                    + SaveGraphicsManager.getInstance().getDefaultSuffix());
-                String name = theFile.getName();
-                String path = theFile.getParent();
-                CmdSaveGraphics cmd = SaveGraphicsManager.getInstance()
+	if ( target instanceof Diagram ) {
+	    String defaultName = ((Diagram) target).getName();
+	    defaultName = Util.stripJunk(defaultName);
+	    // FIX - It's probably worthwhile to abstract and factor
+	    // this chooser and directory stuff. More file handling is
+	    // coming, I'm sure.
+	    try {
+		File theFile = new File(saveDir, defaultName + "."
+		    + SaveGraphicsManager.getInstance().getDefaultSuffix());
+		String name = theFile.getName();
+		String path = theFile.getParent();
+		CmdSaveGraphics cmd = SaveGraphicsManager.getInstance()
                     .getSaveCommandBySuffix(
                         SaveGraphicsManager.getInstance().getDefaultSuffix());
-                if (cmd == null) {
-                    pb.showStatus("Unknown graphics file type with extension "
-                        + SaveGraphicsManager.getInstance().getDefaultSuffix());
-                    return false;
-                }
-                pb.showStatus( "Writing " + path + name + "..." );
-                saveGraphicsToFile(theFile, cmd, overwrite);
-                pb.showStatus( "Wrote " + path + name );
-                return true;
-            }
-            catch ( FileNotFoundException ignore ) {
-                LOG.error("got a FileNotFoundException", ignore);
-            }
-            catch ( IOException ignore ) {
-                LOG.error("got an IOException", ignore);
-            }
-        }
-        return false;
+		if (cmd == null) {
+                    // TODO: I18N
+		    StatusMonitor.notify(this, 
+                            "Unknown graphics file type with extension "
+		            + SaveGraphicsManager.getInstance()
+                                .getDefaultSuffix());
+		    return false;
+		}
+                StatusMonitor.notify(this, "Writing " + path + name + "..." );
+		saveGraphicsToFile(theFile, cmd, overwrite);
+                StatusMonitor.notify(this, "Wrote " + path + name );
+		return true;
+	    }
+	    catch ( FileNotFoundException ignore ) {
+	        LOG.error("got a FileNotFoundException", ignore);
+	    }
+	    catch ( IOException ignore ) {
+		LOG.error("got an IOException", ignore);
+	    }
+	}
+	return false;
     }
 
 
@@ -178,7 +180,7 @@ public class ActionSaveAllGraphics extends UndoableAction {
      * @return returns null if the user did not approve his choice
      */
     protected File getSaveDir(Project p) {
-        JFileChooser chooser = getFileChooser(p);
+	JFileChooser chooser = getFileChooser(p);
 
         String fn = Configuration.getString(
                 SaveGraphicsManager.KEY_SAVEALL_GRAPHICS_PATH);
@@ -194,57 +196,57 @@ public class ActionSaveAllGraphics extends UndoableAction {
             Configuration.setString(
                     SaveGraphicsManager.KEY_SAVEALL_GRAPHICS_PATH,
                     path);
-            return theFile;
-        }
+	    return theFile;
+	}
         return null;
     }
 
     private boolean saveGraphicsToFile(File theFile, CmdSaveGraphics cmd,
             boolean overwrite) throws IOException {
-        if ( theFile.exists() && !overwrite ) {
-            int response =
+	if ( theFile.exists() && !overwrite ) {
+	    int response =
 		JOptionPane.showConfirmDialog(ArgoFrame.getInstance(),
                     Translator.messageFormat("optionpane.confirm-overwrite",
                             new Object[] {theFile}),
                     Translator.localize("optionpane.confirm-overwrite-title"),
                     JOptionPane.YES_NO_OPTION);
-            if (response == JOptionPane.NO_OPTION) return false;
-        }
-        FileOutputStream fo = null;
-        try {
-            fo = new FileOutputStream( theFile );
-            cmd.setStream(fo);
-            cmd.setScale(Configuration.getInteger(
-                    SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1));
-            cmd.doIt();
-        } finally {
-            if (fo != null) {
-                fo.close();
-            }
-        }
-        return true;
+	    if (response == JOptionPane.NO_OPTION) return false;
+	}
+	FileOutputStream fo = null;
+	try {
+	    fo = new FileOutputStream( theFile );
+	    cmd.setStream(fo);
+	    cmd.setScale(Configuration.getInteger(
+	            SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1));
+	    cmd.doIt();
+	} finally {
+	    if (fo != null) {
+		fo.close();
+	    }
+	}
+	return true;
     }
 
     private JFileChooser getFileChooser(Project p) {
-        JFileChooser chooser = null;
-        try {
+	JFileChooser chooser = null;
+	try {
 	    if ( p != null 
                 && p.getURI() != null
                 && p.getURI().toURL().getFile().length() > 0 ) {
 	        chooser = new JFileChooser(p.getURI().toURL().getFile());
-            }
-        }
-        catch ( Exception ex ) {
-            LOG.error("exception in opening JFileChooser", ex);
-        }
+	    }
+	}
+	catch ( Exception ex ) {
+	    LOG.error("exception in opening JFileChooser", ex);
+	}
 
-        if ( chooser == null ) chooser = new JFileChooser();
-        chooser.setDialogTitle(
+	if ( chooser == null ) chooser = new JFileChooser();
+	chooser.setDialogTitle(
                 Translator.localize("filechooser.save-all-graphics"));
-        chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setMultiSelectionEnabled(false);
-        return chooser;
+	chooser.setDialogType(JFileChooser.OPEN_DIALOG);
+	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	chooser.setMultiSelectionEnabled(false);
+	return chooser;
     }
 
 } /* end class ActionSaveAllGraphics */

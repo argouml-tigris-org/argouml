@@ -174,6 +174,8 @@ public class ExplorerTree
             if (target != null) {
                 Vector show = new Vector();
                 show.add(target);
+
+                // TODO: Use focus/target changed event?
                 ProjectBrowser.getInstance().jumpToDiagramShowing(show);
             }
         }

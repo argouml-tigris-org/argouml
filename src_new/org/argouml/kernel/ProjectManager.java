@@ -159,7 +159,7 @@ public final class ProjectManager implements MementoCreationObserver {
      * @param newValue The new value.
      */
     private void firePropertyChanged(String propertyName,
-                                     Object oldValue, Object newValue) {
+				     Object oldValue, Object newValue) {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
@@ -197,13 +197,13 @@ public final class ProjectManager implements MementoCreationObserver {
         Project oldProject = currentProject;
         currentProject = newProject;
         if (currentProject != null
-            && currentProject.getActiveDiagram() == null) {
+	    && currentProject.getActiveDiagram() == null) {
             Vector diagrams = currentProject.getDiagrams();
             if (diagrams != null && !diagrams.isEmpty()) {
-                ArgoDiagram activeDiagram =
-                    (ArgoDiagram) currentProject.getDiagrams().get(0);
+		ArgoDiagram activeDiagram =
+		    (ArgoDiagram) currentProject.getDiagrams().get(0);
                 currentProject.setActiveDiagram(activeDiagram);
-            }
+	    }
         }
         firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
                 oldProject, newProject);
@@ -223,7 +223,7 @@ public final class ProjectManager implements MementoCreationObserver {
         }
         return currentProject;
     }
-    
+
     /**
      * Makes an empty project.
      * @return Project the empty project
@@ -269,7 +269,7 @@ public final class ProjectManager implements MementoCreationObserver {
         }
         return currentProject;
     }
-
+    
     private void createDefaultDiagrams() {
         Object model = Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(model,
@@ -277,6 +277,9 @@ public final class ProjectManager implements MementoCreationObserver {
         currentProject.setRoot(model);
         currentProject.setCurrentNamespace(model);
         currentProject.addMember(model);
+
+        // TODO: Figure out how to break the cycle between ProjectManager
+        // and DiagramFactory
         ArgoDiagram d = DiagramFactory.getInstance().createDiagram(
                 UMLClassDiagram.class, model, null);
         currentProject.addMember(d);

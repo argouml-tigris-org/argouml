@@ -25,6 +25,7 @@
 package org.argouml.uml.ui;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -34,18 +35,13 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
 
 /**
  * Model for a text property on a model element. It listens to
  * property change events for the given property name so that
- * changes made to the underlying UML model are reflected here.
- * <p>
- * NOTE: If you override the insertString() or remove() methods
- * be sure to preserve the flushEvents() calls to keep things
- * synchronized.  Events caused by updates are delivered
- * asynchronously to the actual update calls.
- * <p>
+ * changes made to the underlying UML model are reflected here.<p>
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -92,7 +88,7 @@ public abstract class UMLPlainTextDocument
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        handleEvent();
+        handleEvent(evt);
     }
 
     /**
@@ -110,17 +106,15 @@ public abstract class UMLPlainTextDocument
     public final void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (Model.getFacade().isAModelElement(target)) {
-            if (target != panelTarget) {
-                ModelEventPump eventPump = Model.getPump();
-                if (panelTarget != null) {
-                    eventPump.removeModelEventListener(this, panelTarget,
-                            getEventName());
-                }
-                panelTarget = target;
-                eventPump.addModelEventListener(this, panelTarget,
-                        getEventName());
+            // TODO: Add/remove listener independently from setTarget
+            ModelEventPump eventPump = Model.getPump();
+            if (panelTarget != null) {
+                eventPump.removeModelEventListener(this, panelTarget,
+                                                   getEventName());
             }
-            handleEvent();
+            panelTarget = target;
+            eventPump.addModelEventListener(this, panelTarget, getEventName());
+            handleEvent(null);
         }
     }
 
@@ -131,13 +125,9 @@ public abstract class UMLPlainTextDocument
     public void insertString(int offset, String str, AttributeSet a)
         throws BadLocationException {
         super.insertString(offset, str, a);
-        // TODO: This is updating model on a per character basis as
-        // well as unregistering/reregistering event listeners every
-        // character - very wasteful - tfm
         if (isFiring()) {
             setFiring(false);
             setProperty(getText(0, getLength()));
-            Model.getPump().flushModelEvents();
             setFiring(true);
         }
 
@@ -148,13 +138,9 @@ public abstract class UMLPlainTextDocument
      */
     public void remove(int offs, int len) throws BadLocationException {
         super.remove(offs, len);
-        // TODO: This is updating model on a per character basis as
-        // well as unregistering/reregistering event listeners every
-        // character - very wasteful - tfm
         if (isFiring()) {
             setFiring(false);
             setProperty(getText(0, getLength()));
-            Model.getPump().flushModelEvents();
             setFiring(true);
         }
     }
@@ -184,17 +170,22 @@ public abstract class UMLPlainTextDocument
         return firing;
     }
 
-    private final void handleEvent() {
+    private final void handleEvent(PropertyChangeEvent event) {
+        String value;
+        if (event == null) {
+            value = getProperty();
+        } else {
+            value = (String) event.getNewValue();
+        }
         try {
             setFiring(false);
-            super.remove(0, getLength());
-            super.insertString(0, getProperty(), null);
+            super.replace(0, getLength(), value, null);
         } catch (BadLocationException b) {
             LOG.error(
-		      "A BadLocationException happened\n"
-		      + "The string to set was: "
-		      + getProperty(),
-		      b);
+                      "A BadLocationException happened\n"
+                      + "The string to set was: "
+                      + getProperty(),
+                      b);
         } finally {
             setFiring(true);
         }

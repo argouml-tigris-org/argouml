@@ -78,7 +78,7 @@ public class ExplorerPopup extends JPopupMenu {
         super("Explorer popup menu");
 
         /* Check if multiple items are selected. */
-        boolean ms = TargetManager.getInstance().getTargets().size() > 1;
+        boolean isMultiSelect = TargetManager.getInstance().getTargets().size() > 1;
 
         final Project currentProject =
             ProjectManager.getManager().getCurrentProject();
@@ -102,7 +102,7 @@ public class ExplorerPopup extends JPopupMenu {
         // this.add(action);
         // }
 
-        if (!ms) {
+        if (!isMultiSelect) {
             initMenuCreate();
             this.add(createDiagrams);
         }
@@ -156,7 +156,7 @@ public class ExplorerPopup extends JPopupMenu {
                 (activityDiagramActive)
                     ? ((UMLActivityDiagram) activeDiagram).getStateMachine()
                     : null;
-            if (!ms) {
+            if (!isMultiSelect) {
                 if ((classifierSelected
                         && !dataTypeSelected
                         && !classifierAndRelationShipSelected)
@@ -179,7 +179,7 @@ public class ExplorerPopup extends JPopupMenu {
                 }
             }
 
-            if (!ms) {
+            if (!isMultiSelect) {
                 if ((relationshipSelected
                         && !flowSelected
                         && !nAryAssociationSelected)
@@ -194,20 +194,20 @@ public class ExplorerPopup extends JPopupMenu {
                 }
             }
 
-            if (!ms) {
+            if (!isMultiSelect) {
                 if (Model.getFacade().isAClassifier(selectedItem)
                         || Model.getFacade().isAPackage(selectedItem)) {
                     this.add(new ActionSetSourcePath());
                 }
             }
 
-            if (!ms) {
+            if (!isMultiSelect) {
                 if (Model.getFacade().isAOperation(selectedItem)) {
                     this.add(new ActionRESequenceDiagram());
                 }
             }
 
-            if (!ms) {
+            if (!isMultiSelect) {
                 if (Model.getFacade().isAPackage(selectedItem)
                         || Model.getFacade().isAModel(selectedItem)) {
                     this.add(new ActionAddPackage());
@@ -220,7 +220,7 @@ public class ExplorerPopup extends JPopupMenu {
         }
         // TODO: Make sure this shouldn't go into a previous
         // condition -tml
-        if (!ms) {
+        if (!isMultiSelect) {
             if (selectedItem instanceof UMLClassDiagram) {
                 Action action =
                     new ActionAddAllClassesFromModel(

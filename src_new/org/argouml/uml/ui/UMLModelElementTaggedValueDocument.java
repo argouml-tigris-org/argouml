@@ -28,7 +28,7 @@ import org.argouml.model.Model;
 
 /**
  * This class provides a text field that can be used to access
- * tagged values of a MModelElement object.
+ * tagged values of a ModelElement object.
  * UMLModelElementTaggedValueDocument is especially useful when
  * using LabelledLayout.
  *
@@ -38,21 +38,21 @@ import org.argouml.model.Model;
 public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
 
     /**
-     * Creates a UMLPlainTextDocument object that represents a tagged value of
-     * an MModelElement object.
-     *
-     * @param taggedValue the tagged value
+     * Construct a UMLModelElementTaggedValueDocument.
+     */
+    public UMLModelElementTaggedValueDocument() {
+        super("dataValue");
+        // TODO: Add reference values?
+    }
+
+    /**
+     * Construct a UMLPlainTextDocument that represents a tagged value of
+     * an ModelElement object.
      */
     public UMLModelElementTaggedValueDocument(String taggedValue) {
-        //stores the action command into the UMLPlainTextDocument
-        //class which is also used
-        //for setProperty and getProperty
-        
-        // TODO: This appears to expect that the UML 1.3 tag name
-        // will appear as a property name in an event, but with the
-        // UML 1.4 switch to TagDefinitions, this won't work
-        super(taggedValue);
+        this();
     }
+    
 
     /**
      * Sets the tagged value to given String.
@@ -61,9 +61,8 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      */
     protected void setProperty(String text) {
         if (getTarget() != null) {
-            Model.getCoreHelper().setTaggedValue(
+            Model.getExtensionMechanismsHelper().setValueOfTag(
                     getTarget(),
-                    getEventName(),
                     text);
         }
     }
@@ -73,13 +72,6 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      * @return the value of the tagged value
      */
     protected String getProperty() {
-        String eventName = getEventName();
-        Object taggedValue =
-            Model.getFacade().getTaggedValue(getTarget(), eventName);
-        if (taggedValue != null) {
-            return Model.getFacade().getValueOfTag(taggedValue);
-        } else {
-            return "";
-        }
+        return Model.getFacade().getValueOfTag(getTarget());
     }
 }

@@ -43,7 +43,7 @@ import org.argouml.uml.ui.ProjectFileView;
  * This Action allows import of a XMI file.
  *
  * @author mvw@tigris.org
-  */
+ */
 public class ActionImportXMI extends AbstractAction {
 
     /**
@@ -59,11 +59,10 @@ public class ActionImportXMI extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
         PersistenceManager pm = PersistenceManager.getInstance();
 
-        if (!ProjectBrowser.getInstance().askConfirmationAndSave()) {
+        if (!ProjectLoadSave.askConfirmationAndSave()) {
             return;
         }
 
@@ -92,12 +91,12 @@ public class ActionImportXMI extends AbstractAction {
 
         String fn =
             Configuration.getString(
-                PersistenceManager.KEY_IMPORT_XMI_PATH);
+                    PersistenceManager.KEY_IMPORT_XMI_PATH);
         if (fn.length() > 0) {
             chooser.setSelectedFile(new File(fn));
         }
 
-        int retval = chooser.showOpenDialog(pb);
+        int retval = chooser.showOpenDialog(ArgoFrame.getInstance());
         if (retval == JFileChooser.APPROVE_OPTION) {
             File theFile = chooser.getSelectedFile();
 
@@ -119,10 +118,11 @@ public class ActionImportXMI extends AbstractAction {
                     PersistenceManager.KEY_IMPORT_XMI_PATH,
                     theFile.getPath());
 
-            ProjectBrowser.getInstance().loadProjectWithProgressMonitor(
+            ProjectLoadSave.loadProjectWithProgressMonitor(
                     theFile, true);
         }
     }
+
 
     /**
      * The UID.

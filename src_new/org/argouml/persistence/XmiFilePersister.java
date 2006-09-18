@@ -45,6 +45,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
+import org.argouml.ui.ProjectLoadSave;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.util.ThreadUtils;
 import org.xml.sax.InputSource;
@@ -155,7 +156,7 @@ class XmiFilePersister extends AbstractFilePersister
         }
         progressMgr.nextPhase();
     }
-    
+
     /**
      * Write the output for a project on the given stream.
      *
@@ -195,15 +196,14 @@ class XmiFilePersister extends AbstractFilePersister
             }
             
             if (progressMgr != null) {
-                progressMgr.nextPhase();
-            }
+        progressMgr.nextPhase();
+    }
 
             writer.flush();
         } finally {
             writer.close();
         }
     }
-
 
     /**
      * This method creates a project from the specified URL
@@ -239,10 +239,10 @@ class XmiFilePersister extends AbstractFilePersister
                 phases = 10;
             }
             LOG.info("File length is " + length + " phase space is " + phaseSpace + " phases is " + phases);
-            ProgressMgr progressMgr = new ProgressMgr();
+        ProgressMgr progressMgr = new ProgressMgr();
             progressMgr.setNumberOfPhases(phases);
             ThreadUtils.checkIfInterrupted();
-            
+
             InputSource source = new InputSource(new XmiInputStream(file.toURL().openStream(), this, length, phaseSpace, progressMgr));
             source.setSystemId(file.toURL().toString());
             

@@ -32,9 +32,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.ClassifierRoleNotation;
 import org.argouml.util.MyTokenizer;
 
@@ -84,8 +84,7 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
             String msg = "statusmsg.bar.error.parsing.classifierrole";
             Object[] args = {pe.getLocalizedMessage(),
                              new Integer(pe.getErrorOffset()), };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
+            StatusMonitor.notify(this, Translator.messageFormat(msg, args));
         }
     }
     

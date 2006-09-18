@@ -64,6 +64,7 @@ import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectLoadSave;
 import org.argouml.ui.SplashScreen;
 import org.argouml.ui.cmd.ActionExit;
 import org.argouml.ui.cmd.PrintManager;
@@ -200,7 +201,7 @@ public class Main {
                         PersistenceManager.getInstance().fixExtension(
                                 args[++i]);
                     URL urlToBePrinted = projectUrl(projectToBePrinted, null);
-                    ProjectBrowser.getInstance().loadProject(
+                    ProjectLoadSave.loadProject(
                             new File(urlToBePrinted.getFile()), true, null);
                     // now, let's print it
                     PrintManager.getInstance().print();
@@ -314,7 +315,7 @@ public class Main {
             System.err.println("The filename is " + filename);
             System.err.println("The file is " + file);
             System.err.println("File.exists = " + file.exists());
-            projectLoaded = pb.loadProject(file, true, null);
+            projectLoaded = ProjectLoadSave.loadProject(file, true, null);
         }
         
         if (!projectLoaded) {

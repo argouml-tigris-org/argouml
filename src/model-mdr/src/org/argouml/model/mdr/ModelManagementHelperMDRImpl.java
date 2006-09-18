@@ -83,10 +83,10 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      */
     public Collection getAllSubSystems(Object ns) {
         if (ns == null) {
-            return new ArrayList();
+            return Collections.EMPTY_LIST;
         }
         if (!(ns instanceof Namespace)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Not a namespace : " + ns);
         }
         
         Iterator it = ((Namespace) ns).getOwnedElement().iterator();
@@ -110,42 +110,35 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      * This method is CPU intensive and therefore needs to be as efficient as
      * possible.
      * 
+     * TODO: Perhaps use getAllModelElementsOfKind (or similar implementation) as a
+     * more efficient method than testing *every* model element in the entire model.
      */
     public Collection getAllNamespaces(Object ns) {
-
-        if (ns == null || !(ns instanceof Namespace)) {
+        if (ns == null) {
             return Collections.EMPTY_LIST;
         }
-
-        Collection namespaces = ((Namespace) ns).getOwnedElement();
-        // the list of namespaces to return
-        List list = Collections.EMPTY_LIST;
-
-        // if there are no owned elements then return empty list
-        if (namespaces == Collections.EMPTY_LIST || namespaces.size() == 0) {
-            return Collections.EMPTY_LIST;
+        if (!(ns instanceof Namespace)) {
+            throw new IllegalArgumentException("Not a namespace : " + ns);
         }
 
-        for (Iterator it = namespaces.iterator(); it.hasNext();) {
+        List result = null;
+        for (Iterator it = ((Namespace) ns).getOwnedElement().iterator(); it
+                .hasNext();) {
             Object o = it.next();
             if (o instanceof Namespace) {
-
-                // only build a namepace if needed, with
-                if (list == Collections.EMPTY_LIST) {
-                    list = new ArrayList(namespaces.size());
+                // Defer instantiating list until needed
+                if (result == null) {
+                    result = new ArrayList();
                 }
-
-                list.add(o);
-
-                Collection namespaces1 = getAllNamespaces(o);
-                // only add all if there are some to add.
-                if (namespaces1 != Collections.EMPTY_LIST
-                        && namespaces1.size() > 0) {
-                    list.addAll(namespaces1);
-                }
+                result.add(o);
+                result.addAll(getAllNamespaces(o));
             }
         }
-        return list;
+        if (result == null) {
+            return Collections.EMPTY_LIST;
+        } else {
+            return result;
+        }
     }
 
     /*

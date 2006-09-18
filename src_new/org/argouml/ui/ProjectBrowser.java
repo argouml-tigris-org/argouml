@@ -36,9 +36,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.URI;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,10 +44,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
@@ -66,39 +61,18 @@ import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.Model;
-import org.argouml.persistence.AbstractFilePersister;
-import org.argouml.persistence.LastLoadInfo;
-import org.argouml.persistence.OpenException;
-import org.argouml.persistence.PersistenceManager;
-import org.argouml.persistence.ProjectFilePersister;
-import org.argouml.persistence.UmlVersionException;
-import org.argouml.persistence.VersionException;
-import org.argouml.persistence.XmiFormatException;
-import org.argouml.swingext.LoadSwingWorker;
-import org.argouml.swingext.ProgressMonitorWindow;
-import org.argouml.swingext.SaveSwingWorker;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
-import org.argouml.uml.ui.ActionSaveProject;
-import org.argouml.uml.ui.ProjectFileView;
-import org.argouml.uml.ui.TabProps;
-import org.argouml.util.ThreadUtils;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.IStatusBar;
-import org.tigris.gef.undo.RedoAction;
-import org.tigris.gef.undo.UndoAction;
 import org.tigris.gef.undo.UndoManager;
-import org.tigris.gef.util.Util;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Orientation;
@@ -127,8 +101,7 @@ public final class ProjectBrowser
     /**
      * Logger.
      */
-    private static final Logger LOG =
-        Logger.getLogger(ProjectBrowser.class);
+    private static final Logger LOG = Logger.getLogger(ProjectBrowser.class);
 
     ////////////////////////////////////////////////////////////////
     // class variables
@@ -191,29 +164,6 @@ public final class ProjectBrowser
      */
     private TitleHandler titleHandler = new TitleHandler();
 
-    /**
-     * The action to save the current project.
-     */
-    private AbstractAction saveAction;
-
-    /**
-     * The action to redo the last undone action.
-     */
-    private final AbstractAction redoAction =
-        new RedoAction(Translator.localize("action.redo"));
-
-    /**
-     * The action to undo the last user interaction.
-     */
-    private final UndoAction undoAction =
-        new UndoAction(Translator.localize("action.undo"));
-
-    /**
-     * The action to remove the current selected Figs from the diagram.
-     */
-    private final ActionRemoveFromDiagram removeFromDiagram =
-        new ActionRemoveFromDiagram(
-                Translator.localize("action.remove-from-diagram"));
 
     /**
      * For testing purposes. In tests this constructor can be called so
@@ -233,8 +183,8 @@ public final class ProjectBrowser
         super(applicationName);
         theInstance = this;
 
-        saveAction = new ActionSaveProject();
-        ProjectManager.getManager().setSaveAction(saveAction);
+        ArgoActions.initialize();
+        ProjectManager.getManager().setSaveAction(ArgoActions.getSaveAction());
 
         if (splash != null) {
 	    splash.getStatusBar().showStatus(
@@ -398,7 +348,7 @@ public final class ProjectBrowser
 		    "statusmsg.bar.making-project-browser-to-do-pane"));
             splash.getStatusBar().incProgress(5);
         }
-        todoPane = new ToDoPane(splash);
+        todoPane = new ToDoPane(splash.getStatusBar());
         restorePanelSizes();
 
         // There are various details panes all of which could hold
@@ -533,12 +483,12 @@ public final class ProjectBrowser
         
         private ArgoDiagram monitoredDiagram = null;
 
-        /**
-         * Create a title for the main window's title.
-         *
+    /**
+     * Create a title for the main window's title.
+     *
          * @param projectFileName the project-file name
          * @param activeDiagram the (new) current diagram
-         */
+     */
         protected void buildTitle(String projectFileName, 
                 ArgoDiagram activeDiagram) {
             if (projectFileName == null || "".equals(projectFileName)) {
@@ -552,7 +502,8 @@ public final class ProjectBrowser
                     .getCurrentProject().getActiveDiagram();
             }
             String changeIndicator = "";
-            if (saveAction != null && saveAction.isEnabled()) {
+            Action saveAction = ArgoActions.getSaveAction();
+            if ( saveAction != null && saveAction.isEnabled()) {
                 changeIndicator = " *";
             }
             if (activeDiagram != null) {
@@ -626,6 +577,9 @@ public final class ProjectBrowser
      * TODO: should introduce an instance variable to go straight to
      * the correct tab instead of trying all
      *
+     * TODO:  Have the DetailsPane listen for target changes instead
+     * of managing directly from ToDoPane - tfm 20060531
+     * 
      * @param o the todo item to select
      */
     public void setToDoItem(Object o) {
@@ -643,20 +597,20 @@ public final class ProjectBrowser
      *
      * @return the TabProps tabpage
      */
-    public TabProps getTabProps() {
-        // In theory there can be multiple details pane (work in
-        // progress). It must first be determined which details
-        // page contains the properties tab. Bob Tarling 7 Dec 2002
-        Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane) it.next();
-            TabProps tabProps = detailsPane.getTabProps();
-            if (tabProps != null) {
-                return tabProps;
-            }
-        }
-        throw new IllegalStateException("No properties tab found");
-    }
+//    public TabProps getTabProps() {
+//        // In theory there can be multiple details pane (work in
+//        // progress). It must first be determined which details
+//        // page contains the properties tab. Bob Tarling 7 Dec 2002
+//        Iterator it = detailsPanesByCompassPoint.values().iterator();
+//        while (it.hasNext()) {
+//            DetailsPane detailsPane = (DetailsPane) it.next();
+//            TabProps tabProps = detailsPane.getTabProps();
+//            if (tabProps != null) {
+//                return tabProps;
+//            }
+//        }
+//        throw new IllegalStateException("No properties tab found");
+//    }
 
     /**
      * Get the tab page instance of the given class.
@@ -899,6 +853,7 @@ public final class ProjectBrowser
      * save and exit, exit without saving or cancel the exit operation.
      */
     public void tryExit() {
+        Action saveAction = ArgoActions.getSaveAction();
         if (saveAction != null && saveAction.isEnabled()) {
             Project p = ProjectManager.getManager().getCurrentProject();
 
@@ -915,7 +870,8 @@ public final class ProjectBrowser
                 return;
             }
             if (response == JOptionPane.YES_OPTION) {
-                trySave(ProjectManager.getManager().getCurrentProject() != null
+                ProjectLoadSave.trySave(ProjectManager.getManager()
+                        .getCurrentProject() != null
                         && ProjectManager.getManager().getCurrentProject()
                                 .getURI() != null);
                 if (saveAction.isEnabled()) {
@@ -1022,7 +978,7 @@ public final class ProjectBrowser
             removeEnabled =
                 ((UMLMutableGraphSupport) gm).isRemoveFromDiagramAllowed(figs);
         }
-        removeFromDiagram.setEnabled(removeEnabled);
+        ArgoActions.getRemoveFromDiagramAction().setEnabled(removeEnabled);
     }
 
     /**
@@ -1041,99 +997,6 @@ public final class ProjectBrowser
     }
 
     /**
-     * Try to save the project, possibly not creating a new file
-     * @param overwrite if true, then we overwrite without asking
-     */
-    public void trySave(boolean overwrite) {
-        this.trySave(overwrite, false);
-    }
-    
-    
-    /**
-     * Try to save the project.
-     * @param overwrite if true, then we overwrite without asking
-     * @param saveNewFile if true, we'll ask for a new file even if
-     *                    the current project already had one  
-     */
-    public void trySave(boolean overwrite, boolean saveNewFile) {
-        URI uri = ProjectManager.getManager().getCurrentProject().getURI();
-
-        File file = null;
-
-        // this method is invoked from several places, so we have to check
-        // whether if the project uri is set or not
-        if (uri != null && !saveNewFile) {
-            file = new File(uri);
-
-            // does the file really exists?
-            if (!file.exists()) {
-                // project file doesn't exist. let's pop up a message dialog..
-                int response = JOptionPane.showConfirmDialog(
-                        this,
-                        Translator.localize(
-                                "optionpane.save-project-file-not-found"),
-                        Translator.localize(
-                                "optionpane.save-project-file-not-found-title"),
-                        JOptionPane.YES_NO_OPTION);
-
-                // ..and let's ask the user whether he wants to save the actual
-                // project into a new file or not
-                if (response == JOptionPane.YES_OPTION) {
-                    saveNewFile = true;
-                } else {
-                    // save action has been cancelled
-                    return;
-                }
-            }
-        } else {
-            // Attempt to save this project under a new name.
-            saveNewFile = true;
-        }
-
-        // Prompt the user for the new name.
-        if (saveNewFile) {
-            file = getNewFile();
-
-            // if the user cancelled the operation,
-            // we don't have to save anything
-            if (file == null) {
-                return;
-            }
-        }
-
-        // let's call the real save method
-        trySaveWithProgressMonitor(overwrite, file);
-    }
-    
-    /**
-     * Checks if the given file is writable or read-only
-     * @param file the file to be checked
-     * @return true if the given file is read-only
-     */
-    private boolean isFileReadonly(File file) {
-        try {
-            return (file == null) 
-                || (file.exists() && !file.canWrite()) 
-                || (!file.exists() && !file.createNewFile());
-        
-        } catch (IOException ioExc) {
-            return true;
-        }
-    }
-
-    /**
-     * Loads a project displaying a nice ProgressMonitor
-     * 
-     * @param overwrite if true, the file is going to be overwritten
-     * @param file      the target file
-     */
-    public void trySaveWithProgressMonitor(boolean overwrite, File file) {
-        SaveSwingWorker worker = new SaveSwingWorker(overwrite, file);
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        worker.start();
-    }
-    
-    /**
      * Rebuild the title using the name of the current project.
      *
      */
@@ -1143,462 +1006,6 @@ public final class ProjectBrowser
                 null);
     }
     
-    /**
-     * Try to save the project.
-     * @param overwrite if true, then we overwrite without asking
-     * @param file the File to save to
-     * @param pmw       the ProgressMonitorWindow to be updated;  
-     * @return true if successful
-     */
-    public boolean trySave(boolean overwrite, 
-            File file, 
-            ProgressMonitorWindow pmw) {
-        LOG.info("Saving the project");
-        Project project = ProjectManager.getManager().getCurrentProject();
-        PersistenceManager pm = PersistenceManager.getInstance();
-        ProjectFilePersister persister = null;
-        
-        try {
-            if (!PersistenceManager.getInstance()
-                    .confirmOverwrite(overwrite, file)) {
-                return false;
-            }
-
-            if (this.isFileReadonly(file)) {
-                JOptionPane.showMessageDialog(this, 
-                        Translator.localize(
-                                "optionpane.save-project-cant-write"),
-                        Translator.localize(
-                                "optionpane.save-project-cant-write-title"),
-                              JOptionPane.INFORMATION_MESSAGE);
-                
-                return false;
-            }
-
-            String sStatus =
-                MessageFormat.format(Translator.localize(
-                    "label.save-project-status-writing"),
-                         new Object[] {file});
-            this.showStatus (sStatus);
-
-            persister = pm.getPersisterFromFileName(file.getName());
-            if (persister == null) {
-                throw new IllegalStateException("Filename " + project.getName()
-                            + " is not of a known file type");
-            }
-
-            // Simulate some errors to repair.
-            // TODO: Replace with junits - Bob
-//            Layer lay =
-//                Globals.curEditor().getLayerManager().getActiveLayer();
-//            List figs = lay.getContentsNoEdges();
-//            // A Fig with a null owner
-//            if (figs.size() > 0) {
-//                Fig fig = (Fig)figs.get(0);
-//                LOG.error("Setting owner of " 
-//                    + fig.getClass().getName() + " to null");
-//                fig.setOwner(null);
-//            }
-//            // A Fig with a null layer
-//            if (figs.size() > 1) {
-//                Fig fig = (Fig)figs.get(1);
-//                fig.setLayer(null);
-//            }
-//            // A Fig with a removed model element
-//            if (figs.size() > 2) {
-//                Fig fig = (Fig)figs.get(2);
-//                Object owner = fig.getOwner();
-//                Model.getUmlFactory().delete(owner);
-//            }
-
-            // Repair any errors in the project
-            String report = project.repair();
-            if (report.length() > 0) {
-                reportError(
-                        Translator.localize("dialog.repair"), true, report);
-            }
-            
-            if (pmw != null) {
-                pmw.progress(25);
-                persister.addProgressListener(pmw);
-            }
-            
-            project.preSave();
-            persister.save(project, file);
-            project.postSave();
-
-            sStatus =
-                MessageFormat.format(Translator.localize(
-                    "label.save-project-status-wrote"),
-                         new Object[] {project.getURI()});
-            showStatus(sStatus);
-            LOG.debug ("setting most recent project file to "
-                   + file.getCanonicalPath());
-
-            /*
-             * notification of menu bar
-             */
-            saveAction.setEnabled(false);
-            addFileSaved(file);
-
-            Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
-                        file.getCanonicalPath());
-
-            return true;
-        } catch (Exception ex) {
-            String sMessage =
-                MessageFormat.format(Translator.localize(
-                    "optionpane.save-project-general-exception"),
-                         new Object[] {ex.getMessage()});
-
-            JOptionPane.showMessageDialog(this, sMessage,
-                    Translator.localize(
-                    "optionpane.save-project-general-exception-title"),
-                          JOptionPane.ERROR_MESSAGE);
-
-            reportError(
-                    Translator.localize(
-                            "dialog.error.save.error",
-                            new Object[] {file.getName()}),
-                    true, ex);
-
-            LOG.error(sMessage, ex);
-        }
-
-        return false;
-    }
-
-    /**
-     * Register a new file saved.
-     *
-     * @param file The file.
-     * @throws IOException if we cannot get the file name from the file.
-     */
-    public void addFileSaved(File file) throws IOException {
-        GenericArgoMenuBar menu = (GenericArgoMenuBar) getJMenuBar();
-        menu.addFileSaved(file.getCanonicalPath());
-    }
-
-    /**
-     * If the current project is dirty (needs saving) then this function will
-     * ask confirmation from the user.
-     * If the user indicates that saving is needed, then saving is attempted.
-     * See ActionExit.actionPerformed() for a very similar procedure!
-     *
-     * @return true if we can continue with opening
-     */
-    public boolean askConfirmationAndSave() {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
-        Project p = ProjectManager.getManager().getCurrentProject();
-
-
-        if (p != null && saveAction.isEnabled()) {
-            String t =
-                MessageFormat.format(Translator.localize(
-                        "optionpane.open-project-save-changes-to"),
-                        new Object[] {p.getName()});
-
-            int response =
-                JOptionPane.showConfirmDialog(pb, t, t,
-                    JOptionPane.YES_NO_CANCEL_OPTION);
-
-            if (response == JOptionPane.CANCEL_OPTION
-                    || response == JOptionPane.CLOSED_OPTION) {
-                return false;
-            }
-            if (response == JOptionPane.YES_OPTION) {
-
-                trySave(ProjectManager.getManager().getCurrentProject() != null
-                        && ProjectManager.getManager().getCurrentProject()
-                                .getURI() != null);
-                if (saveAction.isEnabled()) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Loads a project displaying a nice ProgressMonitor
-     * 
-     * @param file      the project to be opened
-     * @param showUI    whether to show the GUI or not
-     */
-    public void loadProjectWithProgressMonitor(File file, boolean showUI) {
-        LoadSwingWorker worker = new LoadSwingWorker(file, showUI);
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        worker.start();
-    }
-    	
-    /**
-     * Loads the project file and opens all kinds of error message windows
-     * if it doesn't work for some reason. In those cases it preserves
-     * the old project.
-     *
-     * @param file the file to open.
-     * @param showUI true if an error message may be shown to the user,
-     *               false if run in commandline mode
-     * @param pmw 	the ProgressMonitorWindow to be updated;  
-     * 				if not needed, use null 
-     * @return true if the file was successfully opened
-     */
-    public boolean loadProject(File file, boolean showUI, 
-    		ProgressMonitorWindow pmw) {
-        LOG.info("Loading project.");
-
-        PersistenceManager pm = PersistenceManager.getInstance();
-        Project oldProject = ProjectManager.getManager().getCurrentProject();
-        boolean success = true;
-
-        // TODO:
-        // This is actually a hack! Some diagram types
-        // (like the statechart diagrams) access the current
-        // diagram to get some info. This might cause
-        // problems if there's another statechart diagram
-        // active, so I remove the current project, before
-        // loading the new one.
-
-        Designer.disableCritiquing();
-        Designer.clearCritiquing();
-        clearDialogs();
-        Project project = null;
-
-        if (!(file.canRead())) {
-            reportError("File not found " + file + ".", showUI);
-            Designer.enableCritiquing();
-            success = false;
-        } else {
-            // Hide save action during load. Otherwise we get the
-            // * appearing in title bar as models are updated
-            AbstractAction rememberedSaveAction = this.saveAction;
-            this.saveAction = null;
-            ProjectManager.getManager().setSaveAction(null);
-            try {
-                ProjectFilePersister persister =
-                    pm.getPersisterFromFileName(file.getName());
-                if (persister == null) {
-                    success = false;
-                    throw new IllegalStateException("Filename "
-                            + file.getName()
-                            + " is not of a known file type");
-                }
-
-                if (pmw != null) {
-                    persister.addProgressListener(pmw);
-                }
-                
-                DiagramFactory.getInstance().getDiagram().clear();
-
-                project = persister.doLoad(file);
-                
-                if (pmw != null) {
-                    persister.removeProgressListener(pmw);
-                }
-                ThreadUtils.checkIfInterrupted();
-                
-                if (Model.getDiagramInterchangeModel() != null) {
-                    Collection diagrams =
-                        DiagramFactory.getInstance().getDiagram();
-                    Iterator diag = diagrams.iterator();
-                    while (diag.hasNext()) {
-                        project.addMember(diag.next());
-                    }
-                    if (!diagrams.isEmpty()) {
-                        project.setActiveDiagram(
-                                (ArgoDiagram) diagrams.iterator().next());
-                    }
-                }
-
-                // Let's save this project in the mru list
-                this.addFileSaved(file);
-                // Let's save this project as the last used one
-                // in the configuration file
-                Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
-                        file.getCanonicalPath());
-                
-                ProjectBrowser.getInstance().showStatus(
-                        Translator.localize(
-                                "label.open-project-status-read",
-                                new Object[] {file.getName(), }));
-            } catch (VersionException ex) {
-                project = oldProject;
-                success = false;
-                reportError(
-                        Translator.localize(
-                                "dialog.error.file.version",
-                                new Object[] {ex.getMessage()}),
-                        showUI);
-            } catch (OutOfMemoryError ex) {
-                project = oldProject;
-                success = false;
-                LOG.error("Out of memory while loading project", ex);
-                reportError(
-                        Translator.localize("dialog.error.memory.limit.error"),
-                        showUI);
-            } catch (java.lang.InterruptedException ex) {
-                project = oldProject;
-                success = false;
-                LOG.error("Project loading interrupted by user");
-            } catch (UmlVersionException ex) {
-                project = oldProject;
-                success = false;
-                reportError(
-                        Translator.localize(
-                                "dialog.error.file.version.error",
-                                new Object[] {ex.getMessage()}),
-                        showUI, ex);
-            } catch (XmiFormatException ex) {
-                project = oldProject;
-                success = false;
-                reportError(
-                        Translator.localize(
-                                "dialog.error.xmi.format.error",
-                                new Object[] {ex.getMessage()}),
-                        showUI, ex);
-            } catch (Exception ex) {
-                success = false;
-                project = oldProject;
-                LOG.error("Exception while loading project", ex);
-                reportError(
-                        Translator.localize(
-                                "dialog.error.open.error",
-                                new Object[] {file.getName()}),
-                        showUI, ex);
-            } finally {
-
-                if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
-                    project = oldProject;
-                    success = false;
-                    // TODO: This seems entirely redundant
-                    // for now I've made the message more generic, but it
-                    // should be removed at a convenient time - tfm
-                    reportError(
-                            "Problem loading the project "
-                            + file.getName()
-                            + "\n"
-                            + "Error message:\n"
-                            + LastLoadInfo.getInstance().getLastLoadMessage()
-                            + "\n"
-                            + "Some (or all) information may be missing "
-                            + "from the project.\n"
-                            + "Please report this problem at "
-                            + "http://argouml.tigris.org\n",
-                            showUI);
-                } else if (oldProject != null) {
-                    // if p equals oldProject there was an exception and we do
-                    // not have to gc (garbage collect) the old project
-                    if (project != null && !project.equals(oldProject)) {
-                        //prepare the old project for gc
-                        LOG.info("There are " + oldProject.getMembers().size()
-                                + " members in the old project");
-                        LOG.info("There are " + project.getMembers().size()
-                                + " members in the new project");
-                        // Set new project before removing old so we always have
-                        // a valid current project
-                        ProjectManager.getManager().setCurrentProject(project);
-                        ProjectManager.getManager().removeProject(oldProject);
-                    }
-                }
-
-                if (project == null) {
-                    LOG.info("The current project is null");
-                } else {
-                    LOG.info("There are " + project.getMembers().size()
-                            + " members in the current project");
-                }
-                UndoManager.getInstance().empty();
-                Designer.enableCritiquing();
-
-                // Make sure save action is always reinstated
-                this.saveAction = rememberedSaveAction;
-                ProjectManager.getManager().setSaveAction(rememberedSaveAction);
-                if (success) {
-                    rememberedSaveAction.setEnabled(false);
-                }
-            }
-        }
-        return success;
-    }
-
-    /**
-     * Open a Message Dialog with an error message.
-     *
-     * @param message the message to display.
-     * @param showUI true if an error message may be shown to the user,
-     *               false if run in commandline mode
-     */
-    private void reportError(String message, boolean showUI) {
-        if (showUI) {
-            JOptionPane.showMessageDialog(
-                      ProjectBrowser.getInstance(),
-                      message,
-                      "Error",
-                      JOptionPane.ERROR_MESSAGE);
-        } else {
-            System.err.print(message);
-        }
-    }
-
-    /**
-     * Open a Message Dialog with an error message.
-     *
-     * @param message the message to display.
-     * @param showUI true if an error message may be shown to the user,
-     *               false if run in commandline mode
-     * @param error the error
-     * 
-     * TODO: This appears to have been cloned from the method below
-     * without updating the Javadoc. Not sure what the difference
-     * is meant to be... - tfm
-     */
-    private void reportError(String message, boolean showUI, String error) {
-        if (showUI) {
-            JDialog dialog =
-                new ExceptionDialog(
-                        ProjectBrowser.getInstance(),
-                        message,
-                        error);
-            dialog.setVisible(true);
-        } else {
-            // TODO:  Does anyone use command line?
-            // If so, localization is needed - tfm
-            reportError("Please report the error below to the ArgoUML"
-                    + "development team at http://argouml.tigris.org.\n"
-                    + message + "\n\n" + error, showUI);
-        }
-    }
-
-    /**
-     * Open a Message Dialog with an error message.
-     *
-     * @param message the message to display.
-     * @param showUI true if an error message may be shown to the user,
-     *               false if run in commandline mode
-     * @param ex The exception that was thrown.
-     */
-    private void reportError(String message, boolean showUI, Throwable ex) {
-        if (showUI) {
-            JDialog dialog =
-                new ExceptionDialog(
-                        ProjectBrowser.getInstance(),
-                        message,
-                        ex,
-                        ex instanceof OpenException);
-            dialog.setVisible(true);
-        } else {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            ex.printStackTrace(pw);
-            String exception = sw.toString();
-            // TODO:  Does anyone use command line?
-            // If so, localization is needed - tfm
-            reportError("Please report the error below to the ArgoUML"
-                    + "development team at http://argouml.tigris.org.\n"
-                    + message + "\n\n" + exception, showUI);
-        }
-    }
-
     /**
      * We should remove all open dialogs. They have as parent the
      * ProjectBrowser. This is needed for the non-modal dialogs
@@ -1614,94 +1021,16 @@ public final class ProjectBrowser
     }
 
     /**
-     * Get the action that can undo the last user interaction on this project.
-     * @return the undo action.
+     * Register a new file saved.
+     *
+     * @param file The file.
+     * @throws IOException if we cannot get the file name from the file.
      */
-    public AbstractAction getUndoAction() {
-        return undoAction;
+    public void addFileSaved(File file) throws IOException {
+        GenericArgoMenuBar menu = (GenericArgoMenuBar) getJMenuBar();
+        menu.addFileSaved(file.getCanonicalPath());
     }
 
-    /**
-     * Get the action that can redo the last undone action.
-     * @return the redo action.
-     */
-    public AbstractAction getRedoAction() {
-        return redoAction;
-    }
-
-    /**
-     * Get the action that can save the current project.
-     * @return the save action.
-     */
-    public AbstractAction getSaveAction() {
-        return saveAction;
-    }
-
-    /**
-     * Get the action that removes selected figs from the diagram.
-     * @return the remove from diagram action.
-     */
-    public AbstractAction getRemoveFromDiagramAction() {
-        return removeFromDiagram;
-    }
-
-    /**
-     * @return the File to save to
-     */
-    protected File getNewFile() {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
-        Project p = ProjectManager.getManager().getCurrentProject();
-
-        JFileChooser chooser = null;
-        URI uri = p.getURI();
-        
-        if (uri != null) {
-            File projectFile = new File(uri);
-            if (projectFile.length() > 0) {
-                chooser = new JFileChooser(projectFile);
-            } else {
-                chooser = new JFileChooser();
-            }
-            chooser.setSelectedFile(projectFile);
-        } else {
-            chooser = new JFileChooser();
-        }
-
-        String sChooserTitle =
-            Translator.localize("filechooser.save-as-project");
-        chooser.setDialogTitle(sChooserTitle + " " + p.getName());
-
-        // adding project files icon
-        chooser.setFileView(ProjectFileView.getInstance());
-
-        chooser.setAcceptAllFileFilterUsed(false);
-        
-        PersistenceManager.getInstance().setSaveFileChooserFilters(
-                chooser, 
-                uri != null ? Util.URIToFilename(uri.toString()) : null);
-
-        int retval = chooser.showSaveDialog(pb);
-        if (retval == JFileChooser.APPROVE_OPTION) {
-            File theFile = chooser.getSelectedFile();
-            AbstractFilePersister filter =
-                (AbstractFilePersister) chooser.getFileFilter();
-            if (theFile != null) {
-                Configuration.setString(
-                        PersistenceManager.KEY_PROJECT_NAME_PATH,
-                        PersistenceManager.getInstance().getBaseName(
-                                theFile.getPath()));
-                String name = theFile.getName();
-                if (!name.endsWith("." + filter.getExtension())) {
-                    theFile =
-                        new File(
-                            theFile.getParent(),
-                            name + "." + filter.getExtension());
-                }
-            }
-            return theFile;
-        }
-        return null;
-    }
 
     /**
      * The UID.

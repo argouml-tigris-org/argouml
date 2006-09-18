@@ -30,7 +30,7 @@ import java.io.File;
 import javax.swing.AbstractAction;
 
 import org.apache.log4j.Logger;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectLoadSave;
 
 /**
  * Reopens a project with respect of the calling event handler - should be
@@ -78,12 +78,13 @@ public class ActionReopenProject extends AbstractAction {
      * project
      */
     public void actionPerformed(ActionEvent e) {
-        if (!ProjectBrowser.getInstance().askConfirmationAndSave()) return;
+        if (!ProjectLoadSave.askConfirmationAndSave()) {
+            return;
+        }
 
         File toOpen = new File(filename);
         // load of the new project
         // just reuse of the ActionOpen object
-        ProjectBrowser.getInstance().loadProjectWithProgressMonitor(
-                toOpen, true);
+        ProjectLoadSave.loadProjectWithProgressMonitor(toOpen, true);
     }
 }

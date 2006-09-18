@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
@@ -46,7 +47,6 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.notation.uml.NotationUtilityUml;
@@ -169,13 +169,13 @@ public class FigAssociation extends FigEdgeModelElement {
         
         addElementListener(getOwner(), new String[] {"name", "isAbstract"});
     }
-
+    
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     public void updateListeners(Object oldOwner, Object newOwner) {
         // We don't want to keep adding and removing listeners on a Fig
-        // I think this methiod should be deprecated - Bob
+        // I think this method should be deprecated - Bob
     }
 
     // //////////////////////////////////////////////////////////////
@@ -189,12 +189,12 @@ public class FigAssociation extends FigEdgeModelElement {
         if (getOwner() == null) {
             return;
         }
-        super.textEdited(ft);
-        
-        Collection conn = Model.getFacade().getConnections(getOwner());
-        if (conn == null || conn.size() == 0) {
-            return;
-        }
+	super.textEdited(ft);
+
+	Collection conn = Model.getFacade().getConnections(getOwner());
+	if (conn == null || conn.size() == 0) {
+	    return;
+	}
 
 	String msg =
 	    Translator.localize("statusmsg.bar.error.parsing.multiplicity");
@@ -202,7 +202,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	if (ft == srcGroup.role) {
             ((FigRole) ft).parse();
 	} else if (ft == destGroup.role) {
-            ((FigRole) ft).parse();
+        ((FigRole) ft).parse();
 	} else if (ft == srcMult) {
 	    Object srcAE = (conn.toArray())[0];
 	    try {
@@ -211,7 +211,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	        Model.getCoreHelper().setMultiplicity(srcAE, multi);
 	    } catch (IllegalArgumentException e) {
 	        Object[] args = {e.getLocalizedMessage()};
-	        ProjectBrowser.getInstance().getStatusBar().showStatus(
+	        StatusMonitor.notify(this,
                     Translator.messageFormat(msg, args));
 	        srcMult.setText(Model.getFacade().toString(
                         Model.getFacade().getMultiplicity(srcAE)));
@@ -224,7 +224,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	        Model.getCoreHelper().setMultiplicity(destAE, multi);
 	    } catch (IllegalArgumentException e) {
 	        Object[] args = {e.getLocalizedMessage()};
-	        ProjectBrowser.getInstance().getStatusBar().showStatus(
+	        StatusMonitor.notify(this,
                     Translator.messageFormat(msg, args));
                 srcMult.setText(Model.getFacade().toString(
                         Model.getFacade().getMultiplicity(destAE)));
@@ -264,7 +264,7 @@ public class FigAssociation extends FigEdgeModelElement {
                     + e.getPropertyName());
         }
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
@@ -319,9 +319,9 @@ public class FigAssociation extends FigEdgeModelElement {
         }
 
 	int srcDeterminingFactor =
-	    getSquaredDistance(me.getPoint(), firstPoint);
+	    squaredDistance(me.getPoint(), firstPoint);
 	int destDeterminingFactor =
-	    getSquaredDistance(me.getPoint(), lastPoint);
+	    squaredDistance(me.getPoint(), lastPoint);
 
 	if (srcDeterminingFactor < rSquared
 	    && srcDeterminingFactor < destDeterminingFactor) {
@@ -487,7 +487,22 @@ public class FigAssociation extends FigEdgeModelElement {
             super.layoutEdge();
         }
     }
-    
+
+    /**
+     * distance formula: (x-h)^2 + (y-k)^2 = distance^2
+     *
+     * @param p1 point
+     * @param p2 point
+     * @return the square of the distance
+     */
+    private static int squaredDistance(Point p1, Point p2) {
+        int xSquared = p2.x - p1.x;
+        xSquared *= xSquared;
+        int ySquared = p2.y - p1.y;
+        ySquared *= ySquared;
+        return xSquared + ySquared;
+    }
+
 } /* end class FigAssociation */
 
 /**
@@ -512,7 +527,7 @@ class FigMultiplicity extends FigSingleLineText
         Object multi = Model.getFacade().getMultiplicity(getOwner());
         setText(NotationUtilityUml.generateMultiplicity(multi));
     }
-}
+    }
 
 /**
  * A textual Fig representing the ordering of some model element,
@@ -582,19 +597,19 @@ class FigRole extends FigSingleLineText
 
     public void setOwner(Object owner) {
         super.setOwner(owner);
-        getNewNotation();
-    }
+            getNewNotation();
+        }
 
     private void getNewNotation() {
         if (notationProviderRole != null) {
             notationProviderRole.removeListener(this, getOwner());
         }
         if (getOwner() != null) {
-            notationProviderRole = 
+            notationProviderRole =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                        getOwner(),
-                        this);
+                    getOwner(),
+                    this);
         }
     }
     
@@ -627,7 +642,7 @@ class FigRole extends FigSingleLineText
         setText();
         damage();
         super.propertyChange(pce);  // do we need this?
-    }
+}
 
     /**
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()

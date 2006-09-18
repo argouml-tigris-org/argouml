@@ -34,24 +34,37 @@
     The OMG document ad/01-02-24 available at 
     http://www.omg.org/docs/ad/01-02-24.htm
     summarizes the differences between UML 1.3 and UML 1.4
+    
+    TODO: Most of this is written in a programatic style instead of
+    a dataflow style and needs to be rewritten for efficiency.
 -->
 <xsl:stylesheet version="2.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:xalan="http://xml.apache.org/xalan"
+    xmlns:date = "http://exslt.org/dates-and-times"
+    xmlns:exsl = "http://exslt.org/common"
+    xmlns:fn = "http://www.w3.org/2005/02/xpath-functions"
     xmlns:saxon = "http://icl.com/saxon"
-    xmlns:UML="org.omg.xmi.namespace.UML"
-    xmlns:date="http://xml.apache.org/xalan/java/java.util.Date"
-    xmlns:java_lang="http://xml.apache.org/xalan/java/java.lang"
-    xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
-    extension-element-prefixes="fn date java_lang"
-    exclude-result-prefixes = "xs fn date xalan saxon java_lang"	
+    xmlns:str = "http://exslt.org/strings"
+    xmlns:UML = "org.omg.xmi.namespace.UML"
+    xmlns:xalan = "http://xml.apache.org/xalan"
+    xmlns:xs = "http://www.w3.org/2001/XMLSchema"
+    xmlns:xsl = "http://www.w3.org/1999/XSL/Transform"
+    extension-element-prefixes = "date exsl fn saxon str xalan"
+    exclude-result-prefixes = "date exsl fn saxon str xalan xs"	
 >
   <xsl:output method="xml" indent="yes" encoding="utf-8" 
          xalan:indent-amount="2" saxon:indent-spaces="2"/>
-  <xsl:variable name="version" select="0.4"/>
-  <xsl:variable name="now" select="date:new()"/>
-
+  <xsl:variable name="version" select="'v 0.5+ - $Revision$ $Date$'"/>
+  <xsl:variable name="processor"/>
+<!-- this won't work for XSLTC with Java 5
+  <xsl:variable name="processor">
+   <xsl:choose>
+     <xsl:when test="function-available('xalan:checkEnvironment')">
+       XALAN <xsl:copy-of select="xalan:checkEnvironment()"/>
+     </xsl:when>
+     <xsl:otherwise>XSLT Processor info not available</xsl:otherwise>
+   </xsl:choose>
+  </xsl:variable>
+-->
   <xsl:key name="stereo-key" match="Foundation.Extension_Mechanisms.Stereotype" 
     use="./Foundation.Extension_Mechanisms.Stereotype.extendedElement/Foundation.Core.ModelElement/@xmi.idref"/>
   
@@ -62,11 +75,15 @@
   <xsl:template match="/" name="root">
     <xsl:text>&#xa;</xsl:text>
     <xsl:comment>
-      Converted from UML 1.3 to UML 1.4 on: <xsl:value-of select="date:toString($now)"/>
+      Converted from UML 1.3 to UML 1.4 on: <xsl:value-of select="date:date-time()"/>
       Converter version <xsl:value-of select="$version"/> by Ludovic Maitre and Tom Morris
-    </xsl:comment>
+      Total number of input nodes =  <xsl:value-of select="count(//*)"/>
+      XSLT Processor : <xsl:value-of select="$processor"/>    "/>
+ </xsl:comment>
     <xsl:text>&#xa;</xsl:text>
     <xsl:copy>
+    <!-- Saxon warns that the attribute selector won't select anything -->
+    <!--  <xsl:apply-templates select="@*|node()"/> -->
       <xsl:apply-templates select="@*|node()"/>
     </xsl:copy>
   </xsl:template>
@@ -75,7 +92,7 @@
   <xsl:template match="/XMI" name="xmi">
     <XMI xmi.version="1.2" xmlns:UML="org.omg.xmi.namespace.UML">
       <xsl:attribute name="timestamp">
-        <xsl:value-of select="date:toString($now)"/>
+        <xsl:value-of select="date:date-time()"/>
       </xsl:attribute>
       <xsl:apply-templates />
     </XMI>
@@ -85,9 +102,9 @@
   <xsl:template match="*" name="process-elements">
     <xsl:choose>
       <xsl:when test="name()='XMI.metamodel'"/>
-      <!-- TODO: preserve old XMI exporter info in comments at a minimum -->
-      <xsl:when test="name()='XMI.exporter'"><XMI.exporter>UML 1.3 to UML 1.4 stylesheets</XMI.exporter></xsl:when>
-      <xsl:when test="name()='XMI.exporterVersion'"><XMI.exporterVersion><xsl:value-of select="$version"/> </XMI.exporterVersion></xsl:when>
+	<!-- TODO: preserve old XMI exporter info in comments at a minimum -->
+	<xsl:when test="name()='XMI.exporter'"><XMI.exporter>UML 1.3 to UML 1.4 stylesheets</XMI.exporter></xsl:when>
+	<xsl:when test="name()='XMI.exporterVersion'"><XMI.exporterVersion><xsl:value-of select="$version"/> </XMI.exporterVersion></xsl:when>
       <xsl:when test="starts-with(name(.),'XMI')">
         <xsl:copy>
           <xsl:apply-templates select="@*|node()"/>
@@ -99,6 +116,8 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- Saxon warns that the following does nothing -->
+  <!-- Attribute of an attribute - no such thing -->
   <xsl:template match="@*">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
@@ -203,7 +222,7 @@
       <UML:TagDefinition>
         <xsl:attribute name="xmi.idref">
           <xsl:value-of 
-              select="xalan:nodeset($tagdefinitions)//*[@name=$tag]/@xmi.id" />
+              select="exsl:node-set($tagdefinitions)//*[@name=$tag]/@xmi.id" />
         </xsl:attribute>
       </UML:TagDefinition>
     </UML:TaggedValue.type>
@@ -213,6 +232,7 @@
     This is where all the main work is done
   -->
   <xsl:template name="UML">
+
     <xsl:variable name="umlName">
       <xsl:call-template name="lastName">
         <xsl:with-param name="aString" select="name()"/>
@@ -224,6 +244,36 @@
         <xsl:with-param name="aString" select="substring($fatherBase,1,string-length($fatherBase)-1)"/>
       </xsl:call-template>
     </xsl:variable>
+
+
+<!-- 
+    <xsl:variable name="namePieces" select="str:split(name(),'.')"/>
+-->
+  <!-- 
+    <xsl:variable name="namePieces" select="xalan:tokenize(name(),'.')"/>
+    <xsl:variable name="umlName1" select="$namePieces[last()]"/>
+    
+    <xsl:choose>
+      <xsl:when test="count($namePieces) > 1">
+        <xsl:variable name="fatherName1" select="$namePieces[last()-1]"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="fatherName1"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    
+    <xsl:choose>
+    <xsl:when test="umlName != umlName1">
+	<message>Match failed for umlName</message>
+    </xsl:when>
+    <xsl:otherwise>
+      <message>Match succeeded</message>
+    </xsl:otherwise>
+    </xsl:choose>
+    <xsl:if test="fatherName != fatherName1">
+    <message>Match failed for fatherName</message>
+    </xsl:if> 
+-->
 <!-- special code for unexpected conditions needs more testing
     <xsl:variable name="qualifiedName">
       <xsl:choose>
@@ -281,7 +331,6 @@
     </xsl:call-template>
   </xsl:template>
 
-
   <xsl:template name="build-uml">
     <xsl:param name="umlName"/> 
     <xsl:choose>
@@ -303,6 +352,8 @@
               <xsl:with-param name="aString" select="name()"/>
             </xsl:call-template>
           </xsl:variable>
+<!--           <xsl:variable name="attribName" select="str:split(name(),'.')[last()]"/>
+-->
           <xsl:attribute name="{$attribName}">
             <xsl:value-of select="@xmi.value"/>
           </xsl:attribute>
@@ -333,7 +384,7 @@
             </xsl:otherwise>
 	  </xsl:choose>
         </xsl:if>
-      <!-- Create reference to stereotype if there's one with our ID  -->
+        <!-- Create reference to stereotype if there's one with our ID  -->
         <!-- try xmi.uuid first (Argo specific), then use xmi.id if not present -->
         <xsl:choose>
           <xsl:when test="key('stereo-key',@xmi.id)/@xmi.uuid">

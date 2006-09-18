@@ -47,6 +47,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
+import org.argouml.uml.diagram.ui.Actions;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -167,7 +168,7 @@ public class FigInterface extends FigClassifierBox {
 
         // Add ...
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
-        addMenu.add(TargetManager.getInstance().getAddOperationAction());
+        addMenu.add(Actions.getInstance().getAddOperationAction());
         addMenu.add(new ActionAddNote());
         addMenu.add(ActionEdgesDisplay.getShowEdges());
         addMenu.add(ActionEdgesDisplay.getHideEdges());

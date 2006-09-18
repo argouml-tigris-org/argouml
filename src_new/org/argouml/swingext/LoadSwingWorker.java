@@ -30,6 +30,7 @@ import javax.swing.UIManager;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectLoadSave;
 
 /**
  * The specialized SwingWorker used for loading projects 
@@ -60,7 +61,7 @@ public class LoadSwingWorker extends SwingWorker {
      */
     public Object construct(ProgressMonitorWindow pmw) {
         // loads the project
-        ProjectBrowser.getInstance().loadProject(file, showUi, pmw);
+        ProjectLoadSave.loadProject(file, showUi, pmw);
         return null;
     }
 

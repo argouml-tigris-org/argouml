@@ -36,9 +36,7 @@ import org.tigris.swidgets.Vertical;
 
 /**
  * This the tab in the details pane for documentation.<p>
- *
- * This prop panel now uses the new (0.13.*) event implementation.<p>
- *
+ * 
  * All data in this tab is stored as Tagged Values,
  * and saved and reloaded correctly.<p>
  *
@@ -64,7 +62,7 @@ import org.tigris.swidgets.Vertical;
  * <li>uses LabelledLayout instead of GridBagLayout
  * <li>uses the new event pump introduced late 2002 by Jaap</ul><p>
  *
- * UMLModelElementTaggedValueDocument is used to access the tagged values of an
+ * UMLModelElementTaggedValueProxy is used to access the tagged values of an
  * MModelElement.
  */
 public class TabDocumentation extends PropPanel {
@@ -81,19 +79,19 @@ public class TabDocumentation extends PropPanel {
                 .getInstance() : Horizontal.getInstance());
 
         addField(Translator.localize("label.author"), new UMLTextField2(
-                new UMLModelElementTaggedValueDocument("author")));
+                new UMLModelElementTaggedValueProxy("author")));
 
         addField(Translator.localize("label.version"), new UMLTextField2(
-                new UMLModelElementTaggedValueDocument("version")));
+                new UMLModelElementTaggedValueProxy("version")));
 
         addField(Translator.localize("label.since"), new UMLTextField2(
-                new UMLModelElementTaggedValueDocument("since")));
+                new UMLModelElementTaggedValueProxy("since")));
 
         addField(Translator.localize("label.deprecated"),
                 new UMLDeprecatedCheckBox());
 
         UMLTextArea2 see = new UMLTextArea2(
-                new UMLModelElementTaggedValueDocument("see"));
+                new UMLModelElementTaggedValueProxy("see"));
         see.setRows(2);
         see.setLineWrap(true);
         see.setWrapStyleWord(true);
@@ -105,7 +103,8 @@ public class TabDocumentation extends PropPanel {
         add(LabelledLayout.getSeperator());
 
         UMLTextArea2 doc = new UMLTextArea2(
-                new UMLModelElementTaggedValueDocument("documentation"));
+                new UMLModelElementTaggedValueProxy("documentation"));
+
         doc.setRows(2);
         doc.setLineWrap(true);
         doc.setWrapStyleWord(true);
@@ -114,7 +113,7 @@ public class TabDocumentation extends PropPanel {
         addField(Translator.localize("label.documentation"), spDocs);
 
         // Comment.name text field - editing disabled
-        UMLTextArea2 comment = new UMLTextArea2(
+        UMLTextArea2 comment = new UMLTextArea2( 
                 new UMLModelElementCommentDocument(false));
         comment.setRows(2);
         comment.setLineWrap(true);

@@ -29,9 +29,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.AssociationRoleNotation;
 import org.argouml.util.MyTokenizer;
 
@@ -70,8 +70,7 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
                 pe.getLocalizedMessage(),
                 new Integer(pe.getErrorOffset()),
             };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                Translator.messageFormat(msg, args));
+            StatusMonitor.notify(this, Translator.messageFormat(msg, args));
         }
     }
 

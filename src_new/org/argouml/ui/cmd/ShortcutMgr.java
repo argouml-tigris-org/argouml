@@ -46,9 +46,11 @@ import org.argouml.ui.ActionExportXMI;
 import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ActionSettings;
+import org.argouml.ui.ArgoActions;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ActionPerspectiveConfig;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.Actions;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
@@ -291,7 +293,7 @@ public class ShortcutMgr {
 
     /** Action key for reorder to back */
     public static final String ACTION_REORDER_TO_BACK = "reorderToBack";
-    
+
     /** 
      * The expression between modifier/modifier and between modifier/text 
      */
@@ -438,7 +440,7 @@ public class ShortcutMgr {
     }
 
     private static void putDefaultShortcut(String shortcutKey,
-        KeyStroke defaultKeyStroke, AbstractAction action) {
+            KeyStroke defaultKeyStroke, AbstractAction action) {
         putDefaultShortcut(shortcutKey, defaultKeyStroke, action, 
                 getActionDefaultName(action));
     }
@@ -574,8 +576,7 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_OPEN_PROJECT, KeyStroke.getKeyStroke(
                 KeyEvent.VK_O, DEFAULT_MASK), new ActionOpenProject());
         putDefaultShortcut(ACTION_SAVE_PROJECT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_S, DEFAULT_MASK), ProjectBrowser.getInstance()
-                .getSaveAction());
+                KeyEvent.VK_S, DEFAULT_MASK), ArgoActions.getSaveAction());
         putDefaultShortcut(ACTION_SAVE_PROJECT_AS, null,
                 new ActionSaveProjectAs());
         putDefaultShortcut(ACTION_REVERT_TO_SAVED, null,
@@ -599,9 +600,10 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_SELECT_ALL, KeyStroke.getKeyStroke(
                 KeyEvent.VK_A, DEFAULT_MASK), new CmdSelectAll());
         putDefaultShortcut(ACTION_REDO, KeyStroke.getKeyStroke(KeyEvent.VK_Y,
-                DEFAULT_MASK), ProjectBrowser.getInstance().getRedoAction());
+                DEFAULT_MASK), ArgoActions.getRedoAction());
+
         putDefaultShortcut(ACTION_UNDO, KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-                DEFAULT_MASK), ProjectBrowser.getInstance().getUndoAction());
+                DEFAULT_MASK), ArgoActions.getUndoAction());
         putDefaultShortcut(ACTION_NAVIGATE_FORWARD, null,
                 new NavigateTargetForwardAction());
         putDefaultShortcut(ACTION_NAVIGATE_BACK, null,
@@ -611,11 +613,10 @@ public class ShortcutMgr {
                 new ActionPerspectiveConfig());
         putDefaultShortcut(ACTION_SETTINGS, null, new ActionSettings());
         putDefaultShortcut(ACTION_REMOVE_FROM_DIAGRAM, KeyStroke.getKeyStroke(
-                KeyEvent.VK_DELETE, 0), ProjectBrowser.getInstance()
-                .getRemoveFromDiagramAction());
+                KeyEvent.VK_DELETE, 0), Actions.getRemoveFromDiagramAction());
         putDefaultShortcut(ACTION_DELETE_MODEL_ELEMENTS, KeyStroke
-                .getKeyStroke(KeyEvent.VK_DELETE, DEFAULT_MASK), TargetManager
-                .getInstance().getDeleteAction());
+                .getKeyStroke(KeyEvent.VK_DELETE, DEFAULT_MASK), 
+                Actions.getDeleteAction());
 
         // view menu
         putDefaultShortcut(ACTION_GO_TO_DIAGRAM, null, new ActionGotoDiagram());
@@ -627,10 +628,10 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_SHOW_XML_DUMP, null, new ActionShowXMLDump());
         putDefaultShortcut(ACTION_ZOOM_IN, KeyStroke.getKeyStroke(
                 KeyEvent.VK_MINUS, DEFAULT_MASK), new CmdZoom(
-                (1.0) / (GenericArgoMenuBar.ZOOM_FACTOR)));
+                        (1.0) / (GenericArgoMenuBar.ZOOM_FACTOR)));
         putDefaultShortcut(ACTION_ZOOM_OUT, KeyStroke.getKeyStroke(
                 KeyEvent.VK_PLUS, DEFAULT_MASK), new CmdZoom(
-                GenericArgoMenuBar.ZOOM_FACTOR));
+                        GenericArgoMenuBar.ZOOM_FACTOR));
         putDefaultShortcut(ACTION_FIND, KeyStroke.getKeyStroke(KeyEvent.VK_F3,
                 0), new ActionFind());
 
@@ -718,5 +719,5 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_REORDER_TO_BACK, KeyStroke.getKeyStroke(
                 KeyEvent.VK_B, SHIFTED_DEFAULT_MASK), new CmdReorder(
                 CmdReorder.SEND_TO_BACK));
-    }
+}
 }

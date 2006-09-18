@@ -30,10 +30,10 @@ import java.util.NoSuchElementException;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.ModelElementNameNotation;
 import org.argouml.util.MyTokenizer;
 
@@ -65,9 +65,9 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
                 pe.getLocalizedMessage(),
                 new Integer(pe.getErrorOffset()),
             };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
+        StatusMonitor.notify(this, 
                 Translator.messageFormat(msg, args));
-        }
+    }
     }
 
     /**
@@ -108,14 +108,14 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
                 } else if (".".equals(token)) {
                     if (name != null) {
                         name = name.trim();
-                    }
+        }
 
                     if (path != null && (name == null || "".equals(name))) {
                         String msg = 
                             "parsing.error.model-element-name.anon-qualifiers";
                         throw new ParseException(Translator.localize(msg), 
                                 st.getTokenIndex());
-                    }
+    }
 
                     if (path == null) {
                         path = new Vector();

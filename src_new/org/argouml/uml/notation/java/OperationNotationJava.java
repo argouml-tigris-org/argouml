@@ -30,8 +30,8 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.OperationNotation;
 
 /**
@@ -60,7 +60,7 @@ public class OperationNotationJava extends OperationNotation {
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
-        ProjectBrowser.getInstance().getStatusBar().showStatus(
+        StatusMonitor.notify(this, 
             "Parsing in Java not yet supported");
     }
 

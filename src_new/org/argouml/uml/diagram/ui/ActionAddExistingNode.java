@@ -27,6 +27,8 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -42,19 +44,28 @@ import org.tigris.gef.undo.UndoableAction;
 public class ActionAddExistingNode extends UndoableAction {
 
     /**
-     * The UML object to be added to the diagram.
+     * The UML model element to be added to the diagram.
      */
-    private Object object;
+    private Object modelElement;
 
     /**
-     * The Constructor.
+     * Construct an action to add an element to a diagram.
      *
      * @param name the localized name of the action
-     * @param o the node UML object to be added
+     * @param element the node UML element to be added
      */
-    public ActionAddExistingNode(String name, Object o) {
+    public ActionAddExistingNode(String name, Object element) {
         super(name);
-        object = o;
+        modelElement = element;
+    }
+    
+    /**
+     * Construct an action to add the current target to the current diagram.
+     */
+    public ActionAddExistingNode() {
+        super(Translator.localize("action.add-to-diagram"), 
+                ResourceLoaderWrapper.lookupIconResource("Add"));
+        modelElement = null;
     }
 
     /**
@@ -62,9 +73,14 @@ public class ActionAddExistingNode extends UndoableAction {
      */
     public boolean isEnabled() {
         Object target = TargetManager.getInstance().getTarget();
-        ArgoDiagram dia = ProjectManager.getManager().
-            getCurrentProject().getActiveDiagram();
-        if (dia == null) return false;
+        if (target == null) {
+            return false;
+        }
+        ArgoDiagram dia = 
+            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        if (dia == null) {
+            return false;
+        }
         MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
         return gm.canAddNode(target);
     }
@@ -74,7 +90,13 @@ public class ActionAddExistingNode extends UndoableAction {
      */
     public void actionPerformed(ActionEvent ae) {
         super.actionPerformed(ae);
-        AddExistingNodeCommand cmd = new AddExistingNodeCommand(object);
+        AddExistingNodeCommand cmd;
+        if (modelElement == null) {
+            cmd = new AddExistingNodeCommand(
+                    TargetManager.getInstance().getTarget());
+        } else {
+            cmd = new AddExistingNodeCommand(modelElement);
+        }
         cmd.execute();
     }
 } /* end class ActionAddExistingNode */

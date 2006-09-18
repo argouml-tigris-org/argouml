@@ -41,7 +41,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoFrame;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectLoadSave;
+
 
 /**
  * Action that loads the project.
@@ -80,15 +81,15 @@ public class ActionOpenProject extends AbstractAction
         Project p = ProjectManager.getManager().getCurrentProject();
         PersistenceManager pm = PersistenceManager.getInstance();
 
-        if (!ProjectBrowser.getInstance().askConfirmationAndSave()) {
+        if (!ProjectLoadSave.askConfirmationAndSave()) {
             return;
         }
 
         // next line does give user.home back but this is not
         // compliant with how the project.uri works and therefore
         // open and save project as give different starting
-        // directories.  String directory =
-        // Globals.getLastDirectory();
+        // directories.  
+        // String directory = Globals.getLastDirectory();
         JFileChooser chooser = null;
         if (p != null && p.getURI() != null) {
             File file = new File(p.getURI());
@@ -110,7 +111,7 @@ public class ActionOpenProject extends AbstractAction
 
         // adding project files icon
         chooser.setFileView(ProjectFileView.getInstance());
-        
+
         pm.setOpenFileChooserFilter(chooser);
 
         String fn = Configuration.getString(
@@ -151,8 +152,7 @@ public class ActionOpenProject extends AbstractAction
                         PersistenceManager.KEY_OPEN_PROJECT_PATH,
                         theFile.getPath());
 
-                ProjectBrowser.getInstance().loadProjectWithProgressMonitor(
-                		theFile, true);
+                ProjectLoadSave.loadProjectWithProgressMonitor(theFile, true);
             }
         }
     }
@@ -165,8 +165,7 @@ public class ActionOpenProject extends AbstractAction
      * @return true if it is OK.
      */
     public boolean doCommand(String argument) {
-        return ProjectBrowser.getInstance()
-            .loadProject(new File(argument), false, null);
+        return ProjectLoadSave.loadProject(new File(argument), false, null);
     }
 
 } /* end class ActionOpenProject */

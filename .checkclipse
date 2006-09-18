@@ -1,0 +1,6 @@
+#Thu May 25 12:31:54 EDT 2006
+filenames.properties=/argouml-old/tools/checkstyle/checkclipse.properties
+enabled=true
+projectclassloader=false
+filenames.config=/argouml-old/tools/checkstyle/checkstyle_argouml.xml
+filenames.filter=/argouml-old/tools/checkstyle/checkclipse.filefilters

@@ -157,9 +157,11 @@ public class ItemUID {
      * @return	The ID of the object, or null.
      */
     protected static String readObjectID(Object obj) {
+        // TODO: We really want this coupled to the model subsystem?
         if (Model.getFacade().isAModelElement(obj)) {
             return UUIDHelper.getUUID(obj);
         }
+        
 	/*
 	// Want to use the "built in" UID of the MXxx instances
 	// d00mst 2002-10-08
@@ -226,6 +228,7 @@ public class ItemUID {
      * @return	The new ID of the object, or null.
      */
     protected static String createObjectID(Object obj) {
+        // TODO: Do we really want this coupled to the model subsystem?
 	if (Model.getFacade().isAModelElement(obj)) {
 	    return null;
 	}

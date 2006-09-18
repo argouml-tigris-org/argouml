@@ -41,10 +41,10 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
+import org.argouml.uml.diagram.ui.Actions;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
@@ -190,8 +190,8 @@ public class FigClass extends FigClassifierBox
 
         // Add...
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
-        addMenu.add(TargetManager.getInstance().getAddAttributeAction());
-        addMenu.add(TargetManager.getInstance().getAddOperationAction());
+        addMenu.add(Actions.getInstance().getAddAttributeAction());
+        addMenu.add(Actions.getInstance().getAddOperationAction());
         addMenu.add(new ActionAddNote());
         addMenu.add(ActionEdgesDisplay.getShowEdges());
         addMenu.add(ActionEdgesDisplay.getHideEdges());
@@ -412,7 +412,7 @@ public class FigClass extends FigClassifierBox
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
-
+            
             highlightedFigText.getNotationProvider()
                 .parse(highlightedFigText.getOwner(), ft.getText());
             ft.setText(highlightedFigText.getNotationProvider().toString(
@@ -423,7 +423,7 @@ public class FigClass extends FigClassifierBox
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
-
+            
             highlightedFigText.getNotationProvider()
                 .parse(highlightedFigText.getOwner(), ft.getText());
             ft.setText(highlightedFigText.getNotationProvider().toString(

@@ -61,6 +61,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Highlightable;
 import org.argouml.cognitive.ItemUID;
@@ -74,13 +75,12 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ActionGoToCritique;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.ui.ActionDeleteModelElements;
@@ -485,7 +485,7 @@ public abstract class FigNodeModelElement
         popupAddOffset = 1;
         if (removeFromDiagram) {
             popUpActions.addElement(
-                    ProjectBrowser.getInstance().getRemoveFromDiagramAction());
+                    Actions.getRemoveFromDiagramAction());
             popupAddOffset++;
         }
         popUpActions.addElement(new ActionDeleteModelElements());
@@ -596,17 +596,23 @@ public abstract class FigNodeModelElement
 	    if (newEncloser == null && isVisible()) {
 	        // If we are not visible most likely we're being deleted.
 
+                // TODO:  Rather than trying to guess at an appropriate
+                // namespace, why not just leave it unchanged until it
+                // gets moved *in* to something appropriate? - tfm
+                // (if that's not acceptable, find another way to remove
+                // this dependency cycle)
+                
 		// moved outside another fig onto the diagram canvas
-		Project currentProject =
-		    ProjectManager.getManager().getCurrentProject();
-                ArgoDiagram diagram = currentProject.getActiveDiagram();
+//		Project currentProject =
+//		    ProjectManager.getManager().getCurrentProject();
+//                ArgoDiagram diagram = currentProject.getActiveDiagram();
                 // TODO: Who said this was about the active diagram?
-                if (diagram instanceof UMLDiagram
-			&& ((UMLDiagram) diagram).getNamespace() != null) {
-                    owningModelelement = ((UMLDiagram) diagram).getNamespace();
-                } else {
-                    owningModelelement = currentProject.getRoot();
-                }
+//                if (diagram instanceof UMLDiagram
+//			&& ((UMLDiagram) diagram).getNamespace() != null) {
+//                    owningModelelement = ((UMLDiagram) diagram).getNamespace();
+//                } else {
+//                    owningModelelement = currentProject.getRoot();
+//                }
 	    } else if (newEncloser != null
                     && Model.getFacade()
                             .isAModelElement(newEncloser.getOwner())) {
@@ -867,7 +873,12 @@ public abstract class FigNodeModelElement
             && Globals.curEditor().getSelectionManager().containsFig(this)) {
             tip = item.getHeadline() + " ";
         } else if (getOwner() != null) {
-            tip = Model.getFacade().getTipString(getOwner());
+            try {
+                tip = Model.getFacade().getTipString(getOwner());
+            } catch (InvalidElementException e) {
+                // We moused over an element just as it was deleted
+                tip = "*deleted element*";
+            }
         } else {
             tip = toString();
         }
@@ -1002,20 +1013,19 @@ public abstract class FigNodeModelElement
      * @param s the given string to be localized and shown
      */
     protected void showHelp(String s) {
-        ProjectBrowser.getInstance().getStatusBar().showStatus(
-                Translator.localize(s));
+        StatusMonitor.notify(this, Translator.localize(s));
     }
 
     /**
-     * This method is called after the user finishes editing a text
-     * field that is in the FigNodeModelElement.  Determine which
-     * field and update the model.  This class handles the name,
-     * and the stereotype,
-     * subclasses should override to handle other text elements.
-     *
-     * @param ft the FigText that has been edited and contains the new text
-     * @throws PropertyVetoException thrown when new text represents
-     * an unacceptable value
+     * This method is called after the user finishes editing a text field that
+     * is in the FigNodeModelElement. Determine which field and update the
+     * model. This class handles the name, and the stereotype, subclasses should
+     * override to handle other text elements.
+     * 
+     * @param ft
+     *            the FigText that has been edited and contains the new text
+     * @throws PropertyVetoException
+     *             thrown when new text represents an unacceptable value
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == nameFig) {
@@ -1217,7 +1227,9 @@ public abstract class FigNodeModelElement
     public void deleteFromModel() {
         Object own = getOwner();
         if (own != null) {
-            ProjectManager.getManager().getCurrentProject().moveToTrash(own);
+//            ProjectManager.getManager().getCurrentProject().moveToTrash(own);
+            // Just delete directly instead of using "trash"
+            Model.getUmlFactory().delete(own);
         }
         Iterator it = getFigs().iterator();
         while (it.hasNext()) {
@@ -1392,7 +1404,7 @@ public abstract class FigNodeModelElement
         }
 
     }
-
+    
     /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */

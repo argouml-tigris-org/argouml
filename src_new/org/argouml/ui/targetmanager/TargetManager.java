@@ -32,22 +32,19 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Vector;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
+
+// TODO: This still needs work to decouple the following - tfm 
+//import org.argouml.kernel.Project;
+//import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.argouml.uml.diagram.ui.UMLDiagramInterface;
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -395,14 +392,6 @@ public final class TargetManager {
      */
     private boolean inTransaction = false;
 
-    private Action addAttributeAction = new ActionAddAttribute();
-
-    private Action addOperationAction = new ActionAddOperation();
-    
-    private AbstractAction deleteAction = new ActionDeleteModelElements();
-
-    private Action addEnumerationLiteralAction = 
-        new ActionAddEnumerationLiteral();
 
     /**
      * Singleton retrieval method.
@@ -443,8 +432,9 @@ public final class TargetManager {
 	targets.clear();
 
 	if (o != null) {
+	    // Needed for Argo startup :-(
             Object newTarget;
-            if (o instanceof UMLDiagram) { // Needed for Argo startup :-(
+            if (o instanceof UMLDiagramInterface) {
                 newTarget = o;
             } else {
 	        newTarget = getOwner(o);
@@ -655,13 +645,16 @@ public final class TargetManager {
                 c.add(o);
             }
         }
-        if (!(o instanceof Fig)) {
-            Project p = ProjectManager.getManager().getCurrentProject();
-            Collection col = p.findAllPresentationsFor(o);
-            if (col != null && !col.isEmpty()) {
-                c.addAll(col);
-            }
-        }
+        
+        // TODO:  Decouple this from the ProjectManager - tfm
+        
+//        if (!(o instanceof Fig)) {
+//            Project p = ProjectManager.getManager().getCurrentProject();
+//            Collection col = p.findAllPresentationsFor(o);
+//            if (col != null && !col.isEmpty()) {
+//                c.addAll(col);
+//            }
+//        }
         return c;
     }
 
@@ -830,122 +823,7 @@ public final class TargetManager {
     }
 
     private void endTargetTransaction() {
-
-        boolean addAttributeEnabled;
-        if (targets.size() == 1) {
-            Object target = determineModelTarget(targets.get(0));
-            if ((Model.getFacade().isAClass(target)
-                    || Model.getFacade().isAUseCase(target)
-                    || (Model.getFacade().isAFeature(target)
-                        && Model.getFacade().isAClass(
-                            Model.getFacade().getOwner(target)))
-                    || (Model.getFacade().isAFeature(target)
-                        && Model.getFacade().isAUseCase(
-                            Model.getFacade().getOwner(target)))
-                    || Model.getFacade().isAAssociationEnd(target))) {
-                addAttributeEnabled = true;
-            } else {
-                addAttributeEnabled = false;
-            }
-        } else {
-            addAttributeEnabled = false;
-        }
-
-        boolean addOperationEnabled;
-        if (targets.size() == 1) {
-            Object target = determineModelTarget(targets.get(0));
-            if ((Model.getFacade().isAClassifier(target)
-                    || Model.getFacade().isAFeature(target))
-                    && !Model.getFacade().isASignal(target)) {
-                addOperationEnabled = true;
-            } else {
-                addOperationEnabled = false;
-            }
-        } else {
-            addOperationEnabled = false;
-        }
-        
-        addAttributeAction.setEnabled(addAttributeEnabled);
-        addOperationAction.setEnabled(addOperationEnabled);
-        deleteAction.setEnabled(isDeleteAllowed());
-
         inTransaction = false;
-    }
-    
-    /**
-     * Determine if the current selected targets should allow enablement of
-     * the delete action.
-     * @return true to enable delete
-     */
-    private boolean isDeleteAllowed() {
-        int size = 0;
-        try {
-            Editor ce = Globals.curEditor();
-            Vector figs = ce.getSelectionManager().getFigs();
-            size = figs.size();
-        } catch (Exception e) {
-        // Ignore
-        }
-        if (size > 0) {
-            return true;
-        }
-        Object target = TargetManager.getInstance().getTarget();
-        if (target instanceof Diagram) { // we cannot delete the last diagram
-            return (ProjectManager.getManager().getCurrentProject()
-                .getDiagrams().size() > 1);
-        }
-        if (Model.getFacade().isAModel(target)
-        // we cannot delete the model itself
-            && target.equals(ProjectManager.getManager().getCurrentProject()
-                 .getModel())) {
-            return false;
-        }
-        if (Model.getFacade().isAAssociationEnd(target)) {
-            return Model.getFacade().getOtherAssociationEnds(target).size() > 1;
-        }
-        if (Model.getStateMachinesHelper().isTopState(target)) {
-            /* we can not delete a "top" state,
-             * it comes and goes with the statemachine. Issue 2655.
-             */
-            return false;
-        }
-        return target != null;
-    }
-
-    /**
-     * Get the Action for creating and adding a new attribute
-     * to the single selected target (or its owner).
-     * @return the action
-     */
-    public Action getAddAttributeAction() {
-        return addAttributeAction;
-    }
-
-    /**
-     * Get the Action for creating and adding a new operation
-     * to the single selected target (or its owner).
-     * @return the action
-     */
-    public Action getAddOperationAction() {
-        return addOperationAction;
-    }
-
-    /**
-     * Get the Action for deleting the target list.
-     * @return the action
-     */
-    public AbstractAction getDeleteAction() {
-        return deleteAction;
-    }
-
-    /**
-     * Get the Action class for creating and adding a new EnumerationLiteral for
-     * the single selected target (or its owner).
-     * 
-     * @return the action
-     */
-    public Action getAddEnumerationLiteralAction() {
-        return addEnumerationLiteralAction;
     }
 
     /**
@@ -969,13 +847,13 @@ public final class TargetManager {
     private Fig determineFigTarget(Object target) {
         if (!(target instanceof Fig)) {
 
-            Project p = ProjectManager.getManager().getCurrentProject();
-            Collection col = p.findFigsForMember(target);
-            if (col == null || col.isEmpty()) {
-                target = null;
-            } else {
-                target = col.iterator().next();
-            }
+//            Project p = ProjectManager.getManager().getCurrentProject();
+//            Collection col = p.findFigsForMember(target);
+//            if (col == null || col.isEmpty()) {
+//                target = null;
+//            } else {
+//                target = col.iterator().next();
+//            }
         }
 
         return target instanceof Fig ? (Fig) target : null;
@@ -1006,7 +884,7 @@ public final class TargetManager {
                 target = owner;
             }
         }
-        return target instanceof UMLDiagram
+        return target instanceof UMLDiagramInterface
             || Model.getFacade().isAModelElement(target) ? target : null;
 
     }
@@ -1071,6 +949,9 @@ public final class TargetManager {
      * 
      * @author michiel
      */
+     
+    // TODO: This needs to listen for element deletion - tfm
+
     private abstract class Remover implements PropertyChangeListener 
     {
 

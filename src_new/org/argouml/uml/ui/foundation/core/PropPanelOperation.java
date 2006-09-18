@@ -36,6 +36,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.Actions;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateOwner;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -108,7 +109,7 @@ public class PropPanelOperation extends PropPanelFeature {
                 new JScrollPane(osta));
 
         addAction(new ActionNavigateOwner());
-        addAction(TargetManager.getInstance().getAddOperationAction());
+        addAction(Actions.getInstance().getAddOperationAction());
         addAction(new ActionNewParameter());
         addAction(new ActionNewRaisedSignal());
         addAction(new ActionNewMethod());

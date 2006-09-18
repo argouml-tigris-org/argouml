@@ -31,10 +31,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.ObjectFlowStateStateNotation;
 
 /**
@@ -72,8 +72,7 @@ public class ObjectFlowStateStateNotationUml extends
             String msg = "statusmsg.bar.error.parsing.objectflowstate";
             Object[] args = {pe.getLocalizedMessage(),
                              new Integer(pe.getErrorOffset()), };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
+            StatusMonitor.notify(this, Translator.messageFormat(msg, args));
         }
     }
 

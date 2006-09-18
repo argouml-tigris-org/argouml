@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,22 +42,19 @@ public class UMLTextField2
     implements PropertyChangeListener, TargettableModelView {
 
     /**
-     * Serial version generated for rev 1.15
-     */
-    private static final long serialVersionUID = -5740838103900828073L;
-
-    /**
      * Constructor for UMLTextField2.
      *
      * @param doc the plain text document
      */
     public UMLTextField2(UMLDocument doc) {
         super(doc, null, 0);
-        setFont(LookAndFeelMgr.getInstance().getStandardFont());
+        setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addCaretListener(ActionCopy.getInstance());
         addCaretListener(ActionCut.getInstance());
         addCaretListener(ActionPaste.getInstance());
         addFocusListener(ActionPaste.getInstance());
+        // TODO: add focus listener to commit updates
+        // and register model event listener again
     }
 
     /**

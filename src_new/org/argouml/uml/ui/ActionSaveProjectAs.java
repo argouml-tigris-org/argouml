@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectLoadSave;
 
 /**
  * Action to save project under name.
@@ -59,7 +59,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
      */
     public void actionPerformed(ActionEvent e) {
         LOG.info("Performing saveas action");
-        ProjectBrowser.getInstance().trySave(false, true);
+        ProjectLoadSave.trySave(false, true);
     }
 
     /**

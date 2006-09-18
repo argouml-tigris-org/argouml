@@ -1,4 +1,5 @@
 // $Id$
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,6 +54,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Highlightable;
 import org.argouml.cognitive.ItemUID;
@@ -74,10 +76,10 @@ import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
@@ -163,6 +165,8 @@ public abstract class FigEdgeModelElement
      * List of model element listeners we've registered.
      */
     private Collection listeners = new ArrayList();
+    
+    private boolean mergingHandles;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -178,8 +182,12 @@ public abstract class FigEdgeModelElement
         stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
 
         setBetweenNearestPoints(true);
-
+        
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+
+        // Register with delegate Fig to get bounds notification
+        // (for handle merge prototype?)
+        //getFig().addPropertyChangeListener(this);
     }
 
     /**
@@ -242,7 +250,7 @@ public abstract class FigEdgeModelElement
             tip = item.getHeadline();
         } else if (getOwner() != null) {
             try {
-                tip = Model.getFacade().getTipString(getOwner());
+            tip = Model.getFacade().getTipString(getOwner());
             } catch (InvalidElementException e) {
                 // We moused over an object just as it was deleted
                 // transient condition - doesn't require I18N
@@ -264,17 +272,13 @@ public abstract class FigEdgeModelElement
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        
-        // TODO: Remove this line after 0.20.
-        // This is a hack that removes the ordering menu according to issue 3645
-        popUpActions.remove(0);
 
         // popupAddOffset should be equal to the number of items added here:
         popUpActions.addElement(new JSeparator());
         popupAddOffset = 1;
         if (removeFromDiagram) {
             popUpActions.addElement(
-                    ProjectBrowser.getInstance().getRemoveFromDiagramAction());
+                    Actions.getRemoveFromDiagramAction());
             popupAddOffset++;
         }
         popUpActions.addElement(new ActionDeleteModelElements());
@@ -334,15 +338,27 @@ public abstract class FigEdgeModelElement
      * @param p1 point
      * @param p2 point
      * @return the square of the distance
+     * @deprecated for 0.21.3 by tfmorris - use private implementation if needed
      */
-    protected int getSquaredDistance(Point p1, Point p2) {
+    public int getSquaredDistance(Point p1, Point p2) {
+        return squaredDistance(p1, p2);
+    }
+
+    /**
+     * distance formula: (x-h)^2 + (y-k)^2 = distance^2
+     *
+     * @param p1 point
+     * @param p2 point
+     * @return the square of the distance
+     */
+    private int squaredDistance(Point p1, Point p2) {
         int xSquared = p2.x - p1.x;
         xSquared *= xSquared;
         int ySquared = p2.y - p1.y;
         ySquared *= ySquared;
         return xSquared + ySquared;
     }
-
+    
     /**
      * @param g the <code>Graphics</code> object
      */
@@ -539,7 +555,7 @@ public abstract class FigEdgeModelElement
         }
         // We handle and consume editing events
         if (pName.equals("editing")
-                && Boolean.FALSE.equals(pve.getNewValue())) {
+            && Boolean.FALSE.equals(pve.getNewValue())) {
             LOG.debug("finished editing");
             // parse the text that was edited
             textEdited((FigText) src);
@@ -562,12 +578,15 @@ public abstract class FigEdgeModelElement
             super.propertyChange(pve);
         }
 
-        if (Model.getFacade().isAModelElement(src) 
-                && getOwner() != null
-                && !Model.getUmlFactory().isRemoved(getOwner())) {
+        if (Model.getFacade().isAModelElement(src)) {
             /* If the source of the event is an UML object,
              * then the UML model has been changed.*/
-            modelChanged(pve);
+            try {
+                modelChanged(pve);
+            } catch (InvalidElementException e) {
+                LOG.debug("modelChanged method attempted to access"
+                        + " deleted element ", e);
+            }
         }
         if (pve instanceof AttributeChangeEvent) {
             modelAttributeChanged((AttributeChangeEvent) pve);
@@ -633,8 +652,7 @@ public abstract class FigEdgeModelElement
      * @param s the given string to be localized and shown
      */
     protected void showHelp(String s) {
-        ProjectBrowser.getInstance().getStatusBar().showStatus(
-                Translator.localize(s));
+        StatusMonitor.notify(this, Translator.localize(s));
     }
 
     /**
@@ -642,7 +660,7 @@ public abstract class FigEdgeModelElement
      * field that is in the FigEdgeModelElement.  Determine which field
      * and update the model.  This class handles the name, subclasses
      * should override to handle other text elements.
-     *
+     * 
      * @param ft the text Fig that has been edited
      */
     protected void textEdited(FigText ft) {
@@ -690,7 +708,7 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * If the user double clicks on anu part of this FigNode, pass it
+     * If the user double clicks on any part of this FigNode, pass it
      * down to one of the internal Figs.  This allows the user to
      * initiate direct text editing.
      *
@@ -834,7 +852,7 @@ public abstract class FigEdgeModelElement
         }
         super.setOwner(owner);
         initNotationProviders(owner);
-        renderingChanged();
+            renderingChanged();
         updateListeners(null, owner);
     }
 
@@ -915,6 +933,7 @@ public abstract class FigEdgeModelElement
         if (getOwner() == null) return;
         initNotationProviders(getOwner());
         renderingChanged();
+
     }
 
     /**
@@ -963,9 +982,9 @@ public abstract class FigEdgeModelElement
     public final void removeFromDiagram() {
         Fig delegate = getRemoveDelegate();
         if (delegate instanceof FigNodeModelElement) {
-            ((FigNodeModelElement) delegate).removeFromDiagramImpl();
+            ((FigNodeModelElement)delegate).removeFromDiagramImpl();
         } else if (delegate instanceof FigEdgeModelElement) {
-            ((FigEdgeModelElement) delegate).removeFromDiagramImpl();
+            ((FigEdgeModelElement)delegate).removeFromDiagramImpl();
         } else if (delegate != null) {
             removeFromDiagramImpl();
         }
@@ -997,7 +1016,7 @@ public abstract class FigEdgeModelElement
 
         /* TODO: MVW: Why the next action?
          * Deleting a fig from 1 diagram should not influence others!
-         * */
+         */
         // GEF does not take into account the multiple diagrams we have
         // therefore we loop through our diagrams and delete each and every
         // occurence on our own
@@ -1011,6 +1030,7 @@ public abstract class FigEdgeModelElement
         /* TODO: MVW: Should we not call damage()
          * for diagrams AFTER the next step? */
         super.removeFromDiagram();
+
     }
     
     protected void superRemoveFromDiagram() {
@@ -1068,8 +1088,8 @@ public abstract class FigEdgeModelElement
                 setDestFigNode((FigNode) newDestFig);
                 setDestPortFig(newDestFig);
             }
-            ((FigNode) newSourceFig).updateEdges();
-            ((FigNode) newDestFig).updateEdges();
+                ((FigNode) newSourceFig).updateEdges();
+                ((FigNode) newDestFig).updateEdges();
             calcBounds();
 
             // adapted from SelectionWButtons from line 280
@@ -1094,17 +1114,17 @@ public abstract class FigEdgeModelElement
         if (element == null) {
             throw new IllegalArgumentException("Can't search for a null owner");
         }
-        List contents = getLayer().getContentsNoEdges();
-        int figCount = contents.size();
-        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig fig = (Fig) contents.get(figIndex);
-            if (fig.getOwner() == element) {
-                return fig;
+            List contents = getLayer().getContentsNoEdges();
+            int figCount = contents.size();
+            for (int figIndex = 0; figIndex < figCount; ++figIndex) {
+                Fig fig = (Fig) contents.get(figIndex);
+                if (fig.getOwner() == element) {
+                    return fig;
+                }
             }
-        }
         throw new IllegalStateException("Can't find a FigNode representing "
                 + Model.getFacade().getName(element));
-    }
+        }
 
 
     /**
@@ -1299,7 +1319,7 @@ public abstract class FigEdgeModelElement
 
     /**
      * Returns all texts shown in a TextFig that are editable.
-     * This is used to meke these texts stand out when the edge is selected.
+     * This is used to make these texts stand out when the edge is selected.
      * 
      * @return a collection of TextFigs
      */
@@ -1309,4 +1329,52 @@ public abstract class FigEdgeModelElement
 //        return c;
 //    }
 
+    final static double EPSILON_ANGLE = 7.0; // degrees
+    final static double EPSILON_DISTANCE = 5 * 5; // screen pixels (squared)
+    
+    /*
+     * Traverse the edge and see if there are any handles which should
+     * be removed because they are either so close together as to be
+     * considered colocated or so 
+     */
+    private void mergeHandles() {
+
+        FigPoly poly = (FigPoly) getFig();
+        int pointCount = poly.getNumPoints();
+        Point[] points = poly.getPoints();
+        
+        for (int i = 1; i < pointCount - 1; i++) {
+            Point previous = points[i - 1];
+            Point current = points[i];
+            Point next = points[i + 1];
+
+            // Remove points which are enclosed in endpoint fig
+            
+            
+
+            // remove points that are too close to each other
+            if (squaredDistance(previous, current) < EPSILON_DISTANCE 
+                    || squaredDistance(current, next) < EPSILON_DISTANCE ) {
+                poly.removePoint(i);
+                break;
+            }
+            // remove points that are too close to each other
+            if (squaredDistance(previous, current) < EPSILON_DISTANCE 
+                    || squaredDistance(current, next) < EPSILON_DISTANCE ) {
+                poly.removePoint(i);
+                break;
+            }
+
+            double segment1Angle = Geometry.segmentAngle(previous, current);
+            double segment2Angle = Geometry.segmentAngle(current, next);
+            double difference = 
+                Geometry.diffAngle(segment1Angle, segment2Angle);
+
+            if (difference < EPSILON_ANGLE) {
+                //poly.removePoint(i);
+            }
+        }
+
+        calcBounds();
+    }
 } /* end class FigEdgeModelElement */

@@ -56,11 +56,9 @@ import org.argouml.uml.ProfileException;
 import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
-import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagramInterface;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
@@ -170,6 +168,7 @@ public class Project implements java.io.Serializable, TargetListener {
         projectSettings = new ProjectSettings();
         
         Model.getModelManagementFactory().setRootModel(null);
+
 
         authorname = Configuration.getString(Argo.KEY_USER_FULLNAME);
         authoremail = Configuration.getString(Argo.KEY_USER_EMAIL);
@@ -420,26 +419,28 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     protected void removeProjectMemberDiagram(ArgoDiagram d) {
         if (activeDiagram == d) {
-            ArgoDiagram defaultDiagram;
+//            ArgoDiagram defaultDiagram;
             if (diagrams.size() == 1) {
                 // We're deleting the last diagram so lets create a new one
                 // TODO: Once we go MDI we won't need this.
                 Object treeRoot = 
                     Model.getModelManagementFactory().getRootModel();
-                defaultDiagram =
-                    DiagramFactory.getInstance()
-                        .createDiagram(UMLClassDiagram.class, treeRoot, null);
-                addMember(defaultDiagram);
+                // TODO: Repair this dependency cycle
+                // The right repair might actually be in DiagramFactory or UML Class diagram
+//                defaultDiagram =
+//                    DiagramFactory.getInstance()
+//                        .createDiagram(UMLClassDiagram.class, treeRoot, null);
+//                addMember(defaultDiagram);
             } else {
                 // Make the topmost diagram (that is not the one being deleted)
                 // current.
-                defaultDiagram = (ArgoDiagram) diagrams.get(0);
-                if (defaultDiagram == d) {
-                    defaultDiagram = (ArgoDiagram) diagrams.get(1);
-                }
+//                defaultDiagram = (ArgoDiagram) diagrams.get(0);
+//                if (defaultDiagram == d) {
+//                    defaultDiagram = (ArgoDiagram) diagrams.get(1);
+//                }
             }
-            activeDiagram = defaultDiagram;
-            TargetManager.getInstance().setTarget(defaultDiagram);
+//            activeDiagram = defaultDiagram;
+//            TargetManager.getInstance().setTarget(defaultDiagram);
         }
 
         removeDiagram(d);
@@ -782,12 +783,12 @@ public class Project implements java.io.Serializable, TargetListener {
     protected void removeDiagram(ArgoDiagram d) {
         d.removeVetoableChangeListener(new Vcl());
         diagrams.removeElement(d);
-        if (d instanceof UMLDiagram) {
+        if (d instanceof UMLDiagramInterface) {
             /* If this is a UML diagram, then remove the dependent
              * modelelements, such as the statemachine
              * for a statechartdiagram.
              */
-            Object o = ((UMLDiagram) d).getDependentElement();
+            Object o = ((UMLDiagramInterface) d).getDependentElement();
             if (o != null) {
                 moveToTrash(o);
             }
@@ -885,7 +886,7 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * This is execcuted after a save.
+     * This is executed after a save.
      */
     public void postSave() {
         for (int i = 0; i < diagrams.size(); i++) {
@@ -960,7 +961,7 @@ public class Project implements java.io.Serializable, TargetListener {
             trashcan.add(obj);
         }
         if (Model.getFacade().isAModelElement(obj)) {
-
+            
             Model.getUmlFactory().delete(obj);
 
             if (obj instanceof ProjectMember
@@ -1192,15 +1193,12 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Called to update the current namespace and active diagram after
      * the target has changed.
-     *
-     * TODO: The parameter is not used. Why?
-     * @param target Not used.
      */
     private void setTarget(Object target) {
         Object theCurrentNamespace = null;
         target = TargetManager.getInstance().getModelTarget();
-        if (target instanceof UMLDiagram) {
-            theCurrentNamespace = ((UMLDiagram) target).getNamespace();
+        if (target instanceof UMLDiagramInterface) {
+            theCurrentNamespace = ((UMLDiagramInterface) target).getNamespace();
         } else if (Model.getFacade().isANamespace(target)) {
             theCurrentNamespace = target;
         } else if (Model.getFacade().isAModelElement(target)) {

@@ -37,13 +37,13 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ExceptionDialog;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.SuffixFilter;
 import org.tigris.gef.base.CmdSaveGraphics;
 import org.tigris.gef.base.Diagram;
@@ -108,7 +108,7 @@ public class ActionSaveGraphics extends AbstractAction
                 chooser = new JFileChooser();
             }
 
-            Object[] s = {defaultName };
+            Object[] s = {defaultName};
             chooser.setDialogTitle(
                     Translator.messageFormat("filechooser.save-graphics", s));
             // Only specified format are allowed.
@@ -172,8 +172,8 @@ public class ActionSaveGraphics extends AbstractAction
         }
 
         if (useUI) {
-            ProjectBrowser.getInstance().showStatus(
-                            "Writing " + theFile + "...");
+            // TODO: I18N
+            StatusMonitor.notify(this, "Writing " + theFile + "...");
         }
 	if (theFile.exists() && useUI) {
 	    int response = JOptionPane.showConfirmDialog(
@@ -193,7 +193,7 @@ public class ActionSaveGraphics extends AbstractAction
 	cmd.doIt();
 	fo.close();
         if (useUI) {
-            ProjectBrowser.getInstance().showStatus("Wrote " + theFile);
+            StatusMonitor.notify(this, "Wrote " + theFile);
         }
 	return true;
     }

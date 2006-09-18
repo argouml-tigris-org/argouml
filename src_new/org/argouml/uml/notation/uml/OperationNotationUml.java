@@ -32,12 +32,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.notation.OperationNotation;
 import org.argouml.util.MyTokenizer;
@@ -71,8 +71,7 @@ public class OperationNotationUml extends OperationNotation {
                 pe.getLocalizedMessage(),
                 new Integer(pe.getErrorOffset()),
             };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
+            StatusMonitor.notify(this, Translator.messageFormat(msg, args));
         }
     }
 

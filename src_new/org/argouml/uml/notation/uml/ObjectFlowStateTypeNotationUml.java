@@ -27,9 +27,9 @@ package org.argouml.uml.notation.uml;
 import java.text.ParseException;
 import java.util.HashMap;
 
+import org.argouml.application.events.StatusMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.ObjectFlowStateTypeNotation;
 
 /**
@@ -59,8 +59,7 @@ public class ObjectFlowStateTypeNotationUml
                 pe.getLocalizedMessage(),
                 new Integer(pe.getErrorOffset()),
             };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
+            StatusMonitor.notify(this, Translator.messageFormat(msg, args));
         }
     }
 
