@@ -334,7 +334,9 @@ class UmlFilePersister extends AbstractFilePersister {
                         100000);
 
             ArgoParser parser = new ArgoParser();
-            Reader reader = new InputStreamReader(inputStream, PersistenceManager.getEncoding());
+            Reader reader =
+                    new InputStreamReader(inputStream, 
+                            PersistenceManager.getEncoding());
             parser.readProject(p, reader);
             
             List memberList = parser.getMemberList();
