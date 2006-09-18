@@ -68,6 +68,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.persistence.AbstractFilePersister;
+import org.argouml.persistence.LastLoadInfo;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
@@ -1180,11 +1181,7 @@ public final class ProjectBrowser
                          new Object[] {file});
             this.showStatus (sStatus);
 
-            persister = pm.getSavePersister();
-            pm.setSavePersister(null);
-            if (persister == null) {
-                persister = pm.getPersisterFromFileName(file.getName());
-            }
+            persister = pm.getPersisterFromFileName(file.getName());
             if (persister == null) {
                 throw new IllegalStateException("Filename " + project.getName()
                             + " is not of a known file type");
@@ -1470,7 +1467,7 @@ public final class ProjectBrowser
                         showUI, ex);
             } finally {
 
-                if (!PersistenceManager.getInstance().getLastLoadStatus()) {
+                if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
                     project = oldProject;
                     success = false;
                     // TODO: This seems entirely redundant
@@ -1481,7 +1478,7 @@ public final class ProjectBrowser
                             + file.getName()
                             + "\n"
                             + "Error message:\n"
-                            + PersistenceManager.getInstance().getLastLoadMessage()
+                            + LastLoadInfo.getInstance().getLastLoadMessage()
                             + "\n"
                             + "Some (or all) information may be missing "
                             + "from the project.\n"
@@ -1534,7 +1531,7 @@ public final class ProjectBrowser
     private void reportError(String message, boolean showUI) {
         if (showUI) {
             JOptionPane.showMessageDialog(
-                      ArgoFrame.getInstance(),
+                      ProjectBrowser.getInstance(),
                       message,
                       "Error",
                       JOptionPane.ERROR_MESSAGE);
@@ -1559,7 +1556,7 @@ public final class ProjectBrowser
         if (showUI) {
             JDialog dialog =
                 new ExceptionDialog(
-                        ArgoFrame.getInstance(),
+                        ProjectBrowser.getInstance(),
                         message,
                         error);
             dialog.setVisible(true);
@@ -1584,7 +1581,7 @@ public final class ProjectBrowser
         if (showUI) {
             JDialog dialog =
                 new ExceptionDialog(
-                        ArgoFrame.getInstance(),
+                        ProjectBrowser.getInstance(),
                         message,
                         ex,
                         ex instanceof OpenException);
@@ -1701,7 +1698,6 @@ public final class ProjectBrowser
                             name + "." + filter.getExtension());
                 }
             }
-            PersistenceManager.getInstance().setSavePersister(filter);
             return theFile;
         }
         return null;
