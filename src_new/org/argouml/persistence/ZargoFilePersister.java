@@ -325,13 +325,18 @@ class ZargoFilePersister extends UmlFilePersister {
             if (zis != null) {
                 InputStreamReader isr = new InputStreamReader(zis, encoding);
                 reader = new BufferedReader(isr);
-                // Skip the 2 lines
-                //<?xml version = "1.0" encoding = "UTF-8" ?>
-                //<!DOCTYPE todo SYSTEM "todo.dtd" >
-                // TODO: This could be made more robust, these 2 lines should be
-                // there but what if they don't exist?
-                reader.readLine();
-                reader.readLine();
+                
+                String firstLine = reader.readLine();
+                if (firstLine.startsWith("<?xml")) {
+                    // Skip the 2 lines
+                    //<?xml version="1.0" encoding="UTF-8" ?>
+                    //<!DOCTYPE todo SYSTEM "todo.dtd" >
+                    reader.readLine();
+                } else {
+                    writer.println(firstLine);
+                }
+                
+                
 
                 readerToWriter(reader, writer);
 
