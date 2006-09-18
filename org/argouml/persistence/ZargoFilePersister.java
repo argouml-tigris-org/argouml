@@ -256,7 +256,7 @@ class ZargoFilePersister extends UmlFilePersister {
             LOG.info("Transfering argo contents");
             int memberCount = 0;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().equals("<member")) {
+                if (line.trim().startsWith("<member")) {
                     ++memberCount;
                 }
                 if (line.trim().equals("</argo>") && memberCount == 0) {
