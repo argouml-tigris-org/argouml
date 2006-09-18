@@ -434,6 +434,8 @@ class TodoParser extends SAXParserBase {
      *
      * TODO: Why are we doing this ourselves?  Surely encoding information
      * for XML serialization is a well known task - tfm
+     * I have never understood why this is being done. I think we should remove
+     * any usage - bob
      * 
      * @param	str	The String to encode.
      * @return	The encoded String.
