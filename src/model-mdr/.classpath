@@ -9,7 +9,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/mof.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nbmdr.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/openide-util.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-lib"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-tools"/>
 	<classpathentry kind="src" path="build/java"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>

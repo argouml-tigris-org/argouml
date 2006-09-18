@@ -6,7 +6,7 @@ Bundle-Version: 0.23.1
 Bundle-Localization: plugin
 Export-Package: org.argouml.model.mdr
 Bundle-Vendor: %pluginProvider
-Require-Bundle: org.argouml.core.model,
+Require-Bundle: org.argouml.core.model;visibility:=reexport,
  org.eclipse.core.runtime
 Bundle-ClassPath: lib/jmi.jar,
  lib/jmiutils.jar,

@@ -5,10 +5,9 @@ Bundle-SymbolicName: org.argouml
 Bundle-Version: 0.23.1
 Bundle-Localization: plugin
 Bundle-ClassPath: .
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Bundle-Vendor: %pluginProvider
 Require-Bundle: org.argouml.core.lib;visibility:=reexport,
- org.argouml.core.model;visibility:=reexport
+ org.argouml.core.model
 Export-Package: org.argouml.application,
  org.argouml.application.api,
  org.argouml.application.configuration,

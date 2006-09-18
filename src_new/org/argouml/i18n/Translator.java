@@ -84,9 +84,32 @@ public final class Translator {
     }
 
     /**
+     * Alternate initialization entry point for use by ArgoEclipse.
+     * It leaves out telling GEF about bundles that it won't be able
+     * to access.
+     * NOTE: This must be called *before* any other methods are called to
+     * work properly.
+     */
+    public static void initForEclipse () {
+        initInternal();
+    }
+
+    /**
      * Default Locale is set and resources Bundles are loaded.
      */
     public static void init () {
+        initInternal();
+        // TODO: This is an uplevel reference from GEF to ArgoUML - tfm
+        // What is this bundle used for?
+//        Localizer.addResource("UMLMenu",
+//			      "org.argouml.i18n.UMLResourceBundle");
+    }
+        
+    /*
+     * Internal initialization method.  Handles initialization which
+     * is common to both public methods.
+     */
+    private static void initInternal () {
         initialized = true;
         loadDefaultLocale();
         
@@ -99,13 +122,12 @@ public final class Translator {
                     System.getProperty("user.country", "")));
         }
 
+        // TODO: This is using internal knowledge about GEF - tfm
         Localizer.addResource("GefBase",
 			      "org.tigris.gef.base.BaseResourceBundle");
         Localizer.addResource(
 		"GefPres",
 		"org.tigris.gef.presentation.PresentationResourceBundle");
-        Localizer.addResource("UMLMenu",
-			      "org.argouml.i18n.UMLResourceBundle");
     }
 
     /**

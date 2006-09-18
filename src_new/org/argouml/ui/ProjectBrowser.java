@@ -116,18 +116,28 @@ public final class ProjectBrowser
     /**
      * Default width.
      */
-    public static final int DEFAULT_COMPONENTWIDTH = 220;
+    public static final int DEFAULT_COMPONENTWIDTH = 400;
 
     /**
      * Default height.
      */
-    public static final int DEFAULT_COMPONENTHEIGHT = 200;
+    public static final int DEFAULT_COMPONENTHEIGHT = 350;
 
     /**
      * Logger.
      */
     private static final Logger LOG =
         Logger.getLogger(ProjectBrowser.class);
+
+    /**
+     * Flag to indicate if we are the main application
+     * or being integrated in another top level application such
+     * as Eclipse (via the ArgoEclipse plugin).
+     * TODO: This is a temporary measure until ProjectBrowser
+     * can be refactored more appropriately. - tfm
+     */
+    private static boolean isMainApplication;
+
 
     ////////////////////////////////////////////////////////////////
     // class variables
@@ -219,81 +229,84 @@ public final class ProjectBrowser
      * TheInstance is filled.
      */
     private ProjectBrowser() {
-        this("ArgoUML", null);
+        this("ArgoUML", null, true);
     }
 
     /**
      * The constructor.
-     *
-     * @param applicationName  the title of the frame
-     * @param splash the splash screen to show at startup
+     * 
+     * @param applicationName
+     *            the title of the frame
+     * @param splash
+     *            the splash screen to show at startup
+     * @param mainApplication
+     *            flag indicating whether we are the top level application.
+     *            False if we are providing components to another top level app.
      */
-    private ProjectBrowser(String applicationName, SplashScreen splash) {
+    private ProjectBrowser(String applicationName, SplashScreen splash, 
+             boolean mainApplication) {
         super(applicationName);
         theInstance = this;
-
+        isMainApplication = mainApplication;
+        
+        getContentPane().setFont(defaultFont);
+        
         saveAction = new ActionSaveProject();
         ProjectManager.getManager().setSaveAction(saveAction);
 
-        if (splash != null) {
-	    splash.getStatusBar().showStatus(
-	        Translator.localize("statusmsg.bar.making-project-browser"));
-            splash.getStatusBar().showProgress(10);
-            splash.setVisible(true);
-        }
+        createPanels(splash);
 
-        menuBar = new GenericArgoMenuBar();
+        if (isMainApplication) {
+            menuBar = new GenericArgoMenuBar();
+            getContentPane().setLayout(new BorderLayout());
+            this.setJMenuBar(menuBar);
+            //getContentPane().add(_menuBar, BorderLayout.NORTH);
+            getContentPane().add(assemblePanels(), BorderLayout.CENTER);
+            getContentPane().add(statusBar, BorderLayout.SOUTH);
 
-        editorPane = new MultiEditorPane();
-        getContentPane().setFont(defaultFont);
-        getContentPane().setLayout(new BorderLayout());
-        this.setJMenuBar(menuBar);
-        //getContentPane().add(_menuBar, BorderLayout.NORTH);
-        getContentPane().add(createPanels(splash), BorderLayout.CENTER);
-        getContentPane().add(statusBar, BorderLayout.SOUTH);
+            setAppName(applicationName);
 
-        setAppName(applicationName);
+            // allows me to ask "Do you want to save first?"
+            setDefaultCloseOperation(ProjectBrowser.DO_NOTHING_ON_CLOSE);
+            addWindowListener(new WindowCloser());
+            ImageIcon argoImage =
+                ResourceLoaderWrapper.lookupIconResource("ArgoIcon");
+            this.setIconImage(argoImage.getImage());
 
-        // allows me to ask "Do you want to save first?"
-        setDefaultCloseOperation(ProjectBrowser.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowCloser());
-        ImageIcon argoImage =
-            ResourceLoaderWrapper.lookupIconResource("ArgoIcon");
-        this.setIconImage(argoImage.getImage());
-        //
 
-        // adds this as listener to projectmanager so it gets updated when the
-        // project changes
-        ProjectManager.getManager().addPropertyChangeListener(this);
+            // adds this as listener to projectmanager so 
+            // it gets updated when the project changes
+            ProjectManager.getManager().addPropertyChangeListener(this);
 
-        // adds this as listener to TargetManager so gets notified
-        // when the active diagram changes
-        TargetManager.getInstance().addTargetListener(this);
+            // adds this as listener to TargetManager so gets notified
+            // when the active diagram changes
+            TargetManager.getInstance().addTargetListener(this);
 
-        // Add a listener to focus changes.
-        // Rationale: reset the undo manager to start a new chain.
-        KeyboardFocusManager kfm =
-            KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        kfm.addPropertyChangeListener(new PropertyChangeListener() {
-            private Object obj;
+            // Add a listener to focus changes.
+            // Rationale: reset the undo manager to start a new chain.
+            KeyboardFocusManager kfm =
+                KeyboardFocusManager.getCurrentKeyboardFocusManager();
+            kfm.addPropertyChangeListener(new PropertyChangeListener() {
+                private Object obj;
 
-            /**
-             * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-             */
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("focusOwner".equals(evt.getPropertyName())
-                        && (evt.getNewValue() != null)
-                        /* We get many many events (why?), so let's filter: */
-                        && (obj != evt.getNewValue())) {
-                    obj = evt.getNewValue();
-                    UndoManager.getInstance().startChain();
-                    /* This next line is ideal for debugging the taborder
-                     * (focus traversal), see e.g. issue 1849.
-                     */
-//                  System.out.println("Focus changed " + obj);
+                /**
+                 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+                 */
+                public void propertyChange(PropertyChangeEvent evt) {
+                    if ("focusOwner".equals(evt.getPropertyName())
+                            && (evt.getNewValue() != null)
+                            /* We get many many events (why?), so filter: */
+                            && (obj != evt.getNewValue())) {
+                        obj = evt.getNewValue();
+                        UndoManager.getInstance().startChain();
+                        /* This next line is ideal for debugging the taborder
+                         * (focus traversal), see e.g. issue 1849.
+                         */
+//                      System.out.println("Focus changed " + obj);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     /**
@@ -316,7 +329,25 @@ public final class ProjectBrowser
      * @param splash true if we are allowed to show a splash screen
      */
     public static ProjectBrowser makeInstance(SplashScreen splash) {
-        return new ProjectBrowser("ArgoUML", splash);
+        return makeInstance(splash, true);
+    }
+
+    /**
+     * Creator method for the ProjectBrowser which optionally allows all
+     * components to be created without making a top level application window
+     * visible.
+     * 
+     * @param splash
+     *            true if we are allowed to show a splash screen
+     * @param mainApplication
+     *            true to create a top level application, false if integrated
+     *            with something else.
+     * 
+     * @return the singleton instance of the projectbrowser
+     */
+    public static ProjectBrowser makeInstance(SplashScreen splash,
+            boolean mainApplication) {
+        return new ProjectBrowser("ArgoUML", splash, mainApplication);
     }
 
     /**
@@ -336,69 +367,49 @@ public final class ProjectBrowser
      *                   position north, south, east or west.
      *
      */
-    protected Component createPanels(SplashScreen splash) {
+    protected void createPanels(SplashScreen splash) {
+
         if (splash != null) {
-	    splash.getStatusBar().showStatus(
-	            Translator.localize(
-	                    "statusmsg.bar.making-project-browser-explorer"));
+            splash.getStatusBar().showStatus(
+                Translator.localize("statusmsg.bar.making-project-browser"));
+            splash.getStatusBar().showProgress(10);
+            splash.setVisible(true);
+        }
+        
+        editorPane = new MultiEditorPane();
+        if (splash != null) {
+            splash.getStatusBar().showStatus(
+                    Translator.localize(
+                            "statusmsg.bar.making-project-browser-explorer"));
             splash.getStatusBar().incProgress(5);
         }
         explorerPane = new NavigatorPane(splash);
-
-        /* Work in progress here to allow multiple details panes with
-        ** different contents - Bob Tarling
-        */
-        eastPane  =
-	    makeDetailsPane(BorderSplitPane.EAST,  Vertical.getInstance());
-        southPane =
-	    makeDetailsPane(BorderSplitPane.SOUTH, Horizontal.getInstance());
-        southEastPane =
-	    makeDetailsPane(BorderSplitPane.SOUTHEAST,
-			    Horizontal.getInstance());
-        northWestPane =
-	    makeDetailsPane(BorderSplitPane.NORTHWEST,
-			    Horizontal.getInstance());
-        northPane =
-	    makeDetailsPane(BorderSplitPane.NORTH, Horizontal.getInstance());
-        northEastPane =
-	    makeDetailsPane(BorderSplitPane.NORTHEAST,
-			    Horizontal.getInstance());
-
-        if (southPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, southPane);
-        }
-        if (southEastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST,
-					   southEastPane);
-        }
-        if (eastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.EAST, eastPane);
-        }
-        if (northWestPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST,
-					   northWestPane);
-        }
-        if (northPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, northPane);
-        }
-        if (northEastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST,
-					   northEastPane);
-        }
 
         // The workarea is all the visible space except the menu,
         // toolbar and status bar.  Workarea is layed out as a
         // BorderSplitPane where the various components that make up
         // the argo application can be positioned.
         workAreaPane = new BorderSplitPane();
+
         // create the todopane
         if (splash != null) {
-	    splash.getStatusBar().showStatus(Translator.localize(
-		    "statusmsg.bar.making-project-browser-to-do-pane"));
+            splash.getStatusBar().showStatus(Translator.localize(
+                    "statusmsg.bar.making-project-browser-to-do-pane"));
             splash.getStatusBar().incProgress(5);
         }
         todoPane = new ToDoPane(splash);
+        createDetailsPanes();
         restorePanelSizes();
+
+        getTab(TabToDo.class); // TODO: If this doesn't have side effects,
+                               //       it can be removed alltogether.
+
+    }
+
+    private Component assemblePanels() {
+        addPanel(editorPane, BorderSplitPane.CENTER);
+        addPanel(explorerPane, BorderSplitPane.WEST);
+        addPanel(todoPane, BorderSplitPane.SOUTHWEST);
 
         // There are various details panes all of which could hold
         // different tabs pages according to users settings.
@@ -407,33 +418,74 @@ public final class ProjectBrowser
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             String position = (String) entry.getKey();
-            if (entry.getValue() instanceof DetailsPane) {
-                DetailsPane detailsPane = (DetailsPane) entry.getValue();
-                TargetManager.getInstance().addTargetListener(detailsPane);
-            }
             addPanel((Component) entry.getValue(), position);
         }
-        addPanel(explorerPane, BorderSplitPane.WEST);
-
-        getTab(TabToDo.class); // TODO: If this doesn't have side effects,
-                               //       it can be removed alltogether.
-        //todo.setTree(_todoPane);
-        addPanel(todoPane, BorderSplitPane.SOUTHWEST);
-        addPanel(editorPane, BorderSplitPane.CENTER);
-        // Toolbar boundry is the area between the menu and the status
+        
+        // Toolbar boundary is the area between the menu and the status
         // bar. It contains the workarea at centre and the toolbar
         // position north, south, east or west.
-        JPanel toolbarBoundry = new JPanel();
-        toolbarBoundry.setLayout(new DockBorderLayout());
+        JPanel toolbarBoundary = new JPanel();
+        toolbarBoundary.setLayout(new DockBorderLayout());
         // TODO: - should save and restore the last positions of the toolbars
-        toolbarBoundry.add(menuBar.getFileToolbar(), BorderLayout.NORTH);
-        toolbarBoundry.add(menuBar.getEditToolbar(), BorderLayout.NORTH);
-        toolbarBoundry.add(menuBar.getViewToolbar(), BorderLayout.NORTH);
-        toolbarBoundry.add(menuBar.getCreateDiagramToolbar(),
-			   BorderLayout.NORTH);
-        toolbarBoundry.add(workAreaPane, BorderLayout.CENTER);
+        toolbarBoundary.add(menuBar.getFileToolbar(), BorderLayout.NORTH);
+        toolbarBoundary.add(menuBar.getEditToolbar(), BorderLayout.NORTH);
+        toolbarBoundary.add(menuBar.getViewToolbar(), BorderLayout.NORTH);
+        toolbarBoundary.add(menuBar.getCreateDiagramToolbar(),
+                           BorderLayout.NORTH);
+        toolbarBoundary.add(workAreaPane, BorderLayout.CENTER);
 
-        return toolbarBoundry;
+        return toolbarBoundary;
+    }
+
+    private void createDetailsPanes() {
+        /*
+         * Work in progress here to allow multiple details panes with different
+         * contents - Bob Tarling
+         */
+        eastPane  =
+            makeDetailsPane(BorderSplitPane.EAST,  Vertical.getInstance());
+        southPane =
+            makeDetailsPane(BorderSplitPane.SOUTH, Horizontal.getInstance());
+        southEastPane =
+            makeDetailsPane(BorderSplitPane.SOUTHEAST,
+                    Horizontal.getInstance());
+        northWestPane =
+            makeDetailsPane(BorderSplitPane.NORTHWEST,
+                    Horizontal.getInstance());
+        northPane =
+            makeDetailsPane(BorderSplitPane.NORTH, Horizontal.getInstance());
+        northEastPane =
+            makeDetailsPane(BorderSplitPane.NORTHEAST,
+                    Horizontal.getInstance());
+
+        if (southPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, southPane);
+        }
+        if (southEastPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST,
+                    southEastPane);
+        }
+        if (eastPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.EAST, eastPane);
+        }
+        if (northWestPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST,
+                    northWestPane);
+        }
+        if (northPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, northPane);
+        }
+        if (northEastPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST,
+                    northEastPane);
+        }
+
+        // Add target listeners for details panes
+        Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
+        while (it.hasNext()) {
+            TargetManager.getInstance().addTargetListener(
+                    (DetailsPane) ((Map.Entry) it.next()).getValue());
+        }
     }
 
     /**
@@ -463,64 +515,64 @@ public final class ProjectBrowser
     private void restorePanelSizes() {
         if (northPane != null) {
             northPane.setPreferredSize(
-		    new Dimension(0,
-				  Configuration.getInteger(
-					  Argo.KEY_SCREEN_NORTH_HEIGHT,
-					  DEFAULT_COMPONENTHEIGHT)));
+                    new Dimension(0,
+                                  Configuration.getInteger(
+                                          Argo.KEY_SCREEN_NORTH_HEIGHT,
+                                          DEFAULT_COMPONENTHEIGHT)));
         }
         if (southPane != null) {
             southPane.setPreferredSize(
-		    new Dimension(0,
-				  Configuration.getInteger(
-					  Argo.KEY_SCREEN_SOUTH_HEIGHT,
-					  DEFAULT_COMPONENTHEIGHT)));
+                    new Dimension(0,
+                                  Configuration.getInteger(
+                                          Argo.KEY_SCREEN_SOUTH_HEIGHT,
+                                          DEFAULT_COMPONENTHEIGHT)));
         }
         if (eastPane != null) {
             eastPane.setPreferredSize(
-		    new Dimension(Configuration.getInteger(
-					  Argo.KEY_SCREEN_EAST_WIDTH,
-					  DEFAULT_COMPONENTHEIGHT),
-				  0));
+                    new Dimension(Configuration.getInteger(
+                                          Argo.KEY_SCREEN_EAST_WIDTH,
+                                          DEFAULT_COMPONENTWIDTH),
+                                  0));
         }
         if (explorerPane != null) {
             explorerPane.setPreferredSize(
-		    new Dimension(Configuration.getInteger(
-					  Argo.KEY_SCREEN_WEST_WIDTH,
-					  DEFAULT_COMPONENTHEIGHT),
-				  0));
+                    new Dimension(Configuration.getInteger(
+                                          Argo.KEY_SCREEN_WEST_WIDTH,
+                                          DEFAULT_COMPONENTWIDTH),
+                                  0));
         }
-	//        if (_northWestPane != null) {
-	//            _northWestPane.setPreferredSize(new Dimension(
-	//                Configuration.getInteger(
-	// Argo.KEY_SCREEN_NORTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-	//                Configuration.getInteger(
-	// Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-	//            ));
-	//        }
-	//        if (_todoPane != null) {
-	//            _todoPane.setPreferredSize(new Dimension(
-	//                Configuration.getInteger(
-	// Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-	//                Configuration.getInteger(
-	// Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-	//            ));
-	//        }
-	//        if (_northEastPane != null) {
-	//            _northEastPane.setPreferredSize(new Dimension(
-	//                Configuration.getInteger(
-	// Argo.KEY_SCREEN_NORTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
-	//                Configuration.getInteger(
-	// Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-	//            ));
-	//        }
-	//        if (_southEastPane != null) {
-	//            _southEastPane.setPreferredSize(new Dimension(
-	//                Configuration.getInteger(
-	// Argo.KEY_SCREEN_SOUTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
-	//                Configuration.getInteger(
-	// Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-	//            ));
-	//        }
+        //        if (_northWestPane != null) {
+        //            _northWestPane.setPreferredSize(new Dimension(
+        //                Configuration.getInteger(
+        // Argo.KEY_SCREEN_NORTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+        //                Configuration.getInteger(
+        // Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+        //            ));
+        //        }
+        //        if (_todoPane != null) {
+        //            _todoPane.setPreferredSize(new Dimension(
+        //                Configuration.getInteger(
+        // Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+        //                Configuration.getInteger(
+        // Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+        //            ));
+        //        }
+        //        if (_northEastPane != null) {
+        //            _northEastPane.setPreferredSize(new Dimension(
+        //                Configuration.getInteger(
+        // Argo.KEY_SCREEN_NORTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
+        //                Configuration.getInteger(
+        // Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+        //            ));
+        //        }
+        //        if (_southEastPane != null) {
+        //            _southEastPane.setPreferredSize(new Dimension(
+        //                Configuration.getInteger(
+        // Argo.KEY_SCREEN_SOUTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
+        //                Configuration.getInteger(
+        // Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+        //            ));
+        //        }
     }
 
     /**
@@ -676,7 +728,7 @@ public final class ProjectBrowser
             }
         }
         throw new IllegalStateException("No " + tabClass.getName()
-					+ " tab found");
+                                        + " tab found");
     }
 
     /**
@@ -698,6 +750,20 @@ public final class ProjectBrowser
      */
     public MultiEditorPane getEditorPane() {
         return editorPane;
+    }
+
+    /**
+     * @return the explorer pane
+     */
+    public NavigatorPane getExplorerPane() {
+        return explorerPane;
+    }
+    
+    /**
+     * @return the details pane
+     */
+    public JPanel getDetailsPane() {
+        return southPane;
     }
 
     /**
@@ -795,7 +861,7 @@ public final class ProjectBrowser
         }
         // making it possible to jump to the modelroot
         if (first.equals(ProjectManager.getManager().getCurrentProject()
-			 .getRoot())) {
+                         .getRoot())) {
             setTarget(first);
         }
 
@@ -837,37 +903,37 @@ public final class ProjectBrowser
      */
     private void saveScreenConfiguration() {
         if (explorerPane != null) {
-	    Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH,
-				     explorerPane.getWidth());
+            Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH,
+                                     explorerPane.getWidth());
         }
 
         if (eastPane != null) {
-	    Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH,
-				     eastPane.getWidth());
+            Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH,
+                                     eastPane.getWidth());
         }
 
         if (northPane != null) {
-	    Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT,
-				     northPane.getHeight());
+            Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT,
+                                     northPane.getHeight());
         }
 
         if (southPane != null) {
-	    Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT,
-				     southPane.getHeight());
+            Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT,
+                                     southPane.getHeight());
         }
 
-	//        if (_todoPane != null)
-	// Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH,
-	// _todoPane.getWidth());
-	//        if (_southEastPane != null)
-	// Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH,
-	// _southEastPane.getWidth());
-	//        if (_northWestPane != null)
-	// Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH,
-	// _northWestPane.getWidth());
-	//        if (_northEastPane != null)
-	// Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH,
-	// _northEastPane.getWidth());
+        //        if (_todoPane != null)
+        // Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH,
+        // _todoPane.getWidth());
+        //        if (_southEastPane != null)
+        // Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH,
+        // _southEastPane.getWidth());
+        //        if (_northWestPane != null)
+        // Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH,
+        // _northWestPane.getWidth());
+        //        if (_northEastPane != null)
+        // Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH,
+        // _northEastPane.getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
@@ -883,9 +949,9 @@ public final class ProjectBrowser
      *         compass point.
      */
     private DetailsPane makeDetailsPane(String compassPoint,
-					Orientation orientation) {
+                                        Orientation orientation) {
         DetailsPane detailsPane =
-	    new DetailsPane(compassPoint.toLowerCase(), orientation);
+            new DetailsPane(compassPoint.toLowerCase(), orientation);
         if (detailsPane.getTabCount() == 0) {
             return null;
         }
@@ -1038,7 +1104,7 @@ public final class ProjectBrowser
     public Font getDefaultFont() {
         return defaultFont;
     }
-
+    
     /**
      * Try to save the project, possibly not creating a new file
      * @param overwrite if true, then we overwrite without asking
@@ -1047,13 +1113,12 @@ public final class ProjectBrowser
         this.trySave(overwrite, false);
     }
     
-    
     /**
      * Try to save the project.
      * @param overwrite if true, then we overwrite without asking
      * @param saveNewFile if true, we'll ask for a new file even if
      *                    the current project already had one  
-     */
+     */        
     public void trySave(boolean overwrite, boolean saveNewFile) {
         URI uri = ProjectManager.getManager().getCurrentProject().getURI();
 
@@ -1119,7 +1184,7 @@ public final class ProjectBrowser
             return true;
         }
     }
-
+    
     /**
      * Loads a project displaying a nice ProgressMonitor
      * 
@@ -1156,7 +1221,7 @@ public final class ProjectBrowser
         Project project = ProjectManager.getManager().getCurrentProject();
         PersistenceManager pm = PersistenceManager.getInstance();
         ProjectFilePersister persister = null;
-        
+
         try {
             if (!PersistenceManager.getInstance()
                     .confirmOverwrite(overwrite, file)) {
@@ -1394,7 +1459,7 @@ public final class ProjectBrowser
                 DiagramFactory.getInstance().getDiagram().clear();
 
                 project = persister.doLoad(file);
-                
+
                 if (pmw != null) {
                     persister.removeProgressListener(pmw);
                 }
@@ -1678,7 +1743,7 @@ public final class ProjectBrowser
         chooser.setFileView(ProjectFileView.getInstance());
 
         chooser.setAcceptAllFileFilterUsed(false);
-        
+
         PersistenceManager.getInstance().setSaveFileChooserFilters(
                 chooser, 
                 uri != null ? Util.URIToFilename(uri.toString()) : null);
@@ -1706,7 +1771,7 @@ public final class ProjectBrowser
         }
         return null;
     }
-
+    
     /**
      * The UID.
      */

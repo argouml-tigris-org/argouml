@@ -24,13 +24,23 @@
 
 package org.argouml.uml.reveng.java;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import org.apache.log4j.Logger;
-import org.argouml.kernel.*;
-import org.argouml.uml.reveng.*;
+import org.argouml.application.api.PluggableImportSettings;
+import org.argouml.kernel.Project;
+import org.argouml.uml.reveng.DiagramInterface;
+import org.argouml.uml.reveng.FileImportSupportEx;
+import org.argouml.uml.reveng.Import;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 
-import java.io.*;
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
 
 /**
  * This is the main class for Java reverse engineering. It's based
@@ -38,7 +48,7 @@ import java.io.*;
  *
  * @author Andreas Rueckert <a_rueckert@gmx.net>
  */
-public class JavaImport extends FileImportSupport {
+public class JavaImport extends FileImportSupportEx {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(JavaImport.class);
@@ -46,54 +56,89 @@ public class JavaImport extends FileImportSupport {
     /**
      * This method parses 1 Java file.
      * Throws a Parser exception.
+     * @throws IOException 
+     * @throws TokenStreamException 
+     * @throws RecognitionException 
      *
      * @see org.argouml.application.api.PluggableImport#parseFile(
      * org.argouml.kernel.Project, java.lang.Object,
      * org.argouml.uml.reveng.DiagramInterface, org.argouml.uml.reveng.Import)
      */
     public void parseFile(Project p, Object o, DiagramInterface diagram,
-			  Import theImport)
-	throws Exception {
-	if (o instanceof File) {
-	    File f = (File) o;
-	    // Create a scanner that reads from the input stream passed to us
-	    String encoding = theImport.getInputSourceEncoding();
-	    FileInputStream in = new FileInputStream(f);
-	    JavaLexer lexer =
-		new JavaLexer(
-		    new BufferedReader(new InputStreamReader(in, encoding)));
-	    // We use a special Argo token, that stores the preceding
-	    // whitespaces.
-	    lexer.setTokenObjectClass("org.argouml.uml.reveng.java.ArgoToken");
+            Import theImport) throws RecognitionException,
+            TokenStreamException, IOException {
+        parseFile(p, o, diagram, theImport, null);
+    }
+    
+    /**
+     * This method parses 1 Java file. Throws a Parser exception.
+     * 
+     * @see org.argouml.application.api.PluggableImport#parseFile(Project,
+     *      Object, DiagramInterface, PluggableImportSettings)
+     */
+    public void parseFile(Project p, Object o, DiagramInterface diagram,
+            PluggableImportSettings settings) throws Exception {
+        parseFile(p, o, diagram, null, settings);
+    }
+    
+    private void parseFile(Project p, Object o, DiagramInterface diagram,
+            Import theImport, PluggableImportSettings settings)
+        throws IOException, RecognitionException, TokenStreamException {
+        if (o instanceof File) {
+            File f = (File) o;
+            // Create a scanner that reads from the input stream passed to us
+            String encoding = theImport != null ? theImport
+                    .getInputSourceEncoding() : settings.getSourceEncoding();
+            FileInputStream in = new FileInputStream(f);
+            JavaLexer lexer =
+                new JavaLexer(
+                    new BufferedReader(new InputStreamReader(in, encoding)));
+            // We use a special Argo token, that stores the preceding
+            // whitespaces.
+            lexer.setTokenObjectClass("org.argouml.uml.reveng.java.ArgoToken");
 
-	    // Create a parser that reads from the scanner
-	    JavaRecognizer parser = new JavaRecognizer(lexer);
+            // Create a parser that reads from the scanner
+            JavaRecognizer parser = new JavaRecognizer(lexer);
 
-	    // Create a modeller for the parser
-	    Modeller modeller = new Modeller(p.getModel(),
-					     diagram, theImport,
-					     getAttribute().isSelected(),
-					     getDatatype().isSelected(),
-					     f.getName());
+            // Create a modeller for the parser
+            Modeller modeller;
+            if (theImport != null) {
+                modeller = new Modeller(p.getModel(), diagram, theImport,
+                        getAttribute().isSelected(),
+                        getDatatype().isSelected(), f.getName());
+            } else {
+                modeller = new Modeller(p.getModel(), diagram,
+                        getAttributesSelection() == 0,
+                        getArraysSelection() == 0,
+                        settings, f.getName());
+            }
 
-	    // Print the name of the current file, so we can associate
-	    // exceptions to the file.
-	    LOG.info("Parsing " + f.getAbsolutePath());
+            // Print the name of the current file, so we can associate
+            // exceptions to the file.
+            LOG.info("Parsing " + f.getAbsolutePath());
 
-            modeller.setAttribute("level", theImport.getAttribute("level"));
+            modeller.setAttribute("level", theImport != null ? theImport
+                    .getAttribute("level") : new Integer(settings
+                    .getCurrentImportLevel()));
 
             try {
-		// start parsing at the compilationUnit rule
-		parser.compilationUnit(modeller, lexer);
-            } catch (Exception e) {
+                // start parsing at the compilationUnit rule
+                parser.compilationUnit(modeller, lexer);
+            } catch (RecognitionException e) {
                 LOG.error(e.getClass().getName()
-			  + " Exception in file: "
-			  + f.getCanonicalPath() + " "
-			  + f.getName(), e);
+                        + " Exception in file: "
+                        + f.getCanonicalPath() + " "
+                        + f.getName(), e);
+                throw e;
+            } catch (TokenStreamException e) {
+                LOG.error(e.getClass().getName()
+                        + " Exception in file: "
+                        + f.getCanonicalPath() + " "
+                        + f.getName(), e);
                 throw e;
             }
-	    in.close();
-	}
+            in.close();
+        }
     }
 
     /**
@@ -101,8 +146,8 @@ public class JavaImport extends FileImportSupport {
      * @return SuffixFilter[] files with these suffixes will be processed.
      */
     public SuffixFilter[] getSuffixFilters() {
-	SuffixFilter[] result = {FileFilters.JAVA_FILE_FILTER};
-	return result;
+        SuffixFilter[] result = {FileFilters.JAVA_FILE_FILTER};
+        return result;
     }
 
     /**
@@ -111,7 +156,7 @@ public class JavaImport extends FileImportSupport {
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() {
-	return "Java";
+        return "Java";
     }
 
     /**
@@ -120,14 +165,14 @@ public class JavaImport extends FileImportSupport {
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
     public String getModuleDescription() {
-	return "Java import from files";
+        return "Java import from files";
     }
 
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */
     public String getModuleKey() {
-	return "module.import.java-files";
+        return "module.import.java-files";
     }
 
 }
