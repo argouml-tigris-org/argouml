@@ -361,10 +361,12 @@ class ZargoFilePersister extends UmlFilePersister {
 
         int ch;
         while ((ch = reader.read()) != -1) {
-            if (ch != 0xFFFF) {
-                writer.write(ch);
+            if (ch == 0xFFFF) {
+                LOG.info("Stripping out 0xFFFF from save file");
+            } else if (ch == 8) {
+                LOG.info("Stripping out 0x8 from save file");
             } else {
-                LOG.info("Stripping out 0xFFFF from XMI");
+                writer.write(ch);
             }
         }
     }
