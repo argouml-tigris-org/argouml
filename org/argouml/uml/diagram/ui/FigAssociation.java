@@ -583,6 +583,9 @@ class FigRole extends FigSingleLineText
     public void setOwner(Object owner) {
         super.setOwner(owner);
         getNewNotation();
+//        if (getOwner() != null) {
+//            setText();
+//        }
     }
 
     private void getNewNotation() {
@@ -595,6 +598,8 @@ class FigRole extends FigSingleLineText
                         NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
                         getOwner(),
                         this);
+//        } else {
+//            damage();
         }
     }
     
@@ -721,6 +726,7 @@ class FigAssociationEndAnnotation extends FigTextGroup {
             super.setOwner(owner);
             ordering.setOwner(owner);
             role.setOwner(owner);
+            role.setText();
             determineArrowHead();
             Model.getPump().addModelEventListener(this, owner, 
                     new String[] {"isNavigable", "aggregation", "participant"});
