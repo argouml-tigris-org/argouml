@@ -583,9 +583,6 @@ class FigRole extends FigSingleLineText
     public void setOwner(Object owner) {
         super.setOwner(owner);
         getNewNotation();
-//        if (getOwner() != null) {
-//            setText();
-//        }
     }
 
     private void getNewNotation() {
@@ -598,8 +595,6 @@ class FigRole extends FigSingleLineText
                         NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
                         getOwner(),
                         this);
-//        } else {
-//            damage();
         }
     }
     
