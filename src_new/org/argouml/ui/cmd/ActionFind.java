@@ -47,7 +47,7 @@ import org.tigris.gef.undo.UndoableAction;
  * 
  * @author michiel
  */
-public class ActionFind extends UndoableAction {
+class ActionFind extends UndoableAction {
 
     private String name;
     
