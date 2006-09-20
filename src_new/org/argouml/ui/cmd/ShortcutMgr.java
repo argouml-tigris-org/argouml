@@ -627,10 +627,10 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_SHOW_XML_DUMP, null, new ActionShowXMLDump());
         putDefaultShortcut(ACTION_ZOOM_IN, KeyStroke.getKeyStroke(
                 KeyEvent.VK_MINUS, DEFAULT_MASK), new CmdZoom(
-                (1.0) / (GenericArgoMenuBar.ZOOM_FACTOR)));
+                        (1.0) / (GenericArgoMenuBar.ZOOM_FACTOR)));
         putDefaultShortcut(ACTION_ZOOM_OUT, KeyStroke.getKeyStroke(
                 KeyEvent.VK_PLUS, DEFAULT_MASK), new CmdZoom(
-                GenericArgoMenuBar.ZOOM_FACTOR));
+                        GenericArgoMenuBar.ZOOM_FACTOR));
         putDefaultShortcut(ACTION_FIND, KeyStroke.getKeyStroke(KeyEvent.VK_F3,
                 0), new ActionFind());
 
@@ -708,15 +708,15 @@ public class ShortcutMgr {
         // reorder submenu
         putDefaultShortcut(ACTION_REORDER_FORWARD, KeyStroke.getKeyStroke(
                 KeyEvent.VK_F, DEFAULT_MASK), new CmdReorder(
-                CmdReorder.BRING_FORWARD));
+                        CmdReorder.BRING_FORWARD));
         putDefaultShortcut(ACTION_REORDER_BACKWARD, KeyStroke.getKeyStroke(
                 KeyEvent.VK_B, DEFAULT_MASK), new CmdReorder(
-                CmdReorder.SEND_BACKWARD));
+                        CmdReorder.SEND_BACKWARD));
         putDefaultShortcut(ACTION_REORDER_TO_FRONT, KeyStroke.getKeyStroke(
                 KeyEvent.VK_F, SHIFTED_DEFAULT_MASK), new CmdReorder(
-                CmdReorder.BRING_TO_FRONT));
+                        CmdReorder.BRING_TO_FRONT));
         putDefaultShortcut(ACTION_REORDER_TO_BACK, KeyStroke.getKeyStroke(
                 KeyEvent.VK_B, SHIFTED_DEFAULT_MASK), new CmdReorder(
-                CmdReorder.SEND_TO_BACK));
+                        CmdReorder.SEND_TO_BACK));
     }
 }
