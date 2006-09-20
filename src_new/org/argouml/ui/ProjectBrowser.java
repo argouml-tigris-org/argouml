@@ -1675,7 +1675,9 @@ public final class ProjectBrowser
     public void clearDialogs() {
         Window[] windows = getOwnedWindows();
         for (int i = 0; i < windows.length; i++) {
-            windows[i].dispose();
+            if (!(windows[i] instanceof FindDialog)) {
+                windows[i].dispose();
+            }
         }
         FindDialog.getInstance().doClearTabs();
         FindDialog.getInstance().doResetFields();
