@@ -362,10 +362,6 @@ public final class ProjectBrowser
      * Creates the panels in the working area.
      *
      * @param splash true if we show  the splashscreen during startup
-     * @return Component the area between the menu and the statusbar.
-     *                   It contains the workarea at centre and the toolbar
-     *                   position north, south, east or west.
-     *
      */
     protected void createPanels(SplashScreen splash) {
 
@@ -738,7 +734,7 @@ public final class ProjectBrowser
         return statusBar;
     }
 
-    /**
+    /*
      * @see javax.swing.JFrame#getJMenuBar()
      */
     public JMenuBar getJMenuBar() {
@@ -878,7 +874,7 @@ public final class ProjectBrowser
     ////////////////////////////////////////////////////////////////
     // window operations
 
-    /**
+    /*
      * @see java.awt.Component#setVisible(boolean)
      */
     public void setVisible(boolean b) {
@@ -890,7 +886,7 @@ public final class ProjectBrowser
 
     ////////////////////////////////////////////////////////////////
     // IStatusBar
-    /**
+    /*
      * @see org.tigris.gef.ui.IStatusBar#showStatus(java.lang.String)
      */
     public void showStatus(String s) {
@@ -1041,7 +1037,7 @@ public final class ProjectBrowser
     // TargetListener methods implemented so notified when selected
     // diagram changes. Used to update the window title.
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
@@ -1052,7 +1048,7 @@ public final class ProjectBrowser
         determineRemoveEnabled();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
@@ -1063,7 +1059,7 @@ public final class ProjectBrowser
         determineRemoveEnabled();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
@@ -1190,6 +1186,8 @@ public final class ProjectBrowser
      * 
      * @param overwrite if true, the file is going to be overwritten
      * @param file      the target file
+     * 
+     * TODO: Separate this into a Swing specific class - tfm
      */
     public void trySaveWithProgressMonitor(boolean overwrite, File file) {
         SaveSwingWorker worker = new SaveSwingWorker(overwrite, file);
@@ -1213,6 +1211,8 @@ public final class ProjectBrowser
      * @param file the File to save to
      * @param pmw       the ProgressMonitorWindow to be updated;  
      * @return true if successful
+     * 
+     * TODO: Separate this into a Swing specific class - tfm
      */
     public boolean trySave(boolean overwrite, 
             File file, 
@@ -1343,8 +1343,11 @@ public final class ProjectBrowser
      * @throws IOException if we cannot get the file name from the file.
      */
     public void addFileSaved(File file) throws IOException {
+        // TODO: This should listen for file save events - tfm
         GenericArgoMenuBar menu = (GenericArgoMenuBar) getJMenuBar();
-        menu.addFileSaved(file.getCanonicalPath());
+        if (menu != null) {
+            menu.addFileSaved(file.getCanonicalPath());
+        }
     }
 
     /**
@@ -1392,6 +1395,8 @@ public final class ProjectBrowser
      * 
      * @param file      the project to be opened
      * @param showUI    whether to show the GUI or not
+     * 
+     * TODO: This needs to be refactored to be GUI independent - tfm
      */
     public void loadProjectWithProgressMonitor(File file, boolean showUI) {
         LoadSwingWorker worker = new LoadSwingWorker(file, showUI);
@@ -1410,6 +1415,8 @@ public final class ProjectBrowser
      * @param pmw 	the ProgressMonitorWindow to be updated;  
      * 				if not needed, use null 
      * @return true if the file was successfully opened
+     * 
+     * TODO: Separate this into a Swing specific class - tfm
      */
     public boolean loadProject(File file, boolean showUI, 
     		ProgressMonitorWindow pmw) {
@@ -1546,7 +1553,8 @@ public final class ProjectBrowser
                             + file.getName()
                             + "\n"
                             + "Error message:\n"
-                            + PersistenceManager.getInstance().getLastLoadMessage()
+                            + PersistenceManager.getInstance()
+                                .getLastLoadMessage()
                             + "\n"
                             + "Some (or all) information may be missing "
                             + "from the project.\n"
