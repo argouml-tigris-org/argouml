@@ -31,6 +31,7 @@ import javax.swing.Action;
 import org.argouml.i18n.Translator;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
+import org.tigris.gef.base.CreateNodeAction;
 
 /**
  * Command to create nodes with the appropriate modelelement. The modelelement
@@ -51,13 +52,17 @@ import org.argouml.model.Model;
  * @see org.argouml.model.UseCasesFactory
  * @author jaap.branderhorst@xs4all.nl
  */
-public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
+public class CmdCreateNode extends CreateNodeAction {
+    
+    private static final long serialVersionUID = 4813526025971574818L;
+
     /**
      * Constructor for CmdCreateNode.
      *
      * @param args a hastable of arguments
      * @param resource for localizing the name
      * @param name the to be localized tooltip name
+     * @deprecated in 0.23.2 use CmdCreateNode(Object, String)
      */
     public CmdCreateNode(Hashtable args, String resource, String name) {
         super(args, resource, name);
@@ -69,6 +74,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      *
      * @param args a hastable of arguments
      * @param name the to be localized name of the command = tooltip name
+     * @deprecated in 0.23.2 use CmdCreateNode(Object, String)
      */
     public CmdCreateNode(Hashtable args, String name) {
         super(args, ResourceLoaderWrapper.getImageBinding(name));
@@ -82,6 +88,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      *                  to create itself
      * @param resource for localizing the name
      * @param name the tooltip name
+     * @deprecated in 0.23.2 use CmdCreateNode(Object, String)
      */
     public CmdCreateNode(Class nodeClass, String resource, String name) {
         super(nodeClass, resource, ResourceLoaderWrapper.getImageBinding(name));
@@ -91,12 +98,14 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
     /**
      * Constructor for CmdCreateNode.
      *
-     * @param nodeClass the class for which to create a node, and which
-     *                  to create itself
-     * @param name the tooltip name
+     * @param nodeType the type of model element for which to create a FigNode
+     * @param name the i18n key used to generate the tooltip and icon.
      */
-    public CmdCreateNode(Object nodeClass, String name) {
-        super((Class) nodeClass, ResourceLoaderWrapper.getImageBinding(name));
+    public CmdCreateNode(Object nodeType, String name) {
+        super(nodeType,
+                name,
+                ResourceLoaderWrapper.lookupIconResource(
+                        ResourceLoaderWrapper.getImageBinding(name)));
         putToolTip(name);
     }
 
@@ -109,6 +118,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      *               to place several nodes rapidly (in succession)
      * @param resource for localizing the name
      * @param name the tooltip name
+     * @deprecated in 0.23.2 use CmdCreateNode(Object, String)
      */
     public CmdCreateNode(Class nodeClass, boolean sticky, String resource,
             String name) {
@@ -125,6 +135,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * @param sticky the global sticky mode boolean allows the user
      *               to place several nodes rapidly (in succession)
      * @param name the tooltip name
+     * @deprecated in 0.23.2 use CmdCreateNode(Object, String)
      */
     public CmdCreateNode(Object nodeClass, boolean sticky, String name) {
         super((Class) nodeClass, sticky,
@@ -143,7 +154,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      */
     public Object makeNode() {
         Object newNode =
-            Model.getUmlFactory().buildNode(_args.get("className"));
+            Model.getUmlFactory().buildNode(getArg("className"));
         return newNode;
     }
 
