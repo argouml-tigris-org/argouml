@@ -7,11 +7,6 @@
 	<classpathentry exported="true" kind="lib" path="ocl-argo-1.1.jar"/>
 	<classpathentry exported="true" sourcepath="/swidgets/src" kind="lib" path="swidgets-0.1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="toolbar-1.3.jar"/>
-	<classpathentry exported="true" sourcepath="/gef/src" kind="lib" path="gef-0.12.1.jar">
-		<accessrules>
-			<accessrule kind="accessible" pattern="org/tigris/gef/**"/>
-		</accessrules>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
