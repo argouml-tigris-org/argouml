@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
 	<provider id="org.eclipse.team.cvs.core.cvsnature">
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-php,argouml-module-php"/>
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-idl,argouml-module-idl"/>
 		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/dev,argouml-module-dev"/>
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-csharp,argouml-module-csharp"/>
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-cpp,argouml-module-cpp"/>
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml-classfile,argouml-module-classfile"/>
+	</provider>
+	<provider id="org.tigris.subversion.subclipse.core.svnnature">
+		<project reference="0.9.3,http://argouml-classfile.tigris.org/svn/argouml-classfile/trunk,argouml-module-classfile"/>
+		<project reference="0.9.3,http://argouml-cpp.tigris.org/svn/argouml-cpp/trunk,argouml-module-cpp"/>
+		<project reference="0.9.3,http://argouml-csharp.tigris.org/svn/argouml-csharp/trunk,argouml-module-csharp"/>
+		<project reference="0.9.3,http://argouml-idl.tigris.org/svn/argouml-idl/trunk,argouml-module-idl"/>
+		<project reference="0.9.3,http://argouml-php.tigris.org/svn/argouml-php/trunk,argouml-module-php"/>
 	</provider>
 </psf>
