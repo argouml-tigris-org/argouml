@@ -88,6 +88,15 @@ class XmiFilePersister extends AbstractFilePersister
         return Translator.localize("combobox.filefilter.xmi");
     }
 
+    
+    
+    /**
+     * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
+     */
+    public boolean isSaveEnabled() {
+        return false;
+    }
+
     /**
      * Save a project to a file in XMI format.
      *

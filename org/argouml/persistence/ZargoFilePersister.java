@@ -186,13 +186,10 @@ class ZargoFilePersister extends UmlFilePersister {
     }
     
     /**
-     * The .zargo save format is able to save. We must override
-     * UmlFilePersister which has turned this off (suggests a need for some
-     * refactoring here)
      * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
      */
     public boolean isSaveEnabled() {
-        return true;
+        return false;
     }
 
     /**

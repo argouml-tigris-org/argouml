@@ -80,6 +80,13 @@ class ZipFilePersister extends XmiFilePersister {
     protected String getDesc() {
         return Translator.localize("combobox.filefilter.zip");
     }
+    
+    /**
+     * @see org.argouml.persistence.XmiFilePersister#isSaveEnabled()
+     */
+    public boolean isSaveEnabled() {
+        return true;
+    }
 
     /**
      * It is being considered to save out individual xmi's from individuals

@@ -201,7 +201,7 @@ class UmlFilePersister extends AbstractFilePersister {
      * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
      */
     public boolean isSaveEnabled() {
-        return false;
+        return true;
     }
 
     /**
@@ -252,6 +252,26 @@ class UmlFilePersister extends AbstractFilePersister {
                         LOG.info("Saving member of type: "
                               + ((ProjectMember) project.getMembers()
                                     .get(i)).getType());
+                    }
+                    MemberFilePersister persister
+                        = getMemberFilePersister(projectMember);
+                    persister.save(projectMember, writer, indent);
+                }
+            }
+
+            if (progressMgr != null) {
+                progressMgr.nextPhase();
+            }
+
+            // Write out all non-XMI sections
+            for (int i = 0; i < size; i++) {
+                ProjectMember projectMember =
+                    (ProjectMember) project.getMembers().get(i);
+                if (!projectMember.getType().equalsIgnoreCase("xmi")) {
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info("Saving member of type: "
+                              + ((ProjectMember) project.getMembers().
+                                    get(i)).getType());
                     }
                     MemberFilePersister persister
                         = getMemberFilePersister(projectMember);

@@ -115,7 +115,7 @@ public final class PersistenceManager {
      */
     private PersistenceManager() {
         // These are the file formats I know about:
-        defaultPersister = new ZargoFilePersister();
+        defaultPersister = new OldZargoFilePersister();
         quickViewDump = new XmiFilePersister();
         otherPersisters.add(quickViewDump);
         xmiPersister = new XmiFilePersister();
@@ -126,7 +126,6 @@ public final class PersistenceManager {
         otherPersisters.add(umlPersister);
         zipPersister = new ZipFilePersister();
         otherPersisters.add(zipPersister);
-        otherPersisters.add(new OldZargoFilePersister());
     }
 
     /**
