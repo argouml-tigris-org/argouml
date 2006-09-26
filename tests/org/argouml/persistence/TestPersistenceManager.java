@@ -90,7 +90,7 @@ public class TestPersistenceManager extends TestCase {
         
         FileFilter[] fileFilters = chooser.getChoosableFileFilters();
         assertNotNull(fileFilters);
-        assertEquals(5, fileFilters.length);
+        assertEquals(4, fileFilters.length);
         FileFilter defaultFileFilter = chooser.getFileFilter();
         assertNotNull(defaultFileFilter);
         assertTrue(defaultFileFilter.accept(new File(
