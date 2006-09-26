@@ -24,14 +24,18 @@
 
 package org.argouml.persistence;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
@@ -39,15 +43,12 @@ import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
-import org.argouml.model.XmiExtensionWriter;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
-import org.argouml.ocl.OCLExpander;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
@@ -56,7 +57,6 @@ import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.tigris.gef.ocl.TemplateReader;
 import org.xml.sax.InputSource;
 
 /**
@@ -64,7 +64,7 @@ import org.xml.sax.InputSource;
  * @author Bob Tarling
  */
 class ModelMemberFilePersister extends MemberFilePersister 
-    implements XmiExtensionWriter, XmiExtensionParser {
+    implements XmiExtensionParser {
 
     /**
      * Logger.
@@ -142,66 +142,48 @@ class ModelMemberFilePersister extends MemberFilePersister
         try {
             ProjectMemberModel pmm = (ProjectMemberModel) member;
             Object model = pmm.getModel();
-            XmiWriter xmiWriter = 
-                Model.getXmiWriter(model, w, 
-                        ArgoVersion.getVersion() + "(" 
-                        + UmlFilePersister.PERSISTENCE_VERSION + ")");
-            LOG.info("Registering extension writer to XmiWriter");
-            xmiWriter.setXmiExtensionWriter(this);
-            xmiWriter.write();
+//            XmiWriter xmiWriter = 
+//                Model.getXmiWriter(model, w, 
+//                        ArgoVersion.getVersion() + "(" 
+//                        + UmlFilePersister.PERSISTENCE_VERSION + ")");
+//            LOG.info("Registering extension writer to XmiWriter");
+//            //xmiWriter.setXmiExtensionWriter(this);
+//            xmiWriter.write();
+            
+            
+            if (indent != null) {
+                // If we have an indent then we are adding this file
+                // to a superfile.
+                // That is most likely inserting the XMI into the .uml file
+                File tempFile = File.createTempFile("xmi", null);
+                tempFile.deleteOnExit();
+
+                Writer writer =
+                    new BufferedWriter(
+                        new OutputStreamWriter(
+                                new FileOutputStream(tempFile), "UTF-8"));
+                XmiWriter xmiWriter = 
+                    Model.getXmiWriter(model, writer, 
+                            ArgoVersion.getVersion() + "(" 
+                            + UmlFilePersister.PERSISTENCE_VERSION + ")");
+                
+                xmiWriter.write();
+                addXmlFileToWriter((PrintWriter) w, tempFile,
+                                   indent.intValue());
+            } else {
+                // Othewise we are writing into a zip writer or to XMI.
+                XmiWriter xmiWriter = 
+                    Model.getXmiWriter(model, w, 
+                            ArgoVersion.getVersion() + "(" 
+                            + UmlFilePersister.PERSISTENCE_VERSION + ")");
+                xmiWriter.write();
+            }
+        } catch (IOException e) {
+            throw new SaveException(e);
         } catch (UmlException e) {
             throw new SaveException(e);
         }
 
-    }
-    
-
-    public void write(Writer writer) throws IOException {
-        writer.write("<XMI.extensions xmi.extender='ArgoUML'>\n");
-        
-        Project project = ProjectManager.getManager().getCurrentProject();
-        
-        writer.write(
-                "<XMI.extension xmi.extender='ArgoUML' xmi.label='argo'>\n");
-            
-        try {
-            LOG.info("Saving member of type: argo");
-            Hashtable templates =
-                TemplateReader.getInstance().read(
-                        "/org/argouml/persistence/argo.tee");
-            OCLExpander expander = new OCLExpander(templates);
-            expander.expand(writer, project);
-        } catch (Exception e) {
-            LOG.error("Exception expanding argo.tee", e);
-            throw new IOException("Exception expanding argo.tee");
-        }
-
-        writer.write("</XMI.extension>\n");
-        
-        for (Iterator it = project.getMembers().iterator(); it.hasNext(); ) {
-            ProjectMember projectMember = (ProjectMember) it.next();
-            
-            if (!projectMember.getType().equalsIgnoreCase("xmi")) {
-                writer.write("<XMI.extension xmi.extender='ArgoUML' xmi.label='"
-                        + projectMember.getType().toLowerCase() + "'>\n");
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Saving member of type: "
-                          + projectMember.getType());
-                }
-                MemberFilePersister persister
-                    = getMemberFilePersister(projectMember);
-                try {
-                    persister.save(projectMember, writer, null);
-                } catch (Exception e) {
-                    LOG.error("Error saving", e);
-                    throw new IOException(e.getMessage());
-                }
-                writer.write("</XMI.extension>\n");
-            }
-        }
-        
-        writer.write("</XMI.extensions>\n");
-        LOG.info("Written extensions");
     }
     
     /**
