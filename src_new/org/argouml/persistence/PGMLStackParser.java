@@ -53,7 +53,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.util.Predicate;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -335,6 +334,7 @@ class PGMLStackParser
                     edge.setDestPortFig(dpf);
                     edge.setSourceFigNode(sfn);
                     edge.setDestFigNode(dfn);
+                    edge.computeRoute();
                 }
             }
         }
