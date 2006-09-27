@@ -202,6 +202,7 @@ public abstract class FigEdgeModelElement
             edgePort.setVisible(false);
             addPathItem(edgePort,
                     new PathConvPercent(this, 50, 0));
+            computeRoute();
         }
     }
 
