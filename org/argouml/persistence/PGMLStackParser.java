@@ -358,7 +358,12 @@ class PGMLStackParser
         if (figId.indexOf('.') < 0) {
             // If there is no dot then this must be a top level Fig and can be
             // assumed to be a FigNode.
-            return (FigNode) findFig(figId);
+            Fig f = findFig(figId);
+            if (f instanceof FigNode) {
+                return (FigNode) f;
+            } else {
+                throw new IllegalStateException("FigID " + figId + " is not a node");
+            }
         }
         // If the id does not look like a top-level Fig then we can assume that
         // this is an id of a FigEdgePort inside some FigEdge.
