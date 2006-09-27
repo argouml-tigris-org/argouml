@@ -198,7 +198,9 @@ public abstract class FigEdgeModelElement
     public void makeEdgePort() {
         if (edgePort == null) {
             edgePort = new FigEdgePort();
-            edgePort.setOwner(getOwner());
+            if (getOwner() != null) {
+                edgePort.setOwner(getOwner());
+            }
             edgePort.setVisible(false);
             addPathItem(edgePort,
                     new PathConvPercent(this, 50, 0));
@@ -834,6 +836,9 @@ public abstract class FigEdgeModelElement
                     + owner.getClass().getName());
         }
         super.setOwner(owner);
+        if (edgePort != null) {
+            edgePort.setOwner(getOwner());
+        }
         initNotationProviders(owner);
         renderingChanged();
         updateListeners(null, owner);
