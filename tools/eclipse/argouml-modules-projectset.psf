@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
-	<provider id="org.eclipse.team.cvs.core.cvsnature">
-		<project reference="1.0,:pserver:cvs.tigris.org:/cvs,argouml/modules/dev,argouml-module-dev"/>
-	</provider>
 	<provider id="org.tigris.subversion.subclipse.core.svnnature">
+		<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/modules/dev,argouml-module-dev"/>
 		<project reference="0.9.3,http://argouml-classfile.tigris.org/svn/argouml-classfile/trunk,argouml-module-classfile"/>
 		<project reference="0.9.3,http://argouml-cpp.tigris.org/svn/argouml-cpp/trunk,argouml-module-cpp"/>
 		<project reference="0.9.3,http://argouml-csharp.tigris.org/svn/argouml-csharp/trunk,argouml-module-csharp"/>
