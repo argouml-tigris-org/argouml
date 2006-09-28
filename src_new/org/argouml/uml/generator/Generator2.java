@@ -50,7 +50,7 @@ import org.argouml.notation.NotationName;
  * the CodeGenerator interface. <p>
  * Explanation by Daniele Tamino:<p>
  * Why Generator2 is deprecated: Because it was replaced 
- * by CodeGenerator and GeneratorManager. 
+ * by {@link CodeGenerator} and {@link GeneratorManager}. 
  * The Generator2 class kept a list of Generator2 objects, 
  * populated during construction, but that list was 
  * not changeable afterward, and this was incompatible 
@@ -137,84 +137,84 @@ public abstract class Generator2
     public String generate(Object o) {
         if (o == null) {
             return "";
-	}
+        }
         if (Model.getFacade().isAActionState(o)) {
             return generateActionState(o);
         }
         if (Model.getFacade().isAExtensionPoint(o)) {
             return generateExtensionPoint(o);
-	}
+        }
         if (Model.getFacade().isAOperation(o)) {
             return generateOperation(o, false);
-	}
+        }
         if (Model.getFacade().isAAttribute(o)) {
             return generateAttribute(o, false);
-	}
+        }
         if (Model.getFacade().isAParameter(o)) {
             return generateParameter(o);
-	}
+        }
         if (Model.getFacade().isAPackage(o)) {
             return generatePackage(o);
-	}
+        }
         if (Model.getFacade().isAClassifier(o)) {
             return generateClassifier(o);
-	}
+        }
         if (Model.getFacade().isAExpression(o)) {
             return generateExpression(o);
-	}
+        }
         if (o instanceof String) {
             return generateName((String) o);
-	}
+        }
         if (o instanceof String) {
             return generateUninterpreted((String) o);
-	}
+        }
         if (Model.getFacade().isAStereotype(o)) {
             return generateStereotype(o);
-	}
+        }
         if (Model.getFacade().isATaggedValue(o)) {
             return generateTaggedValue(o);
         }
         if (Model.getFacade().isAAssociation(o)) {
             return generateAssociation(o);
-	}
+        }
         if (Model.getFacade().isAAssociationEnd(o)) {
             return generateAssociationEnd(o);
-	}
+        }
         if (Model.getFacade().isAMultiplicity(o)) {
             return generateMultiplicity(o);
-	}
+        }
         if (Model.getFacade().isAState(o)) {
             return generateState(o);
-	}
+        }
         if (Model.getFacade().isATransition(o)) {
             return generateTransition(o);
-	}
+        }
         if (Model.getFacade().isAAction(o)) {
             return generateAction(o);
-	}
+        }
         if (Model.getFacade().isACallAction(o)) {
             return generateAction(o);
-	}
+        }
         if (Model.getFacade().isAGuard(o)) {
             return generateGuard(o);
-	}
+        }
         if (Model.getFacade().isAMessage(o)) {
             return generateMessage(o);
-	}
+        }
         if (Model.getFacade().isAEvent(o)) {
             return generateEvent(o);
         }
         if (Model.getFacade().isAVisibilityKind(o)) {
             return generateVisibility(o);
-	}
+        }
 
         if (Model.getFacade().isAModelElement(o)) {
             return generateName(Model.getFacade().getName(o));
-	}
+        }
 
         if (o == null) {
             return "";
-	}
+        }
 
         return o.toString();
     }
@@ -323,9 +323,9 @@ public abstract class Generator2
             }
             if (!first) {
                 return ps.getLeftGuillemot()
-		    + sb.toString()
-		    + ps.getRightGuillemot();
-	    }
+                    + sb.toString()
+                    + ps.getRightGuillemot();
+            }
         }
         return "";
     }
@@ -375,18 +375,18 @@ public abstract class Generator2
      */
     public static String getCodePath(Object me) {
         if (me == null) {
-	    return null;
-	}
+            return null;
+        }
 
         Object taggedValue = Model.getFacade().getTaggedValue(me, "src_path");
         String s;
         if (taggedValue == null) {
-	    return null;
-	}
+            return null;
+        }
         s =  Model.getFacade().getValueOfTag(taggedValue);
         if (s != null) {
             return s.trim();
-	}
+        }
         return null;
     }
 
