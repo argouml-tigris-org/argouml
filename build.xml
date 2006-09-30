@@ -534,10 +534,6 @@ Property files to be searched:
       <sourcepath>
         <pathelement location="${argo.src.dir}"/>
         <pathelement location="${argo.src.dir}/../src/model/src"/>
-        <pathelement location="${argo.src.dir}/../modules/cpp/src"/>
-        <pathelement location="${argo.src.dir}/../modules/csharp/src"/>
-        <pathelement location="${argo.src.dir}/../modules/classfile/src"/>
-        <pathelement location="${argo.src.dir}/../modules/php/src"/>
       </sourcepath>
 
       <classpath>
