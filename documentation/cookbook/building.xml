@@ -126,17 +126,19 @@ you need to work with ArgoUML.
 A computer with an Internet connection and free disk space for your work.
 </para>
           <para>
-160MB is enough to download everything from the repository.
+Around 150MB to download everything from the repository.
 (Currently September 2006 it is 147MB.)
-(In March 2003 it was 68MB but the CVS was used.)
-150MB is enough to download all and build the tool and the documentation.
-(Currently March 2003 it is 114MB).
-250MB is enough to build it all 
-(Javadocs, documentation, classes, packages, ...).
-Note added September 2006:
-These figures are for CVS.
-How Subversion affects the disc usage is unclear.
-The first guess is that you need twice the amount.
+<!--
+ In March 2003 it was 68MB but CVS was used then.
+ -->
+Around 200MB to download all and build the tool and the documentation.
+(Currently September 2006 it is 192MB.)
+<!--
+ In March 2003 it is 114MB.
+-->
+350MB should be enough to build it all 
+(Javadocs, documentation, classes, ...).
+(Currently September 2006 it is 299MB.)
 </para>
         </listitem>
         <listitem>
