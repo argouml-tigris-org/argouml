@@ -1362,6 +1362,9 @@ public final class ProjectBrowser
         // active, so I remove the current project, before
         // loading the new one.
 
+        boolean wasGeneratingMementos = 
+            UndoManager.getInstance().isGenerateMementos();
+        UndoManager.getInstance().setGenerateMementos(false);
         Designer.disableCritiquing();
         Designer.clearCritiquing();
         clearDialogs();
@@ -1511,6 +1514,7 @@ public final class ProjectBrowser
                             + " members in the current project");
                 }
                 UndoManager.getInstance().empty();
+                UndoManager.getInstance().setGenerateMementos(wasGeneratingMementos);
                 Designer.enableCritiquing();
 
                 // Make sure save action is always reinstated
