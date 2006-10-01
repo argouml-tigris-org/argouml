@@ -292,13 +292,17 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
             LOG.info("Removing a FigMessage");
             FigMessage fm = (FigMessage) f;
             FigMessagePort source = (FigMessagePort) fm.getSourcePortFig();
+            FigLifeLine sourceLifeLine = (FigLifeLine) source.getGroup();
             FigMessagePort dest = (FigMessagePort) fm.getDestPortFig();
+            FigLifeLine destLifeLine = (FigLifeLine) dest.getGroup();
             
             if (source != null) removeFigMessagePort(source);
             if (dest != null) removeFigMessagePort(dest);
-            if (source != null) updateNodeStates(source);
+            if (source != null) {
+            	updateNodeStates(source, sourceLifeLine);
+            }
             if (dest != null && fm.getSourceFigNode() != fm.getDestFigNode()) {
-                updateNodeStates(dest);
+                updateNodeStates(dest, destLifeLine);
             }
         }
         super.remove(f);
@@ -314,11 +318,10 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
         }
     }
     
-    private void updateNodeStates(FigMessagePort fmp) {
-        Fig parent = fmp.getGroup();
-        if (parent instanceof FigLifeLine) {
-            ((FigClassifierRole) parent.getGroup()).updateNodeStates();
-        }
+    private void updateNodeStates(FigMessagePort fmp, FigLifeLine lifeLine) {
+    	if (lifeLine != null) {
+            ((FigClassifierRole) lifeLine.getGroup()).updateNodeStates();
+    	}
     }
     
 

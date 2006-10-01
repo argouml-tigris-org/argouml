@@ -49,6 +49,7 @@ public class FigMessagePort extends FigGroup {
     /**
      * Creates a new horizontal FigMessagePort that's not displayed.
      *
+     * @param owner the message that the FigMessagePort represents
      * @param x first x coordinate.
      * @param y y coordinate.
      * @param x2 second x coordinate.
