@@ -1538,14 +1538,6 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#damage()
-     */
-    public void damage() {
-        updateEdges();
-        super.damage();
-    }
-
-    /**
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
     public void postLoad() {

@@ -280,6 +280,7 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
             Object fig = it.next();
             if (fig instanceof FigClassifierRole) {
                 ((FigClassifierRole) fig).updateActivations();
+                ((FigClassifierRole) fig).damage();
             }
         }
     }
