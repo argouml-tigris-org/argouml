@@ -126,6 +126,14 @@ public class MessageNode extends Object {
     public void setCallers(List theCallers) {
         this.callers = theCallers;
     }
+    
+    /**
+     * Get the list of callers
+     * @return the caller list
+     */
+    List getCallers() {
+    	return callers;
+    }
 
     /**
      * @return the figclassifierrole that is the owner
