@@ -946,17 +946,25 @@ These style guides correspond to the default Java settings in Emacs:
       </author>
     </sect1info>
     <title>Setting up Eclipse 3</title>
-    <warning>
-      <para>
-This was recently updated to the 
-recommended Eclipse setup with files committed to the repository.
-</para>
-    </warning>
+    <indexterm>
+      <primary>Setting up Eclipse</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Eclipse</primary>
+      <secondary>Setting up the development environment</secondary>
+    </indexterm>
+
     <para>
-If you are running Eclipse 3.1 we have a prepared and recommended setup
+If you are running Eclipse 3.1 or 3.2
+we have a prepared and recommended setup
 committed into our repository.
 The prepared setup includes settings for Checkstyle within Eclipse that
 will be enabled if you have the Checkclipse Eclipse plugin installed.
+</para>
+    <para>
+You need to have Subclipse installed in your Eclipse to retrieve
+the files from the repository.
+See <ulink url="http://subclipse.tigris.org/install.html"/>.
 </para>
     <para>
 If any of these instructions don't work or could be improved in some way,
@@ -975,64 +983,31 @@ We have Team Project Set files prepared to make the set up automatic.
 </para>
 
       <para>
-When Eclipse asks you of your CVS Repository information,
-you give the information like this.
-</para>
-      <para>
-Change to the CVS Repository perspective and select 
-Add CVS Repository.
-Then enter the following information.
-</para>
-
-      <itemizedlist>
-        <listitem>
-          <para>Host:
-cvs.tigris.org
-</para>
-        </listitem>
-        <listitem>
-          <para>Repository path:
-/cvs
-</para>
-        </listitem>
-        <listitem>
-          <para>User:
-<replaceable>Your Tigris user name.</replaceable>
-</para>
-        </listitem>
-        <listitem>
-          <para>Password:
-<replaceable>Your Tigris password.</replaceable>
-</para>
-        </listitem>
-        <listitem>
-          <para>Connection type:
-pserver
-(default)
-</para>
-        </listitem>
-        <listitem>
-          <para>Use Default Port. (default)</para>
-        </listitem>
-      </itemizedlist>
-
-      <para>
 Do the following.
 </para>
 
       <orderedlist>
         <listitem>
           <para>
+Change to the SVN Repository Explorer perspective and select 
+Add SVN Repository.
+Then enter the following url
+<command>http://argouml.tigris.org/svn/argouml</command>.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
 Download the initial Team Project Set file and save it somewhere.
+</para>
+          <para>
+Suggested by browsing to
+<filename>trunk/tools/eclipse</filename>
+and checking it out as a project.
 </para>
           <para>
 This is only needed the first time and if you don't already 
 happen to have an updated checked out copy of argouml laying around.
-</para>
-          <para>
-The file can be found through the repository browsing function at Tigris
-at
-<ulink url="http://argouml.tigris.org/source/browse/*checkout*/argouml/tools/eclipse/argouml-core-projectset.psf"/>.
 </para>
         </listitem>
 
@@ -1055,7 +1030,7 @@ Now everything is automatic even though it takes a while. What happens is:
           <orderedlist>
             <listitem>
               <para>
-Files are downloaded from the Tigris CVS server and put into Eclipse
+Files are downloaded from the Tigris SVN server and put into Eclipse
 projects.
 </para>
               <para>
@@ -1065,7 +1040,7 @@ connection.
             </listitem>
             <listitem>
               <para>
-The projects are build.
+The projects are built.
 First things that are special for ArgoUML, generated Java code,
 are created by Eclipse calling ant,
 then Eclipse kicks in and compiles the Java code.
@@ -1083,8 +1058,9 @@ Eclipse finds the Configurations that are also checked out.
           <para>
 Verify that you can start ArgoUML from the debugger within Eclipse. 
 You can do this by clicking on the little down-arrow close to the
-Debug icon in the tool bar
-and finding ArgoUML in the list.
+Debug icon in the tool bar,
+selecting Debug...,
+and finding ArgoUML in the list (under Java Application).
 </para>
         </listitem>
 
@@ -1128,9 +1104,20 @@ Then select Java => Code Style => Formatter.
             </listitem>
             <listitem>
               <para>
+For Eclipse 3.2 you do:
+Select Java Conventions [built-in].
+</para>
+            </listitem>
+            <listitem>
+              <para>
+For Eclipse 3.1 you do:
 Select Import and give the file
 <filename>eclipse/eclipse-argo-formatter.xml</filename>
 located in the argouml-core-tools project that you just checked out.
+</para>
+              <para>
+This takes care of the Eclipse-built-in bug
+(<ulink url="https://bugs.eclipse.org/bugs/show_bug.cgi?id=104765"/>).
 </para>
             </listitem>
             <listitem>
@@ -1143,11 +1130,6 @@ Press OK.
           <para>
 This will give you Code Conventions exactly like the Sun Coding Style
 that we use in the ArgoUML project.
-</para>
-          <para>
-Once Eclipse 3.2 is out and the Eclipse-built-in bug
-(<ulink url="https://bugs.eclipse.org/bugs/show_bug.cgi?id=104765"/>)
-is fixed you could use "Java conventions [build-in]" instead.
 </para>
         </listitem>
 
@@ -1205,10 +1187,9 @@ You can then decide to fix them or not depending on how you feel about
 the code you are working with.
 </para>
       <para>
-Some of these are set up by projects and Eclipse seems to have sensible
-defaults on these so you don't have to do anything with this.
-Consider this only if you want more information or to understand 
-why you get warnings.
+The instructions on where to find the different settings are for Eclipse 3.2.
+If you use Eclipse 3.1 you might need to search through the tabs to find
+where the setting is since they were reorganized for Eclipse 3.2.
 </para>
       <itemizedlist>
         <listitem>
@@ -1219,8 +1200,14 @@ Compiler compliance level.
       See in the menu Window => Preferences.
       Then select
       Java => Compiler.
-      At the right hand side, select the tab
-Compliance and classfiles => Compiler compliance level: 1.4.
+At the right hand side set
+Compiler compliance level: 1.4.
+</para>
+          <para>
+Uncheck Use default complicance settings and set
+Generated .class file compatibility: 1.4,
+Source compatibility: 1.4,
+and Disallow identifiers called enum to Error.
 </para>
           <para>
 In the ArgoUML project we have decided to keep source compliance to JDK 1.4.
@@ -1228,6 +1215,8 @@ In the ArgoUML project we have decided to keep source compliance to JDK 1.4.
 This setting enables Eclipse to tell you where some
 JDK 1.5
 features have crept in.
+At the same time we don't want to introduce identifiers that are in conflict
+with Java5.
 </para>
         </listitem>
 
@@ -1238,28 +1227,37 @@ Find forgotten and incorrect Javadoc comments.
           <para>
 In the menu select Window => Preferences.
 Then select
-Java => Compiler.
+Java => Compiler => Javadoc.
 Suggested settings for these tabs
 (Only things diverting from the Eclipse defaults are listed):
 </para>
           <itemizedlist>
             <listitem>
               <para>
-Javadoc => Malformed javadoc comments: Warning, Private, Report errors in tags.
+Javadoc => Malformed javadoc comments:
+Warning,
+Private,
+Check all reports.
 </para>
             </listitem>
             <listitem>
               <para>
-Javadoc => Missing javadoc tags: Warning, Protected,
+Javadoc => Missing javadoc tags: Warning, Private,
+check Check overriding and implementing methods.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Javadoc => Missing javadoc comments: Warning, Protected,
 Check overriding and implementing methods.
 </para>
-              <para>
+            </listitem>
+          </itemizedlist>
+          <para>
 These problems are also found by Checkstyle so if you are
 running Checkclipse (See <xref linkend="checkclipse"/>)
 put this in Ignore instead.
 </para>
-            </listitem>
-          </itemizedlist>
         </listitem>
 
         <listitem>
@@ -1269,82 +1267,7 @@ Code that hides other code.
           <para>
 In the menu select Window => Preferences.
 Then select
-Java => Compiler.
-Suggested settings for these tabs
-(Only things diverting from the Eclipse defaults are listed):
-</para>
-          <itemizedlist>
-            <listitem>
-              <para>
-Style => Possible accidental boolean assignment: Warning.
-</para>
-            </listitem>
-            <listitem>
-              <para>
-Advanced => Local variable declaration hides another field or variable:
-Warning.
-</para>
-            </listitem>
-            <listitem>
-              <para>
-Advanced => Field declaration hides another field or variable: Warning.
-</para>
-            </listitem>
-          </itemizedlist>
-        </listitem>
-        <listitem>
-          <para>
-Find Code that shall be removed.
-</para>
-          <para>
-In the menu select Window => Preferences.
-Then select
-Java => Compiler.
-Suggested settings for these tabs
-(Only things diverting from the Eclipse defaults are listed):
-</para>
-          <itemizedlist>
-            <listitem>
-              <para>
-Unused code => Local variable is never read: Warning.
-</para>
-            </listitem>
-            <listitem>
-              <para>
-Unused code => Parameter is never read: Warning.
-</para>
-            </listitem>
-            <listitem>
-              <para>
-Unused code => Unused or unread private members: Warning.
-</para>
-            </listitem>
-            <listitem>
-              <para>
-Unused code => Unnecessary semicolon: Warning.
-</para>
-            </listitem>
-            <listitem>
-              <para>
-Unused code => Unnecessary cast or 'instanceof' operation: Warning.
-</para>
-            </listitem>
-            <listitem>
-              <para>
-Unused code => Unnecessary declaration of thrown checked exception: Warning.
-</para>
-            </listitem>
-          </itemizedlist>
-        </listitem>
-
-        <listitem>
-          <para>
-Serialization
-</para>
-          <para>
-In the menu select Window => Preferences.
-Then select
-Java => Compiler => Errors/Warnings
+Java => Compiler => Error/Warnings.
 Suggested settings for these tabs
 (Only things diverting from the Eclipse defaults are listed):
 </para>
@@ -1358,8 +1281,73 @@ Ignore
 We don't use serialization in the ArgoUML project anyway.
 </para>
             </listitem>
+            <listitem>
+              <para>
+Potential programming problems =>
+Possible accidental boolean assignment: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Name shadowing and conflicts =>
+Local variable declaration hides another field or variable: Warning,
+check Include constructor or setter method parameters.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Name shadowing and conflicts =>
+Field declaration hides another field or variable: Warning.
+</para>
+            </listitem>
           </itemizedlist>
         </listitem>
+        <listitem>
+          <para>
+Find Code that shall be removed.
+</para>
+          <para>
+In the menu select Window => Preferences.
+Then select
+Java => Compiler => Error/Warnings.
+Suggested settings for these tabs
+(Only things diverting from the Eclipse defaults are listed):
+</para>
+          <itemizedlist>
+            <listitem>
+              <para>
+Unnecessary code => Local variable is never read: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Unnecessary code => Parameter is never read: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Unnecessary code => Unused or unread private members: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Unnecessary code => Unnecessary semicolon: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Unnecessary code => Unnecessary cast or 'instanceof' operation: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Unnecessary code =>
+Unnecessary declaration of thrown checked exception: Warning.
+</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+
       </itemizedlist>
     </sect2>
 
@@ -1581,7 +1569,7 @@ Right-click on the project argouml-core-tests.
             <para>
 On the multilevel popup that opens, select
 Run As... JUnit Test or
-Degug As... JUnit Test.
+Debug As... JUnit Test.
 </para>
           </listitem>
           <listitem>
