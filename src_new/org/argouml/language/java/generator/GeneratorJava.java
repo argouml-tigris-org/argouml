@@ -164,7 +164,7 @@ public class GeneratorJava
                     return null;
                 }
             }
-
+            
             if (lastIndex == packagePath.length()) {
                 break;
             }
@@ -1836,6 +1836,9 @@ public class GeneratorJava
             return "";
         }
         String packagePath = Model.getFacade().getName(namespace);
+        if(packagePath == null) {
+        	return "";
+        }
         while ((namespace = Model.getFacade().getNamespace(namespace))
                 != null) {
             // ommit root package name; it's the model's root
