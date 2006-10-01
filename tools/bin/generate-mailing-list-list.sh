@@ -78,9 +78,9 @@ function onelist() {
 }
 
 
-for proj in $projects
+for listname in $lists
 do
-    for listname in $lists
+    for proj in $projects
     do
         for f in $files
 	do
