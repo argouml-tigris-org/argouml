@@ -24,11 +24,62 @@ sums are correct and that it is regularly updated!
 
 <!-- Tigris CSS seems to be overriding td align="right" for some browsers -->
 <STYLE type="text/css">
-  TABLE.stats TD, TABLE.stats TH { text-align : right }
+  TABLE.stats TD { text-align : right }
+  TABLE.stats TH { text-align : center }
   TD[align="right"], TH[align="right"] { text-align : right !important }
   TD[align="left"], TH[align="left"] { text-align : left !important}
   TD[align="center"], TH[align="center"] { text-align : center !important}
 </STYLE>
+
+<div class="h2" id="d022">
+<H2><a name="022">Downloads of ArgoUML 0.18.1</a></H2>
+<p>ArgoUML 0.22 was released on 8th of August 2006.</p>
+<p>
+The count is only from the 18th of September.
+Before that the counting was not enabled.
+</p>
+
+<table class="stats">
+<tr>
+<th>When</th>
+<th>HP zip</th>
+<th>DL zip</th>
+<th>tar.gz</th>
+<th>appb</th>
+<th>HP jws</th>
+<th>DL jws</th>
+<th>Total</th>
+</tr>
+
+<tr>
+<td>September 2006</td>
+<td> 2696</td>
+<td> 1022</td>
+<td>  326</td>
+<td>   97</td>
+<td> 1930</td>
+<td>  188</td>
+<td> 6259</td>
+<td>
+(17 days statistics missing)
+</td>
+</tr>
+</table>
+</div>
+
+
+<p>
+The figures below are from the download statistics 
+from the Tigris site of the argouml project.
+The 0.18.1 release was downloadable from both
+the argouml and 
+the argouml-downloads projects
+so the figures for the argouml-downloads project are missing.
+The 0.20 release and the 0.22 release were only made downloadable
+through the argouml-downloads project so the statistics for those
+are missing (except for what is counted above).
+</p>
+
 
 <div class="h2" id="d0181">
 <H2><a name="0181">Downloads of ArgoUML 0.18.1</a></H2>
@@ -572,23 +623,24 @@ June 2-11, 2004 which may have been the result of a runaway script.
 <div class="h2" id="explanation">
 <H2>How do we count?</H2>
 <p>
-These counts are based on the download counts from our web site.<p>
-
-In an attempt to let the figures reflect the amount of people that have
-installed ArgoUML
-every downloaded .zip or .tar.gz archive of the release is counted as one.
-This could be too much since sometimes people download without installing.
-This could be too little since sometimes people download once and then
-install on many machines.<p>
-
-For Java Web Start we count the amount of times the last file in the 
-Java Web Start set it downloaded.
-This is the best we can do since after that is downloaded,
-the Java Web Start installation is completed and ArgoUML starts.
+The counts are based on Unique Views from
+<a href="http://www.google.com/analytics">Google Analytics</a>.
+We count the click of links to .zip or .tar.gz files of the release.
+The way Google Analytics work we also count failed attempts to do
+downloads. There is not much we can do about it.
+On the other hand counting Unique Views means that
+if a single user attempts several downloads only one of them is counted
+so if a failed attempt is followed by a successful one that is still correct.
+For Java Web Start we count the amount of Unique Views
+of the jnlp file.
+</p>
 </div>
 
 <hr>
-This page was last modified $Date$.
+<p>
+This page was last modified
+$Date$.
+</p>
 
 </DIV>
 
