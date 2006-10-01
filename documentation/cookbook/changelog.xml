@@ -55,7 +55,7 @@ responsibilities or functions of the subsystems.
 
       <tbody valign="top">
         <row>
-          <entry>2006-09-</entry>
+          <entry>2006-10-</entry>
           <entry>
 Change to XXX.
 (See <xref linkend="xxx"/>).
@@ -64,6 +64,29 @@ Change to XXX.
         </row>
       </tbody>
       -->
+
+      <tbody valign="top">
+        <row>
+          <entry>2006-10-01</entry>
+          <entry>
+Change the description on how to check out and build with Eclipse
+to fit the Subversion set up (and Eclipse 3.2).
+(See <xref linkend="eclipse3"/>).
+          </entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
+          <entry>2006-09-30</entry>
+          <entry>
+Change to describe the new release build mechanism based on subversion
+(See <xref linkend="release_process"/>).
+          </entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
 
       <tbody valign="top">
         <row>
@@ -178,7 +201,6 @@ Moved the rest of chapter 7 to appendix.
           <entry>
 Removed old description on how to make releases.
 Added instructions on how to run the installers.
-(See <xref linkend="running_installers"/>).
 </entry>
           <entry>Linus Tolke</entry>
         </row>
