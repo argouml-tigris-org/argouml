@@ -24,8 +24,6 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.util.Hashtable;
-
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 
@@ -48,14 +46,14 @@ public class ActionCreatePseudostate extends CmdCreateNode {
      * @param name the name of this kind of pseudostate
      */
     public ActionCreatePseudostate(Object kind, String name) {
-	super(new Hashtable(), name);
+        super(kind, name);
 
         if (!Model.getFacade().isAPseudostateKind(kind)) {
             throw new IllegalArgumentException();
-	}
+        }
 
-	setArg("className", Model.getMetaTypes().getPseudostate());
-	setArg("kind", kind);
+        setArg("className", Model.getMetaTypes().getPseudostate());
+        setArg("kind", kind);
     }
 
     ////////////////////////////////////////////////////////////////
