@@ -196,11 +196,13 @@ public final class NotationProviderFactory2 {
             try {
                 constructor = clazz.getConstructor(p);
             } catch (SecurityException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
+                // TODO: Why aren't we throwing an exception here?
+            	// Returning null results in NPE and no explanation why.
+                LOG.error("Exception caught", e);
             } catch (NoSuchMethodException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
+                // TODO: Why aren't we throwing an exception here?
+            	// Returning null results in NPE and no explanation why.
+                LOG.error("Exception caught", e);
             }
             Object[] params = {
                 object,
@@ -209,17 +211,21 @@ public final class NotationProviderFactory2 {
             try {
                 return (NotationProvider) constructor.newInstance(params);
             } catch (IllegalArgumentException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
+                // TODO: Why aren't we throwing an exception here?
+            	// Returning null results in NPE and no explanation why.
+                LOG.error("Exception caught", e);
             } catch (InstantiationException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
+                // TODO: Why aren't we throwing an exception here?
+            	// Returning null results in NPE and no explanation why.
+                LOG.error("Exception caught", e);
             } catch (IllegalAccessException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
+                // TODO: Why aren't we throwing an exception here?
+            	// Returning null results in NPE and no explanation why.
+                LOG.error("Exception caught", e);
             } catch (InvocationTargetException e) {
-                // TODO: Auto-generated catch block
-                LOG.error(e);
+                // TODO: Why aren't we throwing an exception here?
+            	// Returning null results in NPE and no explanation why.
+                LOG.error("Exception caught", e);
             }
         }
         return null;
