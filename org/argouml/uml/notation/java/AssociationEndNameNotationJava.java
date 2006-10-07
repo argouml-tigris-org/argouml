@@ -29,6 +29,7 @@ import java.util.HashMap;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.AssociationEndNameNotation;
+import org.argouml.uml.notation.uml.AssociationEndNameNotationUml;
 import org.argouml.uml.notation.uml.NotationUtilityUml;
 
 /**
@@ -38,13 +39,24 @@ import org.argouml.uml.notation.uml.NotationUtilityUml;
  */
 public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
 
+	private static final AssociationEndNameNotationJava instance =
+		new AssociationEndNameNotationJava();
+	
+	/**
+	 * Create a new instance of AssociationEndNameNotationUml
+	 * @return the notation
+	 */
+    public static final AssociationEndNameNotationJava getInstance() {
+    	return instance;
+    }
+
     /**
      * The constructor.
      *
      * @param assocEnd the Java associationEnd
      */
-    public AssociationEndNameNotationJava(Object assocEnd) {
-        super(assocEnd);
+    protected AssociationEndNameNotationJava() {
+        super();
     }
 
     /**

@@ -24,8 +24,6 @@
 
 package org.argouml.uml.notation;
 
-import org.argouml.model.Model;
-
 /**
  * This abstract class forms the basis of all Notation providers
  * for the text shown next to the end of an association.
@@ -37,14 +35,8 @@ public abstract class AssociationEndNameNotation extends NotationProvider {
 
     /**
      * The constructor. 
-     *
-     * @param assocEnd the UML element
      */
-    public AssociationEndNameNotation(Object assocEnd) {
-        if (!Model.getFacade().isAAssociationEnd(assocEnd)) {
-            throw new IllegalArgumentException(
-                    "This is not an AssociationEnd.");
-        }
+    protected AssociationEndNameNotation() {
     }
 
 }

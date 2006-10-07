@@ -40,8 +40,8 @@ public class AttributeNotationJava extends AttributeNotation {
      *
      * @param attribute the attribute that is represented
      */
-    public AttributeNotationJava(Object attribute) {
-        super(attribute);
+    protected AttributeNotationJava() {
+        super();
     }
 
     /**

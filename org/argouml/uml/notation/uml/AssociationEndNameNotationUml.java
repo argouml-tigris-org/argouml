@@ -52,13 +52,21 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
 	 */
 	private ArrayList stereotypes;
 	
+	/**
+	 * Create a new instance of AssociationEndNameNotationUml
+	 * @return the notation
+	 */
+    public static final AssociationEndNameNotationUml getInstance() {
+    	return new AssociationEndNameNotationUml();
+    }
+	
     /**
      * The constructor.
      *
      * @param assocEnd the UML associationEnd
      */
-    public AssociationEndNameNotationUml(Object assocEnd) {
-        super(assocEnd);
+    protected AssociationEndNameNotationUml() {
+        super();
     }
 
     /**
