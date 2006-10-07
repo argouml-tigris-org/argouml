@@ -67,6 +67,16 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2006-10-07</entry>
+          <entry>
+Removed mentions of CVS.
+          </entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2006-10-01</entry>
           <entry>
 Change the description on how to check out and build with Eclipse
@@ -153,7 +163,7 @@ Splitted and moved the cvs chapter.
 One part goes into the Standards for coding chapter and
 one part goes into a newly created appendixex.
 (See <xref linkend="groundrules"/>,
-<xref linkend="cvs"/>, and
+and
 <xref linkend="repository-contents"/>).
 </entry>
           <entry>Linus Tolke</entry>
@@ -336,8 +346,7 @@ Change to release building description.
           <entry>2005-05-06</entry>
           <entry>
 Added instructions on how we work with sub-projects.
-(See <xref linkend="working-with-subproject"/> and
-<xref linkend="cvs"/>).
+(See <xref linkend="working-with-subproject"/>).
 </entry>
           <entry>Linus Tolke</entry>
         </row>

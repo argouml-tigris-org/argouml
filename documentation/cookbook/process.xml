@@ -394,13 +394,13 @@ in the ArgoUML project.
       <para>
 The Resolver is the software developer who attempts to resolve the issue.
 Doing so requires at least "observer" role.
-The "developer" role is only needed to commit things into CVS
+The "developer" role is only needed to commit things into the repository
 (e.g. submit changed Java code, scripts or documentation).
 </para>
       <para>
 Remark: Someone who does not have the developer role, 
 but solves the issue and convinces someone else to commit the solution, 
-is still the Resolver even though he cannot commit things into CVS.
+is still the Resolver even though he cannot commit things into the repository.
 </para>
       <para>
 The goal of the Resolver is to progress the issue to the status of

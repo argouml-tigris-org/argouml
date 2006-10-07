@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+<!--
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+
+<appendix id="repository-contents">
+  <title>Repository Contents</title>
+  <indexterm>
+    <primary>CVS Repository Contents</primary>
+  </indexterm>
+  <indexterm>
+    <primary>SVN Repository Contents</primary>
+  </indexterm>
+  <indexterm>
+    <primary>Repository contents</primary>
+  </indexterm>
+  <indexterm>
+    <primary>Contents of the CVS repository at Tigris</primary>
+  </indexterm>
+  <indexterm>
+    <primary>Contents of the SVN repository at Tigris</primary>
+  </indexterm>
+
+  <para>
+This appendix describes what parts of the repository is used for
+what purpose.
+This is a rather terse collection.
+Further details on specific parts can sometimes be found elsewhere in
+this document.
+</para>
+
+  <note>
+    <para>
+This explanation only describes the single Tigris project layout.
+Lately (since beginning of 2006) we have been working with splitting
+the project over several Tigris projects.
+This is not yet described here.
+</para>
+  </note>
+
+  <note>
+    <para>
+This explanation was first written when it was a CVS repository. 
+This repository is then converted to a SVN repository with the exact
+same structure so the choice of version control system should not
+matter.
+However, the descriptions might include the incorrect name of the tool
+since this description is unlikely to be updated exactly when the
+conversion is done.
+</para>
+  </note>
+
+  <para>
+This chapter is organized as the repository itself and
+everything is in alphabetical order.
+</para>
+  <para>
+This is the normal structure for any argouml jar file and project.
+</para>
+  <itemizedlist>
+    <listitem>
+      <para><filename>build.xml</filename></para>
+      <para>
+The file controlling the build of that subsystem.
+</para>
+      <para>
+When built, the result end up in a newly created build directory.
+</para>
+    </listitem>
+
+    <listitem>
+      <para><filename class="directory">build</filename></para>
+      <para>
+Directory where the built things end up when building with ant.
+</para>
+      <para>
+This is not kept in the repository. It is created by the build.
+For historic reasons this actually exists in the CVS repository
+of some of the projects.
+This will be fixed after the move to SVN.
+</para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">build-eclipse</filename></para>
+      <para>
+Directory where the built things end up when building with Eclipse.
+</para>
+      <para>
+This is not kept in the repository. It is created by the build.
+</para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">lib</filename></para>
+      <para>jar files used by the project.</para>
+      <para>
+This directory contains the jar files of products that are shipped with
+the project i.e. needed to run the project.
+For ArgoUML this is things like log4j, gef, ...
+</para>
+      <para>
+These are distributed with ArgoUML and have licenses that allow this.
+For clarity the README files and licenses and other distribution
+details of each used jar will also be stored in this directory.
+(Quick summary: BSD License, Apache License, LGPL are OK, GPL is not.)
+Don't forget to arrange for the modules version and license information
+to appear when starting ArgoUML and in the About box.
+</para>
+      <para>
+Take care also to make the versions of these libraries explicit,
+so as to allow people building from sources to figure out
+exact dependencies. Easiest way is to rename the files to
+include version informations, the same way as shared
+libraries in Unix world: foo-x.y.z.jar, bar-x.y.z.jar,
+etc...
+</para>
+    </listitem>
+    <listitem>
+      <para><filename class="directory">src</filename></para>
+      <para>
+Source code.
+</para>
+      <para>
+This directory contains exactly one java class tree
+that is build into exactly one jar file.
+</para>
+    </listitem>
+
+    <listitem>
+      <para><filename class="directory">tests</filename></para>
+      <para>
+Source code for JUnit tests of everything that is in the src directory.
+See <xref linkend="junittests"/>.
+</para>
+      <para>
+This directory contains exactly one java class tree.
+</para>
+    </listitem>
+
+    <listitem>
+      <para><filename class="directory">tools</filename></para>
+      <para>
+Tools used during the build process.
+</para>
+      <para>
+Tools also have the readme files, licenses and other distribution files
+stored in this directory in much the same way as the libraries in
+<filename class="directory">lib</filename>.
+However the requirement on the license is different.
+The tools are never distributed with ArgoUML but merely used in the
+development of ArgoUML so it is enough to have a license that does not
+allow distribution.
+(Quick summary: BSD License, Apache license, LGPL, GPL, Freeware are OK.)
+</para>
+    </listitem>
+  </itemizedlist>
+
+
+  <para>
+Because of they way the Tigris site works there is also the following:
+</para>
+
+  <itemizedlist>
+    <listitem>
+      <para><filename class="directory">www</filename></para>
+      <para>
+This is all the static contents of the web site.
+</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>
+For historic reasons the argouml project i.e. the main project
+looks a little bit different.
+</para>
+
+  <itemizedlist>
+    <listitem>
+      <para><filename class="directory">documentation</filename></para>
+      <para>Directory where the source of the documentation is.</para>
+      <itemizedlist>
+        <listitem>
+          <para><filename class="directory">cookbook</filename></para>
+          <para>XML-source code for this cookbook.</para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">docbook-setup</filename></para>
+          <para>
+XML Tools and configuration files used for the formatting of
+the documentation from the XML-source to HTML and PDF.
+</para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">images</filename></para>
+          <para>Pictures for all documents are collected here.</para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">javahelp</filename></para>
+          <para>Not used. Empty.</para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">manual</filename></para>
+          <para>XML-source code for the User Manual.</para>
+        </listitem>
+        <listitem>
+          <para><filename class="directory">quick-guide</filename></para>
+          <para>XML-source code for the Quick Guide.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>
+It is not yet decided how to handle the User Manual in other languages.
+It is probably best if they reside in the documentation directory in
+the subproject for that language.
+That would make the correct group of developers get access to the files
+without special features.
+</para>
+
+      <para>
+Documentation for features and functions provided by other projects
+are, for the time being, best kept in the one big User Manual.
+</para>
+    </listitem>
+
+
+    <listitem>
+      <para><filename class="directory">modules</filename></para>
+      <para>Old module structure. To be removed.</para>
+    </listitem>
+
+    <listitem>
+      <para><filename class="directory">src</filename></para>
+      <para>
+In conflict with the description above
+this directory contains one directory for each subsystem within ArgoUML.
+Each directory is a complete tree as described above.
+</para>
+    </listitem>
+
+    <listitem>
+      <para><filename class="directory">src_new</filename></para>
+      <para>
+All source code for ArgoUML including pictures of icons.
+</para>
+      <para>
+This is replacing the <filename class="directory">src</filename> directory
+above with the exception that it also contains the build.xml file.
+</para>
+    </listitem>
+
+  </itemizedlist>
+
+  <para>
+The ArgoUML subprojects are projects on Tigris that belong to the
+ArgoUML project.
+To simplify the administration, they are all set up in the same way, i.e.
+as describe above.
+</para>
+
+</appendix>
+
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  cookbook.xml"
+indent-tabs-mode: nil
+End:
+
+-->

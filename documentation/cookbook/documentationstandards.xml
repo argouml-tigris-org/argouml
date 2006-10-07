@@ -141,7 +141,7 @@ html on the &argouml; web site.
       <listitem>
 	<para>
 Do not include lists of what changes have been done to the files.
-This information is kept by CVS, the version control tool.
+This information is kept by the version control tool.
 This is changed since Jeremy Bennet did the work for 
 the 0.9/0.10 User Manual and there might still exist such lists.
 Remove them while changing the files!
@@ -356,8 +356,8 @@ editors use 6 spaces), making documents unreadable between users.
       This does not apply to the manual any more 
       (it now uses standard formatting as supported by most xml editors):
 Indent only the tags, not the text.
-The Docbook source is kept in CVS that is a line-oriented tool. 
-This means that reindentation will be a major thing in CVS making
+The Docbook source is kept in subversion that is a line-oriented tool. 
+This means that reindentation will be a major thing in subversion making
 it hard to see if there were other things done to the code.
 Especially if reindentation caused the paragraphs to be broken
 in a different way.
@@ -378,11 +378,11 @@ The indentation size is 2.
       <listitem>
 	<para>
 Make a new line after each sentence or before expressions.
-The Docbook source is source that is handled by CVS.
+The Docbook source is source that is handled by subversion.
 When structuring the text the parts are paragraphs, sentences and words.
 By having each sentence on a line of its own it is easier to see
 which sentences have been changed and which have not in the <literal>diff</literal>
-reports from CVS.
+reports from subversion.
 The contributions that Jeremy Bennet did for the 0.10 User Manual
 are not written like this.
 Change it while changing the paragraphs.

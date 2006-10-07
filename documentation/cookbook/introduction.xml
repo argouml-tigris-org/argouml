@@ -161,25 +161,15 @@ you to comment on issues.
               </listitem>
               <listitem>
                 <para>
-Subscribe to the cvs mailing list
+Subscribe to the commits mailing list
 of the project that you are interested in.
 </para>
                 <para>
 You will get updates on all changes that are done to code,
-                  documentation, and the web site. (It could be a lot of large
-                  mails. If it turns out you don't like watching what is going on
-                  in the project in this way you unsubscribe.) </para>
-                <note>
-                  <para>
-Some of the argouml projects does not use cvs for the repository
-but subversion
-and, probably during 2006,
-we will convert all the argouml project to subversion.
-For subversion projects, the mailing list is called commits.
-When the conversion is done, you will be moved from the cvs list to the
-commits list automatically but the syntax of the mailings will change.
+documentation, and the web site. (It could be a lot of large
+mails. If it turns out you don't like watching what is going on
+in the project in this way you unsubscribe.)
 </para>
-                </note>
               </listitem>
               <listitem>
                 <para>
@@ -220,7 +210,7 @@ From this on you can comment on bugs yourself directly in Issuezilla.
                   code. </para>
               </listitem>
               <listitem>
-                <para>Check out the source from CVS and build.</para>
+                <para>Check out the source from subversion and build.</para>
               </listitem>
             </orderedlist> </para>
           
@@ -323,7 +313,7 @@ Understanding the terminology used in the project.
             </listitem>
             <listitem>
               <para>
-Understanding how we use CVS in the project.
+Understanding how we use subversion in the project.
 </para>
             </listitem>
             <listitem>
@@ -409,16 +399,22 @@ need to know about how to contribute.
       http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>
 </para>
     <indexterm>
-      <primary>CVS</primary>
+      <primary>Subversion</primary>
+      <secondary>Mailing list</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>commits</primary>
       <secondary>Mailing list</secondary>
     </indexterm>
     <indexterm>
       <primary>Issues</primary>
       <secondary>Mailing list</secondary>
     </indexterm>
-    <para> It is also recommended to join the CVS and Issues mailing lists. Both
-      give you a good idea of what is going on. Developers should also work with
-      Issuezilla registering or fixing problems found by themselves and others.
+    <para>
+It is also recommended to join the commits and issues mailing lists.
+Both give you a good idea of what is going on.
+Developers should also work with
+Issuezilla registering or fixing problems found by themselves and others.
 </para>
   </sect1>
   

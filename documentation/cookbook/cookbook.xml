@@ -34,7 +34,7 @@
 <!ENTITY inside_subsystems SYSTEM "inside_subsystems.xml">
 <!ENTITY extending SYSTEM "extending.xml">
 <!ENTITY documentationorganization SYSTEM "documentation_organization.xml">
-<!ENTITY cvs SYSTEM "cvs.xml">
+<!ENTITY repository SYSTEM "repository.xml">
 <!ENTITY standards SYSTEM "standard.xml">
 <!ENTITY documentationstandards SYSTEM "documentationstandards.xml">
 <!ENTITY further_reading SYSTEM "further_reading.xml">
@@ -140,7 +140,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
   <index/>
 
   &further_reading;
-  &cvs;
+  &repository;
   &documentationorganization;
   
 </book>
