@@ -31,6 +31,7 @@ import javax.swing.JMenu;
 import javax.swing.JTabbedPane;
 
 import org.argouml.dev.figinspector.FigInspectorPanel;
+import org.argouml.model.mdr.EventPumpInspectorPanel;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.ui.targetmanager.TargetManagerPanel;
 import org.tigris.gef.undo.UndoLogPanel;
@@ -80,6 +81,9 @@ public final class DeveloperModule implements ModuleInterface {
 
         JComponent targetManagerPanel = TargetManagerPanel.getInstance();
         devPanel.add("TargetManager", targetManagerPanel);
+
+        JComponent eventPumpPanel = EventPumpInspectorPanel.getInstance();
+        devPanel.add("Model Listeners", eventPumpPanel);
 
         ProjectBrowser.getInstance().addPanel(devPanel, BorderLayout.EAST);
 

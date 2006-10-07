@@ -4,5 +4,7 @@
 	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
 	<classpathentry path="/argouml" combineaccessrules="false" kind="src"/>
 	<classpathentry path="/argouml-core-lib" combineaccessrules="false" kind="src"/>
+	<classpathentry path="/argouml-core-model" combineaccessrules="false" kind="src"/>
+	<classpathentry path="/argouml-core-model-mdr" combineaccessrules="false" kind="src"/>
 	<classpathentry path="build-eclipse" kind="output"/>
 </classpath>
