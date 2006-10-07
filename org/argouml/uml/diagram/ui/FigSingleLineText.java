@@ -148,7 +148,6 @@ public class FigSingleLineText extends FigText {
     }
     
     public void propertyChange(PropertyChangeEvent pce) {
-        super.propertyChange(pce);
         if (getOwner() != null
                 && properties != null
                 && pce instanceof AttributeChangeEvent) {
