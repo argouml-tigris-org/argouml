@@ -263,7 +263,7 @@ public class FigAssociation extends FigEdgeModelElement {
             updateAbstract();
         } else {
             LOG.warn("Got an event with a property we're not registered for "
-                    + e.getPropertyName());
+                    + e.getPropertyName() + " element is " + e.getSource());
         }
     }
     
@@ -741,7 +741,6 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     }
     
     public void propertyChange(PropertyChangeEvent pce) {
-        super.propertyChange(pce);
         if (pce instanceof AttributeChangeEvent
             && (pce.getPropertyName().equals("isNavigable")
                 || pce.getPropertyName().equals("aggregation"))) {
