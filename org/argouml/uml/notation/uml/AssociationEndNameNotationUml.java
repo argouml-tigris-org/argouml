@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
@@ -47,6 +48,12 @@ import org.argouml.util.MyTokenizer;
  */
 public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
 
+	/**
+	 * Logger
+	 */
+	private static Logger LOG =
+		Logger.getLogger(AssociationEndNameNotationUml.class);
+	
     /**
      * The constructor.
      *
@@ -85,6 +92,11 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
                 listener, 
                 modelElement, 
                 new String[] {"name", "visibility", "stereotype"});
+        if (Model.getUmlFactory().isRemoved(modelElement)) {
+        	LOG.warn("Can't get stereotypes of removed AssociationEnd " +
+        			"There will be listeners left in the event pump");
+        	return;
+        }
         Collection st = Model.getFacade().getStereotypes(modelElement);
         Iterator iter = st.iterator();
         while (iter.hasNext()) {
