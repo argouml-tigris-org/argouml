@@ -54,13 +54,20 @@ public class AttributeNotationUml extends AttributeNotation {
     private static final Logger LOG = 
         Logger.getLogger(AttributeNotationUml.class);
 
+    private static final AttributeNotationUml instance = new AttributeNotationUml();
+    
+    public static final AttributeNotationUml getInstance() {
+    	return instance;
+    }
+    
     /**
      * The constructor.
      *
      * @param attribute the attribute that is represented
      */
-    public AttributeNotationUml(Object attribute) {
-        super(attribute);
+    protected AttributeNotationUml() {
+        super();
+        LOG.info("Creating AttributeNotationUml");
     }
 
     /**

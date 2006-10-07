@@ -24,8 +24,6 @@
 
 package org.argouml.uml.notation;
 
-import org.argouml.model.Model;
-
 /**
  * This abstract class forms the basis of all Notation providers
  * for the text shown in the attribute compartment of a Class.
@@ -40,10 +38,7 @@ public abstract class AttributeNotation extends NotationProvider {
      *
      * @param attribute the represented attribute
      */
-    public AttributeNotation(Object attribute) {
-        if (!Model.getFacade().isAAttribute(attribute)) {
-            throw new IllegalArgumentException("This is not an Attribute.");
-        }
+    protected AttributeNotation() {
     }
 
 }

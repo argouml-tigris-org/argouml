@@ -27,6 +27,7 @@ package org.argouml.notation;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -191,10 +192,19 @@ public final class NotationProviderFactory2 {
         NotationName name = proj.getProjectSettings().getNotationName();
         Class clazz = getNotationProviderClass(type, name);
         if (clazz != null) {
-            Class[] p = {Object.class};
-            Constructor constructor = null;
             try {
-                constructor = clazz.getConstructor(p);
+                try {
+                    Class[] mp = {};
+                	Method m = clazz.getMethod("getInstance", mp);
+                	return (NotationProvider) m.invoke(null, mp);
+                } catch (Exception e) {
+                    Class[] cp = {Object.class};
+                    Constructor constructor = clazz.getConstructor(cp);
+                    Object[] params = {
+                            object,
+                        };
+                    return (NotationProvider) constructor.newInstance(params);
+                }
             } catch (SecurityException e) {
                 // TODO: Why aren't we throwing an exception here?
             	// Returning null results in NPE and no explanation why.
@@ -203,13 +213,6 @@ public final class NotationProviderFactory2 {
                 // TODO: Why aren't we throwing an exception here?
             	// Returning null results in NPE and no explanation why.
                 LOG.error("Exception caught", e);
-            }
-            Object[] params = {
-                object,
-            };
-
-            try {
-                return (NotationProvider) constructor.newInstance(params);
             } catch (IllegalArgumentException e) {
                 // TODO: Why aren't we throwing an exception here?
             	// Returning null results in NPE and no explanation why.
