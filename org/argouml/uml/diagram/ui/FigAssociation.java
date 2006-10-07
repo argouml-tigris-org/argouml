@@ -167,7 +167,9 @@ public class FigAssociation extends FigEdgeModelElement {
         updateStereotypeText();
         updateAbstract();
         
-        addElementListener(getOwner(), new String[] {"name", "isAbstract"});
+        addElementListener(
+        		getOwner(),
+        		new String[] {"name", "isAbstract", "remove"});
     }
 
     /**
