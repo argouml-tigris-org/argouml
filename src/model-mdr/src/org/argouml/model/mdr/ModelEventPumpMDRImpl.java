@@ -132,7 +132,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         repository = repo;
         subtypeMap = buildTypeMap(modelImplementation.getModelPackage());
     }
-
+    
     /**
      * @see org.argouml.model.AbstractModelEventPump#addModelEventListener(java.beans.PropertyChangeListener,
      *      java.lang.Object, java.lang.String[])
@@ -235,8 +235,6 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         if (mdrEvent instanceof TransactionEvent) {
             return;
         }
-
-        enableSaveAction();
 
         Vector events = new Vector();
 
@@ -889,5 +887,24 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                 }
             }
         }
+    }
+    
+    /**
+     * Getter provided for the dev module to allow it to discover the
+     * listeners contained by the event pump.
+     * @return The structure of listeners
+     */
+    Map getElements() {
+        return elements;
+    }
+    
+    /**
+     * Getter provided for the dev module to allow it to determine the model
+     * element from a MOF ID returned within the getElements() structure.
+     * @param mofId The MOF ID of the model element
+     * @return The model element
+     */
+    Object getByMofId(String mofId) {
+        return repository.getByMofId(mofId);
     }
 }
