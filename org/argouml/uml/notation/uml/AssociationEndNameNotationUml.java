@@ -27,12 +27,10 @@ package org.argouml.uml.notation.uml;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
@@ -43,16 +41,16 @@ import org.argouml.util.MyTokenizer;
 
 /**
  * The UML notation for an associationend name (i.e. the  role).
- * 
+ * TODO: This is the only notation (that I'm aware of) that requires state.
+ * All others should become effectively singletons. - Bob.
  * @author michiel
  */
 public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
 
 	/**
-	 * Logger
+	 * The stereotypes of interest to this notation
 	 */
-	private static Logger LOG =
-		Logger.getLogger(AssociationEndNameNotationUml.class);
+	private ArrayList stereotypes;
 	
     /**
      * The constructor.
@@ -72,8 +70,9 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
                 listener, 
                 modelElement, 
                 new String[] {"name", "visibility", "stereotype"});
-        Collection st = Model.getFacade().getStereotypes(modelElement);
-        Iterator iter = st.iterator();
+        stereotypes =
+        	new ArrayList(Model.getFacade().getStereotypes(modelElement));
+        Iterator iter = stereotypes.iterator();
         while (iter.hasNext()) {
             Object o = iter.next();
             Model.getPump().addModelEventListener(
@@ -92,13 +91,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
                 listener, 
                 modelElement, 
                 new String[] {"name", "visibility", "stereotype"});
-        if (Model.getUmlFactory().isRemoved(modelElement)) {
-        	LOG.warn("Can't get stereotypes of removed AssociationEnd " +
-        			"There will be listeners left in the event pump");
-        	return;
-        }
-        Collection st = Model.getFacade().getStereotypes(modelElement);
-        Iterator iter = st.iterator();
+        Iterator iter = stereotypes.iterator();
         while (iter.hasNext()) {
             Object o = iter.next();
             Model.getPump().removeModelEventListener(
@@ -124,6 +117,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
                         listener, 
                         pce.getNewValue(), 
                         new String[] {"name", "remove"});
+                stereotypes.add(pce.getNewValue());
             }
             if (pce instanceof RemoveAssociationEvent 
                     && Model.getFacade().isAStereotype(pce.getOldValue())) {
@@ -132,6 +126,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
                         listener, 
                         pce.getOldValue(), 
                         new String[] {"name", "remove"});
+                stereotypes.remove(pce.getOldValue());
             }
         }
     }
