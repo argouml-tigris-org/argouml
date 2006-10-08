@@ -313,12 +313,64 @@ class ModelMemberFilePersister extends MemberFilePersister
      * model(s) of the project. If no other diagrams are created and atLeastOne
      * is true, than a default Class Diagram will be created.  ArgoUML currently
      * requires at least one diagram for proper operation.
+     * TODO: Move to XmiFilePersister (protected)
      *
-     * @param project
-     *            The project
+     * @param project The project
      */
     public void registerDiagrams(Project project) {
-        registerDiagrams(project, elementsRead, true);
+        Facade facade = Model.getFacade();
+        Collection diagramsElement = new ArrayList();
+        Iterator it = elementsRead.iterator();
+        while (it.hasNext()) {
+            Object element = it.next();
+            if (facade.isAModel(element)) {
+                diagramsElement.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(element,
+                                Model.getMetaTypes().getStateMachine()));
+            } else if (facade.isAStateMachine(element)) {
+                diagramsElement.add(element);
+            }
+        }
+        DiagramFactory diagramFactory = DiagramFactory.getInstance();
+        it = diagramsElement.iterator();
+        while (it.hasNext()) {
+            Object statemachine = it.next();
+            Object namespace = facade.getNamespace(statemachine);
+            if (namespace == null) {
+                namespace = facade.getContext(statemachine);
+                Model.getCoreHelper().setNamespace(statemachine, namespace);
+            }
+            ArgoDiagram diagram = null;
+            if (facade.isAActivityGraph(statemachine)) {
+                LOG.info("Creating activity diagram for "
+                        + facade.getUMLClassName(statemachine)
+                        + "<<" + facade.getName(statemachine) + ">>");
+                diagram =
+                    diagramFactory.createDiagram(UMLActivityDiagram.class,
+                                                 namespace, statemachine);
+            } else {
+                LOG.info("Creating state diagram for "
+                        + facade.getUMLClassName(statemachine)
+                        + "<<" + facade.getName(statemachine) + ">>");
+                diagram =
+                    diagramFactory.createDiagram(UMLStateDiagram.class,
+                                                 namespace, statemachine);
+            }
+            if (diagram != null) {
+                proj.addMember(diagram);
+            }
+        }
+        // ISSUE 3516 : Make sure there is at least one diagram because
+        // ArgoUML requires it for correct operation
+        if (proj.getDiagramCount() < 1) {
+            ArgoDiagram d =
+                diagramFactory.createDiagram(UMLClassDiagram.class,
+                                             curModel, null);
+            proj.addMember(d);
+        }
+        if (proj.getDiagramCount() >= 1 && proj.getActiveDiagram() == null) {
+            proj.setActiveDiagram((ArgoDiagram) proj.getDiagrams().get(0));
+        }
     }
     
     /**
@@ -333,6 +385,7 @@ class ModelMemberFilePersister extends MemberFilePersister
      *            Collection of top level model elements to process
      * @param atLeastOne
      *            If true, forces at least one diagram to be created.
+     * @deprecated in 0.23.3 use registerDiagrams(Project)
      */
     public void registerDiagrams(Project project, Collection elements,
             boolean atLeastOne) {
