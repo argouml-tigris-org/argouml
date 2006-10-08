@@ -496,6 +496,8 @@ what you are doing</h5>
      You must trust that it was put there by Linus Tolke and
      that it has not been compromised on the tigris server or
      while moving it from the tigris server to your computer. )
+    Starting with release 0.23.3 there is a new certificate called
+    "argouml-linus-2.cer".
      
 <li>Note one of the hashcodes:<pre>
    MD5: F1:A9:ED:79:88:91:19:31:AA:69:EE:A0:8F:AF:4A:43
@@ -507,6 +509,14 @@ what you are doing</h5>
    ( You must trust that the fingerprints where put there by Linus Tolke
      and that they have not been compromised while on the tigris server or
      while moving them from the tigris server to your computer. )
+
+   Starting with release 0.23.3 there is a new certificate called
+    "argouml-linus-2.cer".
+   The new certificate has the hash codes
+   <pre>
+   MD5:  88:B9:BB:BE:B8:53:F8:97:FC:B4:AE:9F:E2:2F:21:50
+   SHA1: 1C:5D:60:B3:77:29:94:4A:1F:BE:B0:0E:D5:D9:66:63:9B:EC:E5:E6
+   </pre>
 
 <li>Import the certificate to your local installation of Java Web Start.
    You can do that - for example - performing these steps:
@@ -536,9 +546,14 @@ Now <em>you</em> are trusting the updates from ArgoUML issued by
 Linus Tolke using this certificate.<p>
 
 If you notice that the current (September 2004) certificate
-expires in November 2006 you can conclude that Linus Tolke will
-create a new certificate in the first half of 2006 and then the
-fingerprints will change.
+("argouml-linus-1.cer")
+expires in November 2006,
+you understand that Linus Tolke
+created a new certificate (in October 2006) and then the
+fingerprints for the new certificate are different.
+The new certificate ("argouml-linus-2.cer")
+expires in March 2012 and then a new certificate will be created
+unless something has happened that changes this.
 Another thing that might happen is that Linus Tolke will let someone
 else do the release work and sign the Java Web Start releases with
 a new key.
