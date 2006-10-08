@@ -681,7 +681,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         throws ParseException {
 
         if (Model.getFacade().isAAttribute(element)) {
-            AttributeNotationUml anu = new AttributeNotationUml(element); 
+            AttributeNotationUml anu = new AttributeNotationUml(); 
             anu.parseAttribute(text, element);
             assertTrue(text
                        + " gave wrong name: "
@@ -703,7 +703,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     private void checkType(Object feature, String text, String type)
         throws ParseException {
         if (Model.getFacade().isAAttribute(feature)) {
-            AttributeNotationUml anu = new AttributeNotationUml(feature); 
+            AttributeNotationUml anu = new AttributeNotationUml(); 
             anu.parseAttribute(text, feature);
             assertTrue(text + " gave wrong type: (null)",
                        Model.getFacade().getType(feature) != null);
@@ -787,7 +787,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     private void checkVisibility(Object feature, String text, String vis)
         throws ParseException {
         if (Model.getFacade().isAAttribute(feature)) {
-            AttributeNotationUml anu = new AttributeNotationUml(feature); 
+            AttributeNotationUml anu = new AttributeNotationUml(); 
             anu.parseAttribute(text, feature);
             assertTrue(text + " gave wrong visibility: (null)",
                        Model.getFacade().getVisibility(feature) != null);
@@ -819,7 +819,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         if (Model.getFacade().isAAttribute(feature)) {
             int i;
-            AttributeNotationUml anu = new AttributeNotationUml(feature); 
+            AttributeNotationUml anu = new AttributeNotationUml(); 
             anu.parseAttribute(text, feature);
             for (i = 0; i + 1 < props.length; i += 2) {
                 if (props[i + 1] == null) {
@@ -867,7 +867,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
                    Object mult)
         throws ParseException {
 
-        AttributeNotationUml anu = new AttributeNotationUml(attr); 
+        AttributeNotationUml anu = new AttributeNotationUml(); 
         anu.parseAttribute(text, attr);
         if (mult == null) {
             assertTrue(
@@ -900,7 +900,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
                  boolean ex3) {
         if (Model.getFacade().isAAttribute(element)) {
             try {
-                AttributeNotationUml anu = new AttributeNotationUml(element); 
+                AttributeNotationUml anu = new AttributeNotationUml(); 
                 anu.parseAttribute(text, element);
                 fail("didn't throw for " + text);
             } catch (ParseException pe) {
@@ -920,7 +920,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     private void checkValue(Object attr, String text, String val)
         throws ParseException {
 
-        AttributeNotationUml anu = new AttributeNotationUml(attr); 
+        AttributeNotationUml anu = new AttributeNotationUml(); 
         anu.parseAttribute(text, attr);
         if (val == null) {
             assertTrue(
@@ -960,7 +960,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         throws ParseException {
 
         if (Model.getFacade().isAAttribute(feature)) {
-            AttributeNotationUml anu = new AttributeNotationUml(feature); 
+            AttributeNotationUml anu = new AttributeNotationUml(); 
             anu.parseAttribute(text, feature);
         } else if (Model.getFacade().isAOperation(feature)) {
             OperationNotationUml onu = new OperationNotationUml(feature);
