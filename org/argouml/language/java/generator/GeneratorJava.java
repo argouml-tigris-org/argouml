@@ -439,14 +439,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateAssociationRole(java.lang.Object)
-     */
-    public String generateAssociationRole(Object m) {
-        return "";
-    }
-
-    /**
-     * @see org.argouml.notation.NotationProvider2#generateOperation(
+     * @see org.argouml.uml.generator.Generator2#generateOperation(
      *         java.lang.Object, boolean)
      */
     public String generateOperation(Object op, boolean documented) {
@@ -563,7 +556,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateAttribute(
+     * @see org.argouml.uml.generator.Generator2#generateAttribute(
      *         java.lang.Object, boolean)
      */
     public String generateAttribute(Object attr, boolean documented) {
@@ -618,7 +611,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateParameter(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateParameter(java.lang.Object)
      */
     public String generateParameter(Object parameter) {
         StringBuffer sb = new StringBuffer(20);
@@ -632,7 +625,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generatePackage(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generatePackage(java.lang.Object)
      */
     public String generatePackage(Object p) {
         StringBuffer sb = new StringBuffer(80);
@@ -788,7 +781,7 @@ public class GeneratorJava
     /**
      * Generates code for a classifier. In case of Java code is
      * generated for classes and interfaces only at the moment.
-     * @see org.argouml.notation.NotationProvider2#generateClassifier(
+     * @see org.argouml.uml.generator.Generator2#generateClassifier(
      *         Object)
      */
     public String generateClassifier(Object cls) {
@@ -1129,7 +1122,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateTaggedValue(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateTaggedValue(java.lang.Object)
      */
     public String generateTaggedValue(Object tv) {
         if (tv == null) {
@@ -1379,7 +1372,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateAssociation(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateAssociation(java.lang.Object)
      */
     public String generateAssociation(Object a) {
         //    String s = "";
@@ -1398,7 +1391,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateAssociationEnd(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateAssociationEnd(java.lang.Object)
      */
     public String generateAssociationEnd(Object ae) {
         if (!Model.getFacade().isNavigable(ae)) {
@@ -1502,7 +1495,7 @@ public class GeneratorJava
      * the definition in NotationProvider2), but also for a model element,
      * because if it is a MFeature, then the tag 'src_visibility' is to be
      * taken into account for generating language dependent visibilities.
-     * @see org.argouml.notation.NotationProvider2#generateVisibility(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateVisibility(java.lang.Object)
      */
     public String generateVisibility(Object o) {
 	if (Model.getFacade().isAFeature(o)) {
@@ -1614,14 +1607,14 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateState(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateState(java.lang.Object)
      */
     public String generateState(Object m) {
         return Model.getFacade().getName(m);
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateSubmachine(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateSubmachine(java.lang.Object)
      */
     public String generateSubmachine(Object m) {
         Object c = Model.getFacade().getSubmachine(m);
@@ -1638,7 +1631,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateObjectFlowState(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateObjectFlowState(java.lang.Object)
      */
     public String generateObjectFlowState(Object m) {
         Object c = Model.getFacade().getType(m);
@@ -1648,9 +1641,9 @@ public class GeneratorJava
         return Model.getFacade().getName(c);
     }
 
-    /**
-     * @see org.argouml.notation.NotationProvider2#generateStateBody(java.lang.Object)
-     */
+    /*
+     * @see org.argouml.uml.generator.Generator2#generateStateBody(java.lang.Object)
+     *
     public String generateStateBody(Object m) {
         LOG.info("GeneratorJava: generating state body");
         StringBuffer sb = new StringBuffer(80);
@@ -1700,12 +1693,12 @@ public class GeneratorJava
 	     if (s.length() > 0) s += "\n";
 	     s += Generate(transarray[i]);
 	     }
-	     }*/
+	     }*
         return sb.toString();
-    }
+    } */
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateTransition(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateTransition(java.lang.Object)
      */
     public String generateTransition(Object m) {
         StringBuffer sb =
@@ -1743,7 +1736,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateAction(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateAction(java.lang.Object)
      */
     public String generateAction(Object m) {
         // return m.getName();
@@ -1759,7 +1752,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateGuard(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateGuard(java.lang.Object)
      */
     public String generateGuard(Object m) {
         //return generateExpression(Model.getFacade().getExpression(m));
@@ -1770,7 +1763,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateMessage(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateMessage(java.lang.Object)
      */
     public String generateMessage(Object m) {
         if (m == null) {
@@ -1976,7 +1969,7 @@ public class GeneratorJava
     }
 
     /**
-     * @see org.argouml.notation.NotationProvider2#generateActionState(java.lang.Object)
+     * @see org.argouml.uml.generator.Generator2#generateActionState(java.lang.Object)
      */
     public String generateActionState(Object actionState) {
         String ret = "";
