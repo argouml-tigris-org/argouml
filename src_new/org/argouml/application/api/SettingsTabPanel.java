@@ -30,11 +30,11 @@ import org.argouml.ui.GUISettingsTabInterface;
  * An interface which must be implemented as the UI for
  * tabs used on the settings panel.<p>
  *
- * Tabs will only need to load data during {@link #handleSettingsTabRefresh}
- * and should only save data during {@link #handleSettingsTabSave}.
+ * Tabs will only need to load data during {@link GUISettingsTabInterface#handleSettingsTabRefresh}
+ * and should only save data during {@link GUISettingsTabInterface#handleSettingsTabSave}.
  * Changes can be made during editing of the tabs, but the tab must
  * be able to undo any change if requested
- * through {@link #handleSettingsTabCancel}.<p>
+ * through {@link GUISettingsTabInterface#handleSettingsTabCancel}.<p>
  *
  * @author Thierry Lach
  * @since 0.9.4

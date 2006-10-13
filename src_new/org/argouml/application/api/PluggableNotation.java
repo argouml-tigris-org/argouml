@@ -34,7 +34,7 @@ package org.argouml.application.api;
  * @deprecated by Linus Tolke (0.21.1 March 2006).
  *         Register with
  *         {@link org.argouml.uml.generator.GeneratorManager#addGenerator(
- *         Language, CodeGenerator)}
+ *         org.argouml.uml.generator.Language, org.argouml.uml.generator.CodeGenerator)}
  *         from
  *         {@link org.argouml.moduleloader.ModuleInterface#enable()}.
  */

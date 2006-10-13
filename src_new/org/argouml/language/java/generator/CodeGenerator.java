@@ -45,11 +45,13 @@ import org.argouml.model.Model;
  */
 class CodeGenerator {
     /**
-       Generate code for a class.
-
-       @param mClass The class to generate code for.
-       @param writer The writer to write to.
-    */
+     * Generate code for a class.
+     *
+     * @param mClass The class to generate code for.
+     * @param reader The reader to read from.
+     * @param writer The writer to write to.
+     * @throws IOException if there is a problem with reading/writing.
+     */
     public static void generateClass(Object/*MClass*/ mClass,
 				     BufferedReader reader,
 				     BufferedWriter writer)
@@ -96,7 +98,9 @@ class CodeGenerator {
      * Generate code for an interface.
      *
      * @param mInterface The interface to generate code for.
+     * @param reader The reader to read from.
      * @param writer The writer to write to.
+     * @throws IOException if there is a problem with reading/writing.
      */
     public static void generateInterface(Object mInterface,
 					 BufferedReader reader,
@@ -140,12 +144,14 @@ class CodeGenerator {
     }
 
     /**
-       Generate code for an operation.
-
-       @param mOperation The operation to generate code for.
-       @param mClassifier The classifier the operation belongs to.
-       @param writer The writer to write to.
-    */
+     * Generate code for an operation.
+     *
+     * @param mOperation The operation to generate code for.
+     * @param mClassifier The classifier the operation belongs to.
+     * @param reader The reader to read from.
+     * @param writer The writer to write to.
+     * @throws IOException if there is a problem with reading/writing.
+     */
     public static void generateOperation(Object mOperation,
 					 Object mClassifier,
 					 BufferedReader reader,
@@ -176,7 +182,9 @@ class CodeGenerator {
      *
      * @param mAttribute The attribute to generate code for.
      * @param mClassifier The classifier the attribute belongs to.
+     * @param reader The reader to read from.
      * @param writer The writer to write to.
+     * @throws IOException if there is a problem with reading/writing.
      */
     public static void generateAttribute(Object mAttribute,
 					 Object mClassifier,
