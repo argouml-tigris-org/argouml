@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<psf version="2.0">
-	<provider id="org.polarion.team.svn.core.svnnature">
-		<project reference="1.0.0,http://argoprint.tigris.org/svn/argoprint/trunk,argoprint,d85409-10d46d54d59-94b9d072f665273475098ea4596745aa;http://argoprint.tigris.org/svn/argoprint;http://argoprint.tigris.org/svn/argoprint;branches;tags;trunk"/>
-	</provider>
-</psf>
