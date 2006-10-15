@@ -24,6 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.Collection;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -31,6 +33,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.ActionNavigateUpNextDown;
+import org.argouml.uml.ui.ActionNavigateUpPreviousDown;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
@@ -40,7 +44,8 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * The properties panel for an Attribute.
+ * The properties panel for an Attribute of a Classifier, 
+ * and the Qualifier of an AssociationEnd.
  *
  * @author jrobbins
  * @author jaap.branderhorst
@@ -95,6 +100,30 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         add(initialPanel);
 
         addAction(new ActionNavigateContainerElement());
+        addAction(new ActionNavigateUpPreviousDown() {
+            public Collection getFamily(Object parent) {
+                if(Model.getFacade().isAAssociationEnd(parent)) {
+                    return Model.getFacade().getQualifiers(parent);
+                }
+                return Model.getFacade().getAttributes(parent);
+            }
+
+            public Object getParent(Object child) {
+                return Model.getFacade().getModelElementContainer(child);
+            }
+        });
+        addAction(new ActionNavigateUpNextDown() {
+            public Collection getFamily(Object parent) {
+                if (Model.getFacade().isAAssociationEnd(parent)) {
+                    return Model.getFacade().getQualifiers(parent);
+                }
+                return Model.getFacade().getAttributes(parent);
+            }
+
+            public Object getParent(Object child) {
+                return Model.getFacade().getModelElementContainer(child);
+            }
+        });
         addAction(TargetManager.getInstance().getAddAttributeAction());
         addAction(new ActionAddDataType());
         addAction(new ActionAddEnumeration());

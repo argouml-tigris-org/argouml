@@ -25,6 +25,7 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -38,13 +39,15 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateOwner;
+import org.argouml.uml.ui.ActionNavigateUpNextDown;
+import org.argouml.uml.ui.ActionNavigateUpPreviousDown;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * A property panel for operations.
+ * A property panel for Operations of Classifiers.
  */
 public class PropPanelOperation extends PropPanelFeature {
 
@@ -108,6 +111,24 @@ public class PropPanelOperation extends PropPanelFeature {
                 new JScrollPane(osta));
 
         addAction(new ActionNavigateOwner());
+        addAction(new ActionNavigateUpPreviousDown() {
+            public Collection getFamily(Object parent) {
+                return Model.getFacade().getOperations(parent);
+            }
+
+            public Object getParent(Object child) {
+                return Model.getFacade().getOwner(child);
+            }
+        });
+        addAction(new ActionNavigateUpNextDown() {
+            public Collection getFamily(Object parent) {
+                return Model.getFacade().getOperations(parent);
+            }
+
+            public Object getParent(Object child) {
+                return Model.getFacade().getOwner(child);
+            }
+        });
         addAction(TargetManager.getInstance().getAddOperationAction());
         addAction(new ActionNewParameter());
         addAction(new ActionNewRaisedSignal());

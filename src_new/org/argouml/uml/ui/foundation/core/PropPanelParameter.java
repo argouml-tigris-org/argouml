@@ -24,6 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.Collection;
+
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -32,6 +34,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.ActionNavigateUpNextDown;
+import org.argouml.uml.ui.ActionNavigateUpPreviousDown;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
@@ -89,6 +93,24 @@ public class PropPanelParameter extends PropPanelModelElement {
                 Translator.localize("label.parameter.kind"), true));
 
         addAction(new ActionNavigateContainerElement());
+        addAction(new ActionNavigateUpPreviousDown() {
+            public Collection getFamily(Object parent) {
+                return Model.getFacade().getParameters(parent);
+            }
+
+            public Object getParent(Object child) {
+                return Model.getFacade().getModelElementContainer(child);
+            }
+        });
+        addAction(new ActionNavigateUpNextDown() {
+            public Collection getFamily(Object parent) {
+                return Model.getFacade().getParameters(parent);
+            }
+
+            public Object getParent(Object child) {
+                return Model.getFacade().getModelElementContainer(child);
+            }
+        });
         addAction(new ActionNewParameter());
         addAction(new ActionAddDataType());
         addAction(new ActionAddEnumeration());
