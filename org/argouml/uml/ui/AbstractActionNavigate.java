@@ -32,6 +32,8 @@ import javax.swing.Icon;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -40,7 +42,8 @@ import org.tigris.gef.undo.UndoableAction;
  * @author mkl
  *
  */
-public abstract class AbstractActionNavigate extends UndoableAction {
+public abstract class AbstractActionNavigate extends UndoableAction 
+    implements TargetListener {
 
     /**
      * The constructor.
@@ -105,4 +108,26 @@ public abstract class AbstractActionNavigate extends UndoableAction {
             }
         }
     }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        setEnabled(isEnabled());
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        setEnabled(isEnabled());
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setEnabled(isEnabled());
+    }
+
 }

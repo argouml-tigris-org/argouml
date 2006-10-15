@@ -28,7 +28,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
 import javax.swing.Action;
@@ -169,13 +168,29 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      *            the tooltip to set, or null to skip setting of a new tooltip.
      */
     protected void addAction(Action action, String tooltip) {
-        JButton button = new JButton(action);
+        JButton button = new TargettableButton(action);
         if (tooltip != null) button.setToolTipText(tooltip);
         button.setText("");
         button.setFocusable(false);
         buttonPanel.add(button);
     }
 
+    private class TargettableButton extends JButton 
+        implements TargettableModelView {
+
+        public TargettableButton(Action action) {
+            super(action);
+        }
+
+        public TargetListener getTargettableModel() {
+            if (getAction() instanceof TargetListener) {
+                return (TargetListener) getAction();
+            }
+            return null;
+        }
+        
+    }
+    
     /**
      * Add a component with the specified label.
      * <p>
