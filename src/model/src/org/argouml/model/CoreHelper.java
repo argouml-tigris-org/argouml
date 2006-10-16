@@ -96,8 +96,10 @@ public interface CoreHelper {
      *
      * @param classifier the classifier you want to have the operations for
      * @return a collection of the operations
+     * @deprecated by tfmorris for 0.23.4 
+     * use {@link Facade#getOperations(Object)}
      */
-    Collection getOperations(Object classifier);
+    List getOperations(Object classifier);
 
     /**
      * This method replaces all operations of the given classifier
@@ -105,25 +107,47 @@ public interface CoreHelper {
      *
      * @param classifier the given classifier
      * @param operations the new operations
+     * @deprecated use variant which takes a List of operations as a parameter
+     * {@link #setOperations(Object, List)}
      */
     void setOperations(Object classifier, Collection operations);
+
+    /**
+     * This method replaces all operations of the given classifier
+     * by the given list of operations.
+     *
+     * @param classifier the given classifier
+     * @param operations the new operations
+     */
+    void setOperations(Object classifier, List operations);
 
     /**
      * This method returns all attributes of a given Classifier.
      *
      * @param classifier the classifier you want to have the attributes for
      * @return a collection of the attributes
+     * @deprecated by tfmorris for 0.23.4 use {@link Facade#getAttributes(Object)}
      */
-    Collection getAttributes(Object classifier);
+    List getAttributes(Object classifier);
 
     /**
      * This method replaces all attributes of the given classifier
      * by the given collection of attributes.
      * @param classifier the classifier
      * @param attributes the new attributes
+     * @deprecated by tfmorris for 0.23.4, use the variant that takes a List 
+     * of attributes {@link #setAttributes(Object, List)}
      */
     void setAttributes(Object classifier, Collection attributes);
 
+    /**
+     * This method replaces all attributes of the given classifier
+     * by the given collection of attributes.
+     * @param classifier the classifier
+     * @param attributes an ordered list of new attributes
+     */
+    void setAttributes(Object classifier, List attributes);
+    
     /**
      * This method returns all attributes of a given Classifier,
      * including inherited.
@@ -162,9 +186,9 @@ public interface CoreHelper {
      * Returns all return parameters for an operation.
      *
      * @param operation is the operation.
-     * @return Collection
+     * @return List of parameters of with direction kind of Return
      */
-    Collection getReturnParameters(Object operation);
+    List getReturnParameters(Object operation);
 
     /**
      * Returns the operation that some method realized. Returns null if
@@ -213,9 +237,9 @@ public interface CoreHelper {
     /**
      * Returns all behavioral features of some classifier.
      * @param clazz The classifier
-     * @return the collection with all behavioral features of some classifier
+     * @return the list with all behavioral features of some classifier
      */
-    Collection getBehavioralFeatures(Object clazz);
+    List getBehavioralFeatures(Object clazz);
 
     /**
      * Returns all interfaces found in this namespace and in its children.
@@ -1041,8 +1065,18 @@ public interface CoreHelper {
      *
      * @param handle the association end
      * @param elems is a Collection of qualifiers
+     * @deprecated by tfmorris for 0.23.4, 
+     * use {@link #setQualifiers(Object, List)}
      */
     void setQualifiers(Object handle, Collection elems);
+
+    /**
+     * Sets the qualified attributes of an association end.
+     *
+     * @param handle the association end
+     * @param elems List of qualifiers
+     */
+    void setQualifiers(Object handle, List elems);
 
     /**
      * Sets the query flag of a behavioral feature.

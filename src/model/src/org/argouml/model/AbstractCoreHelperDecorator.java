@@ -112,7 +112,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     /**
      * @see org.argouml.model.CoreHelper#getOperations(java.lang.Object)
      */
-    public Collection getOperations(Object classifier) {
+    public List getOperations(Object classifier) {
         return impl.getOperations(classifier);
     }
 
@@ -125,9 +125,17 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     }
 
     /**
+     * @see org.argouml.model.CoreHelper#setOperations(
+     *         java.lang.Object, java.util.List)
+     */
+    public void setOperations(Object classifier, List operations) {
+        impl.setOperations(classifier, operations);
+    }
+
+    /**
      * @see org.argouml.model.CoreHelper#getAttributes(java.lang.Object)
      */
-    public Collection getAttributes(Object classifier) {
+    public List getAttributes(Object classifier) {
         return impl.getAttributes(classifier);
     }
 
@@ -139,6 +147,14 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.setAttributes(classifier, attributes);
     }
 
+    /**
+     * @see org.argouml.model.CoreHelper#setAttributes(
+     *         java.lang.Object, java.util.List)
+     */
+    public void setAttributes(Object classifier, List attributes) {
+        impl.setAttributes(classifier, attributes);
+    }
+    
     /**
      * @see org.argouml.model.CoreHelper#getAttributesInh(java.lang.Object)
      */
@@ -163,7 +179,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     /**
      * @see org.argouml.model.CoreHelper#getReturnParameters(java.lang.Object)
      */
-    public Collection getReturnParameters(Object operation) {
+    public List getReturnParameters(Object operation) {
         return impl.getReturnParameters(operation);
     }
 
@@ -200,7 +216,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      * @see org.argouml.model.CoreHelper#getBehavioralFeatures(
      *         java.lang.Object)
      */
-    public Collection getBehavioralFeatures(Object clazz) {
+    public List getBehavioralFeatures(Object clazz) {
         return impl.getBehavioralFeatures(clazz);
     }
 
@@ -842,6 +858,14 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      *         java.lang.Object, java.util.Collection)
      */
     public void setQualifiers(Object handle, Collection elems) {
+        impl.setQualifiers(handle, elems);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setQualifiers(
+     *         java.lang.Object, java.util.List)
+     */
+    public void setQualifiers(Object handle, List elems) {
         impl.setQualifiers(handle, elems);
     }
 

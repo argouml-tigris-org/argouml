@@ -1233,7 +1233,7 @@ public interface Facade {
      * @param handle classifier to examine.
      * @return Collection with attributes.
      */
-    Collection getAttributes(Object handle);
+    List getAttributes(Object handle);
 
     /**
      * The baseclass of some stereotype.
@@ -2033,7 +2033,7 @@ public interface Facade {
      * @param handle classifier to examine.
      * @return Collection with operations.
      */
-    Collection getOperations(Object handle);
+    List getOperations(Object handle);
 
     /**
      * Returns the opposite end of an association end.
@@ -2119,9 +2119,9 @@ public interface Facade {
      * Get the qualified attributes of an association end.
      *
      * @param handle association end to retrieve from
-     * @return Collection with qualifiers.
+     * @return List of qualifiers.
      */
-    Collection getQualifiers(Object handle);
+    List getQualifiers(Object handle);
 
     /**
      * Determine if the passed parameter has a RETURN direction kind.
@@ -2140,7 +2140,7 @@ public interface Facade {
     Object getPackage(Object handle);
 
     /**
-     * Get a parameter of a behavioral feature.
+     * Get a specific parameter of a Behavioral Feature or Event.
      *
      * @param handle behavioral feature to retrieve from
      * @param n parameter number
@@ -2149,13 +2149,27 @@ public interface Facade {
     Object getParameter(Object handle, int n);
 
     /**
-     * Get the parameters of a Object Flow State, Behavioral Feature,
-     * Classifier or Event.
-     *
-     * @param handle operation to retrieve from
+     * Get the parameters of a Behavioral Feature, Event, or Object Flow State,
+     * or all the parameters which have a given classifier as their type. The
+     * collection returned for the first two parameter types (Behavioral Feature
+     * and Event) is an ordered List, while the latter two return an unordered
+     * collection.
+     * 
+     * @param handle
+     *            operation to retrieve from
      * @return A Collection with the parameters.
      */
     Collection getParameters(Object handle);
+
+    /**
+     * Get an ordered list of parameters of a Behavioral Feature
+     * or Event.
+     * 
+     * @param handle
+     *            operation to retrieve from
+     * @return List of parameters.
+     */
+    List getParametersList(Object handle);
 
     /**
      * Get the parent of a generalization.
@@ -2500,7 +2514,7 @@ public interface Facade {
      * @param handle is the classifier you want to have the attributes for.
      * @return a collection of the attributes
      */
-    Collection getStructuralFeatures(Object handle);
+    List getStructuralFeatures(Object handle);
 
     /**
      * Returns the Specification of a given Reception or Operation.
