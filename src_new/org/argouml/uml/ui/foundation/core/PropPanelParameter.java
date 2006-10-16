@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -93,9 +93,12 @@ public class PropPanelParameter extends PropPanelModelElement {
                 Translator.localize("label.parameter.kind"), true));
 
         addAction(new ActionNavigateContainerElement());
+        // The following two actions are only significant if the Parameter is
+        // contained in the list of parameters for a Behavioral Feature or an
+        // Event.  I'm not sure if they need to be conditionally disabled.-tfm
         addAction(new ActionNavigateUpPreviousDown() {
-            public Collection getFamily(Object parent) {
-                return Model.getFacade().getParameters(parent);
+            public List getFamily(Object parent) {
+                return Model.getFacade().getParametersList(parent);
             }
 
             public Object getParent(Object child) {
@@ -103,8 +106,8 @@ public class PropPanelParameter extends PropPanelModelElement {
             }
         });
         addAction(new ActionNavigateUpNextDown() {
-            public Collection getFamily(Object parent) {
-                return Model.getFacade().getParameters(parent);
+            public List getFamily(Object parent) {
+                return Model.getFacade().getParametersList(parent);
             }
 
             public Object getParent(Object child) {

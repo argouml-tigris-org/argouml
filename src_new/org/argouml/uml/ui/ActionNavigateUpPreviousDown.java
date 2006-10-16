@@ -24,12 +24,13 @@
 
 package org.argouml.uml.ui;
 
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+
 
 /**
  * An action to navigate to the previous in the list, 
@@ -54,7 +55,7 @@ public abstract class ActionNavigateUpPreviousDown
      */
     protected Object navigateTo(Object source) {
         Object up = getParent(source);
-        Collection family = getFamily(up);
+        List family = getFamily(up);
         assert family.contains(source);
         Iterator it = family.iterator();
         Object previous = null;
@@ -74,7 +75,7 @@ public abstract class ActionNavigateUpPreviousDown
      * @param parent the parent element that owns all elements in the list
      * @return the list
      */
-    public abstract Collection getFamily(Object parent);
+    public abstract List getFamily(Object parent);
     
     /**
      * Get the parent of the list of elements that we are navigating through.
