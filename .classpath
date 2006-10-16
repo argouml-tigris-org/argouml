@@ -2,6 +2,6 @@
 <classpath>
 	<classpathentry excluding=".settings/|bin/|build-eclipse/|build/|templates/|tests/" kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
