@@ -1908,6 +1908,7 @@ class FacadeMDRImpl implements Facade {
     public Collection getConnections(Object handle) {
         try {
             if (handle instanceof UmlAssociation) {
+                // returns List
                 return ((UmlAssociation) handle).getConnection();
             }
             if (handle instanceof Link) {
@@ -2122,6 +2123,7 @@ class FacadeMDRImpl implements Facade {
                 return ((UseCase) handle).getExtensionPoint();
             }
             if (handle instanceof Extend) {
+                // returns a List
                 return ((Extend) handle).getExtensionPoint();
             }
         } catch (InvalidObjectException e) {
@@ -2133,7 +2135,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * @see org.argouml.model.Facade#getFeatures(java.lang.Object)
      */
-    public Collection getFeatures(Object handle) {
+    public List getFeatures(Object handle) {
         try {
             if (handle instanceof Classifier) {
                 return ((Classifier) handle).getFeature();
@@ -2141,7 +2143,7 @@ class FacadeMDRImpl implements Facade {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
+        return illegalArgumentList(handle);
     }
 
     /**
@@ -2700,7 +2702,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * @see org.argouml.model.Facade#getConstrainedElements(java.lang.Object)
      */
-    public Collection getConstrainedElements(Object handle) {
+    public List getConstrainedElements(Object handle) {
         try {
             if (handle instanceof Constraint) {
                 return ((Constraint) handle).getConstrainedElement();
@@ -2708,7 +2710,7 @@ class FacadeMDRImpl implements Facade {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
+        return illegalArgumentList(handle);
     }
 
     /**
@@ -4296,12 +4298,12 @@ class FacadeMDRImpl implements Facade {
     /**
      * @see org.argouml.model.Facade#getActualArguments(java.lang.Object)
      */
-    public Collection getActualArguments(Object handle) {
+    public List getActualArguments(Object handle) {
         try {
             if (handle instanceof Action) {
                 return ((Action) handle).getActualArgument();
             }
-            return illegalArgumentCollection(handle);
+            return illegalArgumentList(handle);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
