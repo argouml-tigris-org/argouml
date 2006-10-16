@@ -300,23 +300,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
     /**
      * @see org.argouml.model.CoreHelper#getOperations(java.lang.Object)
      */
-    public Collection getOperations(Object classifier) {
-        Collection result = new ArrayList();
-        try {
-            if (classifier instanceof Classifier) {
-                Classifier mclassifier = (Classifier) classifier;
-                Iterator features = mclassifier.getFeature().iterator();
-                while (features.hasNext()) {
-                    Feature feature = (Feature) features.next();
-                    if (feature instanceof Operation) {
-                        result.add(feature);
-                    }
-                }
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-        return result;
+    public List getOperations(Object classifier) {
+        return Model.getFacade().getOperations(classifier);
     }
 
     /**
@@ -341,27 +326,18 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /**
+     * @see org.argouml.model.CoreHelper#setOperations( java.lang.Object,
+     *      java.util.List)
+     */
+    public void setOperations(Object classifier, List operations) {
+        setOperations(classifier, (Collection) operations);
+    }
+    
+    /**
      * @see org.argouml.model.CoreHelper#getAttributes(java.lang.Object)
      */
-    public Collection getAttributes(Object classifier) {
-        if (!(classifier instanceof Classifier)) {
-            throw new IllegalArgumentException();
-        }
-
-        Collection result = new ArrayList();
-        try {
-            Iterator features = 
-                ((Classifier) classifier).getFeature().iterator();
-            while (features.hasNext()) {
-                Feature feature = (Feature) features.next();
-                if (feature instanceof Attribute) {
-                    result.add(feature);
-                }
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-        return result;
+    public List getAttributes(Object classifier) {
+        return Model.getFacade().getAttributes(classifier);
     }
 
     /**
@@ -383,6 +359,14 @@ public class CoreHelperMDRImpl implements CoreHelper {
             mclassifier.getFeature().clear();
             mclassifier.getFeature().addAll(result);
         }
+    }
+    
+    /**
+     * @see org.argouml.model.CoreHelper#setAttributes( java.lang.Object,
+     *      java.util.List)
+     */
+    public void setAttributes(Object classifier, List attributes) {
+        setAttributes(classifier, (Collection) attributes);
     }
 
     /**
@@ -465,7 +449,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     /**
      * @see org.argouml.model.CoreHelper#getReturnParameters(java.lang.Object)
      */
-    public Collection getReturnParameters(Object operation) {
+    public List getReturnParameters(Object operation) {
         List returnParams = new ArrayList();
         try {
             Iterator params = 
@@ -575,7 +559,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     /**
      * @see org.argouml.model.CoreHelper#getBehavioralFeatures(java.lang.Object)
      */
-    public Collection getBehavioralFeatures(Object clazz) {
+    public List getBehavioralFeatures(Object clazz) {
         if (clazz instanceof Classifier) {
             List ret = new ArrayList();
             try {
@@ -3079,7 +3063,19 @@ public class CoreHelperMDRImpl implements CoreHelper {
      *      java.util.Collection)
      */
     public void setQualifiers(Object handle, Collection elems) {
-        if (handle instanceof AssociationEnd && elems instanceof List) {
+        if (elems instanceof List) {
+            setQualifiers(handle, (List) elems);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * @see org.argouml.model.CoreHelper#setQualifiers( java.lang.Object,
+     *      java.util.List)
+     */
+    public void setQualifiers(Object handle, List elems) {
+        if (handle instanceof AssociationEnd) {
             ((AssociationEnd) handle).getQualifier().clear();
             ((AssociationEnd) handle).getQualifier().addAll(elems);
             return;

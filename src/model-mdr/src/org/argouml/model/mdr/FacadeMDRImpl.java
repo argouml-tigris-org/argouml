@@ -1574,12 +1574,12 @@ class FacadeMDRImpl implements Facade {
      *            classifier to examine.
      * @return iterator with attributes.
      */
-    public Collection getAttributes(Object handle) {
+    public List getAttributes(Object handle) {
         try {
             if (handle instanceof Classifier) {
                 return getStructuralFeatures(handle);
             }
-            return illegalArgumentCollection(handle);
+            return illegalArgumentList(handle);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
@@ -3197,12 +3197,12 @@ class FacadeMDRImpl implements Facade {
     /**
      * @see org.argouml.model.Facade#getOperations(java.lang.Object)
      */
-    public Collection getOperations(Object handle) {
+    public List getOperations(Object handle) {
         if (!(handle instanceof Classifier)) {
-            return illegalArgumentCollection(handle);
+            return illegalArgumentList(handle);
         }
         Classifier mclassifier = (Classifier) handle;
-        Collection result = new ArrayList();
+        List result = new ArrayList();
         try {
             Iterator features = mclassifier.getFeature().iterator();
             while (features.hasNext()) {
@@ -3430,7 +3430,7 @@ class FacadeMDRImpl implements Facade {
     /**
      * @see org.argouml.model.Facade#getQualifiers(java.lang.Object)
      */
-    public Collection getQualifiers(Object handle) {
+    public List getQualifiers(Object handle) {
         try {
             if (handle instanceof AssociationEnd) {
                 return ((AssociationEnd) handle).getQualifier();
@@ -3438,7 +3438,7 @@ class FacadeMDRImpl implements Facade {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return illegalArgumentCollection(handle);
+        return illegalArgumentList(handle);
     }
 
     /**
@@ -3487,14 +3487,12 @@ class FacadeMDRImpl implements Facade {
      */
     public Collection getParameters(Object handle) {
         try {
+            if (handle instanceof BehavioralFeature 
+                    || handle instanceof Event) {
+                return getParametersList(handle);
+            }
             if (handle instanceof ObjectFlowState) {
                 return ((ObjectFlowState) handle).getParameter();
-            }
-            if (handle instanceof BehavioralFeature) {
-                return ((BehavioralFeature) handle).getParameter();
-            }
-            if (handle instanceof Event) {
-                return ((Event) handle).getParameter();
             }
             if (handle instanceof Classifier) {
                 return implementation.getUmlPackage().getCore()
@@ -3505,6 +3503,23 @@ class FacadeMDRImpl implements Facade {
             throw new InvalidElementException(e);
         }
         return illegalArgumentCollection(handle);
+    }
+
+    /**
+     * @see org.argouml.model.Facade#getParametersList(java.lang.Object)
+     */
+    public List getParametersList(Object handle) {
+        try {
+            if (handle instanceof BehavioralFeature) {
+                return ((BehavioralFeature) handle).getParameter();
+            }
+            if (handle instanceof Event) {
+                return ((Event) handle).getParameter();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        return illegalArgumentList(handle);
     }
 
     /**
@@ -4168,11 +4183,11 @@ class FacadeMDRImpl implements Facade {
     /**
      * @see org.argouml.model.Facade#getStructuralFeatures(java.lang.Object)
      */
-    public Collection getStructuralFeatures(Object handle) {
+    public List getStructuralFeatures(Object handle) {
         if (!(handle instanceof Classifier)) {
-            return illegalArgumentCollection(handle);
+            return illegalArgumentList(handle);
         }
-        Collection result = new ArrayList();
+        List result = new ArrayList();
         Classifier mclassifier = (Classifier) handle;
 
         try {
@@ -4919,6 +4934,19 @@ class FacadeMDRImpl implements Facade {
         return null;
     }
 
+    /**
+     * Method that throws an error when a method is called with an incorrect
+     * argument.<p>
+     *
+     * @param arg
+     *            is the incorrect argument.
+     * @return Collection for use in the return statement.
+     */
+    private List illegalArgumentList(Object arg) {
+        illegalArgument(arg);
+        return null;
+    }
+    
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
