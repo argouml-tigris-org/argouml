@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -112,7 +112,7 @@ public class PropPanelOperation extends PropPanelFeature {
 
         addAction(new ActionNavigateOwner());
         addAction(new ActionNavigateUpPreviousDown() {
-            public Collection getFamily(Object parent) {
+            public List getFamily(Object parent) {
                 return Model.getFacade().getOperations(parent);
             }
 
@@ -121,7 +121,7 @@ public class PropPanelOperation extends PropPanelFeature {
             }
         });
         addAction(new ActionNavigateUpNextDown() {
-            public Collection getFamily(Object parent) {
+            public List getFamily(Object parent) {
                 return Model.getFacade().getOperations(parent);
             }
 

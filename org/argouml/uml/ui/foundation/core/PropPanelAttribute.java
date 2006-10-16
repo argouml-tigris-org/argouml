@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -101,7 +101,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNavigateUpPreviousDown() {
-            public Collection getFamily(Object parent) {
+            public List getFamily(Object parent) {
                 if(Model.getFacade().isAAssociationEnd(parent)) {
                     return Model.getFacade().getQualifiers(parent);
                 }
@@ -113,7 +113,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
             }
         });
         addAction(new ActionNavigateUpNextDown() {
-            public Collection getFamily(Object parent) {
+            public List getFamily(Object parent) {
                 if (Model.getFacade().isAAssociationEnd(parent)) {
                     return Model.getFacade().getQualifiers(parent);
                 }

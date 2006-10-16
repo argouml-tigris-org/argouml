@@ -24,8 +24,8 @@
 
 package org.argouml.uml.ui;
 
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -53,7 +53,7 @@ public abstract class ActionNavigateUpNextDown extends AbstractActionNavigate {
      */
     protected Object navigateTo(Object source) {
         Object up = getParent(source);
-        Collection family = getFamily(up);
+        List family = getFamily(up);
         assert family.contains(source);
         Iterator it = family.iterator();
         while (it.hasNext()) {
@@ -75,7 +75,7 @@ public abstract class ActionNavigateUpNextDown extends AbstractActionNavigate {
      * @param parent the parent element that owns all elements in the list
      * @return the list
      */
-    public abstract Collection getFamily(Object parent);
+    public abstract List getFamily(Object parent);
 
     /**
      * Get the parent of the list of elements that we are navigating through.
