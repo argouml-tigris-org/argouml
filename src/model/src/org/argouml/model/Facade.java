@@ -1203,7 +1203,7 @@ public interface Facade {
     Object getAssociation(Object handle);
 
     /**
-     * Returns the association end between some classifier and some associaton.
+     * Returns the association end between some classifier and some association.
      *
      * @param handle is the classifier
      * @param assoc is the association
@@ -1212,7 +1212,7 @@ public interface Facade {
     Object getAssociationEnd(Object handle, Object assoc);
 
     /**
-     * The list of Association Ends.
+     * The collection of Association Ends.
      *
      * @param handle the object that we get the association ends from.
      * @return Collection with association ends.
@@ -1220,7 +1220,7 @@ public interface Facade {
     Collection getAssociationEnds(Object handle);
 
     /**
-     * The list of association roles.
+     * The collection of association roles.
      *
      * @param handle the object that we get the association roles from.
      * @return Collection of association roles.
@@ -1394,7 +1394,7 @@ public interface Facade {
     Object getConcurrency(Object handle);
 
     /**
-     * The list of connections to an association or link.
+     * The collection of connections to an association or link.
      *
      * @param handle to the association or link
      * @return a Collection with all connections.
@@ -1445,7 +1445,7 @@ public interface Facade {
      * Returns the enumeration literals of a UML Enumeration.
      *
      * @param handle is the Enumeration
-     * @return Collection the Enumeration literals.
+     * @return List of the Enumeration literals.
      */
     List getEnumerationLiterals(Object handle);
 
@@ -1519,9 +1519,9 @@ public interface Facade {
      * The list of Features from a Classifier.
      *
      * @param handle Classifier to retrieve from.
-     * @return Collection with Features
+     * @return List of Features
      */
-    Collection getFeatures(Object handle);
+    List getFeatures(Object handle);
 
     /**
      * Gets the generalization between two generalizable elements.
@@ -1534,7 +1534,7 @@ public interface Facade {
     Object getGeneralization(Object handle, Object parent);
 
     /**
-     * The list of Generalizations from a GeneralizableElement.
+     * The collection of Generalizations from a GeneralizableElement.
      *
      * @param handle GeneralizableElement to retrieve from.
      * @return Generalizations
@@ -1772,12 +1772,12 @@ public interface Facade {
     Collection getConstrainingElements(Object handle);
 
     /**
-     * Returns the collection of ConstrainedElements of a constraint.
+     * Returns the list of ConstrainedElements of a constraint.
      *
      * @param handle the Constraint
-     * @return the collection of ConstrainedElements
+     * @return the list of ConstrainedElements
      */
-    Collection getConstrainedElements(Object handle);
+    List getConstrainedElements(Object handle);
 
     /**
      * Get the collection of all constraints of the given ModelElement.
@@ -1941,7 +1941,7 @@ public interface Facade {
     Object getDoActivity(Object handle);
 
     /**
-     * The list of imported elements of the given package.
+     * The collection of imported elements of the given package.
      *
      * @param pack package to retrieve from.
      * @return A Collection with the imported elements.
@@ -2031,7 +2031,7 @@ public interface Facade {
      * Get the list of operations.
      *
      * @param handle classifier to examine.
-     * @return Collection with operations.
+     * @return list of operations.
      */
     List getOperations(Object handle);
 
@@ -2052,7 +2052,8 @@ public interface Facade {
     Object getOrdering(Object handle);
 
     /**
-     * Returns the list of Transitions outgoing from the given stateVertex.
+     * Returns the collection of Transitions outgoing from the given 
+     * stateVertex.
      *
      * @param handle statevertex
      * @return Collection
@@ -2060,7 +2061,8 @@ public interface Facade {
     Collection getOutgoings(Object handle);
 
     /**
-     * Get the list of Associations Ends connected to this association end.
+     * Get the collection of Associations Ends connected to this association 
+     * end.
      *
      * @param handle association end to start from
      * @return A Collection with all connected association ends.
@@ -2068,7 +2070,7 @@ public interface Facade {
     Collection getOtherAssociationEnds(Object handle);
 
     /**
-     * Get the list of Link Ends connected to this link end.
+     * Get the collection of Link Ends connected to this link end.
      *
      * @param handle link end to start from
      * @return A Collection with all connected link ends.
@@ -2076,7 +2078,7 @@ public interface Facade {
     Collection getOtherLinkEnds(Object handle);
 
     /**
-     * The list of owned elements of the the namespace.
+     * The collection of owned elements of the the namespace.
      *
      * @param handle namespace to retrieve from.
      * @return A Collection with the owned elements.
@@ -2293,7 +2295,7 @@ public interface Facade {
     Collection getSourceFlows(Object handle);
 
     /**
-     * The list of Specializations from a GeneralizableElement.
+     * The collection of Specializations from a GeneralizableElement.
      *
      * @param handle GeneralizableElement to retrieve from.
      * @return Collection of Specializations.
@@ -2391,7 +2393,7 @@ public interface Facade {
     Collection getSubmachineStates(Object handle);
 
     /**
-     * The list of SupplierDependencies from a ModelElement.
+     * The collection of SupplierDependencies from a ModelElement.
      *
      * @param handle model element.
      * @return A Collection with the supplier dependencies.
@@ -2571,7 +2573,7 @@ public interface Facade {
      * @param handle is the action
      * @return the actual arguments
      */
-    Collection getActualArguments(Object handle);
+    List getActualArguments(Object handle);
 
     /**
      * Returns an addition for a given include.
