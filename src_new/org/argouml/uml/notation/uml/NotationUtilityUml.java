@@ -30,7 +30,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -41,17 +40,11 @@ import org.argouml.uml.ProfileException;
 import org.argouml.util.MyTokenizer;
 
 /**
- * This class is a utility for the UML notation. 
+ * This class is a utility for the UML notation.
  *
  * @author mvw@tigris.org
  */
 public final class NotationUtilityUml {
-    /**
-     * The standard error etc. logger
-     */
-    private static final Logger LOG = 
-        Logger.getLogger(NotationUtilityUml.class);
-
     /**
      * The array of special properties for attributes.
      */
@@ -111,7 +104,8 @@ public final class NotationUtilityUml {
     }
 
     void init() {
-        attributeSpecialStrings[0] =
+	int assPos = 0;
+        attributeSpecialStrings[assPos++] =
             new PropertySpecialString("frozen",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
@@ -126,7 +120,7 @@ public final class NotationUtilityUml {
                     }
                 }
             });
-        attributeSpecialStrings[1] =
+        attributeSpecialStrings[assPos++] =
             new PropertySpecialString("addonly",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
@@ -142,8 +136,11 @@ public final class NotationUtilityUml {
                 }
             });
 
+        assert assPos == attributeSpecialStrings.length;
+
         operationSpecialStrings = new PropertySpecialString[8];
-        operationSpecialStrings[0] =
+        int ossPos = 0;
+        operationSpecialStrings[ossPos++] =
             new PropertySpecialString("sequential",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
@@ -153,7 +150,7 @@ public final class NotationUtilityUml {
                     }
                 }
             });
-        operationSpecialStrings[1] =
+        operationSpecialStrings[ossPos++] =
             new PropertySpecialString("guarded",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
@@ -166,7 +163,7 @@ public final class NotationUtilityUml {
                     }
                 }
             });
-        operationSpecialStrings[2] =
+        operationSpecialStrings[ossPos++] =
             new PropertySpecialString("concurrent",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
@@ -180,7 +177,7 @@ public final class NotationUtilityUml {
                     }
                 }
             });
-        operationSpecialStrings[3] =
+        operationSpecialStrings[ossPos++] =
             new PropertySpecialString("concurrency",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
@@ -196,7 +193,7 @@ public final class NotationUtilityUml {
                     }
                 }
             });
-        operationSpecialStrings[4] =
+        operationSpecialStrings[ossPos++] =
             new PropertySpecialString("abstract",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
@@ -209,7 +206,7 @@ public final class NotationUtilityUml {
                     }
                 }
             });
-        operationSpecialStrings[5] =
+        operationSpecialStrings[ossPos++] =
             new PropertySpecialString("leaf",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
@@ -222,7 +219,7 @@ public final class NotationUtilityUml {
                     }
                 }
             });
-        operationSpecialStrings[6] =
+        operationSpecialStrings[ossPos++] =
             new PropertySpecialString("query",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
@@ -235,7 +232,7 @@ public final class NotationUtilityUml {
                     }
                 }
             });
-        operationSpecialStrings[7] =
+        operationSpecialStrings[ossPos++] =
             new PropertySpecialString("root",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
@@ -248,6 +245,8 @@ public final class NotationUtilityUml {
                     }
                 }
             });
+
+        assert ossPos == operationSpecialStrings.length;
     }
 
     /**
@@ -492,7 +491,7 @@ public final class NotationUtilityUml {
         MyTokenizer st =
             new MyTokenizer(param, " ,\t,:,=,\\,", parameterCustomSep);
         // Copy returned parameters because it will be a live collection for MDR
-        Collection origParam = 
+        Collection origParam =
             new ArrayList(Model.getFacade().getParameters(op));
         Object ns = Model.getFacade().getModel(op);
         if (Model.getFacade().isAOperation(op)) {
@@ -535,9 +534,9 @@ public final class NotationUtilityUml {
                     hasEq = false;
                 } else if ("=".equals(tok)) {
                     if (value != null) {
-                    	String msg = 
+                    	String msg =
                             "parsing.error.notation-utility.two-default-values";
-                        throw new ParseException(Translator.localize(msg), 
+                        throw new ParseException(Translator.localize(msg),
                                 paramOffset + st.getTokenIndex());
                     }
                     hasEq = true;
@@ -546,21 +545,21 @@ public final class NotationUtilityUml {
                 } else if (hasColon) {
                     if (type != null) {
                         String msg = "parsing.error.notation-utility.two-types";
-                        throw new ParseException(Translator.localize(msg), 
+                        throw new ParseException(Translator.localize(msg),
                                 paramOffset + st.getTokenIndex());
                     }
 
                     if (tok.charAt(0) == '\'' || tok.charAt(0) == '\"') {
-                        String msg = 
+                        String msg =
                             "parsing.error.notation-utility.type-quoted";
-                        throw new ParseException(Translator.localize(msg), 
+                        throw new ParseException(Translator.localize(msg),
                                 paramOffset + st.getTokenIndex());
                     }
 
                     if (tok.charAt(0) == '(') {
-                        String msg = 
+                        String msg =
                             "parsing.error.notation-utility.type-expr";
-                        throw new ParseException(Translator.localize(msg), 
+                        throw new ParseException(Translator.localize(msg),
                                 paramOffset + st.getTokenIndex());
                     }
 
@@ -569,14 +568,14 @@ public final class NotationUtilityUml {
                     value += tok;
                 } else {
                     if (name != null && kind != null) {
-                        String msg = 
+                        String msg =
                             "parsing.error.notation-utility.extra-text";
                         throw new ParseException(Translator.localize(msg),
                                 paramOffset + st.getTokenIndex());
                     }
 
                     if (tok.charAt(0) == '\'' || tok.charAt(0) == '\"') {
-                        String msg = 
+                        String msg =
                             "parsing.error.notation-utility.name-kind-quoted";
                         throw new ParseException(
                                 Translator.localize(msg),
@@ -584,10 +583,10 @@ public final class NotationUtilityUml {
                     }
 
                     if (tok.charAt(0) == '(') {
-                        String msg = 
+                        String msg =
                             "parsing.error.notation-utility.name-kind-expr";
                         throw new ParseException(
-                                Translator.localize(msg), 
+                                Translator.localize(msg),
                                 paramOffset + st.getTokenIndex());
                     }
 
@@ -623,10 +622,10 @@ public final class NotationUtilityUml {
             }
 
             if (value != null) {
-                Project project = 
+                Project project =
                     ProjectManager.getManager().getCurrentProject();
                 ProjectSettings ps = project.getProjectSettings();
-                
+
                 Object initExpr =
                     Model.getDataTypesFactory()
                         .createExpression(
@@ -665,7 +664,7 @@ public final class NotationUtilityUml {
 
     /**
      * Finds the classifier associated with the type named in name.
-     * 
+     *
      * @param name
      *            The name of the type to get.
      * @param defaultSpace
@@ -745,7 +744,7 @@ public final class NotationUtilityUml {
 
 
     /**
-     * Interface specifying the operation to take when a 
+     * Interface specifying the operation to take when a
      * PropertySpecialString is matched.
      *
      * @author Michael Stockman
@@ -759,7 +758,7 @@ public final class NotationUtilityUml {
          * @param element
          *            The element on which the property was set.
          * @param value
-         *            The value of the property, 
+         *            The value of the property,
          *            may be null if no value was given.
          */
         void found(Object element, String value);
@@ -784,14 +783,14 @@ public final class NotationUtilityUml {
      *         });
      * </pre>
      *
-     * Taken from the (former) ParserDisplay constructor. 
-     * It creates a PropertySpecialString that is invoken when the String 
+     * Taken from the (former) ParserDisplay constructor.
+     * It creates a PropertySpecialString that is invoken when the String
      * "frozen" is found as a property name. Then
-     * the found mehod in the anonymous inner class 
-     * defined on the 2nd line is invoked and performs 
+     * the found mehod in the anonymous inner class
+     * defined on the 2nd line is invoked and performs
      * a custom action on the element on which the property was
-     * specified by the user. In this case it does a setChangeability 
-     * on an attribute instead of setting a tagged value, 
+     * specified by the user. In this case it does a setChangeability
+     * on an attribute instead of setting a tagged value,
      * which would not have the desired effect.
      *
      * @author Michael Stockman
@@ -799,7 +798,7 @@ public final class NotationUtilityUml {
      * @see PropertyOperation
      * @see ParserDisplay#setProperties
      */
-    class PropertySpecialString {
+    static class PropertySpecialString {
         private String name;
 
         private PropertyOperation op;
@@ -891,25 +890,28 @@ public final class NotationUtilityUml {
             return Model.getVisibilityKind().getPrivate();
         }
     }
-    
+
     /**
-     * @param st a stereotype UML object 
+     * @param st a stereotype UML object
      *                 or a collection of stereotypes
      *                 or a modelelement of which the stereotypes are retrieved
      * @return a string representing the given stereotype(s)
      */
     public static String generateStereotype(Object st) {
-        if (st == null)
+        if (st == null) {
             return "";
-        Project project = 
+        }
+        Project project =
             ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = project.getProjectSettings();
 
         if (Model.getFacade().isAStereotype(st)) {
-            if (Model.getFacade().getName(st) == null)
+            if (Model.getFacade().getName(st) == null) {
                 return ""; // Patch by Jeremy Bennett
-            if (Model.getFacade().getName(st).length() == 0)
+            }
+            if (Model.getFacade().getName(st).length() == 0) {
                 return "";
+            }
             return ps.getLeftGuillemot()
                 + Model.getFacade().getName(st)
                 + ps.getRightGuillemot();
@@ -923,8 +925,9 @@ public final class NotationUtilityUml {
             boolean first = true;
             Iterator iter = ((Collection) st).iterator();
             while (iter.hasNext()) {
-                if (!first)
+                if (!first) {
                     sb.append(',');
+                }
                 o = iter.next();
                 if (o != null) {
                     sb.append(Model.getFacade().getName(o));
@@ -939,7 +942,7 @@ public final class NotationUtilityUml {
         }
         return "";
     }
-    
+
     /**
      * Generates the representation of a parameter on the display
      * (diagram). The string to be returned will have the following
@@ -952,7 +955,9 @@ public final class NotationUtilityUml {
     static String generateParameter(Object parameter) {
         StringBuffer s = new StringBuffer();
         s.append(generateKind(Model.getFacade().getKind(parameter)));
-        if (s.length() > 0) s.append(" ");
+        if (s.length() > 0) {
+            s.append(" ");
+        }
         s.append(Model.getFacade().getName(parameter));
         String classRef =
             generateClassifierRef(Model.getFacade().getType(parameter));
@@ -970,26 +975,29 @@ public final class NotationUtilityUml {
     }
 
     private static String generateExpression(Object expr) {
-        if (Model.getFacade().isAExpression(expr))
+        if (Model.getFacade().isAExpression(expr)) {
             return generateUninterpreted(
                     (String) Model.getFacade().getBody(expr));
-        else if (Model.getFacade().isAConstraint(expr))
+        } else if (Model.getFacade().isAConstraint(expr)) {
             return generateExpression(Model.getFacade().getBody(expr));
+        }
         return "";
     }
 
     private static String generateUninterpreted(String un) {
-        if (un == null)
+        if (un == null) {
             return "";
+        }
         return un;
     }
 
     private static String generateClassifierRef(Object cls) {
-        if (cls == null)
+        if (cls == null) {
             return "";
+        }
         return Model.getFacade().getName(cls);
     }
-    
+
     private static String generateKind(Object /*Parameter etc.*/ kind) {
         StringBuffer s = new StringBuffer();
         if (kind == null /* "in" is the default */
@@ -1017,10 +1025,10 @@ public final class NotationUtilityUml {
             + "="
             + generateUninterpreted(Model.getFacade().getValueOfTag(tv));
     }
-    
+
     /**
      * Generate the text of a multiplicity.
-     * 
+     *
      * @param m the given multiplicity
      * @return a string (guaranteed not null)
      */

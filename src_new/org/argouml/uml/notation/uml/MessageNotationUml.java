@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
@@ -44,14 +45,14 @@ import org.argouml.util.MyTokenizer;
 
 /**
  * The UML notation for a message, as shown on a collaboration diagram. <p>
- * 
+ *
  * The parse method parses a message line of the form: <p>
  *
  * <pre>
  * intno := integer|name
  * seq := intno ['.' intno]*
- * recurrance := '*'['//'] | '*'['//']'[' <i>iteration </i>']' | '['
- * <i>condition </i>']'
+ * recurrance := '*'['//'] | '*'['//']'[' <code>iteration </code>']' | '['
+ * <code>condition </code>']'
  * seqelem := {[intno] ['['recurrance']']}
  * seq2 := seqelem ['.' seqelem]*
  * ret_list := lvalue [',' lvalue]*
@@ -73,7 +74,7 @@ import org.argouml.util.MyTokenizer;
  * allows a number possibly followed by a sequence of letters in the range
  * 'a' - 'z', seqelem, which does not allow a recurrance, and message, which
  * does allow one recurrance near seq2. (formerly: name: action )
- * 
+ *
  * @author michiel
  */
 public class MessageNotationUml extends MessageNotation {
@@ -81,17 +82,17 @@ public class MessageNotationUml extends MessageNotation {
     /**
      * The standard error etc. logger
      */
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(MessageNotationUml.class);
 
     /**
      * The vector of CustomSeparators to use when tokenizing parameters.
      */
     private Vector parameterCustomSep;
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param message the UML object
      */
     public MessageNotationUml(Object message) {
@@ -126,7 +127,7 @@ public class MessageNotationUml extends MessageNotation {
 
     /**
      * Generates a textual description for a MMessage m.
-     * 
+     *
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {
@@ -192,13 +193,16 @@ public class MessageNotationUml extends MessageNotation {
 
             action = generateAction(act);
             /* Dirty fix for issue 1758 (Needs to be amended
-             * when we start supporting parameters): */
-            if (!action.endsWith(")")) action = action + "()";
+             * when we start supporting parameters):
+             */
+            if (!action.endsWith(")")) {
+        	action = action + "()";
+            }
         }
 
         return predecessors + number + " : " + action;
     }
-    
+
     private String generateMessageNumber(
             Object/*MMessage*/ m,
             Object/*MMessage*/ pre,
@@ -208,16 +212,16 @@ public class MessageNotationUml extends MessageNotation {
         String mname = "";
         Object act;
         int subpos = 0, submax = 1;
-        
+
         if (m == null) {
             return null;
         }
-        
+
         act = Model.getFacade().getActivator(m);
         if (act != null) {
             mname = generateMessageNumber(act);
         }
-        
+
         if (pre != null) {
             c = Model.getFacade().getMessages3(pre);
             submax = c.size();
@@ -226,24 +230,27 @@ public class MessageNotationUml extends MessageNotation {
                 subpos++;
             }
         }
-        
+
         if (mname.length() > 0) {
             if (submax > 1) {
                 return mname + "." + position + (char) ('a' + subpos);
             }
             return mname + "." + position;
         }
-        
+
         if (submax > 1) {
             return Integer.toString(position) + (char) ('a' + subpos);
         }
         return Integer.toString(position);
     }
-    
-    class MsgPtr {
+
+    static class MsgPtr {
+        /**
+         * The message pointed to.
+         */
         public Object/*MMessage*/ message;
     }
-    
+
     /**
      * Generates the textual number of MMessage m. The number is a string
      * of numbers separated by points which describes the message's order
@@ -260,7 +267,7 @@ public class MessageNotationUml extends MessageNotation {
         int pos = recCountPredecessors(m, ptr) + 1;
         return generateMessageNumber(m, ptr.message, pos);
     }
-    
+
     private int recCountPredecessors(Object message, MsgPtr ptr) {
         Collection c;
         Iterator it;
@@ -268,12 +275,12 @@ public class MessageNotationUml extends MessageNotation {
         int local = 0;
         Object/*MMessage*/ maxmsg = null;
         Object/*MMessage*/ act;
-        
+
         if (message == null) {
             ptr.message = null;
             return 0;
         }
-        
+
         act = Model.getFacade().getActivator(message);
         c = Model.getFacade().getPredecessors(message);
         it = c.iterator();
@@ -289,14 +296,14 @@ public class MessageNotationUml extends MessageNotation {
             }
             local++;
         }
-        
+
         if (ptr != null) {
             ptr.message = maxmsg;
         }
-        
+
         return Math.max(pre, local);
     }
-    
+
     private int countSuccessors(Object/*MMessage*/ m) {
         int count = 0;
         Object act = Model.getFacade().getActivator(m);
@@ -313,7 +320,7 @@ public class MessageNotationUml extends MessageNotation {
         }
         return count;
     }
-    
+
     /**
      * Generates a textual description of a MIterationExpression.
      *
@@ -324,25 +331,25 @@ public class MessageNotationUml extends MessageNotation {
         if (expr == null) {
             return "";
         }
-        
+
         return Model.getFacade().getBody(expr).toString();
     }
-    
+
     private String generateAction(Object m) {
         Collection c;
         Iterator it;
         String s;
         String p;
         boolean first;
-        
+
         Object script = Model.getFacade().getScript(m);
-        
+
         if ((script != null) && (Model.getFacade().getBody(script) != null)) {
             s = Model.getFacade().getBody(script).toString();
         } else {
             s = "";
         }
-        
+
         p = "";
         c = Model.getFacade().getActualArguments(m);
         if (c != null) {
@@ -353,7 +360,7 @@ public class MessageNotationUml extends MessageNotation {
                 if (!first) {
                     p += ", ";
                 }
-                
+
                 if (Model.getFacade().getValue(arg) != null) {
                     p += generateExpression(Model.getFacade().getValue(arg));
                 }
@@ -363,7 +370,7 @@ public class MessageNotationUml extends MessageNotation {
         if (s.length() == 0 && p.length() == 0) {
             return "";
         }
-        
+
         /* If there are no arguments, then do not show the ().
          * This solves issue 1758.
          * Arguments are not supported anyhow in the UI yet.
@@ -373,31 +380,33 @@ public class MessageNotationUml extends MessageNotation {
         if (p.length() == 0) {
             return s;
         }
-        
+
         return s + " (" + p + ")";
     }
-    
+
     private String generateExpression(Object expr) {
-        if (Model.getFacade().isAExpression(expr))
+        if (Model.getFacade().isAExpression(expr)) {
             return generateUninterpreted(
                     (String) Model.getFacade().getBody(expr));
-        else if (Model.getFacade().isAConstraint(expr))
+        } else if (Model.getFacade().isAConstraint(expr)) {
             return generateExpression(Model.getFacade().getBody(expr));
+        }
         return "";
     }
-    
+
     /**
      * Make a string non-null.
-     * 
+     *
      * @param un the String or null
      * @return a string, guaranteed to be not null
      */
     private String generateUninterpreted(String un) {
-        if (un == null)
+        if (un == null) {
             return "";
+        }
         return un;
     }
-    
+
     /**
      * Parse a Message textual description.<p>
      *
@@ -476,14 +485,14 @@ public class MessageNotationUml extends MessageNotation {
                 } else if ("[".equals(token)) {
                     if (mustBePre) {
                     	String msg = "parsing.error.message.pred-unqualified";
-                        throw new ParseException(Translator.localize(msg), 
+                        throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
                     mustBeSeq = true;
 
                     if (guard != null) {
                     	String msg = "parsing.error.message.several-specs";
-                        throw new ParseException(Translator.localize(msg), 
+                        throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
 
@@ -498,7 +507,7 @@ public class MessageNotationUml extends MessageNotation {
                 } else if ("*".equals(token)) {
                     if (mustBePre) {
                     	String msg = "parsing.error.message.pred-unqualified";
-                        throw new ParseException(Translator.localize(msg), 
+                        throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
                     mustBeSeq = true;
@@ -509,7 +518,7 @@ public class MessageNotationUml extends MessageNotation {
                 } else if (".".equals(token)) {
                     if (currentseq == null) {
                     	String msg = "parsing.error.message.unexpected-dot";
-                        throw new ParseException(Translator.localize(msg), 
+                        throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
                     if (currentseq.get(currentseq.size() - 2) != null
@@ -584,7 +593,7 @@ public class MessageNotationUml extends MessageNotation {
                 } else if ("//".equals(token)) {
                     if (mustBePre) {
                     	String msg = "parsing.error.message.pred-parallelized";
-                        throw new ParseException(Translator.localize(msg), 
+                        throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
                     mustBeSeq = true;
@@ -596,7 +605,7 @@ public class MessageNotationUml extends MessageNotation {
                     if (currentseq != null) {
                         if (mustBeSeq) {
                             String msg = "parsing.error.message.many-numbers";
-                            throw new ParseException(Translator.localize(msg), 
+                            throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
                         mustBePre = true;
@@ -628,7 +637,7 @@ public class MessageNotationUml extends MessageNotation {
                         } else {
                             String msg = "parsing.error.message.found-comma";
                             throw new ParseException(
-                                    Translator.localize(msg), 
+                                    Translator.localize(msg),
                                     st.getTokenIndex());
                         }
                     }
@@ -644,15 +653,15 @@ public class MessageNotationUml extends MessageNotation {
                 } else if (currentseq == null) {
                     if (paramExpr == null && token.charAt(0) == '(') {
                         if (token.charAt(token.length() - 1) != ')') {
-                            String msg = 
+                            String msg =
                                 "parsing.error.message.malformed-parameters";
-                            throw new ParseException(Translator.localize(msg), 
+                            throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
                         if (fname == null || "".equals(fname)) {
-                            String msg = 
+                            String msg =
                                 "parsing.error.message.function-not-found";
-                            throw new ParseException(Translator.localize(msg), 
+                            throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
                         if (varname == null) {
@@ -667,7 +676,7 @@ public class MessageNotationUml extends MessageNotation {
                     	String msg = "parsing.error.message.unexpected-token";
                         Object[] parseExcArgs = {token};
                         throw new ParseException(
-                        		Translator.localize(msg, parseExcArgs), 
+                        		Translator.localize(msg, parseExcArgs),
                                 st.getTokenIndex());
                     }
                 } else {
@@ -711,7 +720,7 @@ public class MessageNotationUml extends MessageNotation {
                     	String msg = "parsing.error.message.unexpected-token";
                         Object[] parseExcArgs = {token};
                         throw new ParseException(
-                        		Translator.localize(msg, parseExcArgs), 
+                        		Translator.localize(msg, parseExcArgs),
                                 st.getTokenIndex());
                     }
                 }
@@ -802,7 +811,7 @@ public class MessageNotationUml extends MessageNotation {
                     guard = "*" + guard;
                 }
             }
-            Project project = 
+            Project project =
                 ProjectManager.getManager().getCurrentProject();
             ProjectSettings ps = project.getProjectSettings();
             Object expr =
@@ -862,11 +871,11 @@ public class MessageNotationUml extends MessageNotation {
                 varname = "";
             }
         }
-        
-        Project project = 
+
+        Project project =
             ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = project.getProjectSettings();
-        
+
         if (fname != null) {
             String expr = fname.trim();
             if (varname.length() > 0) {
@@ -1007,7 +1016,7 @@ public class MessageNotationUml extends MessageNotation {
                 throw new ParseException(Translator.localize(msg), 0);
             } else {
                 /* Disconnect the message from the call graph
-                 * Make copies of returned live collections 
+                 * Make copies of returned live collections
                  * since we're modifying
                  */
                 Collection c = new ArrayList(
@@ -1194,7 +1203,7 @@ public class MessageNotationUml extends MessageNotation {
         }
         return root;
     }
-    
+
     /**
      * Finds the steps'th successor of r in the sense that it is a successor of
      * a successor of r (steps times). The first successor with the same
@@ -1216,7 +1225,7 @@ public class MessageNotationUml extends MessageNotation {
         }
         return r;
     }
-    
+
     /**
      * Finds the root candidates in a collection c, ie the messages in c that
      * has the activator a (may be null) and has no predecessor with the same
@@ -1231,7 +1240,7 @@ public class MessageNotationUml extends MessageNotation {
     private Collection findCandidateRoots(Collection c, Object a,
             Object veto) {
         Iterator it = c.iterator();
-        ArrayList v = new ArrayList();
+        List v = new ArrayList();
         while (it.hasNext()) {
             Object m = /* (MMessage) */it.next();
             if (m == veto) {
@@ -1254,7 +1263,7 @@ public class MessageNotationUml extends MessageNotation {
         }
         return v;
     }
-    
+
     /**
      * Finds the steps'th successor of message r in the sense that it is a
      * direct successor of r. Returns null if r has fewer successors.
@@ -1270,7 +1279,7 @@ public class MessageNotationUml extends MessageNotation {
         }
         return null;
     }
-    
+
     /**
      * Compares two message numbers n1, n2 with each other to determine if n1
      * specifies a the same position as n2 in a call tree or n1 specifies a
@@ -1352,7 +1361,7 @@ public class MessageNotationUml extends MessageNotation {
     private boolean compareMsgNumbers(String n1, String n2) {
         return isMsgNumberStartOf(n1, n2) && isMsgNumberStartOf(n2, n1);
     }
-    
+
     /**
      * Finds the break between message number and (possibly) message order.
      *
@@ -1390,7 +1399,7 @@ public class MessageNotationUml extends MessageNotation {
 
         return v;
     }
-    
+
     /**
      * Finds the message in ClassifierRole r that has the message number written
      * in n. If it isn't found, null is returned.
@@ -1407,7 +1416,7 @@ public class MessageNotationUml extends MessageNotation {
         }
         return null;
     }
-    
+
     /**
      * Examines a collection to see if any message has the given message as an
      * activator.
@@ -1426,7 +1435,7 @@ public class MessageNotationUml extends MessageNotation {
         }
         return false;
     }
-    
+
     /**
      * Examines the call tree from chld to see if ans is an ancestor.
      *
@@ -1447,7 +1456,7 @@ public class MessageNotationUml extends MessageNotation {
         }
         return false;
     }
-    
+
     /**
      * Examines the call tree from suc to see if pre is a predecessor. This
      * function is recursive and md specifies the maximum level of recursions
@@ -1471,13 +1480,13 @@ public class MessageNotationUml extends MessageNotation {
         }
         return false;
     }
-    
+
     /**
      * Finds the messages in Collection c that has message a as activator.
      */
     private Collection filterWithActivator(Collection c, Object/*MMessage*/a) {
         Iterator it = c.iterator();
-        ArrayList v = new ArrayList();
+        List v = new ArrayList();
         while (it.hasNext()) {
             Object m = /* (MMessage) */it.next();
             if (Model.getFacade().getActivator(m) == a) {
@@ -1486,7 +1495,7 @@ public class MessageNotationUml extends MessageNotation {
         }
         return v;
     }
-    
+
     /**
      * Inserts message s as the p'th successor of message m.
      *
@@ -1504,7 +1513,7 @@ public class MessageNotationUml extends MessageNotation {
         }
         Model.getCollaborationsHelper().setMessages3(m, v);
     }
-    
+
     /**
      * Finds the operations in Collection c with name name and params number of
      * parameters. If no operation is found, one is created. The applicable
@@ -1603,5 +1612,5 @@ public class MessageNotationUml extends MessageNotation {
 
         return count;
     }
-    
+
 }
