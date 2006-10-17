@@ -534,6 +534,7 @@ Property files to be searched:
       <sourcepath>
         <pathelement location="${argo.src.dir}"/>
         <pathelement location="${argo.src.dir}/../src/model/src"/>
+        <pathelement location="${argo.src.dir}/../src/model-mdr/src"/>
       </sourcepath>
 
       <classpath>
