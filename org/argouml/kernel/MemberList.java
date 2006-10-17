@@ -41,11 +41,13 @@ import org.tigris.gef.base.Diagram;
  */
 public class MemberList implements List {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(MemberList.class);
 
     private AbstractProjectMember model;
-    private ArrayList diagramMembers = new ArrayList(10);
+    private List diagramMembers = new ArrayList(10);
     private AbstractProjectMember todoList;
 
     /**
@@ -56,7 +58,7 @@ public class MemberList implements List {
     }
 
     /**
-     * @see java.util.Collection#add(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean add(Object member) {
 
@@ -76,7 +78,7 @@ public class MemberList implements List {
     }
 
     /**
-     * @see java.util.Collection#remove(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean remove(Object member) {
         LOG.info("Removing a member");
@@ -97,10 +99,10 @@ public class MemberList implements List {
     }
 
     /**
-     * @see java.util.Collection#iterator()
+     * {@inheritDoc}
      */
     public Iterator iterator() {
-        ArrayList temp = new ArrayList(size());
+        List temp = new ArrayList(size());
         if (model != null) {
             temp.add(model);
         }
@@ -112,10 +114,10 @@ public class MemberList implements List {
     }
 
     /**
-     * @see java.util.List#listIterator()
+     * {@inheritDoc}
      */
     public ListIterator listIterator() {
-        ArrayList temp = new ArrayList(size());
+        List temp = new ArrayList(size());
         if (model != null) {
             temp.add(model);
         }
@@ -127,10 +129,10 @@ public class MemberList implements List {
     }
 
     /**
-     * @see java.util.List#listIterator(int)
+     * {@inheritDoc}
      */
     public ListIterator listIterator(int arg0) {
-        ArrayList temp = new ArrayList(size());
+        List temp = new ArrayList(size());
         if (model != null) {
             temp.add(model);
         }
@@ -158,17 +160,21 @@ public class MemberList implements List {
 
 
     /**
-     * @see java.util.Collection#size()
+     * {@inheritDoc}
      */
     public int size() {
         int size = diagramMembers.size();
-        if (model != null) ++size;
-        if (todoList != null) ++size;
+        if (model != null) {
+            ++size;
+        }
+        if (todoList != null) {
+            ++size;
+        }
         return size;
     }
 
     /**
-     * @see java.util.Collection#contains(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean contains(Object member) {
         if (todoList == member) {
@@ -181,7 +187,7 @@ public class MemberList implements List {
     }
 
     /**
-     * @see java.util.Collection#clear()
+     * {@inheritDoc}
      */
     public void clear() {
         LOG.info("Clearing members");
@@ -217,14 +223,14 @@ public class MemberList implements List {
      * @param type the type of the member
      * @return the member of the project
      */
-    public ArrayList getMembers(Class type) {
+    public List getMembers(Class type) {
         if (type == ProjectMemberModel.class) {
-            ArrayList temp = new ArrayList(1);
+            List temp = new ArrayList(1);
             temp.add(model);
             return temp;
         }
         if (type == ProjectMemberTodoList.class) {
-            ArrayList temp = new ArrayList(1);
+            List temp = new ArrayList(1);
             temp.add(todoList);
             return temp;
         }
@@ -236,7 +242,7 @@ public class MemberList implements List {
     }
 
     /**
-     * @see java.util.List#get(int)
+     * {@inheritDoc}
      */
     public Object get(int i) {
         if (model != null) {
@@ -250,18 +256,18 @@ public class MemberList implements List {
             return todoList;
         }
 
-        return (ProjectMember) diagramMembers.get(i);
+        return diagramMembers.get(i);
     }
 
     /**
-     * @see java.util.List#isEmpty()
+     * {@inheritDoc}
      */
     public boolean isEmpty() {
         return size() == 0;
     }
 
     /**
-     * @see java.util.List#toArray()
+     * {@inheritDoc}
      */
     public Object[] toArray() {
         Object[] temp = new Object[size()];
@@ -284,77 +290,77 @@ public class MemberList implements List {
     }
 
     /**
-     * @see java.util.List#toArray(java.lang.Object[])
+     * {@inheritDoc}
      */
     public Object[] toArray(Object[] arg0) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @see java.util.List#containsAll(java.util.Collection)
+     * {@inheritDoc}
      */
     public boolean containsAll(Collection arg0) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @see java.util.List#addAll(java.util.Collection)
+     * {@inheritDoc}
      */
     public boolean addAll(Collection arg0) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @see java.util.List#addAll(int, java.util.Collection)
+     * {@inheritDoc}
      */
     public boolean addAll(int arg0, Collection arg1) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @see java.util.List#removeAll(java.util.Collection)
+     * {@inheritDoc}
      */
     public boolean removeAll(Collection arg0) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @see java.util.List#retainAll(java.util.Collection)
+     * {@inheritDoc}
      */
     public boolean retainAll(Collection arg0) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @see java.util.List#set(int, java.lang.Object)
+     * {@inheritDoc}
      */
     public Object set(int arg0, Object arg1) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @see java.util.List#add(int, java.lang.Object)
+     * {@inheritDoc}
      */
     public void add(int arg0, Object arg1) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @see java.util.List#remove(int)
+     * {@inheritDoc}
      */
     public Object remove(int arg0) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @see java.util.List#indexOf(java.lang.Object)
+     * {@inheritDoc}
      */
     public int indexOf(Object arg0) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @see java.util.List#lastIndexOf(java.lang.Object)
+     * {@inheritDoc}
      */
     public int lastIndexOf(Object arg0) {
         throw new UnsupportedOperationException();
@@ -362,7 +368,7 @@ public class MemberList implements List {
 
 
     /**
-     * @see java.util.List#subList(int, int)
+     * {@inheritDoc}
      */
     public List subList(int arg0, int arg1) {
         throw new UnsupportedOperationException();

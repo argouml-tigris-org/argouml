@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
@@ -133,7 +134,7 @@ public class Project implements java.io.Serializable, TargetListener {
     private Vector diagrams;
     private Object defaultModel;
     private Object currentNamespace;
-    private HashMap uuidRefs;
+    private Map uuidRefs;
     private GenerationPreferences cgPrefs;
     private transient VetoableChangeSupport vetoSupport;
 
@@ -167,7 +168,7 @@ public class Project implements java.io.Serializable, TargetListener {
     public Project() {
         profile = new ProfileJava();
         projectSettings = new ProjectSettings();
-        
+
         Model.getModelManagementFactory().setRootModel(null);
 
         authorname = Configuration.getString(Argo.KEY_USER_FULLNAME);
@@ -418,7 +419,7 @@ public class Project implements java.io.Serializable, TargetListener {
             if (diagrams.size() == 1) {
                 // We're deleting the last diagram so lets create a new one
                 // TODO: Once we go MDI we won't need this.
-                Object treeRoot = 
+                Object treeRoot =
                     Model.getModelManagementFactory().getRootModel();
                 defaultDiagram =
                     DiagramFactory.getInstance()
@@ -965,7 +966,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 members.remove(obj);
             }
 
-            // TODO: Presumably this is only relevant if 
+            // TODO: Presumably this is only relevant if
             // obj is actually a Model.
             // An added test of Model.getFacade.isAModel(obj) would clarify what
             // is going on here.
@@ -994,7 +995,7 @@ public class Project implements java.io.Serializable, TargetListener {
             TargetManager.getInstance().removeTarget(obj);
             TargetManager.getInstance().removeHistoryElement(obj);
             CommentEdge ce = (CommentEdge) obj;
-            LOG.info("Removing the link from " + ce.getAnnotatedElement() 
+            LOG.info("Removing the link from " + ce.getAnnotatedElement()
                     + " to " + ce.getComment());
             Model.getCoreHelper().removeAnnotatedElement(
                     ce.getComment(), ce.getAnnotatedElement());
@@ -1064,10 +1065,13 @@ public class Project implements java.io.Serializable, TargetListener {
     public void setRoot(Object root) {
 
         if (root == null) {
-            throw new IllegalArgumentException("A root model element is required");
+            throw new IllegalArgumentException(
+        	    "A root model element is required");
         }
         if (!Model.getFacade().isAModel(root)) {
-            throw new IllegalArgumentException("The root model element must be a model - got " + root.getClass().getName());
+            throw new IllegalArgumentException(
+        	    "The root model element must be a model - got "
+        	    + root.getClass().getName());
         }
 
         Object treeRoot = Model.getModelManagementFactory().getRootModel();
@@ -1118,7 +1122,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * Returns the uUIDRefs.
      * @return HashMap
      */
-    public HashMap getUUIDRefs() {
+    public Map getUUIDRefs() {
         return uuidRefs;
     }
 
@@ -1163,21 +1167,21 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * @see TargetListener#targetAdded(TargetEvent)
+     * {@inheritDoc}
      */
     public void targetAdded(TargetEvent e) {
     	setTarget(e.getNewTarget());
     }
 
     /**
-     * @see TargetListener#targetRemoved(TargetEvent)
+     * {@inheritDoc}
      */
     public void targetRemoved(TargetEvent e) {
     	setTarget(e.getNewTarget());
     }
 
     /**
-     * @see TargetListener#targetSet(TargetEvent)
+     * {@inheritDoc}
      */
     public void targetSet(TargetEvent e) {
     	setTarget(e.getNewTarget());
@@ -1220,7 +1224,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 diagram.remove();
             }
         }
-        
+
         if (members != null) {
             members.clear();
         }
@@ -1228,15 +1232,15 @@ public class Project implements java.io.Serializable, TargetListener {
         if (models != null) {
             for (Iterator it = models.iterator(); it.hasNext();) {
                 Object model = it.next();
-                LOG.debug("Deleting project model " 
+                LOG.debug("Deleting project model "
                         + Model.getFacade().getName(model));
                 Model.getUmlFactory().delete(model);
             }
             models.clear();
         }
-        
+
         if (defaultModel != null) {
-            LOG.debug("Deleting profile model " 
+            LOG.debug("Deleting profile model "
                     + Model.getFacade().getName(defaultModel));
             Model.getUmlFactory().delete(defaultModel);
             defaultModel = null;
@@ -1297,7 +1301,7 @@ public class Project implements java.io.Serializable, TargetListener {
     public Profile getProfile() {
         return profile;
     }
-    
+
     /**
      * Repair all parts of the project before a save takes place.
      * @return a report of any fixes
