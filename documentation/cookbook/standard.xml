@@ -114,6 +114,16 @@ If you are doing something complex enough to need a comment, consider
 breaking it out into its own private commented method.
 </para>
         <para>
+If you are overriding or implementing a method,
+use the standard javadoc comment:
+<programlisting>
+    /**
+     * {@inheritDoc}
+     */
+</programlisting>
+unless you want to describe specifics of the implementation.
+</para>
+        <para>
 This is not required by the Sun Code Conventions but
 an additional requirement for ArgoUML.
 </para>
