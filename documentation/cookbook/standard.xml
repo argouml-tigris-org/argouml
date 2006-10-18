@@ -1044,6 +1044,13 @@ Eclipse finds the Configurations that are also checked out.
 
         <listitem>
           <para>
+Select Project => Clean... => Clean all projects
+and wait for everything to build again.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
 Verify that you can start ArgoUML from the debugger within Eclipse. 
 You can do this by clicking on the little down-arrow close to the
 Debug icon in the tool bar,
