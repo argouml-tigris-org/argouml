@@ -14,6 +14,7 @@
 
     <module name="ConstantName"/>
     <module name="DoubleCheckedLocking"/>
+
     <module name="EmptyBlock">
       <!-- All except catch and for. -->
       <property name="tokens" value="LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_IF,LITERAL_TRY,LITERAL_WHILE,STATIC_INIT"/>
@@ -24,36 +25,42 @@
     <module name="GenericIllegalRegexp">
       <property name="format" value="@todo"/>
     </module>
+
     <module name="GenericIllegalRegexp">
       <property name="format" value="TODO "/>
     </module>
+
     <module name="GenericIllegalRegexp">
-      <property name="format" value="needs?-?more-?work"/>
+      <property name="format" value="[Nn]eeds?-?more-?work"/>
     </module>
+
     <module name="GenericIllegalRegexp">
       <property name="format" value="non-Javadoc"/>
     </module>
 
+
     <module name="GenericIllegalRegexp">
       <property 
-        name="format"
-                value="/\*\* (needs documenting|to be documented|\s*) \*/"/>
+            name="format"
+            value="/\*\* (needs documenting|to be documented|\s*) \*/"/>
+    </module>
+
+
+    <module name="GenericIllegalRegexp">
+      <property 
+            name="format"
+            value="(public|protected).*Logger"/>
+      <property
+	        name="message"
+            value="The Logger shall be private in the ArgoUML project."/>
     </module>
 
     <module name="GenericIllegalRegexp">
       <property 
-        name="format"
-            value="(public|protected).*Logger"/>
-      <property
-	    name="message"
-            value="The Logger shall be private in the ArgoUML project."/>
-    </module>
-    <module name="GenericIllegalRegexp">
-      <property 
-	    name="format"
+            name="format"
             value="^[^/*]*Logger[ \t][ \t]*([^L]|L[^O]|LO[^G]|LOG[^ \t])"/>
       <property
-	    name="message"
+	        name="message"
             value="The Logger shall be named LOG in the ArgoUML project."/>
     </module>
 
@@ -61,38 +68,44 @@
 
     <module name="IllegalImport">
       <property name="severity" value="error"/>
-	</module>
+    </module>
 
     <module name="IllegalInstantiation">
       <property name="severity" value="error"/>
     </module>
-	<module name="Indentation">
-       <property name="caseIndent" value="0"/>
+    <module name="Indentation">
+      <property name="caseIndent" value="0"/>
     </module>
 
     <module name="InnerAssignment"/>
+
     <module name="JavadocType">
-        <property name="scope" value="protected"/>
+      <property name="scope" value="protected"/>
     </module>
+
     <module name="JavadocMethod">
       <property name="scope" value="protected"/>
       <property name="allowUndeclaredRTE" value="true"/>
+      <property name="logLoadErrors" value="true"/>
+      <property name="suppressLoadErrors" value="true"/>
     </module>
     <module name="JavadocVariable">
       <property name="scope" value="protected"/>
     </module>
 
     <module name="LineLength">
-      <!-- ignore Javadoc refs, imports, & CVS Id tagline -->
+      <!-- ignore imports, & CVS Id tagline -->
       <property name="ignorePattern"
-	      value="^( *\* @see |import |// \$Id:)"/>
+	      value="^(import |// \$Id:)"/>
     </module>
 
     <module name="LocalFinalVariableName"/>
     <module name="LocalVariableName"/>
+
     <module name="MemberName">
       <property name="format" value="^[a-z][a-zA-Z0-9]*$|^LOG$"/>
     </module>
+
     <module name="MethodLength"/>
     <module name="MethodName"/>
     <module name="ModifierOrder"/>
