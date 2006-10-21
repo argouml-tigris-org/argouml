@@ -24,7 +24,7 @@
 
 package org.argouml.uml.notation.java;
 
-import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
@@ -46,7 +46,7 @@ public class InitNotationJava {
             Notation.makeNotation(
                     "Java",
                     null,
-                    Argo.lookupIconResource("JavaNotation"));
+                    ResourceLoaderWrapper.lookupIconResource("JavaNotation"));
 
         npf.addNotationProvider(
                 NotationProviderFactory2.TYPE_NAME,

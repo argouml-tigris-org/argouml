@@ -25,6 +25,8 @@
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.Action;
 
@@ -71,18 +73,22 @@ public class ActionSetMetaClass extends UndoableAction {
             UMLComboBox2 combo = (UMLComboBox2) source;
             stereo = combo.getTarget();
             if (Model.getFacade().isAStereotype(stereo)) {
-                oldBase = Model.getFacade().getBaseClass(stereo);
+                Collection baseClasses = Model.getFacade().getBaseClasses(stereo);
+                Iterator iter = baseClasses != null ? baseClasses.iterator() : null;
+                oldBase = iter != null ? iter.next() : null;
                 newBase = combo.getSelectedItem();
                 if (newBase != null) { // TODO: How come this happens?
                     if (newBase != oldBase) {
-                        Model.getExtensionMechanismsHelper().setBaseClass(
+                        Model.getFacade().getBaseClasses(stereo).clear(); // TODO: this works?
+                        Model.getExtensionMechanismsHelper().addBaseClass(
                                 stereo,
                                 newBase);
                     } else {
                         if (newBase != null && newBase.equals("")) {
-                            Model.getExtensionMechanismsHelper().setBaseClass(
+                            Model.getFacade().getBaseClasses(stereo).clear(); // TODO: this works?
+                            Model.getExtensionMechanismsHelper().addBaseClass(
                                     stereo,
-                            "ModelElement");
+                                    "ModelElement");
                         }
                     }
                 }

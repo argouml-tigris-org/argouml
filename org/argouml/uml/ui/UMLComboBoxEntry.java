@@ -214,8 +214,14 @@ public class UMLComboBoxEntry implements Comparable {
                 Model.getCoreHelper().addAllStereotypes(clone,
                         Model.getFacade().getStereotypes(element));
                 if (Model.getFacade().isAStereotype(clone)) {
-                    Model.getExtensionMechanismsHelper().setBaseClass(clone,
-                            Model.getFacade().getBaseClass(element));
+                    Collection baseClasses =
+                        Model.getFacade().getBaseClasses(element);
+                    Iterator iter =
+                        baseClasses != null ? baseClasses.iterator() : null;
+                    while (iter != null && iter.hasNext()) {
+                        Model.getExtensionMechanismsHelper().addBaseClass(clone,
+                            iter.next());
+                    }
                 }
                 Model.getCoreHelper().addOwnedElement(targetNS, clone);
                 element = clone;

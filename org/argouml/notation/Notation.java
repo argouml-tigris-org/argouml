@@ -31,12 +31,12 @@ import java.util.ArrayList;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 
 /**
  * Provides centralized methods dealing with notation.
@@ -61,7 +61,7 @@ public final class Notation implements PropertyChangeListener {
         makeNotation(
             "UML",
             "1.4",
-            Argo.lookupIconResource("UmlNotation"));
+            ResourceLoaderWrapper.lookupIconResource("UmlNotation"));
 
     /*
      * Remark:

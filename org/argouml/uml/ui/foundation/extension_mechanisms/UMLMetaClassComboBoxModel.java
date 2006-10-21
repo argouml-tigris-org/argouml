@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -56,7 +57,9 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return Model.getFacade().getBaseClass(getTarget());
+            Collection baseClasses = Model.getFacade().getBaseClasses(getTarget());
+            Iterator iter = baseClasses != null ? baseClasses.iterator() : null;
+            return iter != null ? iter.next() : null;
         }
         return null;
     }
