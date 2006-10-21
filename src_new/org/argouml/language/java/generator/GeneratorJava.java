@@ -29,6 +29,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -38,6 +39,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -56,11 +58,10 @@ import org.argouml.notation.NotationName;
 import org.argouml.ocl.ArgoFacade;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.CodeGenerator;
-import org.argouml.uml.generator.FileGenerator;
-import org.argouml.uml.generator.FileGeneratorAdapter;
 import org.argouml.uml.generator.GeneratorHelper;
 import org.argouml.uml.generator.GeneratorManager;
 import org.argouml.uml.generator.Language;
+import org.argouml.uml.generator.SourceUnit;
 
 import tudresden.ocl.OclTree;
 import tudresden.ocl.parser.analysis.DepthFirstAdapter;
@@ -73,7 +74,7 @@ import antlr.ANTLRException;
  *
  * @stereotype singleton
  */
-public class GeneratorJava implements FileGenerator {
+public class GeneratorJava implements CodeGenerator {
 
     /**
      * Logger.
@@ -145,13 +146,7 @@ public class GeneratorJava implements FileGenerator {
         String cv = nn.getConfigurationValue();
         Language lang =
             GeneratorHelper.makeLanguage(cv, nn.getTitle(), nn.getIcon());
-        try {
-            CodeGenerator wrapper =
-                new FileGeneratorAdapter(this);
-            GeneratorManager.getInstance().addGenerator(lang, wrapper);
-        } catch (ClassCastException cce) {
-            LOG.warn("Class " + getClass() + " should implement FileGenerator");
-        }
+        GeneratorManager.getInstance().addGenerator(lang, this);
     }
 
     /**
@@ -163,6 +158,10 @@ public class GeneratorJava implements FileGenerator {
      *
      * @see org.argouml.uml.generator.FileGenerator#generateFile2(
      * java.lang.Object, java.lang.String)
+     *
+     * @param modelElement the element to be generated
+     * @param path the path where the element will be generated
+     * @return String full path name of the the generated file
      */
     public String generateFile2(Object modelElement, String path) {
         String name = Model.getFacade().getName(modelElement);
@@ -2126,5 +2125,185 @@ public class GeneratorJava implements FileGenerator {
             }
         }
         return "";
+    }
+
+    /**
+     * @see org.argouml.uml.generator.CodeGenerator#generate(java.util.Collection, boolean)
+     */
+    public Collection generate(Collection elements, boolean deps) {
+        LOG.debug("generate() called");
+        File tmpdir = null;
+        try {
+            tmpdir = createTempDir();
+            if (tmpdir != null) {
+                generateFiles(elements, tmpdir.getPath(), deps);
+                return readAllFiles(tmpdir);
+            }
+            return new Vector();
+        } finally {
+            if (tmpdir != null) {
+                deleteDir(tmpdir);
+            }
+            LOG.debug("generate() terminated");
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.generator.CodeGenerator#generateFiles(java.util.Collection,
+     *      java.lang.String, boolean)
+     */
+    public Collection generateFiles(Collection elements, String path,
+            boolean deps) {
+        LOG.debug("generateFiles() called");
+        // TODO: 'deps' is ignored here
+        for (Iterator it = elements.iterator(); it.hasNext();) {
+            generateFile2(it.next(), path);
+        }
+        return readFileNames(new File(path));
+    }
+
+    /**
+     * @see org.argouml.uml.generator.CodeGenerator#generateFileList(java.util.Collection, boolean)
+     */
+    public Collection generateFileList(Collection elements, boolean deps) {
+        LOG.debug("generateFileList() called");
+        // TODO: 'deps' is ignored here
+        File tmpdir = null;
+        try {
+            tmpdir = createTempDir();
+            for (Iterator it = elements.iterator(); it.hasNext();) {
+                generateFile2(it.next(), tmpdir.getName());
+            }
+            return readFileNames(tmpdir);
+        } finally {
+            if (tmpdir != null) {
+                deleteDir(tmpdir);
+            }
+        }
+    }
+
+    // methods to manage files in the temporary directory
+
+    private File createTempDir() {
+        File tmpdir = null;
+        try  {
+            tmpdir = File.createTempFile("argouml", null);
+            tmpdir.delete();
+            if (!tmpdir.mkdir()) {
+                return null;
+            }
+            return tmpdir;
+        } catch (IOException ioe) {
+            LOG.error("Error while creating a temporary directory", ioe);
+            return null;
+        }
+    }
+
+    private interface FileAction {
+        /**
+         * Execute some action on the specified file.
+         */
+        void act(File f) throws IOException;
+    }
+
+    /**
+     * Visit directory in post-order fashion.
+     */
+    private void traverseDir(File dir, FileAction action) throws IOException {
+        if (dir.exists()) {
+            File[] files = dir.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    traverseDir(files[i], action);
+                } else {
+                    action.act(files[i]);
+                }
+            }
+            action.act(dir);
+        }
+    }
+
+    /**
+     * Reads all files in a directory in memory.
+     * @param dir
+     * @return A collection of SourceUnit objects.
+     */
+    private Collection readAllFiles(File dir) {
+        try {
+            final Vector ret = new Vector();
+            final int prefix = dir.getPath().length() + 1;
+            traverseDir(dir, new FileAction() {
+
+                public void act(File f) throws IOException {
+                    // skip backup files. This is actually a workaround for the
+                    // cpp generator, which always creates backup files (it's a
+                    // bug).
+                    if (!f.isDirectory() && !f.getName().endsWith(".bak")) {
+                        FileReader fr = new FileReader(f);
+                        BufferedReader bfr = new BufferedReader(fr);
+                        try { 
+                            StringBuffer result =
+                                new StringBuffer((int) f.length());
+                            String line = bfr.readLine();
+                            do {
+                                result.append(line);
+                                line = bfr.readLine();
+                                if (line != null) {
+                                    result.append('\n');
+                                }
+                            } while (line != null);
+                            ret.add(new SourceUnit(f.toString().substring(
+                                    prefix), result.toString()));
+                        } finally {
+                            bfr.close();
+                            fr.close();
+                        }
+                    }
+                }
+
+            });
+            return ret;
+        } catch (IOException ioe) {
+            LOG.error("Exception reading files", ioe);
+        }
+        return null;
+    }
+
+    /**
+     * Deletes a directory and all of its contents.
+     * @param dir The directory to delete.
+     */
+    private void deleteDir(File dir) {
+        try {
+            traverseDir(dir, new FileAction() {
+                public void act(File f) {
+                    f.delete();
+                }
+            });
+        } catch (IOException ioe) {
+            // never happens, just to keep the compiler happy
+        }
+    }
+
+    /**
+     * Reads all the files within a directory tree.
+     * @param dir The base directory.
+     * @return The collection of files.
+     */
+    private Collection readFileNames(File dir) {
+        final List ret = new Vector();
+        final int prefix = dir.getPath().length() + 1;
+        try {
+            traverseDir(dir, new FileAction() {
+                public void act(File f) {
+                    if (!f.isDirectory()) {
+                        ret.add(f.toString().substring(prefix));
+                    }
+                }
+            });
+        } catch (IOException ioe) {
+            // never happens, just to keep the compiler happy
+        }
+        return ret;
     }
 }

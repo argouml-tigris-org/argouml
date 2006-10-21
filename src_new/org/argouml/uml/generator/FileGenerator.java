@@ -26,6 +26,8 @@ package org.argouml.uml.generator;
 
 /** This class is the interface that tells that a certain generator
  * can generate a file.
+ * 
+ * @deprecated in 0.23.3 (not used in project anymore)
  */
 public interface FileGenerator {
 
