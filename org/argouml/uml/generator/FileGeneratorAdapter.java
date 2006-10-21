@@ -41,6 +41,8 @@ import org.apache.log4j.Logger;
  * in a temporary directory and reads them.
  * TODO: Remove this class when all code generators implements the new
  * CodeGenerator interface directly.
+ * 
+ * @deprecated in 0.23.3 (not used in project anymore)
  *
  * @author Daniele Tamino
  */
