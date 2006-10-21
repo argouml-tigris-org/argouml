@@ -223,8 +223,10 @@ public class WizOperName extends WizMEName {
                             Model.getFacade().getName(candidate)))) {
                         continue;
                     }
-                    if (!("BehavioralFeature".equals(
-                            Model.getFacade().getBaseClass(candidate)))) {
+                    Collection baseClasses = Model.getFacade().getBaseClasses(candidate);
+                    Iterator iter2 = baseClasses != null ? baseClasses.iterator() : null;
+                    if (iter2 == null || !("BehavioralFeature".equals(
+                            iter2.next()))) {
                         continue;
                     }
                     theStereotype = candidate;
@@ -237,7 +239,7 @@ public class WizOperName extends WizMEName {
                     Model.getCoreHelper().setName(theStereotype, "create");
                     // theStereotype.setStereotype(???);
                     Model.getExtensionMechanismsHelper()
-                            .setBaseClass(theStereotype, "BehavioralFeature");
+                            .addBaseClass(theStereotype, "BehavioralFeature");
                     Object targetNS =
                         findNamespace(Model.getFacade().getNamespace(oper),
                                       Model.getFacade().getModel(oper));

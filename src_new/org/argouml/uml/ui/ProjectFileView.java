@@ -29,7 +29,7 @@ import java.io.File;
 import javax.swing.Icon;
 import javax.swing.filechooser.FileView;
 
-import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
 
@@ -70,7 +70,7 @@ public final class ProjectFileView extends FileView {
     	AbstractFilePersister persister = PersistenceManager.getInstance()
 				.getPersisterFromFileName(f.getName());
         if (persister != null && persister.hasAnIcon()) {
-            return Argo.lookupIconResource("UmlNotation");
+            return ResourceLoaderWrapper.lookupIconResource("UmlNotation");
         } else {
             return null;
         }

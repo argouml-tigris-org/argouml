@@ -91,7 +91,7 @@ public class TestTabDiagram extends TestCase {
     public void testSetTargetWithDiagram() {
         try {
             TabDiagram tabDiagram = new TabDiagram();
-            tabDiagram.setTarget(diagram);
+            TargetManager.getInstance().setTarget(diagram);
             assertEquals(
                 tabDiagram.getJGraph().getGraphModel(),
                 diagram.getGraphModel());
@@ -109,9 +109,8 @@ public class TestTabDiagram extends TestCase {
     public void testSetTargetWithNoDiagram() {
         try {
             TabDiagram tabDiagram = new TabDiagram();
-            Object o = new Object();
             JGraph graph = tabDiagram.getJGraph();
-            tabDiagram.setTarget(o);
+            TargetManager.getInstance().setTarget(diagram);
             // the graph should stay the same.
             assertEquals(tabDiagram.getJGraph(), graph);
         } catch (Exception noHead) {

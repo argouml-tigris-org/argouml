@@ -133,10 +133,12 @@ public class TestExtensionMechanismsHelper extends TestCase {
      * Test multiple base class support.
      */
     public void testMultipleBaseClasses() {
-        String classType = (String) Model.getMetaTypes().getName(theClass);
+        String classType = Model.getMetaTypes().getName(theClass);
+        Collection baseClasses = Model.getFacade().getBaseClasses(theStereotype);
+        assertNotNull("There are no base classes", baseClasses);
         assertEquals("Base class doesn't match type of model element",
                 classType,
-                Model.getFacade().getBaseClass(theStereotype));
+                baseClasses.iterator().next());
         assertEquals("Wrong number of base classes",
                 1,
                 Model.getFacade().getBaseClasses(theStereotype).size());
