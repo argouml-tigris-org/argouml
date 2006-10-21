@@ -46,12 +46,21 @@ import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
 import org.argouml.ocl.ArgoFacade;
 import org.argouml.uml.DocumentationManager;
+import org.argouml.uml.generator.CodeGenerator;
 import org.argouml.uml.generator.FileGenerator;
-import org.argouml.uml.generator.Generator2;
+import org.argouml.uml.generator.FileGeneratorAdapter;
+import org.argouml.uml.generator.GeneratorHelper;
+import org.argouml.uml.generator.GeneratorManager;
+import org.argouml.uml.generator.Language;
 
 import tudresden.ocl.OclTree;
 import tudresden.ocl.parser.analysis.DepthFirstAdapter;
@@ -59,13 +68,12 @@ import tudresden.ocl.parser.node.AConstraintBody;
 import antlr.ANTLRException;
 
 /**
- * Generator2 subclass to generate Java for display in diagrams and in
- * text fields in the ArgoUML user interface.
+ * FileGenerator implementing class to generate Java for display in diagrams
+ * and in text fields in the ArgoUML user interface.
  *
  * @stereotype singleton
  */
-public class GeneratorJava
-    extends Generator2 implements FileGenerator {
+public class GeneratorJava implements FileGenerator {
 
     /**
      * Logger.
@@ -112,6 +120,11 @@ public class GeneratorJava
     private static final GeneratorJava SINGLETON = new GeneratorJava();
 
     /**
+     * Two spaces used for indenting code in classes.
+     */
+    private static final String INDENT = "  ";
+
+    /**
      * Get the generator.
      *
      * @return The singleton.
@@ -124,11 +137,21 @@ public class GeneratorJava
      * Constructor.
      */
     protected GeneratorJava() {
-        super(
-	      Notation.makeNotation(
-				    "Java",
-				    null,
-				    Argo.lookupIconResource("JavaNotation")));
+        NotationName nn =
+            Notation.makeNotation(
+                "Java",
+                null,
+                ResourceLoaderWrapper.lookupIconResource("JavaNotation"));
+        String cv = nn.getConfigurationValue();
+        Language lang =
+            GeneratorHelper.makeLanguage(cv, nn.getTitle(), nn.getIcon());
+        try {
+            CodeGenerator wrapper =
+                new FileGeneratorAdapter(this);
+            GeneratorManager.getInstance().addGenerator(lang, wrapper);
+        } catch (ClassCastException cce) {
+            LOG.warn("Class " + getClass() + " should implement FileGenerator");
+        }
     }
 
     /**
@@ -257,6 +280,97 @@ public class GeneratorJava
 	}
         sb.append(generateImports(cls, packagePath));
         return sb.toString();
+    }
+
+    /**
+     * Generates code for some modelelement. Subclasses should
+     * implement this to generate code for different notations.
+     * @param o the element to be generated
+     * @return String the generated code
+     */
+    private String generate(Object o) {
+        if (o == null) {
+            return "";
+        }
+        if (Model.getFacade().isAActionState(o)) {
+            return generateActionState(o);
+        }
+        if (Model.getFacade().isAExtensionPoint(o)) {
+            return generateExtensionPoint(o);
+        }
+        if (Model.getFacade().isAOperation(o)) {
+            return generateOperation(o, false);
+        }
+        if (Model.getFacade().isAAttribute(o)) {
+            return generateAttribute(o, false);
+        }
+        if (Model.getFacade().isAParameter(o)) {
+            return generateParameter(o);
+        }
+        if (Model.getFacade().isAPackage(o)) {
+            return generatePackage(o);
+        }
+        if (Model.getFacade().isAClassifier(o)) {
+            return generateClassifier(o);
+        }
+        if (Model.getFacade().isAExpression(o)) {
+            return generateExpression(o);
+        }
+        if (o instanceof String) {
+            return generateName((String) o);
+        }
+        if (o instanceof String) {
+            return generateUninterpreted((String) o);
+        }
+        if (Model.getFacade().isAStereotype(o)) {
+            return generateStereotype(o);
+        }
+        if (Model.getFacade().isATaggedValue(o)) {
+            return generateTaggedValue(o);
+        }
+        if (Model.getFacade().isAAssociation(o)) {
+            return generateAssociation(o);
+        }
+        if (Model.getFacade().isAAssociationEnd(o)) {
+            return generateAssociationEnd(o);
+        }
+        if (Model.getFacade().isAMultiplicity(o)) {
+            return generateMultiplicity(o);
+        }
+        if (Model.getFacade().isAState(o)) {
+            return generateState(o);
+        }
+        if (Model.getFacade().isATransition(o)) {
+            return generateTransition(o);
+        }
+        if (Model.getFacade().isAAction(o)) {
+            return generateAction(o);
+        }
+        if (Model.getFacade().isACallAction(o)) {
+            return generateAction(o);
+        }
+        if (Model.getFacade().isAGuard(o)) {
+            return generateGuard(o);
+        }
+        if (Model.getFacade().isAMessage(o)) {
+            return generateMessage(o);
+        }
+        if (Model.getFacade().isAEvent(o)) {
+            return generateEvent(o);
+        }
+        if (Model.getFacade().isAVisibilityKind(o)) {
+            return generateVisibility(o);
+        }
+
+        if (Model.getFacade().isAModelElement(o)) {
+            return generateName(Model.getFacade().getName(o));
+        }
+
+        if (o == null) {
+            return "";
+        }
+
+        return o.toString();
     }
 
     private String generateImports(Object cls, String packagePath) {
@@ -438,10 +552,6 @@ public class GeneratorJava
         return null;
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateOperation(
-     *         java.lang.Object, boolean)
-     */
     public String generateOperation(Object op, boolean documented) {
         if (isFileGeneration) {
             documented = true; // fix Issue 1506
@@ -555,10 +665,6 @@ public class GeneratorJava
         return sb.toString();
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateAttribute(
-     *         java.lang.Object, boolean)
-     */
     public String generateAttribute(Object attr, boolean documented) {
         if (isFileGeneration) {
             documented = true; // always "documented" if we generate file.
@@ -610,9 +716,6 @@ public class GeneratorJava
         return sb.toString();
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateParameter(java.lang.Object)
-     */
     public String generateParameter(Object parameter) {
         StringBuffer sb = new StringBuffer(20);
         //TODO: qualifiers (e.g., const)
@@ -624,9 +727,6 @@ public class GeneratorJava
         return sb.toString();
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generatePackage(java.lang.Object)
-     */
     public String generatePackage(Object p) {
         StringBuffer sb = new StringBuffer(80);
         String packName = generateName(Model.getFacade().getName(p));
@@ -781,8 +881,8 @@ public class GeneratorJava
     /**
      * Generates code for a classifier. In case of Java code is
      * generated for classes and interfaces only at the moment.
-     * @see org.argouml.uml.generator.Generator2#generateClassifier(
-     *         Object)
+     * @param cls
+     * @return String
      */
     public String generateClassifier(Object cls) {
         StringBuffer returnValue = new StringBuffer();
@@ -1121,9 +1221,6 @@ public class GeneratorJava
         return buf.toString();
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateTaggedValue(java.lang.Object)
-     */
     public String generateTaggedValue(Object tv) {
         if (tv == null) {
             return "";
@@ -1371,9 +1468,6 @@ public class GeneratorJava
         return sb.toString();
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateAssociation(java.lang.Object)
-     */
     public String generateAssociation(Object a) {
         //    String s = "";
         //     String generatedName = generateName(a.getName());
@@ -1390,9 +1484,6 @@ public class GeneratorJava
         return "";
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateAssociationEnd(java.lang.Object)
-     */
     public String generateAssociationEnd(Object ae) {
         if (!Model.getFacade().isNavigable(ae)) {
             return "";
@@ -1495,7 +1586,8 @@ public class GeneratorJava
      * the definition in NotationProvider2), but also for a model element,
      * because if it is a MFeature, then the tag 'src_visibility' is to be
      * taken into account for generating language dependent visibilities.
-     * @see org.argouml.uml.generator.Generator2#generateVisibility(java.lang.Object)
+     * @param o
+     * @return String
      */
     public String generateVisibility(Object o) {
 	if (Model.getFacade().isAFeature(o)) {
@@ -1606,16 +1698,10 @@ public class GeneratorJava
         }
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateState(java.lang.Object)
-     */
     public String generateState(Object m) {
         return Model.getFacade().getName(m);
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateSubmachine(java.lang.Object)
-     */
     public String generateSubmachine(Object m) {
         Object c = Model.getFacade().getSubmachine(m);
         if (c == null) {
@@ -1630,9 +1716,6 @@ public class GeneratorJava
         return ("include / " + generateName(Model.getFacade().getName(c)));
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateObjectFlowState(java.lang.Object)
-     */
     public String generateObjectFlowState(Object m) {
         Object c = Model.getFacade().getType(m);
         if (c == null) {
@@ -1642,8 +1725,6 @@ public class GeneratorJava
     }
 
     /*
-     * @see org.argouml.uml.generator.Generator2#generateStateBody(java.lang.Object)
-     *
     public String generateStateBody(Object m) {
         LOG.info("GeneratorJava: generating state body");
         StringBuffer sb = new StringBuffer(80);
@@ -1697,9 +1778,6 @@ public class GeneratorJava
         return sb.toString();
     } */
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateTransition(java.lang.Object)
-     */
     public String generateTransition(Object m) {
         StringBuffer sb =
             new StringBuffer(generate(Model.getFacade().getName(m)));
@@ -1735,9 +1813,6 @@ public class GeneratorJava
 	    return s;*/
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateAction(java.lang.Object)
-     */
     public String generateAction(Object m) {
         // return m.getName();
 
@@ -1751,9 +1826,6 @@ public class GeneratorJava
         return "";
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateGuard(java.lang.Object)
-     */
     public String generateGuard(Object m) {
         //return generateExpression(Model.getFacade().getExpression(m));
         if (m != null && Model.getFacade().getExpression(m) != null) {
@@ -1762,9 +1834,6 @@ public class GeneratorJava
         return "";
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateMessage(java.lang.Object)
-     */
     public String generateMessage(Object m) {
         if (m == null) {
             return "";
@@ -1888,6 +1957,7 @@ public class GeneratorJava
 
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleName()
+     * @return String
      */
     public String getModuleName() {
         return "GeneratorJava";
@@ -1895,6 +1965,7 @@ public class GeneratorJava
 
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
+     * @return String
      */
     public String getModuleDescription() {
         return "Java Notation and Code Generator";
@@ -1902,6 +1973,7 @@ public class GeneratorJava
 
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
+     * @return String
      */
     public String getModuleAuthor() {
         return "ArgoUML Core";
@@ -1909,6 +1981,7 @@ public class GeneratorJava
 
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
+     * @return String
      */
     public String getModuleVersion() {
         return ArgoVersion.getVersion();
@@ -1916,6 +1989,7 @@ public class GeneratorJava
 
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
+     * @return String
      */
     public String getModuleKey() {
         return "module.language.java.generator";
@@ -1956,6 +2030,8 @@ public class GeneratorJava
 
     /**
      * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
+     * @param o
+     * @return boolean
      */
     public boolean inContext(Object[] o) {
 	return true;
@@ -1963,14 +2039,12 @@ public class GeneratorJava
 
     /**
      * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
+     * @return boolean
      */
     public boolean isModuleEnabled() {
         return true;
     }
 
-    /**
-     * @see org.argouml.uml.generator.Generator2#generateActionState(java.lang.Object)
-     */
     public String generateActionState(Object actionState) {
         String ret = "";
         Object action = Model.getFacade().getEntry(actionState);
@@ -1983,5 +2057,74 @@ public class GeneratorJava
         return ret;
     }
 
+    private String generateExpression(Object expr) {
+        if (Model.getFacade().isAExpression(expr))
+            return generateUninterpreted(
+                    (String) Model.getFacade().getBody(expr));
+        else if (Model.getFacade().isAConstraint(expr))
+            return generateExpression(Model.getFacade().getBody(expr));
+        return "";
+    }
 
+    private String generateName(String n) {
+        return n;
+    }
+
+    /**
+     * Make a string non-null.<p>
+     *
+     * What is the purpose of this function? Shouldn't it be private static?
+     *
+     * @param un The String.
+     * @return a non-null string.
+     */
+    private String generateUninterpreted(String un) {
+        if (un == null)
+            return "";
+        return un;
+    }
+
+    private String generateClassifierRef(Object cls) {
+        if (cls == null)
+            return "";
+        return Model.getFacade().getName(cls);
+    }
+
+    private String generateStereotype(Object st) {
+        if (st == null)
+            return "";
+        Project project = 
+            ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = project.getProjectSettings();
+        if (Model.getFacade().isAModelElement(st)) {
+            if (Model.getFacade().getName(st) == null)
+                return ""; // Patch by Jeremy Bennett
+            if (Model.getFacade().getName(st).length() == 0)
+                return "";
+            return ps.getLeftGuillemot()
+                + generateName(Model.getFacade().getName(st))
+                + ps.getRightGuillemot();
+        }
+        if (st instanceof Collection) {
+            Object o;
+            StringBuffer sb = new StringBuffer(10);
+            boolean first = true;
+            Iterator iter = ((Collection) st).iterator();
+            while (iter.hasNext()) {
+                if (!first)
+                    sb.append(',');
+                o = iter.next();
+                if (o != null) {
+                    sb.append(generateName(Model.getFacade().getName(o)));
+                    first = false;
+                }
+            }
+            if (!first) {
+                return ps.getLeftGuillemot()
+                    + sb.toString()
+                    + ps.getRightGuillemot();
+            }
+        }
+        return "";
+    }
 }
