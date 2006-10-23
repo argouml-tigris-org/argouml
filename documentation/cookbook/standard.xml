@@ -108,20 +108,17 @@ This is checked by Checkstyle.
       </listitem>
       <listitem>
         <para>
-Use Javadoc for each class, instance variable, and method. 
+Use Javadoc for each class, instance variable, and
+methods that are not overriding or implementing a method
+from an interface or extended class.
 In general do not put comments in the body of a method. 
 If you are doing something complex enough to need a comment, consider
 breaking it out into its own private commented method.
 </para>
         <para>
-If you are overriding or implementing a method,
-use the standard javadoc comment:
-<programlisting>
-    /**
-     * {@inheritDoc}
-     */
-</programlisting>
-unless you want to describe specifics of the implementation.
+If you are overriding or implementing a method and
+you want to describe specifics of the implementation,
+use the javadoc and reference the overridden or implemented method.
 </para>
         <para>
 This is not required by the Sun Code Conventions but
@@ -130,7 +127,7 @@ an additional requirement for ArgoUML.
         <para>
 This is partly checked by Checkstyle.
 Checkstyle does currently only warn if a Javadoc comment is omitted for
-a public, protected or default visibility variable or method.
+a public, protected or default visibility variables.
 </para>
       </listitem>
       <listitem>
@@ -172,12 +169,11 @@ It is here just for the emphasis.
 </para>
         <para>
 This is checked by Checkstyle.
-Checkstyle ignores three kinds of lines in this check because of the
+Checkstyle ignores two kinds of lines in this check because of the
 historical use of long class names and package names.
 These are lines that contain
-"//&nbsp;&dollar;Id:<replaceable>whatever</replaceable>&dollar;",
-import statements, and
-Javadoc comments with @see-tags.
+"//&nbsp;&dollar;Id:<replaceable>whatever</replaceable>&dollar;" and
+import statements.
 </para>
       </listitem>
       <listitem>
@@ -1244,12 +1240,14 @@ check Check overriding and implementing methods.
             <listitem>
               <para>
 Javadoc => Missing javadoc comments: Warning, Protected,
-Check overriding and implementing methods.
+uncheck Check overriding and implementing methods.
 </para>
             </listitem>
           </itemizedlist>
           <para>
-These problems are also found by Checkstyle so if you are
+These problems
+(except missing javadoc comments)
+are also found by Checkstyle so if you are
 running Checkclipse (See <xref linkend="checkclipse"/>)
 put this in Ignore instead.
 </para>
