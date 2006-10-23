@@ -88,6 +88,7 @@
       <property name="allowUndeclaredRTE" value="true"/>
       <property name="logLoadErrors" value="true"/>
       <property name="suppressLoadErrors" value="true"/>
+      <property name="allowMissingJavadoc" value="true"/>
     </module>
     <module name="JavadocVariable">
       <property name="scope" value="protected"/>
