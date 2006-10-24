@@ -39,11 +39,17 @@ import org.argouml.i18n.Translator;
 
 /**
  * Helper object for Settings Tabs.
- *
+ * 
  * @author Thierry Lach
- * @since  0.9.4
+ * @since 0.9.4
  * @deprecated as of 0.21.3 by Linus Tolke. Replace by explicit calls to Swing
- *         and copy the {@link #getTabPanel()} into your class.
+ *             and copy the {@link #getTabPanel()} into your class. Instead of
+ *             extending this class, implement {@link GUISettingsTabInterface}
+ *             and {@link ModuleInterface} directly and register your module
+ *             with
+ *             {@link GUI#addSettingsTab(org.argouml.ui.GUISettingsTabInterface)}
+ *             when your module is enabled. See {@link SettingsTabCpp} for an
+ *             example which has been converted.
  */
 public abstract class SettingsTabHelper extends JPanel
     implements SettingsTabPanel, PluggableSettingsTab {
