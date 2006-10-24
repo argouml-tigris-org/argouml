@@ -33,11 +33,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.StringTokenizer;
@@ -77,6 +79,13 @@ public final class ModuleLoader2 {
      * The values are {@link org.argouml.moduleloader.ModuleStatus}.
      */
     private Map moduleStatus;
+    
+    /**
+     * List of locations that we've searched and/or loaded modules
+     * from.  This is for information purposes only to allow it to 
+     * be displayed in the settings Environment tab.
+     */
+    private List extensionLocations = new ArrayList();
 
     /**
      * The module loader object.
@@ -510,21 +519,30 @@ public final class ModuleLoader2 {
 	}
 
 	if (argoHome != null) {
+            String extdir;
 	    if (argoHome.startsWith(FILE_PREFIX)) {
-	        huntModulesFromNamedDirectory(
-	                argoHome.substring(FILE_PREFIX.length())
-	                + File.separator + "ext");
+	        extdir = argoHome.substring(FILE_PREFIX.length())
+                        + File.separator + "ext";
 	    } else {
-	        huntModulesFromNamedDirectory(argoHome
-					      + File.separator + "ext");
+	        extdir = argoHome + File.separator + "ext";
 	    }
-
+            extensionLocations.add(extdir);
+	    huntModulesFromNamedDirectory(extdir);
 	}
 
         String extdir = System.getProperty("argo.ext.dir");
 	if (extdir != null) {
+            extensionLocations.add(extdir);
 	    huntModulesFromNamedDirectory(extdir);
 	}
+    }
+    
+    /**
+     * Get the list of locations that we've loaded extension modules from.
+     * @return A list of the paths we've loaded from.
+     */
+    public List getExtensionLocations() {
+        return Collections.unmodifiableList(extensionLocations);
     }
 
     /**
