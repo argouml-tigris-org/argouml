@@ -24,15 +24,17 @@
 
 package org.argouml.uml.generator;
 
-/** This class is the interface that tells that a certain generator
+/** 
+ * This class is the interface that tells that a certain generator
  * can generate a file.
  * 
- * @deprecated in 0.23.3 (not used in project anymore)
+ * @deprecated in 0.23.3 by thn.  Not used in core ArgoUML any more, but
+ * may be used by third party code generator modules.
  */
 public interface FileGenerator {
 
     /**
-     * The fileseperation for this operating system.
+     * The file seperator for this operating system.
      */
     public static final String FILE_SEPARATOR =
 	System.getProperty("file.separator");
