@@ -661,6 +661,8 @@ public final class ModuleLoader2 {
         }
 
         if (!Modifier.isPublic(c.getModifiers())) {
+            LOG.debug("The constructor for class " + classname
+                    + " is not public.  Not loaded.");
             return;
         }
         Object obj;
@@ -691,6 +693,7 @@ public final class ModuleLoader2 {
         ModuleInterface mf = (ModuleInterface) obj;
 
         addModule(mf);
+        LOG.info("Succesfully loaded module " + classname);
     }
 
     /**
