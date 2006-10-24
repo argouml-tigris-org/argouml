@@ -797,9 +797,6 @@ public class Project implements java.io.Serializable, TargetListener {
      * @author mvw@tigris.org
      */
     private static class Vcl implements VetoableChangeListener {
-        /**
-         * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
-         */
         public void vetoableChange(PropertyChangeEvent evt)
             throws PropertyVetoException {
             if (evt.getPropertyName().equals("name")) {
@@ -1166,23 +1163,14 @@ public class Project implements java.io.Serializable, TargetListener {
         activeDiagram = theDiagram;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void targetAdded(TargetEvent e) {
     	setTarget(e.getNewTarget());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void targetRemoved(TargetEvent e) {
     	setTarget(e.getNewTarget());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void targetSet(TargetEvent e) {
     	setTarget(e.getNewTarget());
     }

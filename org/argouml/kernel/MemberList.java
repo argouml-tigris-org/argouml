@@ -57,9 +57,6 @@ public class MemberList implements List {
         LOG.info("Creating a member list");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean add(Object member) {
 
         if (member instanceof ProjectMemberModel) {
@@ -77,9 +74,6 @@ public class MemberList implements List {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean remove(Object member) {
         LOG.info("Removing a member");
         if (member instanceof Diagram) {
@@ -98,9 +92,6 @@ public class MemberList implements List {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Iterator iterator() {
         List temp = new ArrayList(size());
         if (model != null) {
@@ -113,9 +104,6 @@ public class MemberList implements List {
         return temp.iterator();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public ListIterator listIterator() {
         List temp = new ArrayList(size());
         if (model != null) {
@@ -128,9 +116,6 @@ public class MemberList implements List {
         return temp.listIterator();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public ListIterator listIterator(int arg0) {
         List temp = new ArrayList(size());
         if (model != null) {
@@ -157,11 +142,6 @@ public class MemberList implements List {
         return false;
     }
 
-
-
-    /**
-     * {@inheritDoc}
-     */
     public int size() {
         int size = diagramMembers.size();
         if (model != null) {
@@ -173,9 +153,6 @@ public class MemberList implements List {
         return size;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean contains(Object member) {
         if (todoList == member) {
             return true;
@@ -186,9 +163,6 @@ public class MemberList implements List {
         return diagramMembers.contains(member);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void clear() {
         LOG.info("Clearing members");
         if (model != null) {
@@ -241,9 +215,6 @@ public class MemberList implements List {
             "There is no single instance of a " + type.getName() + " member");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object get(int i) {
         if (model != null) {
             if (i == 0) {
@@ -259,16 +230,10 @@ public class MemberList implements List {
         return diagramMembers.get(i);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isEmpty() {
         return size() == 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object[] toArray() {
         Object[] temp = new Object[size()];
         int pos = 0;
@@ -289,89 +254,51 @@ public class MemberList implements List {
         todoList = member;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object[] toArray(Object[] arg0) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean containsAll(Collection arg0) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean addAll(Collection arg0) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean addAll(int arg0, Collection arg1) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean removeAll(Collection arg0) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean retainAll(Collection arg0) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object set(int arg0, Object arg1) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void add(int arg0, Object arg1) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object remove(int arg0) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int indexOf(Object arg0) {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int lastIndexOf(Object arg0) {
         throw new UnsupportedOperationException();
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
     public List subList(int arg0, int arg1) {
         throw new UnsupportedOperationException();
     }
 }
-
