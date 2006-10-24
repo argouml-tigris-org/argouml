@@ -24,13 +24,9 @@
 
 package org.argouml.uml.generator;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -42,7 +38,7 @@ import org.apache.log4j.Logger;
  * TODO: Remove this class when all code generators implements the new
  * CodeGenerator interface directly.
  * 
- * @deprecated in 0.23.3 (not used in project anymore)
+ * @deprecated in 0.23.3 by thn.  Not used in core ArgoUML any more.
  *
  * @author Daniele Tamino
  */
@@ -64,29 +60,30 @@ public class FileGeneratorAdapter implements CodeGenerator {
     }
 
     /**
-     * @see org.argouml.uml.generator.CodeGenerator#generate(java.util.Collection, boolean)
+     * @see org.argouml.uml.generator.CodeGenerator#generate(
+     *      java.util.Collection, boolean)
      */
     public Collection generate(Collection elements, boolean deps) {
         LOG.debug("generate() called");
         File tmpdir = null;
         try {
-            tmpdir = createTempDir();
+            tmpdir = TempFileUtils.createTempDir();
             if (tmpdir != null) {
                 generateFiles(elements, tmpdir.getPath(), deps);
-                return readAllFiles(tmpdir);
+                return TempFileUtils.readAllFiles(tmpdir);
             }
             return new Vector();
         } finally {
             if (tmpdir != null) {
-                deleteDir(tmpdir);
+                TempFileUtils.deleteDir(tmpdir);
             }
             LOG.debug("generate() terminated");
         }
     }
 
     /**
-     * @see org.argouml.uml.generator.CodeGenerator#generateFiles(java.util.Collection,
-     *      java.lang.String, boolean)
+     * @see org.argouml.uml.generator.CodeGenerator#generateFiles(
+     *      java.util.Collection, java.lang.String, boolean)
      */
     public Collection generateFiles(Collection elements, String path,
             boolean deps) {
@@ -95,152 +92,31 @@ public class FileGeneratorAdapter implements CodeGenerator {
         for (Iterator it = elements.iterator(); it.hasNext();) {
             fileGen.generateFile2(it.next(), path);
         }
-        return readFileNames(new File(path));
+        return TempFileUtils.readFileNames(new File(path));
     }
 
     /**
-     * @see org.argouml.uml.generator.CodeGenerator#generateFileList(java.util.Collection, boolean)
+     * @see org.argouml.uml.generator.CodeGenerator#generateFileList(
+     *      java.util.Collection, boolean)
      */
     public Collection generateFileList(Collection elements, boolean deps) {
         LOG.debug("generateFileList() called");
         // TODO: 'deps' is ignored here
         File tmpdir = null;
         try {
-            tmpdir = createTempDir();
+            tmpdir = TempFileUtils.createTempDir();
             for (Iterator it = elements.iterator(); it.hasNext();) {
                 fileGen.generateFile2(it.next(), tmpdir.getName());
             }
-            return readFileNames(tmpdir);
+            return TempFileUtils.readFileNames(tmpdir);
         } finally {
             if (tmpdir != null) {
-                deleteDir(tmpdir);
+                TempFileUtils.deleteDir(tmpdir);
             }
         }
     }
 
-    // methods to manage files in the temporary directory
 
-    private File createTempDir() {
-        File tmpdir = null;
-        try  {
-            tmpdir = File.createTempFile("argouml", null);
-            tmpdir.delete();
-            if (!tmpdir.mkdir()) {
-                return null;
-            }
-            return tmpdir;
-        } catch (IOException ioe) {
-            LOG.error("Error while creating a temporary directory", ioe);
-            return null;
-        }
-    }
 
-    private interface FileAction {
-        /**
-         * Execute some action on the specified file.
-         */
-        void act(File f) throws IOException;
-    }
-
-    /**
-     * Visit directory in post-order fashion.
-     */
-    private void traverseDir(File dir, FileAction action) throws IOException {
-        if (dir.exists()) {
-            File[] files = dir.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory()) {
-                    traverseDir(files[i], action);
-                } else {
-                    action.act(files[i]);
-                }
-            }
-            action.act(dir);
-        }
-    }
-
-    /**
-     * Reads all files in a directory in memory.
-     * @param dir
-     * @return A collection of SourceUnit objects.
-     */
-    private Collection readAllFiles(File dir) {
-        try {
-            final Vector ret = new Vector();
-            final int prefix = dir.getPath().length() + 1;
-            traverseDir(dir, new FileAction() {
-
-                public void act(File f) throws IOException {
-                    // skip backup files. This is actually a workaround for the
-                    // cpp generator, which always creates backup files (it's a
-                    // bug).
-                    if (!f.isDirectory() && !f.getName().endsWith(".bak")) {
-                        FileReader fr = new FileReader(f);
-                        BufferedReader bfr = new BufferedReader(fr);
-                        try { 
-                            StringBuffer result =
-                                new StringBuffer((int) f.length());
-                            String line = bfr.readLine();
-                            do {
-                                result.append(line);
-                                line = bfr.readLine();
-                                if (line != null) {
-                                    result.append('\n');
-                                }
-                            } while (line != null);
-                            ret.add(new SourceUnit(f.toString().substring(
-                                    prefix), result.toString()));
-                        } finally {
-                            bfr.close();
-                            fr.close();
-                        }
-                    }
-                }
-
-            });
-            return ret;
-        } catch (IOException ioe) {
-            LOG.error("Exception reading files", ioe);
-        }
-        return null;
-    }
-
-    /**
-     * Deletes a directory and all of its contents.
-     * @param dir The directory to delete.
-     */
-    private void deleteDir(File dir) {
-        try {
-            traverseDir(dir, new FileAction() {
-                public void act(File f) {
-                    f.delete();
-                }
-            });
-        } catch (IOException ioe) {
-            // never happens, just to keep the compiler happy
-        }
-    }
-
-    /**
-     * Reads all the files within a directory tree.
-     * @param dir The base directory.
-     * @return The collection of files.
-     */
-    private Collection readFileNames(File dir) {
-        final List ret = new Vector();
-        final int prefix = dir.getPath().length() + 1;
-        try {
-            traverseDir(dir, new FileAction() {
-                public void act(File f) {
-                    if (!f.isDirectory()) {
-                        ret.add(f.toString().substring(prefix));
-                    }
-                }
-            });
-        } catch (IOException ioe) {
-            // never happens, just to keep the compiler happy
-        }
-        return ret;
-    }
 
 }
