@@ -37,10 +37,10 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
@@ -65,12 +65,12 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.api.PluggableImport;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
@@ -123,7 +123,7 @@ public class Import {
     /**
      * Current language module.
      */
-    private PluggableImport module;
+    private FileImportSupport module;
 
     /**
      * keys are module name, values are PluggableImport instance.
@@ -169,18 +169,27 @@ public class Import {
      */
     public Import() {
         modules = new Hashtable();
-        List arraylist = Argo.getPlugins(PluggableImport.class);
-        ListIterator iterator = arraylist.listIterator();
+        //TODO: The next line doesn't work, because it returns the module names only
+        Collection coll = ModuleLoader2.allModules();
+        //TODO: The next loop will find nothing, because the ModuleLoader2 does not
+        // allow for getting the module instances. But it's needed to let the chooser
+        // offer the file import instances. So: Choosing is broken.
+        Iterator iterator = coll.iterator();
         while (iterator.hasNext()) {
-            PluggableImport pIModule = (PluggableImport) iterator.next();
-            modules.put(pIModule.getModuleName(), pIModule);
+            Object pIModule = iterator.next();
+            if (pIModule instanceof FileImportSupport)
+            modules.put(((FileImportSupport)pIModule).getName(), pIModule);
         }
+        //TODO: the next 2 lines are a hack, because of the ModuleLoader2 restriction
+        module = new org.argouml.uml.reveng.java.JavaImport();
+        modules.put(module.getName(), module);
         if (modules.size() == 0) {
             throw new RuntimeException("Internal error. "
                        + "No import modules defined");
         }
         // "Java" is a default module
-        module = (PluggableImport) modules.get("Java");
+        //TODO: the next line must be enabled as soon as the above hack is fixed.
+        //module = (FileImportSupport) modules.get("Java");
         if (module == null) {
             throw new RuntimeException("Internal error. "
                        + "Default import module not found");
@@ -353,7 +362,7 @@ public class Import {
             general.add(inputSourceEncoding);
 
             tab.add(general, Translator.localize("action.import-general"));
-            tab.add(module.getConfigPanel(), module.getModuleName());
+            tab.add(module.getConfigPanel(), module.getName());
             configPanel = tab;
         }
         return configPanel;
@@ -387,7 +396,7 @@ public class Import {
         public void actionPerformed(ActionEvent e) {
             JComboBox cb = (JComboBox) e.getSource();
             String selected = (String) cb.getSelectedItem();
-            module = (PluggableImport) modules.get(selected);
+            module = (FileImportSupport) modules.get(selected);
             dialog.getContentPane().remove(0);
             JComponent chooser = module.getChooser(importInstance);
             if (chooser == null) {

@@ -38,9 +38,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.filechooser.FileSystemView;
 
-import org.argouml.application.api.PluggableImport;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
+import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.SuffixFilter;
@@ -55,7 +55,7 @@ import org.tigris.gef.base.Globals;
  *
  * @author Alexander Lepekhine
  */
-public abstract class FileImportSupport implements PluggableImport {
+public abstract class FileImportSupport implements ModuleInterface {
 
     private JPanel configPanel;
 
@@ -312,7 +312,6 @@ public abstract class FileImportSupport implements PluggableImport {
 	return false;
     }
 
-
     /**
      * Provide layout for modified class diagram.
      *
@@ -323,65 +322,41 @@ public abstract class FileImportSupport implements PluggableImport {
     }
 
     /**
-     * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
+     * @see ModuleInterface#enable()
      */
-    public boolean inContext(Object[] context) {
-	return true;
+    public boolean enable() {
+        return true;
     }
 
     /**
-     * @see org.argouml.application.api.ArgoModule#initializeModule()
+     * @see ModuleInterface#disable()
      */
-    public boolean initializeModule() {
-	// called when loading module
-	return true;
+
+    public boolean disable() {
+        return true;
     }
 
     /**
-     * @see org.argouml.application.api.ArgoModule#shutdownModule()
+     * @see ModuleInterface#getName()
      */
-    public boolean shutdownModule() {
-	// called when the module is shutdown
-	return true;
+    public String getName() {
+        return "FileImport";
     }
 
     /**
-     * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
+     * @see ModuleInterface#getInfo(int)
      */
-    public void setModuleEnabled(boolean tf) {
-	// called to enable-disable
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
-     */
-    public boolean isModuleEnabled() {
-	// determines if enabled-disabled
-	return true;
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
-     */
-    public String getModuleVersion() {
-	return "0.1";
-    }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
-     */
-    public String getModuleAuthor() {
-	return "";
-    }
-
-    /**
-     * Calls all modules to let them add to a popup menu.
-     *
-     * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
-     * java.util.Vector, java.lang.Object)
-     */
-    public Vector getModulePopUpActions(Vector popUpActions, Object context) {
-	return null;
+    public String getInfo(int type) {
+        switch (type) {
+        case DESCRIPTION:
+            return "This is a base class for import from files.";
+        case AUTHOR:
+            return "Alexander Lepekhine, Thomas Neustupny";
+        case VERSION:
+            return "1.0";
+        default:
+            return null;
+        }
     }
 
     /**

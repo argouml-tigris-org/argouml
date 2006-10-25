@@ -26,6 +26,7 @@ package org.argouml.uml.reveng.java;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.*;
+import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.uml.reveng.*;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
@@ -108,26 +109,25 @@ public class JavaImport extends FileImportSupport {
     /**
      * Display name of the module.
      *
-     * @see org.argouml.application.api.ArgoModule#getModuleName()
+     * @see org.argouml.moduleloader.ModuleInterface#getName()
      */
-    public String getModuleName() {
-	return "Java";
+    public String getName() {
+        return "Java";
     }
 
     /**
-     * Textual description of the module.
-     *
-     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
+     * @see ModuleInterface#getInfo(int)
      */
-    public String getModuleDescription() {
-	return "Java import from files";
+    public String getInfo(int type) {
+        switch (type) {
+        case DESCRIPTION:
+            return "This is a module for import from Java files.";
+        case AUTHOR:
+            return "Marcus Andersson, Thomas Neustupny, Andreas Rückert";
+        case VERSION:
+            return "1.0";
+        default:
+            return null;
+        }
     }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleKey()
-     */
-    public String getModuleKey() {
-	return "module.import.java-files";
-    }
-
 }
