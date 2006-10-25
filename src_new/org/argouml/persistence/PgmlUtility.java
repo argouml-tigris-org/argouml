@@ -70,7 +70,7 @@ public final class PgmlUtility {
      * Return just the comment edges for a specific layer.
      * TODO: Document: Diagram / layer?
      *
-     * @param lay The {@link Layer}.
+     * @param diagram The diagram.
      * @return a {@link List} with the edges.
      */
     public static List getEdges(Diagram diagram) {
@@ -161,7 +161,7 @@ public final class PgmlUtility {
             String groupId = f.getGroup().getId();
             if(f.getGroup() instanceof FigGroup) {
                 FigGroup group = (FigGroup) f.getGroup();
-                return groupId + "." + ((List) group.getFigs()).indexOf(f);
+                return groupId + "." + (group.getFigs()).indexOf(f);
             } else if (f.getGroup() instanceof FigEdge) {
                 FigEdge edge = (FigEdge) f.getGroup();
                 return groupId + "." +
@@ -176,7 +176,7 @@ public final class PgmlUtility {
             return "LAYER_NULL";
         }
 
-        List c = (List) layer.getContents();
+        List c = layer.getContents();
         int index = c.indexOf(f);
         return "Fig" + index;
     }

@@ -268,6 +268,10 @@ public final class Translator {
      * existing uses of localize() + string concatentation to use
      * this method instead.
      * @see org.argouml.i18n.Translator#messageFormat(String, Object[])
+     *
+     * @param key
+     * @param args
+     * @return String
      */
     public static String localize(String key, Object[] args) {
         return messageFormat(key, args);

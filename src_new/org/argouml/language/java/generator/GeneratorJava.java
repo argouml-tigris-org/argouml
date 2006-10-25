@@ -2202,6 +2202,9 @@ public class GeneratorJava implements CodeGenerator {
     private interface FileAction {
         /**
          * Execute some action on the specified file.
+         * 
+         * @param f the file
+         * @exception IOException
          */
         void act(File f) throws IOException;
     }

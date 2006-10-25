@@ -998,8 +998,12 @@ public class Critic extends Observable implements Poster, Serializable {
      *
      * TODO: Critic's may want to add new fields to a
      * ToDoItem to make stillValid more efficent.
-     *
+     * 
      * @see Critic#critique
+     *
+     * @param dm
+     * @param dsgr
+     * @return ToToItem
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	return new ToDoItem(this, dm, dsgr);
@@ -1016,6 +1020,9 @@ public class Critic extends Observable implements Poster, Serializable {
      * problem can be fixed. The fixIt() method actually does the fix.
      *
      * @see Critic#fixIt
+     *
+     * @param item
+     * @return boolean
      */
     public boolean canFixIt(ToDoItem item) {
 	return false;
@@ -1028,6 +1035,9 @@ public class Critic extends Observable implements Poster, Serializable {
      * problem. By default this method does nothing.
      *
      * @see Critic#canFixIt
+     *
+     * @param item
+     * @param arg
      */
     public void fixIt(ToDoItem item, Object arg) { }
 

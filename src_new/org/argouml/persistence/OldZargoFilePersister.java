@@ -237,6 +237,8 @@ class OldZargoFilePersister extends ZargoFilePersister {
      * UmlFilePersister which has turned this off (suggests a need for some
      * refactoring here)
      * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
+     * 
+     * @return boolean
      */
     public boolean isLoadEnabled() {
         return false;

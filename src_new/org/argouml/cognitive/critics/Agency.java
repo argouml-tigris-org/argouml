@@ -113,6 +113,8 @@ public class Agency extends Observable { //implements java.io.Serialization
      * theAgency is actually stored in <code>Designer.theDesigner()</code>.
      *
      * @see Designer#theDesigner
+     * 
+     * @return Agency the Agency instance
      */
     public static Agency theAgency() {
         Designer dsgr = Designer.theDesigner();

@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.swing.event.EventListenerList;
+//import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 
@@ -56,7 +56,7 @@ class XmlInputStream extends BufferedInputStream {
     private Map attributes;
     private boolean childOnly;
     private int instanceCount;
-    private EventListenerList listenerList = new EventListenerList();
+    //private EventListenerList listenerList = new EventListenerList();
 
     /**
      * The number of bytes to be read between each progress
@@ -67,7 +67,7 @@ class XmlInputStream extends BufferedInputStream {
     /**
      * The number of characters read so far.
      */
-    private long readCount;
+    //private long readCount;
 
     /**
      * The expected stream length.
@@ -171,17 +171,17 @@ class XmlInputStream extends BufferedInputStream {
             return -1;
         }
 
-        int count;
-        for (count = 0; count < len; ++count) {
+        int cnt;
+        for (cnt = 0; cnt < len; ++cnt) {
             int read = read();
             if (read == -1) {
 		break;
 	    }
-            b[count + off] = (byte) read;
+            b[cnt + off] = (byte) read;
         }
 
-        if (count > 0) {
-            return count;
+        if (cnt > 0) {
+            return cnt;
         }
         return -1;
     }

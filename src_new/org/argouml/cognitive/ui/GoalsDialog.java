@@ -54,8 +54,8 @@ import org.argouml.ui.ArgoDialog;
 public class GoalsDialog extends ArgoDialog implements ChangeListener {
     ////////////////////////////////////////////////////////////////
     // constants
-    private static final int WIDTH = 320;
-    private static final int HEIGHT = 400;
+    private static final int DIALOG_WIDTH = 320;
+    private static final int DIALOG_HEIGHT = 400;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -75,7 +75,7 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener {
 	initMainPanel();
 
 	JScrollPane scroll = new JScrollPane(mainPanel);
-	scroll.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+	scroll.setPreferredSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
 
 	setContent(scroll);
     }

@@ -209,10 +209,11 @@ public class ResolvedCritic {
      * @return	A identifying name of the critic.
      */
     protected String getCriticString(Critic c) throws UnresolvableException {
-	String s = c.getClass().toString();
-
-	// TODO: Should throw if the string is not good?
-
+        // TODO: Should throw if the string is not good?
+        if (c == null) {
+            throw (new UnresolvableException("Critic is null"));
+        }
+        String s = c.getClass().toString();
 	return s;
     }
 

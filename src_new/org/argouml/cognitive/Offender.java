@@ -29,7 +29,7 @@ package org.argouml.cognitive;
  * produced the offender as well as the designer can be informed about the new
  * ToDoItem.
  *
- * @see DesignMaterial
+ * see DesignMaterial
  *
  * @author MarkusK
  *

@@ -88,11 +88,11 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     boolean sel,
     boolean expanded,
     boolean leaf, int row,
-    boolean hasFocus) {
+    boolean hasTheFocus) {
 
         Component r = super.getTreeCellRendererComponent(tree, value, sel,
 							 expanded, leaf,
-							 row, hasFocus);
+							 row, hasTheFocus);
 
         if (r instanceof JLabel) {
             JLabel lab = (JLabel) r;
@@ -132,7 +132,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
 								 expanded,
 								 leaf,
 								 row,
-								 hasFocus);
+								 hasTheFocus);
             } else {
                 Object newValue = value;
                 if (newValue instanceof Fig) {
@@ -145,7 +145,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
 								     expanded,
 								     leaf,
 								     row,
-								     hasFocus);
+								     hasTheFocus);
                 }
             }
 

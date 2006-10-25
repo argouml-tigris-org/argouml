@@ -83,8 +83,8 @@ public class JavaUML {
     /**
      * This UML Model contains the Java standard elements.
      */
-    private static Object javastandards =
-	Model.getModelManagementFactory().createModel();
+    //private static Object javastandards =
+    //    Model.getModelManagementFactory().createModel();
 
     static {
         Model.getCoreHelper().setName(STRING_CLASS, "String");
