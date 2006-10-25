@@ -280,7 +280,8 @@ public interface ModelImplementation {
      * @return the object implementing the XmiWriter interface
      * @throws UmlException
      *             on any error while writing
-     * @deprecated for 0.22.1 by tfmorris - use 3 argument version
+     * @deprecated for 0.22.1 by tfmorris - use 3 argument version 
+     * {@link #getXmiWriter(Object, Writer, String)}
      */
     XmiWriter getXmiWriter(Object model, Writer writer)
         throws UmlException;
