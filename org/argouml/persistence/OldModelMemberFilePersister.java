@@ -25,12 +25,10 @@
 package org.argouml.persistence;
 
 import java.io.Writer;
-import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
-import org.argouml.model.XmiExtensionWriter;
 import org.argouml.model.XmiWriter;
 import org.argouml.uml.ProjectMemberModel;
 

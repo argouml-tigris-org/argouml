@@ -77,7 +77,7 @@ public class CheckManager implements Serializable {
 
 	java.lang.Class cls = dm.getClass();
 	while (cls != null) {
-	    cl = (Checklist) lookupChecklist(cls);
+	    cl = lookupChecklist(cls);
 	    if (cl != null) {
 		return cl;
 	    }

@@ -248,6 +248,7 @@ class ModelMemberFilePersister extends MemberFilePersister
      *
      * @param p the project
      * @param url the URL
+     * @param xmiExtensionParser the XmiExtensionParser
      * @throws OpenException when there is an IO error
      */
     public synchronized void readModels(Project p, URL url, XmiExtensionParser xmiExtensionParser)

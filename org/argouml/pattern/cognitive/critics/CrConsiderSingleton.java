@@ -38,8 +38,7 @@ import org.argouml.uml.cognitive.critics.CrUML;
  * as a Singleton (with stereotype &laquo;Singleton&raquo;.<p>
  *
  * @see <a
- * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#
- * s2.ref.critics_singleton_violated">
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">
  * ArgoUML User Manual: Singleton Violated</a>
  *
  * @author jrobbins

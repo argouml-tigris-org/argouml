@@ -74,6 +74,9 @@ class PrivateHandler
      * If the containing object is a type for which the private element
      * might contain an ItemUID, extract the ItemUID if it exists and assign it
      * to the object.
+     * 
+     * @param contents
+     * @exception SAXException
      */
     public void gotElement(String contents)
         throws SAXException {

@@ -303,6 +303,9 @@ class XmiFilePersister extends AbstractFilePersister
 
     /**
      * Parse all the extensions that were found when reading XMI
+     * 
+     * @param project
+     * @exception OpenException
      */
     public void parseXmiExtensions(Project project) throws OpenException {
         

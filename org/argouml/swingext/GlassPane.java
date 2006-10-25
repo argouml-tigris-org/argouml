@@ -105,7 +105,7 @@ public class GlassPane extends JComponent implements AWTEventListener {
         // until the very top
         while ((aComponent.getParent() != null) 
         		&& !(aComponent instanceof RootPaneContainer)) {
-            aComponent = (Component) aComponent.getParent();
+            aComponent = aComponent.getParent();
         }
 
         // Guard against error conditions if climb search wasn't successful

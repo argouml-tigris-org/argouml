@@ -302,6 +302,13 @@ class UmlFilePersister extends AbstractFilePersister {
 
     /**
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
+     * 
+     * @param originalFile
+     * @param file
+     * @param progressMgr
+     * @return Project
+     * @exception OpenException
+     * @exception InterruptedException
      */
     public Project doLoad(File originalFile, File file, ProgressMgr progressMgr)
         throws OpenException, InterruptedException {

@@ -189,7 +189,7 @@ class XmiInputStream extends BufferedInputStream {
         return ch;
     }
     
-    private void callExtensionParser() throws IOException {
+    private void callExtensionParser() {
         String label = null;
         String extender = null;
         for (StringTokenizer st = new StringTokenizer(attributes, " =");
@@ -218,17 +218,17 @@ class XmiInputStream extends BufferedInputStream {
     public synchronized int read(byte[] b, int off, int len)
         throws IOException {
 
-        int count;
-        for (count = 0; count < len; ++count) {
+        int cnt;
+        for (cnt = 0; cnt < len; ++cnt) {
             int read = read();
             if (read == -1) {
                 break;
             }
-            b[count + off] = (byte) read;
+            b[cnt + off] = (byte) read;
         }
 
-        if (count > 0) {
-            return count;
+        if (cnt > 0) {
+            return cnt;
         }
         return -1;
     }

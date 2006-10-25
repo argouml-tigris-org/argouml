@@ -30,7 +30,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigEdgePoly;
 import org.tigris.gef.presentation.FigLine;
-import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.xml.sax.SAXException;
 

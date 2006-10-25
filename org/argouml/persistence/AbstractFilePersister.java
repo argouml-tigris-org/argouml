@@ -201,7 +201,9 @@ public abstract class AbstractFilePersister extends FileFilter
      * @throws SaveException when anything goes wrong
      */
     private void preSave(Project project, File file) throws SaveException {
-
+        if (project == null && file == null) {
+            throw new SaveException("No project nor file given");
+        }
     }
 
     /**
@@ -213,7 +215,9 @@ public abstract class AbstractFilePersister extends FileFilter
      * @throws SaveException when anything goes wrong
      */
     private void postSave(Project project, File file) throws SaveException {
-
+        if (project == null && file == null) {
+            throw new SaveException("No project nor file given");
+        }
     }
 
     /**

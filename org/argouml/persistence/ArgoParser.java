@@ -24,7 +24,6 @@
 
 package org.argouml.persistence;
 
-import java.io.InputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -278,6 +277,9 @@ class ArgoParser extends SAXParserBase {
      * @throws SAXException on any error parsing the member XML.
      */
     protected void handleMember(XMLElement e) throws SAXException {
+        if (e == null) {
+            throw new SAXException("XML element is null");
+        }
         String type = e.getAttribute("type");
         // The members list dictates the order in which the
         // members are loaded. So make sure that XMI is at the top
