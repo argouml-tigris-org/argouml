@@ -25,6 +25,7 @@
 package org.argouml.model.mdr;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -385,8 +386,9 @@ class XmiReferenceResolverImpl extends XmiContext {
             url = new URL(systemId);
             stream = url.openStream();
             stream.close();
-        } catch (Exception e) {
-            // TODO: What kinds of exceptions are expected here? - tfm
+        } catch (MalformedURLException e) {
+            url = null;
+        } catch (IOException e) {
             url = null;
         } finally {
             stream = null;
