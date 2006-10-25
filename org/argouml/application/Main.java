@@ -339,6 +339,12 @@ public class Main {
         // Initialize the module loader.
         st.mark("modules");
 
+        try {
+            ModuleLoader2.addClass("org.argouml.uml.reveng.java.JavaImport");
+        } catch (ClassNotFoundException e) {
+            // We'll automatically use the java file import module if we find
+            // it but don't care is we don't
+        }
         ModuleLoader2.doLoad(false);
         Argo.initializeModules();
 
