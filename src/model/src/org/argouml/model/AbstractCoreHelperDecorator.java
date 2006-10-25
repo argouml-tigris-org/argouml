@@ -24,7 +24,9 @@
 
 package org.argouml.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -113,7 +115,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      * @see org.argouml.model.CoreHelper#getOperations(java.lang.Object)
      */
     public List getOperations(Object classifier) {
-        return impl.getOperations(classifier);
+        return Model.getFacade().getOperations(classifier);
     }
 
     /**
@@ -121,7 +123,9 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      *         java.lang.Object, java.util.Collection)
      */
     public void setOperations(Object classifier, Collection operations) {
-        impl.setOperations(classifier, operations);
+        List operList = new ArrayList();
+        operList.addAll(operations);
+        impl.setOperations(classifier, operList);
     }
 
     /**
@@ -136,7 +140,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      * @see org.argouml.model.CoreHelper#getAttributes(java.lang.Object)
      */
     public List getAttributes(Object classifier) {
-        return impl.getAttributes(classifier);
+        return Model.getFacade().getAttributes(classifier);
     }
 
     /**
@@ -144,7 +148,9 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      *         java.lang.Object, java.util.Collection)
      */
     public void setAttributes(Object classifier, Collection attributes) {
-        impl.setAttributes(classifier, attributes);
+        List attrList = new ArrayList();
+        attrList.addAll(attributes);
+        impl.setAttributes(classifier, attrList);
     }
 
     /**
@@ -172,8 +178,10 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     /**
      * @see org.argouml.model.CoreHelper#getReturnParameter(java.lang.Object)
      */
-    public Object getReturnParameter(Object operation1) {
-        return impl.getReturnParameter(operation1);
+    public Object getReturnParameter(Object operation) {
+        Collection returnParameters = getReturnParameters(operation);
+        Iterator it = returnParameters != null ? returnParameters.iterator() : null;
+        return (it != null ? it.next() : null);
     }
 
     /**
@@ -858,7 +866,9 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      *         java.lang.Object, java.util.Collection)
      */
     public void setQualifiers(Object handle, Collection elems) {
-        impl.setQualifiers(handle, elems);
+        List elemList = new ArrayList();
+        elemList.addAll(elems);
+        impl.setQualifiers(handle, elemList);
     }
 
     /**

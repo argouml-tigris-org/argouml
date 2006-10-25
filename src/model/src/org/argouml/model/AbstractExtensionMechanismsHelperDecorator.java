@@ -160,7 +160,8 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
      *         java.lang.Object)
      */
     public void setBaseClass(Object handle, Object baseClass) {
-        impl.setBaseClass(handle, baseClass);
+        Model.getFacade().getBaseClasses(handle).clear(); // TODO: does this work?
+        impl.addBaseClass(handle, baseClass);
     }
 
     /**
