@@ -490,7 +490,8 @@ public final class Model {
      * @param writer the writer
      * @return the object implementing the XmiWriter interface
      * @throws UmlException on any error while writing
-     * @deprecated for 0.22.1 by Tom Morris - use three argument version
+     * @deprecated for 0.22.1 by Tom Morris - use three argument version 
+     * {@link #getXmiWriter(Object, Writer, String)}
      */
     public static XmiWriter getXmiWriter(Object model, Writer writer)
         throws UmlException {
