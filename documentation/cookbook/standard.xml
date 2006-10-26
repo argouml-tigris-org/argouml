@@ -169,10 +169,11 @@ It is here just for the emphasis.
 </para>
         <para>
 This is checked by Checkstyle.
-Checkstyle ignores two kinds of lines in this check because of the
+Checkstyle ignores three kinds of lines in this check because of the
 historical use of long class names and package names.
 These are lines that contain
-"//&nbsp;&dollar;Id:<replaceable>whatever</replaceable>&dollar;" and
+"@see <replaceable>some method name</replaceable>",
+"//&nbsp;&dollar;Id:<replaceable>whatever</replaceable>&dollar;", and
 import statements.
 </para>
       </listitem>
