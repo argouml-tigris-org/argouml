@@ -60,6 +60,7 @@ import org.argouml.util.ThreadUtils;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
+import org.xml.sax.SAXException;
 
 /**
  * To persist to and from argo (xml file) storage.
@@ -389,7 +390,9 @@ class UmlFilePersister extends AbstractFilePersister {
             throw e;
         } catch (OpenException e) {
             throw e;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            throw new OpenException(e);
+        } catch (SAXException e) {
             throw new OpenException(e);
         }
     }

@@ -47,6 +47,7 @@ import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
+import org.argouml.model.XmiException;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
 import org.argouml.ui.ArgoDiagram;
@@ -103,7 +104,7 @@ class ModelMemberFilePersister extends MemberFilePersister
             PersistenceManager.getInstance().setLastLoadMessage(
                     "UmlException parsing XMI.");
             LOG.error("UmlException caught", e);
-            throw new OpenException(e);
+            throw e;
         }
         // This should probably be inside xmiReader.parse
         // but there is another place in this source
@@ -251,15 +252,17 @@ class ModelMemberFilePersister extends MemberFilePersister
      * @param xmiExtensionParser the XmiExtensionParser
      * @throws OpenException when there is an IO error
      */
-    public synchronized void readModels(Project p, URL url, XmiExtensionParser xmiExtensionParser)
-        throws OpenException {
+    public synchronized void readModels(Project p, URL url,
+            XmiExtensionParser xmiExtensionParser) throws OpenException {
         LOG.info("=======================================");
         LOG.info("== READING MODEL " + url);
         try {
-            InputSource source = new InputSource(new XmiInputStream(url.openStream(), xmiExtensionParser, 10000000, 100000));
+            InputSource source = new InputSource(new XmiInputStream(
+                    url.openStream(), xmiExtensionParser, 10000000, 100000));
+            
             source.setSystemId(url.toString());
             readModels(p, source);
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             throw new OpenException(ex);
         }
     }
@@ -303,8 +306,12 @@ class ModelMemberFilePersister extends MemberFilePersister
                 }
             }
             uUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
-        } catch (Exception ex) {
-            throw new OpenException(ex);
+        } catch (XmiException ex) {
+            throw new XmiFormatException(ex);
+        } catch (UmlException ex) {
+            // Could this be some other type of internal error that we want
+            // to handle differently?  Don't think so.  - tfm
+            throw new XmiFormatException(ex);
         }
         LOG.info("=======================================");
     }
