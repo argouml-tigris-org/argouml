@@ -1586,29 +1586,6 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
-     * @see org.argouml.model.Facade#getBaseClass(java.lang.Object)
-     * TODO: delete this method and replace with getBaseClasses
-     */
-    public Object getBaseClass(Object handle) {
-        try {
-            if (isAStereotype(handle)) {
-                Collection stereos = ((Stereotype) handle).getBaseClass();
-                if (!stereos.isEmpty()) {
-                    if (stereos.size() > 1) {
-                        LOG.warn("There is more than one stereotype defined,"
-                                + " returning the first");
-                    }
-                    return stereos.iterator().next();
-                }
-                return null;
-            }
-            return illegalArgumentObject(handle);
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-    }
-
-    /**
      * @see org.argouml.model.Facade#getBaseClasses(java.lang.Object)
      */
     public Collection getBaseClasses(Object handle) {

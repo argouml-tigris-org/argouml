@@ -24,14 +24,12 @@
 
 package org.argouml.model.mdr;
 
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.CoreFactory;
-import org.argouml.model.ModelEventPump;
 import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.foundation.core.Abstraction;
 import org.omg.uml.foundation.core.Artifact;
@@ -120,11 +118,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     private CorePackage corePackage;
 
     /**
-     * The model event pump
-     */
-    private ModelEventPump eventPump;
-
-    /**
      * Don't allow instantiation.
      * 
      * @param implementation
@@ -132,7 +125,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     CoreFactoryMDRImpl(MDRModelImplementation implementation) {
         nsmodel = implementation;
-        eventPump = nsmodel.getModelEventPump();
         corePackage = nsmodel.getUmlPackage().getCore();
     }
 
@@ -831,7 +823,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
     /**
-     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object,
+     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object, 
      *      java.lang.Object, java.lang.Object)
      */
     public Object buildAttribute(Object handle, Object model, Object type) {
@@ -852,22 +844,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return attr;
     }
     
-    /**
-     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object,
-     *      java.lang.Object, java.lang.Object, java.util.Collection)
-     */
-    public Object buildAttribute(Object handle, Object model, Object type,
-            Collection propertyChangeListeners) {
-        Object attr = buildAttribute(handle, model, type);
-        Iterator it = propertyChangeListeners.iterator();
-        while (it.hasNext()) {
-            PropertyChangeListener listener = 
-                (PropertyChangeListener) it.next();
-            eventPump.addModelEventListener(listener, attr);
-        }
-        return attr;
-    }
-
     /**
      * @see org.argouml.model.CoreFactory#buildClass()
      */
@@ -1111,27 +1087,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * @see org.argouml.model.CoreFactory#buildOperation(java.lang.Object,
-     *      java.lang.Object, java.lang.Object, java.util.Collection)
-     */
-    public Object buildOperation(Object classifier, Object model,
-            Object returnType, Collection propertyChangeListeners) {
-        Object operation = buildOperation(classifier, model, returnType);
-        // We know there's only a single parameter now and take advantage
-        // of that knowledge
-        Object returnParam = ((Operation) operation).getParameter().iterator()
-                .next();
-        Iterator it = propertyChangeListeners.iterator();
-        while (it.hasNext()) {
-            PropertyChangeListener listener = (PropertyChangeListener) it.
-                    next();
-            eventPump.addModelEventListener(listener, operation);
-            eventPump.addModelEventListener(listener, returnParam);
-        }
-        return operation;
-    }
-    
-    /**
-     * @see org.argouml.model.CoreFactory#buildOperation(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
     public Object buildOperation(Object classifier, Object model,
@@ -1165,21 +1120,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     public Object buildOperation(Object cls, Object model, Object returnType,
             String name) {
         Object oper = buildOperation(cls, model, returnType);
-        if (oper != null) {
-            ((Operation) oper).setName(name);
-        }
-        return oper;
-    }
-
-    /**
-     * @see org.argouml.model.CoreFactory#buildOperation(java.lang.Object,
-     *      java.lang.Object, java.lang.Object, java.lang.String,
-     *      java.util.Collection)
-     */
-    public Object buildOperation(Object cls, Object model, Object returnType,
-            String name, Collection propertyChangeListeners) {
-        Object oper = buildOperation(cls, model, returnType,
-                propertyChangeListeners);
         if (oper != null) {
             ((Operation) oper).setName(name);
         }
@@ -1227,24 +1167,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else {
             throw new IllegalArgumentException("Unsupported object type");
         }
-    }
-
-    
-    /**
-     * @see org.argouml.model.CoreFactory#buildParameter(java.lang.Object,
-     *      java.lang.Object, java.lang.Object, java.util.Collection)
-     */
-    public Object buildParameter(Object o, Object model, Object type,
-            Collection propertyChangeListeners) {
-        Object param = buildParameter(o, model, type);
-        Iterator it = propertyChangeListeners.iterator();
-        while (it.hasNext()) {
-            PropertyChangeListener listener = (PropertyChangeListener) it.
-            next();
-            eventPump.addModelEventListener(listener, param);
-        }
-        return param;
-
     }
 
     /**

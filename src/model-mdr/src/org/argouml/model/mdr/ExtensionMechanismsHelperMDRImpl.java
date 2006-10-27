@@ -150,7 +150,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                         && name.equals(((Stereotype) o).getName())
                         && ((Stereotype) o).getBaseClass()
                             .contains(baseClass)) {
-                    return (Stereotype) o;
+                    return o;
                 }
             }
         } catch (InvalidObjectException e) {
@@ -191,7 +191,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                             && name.equals(((Stereotype) o).getName())
                             && ((Stereotype) o).getBaseClass().contains(
                                     baseClass)) {
-                        return (Stereotype) o;
+                        return o;
                     }
                 }
             }
@@ -429,26 +429,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or extendedElement: " + extendedElement);
     }
 
-    /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#setBaseClass(java.lang.Object, java.lang.Object)
-     */
-    public void setBaseClass(Object handle, Object baseClass) {
-        if (handle instanceof Stereotype
-                && (baseClass instanceof String
-                        || baseClass instanceof ModelElement)) {
-
-            /*
-             * TODO: UML 1.4 allows multiple baseclassses, but we restrict our
-             * implementation to a single baseclass for compatibility with other
-             * tools.
-             */
-            ((Stereotype) handle).getBaseClass().clear();
-            addBaseClass(handle, baseClass);
-            return;
-        }
-        throw new IllegalArgumentException("handle: " + handle
-                + " or baseClass: " + baseClass);
-    }
 
     /**
      * @see org.argouml.model.ExtensionMechanismsHelper#addBaseClass(java.lang.Object, java.lang.Object)

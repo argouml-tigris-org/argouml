@@ -422,31 +422,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getReturnParameter(java.lang.Object)
-     */
-    public Object getReturnParameter(Object operation1) {
-        if (!(operation1 instanceof Operation)) {
-            throw new IllegalArgumentException();
-        }
-
-        try {
-            Collection returnParams = getReturnParameters(operation1);
-            switch (returnParams.size()) {
-            case 1:
-                return (Parameter) returnParams.iterator().next();
-            case 0:
-                return null;
-            default:
-                LOG.warn("More than one ReturnParameter found," 
-                        + " returning first!");
-            return (Parameter) returnParams.iterator().next();
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#getReturnParameters(java.lang.Object)
      */
     public List getReturnParameters(Object operation) {
@@ -3287,14 +3262,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
         throw new IllegalArgumentException("handle: " + handle + " or type: "
                 + type);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setUUID( java.lang.Object,
-     *      java.lang.String)
-     */
-    public void setUUID(Object handle, String uuid) {
-        throw new NotImplementedException();
     }
 
     /**
