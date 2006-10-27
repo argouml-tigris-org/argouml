@@ -36,7 +36,10 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 /**
  * A model for stereotypes to handle their base class, or as it is a class from
  * the UML metamodel its metaclass.
- *
+ * 
+ * TODO: This class needs to be replaced with a mechanism that supports multiple
+ * base classes as added in UML 1.4.
+ * 
  * @author mkl
  */
 public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {

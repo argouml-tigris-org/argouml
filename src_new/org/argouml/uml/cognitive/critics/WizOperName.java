@@ -85,8 +85,8 @@ public class WizOperName extends WizMEName {
 
     private boolean addedCreateStereotype;
 
-    /**
-     * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
+    /*
+     * @see org.argouml.uml.cognitive.critics.UMLWizard#getNumSteps()
      */
     public int getNumSteps() {
         if (possibleConstructor) {
@@ -113,10 +113,8 @@ public class WizOperName extends WizMEName {
         possibleConstructor = b;
     }
 
-    /**
-     * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
-     *
-     * Create a new panel for the given step.
+    /*
+     * @see org.argouml.uml.cognitive.critics.WizMEName#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
         if (!possibleConstructor) {
@@ -181,7 +179,7 @@ public class WizOperName extends WizMEName {
      * non-modal wizards should take action as they do along, as soon as
      * possible, they should not wait until the final step.
      *
-     * @see org.argouml.cognitive.ui.Wizard#doAction(int)
+     * @see org.argouml.uml.cognitive.critics.WizMEName#doAction(int)
      */
     public void doAction(int oldStep) {
         if (!possibleConstructor) {
@@ -223,8 +221,10 @@ public class WizOperName extends WizMEName {
                             Model.getFacade().getName(candidate)))) {
                         continue;
                     }
-                    Collection baseClasses = Model.getFacade().getBaseClasses(candidate);
-                    Iterator iter2 = baseClasses != null ? baseClasses.iterator() : null;
+                    Collection baseClasses = 
+                        Model.getFacade().getBaseClasses(candidate);
+                    Iterator iter2 = 
+                        baseClasses != null ? baseClasses.iterator() : null;
                     if (iter2 == null || !("BehavioralFeature".equals(
                             iter2.next()))) {
                         continue;

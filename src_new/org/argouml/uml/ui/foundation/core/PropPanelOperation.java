@@ -32,7 +32,6 @@ import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -55,13 +54,6 @@ public class PropPanelOperation extends PropPanelFeature {
      * The serial version.
      */
     private static final long serialVersionUID = -8231585002039922761L;
-    
-    /**
-     * The logger.
-     */
-    private static final Logger LOG = 
-        Logger.getLogger(PropPanelOperation.class);
-
 
     /**
      * The constructor.
@@ -256,6 +248,7 @@ public class PropPanelOperation extends PropPanelFeature {
     /**
      * Appropriate namespace is the namespace of our class,
      * not the class itself.
+     * @return the namespace
      *
      * @see org.argouml.uml.ui.PropPanel#getDisplayNamespace()
      */
