@@ -24,6 +24,8 @@
 
 package org.argouml.uml.reveng.java;
 
+import java.net.MalformedURLException;
+
 import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
@@ -108,11 +110,11 @@ class PackageContext extends Context {
 						   Facade.GENERATED_TAG,
 						   "yes");
 		    }
-                }
-                catch (Exception e1) {
-		    // Ignore.
-                    // TODO: Why are these being ignored?
-                    LOG.warn("Exception ignored", e1);
+                } catch (MalformedURLException e1) {
+                    LOG.warn("Classpath configuration error ", e1);
+                } catch (ClassNotFoundException e1) {
+                    // Ignore - we'll deal with this later by checking to see
+                    // if we found anything.
                 }
 	    }
 	}
@@ -135,6 +137,7 @@ class PackageContext extends Context {
      *
      * @param name The name of the classifier to find.
      * @return Found classifier.
+     * @throws ClassifierNotFoundException if classifier couldn't be located
      */
     public Object get(String name)
 	throws ClassifierNotFoundException {
@@ -198,10 +201,11 @@ class PackageContext extends Context {
 					       Facade.GENERATED_TAG,
 					       "yes");
                 }
-                catch (Exception e1) {
-		    // Ignore
-                    // TODO: Why are these being ignored? - tfm
-                    LOG.warn("Exception ignored", e1);
+                catch (ClassNotFoundException e1) {
+                    // Ignore - we'll deal with this later by checking to see
+                    // if we found anything.
+                } catch (MalformedURLException e1) {
+                    LOG.warn("Classpath configuration error", e1);
                 }
             }
 	}
