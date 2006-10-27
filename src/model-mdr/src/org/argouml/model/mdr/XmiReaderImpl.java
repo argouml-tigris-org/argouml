@@ -52,6 +52,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
+import org.argouml.model.XmiException;
 import org.argouml.model.XmiReader;
 import org.netbeans.api.xmi.XMIReader;
 import org.netbeans.api.xmi.XMIReaderFactory;
@@ -267,7 +268,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             }
 
             if (unknownElement) {
-                throw new UmlException("Unknown element in XMI file : "
+                throw new XmiException("Unknown element in XMI file : "
                         + unknownElementName);
             }
 
@@ -277,9 +278,9 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             }
 
         } catch (MalformedXMIException e) {
-            throw new UmlException(e);
+            throw new XmiException(e);
         } catch (IOException e) {
-            throw new UmlException(e);
+            throw new XmiException(e);
         }
 
         if (profile) {
@@ -376,10 +377,13 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      * translation below in serialTransform
      */
     private InputSource chainedTransform(String[] styles, InputSource input)
-        throws UmlException {
+        throws XmiException {
         SAXTransformerFactory stf =
             (SAXTransformerFactory) TransformerFactory.newInstance();
 
+        // TODO: Reconfigure exception handling to distinguish between errors
+        // that are possible due to bad input data and those that represent
+        // unexpected processing errors.
         try {
             // Set up reader to be first filter in chain
             SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -392,7 +396,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                 String xsltFileName = STYLE_PATH + styles[i];
                 URL xsltUrl = getClass().getResource(xsltFileName);
                 if (xsltUrl == null) {
-                    throw new UmlException("Error opening XSLT style sheet : "
+                    throw new IOException("Error opening XSLT style sheet : "
                             + xsltFileName);
                 }
                 StreamSource xsltStreamSource =
@@ -420,15 +424,15 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             return new InputSource(new FileInputStream(tmpFile));
 
         } catch (SAXException e) {
-            throw new UmlException(e);
+            throw new XmiException(e);
         } catch (ParserConfigurationException e) {
-            throw new UmlException(e);
+            throw new XmiException(e);
         } catch (IOException e) {
-            throw new UmlException(e);
+            throw new XmiException(e);
         } catch (TransformerConfigurationException e) {
-            throw new UmlException(e);
+            throw new XmiException(e);
         } catch (TransformerException e) {
-            throw new UmlException(e);
+            throw new XmiException(e);
         }
 
     }
