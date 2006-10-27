@@ -58,7 +58,7 @@ public class TestExtensionMechanismsHelper extends TestCase {
         super(n);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -134,14 +134,13 @@ public class TestExtensionMechanismsHelper extends TestCase {
      */
     public void testMultipleBaseClasses() {
         String classType = Model.getMetaTypes().getName(theClass);
-        Collection baseClasses = Model.getFacade().getBaseClasses(theStereotype);
+        Collection baseClasses = 
+            Model.getFacade().getBaseClasses(theStereotype);
         assertNotNull("There are no base classes", baseClasses);
+        assertEquals("Wrong number of base classes", 1, baseClasses.size());
         assertEquals("Base class doesn't match type of model element",
                 classType,
                 baseClasses.iterator().next());
-        assertEquals("Wrong number of base classes",
-                1,
-                Model.getFacade().getBaseClasses(theStereotype).size());
         Model.getExtensionMechanismsHelper().removeBaseClass(theStereotype,
                 theClass);
         assertEquals("Wrong number of base classes",
