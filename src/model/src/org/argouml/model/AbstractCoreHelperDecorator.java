@@ -26,7 +26,6 @@ package org.argouml.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -115,7 +114,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      * @see org.argouml.model.CoreHelper#getOperations(java.lang.Object)
      */
     public List getOperations(Object classifier) {
-        return Model.getFacade().getOperations(classifier);
+        return impl.getOperations(classifier);
     }
 
     /**
@@ -140,7 +139,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      * @see org.argouml.model.CoreHelper#getAttributes(java.lang.Object)
      */
     public List getAttributes(Object classifier) {
-        return Model.getFacade().getAttributes(classifier);
+        return impl.getAttributes(classifier);
     }
 
     /**
