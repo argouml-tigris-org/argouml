@@ -71,52 +71,42 @@ public class OperationCodePiece extends NamedCodePiece {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getText()
-     *
-     * Return the string representation for this piece of code.
      */
     public StringBuffer getText() {
 	return operationDef.getText();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
-     *
-     * Return the start position.
      */
     public int getStartPosition() {
 	return operationDef.getStartPosition();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
-     *
-     * Return the end position.
      */
     public int getEndPosition() {
 	return operationDef.getEndPosition();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
-     *
-     * Return the start line
      */
     public int getStartLine() {
 	return operationDef.getStartLine();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
-     *
-     * Return the end line
      */
     public int getEndLine() {
 	return operationDef.getEndLine();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.NamedCodePiece#write(
      *         java.io.BufferedReader, java.io.BufferedWriter, java.util.Stack)
      *
