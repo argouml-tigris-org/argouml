@@ -132,23 +132,21 @@ public final class ImportClassLoader extends URLClassLoader {
      */
     public static ImportClassLoader getInstance(URL[] urls)
 	throws MalformedURLException {
-//        if(instance ==null){
-//
 	instance = new ImportClassLoader(urls);
 	return instance;
-//        }
-//        else
-//            return instance;
     }
 
     /**
      * @param f the file to be added
      * @throws MalformedURLException when the URL is bad
+     * 
+     * TODO: Either method signature or implementation needs to be
+     * changed to make behavior consistent - tfm
      */
     public void addFile(File f) throws MalformedURLException {
         try {
             this.addURL(f.toURL());
-        } catch (Exception e) {
+        } catch (MalformedURLException e) {
 	    LOG.warn("could not add file ", e);
 	}
     }
@@ -164,8 +162,9 @@ public final class ImportClassLoader extends URLClassLoader {
         URL url = null;
         try {
             url = f.toURL();
-        } catch (Exception e) {
+        } catch (MalformedURLException e) {
 	    LOG.warn("could not remove file ", e);
+            return;
 	}
 
         List urls = new ArrayList(); //getURLs();
@@ -200,7 +199,7 @@ public final class ImportClassLoader extends URLClassLoader {
 
             try {
 		this.addFile(new File(token));
-            } catch (Exception e) {
+            } catch (MalformedURLException e) {
 		LOG.warn("could not set path ", e);
 	    }
         }
@@ -222,12 +221,10 @@ public final class ImportClassLoader extends URLClassLoader {
 
             try {
 		urlList.add(new File(token).toURL());
-            } catch (Exception e) {
+            } catch (MalformedURLException e) {
 		LOG.error(e);
 	    }
         }
-
-//        Object urls[] = urlList.toArray();
 
         URL[] urls = new URL[urlList.size()];
         for (int i = 0; i < urls.length; i++) {
@@ -267,9 +264,6 @@ public final class ImportClassLoader extends URLClassLoader {
 				this.toString());
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
     public String toString() {
 
         URL[] urls = this.getURLs();
