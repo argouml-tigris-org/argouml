@@ -78,8 +78,11 @@ public interface PluggableImport extends Pluggable {
     Vector getList(Import importElement);
 
     /**
-     * Tells if the object is parseable or not.
-     * @param f object to be tested.
+     * Tells if the object is parseable or not. Must match with files that are
+     * actually parseable.
+     * 
+     * @param f
+     *            object to be tested.
      * @return true if parseable, false if not.
      */
     boolean isParseable(Object f);
