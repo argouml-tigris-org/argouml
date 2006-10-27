@@ -24,14 +24,21 @@
 
 package org.argouml.uml.reveng.java;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import org.apache.log4j.Logger;
-import org.argouml.kernel.*;
+import org.argouml.kernel.Project;
 import org.argouml.moduleloader.ModuleInterface;
-import org.argouml.uml.reveng.*;
+import org.argouml.uml.reveng.FileImportUtils;
+import org.argouml.uml.reveng.ImportInterface;
+import org.argouml.uml.reveng.ImportSettings;
+import org.argouml.uml.reveng.ImporterManager;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
-
-import java.io.*;
 
 /**
  * This is the main class for Java reverse engineering. It's based
@@ -39,84 +46,99 @@ import java.io.*;
  *
  * @author Andreas Rueckert <a_rueckert@gmx.net>
  */
-public class JavaImport extends FileImportSupport {
+public class JavaImport implements ModuleInterface, ImportInterface {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(JavaImport.class);
 
-    /**
-     * This method parses 1 Java file.
-     * Throws a Parser exception.
-     *
-     * @see org.argouml.application.api.PluggableImport#parseFile(
-     * org.argouml.kernel.Project, java.lang.Object,
-     * org.argouml.uml.reveng.DiagramInterface, org.argouml.uml.reveng.Import)
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#parseFile(org.argouml.kernel.Project, java.lang.Object, org.argouml.uml.reveng.ImportSettings)
      */
-    public void parseFile(Project p, Object o, DiagramInterface diagram,
-			  Import theImport)
-	throws Exception {
-	if (o instanceof File) {
-	    File f = (File) o;
-	    // Create a scanner that reads from the input stream passed to us
-	    String encoding = theImport.getInputSourceEncoding();
-	    FileInputStream in = new FileInputStream(f);
-	    JavaLexer lexer =
-		new JavaLexer(
-		    new BufferedReader(new InputStreamReader(in, encoding)));
-	    // We use a special Argo token, that stores the preceding
-	    // whitespaces.
-	    lexer.setTokenObjectClass("org.argouml.uml.reveng.java.ArgoToken");
-
-	    // Create a parser that reads from the scanner
-	    JavaRecognizer parser = new JavaRecognizer(lexer);
-
-	    // Create a modeller for the parser
-	    Modeller modeller = new Modeller(p.getModel(),
-					     diagram, theImport,
-					     getAttribute().isSelected(),
-					     getDatatype().isSelected(),
-					     f.getName());
-
-	    // Print the name of the current file, so we can associate
-	    // exceptions to the file.
-	    LOG.info("Parsing " + f.getAbsolutePath());
-
-            modeller.setAttribute("level", theImport.getAttribute("level"));
-
+    public void parseFile(Project p, Object o, ImportSettings settings)
+            throws ImportException {
+        if (o instanceof File) {
+            File f = (File) o;
             try {
-		// start parsing at the compilationUnit rule
-		parser.compilationUnit(modeller, lexer);
-            } catch (Exception e) {
-                LOG.error(e.getClass().getName()
-			  + " Exception in file: "
-			  + f.getCanonicalPath() + " "
-			  + f.getName(), e);
-                throw e;
+                // Create a scanner that reads from the input stream 
+                String encoding = settings.getInputSourceEncoding();
+                FileInputStream in = new FileInputStream(f);
+                JavaLexer lexer = new JavaLexer(new BufferedReader(
+                        new InputStreamReader(in, encoding)));
+
+                // We use a special Argo token, that stores the preceding
+                // whitespaces.
+                lexer.setTokenObjectClass(
+                        "org.argouml.uml.reveng.java.ArgoToken");
+
+                // Create a parser that reads from the scanner
+                JavaRecognizer parser = new JavaRecognizer(lexer);
+
+                // Create a modeller for the parser
+                Modeller modeller = new Modeller(p.getModel(),
+                        settings.getDiagramInterface(), 
+                        settings.getImportSession(),
+                        settings.isAttributeSelected(),
+                        settings.isDatatypeSelected(),
+                        f.getName());
+
+                // Print the name of the current file, so we can associate
+                // exceptions to the file.
+                LOG.info("Parsing " + f.getAbsolutePath());
+
+                modeller.setAttribute("level", 
+                        Integer.valueOf(settings.getImportLevel()));
+
+                try {
+                    // start parsing at the compilationUnit rule
+                    parser.compilationUnit(modeller, lexer);
+                } catch (Exception e) {
+                    String errorString = buildErrorString(f);
+                    LOG.error(e.getClass().getName()
+                            + errorString, e);
+                    throw new ImportException(errorString, e);
+                }
+                in.close();
+            } catch (IOException e) {
+                throw new ImportException(buildErrorString(f), e);
             }
-	    in.close();
-	}
+        }
     }
 
-    /**
-     * Provides an array of suffix filters for the module.
-     * @return SuffixFilter[] files with these suffixes will be processed.
+    private String buildErrorString(File f) {
+        String path = "";
+        try {
+            path = f.getCanonicalPath();
+        } catch (IOException e) {
+            // Just ignore - we'll use the simple file name
+        }
+        return "Exception in file: " + path + " " + f.getName();
+    }
+
+
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#getSuffixFilters()
      */
     public SuffixFilter[] getSuffixFilters() {
 	SuffixFilter[] result = {FileFilters.JAVA_FILE_FILTER};
 	return result;
     }
+    
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#isParseable(java.io.File)
+     */
+    public boolean isParseable(File file) {
+        return FileImportUtils.matchesSuffix(file, getSuffixFilters());
+    }
 
-    /**
-     * Display name of the module.
-     *
+    /*
      * @see org.argouml.moduleloader.ModuleInterface#getName()
      */
     public String getName() {
-        return "Java";
+	return "Java";
     }
 
-    /**
-     * @see ModuleInterface#getInfo(int)
+    /*
+     * @see org.argouml.moduleloader.ModuleInterface#getInfo(int)
      */
     public String getInfo(int type) {
         switch (type) {
@@ -130,4 +152,22 @@ public class JavaImport extends FileImportSupport {
             return null;
         }
     }
+    
+    /*
+     * @see org.argouml.moduleloader.ModuleInterface#disable()
+     */
+    public boolean disable() {
+        // We are permanently enabled
+        return false;
+    }
+
+    /*
+     * @see org.argouml.moduleloader.ModuleInterface#enable()
+     */
+    public boolean enable() {
+        ImporterManager.getInstance().addimporter(this);
+        return true;
+    }
+
+
 }

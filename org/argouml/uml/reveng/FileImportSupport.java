@@ -24,23 +24,17 @@
 
 package org.argouml.uml.reveng;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.io.File;
 import java.util.Vector;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.filechooser.FileSystemView;
 
-import org.argouml.i18n.Translator;
+import org.argouml.application.api.PluggableImport;
 import org.argouml.kernel.Project;
-import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.SuffixFilter;
@@ -52,154 +46,50 @@ import org.tigris.gef.base.Globals;
  * and other methods common to file import.
  * It assumes that similar classes will be written
  * for other input sources.
+ * 
+ * @deprecated by tfmorris for 0.23.2 - implement ImportInterface and ModuleInterface
+ * directly, using the utility methods in FileImportUtils to replace some of the previous
+ * functionality of this class.
  *
  * @author Alexander Lepekhine
  */
-public abstract class FileImportSupport implements ModuleInterface {
+public abstract class FileImportSupport implements PluggableImport {
+    
+    private static final String SEPARATOR = "/";
 
     private JPanel configPanel;
 
-    private JRadioButton attribute;
-
-    private JRadioButton datatype;
-
-    private static final String SEPARATOR = "/";
-    //System.getProperty("file.separator");
 
     /**
      * Object(s) selected in chooser.
      */
     private Object theFile;
 
-    /**
-     * Get the panel that lets the user set reverse engineering
-     * parameters.
-     *
+    /*
      * @see org.argouml.application.api.PluggableImport#getConfigPanel()
      */
     public JComponent getConfigPanel() {
-
 	if (configPanel == null) {
-	    configPanel = new JPanel();
-	    configPanel.setLayout(new GridBagLayout());
-
-	    JLabel attributeLabel1 =
-                new JLabel(
-                        Translator.localize("action.import-java-attr-model"));
-	    configPanel.add(attributeLabel1,
-			    new GridBagConstraints(GridBagConstraints.RELATIVE,
-						   GridBagConstraints.RELATIVE,
-						   GridBagConstraints.REMAINDER,
-						   1,
-						   1.0, 0.0,
-						   GridBagConstraints.NORTHWEST,
-						   GridBagConstraints.NONE,
-						   new Insets(5, 5, 0, 5),
-						   0, 0));
-	    ButtonGroup group1 = new ButtonGroup();
-	    attribute =
-		new JRadioButton(
-                        Translator.localize("action.import-java-UML-attr"));
-	    attribute.setSelected(true);
-	    group1.add(attribute);
-	    configPanel.add(attribute,
-			    new GridBagConstraints(GridBagConstraints.RELATIVE,
-						   GridBagConstraints.RELATIVE,
-						   GridBagConstraints.REMAINDER,
-						   1,
-						   1.0, 0.0,
-						   GridBagConstraints.NORTHWEST,
-						   GridBagConstraints.NONE,
-						   new Insets(0, 5, 0, 5),
-						   0, 0));
-	    JRadioButton association =
-		new JRadioButton(
-                        Translator.localize("action.import-java-UML-assoc"));
-	    group1.add(association);
-	    configPanel.add(association,
-			    new GridBagConstraints(GridBagConstraints.RELATIVE,
-						   GridBagConstraints.RELATIVE,
-						   GridBagConstraints.REMAINDER,
-						   1,
-						   1.0, 0.0,
-						   GridBagConstraints.NORTHWEST,
-						   GridBagConstraints.NONE,
-						   new Insets(0, 5, 5, 5),
-						   0, 0));
-	    JLabel attributeLabel2 =
-	        new JLabel(
-                    Translator.localize("action.import-java-array-model"));
-	    configPanel.add(attributeLabel2,
-                        new GridBagConstraints(GridBagConstraints.RELATIVE,
-                                               GridBagConstraints.RELATIVE,
-                                               GridBagConstraints.REMAINDER,
-                                               1,
-                                               1.0, 0.0,
-                                               GridBagConstraints.NORTHWEST,
-                                               GridBagConstraints.NONE,
-                                               new Insets(5, 5, 0, 5),
-                                               0, 0));
-
-	    ButtonGroup group2 = new ButtonGroup();
-	    datatype =
-		new JRadioButton(
-                        Translator.localize(
-                                "action.import-java-array-model-datatype"));
-	    datatype.setSelected(true);
-	    group2.add(datatype);
-	    configPanel.add(datatype,
-			    new GridBagConstraints(GridBagConstraints.RELATIVE,
-						   GridBagConstraints.RELATIVE,
-						   GridBagConstraints.REMAINDER,
-						   1,
-						   1.0, 0.0,
-						   GridBagConstraints.NORTHWEST,
-						   GridBagConstraints.NONE,
-						   new Insets(5, 5, 0, 5),
-						   0, 0));
-	    JRadioButton multi =
-		new JRadioButton(
-                        Translator.localize(
-                                "action.import-java-array-model-multi"));
-	    group2.add(multi);
-	    configPanel.add(multi,
-			    new GridBagConstraints(GridBagConstraints.RELATIVE,
-						   GridBagConstraints.RELATIVE,
-						   GridBagConstraints.REMAINDER,
-						   GridBagConstraints.REMAINDER,
-						   1.0, 1.0,
-						   GridBagConstraints.NORTHWEST,
-						   GridBagConstraints.NONE,
-						   new Insets(0, 5, 5, 5),
-						   0, 0));
-	}
+	    configPanel = new ConfigPanelExtension();
+        }
 	return configPanel;
     }
 
-    /**
-     * This method parses 1 file.
-     * Default implementation does nothing.
-     *
-     * @see org.argouml.application.api.PluggableImport#parseFile(
-     *         org.argouml.kernel.Project, java.lang.Object,
-     *         org.argouml.uml.reveng.DiagramInterface,
-     *         org.argouml.uml.reveng.Import)
-     * @param p the project
-     * @param o the object
-     * @param diagram the diagram interface
-     * @param theImport the import
-     * @exception Exception Parser exception.
+    /*
+     * @see org.argouml.application.api.PluggableImport#parseFile(org.argouml.kernel.Project, java.lang.Object, org.argouml.uml.reveng.DiagramInterface, org.argouml.uml.reveng.Import)
      */
     public void parseFile(Project p, Object o, DiagramInterface diagram,
 			  Import theImport)
 	throws Exception {
+        
+        // Default implementation does nothing
+        
     }
 
-    /**
-     * Create chooser for objects we are to import.
-     * Default implemented chooser is JFileChooser.
-     *
+    /*
      * @see org.argouml.application.api.PluggableImport#getChooser(org.argouml.uml.reveng.Import)
+     * 
+     * Default chooser is a JFileChooser
      */
     public JComponent getChooser(Import imp) {
         String directory = Globals.getLastDirectory();
@@ -216,148 +106,101 @@ public abstract class FileImportSupport implements ModuleInterface {
         return chooser;
     }
 
-    /**
-     * This method returns a Vector with objects to import.<p>
-     *
-     * Processing each file in turn is equivalent to a breadth first
-     * search through the directory structure.
-     *
-     * @param theImport object called by this method.
-     * @return the list
-     *
+    /*
      * @see org.argouml.application.api.PluggableImport#getList(org.argouml.uml.reveng.Import)
      */
     public Vector getList(Import theImport) {
-	Vector res = new Vector();
+        if (theFile != null && theFile instanceof File) {
+            File f = (File) theFile;
+            if (f.isDirectory()) {
+                theImport.setSrcPath(f.getAbsolutePath());
+            } else {
+                theImport.setSrcPath(null);
+            }
+            return new Vector(FileImportUtils.getList(f, 
+                    theImport.isDiscendDirectoriesRecursively(), getSuffixFilters()));
+        } else {
+            return new Vector();
+        }
 
-	Vector toDoDirectories = new Vector();
-	Vector doneDirectories = new Vector();
-
-	if (theFile != null && theFile instanceof File) {
-	    File f = (File) theFile;
-	    if (f.isDirectory()) {
-	        theImport.setSrcPath(f.getAbsolutePath());
-	    } else {
-	        theImport.setSrcPath(null);
-	    }
-
-	    toDoDirectories.add(f);
-
-	    while (toDoDirectories.size() > 0) {
-		File curDir = (File) toDoDirectories.elementAt(0);
-		toDoDirectories.removeElementAt(0);
-		doneDirectories.add(curDir);
-
-		if (!curDir.isDirectory()) {
-		    // For some reason, this eledged directory is a single file
-		    // This could be that there is some confusion or just
-		    // the normal, that a single file was selected and is
-		    // supposed to be imported.
-		    res.add(curDir);
-		    continue;
-		}
-
-		// Get the contents of the directory
-		String [] files = curDir.list();
-
-		for (int i = 0; i < files.length; i++) {
-		    File curFile = new File(curDir, files[i]);
-
-		    // The following test can cause trouble with
-		    // links, because links are accepted as
-		    // directories, even if they link files.  Links
-		    // could also result in infinite loops. For this
-		    // reason we don't do this traversing recursively.
-		    if (curFile.isDirectory()) {
-			// If this file is a directory
-			if (theImport.isDiscendDirectoriesRecursively()) {
-			    if (doneDirectories.indexOf(curFile) >= 0
-				|| toDoDirectories.indexOf(curFile) >= 0) {
-				; // This one is already seen or to be seen.
-			    } else {
-				toDoDirectories.add(curFile);
-			    }
-			}
-		    } else {
-			if (isParseable(curFile)) {
-			    res.add(curFile);
-			}
-		    }
-		}
-	    }
-	}
-	return res;
     }
 
-    /**
-     * Tells if the file is parseable or not.
-     * Must match with files that are actually parseable.
-     *
-     * @param f file to be tested.
-     * @return true if parseable, false if not.
+    /*
+     * @see org.argouml.application.api.PluggableImport#isParseable(java.lang.Object)
      */
     public boolean isParseable(Object f) {
-	SuffixFilter[] filters = getSuffixFilters();
-	if (filters != null) {
-	    for (int i = 0; i < filters.length; i++) {
-		String fileName =
-		    (f != null && f instanceof File
-		     ? ((File) f).getName()
-		     : "");
-		if (fileName.endsWith(filters[i].getSuffix())) {
-		    return true;
-		}
-	    }
-	}
-	return false;
+        return FileImportUtils.matchesSuffix(f, getSuffixFilters());
     }
 
-    /**
-     * Provide layout for modified class diagram.
-     *
+    /*
      * @see org.argouml.application.api.PluggableImport#getLayout(org.argouml.uml.diagram.ui.UMLDiagram)
      */
     public ClassdiagramLayouter getLayout(UMLDiagram diagram) {
 	return	new ClassdiagramLayouter(diagram);
     }
 
-    /**
-     * @see ModuleInterface#enable()
+    /*
+     * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
      */
-    public boolean enable() {
+    public boolean inContext(Object[] context) {
         return true;
     }
 
-    /**
-     * @see ModuleInterface#disable()
+    /*
+     * @see org.argouml.application.api.ArgoModule#initializeModule()
      */
-
-    public boolean disable() {
+    public boolean initializeModule() {
+        // called when loading module
         return true;
     }
 
-    /**
-     * @see ModuleInterface#getName()
+    /*
+     * @see org.argouml.application.api.ArgoModule#shutdownModule()
      */
-    public String getName() {
-        return "FileImport";
+    public boolean shutdownModule() {
+        // called when the module is shutdown
+        return true;
+    }
+
+    /*
+     * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
+     */
+    public void setModuleEnabled(boolean tf) {
+        // called to enable-disable
+    }
+
+    /*
+     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
+     */
+    public boolean isModuleEnabled() {
+        // determines if enabled-disabled
+        return true;
+    }
+
+    /*
+     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
+     */
+    public String getModuleVersion() {
+        return "0.1";
+    }
+
+    /*
+     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
+     */
+    public String getModuleAuthor() {
+        return "";
     }
 
     /**
-     * @see ModuleInterface#getInfo(int)
+     * Calls all modules to let them add to a popup menu.
+     *
+     * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
+     * java.util.Vector, java.lang.Object)
      */
-    public String getInfo(int type) {
-        switch (type) {
-        case DESCRIPTION:
-            return "This is a base class for import from files.";
-        case AUTHOR:
-            return "Alexander Lepekhine, Thomas Neustupny";
-        case VERSION:
-            return "1.0";
-        default:
-            return null;
-        }
+    public Vector getModulePopUpActions(Vector popUpActions, Object context) {
+        return null;
     }
+
 
     /**
      * Provides an array of suffixe filters for the module.
@@ -367,17 +210,21 @@ public abstract class FileImportSupport implements ModuleInterface {
     public abstract SuffixFilter[] getSuffixFilters();
 
     /**
-     * @return Returns the attribute.
+     * @return Returns the attribute radio button.
+     * @deprecated by tfmorris for 0.23.4,
+     *  use {@link ImportSettings#isAttributeSelected()}
      */
     protected JRadioButton getAttribute() {
-        return attribute;
+        return ((ConfigPanelExtension) getConfigPanel()).getAttribute();
     }
 
     /**
-     * @return Returns the datatype.
+     * @return Returns the datatype radio button.
+     * @deprecated by tfmorris for 0.23.4,
+     *  use {@link ImportSettings#isDatatypeSelected()}
      */
     protected JRadioButton getDatatype() {
-        return datatype;
+        return ((ConfigPanelExtension) getConfigPanel()).getDatatype();
     }
 
     private class ImportFileChooser extends JFileChooser {
@@ -421,10 +268,10 @@ public abstract class FileImportSupport implements ModuleInterface {
             this.theImport = imp;
         }
 
-	/**
-	 * @see javax.swing.JFileChooser#approveSelection()
-	 */
-	public void approveSelection() {
+        /*
+         * @see javax.swing.JFileChooser#approveSelection()
+         */
+        public void approveSelection() {
             theFile = getSelectedFile();
             if (theFile != null) {
                 String path = getSelectedFile().getParent();
@@ -438,18 +285,16 @@ public abstract class FileImportSupport implements ModuleInterface {
                     return;
                 }
             }
-	}
-
-	/**
-	 * @see javax.swing.JFileChooser#cancelSelection()
-	 */
-	public void cancelSelection() {
-            theImport.disposeDialog();
-	}
+        }
 
         /**
-         * The UID.
+         * @see javax.swing.JFileChooser#cancelSelection()
          */
-        private static final long serialVersionUID = 3298461148934583094L;
+        public void cancelSelection() {
+            theImport.disposeDialog();
+        }
+
     }
+
+
 }
