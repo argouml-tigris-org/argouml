@@ -123,6 +123,9 @@ public class Modeller {
     /**
      * Create a new modeller.
      *
+     * TODO: Refactor diagram creation to be common to all importers and
+     * remove the need for the diagram interface to be passed in here. - tfm
+     *  
      * @param diag the interface to the diagram to add nodes and edges to
      * @param imp The current Import session.
      * @param noAss whether associations are modelled as attributes
@@ -162,16 +165,6 @@ public class Modeller {
      */
     public void setAttribute(String key, Object value) {
         attributes.put(key, value);
-    }
-
-
-    /**
-     * Get the current diagram.
-     *
-     * @return a interface to the current diagram.
-     */
-    private DiagramInterface getDiagram() {
-	return diagram;
     }
 
     /**
@@ -244,16 +237,17 @@ public class Modeller {
 	String ownerPackageName, currentName = name;
         ownerPackageName = getPackageName(currentName);
 	while (!"".equals(ownerPackageName)) {
-	    if (getDiagram() != null
-		&& importSession != null
-                && importSession.isCreateDiagramsChecked()
-		&& getDiagram().isDiagramInProject(ownerPackageName)) {
+            // TODO: Refactor diagram creation to be common to all importers - tfm
+	    if (diagram != null
+	            && importSession != null
+	            && importSession.isCreateDiagramsChecked()
+	            && diagram.isDiagramInProject(ownerPackageName)) {
 
-                getDiagram().selectClassDiagram(getPackage(ownerPackageName),
-						ownerPackageName);
-                getDiagram().addPackage(getPackage(currentName));
+	        diagram.selectClassDiagram(getPackage(ownerPackageName),
+	                ownerPackageName);
+	        diagram.addPackage(getPackage(currentName));
 
-            }
+	    }
 	    currentName = ownerPackageName;
             ownerPackageName = getPackageName(currentName);
 	}
@@ -646,7 +640,8 @@ public class Modeller {
     public void popClassifier() {
         // now create diagram if it doesn't exists in project
 	if (importSession != null && importSession.isCreateDiagramsChecked()) {
-	    if (getDiagram() == null) {
+            // TODO: Refactor diagram creation to be common to all importers - tfm
+	    if (diagram == null) {
 		diagram = new DiagramInterface(Globals.curEditor());
 		if (currentPackageName != null
 		    && !currentPackageName.trim().equals("")) {
@@ -660,7 +655,7 @@ public class Modeller {
 
 	    } else {
 		if (currentPackageName != null) {
-		    getDiagram().selectClassDiagram(currentPackage,
+		    diagram.selectClassDiagram(currentPackage,
 						    currentPackageName);
 		}
 		// the DiagramInterface is instantiated already
@@ -671,24 +666,16 @@ public class Modeller {
 		    diagram.createRootClassDiagram();
 		}
 	    }
+	    // add the current classifier to the diagram.
+	    Object classifier = parseState.getClassifier();
+	    if (Model.getFacade().isAInterface(classifier)) {
+	        diagram.addInterface(classifier,
+	                importSession.isMinimiseFigsChecked());
+	    } else if (Model.getFacade().isAClass(classifier)) {
+	        diagram.addClass(classifier,
+	                importSession.isMinimiseFigsChecked());
+	    }
 	}
-        // add the current classifier to the diagram.
-        Object classifier = parseState.getClassifier();
-        if (Model.getFacade().isAInterface(classifier)) {
-            if (getDiagram() != null && importSession != null
-                    && importSession.isCreateDiagramsChecked()) {
-		diagram.addInterface(classifier,
-				      importSession.isMinimiseFigsChecked());
-            }
-        } else {
-            if (Model.getFacade().isAClass(classifier)) {
-                if (getDiagram() != null && importSession != null
-                        && importSession.isCreateDiagramsChecked()) {
-                    diagram.addClass(classifier,
-				      importSession.isMinimiseFigsChecked());
-                }
-            }
-        }
 
         // Remove operations and attributes not in source
         parseState.removeObsoleteFeatures();
