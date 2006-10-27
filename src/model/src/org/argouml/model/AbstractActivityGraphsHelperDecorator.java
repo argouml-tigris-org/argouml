@@ -55,40 +55,27 @@ public abstract class AbstractActivityGraphsHelperDecorator
         return impl;
     }
 
-    /**
-     * @see org.argouml.model.ActivityGraphsHelper#findClassifierByName(java.lang.Object,
-     *      java.lang.String)
+    /*
+     * @see org.argouml.model.ActivityGraphsHelper#findClassifierByName(java.lang.Object, java.lang.String)
+     *
+     * all methods below similarly implement methods from ActivityGraphsHelper 
      */
     public Object findClassifierByName(Object ofs, String s) {
         return impl.findClassifierByName(ofs, s);
     }
 
-    /**
-     * @see org.argouml.model.ActivityGraphsHelper#findStateByName(java.lang.Object,
-     *      java.lang.String)
-     */
     public Object findStateByName(Object c, String s) {
         return impl.findStateByName(c, s);
     }
 
-    /**
-     * @see org.argouml.model.ActivityGraphsHelper#isAddingActivityGraphAllowed(java.lang.Object)
-     */
     public boolean isAddingActivityGraphAllowed(Object context) {
         return impl.isAddingActivityGraphAllowed(context);
     }
 
-    /**
-     * @see org.argouml.model.ActivityGraphsHelper#addInState(java.lang.Object,
-     *      java.lang.Object)
-     */
     public void addInState(Object classifierInState, Object state) {
         impl.addInState(classifierInState, state);
     }
-    
-    /**
-     * @see org.argouml.model.ActivityGraphsHelper#setInStates(java.lang.Object, java.util.Collection)
-     */
+
     public void setInStates(Object classifierInState, Collection newStates) {
         impl.setInStates(classifierInState, newStates);
     }

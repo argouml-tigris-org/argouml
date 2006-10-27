@@ -46,30 +46,21 @@ public abstract class AbstractUmlHelperDecorator implements UmlHelper {
         impl = component;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UmlHelper#addListenersToModel(java.lang.Object)
      */
     public void addListenersToModel(Object model) {
         impl.addListenersToModel(model);
     }
 
-    /**
-     * @see org.argouml.model.UmlHelper#deleteCollection(java.util.Collection)
-     */
     public void deleteCollection(Collection col) {
         impl.deleteCollection(col);
     }
 
-    /**
-     * @see org.argouml.model.UmlHelper#getSource(java.lang.Object)
-     */
     public Object getSource(Object relationship) {
         return impl.getSource(relationship);
     }
 
-    /**
-     * @see org.argouml.model.UmlHelper#getDestination(java.lang.Object)
-     */
     public Object getDestination(Object relationship) {
         return impl.getDestination(relationship);
     }
