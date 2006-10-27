@@ -1044,12 +1044,4 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
-    /**
-     * @see org.argouml.model.AbstractCoreHelperDecorator#setUUID(
-     * java.lang.Object, java.lang.String)
-     */
-    public void setUUID(Object handle, String uuid) {
-        super.setUUID(handle, uuid);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
-    }
 }

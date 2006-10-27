@@ -155,16 +155,6 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
     }
 
     /**
-     * @see org.argouml.model.ExtensionMechanismsHelper#setBaseClass(
-     *         java.lang.Object,
-     *         java.lang.Object)
-     */
-    public void setBaseClass(Object handle, Object baseClass) {
-        Model.getFacade().getBaseClasses(handle).clear(); // TODO: does this work?
-        impl.addBaseClass(handle, baseClass);
-    }
-
-    /**
      * @see org.argouml.model.ExtensionMechanismsHelper#addBaseClass(
      *         java.lang.Object,
      *         java.lang.Object)

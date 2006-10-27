@@ -180,21 +180,25 @@ public abstract class AbstractModelEventPump {
     }
 
     /**
-     * Register an Action with the pump that is used to perform saving.
-     * This action will be enabled by any change to the model.
-     * The param saveAction is the action to enable on change to model.
-     *
+     * Register an Action with the pump that is used to perform saving. This
+     * action will be enabled by any change to the model. The param saveAction
+     * is the action to enable on change to model.
+     * 
      * @see org.argouml.model.ModelEventPump#setSaveAction(javax.swing.Action)
-     *
-     * @param theSaveAction The saveAction to set (or <code>null</code>).
-     * @deprecated The save Action is no longer required by the model subsystem
+     * 
+     * @param theSaveAction
+     *            The saveAction to set (or <code>null</code>).
+     * @deprecated by bobtarling July 2006 - The save Action is no longer
+     *             required by the model subsystem
      */
     public void setSaveAction(Action theSaveAction) {
     }
 
     /**
      * Enable the save action.
-     * @deprecated The save Action is no longer required by the model subsystem
+     * 
+     * @deprecated by bobtarling July 2006 - The save Action is no longer
+     *             required by the model subsystem
      */
     public void enableSaveAction() {
     }

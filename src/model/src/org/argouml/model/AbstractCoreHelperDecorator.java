@@ -176,15 +176,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     }
 
     /**
-     * @see org.argouml.model.CoreHelper#getReturnParameter(java.lang.Object)
-     */
-    public Object getReturnParameter(Object operation) {
-        Collection returnParameters = getReturnParameters(operation);
-        Iterator it = returnParameters != null ? returnParameters.iterator() : null;
-        return (it != null ? it.next() : null);
-    }
-
-    /**
      * @see org.argouml.model.CoreHelper#getReturnParameters(java.lang.Object)
      */
     public List getReturnParameters(Object operation) {
@@ -933,14 +924,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      */
     public void setType(Object handle, Object type) {
         impl.setType(handle, type);
-    }
-
-    /**
-     * @see org.argouml.model.CoreHelper#setUUID(
-     *         java.lang.Object, java.lang.String)
-     */
-    public void setUUID(Object handle, String uuid) {
-        impl.setUUID(handle, uuid);
     }
 
     /**

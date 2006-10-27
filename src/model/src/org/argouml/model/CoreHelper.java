@@ -93,22 +93,26 @@ public interface CoreHelper {
 
     /**
      * This method returns all operations of a given Classifier.
-     *
-     * @param classifier the classifier you want to have the operations for
+     * 
+     * @param classifier
+     *            the classifier you want to have the operations for
      * @return a collection of the operations
-     * @deprecated by tfmorris for 0.23.4 
-     * use {@link Facade#getOperations(Object)}
+     * @deprecated by tfmorris for 0.23.4 use
+     *             {@link Facade#getOperations(Object)}
      */
     List getOperations(Object classifier);
 
     /**
-     * This method replaces all operations of the given classifier
-     * by the given collection of operations.
-     *
-     * @param classifier the given classifier
-     * @param operations the new operations
-     * @deprecated use variant which takes a List of operations as a parameter
-     * {@link #setOperations(Object, List)}
+     * This method replaces all operations of the given classifier by the given
+     * collection of operations.
+     * 
+     * @param classifier
+     *            the given classifier
+     * @param operations
+     *            the new operations
+     * @deprecated by tfmorris for 0.23.4, use variant which takes a List of
+     *             operations as a parameter
+     *             {@link #setOperations(Object, List)}
      */
     void setOperations(Object classifier, Collection operations);
 
@@ -123,10 +127,12 @@ public interface CoreHelper {
 
     /**
      * This method returns all attributes of a given Classifier.
-     *
-     * @param classifier the classifier you want to have the attributes for
+     * 
+     * @param classifier
+     *            the classifier you want to have the attributes for
      * @return a collection of the attributes
-     * @deprecated by tfmorris for 0.23.4 use {@link Facade#getAttributes(Object)}
+     * @deprecated by tfmorris for 0.23.4 use
+     *             {@link Facade#getAttributes(Object)}
      */
     List getAttributes(Object classifier);
 
@@ -165,22 +171,6 @@ public interface CoreHelper {
      * @return a collection of the operations
      */
     Collection getOperationsInh(Object classifier);
-
-    /**
-     * This method finds all parameters of the given operation which
-     * have the ParameterDirectionType RETURN. If it is only one, it
-     * is returned.  In case there are no return parameters, null is
-     * returned. If there is more than one return paramter, first of
-     * them is returned, but a message is logged.<p>
-     *
-     * @deprecated by tfmorris before 0.21.1 - use getReturnParameters
-     * @see #getReturnParameters(Object)
-     * @param operation1 the operation you want to find the return
-     * parameter for.
-     * @return If this operation has only one paramter with Kind: RETURN,
-     *         this is it, otherwise null
-     */
-    Object getReturnParameter(Object operation1);
 
     /**
      * Returns all return parameters for an operation.
@@ -1065,7 +1055,7 @@ public interface CoreHelper {
      *
      * @param handle the association end
      * @param elems is a Collection of qualifiers
-     * @deprecated by tfmorris for 0.23.4, 
+     * @deprecated by tfmorris for 0.23.4,
      * use {@link #setQualifiers(Object, List)}
      */
     void setQualifiers(Object handle, Collection elems);
@@ -1209,19 +1199,6 @@ public interface CoreHelper {
      * @param type is the type (a classifier)
      */
     void setType(Object handle, Object type);
-
-    /**
-     * Set the UUID of this element.
-     * 
-     * @deprecated by tfm for 0.20 - getUUID is guaranteed to return a value but
-     *             it is not settable. If a settable ID is required, use a
-     *             TaggedValued or other private mechanism.
-     * @param handle
-     *            base element (MBase type)
-     * @param uuid
-     *            is the UUID
-     */
-    void setUUID(Object handle, String uuid);
 
     /**
      * Set the visibility of some modelelement.

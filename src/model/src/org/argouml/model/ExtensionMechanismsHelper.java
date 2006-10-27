@@ -152,15 +152,6 @@ public interface ExtensionMechanismsHelper {
     void addExtendedElement(Object handle, Object extendedElement);
 
     /**
-     * Set the baseclass of some stereotype.
-     *
-     * @deprecated use addBaseClass
-     * @param handle the stereotype
-     * @param baseClass the baseclass
-     */
-    void setBaseClass(Object handle, Object baseClass);
-
-    /**
      * Add a baseclass to some stereotype.
      *
      * @param handle the stereotype

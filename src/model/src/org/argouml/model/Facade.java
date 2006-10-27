@@ -63,7 +63,7 @@ public interface Facade {
      * importing.
      * If it is set, then the critics could ignore those objects if they want.
      */
-    String GENERATED_TAG = "GeneratedFromImport";
+    String GENERATED_TAG = "GeneratedFromImport"; //$NON-NLS-1$
 
     ////////////////////////////////////////////////////////////////
     /**
@@ -1234,15 +1234,6 @@ public interface Facade {
      * @return Collection with attributes.
      */
     List getAttributes(Object handle);
-
-    /**
-     * The baseclass of some stereotype.
-     *
-     * @param handle the stereotype
-     * @return the baseclass
-     * @deprecated use getBaseClasses for UML 1.4 and later
-     */
-    Object getBaseClass(Object handle);
 
     /**
      * Collection of baseclasses of some stereotype.
