@@ -1541,6 +1541,798 @@ and not the temporary file.
     </sect2>
   </sect1>
 
+  <sect1 id="eclipse3">
+    <sect1info>
+      <author>
+        <firstname>Linus</firstname>
+        <surname>Tolke</surname>
+      </author>
+    </sect1info>
+    <title>Setting up Eclipse 3</title>
+    <indexterm>
+      <primary>Setting up Eclipse</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Eclipse</primary>
+      <secondary>Setting up the development environment</secondary>
+    </indexterm>
+
+    <para>
+If you are running Eclipse 3.1 or 3.2
+we have a prepared and recommended setup
+committed into our repository.
+This setup is slightly different than the ant setup 
+w.r.t. file tree structure of the checked out copy
+and some special magic is used in the ant scripts
+that is controlled from the special Eclipse configurations.
+</para>
+    <para>
+The prepared setup includes settings for Checkstyle within Eclipse that
+will be enabled if you have the Checkclipse Eclipse plugin installed.
+</para>
+    <para>
+You need to have Subclipse installed in your Eclipse to retrieve
+the files from the repository.
+See <ulink url="http://subclipse.tigris.org/install.html"/>.
+</para>
+    <para>
+If any of these instructions don't work or could be improved in some way,
+please help in making them better by contacting the editor of the Cookbook.
+</para>
+
+    <sect2 id="eclipse-checkout">
+      <title>Checking out through Eclipse</title>
+      <para>
+This instruction is if you want to use Eclipse to download the source
+and it takes you up to where you can start ArgoUML from the source.
+</para>
+
+      <para>
+We have Team Project Set files prepared to make the set up automatic.
+</para>
+
+      <para>
+Do the following.
+</para>
+
+      <orderedlist>
+        <listitem>
+          <para>
+Change to the SVN Repository Explorer perspective and select 
+Add SVN Repository.
+Then enter the following url
+<command>http://argouml.tigris.org/svn/argouml</command>.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Download the initial Team Project Set file and save it somewhere.
+</para>
+          <para>
+Suggested by browsing to
+<filename>trunk/tools/eclipse</filename>
+and checking it out as a project.
+</para>
+          <para>
+This is only needed the first time and if you don't already 
+happen to have an updated checked out copy of argouml laying around.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Do File => Import and select Team Project Set and press Next.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Browse to the file
+<filename>argouml-core-projectset.psf</filename>
+and press Finish.
+</para>
+
+          <para>
+Now everything is automatic even though it takes a while. What happens is:
+</para>
+          <orderedlist>
+            <listitem>
+              <para>
+Files are downloaded from the Tigris SVN server and put into Eclipse
+projects.
+</para>
+              <para>
+It is around 30Meg that is downloaded so beware if you are on a slow
+connection.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+The projects are built.
+First things that are special for ArgoUML, generated Java code,
+are created by Eclipse calling ant,
+then Eclipse kicks in and compiles the Java code.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Eclipse finds the Configurations that are also checked out.
+</para>
+            </listitem>
+          </orderedlist>
+        </listitem>
+
+        <listitem>
+          <para>
+Select Project => Clean... => Clean all projects
+and wait for everything to build again.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Verify that you can start ArgoUML from the debugger within Eclipse. 
+You can do this by clicking on the little down-arrow close to the
+Debug icon in the tool bar,
+selecting Debug...,
+and finding ArgoUML in the list (under Java Application).
+</para>
+        </listitem>
+
+      </orderedlist>
+    </sect2>
+
+    <sect2>
+      <title>Eclipse to help with the ArgoUML coding style</title>
+      <para>
+This instruction is to set up Eclipse to work according to
+the ArgoUML Coding standards.
+If this is not done correctly you will most likely find that you will have to
+do a lot of manual edits every time Eclipse has
+touched the code.
+You have your tool working against you instead of for you.
+</para>
+      <para>
+The instructions here are for these settings to affect your Eclipse Workspace.
+If you have other projects in
+the same Eclipse Workspace you would probably want this for
+only the ArgoUML projects and that is possible although not explained here.
+We suggest you to consider having ArgoUML work in an
+Eclipse Workspace separate from your other projects.
+</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>
+Code conventions.
+</para>
+          <orderedlist>
+            <listitem>
+              <para>
+Select in the menu Window => Preferences. 
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Then select Java => Code Style => Formatter.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+For Eclipse 3.2 you do:
+Select Java Conventions [built-in].
+</para>
+            </listitem>
+            <listitem>
+              <para>
+For Eclipse 3.1 you do:
+Select Import and give the file
+<filename>eclipse/eclipse-argo-formatter.xml</filename>
+located in the argouml-core-tools project that you just checked out.
+</para>
+              <para>
+This takes care of the Eclipse-built-in bug
+(<ulink url="https://bugs.eclipse.org/bugs/show_bug.cgi?id=104765"/>).
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Press OK.
+</para>
+            </listitem>
+          </orderedlist>
+
+          <para>
+This will give you Code Conventions exactly like the Sun Coding Style
+that we use in the ArgoUML project.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+New file templates.
+</para>
+
+          <orderedlist>
+            <listitem>
+              <para>
+Select in the menu Window => Preferences. 
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Then select Java => Code Style => Code Templates.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Select Import and give the file
+<filename>eclipse/eclipse-argo-codetemplates.xml</filename>
+located in the argouml-core-tools project that you just checked out.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Press OK.
+</para>
+            </listitem>
+          </orderedlist>
+
+          <para>
+This will set up templates to be used when using the Eclipse functions
+for creating files, functions, types and javadoc...
+</para>
+
+        </listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Eclipse to automatically find problems in the code</title>
+      <para>
+This instruction is to set up Eclipse to automatically find 
+what, in the ArgoUML project, could be considered problems in the code.
+</para>
+      <para>
+You can apply these individually depending on what level of help you need
+in your coding.
+I (Linus Tolke) recommend that you set them all on the Warning level.
+This makes them visible for you.
+You can then decide to fix them or not depending on how you feel about
+the code you are working with.
+</para>
+      <para>
+The instructions on where to find the different settings are for Eclipse 3.2.
+If you use Eclipse 3.1 you might need to search through the tabs to find
+where the setting is since they were reorganized for Eclipse 3.2.
+</para>
+      <itemizedlist>
+        <listitem>
+          <para>
+Compiler compliance level.
+</para>
+          <para>
+      See in the menu Window => Preferences.
+      Then select
+      Java => Compiler.
+At the right hand side set
+Compiler compliance level: 1.4.
+</para>
+          <para>
+Uncheck Use default complicance settings and set
+Generated .class file compatibility: 1.4,
+Source compatibility: 1.4,
+and Disallow identifiers called enum to Error.
+</para>
+          <para>
+In the ArgoUML project we have decided to keep source compliance to JDK 1.4.
+(See <xref linkend="REQ7"/>).
+This setting enables Eclipse to tell you where some
+JDK 1.5
+features have crept in.
+At the same time we don't want to introduce identifiers that are in conflict
+with Java5.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Find forgotten and incorrect Javadoc comments.
+</para>
+          <para>
+In the menu select Window => Preferences.
+Then select
+Java => Compiler => Javadoc.
+Suggested settings for these tabs
+(Only things diverting from the Eclipse defaults are listed):
+</para>
+          <itemizedlist>
+            <listitem>
+              <para>
+Javadoc => Malformed javadoc comments:
+Warning,
+Private,
+Check all reports.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Javadoc => Missing javadoc tags: Warning, Private,
+check Check overriding and implementing methods.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Javadoc => Missing javadoc comments: Warning, Protected,
+uncheck Check overriding and implementing methods.
+</para>
+            </listitem>
+          </itemizedlist>
+          <para>
+These problems
+(except missing javadoc comments)
+are also found by Checkstyle so if you are
+running Checkclipse (See <xref linkend="checkclipse"/>)
+put this in Ignore instead.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Code that hides other code.
+</para>
+          <para>
+In the menu select Window => Preferences.
+Then select
+Java => Compiler => Error/Warnings.
+Suggested settings for these tabs
+(Only things diverting from the Eclipse defaults are listed):
+</para>
+          <itemizedlist>
+            <listitem>
+              <para>
+Potential programming problems => Serializable class without serialVersionUID:
+Ignore
+</para>
+              <para>
+We don't use serialization in the ArgoUML project anyway.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Potential programming problems =>
+Possible accidental boolean assignment: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Name shadowing and conflicts =>
+Local variable declaration hides another field or variable: Warning,
+check Include constructor or setter method parameters.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Name shadowing and conflicts =>
+Field declaration hides another field or variable: Warning.
+</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+        <listitem>
+          <para>
+Find Code that shall be removed.
+</para>
+          <para>
+In the menu select Window => Preferences.
+Then select
+Java => Compiler => Error/Warnings.
+Suggested settings for these tabs
+(Only things diverting from the Eclipse defaults are listed):
+</para>
+          <itemizedlist>
+            <listitem>
+              <para>
+Unnecessary code => Local variable is never read: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Unnecessary code => Parameter is never read: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Unnecessary code => Unused or unread private members: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Unnecessary code => Unnecessary semicolon: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Unnecessary code => Unnecessary cast or 'instanceof' operation: Warning.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Unnecessary code =>
+Unnecessary declaration of thrown checked exception: Warning.
+</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+
+      </itemizedlist>
+    </sect2>
+
+    <sect2 id="checkclipse">
+      <title>Settings for Checkclipse</title>
+      <para>
+Checkclipse is a plug in for Eclipse which needs to be installed separately.
+It enables style checking according the rules set for the ArgoUML project.
+</para>
+      <para>Get the latest Checkclipse kit from SourceForge at
+              <ulink url="http://sourceforge.net/projects/checkclipse"/> 
+      and install it by unzipping into your Eclipse plug-ins directory and
+      restarting Eclipse.  (Checkstyle is bundled with Checkclipse so it's
+      not necessary to install it separately, but the web site is 
+              <ulink url="http://checkstyle.sourceforge.net/"/> 
+     for reference.)
+      </para>
+      <para>
+      In the Java perspective, select the project argouml, 
+      i.e. the icon at the top of the Package Explorer.
+      Then, in the menu, select Project => Properties,
+select Checkclipse (appears only if Checkclipse is correctly installed)
+and then fill the fields like this:
+</para>
+      <itemizedlist>
+        <listitem>
+          <para>Enable Checkstyle - 
+Checked.
+</para>
+        </listitem>
+        <listitem>
+          <para>Checkstyle Configuration File: 
+<filename>tools/checkstyle/checkstyle_argouml.xml</filename>
+in the argouml-core-tools project.
+</para>
+        </listitem>
+        <listitem>
+          <para>Checkstyle Properties File: 
+<filename>tools/checkstyle/checkstyle.properties</filename>
+in the argouml-core-tools project.
+</para>
+        </listitem>
+        <listitem>
+          <para>File Filter Definition: 
+<filename>tools/checkstyle/checkclipse.filefilters</filename>
+in the argouml-core-tools project.
+</para>
+        </listitem>
+      </itemizedlist>
+      <para>
+Leave the two other fields empty.
+</para>
+    </sect2>
+
+    <sect2 id="eclipse-running-junit">
+      <title>Running JUnit test cases from within Eclipse</title>
+      <para>
+Most of the JUnit test cases belong to the argouml-core-tests Eclipse project.
+The argouml-core-tests Eclipse project has its compile time dependencies
+set up to include the things needed to compile the test cases.
+This means that it is possible to compile the test cases and
+nobody will create tests that uses the insides of some subsystem that
+is supposed to be hidden.
+</para>
+      <para>
+The Model subsystem is separated in two parts:
+        <itemizedlist>
+          <listitem>
+            <para>
+The interfaces and some bootstrap code
+in the argouml-core-model Eclipse project.
+</para>
+          </listitem>
+          <listitem>
+            <para>
+The MDR implementation in the argouml-core-model-mdr Eclipse project.
+</para>
+          </listitem>
+        </itemizedlist>
+There is also for test purposes a partly implemented
+Mock implementation of the model subsystem in the 
+<classname>org.argouml.model.MockModelImplementation</classname>-class
+for the purpose of testing the interfaces and the bootstrap code 
+but it requires the test cases to be written especially for that.
+</para>
+      <para>
+The tests are never to be compiled against the MDR-implementation but
+against the interfaces.
+This means that the MDR-implementation is not included in the project
+dependencies.
+</para>
+      <para>
+When it comes to running the tests,
+most of the tests require the Model subsystem working to succeed.
+To run the application with a working Model subsystem, a working
+implementation is needed so the tests require the MDR-implementation.
+</para>
+      <para>
+The simplest way to solve this is to:
+        <orderedlist>
+          <listitem>
+            <para>
+Create the test (by right-clicking on any of the test classes
+and select Run as JUnit Test or Debug as JUnit Test).
+</para>
+            <para>
+The test fails with a
+<exceptionname>java.lang.ExceptionInInitializerError</exceptionname>
+on the first reference to Model.
+If it doesn't then the perhaps the test case doesn't use the Model.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Select Debug... or Run... to get the configuration editing box.
+It has remembered the test case and it is selected.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Add the argouml-core-model-mdr to the classpath.
+</para>
+
+            <para>
+Classpath tab,
+Select User Entries,
+Add Projects,
+Check argouml-core-model-mdr,
+make sure 
+Add exported entries of selected projects
+and
+Add required projects of selected projects are checked,
+Press OK,
+Press Debug or Run.
+Eclipse will remember these changes to that configuration
+but you will have to do it all over again once for each new test case.
+</para>
+          </listitem>
+        </orderedlist>
+</para>
+
+      <sect3 id="running-all-junit-from-within-eclipse">
+        <title>Running all JUnit test cases from within Eclipse</title>
+        <para>
+The description so far describes how to do this for a single test case
+at the time.
+If you want to run all test cases in one go from within Eclipse
+it is also possible.
+We have not prepared that for three reasons:
+          <itemizedlist>
+            <listitem>
+              <para>
+Some of the tests fail when run in this way.
+</para>
+              <para>
+The guess (Linus July 2006) is that this depends on the fact that
+Eclipse doesn't start each test in its own JVM and some of the tests
+relies on a fresh environment (empty models...).
+Let's hope that an upcoming version of Eclipse includes a function
+to allow us to specify that the tests are to be run each in its own JVM.
+</para>
+
+              <para>
+Another cause might be that the tests relies on certain other files being
+in specified places and that the Eclipse set up doesn't provide that.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>
+Maintaining the Configuration.
+</para>
+              <para>
+Since we have an Eclipse setup with a mismatch between the 
+compile time dependenies and the run time dependencies
+this Configuration contains references to specific jar-files.
+This means a maintenance problem whenever changing version of
+a dependency.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>
+Selection of tests.
+</para>
+              <para>
+In the project we keep all tests in the same tree, 
+whether they are working or not.
+We distinguish between test classes with names starting with "Test", "GUITest",
+and neither of them.
+The ones starting with "Test" or "GUITest" are official tests
+that should be working.
+All others are tests that are never run automatically.
+They are perhaps used for other purposes.
+In Eclipse, there is no way to specify this so the description below
+will run all tests.
+</para>
+              <para>
+Such a test is the DoAllTests-test suite that runs all tests so
+tests risk to be run twice.
+</para>
+            </listitem>
+          </itemizedlist>
+</para>
+        <para>
+If you want to test this, this is what you do:
+</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>
+Right-click on the project argouml-core-tests.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+On the multilevel popup that opens, select
+Run As... JUnit Test or
+Debug As... JUnit Test.
+</para>
+          </listitem>
+          <listitem>
+            <para>
+A Configuration is created on that project with the
+Run all tests in the selected project, package or source folder:
+checked
+and the configuration is started/launched.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Stop the running Configuration.
+</para>
+            <para>
+The newly Configuration has the same problem as every single
+test above with the model subsystem so it won't work.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Press Debug... or Run... to open the Configuration editor.
+</para>
+            <para>
+The newly created Configuration argouml-core-test is selected.
+</para>
+          </listitem>
+          <listitem>
+            <para>
+Add the argouml-core-model-mdr project to the classpath.
+</para>
+            <para>
+This is done by:
+              <itemizedlist>
+                <listitem>
+                  <para>selecting the Classpath tab,</para>
+                </listitem>
+
+                <listitem>
+                  <para>selecting argouml-core-tests under User Entries,</para>
+                </listitem>
+
+                <listitem>
+                  <para>clicking Add projects, and</para>
+                </listitem>
+
+                <listitem>
+                  <para>
+selecting the argouml-core-model-mdr project and press OK.
+</para>
+                </listitem>
+              </itemizedlist>
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Run all the tests by pressing Debug or Run.
+</para>
+          </listitem>
+        </itemizedlist>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <sect1info>
+      <author>
+        <firstname>Linus</firstname>
+        <surname>Tolke</surname>
+      </author>
+    </sect1info>
+    <title>Settings for NetBeans</title>
+
+    <warning>
+      <para>
+It is unclear what version of NetBeans these settings work in.
+If you test it, let us know so that we can update the Cookbook.
+</para>
+    </warning>
+
+    <para>
+The argouml style guides correspond to the following settings in NetBeans:
+</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+In (Tools =>) Options => Editing => Editor Settings => Java Editor
+        </para>
+        <para>
+Tab Size = 8
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+In (Tools =>) Options => Editing => 
+Indentation Engines => Java Indentation Engine
+        </para>
+        <para>
+Add Newline Before Brace: False,
+Add Space Before Parenthesis: False,
+Expand Tabs to Spaces: False,
+Number of Spaces per Tab: 4 (Should probably be read as
+Number of Spaces per indentation level).
+        </para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+    <sect1info>
+      <author>
+        <firstname>Linus</firstname>
+        <surname>Tolke</surname>
+      </author>
+    </sect1info>
+    <title>Settings for Emacs</title>
+    <para>
+These style guides correspond to the default Java settings in Emacs:
+<programlisting>
+ ("java"
+  (c-basic-offset . 4)
+  (c-comment-only-line-offset 0 . 0)
+  (c-offsets-alist
+   (inline-open . 0)
+   (topmost-intro-cont . +)
+   (statement-block-intro . +)
+   (knr-argdecl-intro . 5)
+   (substatement-open . +)
+   (label . +)
+   (statement-case-open . +)
+   (statement-cont . +)
+   (arglist-intro . c-lineup-arglist-intro-after-paren)
+   (arglist-close . c-lineup-arglist)
+   (access-label . 0)
+   (inher-cont . c-lineup-java-inher)
+   (func-decl-cont . c-lineup-java-throws)))
+</programlisting>
+    </para>
+  </sect1>
+
+
+
   <sect1 id="release_process">
     <title>Making a release</title>
     <indexterm>
