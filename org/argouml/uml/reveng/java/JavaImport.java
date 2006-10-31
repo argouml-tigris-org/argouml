@@ -86,7 +86,7 @@ public class JavaImport implements ModuleInterface, ImportInterface {
                 LOG.info("Parsing " + f.getAbsolutePath());
 
                 modeller.setAttribute("level", 
-                        Integer.valueOf(settings.getImportLevel()));
+                        new Integer(settings.getImportLevel()));
 
                 try {
                     // start parsing at the compilationUnit rule
