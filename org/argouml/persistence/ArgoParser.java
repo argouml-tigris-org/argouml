@@ -173,6 +173,9 @@ class ArgoParser extends SAXParserBase {
         case ArgoTokenTable.TOKEN_NOTATIONLANGUAGE:
             handleNotationLanguage(e);
             break;
+        case ArgoTokenTable.TOKEN_SHOWBOLDNAMES:
+            handleShowBoldNames(e);
+            break;
         case ArgoTokenTable.TOKEN_USEGUILLEMOTS:
             handleUseGuillemots(e);
             break;
@@ -308,6 +311,14 @@ class ArgoParser extends SAXParserBase {
     protected void handleNotationLanguage(XMLElement e) {
         String language = e.getText().trim();
         ps.setNotationLanguage(language);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleShowBoldNames(XMLElement e) {
+        String ug = e.getText().trim();
+        ps.setShowBoldNames(ug);
     }
 
     /**

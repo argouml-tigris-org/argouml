@@ -127,6 +127,8 @@ public abstract class FigNodeModelElement
 
     private static final Font LABEL_FONT;
     private static final Font ITALIC_LABEL_FONT;
+    private static final Font BOLD_LABEL_FONT;
+    private static final Font BOLD_ITALIC_LABEL_FONT;
 
     protected NotationProvider notationProviderName;
     protected HashMap npArguments = new HashMap();
@@ -188,6 +190,10 @@ public abstract class FigNodeModelElement
             new javax.swing.plaf.metal.DefaultMetalTheme().getSubTextFont();
         ITALIC_LABEL_FONT =
             new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
+        BOLD_LABEL_FONT =
+            new Font(LABEL_FONT.getFamily(), Font.BOLD, LABEL_FONT.getSize() + 2);
+        BOLD_ITALIC_LABEL_FONT =
+            new Font(LABEL_FONT.getFamily(), Font.BOLD | Font.ITALIC, LABEL_FONT.getSize() + 2);
 
         // Setup image ops used in rendering shadows
         byte[][] data = new byte[4][256];
@@ -260,7 +266,7 @@ public abstract class FigNodeModelElement
 
     private boolean readyToEdit = true;
     private boolean suppressCalcBounds;
-
+    private static boolean showBoldName;
     private int shadowSize;
 
     private ItemUID itemUid;
@@ -308,7 +314,7 @@ public abstract class FigNodeModelElement
         nameFig.setText(placeString());
         nameFig.setBotMargin(7); // make space for the clarifier
         nameFig.setRightMargin(4); // margin between text and border
-        nameFig.setLeftMargin(4); 
+        nameFig.setLeftMargin(4);
 
         stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
 
@@ -318,6 +324,12 @@ public abstract class FigNodeModelElement
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
 
+        showBoldName = ps.getShowBoldNamesValue();
+        if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
+            nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT : ITALIC_LABEL_FONT);
+        } else {
+            nameFig.setFont(showBoldName ? BOLD_LABEL_FONT : LABEL_FONT);
+        }
         shadowSize = ps.getDefaultShadowWidthValue();
         /* TODO: how to handle changes in shadowsize 
          * from the project properties? */
@@ -454,6 +466,13 @@ public abstract class FigNodeModelElement
      */
     protected void setNameFig(FigText fig) {
         nameFig = fig;
+        if (nameFig != null) {
+            if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
+                nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT : ITALIC_LABEL_FONT);
+            } else {
+                nameFig.setFont(showBoldName ? BOLD_LABEL_FONT : LABEL_FONT);
+            }
+        }
     }
 
     /**
@@ -1308,6 +1327,14 @@ public abstract class FigNodeModelElement
             if (notationProviderName != null) {
                 nameFig.setText(notationProviderName.toString(
                         getOwner(), npArguments));
+                Project p = ProjectManager.getManager().getCurrentProject();
+                ProjectSettings ps = p.getProjectSettings();
+                showBoldName = ps.getShowBoldNamesValue();
+                if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
+                    nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT : ITALIC_LABEL_FONT);
+                } else {
+                    nameFig.setFont(showBoldName ? BOLD_LABEL_FONT : LABEL_FONT);
+                }
                 updateBounds();
             }
         }

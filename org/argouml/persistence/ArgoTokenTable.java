@@ -54,6 +54,7 @@ class ArgoTokenTable extends XMLTokenTableBase {
 
     private static final String STRING_SETTINGS = "settings";
     private static final String STRING_NOTATIONLANGUAGE = "notationlanguage";
+    private static final String STRING_SHOWBOLDNAMES = "showboldnames";
     private static final String STRING_USEGUILLEMOTS = "useguillemots";
     private static final String STRING_SHOWVISIBILITY = "showvisibility";
     private static final String STRING_SHOWMULTIPLICITY = "showmultiplicity";
@@ -103,6 +104,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
     public static final int    TOKEN_SHOWSTEREOTYPES           = 18;
     /** A token for Notation Settings. */
     public static final int    TOKEN_DEFAULTSHADOWWIDTH           = 19;
+    /** A token for Notation Settings. */
+    public static final int    TOKEN_SHOWBOLDNAMES           = 20;
 
 
     /** The token for undefined. */
@@ -126,6 +129,7 @@ class ArgoTokenTable extends XMLTokenTableBase {
         addToken(STRING_DOCUMENTATION, new Integer(TOKEN_DOCUMENTATION));
         addToken(STRING_SETTINGS, new Integer(TOKEN_SETTINGS));
         addToken(STRING_NOTATIONLANGUAGE, new Integer(TOKEN_NOTATIONLANGUAGE));
+        addToken(STRING_SHOWBOLDNAMES, new Integer(TOKEN_SHOWBOLDNAMES));
         addToken(STRING_USEGUILLEMOTS, new Integer(TOKEN_USEGUILLEMOTS));
         addToken(STRING_SHOWVISIBILITY, new Integer(TOKEN_SHOWVISIBILITY));
         addToken(STRING_SHOWMULTIPLICITY, new Integer(TOKEN_SHOWMULTIPLICITY));

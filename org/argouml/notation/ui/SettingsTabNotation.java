@@ -65,6 +65,7 @@ public class SettingsTabNotation
     implements GUISettingsTabInterface {
 
     private JComboBox notationLanguage;
+    private JCheckBox showBoldNames;
     private JCheckBox useGuillemots;
     private JCheckBox showVisibility;
     private JCheckBox showMultiplicity;
@@ -113,6 +114,9 @@ public class SettingsTabNotation
         notationLanguagePanel.add(notationLanguage);
         top.add(notationLanguagePanel, constraints);
 
+        showBoldNames = createCheckBox("label.show-bold-names");
+        top.add(showBoldNames, constraints);
+
         useGuillemots = createCheckBox("label.use-guillemots");
         top.add(useGuillemots, constraints);
 
@@ -157,6 +161,8 @@ public class SettingsTabNotation
      */
     public void handleSettingsTabRefresh() {
         if (scope == GUI.SCOPE_APPLICATION) {
+            showBoldNames.setSelected(getBoolean(
+                    Notation.KEY_SHOW_BOLD_NAMES));
             useGuillemots.setSelected(getBoolean(
                     Notation.KEY_USE_GUILLEMOTS));
             notationLanguage.setSelectedItem(Notation.getConfigueredNotation());
@@ -185,6 +191,7 @@ public class SettingsTabNotation
 
             notationLanguage.setSelectedItem(Notation.findNotation(
                     ps.getNotationLanguage()));
+            showBoldNames.setSelected(ps.getShowBoldNamesValue());
             useGuillemots.setSelected(ps.getUseGuillemotsValue());
             showVisibility.setSelected(ps.getShowVisibilityValue());
             showMultiplicity.setSelected(ps.getShowMultiplicityValue());
@@ -214,6 +221,8 @@ public class SettingsTabNotation
         if (scope == GUI.SCOPE_APPLICATION) {
             Notation.setDefaultNotation(
                     (NotationName) notationLanguage.getSelectedItem());
+            Configuration.setBoolean(Notation.KEY_SHOW_BOLD_NAMES,
+                    showBoldNames.isSelected());
             Configuration.setBoolean(Notation.KEY_USE_GUILLEMOTS,
                     useGuillemots.isSelected());
             Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY,
@@ -236,6 +245,7 @@ public class SettingsTabNotation
             ProjectSettings ps = p.getProjectSettings();
             NotationName nn = (NotationName) notationLanguage.getSelectedItem();
             if (nn != null) ps.setNotationLanguage(nn.getConfigurationValue());
+            ps.setShowBoldNames(showBoldNames.isSelected());
             ps.setUseGuillemots(useGuillemots.isSelected());
             ps.setShowVisibility(showVisibility.isSelected());
             ps.setShowMultiplicity(showMultiplicity.isSelected());
@@ -260,6 +270,8 @@ public class SettingsTabNotation
     public void handleResetToDefault() {
         if (scope == GUI.SCOPE_PROJECT) {
             notationLanguage.setSelectedItem(Notation.getConfigueredNotation());
+            showBoldNames.setSelected(getBoolean(
+                    Notation.KEY_SHOW_BOLD_NAMES));
             useGuillemots.setSelected(getBoolean(
                     Notation.KEY_USE_GUILLEMOTS));
             showVisibility.setSelected(getBoolean(
