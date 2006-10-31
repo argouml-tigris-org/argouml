@@ -833,6 +833,7 @@ Property files to be searched:
           <enable/>
         </assertions>
         <classpath>
+            <path refid="ant.optional.classpath"/>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
             <path refid="argo.runtime.classpath"/>
@@ -876,6 +877,7 @@ Property files to be searched:
           <enable/>
         </assertions>
         <classpath>
+            <path refid="ant.optional.classpath"/>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
             <path refid="argo.runtime.classpath"/>
