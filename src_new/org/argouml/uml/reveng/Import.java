@@ -245,7 +245,7 @@ public class Import implements ImportSettings {
      */
     public Object getAttribute(String key) {
         if ("level".equals(key)) {
-            return Integer.valueOf(level);
+            return new Integer(level);
         } else {
             throw new IllegalArgumentException("Unknown attribute name");
         }
