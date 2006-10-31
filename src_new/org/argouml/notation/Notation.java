@@ -83,6 +83,12 @@ public final class Notation implements PropertyChangeListener {
         Configuration.makeKey("notation", "navigation", "show", "stereotypes");
 
     /**
+     * The configuration key that indicates whether to show bold names.
+     */
+    public static final ConfigurationKey KEY_SHOW_BOLD_NAMES =
+        Configuration.makeKey("notation", "show", "bold", "names");
+
+    /**
      * The configuration key that indicates whether to use guillemots
      * or greater/lessthan characters in stereotypes.
      */
@@ -139,6 +145,7 @@ public final class Notation implements PropertyChangeListener {
      * The constructor.
      */
     private Notation() {
+        Configuration.addListener(KEY_SHOW_BOLD_NAMES, this);
         Configuration.addListener(KEY_USE_GUILLEMOTS, this);
         Configuration.addListener(KEY_DEFAULT_NOTATION, this);
         Configuration.addListener(KEY_SHOW_TYPES, this);
@@ -156,6 +163,7 @@ public final class Notation implements PropertyChangeListener {
      */
     protected void finalize() {
         Configuration.removeListener(KEY_DEFAULT_NOTATION, this);
+        Configuration.removeListener(KEY_SHOW_BOLD_NAMES, this);
         Configuration.removeListener(KEY_USE_GUILLEMOTS, this);
         Configuration.removeListener(KEY_SHOW_TYPES, this);
         Configuration.removeListener(KEY_SHOW_MULTIPLICITY, this);

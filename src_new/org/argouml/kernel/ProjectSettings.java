@@ -47,6 +47,7 @@ public class ProjectSettings {
 
     /* The notation settings with project scope: */
     private String notationLanguage;
+    private boolean showBoldNames;
     private boolean useGuillemots;
     private boolean showVisibility;
     private boolean showMultiplicity;
@@ -69,6 +70,8 @@ public class ProjectSettings {
         
         notationLanguage = 
             Notation.getConfigueredNotation().getConfigurationValue();
+        showBoldNames = Configuration.getBoolean(
+                Notation.KEY_SHOW_BOLD_NAMES);
         useGuillemots = Configuration.getBoolean(
                 Notation.KEY_USE_GUILLEMOTS, false);
         showVisibility = Configuration.getBoolean(
@@ -121,6 +124,38 @@ public class ProjectSettings {
      */
     public void setNotationLanguage(NotationName nn) {
         setNotationLanguage(nn.getConfigurationValue());
+    }
+
+    /**
+     * Used by "argo.tee".
+     * 
+     * @return Returns "true" if we show bold names.
+     */
+    public String getShowBoldNames() {
+        return Boolean.toString(showBoldNames);
+    }
+
+    /**
+     * @return Returns <code>true</code> if we show bold names.
+     */
+    public boolean getShowBoldNamesValue() {
+        return showBoldNames;
+    }
+
+    /**
+     * @param showbold <code>true</code> if names are to be shown in bold font.
+     */
+    public void setShowBoldNames(String showbold) {
+        setShowBoldNames(Boolean.valueOf(showbold).booleanValue());
+    }
+
+    /**
+     * @param showbold <code>true</code> if names are to be shown in bold font.
+     */
+    public void setShowBoldNames(boolean showbold) {
+        boolean oldValue = showBoldNames;
+        showBoldNames = showbold;
+        fireEvent(Notation.KEY_SHOW_BOLD_NAMES, oldValue, showBoldNames);
     }
 
     /**

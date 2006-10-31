@@ -1302,8 +1302,6 @@ public class FigUseCase extends FigNodeModelElement
             return;
         }
         Rectangle oldBounds = getBounds();
-        super.updateNameText();
-
         // Now things to do with the use case itself. Put the use case in
         // italics if it is abstract, otherwise ordinary font.
 
@@ -1312,6 +1310,7 @@ public class FigUseCase extends FigNodeModelElement
         } else {
             getNameFig().setFont(getLabelFont());
         }
+        super.updateNameText();
         setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
 
     }
