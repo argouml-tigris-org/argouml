@@ -110,15 +110,15 @@ public  class FileImportUtils {
     /**
      * Tells if the filename matches one of the given suffixes.
      *
-     * @param f file to be tested.
+     * @param file file to be tested.
      * @param filters array of filters to test against.
      * @return true if parseable, false if not.
      */
-    public static boolean matchesSuffix(Object f, SuffixFilter[] filters) {
-        if (!(f instanceof File)) {
+    public static boolean matchesSuffix(Object file, SuffixFilter[] filters) {
+        if (!(file instanceof File)) {
             return false;
         }
-        String fileName = ((File) f).getName();
+        String fileName = ((File) file).getName();
 	if (filters != null) {
 	    for (int i = 0; i < filters.length; i++) {
 		if (fileName.endsWith(filters[i].getSuffix())) {
