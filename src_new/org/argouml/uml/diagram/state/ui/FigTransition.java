@@ -26,16 +26,30 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.Vector;
+
+import javax.swing.Action;
 
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.PathConvPercent2;
 import org.argouml.uml.notation.NotationProvider;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewCreateAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewDestroyAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewReturnAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewSendAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewTerminateAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewUninterpretedAction;
+import org.argouml.uml.ui.behavior.state_machines.ButtonActionNewGuard;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.Fig;
@@ -125,6 +139,67 @@ public class FigTransition extends FigEdgeModelElement {
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_TRANSITION, own);
         }
+    }
+
+    public Vector getPopUpActions(MouseEvent me) {
+        Vector popUpActions = super.getPopUpActions(me);
+            /* Check if multiple items are selected: */
+            boolean ms = TargetManager.getInstance().getTargets().size() > 1;
+            /* None of the menu-items below apply
+             * when multiple modelelements are selected:*/
+            if (ms) return popUpActions;
+            
+            Action a;
+            
+            ArgoJMenu triggerMenu =
+                new ArgoJMenu("menu.popup.trigger");
+            a = new ButtonActionNewCallEvent();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            triggerMenu.add(a);
+            a = new ButtonActionNewChangeEvent();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            triggerMenu.add(a);
+            a = new ButtonActionNewSignalEvent();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            triggerMenu.add(a);
+            a = new ButtonActionNewTimeEvent();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            triggerMenu.add(a);
+            popUpActions.insertElementAt(triggerMenu,
+                    popUpActions.size() - getPopupAddOffset());
+            
+            a = new ButtonActionNewGuard();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            popUpActions.insertElementAt(a,
+                    popUpActions.size() - getPopupAddOffset());
+
+            ArgoJMenu effectMenu =
+                new ArgoJMenu("menu.popup.effect");
+            a = ActionNewCallAction.getButtonInstance();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            effectMenu.add(a);
+            a = ActionNewCreateAction.getButtonInstance();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            effectMenu.add(a);
+            a = ActionNewDestroyAction.getButtonInstance();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            effectMenu.add(a);
+            a = ActionNewReturnAction.getButtonInstance();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            effectMenu.add(a);
+            a = ActionNewSendAction.getButtonInstance();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            effectMenu.add(a);
+            a = ActionNewTerminateAction.getButtonInstance();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            effectMenu.add(a);
+            a = ActionNewUninterpretedAction.getButtonInstance();
+            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+            effectMenu.add(a);
+            popUpActions.insertElementAt(effectMenu,
+                    popUpActions.size() - getPopupAddOffset());
+            
+            return popUpActions;
     }
 
     /**
