@@ -33,7 +33,6 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.behavior.common_behavior.ActionNewAction.Roles;
 
 /**
  * @since Dec 15, 2002
@@ -74,6 +73,7 @@ public class ActionNewReturnAction extends ActionNewAction {
 
             public void actionPerformed(ActionEvent e) {
                 Object target = TargetManager.getInstance().getModelTarget();
+                if (!Model.getFacade().isATransition(target)) return;
                 setTarget(target);
                 super.actionPerformed(e);
             }

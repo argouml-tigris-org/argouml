@@ -76,6 +76,7 @@ public class ActionNewCallAction extends ActionNewAction {
 
             public void actionPerformed(ActionEvent e) {
                 Object target = TargetManager.getInstance().getModelTarget();
+                if (!Model.getFacade().isATransition(target)) return;
                 setTarget(target);
                 super.actionPerformed(e);
             }
