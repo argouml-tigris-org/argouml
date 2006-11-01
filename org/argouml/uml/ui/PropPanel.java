@@ -44,8 +44,10 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -108,6 +110,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         setOrientation(orientation);
         buttonPanel = new ToolBar();
         buttonPanel.setFloatable(false);
+        // Set the tooltip of the arrow to open combined tools:
+        buttonPanel.putClientProperty("ToolBar.toolTipSelectTool", 
+                Translator.localize("action.select"));
 
         LabelledLayout layout = 
             new LabelledLayout(orientation == Vertical.getInstance());
@@ -175,6 +180,15 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         buttonPanel.add(button);
     }
 
+    /**
+     * Add multiple buttons at once.
+     * 
+     * @param actions the Actions.
+     */
+    protected void addAction(Object[] actions) {
+        ToolBarUtility.addItemsToToolBar(buttonPanel, actions);
+    }
+    
     private class TargettableButton extends JButton 
         implements TargettableModelView {
 

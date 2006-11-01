@@ -63,9 +63,9 @@ public class PopupMenuNewAction extends JPopupMenu {
         ActionNewCreateAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
-        newMenu.add(ActionNewDestroyAction.getiNSTANCE());
-        ActionNewDestroyAction.getiNSTANCE().setTarget(list.getTarget());
-        ActionNewDestroyAction.getiNSTANCE()
+        newMenu.add(ActionNewDestroyAction.getInstance());
+        ActionNewDestroyAction.getInstance().setTarget(list.getTarget());
+        ActionNewDestroyAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
         newMenu.add(ActionNewReturnAction.getInstance());

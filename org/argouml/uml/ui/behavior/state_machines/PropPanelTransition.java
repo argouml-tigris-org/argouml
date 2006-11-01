@@ -28,9 +28,21 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.swingext.ToolBarUtility;
+import org.argouml.uml.diagram.state.ui.ButtonActionNewCallEvent;
+import org.argouml.uml.diagram.state.ui.ButtonActionNewChangeEvent;
+import org.argouml.uml.diagram.state.ui.ButtonActionNewSignalEvent;
+import org.argouml.uml.diagram.state.ui.ButtonActionNewTimeEvent;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewCreateAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewDestroyAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewReturnAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewSendAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewTerminateAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewUninterpretedAction;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -97,8 +109,35 @@ public class PropPanelTransition extends PropPanelModelElement {
                 new JScrollPane(effectList));
 
         addAction(new ActionNavigateContainerElement());
+        addAction(getTriggerActions());
+        addAction(new ButtonActionNewGuard());
+        addAction(getEffectActions());
         addAction(new ActionNewStereotype());
         addAction(getDeleteAction());
     }
+    
+    private Object[] getTriggerActions() {
+        Object[] actions = {
+            new ButtonActionNewCallEvent(),
+            new ButtonActionNewChangeEvent(),
+            new ButtonActionNewSignalEvent(),
+            new ButtonActionNewTimeEvent(),
+        };
+        ToolBarUtility.manageDefault(actions, "transition.state.trigger");
+        return actions;
+    }
 
+    protected Object[] getEffectActions() {
+        Object[] actions = {
+                ActionNewCallAction.getButtonInstance(),
+                ActionNewCreateAction.getButtonInstance(),
+                ActionNewDestroyAction.getButtonInstance(),
+                ActionNewReturnAction.getButtonInstance(),
+                ActionNewSendAction.getButtonInstance(),
+                ActionNewTerminateAction.getButtonInstance(),
+                ActionNewUninterpretedAction.getButtonInstance(),
+        };
+        ToolBarUtility.manageDefault(actions, "transition.state.effect");
+        return actions;
+    }
 } /* end class PropPanelTransition */
