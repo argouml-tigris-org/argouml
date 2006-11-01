@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
@@ -168,7 +169,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 	    {getActionAggregation(), getActionUniAggregation() },
 	    {getActionComposition(), getActionUniComposition() },
         };
-        manageDefault(actions, "diagram.deployment.association");
+        ToolBarUtility.manageDefault(actions, "diagram.deployment.association");
         return actions;
     }
 

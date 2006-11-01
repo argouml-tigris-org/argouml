@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
@@ -179,7 +180,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 	    {getActionAggregation(), getActionUniAggregation() },
 	    {getActionComposition(), getActionUniComposition() },
         };
-        manageDefault(actions, "diagram.collaboration.association");
+        ToolBarUtility.manageDefault(actions, 
+                "diagram.collaboration.association");
         return actions;
     }
 

@@ -34,12 +34,21 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
+import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewCreateAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewDestroyAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewReturnAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewSendAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewTerminateAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewUninterpretedAction;
+import org.argouml.uml.ui.behavior.state_machines.ButtonActionNewGuard;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
@@ -82,6 +91,18 @@ public class UMLStateDiagram extends UMLDiagram {
     private Action actionJoinPseudoState;
     private Action actionShallowHistoryPseudoState;
     private Action actionDeepHistoryPseudoState;
+    private Action actionCallEvent;
+    private Action actionChangeEvent;
+    private Action actionSignalEvent;
+    private Action actionTimeEvent;
+    private Action actionGuard;
+    private Action actionCallAction;
+    private Action actionCreateAction;
+    private Action actionDestroyAction;
+    private Action actionReturnAction;
+    private Action actionSendAction;
+    private Action actionTerminateAction;
+    private Action actionUninterpretedAction;
     private Action actionTransition;
     private Action actionJunctionPseudoState;
 
@@ -316,7 +337,36 @@ public class UMLStateDiagram extends UMLDiagram {
 	    getActionJoinPseudoState(),
 	    getActionShallowHistoryPseudoState(),
 	    getActionDeepHistoryPseudoState(),
+            null,
+            getTriggerActions(),
+            getActionGuard(),
+            getEffectActions(),
         };
+        return actions;
+    }
+
+    protected Object[] getTriggerActions() {
+        Object[] actions = {
+            getActionCallEvent(),
+            getActionChangeEvent(),
+            getActionSignalEvent(),
+            getActionTimeEvent(),
+        };
+        ToolBarUtility.manageDefault(actions, "diagram.state.trigger");
+        return actions;
+    }
+
+    protected Object[] getEffectActions() {
+        Object[] actions = {
+            getActionCallAction(),
+            getActionCreateAction(),
+            getActionDestroyAction(),
+            getActionReturnAction(),
+            getActionSendAction(),
+            getActionTerminateAction(),
+            getActionUninterpretedAction(),
+        };
+        ToolBarUtility.manageDefault(actions, "diagram.state.effect");
         return actions;
     }
 
@@ -516,6 +566,104 @@ public class UMLStateDiagram extends UMLDiagram {
                         "button.new-transition"));
         }
         return actionTransition;
+    }
+
+    /**
+     * @return Returns the actionCallEvent.
+     */
+    protected Action getActionCallEvent() {
+        if (actionCallEvent == null) {
+            actionCallEvent = new ButtonActionNewCallEvent();
+        }
+        return actionCallEvent;
+    }
+
+    /**
+     * @return Returns the actionCallEvent.
+     */
+    protected Action getActionChangeEvent() {
+        if (actionChangeEvent == null) {
+            actionChangeEvent = new ButtonActionNewChangeEvent();
+        }
+        return actionChangeEvent;
+    }
+
+    /**
+     * @return Returns the actionCallEvent.
+     */
+    protected Action getActionSignalEvent() {
+        if (actionSignalEvent == null) {
+            actionSignalEvent = new ButtonActionNewSignalEvent();
+        }
+        return actionSignalEvent;
+    }
+
+    /**
+     * @return Returns the actionCallEvent.
+     */
+    protected Action getActionTimeEvent() {
+        if (actionTimeEvent == null) {
+            actionTimeEvent = new ButtonActionNewTimeEvent();
+        }
+        return actionTimeEvent;
+    }
+
+    protected Action getActionGuard() {
+        if (actionGuard == null) {
+            actionGuard = new ButtonActionNewGuard();
+        }
+        return actionGuard;
+    }
+    
+    protected Action getActionCallAction() {
+        if (actionCallAction == null) {
+            actionCallAction = ActionNewCallAction.getButtonInstance();
+        }
+        return actionCallAction;
+    }
+    
+    protected Action getActionCreateAction() {
+        if (actionCreateAction == null) {
+            actionCreateAction = ActionNewCreateAction.getButtonInstance();
+        }
+        return actionCreateAction;
+    }
+
+    protected Action getActionDestroyAction() {
+        if (actionDestroyAction == null) {
+            actionDestroyAction = ActionNewDestroyAction.getButtonInstance();
+        }
+        return actionDestroyAction;
+    }
+
+    protected Action getActionReturnAction() {
+        if (actionReturnAction == null) {
+            actionReturnAction = ActionNewReturnAction.getButtonInstance();
+        }
+        return actionReturnAction;
+    }
+    
+    protected Action getActionSendAction() {
+        if (actionSendAction == null) {
+            actionSendAction = ActionNewSendAction.getButtonInstance();
+        }
+        return actionSendAction;
+    }
+    
+    protected Action getActionTerminateAction() {
+        if (actionTerminateAction == null) {
+            actionTerminateAction = 
+                ActionNewTerminateAction.getButtonInstance();
+        }
+        return actionTerminateAction;
+    }
+
+    protected Action getActionUninterpretedAction() {
+        if (actionUninterpretedAction == null) {
+            actionUninterpretedAction = 
+                ActionNewUninterpretedAction.getButtonInstance();
+        }
+        return actionUninterpretedAction;
     }
 
     /**

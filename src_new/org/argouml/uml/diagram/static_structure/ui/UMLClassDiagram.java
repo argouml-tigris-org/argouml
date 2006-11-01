@@ -32,8 +32,9 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
@@ -171,7 +172,7 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionEnumeration(),
             getActionStereotype(),
         };
-        manageDefault(actions, "diagram.class.datatype");
+        ToolBarUtility.manageDefault(actions, "diagram.class.datatype");
         return actions;
     }
 
@@ -185,7 +186,7 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionModel(),
             getActionSubsystem(),
         };
-        manageDefault(actions, "diagram.class.package");
+        ToolBarUtility.manageDefault(actions, "diagram.class.package");
         return actions;
     }
 
@@ -199,7 +200,7 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionPermission(),
             getActionUsage(),
         };
-        manageDefault(actions, "diagram.class.dependency");
+        ToolBarUtility.manageDefault(actions, "diagram.class.dependency");
         return actions;
     }
 
@@ -217,7 +218,7 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionAssociation(),
             getActionUniAssociation(),
         };
-        manageDefault(actions, "diagram.class.association");
+        ToolBarUtility.manageDefault(actions, "diagram.class.association");
         return actions;
     }
 
@@ -226,7 +227,7 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionAggregation(),
             getActionUniAggregation(),
         };
-        manageDefault(actions, "diagram.class.aggregation");
+        ToolBarUtility.manageDefault(actions, "diagram.class.aggregation");
         return actions;
     }
 
@@ -235,7 +236,7 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionComposition(),
             getActionUniComposition(),
         };
-        manageDefault(actions, "diagram.class.composition");
+        ToolBarUtility.manageDefault(actions, "diagram.class.composition");
         return actions;
     }
 

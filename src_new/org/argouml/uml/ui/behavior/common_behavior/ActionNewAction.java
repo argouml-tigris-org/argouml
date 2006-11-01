@@ -29,12 +29,14 @@ import java.awt.event.ActionEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
+import org.tigris.toolbar.toolbutton.ModalAction;
 
 /**
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class ActionNewAction extends AbstractActionNewModelElement {
+public abstract class ActionNewAction extends AbstractActionNewModelElement 
+    implements ModalAction {
 
     /**
      * The constant defining the role the action
