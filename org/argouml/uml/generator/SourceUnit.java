@@ -25,8 +25,12 @@
 package org.argouml.uml.generator;
 
 /**
- * Holds informations about a source unit and its content, whether
+ * Information about a source unit and its content, whether
  * it exists only in memory or it's stored in a file.
+ * 
+ * TODO: Making this an interface instead of a class would allow 
+ * more flexibility in dealing with non-file-based resources. - tfm
+ * 
  * @author aslo
  */
 public class SourceUnit {

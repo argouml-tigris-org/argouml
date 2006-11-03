@@ -49,7 +49,7 @@ public interface CodeGenerator {
      *
      * @param elements the UML model elements to generate code for.
      * @param deps Recursively generate dependency files too.
-     * @return A collection of SourceUnit objects. The collection may be empty
+     * @return A collection of {@link SourceUnit} objects. The collection may be empty
      * if no file is generated.
      */
     Collection generate(Collection elements, boolean deps);
