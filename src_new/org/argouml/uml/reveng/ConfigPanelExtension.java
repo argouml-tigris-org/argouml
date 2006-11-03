@@ -52,7 +52,6 @@ public class ConfigPanelExtension extends JPanel {
      */
     public ConfigPanelExtension() {
 
-//        configPanel = new JPanel();
         configPanel = this;
         configPanel.setLayout(new GridBagLayout());
 
@@ -60,15 +59,7 @@ public class ConfigPanelExtension extends JPanel {
             new JLabel(
                     Translator.localize("action.import-java-attr-model"));
         configPanel.add(attributeLabel1,
-                new GridBagConstraints(GridBagConstraints.RELATIVE,
-                        GridBagConstraints.RELATIVE,
-                        GridBagConstraints.REMAINDER,
-                        1,
-                        1.0, 0.0,
-                        GridBagConstraints.NORTHWEST,
-                        GridBagConstraints.NONE,
-                        new Insets(5, 5, 0, 5),
-                        0, 0));
+                createGridBagConstraints(true, false));
         ButtonGroup group1 = new ButtonGroup();
         attribute =
             new JRadioButton(
@@ -76,43 +67,19 @@ public class ConfigPanelExtension extends JPanel {
         attribute.setSelected(true);
         group1.add(attribute);
         configPanel.add(attribute,
-                new GridBagConstraints(GridBagConstraints.RELATIVE,
-                        GridBagConstraints.RELATIVE,
-                        GridBagConstraints.REMAINDER,
-                        1,
-                        1.0, 0.0,
-                        GridBagConstraints.NORTHWEST,
-                        GridBagConstraints.NONE,
-                        new Insets(0, 5, 0, 5),
-                        0, 0));
+                createGridBagConstraints(false, false));
         JRadioButton association =
             new JRadioButton(
                     Translator.localize("action.import-java-UML-assoc"));
         group1.add(association);
         configPanel.add(association,
-                new GridBagConstraints(GridBagConstraints.RELATIVE,
-                        GridBagConstraints.RELATIVE,
-                        GridBagConstraints.REMAINDER,
-                        1,
-                        1.0, 0.0,
-                        GridBagConstraints.NORTHWEST,
-                        GridBagConstraints.NONE,
-                        new Insets(0, 5, 5, 5),
-                        0, 0));
+                createGridBagConstraints(false, true));
+        
         JLabel attributeLabel2 =
             new JLabel(
                     Translator.localize("action.import-java-array-model"));
         configPanel.add(attributeLabel2,
-                new GridBagConstraints(GridBagConstraints.RELATIVE,
-                        GridBagConstraints.RELATIVE,
-                        GridBagConstraints.REMAINDER,
-                        1,
-                        1.0, 0.0,
-                        GridBagConstraints.NORTHWEST,
-                        GridBagConstraints.NONE,
-                        new Insets(5, 5, 0, 5),
-                        0, 0));
-
+                createGridBagConstraints(true, false));
         ButtonGroup group2 = new ButtonGroup();
         datatype =
             new JRadioButton(
@@ -121,34 +88,59 @@ public class ConfigPanelExtension extends JPanel {
         datatype.setSelected(true);
         group2.add(datatype);
         configPanel.add(datatype,
-                new GridBagConstraints(GridBagConstraints.RELATIVE,
-                        GridBagConstraints.RELATIVE,
-                        GridBagConstraints.REMAINDER,
-                        1,
-                        1.0, 0.0,
-                        GridBagConstraints.NORTHWEST,
-                        GridBagConstraints.NONE,
-                        new Insets(5, 5, 0, 5),
-                        0, 0));
+                createGridBagConstraints(false, false));
         JRadioButton multi =
             new JRadioButton(
                     Translator.localize(
                     "action.import-java-array-model-multi"));
         group2.add(multi);
         configPanel.add(multi,
-                new GridBagConstraints(GridBagConstraints.RELATIVE,
-                        GridBagConstraints.RELATIVE,
-                        GridBagConstraints.REMAINDER,
-                        GridBagConstraints.REMAINDER,
-                        1.0, 1.0,
-                        GridBagConstraints.NORTHWEST,
-                        GridBagConstraints.NONE,
-                        new Insets(0, 5, 5, 5),
-                        0, 0));
-        
-//        add(configPanel);
+                createGridBagConstraintsFinal());
+
+        // TODO: Get the list of extended settings from the current
+        // language importer and add those too
     }
 
+
+    /**
+     * Create a GridBagConstraints object to use with the layout.
+     * 
+     * @param topInset true to use a top inset 
+     * @param bottomInset true to use a bottom inset
+     * @return
+     */
+    private GridBagConstraints createGridBagConstraints(boolean topInset,
+            boolean bottomInset) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = GridBagConstraints.RELATIVE;
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.gridheight = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.0;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.insets = 
+            new Insets(
+                    topInset ? 5 : 0, 
+                    5, 
+                    bottomInset ? 5 : 0, 
+                    5);
+        gbc.ipadx = 0;
+        gbc.ipady = 0;
+        return gbc;
+    }
+
+    /**
+     * A GridBagConstraints for the last item to take up the rest of the space.
+     * @return the GridBagConstraints object
+     */
+    private GridBagConstraints createGridBagConstraintsFinal() {
+        GridBagConstraints gbc = createGridBagConstraints(false, true);
+        gbc.gridheight = GridBagConstraints.REMAINDER;
+        gbc.weighty = 1.0;
+        return gbc;
+    }
 
     /**
      * @return the attribute radio button
