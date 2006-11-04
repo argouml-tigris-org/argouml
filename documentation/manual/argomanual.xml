@@ -598,12 +598,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         critics.</para>
 
         <para><xref linkend="ch.ref.entities"/> is an overview of the 
-        artifacts (i.e. the UML entities that can be placed on 
+        model elements (i.e. the UML entities that can be placed on 
         diagrams) within ArgoUML. The following chapters (
         <xref linkend="ch.ref.entusecase"/> through 
-        <xref linkend="ch.ref.entbuiltin"/>) describe, the artifacts 
+        <xref linkend="ch.ref.entbuiltin"/>) describe, the model elements 
         that can be created through each ArgoUML diagram, and their 
-        properties, as well as some standard artifacts provided with 
+        properties, as well as some standard model elements provided with 
         the system.</para>
 
         <para>A complete <xref linkend="glossary"/> is provided. 
@@ -2331,7 +2331,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <emphasis>View</emphasis> menu.
               <indexterm><primary>View Menu</primary></indexterm>
               This allows you 
-              to switch between diagrams, find artifacts in the 
+              to switch between diagrams, find model elements in the 
               model, zoom in a diagram, adjust the 
               grid, toggle page break display, and show an XML
               representation of the project.
@@ -2449,7 +2449,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para><emphasis>Arrange</emphasis> menu. This allows 
                 <indexterm><primary>Arrange Menu</primary></indexterm>
-                you to align, distribute and reorder artifacts 
+                you to align, distribute and reorder model elements 
                 on a diagram and set the layout strategy for the 
                 diagram.</para>
 
@@ -2683,13 +2683,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para><emphasis>Button 1 click</emphasis>. This action 
                 is generally used to select an item for subsequent 
-                operations. If the item is an artifact in the explorer 
+                operations. If the item is a model element in the explorer 
                 or the editing pane it will be highlighted.</para>
 
                 <para>In the case of the Edit Pane Toolbar, that 
-                artifact is selected as the next to be added to the 
+                model element is selected as the next to be added to the 
                 diagram (but only once—see double clicking for adding 
-                multiple artifacts). The adding to the diagram is 
+                multiple model elements). The adding to the diagram is 
                 achieved by moving the mouse to the editing area and 
                 clicking again.</para>
 
@@ -2701,7 +2701,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 action is identical to a single click 
                 <emphasis>except</emphasis>, when it is used with the 
                 edit pane toolbar. Under these circumstances the 
-                selected artifact will be added multiple times to the 
+                selected model element will be added multiple times to the 
                 drawing area, once for each further button click, until 
                 the tool is again selected or another tool 
                 chosen.</para>
@@ -2712,7 +2712,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para><emphasis>Button 2 click</emphasis>. When used 
                 over text items in the the explorer or details panes, 
-                or graphical artifacts in the editing pane, this will 
+                or graphical model elements in the editing pane, this will 
                 display a context dependent drop-down menu.</para>
 
                 <para>If the item has not yet been selected it will 
@@ -2728,12 +2728,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 on that menu.</para>
 
                 <para>Button 1 motion also has an effect in the editing 
-                pane. Over graphical artifacts it will move the 
-                artifact to a new position. Graphical artifacts that 
+                pane. Over graphical model elements it will move the 
+                model element to a new position. Graphical model elements that 
                 are selected show handles, and these can be used for 
                 re-sizing.</para>
 
-                <para>Where the artifact is some form of connector 
+                <para>Where the model element is some form of connector 
                 between other items, button 1 motion other than at a 
                 handle will cause a new handle to be created, allowing 
                 the connector to be articulated at that point. Such new 
@@ -2763,18 +2763,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>Drawing Diagrams</title>
 
             <para>In general diagrams are drawn by using the edit pane 
-            toolbar to select the artifact desired and clicking in the 
+            toolbar to select the model element desired and clicking in the 
             diagram at the position required.</para>
 
-            <para>Artifacts that are already in the model, but not on a 
+            <para>Model elements that are already in the model, but not on a 
             diagram, may be added to a diagram by selecting the 
-            artifact in the explorer, using <literal>
+            model element in the explorer, using <literal>
             Add to Diagram</literal> from the drop down menu (button 2) 
-            over that artifact, and then clicking button 1 at the 
+            over that model element, and then clicking button 1 at the 
             desired location on the diagram.</para>
 
-            <para>As well as UML artifacts, the Edit pane toolbar 
-            provides for general drawing artifacts (rectangles, 
+            <para>As well as UML model elements, the Edit pane toolbar 
+            provides for general drawing objects (rectangles, 
             circles, lines, polygons, curves, text) to provide 
             supplementary information on diagrams.</para>
 
@@ -4710,11 +4710,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>Having created the actor, you will see it appear in the 
           explorer (the upper left quadrant of the user screen). This 
-          shows all the artifacts created within the UML design. A drop 
+          shows all the model elements created within the UML design. A drop 
           down at the top of the explorer controls the ordering of 
-          artifacts in the explorer. The most useful are the <literal>
+          model elements in the explorer. The most useful are the <literal>
           Package-centric</literal> (default) and <literal>
-          Diagram-centric</literal>. The latter shows artifacts grouped 
+          Diagram-centric</literal>. The latter shows model elements grouped 
           by the diagram on which they appear.</para>
 
         </sect2>
@@ -5215,9 +5215,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </para>
 
           <para><emphasis>Stereotypes</emphasis> are used to label UML 
-          artifacts such as use cases, to indicate that they belong to 
+          model elements such as use cases, to indicate that they belong to 
           a certain category. Such labels are shown in guillemots (
-          <literal>«»</literal>) above the name of the artifact on the 
+          <literal>«»</literal>) above the name of the model element on the 
           diagram. The UML standard defines a number of standard 
           stereotypes, and the user may define more stereotypes of his 
           own.</para>
@@ -5235,7 +5235,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <warning>
 
             <para>ArgoUML is missing a few of the standard UML 
-            stereotypes. In addition not all artifacts will actually 
+            stereotypes. In addition not all model elements will actually 
             display the stereotype on the diagram. At present this 
             includes use cases and actors.</para>
 
@@ -5250,12 +5250,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <indexterm><primary>Documentation in Use Case 
           Diagrams</primary></indexterm>
           <para>ArgoUML has some simple documentation facilities 
-          associated with artifacts on a diagram. In general these 
+          associated with model elements on a diagram. In general these 
           should be used only to record the location of material in 
           documents that can be handled by a mainstream editor or word 
           processor, not the actual documentation itself.</para>
 
-          <para>Documentation for a particular artifact is recorded 
+          <para>Documentation for a particular model element is recorded 
           through the documentation tab in the details pane (the 
           quadrant of the user screen at the bottom right).</para>
 
@@ -5646,7 +5646,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         Phases, the boundary between Analysis and Design Phases is 
         inherently blurred. The key is that analysis should define the 
         solution no further than is necessary to specify the 
-        requirements in the language of the solution. The artifacts in 
+        requirements in the language of the solution. The model elements in 
         Analysis generally represent a high level of abstraction.</para>
 
         <para>Once again the <emphasis>recursive</emphasis>, and 
@@ -5893,7 +5893,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>Entering Data Into Attributes and Methods 
             Windows</title>
 
-            <para>Click directly in the class artifact and start 
+            <para>Click directly in the class model element and start 
             typing. Do not use the properties window dialog fields—they 
             are not fully functional and liable to cause you a little 
             frustration.</para>
@@ -6608,7 +6608,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <figure float="1" id="fig.tut.if">
 
-                <title>Interface artifact on the Class Diagram</title>
+                <title>Interface model element on the Class Diagram</title>
 
                 <screenshot><mediaobject><imageobject>
                 <imagedata align="center"
@@ -7699,7 +7699,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Button 1 Click</title>
 
           <para>Clicking on an user-interface object or on a diagram 
-          artifact may establish many different things. Most of the 
+          model element may establish many different things. Most of the 
           behaviour is experienced quite intuitive by the user, mainly 
           because the high degree of standardisation, even spanning 
           different computer platforms (Macintosh, PC, UNIX,...). 
@@ -7722,24 +7722,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Selection</title>
 
-            <para>Here button 1 is used to choose (select) an artifact 
+            <para>Here button 1 is used to choose (select) a model element 
             (in a list or tree or on a diagram) on which subsequent 
-            operations will take place. Multiple artifacts may be 
+            operations will take place. Multiple model elements may be 
             selected by using Shift and/or Ctrl in combination with 
             button 1, see <xref linkend="s2.ref.mouse.shift_control"/>. 
             Selection is always clearly indicated by a colored 
             background.</para>
 
-            <para>On a diagram, the selected artifact is indicated with 
+            <para>On a diagram, the selected model element is indicated with 
             colored &quot;blocks&quot; at the corners/ends of the 
-            object. Artifacts can be selected or deselected in 
+            object. Model elements can be selected or deselected in 
             different ways:</para>
 
             <itemizedlist>
 
               <listitem>
 
-                <para>Button 1 click. Deselects all artifacts, and 
+                <para>Button 1 click. Deselects all model elements, and 
                 selects the one clicked on.</para>
 
               </listitem>
@@ -7748,7 +7748,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Button 1 motion. Button motion (moving the mouse 
                 with the button down) in the diagram, not on any 
-                artifact, allows to draw a rectangle around artifacts 
+                model element, allows to draw a rectangle around model elements 
                 which will be selected when the button 1 is 
                 released.</para>
 
@@ -7786,11 +7786,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>Navigation</title>
 
             <para>Here button 1 is used to move the focus from one user 
-            interface component or diagram artifact to another. It is 
+            interface component or diagram model element to another. It is 
             better known under the term keyboard focus. This because 
-            keyboard commands usually work on the artifact that has the 
+            keyboard commands usually work on the model element that has the 
             focus. The focus is indicated by a (hardly visible) box 
-            around the artifact, or for a text entry box, by a flashing 
+            around the model element, or for a text entry box, by a flashing 
             cursor.</para>
 
           </sect3>
@@ -8996,13 +8996,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <warning>
 
             <para>If the current diagram contains no selected 
-            artifacts, then the whole diagram is printed. However, if 
-            one or more artifacts are selected, then only the area they 
+            model elements, then the whole diagram is printed. However, if 
+            one or more model elements are selected, then only the area they 
             cover is printed! If scaling is selected (by the &quot;Fit 
             to page&quot; choice in the dialog box descibed above), 
-            then the scaling is done on basis of the selected artifacts 
+            then the scaling is done on basis of the selected model elements 
             only. If scaling is not chosen (or in case it is not 
-            needed), then all pages containing a selected artifact are 
+            needed), then all pages containing a selected model element are 
             printed.</para>
 
           </warning>
@@ -9471,8 +9471,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>The Edit Menu</title>
 
         <para>This menu provides support for 
-        selecting artifacts on the editing pane; 
-        removal of artifacts from diagrams and the model; 
+        selecting model elements on the editing pane; 
+        removal of model elements from diagrams and the model; 
         and control of user settings.</para>
 
         <sect2 id="s2.ref.menu_select">
@@ -9490,7 +9490,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <indexterm><primary>Select All</primary></indexterm> 
               <indexterm><primary>Shortcut 
               key</primary><secondary>Ctrl-A</secondary></indexterm> 
-              Selects all artifacts on the current pane or in the 
+              Selects all model elements on the current pane or in the 
               current field. The exact behaviour depends on the 
               <literal>current pane</literal> (i.e. the last one you 
               clicked in): explorer pane, editing pane, to-do pane, 
@@ -9532,10 +9532,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/navigate_back.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Navigate Back</literal>. ArgoUML keeps a record 
-              of the artifacts that you have been selecting while 
+              of the model elements that you have been selecting while 
               navigating the model. This button moves you back to the 
               previous one selected. If there are no more previous 
-              artifacts, the button is grayed out.</para>
+              model elements, the button is grayed out.</para>
 
             </listitem>
 
@@ -9546,11 +9546,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/navigate_forward.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Navigate Forward</literal>. ArgoUML keeps a 
-              record of the artifacts that you have been selecting 
+              record of the model elements that you have been selecting 
               while navigating the model. This button moves you forward 
               to the next one selected (after you have used the 
               Navigate Back button to move back). If there are no more 
-              next artifacts, the button is grayed out.</para>
+              next model elements, the button is grayed out.</para>
 
             </listitem>
 
@@ -10320,8 +10320,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><literal>Description</literal>. Shows how many 
               nodes and edges there are on the diagrams. A node is a 
-              <quote>2-D</quote> artifact and an edge is a connector 
-              artifact.</para>
+              <quote>2-D</quote> model element and an edge is a connector 
+              model element.</para>
 
             </listitem>
 
@@ -10379,7 +10379,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para>A text box labeled <literal>Element Name:</literal> 
-              specifies the name of the element (or artifact) to search 
+              specifies the name of the model element to search 
               for. Wild cards (<literal>*</literal>, <literal>
               ?</literal>) may be used here. A drop down gives access 
               to find expressions previously used.</para>
@@ -10452,29 +10452,29 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>The top half is labeled <literal>Search 
           Results:</literal> followed by a count of the number of items 
-          found. It comprises a table with one row for each element 
-          (artifact) and four columns. The width of the columns can be 
+          found. It comprises a table with one row for each
+          model element and four columns. The width of the columns can be 
           adjusted.</para>
 
           <itemizedlist>
 
             <listitem>
 
-              <para><literal>Type</literal>. Lists the type of element 
-              (artifact).</para>
+              <para><literal>Type</literal>. Lists the type of
+              model element.</para>
 
             </listitem>
 
             <listitem>
 
               <para><literal>Name</literal>. Lists the name given to 
-              the element (artifact).</para>
+              the model element.</para>
 
             </listitem>
 
             <listitem>
 
-              <para><literal>In Diagram</literal>. Where the artifact 
+              <para><literal>In Diagram</literal>. Where the model element 
               is visible on a diagram, this lists the name of the 
               diagram, otherwise it shows <literal>N/A</literal>.</para>
 
@@ -10483,7 +10483,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para><literal>Description</literal>. Contains a 
-              description of the element (artifact). In ArgoUML V0.18 
+              description of the model element. In ArgoUML V0.18 
               this seems to be restricted to the single entry <literal>
               docs</literal>.</para>
 
@@ -10492,14 +10492,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </itemizedlist>
 
           <para>Button 1 click on any row will give more information on 
-          that artifact by showing related artifacts in the bottom half 
-          (see below). Double click on any row describing an artifact 
+          that model element by showing related model elements in the bottom half 
+          (see below). Double click on any row describing a model element 
           on a diagram and that item and diagram will be 
           selected.</para>
 
           <para>The bottom half of the tab is a table labeled <literal>
           Related Elements:</literal> and is a table with the same 
-          columns as the top half. When an element (artifact) has been 
+          columns as the top half. When a model element has been 
           selected in the top half, this table shows the details of any 
           related elements.</para>
 
@@ -10521,7 +10521,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             remain open while editing the model for easy navigation. 
             But the V0.22 implementation of ArgoUML does not inmediately 
             update the dialog box with changes made to the found 
-            artifacts: change of artifact name, change of diagram name. 
+            model elements: change of model element name, change of diagram name. 
             Deletion of a diagram does not stop the possibility to 
             navigate to it.
             <!-- This is issue 4376. -->
@@ -10657,7 +10657,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>In the V0.22 version of ArgoUML this is not actually 
             a true snap to grid. It just defines the increments by 
-            which artifacts are moved around. Thus if an item has an X 
+            which model elements are moved around. Thus if an item has an X 
             coordinate of 4 and Grid Snap is set to 8, moving will take 
             it to X coordinates of 12, 20, 28 etc, 
             <emphasis>not</emphasis> 8, 16, 24 etc</para>
@@ -10717,13 +10717,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           within that package. 
           This means that it will be shown within the package on 
           the explorer hierarchy (under Package-centric view) and 
-          artifacts created on the diagram will be created within the 
+          model elements created on the diagram will be created within the 
           namespace of the package. This does not only apply to a 
           package, but also to a class, interface, use case, etc.</para>
 
           <tip>
 
-            <para>This does not prevent artifacts from other 
+            <para>This does not prevent model elements from other 
             namespaces/packages appearing on the diagram. They can be 
             added from the explorer using <literal>Add to 
             Diagram</literal> from the button 2 pop-up menu.</para>
@@ -10745,14 +10745,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           currently selected, the class diagram will be created within 
           that package. 
           This means that it will be shown within the package on the 
-          explorer hierarchy (under Package-centric view) and artifacts 
+          explorer hierarchy (under Package-centric view) and model elements 
           created on the diagram will be created within the namespace 
           of the package. This does not only apply to a package, but 
           also to a class, interface, use case, etc.</para>
 
           <tip>
 
-            <para>This does not prevent artifacts from other 
+            <para>This does not prevent model elements from other 
             namespaces/packages appearing on the diagram. They can be 
             added from the explorer using <literal>Add to 
             Diagram</literal> from the button 2 pop-up menu.</para>
@@ -10780,7 +10780,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           that represent the behaviour of that class. 
           This means that the created elements 
           will be shown within the class in the 
-          explorer hierarchy (under Package-centric view) and artifacts 
+          explorer hierarchy (under Package-centric view) and model elements 
           created on the diagram will be created within the namespace 
           of the collaboration. A sequence diagram may 
           not only represent the behavior of a class, but 
@@ -10810,12 +10810,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           This means that it 
           will be shown within the collaboration within the package on 
           the explorer hierarchy (under Package-centric view) and 
-          artifacts created on the diagram will be created within the 
+          model elements created on the diagram will be created within the 
           namespace of the collaboration within the package.</para>
 
           <tip>
 
-            <para>This does not prevent artifacts from other 
+            <para>This does not prevent model elements from other 
             namespaces/packages appearing on the diagram. They can 
             added from the explorer by 
             dragging or by 
@@ -10908,13 +10908,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           currently selected, the deployment diagram will be created 
           within that package, it will be shown within the package on 
           the explorer hierarchy (under Package-centric view) and 
-          artifacts created on the diagram will be created within the 
+          model elements created on the diagram will be created within the 
           namespace of the package.-->
           </para>
 
           <tip>
 
-            <para>Artifacts from other 
+            <para>Model elements from other 
             namespaces/packages can be
             added from the explorer by
             dragging or by
@@ -10932,9 +10932,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>The Arrange Menu</title>
 
         <para>This menu provides a range of functions to help in the 
-        alignment of artifacts on diagrams within the editing pane. In 
-        general the menu function invoked is applied to any artifact or 
-        artifacts currently selected in the editing pane.</para>
+        alignment of model elements on diagrams within the editing pane. In 
+        general the menu function invoked is applied to any model element or 
+        model elements currently selected in the editing pane.</para>
 
         <sect2 id="s2.ref.menu_align">
 
@@ -10952,7 +10952,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/align_tops.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Align Tops</literal>. Aligns the selected 
-              artifacts by their top edges.</para>
+              model elements by their top edges.</para>
 
             </listitem>
 
@@ -10963,7 +10963,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/align_bottoms.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Align Bottoms</literal>. Aligns the selected 
-              artifacts by their bottom edges.</para>
+              model elements by their bottom edges.</para>
 
             </listitem>
 
@@ -10974,7 +10974,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/align_rights.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Align Rights</literal> (Shortcut Ctrl-R). Aligns 
-              the selected artifacts by their right edges.</para>
+              the selected model elements by their right edges.</para>
 
             </listitem>
 
@@ -10985,7 +10985,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/align_lefts.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Align Lefts</literal> (Shortcut Ctrl-L). Aligns 
-              the selected artifacts by their left edges.</para>
+              the selected model elements by their left edges.</para>
 
             </listitem>
 
@@ -10996,7 +10996,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/align_horizontal_centers.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Align Horizontal Centers</literal>. Aligns the 
-              selected artifacts so their horizontal centers are in a 
+              selected model elements so their horizontal centers are in a 
               vertical line.</para>
 
             </listitem>
@@ -11008,7 +11008,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/align_vertical_centers.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Align Vertical Centers</literal>. Aligns the 
-              selected artifacts so their vertical centers are in a 
+              selected model elements so their vertical centers are in a 
               horizontal line.</para>
 
             </listitem>
@@ -11020,7 +11020,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/align_to_grid.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Align To Grid</literal>. Aligns the selected 
-              artifacts so their top and right edges are on the grid 
+              model elements so their top and right edges are on the grid 
               snap boundary (see <xref linkend="s2.ref.menu_grid_snap"/>
               ) edge.</para>
 
@@ -11060,10 +11060,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/distribute_horizontal_spacing.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Distribute Horizontal Spacing</literal>. The 
-              leftmost and rightmost selected artifacts are not moved. 
+              leftmost and rightmost selected model elements are not moved. 
               The others are adjusted horizontally until the horizontal 
-              space (i.e. from the right edge of the left artifact to 
-              the left edge of the right artifact) is the same for all 
+              space (i.e. from the right edge of the left model element to 
+              the left edge of the right model element) is the same for all 
               of the selected items</para>
 
             </listitem>
@@ -11075,7 +11075,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/distribute_horizontal_centers.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Distribute Horizontal Centers</literal>. The 
-              leftmost and rightmost selected artifacts are not moved. 
+              leftmost and rightmost selected model elements are not moved. 
               The others are adjusted horizontally until the distance 
               between the horizontal centers of all the selected items 
               is the same.</para>
@@ -11089,10 +11089,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/distribute_vertical_spacing.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Distribute Vertical Spacing</literal>. The top 
-              and bottom selected artifacts are not moved. The others 
+              and bottom selected model elements are not moved. The others 
               are adjusted vertically until the vertical space (i.e. 
-              from the bottom edge of the top artifact to the top edge 
-              of the bottom artifact) is the same for all of the 
+              from the bottom edge of the top model element to the top edge 
+              of the bottom model element) is the same for all of the 
               selected items</para>
 
             </listitem>
@@ -11104,7 +11104,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/distribute_vertical_centers.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Distribute Vertical Centers</literal>. The top 
-              and bottom selected artifacts are not moved. The others 
+              and bottom selected model elements are not moved. The others 
               are adjusted vertically until the distance between the 
               vertical centers of all the selected items is the 
               same.</para>
@@ -11130,9 +11130,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/forward.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Forward</literal>. The selected artifacts are 
+              <literal>Forward</literal>. The selected model elements are 
               moved one step forward in the ordering hierarchy with 
-              respect to other artifacts they overlap.</para>
+              respect to other model elements they overlap.</para>
 
             </listitem>
 
@@ -11142,9 +11142,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/backward.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Backward</literal>. The selected artifacts are 
+              <literal>Backward</literal>. The selected model elements are 
               moved one step back in the ordering hierarchy with 
-              respect to other artifacts they overlap.</para>
+              respect to other model elements they overlap.</para>
 
             </listitem>
 
@@ -11154,8 +11154,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/to_front.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>To Front</literal>. The selected artifacts are 
-              moved to the front of any other artifacts they 
+              <literal>To Front</literal>. The selected model elements are 
+              moved to the front of any other model elements they 
               overlap.</para>
 
             </listitem>
@@ -11166,8 +11166,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/to_back.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>To Back</literal>. The selected artifacts are 
-              moved to the back of any other artifacts they 
+              <literal>To Back</literal>. The selected model elements are 
+              moved to the back of any other model elements they 
               overlap.</para>
 
             </listitem>
@@ -11181,7 +11181,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Set Preferred Size</title>
 
           <para>This menu-item acts on all selected items on the 
-          current diagram. It resets all sizes of all artifacts to its 
+          current diagram. It resets all sizes of all model elements to its 
           <quote>preferred</quote> size, i.e. the minimum size for 
           which all text fits inside.</para>
 
@@ -11540,7 +11540,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>In the headline you may see the text <literal>
             &lt;ocl&gt;self&lt;/ocl&gt;</literal>, which will be 
-            replaced by the name of the artifact in question when the 
+            replaced by the name of the model element in question when the 
             critic is triggered.</para>
 
           </note>
@@ -11577,7 +11577,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>In this text area you may see the text <literal>
             &lt;ocl&gt;self&lt;/ocl&gt;</literal>, which will be 
-            replaced by the name of the artifact in question when the 
+            replaced by the name of the model element in question when the 
             critic is triggered.</para>
 
           </note>
@@ -11875,7 +11875,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         of the model.</para>
 
         <para>An important feature, related to the cognitive psychology 
-        ideas behind ArgoUML is that not all artifacts are necessarily 
+        ideas behind ArgoUML is that not all model elements are necessarily 
         shown in all perspectives. Rather, the perspectives are used to 
         implement hiding of uninteresting parts of the model.</para>
 
@@ -11908,20 +11908,20 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
            format="GIF"/></imageobject></inlinemediaobject></guiicon> 
           when the hierarchy is open.</para>
 
-          <para>Button 1 click over the name of any diagram artifact 
+          <para>Button 1 click over the name of any diagram model element 
           will cause the diagram to be selected and displayed in the 
           editing pane. Its details will also be displayed in the 
           details pane.</para>
 
-          <para>Button 1 click over the name of any artifact other than 
+          <para>Button 1 click over the name of any model element other than 
           a diagram in the main area of the explorer will cause it to 
           be selected, and its details shown in the details pane. If 
-          the artifact is part of a diagram currently displayed in the 
+          the model element is part of a diagram currently displayed in the 
           editing pane, it will be highlighted there.</para>
 
           <note>
 
-            <para>If the artifact is part of a diagram other than that 
+            <para>If the model element is part of a diagram other than that 
             currently displayed in the Editing Pane, there will be 
             <emphasis>no</emphasis> change of diagram in the Editing 
             Pane.</para>
@@ -12026,7 +12026,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Perspective Selection</title>
 
-        <para>The artifacts in the ArgoUML model may be configured for 
+        <para>The model elements in the ArgoUML model may be configured for 
         displaying in the tree by a number of perspectives. To this 
         end, a drop-down at the top allows selection of the explorer 
         perspective.</para>
@@ -12048,10 +12048,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para><literal>Package-centric</literal> (the default). The 
             exploring hierarchy is organized by package hierarchy. The 
             top level shows the model. Under this are all the top level 
-            packages in the model and all the artifacts that are 
+            packages in the model and all the model elements that are 
             directly in the namespace of the model.</para>
 
-            <para>Beneath each package are all the artifacts that sit 
+            <para>Beneath each package are all the model elements that sit 
             within the namespace of that package, including any further 
             sub-packages (which in turn have their own 
             sub-hierarchies).</para>
@@ -12075,8 +12075,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para><literal>Diagram-centric</literal>. In this view the 
             top level comprises all the diagrams in the model. Beneath 
-            each diagram is a flat listing of all the artifacts on the 
-            diagram. Artifacts that have sub-artifacts that do not 
+            each diagram is a flat listing of all the model elements on the 
+            diagram. Model elements that have sub-model elements that do not 
             appear on the diagram have their own hierarchy (for example 
             attributes and operations of classes).</para>
 
@@ -12086,8 +12086,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para><literal>Inheritance-centric</literal>. In this view 
             the top level shows the model. Beneath this are all 
-            artifacts that have no generalization in the model. Those 
-            artifacts that have specializations have a sub-hierarchy 
+            model elements that have no generalization in the model. Those 
+            model elements that have specializations have a sub-hierarchy 
             showing the specializations.</para>
 
           </listitem>
@@ -12388,14 +12388,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Context Sensitive Menu</title>
 
-        <para>Button 2 Click over any selected artifact in the main 
+        <para>Button 2 Click over any selected model element in the main 
         area of the explorer will cause a pop-up menu to appear.</para>
 
         <sect2>
 
           <title>Add to Diagram</title>
 
-          <para>This entry on the pop-up menu appears for any artifact 
+          <para>This entry on the pop-up menu appears for any model element 
           that could be added to the diagram in the editing pane.</para>
 
           <para>The item can be placed in a diagram by moving the 
@@ -12407,9 +12407,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>This menu entry only appears as not grayed out, if 
             the diagram in the editor pane allows to contain the 
-            artifact, and the artifact is not present yet in the 
+            model element, and the model element is not present yet in the 
             diagram. ArgoUML will not let you place more than one copy 
-            of any particular artifact on a diagram.</para>
+            of any particular model element on a diagram.</para>
 
           </caution>
 
@@ -12423,13 +12423,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
            format="GIF"/></imageobject></inlinemediaobject></guiicon> 
           Delete From Model</title>
 
-          <para>This entry on the pop-up menu appears for any artifact 
+          <para>This entry on the pop-up menu appears for any model element 
           that could be deleted from the model.</para>
 
           <warning>
 
-            <para>This deletes the artifact from the model completely, 
-            not just from the diagram. To remove the artifact just from 
+            <para>This deletes the model element from the model completely, 
+            not just from the diagram. To remove the model element just from 
             the diagram, use the edit menu (see 
             <xref linkend="s2.menu_edit_remove_from_diagram"/>).</para>
 
@@ -12438,7 +12438,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <caution>
 
             <para>You can delete a diagram from the model. Depending on 
-            the type of diagram, that might delete all artifacts shown 
+            the type of diagram, that might delete all model elements shown 
             on the diagram. To illustrate the differences, consider the 
             following examples:</para>
 
@@ -12447,9 +12447,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Deleting a class diagram does not delete any 
-                artifact drawn on it. All artifacts that were shown on 
+                model element drawn on it. All model elements that were shown on 
                 the diagram remain present in the model. This because a 
-                class diagram does not &quot;map&quot; on any artifact 
+                class diagram does not &quot;map&quot; on any model element 
                 according the UML standard V1.4.</para>
 
               </listitem>
@@ -12458,7 +12458,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Deleting a statechart diagram also deletes the 
                 statemachine it represents, and hence also all the 
-                artifacts owned by the statemachine. This because a 
+                model elements owned by the statemachine. This because a 
                 statechart diagram does &quot;map&quot; into a 
                 StateMachine according the UML standard V1.4.</para>
 
@@ -12482,9 +12482,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Add Package</title>
 
-          <para>This entry on the pop-up menu is available whenever an 
-          artifact is selected that may contain a package, e.g. a 
-          package. After activating this menu the artifact will own a 
+          <para>This entry on the pop-up menu is available whenever a 
+          model element is selected that may contain a package, e.g. a 
+          package. After activating this menu the model element will own a 
           new package.</para>
 
         </sect2>
@@ -12554,24 +12554,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Button 1 Click</title>
 
           <para>In the tool bar of the editing pane, button 1 click is 
-          used to select a tool for creating a new artifact and adding 
+          used to select a tool for creating a new model element and adding 
           it to the diagram (see double clicking for creating multiple 
-          artifacts). For most tools, adding a new artifact to the 
+          model elements). For most tools, adding a new model element to the 
           diagram is achieved by moving the mouse into the editing area 
           and clicking again.</para>
 
           <para>In the main editing area button 1 click is used to 
-          select an individual artifact.</para>
+          select an individual model element.</para>
 
-          <para>Many artifacts (e.g. actor, class) show special handles 
+          <para>Many model elements (e.g. actor, class) show special handles 
           when selected and the mouse hovers over them. These are 
           called <quote>Selection Action Buttons</quote>, see 
           <xref linkend="s1.ref.edit_pane_selection_action_buttons"/>. 
           They appear at the sides, top and bottom, and indicate a 
           relationship type. Clicking on a Selection Action Button 
-          creates a new related artifact, with the relation of the type 
+          creates a new related model element, with the relation of the type 
           that was indicated. If the shift key is pressed when hovering 
-          the mouse over a selected artifact, sometimes different 
+          the mouse over a selected model element, sometimes different 
           handles are shown, which stand for different relation 
           types.</para>
 
@@ -12591,13 +12591,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Button 1 Double Click</title>
 
-          <para>When used on the tool bar with a tool to add an 
-          artifact, the selected artifact will be added multiple times 
+          <para>When used on the tool bar with a tool to add a 
+          model element, the selected model element will be added multiple times 
           to the drawing area, once for each further button click, 
           until the tool is again selected or another tool 
           chosen.</para>
 
-          <para>When used within the drawing area on an artifact that 
+          <para>When used within the drawing area on a model element that 
           has sub-components, double click will select the 
           sub-component for editing (creating it if necessary).</para>
 
@@ -12605,7 +12605,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           compartment of a class will select the operation. Or create 
           one if there is none yet.</para>
 
-          <para>A special use is with package artifacts on the class 
+          <para>A special use is with package model elements on the class 
           diagram. A double click on a package will navigate to the 
           class diagram associated with a package (the first created if 
           there is more than one), or will offer to create one for you 
@@ -12629,34 +12629,34 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Button 1 Motion</title>
 
           <!-- This has never worked AFAIK!
-          <para>When adding an artifact using the toolbar, button 1 
+          <para>When adding a model element using the toolbar, button 1 
           motion can generally be used to define the size of the new 
-          artifact. Its dimensions (line ends, diagonal corners of a 
-          rectangular artifact etc) are defined by button 1 down and 
+          model element. Its dimensions (line ends, diagonal corners of a 
+          rectangular model element etc) are defined by button 1 down and 
           button 1 up.</para>
           -->
 
-          <para>Where the artifact being added is some form of 
+          <para>Where the model element being added is some form of 
           connector its termination point is shown with button 1 up 
-          over the terminating artifact. button 1 click may be used in 
-          the space between artifacts to create articulation points in 
+          over the terminating model element. button 1 click may be used in 
+          the space between model elements to create articulation points in 
           the connector. This is particularly useful where connectors 
           must loopback on themselves.</para>
 
-          <para>Over graphical artifacts button 1 motion will move the 
-          artifact to a new position.</para>
+          <para>Over graphical model elements button 1 motion will move the 
+          model element to a new position.</para>
 
-          <para>Graphical artifacts that are selected show handles at 
+          <para>Graphical model elements that are selected show handles at 
           the corners or ends, and these can be used for 
           re-sizing.</para>
 
-          <para>Some artifacts (e.g. actor, class) show special handles 
+          <para>Some model elements (e.g. actor, class) show special handles 
           (called <quote>Selection Action Buttons</quote>, see 
           <xref linkend="s1.ref.edit_pane_selection_action_buttons"/>) 
           at the sides, top and bottom, which can be dragged to form 
-          types of relationship with other artifacts.</para>
+          types of relationship with other model elements.</para>
 
-          <para>Where the artifact is some form of connector between 
+          <para>Where the model element is some form of connector between 
           other items, button 1 motion other than at a handle will 
           cause a new handle to be created, allowing the connector to 
           be articulated at that point. This only works when the 
@@ -12675,12 +12675,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>Where multiple selections are to be made, the CTRL key 
           is used with button 1 to <emphasis>add</emphasis> unselected 
-          artifacts to the current selection. Where an artifact is 
+          model elements to the current selection. Where a model element is 
           already selected, it is removed from the current 
           selection.</para>
 
           <para>Clicking Button 1 while the SHIFT key is pressed, 
-          invokes the broom tool, which causes the selected artifacts 
+          invokes the broom tool, which causes the selected model elements 
           (and any others swept up with them) to be moved with the 
           broom tool (see <xref linkend="s2.ref.edit_layout"/>).</para>
 
@@ -12700,7 +12700,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Button 2 Actions</title>
 
-          <para>When used over artifacts in the the editing pane, this 
+          <para>When used over model elements in the the editing pane, this 
           will display a context dependent pop-up menu. Menu entries 
           are highlighted (but not selected) and sub-menus exposed by 
           subsequent mouse motion (without any buttons). Menu entry 
@@ -12741,11 +12741,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>Many keyboard shortcuts can be used when the editing pane
         is active, mainly to change the selection or to move across the
-        artifacts.</para>
+        model elements.</para>
 
         <sect2>
 
-          <title>Nudging an artifact</title>
+          <title>Nudging a model element</title>
 
           <para>You can nudge a fig by selecting an element and using
           arrow keys. Keeping the shift or the alt key pressed will produce
@@ -12755,11 +12755,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Moving across the artifacts</title>
+          <title>Moving across the model elements</title>
 
-          <para>You can select the artifact nearer to the selected one by 
+          <para>You can select the model element nearer to the selected one by 
           using the arrow keys while clicking the right button of the mouse.
-          You can also select the next artifact using the tab key, or the
+          You can also select the next model element using the tab key, or the
           previous using the ctrl+tab keys.</para>
 
         </sect2>
@@ -12786,28 +12786,28 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <listitem>
 
             <para><emphasis>Layout tools.</emphasis> Provide assistance 
-            in laying out artifacts on the diagram.</para>
+            in laying out model elements on the diagram.</para>
 
           </listitem>
 
           <listitem>
 
             <para><emphasis>Annotation tools.</emphasis> Used to 
-            annotate artifacts on the diagram.</para>
+            annotate model elements on the diagram.</para>
 
           </listitem>
 
           <listitem>
 
             <para><emphasis>Drawing tools.</emphasis> Used to add 
-            general graphic artifacts to diagrams.</para>
+            general graphic objects to diagrams.</para>
 
           </listitem>
 
           <listitem>
 
             <para><emphasis>Diagram specific tools.</emphasis> Used to 
-            add UML artifacts specific to a particular diagram type to 
+            add UML model elements specific to a particular diagram type to 
             the diagram.</para>
 
           </listitem>
@@ -12841,9 +12841,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/select.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Select</literal>. This tool provides for general 
-              selection of artifacts on the diagram. Button 1 click 
-              will select an artifact. CTRL with button 1 can be used 
-              to select (or deselect) multiple artifacts. Button 1 
+              selection of model elements on the diagram. Button 1 click 
+              will select a model element. CTRL with button 1 can be used 
+              to select (or deselect) multiple model elements. Button 1 
               motion will move selected 2D items or add and move a new 
               control point on a link. Button 1 motion on a selected 
               component&apos;s control point will stretch that 
@@ -12858,7 +12858,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <emphasis>Broom</emphasis>. Button 1 motion with this 
               tool provide a <quote>broom</quote> which will sweep all 
-              artifacts along. This is a very shortcut way of lining 
+              model elements along. This is a very shortcut way of lining 
               things up.</para>
 
               <para>The Broom can also be invoked by using SHIFT with 
@@ -12875,7 +12875,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <tip>
 
-            <para>Additional control of artifact layout is provided 
+            <para>Additional control of model element layout is provided 
             through the <literal>Arrange</literal> menu (see 
             <xref linkend="s1.ref.menu_arrange"/>).</para>
 
@@ -12891,12 +12891,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <guiicon><inlinemediaobject><imageobject>
           <imagedata align="center" fileref="images/icons/note.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon>) 
-          is used to add a comment to a selected UML artifact.</para>
+          is used to add a comment to a selected UML model element.</para>
 
           <caution>
 
             <para>Unlike most other tools you use the <literal>
-            Select</literal> tool to select an artifact, and then 
+            Select</literal> tool to select a model element, and then 
             button 1 click on <literal>Comment</literal> to create the 
             comment. If no element is selected when the comment tool is 
             clicked, then the comment is created and put at the left 
@@ -12904,12 +12904,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </caution>
 
-          <para>The comment is created alongside the selected artifact, 
+          <para>The comment is created alongside the selected model element, 
           empty by default. The text can be selected with button 1 
           double-click and edited from the keyboard.</para>
 
           <para>The UML standard allows comments to be attached to any 
-          artifact.</para>
+          model element.</para>
 
           <para>You can link any comment to aditional elements using 
           the <literal>CommentLink</literal> (
@@ -12926,7 +12926,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Drawing Tools</title>
 
           <para>These are a series of tools for providing graphical 
-          additions to diagrams. Although they are not UML artifacts, 
+          additions to diagrams. Although they are not UML model elements, 
           the UML standard provides for such decoration to improve the 
           readability of diagrams.</para>
 
@@ -13062,9 +13062,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Use Case Diagram Specific Tools</title>
 
-          <para>Several tools are provided specific to UML artifacts on 
-          use case diagrams. The detailed properties of these artifacts 
-          are described in the section on use case diagram artifacts 
+          <para>Several tools are provided specific to UML model elements on 
+          use case diagrams. The detailed properties of these model elements 
+          are described in the section on use case diagram model elements 
           (see <xref linkend="ch.ref.entusecase"/>).</para>
 
           <itemizedlist>
@@ -13104,8 +13104,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/association_plain.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Association</literal>. Add an association 
-              between two artifacts selected using button 1 motion 
-              (from the first artifact to the second). There are 6 
+              between two model elements selected using button 1 motion 
+              (from the first model element to the second). There are 6 
               types of association offered here, see 
               <xref linkend="fig.ref.edit_association_tools"/>: 
               <literal>association</literal>, <literal>
@@ -13133,8 +13133,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/dependency.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Dependency</literal>. Add a dependency between 
-              two artifacts selected using button 1 motion (from the 
-              dependent artifact).</para>
+              two model elements selected using button 1 motion (from the 
+              dependent model element).</para>
 
             </listitem>
 
@@ -13145,7 +13145,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/generalization.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Generalization</literal>. Add a generalization 
-              between two artifacts selected using button 1 motion 
+              between two model elements selected using button 1 motion 
               (from the child to the parent).</para>
 
             </listitem>
@@ -13157,7 +13157,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/extend.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Extend</literal>. Add an extend relationship 
-              between two artifacts selected using button 1 motion 
+              between two model elements selected using button 1 motion 
               (from the extended to the extending use case).</para>
 
             </listitem>
@@ -13169,7 +13169,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/include.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Include</literal>. Add an include relationship 
-              between two artifacts selected using button 1 motion 
+              between two model elements selected using button 1 motion 
               (from the including to the included use case).</para>
 
             </listitem>
@@ -13209,9 +13209,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Class Diagram Specific Tools</title>
 
-          <para>Several tools are provided specific to UML artifacts on 
-          class diagrams. The detailed properties of these artifacts 
-          are described in the section on class diagram artifacts (see 
+          <para>Several tools are provided specific to UML model elements on 
+          class diagrams. The detailed properties of these model elements 
+          are described in the section on class diagram model elements (see 
           <xref linkend="ch.ref.entclass"/>).</para>
 
           <itemizedlist>
@@ -13251,8 +13251,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/association_plain.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Association</literal>. Add an association 
-              between two artifacts selected using button 1 motion 
-              (from the first artifact to the second). There are 2 
+              between two model elements selected using button 1 motion 
+              (from the first model element to the second). There are 2 
               types of association offered here, <literal>
               bidirectional</literal> or <literal>
               unidirectional</literal>.</para>
@@ -13266,8 +13266,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/composition_plain.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Composition</literal>. Add an composition 
-              between two artifacts selected using button 1 motion 
-              (from the first artifact to the second). There are 2 
+              between two model elements selected using button 1 motion 
+              (from the first model element to the second). There are 2 
               types of composition offered here, <literal>
               bidirectional</literal> or <literal>
               unidirectional</literal>.</para>
@@ -13281,8 +13281,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/aggregation_plain.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Aggregation</literal>. Add an aggregation
-              between two artifacts selected using button 1 motion 
-              (from the first artifact to the second). There are 2
+              between two model elements selected using button 1 motion 
+              (from the first model element to the second). There are 2
               types of aggregation offered here, <literal>
               bidirectional</literal> or <literal>
               unidirectional</literal>.</para>
@@ -13296,7 +13296,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/generalization.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Generalization</literal>. Add a generalization 
-              between two artifacts selected using button 1 (from the 
+              between two model elements selected using button 1 (from the 
               child to the parent).</para>
 
             </listitem>
@@ -13335,8 +13335,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/dependency.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Dependency</literal>. Add a dependency between 
-              two artifacts selected using button 1 motion (from the 
-              dependent artifact). There are also 2 special types of 
+              two model elements selected using button 1 motion (from the 
+              dependent model element). There are also 2 special types of 
               dependency offered here, <literal>Permission</literal> (
               <guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
@@ -13408,8 +13408,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Association Class</literal>. 
               Add a new association class 
-              between two artifacts selected using button 1 motion 
-              (from the first artifact to the second).</para>
+              between two model elements selected using button 1 motion 
+              (from the first model element to the second).</para>
 
             </listitem>
 
@@ -13457,9 +13457,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Sequence Diagram Specific Tools</title>
 
-          <para>Seven tools are provided specific to UML artifacts on 
-          sequence diagrams. The detailed properties of these artifacts 
-          are described in the section on sequence diagram artifacts 
+          <para>Seven tools are provided specific to UML model elements on 
+          sequence diagrams. The detailed properties of these model elements 
+          are described in the section on sequence diagram model elements 
           (see <xref linkend="ch.ref.entseq"/>).</para>
 
           <itemizedlist>
@@ -13569,10 +13569,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Collaboration Diagram Specific Tools</title>
 
-          <para>Three tools are provided specific to UML artifacts on 
+          <para>Three tools are provided specific to UML model elements on 
           collaboration diagrams. The detailed properties of these 
-          artifacts are described in the section on collaboration 
-          diagram artifacts (see <xref linkend="ch.ref.entcollab"/>
+          model elements are described in the section on collaboration 
+          diagram model elements (see <xref linkend="ch.ref.entcollab"/>
           ).</para>
 
           <itemizedlist>
@@ -13615,7 +13615,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/generalization.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Generalization</literal>. Add a generalization 
-              between two artifacts selected using button 1 (from the 
+              between two model elements selected using button 1 (from the 
               child to the parent).</para>
 
             </listitem>
@@ -13627,8 +13627,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/dependency.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Dependency</literal>. Add a dependency between 
-              two artifacts selected using button 1 motion (from the 
-              dependent artifact).</para>
+              two model elements selected using button 1 motion (from the 
+              dependent model element).</para>
 
             </listitem>
 
@@ -13658,9 +13658,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Statechart Diagram Specific Tools</title>
 
-          <para>Eleven tools are provided specific to UML artifacts on 
-          statechart diagrams. The detailed properties of these artifacts 
-          are described in the section on statechart diagram artifacts 
+          <para>Eleven tools are provided specific to UML model elements on 
+          statechart diagrams. The detailed properties of these model elements 
+          are described in the section on statechart diagram model elements 
           (see <xref linkend="ch.ref.entstate"/>).</para>
 
           <itemizedlist>
@@ -13682,7 +13682,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/composite_state.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Composite State</literal>. Add a composite state 
-              to the diagram. All artifacts that are subsequently 
+              to the diagram. All model elements that are subsequently 
               placed on the diagram on top of the composite state will 
               form part of that composite state.</para>
 
@@ -13871,9 +13871,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Activity Diagram Specific Tools</title>
 
-          <para>Seven tools are provided specific to UML artifacts on 
-          activity diagrams. The detailed properties of these artifacts 
-          are described in the section on activity diagram artifacts 
+          <para>Seven tools are provided specific to UML model elements on 
+          activity diagrams. The detailed properties of these model elements 
+          are described in the section on activity diagram model elements 
           (see <xref linkend="ch.ref.entactiv"/>).</para>
 
           <itemizedlist>
@@ -14030,10 +14030,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Deployment Diagram Specific Tools</title>
 
-          <para>Ten tools are provided specific to UML artifacts on 
+          <para>Ten tools are provided specific to UML model elements on 
           deployment diagrams. The detailed properties of these 
-          artifacts are described in the section on deployment diagram 
-          artifacts (see <xref linkend="ch.ref.entdeploy"/>).</para>
+          model elements are described in the section on deployment diagram 
+          model elements (see <xref linkend="ch.ref.entdeploy"/>).</para>
 
           <note>
 
@@ -14106,7 +14106,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/generalization.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Generalization</literal>. Add a generalization 
-              between two artifacts selected using button 1 (from the 
+              between two model elements selected using button 1 (from the 
               child to the parent).</para>
 
             </listitem>
@@ -14131,8 +14131,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/dependency.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Dependency</literal>. Add a dependency between 
-              two artifacts selected using button 1 motion (from the 
-              dependent artifact).</para>
+              two model elements selected using button 1 motion (from the 
+              dependent model element).</para>
 
             </listitem>
 
@@ -14143,9 +14143,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/association_plain.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Association</literal>. Add an association 
-              between two artifacts (node, component, class or 
+              between two model elements (node, component, class or 
               interface) selected using button 1 motion (from the first 
-              artifact to the second artifact). There are 6 types of 
+              model element to the second model element). There are 6 types of 
               association offered here, see 
               <xref linkend="fig.ref.edit_association_tools"/>: 
               <literal>association</literal>, <literal>
@@ -14183,7 +14183,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <para><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center" fileref="images/icons/link.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Link</literal>. Add a link between two artifacts 
+              <literal>Link</literal>. Add a link between two model elements 
               (node instance, component instance or object) selected 
               using button 1 motion.</para>
 
@@ -14281,11 +14281,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Selection Action Buttons</title>
 
-        <para>When the user selects an artifact in a UML diagram, 
+        <para>When the user selects a model element in a UML diagram, 
         several handles are drawn on it to indicate that it is selected 
         and to provide user interface affordances to resize the node. 
         ArgoUML also displays some <quote>selection-action 
-        buttons</quote> around the selected artifact. See the figure 
+        buttons</quote> around the selected model element. See the figure 
         below for some examples of the handles and 
         <quote>selection-action buttons</quote>. The two figures for a 
         class differ because for creating the second one, the shift key 
@@ -14355,7 +14355,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         transparent pixels. This allows selection-action buttons to be 
         overlaid onto the drawing area without overly obscuring the 
         diagram itself. Also, the buttons are only drawn when the mouse 
-        is over the selected artifact; if any part of the diagram is 
+        is over the selected model element; if any part of the diagram is 
         obscured, the mouse can simply be moved away to get a clearer 
         view of the diagram.</para>
 
@@ -14378,8 +14378,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>Note icon (<guiicon><inlinemediaobject><imageobject>
             <imagedata align="center" fileref="images/icons/note.gif"
              format="GIF"/></imageobject></inlinemediaobject></guiicon>). 
-            Displayed at the top left of an artifact indicates a critic 
-            of that artifact. Moving the mouse over the icon will pop 
+            Displayed at the top left of a model element indicates a critic 
+            of that model element. Moving the mouse over the icon will pop 
             up the critic headline.</para>
 
           </listitem>
@@ -14392,7 +14392,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
              fileref="images/reference/wavy_line.png"
              format="PNG"/></imageobject></inlinemediaobject></guiicon>). 
             Used for critics specific to sub-components of graphical 
-            artifacts. For example to underline attributes with a 
+            model elements. For example to underline attributes with a 
             problem within a class.</para>
 
           </listitem>
@@ -14407,7 +14407,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Not seen in ordinary editing, but used when a to-do item is 
             highlighted from the to-do pane (see 
             <xref linkend="ch.ref.todopane"/>) by button 1 double 
-            click. The solid line is used to show all the artifacts 
+            click. The solid line is used to show all the model elements 
             affected by the critic, for example all stimuli that are 
             out of order.</para>
 
@@ -14452,7 +14452,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Pop-Up Menus</title>
 
-        <para>Within the editing pane, button 2 click over an artifact 
+        <para>Within the editing pane, button 2 click over a model element 
         will bring up a pop-up menu with a variable number of main 
         entries, many with a sub-menu.</para>
 
@@ -14461,7 +14461,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Critiques</title>
 
           <para>This sub-menu gives list of all the critics that have 
-          triggered for this artifact. Selection of a menu entry causes 
+          triggered for this model element. Selection of a menu entry causes 
           that entry to be highlighted in the to-do pane and its 
           detailed explanation to be placed in the <literal>
           ToDoItem</literal> tab of the details pane. A solid colored 
@@ -14474,7 +14474,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Ordering</title>
 
           <para>This menu controls the ordering of overlapping 
-          artifacts on the diagram. It is equivalent to the <literal>
+          model elements on the diagram. It is equivalent to the <literal>
           Reorder</literal> sub-menu of the <literal>Arrange</literal> 
           menu (see <xref linkend="s2.ref.menu_reorder"/>). There are 
           four entries.</para>
@@ -14487,9 +14487,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/forward.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Forward</literal>. The selected artifacts are 
+              <literal>Forward</literal>. The selected model elements are 
               moved one step forward in the ordering hierarchy with 
-              respect to other artifacts they overlap.</para>
+              respect to other model elements they overlap.</para>
 
             </listitem>
 
@@ -14499,9 +14499,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/backward.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Backward</literal>. The selected artifacts are 
+              <literal>Backward</literal>. The selected model elements are 
               moved one step back in the ordering hierarchy with 
-              respect to other artifacts they overlap.</para>
+              respect to other model elements they overlap.</para>
 
             </listitem>
 
@@ -14511,8 +14511,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/to_front.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>To Front</literal>. The selected artifacts are 
-              moved to the front of any other artifacts they 
+              <literal>To Front</literal>. The selected model elements are 
+              moved to the front of any other model elements they 
               overlap.</para>
 
             </listitem>
@@ -14523,8 +14523,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center"
                fileref="images/icons/to_back.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>To Back</literal>. The selected artifacts are 
-              moved to the back of any other artifacts they 
+              <literal>To Back</literal>. The selected model elements are 
+              moved to the back of any other model elements they 
               overlap.</para>
 
             </listitem>
@@ -14537,7 +14537,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Add</title>
 
-          <para>This sub-menu only appears for artifacts that can have 
+          <para>This sub-menu only appears for model elements that can have 
           notes attached (class, interface, object, state, pseudostate) 
           or have operations or attributes added (class, interface). 
           There are at most three entries.</para>
@@ -14551,8 +14551,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/attribute.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>New Attribute</literal>. Only appears where the 
-              selected artifact is a class. Creates a new attribute on 
-              the artifact</para>
+              selected model element is a class. Creates a new attribute on 
+              the model element.</para>
 
             </listitem>
 
@@ -14563,8 +14563,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/operation.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>New Operation</literal>. Only appears where the 
-              selected artifact is a class or interface. Creates a new 
-              operation on the artifact</para>
+              selected model element is a class or interface. Creates a new 
+              operation on the model element.</para>
 
             </listitem>
 
@@ -14574,7 +14574,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center" fileref="images/icons/note.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>New Comment</literal>. Attaches a new comment to 
-              the selected artifact.</para>
+              the selected model element.</para>
 
             </listitem>
 
@@ -14582,9 +14582,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><literal>Add All Relations</literal>. 
               Only appears where the 
-              selected artifact is a class or interface. 
+              selected model element is a class or interface. 
               Makes all relations visible that exist in the model and
-              that are connected to the selected artifact.
+              that are connected to the selected model element.
               </para>
 
             </listitem>
@@ -14593,7 +14593,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><literal>Remove all Relations</literal>. 
               Only appears where the 
-              selected artifact is a class or interface.
+              selected model element is a class or interface.
               Removes all connected relations from the diagram 
               (without removing them from the model).
               </para>
@@ -14607,9 +14607,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Show</title>
 
-          <para>This sub-menu only appears with certain artifacts. It 
+          <para>This sub-menu only appears with certain model elements. It 
           is completely context dependent. There are many possible 
-          entries, depending on the selected artifact and its 
+          entries, depending on the selected model element and its 
           state.</para>
 
           <itemizedlist>
@@ -14702,7 +14702,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para><literal>Show All Edges</literal>. Only appears on 
-              a class. Displays all associations (to shown artifacts) 
+              a class. Displays all associations (to shown model elements) 
               that are not shown yet. This is the same function as the 
               &quot;add to Diagram&quot; on the asociation in the 
               explorer context menu. currently.</para>
@@ -14758,7 +14758,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Modifiers</title>
 
           <para>This sub-menu only appears with class, interface, 
-          package and use case artifacts. It is used to set or clear 
+          package and use case model elements. It is used to set or clear 
           the values of the various modifiers available.</para>
 
           <itemizedlist>
@@ -14766,33 +14766,33 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para><literal>Abstract</literal>. Set for an abstract 
-              artifact.</para>
+              model element.</para>
 
             </listitem>
 
             <listitem>
 
-              <para><literal>Leaf</literal>. Set for a final artifact, 
-              i.e. one with no subartifacts.</para>
+              <para><literal>Leaf</literal>. Set for a final model element, 
+              i.e. one with no sub-model elements.</para>
 
             </listitem>
 
             <listitem>
 
-              <para><literal>Root</literal>. Set for a root artifact, 
-              i.e. one with no superartifacts.</para>
+              <para><literal>Root</literal>. Set for a root model element, 
+              i.e. one with no super-model elements.</para>
 
             </listitem>
 
             <listitem>
 
-              <para><literal>Active</literal>. Set for a artifact with 
+              <para><literal>Active</literal>. Set for a model element with 
               dynamic behavior.</para>
 
               <note>
 
                 <para>This really ought to be set automatically for 
-                artifacts with state machines or activity 
+                model elements with state machines or activity 
                 diagrams.</para>
 
               </note>
@@ -14807,7 +14807,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Multiplicity</title>
 
-          <para>This sub-menu only appears with association artifacts, 
+          <para>This sub-menu only appears with association model elements, 
           when clicking at one end of the association. It is used to 
           control the multiplicity at the end of the association 
           nearest the mouse click point. There are only four entries, a 
@@ -14849,7 +14849,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Aggregation</title>
 
-          <para>This sub-menu only appears with association artifacts, 
+          <para>This sub-menu only appears with association model elements, 
           when clicking at one end of the association. It is used to 
           control the aggregation at the end of the association nearest 
           the mouse click point. There are three entries.</para>
@@ -14895,7 +14895,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Navigability</title>
 
-          <para>This sub-menu only appears with association artifacts, 
+          <para>This sub-menu only appears with association model elements, 
           when clicking at one end of the association. It is used to 
           control the navigability of the association. There are three 
           entries.</para>
@@ -15103,7 +15103,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
            format="PNG"/></imageobject></mediaobject></screenshot>
         </figure>
 
-        <para>For any artifact within the system, this pane is where 
+        <para>For any model element within the system, this pane is where 
         all its associated data is viewed and entered.</para>
 
         <para>The Pane has a series of tabs at the top, which are 
@@ -15113,9 +15113,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>Of these, the <literal>Properties</literal> Tab is by far 
         the most complex, with a different presentation for each 
-        artifact within the system. The detailed descriptions of the 
-        properties tab for each artifact are the subject of separate 
-        chapters covering the artifacts that may appear on the various 
+        model element within the system. The detailed descriptions of the 
+        properties tab for each model element are the subject of separate 
+        chapters covering the model elements that may appear on the various 
         diagrams (see <xref linkend="ch.ref.entities"/> through 
         <xref linkend="ch.ref.entdeploy"/>).</para>
 
@@ -15372,15 +15372,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Properties Tab</title>
 
-        <para>Through this tab, the properties of artifacts selected in 
+        <para>Through this tab, the properties of model elements selected in 
         the explorer or editing pane may be set. The properties of an 
-        artifact may be displayed in one of the following ways:</para>
+        model element may be displayed in one of the following ways:</para>
 
         <orderedlist>
 
           <listitem>
 
-            <para>Selection of the artifact in the explorer or editing 
+            <para>Selection of the model element in the explorer or editing 
             panes, followed by selection of the properties tab in the 
             details pane; or</para>
 
@@ -15388,7 +15388,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <listitem>
 
-            <para>Navigation buttons cause different artifacts to be 
+            <para>Navigation buttons cause different model elements to be 
             selected. I.e. the <literal>Go Up</literal> button on the 
             properties tab, the <literal>Navigate Back</literal> and 
             <literal>Navigate Forward</literal> buttons in the main 
@@ -15400,7 +15400,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </orderedlist>
 
         <para><xref linkend="fig.ref.details_properties"/> shows a 
-        typical properties tab for an artifact in ArgoUML (in this case 
+        typical properties tab for a model element in ArgoUML (in this case 
         a class).</para>
 
         <figure float="1" id="fig.ref.details_properties">
@@ -15415,15 +15415,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </figure>
 
         <para>At the top left is the icon and name of the type of 
-        artifact (i.e. the UML metaclass, not the actual name of this 
-        particular artifact). In this example the property tab is for a 
+        model element (i.e. the UML metaclass, not the actual name of this 
+        particular model element). In this example the property tab is for a 
         class.</para>
 
         <para>To the right of this is a toolbar of icons relevant to 
         this property tab. The first one is always navigation <literal>
         Go up</literal>. The last is always <literal>Delete</literal> 
-        to delete the selected artifact from the model. The ones in 
-        between depend on the artifact.</para>
+        to delete the selected model element from the model. The ones in 
+        between depend on the model element.</para>
 
         <para>The remainder of the tab comprises fields, laid out in 
         two or three columns. Each field has a label to its left. The 
@@ -15439,11 +15439,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         entries).</para>
 
         <para>The first field is almost always a text field <literal>
-        Name</literal>, where the name of the specific artifact can be 
-        entered. The remaining fields vary depending on the artifact 
+        Name</literal>, where the name of the specific model element can be 
+        entered. The remaining fields vary depending on the model element 
         selected.</para>
 
-        <para>The detailed property sheets for all ArgoUML artifacts 
+        <para>The detailed property sheets for all ArgoUML model elements 
         are discussed in separate chapters for each of the diagram 
         types (use case diagram (<xref linkend="ch.ref.entusecase"/>, 
         class diagram (<xref linkend="ch.ref.entclass"/>, sequence 
@@ -15452,7 +15452,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <xref linkend="ch.ref.entcollab"/>, activity diagram (
         <xref linkend="ch.ref.entactiv"/>, deployment diagram (
         <xref linkend="ch.ref.entdeploy"/>). Property sheets for 
-        artifacts that are common to all diagram types have their own 
+        model elements that are common to all diagram types have their own 
         chapter (<xref linkend="ch.ref.entities"/>).</para>
 
         <caution>
@@ -15471,17 +15471,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Documentation Tab</title>
 
-        <para>Within the UML 1.4 standard, all artifacts are children 
+        <para>Within the UML 1.4 standard, all model elements are children 
         of the <literal>Element</literal> metaclass. The <literal>
         Element</literal> metaclass defines a tagged value <literal>
         documentation</literal> for comment, description or explanation 
         of the element to which it is attached. Since this tagged value 
-        applies to every artifact, it is given its own tab in the 
+        applies to every model element, it is given its own tab in the 
         details pane, rather than being part of the <literal>
         Tagged Values</literal> tab.</para>
 
         <para><xref linkend="fig.ref.details_documentation"/> shows a 
-        typical documentation tab for an artifact in ArgoUML.</para>
+        typical documentation tab for a model element in ArgoUML.</para>
 
         <figure float="1" id="fig.ref.details_documentation">
 
@@ -15505,7 +15505,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </para>
         
         <para>The fields on this tab are the same for all 
-        artifacts.</para>
+        model elements.</para>
 
         <para>Since UML comments are a kind of documentation, 
         they are also shown on this tab, with name and body.</para>
@@ -15536,7 +15536,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <listitem>
 
             <para><literal>Deprecated:</literal> A check box to 
-            indicate whether this artifact is deprecated (i.e. planned 
+            indicate whether this model element is deprecated (i.e. planned 
             for removal in future versions of the design model).</para>
 
           </listitem>
@@ -15576,7 +15576,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <tip>
 
           <para>ArgoUML is not primarily a documentation system. For 
-          artifacts that require heavy documentation, notably use 
+          model elements that require heavy documentation, notably use 
           cases, the use of the <literal>See:</literal> field to point 
           to external documents is more practical.</para>
 
@@ -15589,17 +15589,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>Presentation Tab</title>
 
         <para>This tab provides some limited control over the graphical 
-        representation of artifacts in the diagram in the editing 
+        representation of model elements in the diagram in the editing 
         pane.</para>
 
-        <para>Artifacts that do not have any specific direct graphical 
+        <para>Model elements that do not have any specific direct graphical 
         representation on the screen (beyond their textual description) 
         do not have style tabs of their own. For example the style 
         sheet of an operation on a class will be downlighted.</para>
 
-        <para>Style sheets vary a little from artifact to artifact, but 
+        <para>Style sheets vary a little from model element to model element, but 
         <xref linkend="fig.ref.details_style"/> shows a typical style 
-        tab for an artifact in ArgoUML (in this case a class).</para>
+        tab for a model element in ArgoUML (in this case a class).</para>
 
         <figure float="1" id="fig.ref.details_style">
 
@@ -15613,7 +15613,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </figure>
 
         <para>There may be further fields in some cases, e.g. for a 
-        package, but most fields are common to many artifacts.</para>
+        package, but most fields are common to many model elements.</para>
 
         <itemizedlist>
 
@@ -15666,15 +15666,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <listitem>
             <para><literal>Bounds:</literal> This defines the corners 
-            of the bounding box for a 2D artifact. It comprises four 
+            of the bounding box for a 2D model element. It comprises four 
             numbers separated by commas. These four numbers are 
             respectively: i) the X coordinate of the upper left corner 
             of the box; ii) the Y coordinate of the upper left corner 
             of the box; iii) the width of the box; and iv) the height 
             of the box. All units are pixels on the editing pane.</para>
 
-            <para>This field has no effect on 1D artifacts that link 
-            other artifacts (associations, generalizations etc), since 
+            <para>This field has no effect on 1D model elements that link 
+            other model elements (associations, generalizations etc), since 
             their position is constrained by their connectedness. In 
             this case the field is downlighted.</para>
 
@@ -15683,9 +15683,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <listitem>
 
             <para><literal>Fill:</literal> This drop-down selector 
-            specifies the fill color for 2D artifacts. It is not 
-            present for line artifacts. Selecting <literal>No 
-            Fill</literal> makes the artifact transparant. Selecting 
+            specifies the fill color for 2D model elements. It is not 
+            present for line model elements. Selecting <literal>No 
+            Fill</literal> makes the model element transparant. Selecting 
             <literal>Custom</literal> allows to create other colors 
             then the ones listed. It causes the color selector dialog 
             box to appear, see 
@@ -15696,8 +15696,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <listitem>
 
             <para><literal>Line:</literal> This drop-down selector 
-            specifies the line color for artifacts. Selecting <literal>
-            No Fill</literal> makes the artifact transparant. Selecting 
+            specifies the line color for model elements. Selecting <literal>
+            No Fill</literal> makes the model element transparant. Selecting 
             <literal>Custom</literal> allows to create other colors 
             then the ones listed. It causes the color selector dialog 
             box to appear, see 
@@ -15709,7 +15709,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para><literal>Shadow:</literal> This drop-down selector 
             specifies the width of the shadow (if any) for 2D 
-            artifacts. It is not present for line artifacts.</para>
+            model elements. It is not present for line model elements.</para>
 
           </listitem>
 
@@ -15755,7 +15755,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>Source Tab</title>
 
         <para>This tab shows the source code that 
-        will be generated for this artifact, in the selected language. 
+        will be generated for this model element, in the selected language. 
         ArgoUML generates the code e.g. for classes and interfaces. 
         The code shown here, may be saved in the indicated files 
         with the aid of the functions in the Generation menu.
@@ -15886,7 +15886,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </itemizedlist>
 
         <para><xref linkend="fig.ref.details_constraints"/> shows a 
-        typical constraint tab for a artifact in ArgoUML (in this case 
+        typical constraint tab for a model element in ArgoUML (in this case 
         a class).</para>
 
         <figure float="1" id="fig.ref.details_constraints">
@@ -15915,7 +15915,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <literal>Constraints tab</literal> for that new constraint 
             (see <xref linkend="s2.ref.details_constraint_editor"/>). 
             The new constraint is created with a context declaration 
-            for the currently selected artifact.</para>
+            for the currently selected model element.</para>
 
             <warning>
 
@@ -16065,7 +16065,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>The box on the left is titled <literal>Constraint 
         Name</literal> and lists all the constraints (if any) so far 
-        defined for the selected artifact. A constraint may be selected 
+        defined for the selected model element. A constraint may be selected 
         by button 1 click.</para>
 
         <para>The box on the right is labeled <literal>
@@ -16300,7 +16300,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Copy</literal> and <literal>Paste</literal> functions on 
             the <literal>Edit</literal> menu cannot be used within the 
             constraint editor. If used they will work on the currently 
-            selected artifact in the editing pane.</para>
+            selected model element in the editing pane.</para>
 
           </warning-->
 
@@ -16344,15 +16344,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>Tagged values are another extension mechanism provided by 
         UML. The user can define name-value pairs to be associated with 
-        artifacts which define properties of that artifact. The names 
+        model elements which define properties of that model element. The names 
         are known as <emphasis>tags</emphasis>. UML pre-defines a 
-        number of tags that are useful for many of its artifacts.</para>
+        number of tags that are useful for many of its model elements.</para>
 
         <note>
 
           <para>The tag <literal>documentation</literal> is defined for 
           the top UML metaclass, <literal>Element</literal> and is so 
-          available to all artifacts. In ArgoUML documentation values 
+          available to all model elements. In ArgoUML documentation values 
           are provided through the <literal>Documentation</literal> 
           tab, rather than by using the <literal>
           Tagged Values</literal> tab.</para>
@@ -16519,9 +16519,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           toggled.</para>
 
           <para>When applied to a headline, button 1 double click will 
-          show the diagram for the artifact to which the to-do item 
-          applies in the editing pane and select the artifact on the 
-          diagram using an appropriate clarifier (the artifact may be 
+          show the diagram for the model element to which the to-do item 
+          applies in the editing pane and select the model element on the 
+          diagram using an appropriate clarifier (the model element may be 
           highlighted, underlined with a wavy line or surrounded by a 
           colored box as appropriate).</para>
 
@@ -16614,7 +16614,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <listitem>
 
             <para><literal>By Offender</literal>. The to-do items are 
-            organized into a hierarchy according to the artifact that 
+            organized into a hierarchy according to the model element that 
             caused the problem. Todo items that were manually created 
             with the &quot;New ToDo item&quot; button (i.e. not by a 
             critic), are not listed here.</para>
@@ -16821,7 +16821,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Clean Up Diagram</title>
 
           <para>Suggestion that the diagram could be improved by moving 
-          artifacts that are overlapping.</para>
+          model elements that are overlapping.</para>
 
         </sect2>
 
@@ -16831,7 +16831,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Naming</title>
 
-        <para>These are critics concerning the naming of artifacts. The 
+        <para>These are critics concerning the naming of model elements. The 
         current version of ArgoUML has 18 critics in this 
         category.</para>
 
@@ -16863,9 +16863,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="critics.CrOperNameConflict">
 
-          <title>Change Names or Signatures in an Artifact</title>
+          <title>Change Names or Signatures in a model element</title>
 
-          <para>Two operations in &lt;artifact&gt; have the same 
+          <para>Two operations in &lt;model element&gt; have the same 
           signature. This means their name is the same, and the list of 
           parameters has the same type.</para>
 
@@ -16954,7 +16954,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="critics.CrDisambigClassName">
 
-          <title>Choose a Unique Name for an Artifact (Classes and 
+          <title>Choose a Unique Name for a model element (Classes and 
           Interfaces)</title>
 
           <para>Suggestion that the class or interface specified has 
@@ -16999,7 +16999,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <sect2 id="critics.CrDisambigStateName">
 
           <title>Choose a Unique Name for a (State related) 
-          Artifact</title>
+          model element</title>
 
           <para>Suggestion that the state specified has the same name 
           as another (in the current statechart diagram), which is bad 
@@ -17019,7 +17019,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>This critic can be particularly annoying, since at 
             times it is useful and good design to have a series of 
-            artifacts <literal>var1</literal>, <literal>var2</literal> 
+            model elements <literal>var1</literal>, <literal>var2</literal> 
             etc.</para>
 
             <para>It is important to remember that critics offer 
@@ -17035,7 +17035,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Choose a Legal Name</title>
 
-          <para>All artifact names in ArgoUML must use only letters, 
+          <para>All model element names in ArgoUML must use only letters, 
           digits and underscore characters. This critic suggests an 
           entity has not met this requirement.</para>
 
@@ -17043,9 +17043,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="critics.CrReservedName">
 
-          <title>Change an Artifact to a Non-Reserved Word</title>
+          <title>Change a model element to a Non-Reserved Word</title>
 
-          <para>Suggestion that this artifact&apos;s name is the same 
+          <para>Suggestion that this model element&apos;s name is the same 
           as a reserved word in UML (or within one character of one), 
           which is not permitted.</para>
 
@@ -17333,7 +17333,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="critics.CrNoIncomingTransitions">
 
-          <title>Add Incoming Transitions to &lt;artifact&gt;</title>
+          <title>Add Incoming Transitions to &lt;model element&gt;</title>
 
           <para>Suggestion that the given state requires incoming 
           transitions.</para>
@@ -17342,7 +17342,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="critics.CrNoOutgoingTransitions">
 
-          <title>Add Outgoing Transitions from &lt;artifact&gt;</title>
+          <title>Add Outgoing Transitions from &lt;model element&gt;</title>
 
           <para>Suggestion that the given state requires outgoing 
           transitions.</para>
@@ -17440,9 +17440,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Make Edge More Visible</title>
 
-          <para>Suggestion that an edge artifact such as an association 
+          <para>Suggestion that an edge model element such as an association 
           or abstraction is so short it may be missed. Move the 
-          connected artifacts apart to make the edge more 
+          connected model elements apart to make the edge more 
           visible.</para>
 
         </sect2>
@@ -17581,7 +17581,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Nodes normally have no enclosers</title>
 
           <para>A suggestion that nodes should not be drawn inside 
-          other artifacts on the deployment diagram, since they 
+          other model elements on the deployment diagram, since they 
           represent an autonomous physical object.</para>
 
         </sect2>
@@ -17591,7 +17591,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>NodeInstances normally have no enclosers</title>
 
           <para>A suggestion that node instances should not be drawn 
-          inside other artifacts on the deployment diagram, since they 
+          inside other model elements on the deployment diagram, since they 
           represent an autonomous physical object.</para>
 
         </sect2>
@@ -17622,7 +17622,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Classes normally are inside components</title>
 
-          <para>A suggestion that classes, as artifacts making up 
+          <para>A suggestion that classes, as model elements making up 
           components, should be drawn within components on the 
           deployment diagram.</para>
 
@@ -17632,7 +17632,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Interfaces normally are inside components</title>
 
-          <para>A suggestion that interfaces, as artifacts making up 
+          <para>A suggestion that interfaces, as model elements making up 
           components, should be drawn within components on the 
           deployment diagram.</para>
 
@@ -17642,7 +17642,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Objects normally are inside components</title>
 
-          <para>A suggestion that objects, as instances of artifacts 
+          <para>A suggestion that objects, as instances of model elements 
           making up components, should be drawn within components or 
           component instances on the deployment diagram.</para>
 
@@ -17800,11 +17800,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="critics.CrNoAssociations">
 
-          <title>Add Associations to &lt;artifact&gt;</title>
+          <title>Add Associations to &lt;model element&gt;</title>
 
-          <para>Suggestion that the specified artifact (actor, use case 
+          <para>Suggestion that the specified model element (actor, use case 
           or class) has no associations connecting it to other 
-          artifacts. This is required for the artifact to be useful in 
+          model elements. This is required for the model element to be useful in 
           a design.</para>
 
         </sect2>
@@ -17821,9 +17821,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="critics.CrTooManyAssoc">
 
-          <title>Reduce Associations on &lt;artifact&gt;</title>
+          <title>Reduce Associations on &lt;model element&gt;</title>
 
-          <para>Suggestion that the given artifact (actor, use case, 
+          <para>Suggestion that the given model element (actor, use case, 
           class or interface) has so many associations it may be a 
           maintenance bottleneck.</para>
           
@@ -17956,7 +17956,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Change Names or Signatures in &lt;artifact&gt;</title>
+          <title>Change Names or Signatures in &lt;model element&gt;</title>
 
           <para>This critic is discussed under an earlier design issues 
           category (see <xref linkend="critics.CrOperNameConflict"/>
@@ -17985,9 +17985,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="critics.CrTooManyOper">
 
-          <title>Reduce Operations on &lt;artifact&gt;</title>
+          <title>Reduce Operations on &lt;model element&gt;</title>
 
-          <para>Suggestion that the artifact (class or interface) has 
+          <para>Suggestion that the model element (class or interface) has 
           too many operations for a good design, and is at risk of 
           becoming a design bottleneck.</para>
           
@@ -18102,7 +18102,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Illegal Generalization</title>
 
           <para>Suggestion that there is a generalization between 
-          artifacts of different UML metaclasses, which is not 
+          model elements of different UML metaclasses, which is not 
           permitted.</para>
 
           <caution>
@@ -18175,7 +18175,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>Containment</title>
 
         <para>Critics concerning containment in ArgoUML, that is where 
-        one artifact forms a component part of another.</para>
+        one model element forms a component part of another.</para>
 
         <para>The current version of ArgoUML has the following critics 
         in this category.</para>
@@ -18257,7 +18257,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>Aggregation and composition are used to indicate 
           whole-part relationships, and by definition can only apply to 
-          binary associations between artifacts.</para>
+          binary associations between model elements.</para>
 
           <para>To fix this, manually select the association, and set 
           the aggregation of each of its ends (roles) to <literal>
@@ -18288,15 +18288,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <chapter id="ch.ref.entities">
 
-      <title>Top Level Artifact Reference</title>
+      <title>Top Level Model Element Reference</title>
 
       <sect1>
 
         <title>Introduction</title>
 
-        <para>This chapter describes each artifact that can be created 
+        <para>This chapter describes each model element that can be created 
         within ArgoUML. The chapter covers top-level 
-        <quote>general</quote> artifacts. The following chapters (see 
+        <quote>general</quote> model elements. The following chapters (see 
         <xref linkend="ch.ref.entusecase"/> through 
         <xref linkend="ch.ref.entdeploy"/>) cover each of the ArgoUML 
         diagrams.</para>
@@ -18305,7 +18305,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         the properties tab of the details pane (see 
         <xref linkend="s1.ref.proptab"/>). That section covers 
         properties in general, in this chapter they are linked to 
-        specific artifacts.</para>
+        specific model elements.</para>
 
       </sect1>
 
@@ -18314,7 +18314,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>The Model</title>
 
         <indexterm><primary>Model, The</primary></indexterm>
-        <para>The model is the top level artifact within ArgoUML. In 
+        <para>The model is the top level model element within ArgoUML. In 
         the UML meta-model it is a sub-class of package. In many 
         respects within ArgoUML it behaves similarly to a package (see 
         <xref linkend="s1.ref.package"/>).</para>
@@ -18815,8 +18815,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 associations, generalizations, and stereotypes within 
                 the model.</para>
 
-                <para>Button 1 double click on any of the artifacts 
-                yields navigating to that artifact.</para>
+                <para>Button 1 double click on any of the model elements 
+                yields navigating to that model element.</para>
 
               </listitem>
 
@@ -20151,8 +20151,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         values</emphasis>.</para>
 
         <para>New stereotypes are added from the property tab of almost 
-        any artifact. Properties of existing stereotypes can be reached 
-        by selecting the property tab for any artifact with that 
+        any model element. Properties of existing stereotypes can be reached 
+        by selecting the property tab for any model element with that 
         stereotype and using the navstereo button (
         <guiicon><inlinemediaobject><imageobject>
         <imagedata align="center"
@@ -20272,7 +20272,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                   <para>Tagged values for a stereotype are rather 
                   different to those for elements in the UML core 
-                  architecture, in that they apply to all artifacts to 
+                  architecture, in that they apply to all model elements to 
                   which the stereotype is applied, 
                   <emphasis>not</emphasis> just the stereotype 
                   itself.</para>
@@ -20423,10 +20423,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Operation</literal>, <literal>Package</literal>, 
                 <literal>Permission</literal>, <literal>
                 Signal</literal>, <literal>Subsystem</literal> and 
-                <literal>Usage</literal>) or the artifact classes that 
+                <literal>Usage</literal>) or the model element classes that 
                 derive from them. The stereotype will then be available 
-                to artifacts that derive from that same metaclass or 
-                that artifact.</para>
+                to model elements that derive from that same metaclass or 
+                that model element.</para>
 
               </listitem>
 
@@ -20468,7 +20468,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <listitem>
 
                     <para><literal>Abstract</literal> is used to 
-                    declare that artifacts that use this stereotype 
+                    declare that model elements that use this stereotype 
                     cannot be instantiated, but must always be 
                     specialized.</para>
 
@@ -20477,9 +20477,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <listitem>
 
                     <para><literal>Leaf</literal> indicates that 
-                    artifacts that use this stereotype can have no 
+                    model elements that use this stereotype can have no 
                     further sub-types, while <literal>Root</literal> 
-                    indicates it is a top level artifact.</para>
+                    indicates it is a top level model element.</para>
 
                   </listitem>
 
@@ -20488,7 +20488,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <caution>
 
                   <para>Remember that these modifiers apply to the 
-                  artifacts using the stereotype, not just the 
+                  model elements using the stereotype, not just the 
                   stereotype.</para>
 
                 </caution>
@@ -20496,7 +20496,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <warning>
 
                   <para>ArgoUML neither imposes, nor checks that 
-                  artifacts using a stereotype adopt the 
+                  model elements using a stereotype adopt the 
                   stereotype&apos;s modifiers.</para>
 
                 </warning>
@@ -20566,7 +20566,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para><emphasis>Use case diagram</emphasis>. Used to 
             capture and analyse the requirements for any OOA&amp;D 
             project. See <xref linkend="ch.ref.entusecase"/> for 
-            details of the ArgoUML use case diagram and the artifacts 
+            details of the ArgoUML use case diagram and the model elements 
             it supports.</para>
 
           </listitem>
@@ -20584,7 +20584,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>The ArgoUML class diagram provides support for class 
             and package diagrams. See <xref linkend="ch.ref.entclass"/> 
-            for details of the artifacts it supports. The object 
+            for details of the model elements it supports. The object 
             diagram is suported on the Deployment diagram.</para>
 
           </listitem>
@@ -20606,7 +20606,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 using complex communication protocols, such as in 
                 telecommunications. See 
                 <xref linkend="ch.ref.entstate"/> for details of the 
-                ArgoUML statechart diagram and the artifacts it 
+                ArgoUML statechart diagram and the model elements it 
                 supports.</para>
 
               </listitem>
@@ -20619,7 +20619,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 statechart diagram, and is better suited to systems 
                 with a great deal of user interaction. See 
                 <xref linkend="ch.ref.entactiv"/> for details of the 
-                ArgoUML activity diagram and the artifacts it 
+                ArgoUML activity diagram and the model elements it 
                 supports.</para>
 
               </listitem>
@@ -20642,7 +20642,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     where the timing relationships between interactions 
                     are important. See <xref linkend="ch.ref.entseq"/> 
                     for details of the ArgoUML sequence diagram and the 
-                    artifacts it supports.</para>
+                    model elements it supports.</para>
 
                   </listitem>
 
@@ -20656,7 +20656,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     suitable where it is useful to relate interactions 
                     to the static structure of the system. See 
                     <xref linkend="ch.ref.entcollab"/> for details of 
-                    the ArgoUML collaboration diagram and the artifacts 
+                    the ArgoUML collaboration diagram and the model elements 
                     it supports.</para>
 
                   </listitem>
@@ -20682,7 +20682,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>The ArgoUML deployment diagram provides support for 
             both component and deployment diagrams, and additionally 
             for object diagrams. See <xref linkend="ch.ref.entdeploy"/> 
-            for details of the diagram and the artifacts it 
+            for details of the diagram and the model elements it 
             supports.</para>
 
           </listitem>
@@ -20853,30 +20853,30 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <chapter id="ch.ref.entusecase">
 
-      <title>Use Case Diagram Artifact Reference</title>
+      <title>Use Case Diagram Model Element Reference</title>
 
       <indexterm><primary>Use Case Diagram</primary></indexterm>
       <sect1>
 
         <title>Introduction</title>
 
-        <para>This chapter describes each artifact that can be created 
-        within a use case diagram. Note that some sub-artifacts of 
-        artifacts on the diagram may not actually themselves appear on 
+        <para>This chapter describes each model element that can be created 
+        within a use case diagram. Note that some sub-model elements of 
+        model elements on the diagram may not actually themselves appear on 
         the diagram.</para>
 
         <para>There is a close relationship between this material and 
         the properties tab of the details pane (see 
         <xref linkend="s1.ref.proptab"/>). That section covers 
         properties in general, in this chapter they are linked to 
-        specific artifacts.</para>
+        specific model elements.</para>
 
         <para><xref linkend="fig.ref.use_case_diagram"/> shows a use 
-        case diagram with all possible artifacts displayed.</para>
+        case diagram with all possible model elements displayed.</para>
 
         <figure float="1" id="fig.ref.use_case_diagram">
 
-          <title>Possible artifacts on a use case diagram.</title>
+          <title>Possible model elements on a use case diagram.</title>
 
           <screenshot><mediaobject><imageobject>
           <imagedata align="center"
@@ -23800,7 +23800,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <chapter id="ch.ref.entclass">
 
-      <title>Class Diagram Artifact Reference</title>
+      <title>Class Diagram Model Element Reference</title>
 
       <indexterm><primary>Class Diagram</primary></indexterm>
       <indexterm><primary>Object Diagrams</primary></indexterm>
@@ -23809,9 +23809,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Introduction</title>
 
-        <para>This chapter describes each artifact that can be created 
-        within a class diagram. Note that some sub-artifacts of 
-        artifacts on the diagram may not actually themselves appear on 
+        <para>This chapter describes each model element that can be created 
+        within a class diagram. Note that some sub-model elements of 
+        model elements on the diagram may not actually themselves appear on 
         the diagram.</para>
 
         <para>Class diagrams are used for only one of the UML static 
@@ -23825,14 +23825,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         the Properties Tab of the Details Pane (see 
         <xref linkend="s1.ref.proptab"/>). That section covers 
         Properties in general, in this chapter they are linked to 
-        specific artifacts.</para>
+        specific model elements.</para>
 
         <para><xref linkend="fig.ref.class_diagram"/> shows a class 
-        diagram with all possible artifacts displayed.</para>
+        diagram with all possible model elements displayed.</para>
 
         <figure float="1" id="fig.ref.class_diagram">
 
-          <title>Possible artifacts on a class diagram.</title>
+          <title>Possible model elements on a class diagram.</title>
 
           <screenshot><mediaobject><imageobject>
           <imagedata align="center"
@@ -23841,11 +23841,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </figure>
 
         <para><xref linkend="fig.ref.package_diagram"/> shows a package 
-        diagram with all possible artifacts displayed.</para>
+        diagram with all possible model elements displayed.</para>
 
         <figure float="1" id="fig.ref.package_diagram">
 
-          <title>Possible artifacts on a package diagram.</title>
+          <title>Possible model elements on a package diagram.</title>
 
           <screenshot><mediaobject><imageobject>
           <imagedata align="center"
@@ -23877,7 +23877,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>Package</title>
 
         <indexterm><primary>Package</primary></indexterm>
-        <para>The package is the main organizational artifact within 
+        <para>The package is the main organizational model element within 
         ArgoUML. In the UML metamodel it is a sub-class of both 
         <literal>Namespace</literal> and <literal>
         GeneralizableElement</literal>.</para>
@@ -23885,9 +23885,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <note>
 
           <para>ArgoUML also implements the UML <literal>
-          Model</literal> artifact as a sub-class of package, but 
+          Model</literal> model element as a sub-class of package, but 
           <emphasis>not</emphasis> the <literal>Subsystem</literal> 
-          artifact.</para>
+          model element.</para>
 
         </note>
 
@@ -24363,7 +24363,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 the package.</para>
 
                 <para>Button 1 double click on any item listed here 
-                navigates to that artifact.</para>
+                navigates to that model element.</para>
 
               </listitem>
 
@@ -24380,7 +24380,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>Datatype</title>
 
         <para>Datatypes are not specific to packages or class diagrams, 
-        and are discussed within the chapter on top level artifacts 
+        and are discussed within the chapter on top level model elements 
         (see <xref linkend="s1.ref.datatype"/>).</para>
 
       </sect1>
@@ -24391,7 +24391,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>Stereotypes are not specific to packages or class 
         diagrams, and are discussed within the chapter on top level 
-        artifacts (see <xref linkend="s1.ref.stereotype"/>).</para>
+        model elements (see <xref linkend="s1.ref.stereotype"/>).</para>
 
       </sect1>
 
@@ -24400,7 +24400,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>Class</title>
 
         <indexterm><primary>Class</primary></indexterm>
-        <para>The class is the dominant artifact on a class diagram. In 
+        <para>The class is the dominant model element on a class diagram. In 
         the UML metamodel it is a sub-class of <literal>
         Classifier</literal> and <literal>
         GeneralizableElement</literal>.</para>
@@ -24570,7 +24570,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -25123,14 +25123,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Text area. A listing of artifacts contained 
+                <para>Text area. A listing of model elements contained 
                 within the classes&apos; namespace. This is where any 
                 inner class (see 
                 <xref linkend="s2.ref.class_property_toolbar"/>) will 
                 appear</para>
 
-                <para>Button 1 double click on any of the artifacts 
-                navigates to that artifact.</para>
+                <para>Button 1 double click on any of the model elements 
+                navigates to that model element.</para>
 
                 <tip>
 
@@ -25317,7 +25317,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -25685,7 +25685,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <listitem>
 
                     <para><literal>public</literal>. The attribute is 
-                    available to any artifact that can see the owning 
+                    available to any model element that can see the owning 
                     class.</para>
 
                   </listitem>
@@ -25701,7 +25701,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <listitem>
 
                     <para><literal>protected</literal>. The attribute 
-                    is available only to the owning class, or artifacts 
+                    is available only to the owning class, or model elements 
                     that are subclasses of the owning class.</para>
 
                   </listitem>
@@ -25710,7 +25710,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <listitem>
 
                     <para><literal>package</literal>. The attribute 
-                    is available only to artifacts contained in the
+                    is available only to model elements contained in the
                     same package.</para>
 
                   </listitem>
@@ -26005,7 +26005,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -26326,7 +26326,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <listitem>
 
                     <para><literal>public</literal>. The operation is 
-                    available to any artifact that can see the owning 
+                    available to any model element that can see the owning 
                     class.</para>
 
                   </listitem>
@@ -26342,14 +26342,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <listitem>
 
                     <para><literal>protected</literal>. The operation 
-                    is available only to the owning class, or artifacts 
+                    is available only to the owning class, or model elements 
                     that are subclasses of the owning class.</para>
 
                   </listitem>
                   <listitem>
 
                     <para><literal>package</literal>. The operation 
-                    is available only artifacts contained in the 
+                    is available only model elements contained in the 
                     same package.</para>
 
                   </listitem>
@@ -26725,7 +26725,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -27256,7 +27256,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -27728,7 +27728,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -28110,7 +28110,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Standard tab. This tab contains a declaration for 
-                the association end as an instance of the artifact to 
+                the association end as an instance of the model element to 
                 which it is connected.</para>
 
               </listitem>
@@ -28161,7 +28161,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -28417,7 +28417,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <tip>
 
                   <para>By default ArgoUML will select the class of the 
-                  artifact to which the linkend is connected. However, 
+                  model element to which the linkend is connected. However, 
                   an association can be moved to another class by 
                   selecting another entry here.</para>
 
@@ -28678,14 +28678,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>Dependency</title>
 
         <indexterm><primary>Dependency</primary></indexterm>
-        <para>Dependency is a relationship between two artifacts 
+        <para>Dependency is a relationship between two model elements 
         showing that one depends on the other.</para>
 
         <para>Within the UML metamodel, <literal>Dependency</literal> 
         is a sub-class of <literal>Relationship</literal>.</para>
 
         <para>Dependency is represented as a dashed line with an open 
-        arrow head from the depending artifact to that which it is 
+        arrow head from the depending model element to that which it is 
         dependent upon.</para>
 
         <sect2>
@@ -29205,7 +29205,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -29602,12 +29602,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>Abstraction</title>
 
         <para>An abstraction is a dependency relationship joining two 
-        artifacts within the model at different levels of abstraction. 
+        model elements within the model at different levels of abstraction. 
         Within ArgoUML it is principally used through its specific 
         stereotype <literal>realize</literal> to define realization 
-        dependencies, which link artifacts that 
+        dependencies, which link model elements that 
         <emphasis>specify</emphasis> behavior to the corresponding 
-        artifacts that <emphasis>implement</emphasis> the 
+        model elements that <emphasis>implement</emphasis> the 
         behavior.</para>
 
         <para>In the UML metamodel <literal>Abstraction</literal> is a 
@@ -29687,7 +29687,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                   <para>The values for the bounds of the abstraction 
                   are downlighted, since the association is tied to 
-                  particular artifacts.</para>
+                  particular model elements.</para>
 
                 </note>
 
@@ -29745,7 +29745,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -29896,7 +29896,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Text area. Lists the artifact that is the 
+                <para>Text area. Lists the model element that is the 
                 supplier end of this abstraction (for a realization 
                 this is the end providing the implementation).</para>
 
@@ -29920,7 +29920,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Text area. Lists the artifact that is the client 
+                <para>Text area. Lists the model element that is the client 
                 end of this abstraction (for a realization this is the 
                 end providing the specification).</para>
 
@@ -29948,22 +29948,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <chapter id="ch.ref.entseq">
 
-      <title>Sequence Diagram Artifact Reference</title>
+      <title>Sequence Diagram Model Element Reference</title>
 
       <sect1>
 
         <title>Introduction</title>
 
-        <para>This chapter describes each artifact that can be created 
-        within a sequence diagram. Note that some sub-artifacts of 
-        artifacts on the diagram may not actually themselves appear on 
+        <para>This chapter describes each model element that can be created 
+        within a sequence diagram. Note that some sub-model elements of 
+        model elements on the diagram may not actually themselves appear on 
         the diagram.</para>
 
         <para>There is a close relationship between this material and 
         the <literal>Properties</literal> tab of the details pane (see 
         <xref linkend="s1.ref.proptab"/>). That section covers 
         properties in general, in this chapter they are linked to 
-        specific artifacts.</para>
+        specific model elements.</para>
 
         <caution>
 
@@ -29974,11 +29974,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </caution>
 
         <para><xref linkend="fig.ref.sequence_diagram"/> shows a 
-        sequence diagram with all possible artifacts displayed.</para>
+        sequence diagram with all possible model elements displayed.</para>
 
         <figure float="1" id="fig.ref.sequence_diagram">
 
-          <title>Possible artifacts on a sequence diagram.</title>
+          <title>Possible model elements on a sequence diagram.</title>
 
           <screenshot><mediaobject><imageobject>
           <imagedata align="center"
@@ -30169,7 +30169,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -30581,7 +30581,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <para>In the current release of ArgoUML changing the 
                   values of the <literal>Bounds</literal> field is 
                   possible, but will make only a temporary change to 
-                  the position of the stimulus. Selecting any artifact 
+                  the position of the stimulus. Selecting any model element 
                   on the screen causes the stimulus to return to its 
                   original position and the original values to be 
                   restored.</para>
@@ -30663,7 +30663,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -31185,7 +31185,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -31384,30 +31384,30 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <chapter id="ch.ref.entstate">
 
-      <title>Statechart Diagram Artifact Reference</title>
+      <title>Statechart Diagram Model Element Reference</title>
 
       <sect1>
 
         <title>Introduction</title>
 
-        <para>This chapter describes each artifact that can be created 
-        within a statechart diagram. Note that some sub-artifacts of 
-        artifacts on the diagram may not actually themselves appear on 
+        <para>This chapter describes each model element that can be created 
+        within a statechart diagram. Note that some sub-model elements of 
+        model elements on the diagram may not actually themselves appear on 
         the diagram.</para>
 
         <para>There is a close relationship between this material and 
         the Properties Tab of the Details Pane (see 
         <xref linkend="s1.ref.proptab"/>). That section covers 
         Properties in general, in this chapter they are linked to 
-        specific artifacts.</para>
+        specific model elements.</para>
 
         <para><xref linkend="fig.ref.state_diagram"/> and 
         <xref linkend="fig.ref.state_diagram2"/> show statechart 
-        diagrams with most possible artifacts displayed.</para>
+        diagrams with most possible model elements displayed.</para>
 
         <figure float="1" id="fig.ref.state_diagram">
 
-          <title>Statechart diagram artifacts 1.</title>
+          <title>Statechart diagram model elements 1.</title>
 
           <screenshot><mediaobject><imageobject>
           <imagedata align="center"
@@ -31417,7 +31417,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <figure float="1" id="fig.ref.state_diagram2">
 
-          <title>Statechart diagram artifacts 2.</title>
+          <title>Statechart diagram model elements 2.</title>
 
           <screenshot><mediaobject><imageobject>
           <imagedata align="center"
@@ -34717,22 +34717,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <chapter id="ch.ref.entcollab">
 
-      <title>Collaboration Diagram Artifact Reference</title>
+      <title>Collaboration Diagram Model Element Reference</title>
 
       <sect1>
 
         <title>Introduction</title>
 
-        <para>This chapter describes each artifact that can be created 
-        within a collaboration diagram. Note that some sub-artifacts of 
-        artifacts on the diagram may not actually themselves appear on 
+        <para>This chapter describes each model element that can be created 
+        within a collaboration diagram. Note that some sub-model elements of 
+        model elements on the diagram may not actually themselves appear on 
         the diagram.</para>
 
         <para>There is a close relationship between this material and 
         the properties tab of the details pane (see 
         <xref linkend="s1.ref.proptab"/>). That section covers 
         Properties in general, in this chapter they are linked to 
-        specific artifacts.</para>
+        specific model elements.</para>
 
         <caution>
 
@@ -34745,12 +34745,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </caution>
 
         <para><xref linkend="fig.ref.collaboration_diagram"/> shows a 
-        collaboration diagram with all possible artifacts 
+        collaboration diagram with all possible model elements 
         displayed.</para>
 
         <figure float="1" id="fig.ref.collaboration_diagram">
 
-          <title>Possible artifacts on a collaboration diagram.</title>
+          <title>Possible model elements on a collaboration diagram.</title>
 
           <screenshot><mediaobject><imageobject>
           <imagedata align="center"
@@ -34978,7 +34978,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -35500,7 +35500,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -35866,7 +35866,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -36318,7 +36318,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -36635,29 +36635,29 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <chapter id="ch.ref.entactiv">
 
-      <title>Activity Diagram Artifact Reference</title>
+      <title>Activity Diagram Model Element Reference</title>
 
       <sect1>
 
         <title>Introduction</title>
 
-        <para>This chapter describes each artifact that can be created 
-        within an Activity diagram. Note that some sub-artifacts of 
-        artifacts may not actually themselves appear on the 
+        <para>This chapter describes each model element that can be created 
+        within an Activity diagram. Note that some sub-model elements of 
+        model elements may not actually themselves appear on the 
         diagram.</para>
 
         <para>There is a close relationship between this material and 
         the Properties Tab of the Details Pane (see 
         <xref linkend="s1.ref.proptab"/>). That section covers 
         Properties in general, in this chapter they are linked to 
-        specific artifacts.</para>
+        specific model elements.</para>
 
         <para><xref linkend="fig.ref.activity_diagram"/> shows an 
-        Activity Diagram with all possible artifacts displayed.</para>
+        Activity Diagram with all possible model elements displayed.</para>
 
         <figure float="1" id="fig.ref.activity_diagram">
 
-          <title>Possible artifacts on an activity diagram.</title>
+          <title>Possible model elements on an activity diagram.</title>
 
           <screenshot><mediaobject><imageobject>
           <imagedata align="center"
@@ -37051,7 +37051,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Action</title>
 
-        <para>This artifact is described in the context of statechart 
+        <para>This model element is described in the context of statechart 
         diagrams (see <xref linkend="s1.ref.action_state"/>).</para>
 
       </sect1>
@@ -37060,7 +37060,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Transition</title>
 
-        <para>This artifact is described in the context of statechart 
+        <para>This model element is described in the context of statechart 
         diagrams (see <xref linkend="s1.ref.transition_state"/>).</para>
 
         <caution>
@@ -37089,7 +37089,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Guard</title>
 
-        <para>This artifact is described in the context of statechart 
+        <para>This model element is described in the context of statechart 
         diagrams (see <xref linkend="s1.ref.guard_state"/>).</para>
 
       </sect1>
@@ -37098,7 +37098,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Initial State</title>
 
-        <para>This artifact is described in the context of statechart 
+        <para>This model element is described in the context of statechart 
         diagrams (see <xref linkend="s1.ref.initial_state"/>).</para>
 
       </sect1>
@@ -37107,7 +37107,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Final State</title>
 
-        <para>This artifact is described in the context of statechart 
+        <para>This model element is described in the context of statechart 
         diagrams (see <xref linkend="s1.ref.final_state"/>).</para>
 
       </sect1>
@@ -37116,7 +37116,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Junction (Decision)</title>
 
-        <para>This artifact is described in the context of statechart 
+        <para>This model element is described in the context of statechart 
         diagrams (see <xref linkend="s1.ref.junction_state"/>).</para>
 
       </sect1>
@@ -37125,7 +37125,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Fork</title>
 
-        <para>This artifact is described in the context of statechart 
+        <para>This model element is described in the context of statechart 
         diagrams (see <xref linkend="s1.ref.fork_state"/>).</para>
 
       </sect1>
@@ -37134,7 +37134,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Join</title>
 
-        <para>This artifact is described in the context of statechart 
+        <para>This model element is described in the context of statechart 
         diagrams (see <xref linkend="s1.ref.join_state"/>).</para>
 
       </sect1>
@@ -37151,22 +37151,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <chapter id="ch.ref.entdeploy">
 
-      <title>Deployment Diagram Artifact Reference</title>
+      <title>Deployment Diagram Model Element Reference</title>
 
       <sect1>
 
         <title>Introduction</title>
 
-        <para>This chapter describes each artifact that can be created 
-        within a Deployment Diagram. Note that some sub-artifacts of 
-        artifacts on the diagram may not actually themselves appear on 
+        <para>This chapter describes each model element that can be created 
+        within a Deployment Diagram. Note that some sub-model elements of 
+        model elements on the diagram may not actually themselves appear on 
         the diagram.</para>
 
         <para>There is a close relationship between this material and 
         the Properties Tab of the Details Pane (see 
         <xref linkend="s1.ref.proptab"/>). That section covers 
         Properties in general, in this chapter they are linked to 
-        specific artifacts.</para>
+        specific model elements.</para>
 
         <para>Within ArgoUML, the deployment diagram is used for both 
         component diagrams (i.e. without instances, showing static 
@@ -37185,11 +37185,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </caution>
 
         <para><xref linkend="fig.ref.component_diagram"/> shows a 
-        component diagram with all possible artifacts displayed.</para>
+        component diagram with all possible model elements displayed.</para>
 
         <figure float="1" id="fig.ref.component_diagram">
 
-          <title>Possible artifacts on a component diagram.</title>
+          <title>Possible model elements on a component diagram.</title>
 
           <screenshot><mediaobject><imageobject>
           <imagedata align="center"
@@ -37198,11 +37198,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         </figure>
 
         <para><xref linkend="fig.ref.deployment_diagram"/> shows a 
-        deployment diagram with all possible artifacts displayed.</para>
+        deployment diagram with all possible model elements displayed.</para>
 
         <figure float="1" id="fig.ref.deployment_diagram">
 
-          <title>Possible artifacts on a deployment diagram.</title>
+          <title>Possible model elements on a deployment diagram.</title>
 
           <screenshot><mediaobject><imageobject>
           <imagedata align="center"
@@ -37390,7 +37390,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -37798,7 +37798,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -38150,7 +38150,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -38577,7 +38577,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>The UML <literal>Element</literal> metaclass 
-                  from which all other artifacts are derived includes 
+                  from which all other model elements are derived includes 
                   the tagged element <literal>documentation</literal> 
                   which is handled by the <emphasis>documentation 
                   tab</emphasis> under ArgoUML</para>
@@ -39610,14 +39610,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <glossdef>
 
           <indexterm><primary>Class</primary></indexterm>
-          <para>The encapsulation of the data associated with an 
-          artifact (its <emphasis>attributes</emphasis>) and the 
-          actions associated with the artifact (its 
+          <para>The encapsulation of the data associated with a 
+          model element (its <emphasis>attributes</emphasis>) and the 
+          actions associated with the model element (its 
           <emphasis>methods</emphasis>).</para>
 
-          <para>A class specifies the characteristics of an artifact. 
+          <para>A class specifies the characteristics of a model element. 
           An <emphasis>object</emphasis> represents an instance of the 
-          artifact.</para>
+          model element.</para>
 
           <para>Classes and objects in UML are represented on 
           <emphasis>Activity Diagrams</emphasis>, <emphasis>Class 
@@ -40299,7 +40299,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <indexterm><primary>Stereotype</primary></indexterm>
           <indexterm><primary>Stereotyping</primary></indexterm>
-          <para>Any artifact within UML can be given a 
+          <para>Any model element within UML can be given a 
           <emphasis>stereotype</emphasis> to indicate its association 
           with a particular role in the design. A stereotype <literal>
           spqr</literal> is generally indicated with the notation 
