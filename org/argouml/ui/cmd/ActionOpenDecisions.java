@@ -34,7 +34,7 @@ import org.tigris.gef.undo.UndoableAction;
 
 
 
-public class ActionOpenDecisions extends UndoableAction {
+class ActionOpenDecisions extends UndoableAction {
 
     /**
      * The constructor.

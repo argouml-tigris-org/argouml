@@ -38,7 +38,7 @@ import org.argouml.ui.targetmanager.TargetManager;
  *
  * @author jaap.branderhorst@xs4all.nl
  */
-public class NavigateTargetBackAction extends AbstractAction {
+class NavigateTargetBackAction extends AbstractAction {
 
     /**
      * The constructor.
