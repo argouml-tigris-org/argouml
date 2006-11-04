@@ -40,33 +40,42 @@ public interface ArgoModule {
     /**
      * External modules are supposed to be located at
      * <code>MODULEFILENAME</code>.
+     * @deprecated
      */
     String MODULEFILENAME = ".argo.modules";
 
     /**
      * Or, alternatively, external modules may be located at
      * <code>MODULEFILENAME_ALTERNATE</code>.
+     * @deprecated
      */
     String MODULEFILENAME_ALTERNATE = "argo.modules";
 
     /**
      * Method called when Argo is loading a module.
-     *
+     * 
      * @return true if the module initialized properly.
+     * @deprecated use {@link org.argouml.moduleloader.ModuleInterface#enable()}
      */
     boolean initializeModule();
 
     /**
      * Method called when Argo is unloading a module.
-     *
+     * 
      * @return true if the module terminated properly.
+     * @deprecated use
+     *             {@link org.argouml.moduleloader.ModuleInterface#disable()}
      */
     boolean shutdownModule();
 
     /**
      * Called to enable or disable a module programmatically.
-     *
-     * @param tf true to enable module, false to disable
+     * 
+     * @param tf
+     *            true to enable module, false to disable
+     * @deprecated use {@link org.argouml.moduleloader.ModuleInterface#enable()}
+     *             or use
+     *             {@link org.argouml.moduleloader.ModuleInterface#disable()}
      */
     void setModuleEnabled(boolean tf);
 
@@ -74,36 +83,45 @@ public interface ArgoModule {
      * Allows determination if a module is enabled or disabled.
      *
      * @return true if the module is enabled, otherwise false
+     * @deprecated
      */
     boolean isModuleEnabled(); // determines if enabled-disabled
 
     /**
      * Display name of the module.
-     *
+     * 
      * @return the module name
+     * @deprecated use
+     *             {@link org.argouml.moduleloader.ModuleInterface#getName()}
      */
     String getModuleName();
 
     /**
      * Textual description of the module.
-     *
+     * 
      * @return the module description
+     * @deprecated use
+     *             {@link org.argouml.moduleloader.ModuleInterface#getInfo(int)}
      */
     String getModuleDescription();
 
     /**
      * The module version.
-     *
+     * 
      * There is no specified format.
-     *
+     * 
      * @return a string containing the module version
+     * @deprecated use
+     *             {@link org.argouml.moduleloader.ModuleInterface#getInfo(int)}
      */
     String getModuleVersion();
 
     /**
      * The module author.
-     *
+     * 
      * @return a string containing the module author
+     * @deprecated use
+     *             {@link org.argouml.moduleloader.ModuleInterface#getInfo(int)}
      */
     String getModuleAuthor();
 
@@ -114,6 +132,7 @@ public interface ArgoModule {
      * @param context which the actions are valid for
      *
      * @return Vector containing pop-up actions
+     * @deprecated
      */
     Vector getModulePopUpActions(Vector popUpActions, Object context);
 
@@ -121,6 +140,7 @@ public interface ArgoModule {
      * The module identifying key.
      *
      * @return the string key the module uses to identify itself
+     * @deprecated
      */
     String getModuleKey();
 }
