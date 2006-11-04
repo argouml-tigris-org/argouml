@@ -36,7 +36,7 @@ import org.tigris.gef.undo.UndoableAction;
 /**
  * Action to open the Goals dialog.
  */
-public class ActionOpenGoals extends UndoableAction {
+class ActionOpenGoals extends UndoableAction {
 
     /**
      * The constructor.
