@@ -13776,7 +13776,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <caution>
 
                 <para>A well formed junction should have at least one incoming 
-                transition and exactly one outgoing. ArgoUML does not 
+                transition and at least one outgoing. ArgoUML does not 
                 enforce this, but an ArgoUML critic will complain about 
                 any junction that does not follow this rule.</para>
 
@@ -13795,7 +13795,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <caution>
 
                 <para>A well formed choice should have at least one incoming 
-                transition and exactly one outgoing. ArgoUML does not 
+                transition and at least one outgoing. ArgoUML does not 
                 enforce this, but an ArgoUML critic will complain about 
                 any choice that does not follow this rule.</para>
 
@@ -13813,7 +13813,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <caution>
 
-                <para>A well formed fork should have one incoming 
+                <para>A well formed fork should have exactly one incoming 
                 transition and two or more outgoing. ArgoUML does not 
                 enforce this, but an ArgoUML critic will complain about 
                 any fork that does not follow this rule.</para>
@@ -13832,7 +13832,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <caution>
 
-                <para>A well formed join should have one outgoing 
+                <para>A well formed join should have exactly one outgoing 
                 transition and two or more incoming. ArgoUML does not 
                 enforce this, but an ArgoUML critic will complain about 
                 any join that does not follow this rule.</para>
