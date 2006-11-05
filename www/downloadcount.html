@@ -35,10 +35,6 @@ sums are correct and that it is regularly updated!
 <H2><a name="022">Downloads of ArgoUML 0.18.1</a></H2>
 <p>ArgoUML 0.22 was released on 8th of August 2006.</p>
 <p>
-This count uses the Google Analytics to do the counting and the statistics
-of specific pages are collected here manually.
-</p>
-<p>
 The count is only from the 18th of September.
 Before that the counting was not enabled.
 </p>
@@ -88,8 +84,6 @@ Before that the counting was not enabled.
 
 
 </table>
-</div>
-
 
 <p>
 The headers above mean:
@@ -102,10 +96,25 @@ The headers above mean:
 <li>Manpdf - Number of pdf downloads of the manual.</li>
 <li>Manidx - Number of views of the first page of the user manual (from the argouml-stats project).</li>
 </ul>
-The downloads and java web start starts counts rely on that
-the browser adheres to an onClick javascript command.
-If the browser doesn't do this, the download or start is not counted.
 </p>
+</div>
+
+
+<div class="h2" id="explanation">
+<H2>How do we count?</H2>
+<p>
+The counts are based on Pageviews from
+<a href="http://www.google.com/analytics">Google Analytics</a>.
+We count the click of links to .zip or .tar.gz files of the release
+using an onClick javascript command.
+If the browser doesn't do this, the download or start is not counted.
+The way Google Analytics work we also count failed attempts to do
+downloads. There is not much we can do about it.
+For Java Web Start we count the amount of Pageviews
+of the jnlp file.
+</p>
+</div>
+
 
 
 <div class="h2">
@@ -663,22 +672,6 @@ June 2-11, 2004 which may have been the result of a runaway script.
 </div>
 </div>
 
-
-<div class="h2" id="explanation">
-<H2>How do we count?</H2>
-<p>
-The counts are based on Unique Views from
-<a href="http://www.google.com/analytics">Google Analytics</a>.
-We count the click of links to .zip or .tar.gz files of the release.
-The way Google Analytics work we also count failed attempts to do
-downloads. There is not much we can do about it.
-On the other hand counting Unique Views means that
-if a single user attempts several downloads only one of them is counted
-so if a failed attempt is followed by a successful one that is still correct.
-For Java Web Start we count the amount of Unique Views
-of the jnlp file.
-</p>
-</div>
 
 <hr>
 <p>
