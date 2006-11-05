@@ -24,6 +24,7 @@
 
 package org.argouml.application.helpers;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -201,7 +202,7 @@ public final class ResourceLoaderWrapper {
      * @param key The key to find.
      * @return The found Icon.
      */
-    public static Icon lookupIcon(String key) {
+    public static ImageIcon lookupIcon(String key) {
         return lookupIconResource(getImageBinding(key),
                 		  Translator.localize(key));
     }
@@ -430,5 +431,26 @@ public final class ResourceLoaderWrapper {
             return name;
         }
         return found;
+    }
+    
+    /**
+     * Find the path to a given icon and return it as a URL.
+     * 
+     * @param name base name of the icon to search for
+     * @param loader class loader to use or null to use the default class loader
+     * @return the URL where the icon was found
+     */
+    public static URL lookupIconUrl(String name, ClassLoader loader) {
+        return ResourceLoader.lookupIconUrl(name, loader);
+    }
+    
+    /**
+     * Find the path to a given icon and return it as a URL.
+     * 
+     * @param name base name of the icon to search for
+     * @return the URL where the icon was found
+     */
+    public static URL lookupIconUrl(String name) {
+        return lookupIconUrl(name, null);
     }
 }

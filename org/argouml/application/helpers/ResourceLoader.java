@@ -86,50 +86,62 @@ class ResourceLoader {
         }
     
         ImageIcon res = null;
+        java.net.URL imgURL = lookupIconUrl(resource, loader);
+
+        if (imgURL != null) {
+            res = new ImageIcon(imgURL, desc);
+            synchronized (resourceCache) {
+                resourceCache.put(resource, res);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Search for the given resource with one of the registered extensions, in
+     * one of the registered locations. The URL of the first found is returned.
+     * 
+     * @param resource
+     *            base name of resource to search for
+     * @param loader
+     *            class loader to use
+     * @return URL representing first location the resource was found or null if
+     *         it was not found in any of the registered locations.
+     */
+    static java.net.URL lookupIconUrl(String resource, 
+            ClassLoader loader) {
         java.net.URL imgURL = null;
-        try {
-            for (Iterator extensions = resourceExtensions.iterator(); 
-                    extensions.hasNext();) {
-                String tmpExt = (String) extensions.next();
-                for (Iterator locations = resourceLocations.iterator(); 
-                        locations.hasNext();) {
-                    String imageName =
-                            (String) locations.next() + "/" + resource + "."
-                                    + tmpExt;
-                    // System.out.println("[ResourceLoader] try loading " +
-                    // imageName);
-                    if (loader == null) {
-                        imgURL = ResourceLoader.class.getResource(imageName);
-                    } else {
-                        imgURL = loader.getResource(imageName);
-                    }
-                    if (imgURL != null) {
-                        break;
-                    }
+        for (Iterator extensions = resourceExtensions.iterator(); 
+                extensions.hasNext();) {
+            String tmpExt = (String) extensions.next();
+            for (Iterator locations = resourceLocations.iterator(); 
+                    locations.hasNext();) {
+                String imageName =
+                        locations.next() + "/" + resource + "." + tmpExt;
+// System.out.println("[ResourceLoader] try loading " + imageName);
+                if (loader == null) {
+                    imgURL = ResourceLoader.class.getResource(imageName);
+                } else {
+                    imgURL = loader.getResource(imageName);
                 }
                 if (imgURL != null) {
                     break;
                 }
             }
-            if (imgURL == null) {
-                return null;
+            if (imgURL != null) {
+                break;
             }
-            res = new ImageIcon(imgURL, desc);
-            synchronized (resourceCache) {
-                resourceCache.put(resource, res);
-            }
-            return res;
-        } catch (Exception ex) {
-            System.err.println("Exception in looking up IconResource");
-            ex.printStackTrace();
-            return new ImageIcon(resource);
         }
+        return imgURL;
     }
 
     /**
-     * This method adds a new location to the list of known locations.
-     *
-     * @param location String representation of the new location.
+     * Adds a location (path) to the list of known locations. Locations are
+     * searched in the order they are added, so for best performance add the
+     * most likely locations first.
+     * 
+     * @param location
+     *            String representation of the new location.
      */
     public static void addResourceLocation(String location) {
         if (!containsLocation(location)) {
@@ -138,7 +150,9 @@ class ResourceLoader {
     }
 
     /**
-     * This method adds a new extension to the list of known extensions.
+     * Add an extension to the list of known extensions. Extensions are searched
+     * in the order they are added, so for best performance add the most likely
+     * extensions first.
      * 
      * @param extension
      *            String representation of the new extension.
