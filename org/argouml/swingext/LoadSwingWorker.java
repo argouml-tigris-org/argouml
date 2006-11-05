@@ -24,9 +24,11 @@
 
 package org.argouml.swingext;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.UIManager;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
@@ -36,6 +38,8 @@ import org.argouml.ui.ProjectBrowser;
  */
 public class LoadSwingWorker extends SwingWorker {
 
+    private static final Logger LOG = Logger.getLogger(LoadSwingWorker.class);
+    
     private boolean showUi;
     private File file;
 
@@ -85,8 +89,9 @@ public class LoadSwingWorker extends SwingWorker {
     	super.finished();
     	try {
     	    ProjectBrowser.getInstance().addFileSaved(file);
-    	} catch (Exception exc) {
-    		//TODO: what should we do here?
+    	} catch (IOException exc) {
+            LOG.error("Failed to save file: " + file
+                    + " in most recently used list");
     	}
     }
 }

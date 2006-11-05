@@ -87,12 +87,8 @@ public class SaveSwingWorker extends SwingWorker {
      */
     public void finished() {
         super.finished();
-        try {
-            if (this.result != null && this.result.booleanValue()) {
-                ProjectBrowser.getInstance().buildTitleWithCurrentProjectName();
-            }
-        } catch (Exception exc) {
-            //TODO: what should we do here?
+        if (this.result != null && this.result.booleanValue()) {
+            ProjectBrowser.getInstance().buildTitleWithCurrentProjectName();
         }
     }
 }
