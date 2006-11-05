@@ -77,7 +77,7 @@ public final class Translator {
     private static Locale systemDefaultLocale;
     
     /**
-     * This class should only be used in a static constant so make
+     * This class should only be used in a static context so make
      * the constructor private.
      */
     private Translator() {
@@ -99,11 +99,15 @@ public final class Translator {
                     System.getProperty("user.country", "")));
         }
 
+        // TODO: This is using internal knowledge of GEF.  It should
+        // handle this itself. - tfm
         Localizer.addResource("GefBase",
 			      "org.tigris.gef.base.BaseResourceBundle");
         Localizer.addResource(
 		"GefPres",
 		"org.tigris.gef.presentation.PresentationResourceBundle");
+        // TODO: This is an uplevel reference from GEF to ArgoUML. - tfm
+        // Is it used?  What for?
         Localizer.addResource("UMLMenu",
 			      "org.argouml.i18n.UMLResourceBundle");
     }
@@ -269,9 +273,9 @@ public final class Translator {
      * this method instead.
      * @see org.argouml.i18n.Translator#messageFormat(String, Object[])
      *
-     * @param key
-     * @param args
-     * @return String
+     * @param key the key to localize
+     * @param args the arguments as Objects to be inserted in string
+     * @return String the localized string
      */
     public static String localize(String key, Object[] args) {
         return messageFormat(key, args);
