@@ -46,7 +46,7 @@ import org.tigris.gef.base.Globals;
  * and other methods common to file import.
  * It assumes that similar classes will be written
  * for other input sources.
- * 
+ *
  * @deprecated by tfmorris for 0.23.2 - implement ImportInterface and ModuleInterface
  * directly, using the utility methods in FileImportUtils to replace some of the previous
  * functionality of this class.
@@ -54,7 +54,7 @@ import org.tigris.gef.base.Globals;
  * @author Alexander Lepekhine
  */
 public abstract class FileImportSupport implements PluggableImport {
-    
+
     private static final String SEPARATOR = "/";
 
     private JPanel configPanel;
@@ -69,18 +69,18 @@ public abstract class FileImportSupport implements PluggableImport {
      * @see org.argouml.application.api.PluggableImport#getConfigPanel()
      */
     public JComponent getConfigPanel() {
-	if (configPanel == null) {
+        if (configPanel == null) {
 	    configPanel = new ConfigPanelExtension();
         }
-	return configPanel;
+        return configPanel;
     }
 
     /*
      * @see org.argouml.application.api.PluggableImport#parseFile(org.argouml.kernel.Project, java.lang.Object, org.argouml.uml.reveng.DiagramInterface, org.argouml.uml.reveng.Import)
      */
     public void parseFile(Project p, Object o, DiagramInterface diagram,
-			  Import theImport)
-	throws Exception {
+                          Import theImport)
+        throws Exception {
         
         // Default implementation does nothing
         
@@ -88,7 +88,7 @@ public abstract class FileImportSupport implements PluggableImport {
 
     /*
      * @see org.argouml.application.api.PluggableImport#getChooser(org.argouml.uml.reveng.Import)
-     * 
+     *
      * Default chooser is a JFileChooser
      */
     public JComponent getChooser(Import imp) {
@@ -121,22 +121,22 @@ public abstract class FileImportSupport implements PluggableImport {
                     theImport.isDiscendDirectoriesRecursively(), getSuffixFilters()));
         } else {
             return new Vector();
-        }
+                }
 
-    }
+                            }
 
     /*
      * @see org.argouml.application.api.PluggableImport#isParseable(java.lang.Object)
      */
     public boolean isParseable(Object f) {
         return FileImportUtils.matchesSuffix(f, getSuffixFilters());
-    }
+                }
 
     /*
      * @see org.argouml.application.api.PluggableImport#getLayout(org.argouml.uml.diagram.ui.UMLDiagram)
      */
     public ClassdiagramLayouter getLayout(UMLDiagram diagram) {
-	return	new ClassdiagramLayouter(diagram);
+        return  new ClassdiagramLayouter(diagram);
     }
 
     /*
@@ -200,7 +200,6 @@ public abstract class FileImportSupport implements PluggableImport {
     public Vector getModulePopUpActions(Vector popUpActions, Object context) {
         return null;
     }
-
 
     /**
      * Provides an array of suffixe filters for the module.
@@ -295,6 +294,4 @@ public abstract class FileImportSupport implements PluggableImport {
         }
 
     }
-
-
 }
