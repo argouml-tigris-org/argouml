@@ -6,5 +6,5 @@ Bundle-Version: 0.23.1
 Bundle-ClassPath: argouml-core-model.jar
 Bundle-Localization: plugin
 Bundle-Vendor: %pluginProvider
-Require-Bundle: org.argouml.core.lib
+Require-Bundle: org.argouml.core.lib;visibility:=reexport
 Export-Package: org.argouml.model
