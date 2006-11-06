@@ -53,6 +53,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
+import org.argouml.application.modules.ModuleLoader;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
@@ -339,14 +340,8 @@ public class Main {
         // Initialize the module loader.
         st.mark("modules");
 
-        try {
-            ModuleLoader2.addClass("org.argouml.uml.reveng.java.JavaImport");
-        } catch (ClassNotFoundException e) {
-            // We'll automatically use the java file import module if we find
-            // it but don't care is we don't
-        }
         ModuleLoader2.doLoad(false);
-        Argo.initializeModules();
+        ModuleLoader.getInstance().initialize();
 
         st.mark("open window");
 
