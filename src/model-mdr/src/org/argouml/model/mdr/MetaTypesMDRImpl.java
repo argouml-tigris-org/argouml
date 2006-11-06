@@ -155,573 +155,329 @@ public final class MetaTypesMDRImpl implements MetaTypes {
         // forbid instantiation
     }
 
-    /**
-     * @return Returns the Abstraction.
+    /*
+     * @see org.argouml.model.MetaTypes#getAbstraction()
      */
     public Object getAbstraction() {
         return Abstraction.class;
     }
 
-    /**
-     * @return Returns the Action.
-     */
     public Object getAction() {
         return Action.class;
     }
 
-    /**
-     * @return Returns the ActionExpression.
-     */
     public Object getActionExpression() {
         return ActionExpression.class;
     }
 
-    /**
-     * @return Returns the ActionState.
-     */
     public Object getActionState() {
         return ActionState.class;
     }
 
-    /**
-     * @return Returns the Actor.
-     */
     public Object getActor() {
         return Actor.class;
     }
 
-    /**
-     * @return Returns the AggregationKind.
-     */
     public Object getAggregationKind() {
         return AggregationKind.class;
     }
 
-    /**
-     * @return Returns the Association.
-     */
     public Object getAssociation() {
         return UmlAssociation.class;
     }
 
-    /**
-     * @return Returns the AssociationClass.
-     */
     public Object getAssociationClass() {
         return AssociationClass.class;
     }
 
-    /**
-     * @return Returns the AssociationEnd.
-     */
     public Object getAssociationEnd() {
         return AssociationEnd.class;
     }
 
-    /**
-     * @return Returns the AssociationEndRole.
-     */
     public Object getAssociationEndRole() {
         return AssociationEndRole.class;
     }
 
-    /**
-     * @return Returns the AssociationRole.
-     */
     public Object getAssociationRole() {
         return AssociationRole.class;
     }
 
-    /**
-     * @return Returns the Attribute.
-     */
     public Object getAttribute() {
         return Attribute.class;
     }
 
-    /**
-     * @see org.argouml.model.MetaTypes#getBehavioralFeature()
-     */
     public Object getBehavioralFeature() {
         return BehavioralFeature.class;    
     }
 
-    /**
-     * @return Returns the BooleanExpression.
-     */
     public Object getBooleanExpression() {
         return BooleanExpression.class;
     }
 
-    /**
-     * @return Returns the CallAction.
-     */
     public Object getCallAction() {
         return CallAction.class;
     }
 
-    /**
-     * @return Returns the CallConcurrencyKind.
-     */
     public Object getCallConcurrencyKind() {
         return CallConcurrencyKind.class;
     }
 
-    /**
-     * @return Returns the CallState.
-     */
     public Object getCallState() {
         return CallState.class;
     }
 
-    /**
-     * This method has a special name because Java already uses the getClass()
-     * method.
-     * 
-     * @return Returns the Class.
-     */
     public Object getUMLClass() {
         return UmlClass.class;
     }
 
-    /**
-     * @return Returns the Classifier.
-     */
     public Object getClassifier() {
         return Classifier.class;
     }
 
-    /**
-     * @return Returns the ClassifierRole.
-     */
     public Object getClassifierRole() {
         return ClassifierRole.class;
     }
 
-    /**
-     * @return Returns the Collaboration.
-     */
     public Object getCollaboration() {
         return Collaboration.class;
     }
 
-    /**
-     * @return Returns the Comment.
-     */
     public Object getComment() {
         return Comment.class;
     }
 
-    /**
-     * @return Returns the Component.
-     */
     public Object getComponent() {
         return Component.class;
     }
 
-    /**
-     * @return Returns the ComponentInstance.
-     */
     public Object getComponentInstance() {
         return ComponentInstance.class;
     }
 
-    /**
-     * @return Returns the CompositeState.
-     */
     public Object getCompositeState() {
         return CompositeState.class;
     }
 
-    /**
-     * @return Returns the CreateAction.
-     */
     public Object getCreateAction() {
         return CreateAction.class;
     }
 
-    /**
-     * @return Returns the Datatype.
-     */
     public Object getDataType() {
         return DataType.class;
     }
 
-    /**
-     * @return Returns the Dependency.
-     */
     public Object getDependency() {
         return Dependency.class;
     }
 
-    /**
-     * @return Returns the DestroyAction.
-     */
     public Object getDestroyAction() {
         return DestroyAction.class;
     }
 
-    /**
-     * @see org.argouml.model.MetaTypes#getEnumeration()
-     */
     public Object getEnumeration() {
         return Enumeration.class;
     }
 
-    /**
-     * @return Returns the Event.
-     */
     public Object getEvent() {
         return Event.class;
     }
 
-    /**
-     * @return Returns the Exception.
-     */
     public Object getException() {
         return UmlException.class;
     }
 
-    /**
-     * @return Returns the Extend.
-     */
     public Object getExtend() {
         return Extend.class;
     }
 
-    /**
-     * @return Returns the FinalState.
-     */
     public Object getFinalState() {
         return FinalState.class;
     }
 
-    /**
-     * @return Returns the GeneralizableElement.
-     */
     public Object getGeneralizableElement() {
         return GeneralizableElement.class;
     }
 
-    /**
-     * @return Returns the Generalization.
-     */
     public Object getGeneralization() {
         return Generalization.class;
     }
 
-    /**
-     * @return Returns the Guard.
-     */
     public Object getGuard() {
         return Guard.class;
     }
 
-    /**
-     * @return Returns the Include.
-     */
     public Object getInclude() {
         return Include.class;
     }
 
-    /**
-     * @return Returns the Instance.
-     */
     public Object getInstance() {
         return Instance.class;
     }
 
-    /**
-     * @return Returns the Interface.
-     */
     public Object getInterface() {
         return Interface.class;
     }
 
-    /**
-     * @return Returns the Link.
-     */
     public Object getLink() {
         return Link.class;
     }
 
-    /**
-     * @return Returns the Message.
-     */
     public Object getMessage() {
         return Message.class;
     }
 
-    /**
-     * @return Returns the Model.
-     */
     public Object getModel() {
         return Model.class;
     }
 
-    /**
-     * @return Returns the ModelElement.
-     */
     public Object getModelElement() {
         return ModelElement.class;
     }
 
-    /**
-     * @return Returns the Multiplicity.
-     */
     public Object getMultiplicity() {
         return Multiplicity.class;
     }
 
-    /**
-     * @return Returns the Namespace.
-     */
     public Object getNamespace() {
         return Namespace.class;
     }
 
-    /**
-     * @return Returns the Node.
-     */
     public Object getNode() {
         return Node.class;
     }
 
-    /**
-     * @return Returns the NodeInstance.
-     */
     public Object getNodeInstance() {
         return NodeInstance.class;
     }
 
-    /**
-     * @return Returns the Object.
-     */
     public Object getObject() {
         return org.omg.uml.behavioralelements.commonbehavior.Object.class;
     }
 
-    /**
-     * @return Returns the ObjectFlowState.
-     */
     public Object getObjectFlowState() {
         return ObjectFlowState.class;
     }
 
-    /**
-     * @return Returns the Operation.
-     */
     public Object getOperation() {
         return Operation.class;
     }
 
-    /**
-     * @return Returns the Package.
-     */
     public Object getPackage() {
         return UmlPackage.class;
     }
 
-    /**
-     * @return Returns the Parameter.
-     */
     public Object getParameter() {
         return Parameter.class;
     }
 
-    /**
-     * @return Returns the ParameterDirectionKind.
-     */
     public Object getParameterDirectionKind() {
         return ParameterDirectionKind.class;
     }
 
-    /**
-     * @return Returns the Partition.
-     */
     public Object getPartition() {
         return Partition.class;
     }
 
-    /**
-     * @return Returns the Permission.
-     */
     public Object getPermission() {
         return Permission.class;
     }
 
-    /**
-     * @return Returns the Pseudostate.
-     */
     public Object getPseudostate() {
         return Pseudostate.class;
     }
 
-    /**
-     * @return Returns the PseudostateKind.
-     */
     public Object getPseudostateKind() {
         return PseudostateKind.class;
     }
 
-    /**
-     * @return Returns the Reception.
-     */
     public Object getReception() {
         return Reception.class;
     }
 
-    /**
-     * @return Returns the ReturnAction.
-     */
     public Object getReturnAction() {
         return ReturnAction.class;
     }
 
-    /**
-     * @return Returns the ScopeKind.
-     */
     public Object getScopeKind() {
         return ScopeKind.class;
     }
 
-    /**
-     * @return Returns the SendAction.
-     */
     public Object getSendAction() {
         return SendAction.class;
     }
 
-    /**
-     * @return Returns the Signal.
-     */
     public Object getSignal() {
         return Signal.class;
     }
-    
-    /**
-     * @return Returns the SimpleState.
-     */
+
     public Object getSimpleState() {
         return SimpleState.class;
     }
 
-    /**
-     * @return Returns the State.
-     */
     public Object getState() {
         return State.class;
     }
 
-    /**
-     * @return Returns the StateMachine.
-     */
     public Object getStateMachine() {
         return StateMachine.class;
     }
 
-    /**
-     * @return Returns the StateVertex.
-     */
     public Object getStateVertex() {
         return StateVertex.class;
     }
 
-    /**
-     * @return Returns the Stereotype.
-     */
     public Object getStereotype() {
         return Stereotype.class;
     }
 
-    /**
-     * @return Returns the Stimulus.
-     */
     public Object getStimulus() {
         return Stimulus.class;
     }
 
-    /**
-     * @return Returns the StubState.
-     */
     public Object getStubState() {
         return StubState.class;
     }
 
-    /**
-     * @return Returns the SubactivityState.
-     */
     public Object getSubactivityState() {
         return SubactivityState.class;
     }
 
-    /**
-     * @return Returns the SubmachineState.
-     */
     public Object getSubmachineState() {
         return SubmachineState.class;
     }
 
-    /**
-     * @return Returns the Subsystem.
-     */
     public Object getSubsystem() {
         return Subsystem.class;
     }
 
-    /**
-     * @return Returns the SynchState.
-     */
     public Object getSynchState() {
         return SynchState.class;
     }
 
-    /**
-     * @return Returns the TerminateAction.
-     */
     public Object getTerminateAction() {
         return TerminateAction.class;
     }
 
-    /**
-     * @return Returns the Transition.
-     */
     public Object getTransition() {
         return Transition.class;
     }
 
-    /**
-     * @return Returns the Usage.
-     */
     public Object getUsage() {
         return Usage.class;
     }
 
-    /**
-     * @return Returns the Use Case.
-     */
     public Object getUseCase() {
         return UseCase.class;
     }
 
-    /**
-     * @return Returns the VisibilityKind.
-     */
     public Object getVisibilityKind() {
         return VisibilityKind.class;
     }
 
-    /**
-     * @see org.argouml.model.MetaTypes#getTagDefinition()
-     * @return Returns the TagDefinition
-     */
     public Object getTagDefinition() {
         return TagDefinition.class;
     }
 
-    /**
-     * @see org.argouml.model.MetaTypes#getInteraction()
-     */
     public Object getInteraction() {
         return Interaction.class;
     }
