@@ -465,14 +465,14 @@ public class Critic extends Observable implements Poster, Serializable {
 	return false;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Decision)
      */
     public boolean supports(Decision d) {
 	return supportedDecisions.contains(d);
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getSupportedDecisions()
      */
     public Vector getSupportedDecisions() {
@@ -486,14 +486,14 @@ public class Critic extends Observable implements Poster, Serializable {
 	supportedDecisions.addElement(d);
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
      */
     public boolean supports(Goal g) {
         return supportedGoals.contains(g);
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getSupportedGoals()
      */
     public Vector getSupportedGoals() {
@@ -507,8 +507,7 @@ public class Critic extends Observable implements Poster, Serializable {
 	supportedGoals.addElement(g);
     }
 
-
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#containsKnowledgeType(java.lang.String)
      */
     public boolean containsKnowledgeType(String type) {
@@ -597,14 +596,14 @@ public class Critic extends Observable implements Poster, Serializable {
 	return (triggerMask == 0) || ((triggerMask & patternCode) != 0);
     }
 
-    /**
-     * @see org.argouml.cognitive.Poster#expand(java.lang.String, ListSet)
+    /*
+     * @see org.argouml.cognitive.Poster#expand(java.lang.String, org.argouml.cognitive.ListSet)
      */
     public String expand(String desc, ListSet offs) {
         return desc;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {
@@ -1002,8 +1001,8 @@ public class Critic extends Observable implements Poster, Serializable {
      * @see Critic#critique
      *
      * @param dm
-     * @param dsgr
-     * @return ToToItem
+     * @param dsgr the designer
+     * @return ToDoItem
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	return new ToDoItem(this, dm, dsgr);
@@ -1012,36 +1011,27 @@ public class Critic extends Observable implements Poster, Serializable {
     ////////////////////////////////////////////////////////////////
     // issue resolution
 
-    /**
+    /*
      * TODO: Not implemented yet. The idea is that some
      * problems identified by Critic's can be fixed with certain design
      * manipulations (or transforms) that can be applied automatically
      * to resolve the problem. This method replies true iff the given
      * problem can be fixed. The fixIt() method actually does the fix.
      *
+     * @see org.argouml.cognitive.Poster#canFixIt(org.argouml.cognitive.ToDoItem)
+     * Also 
      * @see Critic#fixIt
-     *
-     * @param item
-     * @return boolean
      */
     public boolean canFixIt(ToDoItem item) {
 	return false;
     }
 
-    /**
-     * TODO: Not implemented yet. If the given ToDoItem can
-     * be fixed automatically, and the user wants that to happen, then do
-     * it. Obviously, this depends on the specific Critic and
-     * problem. By default this method does nothing.
-     *
-     * @see Critic#canFixIt
-     *
-     * @param item
-     * @param arg
+    /*
+     * @see org.argouml.cognitive.Poster#fixIt(org.argouml.cognitive.ToDoItem, java.lang.Object)
      */
     public void fixIt(ToDoItem item, Object arg) { }
 
-    /**
+    /*
      * Reply a string that describes this Critic. Identical to getCriticName()
      *
      * @see java.lang.Object#toString()
