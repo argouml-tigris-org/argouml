@@ -147,16 +147,6 @@ public class ModuleLoader {
     public void initialize() {
         // TODO: Move to specific registration.
         loadClassFromLoader(getClass().getClassLoader(),
-                "module.language.java.generator",
-                "org.argouml.language.java.generator.GeneratorJava",
-                true);
-        // TODO: Move to specific registration.
-        loadClassFromLoader(getClass().getClassLoader(),
-                "module.import.java-files",
-                "org.argouml.uml.reveng.java.JavaImport",
-                true);
-        // TODO: Move to specific registration.
-        loadClassFromLoader(getClass().getClassLoader(),
                 "module.menu.file.export.xmi",
                 "org.argouml.ui.ActionExportXMI",
                 true);
