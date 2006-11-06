@@ -101,7 +101,7 @@ public abstract class AbstractFilePersister extends FileFilter
     ////////////////////////////////////////////////////////////////
     // FileFilter API
 
-    /**
+    /*
      * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
      */
     public boolean accept(File f) {
@@ -162,7 +162,7 @@ public abstract class AbstractFilePersister extends FileFilter
         return filename.toLowerCase().endsWith("." + getExtension());
     }
 
-    /**
+    /*
      * @see javax.swing.filechooser.FileFilter#getDescription()
      */
     public String getDescription() {
@@ -260,7 +260,7 @@ public abstract class AbstractFilePersister extends FileFilter
         return true;
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public abstract Project doLoad(File file)

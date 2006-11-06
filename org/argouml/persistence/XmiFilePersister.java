@@ -74,23 +74,21 @@ class XmiFilePersister extends AbstractFilePersister
     public XmiFilePersister() {
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.AbstractFilePersister#getExtension()
      */
     public String getExtension() {
         return "xmi";
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
         return Translator.localize("combobox.filefilter.xmi");
     }
 
-    
-    
-    /**
+    /*
      * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
      */
     public boolean isSaveEnabled() {
@@ -247,12 +245,15 @@ class XmiFilePersister extends AbstractFilePersister
                 phaseSpace = length / 10;
                 phases = 10;
             }
-            LOG.info("File length is " + length + " phase space is " + phaseSpace + " phases is " + phases);
+            LOG.info("File length is " + length + " phase space is "
+                    + phaseSpace + " phases is " + phases);
             ProgressMgr progressMgr = new ProgressMgr();
             progressMgr.setNumberOfPhases(phases);
             ThreadUtils.checkIfInterrupted();
             
-            InputSource source = new InputSource(new XmiInputStream(file.toURL().openStream(), this, length, phaseSpace, progressMgr));
+            InputSource source = new InputSource(new XmiInputStream(file
+                    .toURL().openStream(), this, length, phaseSpace,
+                    progressMgr));
             source.setSystemId(file.toURL().toString());
             
             ModelMemberFilePersister modelPersister =
