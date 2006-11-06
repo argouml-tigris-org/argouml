@@ -83,7 +83,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         nsmodel = implementation;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#getAllClassifierRoles(java.lang.Object)
      */
     public Collection getAllClassifierRoles(Object ns) {
@@ -109,7 +109,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#getAllPossibleAssociationRoles(java.lang.Object)
      */
     public Collection getAllPossibleAssociationRoles(Object roleArg) {
@@ -136,7 +136,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#getClassifierRoles(java.lang.Object)
      */
     public Collection getClassifierRoles(Object role) {
@@ -176,7 +176,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         return roles;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#getAssociationRole(java.lang.Object,
      *      java.lang.Object)
      */
@@ -198,7 +198,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                         AssociationEnd end2 = (AssociationEnd) it2.next();
                         Classifier classifier = end2.getParticipant();
                         if (classifier == to) {
-                            return (AssociationRole) assoc;
+                            return assoc;
                         }
                     }
                 }
@@ -209,7 +209,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         return null;
     }
     
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#getAllPossibleActivators(java.lang.Object)
      */
     public Collection getAllPossibleActivators(Object ames) {
@@ -238,7 +238,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#hasAsActivator(java.lang.Object,
      *      java.lang.Object)
      */
@@ -265,7 +265,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#setActivator(java.lang.Object,
      *      java.lang.Object)
      */
@@ -328,7 +328,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#getAllPossiblePredecessors(java.lang.Object)
      */
     public Collection getAllPossiblePredecessors(Object amessage) {
@@ -358,7 +358,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#addBase(java.lang.Object,
      *      java.lang.Object)
      */
@@ -411,7 +411,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#setBases(java.lang.Object,
      *      java.util.Collection)
      */
@@ -433,7 +433,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#allAvailableFeatures(java.lang.Object)
      */
     public Collection allAvailableFeatures(Object arole) {
@@ -463,7 +463,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + arole);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#allAvailableContents(java.lang.Object)
      */
     public Collection allAvailableContents(Object arole) {
@@ -493,7 +493,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + arole);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#getAllPossibleBases(java.lang.Object)
      */
     public Collection getAllPossibleBases(Object role) {
@@ -657,7 +657,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         return out;
     }
     
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#setBase( java.lang.Object,
      *      java.lang.Object)
      */
@@ -713,7 +713,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         throw new IllegalArgumentException("role");
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#isAddingCollaborationAllowed(java.lang.Object)
      */
     public boolean isAddingCollaborationAllowed(Object context) {
@@ -722,7 +722,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         /* || context instanceof Model */);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#removeBase(java.lang.Object,
      *      java.lang.Object)
      */
@@ -740,7 +740,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 "There must be a ClassifierRole and a Classifier");
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#removeConstrainingElement(java.lang.Object,
      *      java.lang.Object)
      */
@@ -760,7 +760,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or constraint: " + constraint);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#removeMessage(java.lang.Object,
      *      java.lang.Object)
      */
@@ -782,7 +782,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or message: " + message);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#removeMessage3(java.lang.Object,
      *      java.lang.Object)
      */
@@ -801,7 +801,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or successor: " + mess);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#removePredecessor(java.lang.Object,
      *      java.lang.Object)
      */
@@ -818,7 +818,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or message: " + message);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#addConstrainingElement(java.lang.Object,
      *      java.lang.Object)
      */
@@ -834,7 +834,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or constraint: " + constraint);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#addInstance(java.lang.Object,
      *      java.lang.Object)
      */
@@ -849,7 +849,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#addMessage(java.lang.Object,
      *      java.lang.Object)
      */
@@ -868,7 +868,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + elem);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#addMessage3(java.lang.Object,
      *      java.lang.Object)
      */
@@ -884,7 +884,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or successor: " + mess);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#addPredecessor(java.lang.Object,
      *      java.lang.Object)
      */
@@ -900,7 +900,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or predecessor: " + predecessor);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#setAction(java.lang.Object,
      *      java.lang.Object)
      */
@@ -915,7 +915,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + action);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#setContext(java.lang.Object,
      *      java.lang.Object)
      */
@@ -930,7 +930,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + col);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#setMessages3(java.lang.Object,
      *      java.util.Collection)
      */
@@ -955,7 +955,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or messages: " + messages);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#setPredecessors(java.lang.Object,
      *      java.util.Collection)
      */
@@ -969,7 +969,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or predecessors: " + predecessors);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#setRepresentedClassifier(java.lang.Object,
      *      java.lang.Object)
      */
@@ -984,7 +984,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or classifier: " + classifier);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#setRepresentedOperation(java.lang.Object,
      *      java.lang.Object)
      */
@@ -1000,7 +1000,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or operation: " + operation);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsHelper#setSender(java.lang.Object,
      *      java.lang.Object)
      */
@@ -1018,7 +1018,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + sender);
     }
 
-    /**
+    /*
      * 
      * @see org.argouml.model.CollaborationsHelper#removeInteraction(java.lang.Object,
      *      java.lang.Object)

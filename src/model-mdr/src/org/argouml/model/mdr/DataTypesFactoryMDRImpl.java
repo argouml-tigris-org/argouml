@@ -64,12 +64,6 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     private MDRModelImplementation modelImpl;
 
     /**
-     * Logger.
-     */
-//    private static final Logger LOG = 
-//        Logger.getLogger(CoreHelperMDRImpl.class);
-
-    /**
      * Don't allow instantiation.
      * 
      * @param implementation
@@ -79,7 +73,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         this.modelImpl = implementation;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createActionExpression(java.lang.String, java.lang.String)
      */
     public Object createActionExpression(String language, String body) {
@@ -90,7 +84,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myActionExpression;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createArgListsExpression(java.lang.String, java.lang.String)
      */
     public Object createArgListsExpression(String language, String body) {
@@ -101,7 +95,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myArgListsExpression;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createBooleanExpression(java.lang.String, java.lang.String)
      */
     public Object createBooleanExpression(String language, String body) {
@@ -112,7 +106,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myBooleanExpression;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createExpression(java.lang.String, java.lang.String)
      */
     public Object createExpression(String language, String body) {
@@ -122,7 +116,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myExpression;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createIterationExpression(java.lang.String,
      *      java.lang.String)
      */
@@ -134,7 +128,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myIterationExpression;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createMappingExpression(java.lang.String, java.lang.String)
      */
     public Object createMappingExpression(String language, String body) {
@@ -145,7 +139,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myMappingExpression;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createObjectSetExpression(java.lang.String, java.lang.String)
      */
     public Object createObjectSetExpression(String language, String body) {
@@ -156,7 +150,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myObjectSetExpression;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createProcedureExpression(java.lang.String, java.lang.String)
      */
     public Object createProcedureExpression(String language, String body) {
@@ -167,7 +161,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myProcedureExpression;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createTimeExpression(java.lang.String, java.lang.String)
      */
     public Object createTimeExpression(String language, String body) {
@@ -178,7 +172,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myTimeExpression;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createTypeExpression(java.lang.String, java.lang.String)
      */
     public Object createTypeExpression(String language, String body) {
@@ -189,7 +183,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myTypeExpression;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createMultiplicity(int, int)
      */
     public Object createMultiplicity(int lower, int upper) {
@@ -204,8 +198,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * TODO: As currently implemented, this expects a list of
      * MultiplicityRanges. Is this an interface change from the NSUML
      * implementation? I suspect it used to accept a list of Integers. - tfm
-     */
-    /**
+     * 
      * @see org.argouml.model.DataTypesFactory#createMultiplicity(java.util.List)
      */
     public Object createMultiplicity(List range) {
@@ -216,7 +209,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return multiplicity;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createMultiplicity(java.lang.String)
      */
     public Object createMultiplicity(String str) {
@@ -239,7 +232,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createMultiplicityRange(java.lang.String)
      */
     public Object createMultiplicityRange(String str) {
@@ -266,7 +259,7 @@ public class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
     
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesFactory#createMultiplicityRange(int, int)
      */
     public Object createMultiplicityRange(int lower, int upper) {

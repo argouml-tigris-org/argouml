@@ -148,6 +148,8 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      * @return a collection of top level ModelElements
      * @throws UmlException
      *             if there is a problem
+     *             
+     * @see org.argouml.model.XmiReader#parse(org.xml.sax.InputSource, boolean)
      */
     public Collection parse(InputSource pIs, boolean profile)
         throws UmlException {
@@ -504,7 +506,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         return tmpOutFile;
     }
 
-    /**
+    /*
      * @see org.netbeans.lib.jmi.xmi.UnknownElementsListener#elementFound(java.lang.String)
      */
     public void elementFound(String name) {
@@ -530,7 +532,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.XmiReader#setIgnoredElements(java.lang.String[])
      */
     public boolean setIgnoredElements(String[] elementNames) {
@@ -542,7 +544,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         return true;
     }
 
-    /**
+    /*
      * @see org.argouml.model.XmiReader#getIgnoredElements()
      */
     public String[] getIgnoredElements() {
@@ -550,7 +552,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.XmiReader#getIgnoredElementCount()
      */
     public int getIgnoredElementCount() {

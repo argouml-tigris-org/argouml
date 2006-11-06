@@ -97,7 +97,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         cbPackage = nsmodel.getUmlPackage().getCommonBehavior();
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createActionSequence()
      */
     public Object createActionSequence() {
@@ -107,7 +107,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myActionSequence;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createArgument()
      */
     public Object createArgument() {
@@ -117,7 +117,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myArgument;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createAttributeLink()
      */
     public Object createAttributeLink() {
@@ -127,7 +127,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myAttributeLink;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createCallAction()
      */
     public Object createCallAction() {
@@ -136,7 +136,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myCallAction;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createComponentInstance()
      */
     public Object createComponentInstance() {
@@ -146,7 +146,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myComponentInstance;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createCreateAction()
      */
     public Object createCreateAction() {
@@ -157,7 +157,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createDataValue()
      */
     public Object createDataValue() {
@@ -166,7 +166,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myDataValue;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createDestroyAction()
      */
     public Object createDestroyAction() {
@@ -176,7 +176,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myDestroyAction;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createException()
      */
     public Object createException() {
@@ -186,7 +186,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myUmlException;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createLink()
      */
     public Object createLink() {
@@ -195,7 +195,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myLink;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createLinkEnd()
      */
     public Object createLinkEnd() {
@@ -204,7 +204,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myLinkEnd;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createLinkObject()
      */
     public Object createLinkObject() {
@@ -213,7 +213,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myLinkObject;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createNodeInstance()
      */
     public Object createNodeInstance() {
@@ -223,7 +223,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myNodeInstance;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createObject()
      */
     public Object createObject() {
@@ -233,7 +233,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myObject;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createReception()
      */
     public Object createReception() {
@@ -242,7 +242,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myReception;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createReturnAction()
      */
     public Object createReturnAction() {
@@ -252,7 +252,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myReturnAction;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createSendAction()
      */
     public Object createSendAction() {
@@ -261,7 +261,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return mySendAction;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createSignal()
      */
     public Object createSignal() {
@@ -270,7 +270,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return mySignal;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createStimulus()
      */
     public Object createStimulus() {
@@ -279,7 +279,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myStimulus;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createSubsystemInstance()
      */
     public Object createSubsystemInstance() {
@@ -289,7 +289,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return obj;
     }
     
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createTerminateAction()
      */
     public Object createTerminateAction() {
@@ -299,7 +299,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myTerminateAction;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#createUninterpretedAction()
      */
     public Object createUninterpretedAction() {
@@ -309,7 +309,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myUninterpretedAction;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#buildCallAction(java.lang.Object,
      *      java.lang.String)
      */
@@ -324,7 +324,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return action;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#buildUninterpretedAction(java.lang.Object)
      */
     public Object buildUninterpretedAction(Object actionState) {
@@ -335,7 +335,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return action;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#buildLink(java.lang.Object,
      *      java.lang.Object)
      */
@@ -352,7 +352,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return link;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#buildAction(java.lang.Object)
      */
     public Object buildAction(Object message) {
@@ -372,7 +372,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return action;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#buildSignal(java.lang.Object)
      */
     public Object buildSignal(Object feature) {
@@ -386,7 +386,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return signal;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#buildStimulus(java.lang.Object)
      */
     public Object buildStimulus(Object link) {
@@ -408,7 +408,7 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorFactory#buildReception(java.lang.Object)
      */
     public Object buildReception(Object aClassifier) {

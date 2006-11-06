@@ -178,7 +178,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return c.iterator().next();
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#isSubType(java.lang.Object,
      *      java.lang.Object)
      */
@@ -189,7 +189,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return ((Class) type).isAssignableFrom((Class) subType);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllSupertypes(java.lang.Object)
      */
     public Collection getAllSupertypes(Object cls1) {
@@ -223,7 +223,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return result;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getSupertypes(java.lang.Object)
      */
     public Collection getSupertypes(Object ogeneralizableelement) {
@@ -244,7 +244,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return result;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAssociateEnds(java.lang.Object)
      */
     public Collection getAssociateEnds(Object classifier) {
@@ -254,7 +254,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return Model.getFacade().getAssociationEnds(classifier);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAssociateEndsInh(java.lang.Object)
      */
     public Collection getAssociateEndsInh(Object classifier1) {
@@ -280,7 +280,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return result;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeFeature( java.lang.Object,
      *      java.lang.Object)
      */
@@ -297,14 +297,14 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or feature: " + feature);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getOperations(java.lang.Object)
      */
     public List getOperations(Object classifier) {
         return Model.getFacade().getOperations(classifier);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setOperations( java.lang.Object,
      *      java.util.Collection)
      */
@@ -325,7 +325,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setOperations( java.lang.Object,
      *      java.util.List)
      */
@@ -333,14 +333,14 @@ public class CoreHelperMDRImpl implements CoreHelper {
         setOperations(classifier, (Collection) operations);
     }
     
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAttributes(java.lang.Object)
      */
     public List getAttributes(Object classifier) {
         return Model.getFacade().getAttributes(classifier);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setAttributes( java.lang.Object,
      *      java.util.Collection)
      */
@@ -361,7 +361,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
     
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setAttributes( java.lang.Object,
      *      java.util.List)
      */
@@ -369,7 +369,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         setAttributes(classifier, (Collection) attributes);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAttributesInh(java.lang.Object)
      */
     public Collection getAttributesInh(Object classifier) {
@@ -396,7 +396,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return result;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getOperationsInh(java.lang.Object)
      */
     public Collection getOperationsInh(Object classifier) {
@@ -421,7 +421,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return result;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getReturnParameters(java.lang.Object)
      */
     public List getReturnParameters(Object operation) {
@@ -442,7 +442,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return returnParams;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getSpecification(java.lang.Object)
      */
     public Object getSpecification(Object object) {
@@ -456,7 +456,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getSpecifications(java.lang.Object)
      * same as Facade.getSpecifications()
      */
@@ -471,7 +471,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getSubtypes(java.lang.Object)
      */
     public Collection getSubtypes(Object cls) {
@@ -493,7 +493,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return result;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllBehavioralFeatures(
      *      java.lang.Object)
      */
@@ -531,7 +531,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getBehavioralFeatures(java.lang.Object)
      */
     public List getBehavioralFeatures(Object clazz) {
@@ -555,7 +555,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllInterfaces(java.lang.Object)
      */
     public Collection getAllInterfaces(Object ns) {
@@ -580,7 +580,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllClasses(java.lang.Object)
      */
     public Collection getAllClasses(Object ns) {
@@ -609,7 +609,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getRealizedInterfaces(java.lang.Object)
      */
     public Collection getRealizedInterfaces(Object cls) {
@@ -649,7 +649,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getExtendedClassifiers(
      *      java.lang.Object)
      */
@@ -674,7 +674,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getGeneralization( java.lang.Object,
      *      java.lang.Object)
      */
@@ -700,7 +700,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getBody(java.lang.Object)
      */
     public String getBody(Object comment) {
@@ -719,7 +719,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException();
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getFlows( java.lang.Object,
      *      java.lang.Object)
      */
@@ -747,7 +747,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getExtendingElements(java.lang.Object)
      */
     public Collection getExtendingElements(Object clazz) {
@@ -772,7 +772,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getExtendingClassifiers(
      *      java.lang.Object)
      */
@@ -801,7 +801,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllComponents(java.lang.Object)
      */
     public Collection getAllComponents(Object ns) {
@@ -831,7 +831,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllDataTypes(java.lang.Object)
      */
     public Collection getAllDataTypes(Object ns) {
@@ -860,7 +860,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllNodes(java.lang.Object)
      */
     public Collection getAllNodes(Object ns) {
@@ -889,7 +889,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAssociatedClassifiers(
      *      java.lang.Object)
      */
@@ -919,7 +919,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAssociations( java.lang.Object,
      *      java.lang.Object)
      */
@@ -949,7 +949,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllClassifiers(java.lang.Object)
      */
     public Collection getAllClassifiers(Object namespace) {
@@ -975,7 +975,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAssociations(java.lang.Object)
      */
     public Collection getAssociations(Object oclassifier) {
@@ -995,7 +995,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return col;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAssociationEnd( java.lang.Object,
      *      java.lang.Object)
      */
@@ -1021,7 +1021,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllContents(java.lang.Object)
      */
     public Collection getAllContents(Object clazz) {
@@ -1054,7 +1054,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllAttributes(java.lang.Object)
      */
     public Collection getAllAttributes(Object clazz) {
@@ -1084,7 +1084,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllVisibleElements(java.lang.Object)
      */
     public Collection getAllVisibleElements(Object ns) {
@@ -1108,7 +1108,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getSource(java.lang.Object)
      */
     public Object getSource(Object relationship) {
@@ -1149,7 +1149,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 if (col.isEmpty()) {
                     return null;
                 }
-                return (ModelElement) (col.toArray())[0];
+                return (col.toArray())[0];
             }
             if (relationship instanceof Flow) {
                 Flow flow = (Flow) relationship;
@@ -1157,7 +1157,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 if (col.isEmpty()) {
                     return null;
                 }
-                return (ModelElement) (col.toArray())[0];
+                return (col.toArray())[0];
             }
             if (relationship instanceof Extend) {
                 Extend extend = (Extend) relationship;
@@ -1177,7 +1177,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getDestination(java.lang.Object)
      */
     public Object getDestination(Object relationship) {
@@ -1223,7 +1223,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 if (col.isEmpty()) {
                     return null;
                 }
-                return (ModelElement) getFirstItemOrNull(col);
+                return getFirstItemOrNull(col);
             }
             if (relationship instanceof Flow) {
                 Flow flow = (Flow) relationship;
@@ -1231,7 +1231,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 if (col.isEmpty()) {
                     return null;
                 }
-                return (ModelElement) getFirstItemOrNull(col);
+                return getFirstItemOrNull(col);
             }
             if (relationship instanceof Extend) {
                 Extend extend = (Extend) relationship;
@@ -1250,7 +1250,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getDependencies( java.lang.Object,
      *      java.lang.Object)
      */
@@ -1281,7 +1281,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getRelationships( java.lang.Object,
      *      java.lang.Object)
      */
@@ -1314,7 +1314,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#isValidNamespace( java.lang.Object,
      *      java.lang.Object)
      */
@@ -1627,7 +1627,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return true;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getFirstSharedNamespace(
      *      java.lang.Object, java.lang.Object)
      */
@@ -1685,7 +1685,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return path;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllPossibleNamespaces(
      *      java.lang.Object, java.lang.Object)
      */
@@ -1717,7 +1717,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object o) {
@@ -1771,7 +1771,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllRealizedInterfaces(
      *      java.lang.Object)
      */
@@ -1826,7 +1826,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return col;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#hasCompositeEnd(java.lang.Object)
      */
     public final boolean hasCompositeEnd(Object association) {
@@ -1849,7 +1849,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return false;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#equalsAggregationKind(
      *      java.lang.Object, java.lang.String)
      */
@@ -1870,7 +1870,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeAnnotatedElement(
      *      java.lang.Object, java.lang.Object)
      */
@@ -1889,7 +1889,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or model element: " + me);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeClientDependency(
      *      java.lang.Object, java.lang.Object)
      */
@@ -1909,7 +1909,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException();
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeConnection( java.lang.Object,
      *      java.lang.Object)
      */
@@ -1932,7 +1932,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
 
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeConstraint( java.lang.Object,
      *      java.lang.Object)
      */
@@ -1949,7 +1949,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + cons);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeOwnedElement( java.lang.Object,
      *      java.lang.Object)
      */
@@ -1959,7 +1959,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 ModelElement elem = (ModelElement) value;
                 if (!(elem.getNamespace().equals(handle))) {
                     throw new IllegalStateException(
-                    "ModelElement isn't in Namespace");
+                        "ModelElement isn't in Namespace");
                 }
                 elem.setNamespace(null);
                 return;
@@ -1971,7 +1971,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + value);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeParameter( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2004,7 +2004,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or parameter: " + parameter);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeSourceFlow( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2021,7 +2021,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + flow);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeSupplierDependency(
      *      java.lang.Object, java.lang.Object)
      */
@@ -2039,7 +2039,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or dependency: " + dependency);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeTaggedValue( java.lang.Object,
      *      java.lang.String)
      */
@@ -2057,7 +2057,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeTargetFlow( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2074,7 +2074,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + flow);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addAnnotatedElement( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2088,7 +2088,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or annotatedElement: " + annotatedElement);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addClient( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2101,7 +2101,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or element: " + element);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addClientDependency( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2115,7 +2115,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or dependency: " + dependency);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addComment( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2127,7 +2127,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("element: " + element);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addConnection( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2145,7 +2145,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or connection: " + connection);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addConstraint( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2158,7 +2158,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + mc);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addDeploymentLocation(
      *      java.lang.Object, java.lang.Object)
      */
@@ -2171,7 +2171,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + node);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addElementResidence(java.lang.Object,
      *      java.lang.Object)
      */
@@ -2187,7 +2187,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + node);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeElementResidence(java.lang.Object,
      *      java.lang.Object)
      */
@@ -2226,7 +2226,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addFeature( java.lang.Object, int,
      *      java.lang.Object)
      */
@@ -2238,7 +2238,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle + " or f: " + f);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addFeature( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2250,7 +2250,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addLink( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2263,7 +2263,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + link);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addMethod( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2277,7 +2277,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle + " or m: " + m);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addOwnedElement( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2293,7 +2293,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + me);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addParameter( java.lang.Object, int,
      *      java.lang.Object)
      */
@@ -2313,7 +2313,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or parameter: " + parameter);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addParameter( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2341,7 +2341,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or parameter: " + parameter);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addRaisedSignal( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2364,7 +2364,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + sig);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addSourceFlow( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2378,7 +2378,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + flow);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addSupplier( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2391,7 +2391,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or element: " + element);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addSupplierDependency(
      *      java.lang.Object, java.lang.Object)
      */
@@ -2405,7 +2405,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or dependency: " + dependency);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addTaggedValue( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2414,7 +2414,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 taggedValue);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addTargetFlow( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2428,7 +2428,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + flow);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setAbstract(java.lang.Object, boolean)
      */
     public void setAbstract(Object handle, boolean flag) {
@@ -2447,7 +2447,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setActive(java.lang.Object, boolean)
      */
     public void setActive(Object handle, boolean active) {
@@ -2458,7 +2458,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setAggregation( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2473,7 +2473,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or aggregationKind: " + aggregationKind);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setAnnotatedElements( java.lang.Object,
      *      java.util.Collection)
      */
@@ -2487,7 +2487,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setAssociation( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2513,7 +2513,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or association: " + association);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setLeaf(java.lang.Object, boolean)
      */
     public void setLeaf(Object handle, boolean flag) {
@@ -2532,7 +2532,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setRaisedSignals( java.lang.Object,
      *      java.util.Collection)
      */
@@ -2540,7 +2540,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new NotImplementedException();
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setBody( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2561,7 +2561,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + expr);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setChangeability( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2582,7 +2582,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + ck);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setChangeable( java.lang.Object,
      *      boolean)
      */
@@ -2600,7 +2600,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setChild( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2613,7 +2613,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + child);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setConcurrency( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2628,7 +2628,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or concurrencyKind: " + concurrencyKind);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setConnections( java.lang.Object,
      *      java.util.Collection)
      */
@@ -2646,7 +2646,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setDefaultValue( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2659,7 +2659,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + expr);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setDiscriminator( java.lang.Object,
      *      java.lang.String)
      */
@@ -2671,7 +2671,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setFeature( java.lang.Object, int,
      *      java.lang.Object)
      */
@@ -2685,7 +2685,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + impl);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setFeatures( java.lang.Object,
      *      java.util.Collection)
      */
@@ -2704,7 +2704,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setContainer(java.lang.Object, java.lang.Object)
      */
     public void setContainer(Object handle, Object container) {
@@ -2718,7 +2718,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setInitialValue( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2731,7 +2731,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("at: " + at + " or expr: " + expr);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setKind( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2749,7 +2749,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + kind);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setModelElementContainer(
      *      java.lang.Object, java.lang.Object)
      */
@@ -2823,7 +2823,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setMultiplicity( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2869,7 +2869,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + arg);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setName(java.lang.Object,
      *      java.lang.String)
      */
@@ -2882,7 +2882,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + name);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setBody(java.lang.Object,
      *      java.lang.String)
      */
@@ -2893,7 +2893,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setNamespace( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2912,7 +2912,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + ns);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setNavigable(java.lang.Object, boolean)
      */
     public void setNavigable(Object handle, boolean flag) {
@@ -2923,7 +2923,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setOrdering( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2936,7 +2936,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + ok);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setOwner( java.lang.Object,
      *      java.lang.Object)
      *
@@ -2962,7 +2962,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + owner);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setOwnerScope( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2976,7 +2976,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + os);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setParameters( java.lang.Object,
      *      java.util.Collection)
      */
@@ -3005,7 +3005,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or parameters: " + parameters);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setParent( java.lang.Object,
      *      java.lang.Object)
      */
@@ -3019,7 +3019,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + parent);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setPowertype( java.lang.Object,
      *      java.lang.Object)
      */
@@ -3033,7 +3033,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + pt);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setQualifiers( java.lang.Object,
      *      java.util.Collection)
      */
@@ -3045,7 +3045,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setQualifiers( java.lang.Object,
      *      java.util.List)
      */
@@ -3058,7 +3058,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setQuery(java.lang.Object, boolean)
      */
     public void setQuery(Object handle, boolean flag) {
@@ -3069,7 +3069,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setResident( java.lang.Object,
      *      java.lang.Object)
      */
@@ -3083,7 +3083,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or resident: " + resident);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setResidents( java.lang.Object,
      *      java.util.Collection)
      */
@@ -3101,7 +3101,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setRoot(java.lang.Object, boolean)
      */
     public void setRoot(Object handle, boolean flag) {
@@ -3120,7 +3120,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setSources( java.lang.Object,
      *      java.util.Collection)
      */
@@ -3133,7 +3133,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setSpecification( java.lang.Object,
      *      boolean)
      */
@@ -3146,7 +3146,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setSpecification(java.lang.Object, java.lang.String)
      */
     public void setSpecification(Object operation, String specification) {
@@ -3157,7 +3157,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("operation: " + operation);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setSpecification(java.lang.Object, java.lang.Object)
      */
     public void setSpecification(Object method, Object specification) {
@@ -3169,7 +3169,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or operation: " + specification);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setSpecifications( java.lang.Object,
      *      java.util.Collection)
      */
@@ -3181,7 +3181,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setTaggedValue( java.lang.Object,
      *      java.lang.String, java.lang.String)
      */
@@ -3204,7 +3204,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setTaggedValues( java.lang.Object,
      *      java.util.Collection)
      */
@@ -3213,7 +3213,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 taggedValues);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setTargetScope( java.lang.Object,
      *      java.lang.Object)
      */
@@ -3233,7 +3233,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or scopeKind: " + scopeKind);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setType( java.lang.Object,
      *      java.lang.Object)
      */
@@ -3264,7 +3264,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + type);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setVisibility( java.lang.Object,
      *      java.lang.Object)
      */
@@ -3290,7 +3290,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or visibility: " + visibility);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeDeploymentLocation(
      *      java.lang.Object, java.lang.Object)
      */
@@ -3307,7 +3307,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + node);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addStereotype(java.lang.Object,
      * java.lang.Object)
      */
@@ -3326,7 +3326,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#addAllStereotypes(java.lang.Object, java.util.Collection)
      */
     public void addAllStereotypes(Object modelElement, Collection stereos) {
@@ -3339,7 +3339,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 + " or stereos: " + stereos);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#removeStereotype(java.lang.Object,
      *      java.lang.Object)
      */
@@ -3364,7 +3364,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#clearStereotypes(java.lang.Object)
      */
     public void clearStereotypes(Object modelElement) {
@@ -3375,7 +3375,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + modelElement);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#setEnumerationLiterals(java.lang.Object,
      *      java.util.List)
      */
@@ -3386,7 +3386,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CoreHelper#getAllMetatypeNames()
      */
     public Collection getAllMetatypeNames() {

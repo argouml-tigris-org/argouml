@@ -118,7 +118,7 @@ public class XmiWriterMDRImpl implements XmiWriter {
         config.setHeaderProvider(new XmiHeaderProviderImpl(version));
     }
 
-    /**
+    /*
      * @see org.argouml.model.XmiWriter#write()
      */
     public void write() throws UmlException {
@@ -179,21 +179,21 @@ public class XmiWriterMDRImpl implements XmiWriter {
             this.myWriter = wrappedWriter;
         }
 
-        /**
+        /*
          * @see java.io.OutputStream#close()
          */
         public void close() throws IOException {
             myWriter.close();
         }
 
-        /**
+        /*
          * @see java.io.OutputStream#flush()
          */
         public void flush() throws IOException {
             myWriter.flush();
         }
 
-        /**
+        /*
          * @see java.io.OutputStream#write(byte[], int, int)
          */
         public void write(byte[] b, int off, int len) throws IOException {
@@ -205,21 +205,21 @@ public class XmiWriterMDRImpl implements XmiWriter {
             }
         }
 
-        /**
+        /*
          * @see java.io.OutputStream#write(byte[])
          */
         public void write(byte[] b) throws IOException {
             write(b, 0, b.length);
         }
 
-        /**
+        /*
          * @see java.io.OutputStream#write(int)
          */
         public void write(int b) throws IOException {
             write(new byte[] {(byte) (b & 255)}, 0, 1);
         }
         
-        /**
+        /*
          * @see java.io.OutputStream#write(int)
          */
         private void write(char[] ca) throws IOException {
@@ -232,12 +232,12 @@ public class XmiWriterMDRImpl implements XmiWriter {
                         inTag = false;
                         if (Arrays.equals(tagName, TARGET)) {
                             if (i > 0) {
-                                myWriter.write(ca, 0, i+1);
+                                myWriter.write(ca, 0, i + 1);
                             }
                             xmiExtensionWriter.write(myWriter);
                             xmiExtensionWriter = null;
-                            if (i + 1 != len -1) {
-                                myWriter.write(ca, i+1, (len - i) - 1);
+                            if (i + 1 != len - 1) {
+                                myWriter.write(ca, i + 1, (len - i) - 1);
                             }
                             return;
                         }
@@ -258,7 +258,7 @@ public class XmiWriterMDRImpl implements XmiWriter {
         }
     }
 
-    public void setXmiExtensionWriter(XmiExtensionWriter xmiExtensionWriter) {
-        this.xmiExtensionWriter = xmiExtensionWriter;
+    public void setXmiExtensionWriter(XmiExtensionWriter theWriter) {
+        xmiExtensionWriter = theWriter;
     }
 }

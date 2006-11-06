@@ -65,7 +65,7 @@ public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         nsmodel = implementation;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesFactory#createExtend()
      */
     public Object createExtend() {
@@ -75,7 +75,7 @@ public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myExtend;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesFactory#createExtensionPoint()
      */
     public Object createExtensionPoint() {
@@ -85,7 +85,7 @@ public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myExtensionPoint;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesFactory#createActor()
      */
     public Object createActor() {
@@ -95,7 +95,7 @@ public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myActor;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesFactory#createInclude()
      */
     public Object createInclude() {
@@ -105,7 +105,7 @@ public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myInclude;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesFactory#createUseCase()
      */
     public Object createUseCase() {
@@ -116,7 +116,7 @@ public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesFactory#createUseCaseInstance()
      */
     public Object createUseCaseInstance() {
@@ -126,14 +126,14 @@ public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myUseCaseInstance;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesFactory#buildExtend(java.lang.Object, java.lang.Object)
      */
     public Object buildExtend(Object abase, Object anextension) {
         return buildExtend(abase, anextension, null);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesFactory#buildExtend(java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object buildExtend(Object abase, Object anextension, Object apoint) {
@@ -163,7 +163,7 @@ public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return extend;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesFactory#buildExtensionPoint(java.lang.Object)
      */
     public Object buildExtensionPoint(Object modelElement) {
@@ -185,7 +185,7 @@ public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return extensionPoint;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesFactory#buildInclude(java.lang.Object, java.lang.Object)
      */
     public Object buildInclude(Object/* MUseCase */abase,
@@ -229,7 +229,7 @@ public class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesFactory#buildActor(java.lang.Object, java.lang.Object)
      */
     public Object buildActor(Object actor, Object model) {

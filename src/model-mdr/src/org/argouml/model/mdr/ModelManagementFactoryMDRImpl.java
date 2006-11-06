@@ -79,7 +79,7 @@ public final class ModelManagementFactoryMDRImpl extends
         nsmodel = mi;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelManagementFactory#createModel()
      */
     public Object createModel() {
@@ -88,7 +88,7 @@ public final class ModelManagementFactoryMDRImpl extends
         return myModel;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelManagementFactory#setRootModel(java.lang.Object)
      */
     public void setRootModel(Object rootModel) {
@@ -100,14 +100,14 @@ public final class ModelManagementFactoryMDRImpl extends
         theRootModel = rootModel;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelManagementFactory#getRootModel()
      */
     public Object getRootModel() {
         return theRootModel;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelManagementFactory#createElementImport()
      */
     public Object createElementImport() {
@@ -117,7 +117,7 @@ public final class ModelManagementFactoryMDRImpl extends
         return myElementImport;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelManagementFactory#buildElementImport(
      * java.lang.Object, java.lang.Object)
      */
@@ -133,7 +133,7 @@ public final class ModelManagementFactoryMDRImpl extends
                 + "Package and a ModelElement.");
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelManagementFactory#createPackage()
      */
     public Object createPackage() {
@@ -143,7 +143,7 @@ public final class ModelManagementFactoryMDRImpl extends
         return myUmlPackage;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelManagementFactory#buildPackage(
      *      java.lang.String, java.lang.String)
      */
@@ -155,7 +155,7 @@ public final class ModelManagementFactoryMDRImpl extends
         return pkg;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelManagementFactory#createSubsystem()
      */
     public Object createSubsystem() {
@@ -165,7 +165,7 @@ public final class ModelManagementFactoryMDRImpl extends
         return mySubsystem;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelManagementFactory#copyPackage(
      *      java.lang.Object, java.lang.Object)
      */

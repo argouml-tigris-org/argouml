@@ -85,7 +85,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         collabPkg = nsmodel.getUmlPackage().getCollaborations();
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#createAssociationEndRole()
      */
     public Object createAssociationEndRole() {
@@ -95,7 +95,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myAssociationEndRole;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#createAssociationRole()
      */
     public Object createAssociationRole() {
@@ -105,7 +105,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myAssociationRole;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#createClassifierRole()
      */
     public Object createClassifierRole() {
@@ -115,7 +115,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myClassifierRole;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#createCollaboration()
      */
     public Object createCollaboration() {
@@ -125,7 +125,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myCollaboration;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#createCollaborationInstanceSet()
      */
     public Object createCollaborationInstanceSet() {
@@ -136,7 +136,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return obj;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#createInteraction()
      */
     public Object createInteraction() {
@@ -146,7 +146,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myInteraction;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#createInteractionInstanceSet()
      */
     public Object createInteractionInstanceSet() {
@@ -156,7 +156,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         super.initialize(obj);
         return obj;
     }
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#createMessage()
      */
     public Object createMessage() {
@@ -166,7 +166,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myMessage;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#buildClassifierRole(java.lang.Object)
      */
     public Object buildClassifierRole(Object collaboration) {
@@ -182,7 +182,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return classifierRole;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#buildCollaboration(java.lang.Object)
      */
     public Object buildCollaboration(Object handle) {
@@ -198,7 +198,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return modelelement;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#buildCollaboration(java.lang.Object,
      *      java.lang.Object)
      */
@@ -232,7 +232,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 + " Collaboration or Operation");
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#buildInteraction(java.lang.Object)
      */
     public Object buildInteraction(Object handle) {
@@ -248,7 +248,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return inter;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#buildAssociationEndRole(java.lang.Object)
      */
     public Object buildAssociationEndRole(Object atype) {
@@ -263,7 +263,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return end;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#buildAssociationRole(java.lang.Object,
      *      java.lang.Object)
      */
@@ -293,7 +293,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 + " same non-null namespace");
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#buildAssociationRole(java.lang.Object,
      *      java.lang.Object, java.lang.Object, java.lang.Object,
      *      java.lang.Boolean)
@@ -352,7 +352,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 + " same non-null namespace");
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#buildAssociationRole(java.lang.Object)
      */
     public Object buildAssociationRole(Object link) {
@@ -474,7 +474,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#buildMessage(java.lang.Object,
      *      java.lang.Object)
      */
@@ -509,13 +509,14 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return buildMessageInteraction(inter, role);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CollaborationsFactory#buildActivator(java.lang.Object,
      *      java.lang.Object)
      */
     public Object buildActivator(Object owner, Object interaction) {
         if (!(owner instanceof Message)) {
-            throw new IllegalArgumentException("A message must be supplied as the owner");
+            throw new IllegalArgumentException(
+                    "A message must be supplied as the owner");
         }
 
         if (interaction == null) {

@@ -70,7 +70,7 @@ public class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         nsmodel = implementation;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsFactory#createActionState()
      */
     public Object createActionState() {
@@ -80,7 +80,7 @@ public class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myActionState;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsFactory#createActivityGraph()
      */
     public Object createActivityGraph() {
@@ -90,7 +90,7 @@ public class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myActivityGraph;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsFactory#createCallState()
      */
     public Object createCallState() {
@@ -100,7 +100,7 @@ public class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myCallState;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsFactory#createClassifierInState()
      */
     public Object createClassifierInState() {
@@ -111,7 +111,7 @@ public class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myClassifierInState;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsFactory#createObjectFlowState()
      */
     public Object createObjectFlowState() {
@@ -122,7 +122,7 @@ public class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myObjectFlowState;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsFactory#createPartition()
      */
     public Object createPartition() {
@@ -132,7 +132,7 @@ public class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myPartition;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsFactory#createSubactivityState()
      */
     public Object createSubactivityState() {
@@ -143,7 +143,7 @@ public class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return mySubactivityState;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsFactory#buildActivityGraph(java.lang.Object)
      */
     public Object buildActivityGraph(Object theContext) {
@@ -166,7 +166,7 @@ public class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 "Cannot create an ActivityGraph with context " + theContext);
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsFactory#buildObjectFlowState(java.lang.Object)
      */
     public Object buildObjectFlowState(Object compositeState) {
@@ -179,7 +179,7 @@ public class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return state;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsFactory#buildClassifierInState(java.lang.Object, java.util.Collection)
      */
     public Object buildClassifierInState(Object classifier, Collection state) {

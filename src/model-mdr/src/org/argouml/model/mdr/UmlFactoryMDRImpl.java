@@ -328,7 +328,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.UmlFactory#buildConnection(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object buildConnection(Object elementType, Object fromElement,
@@ -402,16 +402,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return connection;
     }
 
-    /**
-     * Creates a UML model element of the given type. This only works for UML
-     * elements. If a diagram contains elements of another type then it is the
-     * responsibility of the diagram manage those items and not call this
-     * method. It also only works for UML model elements that are represented in
-     * diagrams by a node.<p>
-     *
-     * The parameter "elementType" stands for the type of model element to
-     * build.
-     *
+    /*
      * @see org.argouml.model.UmlFactory#buildNode(java.lang.Object)
      */
     public Object buildNode(Object elementType) {
@@ -490,7 +481,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return modelElement;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UmlFactory#isConnectionType(java.lang.Object)
      */
     public boolean isConnectionType(Object connectionType) {
@@ -498,7 +489,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return (validConnectionMap.get(connectionType) != null);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UmlFactory#isConnectionValid(java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public boolean isConnectionValid(Object connectionType, Object fromElement,
@@ -638,8 +629,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *
      * @param elem
      *            The element to be deleted
-     */
-    /**
+     *            
      * @see org.argouml.model.UmlFactory#delete(java.lang.Object)
      */
     public void delete(Object elem) {
@@ -824,7 +814,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
-    /**
+    /*
      * @see org.argouml.model.UmlFactory#isRemoved(java.lang.Object)
      */
     public boolean isRemoved(Object o) {

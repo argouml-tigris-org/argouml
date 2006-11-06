@@ -50,7 +50,7 @@ public class XmiHeaderProviderImpl implements XMIHeaderProvider {
         this.version = version;
     }
 
-    /**
+    /*
      * @see org.netbeans.lib.jmi.xmi.XMIHeaderProvider#writeHeader(java.io.Writer)
      */
     public void writeHeader (Writer ps) {

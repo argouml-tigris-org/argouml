@@ -72,7 +72,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         nsmodel = implementation;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#getExtensionPoints(java.lang.Object)
      */
     public Collection getExtensionPoints(Object/* UseCase */useCase) {
@@ -83,7 +83,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#getAllUseCases(java.lang.Object)
      */
     public Collection getAllUseCases(Object ns) {
@@ -110,7 +110,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#getAllActors(java.lang.Object)
      */
     public Collection getAllActors(Object ns) {
@@ -136,7 +136,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#getExtendedUseCases(java.lang.Object)
      */
     public Collection getExtendedUseCases(Object ausecase) {
@@ -158,7 +158,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#getExtendingUseCases(java.lang.Object)
      */
     public Collection getExtendingUseCases(Object usecase) {
@@ -179,7 +179,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#getExtends(java.lang.Object, java.lang.Object)
      */
     public Object getExtends(Object abase, Object anextension) {
@@ -203,7 +203,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#getIncludedUseCases(java.lang.Object)
      */
     public Collection getIncludedUseCases(Object ausecase) {
@@ -225,7 +225,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#getIncludes(java.lang.Object, java.lang.Object)
      */
     public Object getIncludes(Object abase, Object aninclusion) {
@@ -249,7 +249,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#getSpecificationPath(java.lang.Object)
      */
     public Collection getSpecificationPath(Object ausecase) {
@@ -272,7 +272,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#setBase(java.lang.Object, java.lang.Object)
      */
     public void setBase(Object extend, Object base) {
@@ -319,7 +319,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#removeExtend(java.lang.Object, java.lang.Object)
      */
     public void removeExtend(Object elem, Object extend) {
@@ -339,7 +339,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + extend);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#removeExtensionPoint(java.lang.Object, java.lang.Object)
      */
     public void removeExtensionPoint(Object elem, Object ep) {
@@ -360,7 +360,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         throw new IllegalArgumentException("elem: " + elem + " or ep: " + ep);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#removeInclude(java.lang.Object, java.lang.Object)
      */
     public void removeInclude(Object usecase, Object include) {
@@ -376,7 +376,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or include: " + include);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#addExtend(java.lang.Object, java.lang.Object)
      */
     public void addExtend(Object elem, Object extend) {
@@ -393,7 +393,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + extend);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#addExtensionPoint(java.lang.Object, java.lang.Object)
      */
     public void addExtensionPoint(Object handle, Object extensionPoint) {
@@ -411,7 +411,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or extensionPoint: " + extensionPoint);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#addInclude(java.lang.Object, java.lang.Object)
      */
     public void addInclude(Object usecase, Object include) {
@@ -424,7 +424,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or include: " + include);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#setAddition(java.lang.Object, java.lang.Object)
      */
     public void setAddition(Object handle, Object useCase) {
@@ -446,7 +446,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#setCondition(java.lang.Object, java.lang.Object)
      */
     public void setCondition(Object handle, Object booleanExpression) {
@@ -460,7 +460,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or booleanExpression: " + booleanExpression);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#setExtension(java.lang.Object, java.lang.Object)
      */
     public void setExtension(Object handle, Object useCase) {
@@ -484,7 +484,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + useCase);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#setExtensionPoints(java.lang.Object, java.util.Collection)
      */
     public void setExtensionPoints(Object handle, Collection extensionPoints) {
@@ -510,7 +510,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or extensionPoints: " + extensionPoints);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#setIncludes(java.lang.Object, java.util.Collection)
      */
     public void setIncludes(Object handle, Collection includes) {
@@ -536,7 +536,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or includes: " + includes);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#setLocation(java.lang.Object, java.lang.String)
      */
     public void setLocation(Object handle, String loc) {
@@ -547,7 +547,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.UseCasesHelper#setUseCase(java.lang.Object, java.lang.Object)
      */
     public void setUseCase(Object elem, Object usecase) {

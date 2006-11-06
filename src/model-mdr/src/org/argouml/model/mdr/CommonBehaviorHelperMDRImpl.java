@@ -85,7 +85,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         this.modelImpl = implementation;
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#getSource(java.lang.Object)
      */
     public Object getSource(Object link) {
@@ -99,7 +99,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         throw new IllegalArgumentException("Argument is not a link");
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#getDestination(java.lang.Object)
      */
     public Object getDestination(Object link) {
@@ -113,7 +113,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         throw new IllegalArgumentException("Argument is not a link");
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#removeActualArgument(java.lang.Object,
      *      java.lang.Object)
      */
@@ -130,7 +130,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + " or " + argument);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#removeClassifier(java.lang.Object,
      *      java.lang.Object)
      */
@@ -148,7 +148,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + " or " + classifier);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#removeContext(java.lang.Object,
      *      java.lang.Object)
      */
@@ -168,7 +168,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + " or " + context);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#removeReception(java.lang.Object,
      *      java.lang.Object)
      */
@@ -185,7 +185,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + " or " + reception);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#addActualArgument(java.lang.Object,
      *      java.lang.Object)
      */
@@ -198,7 +198,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + " or " + argument);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#addClassifier(java.lang.Object,
      *      java.lang.Object)
      */
@@ -245,7 +245,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#addStimulus(java.lang.Object,
      *      java.lang.Object)
      */
@@ -265,7 +265,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + " or stimulus: " + stimulus);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setAsynchronous(java.lang.Object,
      *      boolean)
      */
@@ -277,7 +277,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setOperation(java.lang.Object,
      *      java.lang.Object)
      */
@@ -296,7 +296,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + " or operation: " + operation);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setClassifiers(java.lang.Object,
      *      java.util.Vector)
      */
@@ -321,7 +321,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setCommunicationLink(java.lang.Object,
      *      java.lang.Object)
      */
@@ -333,7 +333,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         throw new IllegalArgumentException("handle: " + handle + " or c: " + c);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setComponentInstance(java.lang.Object,
      *      java.lang.Object)
      */
@@ -346,7 +346,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         throw new IllegalArgumentException("handle: " + handle + " or c: " + c);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setContexts(java.lang.Object,
      *      java.util.Collection)
      */
@@ -370,7 +370,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setDispatchAction(java.lang.Object,
      *      java.lang.Object)
      */
@@ -384,7 +384,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + value);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setInstance(java.lang.Object,
      *      java.lang.Object)
      */
@@ -403,7 +403,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + inst);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setNodeInstance(java.lang.Object,
      *      java.lang.Object)
      */
@@ -424,7 +424,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + " or nodeInstance: " + nodeInstance);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setReceiver(java.lang.Object,
      *      java.lang.Object)
      */
@@ -442,7 +442,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + " or receiver: " + receiver);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setReception(java.lang.Object, 
      * java.util.Collection)
      */
@@ -467,7 +467,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setRecurrence(java.lang.Object,
      *      java.lang.Object)
      */
@@ -480,7 +480,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + expr);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setScript(java.lang.Object,
      *      java.lang.Object)
      */
@@ -494,7 +494,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + expr);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setSender(java.lang.Object,
      *      java.lang.Object)
      */
@@ -512,7 +512,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + sender);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setSignal(java.lang.Object,
      *      java.lang.Object)
      */
@@ -535,7 +535,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + signal);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setSpecification(java.lang.Object,
      *      java.lang.String)
      */
@@ -547,7 +547,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setTarget(java.lang.Object,
      *      java.lang.Object)
      */
@@ -565,7 +565,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + " or element: " + element);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setTransition(java.lang.Object,
      *      java.lang.Object)
      */
@@ -584,7 +584,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + trans);
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#setValue(java.lang.Object,
      *      java.lang.Object)
      */
@@ -606,7 +606,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 + value);
     }
 
-    /**
+    /*
      * @see CommonBehaviorHelper#getInstantiation(Object)
      */
     public Object getInstantiation(Object createaction) {
@@ -620,7 +620,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         throw new IllegalArgumentException("handle: " + createaction);
     }
 
-    /**
+    /*
      * @see CommonBehaviorHelper#setInstantiation(Object, Object)
      */
     public void setInstantiation(Object createaction, Object instantiation) {
@@ -639,7 +639,7 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
 
     }
 
-    /**
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#getActionOwner(java.lang.Object)
      */
     public Object getActionOwner(Object action) {

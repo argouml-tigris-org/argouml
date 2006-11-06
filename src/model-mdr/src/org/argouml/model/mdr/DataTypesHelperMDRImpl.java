@@ -57,7 +57,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         modelImpl = implementation;
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#copyTaggedValues(
      *      java.lang.Object, java.lang.Object)
      */
@@ -89,6 +89,9 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
     }
 
     /**
+     * TODO: This isn't in public API. Reduce visibility or remove (it is unused
+     * currently) - tfm
+     * 
      * @param from
      *            The MultiplicityRange to copy
      * @param to
@@ -106,7 +109,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         throw new IllegalArgumentException("from: " + from + ", to: " + to);
     }
 	
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#equalsINITIALKind(java.lang.Object)
      */
     public boolean equalsINITIALKind(Object kind) {
@@ -120,7 +123,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#equalsDeepHistoryKind(java.lang.Object)
      */
     public boolean equalsDeepHistoryKind(Object kind) {
@@ -134,7 +137,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#equalsShallowHistoryKind(java.lang.Object)
      */
     public boolean equalsShallowHistoryKind(Object kind) {
@@ -148,7 +151,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#equalsFORKKind(java.lang.Object)
      */
     public boolean equalsFORKKind(Object kind) {
@@ -162,7 +165,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#equalsJOINKind(java.lang.Object)
      */
     public boolean equalsJOINKind(Object kind) {
@@ -176,7 +179,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#equalsCHOICEKind(java.lang.Object)
      */
     public boolean equalsCHOICEKind(Object kind) {
@@ -190,7 +193,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#equalsJUNCTIONKind(java.lang.Object)
      */
     public boolean equalsJUNCTIONKind(Object kind) {
@@ -204,7 +207,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#multiplicityToString(java.lang.Object)
      */
     public String multiplicityToString(Object multiplicity) {
@@ -245,7 +248,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#setBody(java.lang.Object,
      *      java.lang.String)
      */
@@ -258,7 +261,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
                 + body);
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#getBody(java.lang.Object)
      */
     public String getBody(Object handle) {
@@ -272,7 +275,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#setLanguage(java.lang.Object,
      *      java.lang.String)
      */
@@ -285,7 +288,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
                 + language);
     }
 
-    /**
+    /*
      * @see org.argouml.model.DataTypesHelper#getLanguage(java.lang.Object)
      */
     public String getLanguage(Object handle) {
