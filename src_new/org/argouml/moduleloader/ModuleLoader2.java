@@ -65,6 +65,12 @@ import org.argouml.ui.GUI;
  * @since 0.15.4
  */
 public final class ModuleLoader2 {
+    
+    private static final String[] INTERNAL_MODULES = {
+        "org.argouml.ui.DeveloperModule",
+        "org.argouml.uml.reveng.java.JavaImport", 
+    };
+    
     /**
      * Logger.
      */
@@ -443,15 +449,9 @@ public final class ModuleLoader2 {
      * As the modules are found they are appended to {@link #moduleStatus}.<p>
      */
     private void huntForModules() {
-        // TODO: huntForInternalModules();
+        huntForInternalModules();
         huntForModulesFromExtensionDir();
         // TODO: huntForModulesFromJavaWebStart();
-        try {
-            addClass("org.argouml.ui.DeveloperModule");
-        } catch (ClassNotFoundException e) {
-            // We'll automatically use the dev module if we find
-            // it but don't care is we don'e
-        }
 
         // Load modules specified by a System property.
         // Modules specified by a system property is for
@@ -468,6 +468,20 @@ public final class ModuleLoader2 {
                     LOG.error("Could not load module from class " + className);
                 }
             }
+        }
+    }
+    
+    /**
+     * Load internal modules which should be found on the standard
+     * classpath.
+     */
+    private void huntForInternalModules() {
+        for (int i = 0; i < INTERNAL_MODULES.length; i++) {
+            try {
+                addClass(INTERNAL_MODULES[i]);
+            } catch (ClassNotFoundException e) {
+                LOG.warn("Load failure on internal module", e);
+            }            
         }
     }
 
