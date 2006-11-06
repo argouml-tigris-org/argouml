@@ -27,7 +27,6 @@ package org.argouml.model.mdr;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.ExtensionMechanismsFactory;
 import org.argouml.model.ExtensionMechanismsHelper;
@@ -60,12 +59,6 @@ public class ExtensionMechanismsFactoryMDRImpl extends
     private MDRModelImplementation nsmodel;
 
     /**
-     * The logger.
-     */
-    private Logger LOG = Logger.
-            getLogger(ExtensionMechanismsFactoryMDRImpl.class);
-
-    /**
      * The extension mechanism helper.
      */
     private ExtensionMechanismsHelper extensionHelper;
@@ -81,10 +74,8 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         extensionHelper = implementation.getExtensionMechanismsHelper();
     }
 
-    /**
-     * Create an empty but initialized instance of a UML TaggedValue.
-     * 
-     * @return an initialized UML TaggedValue instance.
+    /*
+     * @see org.argouml.model.ExtensionMechanismsFactory#createTaggedValue()
      */
     public Object createTaggedValue() {
         TaggedValue tv = nsmodel.getUmlPackage().getCore().getTaggedValue().
@@ -122,26 +113,14 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         return td;
     }
 
-    /**
-     * Builds a stereotype for some kind of modelelement.
-     * 
+    /*
      * TODO: MVW: This needs rethinking/rework! I have the following questions:
      * Why does it not search for a stereotype in the namespace using properties
      * and only create a new stereotype if it will actually be used? Ie, why is
      * there not a getStereotype(String name, String baseClass)? (edited by
      * d00mst)  <these comments imported from NSUML implementation - tfm>
      * 
-     * @param theModelElementObject
-     *            a Model Element that the stereotype will be applied to. The
-     *            stereotype will have its BaseClass set to an appropriate value
-     *            for this kind of Model Elements.
-     * @param theName
-     *            the name for the stereotype
-     * @param theNamespaceObject
-     *            the namespace the stereotype will be created within.
-     * @return the resulting stereotype object
-     * @throws IllegalArgumentException
-     *             if either argument is null.
+     * @see org.argouml.model.ExtensionMechanismsFactory#buildStereotype(java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object buildStereotype(
             Object theModelElementObject,
@@ -172,18 +151,8 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         return stereo;
     }
 
-    /**
-     * Builds an initialized stereotype.
-     * 
-     * @param theModelElementObject
-     *            the baseclass for the new stereotype
-     * @param theName
-     *            the name for the new stereotype
-     * @param model
-     *            the current model of interest
-     * @param models
-     *            all the models
-     * @return the new stereotype
+    /*
+     * @see org.argouml.model.ExtensionMechanismsFactory#buildStereotype(java.lang.Object, java.lang.String, java.lang.Object, java.util.Collection)
      */
     public Object buildStereotype(
             Object theModelElementObject,
@@ -227,14 +196,8 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         return stereotype;
     }
 
-    /**
-     * Builds an initialized stereotype.
-     * 
-     * @param text
-     *            is the name of the stereotype
-     * @param ns
-     *            namespace where the stereotype lives (is known)
-     * @return an initialized stereotype.
+    /*
+     * @see org.argouml.model.ExtensionMechanismsFactory#buildStereotype(java.lang.String, java.lang.Object)
      */
     public Object buildStereotype(String text, Object ns) {
         if (!(ns instanceof Namespace)) {
@@ -249,14 +212,8 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         return stereo;
     }
 
-    /**
-     * Build an initialized instance of a UML TaggedValue.
-     * 
-     * @param tag
-     *            is the tag name (a String).
-     * @param value
-     *            is the value (a String).
-     * @return an initialized UML TaggedValue instance.
+    /*
+     * @see org.argouml.model.ExtensionMechanismsFactory#buildTaggedValue(java.lang.String, java.lang.String)
      */
     public Object buildTaggedValue(String tag, String value) {
         return buildTaggedValue(tag, value, null);
@@ -272,6 +229,9 @@ public class ExtensionMechanismsFactoryMDRImpl extends
      * @param tagType
      *            is the name of the TagDefinition
      * @return an initialized UML TaggedValue instance.
+     * 
+     * TODO: This method isn't in the public API.  
+     * Reduce it's visiblity? - tfm
      */
     public Object buildTaggedValue(String tag, String value, String tagType) {
         TaggedValue tv = (TaggedValue) createTaggedValue();
@@ -310,6 +270,11 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         }
     }
 
+    /**
+     * Delete a TagDefinition.
+     * 
+     * @param elem the element to be deleted
+     */
     void deleteTagDefinition(Object elem) {
         if (!(elem instanceof TagDefinition)) {
             throw new IllegalArgumentException();
@@ -319,14 +284,9 @@ public class ExtensionMechanismsFactoryMDRImpl extends
                 nsmodel.getUmlPackage().getCore().getATypeTypedValue()
                         .getTypedValue((TagDefinition) elem));
     }
-    /**
-     * Copies a stereotype.
-     * 
-     * @param source
-     *            is the stereotype to copy.
-     * @param ns
-     *            is the namespace to put the copy in.
-     * @return a newly created stereotype
+
+    /*
+     * @see org.argouml.model.ExtensionMechanismsFactory#copyStereotype(java.lang.Object, java.lang.Object)
      */
     public Object copyStereotype(Object source, Object ns) {
         if (!(source instanceof Stereotype)) {
@@ -360,9 +320,9 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         // TODO: required tags
     }
 
-    /**
-     * @see org.argouml.model.ExtensionMechanismsFactory#buildTagDefinition(java.lang.String,
-     *      java.lang.Object, java.lang.Object)
+    /*
+     * @see org.argouml.model.ExtensionMechanismsFactory#buildTagDefinition(
+     *          java.lang.String, java.lang.Object, java.lang.Object)
      */
     public Object buildTagDefinition(String text, Object owner, Object ns) {
         if (owner != null) {
@@ -390,7 +350,7 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         return td;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsFactory#createTagDefinition()
      */
     public Object createTagDefinition() {
@@ -400,7 +360,7 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         return td;
     }
     
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsFactory#createStereotype()
      */
     public Object createStereotype() {
@@ -410,7 +370,7 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         return st;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsFactory#copyTagDefinition(java.lang.Object, java.lang.Object)
      */
     public Object copyTagDefinition(Object anElement, Object aNs) {
