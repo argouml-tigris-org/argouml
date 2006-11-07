@@ -41,7 +41,7 @@ import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
-import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLRecurrenceExpressionModel;
 import org.argouml.uml.ui.UMLScriptExpressionModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -113,11 +113,8 @@ public abstract class PropPanelAction extends PropPanelModelElement {
 
         addSeparator();
 
-        JList argumentsList =
-            new UMLMutableLinkedList(
-                new UMLActionArgumentListModel(), null,
-                new ActionNewArgument(),
-                new ActionRemoveArgument(), true);
+        JList argumentsList = new UMLLinkedList(
+                    new UMLActionArgumentListModel());
         argumentsList.setVisibleRowCount(5);
         argumentsScroll = new JScrollPane(argumentsList);
         addField(Translator.localize("label.arguments"),
