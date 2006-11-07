@@ -480,7 +480,7 @@ public final class ModuleLoader2 {
             try {
                 addClass(INTERNAL_MODULES[i]);
             } catch (ClassNotFoundException e) {
-                LOG.warn("Load failure on internal module", e);
+                /* This is perfectly normal - no need for reporting. */
             }            
         }
     }
