@@ -38,6 +38,11 @@ import org.argouml.model.Model;
  * NOTE: If requested in the future this could be returned from the language
  * modules.
  *
+ * TODO: Update this to use the UML 1.4 TagDefinition mechanism instead of
+ * UML 1.3 String type tag types. The TagDefinition can be made more specific
+ * so that it just applies to Components with a <<sourceModule>> stereotype
+ * or something similar. - tfm
+ * 
  * @author euluis
  * @since 0.17.1
  */
@@ -49,7 +54,7 @@ public class SourcePathControllerImpl implements SourcePathController {
      */
     private static final String SRC_PATH_TAG = "src_path";
 
-    /**
+    /*
      * @see org.argouml.uml.ui.SourcePathController#getSourcePath(java.lang.Object)
      */
     public File getSourcePath(Object modelElement) {
@@ -64,14 +69,14 @@ public class SourcePathControllerImpl implements SourcePathController {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.SourcePathController#getSourcePathSettings()
      */
     public SourcePathTableModel getSourcePathSettings() {
         return new SourcePathTableModel(this);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.SourcePathController#setSourcePath(org.argouml.uml.ui.SourcePathTableModel)
      */
     public void setSourcePath(SourcePathTableModel srcPaths) {
@@ -81,7 +86,7 @@ public class SourcePathControllerImpl implements SourcePathController {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.SourcePathController#setSourcePath(
      * java.lang.Object, java.io.File)
      */
@@ -90,21 +95,21 @@ public class SourcePathControllerImpl implements SourcePathController {
             sourcePath.toString());
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {
         return "ArgoUML default source path controller.";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.SourcePathController#deleteSourcePath(java.lang.Object)
      */
     public void deleteSourcePath(Object modelElement) {
         Model.getCoreHelper().removeTaggedValue(modelElement, SRC_PATH_TAG);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.SourcePathController#getAllModelElementsWithSourcePath()
      */
     public Collection getAllModelElementsWithSourcePath() {
