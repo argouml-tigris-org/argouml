@@ -183,7 +183,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
         extends UMLComboBoxModel2 {
 
         /**
-         * Constructor for UMLModelElementStereotypeComboBoxModel.
+         * Constructor.
          */
         public UMLTaggedValueModelElementComboBoxModel() {
             super("modelelement", true); // ??
