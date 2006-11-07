@@ -96,14 +96,14 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
     }
 
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnCount()
      */
     public int getColumnCount() {
         return 2;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
     public String getColumnName(int c) {
@@ -116,7 +116,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         return "XXX";
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     public Class getColumnClass(int c) {
@@ -129,14 +129,14 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         return null;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
     public boolean isCellEditable(int row, int col) {
         return true;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getRowCount()
      */
     public int getRowCount() {
@@ -154,7 +154,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         }
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
     public Object getValueAt(int row, int col) {
@@ -185,7 +185,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         return "TV-" + row * 2 + col; // for debugging
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
@@ -286,7 +286,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         return it.next();
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
@@ -300,7 +300,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         }
     }
 
-    /**
+    /*
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {
@@ -308,7 +308,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         SwingUtilities.invokeLater(delayedNotify);
     }
 
-    /**
+    /*
      * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
      */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
