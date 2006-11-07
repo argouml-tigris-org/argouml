@@ -26,6 +26,7 @@ package org.argouml.model.mdr;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.jmi.reflect.InvalidObjectException;
@@ -128,6 +129,23 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle
                 + " or " + argument);
+    }
+
+    /*
+     * @see org.argouml.model.CommonBehaviorHelper#setActualArguments(java.lang.Object, java.util.List)
+     */
+    public void setActualArguments(Object action, List arguments) {
+        try {
+            if (action instanceof Action) {
+                ((Action) action).getActualArgument().clear();
+                ((Action) action).getActualArgument().addAll(arguments);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + action
+                + " or " + arguments);
     }
 
     /*
