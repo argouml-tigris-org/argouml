@@ -599,6 +599,9 @@ public interface CoreHelper {
      * @param handle the model element to remove the tagged value from
      * @param name the name of the tagged value
      * @throws IllegalArgumentException if handle isn't a model element
+     * 
+     * @deprecated by tfmorris for 0.23.3 - 
+     * use {@link ExtensionMechanismsHelper#removeTaggedValue(Object, Object)}
      */
     void removeTaggedValue(Object handle, String name);
 
@@ -1173,6 +1176,9 @@ public interface CoreHelper {
      * @param handle is the model element
      * @param tag is the tag name (a string)
      * @param value is the value
+     * @deprecated by tfmorris for 0.23.3 - 
+     * use {@link ExtensionMechanismsHelper#setType(Object, Object)}
+     * and {@link ExtensionMechanismsHelper#setValueOfTag(Object, String)}
      */
     void setTaggedValue(Object handle, String tag, String value);
 

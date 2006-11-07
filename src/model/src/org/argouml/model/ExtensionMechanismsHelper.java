@@ -177,9 +177,10 @@ public interface ExtensionMechanismsHelper {
 
     /**
      * Set the Tag of a TaggedValue.
-     *
+     * 
      * @param handle TaggedValue
      * @param tag String
+     * @deprecated by tfmorris for 0.23.3 - use {@link #setType(Object, Object)}
      */
     void setTag(Object handle, Object tag);
     
