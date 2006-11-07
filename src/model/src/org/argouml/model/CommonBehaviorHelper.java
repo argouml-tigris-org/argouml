@@ -25,6 +25,7 @@
 package org.argouml.model;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -76,6 +77,15 @@ public interface CommonBehaviorHelper {
      * @param argument Argument
      */
     void removeActualArgument(Object handle, Object argument);
+    
+    /**
+     * This method replaces all arguments of the given action
+     * by the given list of arguments.
+     *
+     * @param action the given action
+     * @param arguments the new arguments
+     */
+    void setActualArguments(Object action, List arguments);
 
     /**
      * This method classifier from an instance.

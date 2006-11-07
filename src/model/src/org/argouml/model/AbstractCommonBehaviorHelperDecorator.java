@@ -25,6 +25,7 @@
 package org.argouml.model;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -69,6 +70,10 @@ public abstract class AbstractCommonBehaviorHelperDecorator
 
     public void removeActualArgument(Object handle, Object argument) {
         impl.removeActualArgument(handle, argument);
+    }
+    
+    public void setActualArguments(Object action, List arguments) {
+        impl.setActualArguments(action, arguments);
     }
 
     public void removeClassifier(Object handle, Object classifier) {
