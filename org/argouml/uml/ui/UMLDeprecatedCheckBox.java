@@ -30,6 +30,9 @@ import org.argouml.model.Model;
  * Class to represent a checkbox for the deprecated checkbox in the
  * documentation tab.
  *
+ * TODO: This needs to be reworked to use UML 1.4 TagDefinitions
+ * instead of the UML 1.3 String typed tag type. - tfm
+ * 
  * @author mkl
  *
  */

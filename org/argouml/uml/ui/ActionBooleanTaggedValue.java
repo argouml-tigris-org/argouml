@@ -58,7 +58,7 @@ public class ActionBooleanTaggedValue extends UndoableAction {
         tagName = theTagName;
     }
 
-    /**
+    /*
      * set the taggedvalue according to the condition of the checkbox. The
      * taggedvalue will be created if not existing.
      *
@@ -83,6 +83,7 @@ public class ActionBooleanTaggedValue extends UndoableAction {
         if (taggedValue == null) {
             taggedValue =
                 Model.getExtensionMechanismsFactory().createTaggedValue();
+            // TODO: Rework to use UML 1.4 TagDefinitions - tfm
             Model.getExtensionMechanismsHelper().setTag(taggedValue, tagName);
             Model.getCoreHelper().addTaggedValue(obj, taggedValue);
         }
