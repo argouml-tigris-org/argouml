@@ -216,35 +216,20 @@ public class ExtensionMechanismsFactoryMDRImpl extends
      * @see org.argouml.model.ExtensionMechanismsFactory#buildTaggedValue(java.lang.String, java.lang.String)
      */
     public Object buildTaggedValue(String tag, String value) {
-        return buildTaggedValue(tag, value, null);
-    }
-
-    /**
-     * Build an initialized instance of a UML TaggedValue.
-     * 
-     * @param tag
-     *            is the tag name (a String).
-     * @param value
-     *            is the value (a String).
-     * @param tagType
-     *            is the name of the TagDefinition
-     * @return an initialized UML TaggedValue instance.
-     * 
-     * TODO: This method isn't in the public API.  
-     * Reduce it's visiblity? - tfm
-     */
-    public Object buildTaggedValue(String tag, String value, String tagType) {
         TaggedValue tv = (TaggedValue) createTaggedValue();
-        tv.setType((TagDefinition) getTagDefinition(tag));
-        if (tagType != null) {
-            tv.getType().setTagType(tagType);
-        }
-        // TODO: It seems that the other CASE tools manage only one
+        TagDefinition td = (TagDefinition) getTagDefinition(tag);
+        td = 
+            (TagDefinition) 
+            nsmodel.getModelManagementHelper().getCorrespondingElement(
+                td, nsmodel.getModelManagementFactory().getRootModel(), true);
+        tv.setType(td);
+        // TODO: Some CASE tools appear to manage only one
         // dataValue. This is an array of String according to the
         // UML 1.4 specs.
         tv.getDataValue().add(value);
         return tv;
     }
+
 
     /**
      * @param elem

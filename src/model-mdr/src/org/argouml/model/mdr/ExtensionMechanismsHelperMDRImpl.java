@@ -511,8 +511,22 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                         ((ExtensionMechanismsFactoryMDRImpl) nsmodel
                             .getExtensionMechanismsFactory())
                             .getTagDefinition(tag.toString());
+                    Object model = nsmodel.getFacade().getModel(handle);
+                    if (!nsmodel.getFacade().isAModel(model)) {
+                        model = 
+                            nsmodel.getModelManagementFactory().getRootModel();
+                    }
+                    td = 
+                        (TagDefinition) 
+                        nsmodel.getModelManagementHelper()
+                            .getCorrespondingElement(
+                                td, model, 
+                                true);
                     tv.setType(td);
                 } else {
+                    // TODO: This is going to change the name of the
+                    // existing TagDefinition, essentially redefining it,
+                    // which is probably not what we want to do - tfm
                     td.setName(tag.toString());
                 }
             }
@@ -605,6 +619,14 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void setType(Object handle, Object type) {
         if (type == null || type instanceof TagDefinition) {
             if (handle instanceof TaggedValue) {
+                Object model = nsmodel.getFacade().getModel(handle);
+                if (!nsmodel.getFacade().isAModel(model)) {
+                    model = 
+                        nsmodel.getModelManagementFactory().getRootModel();
+                }
+                type = 
+                    nsmodel.getModelManagementHelper().getCorrespondingElement(
+                        type, model, true);
                 ((TaggedValue) handle).setType((TagDefinition) type);
                 return;
             }
