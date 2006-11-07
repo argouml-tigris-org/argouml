@@ -431,11 +431,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         Iterator it = ns.getOwnedElement().iterator();
         while (it.hasNext()) {
             ModelElement e = (ModelElement) it.next();
-            if (e.getClass() == ((ModelElement) elem).getClass()
-                    && ((((ModelElement) elem).getName() == null 
-                            && e.getName() == null) || (((ModelElement) elem).
-                            getName() != null && ((ModelElement) elem).
-                            getName().equals(e.getName())))) {
+            if (correspondsInternal(e, (ModelElement) elem)) {
                 return e;
             }
         }
@@ -447,6 +443,27 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return nsmodel.getCopyHelper().copy(elem, ns);
     }
 
+    /**
+     * Check whether two ModelElements match in type and name.
+     * 
+     * @param me1 first element
+     * @param me2 second element
+     * @return true if they match
+     */
+    private boolean correspondsInternal(ModelElement me1, ModelElement me2) {
+        if (me1.getClass() != me2.getClass()) {
+            return false;
+        }
+        if ((me1.getName() == null && me2.getName() != null)
+                || (me1.getName() != null 
+                        && !me1.getName().equals(me2.getName()))) {
+
+            return false;
+
+        }
+        return true;
+    }
+    
     /*
      * @see org.argouml.model.ModelManagementHelper#corresponds(java.lang.Object, java.lang.Object)
      */
@@ -461,21 +478,12 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         if (obj1 instanceof Model && obj2 instanceof Model) {
             return true;
         }
-        if (obj1.getClass() != obj2.getClass()) {
+
+       if (!correspondsInternal((ModelElement) obj1, (ModelElement) obj2)) {
             return false;
         }
-
-        ModelElement modelElement1 = (ModelElement) obj1;
-        ModelElement modelElement2 = (ModelElement) obj2;
-        if ((modelElement1.getName() == null && modelElement2.getName() != null)
-                || (modelElement1.getName() != null && !modelElement1.getName().
-                        equals(modelElement2.getName()))) {
-
-            return false;
-
-        }
-        return corresponds(modelElement1.getNamespace(), modelElement2.
-                getNamespace());
+        return corresponds(((ModelElement) obj1).getNamespace(), 
+                ((ModelElement) obj1).getNamespace());
     }
 
     /*
