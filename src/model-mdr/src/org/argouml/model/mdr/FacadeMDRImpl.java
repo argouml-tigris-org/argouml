@@ -2435,12 +2435,18 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    /**
-     * Get the messages that are activated by the given message.
-     *
+    /*
      * @see org.argouml.model.Facade#getMessages4(java.lang.Object)
      */
     public Collection getMessages4(Object handle) {
+        return getActivatedMessages(handle);
+        
+    }
+    
+    /*
+     * @see org.argouml.model.Facade#getActivatedMessages(java.lang.Object)
+     */
+    public Collection getActivatedMessages(Object handle) {
         try {
             if (handle instanceof Message) {
                 return implementation.getUmlPackage().getCollaborations()
@@ -2452,12 +2458,17 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    /**
-     * Returns the messages received by the given classifier role.
-     *
+    /*
      * @see org.argouml.model.Facade#getMessages1(java.lang.Object)
      */
     public Collection getMessages1(Object handle) {
+        return getReceivedMessages(handle);
+    }
+    
+    /*
+     * @see org.argouml.model.Facade#getReceivedMessages(java.lang.Object)
+     */
+    public Collection getReceivedMessages(Object handle) {
         try {
             if (handle instanceof ClassifierRole) {
                 return implementation.getUmlPackage().getCollaborations()
@@ -2470,12 +2481,17 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    /**
-     * Returns the messages send by the given classifier role.
-     *
+    /*
      * @see org.argouml.model.Facade#getMessages2(java.lang.Object)
      */
     public Collection getMessages2(Object handle) {
+        return getSentMessages(handle);
+    }
+    
+    /*
+     * @see org.argouml.model.Facade#getSentMessages(java.lang.Object)
+     */
+    public Collection getSentMessages(Object handle) {
         try {
             if (handle instanceof ClassifierRole) {
                 return implementation.getUmlPackage().getCollaborations()

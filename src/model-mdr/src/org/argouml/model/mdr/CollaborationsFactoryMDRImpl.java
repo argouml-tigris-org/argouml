@@ -414,14 +414,14 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                     getConnection().get(1)).getParticipant());
 
             Collection messages =
-                Model.getFacade().getMessages1(message.getSender());
+                Model.getFacade().getReceivedMessages(message.getSender());
             Message lastMsg = lastMessage(messages, message);
 
             if (lastMsg != null) {
                 message.setActivator(lastMsg);
-                messages = Model.getFacade().getMessages4(lastMsg);
+                messages = Model.getFacade().getActivatedMessages(lastMsg);
             } else {
-                messages = Model.getFacade().getMessages2(message.getSender());
+                messages = Model.getFacade().getSentMessages(message.getSender());
             }
 
             lastMsg = lastMessage(messages, message);
