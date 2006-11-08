@@ -107,7 +107,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
         this.listTarget = t;
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      * 
      * TODO: This should be reviewed to see if it can be improved with a view
@@ -254,7 +254,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
         return e.getNewValue();
     }
 
-    /**
+    /*
      * @see javax.swing.DefaultListModel#contains(java.lang.Object)
      */
     public boolean contains(Object elem) {
@@ -385,7 +385,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
         return valid;
     }
 
-    /**
+    /*
      * @see javax.swing.DefaultListModel#addElement(java.lang.Object)
      */
     public void addElement(Object obj) {
@@ -415,28 +415,28 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
         eventName = theEventName;
     }
 
-    /**
+    /*
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see javax.swing.AbstractListModel#fireContentsChanged(
      *          Object, int, int)
      */
@@ -445,7 +445,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
             super.fireContentsChanged(source, index0, index1);
     }
 
-    /**
+    /*
      * @see javax.swing.AbstractListModel#fireIntervalAdded(
      *          Object, int, int)
      */
@@ -454,7 +454,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
             super.fireIntervalAdded(source, index0, index1);
     }
 
-    /**
+    /*
      * @see javax.swing.AbstractListModel#fireIntervalRemoved(
      *          Object, int, int)
      */
