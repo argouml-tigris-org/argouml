@@ -68,6 +68,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.argouml.ui.cmd.ActionExit;
 import org.argouml.ui.cmd.PrintManager;
+import org.argouml.uml.reveng.java.JavaImport;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
 
@@ -763,12 +764,47 @@ class PreloadClasses implements Runnable {
      */
     private static final Logger LOG = Logger.getLogger(PreloadClasses.class);
 
+    
+    private static final String[] OPTIONAL_INTERNAL_MODULES = {
+        "org.argouml.ui.DeveloperModule",
+    };
+    
+    /**
+     * Load internal modules which should be found on the standard
+     * classpath.
+     */
+    private void huntForInternalModules() {
+        for (int i = 0; i < OPTIONAL_INTERNAL_MODULES.length; i++) {
+            try {
+                ModuleLoader2.addClass(OPTIONAL_INTERNAL_MODULES[i]);
+            } catch (ClassNotFoundException e) {
+                /* We don't care if optional modules aren't found. */
+            }            
+        }
+    }
+
     /**
      * @see java.lang.Runnable#run()
      */
     public void run() {
+	new JavaImport().init();
+	huntForInternalModules();
 
-        Class c = null;
+	// The hardcoded list of modules to enable buttons for in the
+	// module tabs.
+	final String[][] modules = {
+	    // name, classname
+	    // The name must match the name if the class.
+	    {
+		"ActionTestLoadableModule",
+		"org.argouml.ui.test.ActionTestLoadableModule",
+	    },
+	};
+	// End of the hardcoded list.
+
+	ModuleLoader2.setNotYetLoadedModules(modules);
+
+	Class c = null;
         if (c == null) {
             // otherwise anoying warning
             LOG.info("preloading...");
