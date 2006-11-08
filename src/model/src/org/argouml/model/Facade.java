@@ -1653,11 +1653,21 @@ public interface Facade {
     /**
      * Returns the messages belonging to some other message.
      *
+     * @deprecated by tfmorris for 0.23.4 use {@link #getSuccessors(Object)}
+     * 
      * @param handle is the message
      * @return Collection
      */
     Collection getMessages3(Object handle);
 
+    /**
+     * Returns the messages belonging to some other message.
+     *
+     * @param handle is the message
+     * @return Collection
+     */
+    Collection getSuccessors(Object handle);
+    
     /**
      * Get the messages that are activated by the given message.
      *

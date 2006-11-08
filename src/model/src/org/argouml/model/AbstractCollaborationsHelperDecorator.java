@@ -132,7 +132,11 @@ public abstract class AbstractCollaborationsHelperDecorator
     }
 
     public void removeMessage3(Object handle, Object mess) {
-        impl.removeMessage3(handle, mess);
+        impl.removeSuccessor(handle, mess);
+    }
+
+    public void removeSuccessor(Object handle, Object mess) {
+        impl.removeSuccessor(handle, mess);
     }
 
     public void removePredecessor(Object handle, Object message) {
@@ -155,6 +159,10 @@ public abstract class AbstractCollaborationsHelperDecorator
         impl.addMessage3(handle, mess);
     }
 
+    public void addSuccessor(Object handle, Object mess) {
+        impl.addSuccessor(handle, mess);
+    }
+
     public void addPredecessor(Object handle, Object predecessor) {
         impl.addPredecessor(handle, predecessor);
     }
@@ -169,6 +177,10 @@ public abstract class AbstractCollaborationsHelperDecorator
 
     public void setMessages3(Object handle, Collection messages) {
         impl.setMessages3(handle, messages);
+    }
+
+    public void setSuccessors(Object handle, Collection messages) {
+        impl.setSuccessors(handle, messages);
     }
 
     public void setPredecessors(Object handle, Collection predecessors) {

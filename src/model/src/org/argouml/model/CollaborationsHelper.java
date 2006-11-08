@@ -167,7 +167,7 @@ public interface CollaborationsHelper {
 
     /**
      * Returns all possible bases for the given element. <p>
-     * TODO: Beware: this function does not return the actual base!
+     * TODO: Beware: this function does not return the current base!
      * Is that by design or a bug?
      *
      * @param role the given classifierrole or associationrole
@@ -229,12 +229,24 @@ public interface CollaborationsHelper {
 
     /**
      * Removes a successor message.
-     *
+     * 
+     * @deprecated by tfmorris for 0.23.4 
+     * use {@link #removeSuccessor(Object, Object)}
+     * 
      * @param handle the Message that needs to loose a successor
      * @param mess the Message that is removed
      */
     void removeMessage3(Object handle, Object mess);
 
+
+    /**
+     * Removes a successor message.
+     * 
+     * @param handle the Message that needs to loose a successor
+     * @param mess the Message that is removed
+     */
+    void removeSuccessor(Object handle, Object mess);
+    
     /**
      * Removes a predecessor message.
      *
@@ -269,11 +281,22 @@ public interface CollaborationsHelper {
 
     /**
      * Add Message to a predecessor Message.
-     *
+     * 
+     * @deprecated by tfmorris for 0.23.4 
+     * use {@link #addSuccessor(Object, Object)}
+     * 
      * @param handle predecessor Message
      * @param mess Message to be added
      */
     void addMessage3(Object handle, Object mess);
+
+    /**
+     * Add Message to a predecessor Message.
+     * 
+     * @param handle predecessor Message
+     * @param mess Message to be added
+     */
+    void addSuccessor(Object handle, Object mess);
 
     /**
      * Adds a predecessor to a message.
@@ -300,13 +323,24 @@ public interface CollaborationsHelper {
     void setContext(Object handle, Object col);
 
     /**
-     * Set the successors of a message
-     * (named messsage3 in UML 1.3 & successor in UML 1.4).
-     *
+     * Set the successors of a message.
+     * 
+     * @deprecated by tfmorris for 0.23.4 
+     * use {@link #setSuccessors(Object, Collection)}
+     * 
      * @param handle Message
      * @param messages Collection of successor messages
      */
     void setMessages3(Object handle, Collection messages);
+
+
+    /**
+     * Set the successors of a message.
+     * 
+     * @param handle Message
+     * @param messages Collection of successor messages
+     */
+    void setSuccessors(Object handle, Collection messages);
 
     /**
      * Set the collection of predecessing messages.
