@@ -442,9 +442,9 @@ public class UseCaseDiagramGraphModel
             // Collect all the includes at either end.
 
             ends.addAll(Model.getFacade().getIncludes(node));
-            ends.addAll(Model.getFacade().getIncludes2(node));
+            ends.addAll(Model.getFacade().getIncluders(node));
             ends.addAll(Model.getFacade().getExtends(node));
-            ends.addAll(Model.getFacade().getExtends2(node));
+            ends.addAll(Model.getFacade().getExtenders(node));
 
             Iterator iter = ends.iterator();
 
