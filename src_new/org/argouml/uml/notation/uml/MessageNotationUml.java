@@ -103,7 +103,7 @@ public class MessageNotationUml extends MessageNotation {
         parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -118,14 +118,14 @@ public class MessageNotationUml extends MessageNotation {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-message";
     }
 
-    /**
+    /*
      * Generates a textual description for a MMessage m.
      *
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
@@ -223,7 +223,7 @@ public class MessageNotationUml extends MessageNotation {
         }
 
         if (pre != null) {
-            c = Model.getFacade().getMessages3(pre);
+            c = Model.getFacade().getSuccessors(pre);
             submax = c.size();
             it = c.iterator();
             while (it.hasNext() && it.next() != m) {
@@ -307,7 +307,7 @@ public class MessageNotationUml extends MessageNotation {
     private int countSuccessors(Object/*MMessage*/ m) {
         int count = 0;
         Object act = Model.getFacade().getActivator(m);
-        Collection coll = Model.getFacade().getMessages3(m);
+        Collection coll = Model.getFacade().getSuccessors(m);
         if (coll != null) {
             Iterator it = coll.iterator();
             while (it.hasNext()) {
@@ -1002,7 +1002,7 @@ public class MessageNotationUml extends MessageNotation {
             	String msg = "parsing.error.message.subtree-rooted-self";
                 throw new ParseException(Translator.localize(msg), 0);
             } else if (Model.getFacade().getPredecessors(mes).size() > 1
-                    && Model.getFacade().getMessages3(mes).size() > 1) {
+                    && Model.getFacade().getSuccessors(mes).size() > 1) {
             	String msg = "parsing.error.message.start-end-many-threads";
                 throw new ParseException(Translator.localize(msg), 0);
             } else if (root == null && pname.length() > 0) {
@@ -1022,13 +1022,13 @@ public class MessageNotationUml extends MessageNotation {
                 Collection c = new ArrayList(
                         Model.getFacade().getPredecessors(mes));
                 Collection c2 = new ArrayList(
-                        Model.getFacade().getMessages3(mes));
+                        Model.getFacade().getSuccessors(mes));
                 Iterator it;
 
                 it = c2.iterator();
                 while (it.hasNext()) {
-                    Model.getCollaborationsHelper().removeMessage3(mes,
-                            /* (MMessage) */it.next());
+                    Model.getCollaborationsHelper().removeSuccessor(mes,
+                            it.next());
                 }
 
                 it = c.iterator();
@@ -1069,7 +1069,7 @@ public class MessageNotationUml extends MessageNotation {
                 // crappy, but we'll just use one of them anyway
                 if (majval <= 0) {
                     while (it.hasNext()) {
-                        Model.getCollaborationsHelper().addMessage3(mes,
+                        Model.getCollaborationsHelper().addSuccessor(mes,
                                 /* (MMessage) */it.next());
                     }
                 } else if (it.hasNext()) {
@@ -1214,7 +1214,7 @@ public class MessageNotationUml extends MessageNotation {
     private Object walk(Object/* MMessage */r, int steps, boolean strict) {
         Object/* MMessage */act = Model.getFacade().getActivator(r);
         while (steps > 0) {
-            Iterator it = Model.getFacade().getMessages3(r).iterator();
+            Iterator it = Model.getFacade().getSuccessors(r).iterator();
             do {
                 if (!it.hasNext()) {
                     return (strict ? null : r);
@@ -1269,7 +1269,7 @@ public class MessageNotationUml extends MessageNotation {
      * direct successor of r. Returns null if r has fewer successors.
      */
     private Object/* MMessage */successor(Object/* MMessage */r, int steps) {
-        Iterator it = Model.getFacade().getMessages3(r).iterator();
+        Iterator it = Model.getFacade().getSuccessors(r).iterator();
         while (it.hasNext() && steps > 0) {
             it.next();
             steps--;
@@ -1505,13 +1505,13 @@ public class MessageNotationUml extends MessageNotation {
      *            MMessage
      */
     private void insertSuccessor(Object m, Object s, int p) {
-        Vector v = new Vector(Model.getFacade().getMessages3(m));
+        Vector v = new Vector(Model.getFacade().getSuccessors(m));
         if (v.size() > p) {
             v.insertElementAt(s, p);
         } else {
             v.add(s);
         }
-        Model.getCollaborationsHelper().setMessages3(m, v);
+        Model.getCollaborationsHelper().setSuccessors(m, v);
     }
 
     /**
