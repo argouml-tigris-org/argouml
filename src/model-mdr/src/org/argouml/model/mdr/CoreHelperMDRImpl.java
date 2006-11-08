@@ -3392,8 +3392,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public void setEnumerationLiterals(Object enumeration, List literals) {
         if (enumeration instanceof Enumeration) {
-            CollectionHelper.update(
-                    ((Enumeration) enumeration).getLiteral(), literals);
+            ((Enumeration) enumeration).getLiteral().clear();
+            ((Enumeration) enumeration).getLiteral().addAll(literals);
         }
     }
 

@@ -137,8 +137,8 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     public void setActualArguments(Object action, List arguments) {
         try {
             if (action instanceof Action) {
-                CollectionHelper.update(
-                        ((Action) action).getActualArgument(), arguments);
+                ((Action) action).getActualArgument().clear();
+                ((Action) action).getActualArgument().addAll(arguments);
                 return;
             }
         } catch (InvalidObjectException e) {

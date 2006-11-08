@@ -27,6 +27,7 @@ package org.argouml.model.mdr;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.omg.uml.behavioralelements.statemachines.State;
 
@@ -50,6 +51,9 @@ public class CollectionHelper {
      *            desired end state of collection
      */
     static void update(Collection base, Collection updates) {
+        if (base instanceof List || updates instanceof List) {
+            throw new IllegalArgumentException("Lists are not supported");
+        }
         if (updates == null) {
             base.clear();
             return;
