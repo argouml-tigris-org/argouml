@@ -419,8 +419,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             throw new IllegalArgumentException("In setBases: either the role "
                     + "or the collection bases is " + "null");
         }
-        ((ClassifierRole) role).getBase().clear();
-        ((ClassifierRole) role).getBase().addAll(bases);
+        CollectionHelper.update(((ClassifierRole) role).getBase(), bases);
     }
 
     /*
@@ -976,8 +975,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      */
     public void setPredecessors(Object handle, Collection predecessors) {
         if (handle instanceof Message) {
-            ((Message) handle).getPredecessor().clear();
-            ((Message) handle).getPredecessor().addAll(predecessors);
+            CollectionHelper.update(
+                    ((Message) handle).getPredecessor(), predecessors);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
