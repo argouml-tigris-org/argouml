@@ -1009,7 +1009,7 @@ public class MessageNotationUml extends MessageNotation {
             	String msg = "parsing.error.message.activator-not-found";
                 throw new ParseException(Translator.localize(msg), 0);
             } else if (swapRoles
-                    && Model.getFacade().getMessages4(mes).size() > 0
+                    && Model.getFacade().getActivatedMessages(mes).size() > 0
                     && (Model.getFacade().getSender(mes)
                             != Model.getFacade().getReceiver(mes))) {
             	String msg = "parsing.error.message.reverse-direction-message";
@@ -1055,11 +1055,11 @@ public class MessageNotationUml extends MessageNotation {
                 if (root == null) {
                     c =
                         filterWithActivator(
-                            Model.getFacade().getMessages2(
+                            Model.getFacade().getSentMessages(
                                     Model.getFacade().getSender(mes)),
                                     null);
                 } else {
-                    c = Model.getFacade().getMessages4(root);
+                    c = Model.getFacade().getActivatedMessages(root);
                 }
                 c2 = findCandidateRoots(c, root, mes);
                 it = c2.iterator();
@@ -1190,7 +1190,7 @@ public class MessageNotationUml extends MessageNotation {
             if (i + 3 < path.size()) {
                 Iterator it =
                     findCandidateRoots(
-                            Model.getFacade().getMessages4(root),
+                            Model.getFacade().getActivatedMessages(root),
                             root,
                             null).iterator();
                 // Things are strange if there are more than one candidate root,
@@ -1405,7 +1405,7 @@ public class MessageNotationUml extends MessageNotation {
      * in n. If it isn't found, null is returned.
      */
     private Object findMsg(Object/* MClassifierRole */r, String n) {
-        Collection c = Model.getFacade().getMessages1(r);
+        Collection c = Model.getFacade().getReceivedMessages(r);
         Iterator it = c.iterator();
         while (it.hasNext()) {
             Object msg = /* (MMessage) */it.next();
@@ -1427,7 +1427,7 @@ public class MessageNotationUml extends MessageNotation {
      *            MMessage
      */
     private boolean hasMsgWithActivator(Object r, Object m) {
-        Iterator it = Model.getFacade().getMessages2(r).iterator();
+        Iterator it = Model.getFacade().getSentMessages(r).iterator();
         while (it.hasNext()) {
             if (Model.getFacade().getActivator(it.next()) == m) {
                 return true;

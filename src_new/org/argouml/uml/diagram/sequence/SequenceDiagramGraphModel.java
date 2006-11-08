@@ -103,8 +103,8 @@ public class SequenceDiagramGraphModel
     public List getPorts(Object nodeOrEdge) {
         Vector ports = new Vector();
         if (Model.getFacade().isAClassifierRole(nodeOrEdge)) {
-            ports.addAll(Model.getFacade().getMessages1(nodeOrEdge));
-            ports.addAll(Model.getFacade().getMessages2(nodeOrEdge));
+            ports.addAll(Model.getFacade().getReceivedMessages(nodeOrEdge));
+            ports.addAll(Model.getFacade().getSentMessages(nodeOrEdge));
         } else if (Model.getFacade().isAMessage(nodeOrEdge)) {
             ports.add(Model.getFacade().getSender(nodeOrEdge));
             ports.add(Model.getFacade().getReceiver(nodeOrEdge));
@@ -129,7 +129,7 @@ public class SequenceDiagramGraphModel
     public List getInEdges(Object port) {
         Vector res = new Vector();
         if (Model.getFacade().isAClassifierRole(port)) {
-            res.addAll(Model.getFacade().getMessages2(port));
+            res.addAll(Model.getFacade().getSentMessages(port));
         }
         return res;
     }
@@ -142,7 +142,7 @@ public class SequenceDiagramGraphModel
     public List getOutEdges(Object port) {
         Vector res = new Vector();
         if (Model.getFacade().isAClassifierRole(port)) {
-            res.addAll(Model.getFacade().getMessages1(port));
+            res.addAll(Model.getFacade().getReceivedMessages(port));
         }
         return res;
     }
@@ -246,12 +246,12 @@ public class SequenceDiagramGraphModel
         super.addNodeRelatedEdges(node);
 
         if (Model.getFacade().isAClassifierRole(node)) {
-            Collection ends = Model.getFacade().getMessages2(node);
+            Collection ends = Model.getFacade().getSentMessages(node);
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
                 addEdge(iter.next());
             }
-            iter = Model.getFacade().getMessages1(node).iterator();
+            iter = Model.getFacade().getReceivedMessages(node).iterator();
             while (iter.hasNext()) {
                 addEdge(iter.next());
             }
