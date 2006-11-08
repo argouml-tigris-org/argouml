@@ -24,7 +24,6 @@
 
 package org.argouml.model.mdr;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -76,9 +75,8 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         }
         if (ns != null) {
             Collection c =
-                Model.getModelManagementHelper().
-                    getAllModelElementsOfKind(ns,
-                	        Model.getMetaTypes().getClassifier());
+                Model.getModelManagementHelper().getAllModelElementsOfKind(
+                    ns, Model.getMetaTypes().getClassifier());
             Iterator i = c.iterator();
             while (i.hasNext()) {
                 ModelElement classifier = (ModelElement) i.next();
@@ -144,8 +142,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
     public void addInState(Object classifierInState, Object state) {
         if (classifierInState instanceof ClassifierInState
                 && state instanceof State) {
-            ((ClassifierInState) classifierInState).getInState().
-                add(state);
+            ((ClassifierInState) classifierInState).getInState().add(state);
         } else {
             throw new IllegalArgumentException(
                     "classifierInState: " + classifierInState
@@ -159,35 +156,13 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
     public void setInStates(Object classifierInState, Collection newStates) {
         if (classifierInState instanceof ClassifierInState) {
             ClassifierInState cis = (ClassifierInState) classifierInState;
-            if (newStates == null) {
-                cis.getInState().clear();
-                return;
-            }
-            Collection oldStates = cis.getInState();
-            Collection toBeRemoved = new ArrayList();
-            Collection toBeAdded = new ArrayList();
-
-            Iterator oldIt = oldStates.iterator();
-            while (oldIt.hasNext()) {
-                State s = (State) oldIt.next();
-                if (!newStates.contains(s)) {
-                    toBeRemoved.add(s);
-                }
-            }
-            Iterator newIt = newStates.iterator();
-            while (newIt.hasNext()) {
-                State s = (State) newIt.next();
-                if (!oldStates.contains(s)) {
-                    toBeAdded.add(s);
-                }
-            }
-            cis.getInState().removeAll(toBeRemoved);
-            cis.getInState().addAll(toBeAdded);
+            CollectionHelper.update(cis.getInState(), newStates);
         } else {
             throw new IllegalArgumentException(
                     "classifierInState: " + classifierInState);
         }
     }
+
 
 }
 
