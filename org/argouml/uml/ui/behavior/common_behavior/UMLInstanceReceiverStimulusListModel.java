@@ -40,22 +40,26 @@ public class UMLInstanceReceiverStimulusListModel
      * Constructor.
      */
     public UMLInstanceReceiverStimulusListModel() {
-        super("stimuli2");
+        // TODO: Not sure this is the right event name.  It was "stimuli2"
+        // which was left over from UML 1.3 and definitely won't work - tfm
+        // 20061108
+        super("stimulus");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(Model.getFacade().getStimuli2(getTarget()));
+        addElement(Model.getFacade().getReceivedStimuli(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
-        return Model.getFacade().getStimuli2(getTarget()).contains(element);
+    protected boolean isValidElement(Object element) {
+        return Model.getFacade().getReceivedStimuli(getTarget()).contains(
+                element);
     }
 
 }
