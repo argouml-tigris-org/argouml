@@ -65,19 +65,15 @@ import org.argouml.ui.GUI;
  * @since 0.15.4
  */
 public final class ModuleLoader2 {
-    
-    private static final String[] INTERNAL_MODULES = {
-        "org.argouml.uml.reveng.java.JavaImport", 
-    };
-
-    private static final String[] OPTIONAL_INTERNAL_MODULES = {
-        "org.argouml.ui.DeveloperModule",
-    };
-    
     /**
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(ModuleLoader2.class);
+
+    /**
+     * The list of not yet loaded modules.
+     */
+    private static String[][] notYetLoadeds;
 
     /**
      * This map contains the module loader information about the module.<p>
@@ -293,35 +289,33 @@ public final class ModuleLoader2 {
         return sb.toString();
     }
 
+    
+    /**
+     * Set the list of candidates to not yet loaded modules. These are
+     * not loaded until their button is pressed in the settings tab.<p>
+     *
+     * @param modules Array of Tuples: name, classname.
+     *        The name must match the name declared in the class.
+     */
+    public static void setNotYetLoadedModules(String[][] modules) {
+	notYetLoadeds = modules;
+    }
+
     /**
      * Get a list of not yet loaded modules.<p>
-     *
-     * TODO: For the moment these modules are hardcoded into this file.
-     * Eventually they will be available in some config file.
      *
      * @return a {@link SortedMap}
      *         from name ({@link String})
      *         to classname {@link String}.
      */
     public static SortedMap notYetLoadedModules() {
-	// The hardcoded list
-	final String[][] modules = {
-	    // name, classname
-	    // The name must match the name if the class.
-	    {
-		"ActionTestLoadableModule",
-		"org.argouml.ui.test.ActionTestLoadableModule",
-	    },
-	};
-	// End of the hardcoded list.
-
 	Collection alreadyFound = allModules();
 
 	SortedMap result = new TreeMap();
 
-	for (int i = 0; i < modules.length; i++) {
-	    if (!alreadyFound.contains(modules[i][0])) {
-		result.put(modules[i][0], modules[i][1]);
+	for (int i = 0; i < notYetLoadeds.length; i++) {
+	    if (!alreadyFound.contains(notYetLoadeds[i][0])) {
+		result.put(notYetLoadeds[i][0], notYetLoadeds[i][1]);
 	    }
 	}
 	return result;
@@ -452,7 +446,6 @@ public final class ModuleLoader2 {
      * As the modules are found they are appended to {@link #moduleStatus}.<p>
      */
     private void huntForModules() {
-        huntForInternalModules();
         huntForModulesFromExtensionDir();
         // TODO: huntForModulesFromJavaWebStart();
 
@@ -474,27 +467,6 @@ public final class ModuleLoader2 {
         }
     }
     
-    /**
-     * Load internal modules which should be found on the standard
-     * classpath.
-     */
-    private void huntForInternalModules() {
-        for (int i = 0; i < INTERNAL_MODULES.length; i++) {
-            try {
-                addClass(INTERNAL_MODULES[i]);
-            } catch (ClassNotFoundException e) {
-                LOG.warn("Load failure on internal module", e);
-            }            
-        }
-        for (int i = 0; i < OPTIONAL_INTERNAL_MODULES.length; i++) {
-            try {
-                addClass(OPTIONAL_INTERNAL_MODULES[i]);
-            } catch (ClassNotFoundException e) {
-                /* We don't care if optional modules aren't found. */
-            }            
-        }
-    }
-
     /**
      * Find and enable modules from our "ext" directory and from the
      * directory specified in "argo.ext.dir".<p>

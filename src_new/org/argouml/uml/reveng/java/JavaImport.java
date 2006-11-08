@@ -55,7 +55,7 @@ public class JavaImport implements ModuleInterface, ImportInterface {
      * @see org.argouml.uml.reveng.ImportInterface#parseFile(org.argouml.kernel.Project, java.lang.Object, org.argouml.uml.reveng.ImportSettings)
      */
     public void parseFile(Project p, Object o, ImportSettings settings)
-            throws ImportException {
+        throws ImportException {
         if (o instanceof File) {
             File f = (File) o;
             try {
@@ -165,8 +165,15 @@ public class JavaImport implements ModuleInterface, ImportInterface {
      * @see org.argouml.moduleloader.ModuleInterface#enable()
      */
     public boolean enable() {
-        ImporterManager.getInstance().addimporter(this);
+        init();
         return true;
+    }
+
+    /**
+     * Enable the importer.
+     */
+    public void init() {
+	ImporterManager.getInstance().addimporter(this);
     }
 
 
