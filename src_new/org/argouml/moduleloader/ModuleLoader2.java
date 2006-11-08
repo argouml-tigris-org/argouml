@@ -67,8 +67,11 @@ import org.argouml.ui.GUI;
 public final class ModuleLoader2 {
     
     private static final String[] INTERNAL_MODULES = {
-        "org.argouml.ui.DeveloperModule",
         "org.argouml.uml.reveng.java.JavaImport", 
+    };
+
+    private static final String[] OPTIONAL_INTERNAL_MODULES = {
+        "org.argouml.ui.DeveloperModule",
     };
     
     /**
@@ -480,7 +483,14 @@ public final class ModuleLoader2 {
             try {
                 addClass(INTERNAL_MODULES[i]);
             } catch (ClassNotFoundException e) {
-                /* This is perfectly normal - no need for reporting. */
+                LOG.warn("Load failure on internal module", e);
+            }            
+        }
+        for (int i = 0; i < OPTIONAL_INTERNAL_MODULES.length; i++) {
+            try {
+                addClass(OPTIONAL_INTERNAL_MODULES[i]);
+            } catch (ClassNotFoundException e) {
+                /* We don't care if optional modules aren't found. */
             }            
         }
     }
