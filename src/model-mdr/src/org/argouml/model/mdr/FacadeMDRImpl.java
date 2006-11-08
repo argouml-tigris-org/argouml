@@ -166,6 +166,9 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * <p>
  * Most methods in this class can throw the run-time exception
  * {@link org.argouml.model.InvalidElementException}.
+ * <p>
+ * Unless otherwise noted by the Javadoc, all methods in this class implement
+ * methods from the interface {@link Facade}.
  */
 class FacadeMDRImpl implements Facade {
 
@@ -2029,9 +2032,7 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    /**
-     * @see org.argouml.model.Facade#getExtends(java.lang.Object)
-     */
+
     public Collection getExtends(Object handle) {
         try {
             if (handle instanceof UseCase) {
@@ -2048,10 +2049,14 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    /**
-     * @see org.argouml.model.Facade#getExtends2(java.lang.Object)
-     */
+
     public Collection getExtends2(Object handle) {
+        return getExtenders(handle);
+        
+    }
+    
+
+    public Collection getExtenders(Object handle) {
         try {
             if (handle instanceof UseCase) {
                 return implementation.getUmlPackage().getUseCases()
@@ -2230,9 +2235,6 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    /**
-     * @see org.argouml.model.Facade#getIncludes(java.lang.Object)
-     */
     public Collection getIncludes(Object handle) {
         try {
             if (handle instanceof UseCase) {
@@ -2244,10 +2246,11 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    /**
-     * @see org.argouml.model.Facade#getIncludes2(java.lang.Object)
-     */
     public Collection getIncludes2(Object handle) {
+        return getIncluders(handle);
+    }
+    
+    public Collection getIncluders(Object handle) {
         try {
             if (handle instanceof UseCase) {
                 return implementation.getUmlPackage().getUseCases()
@@ -2391,9 +2394,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    /**
-     * @see org.argouml.model.Facade#getMessages(java.lang.Object)
-     */
+
     public Collection getMessages(Object handle) {
         try {
             if (isAInteraction(handle)) {
@@ -2412,16 +2413,12 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    /*
-     * @see org.argouml.model.Facade#getMessages3(java.lang.Object)
-     */
+    
     public Collection getMessages3(Object handle) {
         return getSuccessors(handle);
     }
 
-    /*
-     * @see org.argouml.model.Facade#getSuccessors(java.lang.Object)
-     */
+    
     public Collection getSuccessors(Object handle) {
         try {
             if (handle instanceof Message) {
@@ -2435,17 +2432,13 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    /*
-     * @see org.argouml.model.Facade#getMessages4(java.lang.Object)
-     */
+
     public Collection getMessages4(Object handle) {
         return getActivatedMessages(handle);
         
     }
     
-    /*
-     * @see org.argouml.model.Facade#getActivatedMessages(java.lang.Object)
-     */
+
     public Collection getActivatedMessages(Object handle) {
         try {
             if (handle instanceof Message) {
@@ -2458,16 +2451,12 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    /*
-     * @see org.argouml.model.Facade#getMessages1(java.lang.Object)
-     */
+
     public Collection getMessages1(Object handle) {
         return getReceivedMessages(handle);
     }
     
-    /*
-     * @see org.argouml.model.Facade#getReceivedMessages(java.lang.Object)
-     */
+
     public Collection getReceivedMessages(Object handle) {
         try {
             if (handle instanceof ClassifierRole) {
@@ -2481,16 +2470,12 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    /*
-     * @see org.argouml.model.Facade#getMessages2(java.lang.Object)
-     */
+
     public Collection getMessages2(Object handle) {
         return getSentMessages(handle);
     }
     
-    /*
-     * @see org.argouml.model.Facade#getSentMessages(java.lang.Object)
-     */
+
     public Collection getSentMessages(Object handle) {
         try {
             if (handle instanceof ClassifierRole) {
@@ -2504,11 +2489,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    /**
-     * Return the model for this object.
-     *
-     * @see org.argouml.model.Facade#getModel(java.lang.Object)
-     */
+
     public Object getModel(Object handle) {
         try {
             if (isAModel(handle)) {
@@ -3856,10 +3837,13 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    /**
-     * @see org.argouml.model.Facade#getStimuli2(java.lang.Object)
-     */
+
     public Collection getStimuli2(Object handle) {
+        return getReceivedStimuli(handle);
+    }
+    
+
+    public Collection getReceivedStimuli(Object handle) {
         try {
             if (handle instanceof Instance) {
                 return implementation.getUmlPackage().getCommonBehavior()
@@ -3871,12 +3855,13 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    /**
-     * Returns the Stimuli that are sent by the given Instance.
-     *
-     * @see org.argouml.model.Facade#getStimuli3(java.lang.Object)
-     */
+
     public Collection getStimuli3(Object handle) {
+        return getSentStimuli(handle);
+    }
+    
+
+    public Collection getSentStimuli(Object handle) {
         try {
             if (handle instanceof Instance) {
                 return implementation.getUmlPackage().getCommonBehavior()

@@ -167,7 +167,7 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
         }
         List list = new ArrayList();
         try {
-            Iterator it = Model.getFacade().getExtends2(usecase).iterator();
+            Iterator it = Model.getFacade().getExtenders(usecase).iterator();
             while (it.hasNext()) {
                 Extend ext = (Extend) it.next();
                 UseCase extension = ext.getExtension();
