@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.jmi.reflect.InvalidObjectException;
 
@@ -421,16 +420,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                     + "or the collection bases is " + "null");
         }
         ((ClassifierRole) role).getBase().clear();
-        // The next code gives NoSuchElementException:
-//        Iterator it = nsmodel.getFacade().getBases(role).iterator();
-//        while (it.hasNext()) {
-//            removeBase(role, it.next());
-//        }
-        Iterator i = bases.iterator();
-        while (i.hasNext()) {
-            addBase(role, i.next());
-        }
-
+        ((ClassifierRole) role).getBase().addAll(bases);
     }
 
     /*
@@ -787,6 +777,14 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      *      java.lang.Object)
      */
     public void removeMessage3(Object handle, Object mess) {
+        removeSuccessor(handle, mess);
+    }
+    
+    /*
+     * @see org.argouml.model.CollaborationsHelper#removeSuccessor(java.lang.Object,
+     *      java.lang.Object)
+     */
+    public void removeSuccessor(Object handle, Object mess) {
         try {
             if (handle instanceof Message && mess instanceof Message) {
                 nsmodel.getUmlPackage().getCollaborations()
@@ -873,6 +871,14 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      *      java.lang.Object)
      */
     public void addMessage3(Object handle, Object mess) {
+        addSuccessor(handle, mess);
+    }
+    
+    /*
+     * @see org.argouml.model.CollaborationsHelper#addSuccessor(java.lang.Object,
+     *      java.lang.Object)
+     */
+    public void addSuccessor(Object handle, Object mess) {
         if (handle instanceof Message && mess instanceof Message) {
             nsmodel.getUmlPackage().getCollaborations().
                 getAPredecessorSuccessor().add((Message) handle,
@@ -935,18 +941,27 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      *      java.util.Collection)
      */
     public void setMessages3(Object handle, Collection messages) {
+        setSuccessors(handle, messages);
+    }
+
+    /*
+     * @see org.argouml.model.CollaborationsHelper#setSuccessors(java.lang.Object,
+     *      java.util.Collection)
+     */
+    public void setSuccessors(Object handle, Collection messages) {
         if (handle instanceof Message) {
-            Collection actualMessages = Model.getFacade().getMessages3(handle);
-            if (!actualMessages.isEmpty()) {
-                Vector messages3 = new Vector();
-                messages3.addAll(actualMessages);
-                Iterator toRemove = messages3.iterator();
-                while (toRemove.hasNext())
-                    removeMessage3(handle, toRemove.next());
+            Collection currentMessages = 
+                Model.getFacade().getSuccessors(handle);
+            if (!currentMessages.isEmpty()) {
+                Collection successors = new ArrayList(currentMessages);
+                Iterator toRemove = successors.iterator();
+                while (toRemove.hasNext()) {
+                    removeSuccessor(handle, toRemove.next());
+                }
             }
             Iterator toAdd = messages.iterator();
             while (toAdd.hasNext())
-                addMessage3(handle, toAdd.next());
+                addSuccessor(handle, toAdd.next());
     
             return;
         }

@@ -465,7 +465,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     private Message findEnd(Message m) {
         while (true) {
-            Collection c = Model.getFacade().getMessages3(m);
+            Collection c = Model.getFacade().getSuccessors(m);
             Iterator it = c.iterator();
             if (!it.hasNext()) {
                 return m;

@@ -2412,12 +2412,17 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    /**
-     * Get Successors to the given message.
-     *
+    /*
      * @see org.argouml.model.Facade#getMessages3(java.lang.Object)
      */
     public Collection getMessages3(Object handle) {
+        return getSuccessors(handle);
+    }
+
+    /*
+     * @see org.argouml.model.Facade#getSuccessors(java.lang.Object)
+     */
+    public Collection getSuccessors(Object handle) {
         try {
             if (handle instanceof Message) {
                 return implementation.getUmlPackage().getCollaborations()
