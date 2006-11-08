@@ -1418,6 +1418,10 @@ public interface Facade {
 
     /**
      * Returns the ElementImports of this ModelElement.
+     * 
+     * TODO: Not sure if we ever had a getElementImports, but,
+     * if not, this method name, which is left over from UML 1.3,
+     * should be changed to getElementImports. - tfm 20061108
      *
      * @param handle the ModelElement
      * @return the collection of ElementImports
@@ -1482,8 +1486,19 @@ public interface Facade {
     Collection getExtends(Object handle);
 
     /**
+     * Returns all extenders of a use case.
+     *
+     * @param handle is the use case
+     * @return the extends
+     */
+    Collection getExtenders(Object handle);
+    
+    /**
      * Returns all extends of a use case.
      *
+     * @deprecated by tfmorris for 0.23.4
+     * use {@link #getExtenders(Object)}
+     * 
      * @param handle is the use case
      * @return the extends
      */
@@ -1557,10 +1572,7 @@ public interface Facade {
     Object getIcon(Object handle);
 
     /**
-     * Returns the includers for some use case.<p>
-     *
-     * <em>Note:</em> Changes from getIncludes in UML 1.3
-     * to getIncluders in UML 1.4.
+     * Returns the includes for some use case.<p>
      *
      * @param handle is the use case
      * @return the includes as a Collection
@@ -1568,15 +1580,23 @@ public interface Facade {
     Collection getIncludes(Object handle);
 
     /**
-     * Returns the includes for some use case.<p>
+     * Returns the includers for some use case.<p>
      *
-     * <em>Note:</em>Changes from getIncludes2 in UML 1.3
-     * to getIncludes in UML 1.4.
-     *
+     * @deprecated by tfmorris for 0.23.4 
+     * use {@link #getIncluders(Object)}
+     * 
      * @param handle is the use case
      * @return the includes as a Collection
      */
     Collection getIncludes2(Object handle);
+    
+    /**
+     * Returns the includers for some use case.<p>
+     *
+     * @param handle is the use case
+     * @return the includes as a Collection
+     */
+    Collection getIncluders(Object handle);
 
     /**
      * Returns the incoming transitions for some statevertex.
@@ -1729,7 +1749,10 @@ public interface Facade {
     Collection getSentMessages(Object handle);
 
     /**
-     * Get the model of some model element.
+     * Get the Model of some model element.
+     * If no containing Model can be found, the outermost
+     * containing ModelElement is returned (which could be
+     * the original element itself if it has no owner).
      *
      * @param handle to the model element.
      * @return model for the model element.
@@ -1737,6 +1760,9 @@ public interface Facade {
     Object getModel(Object handle);
 
     /**
+     * Get the ModelElement which is the importElement of
+     * an ElementImport or the modelElement of a TaggedValue.
+     * 
      * @param handle an Element Import or TaggedValue.
      * @return the model element
      */
@@ -2399,10 +2425,34 @@ public interface Facade {
     /**
      * Returns the Stimuli that are received by the given Instance.
      *
+     * @deprecated by tfmorris for 0.23.4 
+     * use {@link #getReceivedStimuli(Object)}
+     * 
      * @param handle the Instance
      * @return the collection of stimuli
      */
     Collection getStimuli2(Object handle);
+
+
+    /**
+     * Returns the Stimuli that are received by the given Instance.
+     *
+     * @param handle the Instance
+     * @return the collection of stimuli
+     */
+    Collection getReceivedStimuli(Object handle);
+
+
+    /**
+     * Returns the Stimuli that are send by the given Instance.
+     *
+     * @deprecated by tfmorris for 0.23.4 
+     * use {@link #getSentStimuli(Object)}
+     * 
+     * @param handle the Instance
+     * @return the collection of stimuli
+     */
+    Collection getStimuli3(Object handle);
 
     /**
      * Returns the Stimuli that are send by the given Instance.
@@ -2410,7 +2460,7 @@ public interface Facade {
      * @param handle the Instance
      * @return the collection of stimuli
      */
-    Collection getStimuli3(Object handle);
+    Collection getSentStimuli(Object handle);
 
     /**
      * Returns a collection with all subvertices belonging to the given
