@@ -1670,11 +1670,35 @@ public interface Facade {
     
     /**
      * Get the messages that are activated by the given message.
-     *
+     * 
+     * @deprecated by tfmorris for 0.23.4 
+     * use {@link #getActivatedMessages(Object)}
+     * 
      * @param handle Message
      * @return the Collection of Messages
      */
     Collection getMessages4(Object handle);
+
+    
+    /**
+     * Get the messages that are activated by the given message.
+     *
+     * @param handle Message
+     * @return the Collection of Messages
+     */
+    Collection getActivatedMessages(Object handle);
+
+    /**
+     * Returns the messages received by the given classifier role.
+     *
+     * @deprecated by tfmorris for 0.23.4 
+     * use {@link #getReceivedMessages(Object)}
+     * 
+     * @param handle is the classifier role
+     * @return Collection
+     */
+    Collection getMessages1(Object handle);
+
 
     /**
      * Returns the messages received by the given classifier role.
@@ -1682,15 +1706,27 @@ public interface Facade {
      * @param handle is the classifier role
      * @return Collection
      */
-    Collection getMessages1(Object handle);
+    Collection getReceivedMessages(Object handle);
+
 
     /**
-     * Returns the messages send by the given classifier role.
+     * Returns the messages sent by the given classifier role.
      *
+     * @deprecated by tfmorris for 0.23.4 
+     * use {@link #getSentMessages(Object)}
+     * 
      * @param handle is the classifier role
      * @return Collection
      */
     Collection getMessages2(Object handle);
+
+    /**
+     * Returns the messages sent by the given classifier role.
+     *
+     * @param handle is the classifier role
+     * @return Collection
+     */
+    Collection getSentMessages(Object handle);
 
     /**
      * Get the model of some model element.
