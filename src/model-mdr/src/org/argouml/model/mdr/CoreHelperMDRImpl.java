@@ -320,6 +320,11 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 }
             }
             result.addAll(operations);
+            // TODO: A minimal update strategy would be better here to
+            // minimize work and events firing, but it may be better to
+            // deprecate the method and force calls to manage updates
+            // themselves (since they probably usually want to just add
+            // or remove a single element) - tfm 20061108
             mclassifier.getFeature().clear();
             mclassifier.getFeature().addAll(result);
         }
@@ -356,6 +361,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 }
             }
             result.addAll(attributes);
+            // TODO: This should use a minimal update strategy instead of
+            // removing everything and adding it again. - tfm
             mclassifier.getFeature().clear();
             mclassifier.getFeature().addAll(result);
         }
@@ -2479,9 +2486,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public void setAnnotatedElements(Object handle, Collection elems) {
         if (handle instanceof Comment && elems instanceof List) {
-            Comment comment = (Comment) handle;
-            comment.getAnnotatedElement().clear();
-            comment.getAnnotatedElement().addAll(elems);
+            CollectionHelper.update(
+                    ((Comment) handle).getAnnotatedElement(), elems);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle);
@@ -2634,13 +2640,13 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public void setConnections(Object handle, Collection elems) {
         if (handle instanceof UmlAssociation && elems instanceof List) {
-            ((UmlAssociation) handle).getConnection().clear();
-            ((UmlAssociation) handle).getConnection().addAll(elems);
+            CollectionHelper.update(
+                    ((UmlAssociation) handle).getConnection(), elems);
             return;
         }
         if (handle instanceof Link && elems instanceof List) {
-            ((Link) handle).getConnection().clear();
-            ((Link) handle).getConnection().addAll(elems);
+            CollectionHelper.update(
+                    ((Link) handle).getConnection(), elems);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle);
@@ -2697,6 +2703,11 @@ public class CoreHelperMDRImpl implements CoreHelper {
             } else {
                 featuresList = new ArrayList(features);
             }
+            // TODO: A minimal update strategy would be better here to
+            // minimize work and events firing, but it may be better to
+            // deprecate the method and force calls to manage updates
+            // themselves (since they probably usually want to just add
+            // or remove a single element) - tfm 20061108
             ((Classifier) handle).getFeature().clear();
             ((Classifier) handle).getFeature().addAll(featuresList);
             return;
@@ -3089,13 +3100,13 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public void setResidents(Object handle, Collection residents) {
         if (handle instanceof NodeInstance) {
-            ((NodeInstance) handle).getResident().clear();
-            ((NodeInstance) handle).getResident().addAll(residents);
+            CollectionHelper.update(
+                    ((NodeInstance) handle).getResident(), residents);
             return;
         }
         if (handle instanceof ComponentInstance) {
-            ((ComponentInstance) handle).getResident().clear();
-            ((ComponentInstance) handle).getResident().addAll(residents);
+            CollectionHelper.update(
+                    ((ComponentInstance) handle).getResident(), residents);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle);
@@ -3126,8 +3137,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public void setSources(Object handle, Collection specifications) {
         if (handle instanceof Flow) {
-            ((Flow) handle).getSource().clear();
-            ((Flow) handle).getSource().addAll(specifications);
+            CollectionHelper.update(
+                    ((Flow) handle).getSource(), specifications);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle);
@@ -3381,8 +3392,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
      */
     public void setEnumerationLiterals(Object enumeration, List literals) {
         if (enumeration instanceof Enumeration) {
-            ((Enumeration) enumeration).getLiteral().clear();
-            ((Enumeration) enumeration).getLiteral().addAll(literals);
+            CollectionHelper.update(
+                    ((Enumeration) enumeration).getLiteral(), literals);
         }
     }
 
