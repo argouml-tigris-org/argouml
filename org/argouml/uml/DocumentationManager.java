@@ -74,10 +74,12 @@ public class DocumentationManager {
                 while (iter.hasNext()) {
                     Object tv = iter.next();
                     String tag = Model.getFacade().getTagOfTag(tv);
-                    if (tag.equals("documentation") || tag.equals("javadocs")) {
+                    if ("documentation".equals(tag) || "javadocs".equals(tag)) {
                         sResult = Model.getFacade().getValueOfTag(tv);
                         // give priority to "documentation"
-                        if (tag.equals("documentation")) break;
+                        if ("documentation".equals(tag)) {
+                            break;
+                        }
                     }
                 }
             }
