@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.omg.uml.behavioralelements.statemachines.State;
-
 /**
  * Static utility methods for dealing with collections.
  * 
@@ -59,16 +57,16 @@ public class CollectionHelper {
 
         Iterator oldIt = base.iterator();
         while (oldIt.hasNext()) {
-            State s = (State) oldIt.next();
-            if (!updates.contains(s)) {
-                toBeRemoved.add(s);
+            Object obj = oldIt.next();
+            if (!updates.contains(obj)) {
+                toBeRemoved.add(obj);
             }
         }
         Iterator newIt = updates.iterator();
         while (newIt.hasNext()) {
-            State s = (State) newIt.next();
-            if (!base.contains(s)) {
-                toBeAdded.add(s);
+            Object obj = newIt.next();
+            if (!base.contains(obj)) {
+                toBeAdded.add(obj);
             }
         }
         
