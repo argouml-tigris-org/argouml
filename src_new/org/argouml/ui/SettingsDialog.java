@@ -30,17 +30,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
-import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
-import org.argouml.application.api.PluggableSettingsTab;
-import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.i18n.Translator;
 
 /**
@@ -51,11 +45,6 @@ import org.argouml.i18n.Translator;
  * @since 0.9.4
  */
 class SettingsDialog extends ArgoDialog implements WindowListener {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(SettingsDialog.class);
 
     private JButton applyButton;
 
@@ -99,21 +88,6 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
                     stp.getTabPanel());
         }
 
-        // Here is where the tabs from the old plugins mechanism are added.
-        List list = Argo.getPlugins(PluggableSettingsTab.class);
-        ListIterator iterator = list.listIterator();
-        try {
-            while (iterator.hasNext()) {
-                Object o = iterator.next();
-                SettingsTabPanel stp =
-                    ((PluggableSettingsTab) o).getSettingsTabPanel();
-                tabs.addTab(Translator.localize(stp.getTabKey()), stp
-                        .getTabPanel());
-            }
-        } catch (Exception exception) {
-            LOG.error("got an Exception in ActionSettings", exception);
-        }
-
         // Increase width to accommodate all tabs on one row.
         final int minimumWidth = 480;
         tabs.setPreferredSize(new Dimension(Math.max(tabs
@@ -125,8 +99,8 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
         addWindowListener(this);
     }
 
-    /**
-     * @see java.awt.Component#show()
+    /*
+     * @see java.awt.Dialog#show()
      */
     public void show() {
         // If a recursive call from setVisible(), just return
@@ -201,45 +175,45 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
      */
     public void windowActivated(WindowEvent e) {
         handleOpen();
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
      */
     public void windowClosed(WindowEvent e) {
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
      */
     public void windowDeactivated(WindowEvent e) {
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
      */
     public void windowDeiconified(WindowEvent e) {
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
      */
     public void windowIconified(WindowEvent e) {
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
      */
     public void windowOpened(WindowEvent e) {
         handleOpen();
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
      */
     public void windowClosing(WindowEvent e) {
