@@ -53,7 +53,7 @@ public class CrWrongLinkEnds extends CrUML {
 	addSupportedDecision(UMLDecision.PATTERNS);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
@@ -65,7 +65,7 @@ public class CrWrongLinkEnds extends CrUML {
 	return PROBLEM_FOUND;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#toDoItem(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
@@ -75,7 +75,7 @@ public class CrWrongLinkEnds extends CrUML {
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
@@ -117,11 +117,14 @@ public class CrWrongLinkEnds extends CrUML {
 		Iterator it = ends.iterator();
 		while (it.hasNext()) {
                     Object instance = Model.getFacade().getInstance(it.next());
-                    Collection residencies =
-                        Model.getFacade().getResidents(instance);
-		    if (residencies != null
-			&& (residencies.size() > 0))
-			count = count + 2;
+                    if (Model.getFacade().isAComponentInstance(instance)
+                            || Model.getFacade().isANodeInstance(instance)) {
+                        Collection residencies =
+                            Model.getFacade().getResidents(instance);
+                        if (residencies != null
+                                && (residencies.size() > 0))
+                            count = count + 2;
+                    }
 
                     Object component =
                         Model.getFacade().getComponentInstance(instance);
