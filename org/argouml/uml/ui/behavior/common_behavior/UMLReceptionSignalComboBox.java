@@ -50,7 +50,7 @@ public class UMLReceptionSignalComboBox extends UMLComboBox2 {
         setRenderer(new UMLListCellRenderer2(true));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBox2#doIt(ActionEvent)
      */
     protected void doIt(ActionEvent event) {

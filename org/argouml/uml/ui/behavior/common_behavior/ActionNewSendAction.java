@@ -53,7 +53,7 @@ public class ActionNewSendAction extends ActionNewAction {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.common_behavior.ActionNewAction#createAction()
      */
     protected Object createAction() {

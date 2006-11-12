@@ -38,15 +38,10 @@ public class UMLSignalContextListModel extends UMLModelElementListModel2 {
      * The constructor.
      */
     public UMLSignalContextListModel() {
-        /*
-         * The event to listen to is "context", so that model updates
-         * get shown in the list. Reproduce this by adding a new operation,
-         * and see the result displayed in the list.
-         */
         super("context");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -55,12 +50,13 @@ public class UMLSignalContextListModel extends UMLModelElementListModel2 {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isABehavioralFeature(element)
-        && Model.getFacade().getContexts(getTarget()).contains(element);
+                && Model.getFacade().getContexts(getTarget()).contains(
+                        element);
     }
 
 }

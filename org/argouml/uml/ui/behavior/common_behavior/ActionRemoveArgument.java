@@ -48,7 +48,7 @@ public class ActionRemoveArgument extends AbstractActionRemoveElement {
         super(Translator.localize("menu.popup.delete"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

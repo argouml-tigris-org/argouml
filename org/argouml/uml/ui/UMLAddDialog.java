@@ -216,7 +216,8 @@ public class UMLAddDialog extends JPanel implements ActionListener {
             selectedList.setCellRenderer(renderer);
         }
         selectedList
-                .setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+                .setSelectionMode(
+                        ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         selectedList.setVisibleRowCount(15);
         JScrollPane selectedScroll = new JScrollPane(selectedList);
         panelSelected.add(new JLabel(Translator.localize("label.selected")),
@@ -247,7 +248,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
         update();
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

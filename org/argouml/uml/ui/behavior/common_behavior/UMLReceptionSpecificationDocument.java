@@ -41,7 +41,7 @@ public class UMLReceptionSpecificationDocument extends UMLPlainTextDocument {
         super("specification");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
@@ -51,7 +51,7 @@ public class UMLReceptionSpecificationDocument extends UMLPlainTextDocument {
 
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {

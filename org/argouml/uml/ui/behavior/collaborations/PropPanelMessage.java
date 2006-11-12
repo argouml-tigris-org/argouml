@@ -90,8 +90,8 @@ public class PropPanelMessage extends PropPanelModelElement {
         JScrollPane predecessorScroll =
                 new JScrollPane(
                 new UMLMutableLinkedList(new UMLMessagePredecessorListModel(),
-        	ActionAddMessagePredecessor.getInstance(),
-        	null));
+                        ActionAddMessagePredecessor.getInstance(),
+                        null));
         addField(Translator.localize("label.predecessor"),
         	 predecessorScroll);
 

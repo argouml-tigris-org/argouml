@@ -67,18 +67,18 @@ public class PropPanelSignal extends PropPanelClassifier {
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
         add(getNamespaceVisibilityPanel());
-		add(getModifiersPanel());
+        add(getModifiersPanel());
 		
         addSeparator();
         
         addField(Translator.localize("label.generalizations"),
 				getGeneralizationScroll());
-		addField(Translator.localize("label.specializations"),
+        addField(Translator.localize("label.specializations"),
 				getSpecializationScroll());
 		
-		addSeparator();
+        addSeparator();
 		
-		AbstractActionAddModelElement actionAddContext =
+        AbstractActionAddModelElement actionAddContext =
             new ActionAddContextSignal();
         AbstractActionRemoveElement actionRemoveContext =
             new ActionRemoveContextSignal();
@@ -87,7 +87,7 @@ public class PropPanelSignal extends PropPanelClassifier {
                         new UMLSignalContextListModel(),
                         actionAddContext, null, 
                         actionRemoveContext, true));
-		addField(Translator.localize("label.contexts"),
+        addField(Translator.localize("label.contexts"),
                 operationScroll);		
         AbstractActionAddModelElement actionAddReception =
             new ActionAddReceptionSignal();
@@ -282,7 +282,8 @@ class ActionRemoveReceptionSignal extends AbstractActionRemoveElement {
                 Collection receptions = new ArrayList(
                         Model.getFacade().getReceptions(signal));
                 receptions.remove(rec);
-                Model.getCommonBehaviorHelper().setReception(signal, receptions);
+                Model.getCommonBehaviorHelper().setReception(signal, 
+                        receptions);
             }
         }
     }

@@ -269,7 +269,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
         newAction = action;
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseReleased(
      *      java.awt.event.MouseEvent)
      */
@@ -283,7 +283,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent e) {
@@ -334,7 +334,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
         deleteAction = action;
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent e) {
@@ -347,13 +347,14 @@ public class UMLMutableLinkedList extends UMLLinkedList
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent e) {
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
-    /**
+    
+    /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent e) {

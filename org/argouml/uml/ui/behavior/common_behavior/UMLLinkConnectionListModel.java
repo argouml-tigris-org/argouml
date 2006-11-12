@@ -45,7 +45,7 @@ public class UMLLinkConnectionListModel
         super("linkEnd");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -54,14 +54,14 @@ public class UMLLinkConnectionListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
         return Model.getFacade().getConnections(getTarget()).contains(element);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
      */
     protected void moveDown(int index1) {

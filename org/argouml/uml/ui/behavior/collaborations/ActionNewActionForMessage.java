@@ -37,7 +37,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  */
 public class ActionNewActionForMessage extends AbstractActionNewModelElement {
     /**
-     * Logger.
+     * Singleton.
      */
     private static final ActionNewActionForMessage SINGLETON =
         new ActionNewActionForMessage();
@@ -49,7 +49,7 @@ public class ActionNewActionForMessage extends AbstractActionNewModelElement {
         super();
     }
 
-    /**
+    /*
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -58,7 +58,7 @@ public class ActionNewActionForMessage extends AbstractActionNewModelElement {
         Model.getCommonBehaviorFactory().buildAction(getTarget());
     }
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {
