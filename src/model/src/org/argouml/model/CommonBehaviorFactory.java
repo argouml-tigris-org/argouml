@@ -231,12 +231,13 @@ public interface CommonBehaviorFactory extends Factory {
     Object buildAction(Object message);
 
     /**
-     * Builds a signal belonging to some behavioralfeature.
+     * Builds a signal belonging to a BehavioralFeature,
+     * SignalEvent, SendAction, or Reception.
      *
-     * @param feature the given behaviouralfeature
+     * @param element target ModelElement of appropriate type
      * @return the newly build Signal
      */
-    Object buildSignal(Object feature);
+    Object buildSignal(Object element);
 
     /**
      * Builds a stimulus based on a given link.<p>
