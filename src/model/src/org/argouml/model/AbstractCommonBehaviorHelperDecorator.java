@@ -187,5 +187,17 @@ public abstract class AbstractCommonBehaviorHelperDecorator
     public Object getActionOwner(Object handle) {
         return impl.getActionOwner(handle);
     }
+    
+    public void addAction(Object handle, Object action) {
+        impl.addAction(handle, action);
+    }
+
+    public void addAction(Object handle, int position, Object action) {
+        impl.addAction(handle, position, action);
+    }
+
+    public void removeAction(Object handle, Object action) {
+        impl.removeAction(handle, action);
+    }
 
 }

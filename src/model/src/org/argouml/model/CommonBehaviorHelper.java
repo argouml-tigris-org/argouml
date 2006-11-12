@@ -77,7 +77,7 @@ public interface CommonBehaviorHelper {
      * @param argument Argument
      */
     void removeActualArgument(Object handle, Object argument);
-    
+
     /**
      * This method replaces all arguments of the given action
      * by the given list of arguments.
@@ -290,5 +290,30 @@ public interface CommonBehaviorHelper {
      * @return owning element of this action
      */
     Object getActionOwner(Object handle);
+
+    /**
+     * Add an action to action sequence.
+     *
+     * @param handle the action sequence
+     * @param action the action
+     */
+    void addAction(Object handle, Object action);
+
+    /**
+     * Inserts an action at the specified position in an action sequence.
+     *
+     * @param handle the action sequence
+     * @param position the 0-based position at which to insert the action
+     * @param action the action
+     */
+    void addAction(Object handle, int position, Object action);
+
+    /**
+     * Remove an Action from an ActionSequence.
+     *
+     * @param handle ActionSequence
+     * @param action Action
+     */
+    void removeAction(Object handle, Object action);
 
 }

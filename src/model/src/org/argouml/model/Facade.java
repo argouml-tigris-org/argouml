@@ -2654,6 +2654,24 @@ public interface Facade {
      */
     Object getAction(Object handle);
 
+
+    /**
+     * Get the list of Actions in an ActionSequence.
+     *
+     * @param handle the ActionSequence.
+     * @return the List of Actions
+     */
+    List getActions(Object handle);
+
+
+    /**
+     * Get the ActionSequence, if any, that owns this Action.
+     *
+     * @param handle the Action.
+     * @return the ActionSequence or null
+     */
+    Object getActionSequence(Object handle);
+
     /**
      * Returns the activator belonging to some message.
      *
