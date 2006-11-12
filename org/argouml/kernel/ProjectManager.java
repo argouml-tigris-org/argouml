@@ -259,7 +259,7 @@ public final class ProjectManager implements MementoCreationObserver {
         creatingCurrentProject = false;
 
         UndoManager.getInstance().empty();
-        if (!UndoEnabler.enabled) {
+        if (!UndoEnabler.isEnabled()) {
             UndoManager.getInstance().setUndoMax(0);
         }
         Model.getPump().startPumpingEvents();
@@ -334,6 +334,7 @@ public final class ProjectManager implements MementoCreationObserver {
      * Called when the model subsystem creates a memento.
      * We must add this to the UndoManager.
      *
+     * @param memento the memento.
      * @see org.argouml.model.MementoCreationObserver#mementoCreated(org.argouml.model.ModelMemento)
      */
     public void mementoCreated(final ModelMemento memento) {

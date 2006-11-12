@@ -34,15 +34,22 @@ public final class UndoEnabler {
 
     /**
      * Change this value to true to enable undo.
-     * Do not commit to CVS in this state.
+     * Do not commit in this state.
      * TODO: Implement!
      */
-    public static boolean enabled = false;
+    private static boolean enabled = false;
 
     /**
      * The constructor.
      */
     private UndoEnabler() {
         super();
+    }
+
+    /**
+     * @return <code>true</code> if undo is enabled.
+     */
+    public static boolean isEnabled() {
+        return enabled;
     }
 }

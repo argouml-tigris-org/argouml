@@ -376,15 +376,15 @@ public class GenericArgoMenuBar extends JMenuBar implements
                 .getUndoAction());
         setMnemonic(undoItem, "Undo");
         ShortcutMgr.assignAccelerator(undoItem, ShortcutMgr.ACTION_UNDO);
-        undoItem.setVisible(UndoEnabler.enabled);
+        undoItem.setVisible(UndoEnabler.isEnabled());
 
         JMenuItem redoItem = edit.add(ProjectBrowser.getInstance()
                 .getRedoAction());
         setMnemonic(redoItem, "Redo");
         ShortcutMgr.assignAccelerator(redoItem, ShortcutMgr.ACTION_REDO);
-        redoItem.setVisible(UndoEnabler.enabled);
+        redoItem.setVisible(UndoEnabler.isEnabled());
 
-        if (UndoEnabler.enabled) {
+        if (UndoEnabler.isEnabled()) {
             edit.addSeparator();
         }
 
@@ -794,23 +794,14 @@ public class GenericArgoMenuBar extends JMenuBar implements
                 .isEnabled());
     }
 
-    /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
-     */
     public void targetAdded(TargetEvent e) {
         setTarget();
     }
 
-    /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
-     */
     public void targetRemoved(TargetEvent e) {
         setTarget();
     }
 
-    /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-     */
     public void targetSet(TargetEvent e) {
         setTarget();
     }
