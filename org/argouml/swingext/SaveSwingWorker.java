@@ -33,61 +33,59 @@ import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 
 /**
- * The specialized SwingWorker used for saving projects 
+ * The specialized SwingWorker used for saving projects
  */
 public class SaveSwingWorker extends SwingWorker {
 
     private boolean overwrite;
     private File file;
-    private Boolean result;
+    private boolean result;
 
     /**
      * This is the only constructor for SaveSwingWorker.
-     * 
+     *
      * @param aFile        the file that's going to be saved
      * @param aOverwrite   whether to show the UI or not
      */
     public SaveSwingWorker(boolean aOverwrite, File aFile) {
-        this.overwrite = aOverwrite;
-        this.file = aFile;
+        overwrite = aOverwrite;
+        file = aFile;
     }
-        
+
     /**
      * Implements org.argouml.swingext.SwingWorker#construct(); this is
      * the main method for this SwingWorker.
      * In this case, it simply loads the project.
-     * 
+     *
      * @param pmw       the ProgressMonitorWindow used by ProjectBrowser
      * @return          always null
      */
     public Object construct(ProgressMonitorWindow pmw) {
         // saves the project
-        this.result = 
-            new Boolean(
-                    ProjectBrowser.getInstance().trySave(overwrite, file, pmw));
+        result = ProjectBrowser.getInstance().trySave(overwrite, file, pmw);
         return null;
     }
 
     /**
-     * Implements org.argouml.swingext.SwingWorker#initProgressMonitorWindow(); 
+     * Implements org.argouml.swingext.SwingWorker#initProgressMonitorWindow();
      * it just creates an instance of ProgressMonitorWindow.
-     * 
+     *
      * @return  an instance of ProgressMonitorWindow
      */
     public ProgressMonitorWindow initProgressMonitorWindow() {
-        Object[] msgArgs = new Object[] {this.file.getPath()};
-        UIManager.put("ProgressMonitor.progressText", 
+        Object[] msgArgs = new Object[] {file.getPath()};
+        UIManager.put("ProgressMonitor.progressText",
                 Translator.localize("filechooser.save-as-project"));
         return new ProgressMonitorWindow(ArgoFrame.getInstance(),
                 Translator.messageFormat("dialog.saveproject.title", msgArgs));
     }
-    
+
     /**
      * Overrides the finished method of the SwingWorker class to update the GUI
      */
     public void finished() {
         super.finished();
-        if (this.result != null && this.result.booleanValue()) {
+        if (result) {
             ProjectBrowser.getInstance().buildTitleWithCurrentProjectName();
         }
     }
