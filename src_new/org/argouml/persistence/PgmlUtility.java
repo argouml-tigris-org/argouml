@@ -157,22 +157,22 @@ public final class PgmlUtility {
         if (f == null) {
             throw new IllegalArgumentException("A fig must be supplied");
         }
-        if(f.getGroup() != null) {
+        if (f.getGroup() != null) {
             String groupId = f.getGroup().getId();
-            if(f.getGroup() instanceof FigGroup) {
+            if (f.getGroup() instanceof FigGroup) {
                 FigGroup group = (FigGroup) f.getGroup();
                 return groupId + "." + (group.getFigs()).indexOf(f);
             } else if (f.getGroup() instanceof FigEdge) {
                 FigEdge edge = (FigEdge) f.getGroup();
-                return groupId + "." +
-                    (((List) edge.getPathItemFigs()).indexOf(f) + 1);
+                return groupId + "."
+                        + (((List) edge.getPathItemFigs()).indexOf(f) + 1);
             } else {
                 return groupId + ".0";
             }
         }
 
         Layer layer = f.getLayer();
-        if(layer == null) {
+        if (layer == null) {
             return "LAYER_NULL";
         }
 

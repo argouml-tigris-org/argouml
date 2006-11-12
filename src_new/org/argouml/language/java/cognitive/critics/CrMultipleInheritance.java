@@ -44,13 +44,13 @@ public class CrMultipleInheritance extends CrUML {
      * The constructor.
      */
     public CrMultipleInheritance() {
-        setupHeadAndDesc();;
+        setupHeadAndDesc();
 	addSupportedDecision(UMLDecision.INHERITANCE);
 	addSupportedDecision(UMLDecision.CODE_GEN);
 	addTrigger("generalization");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
@@ -66,7 +66,7 @@ public class CrMultipleInheritance extends CrUML {
         return NO_PROBLEM;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
@@ -87,9 +87,11 @@ public class CrMultipleInheritance extends CrUML {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
-    public Class getWizardClass(ToDoItem item) { return WizCueCards.class; }
+    public Class getWizardClass(ToDoItem item) {
+        return WizCueCards.class;
+    }
 
 } /* end class CrMultipleInheritance.java */

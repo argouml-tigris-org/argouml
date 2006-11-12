@@ -127,7 +127,7 @@ public class ResolvedCritic {
 	critic = getCriticString(c);
     }
 
-    /**
+    /*
      * @see java.lang.Object#hashCode()
      *
      * This is a rather bad hash solution but with the {@link #equals(Object)}
@@ -154,7 +154,7 @@ public class ResolvedCritic {
      * Returns true if equal according to the description, false
      * otherwise.
      *
-     * @see java.lang.Object#equals(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean equals(Object obj) {
 	ResolvedCritic rc;
@@ -289,7 +289,7 @@ public class ResolvedCritic {
 	return offenders;
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

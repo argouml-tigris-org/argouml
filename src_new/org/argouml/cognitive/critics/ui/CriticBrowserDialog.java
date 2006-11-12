@@ -420,7 +420,7 @@ public class CriticBrowserDialog extends ArgoDialog
     // event handlers
 
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -446,7 +446,7 @@ public class CriticBrowserDialog extends ArgoDialog
 	LOG.debug("unknown src in CriticBrowserDialog: " + e.getSource());
     }
 
-    /**
+    /*
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent lse) {
@@ -467,7 +467,7 @@ public class CriticBrowserDialog extends ArgoDialog
         }
     }
 
-    /**
+    /*
      * Updates the button if the current row changes
      * 
      * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
@@ -477,7 +477,7 @@ public class CriticBrowserDialog extends ArgoDialog
         table.repaint();
     }
     
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */
     public void insertUpdate(DocumentEvent e) {
@@ -490,12 +490,12 @@ public class CriticBrowserDialog extends ArgoDialog
 	if (e.getDocument() == dDoc) setTargetDesc();
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
      */
     public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
      */
     public void changedUpdate(DocumentEvent e) {
@@ -503,7 +503,7 @@ public class CriticBrowserDialog extends ArgoDialog
 	// Apparently, this method is never called.
     }
 
-    /**
+    /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {
@@ -518,7 +518,7 @@ public class CriticBrowserDialog extends ArgoDialog
 	}
     }
 
-    /**
+    /*
      * Refresh the table when a critique is enabled/disabled
      * 
      * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
@@ -548,6 +548,9 @@ class TableModelCritics extends AbstractTableModel
 
     ////////////////
     // accessors
+    /**
+     * @param critics the list of critics
+     */
     public void setTarget(List critics) {
 	target = critics;
 	//fireTableStructureChanged();

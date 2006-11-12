@@ -70,7 +70,7 @@ public class Decision {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
@@ -84,7 +84,7 @@ public class Decision {
      * Two decisions are considered to be equal if their names are equal. The
      * priority is not considered.
      *
-     * @see java.lang.Object#equals(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean equals(Object d2) {
         if (!(d2 instanceof Decision)) {
@@ -123,7 +123,7 @@ public class Decision {
         priority = p;
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

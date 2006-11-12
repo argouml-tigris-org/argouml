@@ -135,7 +135,7 @@ public class CompoundCritic extends Critic {
     ////////////////////////////////////////////////////////////////
     // critiquing
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#critique(java.lang.Object,
      * org.argouml.cognitive.Designer)
      */
@@ -151,7 +151,7 @@ public class CompoundCritic extends Critic {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Decision)
      */
     public boolean supports(Decision d) {
@@ -165,21 +165,21 @@ public class CompoundCritic extends Critic {
 	return false;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getSupportedDecisions()
      */
     public Vector getSupportedDecisions() {
 	throw new UnsupportedOperationException();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#addSupportedDecision(org.argouml.cognitive.Decision)
      */
     public void addSupportedDecision(Decision d) {
 	throw new UnsupportedOperationException();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
      */
     public boolean supports(Goal g) {
@@ -193,21 +193,21 @@ public class CompoundCritic extends Critic {
 	return false;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getSupportedGoals()
      */
     public Vector getSupportedGoals() {
 	throw new UnsupportedOperationException();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#addSupportedGoal(org.argouml.cognitive.Goal)
      */
     public void addSupportedGoal(Goal g) {
 	throw new UnsupportedOperationException();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#containsKnowledgeType(java.lang.String)
      */
     public boolean containsKnowledgeType(String type) {
@@ -221,21 +221,21 @@ public class CompoundCritic extends Critic {
 	return false;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#addKnowledgeType(java.lang.String)
      */
     public void addKnowledgeType(String type) {
 	throw new UnsupportedOperationException();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#expand(java.lang.String, ListSet)
      */
     public String expand(String desc, ListSet offs) {
 	throw new UnsupportedOperationException();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {
@@ -243,7 +243,7 @@ public class CompoundCritic extends Critic {
     }
 
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#isActive()
      */
     public boolean isActive() {
@@ -260,7 +260,7 @@ public class CompoundCritic extends Critic {
     ////////////////////////////////////////////////////////////////
     // criticism control
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#isEnabled()
      */
     public boolean isEnabled() {
@@ -270,7 +270,7 @@ public class CompoundCritic extends Critic {
     ////////////////////////////////////////////////////////////////
     // design feedback
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
      * org.argouml.cognitive.Designer)
      */

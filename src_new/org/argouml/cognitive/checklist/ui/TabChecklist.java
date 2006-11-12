@@ -151,7 +151,7 @@ public class TabChecklist extends AbstractArgoJPanel
 	resizeColumns();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() { return target; }
@@ -203,7 +203,7 @@ public class TabChecklist extends AbstractArgoJPanel
     ////////////////////////////////////////////////////////////////
     // event handling
 
-    /**
+    /*
      * Enable buttons when selection made.
      *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -211,27 +211,27 @@ public class TabChecklist extends AbstractArgoJPanel
     public void actionPerformed(ActionEvent ae) {
     }
 
-    /**
+    /*
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent lse) {
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
 
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
 	setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {

@@ -465,7 +465,7 @@ public final class Designer
         }
     }
 
-    /**
+    /*
      * Performs critique asap.
      *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
@@ -508,7 +508,7 @@ public final class Designer
 
     /**
      * @see #getAutoCritique()
-     * @param b
+     * @param b true to set auto critique on, false for off
      */
     public void setAutoCritique(boolean b) {
         Configuration.setBoolean(Designer.AUTO_CRITIQUE, b);
@@ -637,34 +637,34 @@ public final class Designer
      */
     public boolean stillValid(ToDoItem i, Designer d) { return true; }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Decision)
      */
     public boolean supports(Decision d) { return d == Decision.UNSPEC; }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getSupportedDecisions()
      */
     public Vector getSupportedDecisions() { return unspecDecisionVector; }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
      */
     public boolean supports(Goal g) { return true; }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getSupportedGoals()
      */
     public Vector getSupportedGoals() { return unspecGoalVector; }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#containsKnowledgeType(java.lang.String)
      */
     public boolean containsKnowledgeType(String type) {
         return type.equals("Designer's");
     }
 
-    /**
+    /*
      * Just returns the descr param.
      *
      * @see org.argouml.cognitive.Poster#expand(java.lang.String, ListSet)
@@ -673,7 +673,7 @@ public final class Designer
         return desc;
     }
 
-    /**
+    /*
      * Get the generic clarifier for this designer/poster.
      *
      * @see org.argouml.cognitive.Poster#getClarifier()
@@ -862,7 +862,7 @@ public final class Designer
         return designerName;
     }
 
-    /**
+    /*
      * This is used in the todo panel, when "By Poster" is chosen for a
      * manually created todo item.
      *
@@ -877,7 +877,7 @@ public final class Designer
     ////////////////////////////////////////////////////////////////
     // issue resolution
 
-    /**
+    /*
      * Does not do anything.
      *
      * @see org.argouml.cognitive.Poster#fixIt(org.argouml.cognitive.ToDoItem,
@@ -885,7 +885,7 @@ public final class Designer
      */
     public void fixIt(ToDoItem item, Object arg) { }
 
-    /**
+    /*
      * Just returns false.
      *
      * @see org.argouml.cognitive.Poster#canFixIt(org.argouml.cognitive.ToDoItem)

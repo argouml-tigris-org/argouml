@@ -185,14 +185,14 @@ class ZargoFilePersister extends UmlFilePersister {
         }
     }
     
-    /**
+    /*
      * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
      */
     public boolean isSaveEnabled() {
         return false;
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public Project doLoad(File file)
@@ -259,7 +259,7 @@ class ZargoFilePersister extends UmlFilePersister {
                 if (line.trim().equals("</argo>") && memberCount == 0) {
                     LOG.info("Inserting member info");
                     writer.println("<member type='xmi' name='.xmi' />");
-                    for (int i=0; i < pgmlCount; ++i) {
+                    for (int i = 0; i < pgmlCount; ++i) {
                         writer.println("<member type='pgml' name='.pgml' />");
                     }
                     if (containsToDo) {
