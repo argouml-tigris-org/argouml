@@ -24,15 +24,10 @@
 
 package org.argouml.model.mdr;
 
-import java.io.IOException;
-
-import javax.jmi.xmi.MalformedXMIException;
-
 import junit.framework.TestCase;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.argouml.model.UmlException;
-import org.netbeans.api.mdr.CreationFailedException;
 
 public abstract class AbstractMDRModelImplementationTestCase extends TestCase {
 

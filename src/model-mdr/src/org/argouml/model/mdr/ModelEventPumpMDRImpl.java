@@ -765,7 +765,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         try {
             if (element instanceof MDRObject) {
                 return modelImplementation.getMetaTypes().getName(element)
-                + "<" + ((MDRObject) element).refMofId() + ">";
+                        + "<" + ((MDRObject) element).refMofId() + ">";
             } else if (element != null) {
                 return element.toString();
             }

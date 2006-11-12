@@ -421,7 +421,8 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 message.setActivator(lastMsg);
                 messages = Model.getFacade().getActivatedMessages(lastMsg);
             } else {
-                messages = Model.getFacade().getSentMessages(message.getSender());
+                messages = Model.getFacade().getSentMessages(
+                        message.getSender());
             }
 
             lastMsg = lastMessage(messages, message);

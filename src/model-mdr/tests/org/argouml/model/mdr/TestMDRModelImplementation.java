@@ -57,7 +57,7 @@ public class TestMDRModelImplementation extends TestCase {
         super(arg0);
     }
     
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() throws Exception {

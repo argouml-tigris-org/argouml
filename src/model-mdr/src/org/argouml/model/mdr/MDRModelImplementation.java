@@ -214,8 +214,8 @@ public class MDRModelImplementation implements ModelImplementation {
     /**
      * Constructor.
      *
-     * @throws UmlException if construction fails.  Some possible nested exceptions
-     * include:
+     * @throws UmlException if construction fails.  Some possible nested 
+     * exceptions include:
      * <ul>
      * <el>CreationFailedException - If the creation of the Extend fail</el>
      * <el>MalformedXMIException If the XMI is bad formed</el>
@@ -259,7 +259,8 @@ public class MDRModelImplementation implements ModelImplementation {
         if (mofExtent == null) {
 
             try {
-                mofExtent = (ModelPackage) repository.createExtent(MOF_EXTENT_NAME);
+                mofExtent = 
+                    (ModelPackage) repository.createExtent(MOF_EXTENT_NAME);
             } catch (CreationFailedException e) {
                 throw new UmlException(e);
             }
@@ -361,14 +362,14 @@ public class MDRModelImplementation implements ModelImplementation {
         MDRManager.getDefault().shutdownAll();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getDiagramInterchangeModel()
      */
     public DiagramInterchangeModel getDiagramInterchangeModel() {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getFacade()
      */
     public Facade getFacade() {
@@ -378,28 +379,28 @@ public class MDRModelImplementation implements ModelImplementation {
         return theFacade;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getModelEventPump()
      */
     public ModelEventPump getModelEventPump() {
         return theModelEventPump;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getActivityGraphsFactory()
      */
     public ActivityGraphsFactory getActivityGraphsFactory() {
         return theActivityGraphsFactory;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getActivityGraphsHelper()
      */
     public ActivityGraphsHelper getActivityGraphsHelper() {
         return theActivityGraphsHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCollaborationsFactory()
      */
     public CollaborationsFactory getCollaborationsFactory() {
@@ -410,7 +411,7 @@ public class MDRModelImplementation implements ModelImplementation {
         return theCollaborationsFactory;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCollaborationsHelper()
      */
     public CollaborationsHelper getCollaborationsHelper() {
@@ -421,98 +422,98 @@ public class MDRModelImplementation implements ModelImplementation {
         return theCollaborationsHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCommonBehaviorFactory()
      */
     public CommonBehaviorFactory getCommonBehaviorFactory() {
         return theCommonBehaviorFactory;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCommonBehaviorHelper()
      */
     public CommonBehaviorHelper getCommonBehaviorHelper() {
         return theCommonBehaviorHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCopyHelper()
      */
     public org.argouml.model.CopyHelper getCopyHelper() {
         return theCopyHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCoreFactory()
      */
     public CoreFactory getCoreFactory() {
         return theCoreFactory;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCoreHelper()
      */
     public CoreHelper getCoreHelper() {
         return theCoreHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getDataTypesFactory()
      */
     public DataTypesFactory getDataTypesFactory() {
         return theDataTypesFactory;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getDataTypesHelper()
      */
     public DataTypesHelper getDataTypesHelper() {
         return theDataTypesHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getExtensionMechanismsFactory()
      */
     public ExtensionMechanismsFactory getExtensionMechanismsFactory() {
         return theExtensionMechanismsFactory;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getExtensionMechanismsHelper()
      */
     public ExtensionMechanismsHelper getExtensionMechanismsHelper() {
         return theExtensionMechanismsHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getModelManagementFactory()
      */
     public ModelManagementFactory getModelManagementFactory() {
         return theModelManagementFactory;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getModelManagementHelper()
      */
     public ModelManagementHelper getModelManagementHelper() {
         return theModelManagementHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getStateMachinesFactory()
      */
     public StateMachinesFactory getStateMachinesFactory() {
         return theStateMachinesFactory;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getStateMachinesHelper()
      */
     public StateMachinesHelper getStateMachinesHelper() {
         return theStateMachinesHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getUmlFactory()
      */
     public UmlFactory getUmlFactory() {
@@ -522,7 +523,7 @@ public class MDRModelImplementation implements ModelImplementation {
         return theUmlFactory;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getUmlHelper()
      */
     public UmlHelper getUmlHelper() {
@@ -532,84 +533,84 @@ public class MDRModelImplementation implements ModelImplementation {
         return theUmlHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getUseCasesFactory()
      */
     public UseCasesFactory getUseCasesFactory() {
         return theUseCasesFactory;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getUseCasesHelper()
      */
     public UseCasesHelper getUseCasesHelper() {
         return theUseCasesHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getMetaTypes()
      */
     public MetaTypes getMetaTypes() {
         return theMetaTypes;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getChangeableKind()
      */
     public ChangeableKind getChangeableKind() {
         return theKindsObject;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getAggregationKind()
      */
     public AggregationKind getAggregationKind() {
         return theKindsObject;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getPseudostateKind()
      */
     public PseudostateKind getPseudostateKind() {
         return theKindsObject;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getScopeKind()
      */
     public ScopeKind getScopeKind() {
         return theKindsObject;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getConcurrencyKind()
      */
     public ConcurrencyKind getConcurrencyKind() {
         return theKindsObject;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getDirectionKind()
      */
     public DirectionKind getDirectionKind() {
         return theKindsObject;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getOrderingKind()
      */
     public OrderingKind getOrderingKind() {
         return theKindsObject;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getVisibilityKind()
      */
     public VisibilityKind getVisibilityKind() {
         return theKindsObject;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getXmiReader()
      */
     public XmiReader getXmiReader() throws UmlException {
@@ -617,7 +618,7 @@ public class MDRModelImplementation implements ModelImplementation {
         return reader;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getXmiWriter(Object, Writer)
      * @deprecated in 0.23.2 in favour of 
      * {@link #getXmiWriter(Object, Writer, String)}
@@ -627,7 +628,7 @@ public class MDRModelImplementation implements ModelImplementation {
         return getXmiWriter(model, writer, "unknown");
     }
     
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getXmiWriter(Object, Writer, String)
      */
     public XmiWriter getXmiWriter(Object model, Writer writer, String version)

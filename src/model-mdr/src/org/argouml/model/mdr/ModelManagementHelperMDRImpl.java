@@ -479,7 +479,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             return true;
         }
 
-       if (!correspondsInternal((ModelElement) obj1, (ModelElement) obj2)) {
+        if (!correspondsInternal((ModelElement) obj1, (ModelElement) obj2)) {
             return false;
         }
         return corresponds(((ModelElement) obj1).getNamespace(), 
