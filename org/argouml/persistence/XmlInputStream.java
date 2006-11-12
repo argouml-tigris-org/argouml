@@ -59,22 +59,6 @@ class XmlInputStream extends BufferedInputStream {
     //private EventListenerList listenerList = new EventListenerList();
 
     /**
-     * The number of bytes to be read between each progress
-     * event.
-     */
-    private long eventSpacing;
-
-    /**
-     * The number of characters read so far.
-     */
-    //private long readCount;
-
-    /**
-     * The expected stream length.
-     */
-    private long length;
-
-    /**
      * Logger.
      */
     private static final Logger LOG =
@@ -83,24 +67,22 @@ class XmlInputStream extends BufferedInputStream {
     /**
      * Construct a new XmlInputStream.
      *
-     * @param in the input stream to wrap.
+     * @param inStream the input stream to wrap.
      * @param theTag the tag name from which to start reading
      * @param theLength the expected length of the input stream
      * @param theEventSpacing the number of characers to read before
      *        firing a progress event.
      */
     public XmlInputStream(
-            InputStream in,
+            InputStream inStream,
             String theTag,
             long theLength,
             long theEventSpacing) {
-        super(in);
-        this.tagName = theTag;
-        this.endTagName = '/' + theTag;
-        this.attributes = null;
-        this.childOnly = false;
-        this.length = theLength;
-        this.eventSpacing = theEventSpacing;
+        super(inStream);
+        tagName = theTag;
+        endTagName = '/' + theTag;
+        attributes = null;
+        childOnly = false;
     }
 
     /**
@@ -111,17 +93,17 @@ class XmlInputStream extends BufferedInputStream {
      * @param attribs the attributes
      * @param child child only
      */
-    public void reopen(
+    public synchronized void reopen(
                 String theTag,
                 Map attribs,
                 boolean child) {
         endStream = false;
         xmlStarted = false;
         inTag = false;
-        this.tagName = theTag;
-        this.endTagName = '/' + theTag;
-        this.attributes = attribs;
-        this.childOnly = child;
+        tagName = theTag;
+        endTagName = '/' + theTag;
+        attributes = attribs;
+        childOnly = child;
     }
 
     /**
@@ -130,14 +112,14 @@ class XmlInputStream extends BufferedInputStream {
      *
      * @param theTag the tag name
      */
-    public void reopen(String theTag) {
+    public synchronized void reopen(String theTag) {
         endStream = false;
         xmlStarted = false;
         inTag = false;
-        this.tagName = theTag;
-        this.endTagName = '/' + theTag;
-        this.attributes = null;
-        this.childOnly = false;
+        tagName = theTag;
+        endTagName = '/' + theTag;
+        attributes = null;
+        childOnly = false;
     }
 
     /**
