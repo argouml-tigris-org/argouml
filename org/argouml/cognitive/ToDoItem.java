@@ -406,7 +406,7 @@ public class ToDoItem implements Serializable, WizardItem {
 	return getPoster().supports(g);
     }
 
-    /**
+    /*
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
@@ -423,7 +423,7 @@ public class ToDoItem implements Serializable, WizardItem {
         return code;
     }
 
-    /**
+    /*
      * Is this item a copy?
      *
      * @see java.lang.Object#equals(java.lang.Object)
@@ -544,7 +544,7 @@ public class ToDoItem implements Serializable, WizardItem {
 	return thePoster.stillValid(this, d);
     }
 
-    /**
+    /*
      * Reply a string for debugging.
      *
      * @see java.lang.Object#toString()

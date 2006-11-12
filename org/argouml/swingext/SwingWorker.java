@@ -245,9 +245,9 @@ public abstract class SwingWorker {
      */
     public SwingWorker() {
         final Runnable doFinished = new Runnable() {
-        	public void run() { 
-        	    finished(); 
-        	}
+            public void run() { 
+                finished(); 
+            }
         };
 
         Runnable doConstruct = new Runnable() { 

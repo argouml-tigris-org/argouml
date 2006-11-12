@@ -124,7 +124,7 @@ public class Checklist implements Serializable {
     public void setNextCategory(String cat) { nextCategory = cat; }
 
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

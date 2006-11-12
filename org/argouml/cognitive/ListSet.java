@@ -165,7 +165,7 @@ public class ListSet implements Serializable, Set, List {
         addAllElementsSuchThat(s.elements(), p);
     }
 
-    /**
+    /*
      * @see java.util.Collection#remove(java.lang.Object)
      */
     public boolean remove(Object o) {
@@ -192,7 +192,7 @@ public class ListSet implements Serializable, Set, List {
         vector.removeAllElements();
     }
 
-    /**
+    /*
      * @see java.util.Collection#contains(java.lang.Object)
      */
     public boolean contains(Object o) {
@@ -250,7 +250,7 @@ public class ListSet implements Serializable, Set, List {
         return vector;
     }
 
-    /**
+    /*
      * @see java.lang.Object#hashCode()
      *
      * This will result in rather bad performance but at least we will
@@ -260,7 +260,7 @@ public class ListSet implements Serializable, Set, List {
         return 0;
     }
 
-    /**
+    /*
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object o) {
@@ -289,14 +289,14 @@ public class ListSet implements Serializable, Set, List {
         return vector.firstElement();
     }
 
-    /**
+    /*
      * @see java.util.Collection#size()
      */
     public int size() {
         return vector.size();
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -402,35 +402,35 @@ public class ListSet implements Serializable, Set, List {
         return touched;
     }
 
-    /**
+    /*
      * @see java.util.Collection#isEmpty()
      */
     public boolean isEmpty() {
         return vector.isEmpty();
     }
 
-    /**
+    /*
      * @see java.util.Collection#iterator()
      */
     public Iterator iterator() {
         return vector.iterator();
     }
 
-    /**
+    /*
      * @see java.util.Collection#toArray()
      */
     public Object[] toArray() {
         return vector.toArray();
     }
 
-    /**
+    /*
      * @see java.util.Collection#toArray(java.lang.Object[])
      */
     public Object[] toArray(Object[] arg0) {
         return vector.toArray(arg0);
     }
 
-    /**
+    /*
      * @see java.util.Collection#add(java.lang.Object)
      */
     public boolean add(Object arg0) {
@@ -441,7 +441,7 @@ public class ListSet implements Serializable, Set, List {
         return !result;
     }
 
-    /**
+    /*
      * @see java.util.Collection#containsAll(java.util.Collection)
      */
     public boolean containsAll(Collection arg0) {
@@ -449,7 +449,7 @@ public class ListSet implements Serializable, Set, List {
     }
 
 
-    /**
+    /*
      * @see java.util.Collection#addAll(java.util.Collection)
      */
     public boolean addAll(Collection arg0) {
@@ -459,7 +459,7 @@ public class ListSet implements Serializable, Set, List {
 
     }
 
-    /**
+    /*
      * @see java.util.Collection#retainAll(java.util.Collection)
      */
     public boolean retainAll(Collection arg0) {
@@ -474,7 +474,7 @@ public class ListSet implements Serializable, Set, List {
         return result;
     }
 
-    /**
+    /*
      * @see java.util.Collection#removeAll(java.util.Collection)
      */
     public boolean removeAll(Collection arg0) {
@@ -486,28 +486,28 @@ public class ListSet implements Serializable, Set, List {
 
     }
 
-    /**
+    /*
      * @see java.util.Collection#clear()
      */
     public void clear() {
         vector.clear();
     }
 
-    /**
+    /*
      * @see java.util.List#addAll(int, java.util.Collection)
      */
     public boolean addAll(int arg0, Collection arg1) {
         return vector.addAll(arg0, arg1);
     }
 
-    /**
+    /*
      * @see java.util.List#get(int)
      */
     public Object get(int index) {
         return vector.get(index);
     }
 
-    /**
+    /*
      * @see java.util.List#set(int, java.lang.Object)
      */
     public Object set(int arg0, Object o) {
@@ -517,7 +517,7 @@ public class ListSet implements Serializable, Set, List {
         return vector.set(arg0, o);
     }
 
-    /**
+    /*
      * @see java.util.List#add(int, java.lang.Object)
      */
     public void add(int arg0, Object arg1) {
@@ -526,42 +526,42 @@ public class ListSet implements Serializable, Set, List {
         }
     }
 
-    /**
+    /*
      * @see java.util.List#remove(int)
      */
     public Object remove(int index) {
         return vector.remove(index);
     }
 
-    /**
+    /*
      * @see java.util.List#indexOf(java.lang.Object)
      */
     public int indexOf(Object o) {
         return vector.indexOf(o);
     }
 
-    /**
+    /*
      * @see java.util.List#lastIndexOf(java.lang.Object)
      */
     public int lastIndexOf(Object o) {
         return vector.lastIndexOf(o);
     }
 
-    /**
+    /*
      * @see java.util.List#listIterator()
      */
     public ListIterator listIterator() {
         return vector.listIterator();
     }
 
-    /**
+    /*
      * @see java.util.List#listIterator(int)
      */
     public ListIterator listIterator(int index) {
         return listIterator(index);
     }
 
-    /**
+    /*
      * @see java.util.List#subList(int, int)
      */
     public List subList(int fromIndex, int toIndex) {

@@ -44,13 +44,13 @@ public class CrMultipleRealization extends CrUML {
      * The constructor.
      */
     public CrMultipleRealization() {
-        setupHeadAndDesc();;
+        setupHeadAndDesc();
 	addSupportedDecision(UMLDecision.INHERITANCE);
 	addSupportedDecision(UMLDecision.CODE_GEN);
 	addTrigger("generalization");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */

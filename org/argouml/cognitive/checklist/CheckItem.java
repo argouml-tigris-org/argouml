@@ -152,14 +152,14 @@ public class CheckItem implements Serializable {
      */
     public void setPredicate(Predicate p) { pred = p; }
 
-    /**
+    /*
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
         return getDescription().hashCode();
     }
 
-    /**
+    /*
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object o) {
@@ -170,7 +170,7 @@ public class CheckItem implements Serializable {
 	return getDescription().equals(i.getDescription());
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() { return getDescription(); }

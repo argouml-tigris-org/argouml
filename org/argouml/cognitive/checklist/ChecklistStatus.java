@@ -105,7 +105,7 @@ public class ChecklistStatus implements Serializable {
 	return items.contains(item);
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

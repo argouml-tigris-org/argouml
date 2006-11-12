@@ -63,7 +63,8 @@ class TodoListMemberFilePersister extends MemberFilePersister {
 
         try {
             TodoParser parser = new TodoParser();
-            Reader reader = new InputStreamReader(inputStream, PersistenceManager.getEncoding());
+            Reader reader = new InputStreamReader(inputStream,
+                    PersistenceManager.getEncoding());
             parser.readTodoList(reader);
             ProjectMemberTodoList pm = new ProjectMemberTodoList("", project);
             project.addMember(pm);

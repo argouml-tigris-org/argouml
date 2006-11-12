@@ -247,7 +247,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 	    }
 	    cachedCritics.put(clazz, col);
         }
-                return col;
+        return col;
 
     }
 

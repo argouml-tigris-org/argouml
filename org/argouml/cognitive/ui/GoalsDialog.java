@@ -188,7 +188,7 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener {
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /**
+    /*
      * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
      */
     public void stateChanged(ChangeEvent ce) {

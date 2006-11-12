@@ -67,7 +67,7 @@ public class Goal {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
@@ -77,7 +77,7 @@ public class Goal {
         return name.hashCode();
     }
 
-    /**
+    /*
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object d2) {
@@ -107,7 +107,7 @@ public class Goal {
      */
     public void setPriority(int p) { priority = p; }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() { return getName(); }

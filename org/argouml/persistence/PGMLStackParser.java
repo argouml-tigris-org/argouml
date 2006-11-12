@@ -129,11 +129,12 @@ class PGMLStackParser
 
     }
 
-    /**
+    /*
      * @see org.tigris.gef.persistence.pgml.PGMLStackParser#setAttrs(
      *         org.tigris.gef.presentation.Fig, org.xml.sax.Attributes)
      */
-    protected final void setAttrs(Fig f, Attributes attrList) throws SAXException {
+    protected final void setAttrs(Fig f, Attributes attrList)
+            throws SAXException {
         if (f instanceof FigGroup) {
             FigGroup group = (FigGroup) f;
             String clsNameBounds = attrList.getValue("description");
@@ -291,9 +292,9 @@ class PGMLStackParser
             FigEdge edge = edgeData.getEdge();
             
             boolean process = false;
-            if (pass == 0 && 
-                    !(edge instanceof FigEdgeAssociationClass) && 
-                    !(edge instanceof FigEdgeNote)) {
+            if (pass == 0 
+                    && !(edge instanceof FigEdgeAssociationClass)
+                    && !(edge instanceof FigEdgeNote)) {
                 process = true;
             } else if (pass == 1 && edge instanceof FigEdgeAssociationClass) {
                 process = true;
@@ -362,7 +363,8 @@ class PGMLStackParser
             if (f instanceof FigNode) {
                 return (FigNode) f;
             } else {
-                throw new IllegalStateException("FigID " + figId + " is not a node");
+                throw new IllegalStateException("FigID " + figId
+                        + " is not a node");
             }
         }
         // If the id does not look like a top-level Fig then we can assume that

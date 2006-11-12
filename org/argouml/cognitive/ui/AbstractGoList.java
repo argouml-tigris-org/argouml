@@ -55,7 +55,7 @@ public abstract class AbstractGoList implements TreeModel {
         return listPredicate;
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#getRoot()
      */
     public Object getRoot() {

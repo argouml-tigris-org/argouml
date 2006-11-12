@@ -50,7 +50,7 @@ public class CrMergeClasses extends CrUML {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
@@ -67,8 +67,8 @@ public class CrMergeClasses extends CrUML {
 	Object asc = Model.getFacade().getAssociation(myEnd);
 	List conns = new ArrayList(Model.getFacade().getConnections(asc));
         // Do we have 2 connection ends?
-        if (conns == null || conns.size()!=2) {
-                return NO_PROBLEM;
+        if (conns == null || conns.size() != 2) {
+            return NO_PROBLEM;
         }
 	Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
 	Object ae1 = /*(MAssociationEnd)*/ conns.get(1);

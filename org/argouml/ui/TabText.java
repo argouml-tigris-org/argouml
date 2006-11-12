@@ -126,7 +126,7 @@ public class TabText
         parseChanges = true;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
@@ -134,7 +134,7 @@ public class TabText
 	doGenerateText();
     }
 
-    /**
+    /*
      * Returns the target of this tab.
      *
      * @see org.argouml.ui.TabTarget#getTarget()
@@ -143,7 +143,7 @@ public class TabText
         return target;
     }
 
-    /**
+    /*
      * Refresh the text of the tab.
      *
      * @see org.argouml.ui.TabTarget#refresh()
@@ -157,7 +157,7 @@ public class TabText
      * This tab pane is enabled if there is a target,
      * i.e. the target must not be null.
      *
-     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean shouldBeEnabled(Object t) {
         return (t != null);
@@ -189,7 +189,7 @@ public class TabText
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */
     public void insertUpdate(DocumentEvent e) {
@@ -198,7 +198,7 @@ public class TabText
         }
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
      */
     public void removeUpdate(DocumentEvent e) {
@@ -207,7 +207,7 @@ public class TabText
         }
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
      */
     public void changedUpdate(DocumentEvent e) {
@@ -216,7 +216,7 @@ public class TabText
         }
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
@@ -224,7 +224,7 @@ public class TabText
 
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
@@ -234,7 +234,7 @@ public class TabText
 
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
@@ -265,7 +265,7 @@ public class TabText
 
     /**
      * Generates the text whenever this panel becomes visible.
-     * @see java.awt.Component#setVisible(boolean)
+     * {@inheritDoc}
      */
     public void setVisible(boolean visible) {
 	super.setVisible(visible);
