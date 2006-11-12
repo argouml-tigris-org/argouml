@@ -26,6 +26,7 @@
 package org.argouml.uml.ui;
 
 import java.awt.Cursor;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -275,9 +276,15 @@ public class UMLMutableLinkedList extends UMLLinkedList
      */
     public void mouseReleased(MouseEvent e) {
         if (e.isPopupTrigger()) {
+            Point point = e.getPoint();
+            int index = locationToIndex(point);
             JPopupMenu popup = getPopupMenu();
+            Object model = getModel();
+            if (model instanceof UMLModelElementListModel2) {
+                ((UMLModelElementListModel2) model).buildPopup(popup, index);
+            }
             if (popup.getComponentCount() > 0) {
-                getPopupMenu().show(this, e.getX(), e.getY());
+                popup.show(this, e.getX(), e.getY());
             }
             e.consume();
         }
