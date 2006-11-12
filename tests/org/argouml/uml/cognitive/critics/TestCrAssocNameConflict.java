@@ -30,12 +30,16 @@ import org.argouml.model.Model;
 
 public class TestCrAssocNameConflict extends TestCase {
 
-    private CrNameConflict critic = null;
+    private CrAssocNameConflict critic = null;
 
     private Object c1, c2, c3, c4, ns1, ns2;
 
-    public TestCrAssocNameConflict(String arg0) {
-        super(arg0);
+    /**
+     * Constructor.
+     * @param name test case name
+     */
+    public TestCrAssocNameConflict(String name) {
+        super(name);
     }
 
     protected void setUp() throws Exception {
@@ -46,7 +50,7 @@ public class TestCrAssocNameConflict extends TestCase {
         c2 = Model.getCoreFactory().buildClass("A", ns1);
         c3 = Model.getCoreFactory().buildClass("B", ns1);
         c4 = Model.getCoreFactory().buildClass("A", ns2);
-        critic = new CrNameConflict();
+        critic = new CrAssocNameConflict();
 
     }
 
@@ -82,7 +86,6 @@ public class TestCrAssocNameConflict extends TestCase {
     }
     
     public void testAssociations() {
-        CrAssocNameConflict critic = new CrAssocNameConflict();
         Model.getCoreHelper().setNamespace(c4, ns1);
         Object a1, a2, a3;
         Model.getCoreHelper().setName(c1, "C1");
@@ -104,7 +107,7 @@ public class TestCrAssocNameConflict extends TestCase {
         // same name, different classes, everything ok
         Model.getCoreHelper().setName(a1, "A2");
         assertFalse(critic.predicate2(ns1, null));
-        assertEquals(0,critic.computeOffenders(ns1).size());
+        assertEquals(0, critic.computeOffenders(ns1).size());
         
         // same name, same participants, two offenders
         a3 = Model.getCoreFactory().buildAssociation(c3, c4);
@@ -114,7 +117,7 @@ public class TestCrAssocNameConflict extends TestCase {
         assertTrue(critic.getAllTypes(a3).containsAll(critic.getAllTypes(a2)));
         assertTrue(critic.getAllTypes(a2).containsAll(critic.getAllTypes(a3)));
 
-        assertEquals(2,critic.computeOffenders(ns1).size());
+        assertEquals(2, critic.computeOffenders(ns1).size());
     }
 
 }
