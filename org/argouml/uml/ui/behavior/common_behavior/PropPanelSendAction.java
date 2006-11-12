@@ -39,9 +39,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 
 /**
  * The properties panel for a SendAction.
- *
- * TODO: this property panel needs a field to select the Signal,
- * similar to the one on the PropPanelCreateAction.
  */
 public class PropPanelSendAction extends PropPanelAction {
 
@@ -51,12 +48,13 @@ public class PropPanelSendAction extends PropPanelAction {
      */
     public PropPanelSendAction() {
         super("SendAction", lookupIcon("SendAction"));
-
+        addAction(new ActionNewSignal());
         AbstractActionAddModelElement action =
             new ActionAddSendActionSignal();
         UMLMutableLinkedList list =
             new UMLMutableLinkedList(
-                new UMLSendActionSignalListModel(), action, null, null, true);
+                new UMLSendActionSignalListModel(), action, 
+                new ActionNewSignal(), null, true);
         list.setVisibleRowCount(1);
         JScrollPane instantiationScroll = new JScrollPane(list);
         addFieldBefore(Translator.localize("label.signal"),
