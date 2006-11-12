@@ -46,6 +46,7 @@ import org.argouml.uml.diagram.state.ui.ButtonActionNewSignalEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewTimeEvent;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCreateAction;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewDestroyAction;
@@ -94,6 +95,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     private Action actionSendAction;
     private Action actionTerminateAction;
     private Action actionUninterpretedAction;
+    private Action actionActionSequence;
 
     /**
      * Constructor.
@@ -101,7 +103,9 @@ public class UMLActivityDiagram extends UMLDiagram {
     public UMLActivityDiagram() {
         try {
             setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) { }
+        } catch (PropertyVetoException pve) {
+            // no action required in case of veto on setName
+        }
     }
 
     /**
@@ -127,13 +131,15 @@ public class UMLActivityDiagram extends UMLDiagram {
                     + (Model.getFacade().getBehaviors(namespace).size());
                 try {
                     setName(name);
-                } catch (PropertyVetoException pve) { }
+                } catch (PropertyVetoException pve) {
+                    // no action required
+                }
             }
         }
         setup(namespace, agraph);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Diagram#initialize(java.lang.Object)
      */
     public void initialize(Object o) {
@@ -205,7 +211,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 new String[] {"remove", "namespace"});
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
@@ -228,7 +234,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
     public Object getOwner() {
@@ -273,6 +279,7 @@ public class UMLActivityDiagram extends UMLDiagram {
      * graphic triggers.
      *
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
+     * @return the array of actions
      */
     protected Object[] getUmlActions() {
         Object[] actions =
@@ -318,6 +325,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             getActionSendAction(),
             getActionTerminateAction(),
             getActionUninterpretedAction(),
+            getActionActionSequence(),
         };
         ToolBarUtility.manageDefault(actions, "diagram.activity.effect");
         return actions;
@@ -337,7 +345,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         return name;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
@@ -586,15 +594,22 @@ public class UMLActivityDiagram extends UMLDiagram {
         return actionUninterpretedAction;
     }
 
+    protected Action getActionActionSequence() {
+        if (actionActionSequence == null) {
+            actionActionSequence = 
+                ActionNewActionSequence.getButtonInstance();
+        }
+        return actionActionSequence;
+    }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getDependentElement()
      */
     public Object getDependentElement() {
         return getStateMachine(); /* The ActivityGraph. */
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base) {
@@ -606,7 +621,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 //      .isAddingActivityGraphAllowed(base);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
     public boolean relocate(Object base) {

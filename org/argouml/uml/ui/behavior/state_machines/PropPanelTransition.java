@@ -36,6 +36,7 @@ import org.argouml.uml.diagram.state.ui.ButtonActionNewTimeEvent;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCreateAction;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewDestroyAction;
@@ -136,6 +137,7 @@ public class PropPanelTransition extends PropPanelModelElement {
                 ActionNewSendAction.getButtonInstance(),
                 ActionNewTerminateAction.getButtonInstance(),
                 ActionNewUninterpretedAction.getButtonInstance(),
+                ActionNewActionSequence.getButtonInstance(),
         };
         ToolBarUtility.manageDefault(actions, "transition.state.effect");
         return actions;

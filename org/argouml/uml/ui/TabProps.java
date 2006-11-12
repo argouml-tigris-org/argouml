@@ -67,6 +67,7 @@ import org.argouml.uml.ui.behavior.collaborations.PropPanelClassifierRole;
 import org.argouml.uml.ui.behavior.collaborations.PropPanelCollaboration;
 import org.argouml.uml.ui.behavior.collaborations.PropPanelInteraction;
 import org.argouml.uml.ui.behavior.collaborations.PropPanelMessage;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelActionSequence;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelArgument;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelCallAction;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelComponentInstance;
@@ -249,6 +250,7 @@ public class TabProps
      *         the visibility of this method will change in the future,
      *         replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
      *
+     * @param t the new target
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
@@ -404,6 +406,9 @@ public class TabProps
         }
         if (Model.getFacade().isACallState(modelElement)) {
             return new PropPanelCallState();
+        }
+        if (Model.getFacade().isAActionSequence(modelElement)) {
+            return new PropPanelActionSequence();
         }
         if (Model.getFacade().isAActionState(modelElement)) {
             return new PropPanelActionState();
@@ -684,6 +689,7 @@ public class TabProps
      * {@link org.argouml.ui.targetmanager.TargetManager#getTarget()
      * TargetManager.getInstance().getTarget()}.
      *
+     * @return the target
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() {
@@ -691,13 +697,14 @@ public class TabProps
     }
 
     /**
-     * Determines if the property panel should be enabled. Returns true if it
-     * should be enabled. The property panel should allways be enabled if the
+     * Determines if the property panel should be enabled. 
+     * The property panel should always be enabled if the
      * target is an instance of a modelelement or an argodiagram.
      * If the target given is a Fig, a check is made if the fig
      * has an owning modelelement and occurs on
      * the current diagram. If so, that modelelement is the target.
-     *
+     * @param t the target
+     * @return true if property panel should be enabled
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(Object)
      */
     public boolean shouldBeEnabled(Object t) {
@@ -711,7 +718,7 @@ public class TabProps
         return shouldBeEnabled;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
@@ -724,7 +731,7 @@ public class TabProps
 
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
@@ -734,7 +741,7 @@ public class TabProps
         repaint();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {

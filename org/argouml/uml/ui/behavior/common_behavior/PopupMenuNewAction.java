@@ -87,10 +87,17 @@ public class PopupMenuNewAction extends JPopupMenu {
         ActionNewUninterpretedAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
+
+        newMenu.add(ActionNewActionSequence.getInstance());
+        ActionNewActionSequence.getInstance().setTarget(list.getTarget());
+        ActionNewActionSequence.getInstance()
+            .putValue(ActionNewAction.ROLE, role);
+
         add(newMenu);
 
         addSeparator();
 
+        // TODO: This needs to be fixed to work for ActionSequences - tfm
         ActionRemoveModelElement.SINGLETON.setObjectToRemove(ActionNewAction
              .getAction(role, list.getTarget()));
         add(ActionRemoveModelElement.SINGLETON);

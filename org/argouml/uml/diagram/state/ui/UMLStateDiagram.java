@@ -41,6 +41,7 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCreateAction;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewDestroyAction;
@@ -103,6 +104,7 @@ public class UMLStateDiagram extends UMLDiagram {
     private Action actionSendAction;
     private Action actionTerminateAction;
     private Action actionUninterpretedAction;
+    private Action actionActionSequence;
     private Action actionTransition;
     private Action actionJunctionPseudoState;
 
@@ -117,7 +119,9 @@ public class UMLStateDiagram extends UMLDiagram {
 
         try {
             setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) { }
+        } catch (PropertyVetoException pve) {
+            // nothing we can do about veto, so just ignore it
+        }
     }
 
     /**
@@ -152,7 +156,9 @@ public class UMLStateDiagram extends UMLDiagram {
                 LOG.info("UMLStateDiagram constructor: String name = " + name);
                 try {
                     setName(name);
-                } catch (PropertyVetoException pve) { }
+                } catch (PropertyVetoException pve) {
+                    // nothing we can do about veto, so just ignore it
+                }
             }
         }
         setup(namespace, machine);
@@ -196,6 +202,7 @@ public class UMLStateDiagram extends UMLDiagram {
     /**
      * The owner of a statechart diagram is the statemachine
      * it's showing.
+     * @return the statemachine which owns the diagram
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
     public Object getOwner() {
@@ -213,6 +220,7 @@ public class UMLStateDiagram extends UMLDiagram {
      * diagram. First the parser creates a statechart diagram via the
      * default constructor. Then this method is called.
      *
+     * @param o the statemachine
      * @see org.tigris.gef.base.Diagram#initialize(Object)
      */
     public void initialize(Object o) {
@@ -271,7 +279,7 @@ public class UMLStateDiagram extends UMLDiagram {
                 new String[] {"remove", "namespace"});
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
@@ -317,6 +325,7 @@ public class UMLStateDiagram extends UMLDiagram {
     /**
      * Get the actions from which to create a toolbar or equivalent
      * graphic triggers.
+     * @return the array of actions
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
@@ -365,6 +374,7 @@ public class UMLStateDiagram extends UMLDiagram {
             getActionSendAction(),
             getActionTerminateAction(),
             getActionUninterpretedAction(),
+            getActionActionSequence(),
         };
         ToolBarUtility.manageDefault(actions, "diagram.state.effect");
         return actions;
@@ -384,7 +394,7 @@ public class UMLStateDiagram extends UMLDiagram {
         return name;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
@@ -666,14 +676,23 @@ public class UMLStateDiagram extends UMLDiagram {
         return actionUninterpretedAction;
     }
 
-    /**
+
+    protected Action getActionActionSequence() {
+        if (actionActionSequence == null) {
+            actionActionSequence = 
+                ActionNewActionSequence.getButtonInstance();
+        }
+        return actionActionSequence;
+    }
+
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getDependentElement()
      */
     public Object getDependentElement() {
         return getStateMachine(); /* The StateMachine. */
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base)  {
@@ -684,7 +703,7 @@ public class UMLStateDiagram extends UMLDiagram {
 //        	.isAddingStatemachineAllowed(base);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
     public boolean relocate(Object base) {
