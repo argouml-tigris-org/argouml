@@ -62,7 +62,7 @@ public class PopupMenuNewEvent extends JPopupMenu {
                 ActionAddEventAsDeferrableEvent.SINGLETON.setTarget(
                         list.getTarget());
                 select.add(ActionAddEventAsDeferrableEvent.SINGLETON);
-            } else if (role == ActionNewEvent.Roles.TRIGGER) {
+            } else if (role.equals(ActionNewEvent.Roles.TRIGGER)) {
                 ActionAddEventAsTrigger.SINGLETON.setTarget(list.getTarget());
                 select.add(ActionAddEventAsTrigger.SINGLETON);
             }
