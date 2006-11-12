@@ -76,7 +76,7 @@ public class PropPanelObject extends PropPanelInstance {
 
 	addAction(new ActionNavigateNamespace());
 	addAction(new ActionNewStereotype());
-    addAction(getDeleteAction());
+	addAction(getDeleteAction());
 
     }
 

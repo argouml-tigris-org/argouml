@@ -40,7 +40,7 @@ public class UMLStateDoActivityListModel extends UMLModelElementListModel2 {
         super("doActivity");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -48,10 +48,10 @@ public class UMLStateDoActivityListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getDoActivity(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return element == Model.getFacade().getDoActivity(getTarget());
     }
 

@@ -40,7 +40,7 @@ public class UMLTransitionEffectListModel extends UMLModelElementListModel2 {
         super("effect");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -48,7 +48,7 @@ public class UMLTransitionEffectListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getEffect(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {

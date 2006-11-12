@@ -74,7 +74,7 @@ public abstract class AbstractActionAddModelElement extends UndoableAction {
         target = theTarget;
     }
 
-    /**
+    /*
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -100,7 +100,7 @@ public abstract class AbstractActionAddModelElement extends UndoableAction {
     protected abstract Vector getChoices();
 
     /**
-     * The modelelements allready selected BEFORE the dialog is shown.
+     * The modelelements already selected BEFORE the dialog is shown.
      * @return Vector
      */
     protected abstract Vector getSelected();
@@ -150,7 +150,7 @@ public abstract class AbstractActionAddModelElement extends UndoableAction {
         multiSelect = theMultiSelect;
     }
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {

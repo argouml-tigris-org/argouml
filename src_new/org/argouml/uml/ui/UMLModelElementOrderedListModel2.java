@@ -62,12 +62,12 @@ public abstract class UMLModelElementOrderedListModel2
         super(name);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected abstract void buildModelList();
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
     protected abstract boolean isValidElement(Object element);
@@ -80,7 +80,7 @@ public abstract class UMLModelElementOrderedListModel2
      */
     protected abstract void moveDown(int index);
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildPopup(
      * javax.swing.JPopupMenu, int)
      */
@@ -118,14 +118,15 @@ class MoveUpAction extends UndoableAction {
         index = theIndex;
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         model.moveDown(index - 1);
     }
-    /**
+    
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {
@@ -152,14 +153,15 @@ class MoveDownAction extends UndoableAction {
         index = theIndex;
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         model.moveDown(index);
     }
-    /**
+    
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {

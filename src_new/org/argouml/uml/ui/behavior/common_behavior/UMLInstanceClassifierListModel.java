@@ -35,13 +35,13 @@ public class UMLInstanceClassifierListModel
     extends UMLModelElementListModel2 {
 
 
-    /** build default listmodel with unlimted size and
+    /** build default listmodel with unlimited size and
      * allowed elements CLASSIFIER */
     public UMLInstanceClassifierListModel() {
         super("classifier");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -49,10 +49,10 @@ public class UMLInstanceClassifierListModel
             setAllElements(Model.getFacade().getClassifiers(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isAClassifier(o)
             && Model.getFacade().getClassifiers(getTarget()).contains(o);
     }

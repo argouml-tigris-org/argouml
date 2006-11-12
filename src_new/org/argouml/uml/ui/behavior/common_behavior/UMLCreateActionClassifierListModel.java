@@ -40,7 +40,7 @@ public class UMLCreateActionClassifierListModel extends
         super("instantiation");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -49,7 +49,7 @@ public class UMLCreateActionClassifierListModel extends
                 .getInstantiation(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(
      *         java.lang.Object)
      */

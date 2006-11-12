@@ -63,14 +63,14 @@ public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
         choiceClass = choice;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
         Model.getCommonBehaviorHelper().setClassifiers(getTarget(), selected);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
@@ -84,14 +84,14 @@ public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-specifications");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {

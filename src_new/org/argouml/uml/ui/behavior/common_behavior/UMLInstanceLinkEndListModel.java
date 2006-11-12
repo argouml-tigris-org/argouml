@@ -40,7 +40,7 @@ public class UMLInstanceLinkEndListModel
         super("linkEnd");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -49,7 +49,7 @@ public class UMLInstanceLinkEndListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {

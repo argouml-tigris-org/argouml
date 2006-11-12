@@ -41,7 +41,7 @@ public class UMLStimulusSenderListModel extends UMLModelElementListModel2 {
         super("sender");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -49,10 +49,10 @@ public class UMLStimulusSenderListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getSender(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ elem) {
+    protected boolean isValidElement(Object elem) {
         return Model.getFacade().getSender(getTarget()) == elem;
     }
 

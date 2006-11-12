@@ -48,7 +48,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -67,14 +67,14 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
 
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object m) {
         return Model.getFacade().isASignal(m);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
@@ -90,7 +90,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      * selected. Don't let that remove it from the combo box. Only remove it if
      * the signal was removed from the namespace.
      * <p>
-     *
+     * @param evt the event describing the property change
      * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {

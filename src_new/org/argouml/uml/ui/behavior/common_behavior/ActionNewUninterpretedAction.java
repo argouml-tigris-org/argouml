@@ -53,7 +53,7 @@ public class ActionNewUninterpretedAction extends ActionNewAction {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.common_behavior.ActionNewAction#createAction()
      */
     protected Object createAction() {
@@ -80,7 +80,8 @@ public class ActionNewUninterpretedAction extends ActionNewAction {
 
         };
         a.putValue(SHORT_DESCRIPTION, a.getValue(Action.NAME));
-        Object icon = ResourceLoaderWrapper.lookupIconResource("UninterpretedAction");
+        Object icon = 
+            ResourceLoaderWrapper.lookupIconResource("UninterpretedAction");
         a.putValue(SMALL_ICON, icon);
         a.putValue(ROLE, Roles.EFFECT);
         return a;

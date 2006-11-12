@@ -45,7 +45,7 @@ public class ActionAddContextSignal extends AbstractActionAddModelElement {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
@@ -59,7 +59,7 @@ public class ActionAddContextSignal extends AbstractActionAddModelElement {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
@@ -68,14 +68,14 @@ public class ActionAddContextSignal extends AbstractActionAddModelElement {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-contexts");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {

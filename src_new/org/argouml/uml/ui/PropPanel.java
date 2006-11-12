@@ -92,7 +92,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     private JLabel titleLabel;
 
-    protected static Font stdFont = LookAndFeelMgr.getInstance().getStandardFont();
+    private static Font stdFont = 
+        LookAndFeelMgr.getInstance().getStandardFont();
 
     /**
      * Construct new PropPanel using LabelledLayout.
@@ -143,9 +144,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         this(title, null, orientation);
     }
 
-    /**
-     * Set the orientation of the panel.
-     *
+    /*
      * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
      */
     public void setOrientation(Orientation orientation) {
@@ -382,21 +381,21 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         return list;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public final Object getTarget() {
         return target;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
         SwingUtilities.invokeLater(new UMLChangeDispatch(this, 0));
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object t) {
@@ -419,35 +418,35 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         return ns;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getProfile()
      */
     public Profile getProfile() {
         return ProjectManager.getManager().getCurrentProject().getProfile();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getModelElement()
      */
     public final Object getModelElement() {
         return modelElement;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatElement(java.lang.Object)
      */
     public String formatElement(/* MModelElement */Object element) {
         return getProfile().formatElement(element, getDisplayNamespace());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatNamespace(java.lang.Object)
      */
     public String formatNamespace(/* MNamespace */Object namespace) {
         return getProfile().formatElement(namespace, null);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatCollection(java.util.Iterator)
      */
     public String formatCollection(Iterator iter) {
@@ -473,7 +472,12 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 //        }
 //    }
     
-    final protected Action getDeleteAction() {
+    /**
+     * Get the delete action.
+     * 
+     * @return the delete action
+     */
+    protected final Action getDeleteAction() {
         return TargetManager.getInstance().getDeleteAction();
     }
 
@@ -489,7 +493,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
                 .getManager().getCurrentProject().getModel())));
     }
 
-    /**
+    /*
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
@@ -500,7 +504,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         fireTargetAdded(e);
     }
 
-    /**
+    /*
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
@@ -508,7 +512,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         fireTargetRemoved(e);
     }
 
-    /**
+    /*
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
@@ -585,7 +589,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * then set the height to e.g. 18, so that the title
      * is aligned right by the LabelledLayout.
      * 
-     * @param height
+     * @param height the height
      */
     protected void setButtonPanelSize(int height) {
         /* Set the minimum and preferred equal, 

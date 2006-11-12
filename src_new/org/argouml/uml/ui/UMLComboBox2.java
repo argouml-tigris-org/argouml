@@ -84,7 +84,7 @@ public class UMLComboBox2
         this(arg0, action, true);
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent arg0) {
@@ -112,14 +112,14 @@ public class UMLComboBox2
     }
 
 
-    /**
-     * @see TargettableModelView#getTargettableModel()
+    /*
+     * @see org.argouml.ui.targetmanager.TargettableModelView#getTargettableModel()
      */
     public TargetListener getTargettableModel() {
         return (TargetListener) getModel();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
@@ -128,14 +128,14 @@ public class UMLComboBox2
         }
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         removeActionListener(this);
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
