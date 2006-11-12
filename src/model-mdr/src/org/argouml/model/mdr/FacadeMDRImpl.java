@@ -4263,7 +4263,31 @@ class FacadeMDRImpl implements Facade {
         }
         return illegalArgumentObject(handle);
     }
+    
 
+    public List getActions(Object handle) {
+        try {
+            if (handle instanceof ActionSequence) {
+                return ((ActionSequence) handle).getAction();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        return illegalArgumentList(handle);
+    }
+
+
+    public Object getActionSequence(Object handle) {
+        try {
+            if (handle instanceof Action) {
+                return ((Action) handle).getActionSequence();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        return illegalArgumentList(handle);
+    }
+    
     /**
      * @see org.argouml.model.Facade#getActivator(java.lang.Object)
      */

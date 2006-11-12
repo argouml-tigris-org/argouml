@@ -37,6 +37,7 @@ import org.argouml.model.Model;
 import org.omg.uml.behavioralelements.collaborations.ClassifierRole;
 import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.commonbehavior.Action;
+import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
 import org.omg.uml.behavioralelements.commonbehavior.Argument;
 import org.omg.uml.behavioralelements.commonbehavior.AttributeLink;
 import org.omg.uml.behavioralelements.commonbehavior.CallAction;
@@ -686,6 +687,42 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
             throw new InvalidElementException(e);
         }
         return null;
+    }
+
+    public void addAction(Object handle, Object action) {
+        if (!(handle instanceof ActionSequence) 
+                || !(action instanceof Action)) {
+            throw new IllegalArgumentException();
+        }
+        try {
+            ((ActionSequence) handle).getAction().add(action);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+    }
+
+    public void addAction(Object handle, int position, Object action) {
+        if (!(handle instanceof ActionSequence) 
+                || !(action instanceof Action)) {
+            throw new IllegalArgumentException();
+        }
+        try {
+            ((ActionSequence) handle).getAction().add(position, action);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        } 
+    }
+
+    public void removeAction(Object handle, Object action) {
+        if (!(handle instanceof ActionSequence) 
+                || !(action instanceof Action)) {
+            throw new IllegalArgumentException();
+        }
+        try {
+            ((ActionSequence) handle).getAction().remove(action);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
     
 }
