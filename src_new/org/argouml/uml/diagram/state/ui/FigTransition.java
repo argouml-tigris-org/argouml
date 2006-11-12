@@ -42,6 +42,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.PathConvPercent2;
 import org.argouml.uml.notation.NotationProvider;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCreateAction;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewDestroyAction;
@@ -114,7 +115,7 @@ public class FigTransition extends FigEdgeModelElement {
         setOwner(edge);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
@@ -129,7 +130,7 @@ public class FigTransition extends FigEdgeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
@@ -143,66 +144,69 @@ public class FigTransition extends FigEdgeModelElement {
 
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-            /* Check if multiple items are selected: */
-            boolean ms = TargetManager.getInstance().getTargets().size() > 1;
-            /* None of the menu-items below apply
-             * when multiple modelelements are selected:*/
-            if (ms) return popUpActions;
-            
-            Action a;
-            
-            ArgoJMenu triggerMenu =
-                new ArgoJMenu("menu.popup.trigger");
-            a = new ButtonActionNewCallEvent();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            triggerMenu.add(a);
-            a = new ButtonActionNewChangeEvent();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            triggerMenu.add(a);
-            a = new ButtonActionNewSignalEvent();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            triggerMenu.add(a);
-            a = new ButtonActionNewTimeEvent();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            triggerMenu.add(a);
-            popUpActions.insertElementAt(triggerMenu,
-                    popUpActions.size() - getPopupAddOffset());
-            
-            a = new ButtonActionNewGuard();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            popUpActions.insertElementAt(a,
-                    popUpActions.size() - getPopupAddOffset());
+        /* Check if multiple items are selected: */
+        boolean ms = TargetManager.getInstance().getTargets().size() > 1;
+        /* None of the menu-items below apply
+         * when multiple modelelements are selected:*/
+        if (ms) return popUpActions;
 
-            ArgoJMenu effectMenu =
-                new ArgoJMenu("menu.popup.effect");
-            a = ActionNewCallAction.getButtonInstance();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            effectMenu.add(a);
-            a = ActionNewCreateAction.getButtonInstance();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            effectMenu.add(a);
-            a = ActionNewDestroyAction.getButtonInstance();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            effectMenu.add(a);
-            a = ActionNewReturnAction.getButtonInstance();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            effectMenu.add(a);
-            a = ActionNewSendAction.getButtonInstance();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            effectMenu.add(a);
-            a = ActionNewTerminateAction.getButtonInstance();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            effectMenu.add(a);
-            a = ActionNewUninterpretedAction.getButtonInstance();
-            a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-            effectMenu.add(a);
-            popUpActions.insertElementAt(effectMenu,
-                    popUpActions.size() - getPopupAddOffset());
-            
-            return popUpActions;
+        Action a;
+
+        ArgoJMenu triggerMenu =
+            new ArgoJMenu("menu.popup.trigger");
+        a = new ButtonActionNewCallEvent();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        triggerMenu.add(a);
+        a = new ButtonActionNewChangeEvent();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        triggerMenu.add(a);
+        a = new ButtonActionNewSignalEvent();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        triggerMenu.add(a);
+        a = new ButtonActionNewTimeEvent();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        triggerMenu.add(a);
+        popUpActions.insertElementAt(triggerMenu,
+                popUpActions.size() - getPopupAddOffset());
+
+        a = new ButtonActionNewGuard();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        popUpActions.insertElementAt(a,
+                popUpActions.size() - getPopupAddOffset());
+
+        ArgoJMenu effectMenu =
+            new ArgoJMenu("menu.popup.effect");
+        a = ActionNewCallAction.getButtonInstance();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        effectMenu.add(a);
+        a = ActionNewCreateAction.getButtonInstance();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        effectMenu.add(a);
+        a = ActionNewDestroyAction.getButtonInstance();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        effectMenu.add(a);
+        a = ActionNewReturnAction.getButtonInstance();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        effectMenu.add(a);
+        a = ActionNewSendAction.getButtonInstance();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        effectMenu.add(a);
+        a = ActionNewTerminateAction.getButtonInstance();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        effectMenu.add(a);
+        a = ActionNewUninterpretedAction.getButtonInstance();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        effectMenu.add(a);
+        a = ActionNewActionSequence.getButtonInstance();
+        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
+        effectMenu.add(a);
+        popUpActions.insertElementAt(effectMenu,
+                popUpActions.size() - getPopupAddOffset());
+
+        return popUpActions;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
     public void setFig(Fig f) {
@@ -210,11 +214,7 @@ public class FigTransition extends FigEdgeModelElement {
         getFig().setDashed(dashed);
     }
 
-    /**
-     * This method is called after the user finishes editing a text field that
-     * is in the FigEdgeModelElement. Determine which field and update the
-     * model. This class handles the name, subclasses should override to handle
-     * other text elements.
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) {
@@ -222,7 +222,7 @@ public class FigTransition extends FigEdgeModelElement {
         ft.setText(notationProvider.toString(getOwner(), null));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
@@ -231,10 +231,7 @@ public class FigTransition extends FigEdgeModelElement {
         }
     }
 
-    /**
-     * This is called after any part of the UML ModelElement has changed. This
-     * method automatically updates the attached FigText.
-     *
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {
@@ -334,7 +331,7 @@ public class FigTransition extends FigEdgeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getDestination()
      */
     protected Object getDestination() {
@@ -345,7 +342,7 @@ public class FigTransition extends FigEdgeModelElement {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getSource()
      */
     protected Object getSource() {
@@ -356,7 +353,7 @@ public class FigTransition extends FigEdgeModelElement {
         return null;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
@@ -383,7 +380,7 @@ public class FigTransition extends FigEdgeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#paintClarifiers(java.awt.Graphics)
      */
     public void paintClarifiers(Graphics g) {

@@ -77,6 +77,11 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement
          * The effect of some transition.
          */
         String EFFECT = "effect";
+
+        /**
+         * The effect of some transition.
+         */
+        String MEMBER = "member";
     }
 
     /**
@@ -93,7 +98,7 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement
      */
     protected abstract Object createAction();
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -101,49 +106,42 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement
         Object action = createAction();
         if (getValue(ROLE).equals(Roles.EXIT)) {
             Model.getStateMachinesHelper().setExit(getTarget(), action);
-        } else
-	    if (getValue(ROLE).equals(Roles.ENTRY)) {
-		Model.getStateMachinesHelper().setEntry(getTarget(), action);
-	    } else
-		if (getValue(ROLE).equals(Roles.DO)) {
-		    Model.getStateMachinesHelper().setDoActivity(
-		            getTarget(),
-		            action);
-		} else
-		    if (getValue(ROLE).equals(Roles.ACTION)) {
-			Model.getCollaborationsHelper().setAction(
-			        getTarget(),
-			        action);
-		    } else
-			if (getValue(ROLE).equals(Roles.EFFECT)) {
-			    Model.getStateMachinesHelper().setEffect(
-			            getTarget(),
-			            action);
-			}
+        } else if (getValue(ROLE).equals(Roles.ENTRY)) {
+            Model.getStateMachinesHelper().setEntry(getTarget(), action);
+        } else if (getValue(ROLE).equals(Roles.DO)) {
+            Model.getStateMachinesHelper().setDoActivity(
+                    getTarget(), action);
+        } else if (getValue(ROLE).equals(Roles.ACTION)) {
+            Model.getCollaborationsHelper().setAction(getTarget(), action);
+        } else if (getValue(ROLE).equals(Roles.EFFECT)) {
+            Model.getStateMachinesHelper().setEffect(getTarget(), action);
+        } else if (getValue(ROLE).equals(Roles.MEMBER)) {
+            Model.getCommonBehaviorHelper().addAction(getTarget(), action);
+        }
         TargetManager.getInstance().setTarget(action);
     }
 
     /**
-     * @param role the role the action plays
-     * @param t the transition or state to get the action for
+     * @param role
+     *            the role the action plays
+     * @param t
+     *            the transition or state to get the action for
      * @return the action
      */
     public static Object getAction(String role, Object t) {
         if (role.equals(Roles.EXIT)) {
             return Model.getFacade().getExit(t);
-        } else
-            if (role.equals(Roles.ENTRY)) {
-                return Model.getFacade().getEntry(t);
-            } else
-                if (role.equals(Roles.DO)) {
-                    return Model.getFacade().getDoActivity(t);
-                } else
-                    if (role.equals(Roles.ACTION)) {
-                        return Model.getFacade().getAction(t);
-                    } else
-                        if (role.equals(Roles.EFFECT)) {
-                            return Model.getFacade().getEffect(t);
-                        }
+        } else if (role.equals(Roles.ENTRY)) {
+            return Model.getFacade().getEntry(t);
+        } else if (role.equals(Roles.DO)) {
+            return Model.getFacade().getDoActivity(t);
+        } else if (role.equals(Roles.ACTION)) {
+            return Model.getFacade().getAction(t);
+        } else if (role.equals(Roles.EFFECT)) {
+            return Model.getFacade().getEffect(t);
+        } else if (role.equals(Roles.MEMBER)) {
+            return Model.getFacade().getActions(t);
+        }
         return null;
     }
 }
