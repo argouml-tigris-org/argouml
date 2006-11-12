@@ -56,8 +56,11 @@ import org.omg.uml.behavioralelements.commonbehavior.SubsystemInstance;
 import org.omg.uml.behavioralelements.commonbehavior.TerminateAction;
 import org.omg.uml.behavioralelements.commonbehavior.UmlException;
 import org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction;
+import org.omg.uml.behavioralelements.statemachines.SignalEvent;
 import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Operation;
 
 /**
@@ -375,17 +378,40 @@ public class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     /*
      * @see org.argouml.model.CommonBehaviorFactory#buildSignal(java.lang.Object)
      */
-    public Object buildSignal(Object feature) {
-        if (!(feature instanceof BehavioralFeature)) {
-            throw new IllegalArgumentException();
+    public Object buildSignal(Object element) {
+        if ((element instanceof BehavioralFeature)) {
+            Signal signal = buildSignalInt(element);
+            cbPackage.getAContextRaisedSignal().add(
+                    (BehavioralFeature) element, signal);
+            return signal;
+        } else if (element instanceof Reception) {
+            Signal signal = buildSignalInt(element);
+            ((Reception) element).setSignal(signal);
+            return signal;            
+        } else if (element instanceof SendAction) {
+            Signal signal = buildSignalInt(element);
+            ((SendAction) element).setSignal(signal);
+            return signal;         
+        } else if (element instanceof SignalEvent) {
+            Signal signal = buildSignalInt(element);
+            ((SignalEvent) element).setSignal(signal);
+            return signal;  
         }
-        
-        Signal signal = (Signal) createSignal();
-        cbPackage.getAContextRaisedSignal()
-                .add((BehavioralFeature) feature, signal);
-        return signal;
+        throw new IllegalArgumentException();
     }
 
+    /**
+     * Create a new Signal in the same namespace as the target.
+     * @param element target element
+     * @return newly created Signal
+     */
+    private Signal buildSignalInt(Object element) {
+        Signal signal = (Signal) createSignal();
+        Namespace ns = ((ModelElement) element).getNamespace();
+        signal.setNamespace(ns);
+        return signal;
+    }
+    
     /*
      * @see org.argouml.model.CommonBehaviorFactory#buildStimulus(java.lang.Object)
      */
