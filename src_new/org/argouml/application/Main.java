@@ -805,10 +805,7 @@ class PreloadClasses implements Runnable {
 	ModuleLoader2.setNotYetLoadedModules(modules);
 
 	Class c = null;
-        if (c == null) {
-            // otherwise anoying warning
-            LOG.info("preloading...");
-        }
+	LOG.info("preloading...");
 
 	// Alphabetic order
         c = org.argouml.kernel.DelayedChangeNotify.class;
@@ -856,6 +853,9 @@ class PreloadClasses implements Runnable {
         c = org.tigris.gef.util.EnumerationEmpty.class;
         c = org.tigris.gef.util.EnumerationSingle.class;
 
+        if (c == null) {
+            LOG.error(" preloading error");
+        }
         LOG.info(" done preloading");
     }
 
