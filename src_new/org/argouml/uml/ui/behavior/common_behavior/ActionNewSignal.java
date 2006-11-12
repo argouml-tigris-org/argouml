@@ -52,24 +52,20 @@ public class ActionNewSignal extends AbstractActionNewModelElement {
 
     /**
      * Creates a new signal and in case of a SignalEvent as target also set the
-     * Signal for this event.
-     *
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * Signal for this event.<p>
+     * {@inheritDoc}
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
         if (Model.getFacade().isASignal(target)
-                || Model.getFacade().isASignalEvent(target)) {
-            Object ns = Model.getFacade().getNamespace(target);
-            if (ns != null) {
-                Object newSig = Model.getCommonBehaviorFactory().createSignal();
-                Model.getCoreHelper().addOwnedElement(ns, newSig);
-                if (Model.getFacade().isASignalEvent(target)) {
-                    Model.getCommonBehaviorHelper().setSignal(target, newSig);
-                }
-                TargetManager.getInstance().setTarget(newSig);
-                super.actionPerformed(e);
-            }
+                || Model.getFacade().isASignalEvent(target)
+                || Model.getFacade().isASendAction(target)
+                || Model.getFacade().isAReception(target)
+                || Model.getFacade().isABehavioralFeature(target)) {
+            Object newSig = 
+                Model.getCommonBehaviorFactory().buildSignal(target);
+            TargetManager.getInstance().setTarget(newSig);
+            super.actionPerformed(e);
         }
     }
 }
