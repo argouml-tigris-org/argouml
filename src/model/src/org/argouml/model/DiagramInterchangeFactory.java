@@ -122,21 +122,21 @@ public interface DiagramInterchangeFactory {
 
     // ADiagramElementProperty delegate methods
 
-    /**
+    /*
      * @see org.omg.uml.diagraminterchange.ADiagramElementProperty#add(
      *         org.omg.uml.diagraminterchange.DiagramElement,
      *         org.omg.uml.diagraminterchange.Property)
      */
     boolean addProperty(Object arg0, Object arg1);
 
-    /**
+    /*
      * @see org.omg.uml.diagraminterchange.ADiagramElementProperty#exists(
      *         org.omg.uml.diagraminterchange.DiagramElement,
      *         org.omg.uml.diagraminterchange.Property)
      */
     boolean existsProperty(Object arg0, Object arg1);
 
-    /**
+    /*
      * @see org.omg.uml.diagraminterchange.ADiagramElementProperty#getProperty(
      *         org.omg.uml.diagraminterchange.DiagramElement)
      */
