@@ -169,7 +169,7 @@ public class ToDoList extends Observable implements Runnable {
      *
      * @param d the designer
      */
-    public void spawnValidityChecker(Designer d) {
+    public synchronized void spawnValidityChecker(Designer d) {
         designer = d;
         validityChecker = new Thread(this, "ValidityCheckingThread");
         validityChecker.setDaemon(true);
@@ -312,6 +312,7 @@ public class ToDoList extends Observable implements Runnable {
     }
 
     /**
+     * @param o any Object.
      * @see Observable#notifyObservers(Object)
      */
     public void notifyObservers(Object o) {
@@ -400,8 +401,8 @@ public class ToDoList extends Observable implements Runnable {
      */
     public static Vector getGoals() { return new Vector(); }
 
-    /**
-     * TODO: needs documenting, why synchronised?
+    /*
+     * TODO: needs documenting, why synchronized?
      */
     private synchronized void addE(ToDoItem item) {
         /* remove any identical items already on the list */
@@ -739,9 +740,6 @@ public class ToDoList extends Observable implements Runnable {
     ////////////////////////////////////////////////////////////////
     // internal methods
 
-    /**
-     * @see java.lang.Object#toString()
-     */
     public String toString() {
         StringBuffer res = new StringBuffer(100);
         res.append(getClass().getName()).append(" {\n");
