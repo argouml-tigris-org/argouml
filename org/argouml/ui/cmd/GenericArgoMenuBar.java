@@ -26,11 +26,15 @@ package org.argouml.ui.cmd;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
@@ -67,8 +71,6 @@ import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
-import org.tigris.gef.base.CmdAdjustGrid;
-import org.tigris.gef.base.CmdAdjustGuide;
 import org.tigris.gef.base.CmdAdjustPageBreaks;
 import org.tigris.gef.base.CmdSelectAll;
 import org.tigris.gef.base.CmdSelectInvert;
@@ -238,7 +240,14 @@ public class GenericArgoMenuBar extends JMenuBar implements
     protected static final String menuLocalize(String key) {
         return Translator.localize(MENU + prepareKey(key));
     }
-
+    
+    /**
+     * @param key the key to localize
+     * @return the localized string
+     */
+    static final String menuItemLocalize(String key) {
+        return Translator.localize(MENUITEM + prepareKey(key));
+    }
 
     /**
      * Construct the ordinary all purpose Argo Menu Bar.
@@ -490,14 +499,39 @@ public class GenericArgoMenuBar extends JMenuBar implements
         ShortcutMgr.assignAccelerator(zoomIn, ShortcutMgr.ACTION_ZOOM_IN);
 
         view.addSeparator();
-        JMenuItem adjustGrid = view.add(new CmdAdjustGrid());
-        setMnemonic(adjustGrid, "Adjust Grid");
-        ShortcutMgr.assignAccelerator(adjustGrid,
-                ShortcutMgr.ACTION_ADJUST_GRID);
-        JMenuItem adjustGuide = view.add(new CmdAdjustGuide());
-        setMnemonic(adjustGuide, "Adjust Guide");
-        ShortcutMgr.assignAccelerator(adjustGuide,
-                ShortcutMgr.ACTION_ADJUST_GUIDE);
+        
+        JMenu grid = (JMenu) view.add(new JMenu(menuLocalize("Adjust Grid")));
+        setMnemonic(grid, "Grid");
+        List gridActions = ActionAdjustGrid.createAdjustGridActions(false);
+        ButtonGroup groupGrid = new ButtonGroup();
+        ActionAdjustGrid.setGroup(groupGrid);
+        Iterator i = gridActions.iterator();
+        while (i.hasNext()) {
+            Action cmdAG = (Action) i.next();
+            JRadioButtonMenuItem mi = new JRadioButtonMenuItem(cmdAG);
+            groupGrid.add(mi);
+            JMenuItem adjustGrid = grid.add(mi);
+            setMnemonic(adjustGrid, (String) cmdAG.getValue(Action.NAME));
+            ShortcutMgr.assignAccelerator(adjustGrid,
+                    ShortcutMgr.ACTION_ADJUST_GRID + cmdAG.getValue("ID"));
+        }
+
+        JMenu snap = (JMenu) view.add(new JMenu(menuLocalize("Adjust Snap")));
+        setMnemonic(snap, "Snap");
+        List snapActions = ActionAdjustSnap.createAdjustSnapActions();
+        ButtonGroup groupSnap = new ButtonGroup();
+        ActionAdjustSnap.setGroup(groupSnap);
+        i = snapActions.iterator();
+        while (i.hasNext()) {
+            Action cmdAS = (Action) i.next();
+            JRadioButtonMenuItem mi = new JRadioButtonMenuItem(cmdAS);
+            groupSnap.add(mi);
+            JMenuItem adjustSnap = snap.add(mi);
+            setMnemonic(adjustSnap, (String) cmdAS.getValue(Action.NAME));
+            ShortcutMgr.assignAccelerator(adjustSnap,
+                    ShortcutMgr.ACTION_ADJUST_GUIDE + cmdAS.getValue("ID"));
+        }
+
         JMenuItem adjustPageBreaks = view.add(new CmdAdjustPageBreaks());
         setMnemonic(adjustPageBreaks, "Adjust Pagebreaks");
         ShortcutMgr.assignAccelerator(adjustPageBreaks,

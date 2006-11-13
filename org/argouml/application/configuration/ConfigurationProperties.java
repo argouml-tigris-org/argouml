@@ -34,7 +34,9 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
- * This class provides a user configuration based upon properties files.
+ * This class provides a user configuration based upon 
+ * the properties file "argo.user.properties" in the user's home directory.
+ * 
  * @author Thierry Lach
  */
 class ConfigurationProperties extends ConfigurationHandler {

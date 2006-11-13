@@ -31,6 +31,8 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.swing.AbstractAction;
@@ -68,8 +70,6 @@ import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.argouml.util.KeyEventUtils;
 import org.tigris.gef.base.AlignAction;
-import org.tigris.gef.base.CmdAdjustGrid;
-import org.tigris.gef.base.CmdAdjustGuide;
 import org.tigris.gef.base.CmdAdjustPageBreaks;
 import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.base.CmdSelectAll;
@@ -620,8 +620,23 @@ public class ShortcutMgr {
         // view menu
         putDefaultShortcut(ACTION_GO_TO_DIAGRAM, null, new ActionGotoDiagram());
         putDefaultShortcut(ACTION_ZOOM_RESET, null, new CmdZoom(0.0));
-        putDefaultShortcut(ACTION_ADJUST_GRID, null, new CmdAdjustGrid());
-        putDefaultShortcut(ACTION_ADJUST_GUIDE, null, new CmdAdjustGuide());
+        
+        List gridActions = ActionAdjustGrid.createAdjustGridActions(true);
+        Iterator i = gridActions.iterator();
+        while (i.hasNext()) {
+            AbstractAction cmdAG = (AbstractAction) i.next();
+            putDefaultShortcut(ACTION_ADJUST_GRID + cmdAG.getValue("ID"),
+                    (KeyStroke) cmdAG.getValue("shortcut"), cmdAG);
+        }
+        
+        List snapActions = ActionAdjustSnap.createAdjustSnapActions();
+        i = snapActions.iterator();
+        while (i.hasNext()) {
+            AbstractAction cmdAS = (AbstractAction) i.next();
+            putDefaultShortcut(ACTION_ADJUST_GUIDE + cmdAS.getValue("ID"),
+                    (KeyStroke) cmdAS.getValue("shortcut"), cmdAS);
+        }
+
         putDefaultShortcut(ACTION_ADJUST_PAGE_BREAKS, null,
                 new CmdAdjustPageBreaks());
         putDefaultShortcut(ACTION_SHOW_XML_DUMP, null, new ActionShowXMLDump());

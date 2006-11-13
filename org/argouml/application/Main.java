@@ -66,6 +66,8 @@ import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
+import org.argouml.ui.cmd.ActionAdjustGrid;
+import org.argouml.ui.cmd.ActionAdjustSnap;
 import org.argouml.ui.cmd.ActionExit;
 import org.argouml.ui.cmd.PrintManager;
 import org.argouml.uml.reveng.java.JavaImport;
@@ -373,6 +375,9 @@ public class Main {
         PostLoad pl = new PostLoad(postLoadActions);
         Thread postLoadThead = new Thread(pl);
         postLoadThead.start();
+
+        ActionAdjustSnap.init();
+        ActionAdjustGrid.init();
 
         LOG.info("");
         LOG.info("profile of load time ############");
