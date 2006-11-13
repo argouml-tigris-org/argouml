@@ -261,6 +261,18 @@ public final class Argo {
         Configuration.makeKey("locale");
 
     /**
+     * Key for selecting the grid size and if it shows lines, dots or none. 
+     */
+    public static final ConfigurationKey KEY_GRID =
+        Configuration.makeKey("grid");
+
+    /**
+     * Key for selecting the snap size. 
+     */
+    public static final ConfigurationKey KEY_SNAP =
+        Configuration.makeKey("snap");
+
+    /**
      * Standard definition of the logging category for the console.
      */
     public static final String CONSOLE_LOG = "argo.console.log";
