@@ -50,7 +50,7 @@ Once the changes is made, we are able to test this.
 
 
     <para>
-If you are using Eclipse 3.1, see <xref linkend="eclipse3"></xref>
+If you are using Eclipse 3.1 or later, see <xref linkend="eclipse3"></xref>
 for quick setup instructions.
 </para>
 
@@ -1983,6 +1983,11 @@ It enables style checking according the rules set for the ArgoUML project.
               <ulink url="http://checkstyle.sourceforge.net/"/> 
      for reference.)
       </para>
+      <para>Most ArgoUML projects in Eclipse have their Checkclipse settings
+      predefined which should be found as soon as you install Checkclipse, 
+      but if you need to set them up by hand, use the following instructions.
+      These instructions are for Checkclipse 2.1.
+      </para>
       <para>
       In the Java perspective, select the project argouml, 
       i.e. the icon at the top of the Package Explorer.
@@ -1997,26 +2002,28 @@ Checked.
 </para>
         </listitem>
         <listitem>
+          <para>Set Project Classloader - Checked.</para>
+        </listitem>
+        <listitem>
           <para>Checkstyle Configuration File: 
-<filename>tools/checkstyle/checkstyle_argouml.xml</filename>
+<filename>/argouml-core-tools/checkstyle/checkstyle_argouml.xml</filename>
 in the argouml-core-tools project.
 </para>
         </listitem>
         <listitem>
           <para>Checkstyle Properties File: 
-<filename>tools/checkstyle/checkstyle.properties</filename>
-in the argouml-core-tools project.
-</para>
-        </listitem>
-        <listitem>
-          <para>File Filter Definition: 
-<filename>tools/checkstyle/checkclipse.filefilters</filename>
+<filename>/argouml-core-tools/checkstyle/checkstyle.properties</filename>
 in the argouml-core-tools project.
 </para>
         </listitem>
       </itemizedlist>
       <para>
-Leave the two other fields empty.
+Leave the rest of the fields at their default (empty).  The File Filters
+are defined on an additional preferences tab rather than in separate
+file as in earlier versions of Checkclipse.  If this isn't populate with
+the saved values from SVN you can add individual files to the exclude 
+list as you encounter them, but generally any machine generated source
+file (JavaLexer, JavaRecognizer, etc) should be excluded from the checks.
 </para>
     </sect2>
 
