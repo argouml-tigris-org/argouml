@@ -59,7 +59,7 @@ public class JavaImport implements ModuleInterface, ImportInterface {
         if (o instanceof File) {
             File f = (File) o;
             try {
-                // Create a scanner that reads from the input stream 
+                // Create a scanner that reads from the input stream
                 String encoding = settings.getInputSourceEncoding();
                 FileInputStream in = new FileInputStream(f);
                 JavaLexer lexer = new JavaLexer(new BufferedReader(
@@ -72,10 +72,11 @@ public class JavaImport implements ModuleInterface, ImportInterface {
 
                 // Create a parser that reads from the scanner
                 JavaRecognizer parser = new JavaRecognizer(lexer);
+                parser.setParserMode(JavaRecognizer.MODE_IMPORT_PASS1 | JavaRecognizer.MODE_IMPORT_PASS2);
 
                 // Create a modeller for the parser
                 Modeller modeller = new Modeller(p.getModel(),
-                        settings.getDiagramInterface(), 
+                        settings.getDiagramInterface(),
                         settings.getImportSession(),
                         settings.isAttributeSelected(),
                         settings.isDatatypeSelected(),
@@ -122,7 +123,7 @@ public class JavaImport implements ModuleInterface, ImportInterface {
 	SuffixFilter[] result = {FileFilters.JAVA_FILE_FILTER};
 	return result;
     }
-    
+
     /*
      * @see org.argouml.uml.reveng.ImportInterface#isParseable(java.io.File)
      */
@@ -152,7 +153,7 @@ public class JavaImport implements ModuleInterface, ImportInterface {
             return null;
         }
     }
-    
+
     /*
      * @see org.argouml.moduleloader.ModuleInterface#disable()
      */
