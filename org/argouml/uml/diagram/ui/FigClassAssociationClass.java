@@ -28,7 +28,6 @@ import java.util.Iterator;
 
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigNode;
 
 /**
  * Class to display a class in an Association Class
@@ -71,7 +70,7 @@ public class FigClassAssociationClass extends FigClass {
             if (o instanceof FigEdgeAssociationClass) {
                 // We have the dashed edge now find the opposite FigNode
                 FigEdgeAssociationClass dashedEdge =
-                    (FigEdgeAssociationClass)o;
+                    (FigEdgeAssociationClass) o;
                 return dashedEdge.getRemoveDelegate();
             }
         }

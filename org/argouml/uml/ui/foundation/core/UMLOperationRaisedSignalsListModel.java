@@ -45,7 +45,7 @@ public class UMLOperationRaisedSignalsListModel
         super("signal");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -59,7 +59,7 @@ public class UMLOperationRaisedSignalsListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {
@@ -68,6 +68,6 @@ public class UMLOperationRaisedSignalsListModel
         if (Model.getFacade().isAOperation(target)) {
             signals = Model.getFacade().getRaisedSignals(target);
         }
-        return (signals!=null) && signals.contains(element);
+        return (signals != null) && signals.contains(element);
     }
 }

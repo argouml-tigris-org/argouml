@@ -102,11 +102,11 @@ public class CrNoAssociations extends CrUML {
         if (Model.getFacade().isAUseCase(dm)) {
             Object usecase = dm;
             Collection includes = Model.getFacade().getIncludes(usecase);
-            if (includes!=null && includes.size()>=1) {
+            if (includes != null && includes.size() >= 1) {
                 return NO_PROBLEM;
             }
             Collection extend = Model.getFacade().getExtends(usecase);
-            if (extend!=null && extend.size()>=1) {
+            if (extend != null && extend.size() >= 1) {
                 return NO_PROBLEM;
             }
         }

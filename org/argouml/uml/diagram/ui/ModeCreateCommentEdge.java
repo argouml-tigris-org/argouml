@@ -54,7 +54,7 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
 
     private Object sourceModelElement;
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
@@ -113,7 +113,7 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
         me.consume();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.ModeCreatePolyEdge#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
@@ -131,7 +131,7 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
             destFig = editor.hit(x - 16, y - 16, 32, 32);
         }
         MutableGraphModel graphModel =
-            (MutableGraphModel)editor.getGraphModel();
+            (MutableGraphModel) editor.getGraphModel();
 
         if (destFig instanceof FigEdgeModelElement
                 && Model.getFacade().isAComment(sourceModelElement)
@@ -162,7 +162,7 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
                 p.setComplete(true);
 
                 setNewEdge(graphModel.connect(
-                       getStartPort(), foundPort, (Object)CommentEdge.class));
+                       getStartPort(), foundPort, (Object) CommentEdge.class));
 
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a

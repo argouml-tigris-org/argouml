@@ -138,7 +138,8 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     private void initialize() {
 
-        modifiersPanel =createBorderPanel(Translator.localize("label.modifiers"));
+        modifiersPanel = 
+            createBorderPanel(Translator.localize("label.modifiers"));
         modifiersPanel.add(
             new UMLGeneralizableElementAbstractCheckBox());
         modifiersPanel.add(

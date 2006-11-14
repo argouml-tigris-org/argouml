@@ -55,7 +55,7 @@ class ActionNewClassifierInState extends UndoableAction {
         super();
     }
     
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -86,8 +86,11 @@ class ActionNewClassifierInState extends UndoableAction {
         }
     }
     
+    /*
+     * @see javax.swing.AbstractAction#isEnabled()
+     */
     public boolean isEnabled() {
-        boolean enabled = false;
+        boolean isEnabled = false;
         Object t = TargetManager.getInstance().getModelTarget();
         if (Model.getFacade().isAObjectFlowState(t)) {
             Object type = Model.getFacade().getType(t);
@@ -97,12 +100,12 @@ class ActionNewClassifierInState extends UndoableAction {
                         .getAllModelElementsOfKindWithModel(type, 
                                 choiceClass);
                     if (states.size() > 0) {
-                        enabled = true;
+                        isEnabled = true;
                     }
                 }
             }
         }
-        return enabled;
+        return isEnabled;
     }
     
     /**
@@ -152,10 +155,10 @@ class ActionNewClassifierInState extends UndoableAction {
             }
         }
 
-        if(simples.size() > 0) {
+        if (simples.size() > 0) {
             return simples.iterator().next();
         }
-        if(composites.size() > 0) {
+        if (composites.size() > 0) {
             return composites.iterator().next();
         }
         return states.iterator().next();

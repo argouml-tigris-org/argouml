@@ -90,11 +90,10 @@ public class FigAssociationClass extends FigAssociation {
         
         FigEdgeAssociationClass figEdgeLink = null;
         Iterator it = figEdgePort.getFigEdges().iterator();
-        while(it.hasNext() && figEdgeLink == null) {
+        while (it.hasNext() && figEdgeLink == null) {
             Object o = it.next();
             if (o instanceof FigEdgeAssociationClass) {
-                figEdgeLink = (FigEdgeAssociationClass)o;
-                
+                figEdgeLink = (FigEdgeAssociationClass) o;
             }
         }
         if (figEdgeLink != null) {
@@ -103,12 +102,12 @@ public class FigAssociationClass extends FigAssociation {
                 figClassBox = figEdgeLink.getSourceFigNode();
             }
             figEdgeLink.removeFromDiagramImpl();
-            ((FigClassAssociationClass)figClassBox).removeFromDiagramImpl();
+            ((FigClassAssociationClass) figClassBox).removeFromDiagramImpl();
         }
         super.removeFromDiagramImpl();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(
      *         org.tigris.gef.presentation.Fig)
      * TODO: Is this required? Why would the fig already be dashed?

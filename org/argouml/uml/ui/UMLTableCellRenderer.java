@@ -28,8 +28,15 @@ import javax.swing.table.TableCellRenderer;
 
 import org.argouml.model.Model;
 
-public class UMLTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
+/**
+ * Basic table cell render which uses the name of a model element as the text.
+ */
+public class UMLTableCellRenderer extends DefaultTableCellRenderer implements
+        TableCellRenderer {
 
+    /**
+     * Constructor.
+     */
     public UMLTableCellRenderer() {
         super();
     }
@@ -40,7 +47,7 @@ public class UMLTableCellRenderer extends DefaultTableCellRenderer implements Ta
             setText(name);
         } else {
             if (value instanceof String)
-                setText((String)value);
+                setText((String) value);
             else
                 setText("");
         }

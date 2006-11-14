@@ -75,7 +75,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     // GraphModel implementation
 
 
-    /**
+    /*
      * Return all ports on node or edge.
      *
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
@@ -88,7 +88,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	return res;
     }
 
-    /**
+    /*
      * Return the node or edge that owns the given port.
      *
      * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
@@ -97,7 +97,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	return port;
     }
 
-    /**
+    /*
      * Return all edges going to given port.
      *
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
@@ -119,7 +119,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	return res;
     }
 
-    /**
+    /*
      * Return all edges going from given port.
      *
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
@@ -131,7 +131,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 
-    /**
+    /*
      * Return true if the given object is a valid node in this graph.
      *
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
@@ -140,7 +140,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
         if (node == null) {
             return false;
         }
-        if (Model.getFacade().isAAssociation(node) && !Model.getFacade().isANaryAssociation(node)) {
+        if (Model.getFacade().isAAssociation(node)
+                && !Model.getFacade().isANaryAssociation(node)) {
             // A binary association is not a node so reject.
             return false;
         }
@@ -153,7 +154,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
             || Model.getFacade().isAComment(node));
     }
 
-    /**
+    /*
      * Return true if the given object is a valid edge in this graph.
      *
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
@@ -207,16 +208,14 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
         
         if (!containsNode(end0)
                 && !containsEdge(end0)) {
-            LOG.error("Edge rejected. Its source end is attached to " +
-                    end0 +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its source end is attached to " + end0
+                    + " but this is not in the graph model");
             return false;
         }
         if (!containsNode(end1)
                 && !containsEdge(end1)) {
-            LOG.error("Edge rejected. Its destination end is attached to " +
-                    end1 +
-                    " but this is not in the graph model");
+            LOG.error("Edge rejected. Its destination end is attached to "
+                    + end1 + " but this is not in the graph model");
             return false;
         }
         
@@ -224,7 +223,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     }
 
 
-    /**
+    /*
      * Add the given node to the graph, if valid.
      *
      * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
@@ -244,7 +243,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	fireNodeAdded(node);
     }
 
-    /**
+    /*
      * Add the given edge to the graph, if valid.
      *
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
@@ -263,7 +262,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
         fireEdgeAdded(edge);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
      */
     public void addNodeRelatedEdges(Object node) {
@@ -315,7 +314,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     }
 
 
-    /**
+    /*
      * Return true if the two given ports can be connected by a
      * kind of edge to be determined by the ports.
      *
@@ -333,7 +332,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     ////////////////////////////////////////////////////////////////
     // VetoableChangeListener implementation
 
-    /**
+    /*
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {

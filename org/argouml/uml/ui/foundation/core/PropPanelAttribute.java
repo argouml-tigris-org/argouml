@@ -102,7 +102,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNavigateUpPreviousDown() {
             public List getFamily(Object parent) {
-                if(Model.getFacade().isAAssociationEnd(parent)) {
+                if (Model.getFacade().isAAssociationEnd(parent)) {
                     return Model.getFacade().getQualifiers(parent);
                 }
                 return Model.getFacade().getAttributes(parent);
