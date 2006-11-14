@@ -125,7 +125,7 @@ public class Modeller {
      *
      * TODO: Refactor diagram creation to be common to all importers and
      * remove the need for the diagram interface to be passed in here. - tfm
-     *  
+     *
      * @param diag the interface to the diagram to add nodes and edges to
      * @param imp The current Import session.
      * @param noAss whether associations are modelled as attributes
@@ -612,7 +612,7 @@ public class Modeller {
         if (parseState.getClassifier() == null) {
             // set the clasifier to be a resident in its component:
             // (before we push a new parse state on the stack)
-            
+
             // This test is carried over from a previous implementation,
             // but I'm not sure why it would already be set - tfm
             if (Model.getFacade().getElementResidences(mClassifier).isEmpty()) {
@@ -898,7 +898,7 @@ public class Modeller {
             Object mAttribute = parseState.getAttribute(name);
             if (mAttribute == null) {
                 mAttribute = buildAttribute(parseState.getClassifier(), name);
-            }            
+            }
             parseState.feature(mAttribute);
 
             setOwnerScope(mAttribute, modifiers);
@@ -922,7 +922,7 @@ public class Modeller {
                 // strings, otherwise the classes will display horribly.
                 initializer = initializer.replace('\n', ' ');
                 initializer = initializer.replace('\t', ' ');
-                
+
 		Object newInitialValue =
 		    Model.getDataTypesFactory()
 		        .createExpression("Java",
@@ -1143,7 +1143,7 @@ public class Modeller {
        @return The attribute found or created.
     */
     private Object buildAttribute(Object classifier, String name) {
-        Project project = ProjectManager.getManager().getCurrentProject(); 
+        Project project = ProjectManager.getManager().getCurrentProject();
         Object intType = project.findType("int");
         Object myModel = project.getModel();
         Object mAttribute = Model.getCoreFactory().buildAttribute(classifier,
@@ -1230,19 +1230,20 @@ public class Modeller {
      * @return the stereotype if found
      *
      * @throws IllegalArgumentException if the desired stereotypes for
-     * the modelelement and baseclass was not found. No stereotype is
-     * created.
+     * the modelelement and baseclass was not found and could not be created.
+     * No stereotype is created.
      */
     private Object getStereotype(Object me, String name, String baseClass) {
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
         Collection stereos =
             Model.getExtensionMechanismsHelper()
-	        .getAllPossibleStereotypes(models, me);
+               .getAllPossibleStereotypes(models, me);
+        Object stereotype =  null;
         if (stereos != null && stereos.size() > 0) {
             Iterator iter = stereos.iterator();
             while (iter.hasNext()) {
-                Object stereotype = iter.next();
+                stereotype = iter.next();
                 if (Model.getExtensionMechanismsHelper()
                         .isStereotypeInh(stereotype, name, baseClass)) {
                     LOG.info("Returning the existing stereotype of <<"
@@ -1251,13 +1252,19 @@ public class Modeller {
                 }
             }
         }
-        // TODO: Instead of failing, this should create any stereotypes that it
+        // Instead of failing, this should create any stereotypes that it
         // requires.  Most likely cause of failure is that the stereotype isn't
         // included in the profile that is being used. - tfm 20060224
+        stereotype = getStereotype(name);
+        if (stereotype != null) {
+            Model.getExtensionMechanismsHelper().addBaseClass(stereotype, me);
+            return stereotype;
+        }
+        // This should never happen then:
         throw new IllegalArgumentException("Could not find "
-					   + "a suitable stereotype for " + me
-                                           + " -  stereotype: <<" + name 
-                                           + ">> base: " + baseClass);
+            + "a suitable stereotype for " + Model.getFacade().getName(me)
+            + " -  stereotype: <<" + name
+            + ">> base: " + baseClass);
     }
 
     /**
@@ -1476,7 +1483,7 @@ public class Modeller {
 	    }
         } else {
             if ("stereotype".equals(sTagName)) {
-                // multiple stereotype support: 
+                // multiple stereotype support:
                 // make one stereotype tag from many stereotype tags
                 Object tv = getTaggedValue(me, sTagName);
                 if (tv != null) {
@@ -1613,14 +1620,14 @@ public class Modeller {
 		}
 	    }
             sJavaDocs = sbPureDocs.toString();
-            
+
             /*
              * After this, we have the documentation text, but there's still a
              * trailing '/' left, either at the end of the actual comment text
              * or at the end of the last tag.
              */
             sJavaDocs = removeTrailingSlash(sJavaDocs);
-            
+
             // handle last tag, if any (strip trailing slash there too)
 	    if (sCurrentTagName != null) {
 		sCurrentTagData = removeTrailingSlash(sCurrentTagData);
@@ -1640,7 +1647,7 @@ public class Modeller {
 
     /*
      * Remove a trailing slash, including the entire line if it's the only thing
-     * on the line. 
+     * on the line.
      */
     private String removeTrailingSlash(String s) {
         if (s.endsWith("\n/")) {
@@ -1651,11 +1658,11 @@ public class Modeller {
             return s;
         }
     }
-    
+
     /*
      * If there is a tagged value named 'stereotype', make it a real
      * stereotype and remove the tagged value.
-     * We allow multiple instances of this tagged value 
+     * We allow multiple instances of this tagged value
      * AND parse a single instance for multiple stereotypes
      */
     private void addStereotypes(Object modelElement) {
@@ -1704,7 +1711,7 @@ public class Modeller {
 
     /**
      * Add a local variable declaration to the list of variables.
-     * 
+     *
      * @param type type of declared variable
      * @param name name of declared variable
      */
@@ -1714,7 +1721,7 @@ public class Modeller {
 
     /**
      * Return the collected set of local variable declarations.
-     * 
+     *
      * @return hashtable containing all local variable declarations.
      */
     public Hashtable getLocalVariableDeclarations() {
