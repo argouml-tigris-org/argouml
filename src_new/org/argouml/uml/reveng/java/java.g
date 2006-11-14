@@ -289,6 +289,13 @@ tokens {
      * comments), we store a reference to it.
      */
     private JavaLexer _lexer = null;
+    
+    /**
+     * Get the lexer of this parser.
+     */
+    public JavaLexer getLexer() {
+        return _lexer;
+    }
 
     /**
      * Set the lexer for this parser.
