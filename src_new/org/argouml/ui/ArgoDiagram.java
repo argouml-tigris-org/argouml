@@ -92,7 +92,7 @@ public class ArgoDiagram extends Diagram {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.tigris.gef.base.Diagram#setName(java.lang.String)
      */
     public void setName(String n) throws PropertyVetoException {
@@ -164,7 +164,7 @@ public class ArgoDiagram extends Diagram {
         return fig;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Diagram#initialize(Object)
      */
     public void initialize(Object owner) {
@@ -185,10 +185,10 @@ public class ArgoDiagram extends Diagram {
         }
     }
 
-    /**
+    /*
      * Get all the model elements in this diagram that are represented
      * by a FigEdge.
-     * @see Diagram#getEdges()
+     * @see org.tigris.gef.base.Diagram#getEdges()
      */
     public List getEdges() {
         if (getGraphModel() != null) {
@@ -198,10 +198,10 @@ public class ArgoDiagram extends Diagram {
     }
 
 
-    /**
+    /*
      * Get all the model elements in this diagram that are represented
      * by a FigNode.
-     * @see Diagram#getNodes()
+     * @see org.tigris.gef.base.Diagram#getNodes()
      */
     public List getNodes() {
         if (getGraphModel() != null) {
@@ -211,7 +211,7 @@ public class ArgoDiagram extends Diagram {
     }
 
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -436,10 +436,13 @@ public class ArgoDiagram extends Diagram {
         return description + "\n";
     }
 
-    /**
+    /*
      * Find the all Figs that visualise the given model element in
      * this layer, or null if there is none.
+     * 
      * TODO: once GEF includes this same method in Diagram then the can go
+     * 
+     * @see org.tigris.gef.base.Diagram#presentationsFor(java.lang.Object)
      */
     public List presentationsFor(Object obj) {
         List presentations = new ArrayList();
@@ -458,7 +461,7 @@ public class ArgoDiagram extends Diagram {
     public void remove() {
         List contents = new ArrayList(getLayer().getContents());
         int size = contents.size();
-        for (int i=0; i < size; ++i) {
+        for (int i = 0; i < size; ++i) {
             Fig f = (Fig) contents.get(i);
             f.removeFromDiagram();
         }

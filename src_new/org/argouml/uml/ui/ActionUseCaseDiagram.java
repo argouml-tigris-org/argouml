@@ -38,11 +38,14 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
     private static final Logger LOG =
         Logger.getLogger(ActionUseCaseDiagram.class);
 
+    /**
+     * Constructor.
+     */
     public ActionUseCaseDiagram() {
         super("action.usecase-diagram");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
     public UMLDiagram createDiagram(Object namespace) {
@@ -52,13 +55,13 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + namespace + "is not a namespace.");
         }
-        return (UMLDiagram)DiagramFactory.getInstance().createDiagram(
+        return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
                 UMLUseCaseDiagram.class,
                 namespace,
                 null);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(Object)
      */
     public boolean isValidNamespace(Object handle) {

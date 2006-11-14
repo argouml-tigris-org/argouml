@@ -49,7 +49,7 @@ public class UMLLinkedListCellRenderer extends UMLListCellRenderer2 {
         super(showIcon);
     }
 
-    /**
+    /*
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(
      * javax.swing.JList, java.lang.Object, int, boolean, boolean)
      */
@@ -58,7 +58,7 @@ public class UMLLinkedListCellRenderer extends UMLListCellRenderer2 {
         JLabel label = (JLabel) super.getListCellRendererComponent(
                 list, value, index, isSelected, cellHasFocus);
       
-        label.setText("<html><u>"+label.getText()+"</html>");        
+        label.setText("<html><u>" + label.getText() + "</html>");
         return label;
     }
 

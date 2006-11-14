@@ -49,7 +49,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 public class Init {
 
     // UML specific
-    private static Critic crAssocNameConflict =new CrAssocNameConflict();
+    private static Critic crAssocNameConflict = new CrAssocNameConflict();
     
     private static Critic crAttrNameConflict = new CrAttrNameConflict();
 

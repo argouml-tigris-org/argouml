@@ -48,9 +48,6 @@ public class CommentEdge {
     private Object comment;
     private Object annotatedElement;
 
-    private static final Logger LOG =
-        Logger.getLogger(UseCaseDiagramRenderer.class);
-
     CommentEdge() {
         uuid = UUIDManager.getInstance().getNewUUID();
     }
@@ -68,8 +65,8 @@ public class CommentEdge {
         }
         if (!(Model.getFacade().isAModelElement(dest))) {
             throw new IllegalArgumentException(
-                    "The destination of the CommentEdge " +
-                    "must be a model element");
+                    "The destination of the CommentEdge "
+                            + "must be a model element");
         }
         if (Model.getFacade().isAComment(source)) {
             comment = source;
@@ -153,7 +150,8 @@ public class CommentEdge {
                 Model.getCoreHelper().removeAnnotatedElement(dest, source);
         }
     }
-    /**
+    
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

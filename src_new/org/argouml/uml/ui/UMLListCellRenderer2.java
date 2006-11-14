@@ -72,7 +72,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
         showIcon = showTheIcon;
     }
 
-    /**
+    /*
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList,
      *      java.lang.Object, int, boolean, boolean)
      */
@@ -165,7 +165,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
                     Collection bases = Model.getFacade().getBaseClasses(value);
                     StringBuffer sb = new StringBuffer();
                     sb.append(" [");
-                    for( Iterator it = bases.iterator(); it.hasNext(); ) {
+                    for (Iterator it = bases.iterator(); it.hasNext();) {
                         sb.append(makeText(it.next()));
                         if (it.hasNext()) {
                             sb.append(", ");
@@ -173,7 +173,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
                     }
                     name = name + sb.toString() + "]";
                 }
-            } catch (InvalidElementException e){
+            } catch (InvalidElementException e) {
                 name = Translator.localize("misc.name.deleted");
             }
         } else if (Model.getFacade().isAMultiplicity(value)) {
