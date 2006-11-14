@@ -30,7 +30,7 @@ import org.argouml.model.Model;
 
 public class TestCrAssocNameConflict extends TestCase {
 
-    private CrAssocNameConflict critic = null;
+    private CrNameConflict critic = null;
 
     private Object c1, c2, c3, c4, ns1, ns2;
 
@@ -50,7 +50,7 @@ public class TestCrAssocNameConflict extends TestCase {
         c2 = Model.getCoreFactory().buildClass("A", ns1);
         c3 = Model.getCoreFactory().buildClass("B", ns1);
         c4 = Model.getCoreFactory().buildClass("A", ns2);
-        critic = new CrAssocNameConflict();
+        critic = new CrNameConflict();
 
     }
 
@@ -86,6 +86,7 @@ public class TestCrAssocNameConflict extends TestCase {
     }
     
     public void testAssociations() {
+        CrAssocNameConflict critic = new CrAssocNameConflict();
         Model.getCoreHelper().setNamespace(c4, ns1);
         Object a1, a2, a3;
         Model.getCoreHelper().setName(c1, "C1");
