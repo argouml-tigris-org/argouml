@@ -69,6 +69,7 @@ public class TabSrc
      */
     public TabSrc() {
         super("tab.source", true);
+        setEditable(false);
         langName = (Language) cbLang.getSelectedItem();
         fileName = null;
         getToolbar().add(cbLang);
