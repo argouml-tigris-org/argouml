@@ -122,7 +122,7 @@ public class ClassdiagramLayouter implements Layouter {
          */
         public NodeRow doSplit(int maxWidth, int gap) {
             TreeSet ts = new TreeSet(nodes);
-            if (ts.isEmpty()) {
+            if (ts.size() < 2) {
                 return null;
             }
             ClassdiagramNode firstNode = (ClassdiagramNode) ts.first();
