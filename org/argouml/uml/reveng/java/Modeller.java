@@ -447,8 +447,11 @@ public class Modeller {
                 if (forceIt && superclassName != null && model != null) {
                     LOG.info("Modeller.java: forced creation of unknown class "
                         + superclassName);
+                    String packageName = getPackageName(superclassName);
+                    String classifierName = getClassifierName(superclassName);
+                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
                     parentClass =
-                        Model.getCoreFactory().buildClass(superclassName, model);
+                        Model.getCoreFactory().buildClass(classifierName, mPackage);
                     getGeneralization(currentPackage, parentClass, mClass);
                 } else {
                     // information will be lost from source files
@@ -471,8 +474,11 @@ public class Modeller {
                     if (forceIt && interfaceName != null && model != null) {
                         LOG.info("Modeller.java: forced creation of unknown interface "
                             + interfaceName);
+                        String packageName = getPackageName(interfaceName);
+                        String classifierName = getClassifierName(interfaceName);
+                        Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
                         mInterface =
-                            Model.getCoreFactory().buildInterface(interfaceName, model);
+                            Model.getCoreFactory().buildInterface(classifierName, mPackage);
                     } else {
                         // information will be lost from source file
                         LOG.info("Modeller.java: a classifier that was in "
@@ -570,8 +576,11 @@ public class Modeller {
                 if (forceIt && interfaceName != null && model != null) {
                     LOG.info("Modeller.java: forced creation of unknown interface "
                         + interfaceName);
+                    String packageName = getPackageName(interfaceName);
+                    String classifierName = getClassifierName(interfaceName);
+                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
                     parentInterface =
-                        Model.getCoreFactory().buildInterface(interfaceName, model);
+                        Model.getCoreFactory().buildInterface(classifierName, mPackage);
                     getGeneralization(currentPackage, parentInterface, mInterface);
                 } else {
                     // information will be lost from source file
@@ -772,8 +781,11 @@ public class Modeller {
                 if (forceIt && returnType != null && model != null) {
                     LOG.info("Modeller.java: forced creation of unknown classifier "
                         + returnType);
+                    String packageName = getPackageName(returnType);
+                    String classifierName = getClassifierName(returnType);
+                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
                     mClassifier =
-                        Model.getCoreFactory().buildClass(returnType, model);
+                        Model.getCoreFactory().buildClass(classifierName, mPackage);
                 } else {
                     // information will be lost from source files
                     LOG.info("Modeller.java: a classifier that was in the source "
@@ -808,8 +820,11 @@ public class Modeller {
                 if (forceIt && typeName != null && model != null) {
                     LOG.info("Modeller.java: forced creation of unknown classifier "
                         + typeName);
+                    String packageName = getPackageName(typeName);
+                    String classifierName = getClassifierName(typeName);
+                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
                     mClassifier =
-                        Model.getCoreFactory().buildClass(typeName, model);
+                        Model.getCoreFactory().buildClass(classifierName, mPackage);
                 } else {
                     // information will be lost from source files
                     LOG.info("Modeller.java: a classifier that was in the source "
@@ -912,8 +927,11 @@ public class Modeller {
             if (forceIt && typeSpec != null && model != null) {
                 LOG.info("Modeller.java: forced creation of unknown classifier "
                     + typeSpec);
+                String packageName = getPackageName(typeSpec);
+                String classifierName = getClassifierName(typeSpec);
+                Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
                 mClassifier =
-                    Model.getCoreFactory().buildClass(typeSpec, model);
+                    Model.getCoreFactory().buildClass(classifierName, mPackage);
             } else {
                 // information will be lost from source files
                 LOG.info("Modeller.java: a classifier that was in the source "
