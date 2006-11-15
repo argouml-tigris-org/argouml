@@ -112,7 +112,7 @@ import org.tigris.swidgets.GridLayout2;
 public class Import implements ImportSettings {
 
     private static final String SEPARATOR = "/";
-    
+
     /**
      * Logger.
      */
@@ -169,10 +169,10 @@ public class Import implements ImportSettings {
     private ImportStatusScreen iss;
 
     private StringBuffer problems = new StringBuffer();
-    
+
     // current level / pass
     private int level;
-    
+
     private File selectedFile;
 
     /**
@@ -181,13 +181,13 @@ public class Import implements ImportSettings {
      * and it can be merged with our main configuration panel here.
      */
     private ConfigPanelExtension importConfigPanel;
-    
+
     /**
      * Creates dialog window with chooser and configuration panel.
      */
     public Import() {
         modules = new Hashtable();
-        
+
         // Get all old style modules
         List arraylist = Argo.getPlugins(PluggableImport.class);
         ListIterator iterator = arraylist.listIterator();
@@ -232,9 +232,9 @@ public class Import implements ImportSettings {
              - dialog.getSize().height)
             / 2;
         dialog.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
-        
+
         UIUtils.loadCommonKeyMap(dialog);
-        
+
         dialog.setVisible(true);
     }
 
@@ -254,25 +254,25 @@ public class Import implements ImportSettings {
     /**
      * @param key the key of the attribute
      * @param value the value of the attribute
-     * 
+     *
      * @deprecated by tfmorris for 0.23.3, use setLevel()
      */
     public void setAttribute(String key, Object value) {
         if ("level".equals(key) && value instanceof Integer) {
             level = ((Integer) value).intValue();
         } else {
-            throw new IllegalArgumentException("Unknown attribute name" 
+            throw new IllegalArgumentException("Unknown attribute name"
                     + " or invalid value");
         }
     }
-    
+
     /*
      * @see org.argouml.uml.reveng.ImportSettings#getImportLevel()
      */
     public int getImportLevel() {
         return level;
     }
-    
+
     /*
      * @param newLevel the import detail for the current pass
      */
@@ -295,7 +295,7 @@ public class Import implements ImportSettings {
         // the only ones invoking this method
         return importConfigPanel.getAttribute().isSelected();
     }
-    
+
     /*
      * @see org.argouml.uml.reveng.ImportSettings#isDatatypeSelected()
      */
@@ -311,10 +311,10 @@ public class Import implements ImportSettings {
     public Import getImportSession() {
         return this;
     }
-    
+
     /**
      * Close dialog window.
-     * 
+     *
      * @deprecated by tfmorris for 0.23.2 - UI management is solely an internal
      *             matter. Visibility of this will be further reduced when no
      *             importers use FileImportSupport.
@@ -329,7 +329,7 @@ public class Import implements ImportSettings {
     /**
      * Get the panel that lets the user set reverse engineering
      * parameters.
-     * 
+     *
      * @param importInstance the instance of the import
      * @return the panel
      * @deprecated by tfmorris for 0.23.3 - this is an internal method
@@ -451,9 +451,9 @@ public class Import implements ImportSettings {
             configPanel = tab;
         }
         return configPanel;
-        
+
     }
-    
+
     /*
      * Get the extension panel for the configuration settings.
      */
@@ -468,7 +468,7 @@ public class Import implements ImportSettings {
             if (importConfigPanel == null) {
                 importConfigPanel = new ConfigPanelExtension();
             }
-            result = importConfigPanel; 
+            result = importConfigPanel;
         } else {
             throw new RuntimeException("Unrecognized module type");
         }
@@ -524,10 +524,7 @@ public class Import implements ImportSettings {
 
                 dialog.validate();
             }
-            
-            // TODO: If/when we implement support for new style
-            // importers to specify additional configuration settings,
-            // those will need to be refreshed here - tfm
+            // TODO: check patch for support for new style importers, commited by Jan Magne Andersen
         }
     }
 
@@ -591,7 +588,7 @@ public class Import implements ImportSettings {
      * Get the files. For old style modules, this asks the module for the list.
      * For new style modules we generate it ourselves based on their specified
      * file suffixes.
-     * 
+     *
      * @return the list of files to be imported
      */
     private List getFileList() {
@@ -636,7 +633,7 @@ public class Import implements ImportSettings {
      *
      * @param project the project
      * @param f The file to parse.
-     * @exception Exception ??? 
+     * @exception Exception ???
      * TODO: Couldn't we throw a narrower exception? - tfm
      * TODO: Does this need to be public? - tfm
      */
@@ -665,7 +662,7 @@ public class Import implements ImportSettings {
         } else {
             throw new RuntimeException("Unrecognized module type");
         }
-        
+
 
     }
 
@@ -700,7 +697,7 @@ public class Import implements ImportSettings {
     /**
      * Check, if "Discend directories recursively" is selected.<p>
      *
-     * @deprecated by tfmorris for 0.23.3, use 
+     * @deprecated by tfmorris for 0.23.3, use
      * {@link ImportSettings#isDescendSelected()}
      * @return true, if "Discend directories recursively" is selected
      */
@@ -717,7 +714,7 @@ public class Import implements ImportSettings {
         }
         return true;
     }
-    
+
     /**
      * Check, if "Minimise Class icons in diagrams" is selected.<p>
      *
@@ -796,11 +793,11 @@ public class Import implements ImportSettings {
             return ((PluggableImport)module).getChooser(this);
         } else {
             String directory = Globals.getLastDirectory();
-            
+
             final JFileChooser chooser = new ImportFileChooser(this, directory);
 
             chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            SuffixFilter[] filters = 
+            SuffixFilter[] filters =
                 ((ImportInterface) module).getSuffixFilters();
             if (filters != null) {
                 for (int i = 0; i < filters.length; i++) {
@@ -808,9 +805,9 @@ public class Import implements ImportSettings {
                 }
             }
             return chooser;
-        } 
+        }
     }
-    
+
 
     private class ImportFileChooser extends JFileChooser {
 
@@ -1070,7 +1067,7 @@ public class Import implements ImportSettings {
                     ProblemsDialog pd = new ProblemsDialog();
                     pd.setVisible(true);
                 }
-                
+
                 // TODO: Inform user if no files were imported
 
                 // turn critiquing on again
@@ -1253,7 +1250,7 @@ public class Import implements ImportSettings {
         }
 
         public void disposeDialog() {
-            setVisible(false); 
+            setVisible(false);
             dispose();
         }
 
@@ -1277,6 +1274,7 @@ class ImportClasspathDialog extends JDialog {
     private static final Logger LOG =
         Logger.getLogger(ImportClasspathDialog.class);
 
+    private JDialog importClasspathDialog;
     private JList paths;
     private DefaultListModel pathsModel;
 
@@ -1291,12 +1289,13 @@ class ImportClasspathDialog extends JDialog {
     /**
      * Construct a dialog to allow the user to set up the classpath for the
      * import.
-     * 
+     *
      * @param importProcess1
      */
     public ImportClasspathDialog(Import importProcess1) {
 
         super();
+        importClasspathDialog = this;
         setTitle("Set up the import classpath"); //MVW - Issue 2539.
         importProcess = importProcess1;
 
@@ -1440,6 +1439,8 @@ class ImportClasspathDialog extends JDialog {
                             JFileChooser.CANCEL_SELECTION)) {
                         // TODO: What shall we do here?
                     }
+                    // bring the import classpath dialog to the front
+                    importClasspathDialog.show();
                 }
             });
 
