@@ -72,7 +72,15 @@ public class JavaImport implements ModuleInterface, ImportInterface {
 
                 // Create a parser that reads from the scanner
                 JavaRecognizer parser = new JavaRecognizer(lexer);
-                parser.setParserMode(JavaRecognizer.MODE_IMPORT_PASS1 | JavaRecognizer.MODE_IMPORT_PASS2);
+                int parserMode = JavaRecognizer.MODE_IMPORT_PASS1 | JavaRecognizer.MODE_IMPORT_PASS2;
+                if (settings.getImportLevel() == 1) {
+                    // only for pass 1 of a 2-phase-run
+                    parserMode = JavaRecognizer.MODE_IMPORT_PASS1;
+                } else if (settings.getImportLevel() == 2) {
+                    // only for pass 2 of a 2-phase-run
+                    parserMode = JavaRecognizer.MODE_IMPORT_PASS2;
+                }
+                parser.setParserMode(parserMode);
 
                 // Create a modeller for the parser
                 Modeller modeller = new Modeller(p.getModel(),
