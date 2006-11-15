@@ -25,9 +25,12 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
@@ -87,7 +90,7 @@ public class FigInitialState extends FigStateVertex {
         setOwner(node);
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -101,7 +104,7 @@ public class FigInitialState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
@@ -132,7 +135,7 @@ public class FigInitialState extends FigStateVertex {
         return sel;
     }
 
-    /**
+    /*
      * Initial states are fixed size.
      *
      * @see org.tigris.gef.presentation.Fig#isResizable()
@@ -141,55 +144,55 @@ public class FigInitialState extends FigStateVertex {
         return false;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
         head.setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return head.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
         head.setFillColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return head.getFillColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return true;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         head.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -199,7 +202,7 @@ public class FigInitialState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Event handlers
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
@@ -210,4 +213,26 @@ public class FigInitialState extends FigStateVertex {
      */
     static final long serialVersionUID = 6572261327347541373L;
 
+    /*
+     * Makes sure that edges stick to the outer circle and not to the box.
+     *
+     * @see org.tigris.gef.presentation.Fig#getGravityPoints()
+     */
+    public List getGravityPoints() {
+        Vector ret = new Vector();
+        int cx = getBigPort().getCenter().x;
+        int cy = getBigPort().getCenter().y;
+        double radius = getBigPort().getWidth() / 2 + 1;
+        final int maxPoints = 32;
+        Point point = null;
+        final double pi2 = Math.PI * 2;
+        for (int i = 0; i < maxPoints; i++) {
+            int px = (int) (cx + Math.cos(pi2 * i / maxPoints) * radius);
+            int py = (int) (cy + Math.sin(pi2 * i / maxPoints) * radius);
+            point = new Point(px, py);
+            ret.add(point);
+        }
+        return ret;
+
+    }
 } /* end class FigInitialState */
