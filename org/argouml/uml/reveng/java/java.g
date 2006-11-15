@@ -491,7 +491,7 @@ importDefinition
     options {defaultErrorHandler = true;}
     { String name=null; }
     :    "import" ( "static" )? name=identifierStar SEMI
-         {getModeller().addImport(name);}
+         {getModeller().addImport(name, (parserMode == MODE_IMPORT_PASS2));}
     ;
 
 // A type definition is either a class, interface, enum or annotation with possible additional semis.
@@ -759,7 +759,8 @@ classDefinition[String javadoc, short modifiers]
         ic=implementsClause
         {
         if (!isInCompoundStatement()) {
-            getModeller().addClass(className.getText(), modifiers, superClassName, ic, javadoc);
+            getModeller().addClass(className.getText(), modifiers, superClassName, ic, javadoc,
+                (parserMode == MODE_IMPORT_PASS2));
         }
         }
         // now parse the body of the class
@@ -780,7 +781,7 @@ interfaceDefinition[String javadoc, short modifiers]
         // it might extend some other interfaces
         ie=interfaceExtends
                 {getModeller().addInterface(interfaceName.getText(), modifiers,
-ie, javadoc);}
+ie, javadoc, (parserMode == MODE_IMPORT_PASS2));}
         // now parse the body of the interface (looks like a class...)
         interfaceBlock
                 {getModeller().popClassifier();}
@@ -981,7 +982,8 @@ classField
 
                         ( compoundStatement | SEMI )
                         {if (isOutestCompStat && level > 0) {
-                             setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
+                             setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment(),
+                                 (parserMode == MODE_IMPORT_PASS2)));
                              getModeller().addBodyToOperation(getMethod(), level>1?getBody():"");
                              setMethod(null);
                              setBody(null);
@@ -1025,7 +1027,8 @@ interfaceField
 
                 SEMI
                 {if (isOutestCompStat && level > 0) {
-                     setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
+                     setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment(),
+                         (parserMode == MODE_IMPORT_PASS2)));
                      setMethod(null);
                 }}
             |    variableDefinitions[getJavadocComment(), mods, t] SEMI
@@ -1072,7 +1075,8 @@ variableDeclarator[String javadoc, short modifiers, String varType]
     :    (id:IDENT b=declaratorBrackets initializer=varInitializer)
         {
           if (!isInCompoundStatement() && level > 0) {
-            getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
+            getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc,
+                (parserMode == MODE_IMPORT_PASS2));
           }
           if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
             getModeller().addLocalVariableDeclaration(varType+b, id.getText());
@@ -1150,7 +1154,7 @@ ctorHead[ short mods]
 
         {if (isOutestCompStat && level > 0) {
            setMethod(getModeller().addOperation(mods, null, 
-            name.getText(), param, getJavadocComment()));
+            name.getText(), param, getJavadocComment(), (parserMode == MODE_IMPORT_PASS2)));
          }}
         // get the list of exceptions that this method is declared to throw
         (throwsClause)?
@@ -1759,7 +1763,7 @@ newExpression
                 getModeller().addCall(sb.toString());
               }
             }
-            (    { getModeller().addAnonymousClass(t); }
+            (    { getModeller().addAnonymousClass(t, (parserMode == MODE_IMPORT_PASS2)); }
                 classBlock
                 { getModeller().popClassifier(); }
             )?

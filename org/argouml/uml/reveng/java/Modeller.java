@@ -294,8 +294,9 @@ public class Modeller {
      * Called from the parser when an import clause is found.
      *
      * @param name The name of the import. Can end with a '*'.
+     * @param forceIt Force addition by creating all that's missing.
      */
-    public void addImport(String name) {
+    public void addImport(String name, boolean forceIt) {
         // only do imports on the 2nd pass.
         Object level = this.getAttribute("level");
         if (level != null) {
@@ -346,8 +347,21 @@ public class Modeller {
 	    try {
 		mClassifier =
 		    (new PackageContext(null, mPackage)).get(classifierName);
-		parseState.addClassifierContext(mClassifier);
-                Object perm = null;
+            } catch (ClassifierNotFoundException e) {
+                if (forceIt && classifierName != null && mPackage != null) {
+                    // we must guess if it's a class or an interface, so: class
+                    LOG.info("Modeller.java: forced creation of unknown classifier "
+                        + classifierName);
+                    mClassifier = Model.getCoreFactory().buildClass(classifierName, mPackage);
+                } else {
+                    // information will be lost from source files
+                    LOG.info("Modeller.java: a classifier that was in the source"
+                        + " file could not be generated in the model "
+                        + "(to generate an imported classifier)");
+                }
+            }
+            if (mClassifier != null) {
+                parseState.addClassifierContext(mClassifier);
 
                 // try find an existing permission
                 Iterator dependenciesIt =
@@ -355,6 +369,7 @@ public class Modeller {
                         .getDependencies(mClassifier,
 					 parseState.getComponent())
                             .iterator();
+                Object perm = null;
                 while (dependenciesIt.hasNext()) {
 
                     Object dependency = dependenciesIt.next();
@@ -377,19 +392,7 @@ public class Modeller {
 			+ Model.getFacade().getName(mClassifier);
                     Model.getCoreHelper().setName(perm, newName);
                 }
-	    } catch (ClassifierNotFoundException e) {
-		// Currently if a classifier cannot be found in the
-                // model/classpath then information will be lost from
-                // source files, because the classifier cannot be
-                // created on the fly.
-                LOG.warn("Modeller.java: a classifier that was in the source"
-			 + " file could not be generated in the model "
-			 + "(to generate an imported classifier) - "
-			 + "information lost",
-			 e);
-	    }
-
-
+            }
 	}
     }
 
@@ -405,12 +408,14 @@ public class Modeller {
      *        interfaces. Can be fully qualified or just a
      *        simple interface name.
      * @param javadoc The javadoc comment. null or "" if no comment available.
+     * @param forceIt Force addition by creating all that's missing.
      */
     public void addClass(String name,
                          short modifiers,
                          String superclassName,
                          Vector interfaces,
-                         String javadoc) {
+                         String javadoc,
+                         boolean forceIt) {
         Object mClass =
 	    addClassifier(Model.getCoreFactory().createClass(),
 			  name, modifiers, javadoc);
@@ -432,30 +437,50 @@ public class Modeller {
         }
 
 	if (superclassName != null) {
+            Object parentClass = null;
 	    try {
-		Object parentClass =
+		parentClass =
 		    getContext(superclassName)
 		        .get(getClassifierName(superclassName));
 		getGeneralization(currentPackage, parentClass, mClass);
 	    } catch (ClassifierNotFoundException e) {
-		// Currently if a classifier cannot be found in the
-		// model/classpath then information will be lost from
-		// source files, because the classifier cannot be
-		// created on the fly.
-		LOG.warn("Modeller.java: a classifier that was in the source"
-			 + " file could not be generated in the model "
-			 + "(to generate a generalization)- information lost",
-                         e);
+                if (forceIt && superclassName != null && model != null) {
+                    LOG.info("Modeller.java: forced creation of unknown class "
+                        + superclassName);
+                    parentClass =
+                        Model.getCoreFactory().buildClass(superclassName, model);
+                    getGeneralization(currentPackage, parentClass, mClass);
+                } else {
+                    // information will be lost from source files
+                    LOG.info("Modeller.java: a classifier that was in the source"
+                         + " file could not be generated in the model "
+                         + "(to generate a generalization)");
+                }
 	    }
 	}
 
 	if (interfaces != null) {
 	    for (Iterator i = interfaces.iterator(); i.hasNext();) {
 		String interfaceName = (String) i.next();
+                Object mInterface = null;
 		try {
-		    Object mInterface =
+                    mInterface =
 			getContext(interfaceName)
 			    .getInterface(getClassifierName(interfaceName));
+                } catch (ClassifierNotFoundException e) {
+                    if (forceIt && interfaceName != null && model != null) {
+                        LOG.info("Modeller.java: forced creation of unknown interface "
+                            + interfaceName);
+                        mInterface =
+                            Model.getCoreFactory().buildInterface(interfaceName, model);
+                    } else {
+                        // information will be lost from source file
+                        LOG.info("Modeller.java: a classifier that was in "
+                             + "the source file could not be generated "
+                             + "in the model (to generate a abstraction)");
+                    }
+                }
+                if (mInterface != null) {
 		    Object mAbstraction =
 			getAbstraction(mInterface, mClass);
 		    if (Model.getFacade().getSuppliers(mAbstraction).size()
@@ -471,17 +496,7 @@ public class Modeller {
 		    Model.getCoreHelper().addStereotype(
 		            mAbstraction,
 		            getStereotype("realize"));
-		} catch (ClassifierNotFoundException e) {
-		    // Currently if a classifier cannot be found in the
-		    // model/classpath then information will be lost from
-		    // source files, because the classifier cannot be
-		    // created on the fly.
-		    LOG.warn("Modeller.java: a classifier that was in "
-			     + "the source file could not be generated "
-			     + "in the model "
-			     + "(to generate a abstraction)- information lost",
-			     e);
-		}
+                }
 	    }
 	}
     }
@@ -490,8 +505,9 @@ public class Modeller {
      * Called from the parser when an anonymous inner class is found.
      *
      * @param type The type of this anonymous class.
+     * @param forceIt Force addition by creating all that's missing.
      */
-    public void addAnonymousClass(String type) {
+    public void addAnonymousClass(String type, boolean forceIt) {
         String name = parseState.anonymousClass();
         try {
             Object mClassifier = getContext(type).get(getClassifierName(type));
@@ -503,30 +519,31 @@ public class Modeller {
 		     (short) 0,
 		     Model.getFacade().isAClass(mClassifier) ? type : null,
 		     interfaces,
-		     "");
+		     "",
+                     forceIt);
         } catch (ClassifierNotFoundException e) {
             // Must add it anyway, or the class poping will mismatch.
-            addClass(name, (short) 0, null, new Vector(), "");
-            LOG.warn("Modeller.java: an anonymous class was created "
-		     + "although it could not be found in the classpath.",
-		     e);
+            addClass(name, (short) 0, null, new Vector(), "", forceIt);
+            LOG.info("Modeller.java: an anonymous class was created "
+		     + "although it could not be found in the classpath.");
         }
     }
 
     /**
-       Called from the parser when an interface declaration is found.
-
-       @param name The name of the interface.
-       @param modifiers A sequence of interface modifiers.
-       @param interfaces Zero or more strings with the names of extended
-       interfaces. Can be fully qualified or just a
-       simple interface name.
-       @param javadoc The javadoc comment. "" if no comment available.
-    */
+     * Called from the parser when an interface declaration is found.
+     *
+     * @param name The name of the interface.
+     * @param modifiers A sequence of interface modifiers.
+     * @param interfaces Zero or more strings with the names of extended
+     * interfaces. Can be fully qualified or just a simple interface name.
+     * @param javadoc The javadoc comment. "" if no comment available.
+     * @param forceIt Force addition by creating all that's missing.
+     */
     public void addInterface(String name,
                              short modifiers,
                              Vector interfaces,
-                             String javadoc) {
+                             String javadoc,
+                             boolean forceIt) {
         Object mInterface =
 	    addClassifier(Model.getCoreFactory().createInterface(),
 			  name,
@@ -543,20 +560,25 @@ public class Modeller {
 
         for (Iterator i = interfaces.iterator(); i.hasNext();) {
             String interfaceName = (String) i.next();
+            Object parentInterface = null;
             try {
-                Object parentInterface =
+                parentInterface =
 		    getContext(interfaceName)
 		        .getInterface(getClassifierName(interfaceName));
                 getGeneralization(currentPackage, parentInterface, mInterface);
             } catch (ClassifierNotFoundException e) {
-		// Currently if a classifier cannot be found in the
-                // model/classpath then information will be lost from
-                // source files, because the classifier cannot be
-                // created on the fly.
-                LOG.warn("Modeller.java: a classifier that was in the source"
+                if (forceIt && interfaceName != null && model != null) {
+                    LOG.info("Modeller.java: forced creation of unknown interface "
+                        + interfaceName);
+                    parentInterface =
+                        Model.getCoreFactory().buildInterface(interfaceName, model);
+                    getGeneralization(currentPackage, parentInterface, mInterface);
+                } else {
+                    // information will be lost from source file
+                    LOG.info("Modeller.java: a classifier that was in the source"
 			 + " file could not be generated in the model "
-			 + "(to generate a generalization)- information lost",
-			 e);
+			 + "(to generate a generalization)");
+                }
             }
         }
     }
@@ -697,13 +719,15 @@ public class Modeller {
      *
      * parameter.
      * @param javadoc The javadoc comment. null or "" if no comment available.
+     * @param forceIt Force addition by creating all that's missing.
      * @return The operation.
      */
     public Object addOperation (short modifiers,
                                 String returnType,
                                 String name,
                                 Vector parameters,
-                                String javadoc) {
+                                String javadoc,
+                                boolean forceIt) {
 	Object mOperation = getOperation(name);
 	parseState.feature(mOperation);
 
@@ -731,7 +755,7 @@ public class Modeller {
 
 	Object mParameter;
 	String typeName;
-	Object mClassifier;
+	Object mClassifier = null;
 
 	if (returnType == null
             || ("void".equals(returnType)
@@ -744,7 +768,20 @@ public class Modeller {
 	    try {
 		mClassifier =
 		    getContext(returnType).get(getClassifierName(returnType));
-
+            } catch (ClassifierNotFoundException e) {
+                if (forceIt && returnType != null && model != null) {
+                    LOG.info("Modeller.java: forced creation of unknown classifier "
+                        + returnType);
+                    mClassifier =
+                        Model.getCoreFactory().buildClass(returnType, model);
+                } else {
+                    // information will be lost from source files
+                    LOG.info("Modeller.java: a classifier that was in the source "
+                         + "file could not be generated in the model "
+                         + "(for generating operation return type)");
+                }
+            }
+            if (mClassifier != null) {
 		Object mdl = ProjectManager.getManager()
 		    .getCurrentProject().getModel();
 		Object voidType = ProjectManager.getManager()
@@ -757,25 +794,30 @@ public class Modeller {
                         Model.getDirectionKind().getReturnParameter());
 
                 Model.getCoreHelper().setType(mParameter, mClassifier);
-	    } catch (ClassifierNotFoundException e) {
-		// Currently if a classifier cannot be found in the
-                // model/classpath then information will be lost from
-                // source files, because the classifier cannot be
-                // created on the fly.
-                LOG.warn("Modeller.java: a classifier that was in the source "
-			 + "file could not be generated in the model "
-			 + "(for generating operation return type) - "
-			 + "information lost",
-			 e);
-	    }
+            }
 	}
 
 	for (Iterator i = parameters.iterator(); i.hasNext();) {
 	    Vector parameter = (Vector) i.next();
 	    typeName = (String) parameter.elementAt(1);
+            mClassifier = null;
 	    try {
                 mClassifier =
 		    getContext(typeName).get(getClassifierName(typeName));
+            } catch (ClassifierNotFoundException e) {
+                if (forceIt && typeName != null && model != null) {
+                    LOG.info("Modeller.java: forced creation of unknown classifier "
+                        + typeName);
+                    mClassifier =
+                        Model.getCoreFactory().buildClass(typeName, model);
+                } else {
+                    // information will be lost from source files
+                    LOG.info("Modeller.java: a classifier that was in the source "
+                         + "file could not be generated in the model "
+                         + "(for generating operation params)");
+                }
+            }
+            if (mClassifier != null) {
                 Object mdl = ProjectManager.getManager()
                     .getCurrentProject().getModel();
                 Object voidType = ProjectManager.getManager()
@@ -797,16 +839,6 @@ public class Modeller {
 			     + ", for parameter: "
 			     + Model.getFacade().getName(mParameter));
                 }
-	    } catch (ClassifierNotFoundException e) {
-		// Currently if a classifier cannot be found in the
-                // model/classpath then information will be lost from
-                // source files, because the classifier cannot be
-                // created on the fly.
-                LOG.warn("Modeller.java: a classifier that was in the source "
-			 + "file could not be generated in the model "
-			 + "(for generating operation params) - "
-			 + "information lost",
-			 e);
 	    }
 	}
 
@@ -854,12 +886,14 @@ public class Modeller {
      * @param name The name of the attribute.
      * @param initializer The initial value of the attribute.
      * @param javadoc The javadoc comment. null or "" if no comment available.
+     * @param forceIt Force addition by creating all that's missing.
      */
     public void addAttribute (short modifiers,
                               String typeSpec,
                               String name,
                               String initializer,
-                              String javadoc) {
+                              String javadoc,
+                              boolean forceIt) {
 	String multiplicity = null;
 
 	if (!arraysAsDatatype && typeSpec.indexOf('[') != -1) {
@@ -874,18 +908,20 @@ public class Modeller {
 	try {
 	    // get the attribute type
 	    mClassifier = getContext(typeSpec).get(getClassifierName(typeSpec));
-	} catch (ClassifierNotFoundException e) {
-	    // Currently if a classifier cannot be found in the
-	    // model/classpath then information will be lost from
-	    // source files, because the classifier cannot be
-	    // created on the fly.
-	    LOG.warn("Modeller.java: a classifier that was in the source "
-		     + "file could not be generated in the model "
-		     + "(for generating an attribute)- information lost",
-		     e);
-
-	    // if we can't find the attribute type then
-	    // we can't add the attribute.
+        } catch (ClassifierNotFoundException e) {
+            if (forceIt && typeSpec != null && model != null) {
+                LOG.info("Modeller.java: forced creation of unknown classifier "
+                    + typeSpec);
+                mClassifier =
+                    Model.getCoreFactory().buildClass(typeSpec, model);
+            } else {
+                // information will be lost from source files
+                LOG.info("Modeller.java: a classifier that was in the source "
+                     + "file could not be generated in the model "
+                     + "(for generating an attribute)");
+            }
+        }
+        if (mClassifier == null) {
 	    return;
 	}
 
