@@ -264,6 +264,14 @@ public class TabText
     }
 
     /**
+     * Sets if text area can be edited.
+     * @param editable if true, text area is editable (default), else not
+     */
+    public void setEditable(boolean editable) {
+        textArea.setEditable(editable);
+    }
+
+    /**
      * Generates the text whenever this panel becomes visible.
      * {@inheritDoc}
      */
