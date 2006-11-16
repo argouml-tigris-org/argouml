@@ -77,7 +77,8 @@ class UMLCallStateEntryList extends UMLMutableLinkedList {
 
             newMenu.add(ActionNewCallAction.getInstance());
             ActionNewCallAction.getInstance().setTarget(list.getTarget());
-            ActionNewCallAction.getInstance().putValue(ActionNewAction.ROLE, role);
+            ActionNewCallAction.getInstance().putValue(
+                    ActionNewAction.ROLE, role);
 
             add(newMenu);
 
