@@ -294,9 +294,18 @@ public class Modeller {
      * Called from the parser when an import clause is found.
      *
      * @param name The name of the import. Can end with a '*'.
+     */
+    public void addImport(String name) {
+        addImport(name, false);
+    }
+    
+    /**
+     * Called from the parser when an import clause is found.
+     *
+     * @param name The name of the import. Can end with a '*'.
      * @param forceIt Force addition by creating all that's missing.
      */
-    public void addImport(String name, boolean forceIt) {
+    void addImport(String name, boolean forceIt) {
         // only do imports on the 2nd pass.
         Object level = this.getAttribute("level");
         if (level != null) {
@@ -408,9 +417,30 @@ public class Modeller {
      *        interfaces. Can be fully qualified or just a
      *        simple interface name.
      * @param javadoc The javadoc comment. null or "" if no comment available.
-     * @param forceIt Force addition by creating all that's missing.
      */
     public void addClass(String name,
+                         short modifiers,
+                         String superclassName,
+                         Vector interfaces,
+                         String javadoc) {
+        addClass(name, modifiers, superclassName, interfaces, javadoc);
+    }
+
+    /**
+     * Called from the parser when a class declaration is found.
+     *
+     * @param name The name of the class.
+     * @param modifiers A sequence of class modifiers.
+     * @param superclassName Zero or one string with the name of the
+     *        superclass. Can be fully qualified or
+     *        just a simple class name.
+     * @param interfaces Zero or more strings with the names of implemented
+     *        interfaces. Can be fully qualified or just a
+     *        simple interface name.
+     * @param javadoc The javadoc comment. null or "" if no comment available.
+     * @param forceIt Force addition by creating all that's missing.
+     */
+    void addClass(String name,
                          short modifiers,
                          String superclassName,
                          Vector interfaces,
@@ -511,9 +541,18 @@ public class Modeller {
      * Called from the parser when an anonymous inner class is found.
      *
      * @param type The type of this anonymous class.
+     */
+    public void addAnonymousClass(String type) {
+        addAnonymousClass(type, false);
+    }
+    
+    /**
+     * Called from the parser when an anonymous inner class is found.
+     *
+     * @param type The type of this anonymous class.
      * @param forceIt Force addition by creating all that's missing.
      */
-    public void addAnonymousClass(String type, boolean forceIt) {
+    void addAnonymousClass(String type, boolean forceIt) {
         String name = parseState.anonymousClass();
         try {
             Object mClassifier = getContext(type).get(getClassifierName(type));
@@ -543,9 +582,25 @@ public class Modeller {
      * @param interfaces Zero or more strings with the names of extended
      * interfaces. Can be fully qualified or just a simple interface name.
      * @param javadoc The javadoc comment. "" if no comment available.
-     * @param forceIt Force addition by creating all that's missing.
      */
     public void addInterface(String name,
+                             short modifiers,
+                             Vector interfaces,
+                             String javadoc) {
+        addInterface(name, modifiers, interfaces, javadoc);
+    }
+    
+    /**
+     * Called from the parser when an interface declaration is found.
+     *
+     * @param name The name of the interface.
+     * @param modifiers A sequence of interface modifiers.
+     * @param interfaces Zero or more strings with the names of extended
+     * interfaces. Can be fully qualified or just a simple interface name.
+     * @param javadoc The javadoc comment. "" if no comment available.
+     * @param forceIt Force addition by creating all that's missing.
+     */
+    void addInterface(String name,
                              short modifiers,
                              Vector interfaces,
                              String javadoc,
@@ -728,10 +783,31 @@ public class Modeller {
      *
      * parameter.
      * @param javadoc The javadoc comment. null or "" if no comment available.
-     * @param forceIt Force addition by creating all that's missing.
      * @return The operation.
      */
     public Object addOperation (short modifiers,
+                                String returnType,
+                                String name,
+                                Vector parameters,
+                                String javadoc) {
+        return addOperation(modifiers, returnType, name, parameters, javadoc);
+    }
+    
+    /**
+     * Called from the parser when an operation is
+     * found.
+     *
+     * @param modifiers A sequence of operation modifiers.
+     * @param returnType The return type of the operation.
+     * @param name The name of the operation as a string
+     * @param parameters A number of vectors, each representing a
+     *
+     * parameter.
+     * @param javadoc The javadoc comment. null or "" if no comment available.
+     * @param forceIt Force addition by creating all that's missing.
+     * @return The operation.
+     */
+    Object addOperation (short modifiers,
                                 String returnType,
                                 String name,
                                 Vector parameters,
@@ -901,9 +977,26 @@ public class Modeller {
      * @param name The name of the attribute.
      * @param initializer The initial value of the attribute.
      * @param javadoc The javadoc comment. null or "" if no comment available.
-     * @param forceIt Force addition by creating all that's missing.
      */
     public void addAttribute (short modifiers,
+                              String typeSpec,
+                              String name,
+                              String initializer,
+                              String javadoc) {
+        addAttribute(modifiers, typeSpec, name, initializer, javadoc);
+    }
+    
+    /**
+     * Called from the parser when an attribute is found.
+     *
+     * @param modifiers A sequence of attribute modifiers.
+     * @param typeSpec The attribute's type.
+     * @param name The name of the attribute.
+     * @param initializer The initial value of the attribute.
+     * @param javadoc The javadoc comment. null or "" if no comment available.
+     * @param forceIt Force addition by creating all that's missing.
+     */
+    void addAttribute (short modifiers,
                               String typeSpec,
                               String name,
                               String initializer,
