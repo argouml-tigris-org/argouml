@@ -25,6 +25,7 @@
 package org.argouml.uml.reveng;
 
 import java.io.File;
+import java.util.List;
 
 import org.argouml.kernel.Project;
 import org.argouml.util.SuffixFilter;
@@ -65,10 +66,33 @@ public interface ImportInterface {
      *            object to be parsed
      * @param settings
      *            Use this object to get common settings.
-     * 
+     * @throws ImportException
+     *             if an error occurs, this will contain the nested exception
+     *             that was originally thrown
      */
-    void parseFile(Project p, Object o, ImportSettings settings) throws ImportException;
+    void parseFile(Project p, Object o, ImportSettings settings)
+        throws ImportException;
+
+    /**
+     * Returns a list with objects that represent settings for this import.
+     * These objects implement the ImportTypes.* interfaces.
+     * <p>
+     * The caller must determine what interface an object is implementing
+     * iterating the interfaces ImportTypes.*
+     * <p>
+     * This is done this way to eliminate the need to use GUI elements. The
+     * settings can easily be mapped into any GUI elements, this way we are
+     * independent from the type of GUI.
+     * 
+     * @return the list of settings that are required by this particular import
+     */
+    List getImportSettings();
     
+    
+    /**
+     * Import subsystem exception to wrap any nested exceptions with when
+     * thrown.
+     */
     public class ImportException extends Exception {
 
         public ImportException(String message, Throwable cause) {
