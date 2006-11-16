@@ -29,7 +29,9 @@ import java.io.IOException;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.ProgressMonitor;
 import org.argouml.i18n.Translator;
+import org.argouml.persistence.ProgressListener;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 
@@ -62,7 +64,7 @@ public class LoadSwingWorker extends SwingWorker {
      * @param pmw	the ProgressMonitorWindow used by ProjectBrowser
      * @return		always null
      */
-    public Object construct(ProgressMonitorWindow pmw) {
+    public Object construct(ProgressMonitor pmw) {
         // loads the project
         ProjectBrowser.getInstance().loadProject(file, showUi, pmw);
         return null;
@@ -74,7 +76,7 @@ public class LoadSwingWorker extends SwingWorker {
      * 
      * @return  an instance of ProgressMonitorWindow
      */
-    public ProgressMonitorWindow initProgressMonitorWindow() {
+    public ProgressMonitor initProgressMonitorWindow() {
         UIManager.put("ProgressMonitor.progressText", 
                 Translator.localize("filechooser.open-project"));
         Object[] msgArgs = new Object[] {this.file.getPath()};

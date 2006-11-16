@@ -32,6 +32,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.ProgressMonitor;
 import org.argouml.ui.ArgoFrame;
 
 /**
@@ -57,7 +58,7 @@ public abstract class SwingWorker {
 
     private Timer timer;
     
-    private ProgressMonitorWindow pmw; 
+    private ProgressMonitor pmw; 
     
     /** 
      * Class to maintain reference to current worker thread
@@ -96,7 +97,7 @@ public abstract class SwingWorker {
      * 	            class shall be registered as a progress listener.
      * @return 		the value to be returned
      */
-    public abstract Object construct(ProgressMonitorWindow progressMonitor);
+    public abstract Object construct(ProgressMonitor progressMonitor);
     
     
     /** 
@@ -104,7 +105,7 @@ public abstract class SwingWorker {
      * 
      * @return      an instance of ProgressMonitorWindow
      */
-    public abstract ProgressMonitorWindow initProgressMonitorWindow();
+    public abstract ProgressMonitor initProgressMonitorWindow();
     
     /**
      * This method calls the construct(),  

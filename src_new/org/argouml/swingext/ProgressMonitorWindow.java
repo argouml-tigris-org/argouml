@@ -30,14 +30,18 @@ import javax.swing.UIManager;
 
 import org.argouml.i18n.Translator;
 import org.argouml.persistence.ProgressEvent;
-import org.argouml.persistence.ProgressListener;
 
 /**
- * Manages a ProgressMonitor dialog
+ * Manages a ProgressMonitor dialog.
+ * 
+ * NOTE: Users of this class should use the type of the interface
+ * org.argouml.application.api.ProgressMonitor wherever possible to
+ * maintain GUI independance.
  * 
  * @author andrea_nironi@tigris.org
  */
-public class ProgressMonitorWindow implements ProgressListener {
+public class ProgressMonitorWindow implements
+        org.argouml.application.api.ProgressMonitor {
     
     private ProgressMonitor pbar;
     
@@ -54,29 +58,23 @@ public class ProgressMonitorWindow implements ProgressListener {
         this.pbar.setMillisToDecideToPopup(250);       
         this.pbar.setMillisToPopup(500);
         parent.repaint();
-        progress(5);
+        updateProgress(5);
         
     }
     
-    /**
-     * Report a progress to the ProgressMonitor window
-     * @param event 	the ProgressEvent, containing the current position
-     * 					of the monitor
+    /*
+     * Report a progress to the ProgressMonitor window.
+     * @see org.argouml.persistence.ProgressListener#progress(org.argouml.persistence.ProgressEvent)
      */
     public void progress(final ProgressEvent event) {
-    	if (this.pbar != null) {
-            int currentUpdate = new Long(event.getPosition()).intValue();
-            pbar.setProgress(currentUpdate);
-            Object[] args = new Object[]{String.valueOf(currentUpdate)};
-            pbar.setNote(Translator.localize("dialog.progress.note", args));
-    	}
+        updateProgress((int) event.getPosition());
     }
     
-    /**
-     * Report a progress to the ProgressMonitor window
-     * @param progress     the progress to be set
+    /*
+     * Report a progress to the ProgressMonitor window.
+     * @see org.argouml.application.api.ProgressMonitor#updateProgress(int)
      */
-    public void progress(final int progress) {
+    public void updateProgress(final int progress) {
         if (this.pbar != null) {
             pbar.setProgress(progress);
             Object[] args = new Object[]{String.valueOf(progress)};
@@ -84,17 +82,15 @@ public class ProgressMonitorWindow implements ProgressListener {
         }
     }
     
-    /**
-     * Checks if the ProgressMonitor has been canceled or not
-     * 
-     * @return true if the user has pressed "cancel"
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#isCanceled()
      */
     public boolean isCanceled() {
         return this.pbar != null && this.pbar.isCanceled();
     }
 
-    /**
-     * Close the ProgressMonitor dialog, releasing its resources
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#close()
      */
     public void close() {
         this.pbar.close();
@@ -105,5 +101,37 @@ public class ProgressMonitorWindow implements ProgressListener {
     static {
         UIManager.put("ProgressBar.repaintInterval", new Integer(150));
         UIManager.put("ProgressBar.cycleTime", new Integer(1050));        
+    }
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#notifyMessage(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public void notifyMessage(String title, String introduction, 
+            String message) {
+        pbar.setNote(introduction + " : " + message);
+    }
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#notifyNullAction()
+     */
+    public void notifyNullAction() {
+        // ignored
+    }
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#setMaximumProgress(int)
+     */
+    public void setMaximumProgress(int max) {
+        pbar.setMaximum(max);
+    }
+
+    public void updateSubTask(String action) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void updateMainTask(String name) {
+        // TODO Auto-generated method stub
+        
     }
 }
