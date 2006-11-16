@@ -641,10 +641,10 @@ public class ShortcutMgr {
                 new CmdAdjustPageBreaks());
         putDefaultShortcut(ACTION_SHOW_XML_DUMP, null, new ActionShowXMLDump());
         putDefaultShortcut(ACTION_ZOOM_IN, KeyStroke.getKeyStroke(
-                KeyEvent.VK_MINUS, DEFAULT_MASK), new CmdZoom(
+                KeyEvent.VK_PLUS, DEFAULT_MASK), new CmdZoom(
                         (1.0) / (GenericArgoMenuBar.ZOOM_FACTOR)));
         putDefaultShortcut(ACTION_ZOOM_OUT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_PLUS, DEFAULT_MASK), new CmdZoom(
+                KeyEvent.VK_MINUS, DEFAULT_MASK), new CmdZoom(
                         GenericArgoMenuBar.ZOOM_FACTOR));
         putDefaultShortcut(ACTION_FIND, KeyStroke.getKeyStroke(KeyEvent.VK_F3,
                 0), new ActionFind());
