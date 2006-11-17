@@ -30,6 +30,7 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.FigText;
 
 
 /**
@@ -116,5 +117,13 @@ public class FigAssociationClass extends FigAssociation {
         super.setFig(f);
         getFig().setDashed(false);
     }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getNameFig()
+     */
+    protected FigText getNameFig() {
+        return null;
+    }
+    
 } /* end class FigAssociationClass */
 

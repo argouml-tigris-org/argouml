@@ -109,7 +109,9 @@ public class FigAssociation extends FigEdgeModelElement {
 
         // let's use groups to construct the different text sections at
         // the association
-        middleGroup.addFig(getNameFig());
+        if (getNameFig() != null) {
+            middleGroup.addFig(getNameFig());
+        }
         middleGroup.addFig(getStereotypeFig());
         addPathItem(middleGroup,
                 new PathConvPercent2(this, middleGroup, 50, 25));
@@ -172,7 +174,7 @@ public class FigAssociation extends FigEdgeModelElement {
         		new String[] {"name", "isAbstract", "remove"});
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     public void updateListeners(Object oldOwner, Object newOwner) {
@@ -183,7 +185,7 @@ public class FigAssociation extends FigEdgeModelElement {
     // //////////////////////////////////////////////////////////////
     // event handlers
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) {
@@ -234,7 +236,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
@@ -251,7 +253,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelAttributeChanged(AttributeChangeEvent e) {
@@ -295,7 +297,7 @@ public class FigAssociation extends FigEdgeModelElement {
                 .ARROW_HEADS[destArrowType]);
     }
     
-    /**
+    /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
@@ -411,6 +413,9 @@ public class FigAssociation extends FigEdgeModelElement {
      * Updates the name if modelchanged receives an "isAbstract" event.
      */
     protected void updateAbstract() {
+        if (getNameFig() == null) {
+            return;
+        }
         Rectangle rect = getBounds();
         if (getOwner() == null) {
             return;
@@ -425,7 +430,7 @@ public class FigAssociation extends FigEdgeModelElement {
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
@@ -441,7 +446,7 @@ public class FigAssociation extends FigEdgeModelElement {
         super.paint(g);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#paintClarifiers(java.awt.Graphics)
      */
     public void paintClarifiers(Graphics g) {
