@@ -234,7 +234,7 @@ public abstract class FigEdgeModelElement
         return itemUid;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
      */
     public String getTipString(MouseEvent me) {
@@ -262,7 +262,7 @@ public abstract class FigEdgeModelElement
         return tip;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
@@ -390,6 +390,9 @@ public abstract class FigEdgeModelElement
      * @param g the graphics
      */
     protected void indicateBounds(FigText f, Graphics g) {
+        if (f == null) {
+            return;
+        }
         String text = f.getText();
         if (text == null || text.length() == 0) {
             Rectangle rect = f.getBounds();
@@ -506,7 +509,7 @@ public abstract class FigEdgeModelElement
         return stereotypeFig;
     }
 
-    /**
+    /*
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {
@@ -518,7 +521,7 @@ public abstract class FigEdgeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
      */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
@@ -530,7 +533,7 @@ public abstract class FigEdgeModelElement
         endTrans();
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent pve) {
@@ -668,31 +671,31 @@ public abstract class FigEdgeModelElement
     ////////////////////////////////////////////////////////////////
     // event handlers - MouseListener implementation
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) {
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent me) {
     }
 
-    /**
+    /*
      * If the user double clicks on anu part of this FigNode, pass it
      * down to one of the internal Figs.  This allows the user to
      * initiate direct text editing.
@@ -710,19 +713,19 @@ public abstract class FigEdgeModelElement
         me.consume();
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
     public void keyReleased(KeyEvent ke) {
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent ke) {
@@ -891,7 +894,7 @@ public abstract class FigEdgeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
      */
     public void setLayer(Layer lay) {
@@ -914,7 +917,7 @@ public abstract class FigEdgeModelElement
         super.deleteFromModel();
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationChanged(ArgoNotationEvent event) {
@@ -923,31 +926,31 @@ public abstract class FigEdgeModelElement
         renderingChanged();
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationAdded(ArgoNotationEvent event) {
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationRemoved(ArgoNotationEvent event) {
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderAdded(ArgoNotationEvent event) {
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderRemoved(ArgoNotationEvent event) {
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
      */
     public boolean hit(Rectangle r) {
