@@ -81,6 +81,7 @@ public interface ModuleInterface {
      * <li>{@link #DESCRIPTION}
      * <li>{@link #AUTHOR}
      * <li>{@link #VERSION}
+     * <li>{@link #DOWNLOADSITE}
      * </ul>
      *
      * If a module does not provide a specific piece of information,
@@ -116,4 +117,10 @@ public interface ModuleInterface {
      * The version of the module.
      */
     int VERSION = 2;
+
+    /**
+     * The URL of the website stating information on where to download the
+     * module.
+     */
+    int DOWNLOADSITE = 3;
 }
