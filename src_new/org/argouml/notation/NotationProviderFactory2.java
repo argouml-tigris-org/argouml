@@ -195,14 +195,14 @@ public final class NotationProviderFactory2 {
             try {
                 try {
                     Class[] mp = {};
-                	Method m = clazz.getMethod("getInstance", mp);
-                	return (NotationProvider) m.invoke(null, mp);
+                    Method m = clazz.getMethod("getInstance", mp);
+                    return (NotationProvider) m.invoke(null, mp);
                 } catch (Exception e) {
                     Class[] cp = {Object.class};
                     Constructor constructor = clazz.getConstructor(cp);
                     Object[] params = {
-                            object,
-                        };
+                        object,
+                    };
                     return (NotationProvider) constructor.newInstance(params);
                 }
             } catch (SecurityException e) {
