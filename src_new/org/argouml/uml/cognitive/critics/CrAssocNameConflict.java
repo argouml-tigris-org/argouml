@@ -39,8 +39,8 @@ import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
- * Well-formedness rule [2] for MNamespace. See page 2-64 of UML 1.1 Semantics.
- * OMG document 1.4.1
+ * Well-formedness rule [2] for Namespace. See section 2.5.3.26 of
+ * UML 1.4 spec.  Rule [1] is checked by CrNameConfusion.
  * 
  * @author mkl
  */
@@ -57,7 +57,7 @@ public class CrAssocNameConflict extends CrUML {
         // no good trigger
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
@@ -65,7 +65,7 @@ public class CrAssocNameConflict extends CrUML {
         return computeOffenders(dm).size() > 1;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
@@ -110,7 +110,7 @@ public class CrAssocNameConflict extends CrUML {
         return offenderResult;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
      *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
@@ -139,7 +139,7 @@ public class CrAssocNameConflict extends CrUML {
             return list;
         Iterator iterator = assocEnds.iterator();
         while (iterator.hasNext()) {
-            Object element = (Object) iterator.next();
+            Object element = iterator.next();
             if (Model.getFacade().isAAssociationEnd(element)) {
                 Object type = Model.getFacade().getType(element);
                 list.add(type);
@@ -147,4 +147,4 @@ public class CrAssocNameConflict extends CrUML {
         }
         return list;
     }
-} /* end class CrAssocNameConflict.java */
+} /* end class CrAssocNameConflict */
