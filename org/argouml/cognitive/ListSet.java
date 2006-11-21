@@ -568,4 +568,4 @@ public class ListSet implements Serializable, Set, List {
         return subList(fromIndex, toIndex);
     }
 
-} /* end class VectorSet */
+} /* end class ListSet */
