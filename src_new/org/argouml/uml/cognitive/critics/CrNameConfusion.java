@@ -44,7 +44,12 @@ import org.argouml.uml.cognitive.UMLToDoItem;
  */
 public class CrNameConfusion extends CrUML {
 
-    /**
+    /** 
+     * The serialVersionUID 
+     */
+    private static final long serialVersionUID = -6659510145586121263L;
+
+	/**
      * The constructor.
      */
     public CrNameConfusion() {
@@ -58,6 +63,9 @@ public class CrNameConfusion extends CrUML {
     /**
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
+     * @param dm	the DesignManager
+     * @param dsgr	the Designer
+     * @return true if a problem is found
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAModelElement(dm))) {
@@ -73,7 +81,7 @@ public class CrNameConfusion extends CrUML {
 
     /**
      * @param dm the given modelelement
-     * @return the vectorset of offenders
+     * @return the ListSet of offenders
      */
     public ListSet computeOffenders(Object/*MModelElement*/ dm) {
 	Object ns = Model.getFacade().getNamespace(dm);
@@ -116,6 +124,9 @@ public class CrNameConfusion extends CrUML {
     /**
      * @see org.argouml.cognitive.critics.Critic#toDoItem(
      * java.lang.Object, org.argouml.cognitive.Designer)
+     * @param	dm	the DesignManager
+     * @param	dsgr	the Designer
+     * @return	a ToDoItem for this critis
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Object me = /*(MModelElement)*/ dm;
@@ -126,6 +137,9 @@ public class CrNameConfusion extends CrUML {
     /**
      * @see org.argouml.cognitive.Poster#stillValid(
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     * @param i	the ToDoItem
+     * @param dsgr	the Designer
+     * @return	true it the Critic is still valid
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) {
@@ -191,6 +205,7 @@ public class CrNameConfusion extends CrUML {
 
     /**
      * @see org.argouml.cognitive.Poster#getClarifier()
+     * @return	the clarifier, as an Icon object
      */
     public Icon getClarifier() {
 	return ClClassName.getTheInstance();
@@ -200,6 +215,7 @@ public class CrNameConfusion extends CrUML {
     /**
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
+     * @param w	the wizard 
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizManyNames) {
@@ -210,6 +226,8 @@ public class CrNameConfusion extends CrUML {
 
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     * @param	item	the ToDoItem (not used)
+     * @return	the class name of the wizard
      */
     public Class getWizardClass(ToDoItem item) {
 	return WizManyNames.class;
