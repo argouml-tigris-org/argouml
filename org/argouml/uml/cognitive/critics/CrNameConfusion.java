@@ -39,8 +39,8 @@ import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
- * Well-formedness rule [1] for Namespace. See page 33 of UML 1.1
- * Semantics. OMG document ad/97-08-04.
+ * Well-formedness rule [1] for Namespace. See section 2.5.3.26 of
+ * UML 1.4 spec.  Rule [2] is checked by CrAssocNameConflict.
  */
 public class CrNameConfusion extends CrUML {
 
@@ -65,7 +65,12 @@ public class CrNameConfusion extends CrUML {
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAModelElement(dm))) {
+	if (!(Model.getFacade().isAModelElement(dm)) 
+                || Model.getFacade().isAAssociation(dm)
+                // UML 1.4 spec is ambiguous - English says no Association or 
+                // Generalization, but OCL only includes Association
+//                || Model.getFacade().isAGeneralization(dm)
+	) {
 	    return NO_PROBLEM;
 	}
 	Object me = dm;
@@ -102,7 +107,7 @@ public class CrNameConfusion extends CrUML {
 	Iterator elems = oes.iterator();
 	while (elems.hasNext()) {
 	    Object me2 = elems.next();
-	    if (me2 == dm) {
+	    if (me2 == dm || Model.getFacade().isAAssociation(me2)) {
 	        continue;
 	    }
 	    String meName = Model.getFacade().getName(me2);
