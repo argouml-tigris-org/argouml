@@ -39,7 +39,7 @@ import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
- * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
+ * Well-formedness rule [1] for Namespace. See page 33 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
  */
 public class CrNameConfusion extends CrUML {
@@ -49,7 +49,7 @@ public class CrNameConfusion extends CrUML {
      */
     private static final long serialVersionUID = -6659510145586121263L;
 
-	/**
+    /**
      * The constructor.
      */
     public CrNameConfusion() {
@@ -60,18 +60,15 @@ public class CrNameConfusion extends CrUML {
 	addTrigger("name");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
-     * @param dm	the DesignManager
-     * @param dsgr	the Designer
-     * @return true if a problem is found
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAModelElement(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object me = /*(MModelElement)*/ dm;
+	Object me = dm;
 	ListSet offs = computeOffenders(me);
 	if (offs.size() > 1) {
 	    return PROBLEM_FOUND;
@@ -83,7 +80,7 @@ public class CrNameConfusion extends CrUML {
      * @param dm the given modelelement
      * @return the ListSet of offenders
      */
-    public ListSet computeOffenders(Object/*MModelElement*/ dm) {
+    public ListSet computeOffenders(Object dm) {
 	Object ns = Model.getFacade().getNamespace(dm);
 	ListSet res = new ListSet(dm);
 	String n = Model.getFacade().getName(dm);
@@ -104,7 +101,7 @@ public class CrNameConfusion extends CrUML {
 	}
 	Iterator elems = oes.iterator();
 	while (elems.hasNext()) {
-	    Object me2 = /*(MModelElement)*/ elems.next();
+	    Object me2 = elems.next();
 	    if (me2 == dm) {
 	        continue;
 	    }
@@ -121,32 +118,26 @@ public class CrNameConfusion extends CrUML {
 	return res;
     }
 
-    /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(
-     * java.lang.Object, org.argouml.cognitive.Designer)
-     * @param	dm	the DesignManager
-     * @param	dsgr	the Designer
-     * @return	a ToDoItem for this critis
+    /*
+     * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
+     *      org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	Object me = /*(MModelElement)*/ dm;
+	Object me = dm;
 	ListSet offs = computeOffenders(me);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
-     * @param i	the ToDoItem
-     * @param dsgr	the Designer
-     * @return	true it the Critic is still valid
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) {
 	    return false;
 	}
 	ListSet offs = i.getOffenders();
-	Object dm = /*(MModelElement)*/ offs.firstElement();
+	Object dm = offs.firstElement();
 	if (!predicate(dm, dsgr)) {
 	    return false;
 	}
@@ -203,19 +194,17 @@ public class CrNameConfusion extends CrUML {
 	return res.toString();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
-     * @return	the clarifier, as an Icon object
      */
     public Icon getClarifier() {
 	return ClClassName.getTheInstance();
     }
 
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#initWizard(
-     *         org.argouml.cognitive.ui.Wizard)
-     * @param w	the wizard 
+     *      org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizManyNames) {
@@ -224,13 +213,11 @@ public class CrNameConfusion extends CrUML {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
-     * @param	item	the ToDoItem (not used)
-     * @return	the class name of the wizard
      */
     public Class getWizardClass(ToDoItem item) {
 	return WizManyNames.class;
     }
 
-} /* end class CrNameConfusion.java */
+} /* end class CrNameConfusion */
