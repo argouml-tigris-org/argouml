@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.AddAssociationEvent;
@@ -81,7 +82,6 @@ public class FigActionState extends FigStateVertex {
         // overrule the single-line namefig created by the parent
         setNameFig(new FigMultiLineText(10 + PADDING, 10, 90 - PADDING * 2, 25,
                 true));
-        getNameFig().setLineWidth(0);
         getNameFig().setText(placeString());
         getNameFig().setBotMargin(7); // make space for the clarifier
         getNameFig().setTopMargin(7); // for vertical symmetry
@@ -94,6 +94,7 @@ public class FigActionState extends FigStateVertex {
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
         addFig(cover);
+        addFig(getStereotypeFig());
         addFig(getNameFig());
 
         //setBlinkPorts(false); //make port invisble unless mouse enters
@@ -112,7 +113,7 @@ public class FigActionState extends FigStateVertex {
         setOwner(node);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
@@ -124,7 +125,7 @@ public class FigActionState extends FigStateVertex {
         }
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -133,23 +134,26 @@ public class FigActionState extends FigStateVertex {
         figClone.setBigPort((FigRRect) it.next());
         figClone.cover = (FigRRect) it.next();
         figClone.setNameFig((FigText) it.next());
+        /* TODO: Do we need to clone the stereotype(s)? */
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
-
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
+        Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
-        int w = nameDim.width + PADDING * 2;
-        int h = nameDim.height + PADDING;
+
+        int w = Math.max(stereoDim.width, nameDim.width) + PADDING * 2;
+        /* The stereoDim has height=2, even if it is empty, 
+         * hence the -2 below: */
+        int h = stereoDim.height - 2 + nameDim.height + PADDING;
+        w = Math.max(w, h + 44); // the width needs to be > the height
         return new Dimension(w, h);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      *
      * Override setBounds to keep shapes looking right.
@@ -160,7 +164,12 @@ public class FigActionState extends FigStateVertex {
         }
         Rectangle oldBounds = getBounds();
 
-        getNameFig().setBounds(x + PADDING, y, w - PADDING * 2, h - PADDING);
+        Dimension stereoDim = getStereotypeFig().getMinimumSize();
+        Dimension nameDim = getNameFig().getMinimumSize();
+        getNameFig().setBounds(x + PADDING, y + stereoDim.height,
+                w - PADDING * 2, nameDim.height);
+        getStereotypeFig().setBounds(x + PADDING, y,
+                w - PADDING * 2, stereoDim.height);
         getBigPort().setBounds(x + 1, y + 1, w - 2, h - 2);
         cover.setBounds(x, y, w, h);
         ((FigRRect) getBigPort()).setCornerRadius(h);
@@ -171,63 +180,63 @@ public class FigActionState extends FigStateVertex {
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
         cover.setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return cover.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
         cover.setFillColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return cover.getFillColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
         cover.setFilled(f);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return cover.getFilled();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         cover.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
         return cover.getLineWidth();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -240,7 +249,7 @@ public class FigActionState extends FigStateVertex {
         }
     }
     
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
@@ -251,10 +260,17 @@ public class FigActionState extends FigStateVertex {
          * that change the body text: 
          */
         if (newOwner != null) {
-            addElementListener(newOwner, new String[] {"entry", "remove"} );
+            addElementListener(newOwner, 
+                    new String[] {"entry", "remove", "stereotype"} );
             Object entry = Model.getFacade().getEntry(newOwner);
             if (entry != null) {
                 addElementListener(entry, "script");
+            }
+            Collection c = Model.getFacade().getStereotypes(newOwner);
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                Object st = i.next();
+                addElementListener(st, "name");
             }
         }
     }
@@ -269,8 +285,14 @@ public class FigActionState extends FigStateVertex {
         }
     }
 
-
     /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     */
+    protected void updateStereotypeText() {
+        getStereotypeFig().setOwner(getOwner());
+    }
+
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
@@ -278,7 +300,7 @@ public class FigActionState extends FigStateVertex {
         ft.setText(notationProvider.toString(getOwner(), null));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
