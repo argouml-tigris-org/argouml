@@ -70,7 +70,7 @@ public class ProfileJava extends Profile {
     private Object defaultModel;
     
     static final String DEFAULT_PROFILE = 
-                            "/org/argouml/model/mdr/profile/default-uml14.xmi";
+                            "/org/argouml/model/mdr/profiles/default-uml14.xmi";
     
     private String defaultModelFilename;
 
