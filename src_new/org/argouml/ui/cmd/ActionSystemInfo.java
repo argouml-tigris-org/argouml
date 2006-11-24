@@ -52,7 +52,7 @@ public class ActionSystemInfo extends AbstractAction {
                 Translator.localize("action.system-information"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

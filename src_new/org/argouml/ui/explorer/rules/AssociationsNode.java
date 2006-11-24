@@ -57,14 +57,14 @@ public class AssociationsNode implements WeakExplorerNode {
 	return parent;
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {
 	return "Associations";
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.WeakExplorerNode#subsumes(java.lang.Object)
      */
     public boolean subsumes(Object obj) {

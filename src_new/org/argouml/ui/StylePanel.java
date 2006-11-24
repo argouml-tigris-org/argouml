@@ -77,20 +77,17 @@ public class StylePanel
     }
 
     /**
+     * {@inheritDoc}
+     * <p>
      * This method must be overriden by implementors if they don't want to
      * refresh the whole stylepanel every time a property change events is
      * fired.
-     *
-     * @since 8 june 2003, 0.13.6
-     * @see org.argouml.ui.TabTarget#refresh()
-     *
-     * @param e the property-change-event
      */
     public void refresh(PropertyChangeEvent e) {
 	refresh();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
@@ -115,14 +112,14 @@ public class StylePanel
 	refresh();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() {
 	return panelTarget;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
@@ -130,8 +127,8 @@ public class StylePanel
 	//_table.setModel(_tableModel);
     }
 
-    /**
-     * Style panels ony apply when a Fig is selected.
+    /*
+     * Style panels only apply when a Fig is selected.
      *
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
@@ -144,39 +141,39 @@ public class StylePanel
 	return (target instanceof Fig);
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */
     public void insertUpdate(DocumentEvent e) {
 	LOG.debug(getClass().getName() + " insert");
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
      */
     public void removeUpdate(DocumentEvent e) {
 	insertUpdate(e);
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
      */
     public void changedUpdate(DocumentEvent e) {
     }
 
-    /**
+    /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {
     }
 
-    /**
+    /*
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent lse) {
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -184,7 +181,7 @@ public class StylePanel
 	//if (src == _config) doConfig();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
      *      TargetEvent)
      */
@@ -192,7 +189,7 @@ public class StylePanel
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
      *      TargetEvent)
      */
@@ -201,7 +198,7 @@ public class StylePanel
 
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {

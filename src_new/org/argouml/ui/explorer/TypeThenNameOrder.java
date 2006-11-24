@@ -45,11 +45,9 @@ public class TypeThenNameOrder extends NameOrder {
     public TypeThenNameOrder() {
     }
 
-    /**
+    /*
      * Compares obj1 and obj2 as per the class description.
-     * nulls are sorted first.
-     * Returns a negative integer, zero, or a positive integer as the first
-     * argument is less than, equal to, or greater than the second.
+     * Nulls are sorted first.
      *
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
@@ -103,7 +101,7 @@ public class TypeThenNameOrder extends NameOrder {
         return typeNameOrder;
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

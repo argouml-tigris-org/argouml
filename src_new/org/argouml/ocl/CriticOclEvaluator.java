@@ -45,6 +45,7 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         new CriticOclEvaluator();
 
     private CriticOclEvaluator() {
+        // no instantiations
     }
 
     /**
@@ -54,7 +55,7 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         return INSTANCE;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(
      * java.lang.Object, java.lang.String)
      */
@@ -99,7 +100,9 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
     /*
         if (GET_OWNER_EXPR.equals(expr) && self instanceof Diagram) {
             res = ((Diagram)self).getOwner().getName();
-            if (res == null || "".equals(res)) res = Translator.localize("misc.name.anon");
+            if (res == null || "".equals(res)) {
+                res = Translator.localize("misc.name.anon");
+            }
         }
     */
         if (res == null) {
@@ -108,7 +111,7 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         return res;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(
      * java.lang.Object, java.lang.String, java.lang.String)
      */

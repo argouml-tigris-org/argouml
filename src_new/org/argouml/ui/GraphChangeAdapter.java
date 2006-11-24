@@ -64,6 +64,7 @@ public final class GraphChangeAdapter implements GraphListener {
      * The constructor of a singleton is private.
      */
     private GraphChangeAdapter() {
+        // singleton, no instantiation
     }
 
     public DiDiagram createDiagram(Class type, Object owner) {
@@ -95,10 +96,7 @@ public final class GraphChangeAdapter implements GraphListener {
         }
     }
 
-
-
-
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphListener#nodeAdded(org.tigris.gef.graph.GraphEvent)
      */
     public void nodeAdded(GraphEvent e) {
@@ -113,7 +111,7 @@ public final class GraphChangeAdapter implements GraphListener {
         Model.getDiagramInterchangeModel().nodeAdded(source, arg);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphListener#edgeAdded(org.tigris.gef.graph.GraphEvent)
      */
     public void edgeAdded(GraphEvent e) {
@@ -128,7 +126,7 @@ public final class GraphChangeAdapter implements GraphListener {
         Model.getDiagramInterchangeModel().edgeAdded(source, arg);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphListener#nodeRemoved(org.tigris.gef.graph.GraphEvent)
      */
     public void nodeRemoved(GraphEvent e) {
@@ -143,7 +141,7 @@ public final class GraphChangeAdapter implements GraphListener {
         Model.getDiagramInterchangeModel().nodeRemoved(source, arg);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphListener#edgeRemoved(org.tigris.gef.graph.GraphEvent)
      */
     public void edgeRemoved(GraphEvent e) {
@@ -158,7 +156,7 @@ public final class GraphChangeAdapter implements GraphListener {
         Model.getDiagramInterchangeModel().edgeRemoved(source, arg);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphListener#graphChanged(org.tigris.gef.graph.GraphEvent)
      */
     public void graphChanged(GraphEvent e) {

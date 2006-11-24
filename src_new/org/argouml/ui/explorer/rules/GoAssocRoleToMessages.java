@@ -37,14 +37,14 @@ import org.argouml.model.Model;
  */
 public class GoAssocRoleToMessages extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
         return Translator.localize ("misc.association-role.messages");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
@@ -54,7 +54,7 @@ public class GoAssocRoleToMessages extends AbstractPerspectiveRule {
 	return Model.getFacade().getMessages(parent);
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {

@@ -74,7 +74,7 @@ public class WizDescription extends WizStep {
 	getMainPanel().add(new JScrollPane(description), BorderLayout.CENTER);
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ui.WizStep#setTarget(java.lang.Object)
      */
     public void setTarget(Object item) {

@@ -86,7 +86,7 @@ public class ExplorerPerspective {
         return rules;
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

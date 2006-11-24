@@ -53,7 +53,7 @@ public class ActionNewToDoItem extends UndoableAction {
                 Translator.localize("action.new-todo-item"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

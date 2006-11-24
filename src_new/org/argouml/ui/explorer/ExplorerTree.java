@@ -217,13 +217,14 @@ public class ExplorerTree
      */
     class ExplorerTreeWillExpandListener implements TreeWillExpandListener {
 
-        /**
+        /*
          * @see javax.swing.event.TreeWillExpandListener#treeWillCollapse(javax.swing.event.TreeExpansionEvent)
          */
         public void treeWillCollapse(TreeExpansionEvent tee) {
+            // unimplemented - we only care about expanding
 	}
 
-        /**
+        /*
          * Updates stereotype setting,
          * adds all children per treemodel 'build on demand' design.
          *
@@ -246,16 +247,15 @@ public class ExplorerTree
      */
     class ExplorerTreeExpansionListener implements TreeExpansionListener {
 
-        /**
+        /*
          * @see javax.swing.event.TreeExpansionListener#treeCollapsed(
          *         javax.swing.event.TreeExpansionEvent)
-         *
-         * Does nothing.
          */
         public void treeCollapsed(TreeExpansionEvent event) {
+            // does nothing.
         }
 
-        /**
+        /*
          * @see javax.swing.event.TreeExpansionListener#treeExpanded(
          *         javax.swing.event.TreeExpansionEvent)
          * Updates the selection state.

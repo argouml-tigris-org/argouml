@@ -324,15 +324,17 @@ public class FindDialog extends ArgoDialog
 
     /**
      * Init the Last Modified tab.
-     * TODO: This tab does not work currently.
      */
-    public void initModifiedTab() { }
+    public void initModifiedTab() {
+        // TODO: This tab does not work currently.
+    }
 
     /**
      * Init the Constraints tab.
-     * TODO: This tab does not work currently.
      */
-    public void initConstraintsTab() { }
+    public void initConstraintsTab() {
+        // TODO: This tab does not work currently.
+    }
 
 
     /**
@@ -384,7 +386,7 @@ public class FindDialog extends ArgoDialog
 
     }
 
-    /**
+    /*
      * @see org.tigris.swidgets.Dialog#nameButtons()
      */
     protected void nameButtons() {
@@ -395,7 +397,7 @@ public class FindDialog extends ArgoDialog
 
     ////////////////////////////////////////////////////////////////
     // event handlers
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(
      * java.awt.event.ActionEvent)
      */
@@ -547,27 +549,35 @@ public class FindDialog extends ArgoDialog
     ////////////////////////////////////////////////////////////////
     // MouseListener implementation
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
-    public void mousePressed(MouseEvent me) { }
+    public void mousePressed(MouseEvent me) { 
+        // empty implementation - we only handle mouseClicked
+    }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
-    public void mouseReleased(MouseEvent me) { }
+    public void mouseReleased(MouseEvent me) { 
+        // empty implementation - we only handle mouseClicked
+    }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
-    public void mouseEntered(MouseEvent me) { }
+    public void mouseEntered(MouseEvent me) { 
+        // empty implementation - we only handle mouseClicked
+    }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
-    public void mouseExited(MouseEvent me) { }
+    public void mouseExited(MouseEvent me) { 
+        // empty implementation - we only handle mouseClicked
+    }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
@@ -686,7 +696,7 @@ class PredicateMType extends PredicateType {
     }
 
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

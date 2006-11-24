@@ -313,7 +313,7 @@ public class DetailsPane
         return currentTarget;
     }
 
-    /**
+    /*
      * @see java.awt.Component#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -443,7 +443,7 @@ public class DetailsPane
      * old notes: called when the user selects a new tab, by clicking or
      *  otherwise.
      *
-     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+     * {@inheritDoc}
      */
     public void stateChanged(ChangeEvent e) {
         LOG.debug("DetailsPane state changed");
@@ -507,39 +507,35 @@ public class DetailsPane
 //	    ((AbstractArgoJPanel) t).spawn();
     }
 
-    /**
-     * empty, no action taken.
-     *
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
+        // empty implementation - we only handle mouseClicked
     }
 
-    /**
-     * empty, no action taken.
-     *
+    /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
+        // empty implementation - we only handle mouseClicked
     }
 
-    /**
-     * empty, no action taken.
-     *
+    /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) {
+        // empty implementation - we only handle mouseClicked
     }
 
-    /**
-     * empty, no action taken.
-     *
+    /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent me) {
+        // empty implementation - we only handle mouseClicked
     }
 
-    /**
+    /*
      * if(the mouse click is not in the bounds of the tabbed panel)
      *      then call mySingleClick() or myDoubleClick().
      *
@@ -570,17 +566,15 @@ public class DetailsPane
      */
     private Icon leftArrowIcon = new LeftArrowIcon();
 
-    /**
+    /*
      * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
      */
     public int getQuadrant() {
         return Q_BOTTOM_RIGHT;
     }
 
-    /**
-     * Set the orientation of this details pane.<p>
-     *
-     * @param orientation the required orientation
+    /*
+     * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
      */
     public void setOrientation(Orientation orientation) {
         for (int i = 0; i < tabPanelList.size(); i++) {
@@ -592,7 +586,7 @@ public class DetailsPane
         } /* end for */
     }
 
-    /**
+    /*
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
@@ -600,7 +594,7 @@ public class DetailsPane
         fireTargetAdded(e);
     }
 
-    /**
+    /*
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
@@ -608,7 +602,7 @@ public class DetailsPane
         fireTargetRemoved(e);
     }
 
-    /**
+    /*
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {

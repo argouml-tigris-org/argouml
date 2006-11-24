@@ -49,9 +49,8 @@ public final class ActionExportXMI extends AbstractAction {
         super(Translator.localize("action.export-project-as-xmi"));
     }
 
-    /**
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         PersistenceManager pm = PersistenceManager.getInstance();

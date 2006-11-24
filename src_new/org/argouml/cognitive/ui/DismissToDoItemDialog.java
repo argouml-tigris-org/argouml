@@ -198,7 +198,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
         target = (ToDoItem) t;
     }
 
-    /**
+    /*
      * Prepare for typing in rationale field when window is opened.
      *
      * @see java.awt.Component#setVisible(boolean)

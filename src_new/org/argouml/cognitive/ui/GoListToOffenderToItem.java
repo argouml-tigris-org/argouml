@@ -53,7 +53,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
      */
     public Object getChild(Object parent, int index) {
@@ -61,7 +61,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
 	return (children == null) ? null : children.elementAt(index);
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
      */
     public int getChildCount(Object parent) {
@@ -69,7 +69,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
 	return (children == null) ? 0 : children.size();
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#getIndexOfChild(
      * java.lang.Object, java.lang.Object)
      */
@@ -78,7 +78,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
 	return (children == null) ? -1 : children.indexOf(child);
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */
     public boolean isLeaf(Object node) {
@@ -119,18 +119,18 @@ public class GoListToOffenderToItem extends AbstractGoList {
 	return null;
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#valueForPathChanged(
      * javax.swing.tree.TreePath, java.lang.Object)
      */
     public void valueForPathChanged(TreePath path, Object newValue) { }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
      */
     public void addTreeModelListener(TreeModelListener l) { }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
      */
     public void removeTreeModelListener(TreeModelListener l) { }

@@ -59,7 +59,7 @@ public class TransferableModelElements implements Transferable {
         theModelElements = data;
     }
 
-    /**
+    /*
      * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
      */
     public Object getTransferData(DataFlavor dataFlavor)
@@ -77,14 +77,14 @@ public class TransferableModelElements implements Transferable {
         throw new UnsupportedFlavorException(dataFlavor);
     }
 
-    /**
+    /*
      * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
      */
     public DataFlavor[] getTransferDataFlavors() {
         return flavors;
     }
 
-    /**
+    /*
      * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
      */
     public boolean isDataFlavorSupported(DataFlavor dataFlavor) {

@@ -83,30 +83,32 @@ public class NotationComboBox
         refresh();
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationChanged(ArgoNotationEvent event) {
     }
-    /**
+    
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationAdded(ArgoNotationEvent event) {
         refresh();
     }
-    /**
+    
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationRemoved(ArgoNotationEvent event) {
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderAdded(ArgoNotationEvent event) {
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderRemoved(ArgoNotationEvent event) {

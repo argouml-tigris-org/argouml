@@ -46,14 +46,14 @@ public class PerspectiveComboBox
         PerspectiveManager.getInstance().addListener(this);
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.PerspectiveManagerListener#addPerspective(java.lang.Object)
      */
     public void addPerspective(Object perspective) {
         addItem(perspective);
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.PerspectiveManagerListener#removePerspective(java.lang.Object)
      */
     public void removePerspective(Object perspective) {

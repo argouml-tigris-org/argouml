@@ -43,7 +43,7 @@ public class ActionSnooze extends ToDoItemAction {
         super("action.snooze-critic", true);
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

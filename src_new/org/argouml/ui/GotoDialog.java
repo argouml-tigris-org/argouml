@@ -82,7 +82,7 @@ public class GotoDialog extends ArgoDialog {
     }
 
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -93,7 +93,7 @@ public class GotoDialog extends ArgoDialog {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.swidgets.Dialog#nameButtons()
      */
     protected void nameButtons() {

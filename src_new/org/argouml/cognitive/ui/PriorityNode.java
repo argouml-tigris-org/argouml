@@ -80,7 +80,7 @@ public class PriorityNode {
             priorities.addElement(new PriorityNode(LOW,
                     ToDoItem.LOW_PRIORITY));
         }
-    return priorities;
+        return priorities;
     }
 
 
@@ -97,7 +97,7 @@ public class PriorityNode {
      */
     public int getPriority() { return priority; }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() { return getName(); }

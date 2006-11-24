@@ -70,7 +70,7 @@ public class KnowledgeTypeNode {
             types.addElement(new KnowledgeTypeNode(Critic.KT_EXPERIENCIAL));
             types.addElement(new KnowledgeTypeNode(Critic.KT_TOOL));
         }
-    return types;
+        return types;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ public class KnowledgeTypeNode {
      */
     public String getName() { return name; }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() { return getName(); }

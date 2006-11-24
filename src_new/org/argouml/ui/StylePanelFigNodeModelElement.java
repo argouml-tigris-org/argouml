@@ -105,7 +105,7 @@ public class StylePanelFigNodeModelElement
         displayPane.add(cb);
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
@@ -146,7 +146,7 @@ public class StylePanelFigNodeModelElement
         getPanelTarget().endTrans();
     }
 
-    /**
+    /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {

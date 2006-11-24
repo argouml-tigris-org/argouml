@@ -137,7 +137,7 @@ public class WizStepChoice extends WizStep {
     public int getSelectedIndex() { return selectedIndex; }
 
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

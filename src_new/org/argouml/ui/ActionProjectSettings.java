@@ -55,7 +55,7 @@ public class ActionProjectSettings extends AbstractAction {
                 Translator.localize("action.properties"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

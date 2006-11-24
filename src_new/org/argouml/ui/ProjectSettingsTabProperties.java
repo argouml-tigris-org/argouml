@@ -132,8 +132,8 @@ public class ProjectSettingsTabProperties extends JPanel implements
         add(top, BorderLayout.NORTH);
     }
 
-    /**
-     * @see GUISettingsTabInterface#handleSettingsTabRefresh()
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -143,8 +143,8 @@ public class ProjectSettingsTabProperties extends JPanel implements
         version.setText(p.getVersion());
     }
 
-    /**
-     * @see GUISettingsTabInterface#handleSettingsTabSave()
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -153,14 +153,14 @@ public class ProjectSettingsTabProperties extends JPanel implements
         p.setDescription(description.getText());
     }
 
-    /**
-     * @see GUISettingsTabInterface#handleSettingsTabCancel()
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() {
         handleSettingsTabRefresh();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
      */
     public void handleResetToDefault() {
@@ -169,13 +169,13 @@ public class ProjectSettingsTabProperties extends JPanel implements
         // There is no default description.
     }
 
-    /**
-     * @see GUISettingsTabInterface#getTabKey()
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.user"; }
 
-    /**
-     * @see GUISettingsTabInterface#getTabPanel()
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() { return this; }
 

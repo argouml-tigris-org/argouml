@@ -130,9 +130,7 @@ public abstract class AbstractArgoJPanel extends JPanel
         return null;
     }
 
-    /**
-     * Set the orientation of the property panel.
-     *
+    /*
      * @see org.tigris.swidgets.Orientable#setOrientation(Orientation)
      */
     public void setOrientation(Orientation o) {

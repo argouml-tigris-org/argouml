@@ -64,7 +64,7 @@ public class LanguageComboBox
         refresh();
     }
 
-    /**
+    /*
      * @see java.lang.Object#finalize()
      */
     protected void finalize() {
@@ -90,21 +90,21 @@ public class LanguageComboBox
         invalidate();
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoGeneratorEventListener#generatorChanged(org.argouml.application.events.ArgoGeneratorEvent)
      */
     public void generatorChanged(ArgoGeneratorEvent e) {
         refresh();
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoGeneratorEventListener#generatorAdded(org.argouml.application.events.ArgoGeneratorEvent)
      */
     public void generatorAdded(ArgoGeneratorEvent e) {
         refresh();
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoGeneratorEventListener#generatorRemoved(org.argouml.application.events.ArgoGeneratorEvent)
      */
     public void generatorRemoved(ArgoGeneratorEvent e) {

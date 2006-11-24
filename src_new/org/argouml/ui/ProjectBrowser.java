@@ -350,7 +350,7 @@ public final class ProjectBrowser
         return new ProjectBrowser("ArgoUML", splash, mainApplication);
     }
 
-    /**
+    /*
      * @see java.awt.Component#getLocale()
      */
     public Locale getLocale() {
@@ -1014,7 +1014,7 @@ public final class ProjectBrowser
         }
     } /* end class WindowCloser */
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(
      *         java.beans.PropertyChangeEvent)
      */
@@ -1587,7 +1587,8 @@ public final class ProjectBrowser
                             + " members in the current project");
                 }
                 UndoManager.getInstance().empty();
-                UndoManager.getInstance().setGenerateMementos(wasGeneratingMementos);
+                UndoManager.getInstance().setGenerateMementos(
+                        wasGeneratingMementos);
                 Designer.enableCritiquing();
 
                 // Make sure save action is always reinstated

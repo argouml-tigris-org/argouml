@@ -274,10 +274,7 @@ public class ToDoPane extends JPanel
     /**
      * Called when the user selects a perspective from the perspective
      * combo. <p>
-     *
-     * Param e is the event.
-     *
-     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     * {@inheritDoc}
      */
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == combo) {
@@ -287,12 +284,7 @@ public class ToDoPane extends JPanel
 
     // -------------TreeSelectionListener implementation -----------
 
-    /**
-     * Called when the user selects an item in the tree, by clicking or
-     * otherwise.<p>
-     *
-     * Param e is the event.
-     *
+    /*
      * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
      */
     public void valueChanged(TreeSelectionEvent e) {
@@ -314,35 +306,35 @@ public class ToDoPane extends JPanel
 
     // ------------- MouseListener implementation ---------------
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-     *
-     * Empty implementation.
      */
-    public void mousePressed(MouseEvent e) { }
+    public void mousePressed(MouseEvent e) { 
+        // Empty implementation.
+    }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-     *
-     * Empty implementation.
      */
-    public void mouseReleased(MouseEvent e) { }
+    public void mouseReleased(MouseEvent e) {  
+        // Empty implementation.
+    }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-     *
-     * Empty implementation.
      */
-    public void mouseEntered(MouseEvent e) { }
+    public void mouseEntered(MouseEvent e) {  
+        // Empty implementation.
+    }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-     *
-     * Empty implementation.
      */
-    public void mouseExited(MouseEvent e) { }
+    public void mouseExited(MouseEvent e) { 
+        // Empty implementation.
+    }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent e) {
@@ -361,7 +353,7 @@ public class ToDoPane extends JPanel
     ////////////////////////////////////////////////////////////////
     // ToDoListListener implementation
 
-    /**
+    /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsChanged(ToDoListEvent tde) {
@@ -370,7 +362,7 @@ public class ToDoPane extends JPanel
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsAdded(ToDoListEvent tde) {
@@ -379,8 +371,8 @@ public class ToDoPane extends JPanel
 	}
         updateCountLabel();
     }
-
-    /**
+    
+    /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
@@ -390,7 +382,7 @@ public class ToDoPane extends JPanel
         updateCountLabel();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoListChanged(ToDoListEvent tde) {
@@ -451,7 +443,7 @@ public class ToDoPane extends JPanel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
      */
     public int getQuadrant() { return Q_BOTTOM_LEFT; }

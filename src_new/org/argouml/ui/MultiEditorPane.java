@@ -105,14 +105,14 @@ public class MultiEditorPane
         setTarget(null);
     }
 
-    /**
+    /*
      * @see java.awt.Component#getPreferredSize()
      */
     public Dimension getPreferredSize() {
         return new Dimension(400, 500);
     }
 
-    /**
+    /*
      * @see java.awt.Component#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -202,7 +202,7 @@ public class MultiEditorPane
     }
 
 
-    /**
+    /*
      * Called when the user selects a tab, by clicking or otherwise.
      *
      * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
@@ -221,31 +221,35 @@ public class MultiEditorPane
              ((TabModelTarget) lastTab).refresh();
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
+        // empty implementation - we only handle mouseClicked
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
+        // empty implementation - we only handle mouseClicked
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) {
+        // empty implementation - we only handle mouseClicked
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent me) {
+        // empty implementation - we only handle mouseClicked
     }
 
-    /**
+    /*
      * Catches a mouseevent and calls mySingleClick and myDoubleClick if a tab
      * is clicked which is selected.
      * @see java.awt.event.MouseListener#mouseClicked(MouseEvent)
@@ -293,14 +297,14 @@ public class MultiEditorPane
 //             ((AbstractArgoJPanel) t).spawn();
     }
 
-    /**
+    /*
      * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
      */
     public int getQuadrant() {
         return Q_TOP_RIGHT;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -308,7 +312,7 @@ public class MultiEditorPane
 	setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -318,7 +322,7 @@ public class MultiEditorPane
 	setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
      *         org.argouml.ui.targetmanager.TargetEvent)
      */

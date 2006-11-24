@@ -48,8 +48,7 @@ public class ActionExit extends AbstractAction
                 ResourceLoaderWrapper.lookupIcon("action.exit"));
     }
 
-    /**
-     * Asks the ProjectBrowser to exit.
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

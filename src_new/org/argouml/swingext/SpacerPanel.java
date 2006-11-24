@@ -39,7 +39,9 @@ public class SpacerPanel extends JPanel {
      * The constructor.
      *
      */
-    public SpacerPanel() { }
+    public SpacerPanel() { 
+        // no initialization required
+    }
 
     /**
      * The constructor.
@@ -49,17 +51,17 @@ public class SpacerPanel extends JPanel {
      */
     public SpacerPanel(int width, int height) { w = width; h = height; }
 
-    /**
+    /*
      * @see java.awt.Component#getMinimumSize()
      */
     public Dimension getMinimumSize() { return new Dimension(w, h); }
 
-    /**
+    /*
      * @see java.awt.Component#getPreferredSize()
      */
     public Dimension getPreferredSize() { return new Dimension(w, h); }
 
-    /**
+    /*
      * @see java.awt.Component#getSize()
      */
     public Dimension getSize() { return new Dimension(w, h); }

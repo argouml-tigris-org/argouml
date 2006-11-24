@@ -53,12 +53,11 @@ public class ActionImportXMI extends AbstractAction {
         super(Translator.localize("action.import-xmi"));
     }
 
-    /**
-     * Most of this code originates from ActionOpenProject.
-     *
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        // Most of this code originates from ActionOpenProject.
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
         PersistenceManager pm = PersistenceManager.getInstance();

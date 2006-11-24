@@ -121,7 +121,7 @@ public class PerspectiveSupport {
     public void setName(String s) { name = s; }
 
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

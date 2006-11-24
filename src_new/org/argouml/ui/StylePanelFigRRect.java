@@ -60,7 +60,7 @@ public class StylePanelFigRRect extends StylePanelFig {
         add(roundingField);
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
@@ -85,7 +85,7 @@ public class StylePanelFigRRect extends StylePanelFig {
     /**
      * react to changes in the rounding field text box.
      *
-     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     * {@inheritDoc}
      */
     public void insertUpdate(DocumentEvent e) {
         Document roundingDoc = roundingField.getDocument();

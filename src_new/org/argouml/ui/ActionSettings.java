@@ -53,7 +53,7 @@ public class ActionSettings extends AbstractAction {
                 ResourceLoaderWrapper.lookupIcon("action.settings"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(
      *         java.awt.event.ActionEvent)
      */

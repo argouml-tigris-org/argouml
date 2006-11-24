@@ -76,7 +76,7 @@ public class ActionNotation extends UndoableAction
         menu.addMenuListener(this);
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -102,7 +102,7 @@ public class ActionNotation extends UndoableAction
      */
     public JMenu getMenu() { return menu; }
 
-    /**
+    /*
      * @see javax.swing.event.MenuListener#menuSelected(javax.swing.event.MenuEvent)
      */
     public void menuSelected(MenuEvent me) {
@@ -129,12 +129,12 @@ public class ActionNotation extends UndoableAction
         }
     }
 
-    /**
+    /*
      * @see javax.swing.event.MenuListener#menuDeselected(javax.swing.event.MenuEvent)
      */
     public void menuDeselected(MenuEvent me) { }
 
-    /**
+    /*
      * @see javax.swing.event.MenuListener#menuCanceled(javax.swing.event.MenuEvent)
      */
     public void menuCanceled(MenuEvent me) { }

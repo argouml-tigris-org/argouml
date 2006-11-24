@@ -55,7 +55,7 @@ public class ActionGoToCritique extends UndoableAction {
 	item = theItem;
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

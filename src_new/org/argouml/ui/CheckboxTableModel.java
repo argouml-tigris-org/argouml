@@ -60,14 +60,14 @@ public class CheckboxTableModel extends AbstractTableModel {
         columnName2 = colName2;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnCount()
      */
     public int getColumnCount() {
         return 2;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
     public String getColumnName(int col) {
@@ -79,14 +79,14 @@ public class CheckboxTableModel extends AbstractTableModel {
         return null;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getRowCount()
      */
     public int getRowCount() {
         return elements.length;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
     public Object getValueAt(int row, int col) {
@@ -97,7 +97,7 @@ public class CheckboxTableModel extends AbstractTableModel {
         }
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#setValueAt(
      *         java.lang.Object, int, int)
      */
@@ -105,7 +105,7 @@ public class CheckboxTableModel extends AbstractTableModel {
         elements[row][col] = ob;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     public Class getColumnClass(int col) {
@@ -119,7 +119,7 @@ public class CheckboxTableModel extends AbstractTableModel {
         return null;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
     public boolean isCellEditable(int row, int col) {

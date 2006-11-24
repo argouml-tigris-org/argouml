@@ -48,7 +48,7 @@ public class ActionAboutArgoUML extends AbstractAction {
                 ResourceLoaderWrapper.lookupIcon("action.about-argouml"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
