@@ -29,6 +29,9 @@ import junit.framework.TestCase;
 import org.apache.log4j.PropertyConfigurator;
 import org.argouml.model.UmlException;
 
+/**
+ * Base test case for MDR Model tests.
+ */
 public abstract class AbstractMDRModelImplementationTestCase extends TestCase {
 
     /**
@@ -40,6 +43,9 @@ public abstract class AbstractMDRModelImplementationTestCase extends TestCase {
      */
     protected static MDRModelImplementation modelImplementation;
     
+    /**
+     * Initialization state.
+     */
     protected boolean initialized = false;
     
     protected void init() {
@@ -50,7 +56,7 @@ public abstract class AbstractMDRModelImplementationTestCase extends TestCase {
             );
             System.setProperty(
                     "org.netbeans.mdr.storagemodel.StorageFactoryClassName",
-                    "org.netbeans.mdr.persistence.memoryimpl.StorageFactoryImpl");            
+                    "org.netbeans.mdr.persistence.memoryimpl.StorageFactoryImpl");
             System.setProperty("argouml.model.implementation",
                     "org.argouml.model.mdr.MDRModelImplementation");
             System.setProperty("org.netbeans.lib.jmi.Logger", "0");

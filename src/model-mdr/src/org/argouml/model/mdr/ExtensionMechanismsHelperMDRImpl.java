@@ -93,7 +93,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#getStereotypes(java.lang.Object)
      */
     public Collection getStereotypes(Object ns) {
@@ -123,7 +123,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#getStereotype(java.lang.Object, java.lang.Object)
      */
     public Object getStereotype(Object ns, Object stereo) {
@@ -160,7 +160,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#getStereotype(java.util.Collection, java.lang.Object)
      */
     public Object getStereotype(Collection models, Object stereo) {
@@ -201,7 +201,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#getMetaModelName(java.lang.Object)
      */
     public String getMetaModelName(Object m) {
@@ -221,7 +221,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         return nsmodel.getMetaTypes().getName(clazz);
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#getAllPossibleStereotypes(java.util.Collection, java.lang.Object)
      */
     public Collection getAllPossibleStereotypes(Collection models,
@@ -318,7 +318,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#isValidStereoType(java.lang.Object, java.lang.Object)
      */
     public boolean isValidStereoType(Object theModelElement,
@@ -330,7 +330,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#getStereotypes(java.util.Collection)
      */
     public Collection getStereotypes(Collection models) {
@@ -354,7 +354,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#addCopyStereotype(java.lang.Object, java.lang.Object)
      */
     public void addCopyStereotype(Object modelElement, Object stereotype) {
@@ -368,7 +368,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#isStereotype(java.lang.Object, java.lang.String, java.lang.String)
      */
     public boolean isStereotype(Object object, String name, String base) {
@@ -392,7 +392,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#isStereotypeInh(java.lang.Object, java.lang.String, java.lang.String)
      */
     public boolean isStereotypeInh(Object object, String name, String base) {
@@ -416,7 +416,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         return false;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#addExtendedElement(java.lang.Object, java.lang.Object)
      */
     public void addExtendedElement(Object handle, Object extendedElement) {
@@ -430,7 +430,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#addBaseClass(java.lang.Object, java.lang.Object)
      */
     public void addBaseClass(Object handle, Object baseClass) {
@@ -449,7 +449,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or baseClass: " + baseClass);
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#removeBaseClass(java.lang.Object, java.lang.Object)
      */
     public void removeBaseClass(Object handle, Object baseClass) {
@@ -472,7 +472,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or baseClass: " + baseClass);
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#setIcon(java.lang.Object, java.lang.Object)
      */
     public void setIcon(Object handle, Object icon) {
@@ -486,7 +486,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#setTag(java.lang.Object, java.lang.Object)
      */
     public void setTag(Object handle, Object tag) {
@@ -534,7 +534,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#setValueOfTag(java.lang.Object, java.lang.String)
      */
     public void setValueOfTag(Object handle, String value) {
@@ -552,7 +552,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#addTaggedValue(java.lang.Object, java.lang.Object)
      */
     public void addTaggedValue(Object handle, Object taggedValue) {
@@ -565,7 +565,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or taggedValue: " + taggedValue);
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#removeTaggedValue(java.lang.Object, java.lang.Object)
      */
     public void removeTaggedValue(Object handle, Object taggedValue) {
@@ -580,7 +580,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or taggedValue: " + taggedValue);
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#setTaggedValue(java.lang.Object, java.util.Collection)
      */
     public void setTaggedValue(Object handle, Collection taggedValues) {
@@ -612,7 +612,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or taggedValues: " + taggedValues);
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#setType(
      *          java.lang.Object, java.lang.Object)
      */
@@ -635,7 +635,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + type);
     }
 
-    /**
+    /*
      * @see org.argouml.model.ExtensionMechanismsHelper#hasStereoType(java.lang.Object, java.lang.String)
      */
     public boolean hasStereoType(Object handle, String name) {
