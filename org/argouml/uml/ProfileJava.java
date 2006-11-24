@@ -70,7 +70,7 @@ public class ProfileJava extends Profile {
     private Object defaultModel;
     
     static final String DEFAULT_PROFILE = 
-                            "/org/argouml/model/mdr/mof/default-uml14.xmi";
+                            "/org/argouml/model/mdr/profile/default-uml14.xmi";
     
     private String defaultModelFilename;
 
@@ -81,12 +81,11 @@ public class ProfileJava extends Profile {
         // do nothing - profile loading deferred until needed
     }
 
-    /**
+    /*
      * @see org.argouml.uml.Profile#formatElement(java.lang.Object,
      * java.lang.Object)
      */
-    public String formatElement(Object/*MModelElement*/ element,
-				Object namespace) {
+    public String formatElement(Object element, Object namespace) {
 	String value = null;
 	if (element == null) {
 	    value = "";
@@ -122,17 +121,16 @@ public class ProfileJava extends Profile {
      * @param namespace the namespace
      * @return the default name for the given associationend
      */
-    protected String defaultAssocEndName(Object/*MAssociationEnd*/ assocEnd,
+    protected String defaultAssocEndName(Object assocEnd,
 					 Object namespace) {
 	String name = null;
-	Object/*MClassifier*/ type = Model.getFacade().getType(assocEnd);
+	Object type = Model.getFacade().getType(assocEnd);
 	if (type != null) {
 	    name = formatElement(type, namespace);
 	} else {
 	    name = "unknown type";
 	}
-	Object/*MMultiplicity*/ mult =
-	    Model.getFacade().getMultiplicity(assocEnd);
+	Object mult = Model.getFacade().getMultiplicity(assocEnd);
 	if (mult != null) {
 	    StringBuffer buf = new StringBuffer(name);
 	    buf.append("[");
@@ -157,8 +155,7 @@ public class ProfileJava extends Profile {
      * @param ns the namespace
      * @return the default association name
      */
-    protected String defaultAssocName(Object/*MAssociation*/ assoc,
-				      Object ns) {
+    protected String defaultAssocName(Object assoc, Object ns) {
 	StringBuffer buf = new StringBuffer();
 	Iterator iter = Model.getFacade().getConnections(assoc).iterator();
 	for (int i = 0; iter.hasNext(); i++) {
@@ -175,12 +172,9 @@ public class ProfileJava extends Profile {
      * @param namespace the namespace
      * @return the default generalization name
      */
-    protected String defaultGeneralizationName(Object/*MGeneralization*/ gen,
-					       Object namespace) {
-	Object/*MGeneralizableElement*/ child =
-	    Model.getFacade().getChild(gen);
-	Object/*MGeneralizableElement*/ parent =
-	    Model.getFacade().getParent(gen);
+    protected String defaultGeneralizationName(Object gen, Object namespace) {
+	Object child = Model.getFacade().getChild(gen);
+        Object parent = Model.getFacade().getParent(gen);
 	StringBuffer buf = new StringBuffer();
 	buf.append(formatElement(child, namespace));
 	buf.append(" extends ");
@@ -224,12 +218,10 @@ public class ProfileJava extends Profile {
      * @param element the given modelelement
      * @param pathSep the path separator character(s)
      */
-    private void buildPath(StringBuffer buffer,
-			   Object/*MModelElement*/ element,
-			   String pathSep) {
-	if (element != null) {
-	    Object/*MNamespace*/ parent =
-	        Model.getFacade().getNamespace(element);
+    private void buildPath(StringBuffer buffer, Object element, 
+            String pathSep) {
+        if (element != null) {
+            Object parent = Model.getFacade().getNamespace(element);
 	    if (parent != null && parent != element) {
 		buildPath(buffer, parent, pathSep);
 		buffer.append(pathSep);
@@ -256,7 +248,7 @@ public class ProfileJava extends Profile {
 	return "[empty]";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.Profile#formatCollection(java.util.Iterator,
      * java.lang.Object)
      */
@@ -284,17 +276,17 @@ public class ProfileJava extends Profile {
 	return value;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.Profile#getProfileModel()
      */
-    public Object/*MModel*/ getProfileModel() throws ProfileException {
+    public Object getProfileModel() throws ProfileException {
         if (defaultModel == null) {
             defaultModel = loadProfileModel();
         }
         return defaultModel;
     }
     
-    /**
+    /*
      * @see org.argouml.uml.Profile#setProfileModelFilename(java.lang.String)
      */
     public void setProfileModelFilename(String name) throws ProfileException {
@@ -305,7 +297,7 @@ public class ProfileJava extends Profile {
         }
     }
     
-    /**
+    /*
      * @see org.argouml.uml.Profile#getProfileModelFilename()
      */
     public String getProfileModelFilename() {
