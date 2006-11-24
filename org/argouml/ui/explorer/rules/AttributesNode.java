@@ -57,14 +57,14 @@ public class AttributesNode implements WeakExplorerNode {
 	return parent;
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {
 	return "Attributes";
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.WeakExplorerNode#subsumes(java.lang.Object)
      */
     public boolean subsumes(Object obj) {

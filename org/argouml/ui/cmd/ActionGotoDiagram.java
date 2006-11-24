@@ -60,7 +60,7 @@ public class ActionGotoDiagram
     }
 
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -68,7 +68,7 @@ public class ActionGotoDiagram
         new GotoDialog().setVisible(true);
     }
 
-    /**
+    /*
      * @see org.argouml.application.api.CommandLineInterface#doCommand(java.lang.String)
      */
     public boolean doCommand(String argument) {

@@ -34,7 +34,7 @@ public class XmiFormatException extends OpenException {
     /**
      * Construct an XmiFormatException with a nested cause.
      * 
-     * @param cause
+     * @param cause the underlying error cause
      */
     public XmiFormatException(Throwable cause) {
         super(cause);

@@ -35,16 +35,12 @@ package org.argouml.language.java.generator;
 */
 public class SimpleCodePiece extends CodePiece
 {
-    /** */
     private StringBuffer text;
 
-    /** */
     private int line;
 
-    /** */
     private int startPosition;
 
-    /** */
     private int endPosition;
 
     /**
@@ -71,61 +67,45 @@ public class SimpleCodePiece extends CodePiece
      *
      * @param token the given token
      */
-    public SimpleCodePiece(antlr.Token token)
-    {
+    public SimpleCodePiece(antlr.Token token) {
 	this(new StringBuffer(token.getText()),
 	     token.getLine() - 1,
 	     token.getColumn() - 1,
 	     token.getColumn() + token.getText().length() - 1);
     }
 
-    /**
-     * Return the string representation for this piece of code.
-     *
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getText()
      */
-    public StringBuffer getText()
-    {
-	return text;
+    public StringBuffer getText() {
+        return text;
     }
 
-    /**
-     * Return the start position.
-     *
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
      */
-    public int getStartPosition()
-    {
-	return startPosition;
+    public int getStartPosition() {
+        return startPosition;
     }
 
-    /**
-     * Return the end position.
-     *
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
      */
-    public int getEndPosition()
-    {
-	return endPosition;
+    public int getEndPosition() {
+        return endPosition;
     }
 
-    /**
-     * Return the start line
-     *
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
      */
-    public int getStartLine()
-    {
-	return line;
+    public int getStartLine() {
+        return line;
     }
 
-    /**
-     * Return the end line
-     *
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
      */
-    public int getEndLine()
-    {
-	return line;
+    public int getEndLine() {
+        return line;
     }
 }

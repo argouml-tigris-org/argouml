@@ -276,7 +276,7 @@ public class FigActionState extends FigStateVertex {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
@@ -285,7 +285,7 @@ public class FigActionState extends FigStateVertex {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {

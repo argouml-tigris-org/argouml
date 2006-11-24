@@ -156,7 +156,7 @@ public class SettingsTabNotation
         add(top, BorderLayout.NORTH);
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
@@ -214,7 +214,7 @@ public class SettingsTabNotation
         return Configuration.getBoolean(key, false);
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
@@ -257,14 +257,14 @@ public class SettingsTabNotation
         }
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() {
         handleSettingsTabRefresh();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
      */
     public void handleResetToDefault() {
@@ -291,12 +291,12 @@ public class SettingsTabNotation
         }
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.notation"; }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() { return this; }
@@ -322,7 +322,7 @@ public class SettingsTabNotation
         return new JLabel(Translator.localize(key));
     }
 
-    /**
+    /*
      * @see javax.swing.JComponent#setVisible(boolean)
      */
     public void setVisible(boolean arg0) {

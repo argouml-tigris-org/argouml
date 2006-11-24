@@ -30,7 +30,8 @@
 
 package org.argouml.language.java.generator;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Vector;
 
 /**
    This piece of code is a composition of several adjacent pieces of
@@ -41,10 +42,11 @@ public class CompositeCodePiece extends CodePiece {
     private Vector codePieces;
 
     /**
-       Create a composite piece of code.
-
-       @param codePiece A starter code piece.
-    */
+     * Create a composite piece of code.
+     * 
+     * @param codePiece
+     *            A starter code piece.
+     */
     public CompositeCodePiece(CodePiece codePiece) {
 	codePieces = new Vector();
 	if (codePiece != null) {
@@ -63,8 +65,8 @@ public class CompositeCodePiece extends CodePiece {
 	}
     }
 
-    /**
-     *  @return the string representation for this piece of code
+    /*
+     * @see org.argouml.language.java.generator.CodePiece#getText()
      */
     public StringBuffer getText() {
 	Iterator i = codePieces.iterator();
@@ -90,9 +92,7 @@ public class CompositeCodePiece extends CodePiece {
 	return text;
     }
 
-    /**
-     * Return the start position.
-     *
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
      */
     public int getStartPosition() {
@@ -102,9 +102,7 @@ public class CompositeCodePiece extends CodePiece {
         return 0;
     }
 
-    /**
-     * Return the end position.
-     *
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
      */
     public int getEndPosition() {
@@ -114,9 +112,7 @@ public class CompositeCodePiece extends CodePiece {
 	return 0;
     }
 
-    /**
-     * Return the start line.
-     *
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
      */
     public int getStartLine() {
@@ -126,9 +122,7 @@ public class CompositeCodePiece extends CodePiece {
         return 0;
     }
 
-    /**
-     * Return the end line.
-     *
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
      */
     public int getEndLine() {

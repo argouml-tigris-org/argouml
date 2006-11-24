@@ -54,7 +54,7 @@ public class ToDoByPriority extends ToDoPerspective
     ////////////////////////////////////////////////////////////////
     // ToDoListListener implementation
 
-    /**
+    /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsChanged(ToDoListEvent tde) {
@@ -89,7 +89,7 @@ public class ToDoByPriority extends ToDoPerspective
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsAdded(ToDoListEvent tde) {
@@ -124,7 +124,7 @@ public class ToDoByPriority extends ToDoPerspective
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
@@ -152,7 +152,7 @@ public class ToDoByPriority extends ToDoPerspective
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoListChanged(ToDoListEvent tde) { }

@@ -1,3 +1,4 @@
+// $Id:$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -23,6 +24,10 @@
 
 package org.argouml.cognitive;
 
+/**
+ * Interface to be implementable by figures which can be highlighted to
+ * visually show where a problem identified by the Critic subsystem is located.
+ */
 public interface Highlightable {
     void setHighlight(boolean b);
     boolean getHighlight();

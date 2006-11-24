@@ -313,7 +313,7 @@ public class DisplayTextTree extends JTree {
         expanded.addElement(path);
     }
 
-    /**
+    /*
      * @see javax.swing.JTree#fireTreeCollapsed(javax.swing.tree.TreePath)
      */
     public void fireTreeCollapsed(TreePath path) {
@@ -328,7 +328,7 @@ public class DisplayTextTree extends JTree {
         expanded.removeElement(path);
     }
 
-    /**
+    /*
      * @see javax.swing.JTree#setModel(javax.swing.tree.TreeModel)
      */
     public void setModel(TreeModel newModel) {

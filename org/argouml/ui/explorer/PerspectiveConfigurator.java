@@ -395,7 +395,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         // sort them
         Collections.sort(rulesLib, new Comparator() {
             public int compare(Object o1, Object o2) {
-            return o1.toString().compareTo(o2.toString());
+                return o1.toString().compareTo(o2.toString());
             }
         });
         // remove the ones already selected (if a perspective is selected)
@@ -488,7 +488,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         model.clear();
         Collections.sort(all, new Comparator() {
             public int compare(Object o1, Object o2) {
-            return o1.toString().compareTo(o2.toString());
+                return o1.toString().compareTo(o2.toString());
             }
         });
         Iterator it = all.iterator();
@@ -691,7 +691,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
      * Handles pressing the move up button.
      */
     class MoveUpListener implements ActionListener {
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
@@ -775,7 +775,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
      * Handles selection changes in the perspective list.
      */
     class PerspectiveListSelectionListener implements ListSelectionListener {
-        /**
+        /*
          * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
          */
         public void valueChanged(ListSelectionEvent lse) {
@@ -816,7 +816,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
      * Handles selection changes in the rules list.
      */
     class RulesListSelectionListener implements ListSelectionListener {
-        /**
+        /*
          * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
          */
         public void valueChanged(ListSelectionEvent lse) {
@@ -843,7 +843,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
      *
      */
     class LibraryListSelectionListener implements ListSelectionListener {
-        /**
+        /*
          * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
          */
         public void valueChanged(ListSelectionEvent lse) {

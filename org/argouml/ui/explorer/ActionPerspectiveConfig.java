@@ -49,7 +49,7 @@ public class ActionPerspectiveConfig extends AbstractAction {
                 Translator.localize("action.configure-perspectives"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

@@ -63,7 +63,7 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode implements
             ((UMLDiagram) userObj).addPropertyChangeListener(this);
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeNode#isLeaf()
      */
     public boolean isLeaf() {
@@ -119,7 +119,7 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode implements
 	}
     }
     
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {

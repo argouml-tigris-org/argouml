@@ -205,18 +205,14 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	order = new TypeThenNameOrder();
     }
 
-    /**
-     * a model element has changed in some way.
-     *
+    /*
      * @see org.argouml.ui.explorer.TreeModelUMLEventListener#modelElementChanged(java.lang.Object)
      */
     public void modelElementChanged(Object node) {
         traverseModified((TreeNode) getRoot(), node);
     }
 
-    /**
-     * a model element has been added to the model.
-     *
+    /*
      * @see org.argouml.ui.explorer.TreeModelUMLEventListener#modelElementAdded(java.lang.Object)
      */
     public void modelElementAdded(Object node) {
@@ -242,9 +238,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	}
     }
 
-    /**
-     * a model element has been removed from the model.
-     *
+    /*
      * @see org.argouml.ui.explorer.TreeModelUMLEventListener#modelElementRemoved(java.lang.Object)
      */
     public void modelElementRemoved(Object node) {
@@ -262,8 +256,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
         traverseModified((TreeNode) getRoot(), node);
     }
 
-    /**
+    /*
      * the model structure has changed, eg a new project.
+     * @see org.argouml.ui.explorer.TreeModelUMLEventListener#structureChanged()
      */
     public void structureChanged() {
 	// remove references for gc
@@ -630,17 +625,8 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	}
     }
 
-    /**
-     * Invoked this to insert newChild at location index in parents children.
-     * This will then message nodesWereInserted to create the appropriate
-     * event. This is the preferred way to add children as it will create the
-     * appropriate event.<p>
-     *
-     * Also performs subclass specific initialization.
-     *
-     * @param newChild The new child node.
-     * @param parent The parent node.
-     * @param index The index.
+    /*
+     * @see javax.swing.tree.DefaultTreeModel#insertNodeInto(javax.swing.tree.MutableTreeNode, javax.swing.tree.MutableTreeNode, int)
      */
     public void insertNodeInto(MutableTreeNode newChild,
 			       MutableTreeNode parent, int index) {
@@ -649,15 +635,8 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	addNodesToMap(newChild);
     }
 
-    /**
-     * Message this to remove node from its parent. This will message
-     * nodesWereRemoved to create the appropriate event. This is the
-     * preferred way to remove a node as it handles the event creation
-     * for you.<p>
-     *
-     * Also performs subclass specific uninitialization.
-     *
-     * @param node The node to remove.
+    /*
+     * @see javax.swing.tree.DefaultTreeModel#removeNodeFromParent(javax.swing.tree.MutableTreeNode)
      */
     public void removeNodeFromParent(MutableTreeNode node) {
 	removeNodesFromMap(node);
@@ -761,7 +740,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
     /**
      * Updates the explorer for new perspectives / orderings.
      *
-     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     * {@inheritDoc}
      */
     public void itemStateChanged(ItemEvent e) {
 	if (e.getSource() instanceof PerspectiveComboBox) {

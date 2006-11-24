@@ -267,7 +267,7 @@ public class StylePanelFigText extends StylePanelFig {
         getPanelTarget().endTrans();
     }
 
-    /**
+    /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {

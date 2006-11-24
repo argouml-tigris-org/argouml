@@ -47,7 +47,7 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
     public OCLEvaluator() {
     }
 
-    /**
+    /*
      * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(java.lang.Object,
      * java.lang.String)
      */
@@ -100,7 +100,7 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         return res;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(java.lang.Object,
      * java.lang.String, java.lang.String)
      */

@@ -58,7 +58,7 @@ public class ActionShowXMLDump extends AbstractAction {
         super(Translator.localize("action.show-saved"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

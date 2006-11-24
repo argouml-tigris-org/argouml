@@ -53,7 +53,7 @@ public class ActionAutoCritique extends UndoableAction {
                     Boolean.valueOf(Designer.theDesigner().getAutoCritique()));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

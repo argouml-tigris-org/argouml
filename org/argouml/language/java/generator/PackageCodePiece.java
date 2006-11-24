@@ -53,56 +53,44 @@ public class PackageCodePiece extends NamedCodePiece {
 	identifier = id;
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getText()
-     *
-     * Return the string representation for this piece of code.
      */
     public StringBuffer getText() {
 	return identifier.getText();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
-     *
-     * Return the start position.
      */
     public int getStartPosition() {
 	return identifier.getStartPosition();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
-     *
-     * Return the end position.
      */
     public int getEndPosition() {
 	return identifier.getEndPosition();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
-     *
-     * Return the start line
      */
     public int getStartLine() {
 	return identifier.getStartLine();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
-     *
-     * Return the end line
      */
     public int getEndLine() {
 	return identifier.getEndLine();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.NamedCodePiece#write(
      *         java.io.BufferedReader, java.io.BufferedWriter, java.util.Stack)
-     *
-     * Write the code this piece represents to file.
      */
     public void write(BufferedReader reader,
                       BufferedWriter writer,

@@ -130,7 +130,12 @@ public class CmdSetPreferredSize extends Cmd {
         }
     }
 
-    /** unsupported. */
-    public void undoIt() { }
+
+    /*
+     * @see org.tigris.gef.base.Cmd#undoIt()
+     */
+    public void undoIt() {
+        // unsupported. 
+    }
 
 }

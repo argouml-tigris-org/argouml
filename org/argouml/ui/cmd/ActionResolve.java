@@ -41,7 +41,7 @@ public class ActionResolve extends ToDoItemAction {
         super("action.resolve-item", true);
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

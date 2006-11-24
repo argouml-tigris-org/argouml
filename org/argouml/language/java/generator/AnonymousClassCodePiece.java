@@ -54,42 +54,42 @@ public class AnonymousClassCodePiece extends NamedCodePiece {
 	number = seqNumber;
     }
 
-    /**
-     * @return the string representation for this piece of code.
+    /*
+     * @see org.argouml.language.java.generator.CodePiece#getText()
      */
     public StringBuffer getText() {
 	return classDef.getText();
     }
 
-    /**
-     * @return the start position.
+    /*
+     * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
      */
     public int getStartPosition() {
 	return classDef.getStartPosition();
     }
 
-    /**
-     * @return the end position.
+    /*
+     * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
      */
     public int getEndPosition() {
 	return classDef.getEndPosition();
     }
 
-    /**
-     * @return the start line
+    /*
+     * @see org.argouml.language.java.generator.CodePiece#getStartLine()
      */
     public int getStartLine() {
 	return classDef.getStartLine();
     }
 
-    /**
-     * @return the end line
+    /*
+     * @see org.argouml.language.java.generator.CodePiece#getEndLine()
      */
     public int getEndLine() {
 	return classDef.getEndLine();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.NamedCodePiece#write(
      *         java.io.BufferedReader, java.io.BufferedWriter, java.util.Stack)
      *

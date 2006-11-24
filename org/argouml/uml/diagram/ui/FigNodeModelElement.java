@@ -134,8 +134,8 @@ public abstract class FigNodeModelElement
     protected HashMap npArguments = new HashMap();
     
     /**
-     * True of a subclass of FigNodeModelElement is allowed to be
-     * invisible. This is currently only set true by FigEdgePort
+     * True if an instance is allowed to be
+     * invisible. This is currently only set true by FigEdgePort.
      * TODO: FigEdgePort should be removed from the FigNodeModelElement
      * hierarchy and so the need for this removed.
      */
@@ -191,9 +191,11 @@ public abstract class FigNodeModelElement
         ITALIC_LABEL_FONT =
             new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
         BOLD_LABEL_FONT =
-            new Font(LABEL_FONT.getFamily(), Font.BOLD, LABEL_FONT.getSize() + 2);
+            new Font(LABEL_FONT.getFamily(), Font.BOLD, 
+                    LABEL_FONT.getSize() + 2);
         BOLD_ITALIC_LABEL_FONT =
-            new Font(LABEL_FONT.getFamily(), Font.BOLD | Font.ITALIC, LABEL_FONT.getSize() + 2);
+            new Font(LABEL_FONT.getFamily(), Font.BOLD | Font.ITALIC, 
+                    LABEL_FONT.getSize() + 2);
 
         // Setup image ops used in rendering shadows
         byte[][] data = new byte[4][256];
@@ -326,7 +328,8 @@ public abstract class FigNodeModelElement
 
         showBoldName = ps.getShowBoldNamesValue();
         if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
-            nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT : ITALIC_LABEL_FONT);
+            nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT
+                    : ITALIC_LABEL_FONT);
         } else {
             nameFig.setFont(showBoldName ? BOLD_LABEL_FONT : LABEL_FONT);
         }
@@ -356,8 +359,8 @@ public abstract class FigNodeModelElement
      * Construct a figure at a specific position for a given model element.
      * 
      * @param element ModelElement associated with figure
-     * @param x
-     * @param y
+     * @param x horizontal location
+     * @param y vertical location
      */
     public FigNodeModelElement(Object element, int x, int y) {
         this();
@@ -368,7 +371,7 @@ public abstract class FigNodeModelElement
         //ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
-    /**
+    /*
      * @see java.lang.Object#finalize()
      */
     protected void finalize() throws Throwable {
@@ -376,7 +379,7 @@ public abstract class FigNodeModelElement
         super.finalize();
     }
 
-    /**
+    /*
      * After the base clone method has been called determine which child
      * figs of the clone represent the name, stereotype and port. <p>
      *
@@ -468,7 +471,8 @@ public abstract class FigNodeModelElement
         nameFig = fig;
         if (nameFig != null) {
             if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
-                nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT : ITALIC_LABEL_FONT);
+                nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT
+                        : ITALIC_LABEL_FONT);
             } else {
                 nameFig.setFont(showBoldName ? BOLD_LABEL_FONT : LABEL_FONT);
             }
@@ -493,7 +497,7 @@ public abstract class FigNodeModelElement
         nameFig.setText(n);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
@@ -591,21 +595,22 @@ public abstract class FigNodeModelElement
         return modifierMenu;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getEnclosingFig()
      */
     public Fig getEnclosingFig() {
         return encloser;
     }
 
-    /**
+    /*
      * Updates the modelelement container if the fig is moved in or
      * out another fig. If this fig doesn't have an enclosing fig
      * anymore, the namespace of the diagram will be the owning
      * modelelement. If this fig is moved inside another
      * FigNodeModelElement the owner of that fignodemodelelement will
      * be the owning modelelement.
-     * @see Fig#setEnclosingFig(Fig)
+     * 
+     * @see org.tigris.gef.presentation.FigNode#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig newEncloser) {
 	Fig oldEncloser = encloser;
@@ -670,7 +675,7 @@ public abstract class FigNodeModelElement
         enclosedFigs.remove(fig);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getEnclosedFigs()
      */
     public Vector getEnclosedFigs() {
@@ -699,14 +704,14 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
         return new SelectionNodeClarifiers(this);
     }
 
-    /**
+    /*
      * Overridden to paint shadows. This method supports painting shadows
      * for any FigNodeModelElement. Any Figs that are nested within the
      * FigNodeModelElement will be shadowed.<p>
@@ -714,7 +719,7 @@ public abstract class FigNodeModelElement
      * TODO: If g is not a Graphics2D shadows cannot be painted. This is
      * a problem when saving the diagram as SVG.
      *
-     * @param g is a Graphics that we paint this object on.
+     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
         if (shadowSize > 0
@@ -876,7 +881,7 @@ public abstract class FigNodeModelElement
         return null;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
      */
     public String getTipString(MouseEvent me) {
@@ -899,7 +904,7 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /**
+    /*
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {
@@ -916,7 +921,7 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
      */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
@@ -940,7 +945,7 @@ public abstract class FigNodeModelElement
         setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent pve) {
@@ -1049,7 +1054,7 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // event handlers - MouseListener implementation
 
-    /**
+    /*
      * If the user double clicks on any part of this FigNode, pass it
      * down to one of the internal Figs. This allows the user to
      * initiate direct text editing.
@@ -1092,7 +1097,7 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
@@ -1102,7 +1107,7 @@ public abstract class FigNodeModelElement
         nameFig.keyPressed(ke);
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
     public void keyReleased(KeyEvent ke) {
@@ -1112,7 +1117,7 @@ public abstract class FigNodeModelElement
         nameFig.keyReleased(ke);
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent ke) {
@@ -1177,15 +1182,13 @@ public abstract class FigNodeModelElement
     /**
      * Create a new feature in the owner fig.
      *
-     * must be overridden to make sense
-     * (I didn't want to make it abstract because it might not be required)
-     *
      * @param fg The fig group to which this applies
      * @param me The input event that triggered us. In the current
      *            implementation a mouse double click.
      */
     protected void createFeatureIn(FigGroup fg, InputEvent me) {
-
+        // must be overridden to make sense
+        // (I didn't want to make it abstract because it might not be required)
     }
 
     /**
@@ -1230,7 +1233,7 @@ public abstract class FigNodeModelElement
         return false;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
     public void deleteFromModel() {
@@ -1331,23 +1334,26 @@ public abstract class FigNodeModelElement
                 ProjectSettings ps = p.getProjectSettings();
                 showBoldName = ps.getShowBoldNamesValue();
                 if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
-                    nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT : ITALIC_LABEL_FONT);
+                    nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT
+                            : ITALIC_LABEL_FONT);
                 } else {
-                    nameFig.setFont(showBoldName ? BOLD_LABEL_FONT : LABEL_FONT);
+                    nameFig
+                            .setFont(showBoldName ? BOLD_LABEL_FONT
+                                    : LABEL_FONT);
                 }
                 updateBounds();
             }
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.PathContainer#isPathVisible()
      */
     public boolean isPathVisible() {
         return pathVisible;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.PathContainer#setPathVisible(boolean)
      */
     public void setPathVisible(boolean visible) {
@@ -1365,10 +1371,8 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /**
-     * USED BY PGML.tee.
-     * @return the class name and bounds together with compartment
-     * visibility.
+    /*
+     * @see org.tigris.gef.presentation.Fig#classNameAndBounds()
      */
     public String classNameAndBounds() {
         return getClass().getName()
@@ -1420,7 +1424,7 @@ public abstract class FigNodeModelElement
 
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationChanged(ArgoNotationEvent event) {
@@ -1433,28 +1437,32 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationAdded(ArgoNotationEvent event) {
+        // Default is to do nothing
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationRemoved(ArgoNotationEvent event) {
+        // Default is to do nothing
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderAdded(ArgoNotationEvent event) {
+        // Default is to do nothing
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderRemoved(ArgoNotationEvent event) {
+        // Default is to do nothing
     }
 
     /**
@@ -1471,7 +1479,7 @@ public abstract class FigNodeModelElement
         damage();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#calcBounds()
      */
     public void calcBounds() {
@@ -1503,7 +1511,9 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * @deprecated do not use. Delete as soon as its single reference is gone.
+     * @deprecated do not use. This was deprecated by bobtarling at the 
+     * same time that it was introduced (July 2006), so may be deleted without
+     * warning as soon as its single reference is gone.
      * @param size
      */
     protected void setShadowSizeFriend(int size) {
@@ -1520,8 +1530,9 @@ public abstract class FigNodeModelElement
         return shadowSize;
     }
 
-    /**
+    /*
      * Necessary since GEF contains some errors regarding the hit subject.
+     * 
      * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
      */
     public boolean hit(Rectangle r) {
@@ -1532,7 +1543,7 @@ public abstract class FigNodeModelElement
         return (cornersHit > 0 && cornersHit < 4) || intersects(r);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public final void removeFromDiagram() {
@@ -1564,7 +1575,7 @@ public abstract class FigNodeModelElement
         super.removeFromDiagram();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
     public void postLoad() {
@@ -1627,7 +1638,7 @@ public abstract class FigNodeModelElement
         return checkSize;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigNode#isDragConnectable()
      */
     public boolean isDragConnectable() {
@@ -1668,6 +1679,16 @@ public abstract class FigNodeModelElement
         this.suppressCalcBounds = scb;
     }
     
+    /**
+     * Set visibility of figure. If the field {@link #invisibleAllowed} is not
+     * <code>true</code> and this method is passed a parameter of
+     * <code>false</code> it will throw an IllegalArgumentException.
+     * 
+     * @param visible
+     *            new visibility - <code>true</code> = visible.
+     * 
+     * @see org.tigris.gef.presentation.Fig#setVisible(boolean)
+     */
     public void setVisible(boolean visible) {
         if (!visible && !invisibleAllowed) {
             throw new IllegalArgumentException(
@@ -1675,7 +1696,7 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
      */
     public void setLayer(Layer lay) {

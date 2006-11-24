@@ -200,7 +200,7 @@ public class TabResults
             Translator.localize("dialog.tabresults.related-items"));
     }
 
-    /**
+    /*
      * @see org.argouml.ui.AbstractArgoJPanel#spawn()
      */
     public AbstractArgoJPanel spawn() {
@@ -233,28 +233,31 @@ public class TabResults
     ////////////////////////////////////////////////////////////////
     // ActionListener implementation
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+        // ignored
     }
 
     ////////////////////////////////////////////////////////////////
     // MouseListener implementation
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
+        // ignored
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
+        // ignored
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
@@ -263,16 +266,18 @@ public class TabResults
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) {
+        // ignored
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent me) {
+        // ignored
     }
 
     private void myDoubleClick(Object src) {
@@ -304,7 +309,7 @@ public class TabResults
     ////////////////////////////////////////////////////////////////
     // KeyListener implementation
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent e) {
@@ -314,22 +319,24 @@ public class TabResults
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
     public void keyReleased(KeyEvent e) {
+        // ignored
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent e) {
+        // ignored
     }
 
     ////////////////////////////////////////////////////////////////
     // ListSelectionListener implementation
 
-    /**
+    /*
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent lse) {
@@ -358,7 +365,7 @@ public class TabResults
     ////////////////////////////////////////////////////////////////
     // actions
 
-    /**
+    /*
      * @see java.lang.Runnable#run()
      */
     public void run() {

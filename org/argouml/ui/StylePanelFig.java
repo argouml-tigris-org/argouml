@@ -420,7 +420,7 @@ public class StylePanelFig
         target.endTrans();
     }
 
-    /**
+    /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {
@@ -444,7 +444,7 @@ public class StylePanelFig
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
      */
     public void focusGained(FocusEvent e) {
@@ -453,7 +453,7 @@ public class StylePanelFig
     /**
      * Makes sure that the fig is updated when the bboxField loses focus.
      *
-     * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+     * {@inheritDoc}
      */
     public void focusLost(FocusEvent e) {
         if (e.getSource() == bboxField) {
@@ -461,16 +461,18 @@ public class StylePanelFig
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent e) {
+        // Empty implementation - we only care about keyTyped
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
     public void keyReleased(KeyEvent e) {
+        // Empty implementation - we only care about keyTyped
     }
 
     /**

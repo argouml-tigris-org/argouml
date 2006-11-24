@@ -45,7 +45,7 @@ public class GoListToTypeToItem extends AbstractGoList {
     // TreeModel implementation
 
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
      */
     public Object getChild(Object parent, int index) {
@@ -68,7 +68,7 @@ public class GoListToTypeToItem extends AbstractGoList {
 					    + "GoListToTypeToItem");
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
      */
     public int getChildCount(Object parent) {
@@ -90,7 +90,7 @@ public class GoListToTypeToItem extends AbstractGoList {
 	return 0;
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#getIndexOfChild(
      * java.lang.Object, java.lang.Object)
      */
@@ -115,7 +115,7 @@ public class GoListToTypeToItem extends AbstractGoList {
 	return -1;
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */
     public boolean isLeaf(Object node) {
@@ -125,18 +125,18 @@ public class GoListToTypeToItem extends AbstractGoList {
 	return true;
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#valueForPathChanged(
      * javax.swing.tree.TreePath, java.lang.Object)
      */
     public void valueForPathChanged(TreePath path, Object newValue) { }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
      */
     public void addTreeModelListener(TreeModelListener l) { }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
      */
     public void removeTreeModelListener(TreeModelListener l) { }

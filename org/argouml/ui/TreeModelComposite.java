@@ -59,19 +59,15 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
 
-    /** Getter for the root of the model.
+    /*
      * @see javax.swing.tree.TreeModel#getRoot()
      */
     public Object getRoot() {
         return root;
     }
 
-    /**
-     * Finds the each of the children of a parent in the tree.
-     *
-     * @param parent in the tree
-     * @param index of child to find
-     * @return the child found at index. Null if index is out of bounds.
+    /*
+     * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
      */
     public Object getChild(Object parent, int index) {
 
@@ -87,7 +83,7 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
         return null;
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
      */
     public int getChildCount(Object parent) {
@@ -101,7 +97,7 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
         return childCount;
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
      * java.lang.Object)
      */
@@ -123,16 +119,8 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
         return -1;
     }
 
-    /**
-     * Returns true if <I>node</I> is a leaf.  It is possible for this method
-     * to return false even if <I>node</I> has no children.  A directory in a
-     * filesystem, for example, may contain no files; the node representing
-     * the directory is not a leaf, but it also has no children.
-     * <P>
-     * If none of the subTreeModels is not a leaf, then we are not a leaf.
-     *
-     * @param   node    a node in the tree, obtained from this data source
-     * @return  true if <I>node</I> is a leaf
+    /*
+     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */
     public boolean isLeaf(Object node) {
         int nSubs = getGoRules().size();
@@ -144,18 +132,13 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
         return true;
     }
 
-    /**
-     * Empty implementation - not used.<p>
-     *
-     * Messaged when the user has altered the value for the item identified
-     * by <I>path</I> to <I>newValue</I>.  If <I>newValue</I> signifies
-     * a truly new value the model should post a treeNodesChanged
-     * event.<p>
-     *
-     * @param path path to the node that the user has altered.
-     * @param newValue the new value from the TreeCellEditor.
+
+    /*
+     * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)
      */
-    public void valueForPathChanged(TreePath path, Object newValue) { }
+    public void valueForPathChanged(TreePath path, Object newValue) { 
+        //  Empty implementation - not used.
+    }
 
     ////////////////////////////////////////////////////////////////
     // other methods

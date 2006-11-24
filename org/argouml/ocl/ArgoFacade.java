@@ -66,7 +66,7 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
 	}
     }
 
-    /**
+    /*
      * @see tudresden.ocl.check.types.ModelFacade#getClassifier(java.lang.String)
      */
     public Any getClassifier(String name) {
@@ -109,7 +109,7 @@ class ArgoAny implements Any, Type2 {
 	classifier = cl;
     }
 
-    /**
+    /*
      * @see tudresden.ocl.check.types.Type#navigateQualified(
      *         java.lang.String, tudresden.ocl.check.types.Type[])
      */
@@ -234,7 +234,7 @@ class ArgoAny implements Any, Type2 {
 	return result;
     }
 
-    /**
+    /*
      * @see tudresden.ocl.check.types.Type2#navigateParameterizedQuery(
      *         java.lang.String, tudresden.ocl.check.types.Type[])
      */
@@ -243,7 +243,7 @@ class ArgoAny implements Any, Type2 {
 	return internalNavigateParameterized(name, qualifiers, true);
     }
 
-    /**
+    /*
      * @see tudresden.ocl.check.types.Type#navigateParameterized(
      *         java.lang.String, tudresden.ocl.check.types.Type[])
      */
@@ -315,7 +315,7 @@ class ArgoAny implements Any, Type2 {
 	return getOclRepresentation(returnType);
     }
 
-    /**
+    /*
      * @see tudresden.ocl.check.types.Type#conformsTo(tudresden.ocl.check.types.Type)
      */
     public boolean conformsTo(Type type) {
@@ -328,7 +328,7 @@ class ArgoAny implements Any, Type2 {
         return false;
     }
 
-    /**
+    /*
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object o) {
@@ -340,7 +340,7 @@ class ArgoAny implements Any, Type2 {
 	return false;
     }
 
-    /**
+    /*
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
@@ -350,7 +350,7 @@ class ArgoAny implements Any, Type2 {
 	return classifier.hashCode();
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -360,7 +360,7 @@ class ArgoAny implements Any, Type2 {
 	return Model.getFacade().getName(classifier);
     }
 
-    /**
+    /*
      * @see tudresden.ocl.check.types.Type#hasState(java.lang.String)
      */
     public boolean hasState(String name) {

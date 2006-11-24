@@ -83,7 +83,7 @@ public class AttributeCodePiece extends NamedCodePiece {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getText()
      *
      * Return the string representation for this piece of code.
@@ -92,7 +92,7 @@ public class AttributeCodePiece extends NamedCodePiece {
 	return attributeDef.getText();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
      *
      * Return the start position.
@@ -101,7 +101,7 @@ public class AttributeCodePiece extends NamedCodePiece {
 	return attributeDef.getStartPosition();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
      *
      * Return the end position.
@@ -110,7 +110,7 @@ public class AttributeCodePiece extends NamedCodePiece {
 	return attributeDef.getEndPosition();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
      *
      * Return the start line
@@ -119,7 +119,7 @@ public class AttributeCodePiece extends NamedCodePiece {
 	return attributeDef.getStartLine();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
      *
      * Return the end line
@@ -128,7 +128,7 @@ public class AttributeCodePiece extends NamedCodePiece {
 	return attributeDef.getEndLine();
     }
 
-    /**
+    /*
      * @see org.argouml.language.java.generator.NamedCodePiece#write(
      *         java.io.BufferedReader, java.io.BufferedWriter, java.util.Stack)
      *

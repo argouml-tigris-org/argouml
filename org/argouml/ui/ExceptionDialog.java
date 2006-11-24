@@ -256,7 +256,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         pack();
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

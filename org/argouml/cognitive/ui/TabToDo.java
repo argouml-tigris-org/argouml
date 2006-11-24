@@ -199,7 +199,7 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
         actionSnooze.updateEnabled(item);
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
      *          TargetEvent)
      */
@@ -207,7 +207,7 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
 	setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
      *          TargetEvent)
      */
@@ -217,7 +217,7 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
 	setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {

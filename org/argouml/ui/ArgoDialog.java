@@ -83,7 +83,7 @@ public class ArgoDialog extends Dialog {
         init();
     }
 
-    /**
+    /*
      * @see org.tigris.swidgets.Dialog#nameButtons()
      */
     protected void nameButtons() {

@@ -79,7 +79,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
 
-    /**
+    /*
      * @see javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent(
      * javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int,
      * boolean)
@@ -139,13 +139,9 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
                     newValue = ((Fig) value).getOwner();
                 }
                 if (Model.getFacade().isAModelElement(newValue)) {
-                    return treeCellRenderer.getTreeCellRendererComponent(tree,
-								     newValue,
-								     sel,
-								     expanded,
-								     leaf,
-								     row,
-								     hasTheFocus);
+                    return treeCellRenderer.getTreeCellRendererComponent(
+                            tree, newValue, sel, expanded, leaf, row,
+                            hasTheFocus);
                 }
             }
 

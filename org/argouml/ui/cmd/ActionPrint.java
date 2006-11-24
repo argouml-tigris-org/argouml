@@ -51,7 +51,7 @@ public class ActionPrint extends AbstractAction {
                 Translator.localize("action.print"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

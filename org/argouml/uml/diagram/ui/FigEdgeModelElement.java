@@ -467,11 +467,11 @@ public abstract class FigEdgeModelElement
         return null;
     }
 
-    /**
+    /*
      * Returns a {@link SelectionRerouteEdge} object that manages selection
      * and rerouting of the edge.
      *
-     * @return the SelectionRerouteEdge.
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
         return new SelectionRerouteEdge(this);
@@ -587,32 +587,35 @@ public abstract class FigEdgeModelElement
     }
     
     /**
-     * Called whenever we receive an AttributeChangeEvent
+     * Called whenever we receive an AttributeChangeEvent.
+     * 
      * @param ace the event
      */
     protected void modelAttributeChanged(AttributeChangeEvent ace) {
-        
+        // Default implementation is to do nothing
     }
 
     /**
-     * Called whenever we receive an AddAssociationEvent
+     * Called whenever we receive an AddAssociationEvent.
+     * 
      * @param aae the event
      */
     protected void modelAssociationAdded(AddAssociationEvent aae) {
-        
+        // Default implementation is to do nothing        
     }
 
     /**
-     * Called whenever we receive an RemoveAssociationEvent
+     * Called whenever we receive an RemoveAssociationEvent.
+     * 
      * @param rae the event
      */
     protected void modelAssociationRemoved(RemoveAssociationEvent rae) {
-        
+        // Default implementation is to do nothing
     }
 
     /**
      * This method is called when the user doubleclicked on the text field,
-     * and starts editing. Subclasses should overrule this field to e.g.
+     * and starts editing. Subclasses should override this method to e.g.
      * supply help to the user about the used format. <p>
      *
      * It is also possible to alter the text to be edited
@@ -675,28 +678,32 @@ public abstract class FigEdgeModelElement
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
+        // Required for MouseListener interface, but we only care about clicks
     }
 
     /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
+        // Required for MouseListener interface, but we only care about clicks
     }
 
     /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) {
+        // Required for MouseListener interface, but we only care about clicks
     }
 
     /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent me) {
+        // Required for MouseListener interface, but we only care about clicks
     }
 
     /*
-     * If the user double clicks on anu part of this FigNode, pass it
+     * If the user double clicks on any part of this FigNode, pass it
      * down to one of the internal Figs.  This allows the user to
      * initiate direct text editing.
      *
@@ -717,12 +724,14 @@ public abstract class FigEdgeModelElement
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
+        // Required for KeyListener interface, but not used
     }
 
     /*
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
     public void keyReleased(KeyEvent ke) {
+        // Required for KeyListener interface, but not used
     }
 
     /*
@@ -902,7 +911,7 @@ public abstract class FigEdgeModelElement
         getFig().setLayer(lay);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
     public void deleteFromModel() {
@@ -930,24 +939,28 @@ public abstract class FigEdgeModelElement
      * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationAdded(ArgoNotationEvent event) {
+        // Default implementation is to do nothing
     }
 
     /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationRemoved(ArgoNotationEvent event) {
+        // Default implementation is to do nothing
     }
 
     /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderAdded(ArgoNotationEvent event) {
+        // Default implementation is to do nothing
     }
 
     /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderRemoved(ArgoNotationEvent event) {
+        // Default implementation is to do nothing
     }
 
     /*
@@ -966,7 +979,7 @@ public abstract class FigEdgeModelElement
 	return super.hit(r);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public final void removeFromDiagram() {
@@ -1026,7 +1039,7 @@ public abstract class FigEdgeModelElement
         super.removeFromDiagram();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#damage()
      */
     public void damage() {
@@ -1177,7 +1190,7 @@ public abstract class FigEdgeModelElement
         return null;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
     public void postLoad() {

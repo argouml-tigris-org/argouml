@@ -100,12 +100,12 @@ public class SplashScreen extends JWindow implements IStatusBar {
     ////////////////////////////////////////////////////////////////
     // IStatusBar
 
-    /**
+    /*
      * @see org.tigris.gef.ui.IStatusBar#showStatus(java.lang.String)
      */
     public void showStatus(String s) { statusBar.showStatus(s); }
     
-    /**
+    /*
      * Override paint so we can set a flag the first time we're called
      * and notify any waiting threads that the splash screen has been
      * painted.
