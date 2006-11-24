@@ -83,14 +83,16 @@ This is designed to work in two different environments:
       <fileset dir="${argo.build.dir}" includes="*.jar"/>
       <path refid="mdr.run.classpath"/>
     </path>
-  
+
+    <property name="profile.file.dir" value="org/argouml/model/mdr/profiles"/>
+    
     <!-- Implementation classes for UML 1.4 are generated from this file -->
     <!-- When changing to a different UML metamodel, be sure to use the 
          _Diff file which adds the Java specific tags for JMI, not the
          base OMG file
       -->
-    <property name="xmi.file.path" value="org/argouml/model/mdr/mof"/>
-    <property name="xmi.file" value="src/${xmi.file.path}/01-02-15_Diff" /> 
+    <property name="mof.file.dir" value="org/argouml/model/mdr/mof"/>
+    <property name="xmi.file" value="src/${mof.file.dir}/01-02-15_Diff" /> 
 
     <taskdef name="mdr" classname="org.netbeans.mdrant.MdrTask">
       <classpath>
@@ -237,7 +239,8 @@ This is designed to work in two different environments:
     <copy todir="${build.classes}">
       <fileset dir="src">
         <include name="**/*.xsl"/>
-        <include name="${xmi.file.path}/**"/>
+        <include name="${mof.file.dir}/**"/>
+        <include name="${profile.file.dir}/**"/>
       </fileset>
     </copy>
   </target>
