@@ -1,5 +1,4 @@
-This directory contains the UML metamodel definitions and UML standard
-standard profiles.
+This directory contains the UML metamodel definitions.
 
 UML 1.3
  - 01-12-02.xml - <deleted> base UML definition - available at 
@@ -23,11 +22,3 @@ UML 1.5
  - ActionUML_Interchange_MetaModel_FTF.xml - base UML definintion - 
         from OMG http://www.omg.org/cgi-bin/doc?formal/2004-04-04
  - ActionUML_Interchange_MetaModel_FTF_omg_Diff.xml - Java binding diffs - from ???
- 
-PROFILES
-- default-uml14.xmi - standard model elements from UML 1.4 spec
-- default-uml14-uml20-deprecated.xmi - standard model elements from
-       UML 1.4 spec, but with items deleted from UML 2.0 marked as
-       deprecated.
-- default-uml14-uml20-subset.xmi - subset of standard model elements
-       from UML 1.4 spec which are also in UML 2.0 spec.
