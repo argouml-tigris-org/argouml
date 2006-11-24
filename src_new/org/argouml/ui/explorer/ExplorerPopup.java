@@ -24,7 +24,11 @@
 
 package org.argouml.ui.explorer;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.Action;
 import javax.swing.JMenu;
@@ -34,6 +38,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -43,6 +48,7 @@ import org.argouml.uml.diagram.ui.ActionAddAllClassesFromModel;
 import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
+import org.argouml.uml.diagram.ui.AddExistingNodeCommand;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionAddPackage;
 import org.argouml.uml.ui.ActionClassDiagram;
@@ -55,6 +61,10 @@ import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * PopUp for extra functionality for the Explorer.
@@ -191,6 +201,7 @@ public class ExplorerPopup extends JPopupMenu {
                             menuLocalize("menu.popup.add-to-diagram"),
                             selectedItem);
                     this.add(action);
+                    addMenuItemForBothEndsOf(selectedItem);
                 }
             }
 
@@ -267,9 +278,83 @@ public class ExplorerPopup extends JPopupMenu {
     private String menuLocalize(String key) {
         return Translator.localize(key);
     }
+    
+    /**
+     * Add popup menu items for adding to diagram both edge ends.
+     *
+     * @param edge
+     *            The edge for which the menu item will be added.
+     */
+    private void addMenuItemForBothEndsOf(Object edge) {
+        Collection coll = null;
+        if (Model.getFacade().isAAssociation(edge) || Model.getFacade().isALink(edge)) {
+            coll = Model.getFacade().getConnections(edge);
+        } else if (Model.getFacade().isAAbstraction(edge) || Model.getFacade().isADependency(edge)) {
+            coll = new ArrayList();
+            coll.addAll(Model.getFacade().getClients(edge));
+            coll.addAll(Model.getFacade().getSuppliers(edge));
+        } else if (Model.getFacade().isAGeneralization(edge)) {
+            coll = new ArrayList();
+            Object parent = Model.getFacade().getParent(edge);
+            coll.add(parent);
+            coll.addAll(Model.getFacade().getChildren(parent));
+        }
+        if (coll == null) {
+            return;
+        }
+        Iterator iter = coll.iterator();
+        while (iter.hasNext()) {
+            Object me = iter.next();
+            if (me != null) {
+                if (Model.getFacade().isAAssociationEnd(me)) {
+                    me = Model.getFacade().getType(me);
+                }
+                if (me != null) {
+                    Action action =
+                        new ActionAddExistingRelatedNode(
+                            menuLocalize("menu.popup.add-to-diagram")
+                             + ": "
+                             + Model.getFacade().getName(me),
+                            me);
+                    this.add(action);
+                }
+            }
+        }
+    }
 
     /**
      * The UID.
      */
     private static final long serialVersionUID = -5663884871599931780L;
+
+    
+    private class ActionAddExistingRelatedNode extends ActionAddExistingNode {
+
+        /**
+         * The UML object to be added to the diagram.
+         */
+        private Object object;
+
+        /**
+         * The Constructor.
+         *
+         * @param name the localized name of the action
+         * @param o the node UML object to be added
+         */
+        public ActionAddExistingRelatedNode(String name, Object o) {
+            super(name, o);
+            object = o;
+        }
+
+        /**
+         * @see javax.swing.Action#isEnabled()
+         */
+        public boolean isEnabled() {
+            ArgoDiagram dia = ProjectManager.getManager().
+                getCurrentProject().getActiveDiagram();
+            if (dia == null) return false;
+            MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
+            return gm.canAddNode(object);
+        }
+    } /* end class ActionAddExistingRelatedNode */
 }
