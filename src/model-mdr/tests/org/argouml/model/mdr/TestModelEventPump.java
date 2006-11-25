@@ -40,7 +40,7 @@ public class TestModelEventPump extends TestCase {
 
     private Map registry;
     
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {

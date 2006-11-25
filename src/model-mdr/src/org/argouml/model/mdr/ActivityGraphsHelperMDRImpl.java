@@ -55,7 +55,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsHelper#findClassifierByName(
      *         java.lang.Object, java.lang.String)
      */
@@ -91,7 +91,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsHelper#findStateByName(
      *         java.lang.Object, java.lang.String)
      */
@@ -126,7 +126,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsHelper#isAddingActivityGraphAllowed(java.lang.Object)
      */
     public boolean isAddingActivityGraphAllowed(Object context) {
@@ -135,7 +135,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
             || context instanceof UmlPackage;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsHelper#addInState(
      *         java.lang.Object, java.lang.Object)
      */
@@ -150,7 +150,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.ActivityGraphsHelper#setInStates(java.lang.Object, java.util.Collection)
      */
     public void setInStates(Object classifierInState, Collection newStates) {

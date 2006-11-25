@@ -55,7 +55,7 @@ class XmiReferenceProviderImpl implements XMIReferenceProvider {
      */
     private final String systemId = null;
 
-    /**
+    /*
      * @see org.netbeans.api.xmi.XMIReferenceProvider#getReference(javax.jmi.reflect.RefObject)
      */
     public XMIReferenceProvider.XMIReference getReference(RefObject object) {

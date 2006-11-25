@@ -69,7 +69,7 @@ class UmlHelperMDRImpl implements UmlHelper {
         // Nothing to do - we get all events automatically
     }
 
-    /**
+    /*
      * @see org.argouml.model.UmlHelper#deleteCollection(java.util.Collection)
      */
     public void deleteCollection(Collection col) {
@@ -79,7 +79,7 @@ class UmlHelperMDRImpl implements UmlHelper {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.UmlHelper#getSource(java.lang.Object)
      */
     public Object getSource(Object relationship) {
@@ -97,7 +97,7 @@ class UmlHelperMDRImpl implements UmlHelper {
         throw new IllegalArgumentException();
     }
 
-    /**
+    /*
      * @see org.argouml.model.UmlHelper#getDestination(java.lang.Object)
      */
     public Object getDestination(Object relationShip) {

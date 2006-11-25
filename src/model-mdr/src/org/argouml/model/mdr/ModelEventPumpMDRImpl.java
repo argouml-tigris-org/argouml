@@ -133,7 +133,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         subtypeMap = buildTypeMap(modelImplementation.getModelPackage());
     }
     
-    /**
+    /*
      * @see org.argouml.model.AbstractModelEventPump#addModelEventListener(java.beans.PropertyChangeListener,
      *      java.lang.Object, java.lang.String[])
      */
@@ -151,7 +151,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         registerModelEvent(listener, modelElement, propertyNames);
     }
 
-    /**
+    /*
      * @see org.argouml.model.AbstractModelEventPump#addModelEventListener(java.beans.PropertyChangeListener,
      *      java.lang.Object)
      */
@@ -169,7 +169,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         registerModelEvent(listener, modelElement, null);
     }
 
-    /**
+    /*
      * @see org.argouml.model.AbstractModelEventPump#removeModelEventListener(java.beans.PropertyChangeListener,
      *      java.lang.Object, java.lang.String[])
      */
@@ -178,7 +178,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         unregisterModelEvent(listener, modelelement, propertyNames);
     }
 
-    /**
+    /*
      * @see org.argouml.model.AbstractModelEventPump#removeModelEventListener(java.beans.PropertyChangeListener,
      *      java.lang.Object)
      */
@@ -187,7 +187,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         unregisterModelEvent(listener, modelelement, null);
     }
 
-    /**
+    /*
      * @see org.argouml.model.AbstractModelEventPump#addClassModelEventListener(java.beans.PropertyChangeListener,
      *      java.lang.Object, java.lang.String[])
      */
@@ -196,7 +196,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         registerClassEvent(listener, modelClass, propertyNames);
     }
 
-    /**
+    /*
      * @see org.argouml.model.AbstractModelEventPump#removeClassModelEventListener(java.beans.PropertyChangeListener,
      *      java.lang.Object, java.lang.String[])
      */
@@ -550,7 +550,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         return modelImplementation.getMetaTypes().getName(elementOrClass);
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelEventPump#startPumpingEvents()
      */
     public void startPumpingEvents() {
@@ -558,7 +558,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         repository.addListener(this);
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelEventPump#stopPumpingEvents()
      */
     public void stopPumpingEvents() {
@@ -566,7 +566,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         repository.removeListener(this);
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelEventPump#flushModelEvents()
      */
     public synchronized void flushModelEvents() {
