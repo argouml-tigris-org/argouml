@@ -60,7 +60,8 @@ public class TestUMLTagDefinitionComboBoxModel extends TestCase {
     public TestUMLTagDefinitionComboBoxModel(String arg0) {
         super(arg0);
     }
-    /**
+    
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {

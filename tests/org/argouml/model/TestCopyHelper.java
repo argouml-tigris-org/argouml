@@ -34,14 +34,14 @@ import junit.framework.TestCase;
  */
 public class TestCopyHelper extends TestCase {
 
-    /**
+    /*
      * @see junit.framework.TestCase#TestCase(String)
      */
     public TestCopyHelper(String name) {
 	super(name);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {

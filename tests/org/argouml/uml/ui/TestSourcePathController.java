@@ -69,7 +69,7 @@ public class TestSourcePathController extends TestCase {
         super(arg0);
     }
     
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {

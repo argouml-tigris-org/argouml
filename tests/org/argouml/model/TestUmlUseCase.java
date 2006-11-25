@@ -53,7 +53,7 @@ public class TestUmlUseCase extends GenericUmlObjectTestFixture {
 	runTruthTests(o);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {

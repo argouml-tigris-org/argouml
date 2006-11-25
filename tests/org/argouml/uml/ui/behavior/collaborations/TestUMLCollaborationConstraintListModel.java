@@ -44,21 +44,21 @@ public class TestUMLCollaborationConstraintListModel
         super(arg0);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
         setElem(Model.getCollaborationsFactory().createCollaboration());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
         setModel(new UMLCollaborationConstrainingElementListModel());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
@@ -72,7 +72,7 @@ public class TestUMLCollaborationConstraintListModel
         return constraints;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
     protected void removeHalfModel(Object[] elements) {

@@ -50,7 +50,7 @@ public class TestGeneratorJava extends TestCase {
         super(name);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {

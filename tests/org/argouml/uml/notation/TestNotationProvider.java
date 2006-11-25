@@ -70,7 +70,7 @@ public class TestNotationProvider extends TestCase {
 
     private class NPImpl extends NotationProvider {
 
-        /**
+        /*
          * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
          */
         public String getParsingHelp() {

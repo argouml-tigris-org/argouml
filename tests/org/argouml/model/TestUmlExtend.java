@@ -95,7 +95,7 @@ public class TestUmlExtend extends GenericUmlObjectTestFixture {
         assertTrue(eps.size() == eps2.size());
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {

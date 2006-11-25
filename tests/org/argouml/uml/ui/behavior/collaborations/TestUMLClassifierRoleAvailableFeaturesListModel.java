@@ -45,21 +45,21 @@ public class TestUMLClassifierRoleAvailableFeaturesListModel
         super(arg0);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
         setElem(Model.getCollaborationsFactory().createClassifierRole());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
         setModel(new UMLClassifierRoleAvailableFeaturesListModel());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
@@ -71,7 +71,7 @@ public class TestUMLClassifierRoleAvailableFeaturesListModel
         return features;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
     protected void removeHalfModel(Object[] elements) {
@@ -80,7 +80,7 @@ public class TestUMLClassifierRoleAvailableFeaturesListModel
         }
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -89,7 +89,7 @@ public class TestUMLClassifierRoleAvailableFeaturesListModel
         Model.getCollaborationsHelper().addBase(getElem(), base);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws Exception {

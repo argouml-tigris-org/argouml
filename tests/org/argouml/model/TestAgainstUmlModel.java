@@ -338,7 +338,7 @@ public class TestAgainstUmlModel extends TestCase {
         return refs;
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {

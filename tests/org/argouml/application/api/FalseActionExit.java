@@ -35,7 +35,7 @@ public class FalseActionExit extends ActionExit {
     private String argument = null;
     private static FalseActionExit lastInvoked = null;
 
-    /**
+    /*
      * @see org.argouml.application.api.CommandLineInterface#doCommand(java.lang.String)
      */
     public boolean doCommand(String args) {

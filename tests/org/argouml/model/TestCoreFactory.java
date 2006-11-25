@@ -84,7 +84,7 @@ public class TestCoreFactory extends TestCase {
 	super(n);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {

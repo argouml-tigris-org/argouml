@@ -45,7 +45,7 @@ public class TestStylePanel extends TestCase {
             super("mock");
         }
 
-        /**
+        /*
          * @see org.argouml.ui.TabTarget#refresh()
          */
         public void refresh() {

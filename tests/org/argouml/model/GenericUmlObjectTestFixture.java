@@ -50,14 +50,14 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	entity = ent;
     }
 
-    /**
+    /*
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
 	super.setUp();
     }
 
-    /**
+    /*
      * @see TestCase#tearDown()
      */
     protected void tearDown() throws Exception {

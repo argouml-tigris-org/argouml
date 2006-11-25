@@ -86,7 +86,7 @@ public class TestModelFacade3 extends TestCase {
                 || methodToTest.getName().equals("toString");
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#runTest()
      */
     protected void runTest() throws Throwable {
@@ -169,7 +169,7 @@ public class TestModelFacade3 extends TestCase {
         }
     }
     
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {

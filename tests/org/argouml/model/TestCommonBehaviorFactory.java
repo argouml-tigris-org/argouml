@@ -74,7 +74,7 @@ public class TestCommonBehaviorFactory extends TestCase {
 	super(n);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {

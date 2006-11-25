@@ -48,7 +48,7 @@ public class TestUmlModelElement extends GenericUmlObjectTestFixture {
         // TODO: Add any other relevant tests        
     }
     
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {

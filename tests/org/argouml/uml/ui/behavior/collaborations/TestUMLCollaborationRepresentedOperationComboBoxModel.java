@@ -52,7 +52,7 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
         super(arg0);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -73,7 +73,7 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
         model.targetSet(new TargetEvent(this, null, null, new Object[] {elem}));
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws Exception {

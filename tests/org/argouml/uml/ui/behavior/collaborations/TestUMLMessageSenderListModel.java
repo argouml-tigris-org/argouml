@@ -47,7 +47,7 @@ public class TestUMLMessageSenderListModel extends TestCase {
     }
 
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -61,7 +61,7 @@ public class TestUMLMessageSenderListModel extends TestCase {
         Model.getPump().flushModelEvents();
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws Exception {

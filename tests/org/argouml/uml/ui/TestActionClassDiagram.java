@@ -43,14 +43,14 @@ public class TestActionClassDiagram extends AbstractTestActionAddDiagram {
 	super(arg0);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
     protected ActionAddDiagram getAction() {
 	return new ActionClassDiagram();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
     protected Object getNamespace() {
@@ -58,9 +58,9 @@ public class TestActionClassDiagram extends AbstractTestActionAddDiagram {
 	return Model.getModelManagementFactory().createPackage();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.
-     * AbstractTestActionAddDiagram#getValidNamespaceClasses()
+     *      AbstractTestActionAddDiagram#getValidNamespaceClasses()
      */
     protected List getValidNamespaceClasses() {
 	List returnList = new ArrayList();

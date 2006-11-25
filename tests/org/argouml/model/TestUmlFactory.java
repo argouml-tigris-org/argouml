@@ -47,7 +47,7 @@ public class TestUmlFactory extends TestCase {
      */
     private UmlFactory fy;
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {

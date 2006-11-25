@@ -63,7 +63,7 @@ public class TestUMLModelElementSupplierDependencyListModel
         super(arg0);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() throws Exception {
@@ -74,7 +74,7 @@ public class TestUMLModelElementSupplierDependencyListModel
         to = Model.getCoreFactory().buildClass("to", namespace);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#tearDown()
      */
     public void tearDown() throws Exception {
@@ -85,21 +85,21 @@ public class TestUMLModelElementSupplierDependencyListModel
         super.tearDown();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
         setElem(Model.getCoreFactory().createClass());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
         setModel(new UMLModelElementSupplierDependencyListModel());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
@@ -111,7 +111,7 @@ public class TestUMLModelElementSupplierDependencyListModel
         return ext;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
     protected void removeHalfModel(Object[] elements) {

@@ -51,7 +51,7 @@ public class TestCoreHelperWithMock extends TestCase {
         super(arg0);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
@@ -66,7 +66,7 @@ public class TestCoreHelperWithMock extends TestCase {
 
         // Registering memento.
         Model.setMementoCreationObserver(new MementoCreationObserver() {
-            /**
+            /*
              * @see org.argouml.model.MementoCreationObserver#mementoCreated(org.argouml.model.ModelMemento)
              */
             public void mementoCreated(ModelMemento memento) {
@@ -75,7 +75,7 @@ public class TestCoreHelperWithMock extends TestCase {
         });
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#tearDown()
      */
     public void tearDown() {

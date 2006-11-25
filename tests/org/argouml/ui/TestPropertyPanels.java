@@ -223,7 +223,7 @@ public class TestPropertyPanels extends TestCase {
     }
 
 
-    /**
+    /*
      * @see junit.framework.TestCase#runTest()
      */
     protected void runTest() throws Throwable {

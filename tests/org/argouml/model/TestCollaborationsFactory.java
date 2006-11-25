@@ -56,7 +56,7 @@ public class TestCollaborationsFactory extends TestCase {
         super(n);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {

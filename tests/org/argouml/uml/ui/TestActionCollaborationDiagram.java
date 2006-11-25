@@ -70,14 +70,14 @@ public class TestActionCollaborationDiagram extends TestCase {
         super(arg0);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
     protected UndoableAction getAction() {
         return new ActionCollaborationDiagram();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
     protected Object getNamespace() {
@@ -87,7 +87,7 @@ public class TestActionCollaborationDiagram extends TestCase {
         return c;
     }
 
-    /**
+    /*
      * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
      */
     protected List getValidNamespaceClasses() {
@@ -96,7 +96,7 @@ public class TestActionCollaborationDiagram extends TestCase {
         return rl;
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {

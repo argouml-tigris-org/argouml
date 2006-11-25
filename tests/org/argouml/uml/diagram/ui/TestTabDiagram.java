@@ -57,7 +57,7 @@ public class TestTabDiagram extends TestCase {
         super(arg0);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -65,7 +65,7 @@ public class TestTabDiagram extends TestCase {
         diagram = new UMLClassDiagram();
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws Exception {

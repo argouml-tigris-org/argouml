@@ -60,7 +60,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
         super(arg0);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -75,7 +75,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
         Model.getPump().flushModelEvents();
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws Exception {

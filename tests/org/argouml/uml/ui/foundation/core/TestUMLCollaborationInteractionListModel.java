@@ -48,21 +48,21 @@ public class TestUMLCollaborationInteractionListModel
         super(arg0);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
         setElem(Model.getCollaborationsFactory().createCollaboration());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
         setModel(new UMLCollaborationInteractionListModel());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
@@ -74,7 +74,7 @@ public class TestUMLCollaborationInteractionListModel
         return inter;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
     protected void removeHalfModel(Object[] elements) {

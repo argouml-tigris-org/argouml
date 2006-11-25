@@ -49,7 +49,7 @@ public class TestModelEventPump extends TestCase {
      * A mock listener used for the tests.
      */
     private class TestListener implements PropertyChangeListener {
-        /**
+        /*
          * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
          */
         public void propertyChange(PropertyChangeEvent e) {
@@ -74,7 +74,7 @@ public class TestModelEventPump extends TestCase {
         super(arg0);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -88,7 +88,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().flushModelEvents();
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws Exception {

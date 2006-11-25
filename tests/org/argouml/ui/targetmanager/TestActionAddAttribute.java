@@ -47,7 +47,7 @@ public class TestActionAddAttribute extends TestCase {
         super(arg0);
     }
 
-    /**
+    /*
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {

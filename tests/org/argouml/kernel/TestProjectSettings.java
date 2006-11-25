@@ -284,7 +284,7 @@ public class TestProjectSettings extends TestCase {
         assertTrue("Wrong new event value", "Java".equals(value));
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {

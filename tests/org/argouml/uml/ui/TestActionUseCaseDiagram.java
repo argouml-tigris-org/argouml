@@ -45,21 +45,21 @@ public class TestActionUseCaseDiagram
         super(arg0);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
     protected ActionAddDiagram getAction() {
         return new ActionUseCaseDiagram();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
     protected Object getNamespace() {
         return Model.getModelManagementFactory().createPackage();
     }
 
-    /**
+    /*
      * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
      */
     protected List getValidNamespaceClasses() {

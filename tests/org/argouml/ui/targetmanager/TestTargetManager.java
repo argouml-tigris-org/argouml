@@ -64,7 +64,7 @@ public class TestTargetManager extends TestCase {
 
     private class TestTargetListener implements TargetListener {
 
-	/**
+	/*
 	 * @see TargetListener#targetAdded(TargetEvent)
 	 */
 	public void targetAdded(TargetEvent e) {
@@ -76,7 +76,7 @@ public class TestTargetManager extends TestCase {
 	    targetAddedObjects = e.getNewTargets();
 	}
 
-	/**
+	/*
 	 * @see TargetListener#targetRemoved(TargetEvent)
 	 */
 	public void targetRemoved(TargetEvent e) {
@@ -88,7 +88,7 @@ public class TestTargetManager extends TestCase {
 	    targetRemovedObjects = e.getNewTargets();
 	}
 
-	/**
+	/*
 	 * @see TargetListener#targetSet(TargetEvent)
 	 */
 	public void targetSet(TargetEvent e) {
@@ -648,7 +648,7 @@ public class TestTargetManager extends TestCase {
 	    private int counter = 0;
 	    private List list = new ArrayList();
 
-	    /**
+	    /*
 	     * @see TargetListener#targetAdded(TargetEvent)
 	     */
 	    public void targetAdded(TargetEvent e) {
@@ -660,7 +660,7 @@ public class TestTargetManager extends TestCase {
 		TargetManager.getInstance().removeTarget(e.getNewTarget());
 	    }
 
-	    /**
+	    /*
 	     * @see TargetListener#targetRemoved(TargetEvent)
 	     */
 	    public void targetRemoved(TargetEvent e) {
@@ -672,7 +672,7 @@ public class TestTargetManager extends TestCase {
 		TargetManager.getInstance().removeTarget(e.getNewTarget());
 	    }
 
-	    /**
+	    /*
 	     * @see TargetListener#targetSet(TargetEvent)
 	     */
 	    public void targetSet(TargetEvent e) {
@@ -771,7 +771,7 @@ public class TestTargetManager extends TestCase {
 
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
@@ -779,7 +779,7 @@ public class TestTargetManager extends TestCase {
 
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() {

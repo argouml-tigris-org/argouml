@@ -47,7 +47,7 @@ public class TestAGHelperWithMock extends TestCase {
         super(arg0);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
@@ -63,7 +63,7 @@ public class TestAGHelperWithMock extends TestCase {
         mockModelImplementation.reset();
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#tearDown()
      */
     public void tearDown() {

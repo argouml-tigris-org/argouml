@@ -71,21 +71,21 @@ public class TestActionStateDiagram extends TestCase {
         super(arg0);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
     protected UndoableAction getAction() {
         return new ActionStateDiagram();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
     protected Object getNamespace() {
         return Model.getCoreFactory().createClass();
     }
 
-    /**
+    /*
      * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
      */
     protected List getValidNamespaceClasses() {
@@ -106,7 +106,7 @@ public class TestActionStateDiagram extends TestCase {
         return rl;
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {

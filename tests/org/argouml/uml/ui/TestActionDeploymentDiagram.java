@@ -45,14 +45,14 @@ public class TestActionDeploymentDiagram
         super(arg0);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
     protected ActionAddDiagram getAction() {
         return new ActionDeploymentDiagram();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
     protected Object getNamespace() {
@@ -60,7 +60,7 @@ public class TestActionDeploymentDiagram
                 .getModel();
     }
 
-    /**
+    /*
      * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
      */
     protected List getValidNamespaceClasses() {

@@ -62,7 +62,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
         super(arg0);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -74,7 +74,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
         Model.getPump().flushModelEvents();
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws Exception {

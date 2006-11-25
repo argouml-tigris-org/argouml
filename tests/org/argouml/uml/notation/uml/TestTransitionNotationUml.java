@@ -54,7 +54,7 @@ public class TestTransitionNotationUml extends TestCase {
         super(str);
     }
 
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {

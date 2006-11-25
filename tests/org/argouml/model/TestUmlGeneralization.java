@@ -91,7 +91,7 @@ public class TestUmlGeneralization extends GenericUmlObjectTestFixture {
         assertTrue(specs2.isEmpty());
     }
     
-    /**
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
