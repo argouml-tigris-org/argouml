@@ -73,12 +73,12 @@ public class UMLModelElementVisibilityRadioButtonPanel
                 ActionSetModelElementVisibility.getInstance(), horizontal);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLRadioButtonPanel#buildModel()
      */
     public void buildModel() {
         if (getTarget() != null) {
-            Object target = /*(MModelElement)*/ getTarget();
+            Object target = getTarget();
             Object kind = Model.getFacade().getVisibility(target);
             if (kind == null
                     || kind.equals(

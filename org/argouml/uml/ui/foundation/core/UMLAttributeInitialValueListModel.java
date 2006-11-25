@@ -41,7 +41,7 @@ public class UMLAttributeInitialValueListModel
 	super("initialValue");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -51,10 +51,10 @@ public class UMLAttributeInitialValueListModel
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
 	return Model.getFacade().getInitialValue(getTarget()) == element;
     }
 

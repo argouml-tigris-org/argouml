@@ -37,7 +37,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
+ * Well-formedness rule [1] for Namespace. See page 33 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
  */
 public class CrDisambigClassName extends CrUML {
@@ -53,15 +53,15 @@ public class CrDisambigClassName extends CrUML {
 	addTrigger("elementOwnership");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAClassifier(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object cls = /*(MClassifier)*/ dm;
+	Object cls = dm;
 	String myName = Model.getFacade().getName(cls);
 	//@ if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
 	String myNameString = myName;
@@ -75,7 +75,7 @@ public class CrDisambigClassName extends CrUML {
 	    return NO_PROBLEM;
 	}
 	for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
-	    Object imp = /*(MElementImport)*/ iter.next();
+	    Object imp = iter.next();
 	    Object ns = Model.getFacade().getPackage(imp);
 	    Collection siblings = Model.getFacade().getOwnedElements(ns);
 	    if (siblings == null) {
@@ -103,21 +103,21 @@ public class CrDisambigClassName extends CrUML {
 	return NO_PROBLEM;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {
 	return ClClassName.getTheInstance();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
+	    Object me = item.getOffenders().elementAt(0);
 	    String sug = Model.getFacade().getName(me);
 	    String ins = super.getInstructions();
 	    ((WizMEName) w).setInstructions(ins);
@@ -126,10 +126,10 @@ public class CrDisambigClassName extends CrUML {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 
-} /* end class CrDisambigClassName.java */
+} /* end class CrDisambigClassName */

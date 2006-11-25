@@ -55,7 +55,8 @@ public class GenCompositeClasses implements ChildGenerator {
     public static GenCompositeClasses getSINGLETON() {
         return SINGLETON;
     }
-    /**
+    
+    /*
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object o) {
@@ -63,14 +64,14 @@ public class GenCompositeClasses implements ChildGenerator {
 	if (!(Model.getFacade().isAClassifier(o))) {
 	    return res.elements();
 	}
-	Object cls = /*(MClassifier)*/ o;
+	Object cls = o;
 	Vector ends = new Vector(Model.getFacade().getAssociationEnds(cls));
 	if (ends == null) {
 	    return res.elements();
 	}
 	Iterator assocEnds = ends.iterator();
 	while (assocEnds.hasNext()) {
-	    Object ae = /*(MAssociationEnd)*/ assocEnds.next();
+	    Object ae = assocEnds.next();
 	    if (Model.getAggregationKind().getComposite().equals(
 	            Model.getFacade().getAggregation(ae))) {
 		Object asc = Model.getFacade().getAssociation(ae);

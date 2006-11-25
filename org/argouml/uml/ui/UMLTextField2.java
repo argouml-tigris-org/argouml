@@ -60,18 +60,18 @@ public class UMLTextField2
         addFocusListener(ActionPaste.getInstance());
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
         ((UMLDocument) getDocument()).propertyChange(evt);
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargettableModelView#getTargettableModel()
      */
     public TargetListener getTargettableModel() {
-       return (UMLDocument) getDocument();
+        return (UMLDocument) getDocument();
     }
 
 }

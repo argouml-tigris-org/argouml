@@ -73,7 +73,7 @@ class TodoListMemberFilePersister extends MemberFilePersister {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.MemberFilePersister#getMainTag()
      */
     public final String getMainTag() {

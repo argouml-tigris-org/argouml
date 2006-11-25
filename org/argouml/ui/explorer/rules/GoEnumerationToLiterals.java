@@ -46,7 +46,7 @@ public class GoEnumerationToLiterals extends AbstractPerspectiveRule {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getChildren(
      *         java.lang.Object)
      */
@@ -64,14 +64,14 @@ public class GoEnumerationToLiterals extends AbstractPerspectiveRule {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getRuleName()
      */
     public String getRuleName() {
         return Translator.localize ("misc.enumeration.literal");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(
      *         java.lang.Object)
      */

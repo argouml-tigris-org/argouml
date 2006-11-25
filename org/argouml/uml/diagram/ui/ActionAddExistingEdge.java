@@ -57,7 +57,7 @@ public class ActionAddExistingEdge extends UndoableAction {
         edge = edgeObject;
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent arg0) {
@@ -86,7 +86,7 @@ public class ActionAddExistingEdge extends UndoableAction {
         }
     }
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {

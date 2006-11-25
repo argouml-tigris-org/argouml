@@ -44,7 +44,7 @@ public class UMLStateVertexIncomingListModel extends UMLModelElementListModel2 {
         super("incoming");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -59,10 +59,10 @@ public class UMLStateVertexIncomingListModel extends UMLModelElementListModel2 {
         setAllElements(c);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/* MBase */element) {
+    protected boolean isValidElement(Object element) {
         ArrayList c =
             new ArrayList(Model.getFacade().getIncomings(getTarget()));
         if (Model.getFacade().isAState(getTarget())) {

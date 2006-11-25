@@ -59,7 +59,8 @@ public abstract class UMLRadioButtonPanel
     extends JPanel
     implements TargetListener, PropertyChangeListener {
 
-    private static Font stdFont = LookAndFeelMgr.getInstance().getStandardFont();
+    private static Font stdFont = 
+        LookAndFeelMgr.getInstance().getStandardFont();
 
     /**
      * The target object of which some attribute is shown via this panel.
@@ -166,7 +167,7 @@ public abstract class UMLRadioButtonPanel
     }
 
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent e) {
@@ -243,21 +244,21 @@ public abstract class UMLRadioButtonPanel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {

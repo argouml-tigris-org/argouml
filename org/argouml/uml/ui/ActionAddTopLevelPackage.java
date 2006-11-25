@@ -58,7 +58,7 @@ public class ActionAddTopLevelPackage extends UndoableAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -66,8 +66,7 @@ public class ActionAddTopLevelPackage extends UndoableAction {
 	Project p = ProjectManager.getManager().getCurrentProject();
         int numPacks = p.getUserDefinedModels().size();
         String nameStr = "package_" + (numPacks + 1);
-        Object/*MModel*/ model =
-	    Model.getModelManagementFactory().createModel();
+        Object model = Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(model, nameStr);
         p.addMember(model);
         super.actionPerformed(ae);

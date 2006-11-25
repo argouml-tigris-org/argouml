@@ -48,14 +48,14 @@ public class ActionAddExtendExtensionPoint
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
         Model.getUseCasesHelper().setExtensionPoints(getTarget(), selected);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
@@ -69,7 +69,7 @@ public class ActionAddExtendExtensionPoint
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
@@ -77,7 +77,7 @@ public class ActionAddExtendExtensionPoint
                 "dialog.title.add-extensionpoints");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {

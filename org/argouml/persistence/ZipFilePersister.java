@@ -67,21 +67,21 @@ class ZipFilePersister extends XmiFilePersister {
     public ZipFilePersister() {
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.AbstractFilePersister#getExtension()
      */
     public String getExtension() {
         return "zip";
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
         return Translator.localize("combobox.filefilter.zip");
     }
     
-    /**
+    /*
      * @see org.argouml.persistence.XmiFilePersister#isSaveEnabled()
      */
     public boolean isSaveEnabled() {
@@ -203,7 +203,7 @@ class ZipFilePersister extends XmiFilePersister {
         return persister;
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public Project doLoad(File file)

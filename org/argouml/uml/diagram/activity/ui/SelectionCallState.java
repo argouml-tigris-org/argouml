@@ -42,14 +42,14 @@ public class SelectionCallState extends SelectionActionState {
         super(f);
     }
     
-    /**
+    /*
      * @see org.argouml.uml.diagram.activity.ui.SelectionActionState#getNewNodeType(int)
      */
     protected Object getNewNodeType(int buttonCode) {
         return Model.getMetaTypes().getCallState();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {

@@ -88,7 +88,7 @@ public abstract class UMLPlainTextDocument
         setEventName(name);
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
@@ -124,7 +124,7 @@ public abstract class UMLPlainTextDocument
         }
     }
 
-    /**
+    /*
      * @see javax.swing.text.Document#insertString(
      *         int, java.lang.String, javax.swing.text.AttributeSet)
      */
@@ -143,7 +143,7 @@ public abstract class UMLPlainTextDocument
 
     }
 
-    /**
+    /*
      * @see javax.swing.text.Document#remove(int, int)
      */
     public void remove(int offs, int len) throws BadLocationException {
@@ -232,21 +232,21 @@ public abstract class UMLPlainTextDocument
         eventName = en;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {

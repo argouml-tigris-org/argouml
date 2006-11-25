@@ -41,7 +41,7 @@ public class UMLModelElementSupplierDependencyListModel
         super("supplierDependency");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -51,10 +51,10 @@ public class UMLModelElementSupplierDependencyListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isADependency(o)
             && Model.getFacade().getSupplierDependencies(getTarget())
             	.contains(o);

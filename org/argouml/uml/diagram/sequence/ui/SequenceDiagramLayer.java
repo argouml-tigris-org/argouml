@@ -92,7 +92,7 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
 
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.LayerPerspective#putInPosition(Fig)
      */
     public void putInPosition(Fig f) {
@@ -133,7 +133,7 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphListener#nodeAdded(GraphEvent)
      */
     public void nodeAdded(GraphEvent ge) {
@@ -144,7 +144,7 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Layer#add(org.tigris.gef.presentation.Fig)
      */
     public void add(Fig f) {
@@ -258,7 +258,7 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
         figObjectsX.add(i, f);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Layer#deleted(org.tigris.gef.presentation.Fig)
      */
     public void deleted(Fig f) {
@@ -285,7 +285,7 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Layer#remove(org.tigris.gef.presentation.Fig)
      */
     public void remove(Fig f) {

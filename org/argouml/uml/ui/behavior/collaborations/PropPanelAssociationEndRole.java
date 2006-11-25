@@ -50,7 +50,7 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
         positionControls();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd#positionControls()
      */
     protected void positionControls() {

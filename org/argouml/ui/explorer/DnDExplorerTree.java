@@ -175,12 +175,16 @@ public class DnDExplorerTree
 
     /**
      * The drag gesture listener is notified of drag gestures by a recognizer.
-     * The typical response is to initiate a drag
-     * by invoking DragSource.startDrag(). <p>
-     *
-     * TODO: find a way to show a different image when multiple
-     * elements are dragged.
-     *
+     * The typical response is to initiate a drag by invoking
+     * DragSource.startDrag().
+     * <p>
+     * 
+     * TODO: find a way to show a different image when multiple elements are
+     * dragged.
+     * 
+     * @param dragGestureEvent
+     *            the DragGestureEvent describing the gesture that has just
+     *            occurred
      * @see java.awt.dnd.DragGestureListener#dragGestureRecognized(java.awt.dnd.DragGestureEvent)
      */
     public void dragGestureRecognized(
@@ -342,7 +346,7 @@ public class DnDExplorerTree
         return false;
     }
 
-    /**
+    /*
      * @see java.awt.dnd.DragSourceListener#dragDropEnd(java.awt.dnd.DragSourceDropEvent)
      */
     public void dragDropEnd(
@@ -351,24 +355,21 @@ public class DnDExplorerTree
         ghostImage = null;
     }
 
-    /**
-     * DragSourceListener empty implementation - not used.
-     *
+    /*
      * @see java.awt.dnd.DragSourceListener#dragEnter(java.awt.dnd.DragSourceDragEvent)
      */
     public void dragEnter(DragSourceDragEvent dragSourceDragEvent) {
+        // empty implementation - not used.
     }
 
-    /**
-     * DragSourceListener empty implementation - not used.
-     *
+    /*
      * @see java.awt.dnd.DragSourceListener#dragExit(java.awt.dnd.DragSourceEvent)
      */
     public void dragExit(DragSourceEvent dragSourceEvent) {
-
+        // empty implementation - not used.
     }
 
-    /**
+    /*
      * This is not the correct location to set the cursor.
      * The commented out code illustrates the calculation
      * of coordinates.
@@ -395,13 +396,12 @@ public class DnDExplorerTree
 //        }
     }
 
-    /**
-     * DragSourceListener empty implementation - not used.
-     *
+    /*
      * @see java.awt.dnd.DragSourceListener#dropActionChanged(java.awt.dnd.DragSourceDragEvent)
      */
     public void dropActionChanged(
     		DragSourceDragEvent dragSourceDragEvent) {
+        // empty implementation - not used.
     }
 
     /**
@@ -427,7 +427,7 @@ public class DnDExplorerTree
 
     private static final int AUTOSCROLL_MARGIN = 12;
 
-    /**
+    /*
      * Ok, we've been told to scroll because the mouse cursor is in our
      * scroll zone.
      * @see java.awt.dnd.Autoscroll#autoscroll(java.awt.Point)
@@ -460,7 +460,7 @@ public class DnDExplorerTree
         scrollRowToVisible(nRow);
     }
 
-    /**
+    /*
      * Calculate the insets for the *JTREE*, not the viewport the tree is in.
      * This makes it a bit messy.
      *
@@ -509,7 +509,7 @@ public class DnDExplorerTree
              */
             hoverTimer =
                 new Timer(1000, new ActionListener() {
-                    /**
+                    /*
                      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
                      */
                     public void actionPerformed(ActionEvent e) {
@@ -526,7 +526,7 @@ public class DnDExplorerTree
             hoverTimer.setRepeats(false);	// Set timer to one-shot mode
         }
 
-        /**
+        /*
          * @see java.awt.dnd.DropTargetListener#dragEnter(java.awt.dnd.DropTargetDragEvent)
          */
         public void dragEnter(
@@ -540,7 +540,7 @@ public class DnDExplorerTree
             }
         }
 
-        /**
+        /*
          * @see java.awt.dnd.DropTargetListener#dragExit(java.awt.dnd.DropTargetEvent)
          */
         public void dragExit(DropTargetEvent dropTargetEvent) {
@@ -794,7 +794,7 @@ public class DnDExplorerTree
             }
         }
 
-        /**
+        /*
          * @see java.awt.dnd.DropTargetListener#dropActionChanged(java.awt.dnd.DropTargetDragEvent)
          */
         public void dropActionChanged(

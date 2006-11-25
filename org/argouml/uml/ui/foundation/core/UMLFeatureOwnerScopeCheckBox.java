@@ -42,7 +42,7 @@ public class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox2 {
                 ActionSetFeatureOwnerScope.getInstance(), "ownerScope");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {

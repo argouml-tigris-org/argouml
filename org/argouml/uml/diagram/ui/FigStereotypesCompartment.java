@@ -33,7 +33,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
@@ -90,7 +89,7 @@ public class FigStereotypesCompartment extends FigCompartment {
         setFilled(false);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object own) {
@@ -101,11 +100,12 @@ public class FigStereotypesCompartment extends FigCompartment {
         }
     }
     
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public void removeFromDiagram() {
-        Model.getPump().removeModelEventListener(this, getOwner(), "stereotype");
+        Model.getPump()
+                .removeModelEventListener(this, getOwner(), "stereotype");
     }
     
     public void propertyChange(PropertyChangeEvent event) {
@@ -126,7 +126,8 @@ public class FigStereotypesCompartment extends FigCompartment {
                             stereotype);
                 stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
                 stereotypeTextFig.setEditable(false);
-                stereotypeTextFig.setText(Model.getFacade().getName(stereotype));
+                stereotypeTextFig.setText(
+                        Model.getFacade().getName(stereotype));
                 stereotypeTextFig.setOwner(stereotype);
                 addFig(stereotypeTextFig);
                 damage();
@@ -246,7 +247,7 @@ public class FigStereotypesCompartment extends FigCompartment {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {

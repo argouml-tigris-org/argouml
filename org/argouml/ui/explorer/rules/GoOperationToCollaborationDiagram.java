@@ -45,7 +45,7 @@ import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
  */
 public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
@@ -70,7 +70,7 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
@@ -78,7 +78,7 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
 	return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {

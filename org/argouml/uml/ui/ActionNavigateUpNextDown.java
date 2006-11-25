@@ -48,7 +48,7 @@ public abstract class ActionNavigateUpNextDown extends AbstractActionNavigate {
                 ResourceLoaderWrapper.lookupIconResource("NavigateUpNext"));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object source) {

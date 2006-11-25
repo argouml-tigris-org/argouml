@@ -55,14 +55,14 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
         super(propertySetName, false);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
         return element instanceof String;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -73,7 +73,7 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#addElement(java.lang.Object)
      */
     public void addElement(Object o) {
@@ -94,7 +94,7 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
 
 
 
-    /**
+    /*
      * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
      */
     public void setSelectedItem(Object anItem) {

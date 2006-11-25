@@ -50,11 +50,15 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
     private static final long serialVersionUID = 2384673708664550264L;
 
     /**
-     * Construct a property panel for SubmachineState elements with the given params.
-     *
-     * @param name the name of the properties panel
-     * @param icon the icon to be shown next to the name
-     * @param orientation the orientation of the panel
+     * Construct a property panel for SubmachineState elements with the given
+     * params.
+     * 
+     * @param name
+     *            the name of the properties panel
+     * @param icon
+     *            the icon to be shown next to the name
+     * @param orientation
+     *            the orientation of the panel
      */
     public PropPanelSubmachineState(String name, ImageIcon icon,
             Orientation orientation) {
@@ -103,21 +107,21 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
                         ActionNewStubState.getInstance())));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */
     protected void addExtraButtons() {
         // Intentionally do nothing.
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelCompositeState#updateExtraButtons()
      */
     protected void updateExtraButtons() {
         // Intentionally do nothing.
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {

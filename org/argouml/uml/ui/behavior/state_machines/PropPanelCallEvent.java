@@ -55,7 +55,7 @@ public class PropPanelCallEvent extends PropPanelEvent {
               ConfigLoader.getTabPropsOrientation());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
      */
     public void initialize() {
@@ -87,7 +87,7 @@ class UMLCallEventOperationComboBox2 extends UMLSearchableComboBox {
         setEditable(false);
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -115,7 +115,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
         super("operation", true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -145,7 +145,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
         setElements(ops);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
@@ -156,7 +156,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {

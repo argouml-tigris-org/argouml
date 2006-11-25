@@ -109,7 +109,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
         return name;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
@@ -180,14 +180,14 @@ public class UMLSequenceDiagram extends UMLDiagram {
         return actions;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getNamespace()
      */
     public Object getNamespace() {
         return ((SequenceDiagramGraphModel) getGraphModel()).getCollaboration();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#setNamespace(java.lang.Object)
      */
     public void setNamespace(Object ns) {
@@ -205,7 +205,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
 */
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(
      *         java.lang.Object)
      */
@@ -218,7 +218,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
 //        	|| Model.getFacade().isAOperation(base);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
     public boolean relocate(Object base) {

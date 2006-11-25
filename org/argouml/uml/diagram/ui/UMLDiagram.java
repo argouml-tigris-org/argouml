@@ -216,7 +216,7 @@ public abstract class UMLDiagram
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Diagram#initialize(java.lang.Object)
      */
     public void initialize(Object owner) {
@@ -264,7 +264,7 @@ public abstract class UMLDiagram
         Model.getPump().addModelEventListener(this, namespace, "remove");
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Diagram#getClassAndModelID()
      */
     public String getClassAndModelID() {
@@ -426,7 +426,7 @@ public abstract class UMLDiagram
      * There are other things to take care of, so all this is delegated to 
      * {@link org.argouml.kernel.Project#moveToTrash(Object)}.
      *
-     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     * {@inheritDoc}
      */
     public void propertyChange(PropertyChangeEvent evt) {
         if ((evt.getSource() == namespace)
@@ -601,12 +601,12 @@ public abstract class UMLDiagram
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.Relocatable#isRelocationAllowed(java.lang.Object)
      */
     public abstract boolean isRelocationAllowed(Object base);
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.Relocatable#relocate(java.lang.Object)
      */
     public abstract boolean relocate(Object base);

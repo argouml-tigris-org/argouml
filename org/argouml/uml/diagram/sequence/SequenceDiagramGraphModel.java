@@ -95,9 +95,7 @@ public class SequenceDiagramGraphModel
     public SequenceDiagramGraphModel() {
     }
 
-    /**
-     * Return all ports on node or edge.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
     public List getPorts(Object nodeOrEdge) {
@@ -112,18 +110,14 @@ public class SequenceDiagramGraphModel
         return ports;
     }
 
-    /**
-     * Return the node or edge that owns the given port.
-     *
+    /*
      * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
      */
     public Object getOwner(Object port) {
         return port;
     }
 
-    /**
-     * Return all edges going to given port.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
     public List getInEdges(Object port) {
@@ -134,9 +128,7 @@ public class SequenceDiagramGraphModel
         return res;
     }
 
-    /**
-     * Return all edges going from given port.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
     public List getOutEdges(Object port) {
@@ -150,9 +142,7 @@ public class SequenceDiagramGraphModel
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 
-    /**
-     * Return true if the given object is a valid node in this graph.
-     *
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
@@ -164,9 +154,7 @@ public class SequenceDiagramGraphModel
                 && Model.getFacade().getNamespace(node) == getCollaboration();
     }
 
-    /**
-     * Return true if the given object is a valid edge in this graph.
-     *
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
     public boolean canAddEdge(Object edge) {
@@ -213,9 +201,7 @@ public class SequenceDiagramGraphModel
         return true;
     }
 
-    /**
-     * Add the given node to the graph, if valid.
-     *
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
      */
     public void addNode(Object node) {
@@ -226,10 +212,7 @@ public class SequenceDiagramGraphModel
 
     }
 
-    /**
-     * Adds an edge to the model if this is allowed. If the edge is a link,
-     * an associationrole and a stimulus to accompany this link are build.
-     *
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      */
     public void addEdge(Object edge) {
@@ -239,7 +222,7 @@ public class SequenceDiagramGraphModel
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
      */
     public void addNodeRelatedEdges(Object node) {
@@ -258,12 +241,9 @@ public class SequenceDiagramGraphModel
         }
     }
 
-    /**
-     * Return true if the two given ports can be connected by a
-     * kind of edge to be determined by the ports.
-     *
-     * @see org.tigris.gef.graph.MutableGraphModel#canConnect(
-     * java.lang.Object, java.lang.Object)
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#canConnect( java.lang.Object,
+     *      java.lang.Object)
      */
     public boolean canConnect(Object fromP, Object toP, Object edgeType) {
 
@@ -434,7 +414,7 @@ public class SequenceDiagramGraphModel
     ////////////////////////////////////////////////////////////////
     // VetoableChangeListener implementation
 
-    /**
+    /*
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {
@@ -442,7 +422,7 @@ public class SequenceDiagramGraphModel
 
         if ("ownedElement".equals(pce.getPropertyName())) {
             Vector oldOwned = (Vector) pce.getOldValue();
-            Object eo = /*(MElementImport)*/ pce.getNewValue();
+            Object eo = pce.getNewValue();
             Object me = Model.getFacade().getModelElement(eo);
             if (oldOwned.contains(eo)) {
                 LOG.debug("model removed " + me);
@@ -541,7 +521,7 @@ public class SequenceDiagramGraphModel
         return defaultState;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getHomeModel()
      */
     public Object getHomeModel() {
@@ -567,7 +547,8 @@ public class SequenceDiagramGraphModel
 
     public void propertyChange(PropertyChangeEvent evt) {
         
-        if (evt instanceof DeleteInstanceEvent && evt.getSource() == interaction) {
+        if (evt instanceof DeleteInstanceEvent
+                && evt.getSource() == interaction) {
             Model.getPump().removeModelEventListener(this, interaction);
             interaction = null;
         }

@@ -159,9 +159,7 @@ public class ActionNavigability extends UndoableAction {
         this.assocEnd = theAssociationEnd;
     }
 
-    /**
-     * To perform the action of changing navigability.
-     *
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(
      *         java.awt.event.ActionEvent)
      */

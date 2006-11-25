@@ -44,7 +44,7 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
         super(edge);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.layout.LayoutedEdge#layout()
      */
     public void layout() {

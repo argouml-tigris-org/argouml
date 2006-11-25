@@ -343,7 +343,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      * @param element the element to be tested
      * @return true if valid
      */
-    protected abstract boolean isValidElement(Object/*MBase*/ element);
+    protected abstract boolean isValidElement(Object element);
 
     /**
      * Returns true if some event is valid. An event is valid if the
@@ -370,7 +370,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
                 valid = true;
                 while (it.hasNext()) {
                     Object o = it.next();
-                    if (!isValidElement(/*(MBase)*/o)) {
+                    if (!isValidElement(o)) {
                         valid = false;
                         break;
                     }

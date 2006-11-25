@@ -38,7 +38,7 @@ public class UMLGeneralizationChildListModel extends UMLModelElementListModel2 {
         super("child");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -49,10 +49,10 @@ public class UMLGeneralizationChildListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getChild(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/* MBase */o) {
+    protected boolean isValidElement(Object o) {
         return (Model.getFacade().getChild(getTarget()) == o);
     }
 }

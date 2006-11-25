@@ -47,29 +47,27 @@ import org.argouml.util.MyTokenizer;
  */
 public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
 
-	/**
-	 * The stereotypes of interest to this notation
-	 */
-	private ArrayList stereotypes;
-	
-	/**
-	 * Create a new instance of AssociationEndNameNotationUml
-	 * @return the notation
-	 */
+    /**
+     * The stereotypes of interest to this notation
+     */
+    private ArrayList stereotypes;
+
+    /**
+     * Create a new instance of AssociationEndNameNotationUml
+     * @return the notation
+     */
     public static final AssociationEndNameNotationUml getInstance() {
     	return new AssociationEndNameNotationUml();
     }
 	
     /**
      * The constructor.
-     *
-     * @param assocEnd the UML associationEnd
      */
     protected AssociationEndNameNotationUml() {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#addListener(java.beans.PropertyChangeListener, java.lang.Object)
      */
     public void addListener(PropertyChangeListener listener, 
@@ -90,7 +88,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#removeListener(java.beans.PropertyChangeListener, java.lang.Object)
      */
     public void removeListener(PropertyChangeListener listener, 
@@ -109,7 +107,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#updateListener(java.beans.PropertyChangeListener, java.lang.Object, java.beans.PropertyChangeEvent)
      */
     public void updateListener(PropertyChangeListener listener, 
@@ -139,14 +137,14 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-association-end-name";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -248,7 +246,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
         NotationUtilityUml.dealWithStereotypes(role, stereotype, true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {

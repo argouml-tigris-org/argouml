@@ -93,7 +93,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         addAction(getDeleteAction());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
      */
     public void navigateUp() {

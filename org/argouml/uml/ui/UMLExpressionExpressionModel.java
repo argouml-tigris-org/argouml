@@ -46,14 +46,15 @@ public class UMLExpressionExpressionModel extends UMLExpressionModel2 {
         super(c, name);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        return Model.getFacade().getExpression(TargetManager.getInstance().getTarget());
+        return Model.getFacade().getExpression(
+                TargetManager.getInstance().getTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expr) {
@@ -61,7 +62,7 @@ public class UMLExpressionExpressionModel extends UMLExpressionModel2 {
         	.setExpression(TargetManager.getInstance().getTarget(), expr);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
      */
     public Object newExpression() {

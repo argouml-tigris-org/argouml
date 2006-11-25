@@ -43,14 +43,14 @@ public class UMLExtensionPointLocationDocument extends UMLPlainTextDocument {
         super("location");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
         Model.getUseCasesHelper().setLocation(getTarget(), text);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {

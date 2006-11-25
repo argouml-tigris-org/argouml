@@ -45,16 +45,16 @@ public class CrInvalidJoinTriggerOrGuard extends CrUML {
         addTrigger("guard");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
-     * org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isATransition(dm))) {
             return NO_PROBLEM;
         }
-        Object tr = /*(MTransition)*/ dm;
-        Object/*MEvent*/ t = Model.getFacade().getTrigger(tr);
+        Object tr = dm;
+        Object t = Model.getFacade().getTrigger(tr);
         Object g = Model.getFacade().getGuard(tr);
         Object dv = Model.getFacade().getTarget(tr);
         if (!(Model.getFacade().isAPseudostate(dv))) {

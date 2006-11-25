@@ -36,7 +36,7 @@ import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
- * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1 Semantics.
+ * Well-formedness rule [1] for Namespace. See page 33 of UML 1.1 Semantics.
  * OMG document ad/97-08-04.
  */
 public class CrNameConflict extends CrUML {
@@ -52,7 +52,7 @@ public class CrNameConflict extends CrUML {
         addTrigger("feature_name");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
@@ -60,7 +60,7 @@ public class CrNameConflict extends CrUML {
         return computeOffenders(dm).size() > 1;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
@@ -101,7 +101,7 @@ public class CrNameConflict extends CrUML {
         return offenderResult;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
      *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
@@ -121,4 +121,4 @@ public class CrNameConflict extends CrUML {
         return res;
     }
 
-} /* end class CrNameConflict.java */
+} /* end class CrNameConflict */

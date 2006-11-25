@@ -207,12 +207,12 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         Iterator oeIterator = ownedElements.iterator();
         Layer lay = getLayer();
         while (oeIterator.hasNext()) {
-            Object me = /*(MModelElement)*/ oeIterator.next();
+            Object me = oeIterator.next();
             if (Model.getFacade().isAAssociationRole(me)) {
                 messages = Model.getFacade().getMessages(me);
                 msgIterator = messages.iterator();
                 while (msgIterator.hasNext()) {
-                    Object message = /*(MMessage)*/ msgIterator.next();
+                    Object message = msgIterator.next();
                     FigMessage figMessage =
                         (FigMessage) lay.presentationFor(message);
                     if (figMessage != null) {
@@ -236,7 +236,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         return name;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
@@ -382,14 +382,14 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         return actionMessage;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getDependentElement()
      */
     public Object getDependentElement() {
         return getNamespace(); /* The collaboration. */
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base) {
@@ -403,7 +403,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         return false;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
     public boolean relocate(Object base) {

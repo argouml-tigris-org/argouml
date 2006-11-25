@@ -147,7 +147,7 @@ class UMLInitialValueExpressionModel extends UMLExpressionModel2 {
         super(container, propertyName);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
@@ -158,7 +158,7 @@ class UMLInitialValueExpressionModel extends UMLExpressionModel2 {
         return Model.getFacade().getInitialValue(target);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expression) {
@@ -171,7 +171,7 @@ class UMLInitialValueExpressionModel extends UMLExpressionModel2 {
         Model.getCoreHelper().setInitialValue(target, expression);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
      */
     public Object newExpression() {

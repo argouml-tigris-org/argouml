@@ -38,13 +38,13 @@ import org.argouml.model.Model;
  */
 public class GoStimulusToAction extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
         if (!Model.getFacade().isAStimulus(parent))
             return null;
-        Object ms = /*(MStimulus)*/ parent;
+        Object ms = parent;
         Object action = Model.getFacade().getDispatchAction(ms);
         Vector vector = new Vector();
         vector.addElement(action);
@@ -52,7 +52,7 @@ public class GoStimulusToAction extends AbstractPerspectiveRule {
 
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
@@ -64,7 +64,7 @@ public class GoStimulusToAction extends AbstractPerspectiveRule {
 	return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {

@@ -42,7 +42,7 @@ public class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel2 {
         super("submachine", true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
@@ -51,7 +51,7 @@ public class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel2 {
                 .getStateMachine(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -62,7 +62,7 @@ public class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel2 {
                 .getAllPossibleStatemachines(model, getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {

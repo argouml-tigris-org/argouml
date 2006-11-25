@@ -41,7 +41,7 @@ public class UMLParameterTypeComboBoxModel
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {

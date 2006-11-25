@@ -53,9 +53,9 @@ public class CrComponentWithoutNode extends CrUML {
 	addSupportedDecision(UMLDecision.PATTERNS);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
@@ -65,9 +65,9 @@ public class CrComponentWithoutNode extends CrUML {
 	return PROBLEM_FOUND;
     }
 
-    /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+    /*
+     * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
+     *      org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
@@ -75,9 +75,9 @@ public class CrComponentWithoutNode extends CrUML {
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
@@ -138,5 +138,5 @@ public class CrComponentWithoutNode extends CrUML {
 	return offs;
     }
 
-} /* end class CrComponentWithoutNode.java */
+} /* end class CrComponentWithoutNode */
 

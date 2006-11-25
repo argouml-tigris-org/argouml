@@ -128,7 +128,7 @@ class ProjectSettingsDialog extends ArgoDialog implements WindowListener {
         // windowOpen state will be changed when window is activated
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(
      *      java.awt.event.ActionEvent)
      */
@@ -196,45 +196,49 @@ class ProjectSettingsDialog extends ArgoDialog implements WindowListener {
         }
     }
     
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
      */
     public void windowActivated(WindowEvent e) {
         handleOpen();
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
      */
     public void windowClosed(WindowEvent e) {
+        // ignored - we only care about open/closing
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
      */
     public void windowDeactivated(WindowEvent e) {
+        // ignored - we only care about open/closing
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
      */
     public void windowDeiconified(WindowEvent e) {
+        // ignored - we only care about open/closing
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
      */
     public void windowIconified(WindowEvent e) {
+        // ignored - we only care about open/closing
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
      */
     public void windowOpened(WindowEvent e) {
         handleOpen();
     }
 
-    /**
+    /*
      * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
      */
     public void windowClosing(WindowEvent e) {

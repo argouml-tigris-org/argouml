@@ -59,9 +59,9 @@ public class CrSubclassReference extends CrUML {
 	addTrigger("associationEnd");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAClass(dm))) return NO_PROBLEM;
@@ -71,9 +71,9 @@ public class CrSubclassReference extends CrUML {
 	return NO_PROBLEM;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
-     * org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Object cls = /*(MClassifier)*/ dm;
@@ -81,9 +81,9 @@ public class CrSubclassReference extends CrUML {
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
@@ -99,7 +99,7 @@ public class CrSubclassReference extends CrUML {
      * @param cls is the UML entity that is being checked.
      * @return the list of offenders
      */
-    public ListSet computeOffenders(Object/*MClassifier*/ cls) {
+    public ListSet computeOffenders(Object cls) {
 	Collection asc = Model.getFacade().getAssociationEnds(cls);
 	if (asc == null || asc.size() == 0) return null;
 

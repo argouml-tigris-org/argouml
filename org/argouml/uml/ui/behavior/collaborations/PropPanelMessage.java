@@ -114,7 +114,7 @@ public class PropPanelMessage extends PropPanelModelElement {
             putValue(Action.SMALL_ICON, icon);
         }
 
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(
          *         java.awt.event.ActionEvent)
          */

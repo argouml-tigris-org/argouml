@@ -42,7 +42,7 @@ public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
         super("stubstate", true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
@@ -51,7 +51,7 @@ public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
                 && Model.getFacade().getName(element) != null);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -77,7 +77,7 @@ public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {

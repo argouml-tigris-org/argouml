@@ -58,7 +58,8 @@ public class StandardCM extends AndCM {
 
 
 class EnabledCM implements ControlMech {
-    /**
+    
+    /*
      * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
      */
     public boolean isRelevant(Critic c, Designer d) {
@@ -67,7 +68,7 @@ class EnabledCM implements ControlMech {
 } // end class EnabledCM
 
 class NotSnoozedCM implements ControlMech {
-    /**
+    /*
      * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
      */
     public boolean isRelevant(Critic c, Designer d) {
@@ -76,7 +77,7 @@ class NotSnoozedCM implements ControlMech {
 } // end class NotSnoozedCM
 
 class DesignGoalsCM implements ControlMech {
-    /**
+    /*
      * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
      */
     public boolean isRelevant(Critic c, Designer d) {
@@ -90,7 +91,7 @@ class DesignGoalsCM implements ControlMech {
 // componentization?
 
 class CurDecisionCM implements ControlMech {
-    /**
+    /*
      * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
      */
     public boolean isRelevant(Critic c, Designer d) {
@@ -118,7 +119,7 @@ abstract class CompositeCM implements ControlMech {
 } // end class CompositeCM
 
 class AndCM extends CompositeCM {
-    /**
+    /*
      * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
      */
     public boolean isRelevant(Critic c, Designer d) {
@@ -134,7 +135,7 @@ class AndCM extends CompositeCM {
 } // end class AndCM
 
 class OrCM extends CompositeCM {
-    /**
+    /*
      * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
      */
     public boolean isRelevant(Critic c, Designer d) {

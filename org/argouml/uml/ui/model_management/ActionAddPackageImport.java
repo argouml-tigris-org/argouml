@@ -44,7 +44,7 @@ class ActionAddPackageImport extends AbstractActionAddModelElement {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
@@ -57,7 +57,7 @@ class ActionAddPackageImport extends AbstractActionAddModelElement {
         return vec;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
@@ -66,16 +66,15 @@ class ActionAddPackageImport extends AbstractActionAddModelElement {
         return vec;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-imported-elements");
     }
 
-    /**
-     * @see
-     * org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+    /*
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
         Object pack = getTarget();

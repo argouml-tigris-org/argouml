@@ -53,7 +53,7 @@ public class PropPanelCallAction extends PropPanelAction {
         super("CallAction", lookupIcon("CallAction"));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.common_behavior.PropPanelAction#initialize()
      */
     public void initialize() {
@@ -98,7 +98,7 @@ public class PropPanelCallAction extends PropPanelAction {
             super("");
         }
 
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
@@ -181,7 +181,7 @@ public class PropPanelCallAction extends PropPanelAction {
             setElements(ops);
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
          */
         protected Object getSelectedModelElement() {
@@ -192,7 +192,7 @@ public class PropPanelCallAction extends PropPanelAction {
             return null;
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
          */
         protected boolean isValidElement(Object element) {

@@ -95,7 +95,7 @@ public class FigDependency extends FigEdgeModelElement {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
     public void setFig(Fig f) {
@@ -105,7 +105,7 @@ public class FigDependency extends FigEdgeModelElement {
         // this recomputes the route if you reload the diagram.
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
      */
     protected boolean canEdit(Fig f) {
@@ -115,7 +115,7 @@ public class FigDependency extends FigEdgeModelElement {
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
@@ -123,7 +123,7 @@ public class FigDependency extends FigEdgeModelElement {
         super.paint(g);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
     protected void renderingChanged() {
@@ -131,7 +131,8 @@ public class FigDependency extends FigEdgeModelElement {
         super.renderingChanged();
         middleGroup.calcBounds();
     }
-    /**
+    
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     public void modelChanged(PropertyChangeEvent e) {

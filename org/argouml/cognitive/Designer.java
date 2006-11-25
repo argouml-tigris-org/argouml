@@ -775,12 +775,12 @@ public final class Designer
      */
     public void stopDesiring(String goal) { goals.stopDesiring(goal); }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#snooze()
      */
     public void snooze() { /* do nothing */ }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#unsnooze()
      */
     public void unsnooze() { /* do nothing */ }

@@ -54,7 +54,7 @@ public class ActionRemoveModelElement extends AbstractActionRemoveElement {
         super();
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -67,7 +67,7 @@ public class ActionRemoveModelElement extends AbstractActionRemoveElement {
     }
 
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {

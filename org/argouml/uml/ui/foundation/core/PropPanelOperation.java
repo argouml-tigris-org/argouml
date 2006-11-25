@@ -186,7 +186,7 @@ public class PropPanelOperation extends PropPanelFeature {
             putValue(Action.SMALL_ICON, icon);
         }
 
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
@@ -217,7 +217,7 @@ public class PropPanelOperation extends PropPanelFeature {
             putValue(Action.SMALL_ICON, icon);
         }
         
-        /**
+        /*
          * @see org.tigris.gef.undo.UndoableAction#isEnabled()
          */
         public boolean isEnabled() {
@@ -232,7 +232,7 @@ public class PropPanelOperation extends PropPanelFeature {
             return super.isEnabled() && result;
         }
 
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {

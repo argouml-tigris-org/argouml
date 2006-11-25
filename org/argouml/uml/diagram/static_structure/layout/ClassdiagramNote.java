@@ -40,7 +40,7 @@ public class ClassdiagramNote extends ClassdiagramNode {
         super(f);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramNode#getTypeOrderNumer()
      */
     public int getTypeOrderNumer() {
@@ -48,7 +48,8 @@ public class ClassdiagramNote extends ClassdiagramNode {
 	    ? super.getTypeOrderNumer()
 	    : first().getTypeOrderNumer();
     }
-    /**
+    
+    /*
      * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramNode#calculateWeight()
      */
     public float calculateWeight() {
@@ -56,21 +57,21 @@ public class ClassdiagramNote extends ClassdiagramNode {
         return getWeight();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramNode#getRank()
      */
     public int getRank() {
         return first() == null ? 0 : first().getRank();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramNode#getWeight()
      */
     public float getWeight() {
         return first() == null ? 0 : first().getWeight() * 0.9999999f;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramNode#isStandalone()
      */
     public boolean isStandalone() {

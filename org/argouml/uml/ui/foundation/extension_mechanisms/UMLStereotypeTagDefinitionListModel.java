@@ -45,7 +45,7 @@ class UMLStereotypeTagDefinitionListModel
         // which have a non-primitive type
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -54,7 +54,7 @@ class UMLStereotypeTagDefinitionListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {

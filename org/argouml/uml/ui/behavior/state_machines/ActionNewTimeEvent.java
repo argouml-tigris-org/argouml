@@ -46,7 +46,7 @@ public class ActionNewTimeEvent extends ActionNewEvent {
         putValue(NAME, Translator.localize("button.new-timeevent"));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.state_machines.ActionNewEvent#createEvent(
      *         java.lang.Object)
      */

@@ -35,8 +35,6 @@ public abstract class AttributeNotation extends NotationProvider {
 
     /**
      * The constructor.
-     *
-     * @param attribute the represented attribute
      */
     protected AttributeNotation() {
     }

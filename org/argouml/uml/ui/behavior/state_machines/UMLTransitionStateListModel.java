@@ -40,7 +40,7 @@ public class UMLTransitionStateListModel extends UMLModelElementListModel2 {
         super("state");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -48,10 +48,10 @@ public class UMLTransitionStateListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getState(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().getState(getTarget()) == element;
     }
 

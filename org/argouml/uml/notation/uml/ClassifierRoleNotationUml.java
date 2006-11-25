@@ -67,14 +67,14 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
         super(classifierRole);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-classifierrole";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -252,7 +252,7 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
         return cls;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {

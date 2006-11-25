@@ -50,7 +50,7 @@ class UMLCollaborationRepresentedClassifierComboBoxModel
         super("representedClassifier", true);
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -73,9 +73,7 @@ class UMLCollaborationRepresentedClassifierComboBoxModel
         setElements(classifiers);
     }
     
-    /**
-     * Not used.
-     * 
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
@@ -84,11 +82,14 @@ class UMLCollaborationRepresentedClassifierComboBoxModel
                 == element;
     }
     
+    /*
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
     protected Object getSelectedModelElement() {
         return Model.getFacade().getRepresentedClassifier(getTarget());
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {

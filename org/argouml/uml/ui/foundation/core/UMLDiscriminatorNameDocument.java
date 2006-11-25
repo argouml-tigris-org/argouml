@@ -42,14 +42,14 @@ public class UMLDiscriminatorNameDocument extends UMLPlainTextDocument {
         super("discriminator");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
         Model.getCoreHelper().setDiscriminator(getTarget(), text);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {

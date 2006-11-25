@@ -60,7 +60,7 @@ class FigHead extends FigGroup {
         addFig(stereotypeFig);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -114,7 +114,7 @@ class FigHead extends FigGroup {
         return h;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     public void setBoundsImpl(int x, int y, int w, int h) {
@@ -135,14 +135,14 @@ class FigHead extends FigGroup {
         _h = h;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean b) {
 
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int i) {

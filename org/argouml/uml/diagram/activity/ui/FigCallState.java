@@ -67,7 +67,7 @@ public class FigCallState extends FigActionState {
         setOwner(node);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
@@ -79,7 +79,7 @@ public class FigCallState extends FigActionState {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -92,7 +92,7 @@ public class FigCallState extends FigActionState {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
@@ -124,14 +124,14 @@ public class FigCallState extends FigActionState {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {
         return "new CallState";
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -139,7 +139,7 @@ public class FigCallState extends FigActionState {
         return figClone;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigStateVertex#makeSelection()
      */
     public Selection makeSelection() {

@@ -52,7 +52,7 @@ public class ActionNewGuard extends AbstractActionNewModelElement {
         super();
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -68,7 +68,7 @@ public class ActionNewGuard extends AbstractActionNewModelElement {
         return singleton;
     }
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {

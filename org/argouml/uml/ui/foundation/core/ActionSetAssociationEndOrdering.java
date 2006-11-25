@@ -54,7 +54,7 @@ public class ActionSetAssociationEndOrdering extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -63,7 +63,7 @@ public class ActionSetAssociationEndOrdering extends UndoableAction {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
             if (Model.getFacade().isAAssociationEnd(target)) {
-                Object m = /*(MAssociationEnd)*/ target;
+                Object m = target;
                 if (source.isSelected()) {
                     Model.getCoreHelper().setOrdering(m,
                             Model.getOrderingKind().getOrdered());

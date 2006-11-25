@@ -69,7 +69,7 @@ public class SelectionComponentInstance extends SelectionNodeClarifiers {
      */
     public SelectionComponentInstance(Fig f) { super(f); }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
      * org.tigris.gef.presentation.Handle)
      */
@@ -115,7 +115,7 @@ public class SelectionComponentInstance extends SelectionNodeClarifiers {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
      */
     public void paintButtons(Graphics g) {
@@ -130,7 +130,7 @@ public class SelectionComponentInstance extends SelectionNodeClarifiers {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
      * org.tigris.gef.presentation.Handle)
      */
@@ -187,9 +187,7 @@ public class SelectionComponentInstance extends SelectionNodeClarifiers {
     }
 
 
-
-
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
@@ -197,7 +195,7 @@ public class SelectionComponentInstance extends SelectionNodeClarifiers {
 	    .createComponentInstance();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -206,7 +204,7 @@ public class SelectionComponentInstance extends SelectionNodeClarifiers {
 			  (Class) Model.getMetaTypes().getDependency());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeLeft(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -215,7 +213,7 @@ public class SelectionComponentInstance extends SelectionNodeClarifiers {
 			  (Class) Model.getMetaTypes().getDependency());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeRight(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -224,9 +222,7 @@ public class SelectionComponentInstance extends SelectionNodeClarifiers {
 			  (Class) Model.getMetaTypes().getDependency());
     }
 
-
-
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */

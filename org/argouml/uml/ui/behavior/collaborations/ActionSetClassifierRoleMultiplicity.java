@@ -46,9 +46,9 @@ public class ActionSetClassifierRoleMultiplicity extends ActionSetMultiplicity {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionSetMultiplicity#setSelectedItem(
-     * java.lang.Object, java.lang.Object)
+     *      java.lang.Object, java.lang.Object)
      */
     public void setSelectedItem(Object item, Object target) {
         if (target != null

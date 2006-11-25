@@ -29,4 +29,5 @@ package org.argouml.uml.diagram.ui;
  * @author Bob Tarling
  */
 public abstract interface FeaturesCompartmentContainer {
+    // marker interface only
 }

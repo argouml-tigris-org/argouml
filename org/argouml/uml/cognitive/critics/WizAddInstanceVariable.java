@@ -51,7 +51,7 @@ public class WizAddInstanceVariable extends UMLWizard {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {

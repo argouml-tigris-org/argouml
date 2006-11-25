@@ -90,7 +90,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      * figs need not exist and be resized, moved etc if they are not visible.
      * If a compartment is later made visible the its child figs are rebuilt
      * from the model.
-     * @see org.tigris.gef.presentation.Fig#setVisible(boolean)
+     * {@inheritDoc}
      */
     public void setVisible(boolean visible) {
         if (isVisible() == visible) {
@@ -109,7 +109,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
      */
     public void addFig(Fig fig) {
@@ -221,7 +221,8 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                 
                 // Now put the text in
                 // We must handle the case where the text is null
-                String ftText = comp.getNotationProvider().toString(umlObject, null);
+                String ftText =
+                        comp.getNotationProvider().toString(umlObject, null);
                 if (ftText == null) {
                     ftText = "";
                 }
@@ -291,7 +292,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         return d;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
@@ -341,21 +342,21 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
             super(x, y, (x + len) - 1, y);
         }
 
-        /**
+        /*
          * @see org.tigris.gef.presentation.Fig#getSize()
          */
         public Dimension getSize() {
             return new Dimension((_x2 - _x1) + 1, getLineWidth());
         }
 
-        /**
+        /*
          * @see org.tigris.gef.presentation.Fig#getMinimumSize()
          */
         public Dimension getMinimumSize() {
             return new Dimension(0, getLineWidth());
         }
 
-        /**
+        /*
          * @see org.tigris.gef.presentation.Fig#setBoundsImpl(
          *         int, int, int, int)
          */

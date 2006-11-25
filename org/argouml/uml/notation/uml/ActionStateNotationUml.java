@@ -46,7 +46,7 @@ public class ActionStateNotationUml extends ActionStateNotation {
         super(actionState);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -67,14 +67,14 @@ public class ActionStateNotationUml extends ActionStateNotation {
         Model.getCommonBehaviorHelper().setScript(entry, actionExpression);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-actionstate";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {

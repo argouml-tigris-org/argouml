@@ -50,7 +50,7 @@ public class CrCircularAssocClass extends CrUML {
         setKnowledgeTypes(Critic.KT_SEMANTICS);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
@@ -81,5 +81,5 @@ public class CrCircularAssocClass extends CrUML {
      * The UID.
      */
     private static final long serialVersionUID = 5265695413303517728L;
-} /* end class CrCircularAssocClass.java */
+} /* end class CrCircularAssocClass */
 

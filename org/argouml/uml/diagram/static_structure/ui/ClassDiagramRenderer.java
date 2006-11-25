@@ -92,12 +92,10 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
     private static final Logger LOG =
         Logger.getLogger(ClassDiagramRenderer.class);
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
      *         org.tigris.gef.graph.GraphModel,
      *         org.tigris.gef.base.Layer, java.lang.Object, java.util.Map)
-     *
-     * Return a Fig that can be used to represent the given node.
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay,
 				 Object node, Map styleAttributes) {
@@ -149,10 +147,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
      * Throws IllegalArgumentException if the edge is not of an expected type.
      * Throws IllegalStateException if the edge generated has no source
      *                               or dest port.
-     *
-     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     *         java.lang.Object, java.util.Map)
+     * {@inheritDoc}
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay,
 				 Object edge, Map styleAttribute) {
@@ -182,7 +177,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         } else if (Model.getFacade().isAAssociation(edge)) {
             newEdge = new FigAssociation(edge, lay);
         } else if (Model.getFacade().isALink(edge)) {
-            Object lnk = /*(MLink)*/ edge;
+            Object lnk = edge;
             FigLink lnkFig = new FigLink(lnk);
             Collection linkEndsColn = Model.getFacade().getConnections(lnk);
 
@@ -282,8 +277,8 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         assert newEdge != null : "There has been no FigEdge created";
         assert (newEdge.getDestFigNode() != null) : "The FigEdge has no dest node";
         assert (newEdge.getDestPortFig() != null) : "The FigEdge has no dest port";
-        assert (newEdge.getSourceFigNode() != null) : "The FigEdge has no source node";;
-        assert (newEdge.getSourcePortFig() != null) : "The FigEdge has no source port";;
+        assert (newEdge.getSourceFigNode() != null) : "The FigEdge has no source node";
+        assert (newEdge.getSourcePortFig() != null) : "The FigEdge has no source port";
         
         return newEdge;
     }

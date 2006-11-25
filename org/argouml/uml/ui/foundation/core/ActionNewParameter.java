@@ -53,7 +53,7 @@ public class ActionNewParameter extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize("button.new-parameter"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

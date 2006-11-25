@@ -52,7 +52,7 @@ class UMLChangeExpressionModel extends UMLExpressionModel2 {
         super(container, propertyName);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
@@ -60,19 +60,20 @@ class UMLChangeExpressionModel extends UMLExpressionModel2 {
                 TargetManager.getInstance().getTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expression) {
         Object target = TargetManager.getInstance().getTarget();
 
         if (target == null) {
-            throw new IllegalStateException("There is no target for " + getContainer());
+            throw new IllegalStateException("There is no target for "
+                    + getContainer());
         }
         Model.getStateMachinesHelper().setChangeExpression(target, expression);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
      */
     public Object newExpression() {

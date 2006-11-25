@@ -38,7 +38,7 @@ public class FigDeepHistoryState extends FigHistoryState {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigHistoryState#getH()
      */
     public String getH() {

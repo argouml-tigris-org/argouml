@@ -194,7 +194,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             throw new IllegalArgumentException(
                 "Illegal argument. Object " + handle + " is not a namespace");
         }
-        Object m = /*(MNamespace)*/ handle;
+        Object m = handle;
         super.setNamespace(m);
 
         UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
@@ -210,10 +210,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     }
 
-    /**
-     * Get the actions from which to create a toolbar or equivilent
-     * graphic triggers.
-     *
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
@@ -255,7 +252,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         return name;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
@@ -427,7 +424,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         return actionExtensionPoint;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base)  {
@@ -438,7 +435,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 //        	|| Model.getFacade().isAClassifier(base);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
     public boolean relocate(Object base) {

@@ -54,10 +54,10 @@ public class PropPanelDataType extends PropPanelClassifier {
 
     /**
      * Construct a property panel for UML DataType elements.
-     *
-     * @param title
-     * @param icon
-     * @param orientation
+     * 
+     * @param title title string for the property panel
+     * @param icon icon
+     * @param orientation horizontal or vertical orientation
      */
     public PropPanelDataType(String title, ImageIcon icon,
             Orientation orientation) {
@@ -120,7 +120,7 @@ public class PropPanelDataType extends PropPanelClassifier {
             putValue(Action.NAME, Translator.localize("button.new-operation"));
         }
 
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {

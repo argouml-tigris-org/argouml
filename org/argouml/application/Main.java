@@ -738,7 +738,7 @@ class PostLoad implements Runnable {
         postLoadActions = v;
     }
 
-    /**
+    /*
      * @see java.lang.Runnable#run()
      */
     public void run() {
@@ -788,7 +788,7 @@ class PreloadClasses implements Runnable {
         }
     }
 
-    /**
+    /*
      * @see java.lang.Runnable#run()
      */
     public void run() {

@@ -44,7 +44,7 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionAggregation extends UndoableAction {
     private String str = "";
-    private Object/*MAggregationKind*/ agg = null;
+    private Object agg = null;
 
 
     ////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ public class ActionAggregation extends UndoableAction {
      * @param a the aggregation kind object
      * @param s "src" or "dest". Anything else is interpreted as "dest".
      */
-    protected ActionAggregation(Object/*MAggregationKind*/ a, String s) {
+    protected ActionAggregation(Object a, String s) {
         super(Translator.localize(Model.getFacade().getName(a)),
                 null);
         // Set the tooltip string:
@@ -94,7 +94,7 @@ public class ActionAggregation extends UndoableAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

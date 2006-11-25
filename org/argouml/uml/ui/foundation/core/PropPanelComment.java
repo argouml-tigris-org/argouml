@@ -105,14 +105,14 @@ class UMLCommentBodyDocument extends UMLPlainTextDocument {
         putProperty("filterNewlines", Boolean.FALSE);
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
         Model.getCoreHelper().setBody(getTarget(), text);
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {

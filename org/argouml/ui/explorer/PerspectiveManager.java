@@ -242,75 +242,82 @@ public final class PerspectiveManager {
      */
     public void loadUserPerspectives() {
 
-        try {
-            String userPerspectives =
-                Configuration.getString(
+        String userPerspectives =
+            Configuration.getString(
                     Argo.KEY_USER_EXPLORER_PERSPECTIVES, "");
 
-            StringTokenizer pst = new StringTokenizer(userPerspectives, ";");
+        StringTokenizer pst = new StringTokenizer(userPerspectives, ";");
 
-            if (pst.hasMoreTokens()) {
+        if (pst.hasMoreTokens()) {
 
-                // load user perspectives
-                while (pst.hasMoreTokens()) {
-                    String perspective = pst.nextToken();
-                    StringTokenizer perspectiveDetails =
-                        new StringTokenizer(perspective, ",");
+            // load user perspectives
+            while (pst.hasMoreTokens()) {
+                String perspective = pst.nextToken();
+                StringTokenizer perspectiveDetails =
+                    new StringTokenizer(perspective, ",");
 
-                    // get the perspective name
-                    String perspectiveName = perspectiveDetails.nextToken();
+                // get the perspective name
+                String perspectiveName = perspectiveDetails.nextToken();
 
-                    ExplorerPerspective userDefinedPerspective =
-                        new ExplorerPerspective(perspectiveName);
+                ExplorerPerspective userDefinedPerspective =
+                    new ExplorerPerspective(perspectiveName);
 
-                    // make sure there are some rules...
-                    if (perspectiveDetails.hasMoreTokens()) {
+                // make sure there are some rules...
+                if (perspectiveDetails.hasMoreTokens()) {
 
-                        // get the rules
-                        while (perspectiveDetails.hasMoreTokens()) {
+                    // get the rules
+                    while (perspectiveDetails.hasMoreTokens()) {
 
-                            // get the rule name
-                            String ruleName = perspectiveDetails.nextToken();
+                        // get the rule name
+                        String ruleName = perspectiveDetails.nextToken();
 
-                            // create the rule
-                            try {
-                                Class ruleClass = Class.forName(ruleName);
+                        // create the rule
+                        try {
+                            Class ruleClass = Class.forName(ruleName);
 
-                                PerspectiveRule rule =
-                                    (PerspectiveRule) ruleClass.newInstance();
+                            PerspectiveRule rule =
+                                (PerspectiveRule) ruleClass.newInstance();
 
-                                userDefinedPerspective.addRule(rule);
-                            } catch (NoClassDefFoundError ex) {
-                                LOG.error(
-                                    "could not create rule, you can try to "
+                            userDefinedPerspective.addRule(rule);
+                        } catch (ClassNotFoundException e) {
+                            LOG.error(
+                                    "could not create rule " + ruleName 
+                                    + " you can try to "
                                     + "refresh the perspectives to the "
                                     + "default settings.",
-                                    ex);
-                            }
+                                    e);
+                        } catch (InstantiationException e) {
+                            LOG.error(
+                                    "could not create rule " + ruleName 
+                                    + " you can try to "
+                                    + "refresh the perspectives to the "
+                                    + "default settings.",
+                                    e);
+                        } catch (IllegalAccessException e) {
+                            LOG.error(
+                                    "could not create rule " + ruleName 
+                                    + " you can try to "
+                                    + "refresh the perspectives to the "
+                                    + "default settings.",
+                                    e);
                         }
-                    } else {
-                        // rule name but no rules
-                        continue;
                     }
-
-                    // add the perspective
-                    addPerspective(userDefinedPerspective);
+                } else {
+                    // rule name but no rules
+                    continue;
                 }
-            } else {
-                // no user defined perspectives
-                loadDefaultPerspectives();
+
+                // add the perspective
+                addPerspective(userDefinedPerspective);
             }
+        } else {
+            // no user defined perspectives
+            loadDefaultPerspectives();
+        }
 
-            // one last check that some loaded.
-            if (getPerspectives().size() == 0) {
-                loadDefaultPerspectives();
-            }
-        } catch (ClassNotFoundException e) {
-
-        } catch (InstantiationException e) {
-
-        } catch (IllegalAccessException e) {
-
+        // one last check that some loaded.
+        if (getPerspectives().size() == 0) {
+            loadDefaultPerspectives();
         }
     }
 
@@ -562,9 +569,8 @@ public final class PerspectiveManager {
     }
 
     /**
-     * string representation of the perspectives in the same format as saved in
-     * the user properties.
-     *
+     * @return string representation of the perspectives in the same format as
+     *         saved in the user properties.
      * @see java.lang.Object#toString()
      */
     public String toString() {

@@ -52,9 +52,9 @@ public class CrDisambigStateName extends CrUML {
 	addTrigger("parent");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAState(dm))) {
@@ -74,7 +74,7 @@ public class CrDisambigStateName extends CrUML {
             return NO_PROBLEM;
         }
 	for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
-	    Object imp = /*(MElementImport)*/ iter.next();
+	    Object imp = iter.next();
 	    Object ns = Model.getFacade().getPackage(imp);
 	    if (ns == null) {
                 return NO_PROBLEM;
@@ -85,10 +85,8 @@ public class CrDisambigStateName extends CrUML {
             }
 	    Iterator elems = oes.iterator();
 	    while (elems.hasNext()) {
-		Object eo = /*(MElementImport)*/ elems.next();
-		Object me =
-                    /*(MModelElement)*/
-		    Model.getFacade().getModelElement(eo);
+		Object eo = elems.next();
+		Object me = Model.getFacade().getModelElement(eo);
 		if (!(Model.getFacade().isAClassifier(me))) {
                     continue;
                 }
@@ -107,7 +105,7 @@ public class CrDisambigStateName extends CrUML {
 	return NO_PROBLEM;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {

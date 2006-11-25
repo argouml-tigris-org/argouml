@@ -48,7 +48,7 @@ class ActionOpenCritics extends UndoableAction {
                 Translator.localize("action.browse-critics"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

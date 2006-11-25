@@ -54,7 +54,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
         super("action.class-diagram");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
     public UMLDiagram createDiagram(Object ns) {
@@ -70,7 +70,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
             "The argument " + ns + "is not a namespace.");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(Object)
      */
     public boolean isValidNamespace(Object handle) {

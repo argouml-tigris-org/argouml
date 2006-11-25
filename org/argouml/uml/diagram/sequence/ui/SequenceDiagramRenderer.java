@@ -53,9 +53,7 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
     private static final Logger LOG =
         Logger.getLogger(SequenceDiagramRenderer.class);
 
-    /**
-     * Return a Fig that can be used to represent the given node.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
      *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      *         java.lang.Object, java.util.Map)
@@ -72,9 +70,7 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
         return result;
     }
 
-    /**
-     * Return a Fig that can be used to represent the given edge.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
      *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      *         java.lang.Object, java.util.Map)
@@ -87,9 +83,7 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
         return getFigEdgeFor(edge, styleAttributes);
     }
 
-    /**
-     * Return a Fig that can be used to represent the given edge.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
      *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      *         java.lang.Object, java.util.Map)

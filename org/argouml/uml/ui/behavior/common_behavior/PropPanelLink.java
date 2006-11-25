@@ -121,7 +121,7 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel2 {
         super("assocation", true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
@@ -168,7 +168,7 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel2 {
         setElements(associations);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
@@ -178,7 +178,7 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel2 {
         return null;
     }
 
-    /**
+    /*
     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
     */
     public void propertyChange(PropertyChangeEvent evt) {
@@ -215,7 +215,7 @@ class ActionSetLinkAssociation extends UndoableAction {
         putValue(Action.SHORT_DESCRIPTION, Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

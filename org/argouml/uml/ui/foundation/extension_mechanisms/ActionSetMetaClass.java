@@ -60,7 +60,7 @@ public class ActionSetMetaClass extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -73,8 +73,10 @@ public class ActionSetMetaClass extends UndoableAction {
             UMLComboBox2 combo = (UMLComboBox2) source;
             stereo = combo.getTarget();
             if (Model.getFacade().isAStereotype(stereo)) {
-                Collection baseClasses = Model.getFacade().getBaseClasses(stereo);
-                Iterator iter = baseClasses != null ? baseClasses.iterator() : null;
+                Collection baseClasses =
+                        Model.getFacade().getBaseClasses(stereo);
+                Iterator iter =
+                        baseClasses != null ? baseClasses.iterator() : null;
                 oldBase = iter != null ? iter.next() : null;
                 newBase = combo.getSelectedItem();
                 if (newBase != null) { // TODO: How come this happens?

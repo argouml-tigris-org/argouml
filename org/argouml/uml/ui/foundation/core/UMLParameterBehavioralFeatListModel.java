@@ -41,7 +41,7 @@ public class UMLParameterBehavioralFeatListModel
 	super("behavioralFeature");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -51,10 +51,10 @@ public class UMLParameterBehavioralFeatListModel
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
 	return Model.getFacade().getBehavioralFeature(getTarget()) == o;
     }
 

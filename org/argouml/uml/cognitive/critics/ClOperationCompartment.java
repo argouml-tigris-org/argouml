@@ -56,19 +56,20 @@ public class ClOperationCompartment implements Clarifier {
     public static ClOperationCompartment getTheInstance() {
         return theInstance;
     }
-    /**
+    
+    /*
      * @see org.argouml.ui.Clarifier#setFig(org.tigris.gef.presentation.Fig)
      */
     public void setFig(Fig f) { fig = f; }
 
-    /**
+    /*
      * @see org.argouml.ui.Clarifier#setToDoItem(org.argouml.cognitive.ToDoItem)
      */
     public void setToDoItem(ToDoItem i) { }
 
-    /**
+    /*
      * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
-     * int, int)
+     *      int, int)
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
 	if (fig instanceof OperationsCompartmentContainer) {
@@ -109,17 +110,17 @@ public class ClOperationCompartment implements Clarifier {
 	}
     }
 
-    /**
+    /*
      * @see javax.swing.Icon#getIconWidth()
      */
     public int getIconWidth() { return 0; }
 
-    /**
+    /*
      * @see javax.swing.Icon#getIconHeight()
      */
     public int getIconHeight() { return 0; }
 
-    /**
+    /*
      * @see org.argouml.ui.Clarifier#hit(int, int)
      */
     public boolean hit(int x, int y) {

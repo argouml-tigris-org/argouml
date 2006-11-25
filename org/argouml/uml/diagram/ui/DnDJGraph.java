@@ -115,7 +115,7 @@ class DnDJGraph
                 this);
     }
     
-    /**
+    /*
      * @see java.awt.dnd.DropTargetListener#dragEnter(
      *         java.awt.dnd.DropTargetDragEvent)
      */
@@ -132,7 +132,7 @@ class DnDJGraph
     	dtde.rejectDrag();
     }
 
-    /**
+    /*
      * @see java.awt.dnd.DropTargetListener#dragOver(
      *         java.awt.dnd.DropTargetDragEvent)
      */
@@ -149,21 +149,23 @@ class DnDJGraph
     	dtde.rejectDrag();
     }
 
-    /**
+    /*
      * @see java.awt.dnd.DropTargetListener#dropActionChanged(
      *         java.awt.dnd.DropTargetDragEvent)
      */
     public void dropActionChanged(DropTargetDragEvent dtde) {
+        // ignored
     }
 
-    /**
+    /*
      * @see java.awt.dnd.DropTargetListener#dragExit(
      *         java.awt.dnd.DropTargetEvent)
      */
     public void dragExit(DropTargetEvent dte) {
+        // ignored
     }
 
-    /**
+    /*
      * @see java.awt.dnd.DropTargetListener#drop(
      *         java.awt.dnd.DropTargetDropEvent)
      */

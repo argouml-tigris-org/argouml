@@ -54,7 +54,7 @@ public class FigEnumLiteralsCompartment extends FigFeaturesCompartment {
         super(x, y, w, h);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#getUmlCollection()
      */
     protected Collection getUmlCollection() {
@@ -62,7 +62,7 @@ public class FigEnumLiteralsCompartment extends FigFeaturesCompartment {
         return Model.getFacade().getEnumerationLiterals(enumeration);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#getNotationType()
      */
     protected int getNotationType() {

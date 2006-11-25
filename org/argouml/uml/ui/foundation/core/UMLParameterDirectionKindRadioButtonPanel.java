@@ -65,7 +65,7 @@ public class UMLParameterDirectionKindRadioButtonPanel extends
                 ActionSetParameterDirectionKind.getInstance(), horizontal);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLRadioButtonPanel#buildModel()
      */
     public void buildModel() {

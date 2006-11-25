@@ -108,7 +108,7 @@ class SettingsTabPreferences extends JPanel
 	add(top, BorderLayout.NORTH);
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
@@ -125,7 +125,7 @@ class SettingsTabPreferences extends JPanel
                 .getProfile().getProfileModelFilename());
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
@@ -145,26 +145,26 @@ class SettingsTabPreferences extends JPanel
         }
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() {
         handleSettingsTabRefresh();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
      */
     public void handleResetToDefault() {
         // Do nothing - these buttons are not shown.
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() { return this; }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.preferences"; }

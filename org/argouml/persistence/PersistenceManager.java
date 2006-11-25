@@ -454,7 +454,7 @@ class MultitypeFileFilter extends FileFilter {
     /**
      * Accept any file that any of our filters will accept.
      *
-     * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
+     * {@inheritDoc}
      */
     public boolean accept(File arg0) {
         Iterator it = filters.iterator();
@@ -466,7 +466,7 @@ class MultitypeFileFilter extends FileFilter {
         return false;
     }
 
-    /**
+    /*
      * @see javax.swing.filechooser.FileFilter#getDescription()
      */
     public String getDescription() {

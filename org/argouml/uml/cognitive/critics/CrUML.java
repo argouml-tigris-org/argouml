@@ -133,9 +133,9 @@ public class CrUML extends Critic {
         setResource(getClassSimpleName());
     }
 
-    /**
-     * @see org.argouml.cognitive.critics.Critic#predicate(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+    /*
+     * @see org.argouml.cognitive.critics.Critic#predicate( java.lang.Object,
+     *      org.argouml.cognitive.Designer)
      */
     public boolean predicate(Object dm, Designer dsgr) {
 	Project p = ProjectManager.getManager().getCurrentProject();
@@ -220,7 +220,7 @@ public class CrUML extends Critic {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#toDoItem(Object, Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {

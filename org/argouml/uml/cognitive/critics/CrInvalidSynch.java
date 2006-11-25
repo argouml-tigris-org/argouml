@@ -47,9 +47,9 @@ public class CrInvalidSynch extends CrUML {
         addTrigger("outgoing");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
-     * org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         Object destinationRegion = null;

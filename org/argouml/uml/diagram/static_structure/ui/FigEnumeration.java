@@ -99,14 +99,14 @@ public class FigEnumeration extends FigDataType
         setBounds(getBounds());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#makeSelection()
      */
     public Selection makeSelection() {
         return new SelectionEnumeration(this);
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      * TODO: Is this actually needed? - tfm
      */
@@ -117,12 +117,9 @@ public class FigEnumeration extends FigDataType
         return clone;
     }
  
-    /**
-     * Build a collection of menu items relevant for a right-click
-     * popup menu on an Interface.
-     *
-     * @param     me     a mouse event
-     * @return           a collection of menu items
+    
+    /*
+     * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#getPopUpActions(java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
@@ -137,7 +134,7 @@ public class FigEnumeration extends FigDataType
         return popUpActions;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -149,7 +146,7 @@ public class FigEnumeration extends FigDataType
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
@@ -159,7 +156,7 @@ public class FigEnumeration extends FigDataType
         super.renderingChanged();
     }
     
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
@@ -203,7 +200,7 @@ public class FigEnumeration extends FigDataType
         setBounds(getBounds());
     }
     
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
@@ -222,10 +219,8 @@ public class FigEnumeration extends FigDataType
         }
     }
 
-    /**
-     * Gets the minimum size permitted for a enumeration on the diagram.<p>
-     * 
-     * @return  the size of the minimum bounding box.
+    /*
+     * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#getMinimumSize()
      */
     public Dimension getMinimumSize() {
         // Start with the minimum for our parent
@@ -240,17 +235,7 @@ public class FigEnumeration extends FigDataType
         return aSize;
     }
     
-    /**
-     * Sets the bounds of all components, but the size will be at least the one returned by
-     * {@link #getMinimumSize()}, unless checking of size is disabled.<p>
-     * 
-     * @param x  Desired X coordinate of upper left corner
-     *
-     * @param y  Desired Y coordinate of upper left corner
-     *
-     * @param w  Desired width of the figure
-     *
-     * @param h  Desired height of the figure
+    /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(final int x, final int y, final int w,

@@ -52,7 +52,7 @@ public class ActionSetCompositeStateConcurrent extends UndoableAction {
                 Translator.localize("action.set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -70,7 +70,7 @@ public class ActionSetCompositeStateConcurrent extends UndoableAction {
     }
 
     /**
-     * @return Returns the sINGLETON.
+     * @return Returns the singleton.
      */
     public static ActionSetCompositeStateConcurrent getInstance() {
         return SINGLETON;

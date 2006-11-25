@@ -84,8 +84,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     public void targetChanged() {
         eventType = 0;
     }
-
-    /**
+    
+    /*
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
      */
     public void targetReasserted() {

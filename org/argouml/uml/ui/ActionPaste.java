@@ -101,9 +101,7 @@ public class ActionPaste
      */
     private JTextComponent textSource;
 
-    /**
-     * Copies some text or a fig.
-     *
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -137,7 +135,7 @@ public class ActionPaste
 	return true;
     }
 
-    /**
+    /*
      * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
      */
     public void focusLost(FocusEvent e) {
@@ -146,16 +144,15 @@ public class ActionPaste
         }
     }
 
-    /**
-     * @see
-     * javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
+    /*
+     * @see javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
      */
     public void caretUpdate(CaretEvent e) {
         textSource = (JTextComponent) e.getSource();
 
     }
 
-    /**
+    /*
      * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
      */
     public void focusGained(FocusEvent e) {

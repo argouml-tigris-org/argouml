@@ -81,19 +81,19 @@ public class PredicateFind implements Predicate {
      * @param m the given package
      * @return true if the name of the given package is equal
      */
-    public boolean matchPackage(Object/*MModel*/ m) {
+    public boolean matchPackage(Object m) {
 	boolean res = packageName.predicate(Model.getFacade().getName(m));
 	return res;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
      */
     public boolean predicate(Object o) {
 	if (!(Model.getFacade().isAModelElement(o))) {
             return false;
         }
-	Object me = /*(MModelElement)*/ o;
+	Object me = o;
 	return theType.predicate(me) && specific.predicate(me)
 	    && elementName.predicate(Model.getFacade().getName(me));
     }

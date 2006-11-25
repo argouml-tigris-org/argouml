@@ -56,9 +56,9 @@ public class CrOppEndConflict extends CrUML {
         addTrigger("associationEnd");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         boolean problem = NO_PROBLEM;
@@ -80,4 +80,4 @@ public class CrOppEndConflict extends CrUML {
         }
         return problem;
     }
-} /* end class CrOppEndConflict.java */
+} /* end class CrOppEndConflict */

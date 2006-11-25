@@ -156,16 +156,13 @@ public class TabChecklist extends AbstractArgoJPanel
      */
     public Object getTarget() { return target; }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() { setTarget(target); }
 
-    /**
-     * Decides if the tab should be enabled or not.<p>
-     *
-     * @param t is the object element that it is then enabled for
-     * @return true if it should be enabled.
+    /*
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object t) {
         t = findTarget(t);
@@ -295,12 +292,13 @@ class TableModelChecklist extends AbstractTableModel
 
     ////////////////
     // TableModel implemetation
-    /**
+    
+    /*
      * @see javax.swing.table.TableModel#getColumnCount()
      */
     public int getColumnCount() { return 2; }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
     public String  getColumnName(int c) {
@@ -313,7 +311,7 @@ class TableModelChecklist extends AbstractTableModel
 	return "XXX";
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     public Class getColumnClass(int c) {
@@ -326,14 +324,14 @@ class TableModelChecklist extends AbstractTableModel
 	return String.class;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
     public boolean isCellEditable(int row, int col) {
 	return col == 0;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getRowCount()
      */
     public int getRowCount() {
@@ -347,7 +345,7 @@ class TableModelChecklist extends AbstractTableModel
 	return cl.size();
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
     public Object getValueAt(int row, int col) {
@@ -366,7 +364,7 @@ class TableModelChecklist extends AbstractTableModel
 	}
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
@@ -396,7 +394,7 @@ class TableModelChecklist extends AbstractTableModel
     ////////////////
     // event handlers
 
-    /**
+    /*
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {
@@ -408,7 +406,7 @@ class TableModelChecklist extends AbstractTableModel
         });
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {

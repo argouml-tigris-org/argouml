@@ -33,7 +33,7 @@ import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect when a join state has the wrong number of
- * transitions.  Implements constraint [4] on MPseudostate in the UML
+ * transitions.  Implements constraint [4] on Pseudostate in the UML
  * Semantics v1.1, pp. 104.
  *
  * @author jrobbins
@@ -49,9 +49,9 @@ public class CrInvalidJoin extends CrUML {
 	addTrigger("outgoing");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAPseudostate(dm))) {

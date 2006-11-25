@@ -88,35 +88,35 @@ public class ActivityDiagramLayouter implements Layouter {
         this.diagram = d;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.layout.Layouter#add(org.argouml.uml.diagram.layout.LayoutedObject)
      */
     public void add(LayoutedObject object) {
         objects.add(object);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.layout.Layouter#remove(org.argouml.uml.diagram.layout.LayoutedObject)
      */
     public void remove(LayoutedObject object) {
         objects.remove(object);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.layout.Layouter#getObjects()
      */
     public LayoutedObject[] getObjects() {
         return (LayoutedObject[]) objects.toArray();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.layout.Layouter#getObject(int)
      */
     public LayoutedObject getObject(int index) {
         return (LayoutedObject) objects.get(index);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.layout.Layouter#layout()
      */
     public void layout() {
@@ -173,14 +173,14 @@ public class ActivityDiagramLayouter implements Layouter {
         return index;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.layout.Layouter#getMinimumDiagramSize()
      */
     public Dimension getMinimumDiagramSize() {
         return new Dimension(
                 STARTING_POINT.x + 300,
                 STARTING_POINT.y + OFFSET_Y * objects.size()
-                );
+        );
     }
 
 }

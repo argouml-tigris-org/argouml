@@ -106,21 +106,21 @@ class SettingsTabModules extends JPanel
 	    }
 	}
 
-	/**
+	/*
 	 * @see javax.swing.table.TableModel#getColumnCount()
 	 */
 	public int getColumnCount() {
 	    return columnNames.length;
 	}
 
-	/**
+	/*
 	 * @see javax.swing.table.TableModel#getColumnName(int)
 	 */
 	public String getColumnName(int col) {
 	    return columnNames[col];
 	}
 
-	/**
+	/*
 	 * @see javax.swing.table.TableModel#getRowCount()
 	 */
 	public int getRowCount() {
@@ -128,7 +128,7 @@ class SettingsTabModules extends JPanel
 		+ ModuleLoader.getInstance().getModules().size();
 	}
 
-	/**
+	/*
 	 * @see javax.swing.table.TableModel#getValueAt(int, int)
 	 */
 	public Object getValueAt(int row, int col) {
@@ -148,7 +148,7 @@ class SettingsTabModules extends JPanel
 	    }
 	}
 
-	/**
+	/*
 	 * @see javax.swing.table.TableModel#setValueAt(
 	 *         java.lang.Object, int, int)
 	 */
@@ -156,7 +156,7 @@ class SettingsTabModules extends JPanel
 	    elements[row][col] = ob;
 	}
 
-	/**
+	/*
 	 * @see javax.swing.table.TableModel#getColumnClass(int)
 	 */
 	public Class getColumnClass(int col) {
@@ -170,7 +170,7 @@ class SettingsTabModules extends JPanel
 	    }
 	}
 
-	/**
+	/*
 	 * @see javax.swing.table.TableModel#isCellEditable(int, int)
 	 */
 	public boolean isCellEditable(int row, int col) {
@@ -236,7 +236,7 @@ class SettingsTabModules extends JPanel
         validate();
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
@@ -244,7 +244,7 @@ class SettingsTabModules extends JPanel
 	createNotYetLoaded();
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
@@ -259,7 +259,7 @@ class SettingsTabModules extends JPanel
 	createNotYetLoaded();
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() {
@@ -267,12 +267,12 @@ class SettingsTabModules extends JPanel
         // The next time we refresh, we will fetch the values again.
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.modules"; }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() {
@@ -295,7 +295,7 @@ class SettingsTabModules extends JPanel
      */
     private static final long serialVersionUID = 8945027241102020504L;
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
      */
     public void handleResetToDefault() {

@@ -53,7 +53,7 @@ public class UMLStimulusActionTextProperty  {
      */
     public void setProperty(UMLUserInterfaceContainer container,
             String newValue) {
-	Object/*MStimulus*/  stimulus = container.getTarget();
+	Object stimulus = container.getTarget();
 	if (stimulus != null) {
 
 	    String oldValue = getProperty(container);
@@ -86,7 +86,7 @@ public class UMLStimulusActionTextProperty  {
      */
     public String getProperty(UMLUserInterfaceContainer container) {
         String value = null;
-	Object/*MStimulus*/ stimulus = container.getTarget();
+	Object stimulus = container.getTarget();
 	if (stimulus != null) {
 	    Object action = Model.getFacade().getDispatchAction(stimulus);
 	    if (action != null) {

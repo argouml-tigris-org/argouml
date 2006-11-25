@@ -146,7 +146,7 @@ public final class SaveGraphicsManager {
                 f.getSuffix());
 
         Collections.sort(otherFilters, new Comparator() {
-            /**
+            /*
              * @see java.util.Comparator#compare(T, T)
              */
             public int compare(Object arg0, Object arg1) {
@@ -218,7 +218,7 @@ public final class SaveGraphicsManager {
             defaultName = name;
         }
 
-        /**
+        /*
          * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
          */
         public void propertyChange(PropertyChangeEvent evt) {
@@ -241,7 +241,7 @@ public final class SaveGraphicsManager {
                 fileName = fn;
             }
 
-            /**
+            /*
              * @see java.lang.Runnable#run()
              */
             public void run() {
@@ -320,7 +320,7 @@ public final class SaveGraphicsManager {
         c.add(defaultFilter);
         Iterator iter = otherFilters.iterator();
         while (iter.hasNext()) {
-            c.add(((SuffixFilter) iter.next()));
+            c.add((iter.next()));
         }
         return c;
     }
@@ -335,7 +335,7 @@ public final class SaveGraphicsManager {
  * The old comment was: override gef default to cope with scaling.
  */
 class ActionSaveGraphicsCmdSaveEPS extends CmdSaveEPS {
-    /**
+    /*
      * @see org.tigris.gef.base.CmdSaveGraphics#saveGraphics(
      *         java.io.OutputStream, org.tigris.gef.base.Editor,
      *         java.awt.Rectangle)

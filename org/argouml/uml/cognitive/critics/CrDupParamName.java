@@ -33,7 +33,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * Well-formedness rule [1] for MBehavioralFeature. See page 28 of UML 1.1
+ * Well-formedness rule [1] for BehavioralFeature. See page 28 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
  *
  * @author jrobbins
@@ -50,20 +50,20 @@ public class CrDupParamName extends CrUML {
 	setKnowledgeTypes(Critic.KT_SYNTAX);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!Model.getFacade().isABehavioralFeature(dm)) {
 	    return NO_PROBLEM;
 	}
 
-	Object bf = /*(MBehavioralFeature)*/ dm;
+	Object bf = dm;
 	Vector namesSeen = new Vector();
 	Iterator params = Model.getFacade().getParameters(bf).iterator();
 	while (params.hasNext()) {
-	    Object p = /*(MParameter)*/ params.next();
+	    Object p = params.next();
 
 	    String pName = Model.getFacade().getName(p);
 	    if (pName == null || "".equals(pName)) {
@@ -80,4 +80,4 @@ public class CrDupParamName extends CrUML {
 	return NO_PROBLEM;
     }
 
-} /* end class CrDupParamName.java */
+} /* end class CrDupParamName */

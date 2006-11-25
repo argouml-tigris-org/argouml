@@ -57,21 +57,20 @@ public class FigFeature extends CompartmentFigText {
             super(f);
         }
 
-        /**
-         * Does nothing.
-         * @see org.tigris.gef.base.Selection#dragHandle(int, int,
-         * int, int, org.tigris.gef.presentation.Handle)
+        /*
+         * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
+         *      org.tigris.gef.presentation.Handle)
          */
         public void dragHandle(int mx, int my, int anX, int anY, Handle h) {
+            // Does nothing.
         }
 
-        /**
-         * Does nothing.
-         * @see
-         * org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
-         * org.tigris.gef.presentation.Handle)
+        /*
+         * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
+         *      org.tigris.gef.presentation.Handle)
          */
         public void hitHandle(Rectangle r, Handle h) {
+           // Does nothing.
         }
 
         /**
@@ -103,24 +102,21 @@ public class FigFeature extends CompartmentFigText {
         setLeftMargin(3);
     }
 
-    /**
-     * Via makeSelection we can add a custom selection class. This way
-     * we can add a custom keyevent handler for our attributes or operations.
-     *
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
         return new SelectionFeature(this);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigText#setTextFilled(boolean)
      */
     public void setTextFilled(boolean filled) {
         super.setTextFilled(false);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean filled) {

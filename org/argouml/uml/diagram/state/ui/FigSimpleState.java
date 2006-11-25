@@ -97,7 +97,7 @@ public class FigSimpleState extends FigState {
 	setOwner(node);
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -114,7 +114,7 @@ public class FigSimpleState extends FigState {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -167,7 +167,7 @@ public class FigSimpleState extends FigState {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
@@ -175,22 +175,22 @@ public class FigSimpleState extends FigState {
 	divider.setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() { return cover.getLineColor(); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) { cover.setFillColor(col); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() { return cover.getFillColor(); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
@@ -198,12 +198,12 @@ public class FigSimpleState extends FigState {
         getBigPort().setFilled(f);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() { return cover.getFilled(); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
@@ -211,7 +211,7 @@ public class FigSimpleState extends FigState {
 	divider.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() { return cover.getLineWidth(); }
@@ -220,28 +220,28 @@ public class FigSimpleState extends FigState {
     ////////////////////////////////////////////////////////////////
     // event processing
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()
      */
     protected int getInitialHeight() {
         return 40;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialWidth()
      */
     protected int getInitialWidth() {
         return 70;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialX()
      */
     protected int getInitialX() {
         return 0;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialY()
      */
     protected int getInitialY() {

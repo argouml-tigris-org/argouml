@@ -38,7 +38,7 @@ import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Check the:
- * Well-formedness rule [2] for MClassifier.
+ * Well-formedness rule [2] for Classifier.
  * See page 29 of UML 1.1, Semantics. OMG document ad/97-08-04.
  * See page 2-49 in UML V1.3<p>
  *
@@ -71,9 +71,12 @@ public class CrAttrNameConflict extends CrUML {
      * @param dm is the classifier
      * @param dsgr is not used.
      * @return true if there are two with the same name.
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAClassifier(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClassifier(dm))) {
+            return NO_PROBLEM;
+        }
 
 	Vector namesSeen = new Vector();
 
@@ -88,12 +91,12 @@ public class CrAttrNameConflict extends CrUML {
 	return NO_PROBLEM;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {
 	return ClAttributeCompartment.getTheInstance();
     }
 
-} /* end class CrAttrNameConflict.java */
+} /* end class CrAttrNameConflict */
 

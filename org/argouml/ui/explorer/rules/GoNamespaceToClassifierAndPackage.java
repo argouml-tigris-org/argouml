@@ -43,14 +43,14 @@ import org.argouml.model.Model;
 public class GoNamespaceToClassifierAndPackage
     extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
         return Translator.localize ("misc.namespace.classifer-or-package");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
@@ -73,7 +73,7 @@ public class GoNamespaceToClassifierAndPackage
         return result;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {

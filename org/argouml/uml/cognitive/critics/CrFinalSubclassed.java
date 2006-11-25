@@ -32,7 +32,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
+ * Well-formedness rule [2] for GeneralizableElement. See page 31 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
  * In UML 1.3 it is rule [2] in section 2.5.3.18 page 2-54.
  * Remove final keyword or remove subclasses
@@ -52,9 +52,9 @@ public class CrFinalSubclassed extends CrUML {
 	addTrigger("isLeaf");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!Model.getFacade().isAGeneralizableElement(dm)) {
@@ -69,5 +69,5 @@ public class CrFinalSubclassed extends CrUML {
 	return specs.hasNext() ? PROBLEM_FOUND : NO_PROBLEM;
     }
 
-} /* end class CrFinalSubclassed.java */
+} /* end class CrFinalSubclassed */
 

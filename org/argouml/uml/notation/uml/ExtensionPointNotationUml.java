@@ -48,7 +48,7 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
         super(ep);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -197,7 +197,7 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
         return ep;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
@@ -211,7 +211,7 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
      * The "name: " is omitted if there
      * is no name given.
      *
-     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * {@inheritDoc}
      */
     public String toString(Object modelElement, HashMap args) {
 

@@ -74,7 +74,8 @@ public class TempFileUtils {
     /**
      * Visit directory in post-order fashion.
      */
-    private static void traverseDir(File dir, FileAction action) throws IOException {
+    private static void traverseDir(File dir, FileAction action)
+            throws IOException {
         if (dir.exists()) {
             File[] files = dir.listFiles();
             for (int i = 0; i < files.length; i++) {

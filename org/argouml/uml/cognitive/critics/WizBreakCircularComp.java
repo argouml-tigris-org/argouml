@@ -69,7 +69,7 @@ public class WizBreakCircularComp extends UMLWizard {
      */
     public WizBreakCircularComp() { }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
      */
     public int getNumSteps() { return 3; }
@@ -84,7 +84,7 @@ public class WizBreakCircularComp extends UMLWizard {
 	    ListSet offs = item.getOffenders();
 	    int size = offs.size();
 	    for (int i = 0; i < size; i++) {
-		Object me = /*(MModelElement)*/ offs.elementAt(i);
+		Object me = offs.elementAt(i);
 		String s = Model.getFacade().getName(me);
 		res.addElement(s);
 	    }
@@ -102,7 +102,7 @@ public class WizBreakCircularComp extends UMLWizard {
 	    Object fromType = selectedCls;
 	    String fromName = Model.getFacade().getName(fromType);
 	    for (Iterator iter = aes.iterator(); iter.hasNext();) {
-		Object fromEnd = /*(MAssociationEnd)*/ iter.next();
+		Object fromEnd = iter.next();
 		Object asc = Model.getFacade().getAssociation(fromEnd);
 		Object toEnd =
 		    new ArrayList(Model.getFacade().getConnections(asc)).get(0);
@@ -127,9 +127,7 @@ public class WizBreakCircularComp extends UMLWizard {
 	return res;
     }
 
-    /**
-     * Create a new panel for the given step.
-     *
+    /*
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
@@ -155,13 +153,7 @@ public class WizBreakCircularComp extends UMLWizard {
 	return null;
     }
 
-    /**
-     * Take action at the completion of a step. For example, when the
-     * given step is 0, do nothing; and when the given step is 1, do
-     * the first action.  Argo non-modal wizards should take action as
-     * they do along, as soon as possible, they should not wait until
-     * the final step.
-     *
+    /*
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
@@ -191,7 +183,7 @@ public class WizBreakCircularComp extends UMLWizard {
 	    Iterator iter =
 	        Model.getFacade().getAssociationEnds(selectedCls).iterator();
 	    for (int n = 0; n <= choice; n++) {
-	        ae = /*(MAssociationEnd)*/ iter.next();
+	        ae = iter.next();
 	    }
 	    selectedAsc = Model.getFacade().getAssociation(ae);
 	    break;
@@ -200,8 +192,8 @@ public class WizBreakCircularComp extends UMLWizard {
 	    if (selectedAsc != null) {
 		List conns = new ArrayList(
 		        Model.getFacade().getConnections(selectedAsc));
-		Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
-		Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
+		Object ae0 = conns.get(0);
+		Object ae1 = conns.get(1);
 		try {
 		    Model.getCoreHelper().setAggregation(
 		            ae0,
@@ -217,12 +209,12 @@ public class WizBreakCircularComp extends UMLWizard {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ui.Wizard#canGoNext()
      */
     public boolean canGoNext() { return canFinish(); }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ui.Wizard#canFinish()
      */
     public boolean canFinish() {

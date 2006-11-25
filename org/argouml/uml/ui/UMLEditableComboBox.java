@@ -51,7 +51,8 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public abstract class UMLEditableComboBox extends UMLComboBox2 implements FocusListener {
+public abstract class UMLEditableComboBox extends UMLComboBox2 implements
+        FocusListener {
 
     /**
      * The comboboxeditor for editable uml comboboxes. This has to be changed
@@ -166,7 +167,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements FocusL
             setShowIcon(showIcon);
         }
 
-        /**
+        /*
          * @see javax.swing.ComboBoxEditor#setItem(java.lang.Object)
          */
         public void setItem(Object anObject) {
@@ -197,14 +198,14 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements FocusL
             theShowIcon = showIcon;
         }
 
-        /**
+        /*
          * @see javax.swing.ComboBoxEditor#getEditorComponent()
          */
         public Component getEditorComponent() {
             return panel;
         }
 
-        /**
+        /*
          * @see javax.swing.ComboBoxEditor#addActionListener(java.awt.event.ActionListener)
          */
         public void addActionListener(ActionListener l) {
@@ -213,21 +214,21 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements FocusL
 
 
 
-        /**
+        /*
          * @see javax.swing.ComboBoxEditor#removeActionListener(java.awt.event.ActionListener)
          */
         public void removeActionListener(ActionListener l) {
             panel.removeActionListener(l);
         }
 
-        /**
+        /*
          * @see javax.swing.ComboBoxEditor#selectAll()
          */
         public void selectAll() {
             super.selectAll();
         }
 
-        /**
+        /*
          * @see javax.swing.ComboBoxEditor#getItem()
          */
         public Object getItem() {
@@ -236,9 +237,9 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements FocusL
 
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2(
-     * UMLComboBoxModel2, Action, boolean)
+    /*
+     * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2( UMLComboBoxModel2,
+     *      Action, boolean)
      */
     public UMLEditableComboBox(UMLComboBoxModel2 model, Action selectAction,
             boolean showIcon) {
@@ -248,15 +249,15 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements FocusL
         getEditor().addActionListener(this);
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2(
-     * UMLComboBoxModel2, Action)
+    /*
+     * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2( UMLComboBoxModel2,
+     *      Action)
      */
     public UMLEditableComboBox(UMLComboBoxModel2 arg0, Action selectAction) {
         this(arg0, selectAction, true);
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      * TODO: From ComboBox javadoc - "This method is public as an implementation side
      * effect. do not call or override."
@@ -286,15 +287,21 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements FocusL
      */
     protected abstract void doOnEdit(Object item);
 
-    final public void focusGained(FocusEvent arg0) {
+    /*
+     * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+     */
+    public final void focusGained(FocusEvent arg0) {
+        // ignored
     }
 
-    /**
+    /*
      * TODO: This is a temporary method of making sure the model is updated
      * on loss of focus of a combo box. In the long term we should attempt to
      * update the model on each keypress.
+     * 
+     * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
      */
-    final public void focusLost(FocusEvent arg0) {
+    public final void focusLost(FocusEvent arg0) {
         doOnEdit(getEditor().getItem());
     }
 }

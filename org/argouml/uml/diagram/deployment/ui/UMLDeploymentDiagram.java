@@ -126,7 +126,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             throw new IllegalArgumentException(
                 "Illegal argument. Object " + handle + " is not a namespace");
         }
-        Object m = /*(MNamespace)*/ handle;
+        Object m = handle;
         super.setNamespace(m);
         DeploymentDiagramGraphModel gm = new DeploymentDiagramGraphModel();
         gm.setHomeModel(m);
@@ -141,10 +141,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
     }
 
-    /**
-     * Get the actions from which to create a toolbar or equivilent
-     * graphic triggers.
-     *
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
@@ -191,7 +188,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         return name;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
@@ -457,7 +454,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         return actionUniComposition;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base)  {
@@ -468,7 +465,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 //    	base == ProjectManager.getManager().getCurrentProject().getModel();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
     public boolean relocate(Object base) {

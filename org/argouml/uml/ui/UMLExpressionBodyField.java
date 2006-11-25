@@ -68,7 +68,7 @@ public class UMLExpressionBodyField extends JTextArea
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */
     public void targetChanged() {
@@ -79,7 +79,7 @@ public class UMLExpressionBodyField extends JTextArea
         update();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
      */
     public void targetReasserted() {
@@ -104,21 +104,21 @@ public class UMLExpressionBodyField extends JTextArea
         }
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
      */
     public void changedUpdate(final DocumentEvent p1) {
         model.setBody(getText());
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
      */
     public void removeUpdate(final DocumentEvent p1) {
         model.setBody(getText());
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */
     public void insertUpdate(final DocumentEvent p1) {

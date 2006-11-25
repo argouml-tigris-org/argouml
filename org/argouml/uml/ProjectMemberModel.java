@@ -65,16 +65,17 @@ public class ProjectMemberModel extends AbstractProjectMember {
      * @param m the model
      */
     protected void setModel(Object m) {
-        model = /*(MModel)*/m;
+        model = m;
     }
 
-    /**
+    /*
      * @see org.argouml.kernel.AbstractProjectMember#getType()
      */
     public String getType() {
         return MEMBER_TYPE;
     }
-    /**
+    
+    /*
      * @see org.argouml.kernel.AbstractProjectMember#getZipFileExtension()
      */
     public String getZipFileExtension() {
@@ -84,7 +85,8 @@ public class ProjectMemberModel extends AbstractProjectMember {
     /**
      * There is not yet any repair task for the UML model but this is open to
      * implement as and when any problems areas are discovered.
-     * @see org.argouml.kernel.ProjectMember#repair()
+     * 
+     * {@inheritDoc}
      */
     public String repair() {
         return "";

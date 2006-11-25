@@ -64,12 +64,12 @@ public class UMLAssociationEndChangeabilityRadioButtonPanel
                 ActionSetChangeability.getInstance(), horizontal);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLRadioButtonPanel#buildModel()
      */
     public void buildModel() {
         if (getTarget() != null) {
-            Object target = /*(MAssociationEnd)*/ getTarget();
+            Object target = getTarget();
             Object kind = Model.getFacade().getChangeability(target);
             if (kind == null
                 || kind.equals(ActionSetChangeability.CHANGEABLE_COMMAND)) {

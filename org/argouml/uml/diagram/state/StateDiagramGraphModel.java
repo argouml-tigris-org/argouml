@@ -86,11 +86,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     ////////////////////////////////////////////////////////////////
     // GraphModel implementation
 
-    /**
-     * Return all ports on node or edge.
-     *
-     * @return The ports.
-     * @param nodeOrEdge The node or the edge.
+    
+    /*
+     * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
     public List getPorts(Object nodeOrEdge) {
         List res = new ArrayList();
@@ -103,20 +101,14 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         return res;
     }
 
-    /**
-     * Return the node or edge that owns the given port.
-     *
-     * @param port the port
-     * @return The owner of the port.
+    /*
      * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
      */
     public Object getOwner(Object port) {
         return port;
     }
 
-    /**
-     * Return all edges going to given port.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
     public List getInEdges(Object port) {
@@ -127,9 +119,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         return Collections.EMPTY_LIST;
     }
 
-    /**
-     * Return all edges going from given port.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
     public List getOutEdges(Object port) {
@@ -143,9 +133,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 
-    /**
-     * Return true if the given object is a valid node in this graph.
-     *
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
@@ -176,9 +164,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         return false;
     }
 
-    /**
-     * Return true if the given object is a valid edge in this graph.
-     *
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
     public boolean canAddEdge(Object edge) {
@@ -236,9 +222,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         return true;
     }
 
-    /**
-     * Add the given node to the graph, if valid.
-     *
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
      */
     public void addNode(Object node) {
@@ -260,9 +244,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         fireNodeAdded(node);
     }
 
-    /**
-     * Add the given edge to the graph, if valid.
-     *
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      */
     public void addEdge(Object edge) {
@@ -275,7 +257,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         fireEdgeAdded(edge);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
      */
     public void addNodeRelatedEdges(Object node) {
@@ -295,12 +277,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         }
     }
 
-    /**
-     * Return true if the two given ports can be connected by a kind of edge to
-     * be determined by the ports.
-     *
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#canConnect(java.lang.Object,
-     * java.lang.Object)
+     *      java.lang.Object)
      */
     public boolean canConnect(Object fromPort, Object toPort) {
         if (!(Model.getFacade().isAStateVertex(fromPort))) {
@@ -324,11 +303,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         return true;
     }
 
-    /**
-     * Contruct and add a new edge of the given kind.
-     *
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object,
-     * java.lang.Object, java.lang.Class)
+     *      java.lang.Object, java.lang.Class)
      */
     public Object connect(Object fromPort, Object toPort,
 			  Object edgeClass) {
@@ -378,7 +355,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     ////////////////////////////////////////////////////////////////
     // VetoableChangeListener implementation
 
-    /**
+    /*
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {
@@ -472,7 +449,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.UMLMutableGraphSupport#isRemoveFromDiagramAllowed(Collection)
      */
     public boolean isRemoveFromDiagramAllowed(Collection figs) {

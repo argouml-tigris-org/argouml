@@ -42,7 +42,7 @@ class UMLSignalEventSignalListModel extends UMLModelElementListModel2 {
         super("signal");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -50,10 +50,10 @@ class UMLSignalEventSignalListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getSignal(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return element == Model.getFacade().getSignal(getTarget());
     }
 

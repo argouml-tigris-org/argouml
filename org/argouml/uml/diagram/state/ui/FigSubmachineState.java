@@ -31,7 +31,6 @@ import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
@@ -139,7 +138,7 @@ public class FigSubmachineState extends FigState {
         setOwner(node);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object node) {
@@ -147,7 +146,7 @@ public class FigSubmachineState extends FigState {
         updateInclude();
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -166,7 +165,7 @@ public class FigSubmachineState extends FigState {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -186,14 +185,14 @@ public class FigSubmachineState extends FigState {
         return new Dimension(w, h);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
     public boolean getUseTrapRect() {
         return true;
     }
 
-    /**
+    /*
      * Override setBounds to keep shapes looking right.
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
@@ -256,7 +255,7 @@ public class FigSubmachineState extends FigState {
     ////////////////////////////////////////////////////////////////
     // fig accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
@@ -268,28 +267,28 @@ public class FigSubmachineState extends FigState {
         circle1tocircle2.setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return cover.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
         cover.setFillColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return cover.getFillColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
@@ -297,14 +296,14 @@ public class FigSubmachineState extends FigState {
         getBigPort().setFilled(f);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return cover.getFilled();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
@@ -313,7 +312,7 @@ public class FigSubmachineState extends FigState {
         divider2.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -323,7 +322,7 @@ public class FigSubmachineState extends FigState {
     ////////////////////////////////////////////////////////////////
     // event processing
 
-    /**
+    /*
      * Update the text labels and listeners.
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
@@ -355,7 +354,7 @@ public class FigSubmachineState extends FigState {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
@@ -393,28 +392,28 @@ public class FigSubmachineState extends FigState {
         return (s + Model.getFacade().getName(c));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()
      */
     protected int getInitialHeight() {
         return 150;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialWidth()
      */
     protected int getInitialWidth() {
         return 180;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialX()
      */
     protected int getInitialX() {
         return 0;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialY()
      */
     protected int getInitialY() {

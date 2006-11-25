@@ -53,7 +53,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
@@ -63,7 +63,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
                 .getFacade().getStereotypes(getTarget()).contains(owner)));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#setSelectedItem(java.lang.Object)
      */
     public void setSelectedItem(Object o) {
@@ -73,7 +73,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -82,7 +82,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         addAll(getApplicableTagDefinitions(t));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {

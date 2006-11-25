@@ -66,12 +66,10 @@ public class WizNavigable extends UMLWizard {
      */
     public Vector getOptions() {
 	Vector res = new Vector();
-	Object asc = /*(MAssociation)*/ getModelElement();
-	Object ae0 =
-            /*(MAssociationEnd)*/
-	    new ArrayList(Model.getFacade().getConnections(asc)).get(0);
+	Object asc = getModelElement();
+	Object ae0 = 
+            new ArrayList(Model.getFacade().getConnections(asc)).get(0);
 	Object ae1 =
-            /*(MAssociationEnd)*/
 	    new ArrayList(Model.getFacade().getConnections(asc)).get(1);
 	Object cls0 = Model.getFacade().getType(ae0);
 	Object cls1 = Model.getFacade().getType(ae1);
@@ -97,9 +95,7 @@ public class WizNavigable extends UMLWizard {
      */
     public void setInstructions(String s) { instructions = s; }
 
-    /**
-     * Create a new panel for the given step.
-     *
+    /*
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
@@ -114,13 +110,7 @@ public class WizNavigable extends UMLWizard {
 	return null;
     }
 
-    /**
-     * Take action at the completion of a step. For example, when the
-     * given step is 0, do nothing; and when the given step is 1, do
-     * the first action.  Argo non-modal wizards should take action as
-     * they do along, as soon as possible, they should not wait until
-     * the final step.
-     *
+    /*
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
@@ -135,12 +125,10 @@ public class WizNavigable extends UMLWizard {
 		throw new Error("nothing selected, should not get here");
 	    }
 	    try {
-		Object asc = /*(MAssociation)*/ getModelElement();
+		Object asc = getModelElement();
 		Object ae0 =
-                    /*(MAssociationEnd)*/
 		    new ArrayList(Model.getFacade().getConnections(asc)).get(0);
 		Object ae1 =
-                    /*(MAssociationEnd)*/
 		    new ArrayList(Model.getFacade().getConnections(asc)).get(1);
 		Model.getCoreHelper().setNavigable(ae0,
 		        choice == 0 || choice == 2);
@@ -152,7 +140,7 @@ public class WizNavigable extends UMLWizard {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ui.Wizard#canFinish()
      */
     public boolean canFinish() {

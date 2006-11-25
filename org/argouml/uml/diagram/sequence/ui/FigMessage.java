@@ -105,7 +105,7 @@ public abstract class FigMessage
         return null;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigEdge#getSourcePortFig()
      */
     public Fig getSourcePortFig() {
@@ -120,7 +120,7 @@ public abstract class FigMessage
         return result;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigEdge#getDestPortFig()
      */
     public Fig getDestPortFig() {
@@ -216,7 +216,7 @@ public abstract class FigMessage
     	return getOwner();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigEdgePoly#layoutEdge()
      */
     protected void layoutEdge() {
@@ -229,7 +229,7 @@ public abstract class FigMessage
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getSource()
      */
     protected Object getSource() {
@@ -240,7 +240,7 @@ public abstract class FigMessage
         return Model.getFacade().getSender(owner);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getDestination()
      */
     protected Object getDestination() {
@@ -295,7 +295,7 @@ public abstract class FigMessage
         return true;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {

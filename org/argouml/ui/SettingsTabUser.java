@@ -106,7 +106,7 @@ class SettingsTabUser extends JPanel
 	add(top, BorderLayout.NORTH);
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
@@ -114,7 +114,7 @@ class SettingsTabUser extends JPanel
         userEmail.setText(Configuration.getString(Argo.KEY_USER_EMAIL));
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
@@ -122,26 +122,26 @@ class SettingsTabUser extends JPanel
         Configuration.setString(Argo.KEY_USER_EMAIL, userEmail.getText());
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() {
 	handleSettingsTabRefresh();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
      */
     public void handleResetToDefault() {
         // Do nothing - these buttons are not shown.
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.user"; }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() { return this; }

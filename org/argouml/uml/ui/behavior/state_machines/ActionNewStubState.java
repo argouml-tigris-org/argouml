@@ -50,7 +50,7 @@ public class ActionNewStubState extends AbstractActionNewModelElement {
                 "button.new-stubstate"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

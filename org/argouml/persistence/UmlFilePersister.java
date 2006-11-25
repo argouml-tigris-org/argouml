@@ -98,14 +98,14 @@ class UmlFilePersister extends AbstractFilePersister {
     public UmlFilePersister() {
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.AbstractFilePersister#getExtension()
      */
     public String getExtension() {
         return "uml";
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
@@ -288,7 +288,7 @@ class UmlFilePersister extends AbstractFilePersister {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public Project doLoad(File file) throws OpenException, 
@@ -301,15 +301,8 @@ class UmlFilePersister extends AbstractFilePersister {
         return doLoad(file, file, progressMgr);
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
-     * 
-     * @param originalFile
-     * @param file
-     * @param progressMgr
-     * @return Project
-     * @exception OpenException
-     * @exception InterruptedException
      */
     public Project doLoad(File originalFile, File file, ProgressMgr progressMgr)
         throws OpenException, InterruptedException {

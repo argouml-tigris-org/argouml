@@ -79,14 +79,14 @@ public class TMResults extends AbstractTableModel {
     ////////////////
     // TableModel implementation
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnCount()
      */
     public int getColumnCount() {
         return showInDiagramColumn ? 4 : 3;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getRowCount()
      */
     public int getRowCount() {
@@ -96,7 +96,7 @@ public class TMResults extends AbstractTableModel {
         return rowObjects.size();
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
     public String getColumnName(int c) {
@@ -117,21 +117,21 @@ public class TMResults extends AbstractTableModel {
         return "XXX";
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     public Class getColumnClass(int c) {
         return String.class;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
     public boolean isCellEditable(int row, int col) {
         return false;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
     public Object getValueAt(int row, int col) {
@@ -212,7 +212,7 @@ public class TMResults extends AbstractTableModel {
         return Translator.messageFormat("dialog.nodes-and-edges", msgArgs);
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {

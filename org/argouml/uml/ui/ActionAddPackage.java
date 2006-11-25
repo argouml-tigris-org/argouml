@@ -47,9 +47,7 @@ public class ActionAddPackage  extends UndoableAction {
         super(Translator.localize("action.add-package"));
     }
 
-    /**
-     * Adds a package to the selected object in the nav pane.
-     *
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

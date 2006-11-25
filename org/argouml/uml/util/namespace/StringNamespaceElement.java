@@ -45,7 +45,7 @@ public class StringNamespaceElement implements NamespaceElement {
         this.element = strelement;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.util.namespace.NamespaceElement#getNamespaceElement()
      */
     public Object getNamespaceElement() {
@@ -53,9 +53,7 @@ public class StringNamespaceElement implements NamespaceElement {
     }
 
     /**
-     * returns the plain string object.
-     *
-     * @see java.lang.Object#toString()
+     * @return the plain string object.
      */
     public String toString() {
         return element;

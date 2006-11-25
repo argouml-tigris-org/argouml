@@ -86,7 +86,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
 
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -148,7 +148,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         return operationsFig.isVisible();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
     public void translate(int dx, int dy) {

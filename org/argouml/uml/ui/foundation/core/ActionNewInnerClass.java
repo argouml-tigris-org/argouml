@@ -48,7 +48,7 @@ public class ActionNewInnerClass extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize("button.new-inner-class"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

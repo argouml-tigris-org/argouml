@@ -52,7 +52,7 @@ public class UMLClassifierRoleAvailableContentsListModel
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -60,7 +60,7 @@ public class UMLClassifierRoleAvailableContentsListModel
             Model.getCollaborationsHelper().allAvailableContents(getTarget()));
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent e) {
@@ -98,7 +98,7 @@ public class UMLClassifierRoleAvailableContentsListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
     public void setTarget(Object theNewTarget) {
@@ -125,7 +125,7 @@ public class UMLClassifierRoleAvailableContentsListModel
                 Collection bases = Model.getFacade().getBases(getTarget());
                 Iterator it = bases.iterator();
                 while (it.hasNext()) {
-                    Object base = /*(MBase)*/ it.next();
+                    Object base =  it.next();
                     Model.getPump().addModelEventListener(
                         this,
                         base,
@@ -149,7 +149,7 @@ public class UMLClassifierRoleAvailableContentsListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {

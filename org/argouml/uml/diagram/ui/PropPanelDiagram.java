@@ -32,11 +32,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -49,8 +45,6 @@ import org.argouml.util.ConfigLoader;
  *
  */
 public class PropPanelDiagram extends PropPanel {
-    
-    private static final Logger LOG = Logger.getLogger(PropPanelDiagram.class);
 
     /**
      * Constructs a proppanel with a given name.
@@ -112,7 +106,7 @@ class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
         super("button.go-up", true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object source) {
@@ -121,14 +115,15 @@ class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
         }
         return null;
     }
-    /**
+    
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {
         return true;
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -158,21 +153,21 @@ class UMLDiagramHomeModelListModel
         TargetManager.getInstance().addTargetListener(this);
     }
 
-    /**
+    /*
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {

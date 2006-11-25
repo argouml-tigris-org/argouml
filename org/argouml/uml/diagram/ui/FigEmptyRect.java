@@ -44,7 +44,7 @@ public class FigEmptyRect extends FigRect {
         super.setFilled(false);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean filled) {

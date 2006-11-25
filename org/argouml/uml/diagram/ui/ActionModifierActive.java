@@ -42,14 +42,14 @@ class ActionModifierActive extends AbstractActionCheckBoxMenuItem {
         putValue("SELECTED", Boolean.valueOf(valueOfTarget(o)));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.AbstractActionCheckBoxMenuItem#toggleValueOfTarget(java.lang.Object)
      */
     void toggleValueOfTarget(Object t) {
         Model.getCoreHelper().setActive(t, !Model.getFacade().isActive(t));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.AbstractActionCheckBoxMenuItem#valueOfTarget(java.lang.Object)
      */
     boolean valueOfTarget(Object t) {

@@ -44,7 +44,7 @@ public class UMLAssociationEndQualifiersListModel
         super("qualifier");
     }
 
-     /**
+     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -53,7 +53,7 @@ public class UMLAssociationEndQualifiersListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
@@ -62,7 +62,7 @@ public class UMLAssociationEndQualifiersListModel
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
     protected void moveDown(int index1) {

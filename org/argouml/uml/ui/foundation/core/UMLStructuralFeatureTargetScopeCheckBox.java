@@ -44,7 +44,7 @@ public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
 	      "targetScope");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {

@@ -55,14 +55,14 @@ public class OperationsNode implements WeakExplorerNode {
 	return parent;
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {
 	return "Operations";
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.WeakExplorerNode#subsumes(java.lang.Object)
      */
     public boolean subsumes(Object obj) {

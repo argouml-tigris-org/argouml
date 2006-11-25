@@ -95,7 +95,7 @@ public class FigObject extends FigNodeModelElement {
         setOwner(node);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
@@ -107,12 +107,12 @@ public class FigObject extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() { return "new Object"; }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -124,7 +124,7 @@ public class FigObject extends FigNodeModelElement {
         return figClone;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -137,7 +137,7 @@ public class FigObject extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
@@ -163,54 +163,54 @@ public class FigObject extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) { cover.setLineColor(col); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() { return cover.getLineColor(); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) { cover.setFillColor(col); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() { return cover.getFillColor(); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) { cover.setFilled(f); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() { return cover.getFilled(); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) { cover.setLineWidth(w); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() { return cover.getLineWidth(); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
         return new SelectionObject(this);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -223,7 +223,7 @@ public class FigObject extends FigNodeModelElement {
         return new Dimension(w, h);
     }
 
-    /**
+    /*
      * Override setBounds to keep shapes looking right.
      *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
@@ -253,7 +253,7 @@ public class FigObject extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // user interaction methods
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
@@ -263,7 +263,7 @@ public class FigObject extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
@@ -272,14 +272,14 @@ public class FigObject extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
         // super.setEnclosingFig(encloser);
 
         if (Model.getFacade().isAObject(getOwner())) {
-            Object me = /*(MObject)*/ getOwner();
+            Object me = getOwner();
             Object mcompInst = null;
             Object mcomp = null;
 
@@ -287,7 +287,7 @@ public class FigObject extends FigNodeModelElement {
                     && (Model.getFacade()
                             .isAComponentInstance(encloser.getOwner()))) {
 
-                mcompInst = /*(MComponentInstance)*/ encloser.getOwner();
+                mcompInst = encloser.getOwner();
                 Model.getCommonBehaviorHelper()
                         .setComponentInstance(me, mcompInst);
                 super.setEnclosingFig(encloser);
@@ -300,8 +300,8 @@ public class FigObject extends FigNodeModelElement {
                     && (Model.getFacade()
                             .isAComponent(encloser.getOwner()))) {
 
-                mcomp = /*(MComponent)*/ encloser.getOwner();
-                Object obj = /*(MObject)*/ getOwner();
+                mcomp = encloser.getOwner();
+                Object obj = getOwner();
                 Model.getCoreHelper().setContainer(resident, mcomp);
                 Model.getCoreHelper().setResident(resident, obj);
                 super.setEnclosingFig(encloser);
@@ -324,7 +324,7 @@ public class FigObject extends FigNodeModelElement {
      */
     static final long serialVersionUID = -185736690375678962L;
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {

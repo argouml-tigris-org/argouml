@@ -41,7 +41,7 @@ public class UMLExtendExtensionListModel extends UMLModelElementListModel2 {
 
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -51,7 +51,7 @@ public class UMLExtendExtensionListModel extends UMLModelElementListModel2 {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {

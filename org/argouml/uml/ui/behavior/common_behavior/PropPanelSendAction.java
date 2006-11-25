@@ -86,7 +86,7 @@ class ActionAddSendActionSignal extends AbstractActionAddModelElement {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
      *         java.util.Vector)
      */
@@ -100,7 +100,7 @@ class ActionAddSendActionSignal extends AbstractActionAddModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
@@ -114,14 +114,14 @@ class ActionAddSendActionSignal extends AbstractActionAddModelElement {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-signal");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
@@ -148,7 +148,7 @@ class UMLSendActionSignalListModel extends UMLModelElementListModel2 {
         super("signal");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -156,7 +156,7 @@ class UMLSendActionSignalListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getSignal(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object elem) {

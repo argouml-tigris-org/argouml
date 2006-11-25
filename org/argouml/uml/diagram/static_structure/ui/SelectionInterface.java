@@ -77,18 +77,7 @@ public class SelectionInterface extends SelectionNodeClarifiers {
         super(f);
     }
 
-    /**
-     * Return a handle ID for the handle under the mouse, or -1 if none. TODO:
-     * in the future, return a Handle instance or null.<p>
-     *
-     * <pre>
-     *    0-------1-------2
-     *    |               |
-     *    3               4
-     *    |               |
-     *    5-------6-------7
-     * </pre>
-     *
+    /*
      * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
      *      org.tigris.gef.presentation.Handle)
      */
@@ -129,7 +118,7 @@ public class SelectionInterface extends SelectionNodeClarifiers {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(
      *      java.awt.Graphics)
      */
@@ -142,7 +131,7 @@ public class SelectionInterface extends SelectionNodeClarifiers {
         paintButtonBelow(realiz, g, cx + cw / 2, cy + ch, 11);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
      *      org.tigris.gef.presentation.Handle)
      */
@@ -189,7 +178,7 @@ public class SelectionInterface extends SelectionNodeClarifiers {
 
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -198,7 +187,7 @@ public class SelectionInterface extends SelectionNodeClarifiers {
                (Class) Model.getMetaTypes().getGeneralization());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
      *      org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -207,7 +196,7 @@ public class SelectionInterface extends SelectionNodeClarifiers {
                 .getMetaTypes().getAbstraction());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {

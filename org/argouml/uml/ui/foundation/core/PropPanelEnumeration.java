@@ -52,7 +52,7 @@ public class PropPanelEnumeration extends PropPanelDataType {
                 getLiteralsScroll());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.foundation.core.PropPanelDataType#addEnumerationButtons()
      */
     protected void addEnumerationButtons() {

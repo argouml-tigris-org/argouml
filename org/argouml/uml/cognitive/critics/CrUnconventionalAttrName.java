@@ -59,9 +59,9 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!Model.getFacade().isAAttribute(dm)) {
@@ -101,7 +101,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 
 	// check whether constant, constants are often weird and thus not a
 	// problem
-	Object/*MChangeableKind*/ ck = Model.getFacade().getChangeability(attr);
+	Object ck = Model.getFacade().getChangeability(attr);
 	if (ck != null && Model.getFacade().isFrozen(ck)) {
 	    return NO_PROBLEM;
 	}
@@ -113,12 +113,12 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 	return NO_PROBLEM;
     }
 
-    /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+    /*
+     * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
+     *      org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	Object f = /*(MFeature)*/ dm;
+	Object f = dm;
 	ListSet offs = computeOffenders(f);
 	return new UMLToDoItem(this, offs, dsgr);
     }
@@ -127,13 +127,13 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      * @param dm the feature
      * @return the set of offenders
      */
-    protected ListSet computeOffenders(Object /*MFeature*/ dm) {
+    protected ListSet computeOffenders(Object dm) {
 	ListSet offs = new ListSet(dm);
 	offs.addElement(Model.getFacade().getOwner(dm));
 	return offs;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.AbstractCrUnconventionalName#computeSuggestion(java.lang.String)
      */
     public String computeSuggestion(String name) {
@@ -166,16 +166,17 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 
 	return sug;
     }
-    /**
+    
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {
 	return ClAttributeCompartment.getTheInstance();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) {
@@ -192,7 +193,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
     }
 
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
@@ -208,7 +209,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }

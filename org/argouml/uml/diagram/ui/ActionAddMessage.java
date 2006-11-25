@@ -70,7 +70,7 @@ public class ActionAddMessage extends UndoableAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -117,7 +117,7 @@ public class ActionAddMessage extends UndoableAction {
         TargetManager.getInstance().setTarget(message);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
     public boolean isEnabled() {

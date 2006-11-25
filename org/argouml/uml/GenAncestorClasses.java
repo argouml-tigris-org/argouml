@@ -37,7 +37,7 @@ import org.tigris.gef.util.ChildGenerator;
 public class GenAncestorClasses implements ChildGenerator {
     //public static GenAncestorClasses TheInstance = new GenAncestorClasses();
 
-    /**
+    /*
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object cls) {
@@ -56,14 +56,12 @@ public class GenAncestorClasses implements ChildGenerator {
      * @param cls the class (in fact any GeneralizableElement will do)
      * @param accum the accumulated list of generalizations
      */
-    public void accumulateAncestors(Object/*MGeneralizableElement*/ cls,
-            Vector accum) {
+    public void accumulateAncestors(Object cls, Vector accum) {
 	Vector gens = new Vector(Model.getFacade().getGeneralizations(cls));
 	if (gens == null) return;
 	int size = gens.size();
 	for (int i = 0; i < size; i++) {
-	    Object/*MGeneralization*/ g = /*(MGeneralization)*/
-	                                    (gens).elementAt(i);
+	    Object g = (gens).elementAt(i);
 	    Object ge = Model.getFacade().getParent(g);
 	    if (!accum.contains(ge)) {
 		accum.add(ge);

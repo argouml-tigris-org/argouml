@@ -49,7 +49,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
         super("base", true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -63,7 +63,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
         if (base != null) addElement(base);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
@@ -75,7 +75,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
@@ -90,7 +90,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
         return false;
     }
 
-    /**
+    /*
      * TODO: Prove that this works. 
      * The TestUMLAssociationRoleBaseComboBoxModel does not cut it. 
      * 
@@ -118,7 +118,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#removeOtherModelEventListeners(java.lang.Object)
      */
     protected void removeOtherModelEventListeners(Object oldTarget) {

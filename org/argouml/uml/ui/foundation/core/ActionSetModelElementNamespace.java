@@ -44,7 +44,7 @@ public class ActionSetModelElementNamespace extends UndoableAction {
         super();
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(
      * java.awt.event.ActionEvent)
      */
@@ -57,12 +57,12 @@ public class ActionSetModelElementNamespace extends UndoableAction {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (Model.getFacade().isAModelElement(o)) {
-                m = /*(MModelElement)*/ o;
+                m =  o;
                 oldNamespace = Model.getFacade().getNamespace(m);
             }
             o = box.getSelectedItem();
             if (Model.getFacade().isANamespace(o)) {
-                newNamespace = /*(MNamespace)*/ o;
+                newNamespace = o;
             }
         }
         if (newNamespace != oldNamespace && m != null && newNamespace != null) {

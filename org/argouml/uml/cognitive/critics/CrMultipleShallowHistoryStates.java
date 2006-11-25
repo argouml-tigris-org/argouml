@@ -57,9 +57,9 @@ public class CrMultipleShallowHistoryStates extends CrUML {
         addTrigger("kind");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isAPseudostate(dm))) {
@@ -95,9 +95,9 @@ public class CrMultipleShallowHistoryStates extends CrUML {
         return NO_PROBLEM;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
-     * org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
         ListSet offs = computeOffenders(dm);
@@ -128,9 +128,9 @@ public class CrMultipleShallowHistoryStates extends CrUML {
         return offs;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
         if (!isActive()) {

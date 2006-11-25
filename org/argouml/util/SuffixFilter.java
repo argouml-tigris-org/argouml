@@ -56,7 +56,7 @@ public class SuffixFilter extends FileFilter {
     ////////////////////////////////////////////////////////////////
     // FileFilter API
 
-    /**
+    /*
      * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
      */
     public boolean accept(File f) {
@@ -96,7 +96,7 @@ public class SuffixFilter extends FileFilter {
 	return null;
     }
 
-    /**
+    /*
      * @see javax.swing.filechooser.FileFilter#getDescription()
      */
     public String getDescription() {
@@ -114,7 +114,7 @@ public class SuffixFilter extends FileFilter {
      * Adding this function enables easy selection of suffixfilters
      * e.g. in a combobox.
      *
-     * @see java.lang.Object#toString()
+     * {@inheritDoc}
      */
     public String toString() {
         return getDescription();

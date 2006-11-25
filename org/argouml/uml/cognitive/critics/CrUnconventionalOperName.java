@@ -51,9 +51,9 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
 	addTrigger("feature_name");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isAOperation(dm))) {
@@ -85,12 +85,12 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
         return NO_PROBLEM;
     }
 
-    /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+    /*
+     * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
+     *      org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	Object f = /*(MFeature)*/ dm;
+	Object f = dm;
 	ListSet offs = computeOffenders(f);
 	return new UMLToDoItem(this, offs, dsgr);
     }
@@ -99,22 +99,22 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
      * @param dm the object to be checked
      * @return the set of offenders
      */
-    protected ListSet computeOffenders(Object/*MFeature*/ dm) {
+    protected ListSet computeOffenders(Object dm) {
 	ListSet offs = new ListSet(dm);
 	offs.addElement(Model.getFacade().getOwner(dm));
 	return offs;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) {
 	    return false;
 	}
 	ListSet offs = i.getOffenders();
-	Object f = /*(MFeature)*/ offs.firstElement();
+	Object f = offs.firstElement();
 	if (!predicate(f, dsgr)) {
 	    return false;
 	}
@@ -132,11 +132,11 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
      * @param me the operation to check
      * @return true if this operation looks like a constructor
      */
-    protected boolean candidateForConstructor(Object/*MModelElement*/ me) {
+    protected boolean candidateForConstructor(Object me) {
 	if (!(Model.getFacade().isAOperation(me))) {
 	    return false;
 	}
-	Object oper = /*(MOperation)*/ me;
+	Object oper = me;
 	String myName = Model.getFacade().getName(oper);
 	if (myName == null || myName.equals("")) {
 	    return false;
@@ -153,7 +153,7 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
     }
 
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
@@ -176,7 +176,7 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.AbstractCrUnconventionalName#computeSuggestion(java.lang.String)
      */
     public String computeSuggestion(String sug) {
@@ -186,7 +186,7 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
         return sug.substring(0, 1).toLowerCase() + sug.substring(1);
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) { return WizOperName.class; }

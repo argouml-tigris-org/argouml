@@ -69,7 +69,7 @@ public class ActionSetAssociationEndAggregation extends UndoableAction {
                 Translator.localize("action.set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -80,8 +80,8 @@ public class ActionSetAssociationEndAggregation extends UndoableAction {
             Object target = ((UMLRadioButtonPanel) source.getParent())
                 .getTarget();
             if (Model.getFacade().isAAssociationEnd(target)) {
-                Object m = /*(MAssociationEnd)*/ target;
-                Object/*MAggregationKind*/ kind = null;
+                Object m = target;
+                Object kind = null;
                 if (actionCommand.equals(AGGREGATE_COMMAND)) {
                     kind = Model.getAggregationKind().getAggregate();
                 } else if (actionCommand.equals(COMPOSITE_COMMAND)) {

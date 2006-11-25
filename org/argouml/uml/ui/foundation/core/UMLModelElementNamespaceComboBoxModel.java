@@ -55,16 +55,15 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
         return Model.getFacade().isANamespace(o)
-        && Model.getCoreHelper().isValidNamespace(
-                /*(MModelElement)*/ getTarget(), /*(MNamespace)*/ o);
+                && Model.getCoreHelper().isValidNamespace(getTarget(), o);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -91,7 +90,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         setElements(c);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
@@ -101,7 +100,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         return null;
     }
 
-    /**
+    /*
     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
     */
     public void propertyChange(PropertyChangeEvent evt) {

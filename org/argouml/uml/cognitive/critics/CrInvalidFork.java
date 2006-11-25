@@ -32,7 +32,7 @@ import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect when a fork state has the wrong number of
- * transitions.  Implements constraint [5] on MPseudostate in the UML
+ * transitions.  Implements constraint [5] on Pseudostate in the UML
  * Semantics v1.1, pp. 104.
  *
  * @author jrobbins
@@ -48,9 +48,9 @@ public class CrInvalidFork extends CrUML {
 	addTrigger("incoming");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAPseudostate(dm))) {

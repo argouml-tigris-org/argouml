@@ -40,7 +40,7 @@ public final class ActionSequenceDiagram extends ActionNewDiagram {
         super("action.sequence-diagram");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
      */
     public UMLDiagram createDiagram() {

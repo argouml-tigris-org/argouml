@@ -53,7 +53,7 @@ class CubePortFigRect extends FigRect {
         d = depth;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
     public Point getClosestPoint(Point anotherPt) {

@@ -292,7 +292,7 @@ public class TabProps
         }
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {

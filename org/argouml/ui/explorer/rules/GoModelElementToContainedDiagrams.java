@@ -47,14 +47,14 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  */
 public class GoModelElementToContainedDiagrams extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getRuleName()
      */
     public String getRuleName() {
         return Translator.localize("misc.model-element.contained-diagrams");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
@@ -76,7 +76,7 @@ public class GoModelElementToContainedDiagrams extends AbstractPerspectiveRule {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {

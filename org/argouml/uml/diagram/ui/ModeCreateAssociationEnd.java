@@ -62,7 +62,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
     private Object association;
     private Collection associationEnds;
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
@@ -120,7 +120,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         me.consume();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.ModeCreatePolyEdge#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
@@ -211,7 +211,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                     Object edgeType = getArg("edgeClass");
                     if (newAssociationEnd == null
                             && !mutableGraphModel.canConnect(
-                           getStartPort(), foundPort, edgeType)) {
+                                    getStartPort(), foundPort, edgeType)) {
                         abort();
                     } else {
                         if (newAssociationEnd == null) {
@@ -351,7 +351,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.ModeImpl#leave()
      */
     public void leave() {

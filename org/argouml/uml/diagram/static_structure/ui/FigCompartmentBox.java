@@ -79,7 +79,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
     public void translate(int dx, int dy) {
@@ -91,7 +91,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent mouseEvent) {
@@ -131,7 +131,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent me) {
@@ -181,7 +181,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#createFeatureIn(
      *         org.tigris.gef.presentation.FigGroup,
      *         java.awt.event.InputEvent)

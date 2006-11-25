@@ -82,9 +82,7 @@ public class WizManyNames extends UMLWizard {
         mes = m;
     }
 
-    /**
-     * Create a new panel for the given step.
-     * 
+    /*
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
@@ -106,12 +104,7 @@ public class WizManyNames extends UMLWizard {
         return null;
     }
 
-    /**
-     * Take action at the completion of a step. For example, when the given step
-     * is 0, do nothing; and when the given step is 1, do the first action. Argo
-     * non-modal wizards should take action as they do along, as soon as
-     * possible, they should not wait until the final step.
-     * 
+    /*
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {

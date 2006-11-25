@@ -58,7 +58,7 @@ public class ActionImportFromSources extends UndoableAction {
                 Translator.localize("action.import-sources"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent event) {

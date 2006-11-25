@@ -52,9 +52,9 @@ public class CrConflictingComposites extends CrUML {
 	// no good trigger
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object classifier, Designer dsgr) {
 	if (!(Model.getFacade().isAClassifier(classifier))) {
@@ -86,4 +86,4 @@ public class CrConflictingComposites extends CrUML {
 	}
 	return NO_PROBLEM;
     }
-} /* end class CrConflictingComposites.java */
+} /* end class CrConflictingComposites */

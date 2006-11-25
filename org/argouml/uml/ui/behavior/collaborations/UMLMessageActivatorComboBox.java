@@ -52,13 +52,13 @@ public class UMLMessageActivatorComboBox extends UMLComboBox2 {
         setRenderer(new UMLListCellRenderer2(true));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBox2#doIt(ActionEvent)
      */
     protected void doIt(ActionEvent event) {
         Object o = getModel().getElementAt(getSelectedIndex());
-        Object activator = /*(MMessage)*/ o;
-        Object mes = /*(MMessage)*/ getTarget();
+        Object activator = o;
+        Object mes = getTarget();
         if (activator != Model.getFacade().getActivator(mes)) {
             Model.getCollaborationsHelper().setActivator(mes, activator);
         }

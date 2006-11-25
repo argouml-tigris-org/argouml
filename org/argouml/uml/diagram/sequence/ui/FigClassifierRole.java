@@ -173,7 +173,7 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     
-    /**
+    /*
      * When the mouse button is released, this fig will be moved into position.
      *
      * @see MouseListener#mouseReleased(MouseEvent)
@@ -256,7 +256,7 @@ public class FigClassifierRole extends FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * Sets the bounds and coordinates of this Fig. The outerbox (the
      * black box around the upper box) and the background box (the
      * white box at the background) are scaled to the given size. The
@@ -286,7 +286,7 @@ public class FigClassifierRole extends FigNodeModelElement
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    /**
+    /*
      * This method is overridden in order to ignore change of y co-ordinate
      * during drag.
      *
@@ -644,11 +644,11 @@ public class FigClassifierRole extends FigNodeModelElement
 
     //////////////////////////////////////////////////////////////////////////
     // HandlerFactory implementation
-    /**
+    /*
      * @see org.tigris.gef.persistence.pgml.HandlerFactory#getHandler(
-     * org.tigris.gef.persistence.pgml.HandlerStack, java.lang.Object,
-     * java.lang.String, java.lang.String, java.lang.String,
-     * org.xml.sax.Attributes)
+     *      org.tigris.gef.persistence.pgml.HandlerStack, java.lang.Object,
+     *      java.lang.String, java.lang.String, java.lang.String,
+     *      org.xml.sax.Attributes)
      */
     public DefaultHandler getHandler(HandlerStack stack,
                                Object container,
@@ -703,9 +703,9 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
     /**
-     * Changing the line width should only change the line width of the outerbox
-     * and the lifeline. 0 Values are ignored.
-     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     * Set the line width.  Only change the line width of the outerbox
+     * and the lifeline are changed. Values of zero are ignored.
+     * @param w width.  Must be greater than zero.
      */
     public void setLineWidth(int w) {
         if (headFig.getLineWidth() != w && w != 0) {
@@ -715,7 +715,7 @@ public class FigClassifierRole extends FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
@@ -725,7 +725,7 @@ public class FigClassifierRole extends FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean filled) {
@@ -735,28 +735,28 @@ public class FigClassifierRole extends FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return headFig.getFillColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return headFig.getFilled();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return headFig.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -767,7 +767,7 @@ public class FigClassifierRole extends FigNodeModelElement
         return lifeLineFig;
     }
 
-    /**
+    /*
      * @see FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
@@ -809,7 +809,7 @@ public class FigClassifierRole extends FigNodeModelElement
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -908,7 +908,7 @@ public class FigClassifierRole extends FigNodeModelElement
         classifierRoleName = getBeautifiedName(getOwner());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
@@ -924,7 +924,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * are added later first). In this case it returns a
      * MessagePort.<p>
      *
-     * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
+     * {@inheritDoc}
      */
     public Object deepHitPort(int x, int y) {
         Rectangle rect = new Rectangle(getX(), y - 16, getWidth(), 32);
@@ -963,7 +963,7 @@ public class FigClassifierRole extends FigNodeModelElement
         } else {
             return null;
         }
-        setMatchingFig((MessageNode) foundNode);
+        setMatchingFig(foundNode);
         return foundNode;
     }
 
@@ -971,7 +971,7 @@ public class FigClassifierRole extends FigNodeModelElement
         return lifeLineFig.getYCoordinate(linkPositions.indexOf(node));
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object own) {
@@ -1014,7 +1014,8 @@ public class FigClassifierRole extends FigNodeModelElement
         }
 	return null;
     }
-    /**
+    
+    /*
      * @see org.tigris.gef.presentation.FigNode#getPortFig(java.lang.Object)
      */
     public Fig getPortFig(Object messageNode) {
@@ -1097,7 +1098,7 @@ public class FigClassifierRole extends FigNodeModelElement
         return node;
     }
 
-    /**
+    /*
      * Override to return a custom SelectionResize class that will not allow
      * handles on the north edge to be dragged.
      *
@@ -1140,11 +1141,11 @@ public class FigClassifierRole extends FigNodeModelElement
             super(parser, classifierRole);
         }
 
-        /**
+        /*
          * @see org.tigris.gef.persistence.pgml.BaseHandler#getElementHandler(
-         *         org.tigris.gef.persistence.pgml.HandlerStack,
-         *         java.lang.Object, java.lang.String, java.lang.String,
-         *         java.lang.String, org.xml.sax.Attributes)
+         *      org.tigris.gef.persistence.pgml.HandlerStack, java.lang.Object,
+         *      java.lang.String, java.lang.String, java.lang.String,
+         *      org.xml.sax.Attributes)
          */
         protected DefaultHandler getElementHandler(
                 HandlerStack stack,
@@ -1195,7 +1196,7 @@ public class FigClassifierRole extends FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {

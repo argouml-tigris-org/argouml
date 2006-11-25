@@ -49,9 +49,9 @@ class DiagramMemberFilePersister extends MemberFilePersister {
      */
     private static final String PGML_TEE = "/org/argouml/persistence/PGML.tee";
 
-    /**
+    /*
      * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
-     * java.io.InputStream)
+     *      java.io.InputStream)
      */
     public void load(Project project, InputStream inputStream)
         throws OpenException {
@@ -75,7 +75,7 @@ class DiagramMemberFilePersister extends MemberFilePersister {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.MemberFilePersister#getMainTag()
      */
     public String getMainTag() {

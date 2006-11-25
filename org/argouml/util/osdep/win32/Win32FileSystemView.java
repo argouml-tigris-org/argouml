@@ -165,7 +165,7 @@ public class Win32FileSystemView extends FileSystemView {
             super(s);
         }
 
-        /**
+        /*
          * @see java.io.File#isDirectory()
          */
         public boolean isDirectory() {

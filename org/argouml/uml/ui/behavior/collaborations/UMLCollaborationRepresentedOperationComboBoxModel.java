@@ -50,7 +50,7 @@ class UMLCollaborationRepresentedOperationComboBoxModel
         super("representedOperation", true);
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -74,9 +74,7 @@ class UMLCollaborationRepresentedOperationComboBoxModel
         setElements(operations);
     }
     
-    /**
-     * Not used.
-     * 
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
@@ -89,7 +87,7 @@ class UMLCollaborationRepresentedOperationComboBoxModel
         return Model.getFacade().getRepresentedOperation(getTarget());
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {

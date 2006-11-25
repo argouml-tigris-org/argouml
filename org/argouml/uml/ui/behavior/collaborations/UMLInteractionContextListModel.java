@@ -41,7 +41,7 @@ public class UMLInteractionContextListModel
         super("context");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -49,10 +49,10 @@ public class UMLInteractionContextListModel
         addElement(Model.getFacade().getContext(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ elem) {
+    protected boolean isValidElement(Object elem) {
         return Model.getFacade().isACollaboration(elem)
             && Model.getFacade().getInteractions(elem).contains(getTarget());
     }

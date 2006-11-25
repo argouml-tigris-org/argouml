@@ -36,7 +36,7 @@ import org.argouml.uml.diagram.state.StateDiagramGraphModel;
  */
 public class ActivityDiagramGraphModel extends StateDiagramGraphModel {
 
-    /**
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {

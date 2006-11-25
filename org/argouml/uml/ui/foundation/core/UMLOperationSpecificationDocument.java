@@ -44,7 +44,7 @@ public class UMLOperationSpecificationDocument extends UMLPlainTextDocument {
         super("specification");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
@@ -54,7 +54,7 @@ public class UMLOperationSpecificationDocument extends UMLPlainTextDocument {
 
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {

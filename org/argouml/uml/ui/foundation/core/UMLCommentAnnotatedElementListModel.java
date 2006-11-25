@@ -43,7 +43,7 @@ public class UMLCommentAnnotatedElementListModel
         super("annotatedElement");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -52,10 +52,10 @@ public class UMLCommentAnnotatedElementListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().isAModelElement(element)
         	&& Model.getFacade().getAnnotatedElements(getTarget())
         		.contains(element);

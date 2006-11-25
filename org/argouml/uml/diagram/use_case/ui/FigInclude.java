@@ -148,7 +148,7 @@ public class FigInclude extends FigEdgeModelElement {
     //
     ///////////////////////////////////////////////////////////////////////////
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {

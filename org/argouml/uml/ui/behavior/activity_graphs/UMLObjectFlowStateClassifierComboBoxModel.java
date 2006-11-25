@@ -49,7 +49,7 @@ public class UMLObjectFlowStateClassifierComboBoxModel
         super("type", false);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
@@ -80,7 +80,7 @@ public class UMLObjectFlowStateClassifierComboBoxModel
     /**
      * Returns a Classifier that may be a ClassifierInState.
      * 
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * {@inheritDoc}
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
@@ -90,9 +90,12 @@ public class UMLObjectFlowStateClassifierComboBoxModel
     }
 
     /**
-     * The function in the parent removes items from the list 
-     * when deselected. We do not need that here. 
+     * The function in the parent removes items from the list when deselected.
+     * We do not need that here.
      * 
+     * @param evt
+     *            A PropertyChangeEvent object describing the event source and
+     *            the property that has changed.
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {

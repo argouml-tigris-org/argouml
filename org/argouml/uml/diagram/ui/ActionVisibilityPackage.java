@@ -44,7 +44,7 @@ class ActionVisibilityPackage extends AbstractActionRadioMenuItem {
                 .equals(valueOfTarget(o))));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.AbstractActionRadioMenuItem#toggleValueOfTarget(java.lang.Object)
      */
     void toggleValueOfTarget(Object t) {

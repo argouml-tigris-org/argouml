@@ -47,7 +47,7 @@ public class GenDescendantClasses implements ChildGenerator {
         return SINGLETON;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object o) {
@@ -56,7 +56,7 @@ public class GenDescendantClasses implements ChildGenerator {
 	    return res.elements();
         }
 
-	Object cls = /*(MGeneralizableElement)*/ o;
+	Object cls = o;
 	Collection gens = Model.getFacade().getSpecializations(cls);
 	if (gens == null) return res.elements();
 	accumulateDescendants(cls, res);
@@ -68,13 +68,12 @@ public class GenDescendantClasses implements ChildGenerator {
      * @param cls the starting class (in fact GeneralizableElement)
      * @param accum the accumulated list of descendents
      */
-    public void accumulateDescendants(Object/*MGeneralizableElement*/ cls,
-            Vector accum) {
+    public void accumulateDescendants(Object cls, Vector accum) {
 	Vector gens = new Vector(Model.getFacade().getSpecializations(cls));
 	if (gens == null) return;
 	int size = gens.size();
 	for (int i = 0; i < size; i++) {
-	    Object g = /*(MGeneralization)*/ (gens.elementAt(i));
+	    Object g = (gens.elementAt(i));
 	    Object ge = Model.getFacade().getChild(g);
 	    if (!accum.contains(ge)) {
 		accum.add(ge);

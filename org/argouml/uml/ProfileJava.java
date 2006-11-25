@@ -187,8 +187,7 @@ public class ProfileJava extends Profile {
      * @param namespace the namespace
      * @return a default name for this modelelement
      */
-    protected String defaultName(Object/*MModelElement*/ element,
-				 Object namespace) {
+    protected String defaultName(Object element, Object namespace) {
 	String name = null;
 	if (Model.getFacade().isAAssociationEnd(element)) {
 	    name = defaultAssocEndName(element, namespace);

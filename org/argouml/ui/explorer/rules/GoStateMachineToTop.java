@@ -39,14 +39,14 @@ import org.argouml.model.Model;
  */
 public class GoStateMachineToTop extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
         return Translator.localize ("misc.state-machine.top-state");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(
      *         java.lang.Object)
      */
@@ -59,7 +59,7 @@ public class GoStateMachineToTop extends AbstractPerspectiveRule {
 	return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(
      *         java.lang.Object)
      */

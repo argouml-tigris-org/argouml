@@ -46,7 +46,7 @@ public class UMLComboBoxEntry implements Comparable {
     
     private static final Logger LOG = Logger.getLogger(UMLComboBoxEntry.class);
     
-    private Object/*MModelElement*/ element;
+    private Object element;
     private String shortName;
 
     /** longName is composed of an identifier and a name as in Class: String */
@@ -88,7 +88,7 @@ public class UMLComboBoxEntry implements Comparable {
         thisIsAPhantom = isPhantom;
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -101,7 +101,7 @@ public class UMLComboBoxEntry implements Comparable {
      */
     public void updateName() {
         if (element != null) {
-            Object/*MNamespace*/ ns = Model.getFacade().getNamespace(element);
+            Object ns = Model.getFacade().getNamespace(element);
             shortName = profile.formatElement(element, ns);
         }
     }
@@ -167,7 +167,7 @@ public class UMLComboBoxEntry implements Comparable {
             String phantomName = Model.getFacade().getName(phantomNS);
             String targetName;
             if (ownedElements != null) {
-                Object/*MModelElement*/ ownedElement;
+                Object ownedElement;
                 Iterator iter = ownedElements.iterator();
                 while (iter.hasNext()) {
                     ownedElement = iter.next();
@@ -194,17 +194,17 @@ public class UMLComboBoxEntry implements Comparable {
      * @param targetModel the UML Model that contains the modelelement
      * @return the modelelement represented by this combobox item
      */
-    public Object/*MModelElement*/ getElement(Object targetModel) {
+    public Object getElement(Object targetModel) {
         //
         //  if phantom then
         //    we need to possibly recreate the package structure
         //       in the target model
         if (thisIsAPhantom && targetModel != null) {
-            Object/*MNamespace*/ targetNS =
+            Object targetNS =
                 findNamespace(
                         Model.getFacade().getNamespace(element),
                         targetModel);
-            Object/*MModelElement*/ clone = null;
+            Object clone = null;
             try {
                 clone = element.getClass().getConstructor(
                         new Class[] {}).newInstance(new Object[] {});
@@ -239,13 +239,13 @@ public class UMLComboBoxEntry implements Comparable {
      * @param modelElement the modelelement represented by this combobox item
      * @param isPhantom true if this is a phantom element
      */
-    public void setElement(Object/*MModelElement*/ modelElement,
+    public void setElement(Object modelElement,
             boolean isPhantom) {
         element = modelElement;
         thisIsAPhantom = isPhantom;
     }
 
-    /**
+    /*
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(final java.lang.Object other) {
@@ -290,9 +290,9 @@ public class UMLComboBoxEntry implements Comparable {
     /**
      * @param modelElement the modelelement that has its name changed
      */
-    public void nameChanged(Object/*MModelElement*/ modelElement) {
+    public void nameChanged(Object modelElement) {
         if (modelElement == element && element != null) {
-            Object/*MNamespace*/ ns = Model.getFacade().getNamespace(element);
+            Object ns = Model.getFacade().getNamespace(element);
             shortName = profile.formatElement(element, ns);
             displayName = shortName;
             longName = null;

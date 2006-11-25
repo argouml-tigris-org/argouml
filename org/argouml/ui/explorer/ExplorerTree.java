@@ -141,6 +141,7 @@ public class ExplorerTree
          * On Windows and Motif platforms, the user brings up a popup menu
          * by releasing the right mouse button while the cursor is over a
          * component that is popup-enabled.
+         * 
          */
         public void mouseReleased(MouseEvent me) {
             if (me.isPopupTrigger()) {
@@ -429,7 +430,7 @@ public class ExplorerTree
             }
         }
 
-        /**
+        /*
          * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
 	 *         org.argouml.ui.targetmanager.TargetEvent)
          */
@@ -465,7 +466,7 @@ public class ExplorerTree
             // setTargets(e.getNewTargets());
         }
 
-        /**
+        /*
          * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
 	 *         org.argouml.ui.targetmanager.TargetEvent)
          */
@@ -502,7 +503,7 @@ public class ExplorerTree
             // setTargets(e.getNewTargets());
         }
 
-        /**
+        /*
          * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
 	 *         org.argouml.ui.targetmanager.TargetEvent)
          */

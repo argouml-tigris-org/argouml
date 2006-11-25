@@ -48,7 +48,7 @@ public class ActionNewFinalState extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize("button.new-finalstate"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

@@ -67,7 +67,7 @@ public abstract class ActionAddDiagram extends UndoableAction {
                 Translator.localize(s));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

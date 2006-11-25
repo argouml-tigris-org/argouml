@@ -43,7 +43,7 @@ public class UMLActionArgumentListModel
         super("actualArgument");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {

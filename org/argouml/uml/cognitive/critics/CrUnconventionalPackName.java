@@ -48,9 +48,9 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
 	addTrigger("name");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAPackage(dm))) {
@@ -75,14 +75,14 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
 	return NO_PROBLEM;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {
 	return ClClassName.getTheInstance();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
@@ -98,7 +98,7 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.AbstractCrUnconventionalName#computeSuggestion(java.lang.String)
      */
     public String computeSuggestion(String nameStr) {
@@ -121,7 +121,7 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
         return sug;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }

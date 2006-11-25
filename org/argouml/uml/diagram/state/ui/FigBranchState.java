@@ -26,12 +26,11 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
+
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
-//import org.tigris.gef.presentation.FigPoly;
 
 /**
  * Class to display graphics for a UML Choice State in a diagram - the circle.
@@ -87,7 +86,7 @@ public class FigBranchState extends FigStateVertex {
         setOwner(node);
     }
 
-    /**
+    /*
      * This makes dragging connected edges very smooth.
      *
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
@@ -97,7 +96,7 @@ public class FigBranchState extends FigStateVertex {
         return p;
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -114,34 +113,34 @@ public class FigBranchState extends FigStateVertex {
     /**
      * Choice states are fixed size.
      *
-     * @see org.tigris.gef.presentation.Fig#isResizable()
+     * @return false
      */
     public boolean isResizable() {
         return false;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
         head.setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return head.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
         head.setFillColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
@@ -149,26 +148,28 @@ public class FigBranchState extends FigStateVertex {
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     * Ignored - figure has a fixed rendering.
+     * @param f ignored
      */
     public void setFilled(boolean f) {
+        // ignored - fixed rendering
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return true;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         head.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -178,10 +179,11 @@ public class FigBranchState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Event handlers
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
+        // ignored
     }
 
     /**

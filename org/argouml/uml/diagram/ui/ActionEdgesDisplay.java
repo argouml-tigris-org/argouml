@@ -82,7 +82,7 @@ public class ActionEdgesDisplay extends UndoableAction {
     // //////////////////////////////////////////////////////////////
     // main methods
 
-    /**
+    /*
      * TODO: Support commentEdges.
      * TODO: Support associations to self.
      *

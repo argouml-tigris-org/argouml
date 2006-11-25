@@ -34,7 +34,7 @@ import org.argouml.uml.cognitive.UMLDecision;
 /**
  * A critic to detect when an initial state has more than one
  * outgoing transitions.  Implements a constraint from the UML
- * 1.1 standard: page 10, MPseudostate [1].
+ * 1.1 standard: page 10, Pseudostate [1].
  *
  * @author jrobbins
  */
@@ -49,9 +49,9 @@ public class CrInvalidInitial extends CrUML {
 	addTrigger("outgoing");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAPseudostate(dm))) {

@@ -41,7 +41,7 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
         super("action");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -50,10 +50,10 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ elem) {
+    protected boolean isValidElement(Object elem) {
         return Model.getFacade().isAAction(elem)
             && Model.getFacade().getAction(getTarget()) == elem;
     }

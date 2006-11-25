@@ -43,7 +43,7 @@ public class UMLNamespaceOwnedElementListModel
         super("ownedElement");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -52,10 +52,10 @@ public class UMLNamespaceOwnedElementListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().getOwnedElements(getTarget())
         	.contains(element);
     }

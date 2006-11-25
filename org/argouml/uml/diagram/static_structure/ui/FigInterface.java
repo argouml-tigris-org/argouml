@@ -148,7 +148,7 @@ public class FigInterface extends FigClassifierBox {
         enableSizeChecking(true);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
@@ -269,21 +269,21 @@ public class FigInterface extends FigClassifierBox {
         return aSize;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         borderFig.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
         return borderFig.getLineWidth();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
     public void translate(int dx, int dy) {
@@ -295,7 +295,7 @@ public class FigInterface extends FigClassifierBox {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
@@ -315,7 +315,7 @@ public class FigInterface extends FigClassifierBox {
         if  (!isVisible()) {
             return;
         }
-        Object me = /*(MModelElement)*/ getOwner();
+        Object me = getOwner();
         Object m = null;
 
         try {
@@ -323,8 +323,7 @@ public class FigInterface extends FigClassifierBox {
             if (encloser != null
                     && oldEncloser != encloser
                     && Model.getFacade().isAPackage(encloser.getOwner())) {
-                Model.getCoreHelper().setNamespace(me,
-                        /*(MNamespace)*/ encloser.getOwner());
+                Model.getCoreHelper().setNamespace(me, encloser.getOwner());
             }
 
             // If default Namespace is not already set
@@ -346,8 +345,8 @@ public class FigInterface extends FigClassifierBox {
         // the container will be set for the owning Interface
         if (encloser != null
                 && (Model.getFacade().isAComponent(encloser.getOwner()))) {
-            Object component = /*(MComponent)*/ encloser.getOwner();
-            Object in = /*(MInterface)*/ getOwner();
+            Object component = encloser.getOwner();
+            Object in = getOwner();
             Model.getCoreHelper().setContainer(resident, component);
             Model.getCoreHelper().setResident(resident, in);
         } else {
@@ -359,13 +358,13 @@ public class FigInterface extends FigClassifierBox {
     ////////////////////////////////////////////////////////////////
     // internal methods
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(
      * org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
-        Object cls = /*(MClassifier)*/ getOwner();
+        Object cls = getOwner();
         if (cls == null) {
             return;
         }
@@ -381,7 +380,7 @@ public class FigInterface extends FigClassifierBox {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(
      * org.tigris.gef.presentation.FigText)
      */
@@ -457,7 +456,7 @@ public class FigInterface extends FigClassifierBox {
                 + "operationsVisible=" + isOperationsVisible();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(
      * java.beans.PropertyChangeEvent)
      */
@@ -471,7 +470,7 @@ public class FigInterface extends FigClassifierBox {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
@@ -512,7 +511,7 @@ public class FigInterface extends FigClassifierBox {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {

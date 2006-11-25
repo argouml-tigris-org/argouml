@@ -50,9 +50,9 @@ public class CrClassMustBeAbstract extends CrUML {
 	setKnowledgeTypes(Critic.KT_SEMANTICS);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAClass(dm))) {
@@ -75,5 +75,5 @@ public class CrClassMustBeAbstract extends CrUML {
      * The UID.
      */
     private static final long serialVersionUID = -3881153331169214357L;
-} /* end class CrClassMustBeAbstract.java */
+} /* end class CrClassMustBeAbstract */
 

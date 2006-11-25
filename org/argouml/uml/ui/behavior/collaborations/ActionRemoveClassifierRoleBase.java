@@ -48,11 +48,8 @@ public class ActionRemoveClassifierRoleBase
         super(Translator.localize("menu.popup.remove"));
     }
 
-
-
-    /**
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
@@ -60,10 +57,8 @@ public class ActionRemoveClassifierRoleBase
         	.removeBase(getTarget(), getObjectToRemove());
     }
 
-
-
     /**
-     * @return Returns the sINGLETON.
+     * @return Returns the singleton.
      */
     public static ActionRemoveClassifierRoleBase getInstance() {
         return SINGLETON;

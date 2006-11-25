@@ -88,7 +88,7 @@ public class ActionLayout extends UndoableAction {
         return false;
     }
 
-    /**
+    /*
      * This action performs the layout and triggers a redraw of the editor pane.
      * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

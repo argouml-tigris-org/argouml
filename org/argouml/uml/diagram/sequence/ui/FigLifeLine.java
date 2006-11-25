@@ -92,14 +92,14 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
         activationFigs = new HashSet();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
         return new Dimension(20, 100);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     public void setBoundsImpl(int x, int y, int w, int h) {
@@ -117,7 +117,7 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
         calcBounds();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#calcBounds()
      */
     public void calcBounds() {
@@ -177,11 +177,11 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
                 + SequenceDiagramLayer.LINK_DISTANCE / 2;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.persistence.pgml.HandlerFactory#getHandler(
-     * org.tigris.gef.persistence.pgml.HandlerStack, java.lang.Object,
-     * java.lang.String, java.lang.String, java.lang.String,
-     * org.xml.sax.Attributes)
+     *      org.tigris.gef.persistence.pgml.HandlerStack, java.lang.Object,
+     *      java.lang.String, java.lang.String, java.lang.String,
+     *      org.xml.sax.Attributes)
      */
     public DefaultHandler getHandler(HandlerStack stack,
                                Object container,
@@ -238,7 +238,7 @@ class FigLifeLine extends FigGroup implements HandlerFactory {
             super(parser, lifeLine);
         }
 
-        /**
+        /*
          * @see org.tigris.gef.persistence.pgml.BaseHandler#getElementHandler(
          *         org.tigris.gef.persistence.pgml.HandlerStack,
          *         java.lang.Object, java.lang.String, java.lang.String,

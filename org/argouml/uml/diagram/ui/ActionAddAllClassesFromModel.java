@@ -55,7 +55,7 @@ public class ActionAddAllClassesFromModel extends UndoableAction {
         object = o;
     }
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {

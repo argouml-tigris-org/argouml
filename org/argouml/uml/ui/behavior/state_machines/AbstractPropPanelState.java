@@ -84,7 +84,7 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
         doScroll = new JScrollPane(doList);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */
     protected void addExtraButtons() {

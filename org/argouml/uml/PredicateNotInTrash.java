@@ -39,7 +39,7 @@ import org.tigris.gef.util.Predicate;
 public class PredicateNotInTrash implements Predicate {
     private Project p;
 
-    /**
+    /*
      * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
      */
     public boolean predicate(Object obj) {

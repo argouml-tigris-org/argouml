@@ -131,7 +131,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         enableSizeChecking(true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
@@ -148,7 +148,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -157,7 +157,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         updateListeners(getOwner(), getOwner());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
@@ -188,14 +188,14 @@ public class FigObjectFlowState extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {
         return "new ObjectFlowState";
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -208,8 +208,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         return figClone;
     }
 
-    /**
-     * Get the minimum size.
+    /*
      * The space between the 2 text figs is: PADDING.
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
@@ -224,12 +223,12 @@ public class FigObjectFlowState extends FigNodeModelElement {
         return new Dimension(Math.max(w, WIDTH / 2), Math.max(h, HEIGHT / 2));
     }
 
-    /**
+    /*
      * Override setBounds to keep shapes looking right.
      * The classifier and state Figs are nicely centered vertically,
      * and stretched out over the full width,
      * to allow easy selection with the mouse.
-     * The Fig can only be shrinked to half its original size - so that
+     * The Fig can only be shrunk to half its original size - so that
      * it is not reduceable to a few pixels only.
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
@@ -259,7 +258,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
@@ -293,55 +292,55 @@ public class FigObjectFlowState extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) { cover.setLineColor(col); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() { return cover.getLineColor(); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) { cover.setFillColor(col); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() { return cover.getFillColor(); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
         cover.setFilled(f);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return cover.getFilled();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         cover.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
         return cover.getLineWidth();
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent ke) {
@@ -361,7 +360,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         getNameFig().keyTyped(ke);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
@@ -374,7 +373,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
@@ -386,7 +385,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {

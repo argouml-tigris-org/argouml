@@ -94,8 +94,10 @@ public class PropPanelClassifierInState extends PropPanelClassifier {
             new ActionAddCISState();
         AbstractActionRemoveElement actionRemove = 
             new ActionRemoveCISState();
-        UMLMutableLinkedList list = new UMLMutableLinkedList(
-                new UMLCISStateListModel(), actionAdd, null, actionRemove, true);
+        UMLMutableLinkedList list =
+                new UMLMutableLinkedList(
+                        new UMLCISStateListModel(), actionAdd, null,
+                        actionRemove, true);
         statesScroll = new JScrollPane(list);
         addField(Translator.localize("label.instate"),
                 statesScroll);
@@ -130,7 +132,7 @@ class ActionSetClassifierInStateType extends UndoableAction {
         super();
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -174,12 +176,12 @@ class UMLClassifierInStateTypeComboBoxModel extends UMLComboBoxModel2 {
         super("type", false);
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return Model.getFacade().isAClassifier(o) 
-        && !Model.getFacade().isAClassifierInState(o);
+        return Model.getFacade().isAClassifier(o)
+                && !Model.getFacade().isAClassifierInState(o);
     }
     
     /**
@@ -213,7 +215,7 @@ class UMLClassifierInStateTypeComboBoxModel extends UMLComboBoxModel2 {
         setElements(newList);
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
@@ -260,7 +262,7 @@ class ActionAddCISState extends AbstractActionAddModelElement {
         setMultiSelect(true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
@@ -270,7 +272,7 @@ class ActionAddCISState extends AbstractActionAddModelElement {
         }
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
@@ -285,14 +287,14 @@ class ActionAddCISState extends AbstractActionAddModelElement {
         return ret;
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-state");
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
@@ -318,7 +320,7 @@ class ActionRemoveCISState extends AbstractActionRemoveElement {
         super(Translator.localize("menu.popup.remove"));
     }
 
-    /**
+    /*
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -352,7 +354,7 @@ class UMLCISStateListModel extends UMLModelElementListModel2 {
         super("inState");
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -363,7 +365,7 @@ class UMLCISStateListModel extends UMLModelElementListModel2 {
         }
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object elem) {

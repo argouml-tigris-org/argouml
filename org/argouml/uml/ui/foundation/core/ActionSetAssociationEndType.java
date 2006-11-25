@@ -54,7 +54,7 @@ public class ActionSetAssociationEndType extends UndoableAction {
 
 
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -67,17 +67,17 @@ public class ActionSetAssociationEndType extends UndoableAction {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (Model.getFacade().isAAssociationEnd(o)) {
-                end = /*(MAssociationEnd)*/ o;
+                end = o;
                 oldClassifier = Model.getFacade().getType(end);
             }
             o = box.getSelectedItem();
             if (Model.getFacade().isAClassifier(o)) {
-                newClassifier = /*(MClassifier)*/ o;
+                newClassifier = o;
             }
         }
         if (newClassifier != oldClassifier && end != null
                 && newClassifier != null) {
-            newClassifier = /*(MClassifier)*/ Model.getModelManagementHelper()
+            newClassifier = Model.getModelManagementHelper()
                 .getCorrespondingElement(
                       newClassifier,
                       Model.getFacade().getModel(end));

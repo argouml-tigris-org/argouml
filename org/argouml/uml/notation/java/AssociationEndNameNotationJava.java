@@ -29,7 +29,6 @@ import java.util.HashMap;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.AssociationEndNameNotation;
-import org.argouml.uml.notation.uml.AssociationEndNameNotationUml;
 import org.argouml.uml.notation.uml.NotationUtilityUml;
 
 /**
@@ -39,7 +38,7 @@ import org.argouml.uml.notation.uml.NotationUtilityUml;
  */
 public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
 
-	private static final AssociationEndNameNotationJava instance =
+    private static final AssociationEndNameNotationJava INSTANCE =
 		new AssociationEndNameNotationJava();
 	
 	/**
@@ -47,19 +46,17 @@ public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
 	 * @return the notation
 	 */
     public static final AssociationEndNameNotationJava getInstance() {
-    	return instance;
+    	return INSTANCE;
     }
 
     /**
      * The constructor.
-     *
-     * @param assocEnd the Java associationEnd
      */
     protected AssociationEndNameNotationJava() {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
@@ -67,7 +64,7 @@ public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
         return "Parsing in Java not yet supported";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -75,7 +72,7 @@ public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
             "Parsing in Java not yet supported");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {

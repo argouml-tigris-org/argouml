@@ -67,7 +67,7 @@ public class ActionSetChangeability extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -79,8 +79,8 @@ public class ActionSetChangeability extends UndoableAction {
                 ((UMLRadioButtonPanel) source.getParent()).getTarget();
             if (Model.getFacade().isAAssociationEnd(target)
 		|| Model.getFacade().isAAttribute(target)) {
-                Object m = /*(MAssociationEnd)*/ target;
-                Object/*MChangeableKind*/ kind = null;
+                Object m =  target;
+                Object kind = null;
                 if (actionCommand.equals(CHANGEABLE_COMMAND)) {
                     kind = Model.getChangeableKind().getChangeable();
                 } else if (actionCommand.equals(ADDONLY_COMMAND)) {

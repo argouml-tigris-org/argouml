@@ -47,7 +47,7 @@ class UMLTagDefinitionTypedValuesListModel
         super("typedValue");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -63,7 +63,7 @@ class UMLTagDefinitionTypedValuesListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {

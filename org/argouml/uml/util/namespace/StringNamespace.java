@@ -115,14 +115,14 @@ public class StringNamespace implements Namespace, Cloneable {
         this(elements, JAVA_NS_TOKEN);
     }
 
-    /**
+    /*
      * @see Namespace#pushNamespaceElement(NamespaceElement)
      */
     public void pushNamespaceElement(NamespaceElement element) {
         ns.push(element);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.util.namespace.Namespace#peekNamespaceElement()
      */
     public NamespaceElement peekNamespaceElement() {
@@ -139,14 +139,14 @@ public class StringNamespace implements Namespace, Cloneable {
         ns.push(new StringNamespaceElement(element));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.util.namespace.Namespace#popNamespaceElement()
      */
     public NamespaceElement popNamespaceElement() {
         return (NamespaceElement) ns.pop();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.util.namespace.Namespace#getBaseNamespace()
      */
     public Namespace getBaseNamespace() {
@@ -161,7 +161,7 @@ public class StringNamespace implements Namespace, Cloneable {
         return result;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.util.namespace.Namespace#getCommonNamespace(
      *         org.argouml.uml.util.namespace.Namespace)
      */
@@ -181,21 +181,21 @@ public class StringNamespace implements Namespace, Cloneable {
         return result;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.util.namespace.Namespace#iterator()
      */
     public Iterator iterator() {
         return ns.iterator();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.util.namespace.Namespace#isEmpty()
      */
     public boolean isEmpty() {
         return ns.isEmpty();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.util.namespace.Namespace#setDefaultScopeToken(java.lang.String)
      */
     public void setDefaultScopeToken(String theToken) {
@@ -238,7 +238,7 @@ public class StringNamespace implements Namespace, Cloneable {
         return parse(c.getName(), JAVA_NS_TOKEN);
     }
 
-    /**
+    /*
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
@@ -264,7 +264,7 @@ public class StringNamespace implements Namespace, Cloneable {
         return false;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.util.namespace.Namespace#toString(java.lang.String)
      */
     public String toString(String theToken) {
@@ -279,7 +279,7 @@ public class StringNamespace implements Namespace, Cloneable {
         return result.toString();
     }
 
-    /**
+    /*
      * Create a string representation using the default scope token.
      *
      * @see java.lang.Object#toString()

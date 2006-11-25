@@ -126,7 +126,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
@@ -138,7 +138,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
     public void updateListeners(Object oldOwner, Object newOwner) {
@@ -184,7 +184,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         return "{" + Model.getFacade().getName(orderingKind) + "}";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) {
@@ -204,7 +204,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
@@ -230,7 +230,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         orderingToUpdate.setText(getOrderingName(order));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {
@@ -242,7 +242,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
     protected void renderingChanged() {

@@ -109,7 +109,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState#addExtraButtons()
      */
     protected void addExtraButtons() {
@@ -123,7 +123,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         addAction(actionNewCIS);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
@@ -138,7 +138,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         }
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
@@ -193,7 +193,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             super("type");
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
          */
         protected void buildModelList() {
@@ -206,7 +206,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             }
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
          */
         protected boolean isValidElement(Object elem) {
@@ -242,7 +242,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             this.setMultiSelect(true);
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
          *         java.util.Vector)
          */
@@ -268,7 +268,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             }
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
          */
         protected Vector getChoices() {
@@ -289,14 +289,14 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             return ret;
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
          */
         protected String getDialogTitle() {
             return Translator.localize("dialog.title.add-state");
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
          */
         protected Vector getSelected() {
@@ -325,7 +325,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             super(Translator.localize("menu.popup.remove"));
         }
 
-        /**
+        /*
          * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {

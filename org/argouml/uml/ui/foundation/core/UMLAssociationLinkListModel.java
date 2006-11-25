@@ -41,7 +41,7 @@ public class UMLAssociationLinkListModel extends UMLModelElementListModel2 {
         super("link");
     }
 
-     /**
+     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -50,10 +50,10 @@ public class UMLAssociationLinkListModel extends UMLModelElementListModel2 {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isALink(o)
             && Model.getFacade().getLinks(getTarget()).contains(o);
     }

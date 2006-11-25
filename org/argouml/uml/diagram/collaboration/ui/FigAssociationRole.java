@@ -85,10 +85,10 @@ public class FigAssociationRole extends FigAssociation {
                         own);
         }
     }
-
-    /**
+    
+    /*
      * @see org.argouml.uml.diagram.ui.FigAssociation#updateListeners(
-     * java.lang.Object)
+     *      java.lang.Object)
      */
     public void updateListeners(Object oldOwner, Object newOwner) {
         super.updateListeners(oldOwner, newOwner);
@@ -110,7 +110,7 @@ public class FigAssociationRole extends FigAssociation {
     	messages.damage();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
@@ -170,7 +170,7 @@ class FigMessageGroup extends FigGroup {
 
 
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#calcBounds()
      */
     public void calcBounds() {
@@ -207,7 +207,7 @@ class FigMessageGroup extends FigGroup {
 
 
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
      */
     public void addFig(Fig f) {

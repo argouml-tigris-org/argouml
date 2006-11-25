@@ -44,7 +44,7 @@ class SelectionEnumeration extends SelectionDataType {
         super(f);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.static_structure.ui.SelectionDataType#hitHandle(java.awt.Rectangle, org.tigris.gef.presentation.Handle)
      */
     public void hitHandle(Rectangle r, Handle h) {
@@ -54,7 +54,7 @@ class SelectionEnumeration extends SelectionDataType {
         if (h.index == 11) h.instructions = "Add a sub-enumeration";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.static_structure.ui.SelectionDataType#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
@@ -62,7 +62,7 @@ class SelectionEnumeration extends SelectionDataType {
         return Model.getCoreFactory().buildEnumeration("", ns);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.static_structure.ui.SelectionDataType#getNewNodeType(int)
      */
     protected Object getNewNodeType(int buttonCode) {

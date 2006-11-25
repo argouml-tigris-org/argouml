@@ -26,7 +26,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLExpressionBodyField;
@@ -34,7 +33,6 @@ import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.UMLTimeExpressionModel;
 import org.argouml.util.ConfigLoader;
-import org.tigris.swidgets.GridLayout2;
 
 /**
  * The properties panel for a TimeEvent.
@@ -51,7 +49,7 @@ public class PropPanelTimeEvent extends PropPanelEvent {
                 .getTabPropsOrientation());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
      */
     public void initialize() {

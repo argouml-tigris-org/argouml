@@ -143,14 +143,14 @@ public class CrConstructorNeeded extends CrUML {
     }
 
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#initWizard(
-     *         org.argouml.cognitive.ui.Wizard)
+     *      org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddConstructor) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
+	    Object me = item.getOffenders().elementAt(0);
 	    String ins = super.getInstructions();
 	    String sug = null;
 	    if (me != null)
@@ -163,7 +163,7 @@ public class CrConstructorNeeded extends CrUML {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) {

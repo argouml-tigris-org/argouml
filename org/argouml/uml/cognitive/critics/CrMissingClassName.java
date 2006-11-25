@@ -34,7 +34,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
+ * Well-formedness rule [1] for Namespace. See page 33 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
  */
 public class CrMissingClassName extends CrUML {
@@ -49,15 +49,15 @@ public class CrMissingClassName extends CrUML {
 	addTrigger("name");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAModelElement(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object e = /*(MModelElement)*/ dm;
+	Object e = dm;
 	String myName = Model.getFacade().getName(e);
 	if (myName == null || myName.equals("") || myName.length() == 0) {
 	    return PROBLEM_FOUND;
@@ -65,21 +65,21 @@ public class CrMissingClassName extends CrUML {
 	return NO_PROBLEM;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {
 	return ClClassName.getTheInstance();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
+	    Object me = item.getOffenders().elementAt(0);
 	    String ins = super.getInstructions();
 	    String sug = super.getDefaultSuggestion();
 	    int count = 1;
@@ -94,9 +94,9 @@ public class CrMissingClassName extends CrUML {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
-} /* end class CrMissingClassName.java */
+} /* end class CrMissingClassName */

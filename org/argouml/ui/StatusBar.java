@@ -100,7 +100,7 @@ public class StatusBar extends JPanel implements Runnable {
 	t.start();
     }
 
-    /**
+    /*
      * @see java.lang.Runnable#run()
      */
     public synchronized void run() {

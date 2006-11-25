@@ -101,14 +101,15 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
     /**
      * Set up for re-routing.
      *
-     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     * {@inheritDoc}
      */
     public void mousePressed(MouseEvent me) {
 
         // calculate the source and dest figs for to self assoc
         sourceFig =
 	    (FigNodeModelElement) ((FigEdge) getContent()).getSourceFigNode();
-        destFig = (FigNodeModelElement) ((FigEdge) getContent()).getDestFigNode();
+        destFig = 
+            (FigNodeModelElement) ((FigEdge) getContent()).getDestFigNode();
 
         Rectangle mousePosition =
 	    new Rectangle(me.getX() - 5, me.getY() - 5, 10, 10);

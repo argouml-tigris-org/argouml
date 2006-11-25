@@ -119,7 +119,7 @@ class ModelMemberFilePersister extends MemberFilePersister
         project.setUUIDRefs(new HashMap(getUUIDRefs()));
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.MemberFilePersister#getMainTag()
      */
     public String getMainTag() {
@@ -221,7 +221,7 @@ class ModelMemberFilePersister extends MemberFilePersister
     /**
      * @return the current model
      */
-    public Object/*MModel*/ getCurModel() {
+    public Object getCurModel() {
         return curModel;
     }
 

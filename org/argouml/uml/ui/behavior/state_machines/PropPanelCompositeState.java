@@ -102,7 +102,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
                 new JScrollPane(subverticesList));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */
     protected void addExtraButtons() {
@@ -128,7 +128,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
 	            new UMLCompositeStateSubvertexListModel());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
@@ -142,7 +142,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
         } else {
             getTitleLabel().setText("Composite State");
         }
-     }
+    }
 
 } /* end class PropPanelCompositeState */
 

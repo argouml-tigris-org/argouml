@@ -69,7 +69,7 @@ public class ActionSaveGraphics extends AbstractAction
                 ResourceLoaderWrapper.lookupIcon("action.save-graphics"));
     }
 
-    /**
+    /*
      * @see AbstractAction#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

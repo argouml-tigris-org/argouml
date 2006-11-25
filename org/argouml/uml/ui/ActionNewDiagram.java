@@ -56,9 +56,9 @@ abstract class ActionNewDiagram extends UndoableAction {
                 Translator.localize(name));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(
-     * java.awt.event.ActionEvent)
+     *      java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         Project p = ProjectManager.getManager().getCurrentProject();

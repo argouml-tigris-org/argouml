@@ -66,7 +66,7 @@ public class ActionGenerateProjectCode extends UndoableAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -77,7 +77,7 @@ public class ActionGenerateProjectCode extends UndoableAction {
 	if (!(activeDiagram instanceof UMLDiagram)) {
 	    return;
 	}
-	Object/*MNamespace*/ ns = ((UMLDiagram) activeDiagram).getNamespace();
+	Object ns = ((UMLDiagram) activeDiagram).getNamespace();
 	if (ns == null) {
 	    return;
 	}
@@ -95,7 +95,7 @@ public class ActionGenerateProjectCode extends UndoableAction {
         //    .getAllModelElementsOfKind(MClassifier.class);
 	Iterator iter = elems.iterator();
 	while (iter.hasNext()) {
-	    Object/*MClassifier*/ cls = iter.next();
+	    Object cls = iter.next();
 	    if (isCodeRelevantClassifier(cls)) {
 		classes.addElement(cls);
 	    }

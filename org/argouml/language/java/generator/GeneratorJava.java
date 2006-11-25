@@ -164,7 +164,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         if (name == null || name.length() == 0) {
             return null;
         }
-        Object classifier = /*(MClassifier)*/ modelElement;
+        Object classifier = modelElement;
         String filename = name + ".java";
         if (!path.endsWith(FILE_SEPARATOR)) {
             path += FILE_SEPARATOR;
@@ -378,7 +378,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         if (c != null) {
             // now check packages of all feature types
             for (j = c.iterator(); j.hasNext();) {
-                Object mFeature = /*(MFeature)*/ j.next();
+                Object mFeature = j.next();
                 if (Model.getFacade().isAAttribute(mFeature)) {
                     if ((ftype =
 			    generateImportType(Model.getFacade()
@@ -402,8 +402,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
 
                     // check the return parameter types
                     it =
-                        Model.getCoreHelper()
-			        .getReturnParameters(/*(MOperation)*/mFeature)
+                        Model.getCoreHelper().getReturnParameters(mFeature)
 			            .iterator();
                     while (it.hasNext()) {
                         Object parameter = it.next();
@@ -439,7 +438,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
 	if (c != null) {
 	    // now check packages of all generalized types
 	    for (j = c.iterator(); j.hasNext();) {
-		Object gen = /*(MGeneralization)*/ j.next();
+		Object gen = j.next();
 		Object parent = Model.getFacade().getParent(gen);
 		if (parent == cls) {
 		    continue;
@@ -469,14 +468,13 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         if (!c.isEmpty()) {
             // check association end types
             for (j = c.iterator(); j.hasNext();) {
-                Object associationEnd = /*(MAssociationEnd)*/ j.next();
+                Object associationEnd = j.next();
                 Object association =
                     Model.getFacade().getAssociation(associationEnd);
                 Iterator connEnum =
 		    Model.getFacade().getConnections(association).iterator();
                 while (connEnum.hasNext()) {
-                    Object associationEnd2 =
-			/*(MAssociationEnd)*/ connEnum.next();
+                    Object associationEnd2 = connEnum.next();
                     if (associationEnd2 != associationEnd
                             && Model.getFacade().isNavigable(associationEnd2)
                             && !Model.getFacade().isAbstract(
@@ -618,7 +616,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
                     + " for " + Model.getFacade().getName(op));
         }
         if (rp != null && !constructor) {
-            Object/*MClassifier*/ returnType = Model.getFacade().getType(rp);
+            Object returnType = Model.getFacade().getType(rp);
             if (returnType == null) {
                 sb.append("void ");
             } else {
@@ -691,8 +689,8 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         sb.append(generateVisibility(attr));
         sb.append(generateScope(attr));
         sb.append(generateChangability(attr));
-        Object/*MClassifier*/ type = Model.getFacade().getType(attr);
-        Object/*MMultiplicity*/ multi = Model.getFacade().getMultiplicity(attr);
+        Object type = Model.getFacade().getType(attr);
+        Object multi = Model.getFacade().getMultiplicity(attr);
         // handle multiplicity here since we need the type
         // actually the API of generator is buggy since to generate
         // multiplicity correctly we need the attribute too
@@ -707,7 +705,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         }
 
         sb.append(generateName(Model.getFacade().getName(attr)));
-        Object/*MExpression*/ init = Model.getFacade().getInitialValue(attr);
+        Object init = Model.getFacade().getInitialValue(attr);
         if (init != null) {
             String initStr = generateExpression(init).trim();
             if (initStr.length() > 0) {
@@ -738,7 +736,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         if (ownedElements != null) {
             Iterator ownedEnum = ownedElements.iterator();
             while (ownedEnum.hasNext()) {
-                Object modelElement = /*(MModelElement)*/ ownedEnum.next();
+                Object modelElement = ownedEnum.next();
                 // This is the only remaining references to generate(), if it
                 // can be made more specific, we can remove that method - tfm
                 // (do we support anything other than classifiers in a package?)
@@ -877,8 +875,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
      * @return the complete classifier code, i.e., sbPrefix plus the classifier
      *         end sequence
      */
-    StringBuffer appendClassifierEnd(StringBuffer sbPrefix,
-				     Object/*MClassifier*/ cls) {
+    StringBuffer appendClassifierEnd(StringBuffer sbPrefix, Object cls) {
         sbPrefix.append(generateClassifierEnd(cls));
 
         return sbPrefix;
@@ -929,8 +926,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
                 Iterator strEnum = strs.iterator();
 		boolean first = true;
                 while (strEnum.hasNext()) {
-                    Object structuralFeature =
-			/*(MStructuralFeature)*/ strEnum.next();
+                    Object structuralFeature = strEnum.next();
 
 		    if (!first) {
 			sb.append(LINE_SEPARATOR);
@@ -958,8 +954,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
 
                 Iterator endEnum = ends.iterator();
                 while (endEnum.hasNext()) {
-                    Object associationEnd =
-			/*(MAssociationEnd)*/ endEnum.next();
+                    Object associationEnd = endEnum.next();
                     Object association =
 			Model.getFacade().getAssociation(associationEnd);
 
@@ -976,7 +971,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
             // Inner classes
             Collection elements = Model.getFacade().getOwnedElements(cls);
             for (Iterator i = elements.iterator(); i.hasNext();) {
-                Object element = /*(MModelElement)*/ i.next();
+                Object element = i.next();
                 if (Model.getFacade().isAClass(element)
 		    || Model.getFacade().isAInterface(element)) {
 
@@ -1168,7 +1163,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
 	     *
              * New code:
              */
-            s = generateTaggedValue(/*(MTaggedValue)*/ iter.next());
+            s = generateTaggedValue(iter.next());
             // end new code
             if (s != null && s.length() > 0) {
                 if (first) {
@@ -1236,7 +1231,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
     private String generateConstraintEnrichedDocComment(Object me, Object ae) {
         String s = generateConstraintEnrichedDocComment(me, true, INDENT);
 
-        Object/*MMultiplicity*/ m = Model.getFacade().getMultiplicity(ae);
+        Object m = Model.getFacade().getMultiplicity(ae);
         if (Model.getFacade().getUpper(m) != 1) {
             // Multiplicity greater 1, that means we will generate some sort of
             // collection, so we need to specify the element type tag
@@ -1253,7 +1248,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
             }
 
             // Build doccomment
-            Object/*MClassifier*/ type = Model.getFacade().getType(ae);
+            Object type = Model.getFacade().getType(ae);
             if (type != null) {
                 sDocComment.append(" @element-type ");
 		sDocComment.append(Model.getFacade().getName(type));
@@ -1294,7 +1289,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
      * element, either enhanced or completely generated
      */
     public static String generateConstraintEnrichedDocComment(
-            Object/*MModelElement*/ me,
+            Object me,
 	    boolean documented,
 	    String indent) {
         if (isFileGeneration) {
@@ -1354,8 +1349,8 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
             public Iterator getTags() {
                 return llsTags.iterator();
             }
-
-            /**
+            
+            /*
              * @see tudresden.ocl.parser.analysis.Analysis#caseAConstraintBody(tudresden.ocl.parser.node.AConstraintBody)
              */
             public void caseAConstraintBody(AConstraintBody node) {
@@ -1396,7 +1391,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
 
         tudresden.ocl.check.types.ModelFacade mf = new ArgoFacade(me);
         for (Iterator i = cConstraints.iterator(); i.hasNext();) {
-            Object constraint = /*(MConstraint)*/ i.next();
+            Object constraint = i.next();
 
             try {
 		String body =
@@ -1430,7 +1425,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         Collection connections = Model.getFacade().getConnections(a);
         Iterator connEnum = connections.iterator();
         while (connEnum.hasNext()) {
-            Object associationEnd2 = /*(MAssociationEnd)*/ connEnum.next();
+            Object associationEnd2 = connEnum.next();
             if (associationEnd2 != associationEnd) {
                 sb.append(INDENT);
 		sb.append(
@@ -1510,7 +1505,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         Collection classes = new ArrayList();
         Iterator it = generalizations.iterator();
         while (it.hasNext()) {
-            Object generalization = /*(MGeneralization)*/ it.next();
+            Object generalization = it.next();
             Object generalizableElement =
                 Model.getFacade().getParent(generalization);
             // assert ge != null
@@ -1532,7 +1527,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         StringBuffer sb = new StringBuffer(80);
         Iterator clsEnum = realizations.iterator();
         while (clsEnum.hasNext()) {
-            Object inter = /*(MInterface)*/ clsEnum.next();
+            Object inter = clsEnum.next();
             sb.append(generateClassifierRef(inter));
             if (clsEnum.hasNext()) {
                 sb.append(", ");
@@ -1548,7 +1543,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         StringBuffer sb = new StringBuffer(80);
         Iterator clsEnum = classifiers.iterator();
         while (clsEnum.hasNext()) {
-            sb.append(generateClassifierRef(/*(MClassifier)*/ clsEnum.next()));
+            sb.append(generateClassifierRef(clsEnum.next()));
             if (clsEnum.hasNext()) {
                 sb.append(", ");
             }
@@ -1844,7 +1839,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
 
     String generateAscEndName(Object ae) {
         String n = Model.getFacade().getName(ae);
-        Object/*MAssociation*/ asc = Model.getFacade().getAssociation(ae);
+        Object asc = Model.getFacade().getAssociation(ae);
         String ascName = Model.getFacade().getName(asc);
         if (n != null && n != null && n.length() > 0) {
             n = generateName(n);

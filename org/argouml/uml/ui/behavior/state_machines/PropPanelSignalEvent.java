@@ -48,7 +48,7 @@ public class PropPanelSignalEvent extends PropPanelEvent {
               ConfigLoader.getTabPropsOrientation());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
      */
     public void initialize() {

@@ -52,9 +52,9 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 	addSupportedDecision(UMLDecision.PATTERNS);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof UMLDeploymentDiagram)) {
@@ -68,9 +68,9 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 	return PROBLEM_FOUND;
     }
 
-    /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+    /*
+     * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
+     *      org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
@@ -78,9 +78,9 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) {
@@ -139,4 +139,4 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
      * The UID.
      */
     private static final long serialVersionUID = -2178052428128671983L;
-} /* end class CrComponentInstanceWithoutClassifier.java */
+} /* end class CrComponentInstanceWithoutClassifier */

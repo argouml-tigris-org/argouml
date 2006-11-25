@@ -48,7 +48,7 @@ class ActionSetRepresentedOperationCollaboration extends UndoableAction {
                 ResourceLoaderWrapper.lookupIcon("action.set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

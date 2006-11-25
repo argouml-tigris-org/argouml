@@ -73,7 +73,7 @@ public class FigTextGroup extends FigGroup implements MouseListener {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#calcBounds()
      */
     public void calcBounds() {
@@ -98,7 +98,7 @@ public class FigTextGroup extends FigGroup implements MouseListener {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public void removeFromDiagram() {
@@ -109,7 +109,7 @@ public class FigTextGroup extends FigGroup implements MouseListener {
         super.removeFromDiagram();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
     public void deleteFromModel() {
@@ -123,36 +123,40 @@ public class FigTextGroup extends FigGroup implements MouseListener {
     ////////////////////////////////////////////////////////////////
     // event handlers - MouseListener implementation
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
+        // ignored
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
+        // ignored
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) {
+        // ignored
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent me) {
+        // ignored
     }
 
     /**
-     * If the user double clicks on anu part of this FigGroup, pass it
-     * down to one of the internal Figs.  This allows the user to
-     * initiate direct text editing.
-     *
-     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     * Handle mouse click. If the user double clicks on any part of this
+     * FigGroup, pass it down to one of the internal Figs. This allows the user
+     * to initiate direct text editing.
+     * 
+     * {@inheritDoc}
      */
     public void mouseClicked(MouseEvent me) {
         if (me.isConsumed())

@@ -42,7 +42,7 @@ public class UMLAssociationAssociationRoleListModel
         super("associationRole");
     }
 
-     /**
+     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -51,10 +51,10 @@ public class UMLAssociationAssociationRoleListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isAAssociationRole(o)
             && Model.getFacade().getAssociationRoles(getTarget()).contains(o);
     }

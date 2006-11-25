@@ -43,7 +43,7 @@ public class UMLGeneralizableElementLeafCheckBox extends UMLCheckBox2 {
                 ActionSetGeneralizableElementLeaf.getInstance(), "isLeaf");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {

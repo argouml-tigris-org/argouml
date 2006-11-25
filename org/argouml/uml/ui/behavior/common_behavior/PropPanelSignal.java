@@ -134,7 +134,7 @@ class UMLSignalReceptionListModel extends UMLModelElementListModel2 {
         super("reception");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -143,7 +143,7 @@ class UMLSignalReceptionListModel extends UMLModelElementListModel2 {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {
@@ -173,7 +173,7 @@ class ActionAddReceptionSignal extends AbstractActionAddModelElement {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
@@ -188,7 +188,7 @@ class ActionAddReceptionSignal extends AbstractActionAddModelElement {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
@@ -197,14 +197,14 @@ class ActionAddReceptionSignal extends AbstractActionAddModelElement {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-receptions");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
@@ -232,7 +232,7 @@ class ActionRemoveContextSignal extends AbstractActionRemoveElement {
         super(Translator.localize("menu.popup.remove"));
     }
 
-    /**
+    /*
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -270,7 +270,7 @@ class ActionRemoveReceptionSignal extends AbstractActionRemoveElement {
         super(Translator.localize("menu.popup.remove"));
     }
 
-    /**
+    /*
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

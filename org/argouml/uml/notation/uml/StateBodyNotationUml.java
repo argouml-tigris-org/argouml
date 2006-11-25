@@ -53,7 +53,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
         super(state);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -70,14 +70,14 @@ public class StateBodyNotationUml extends StateBodyNotation {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-statebody";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {
@@ -490,7 +490,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
             it = c.iterator();
             first = true;
             while (it.hasNext()) {
-                Object arg = /*(MArgument)*/ it.next();
+                Object arg = it.next();
                 if (!first) {
                     p += ", ";
                 }

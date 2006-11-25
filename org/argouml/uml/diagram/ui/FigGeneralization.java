@@ -122,7 +122,7 @@ public class FigGeneralization extends FigEdgeModelElement {
 //  	setOwner(edge);
 //    }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
      */
     protected boolean canEdit(Fig f) { return false; }
@@ -130,10 +130,7 @@ public class FigGeneralization extends FigEdgeModelElement {
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /**
-     * This is called after any part of the UML ModelElement has
-     * changed.
-     *
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {
@@ -165,7 +162,7 @@ public class FigGeneralization extends FigEdgeModelElement {
   	discriminator.setText(disc);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
@@ -173,7 +170,7 @@ public class FigGeneralization extends FigEdgeModelElement {
         super.paint(g);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setOwner(Object)
      */
     public void setOwner(Object own) {

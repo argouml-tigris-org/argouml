@@ -100,7 +100,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         enableSizeChecking(true);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
@@ -110,11 +110,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
     /**
      * Build a collection of menu items relevant for a right-click
      * popup menu on a Stereotype.
-     *
-     * @param     me     a mouse event
-     * @return              a collection of menu items
-     *
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     * {@inheritDoc}
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
@@ -240,8 +236,8 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    /**
-     * @return the compartment
+    /*
+     * @see org.argouml.uml.diagram.static_structure.ui.FigCompartmentBox#unhighlight()
      */
     protected CompartmentFigText unhighlight() {
         CompartmentFigText fc = super.unhighlight();
@@ -252,7 +248,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         return fc;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
@@ -280,7 +276,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {

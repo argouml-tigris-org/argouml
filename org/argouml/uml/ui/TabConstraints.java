@@ -76,7 +76,7 @@ public class TabConstraints extends AbstractArgoJPanel
     /**
      * The current target element.
      */
-    private Object/*MModelElement*/ mMmeiTarget;
+    private Object mMmeiTarget;
 
     /**
      * The constructor.
@@ -105,7 +105,8 @@ public class TabConstraints extends AbstractArgoJPanel
      */
     private void setToolbarRollover(boolean enable) {
         if (!ToolBarManager.alwaysUseStandardRollover()) {
-            getOclToolbar().putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+            getOclToolbar().putClientProperty(
+                    "JToolBar.isRollover", Boolean.TRUE);
         }
     }
 
@@ -138,7 +139,7 @@ public class TabConstraints extends AbstractArgoJPanel
      * Argo only supports constraints for Classes and Features
      * (eg. Attributes and Operations) currently.
      *
-     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
@@ -146,9 +147,7 @@ public class TabConstraints extends AbstractArgoJPanel
                 || Model.getFacade().isAFeature(target));
     }
 
-    /**
-     * Get the target element whose properties this tab presents.
-     *
+    /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() {
@@ -166,7 +165,7 @@ public class TabConstraints extends AbstractArgoJPanel
      * Set the target element to be displayed in this tab. Only model elements
      * will be accepted by the constraint tab.
      *
-     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
+     * {@inheritDoc}
      */
     public void setTarget(Object oTarget) {
         oTarget =
@@ -176,7 +175,7 @@ public class TabConstraints extends AbstractArgoJPanel
             return;
         }
 
-        mMmeiTarget = /*(MModelElement)*/oTarget;
+        mMmeiTarget = oTarget;
 
         // Set editor's model
         mOcleEditor.setModel(new ConstraintModel(mMmeiTarget));
@@ -191,7 +190,7 @@ public class TabConstraints extends AbstractArgoJPanel
         /**
          * The target element being edited.
          */
-        private Object/*MModelElement*/ theMMmeiTarget;
+        private Object theMMmeiTarget;
 
         /**
          * A list of all the constraints in m_nmeiTarget. This is necessary to
@@ -207,7 +206,7 @@ public class TabConstraints extends AbstractArgoJPanel
         /**
          * Construct a new ConstraintModel.
          */
-        public ConstraintModel(Object/*MModelElement*/ mmeiTarget) {
+        public ConstraintModel(Object mmeiTarget) {
             super();
 
             theMMmeiTarget = mmeiTarget;
@@ -244,8 +243,7 @@ public class TabConstraints extends AbstractArgoJPanel
                 return;
             }
 
-            Object/*MConstraint*/ mc =
-		/*(MConstraint)*/theMAlConstraints.remove(nIdx);
+            Object mc = theMAlConstraints.remove(nIdx);
 
             if (mc != null) {
                 Model.getCoreHelper().removeConstraint(theMMmeiTarget, mc);
@@ -309,7 +307,7 @@ public class TabConstraints extends AbstractArgoJPanel
             /**
              * The constraint being represented.
              */
-            private Object/*MConstraint*/ theMMcConstraint;
+            private Object theMMcConstraint;
 
             /**
              * The constraint's index in the list of
@@ -318,7 +316,7 @@ public class TabConstraints extends AbstractArgoJPanel
              */
             private int theMNIdx = -1;
 
-            public CR(Object/*MConstraint*/ mcConstraint, int nIdx) {
+            public CR(Object mcConstraint, int nIdx) {
                 super();
 
                 theMMcConstraint = mcConstraint;
@@ -396,7 +394,7 @@ public class TabConstraints extends AbstractArgoJPanel
 				 i.hasNext();) {
                                 OclTree ocltCurrent = (OclTree) i.next();
 
-                                Object/*MConstraint*/ mc =
+                                Object mc =
                                     Model.getCoreFactory()
 				        .createConstraint();
                                 Model.getCoreHelper().setName(mc, ocltCurrent
@@ -436,7 +434,7 @@ public class TabConstraints extends AbstractArgoJPanel
                     }
 
                     // Store constraint body
-                    Object/*MConstraint*/ mcOld = null;
+                    Object mcOld = null;
 
                     if (theMMcConstraint == null) {
                         // New constraint, first time setData is called
@@ -519,7 +517,7 @@ public class TabConstraints extends AbstractArgoJPanel
                     }
 
                     // Set name
-                    Object/*MConstraint*/ mcOld =
+                    Object mcOld =
                         Model.getCoreFactory().createConstraint();
                     Model.getCoreHelper().setName(mcOld,
                             Model.getFacade().getName(theMMcConstraint));
@@ -590,7 +588,7 @@ public class TabConstraints extends AbstractArgoJPanel
                 return null;
             }
 
-            Object/*MConstraint*/ mc = theMAlConstraints.get(nIdx);
+            Object mc = theMAlConstraints.get(nIdx);
 
             if (mc != null) {
                 return new CR(mc, nIdx);
@@ -618,7 +616,7 @@ public class TabConstraints extends AbstractArgoJPanel
         }
 
         protected void fireConstraintRemoved(
-                Object/*MConstraint*/ mc, int nIdx) {
+                Object mc, int nIdx) {
             // Guaranteed to return a non-null array
             Object[] listeners = theMEllListeners.getListenerList();
 
@@ -657,10 +655,10 @@ public class TabConstraints extends AbstractArgoJPanel
                         int nIdx = theMAlConstraints.size() - 1;
                         cce =
                             new ConstraintChangeEvent(
-                              this,
-                              nIdx,
-                              null,
-                              representationFor(nIdx));
+                                    this,
+                                    nIdx,
+                                    null,
+                                    representationFor(nIdx));
                     }
                     ((ConstraintChangeListener) listeners[i + 1])
                         .constraintAdded(cce);
@@ -670,8 +668,8 @@ public class TabConstraints extends AbstractArgoJPanel
 
         protected void fireConstraintDataChanged(
                          int nIdx,
-                         Object/*MConstraint*/ mcOld,
-                         Object/*MConstraint*/ mcNew) {
+                         Object mcOld,
+                         Object mcNew) {
             // Guaranteed to return a non-null array
             Object[] listeners = theMEllListeners.getListenerList();
 
@@ -698,8 +696,8 @@ public class TabConstraints extends AbstractArgoJPanel
 
         protected void fireConstraintNameChanged(
                          int nIdx,
-                         Object/*MConstraint*/ mcOld,
-                         Object/*MConstraint*/ mcNew) {
+                         Object mcOld,
+                         Object mcNew) {
             // Guaranteed to return a non-null array
             Object[] listeners = theMEllListeners.getListenerList();
 
@@ -725,14 +723,14 @@ public class TabConstraints extends AbstractArgoJPanel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -740,7 +738,7 @@ public class TabConstraints extends AbstractArgoJPanel
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
      *         org.argouml.ui.targetmanager.TargetEvent)
      */

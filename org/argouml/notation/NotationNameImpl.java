@@ -147,14 +147,14 @@ class NotationNameImpl
         return icon;
     }
 
-    /**
+    /*
      * @see org.argouml.notation.NotationName#getConfigurationValue()
      */
     public String getConfigurationValue() {
         return getNotationNameString(name, version);
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -232,7 +232,7 @@ class NotationNameImpl
 	return null;
     }
 
-    /**
+    /*
      * @see org.argouml.notation.NotationName#sameNotationAs(org.argouml.notation.NotationName)
      */
     public boolean sameNotationAs(NotationName nn) {
@@ -262,28 +262,31 @@ class NotationNameImpl
         return findNotation(getNotationNameString(k1, k2));
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoModuleEventListener#moduleLoaded(org.argouml.application.events.ArgoModuleEvent)
      */
     public void moduleLoaded(ArgoModuleEvent event) {
         LOG.info ("notation.moduleLoaded(" + event + ")");
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoModuleEventListener#moduleUnloaded(org.argouml.application.events.ArgoModuleEvent)
      */
     public void moduleUnloaded(ArgoModuleEvent event) {
+        // ignored
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoModuleEventListener#moduleEnabled(org.argouml.application.events.ArgoModuleEvent)
      */
     public void moduleEnabled(ArgoModuleEvent event) {
+        // ignored
     }
 
-    /**
+    /*
      * @see org.argouml.application.events.ArgoModuleEventListener#moduleDisabled(org.argouml.application.events.ArgoModuleEvent)
      */
     public void moduleDisabled(ArgoModuleEvent event) {
+        // ignored
     }
 }

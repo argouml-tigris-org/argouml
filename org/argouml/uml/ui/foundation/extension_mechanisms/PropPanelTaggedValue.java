@@ -154,7 +154,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
             super();
         }
 
-        /**
+        /*
          * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
@@ -193,7 +193,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
 //                "ownedElement");
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
          */
         protected void buildModelList() {
@@ -204,7 +204,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
                         Model.getMetaTypes().getModelElement()));
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
          */
         protected Object getSelectedModelElement() {
@@ -216,7 +216,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
             return me;
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
          */
         protected boolean isValidElement(Object element) {
@@ -234,7 +234,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
             super();
         }
 
-        /**
+        /*
          * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
@@ -265,7 +265,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
             super("type", true);
         }
         
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
          */
         protected void buildModelList() {
@@ -276,7 +276,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
                             Model.getMetaTypes().getTagDefinition()));
         }
         
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
          */
         protected Object getSelectedModelElement() {
@@ -288,7 +288,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
             return me;
         }
         
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
          */
         protected boolean isValidElement(Object element) {
@@ -307,7 +307,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
             super("referenceValue");
         }
         
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
          */
         protected void buildModelList() {
@@ -317,7 +317,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
             }
         }
         
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
          */
         protected boolean isValidElement(Object element) {
@@ -338,7 +338,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
             super("dataValue");
         }
         
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
          */
         protected void buildModelList() {
@@ -348,7 +348,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
             }
         }
         
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
          */
         protected boolean isValidElement(Object element) {

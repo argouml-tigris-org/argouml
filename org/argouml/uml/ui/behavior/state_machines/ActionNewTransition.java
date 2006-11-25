@@ -62,7 +62,7 @@ public class ActionNewTransition extends AbstractActionNewModelElement {
         super();
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -77,9 +77,8 @@ public class ActionNewTransition extends AbstractActionNewModelElement {
         }
     }
 
-    /**
-     * @return true if the action is enabled
-     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
+    /*
+     * @see javax.swing.AbstractAction#isEnabled()
      */
     public boolean isEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();

@@ -105,7 +105,7 @@ public class AbstractActionRemoveElement extends UndoableAction {
 
 
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {

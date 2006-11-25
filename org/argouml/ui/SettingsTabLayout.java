@@ -179,24 +179,24 @@ class SettingsTabLayout extends JPanel
         savePosition(prpTaggedValues, TabTaggedValues.class);
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() { }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
      */
     public void handleResetToDefault() {
         // Do nothing - these buttons are not shown.
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.layout"; }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() { return this; }

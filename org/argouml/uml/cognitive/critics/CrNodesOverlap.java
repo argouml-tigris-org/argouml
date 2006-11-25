@@ -63,9 +63,9 @@ public class CrNodesOverlap extends CrUML {
     ////////////////////////////////////////////////////////////////
     // critiquing API
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof Diagram)) return NO_PROBLEM;
@@ -83,9 +83,9 @@ public class CrNodesOverlap extends CrUML {
     }
 
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
-     * org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Diagram d = (Diagram) dm;
@@ -93,9 +93,9 @@ public class CrNodesOverlap extends CrUML {
 	return new ToDoItem(this, offs, dsgr);
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;

@@ -56,7 +56,7 @@ public class OperationNotationJava extends OperationNotation {
         super(operation);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -64,14 +64,14 @@ public class OperationNotationJava extends OperationNotation {
             "Parsing in Java not yet supported");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "Parsing in Java not yet supported";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {
@@ -119,7 +119,7 @@ public class OperationNotationJava extends OperationNotation {
                     + " for " + Model.getFacade().getName(modelElement));
         }
         if (rp != null && !constructor) {
-            Object/*MClassifier*/ returnType = Model.getFacade().getType(rp);
+            Object returnType = Model.getFacade().getType(rp);
             if (returnType == null) {
                 sb.append("void ");
             } else {

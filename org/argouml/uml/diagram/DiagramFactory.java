@@ -178,7 +178,8 @@ public final class DiagramFactory {
     public Object createRenderingElement(Object diagram, Object model) {
         GraphNodeRenderer rend =
             ((UMLDiagram) diagram).getLayer().getGraphNodeRenderer();
-        Object renderingElement = rend.getFigNodeFor(model, 0, 0, noStyleProperties);
+        Object renderingElement =
+                rend.getFigNodeFor(model, 0, 0, noStyleProperties);
         return renderingElement;
     }
 }

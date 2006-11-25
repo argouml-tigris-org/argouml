@@ -83,7 +83,7 @@ public abstract class ToDoPerspective extends TreeModelComposite {
         return super.getChild(parent,  index);
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
      */
     public int getChildCount(Object parent) {
@@ -93,9 +93,9 @@ public abstract class ToDoPerspective extends TreeModelComposite {
         return super.getChildCount(parent);
     }
 
-    /**
+    /*
      * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
-     * java.lang.Object)
+     *      java.lang.Object)
      */
     public int getIndexOfChild(Object parent, Object child) {
         if (flat && parent == getRoot()) {

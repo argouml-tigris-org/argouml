@@ -88,7 +88,7 @@ public class PropPanelString
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
@@ -101,17 +101,17 @@ public class PropPanelString
 
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() { return target; }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() { setTarget(target); }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object theTarget) { return false; }
@@ -126,7 +126,7 @@ public class PropPanelString
     ////////////////////////////////////////////////////////////////
     // event handling
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */
     public void insertUpdate(DocumentEvent e) {
@@ -136,20 +136,19 @@ public class PropPanelString
 	}
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
      */
     public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
      */
     public void changedUpdate(DocumentEvent e) {
     }
 
-    /**
-     * @see
-     * java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+    /*
+     * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
 	if (evt.getPropertyName().equals("editing")
@@ -160,7 +159,7 @@ public class PropPanelString
 
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
@@ -168,7 +167,7 @@ public class PropPanelString
 
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
@@ -176,7 +175,7 @@ public class PropPanelString
 
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {

@@ -69,9 +69,7 @@ public class ActionSaveDiagramToClipboard extends AbstractAction implements
                 ResourceLoaderWrapper.lookupIcon("action.copy"));
     }
 
-    /**
-     * get diagram image and put in system clipboard.
-     *
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent actionEvent) {
@@ -129,16 +127,15 @@ public class ActionSaveDiagramToClipboard extends AbstractAction implements
         return diagramGifImage;
     }
 
-    /**
-     * Do nothing.
-     *
+    /*
      * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(
      *      java.awt.datatransfer.Clipboard, java.awt.datatransfer.Transferable)
      */
     public void lostOwnership(Clipboard clipboard, Transferable transferable) {
+        // do nothing
     }
 
-    /**
+    /*
      * @see javax.swing.AbstractAction#isEnabled()
      */
     public boolean isEnabled() {
@@ -190,7 +187,7 @@ class ImageSelection implements Transferable {
         diagramImage = newDiagramImage;
     }
 
-    /**
+    /*
      * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
      */
     public synchronized DataFlavor[] getTransferDataFlavors() {
@@ -198,7 +195,7 @@ class ImageSelection implements Transferable {
         return (supportedFlavors);
     }
 
-    /**
+    /*
      * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(
      *         java.awt.datatransfer.DataFlavor)
      */
@@ -211,8 +208,8 @@ class ImageSelection implements Transferable {
                         DataFlavor.imageFlavor.getHumanPresentableName()));
 
     }
-
-    /**
+    
+    /*
      * @see java.awt.datatransfer.Transferable#getTransferData(
      *         java.awt.datatransfer.DataFlavor)
      */

@@ -413,7 +413,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      */
     protected abstract Object getSelectedModelElement();
 
-    /**
+    /*
      * @see javax.swing.ListModel#getElementAt(int)
      */
     public Object getElementAt(int index) {
@@ -423,7 +423,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         return null;
     }
 
-    /**
+    /*
      * @see javax.swing.ListModel#getSize()
      */
     public int getSize() {
@@ -448,7 +448,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         }
     }
 
-    /**
+    /*
      * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
      */
     public void setSelectedItem(Object o) {
@@ -492,7 +492,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         fireIntervalRemoved(this, startIndex, endIndex);
     }
 
-    /**
+    /*
      * @see javax.swing.ComboBoxModel#getSelectedItem()
      */
     public Object getSelectedItem() {
@@ -561,7 +561,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         return valid;
     }
 
-    /**
+    /*
      * @see javax.swing.AbstractListModel#fireContentsChanged(
      *          Object, int, int)
      */
@@ -571,7 +571,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 	}
     }
 
-    /**
+    /*
      * @see javax.swing.AbstractListModel#fireIntervalAdded(
      *          Object, int, int)
      */
@@ -581,7 +581,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 	}
     }
 
-    /**
+    /*
      * @see javax.swing.AbstractListModel#fireIntervalRemoved(
      *          Object, int, int)
      */
@@ -591,7 +591,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 	}
     }
 
-    /**
+    /*
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
@@ -599,7 +599,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
@@ -621,7 +621,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {

@@ -90,9 +90,9 @@ public class ModeCreateMessage extends ModeCreate {
         super(par);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.ModeCreate#createNewItem(
-     * java.awt.event.MouseEvent, int, int)
+     *      java.awt.event.MouseEvent, int, int)
      */
     public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
         return new FigLine(
@@ -103,7 +103,7 @@ public class ModeCreateMessage extends ModeCreate {
             Globals.getPrefs().getRubberbandColor());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.FigModifyingMode#instructions()
      */
     public String instructions() {
@@ -114,8 +114,7 @@ public class ModeCreateMessage extends ModeCreate {
     /**
      * On mousePressed determine what port the user is dragging from.
      * The mousePressed event is sent via ModeSelect.
-     *
-     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     * {@inheritDoc}
      */
     public void mousePressed(MouseEvent me) {
         if (me.isConsumed()) {
@@ -167,7 +166,7 @@ public class ModeCreateMessage extends ModeCreate {
      * construct a new FigEdge and add it to the Layer and send it to
      * the back.
      *
-     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     * {@inheritDoc}
      */
     public void mouseReleased(MouseEvent me) {
         if (me.isConsumed()) {
@@ -253,7 +252,7 @@ public class ModeCreateMessage extends ModeCreate {
         me.consume();
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
      */
     public void mouseDragged(MouseEvent me) {

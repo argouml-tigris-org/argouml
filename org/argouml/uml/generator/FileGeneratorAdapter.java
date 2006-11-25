@@ -59,7 +59,7 @@ public class FileGeneratorAdapter implements CodeGenerator {
         LOG.debug("Wrapping " + fg + " info FileGeneratorAdapter");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.generator.CodeGenerator#generate(
      *      java.util.Collection, boolean)
      */
@@ -81,7 +81,7 @@ public class FileGeneratorAdapter implements CodeGenerator {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.generator.CodeGenerator#generateFiles(
      *      java.util.Collection, java.lang.String, boolean)
      */
@@ -95,7 +95,7 @@ public class FileGeneratorAdapter implements CodeGenerator {
         return TempFileUtils.readFileNames(new File(path));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.generator.CodeGenerator#generateFileList(
      *      java.util.Collection, boolean)
      */

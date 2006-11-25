@@ -100,7 +100,7 @@ public class ToolBarUtility {
             key = k;
         }
 
-        /**
+        /*
          * @see java.beans.PropertyChangeListener#propertyChange(
          *         java.beans.PropertyChangeEvent)
          */

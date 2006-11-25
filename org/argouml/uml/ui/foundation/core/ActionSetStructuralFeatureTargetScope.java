@@ -52,7 +52,7 @@ public class ActionSetStructuralFeatureTargetScope extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -61,7 +61,7 @@ public class ActionSetStructuralFeatureTargetScope extends UndoableAction {
 	    UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
 	    Object target = source.getTarget();
 	    if (Model.getFacade().isAStructuralFeature(target)) {
-                Object m = /*(MStructuralFeature)*/ target;
+                Object m = target;
 		Model.getCoreHelper().setTargetScope(
 		        m,
 		        source.isSelected()

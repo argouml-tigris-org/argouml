@@ -122,7 +122,7 @@ class XmiInputStream extends BufferedInputStream {
         this.xmiExtensionParser  = xmiExtensionParser;
     }
     
-    /**
+    /*
      * @see java.io.InputStream#read()
      */
     public synchronized int read() throws IOException {
@@ -212,7 +212,7 @@ class XmiInputStream extends BufferedInputStream {
         }
     }
     
-    /**
+    /*
      * @see java.io.InputStream#read(byte[], int, int)
      */
     public synchronized int read(byte[] b, int off, int len)

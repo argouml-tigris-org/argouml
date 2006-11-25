@@ -51,7 +51,7 @@ public class UMLTransitionEffectListModel extends UMLModelElementListModel2 {
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return element == Model.getFacade().getEffect(getTarget());
     }
 

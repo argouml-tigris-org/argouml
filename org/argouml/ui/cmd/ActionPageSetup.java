@@ -44,7 +44,7 @@ class ActionPageSetup extends AbstractAction {
                 ResourceLoaderWrapper.lookupIcon("action.page-setup"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

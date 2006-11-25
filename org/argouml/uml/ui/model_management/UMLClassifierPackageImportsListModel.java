@@ -43,14 +43,14 @@ class UMLClassifierPackageImportsListModel extends UMLModelElementListModel2 {
         super("elementImport"); // This is the right event.
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
         setAllElements(Model.getFacade().getImportedElements(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object elem) {
@@ -60,7 +60,7 @@ class UMLClassifierPackageImportsListModel extends UMLModelElementListModel2 {
         return Model.getFacade().getPackage(elem) == getTarget();
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     // TODO: Should this really be overriding the super class? - tfm

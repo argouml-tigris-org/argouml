@@ -87,14 +87,14 @@ class UMLConstraintBodyDocument extends UMLPlainTextDocument {
         super("body"); 
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
         //Model.getCoreHelper().setBody(getTarget(), text);
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {

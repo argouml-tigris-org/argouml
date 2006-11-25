@@ -49,7 +49,7 @@ public class ActionAddClassifierRole extends CmdCreateNode {
                 "button.new-classifierrole");
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphFactory#makeNode()
      */
     public Object makeNode() {

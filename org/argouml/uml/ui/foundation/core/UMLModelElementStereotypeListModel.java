@@ -49,7 +49,7 @@ public class UMLModelElementStereotypeListModel
         super("stereotype");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -60,14 +60,14 @@ public class UMLModelElementStereotypeListModel
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAStereotype(element);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildPopup(javax.swing.JPopupMenu, int)
      */
     public boolean buildPopup(JPopupMenu popup, int index) {
