@@ -30,6 +30,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.CoreFactory;
+import org.argouml.model.DataTypesFactory;
+import org.argouml.model.DummyModelMemento;
+import org.argouml.model.ModelMemento;
+import org.easymock.internal.Range;
 import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.foundation.core.Abstraction;
 import org.omg.uml.foundation.core.Artifact;
@@ -78,6 +82,7 @@ import org.omg.uml.foundation.datatypes.BooleanExpression;
 import org.omg.uml.foundation.datatypes.CallConcurrencyKindEnum;
 import org.omg.uml.foundation.datatypes.ChangeableKind;
 import org.omg.uml.foundation.datatypes.ChangeableKindEnum;
+import org.omg.uml.foundation.datatypes.Expression;
 import org.omg.uml.foundation.datatypes.Multiplicity;
 import org.omg.uml.foundation.datatypes.MultiplicityRange;
 import org.omg.uml.foundation.datatypes.OrderingKind;
@@ -1357,10 +1362,93 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("elem: " + elem);
         }
         // delete AttributeLinks where this is the Attribute
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getCommonBehavior()
-                        .getAAttributeLinkAttribute().getAttributeLink(
-                                (Attribute) elem));
+        
+        final Attribute attr = (Attribute) elem;
+        
+        ModelMemento memento = new ModelMemento() {
+            
+            private Attribute attribute = attr;
+            private String attributeName;
+            private VisibilityKind visibility;
+            private ScopeKind ownerScope;
+            private ScopeKind targetScope;
+            private Collection multiplicityPairs;
+            private Expression initialValue;
+            private ChangeableKind changeability;
+            private OrderingKind ordering;
+            private Namespace namespace;
+            private Classifier type;
+            private Classifier cls;
+            private AssociationEnd assEnd;
+            private Collection dependencies;
+            private int pos;
+            
+            public void undo() {
+                attribute = (Attribute) createAttribute();
+                cls.getFeature().add(pos, attribute);
+                
+                DataTypesFactory dtf = nsmodel.getDataTypesFactory();
+                
+                Iterator it = multiplicityPairs.iterator();
+                ArrayList mrs = new ArrayList();
+                while (it.hasNext()) {
+                    int pair[] = (int[])it.next();
+                    MultiplicityRange multRange =
+                        (MultiplicityRange) dtf.createMultiplicityRange(
+                                pair[0], pair[1]);
+                    mrs.add(multRange);
+                }
+                Multiplicity mult = (Multiplicity)dtf.createMultiplicity(mrs);
+                attribute.setMultiplicity(mult);
+                attribute.setName(attributeName);
+                attribute.setNamespace(namespace);
+                attribute.setOrdering(ordering);
+                attribute.setOwnerScope(ownerScope);
+                attribute.setTargetScope(targetScope);
+                attribute.setType(type);
+                attribute.setVisibility(visibility);
+                attribute.setChangeability(changeability);
+                //attribute.setInitialValue(initialValue);
+                //attribute.setAssociationEnd(assEnd);
+                //attribute.setClientDependency(dependencies);
+            }
+            public void redo() {
+                multiplicityPairs =
+                    new ArrayList(
+                            attribute.getMultiplicity().getRange().size());
+                Iterator it =
+                    attribute.getMultiplicity().getRange().iterator();
+                while (it.hasNext()) {
+                    MultiplicityRange range = (MultiplicityRange) it.next();
+                    int pair[] = new int[2];
+                    pair[0] = range.getLower();
+                    pair[1] = range.getUpper();
+                    multiplicityPairs.add(pair);
+                }
+                
+                changeability = attribute.getChangeability();
+                attributeName = attribute.getName();
+                namespace = attribute.getNamespace();
+                ownerScope = attribute.getOwnerScope();
+                targetScope = attribute.getTargetScope();
+                type = attribute.getType();
+                visibility = attribute.getVisibility();
+                cls = attribute.getOwner();
+                assEnd = attribute.getAssociationEnd();
+                dependencies = attribute.getClientDependency();
+                initialValue = attribute.getInitialValue();
+                
+                pos = cls.getFeature().indexOf(attribute);
+                
+                nsmodel.getUmlHelper().deleteCollection(
+                        nsmodel.getUmlPackage().getCommonBehavior()
+                                .getAAttributeLinkAttribute().getAttributeLink(
+                                        attr));
+            }
+        };
+        memento.redo();
+        
+        org.argouml.model.Model.notifyMementoCreationObserver(memento);
     }
 
     /**
