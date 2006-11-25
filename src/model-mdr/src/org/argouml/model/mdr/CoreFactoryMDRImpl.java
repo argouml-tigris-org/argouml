@@ -31,9 +31,7 @@ import java.util.List;
 
 import org.argouml.model.CoreFactory;
 import org.argouml.model.DataTypesFactory;
-import org.argouml.model.DummyModelMemento;
 import org.argouml.model.ModelMemento;
-import org.easymock.internal.Range;
 import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.foundation.core.Abstraction;
 import org.omg.uml.foundation.core.Artifact;
