@@ -310,11 +310,14 @@ public class ExplorerPopup extends JPopupMenu {
                     me = Model.getFacade().getType(me);
                 }
                 if (me != null) {
+                    String name = Model.getFacade().getName(me);
+                    if (name == null || name.length() == 0) {
+                        name = "(anon element)";
+                    }
                     Action action =
                         new ActionAddExistingRelatedNode(
-                            menuLocalize("menu.popup.add-to-diagram")
-                             + ": "
-                             + Model.getFacade().getName(me),
+                            menuLocalize("menu.popup.add-to-diagram") + ": "
+                             + name,
                             me);
                     this.add(action);
                 }
