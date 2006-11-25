@@ -142,7 +142,7 @@ class ActionCreateArgument extends AbstractActionNewModelElement {
                 ResourceLoaderWrapper.lookupIcon("NewParameter"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

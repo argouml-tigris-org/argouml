@@ -68,7 +68,7 @@ class ActionAddStereotype extends UndoableAction {
             + ps.getRightGuillemot();
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -85,7 +85,7 @@ class ActionAddStereotype extends UndoableAction {
         }
     }
 
-    /**
+    /*
      * @see javax.swing.Action#getValue(java.lang.String)
      */
     public Object getValue(String key) {

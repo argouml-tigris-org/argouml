@@ -76,7 +76,7 @@ public class FigJunctionState extends FigStateVertex {
 	setOwner(node);
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -92,60 +92,59 @@ public class FigJunctionState extends FigStateVertex {
 
     /**
      * Initial states are fixed size.
-     *
-     * @see org.tigris.gef.presentation.Fig#isResizable()
+     * @return false
      */
     public boolean isResizable() { return false; }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
         head.setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return head.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
         head.setFillColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return head.getFillColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return true;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         head.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -155,12 +154,12 @@ public class FigJunctionState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Event handlers
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) { }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
     public Point getClosestPoint(Point anotherPt) {

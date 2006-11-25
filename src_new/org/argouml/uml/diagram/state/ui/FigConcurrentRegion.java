@@ -132,7 +132,7 @@ public class FigConcurrentRegion extends FigState
         setBounds(r.x, r.y, width, height);
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -149,7 +149,7 @@ public class FigConcurrentRegion extends FigState
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
@@ -165,7 +165,7 @@ public class FigConcurrentRegion extends FigState
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -176,7 +176,7 @@ public class FigConcurrentRegion extends FigState
         return new Dimension(w, h);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
     public boolean getUseTrapRect() {
@@ -189,7 +189,7 @@ public class FigConcurrentRegion extends FigState
      * When resized by this way, it only changes the height and the
      * adjacent region's height.
      *
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     * {@inheritDoc}
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         if (getNameFig() == null) {
@@ -205,7 +205,7 @@ public class FigConcurrentRegion extends FigState
             w = oldBounds.width;
             FigCompositeState f = ((FigCompositeState) getEnclosingFig());
             regionsVector = f.getEnclosedFigs();
-            index = regionsVector.indexOf((Object) this, 0);
+            index = regionsVector.indexOf(this, 0);
 
             /* if curHandle.index is 0 or 2,
              * the adjacent region is the previous region
@@ -378,7 +378,7 @@ public class FigConcurrentRegion extends FigState
     ////////////////////////////////////////////////////////////////
     // fig accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
@@ -386,28 +386,28 @@ public class FigConcurrentRegion extends FigState
         dividerline.setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return dividerline.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
         cover.setFillColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return cover.getFillColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
@@ -415,21 +415,21 @@ public class FigConcurrentRegion extends FigState
         getBigPort().setFilled(f);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return cover.getFilled();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         dividerline.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -439,7 +439,7 @@ public class FigConcurrentRegion extends FigState
     ////////////////////////////////////////////////////////////////
     // event processing
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
@@ -449,28 +449,28 @@ public class FigConcurrentRegion extends FigState
         return sel;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()
      */
     public int getInitialHeight() {
         return 130;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialWidth()
      */
     protected int getInitialWidth() {
         return 30;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialX()
      */
     protected int getInitialX() {
         return 0;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialY()
      */
     protected int getInitialY() {
@@ -487,7 +487,7 @@ public class FigConcurrentRegion extends FigState
     /////////////////////////////////////////////////////////////////////////
     // event handlers - MouseListener and MouseMotionListener implementation
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -529,7 +529,7 @@ public class FigConcurrentRegion extends FigState
         });
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent e) {
@@ -539,14 +539,14 @@ public class FigConcurrentRegion extends FigState
                 new Rectangle(x - 4, y - 4, 8, 8), curHandle);
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent e) {
         curHandle.index = -1;
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
      */
     public void mouseDragged(MouseEvent e) {
@@ -555,10 +555,11 @@ public class FigConcurrentRegion extends FigState
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
      */
     public void mouseMoved(MouseEvent e) {
+        // ignored
     }
 
     /**

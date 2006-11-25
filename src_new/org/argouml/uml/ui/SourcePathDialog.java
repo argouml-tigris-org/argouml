@@ -93,7 +93,7 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

@@ -62,7 +62,7 @@ public class FigMessagePort extends FigGroup {
         setVisible(false);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
      */
     public void addFig(Fig toAdd) {
@@ -72,7 +72,7 @@ public class FigMessagePort extends FigGroup {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
@@ -83,7 +83,7 @@ public class FigMessagePort extends FigGroup {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#calcBounds()
      */
     public void calcBounds() {
@@ -106,7 +106,7 @@ public class FigMessagePort extends FigGroup {
         setOwner(owner);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
     public List getGravityPoints() {
@@ -123,7 +123,8 @@ public class FigMessagePort extends FigGroup {
 
     MessageNode getNode() {
         if (node == null) {
-            ((FigClassifierRole) this.getGroup().getGroup()).setMatchingNode(this);
+            ((FigClassifierRole) this.getGroup().getGroup())
+                    .setMatchingNode(this);
         }
         return node;
     }

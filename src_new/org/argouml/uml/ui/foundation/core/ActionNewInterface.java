@@ -50,13 +50,13 @@ class ActionNewInterface extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize("button.new-interface"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
         if (Model.getFacade().isAInterface(target)) {
-            Object iface = /*(MInterface)*/ target;
+            Object iface = target;
             Object newInterface =
                 Model.getCoreFactory().createInterface();
             Model.getCoreHelper().addOwnedElement(

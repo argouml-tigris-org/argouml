@@ -48,9 +48,8 @@ public class NameOrder
     public NameOrder() {
     }
 
-    /**
-     * @see java.util.Comparator#compare(java.lang.Object,
-     *  java.lang.Object)
+    /*
+     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     public int compare(Object obj1, Object obj2) {
 	if (obj1 instanceof DefaultMutableTreeNode) {
@@ -114,7 +113,7 @@ public class NameOrder
         return name;
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

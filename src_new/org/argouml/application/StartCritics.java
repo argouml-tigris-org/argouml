@@ -44,7 +44,7 @@ public class StartCritics implements Runnable {
      */
     private static final Logger LOG = Logger.getLogger(StartCritics.class);
 
-    /**
+    /*
      * @see java.lang.Runnable#run()
      */
     public void run() {

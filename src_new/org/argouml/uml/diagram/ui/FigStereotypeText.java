@@ -73,7 +73,7 @@ public class FigStereotypeText extends FigGroup {
         addStereotypeText("stereo", x, y);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int arg0) {
@@ -91,7 +91,7 @@ public class FigStereotypeText extends FigGroup {
         pseudoStereotype = stereotype;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object modelElement) {

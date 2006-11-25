@@ -54,7 +54,7 @@ public class ActionSetFlowSource extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -63,11 +63,10 @@ public class ActionSetFlowSource extends UndoableAction {
             UMLComboBox2 source = (UMLComboBox2) e.getSource();
             Object target = source.getTarget();
             if (Model.getFacade().isAFlow(target)) {
-                Object flow = /*(MFlow)*/ target;
+                Object flow = target;
                 Object old = null;
                 if (!Model.getFacade().getSources(flow).isEmpty()) {
-                    old = /*(MModelElement)*/
-                        Model.getFacade().getSources(flow).toArray()[0];
+                    old = Model.getFacade().getSources(flow).toArray()[0];
                 }
                 if (old != source.getSelectedItem()) {
                     if (source.getSelectedItem() != null) {

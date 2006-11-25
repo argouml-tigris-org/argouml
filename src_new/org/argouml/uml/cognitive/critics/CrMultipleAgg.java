@@ -159,4 +159,4 @@ public class CrMultipleAgg extends CrUML {
         return WizAssocComposite.class;
     }
 
-} /* end class CrMultipleAgg.java */
+} /* end class CrMultipleAgg */

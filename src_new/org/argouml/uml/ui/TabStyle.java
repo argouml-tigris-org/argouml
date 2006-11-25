@@ -237,7 +237,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         repaint();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
@@ -333,16 +333,14 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         return stylePanelNames;
     }
 
-    /**
-     * Return the current target for this stylepanel.
-     *
+    /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() {
         return target;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object targetItem) {
@@ -416,7 +414,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 //        return _shouldBeEnabled;
 //    }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void propertyChange(PropertyChangeEvent pce) {
@@ -424,14 +422,14 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         SwingUtilities.invokeLater(delayedNotify);
     }
 
-    /**
+    /*
      * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
      */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         if (stylePanel != null) stylePanel.refresh(pce);
     }
 
-    /**
+    /*
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
@@ -440,7 +438,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
     }
 
-    /**
+    /*
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
@@ -452,7 +450,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
     }
 
-    /**
+    /*
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {

@@ -90,12 +90,12 @@ public class FigInstance extends FigNodeModelElement {
 	setOwner(node);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() { return "new MInstance"; }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -107,7 +107,7 @@ public class FigInstance extends FigNodeModelElement {
 	return figClone;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -120,7 +120,7 @@ public class FigInstance extends FigNodeModelElement {
     }
 
 
-    /** Override setBounds to keep shapes looking right
+    /* Override setBounds to keep shapes looking right
      *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */

@@ -65,7 +65,7 @@ public class OpenException extends PersistenceException {
     }
 
 
-    /**
+    /*
      * @see java.lang.Throwable#printStackTrace()
      */
     public void printStackTrace() {
@@ -76,7 +76,7 @@ public class OpenException extends PersistenceException {
         }
     }
 
-    /**
+    /*
      * @see java.lang.Throwable#printStackTrace(java.io.PrintStream)
      */
     public void printStackTrace(PrintStream ps) {
@@ -87,7 +87,7 @@ public class OpenException extends PersistenceException {
         }
     }
 
-    /**
+    /*
      * @see java.lang.Throwable#printStackTrace(java.io.PrintWriter)
      */
     public void printStackTrace(PrintWriter pw) {

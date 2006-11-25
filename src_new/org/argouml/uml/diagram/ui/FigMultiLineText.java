@@ -43,7 +43,7 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigMultiLineText extends FigText {
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigText#FigText(
      *         int, int, int, int, boolean)
      */

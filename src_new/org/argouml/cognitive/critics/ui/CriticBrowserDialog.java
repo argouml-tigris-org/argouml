@@ -558,12 +558,12 @@ class TableModelCritics extends AbstractTableModel
 
     ////////////////
     // TableModel implemetation
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnCount()
      */
     public int getColumnCount() { return 3; }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
     public String getColumnName(int c) {
@@ -576,7 +576,7 @@ class TableModelCritics extends AbstractTableModel
 	return "XXX";
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     public Class getColumnClass(int c) {
@@ -586,14 +586,14 @@ class TableModelCritics extends AbstractTableModel
 	return String.class;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
     public boolean isCellEditable(int row, int col) {
 	return col == 0;
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getRowCount()
      */
     public int getRowCount() {
@@ -601,7 +601,7 @@ class TableModelCritics extends AbstractTableModel
 	return target.size();
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
     public Object getValueAt(int row, int col) {
@@ -612,7 +612,7 @@ class TableModelCritics extends AbstractTableModel
 	return "CR-" + row * 2 + col; // for debugging
     }
 
-    /**
+    /*
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
@@ -628,7 +628,7 @@ class TableModelCritics extends AbstractTableModel
     ////////////////
     // event handlers
 
-    /**
+    /*
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {

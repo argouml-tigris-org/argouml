@@ -48,7 +48,7 @@ public class ActionNewClass extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize("button.new-class"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

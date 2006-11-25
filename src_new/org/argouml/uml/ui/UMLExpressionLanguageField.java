@@ -33,10 +33,8 @@ import org.argouml.ui.LookAndFeelMgr;
 /**
  * This text field shows the language of a UML expression.
  */
-public class UMLExpressionLanguageField
-    extends JTextField
-    implements DocumentListener, UMLUserInterfaceComponent
-    {
+public class UMLExpressionLanguageField extends JTextField implements
+        DocumentListener, UMLUserInterfaceComponent {
 
     private UMLExpressionModel2 model;
     private boolean notifyModel;
@@ -57,7 +55,7 @@ public class UMLExpressionLanguageField
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */
     public void targetChanged() {
@@ -65,7 +63,7 @@ public class UMLExpressionLanguageField
         update();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
      */
     public void targetReasserted() {
@@ -81,21 +79,21 @@ public class UMLExpressionLanguageField
         }
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
      */
     public void changedUpdate(final DocumentEvent p1) {
         model.setLanguage(getText());
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
      */
     public void removeUpdate(final DocumentEvent p1) {
         model.setLanguage(getText());
     }
 
-    /**
+    /*
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */
     public void insertUpdate(final DocumentEvent p1) {

@@ -95,7 +95,7 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
     ////////////////////////////////////////////////////////////////
     // constructor
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void execute() {
@@ -175,17 +175,17 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
     ////////////////////////////////////////////////////////////////
     // GraphFactory implementation
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphFactory#makeGraphModel()
      */
     public GraphModel makeGraphModel() { return null; }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphFactory#makeEdge()
      */
     public Object makeEdge() { return null; }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphFactory#makeNode()
      */
     public Object makeNode() {

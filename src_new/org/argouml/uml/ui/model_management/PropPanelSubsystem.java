@@ -85,7 +85,7 @@ public class PropPanelSubsystem extends PropPanelPackage {
             putValue(Action.NAME, Translator.localize(ACTION_KEY));
         }
 
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {

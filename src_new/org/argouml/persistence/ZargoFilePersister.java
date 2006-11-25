@@ -67,14 +67,14 @@ class ZargoFilePersister extends UmlFilePersister {
     public ZargoFilePersister() {
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.AbstractFilePersister#getExtension()
      */
     public String getExtension() {
         return "zargo";
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
@@ -416,7 +416,7 @@ class ZargoFilePersister extends UmlFilePersister {
             in = z;
         }
 
-        /**
+        /*
          * @see java.io.InputStream#close()
          */
         public void close() throws IOException {

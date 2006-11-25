@@ -52,7 +52,7 @@ public class CrTooManyTransitions extends AbstractCrTooMany {
 
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *         java.lang.Object, org.argouml.cognitive.Designer)
      */

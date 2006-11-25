@@ -40,17 +40,17 @@ public class UMLUseCaseIncludeListModel extends UMLModelElementListModel2 {
         super("include");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
         setAllElements(Model.getFacade().getIncludes(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().getIncludes(getTarget()).contains(o);
     }
 

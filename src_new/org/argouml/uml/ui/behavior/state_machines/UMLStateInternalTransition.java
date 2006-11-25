@@ -40,17 +40,17 @@ public class UMLStateInternalTransition extends UMLModelElementListModel2 {
         super("internalTransition");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
         setAllElements(Model.getFacade().getInternalTransitions(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().getInternalTransitions(getTarget())
             .contains(element);
     }

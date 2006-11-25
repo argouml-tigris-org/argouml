@@ -41,7 +41,7 @@ public class UMLExtendExtensionPointListModel
         super("extensionPoint");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -50,10 +50,10 @@ public class UMLExtendExtensionPointListModel
 
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isAExtensionPoint(o)
             && Model.getFacade().getExtensionPoints(getTarget()).contains(o);
     }

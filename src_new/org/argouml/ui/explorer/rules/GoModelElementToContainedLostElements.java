@@ -46,7 +46,7 @@ import org.argouml.model.Model;
 public class GoModelElementToContainedLostElements
     extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getRuleName()
      */
     public String getRuleName() {
@@ -54,7 +54,7 @@ public class GoModelElementToContainedLostElements
                 "misc.model-element.contained-lost-elements");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
@@ -78,7 +78,7 @@ public class GoModelElementToContainedLostElements
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {

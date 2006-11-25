@@ -41,17 +41,17 @@ public class UMLClassifierParticipantListModel
         super("participant");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
 
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return false;
     }
 

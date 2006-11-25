@@ -1021,15 +1021,14 @@ public class FigUseCase extends FigNodeModelElement
      *
      * The parameter ft is the Fig with the text that has been edited.
      *
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(
-     * org.tigris.gef.presentation.FigText)
+     * {@inheritDoc}
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         // Let the parent do anything it wants first (in casu: the usecase name)
         super.textEdited(ft);
 
         // Only works if we have an owner
-        Object useCase = /*(MUseCase)*/ getOwner();
+        Object useCase = getOwner();
         if (useCase == null) {
             return;
         }
@@ -1045,9 +1044,9 @@ public class FigUseCase extends FigNodeModelElement
         ft.setText(hlft.getNotationProvider().toString(hlft.getOwner(), null));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(
-     * org.tigris.gef.presentation.FigText)
+     *      org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
         super.textEditStarted(ft);
@@ -1122,12 +1121,7 @@ public class FigUseCase extends FigNodeModelElement
         return null;
     }
 
-    /**
-     * Adjust the fig in the light of some change to the model.<p>
-     *
-     * Called both when there has been a change to notation, and when there
-     * has been an event indicating model change.
-     *
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -1141,7 +1135,7 @@ public class FigUseCase extends FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
@@ -1173,7 +1167,7 @@ public class FigUseCase extends FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
@@ -1223,7 +1217,7 @@ public class FigUseCase extends FigNodeModelElement
 
             while (iter.hasNext()) {
                 CompartmentFigText epFig = null;
-                Object ep = /*(MExtensionPoint)*/ iter.next();
+                Object ep = iter.next();
 
                 /* Find the fig for this ep: */
                 Iterator i = figs.iterator();
@@ -1293,11 +1287,11 @@ public class FigUseCase extends FigNodeModelElement
         setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        Object useCase = /*(MUseCase)*/ getOwner();
+        Object useCase = getOwner();
         if (useCase == null) {
             return;
         }
@@ -1315,7 +1309,7 @@ public class FigUseCase extends FigNodeModelElement
 
     }
 
-    /**
+    /*
      * Makes sure that the edges stick to the elipse fig of the usecase. <p>
      * 
      * TODO: This function is called way too many times - I count 6x when
@@ -1347,9 +1341,8 @@ public class FigUseCase extends FigNodeModelElement
         return ret;
     }
 
-    /**
-     * @see
-     * org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
         super.updateStereotypeText();

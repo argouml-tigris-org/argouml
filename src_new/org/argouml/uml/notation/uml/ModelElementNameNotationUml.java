@@ -60,11 +60,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
         super(name);
     }
 
-    /**
-     * Parses a model element, ie reads a string that contains
-     * the stereotype, visibility and name,
-     * and assigns the properties to the passed MModelElement.
-     *
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -81,14 +77,14 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-nodemodelelement";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {

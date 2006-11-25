@@ -337,14 +337,14 @@ public final class ArgoEventPump {
             return listener;
         }
 
-        /**
+        /*
          * @see java.lang.Object#toString()
          */
         public String toString() {
             return "{Pair(" + eventType + "," + listener + ")}";
         }
 
-        /**
+        /*
          * @see java.lang.Object#hashCode()
          */
         public int hashCode() {
@@ -354,7 +354,7 @@ public final class ArgoEventPump {
             return eventType;
         }
 
-        /**
+        /*
          * @see java.lang.Object#equals(java.lang.Object)
          */
         public boolean equals(Object o) {

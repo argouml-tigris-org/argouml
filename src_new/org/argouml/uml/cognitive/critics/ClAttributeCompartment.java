@@ -55,17 +55,17 @@ public class ClAttributeCompartment implements Clarifier {
     // instance variables
     private Fig fig;
 
-    /**
+    /*
      * @see org.argouml.ui.Clarifier#setFig(org.tigris.gef.presentation.Fig)
      */
     public void setFig(Fig f) { fig = f; }
 
-    /**
+    /*
      * @see org.argouml.ui.Clarifier#setToDoItem(org.argouml.cognitive.ToDoItem)
      */
     public void setToDoItem(ToDoItem i) { }
 
-    /**
+    /*
      * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
      * int, int)
      */
@@ -108,17 +108,17 @@ public class ClAttributeCompartment implements Clarifier {
 	}
     }
 
-    /**
+    /*
      * @see javax.swing.Icon#getIconWidth()
      */
     public int getIconWidth() { return 0; }
 
-    /**
+    /*
      * @see javax.swing.Icon#getIconHeight()
      */
     public int getIconHeight() { return 0; }
 
-    /**
+    /*
      * @see org.argouml.ui.Clarifier#hit(int, int)
      */
     public boolean hit(int x, int y) {

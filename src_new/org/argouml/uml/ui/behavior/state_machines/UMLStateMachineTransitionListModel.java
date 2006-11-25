@@ -42,17 +42,17 @@ public class UMLStateMachineTransitionListModel
         super("transition");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
         setAllElements(Model.getFacade().getTransitions(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().getTransitions(getTarget()).contains(element);
     }
 

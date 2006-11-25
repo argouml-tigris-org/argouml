@@ -140,7 +140,7 @@ public class FigDataType extends FigClassifierBox {
     }
     
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
@@ -262,21 +262,21 @@ public class FigDataType extends FigClassifierBox {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         borderFig.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
         return borderFig.getLineWidth();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
     public void translate(int dx, int dy) {
@@ -288,7 +288,7 @@ public class FigDataType extends FigClassifierBox {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
@@ -335,12 +335,12 @@ public class FigDataType extends FigClassifierBox {
 
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
-        Object cls = /*(MClassifier)*/ getOwner();
+        Object cls = getOwner();
         if (cls == null) {
             return;
         }
@@ -355,7 +355,7 @@ public class FigDataType extends FigClassifierBox {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
@@ -377,7 +377,7 @@ public class FigDataType extends FigClassifierBox {
                 + "operationsVisible=" + isOperationsVisible();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -401,7 +401,7 @@ public class FigDataType extends FigClassifierBox {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {

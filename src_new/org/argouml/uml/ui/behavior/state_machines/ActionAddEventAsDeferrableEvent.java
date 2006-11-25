@@ -56,7 +56,7 @@ public class ActionAddEventAsDeferrableEvent
         setMultiSelect(true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
@@ -75,7 +75,7 @@ public class ActionAddEventAsDeferrableEvent
         return vec;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
@@ -87,14 +87,14 @@ public class ActionAddEventAsDeferrableEvent
         return vec;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-events");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
      *         java.util.Vector)
      */

@@ -54,10 +54,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     ////////////////////////////////////////////////////////////////
     // GraphModel implementation
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
-     *
-     * Return all ports on node or edge.
      */
     public List getPorts(Object nodeOrEdge) {
 	Vector res = new Vector();  // wasteful!
@@ -82,10 +80,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	return res;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
-     *
-     * Return the node or edge that owns the given port.
      */
     public Object getOwner(Object port) {
         return port;
@@ -171,10 +167,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	//    return res;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
-     *
-     * Return all edges going from given port (model element).
      */
     public List getOutEdges(Object port) {
 
@@ -214,10 +208,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 
-    /**
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
-     *
-     * Return true if the given object is a valid node in this graph.
      */
     public boolean canAddNode(Object node) {
         if (Model.getFacade().isAAssociation(node)
@@ -267,10 +259,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             || Model.getFacade().isAStereotype(node);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
-     *
-     * Return true if the given object is a valid edge in this graph.
      */
     public boolean canAddEdge(Object edge) {
         if (edge == null) {
@@ -374,10 +364,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
-     *
-     * Add the given node to the graph, if valid.
      */
     public void addNode(Object node) {
 	if (!canAddNode(node)) {
@@ -434,7 +422,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
     /**
      * Adds the edges from the given node. For example, this method lets you add
-     * an allready existing massociation between two figclassifiers.
+     * an already existing association between two figclassifiers.
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(Object)
      */
     public void addNodeRelatedEdges(Object node) {
@@ -503,7 +491,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     ////////////////////////////////////////////////////////////////
     // VetoableChangeListener implementation
 
-    /**
+    /*
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {
@@ -511,7 +499,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	if ("ownedElement".equals(pce.getPropertyName())) {
 	    Vector oldOwned = (Vector) pce.getOldValue();
-	    Object elementImport = /*(MElementImport)*/ pce.getNewValue();
+	    Object elementImport = pce.getNewValue();
             Object modelElement =
                     Model.getFacade().getModelElement(elementImport);
 	    //MModelElement modelElement = elementImport.getModelElement();
@@ -598,7 +586,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    rerouteDependency(newNode,  oldNode,  edge,  isSource);
         } else if (Model.getFacade().isALink(edge)) {
 	    rerouteLink(newNode,  oldNode,  edge,  isSource);
-    }
+        }
     }
 
     /**
@@ -615,15 +603,13 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	// can't have a connection between 2 interfaces:
 	// get the 'other' end type
-	Object /*MModelElement*/ otherNode = null;
+	Object otherNode = null;
 
 	if (isSource) {
-	    otherNode =
-		Model.getCoreHelper().getDestination(/*(MRelationship)*/ edge);
-	} else {
-	    otherNode =
-		Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
-	}
+            otherNode = Model.getCoreHelper().getDestination(edge);
+        } else {
+            otherNode = Model.getCoreHelper().getSource(edge);
+        }
 
 	if (Model.getFacade().isAInterface(newNode)
 	        && Model.getFacade().isAInterface(otherNode)) {
@@ -631,7 +617,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         }
 
         // cast the params
-	Object /*MAssociation*/ edgeAssoc = edge;
+	Object edgeAssoc = edge;
 
 	Object theEnd = null;
 	Object theOtherEnd = null;

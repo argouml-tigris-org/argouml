@@ -143,7 +143,7 @@ public class ClassGenerationDialog
         JButton selectAllButton = new JButton();
         nameButton(selectAllButton, "button.select-all");
         selectAllButton.addActionListener(new ActionListener() {
-            /**
+            /*
              * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
              */
             public void actionPerformed(ActionEvent e) {
@@ -154,7 +154,7 @@ public class ClassGenerationDialog
         JButton selectNoneButton = new JButton();
         nameButton(selectNoneButton, "button.select-none");
         selectNoneButton.addActionListener(new ActionListener() {
-            /**
+            /*
              * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
              */
             public void actionPerformed(ActionEvent e) {
@@ -186,7 +186,7 @@ public class ClassGenerationDialog
         nameButton(browseButton, "button.browse");
         browseButton.setText(browseButton.getText() + "...");
         browseButton.addActionListener(new ActionListener() {
-            /**
+            /*
              * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
              */
             public void actionPerformed(ActionEvent e) {
@@ -226,7 +226,7 @@ public class ClassGenerationDialog
             p.getGenerationPrefs().getOutputDir());
     }
 
-    /**
+    /*
      * @see org.tigris.swidgets.Dialog#nameButtons()
      */
     protected void nameButtons() {
@@ -287,7 +287,7 @@ public class ClassGenerationDialog
         return entries;
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -523,14 +523,15 @@ public class ClassGenerationDialog
 
         ////////////////
         // TableModel implemetation
-        /**
+        
+        /*
          * @see javax.swing.table.TableModel#getColumnCount()
          */
         public int getColumnCount() {
             return 1 + getLanguagesCount();
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#getColumnName(int)
          */
         public String getColumnName(int c) {
@@ -542,7 +543,7 @@ public class ClassGenerationDialog
             return "XXX";
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#getColumnClass(int)
          */
         public Class getColumnClass(int c) {
@@ -554,7 +555,7 @@ public class ClassGenerationDialog
             return String.class;
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#isCellEditable(int, int)
          */
         public boolean isCellEditable(int row, int col) {
@@ -571,7 +572,7 @@ public class ClassGenerationDialog
             return false;
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#getRowCount()
          */
         public int getRowCount() {
@@ -581,7 +582,7 @@ public class ClassGenerationDialog
             return classes.size();
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#getValueAt(int, int)
          */
         public Object getValueAt(int row, int col) {
@@ -602,7 +603,7 @@ public class ClassGenerationDialog
             }
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#setValueAt(
          *          java.lang.Object, int, int)
          */

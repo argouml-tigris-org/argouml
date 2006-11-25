@@ -54,7 +54,7 @@ public class ActionSetParameterType extends UndoableAction {
 
 
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -67,18 +67,18 @@ public class ActionSetParameterType extends UndoableAction {
             UMLComboBox2 box = ((UMLComboBox2) source);
             Object o = box.getTarget();
             if (Model.getFacade().isAParameter(o)) {
-                para = /*(MParameter)*/ o;
+                para = o;
                 oldClassifier = Model.getFacade().getType(para);
             }
             o = box.getSelectedItem();
             if (Model.getFacade().isAClassifier(o)) {
-                newClassifier = /*(MClassifier)*/ o;
+                newClassifier = o;
             }
         }
         if (newClassifier != null
                 && newClassifier != oldClassifier
                 && para != null) {
-            newClassifier = /*(MClassifier)*/ Model.getModelManagementHelper()
+            newClassifier = Model.getModelManagementHelper()
                 .getCorrespondingElement(
 				      newClassifier,
 				      Model.getFacade().getModel(para));

@@ -51,7 +51,7 @@ public class ActionSetStructuralFeatureType extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -64,18 +64,19 @@ public class ActionSetStructuralFeatureType extends UndoableAction {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (Model.getFacade().isAStructuralFeature(o)) {
-                attr = /*(MAttribute)*/ o;
+                attr = o;
                 oldClassifier = Model.getFacade().getType(attr);
             }
             o = box.getSelectedItem();
             if (Model.getFacade().isAClassifier(o)) {
-                newClassifier = /*(MClassifier)*/ o;
+                newClassifier = o;
             }
         }
         if (newClassifier != oldClassifier && attr != null) {
             if (newClassifier != null) {
-                newClassifier = /*(MClassifier)*/ Model
-                    .getModelManagementHelper().getCorrespondingElement(
+                newClassifier =
+                        Model.getModelManagementHelper()
+                                .getCorrespondingElement(
                                     newClassifier,
                                     Model.getFacade().getModel(attr));
             }

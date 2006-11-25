@@ -68,13 +68,15 @@ public class ProjectMemberDiagram extends AbstractProjectMember {
     public ArgoDiagram getDiagram() {
         return diagram;
     }
-    /**
+    
+    /*
      * @see org.argouml.kernel.AbstractProjectMember#getType()
      */
     public String getType() {
         return MEMBER_TYPE;
     }
-    /**
+    
+    /*
      * @see org.argouml.kernel.AbstractProjectMember#getZipFileExtension()
      */
     public String getZipFileExtension() {
@@ -88,7 +90,7 @@ public class ProjectMemberDiagram extends AbstractProjectMember {
         diagram = d;
     }
     
-    /**
+    /*
      * @see org.argouml.kernel.ProjectMember#repair()
      */
     public String repair() {

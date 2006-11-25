@@ -53,7 +53,7 @@ public class ActionNewStereotype extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize("button.new-stereotype"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

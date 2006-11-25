@@ -40,7 +40,7 @@ public class PredIsStartState implements Predicate {
 
     private PredIsStartState() { }
 
-    /**
+    /*
      * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
      */
     public boolean predicate(Object obj) {

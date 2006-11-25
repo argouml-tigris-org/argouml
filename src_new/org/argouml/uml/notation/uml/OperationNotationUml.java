@@ -58,7 +58,7 @@ public class OperationNotationUml extends OperationNotation {
         super(operation);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -459,7 +459,7 @@ public class OperationNotationUml extends OperationNotation {
         Model.getCoreHelper().setType(param, type);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {

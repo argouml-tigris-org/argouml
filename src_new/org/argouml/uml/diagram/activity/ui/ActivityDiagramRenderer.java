@@ -63,12 +63,10 @@ import org.tigris.gef.presentation.FigNode;
  */
 public class ActivityDiagramRenderer extends StateDiagramRenderer {
 
-    /**
-     * Return a Fig that can be used to represent the given node.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel,
-     * org.tigris.gef.base.Layer, java.lang.Object, java.util.Map)
+     *      org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
+     *      java.lang.Object, java.util.Map)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
             Map styleAttributes) {

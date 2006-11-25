@@ -41,7 +41,7 @@ public class UMLModelElementSourceFlowListModel
         super("sourceFlow");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -50,10 +50,10 @@ public class UMLModelElementSourceFlowListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isAFlow(o)
             && Model.getFacade().getSourceFlows(getTarget()).contains(o);
     }

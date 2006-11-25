@@ -41,7 +41,7 @@ public class UMLModelElementConstraintListModel
         super("constraint");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -50,10 +50,10 @@ public class UMLModelElementConstraintListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isAConstraint(o)
             && Model.getFacade().getConstraints(getTarget()).contains(o);
     }

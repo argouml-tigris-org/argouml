@@ -119,7 +119,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
 
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.PropPanel#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
@@ -129,7 +129,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.PropPanel#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
@@ -139,7 +139,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.PropPanel#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {

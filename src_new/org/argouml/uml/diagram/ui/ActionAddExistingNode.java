@@ -57,7 +57,7 @@ public class ActionAddExistingNode extends UndoableAction {
         object = o;
     }
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {
@@ -69,7 +69,7 @@ public class ActionAddExistingNode extends UndoableAction {
         return gm.canAddNode(target);
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

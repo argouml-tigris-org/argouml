@@ -184,7 +184,7 @@ public class TabStereotype extends PropPanel {
         return Model.getFacade().isAModelElement(tgt);
     }
 
-    /**
+    /*
      * TODO: This does not seem to get called...
      *
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
@@ -254,7 +254,7 @@ public class TabStereotype extends PropPanel {
             super("stereotype");
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
          */
         protected void buildModelList() {
@@ -268,7 +268,7 @@ public class TabStereotype extends PropPanel {
             }
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
          */
         protected boolean isValidElement(Object element) {
@@ -285,7 +285,7 @@ public class TabStereotype extends PropPanel {
      * Handles pressing the ">>" or "<<" buttons.
      */
     private class AddRemoveListener implements ActionListener {
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(
          *         java.awt.event.ActionEvent)
          */
@@ -305,7 +305,7 @@ public class TabStereotype extends PropPanel {
      */
     private class AvailableListSelectionListener
         implements ListSelectionListener {
-        /**
+        /*
          * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
          */
         public void valueChanged(ListSelectionEvent lse) {
@@ -323,7 +323,7 @@ public class TabStereotype extends PropPanel {
      */
     private class SelectedListSelectionListener
         implements ListSelectionListener {
-        /**
+        /*
          * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
          */
         public void valueChanged(ListSelectionEvent lse) {

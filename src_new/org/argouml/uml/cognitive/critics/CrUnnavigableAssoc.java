@@ -47,9 +47,9 @@ public class CrUnnavigableAssoc extends CrUML {
 	addTrigger("end_navigable");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAAssociation(dm))) return NO_PROBLEM;
@@ -64,7 +64,7 @@ public class CrUnnavigableAssoc extends CrUML {
 	return PROBLEM_FOUND;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) { return WizNavigable.class; }

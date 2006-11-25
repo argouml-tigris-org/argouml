@@ -29,7 +29,7 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * Well-formedness rule [1] for MDataType. See page 28 of UML 1.1
+ * Well-formedness rule [1] for DataType. See page 28 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
  *
  * @author jrobbins
@@ -47,14 +47,14 @@ public class CrNonAggDataType extends CrUML {
 	setKnowledgeTypes(Critic.KT_SYNTAX);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	// TODO: not implemented
 	return NO_PROBLEM;
     }
 
-} /* end class CrNonAggDataType.java */
+} /* end class CrNonAggDataType */
 

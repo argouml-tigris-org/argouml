@@ -39,7 +39,7 @@ public class UMLGeneralizationParentListModel
         super("parent");
     }
 
-     /**
+     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -50,10 +50,10 @@ public class UMLGeneralizationParentListModel
         addElement(Model.getFacade().getParent(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return (Model.getFacade().getParent(getTarget()) == o);
     }
 

@@ -43,7 +43,7 @@ public class UMLEventParameterListModel extends UMLModelElementListModel2 {
         super("parameter");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -51,10 +51,10 @@ public class UMLEventParameterListModel extends UMLModelElementListModel2 {
         setAllElements(Model.getFacade().getParameters(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().getParameters(getTarget()).contains(element);
     }
 

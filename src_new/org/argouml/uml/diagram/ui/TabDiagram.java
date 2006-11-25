@@ -39,14 +39,13 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.RepaintManager;
 import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.AbstractArgoJPanel;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionCopy;
@@ -140,7 +139,7 @@ public class TabDiagram
         graph.addModeChangeListener(this);
     }
 
-    /**
+    /*
      * The clone method that should clone the JGraph with it's contents and
      * the toolbar with it's contents. Since both JGraph as the toolbar are
      * coming from the GEF framework, cloning them will be hard work and should
@@ -164,14 +163,14 @@ public class TabDiagram
     }
 
     /**
-     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
-     *
      * Sets the target of the tab. The target should allways be an instance of
      * UMLDiagram
      * @param t
      * @deprecated As of ArgoUml version 0.13.5, the visibility of
      * this method will change in the future, replaced by {@link
      * org.argouml.ui.targetmanager.TargetManager}.
+     * 
+     * @param t the target
      */
     public void setTarget(Object t) {
 
@@ -192,7 +191,7 @@ public class TabDiagram
         target = newTarget;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() {
@@ -208,14 +207,14 @@ public class TabDiagram
         return toolBar;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
         setTarget(target);
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object newTarget) {
@@ -234,7 +233,7 @@ public class TabDiagram
         return graph;
     }
 
-    /**
+    /*
      * @see java.awt.Component#setVisible(boolean)
      */
     public void setVisible(boolean b) {
@@ -299,7 +298,7 @@ public class TabDiagram
         graph.removeGraphSelectionListener(listener);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.event.ModeChangeListener#modeChange(org.tigris.gef.event.ModeChangeEvent)
      */
     public void modeChange(ModeChangeEvent mce) {
@@ -338,7 +337,7 @@ public class TabDiagram
         }
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
      *          TargetEvent)
      */
@@ -347,7 +346,7 @@ public class TabDiagram
         select(e.getNewTargets());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
      *          TargetEvent)
      */
@@ -358,7 +357,7 @@ public class TabDiagram
         select(e.getNewTargets());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
      *          org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -427,7 +426,7 @@ class ArgoEditor extends Editor {
         setupRenderingHints();
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) {
@@ -441,11 +440,8 @@ class ArgoEditor extends Editor {
 	_modeManager.mouseEntered(me);
     }
 
-    /**
-     * Invoked when the mouse has been moved (with no buttons down).
-     *
+    /*
      * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
-     * @param me The {@link MouseEvent}.
      */
     public void mouseMoved(MouseEvent me) {
 	//- RedrawManager.lock();
@@ -473,7 +469,7 @@ class ArgoEditor extends Editor {
 	//- _redrawer.repairDamage();
     }
 
-    /**
+    /*
      * Overridden to set Argo-specific RenderingHints to determine whether
      * or not antialiasing should be turned on.
      *

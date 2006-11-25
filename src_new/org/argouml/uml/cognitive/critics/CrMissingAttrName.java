@@ -48,13 +48,13 @@ public class CrMissingAttrName extends CrUML {
 	addTrigger("name");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAAttribute(dm))) return NO_PROBLEM;
-	Object attr = /*(MAttribute)*/ dm;
+	Object attr = dm;
 	String myName = Model.getFacade().getName(attr);
 	if (myName == null
             || "".equals(myName)) return PROBLEM_FOUND;
@@ -62,25 +62,25 @@ public class CrMissingAttrName extends CrUML {
 	return NO_PROBLEM;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {
 	return ClAttributeCompartment.getTheInstance();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
+	    Object me = item.getOffenders().elementAt(0);
 	    String ins = super.getInstructions();
 	    String sug = super.getDefaultSuggestion();
 	    if (Model.getFacade().isAAttribute(me)) {
-		Object a = /*(MAttribute)*/ me;
+		Object a = me;
 		int count = 1;
 		if (Model.getFacade().getOwner(a) != null)
 		    count = Model.getFacade().getFeatures(
@@ -92,7 +92,7 @@ public class CrMissingAttrName extends CrUML {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }

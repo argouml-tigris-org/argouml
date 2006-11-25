@@ -118,14 +118,14 @@ class SettingsTabShortcuts extends JPanel implements
      */
     private Object[][] elements;
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() {
         return "tab.shortcuts";
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() {
@@ -267,14 +267,14 @@ class SettingsTabShortcuts extends JPanel implements
         }
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
      */
     public void handleResetToDefault() {
         // Do nothing - these buttons are not shown.
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() {
@@ -282,7 +282,7 @@ class SettingsTabShortcuts extends JPanel implements
         // The next time we refresh, we will fetch the values again.
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
@@ -291,7 +291,7 @@ class SettingsTabShortcuts extends JPanel implements
         table.setModel(new ShortcutTableModel());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
@@ -489,35 +489,35 @@ class SettingsTabShortcuts extends JPanel implements
             elements = new Object[actions.length][3];
 
             for (int i = 0; i < elements.length; i++) {
-                Action currentAction = (Action) actions[i];
+                Action currentAction = actions[i];
                 elements[i][0] = currentAction.getActionName();
                 elements[i][1] = currentAction.getCurrentShortcut();
                 elements[i][2] = currentAction.getDefaultShortcut();
             }
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#getColumnCount()
          */
         public int getColumnCount() {
             return columnNames.length;
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#getColumnName(int)
          */
         public String getColumnName(int col) {
             return columnNames[col];
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#getRowCount()
          */
         public int getRowCount() {
             return elements.length;
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#getValueAt(int, int)
          */
         public Object getValueAt(int row, int col) {
@@ -559,7 +559,7 @@ class SettingsTabShortcuts extends JPanel implements
             }
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#getColumnClass(int)
          */
         public Class getColumnClass(int col) {
@@ -575,7 +575,7 @@ class SettingsTabShortcuts extends JPanel implements
             }
         }
 
-        /**
+        /*
          * @see javax.swing.table.TableModel#isCellEditable(int, int)
          */
         public boolean isCellEditable(int row, int col) {

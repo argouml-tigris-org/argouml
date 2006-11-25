@@ -105,7 +105,7 @@ public abstract class FigState extends FigStateVertex {
         setOwner(node);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
@@ -113,7 +113,7 @@ public abstract class FigState extends FigStateVertex {
         renderingChanged();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
@@ -125,7 +125,7 @@ public abstract class FigState extends FigStateVertex {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -138,7 +138,7 @@ public abstract class FigState extends FigStateVertex {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
@@ -216,7 +216,7 @@ public abstract class FigState extends FigStateVertex {
     }    
     
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
@@ -266,7 +266,7 @@ public abstract class FigState extends FigStateVertex {
         return internal;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
@@ -276,7 +276,7 @@ public abstract class FigState extends FigStateVertex {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     public void textEdited(FigText ft) throws PropertyVetoException {

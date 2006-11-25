@@ -51,7 +51,7 @@ class NavigateTargetForwardAction extends AbstractAction {
                 Translator.localize("action.navigate-forward"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(
      *         java.awt.event.ActionEvent)
      */

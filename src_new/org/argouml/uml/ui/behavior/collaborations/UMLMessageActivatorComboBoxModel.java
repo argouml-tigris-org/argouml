@@ -41,13 +41,13 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
         super("activator", false);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
         Object target = getTarget();
         if (Model.getFacade().isAMessage(target)) {
-            Object mes = /*(MMessage)*/ target;
+            Object mes = target;
             removeAllElements();
             // fill the list with items
             setElements(Model.getCollaborationsHelper()
@@ -56,7 +56,7 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object m) {
@@ -67,7 +67,7 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
                     == Model.getFacade().getInteraction((getTarget())));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
@@ -77,6 +77,9 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
         return null;
     }
     
+    /*
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#setTarget(java.lang.Object)
+     */
     protected void setTarget(Object target) {
         if (Model.getFacade().isAMessage(getTarget())) {
             if (interaction != null) {

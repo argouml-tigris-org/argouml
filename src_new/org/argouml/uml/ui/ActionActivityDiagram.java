@@ -54,6 +54,7 @@ public class ActionActivityDiagram extends ActionNewDiagram {
 
     /**
      * Create the diagram.
+     * @return the newly created and initialized diagram
      */
     protected UMLDiagram createDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();

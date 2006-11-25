@@ -40,7 +40,7 @@ public abstract class Profile {
      *    @param namespace context namespace (may be null).
      *    @return a string representing the model element
      */
-    public abstract String formatElement(Object/*MModelElement*/ element,
+    public abstract String formatElement(Object element,
 					 Object namespace);
     /**
      *   This method produces a string the represents the collection
@@ -55,7 +55,7 @@ public abstract class Profile {
      * @return the UML Model that contains the profile model
      * @throws ProfileException if failed to get profile.
      */
-    public abstract Object/*MModel*/ getProfileModel() throws ProfileException;
+    public abstract Object getProfileModel() throws ProfileException;
     
     /**
      * Set the filename to load the profile model from.  This will be

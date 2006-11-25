@@ -135,10 +135,10 @@ public class FigInitialState extends FigStateVertex {
         return sel;
     }
 
-    /*
+    /**
      * Initial states are fixed size.
      *
-     * @see org.tigris.gef.presentation.Fig#isResizable()
+     * @return false
      */
     public boolean isResizable() {
         return false;
@@ -172,10 +172,12 @@ public class FigInitialState extends FigStateVertex {
         return head.getFillColor();
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+    /**
+     * Ignored - figure has fixed rendering
+     * @param f ignored
      */
     public void setFilled(boolean f) {
+        // ignored
     }
 
     /*
@@ -206,6 +208,7 @@ public class FigInitialState extends FigStateVertex {
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
+        // ignored
     }
 
     /**

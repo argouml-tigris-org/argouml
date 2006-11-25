@@ -57,7 +57,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
     public UMLDiagram createDiagram(Object notUsedHandle) {
@@ -78,7 +78,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
                 null);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(Object)
      */
     public boolean isValidNamespace(Object notUsedHandle) {

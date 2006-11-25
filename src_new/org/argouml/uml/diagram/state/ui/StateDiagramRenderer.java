@@ -71,12 +71,10 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
     private static final Logger LOG =
         Logger.getLogger(StateDiagramRenderer.class);
 
-    /**
-     * Return a Fig that can be used to represent the given node.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object, java.util.Map)
+     *      org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
+     *      java.lang.Object, java.util.Map)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
                                  Map styleAttributes) {
@@ -130,12 +128,10 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
         return null;
     }
 
-    /**
-     * Return a Fig that can be used to represent the given edge.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object, java.util.Map)
+     *      org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
+     *      java.lang.Object, java.util.Map)
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
             Map styleAttributes) {

@@ -42,7 +42,7 @@ public class UMLClassifierClassifierInStateListModel
         super("classifierInState");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -52,10 +52,10 @@ public class UMLClassifierClassifierInStateListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().getClassifiersInState(getTarget())
         	.contains(element);
     }

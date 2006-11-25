@@ -84,8 +84,7 @@ public class FigPartition extends FigNodeModelElement {
         setOwner(node);
     }
 
-    /**
-     *
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -98,8 +97,7 @@ public class FigPartition extends FigNodeModelElement {
         return figClone;
     }
 
-    /**
-     *
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
@@ -107,16 +105,14 @@ public class FigPartition extends FigNodeModelElement {
         leftLine.setLineColor(col);
     }
 
-    /**
-     *
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return rightLine.getLineColor();
     }
 
-    /**
-     *
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
@@ -124,32 +120,28 @@ public class FigPartition extends FigNodeModelElement {
         getNameFig().setFillColor(col);
     }
 
-    /**
-     *
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return getBigPort().getFillColor();
     }
 
-    /**
-     *
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
         getBigPort().setFilled(f);
     }
 
-    /**
-     *
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return getBigPort().getFilled();
     }
 
-    /**
-     *
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
@@ -157,23 +149,21 @@ public class FigPartition extends FigNodeModelElement {
         leftLine.setLineWidth(w);
     }
 
-    /**
-     *
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
         return rightLine.getLineWidth();
     }
 
-    /**
-     *
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {
         return "new Swimlane";
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -194,8 +184,7 @@ public class FigPartition extends FigNodeModelElement {
         return true;
     }
 
-    /**
-     *
+    /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {

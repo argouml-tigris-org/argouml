@@ -49,7 +49,7 @@ class UMLActivityGraphContextComboBoxModel
         super("context", false);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -74,9 +74,7 @@ class UMLActivityGraphContextComboBoxModel
         setElements(elements);
     }
 
-    /**
-     * Not used.
-     * 
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
@@ -85,14 +83,14 @@ class UMLActivityGraphContextComboBoxModel
             || Model.getFacade().isAPackage(element);
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
         return Model.getFacade().getContext(getTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {

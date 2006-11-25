@@ -60,7 +60,7 @@ public class UMLAssociationConnectionListModel
         super("connection");
     }
 
-     /**
+     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#addOtherModelEventListeners(java.lang.Object)
      */
     protected void addOtherModelEventListeners(Object newTarget) {
@@ -74,7 +74,7 @@ public class UMLAssociationConnectionListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#removeOtherModelEventListeners(java.lang.Object)
      */
     protected void removeOtherModelEventListeners(Object oldTarget) {
@@ -87,7 +87,7 @@ public class UMLAssociationConnectionListModel
         others.clear();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -96,16 +96,16 @@ public class UMLAssociationConnectionListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isAAssociationEnd(o)
             && Model.getFacade().getConnections(getTarget()).contains(o);
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
     protected void moveDown(int index1) {

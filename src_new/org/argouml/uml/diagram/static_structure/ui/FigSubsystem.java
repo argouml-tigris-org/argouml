@@ -64,7 +64,7 @@ public class FigSubsystem extends FigPackage {
         this(node, 0, 0);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
@@ -78,7 +78,7 @@ public class FigSubsystem extends FigPackage {
         super.setBoundsImpl(x, y, w, h);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {

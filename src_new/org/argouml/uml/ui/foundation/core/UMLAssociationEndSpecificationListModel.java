@@ -42,7 +42,7 @@ public class UMLAssociationEndSpecificationListModel
         super("specification");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -51,10 +51,10 @@ public class UMLAssociationEndSpecificationListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isAClassifier(o)
             && Model.getFacade().getSpecifications(getTarget()).contains(o);
     }

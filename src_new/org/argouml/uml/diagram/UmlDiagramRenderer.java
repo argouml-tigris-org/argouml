@@ -105,7 +105,7 @@ import org.tigris.gef.presentation.FigNode;
 public abstract class UmlDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
      *         java.lang.Object, int, int, java.util.Map)
      */
@@ -243,7 +243,7 @@ public abstract class UmlDiagramRenderer
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(java.lang.Object, java.util.Map)
      */
     public FigEdge getFigEdgeFor(Object edge, Map styleAttributes) {

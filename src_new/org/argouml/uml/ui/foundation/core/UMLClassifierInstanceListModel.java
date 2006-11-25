@@ -41,7 +41,7 @@ public class UMLClassifierInstanceListModel extends UMLModelElementListModel2 {
         super("instance");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -50,10 +50,10 @@ public class UMLClassifierInstanceListModel extends UMLModelElementListModel2 {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().getInstances(getTarget()).contains(element);
     }
 

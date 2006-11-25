@@ -80,7 +80,7 @@ public class TabSrc
         cbFiles.addItemListener(this);
     }
 
-    /**
+    /*
      * @see java.lang.Object#finalize()
      */
     protected void finalize() {
@@ -112,7 +112,7 @@ public class TabSrc
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabText#genText(java.lang.Object)
      */
     protected String genText(Object modelObject) {
@@ -124,7 +124,7 @@ public class TabSrc
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabText#parseText(java.lang.String)
      */
     protected void parseText(String s) {
@@ -141,9 +141,7 @@ public class TabSrc
         //Parser.ParseAndUpdate(modelObject, s);
     }
 
-    /**
-     * Sets the target of this tab.
-     *
+    /*
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
@@ -159,7 +157,7 @@ public class TabSrc
      * Returns true if the given target is either
      * a modelelement or is a fig with as owner a modelelement.
      *
-     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
@@ -172,7 +170,7 @@ public class TabSrc
         return shouldBeEnabled();
     }
 
-    /**
+    /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent event) {
@@ -195,7 +193,7 @@ public class TabSrc
         }
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {

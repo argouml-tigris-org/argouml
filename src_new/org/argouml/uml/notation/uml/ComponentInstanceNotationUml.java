@@ -52,7 +52,7 @@ public class ComponentInstanceNotationUml extends ComponentInstanceNotation {
     /**
      * Parse a line of the form: "name : base-component".
      *
-     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
+     * {@inheritDoc}
      */
     public void parse(Object modelElement, String text) {
         // strip any trailing semi-colons
@@ -93,14 +93,14 @@ public class ComponentInstanceNotationUml extends ComponentInstanceNotation {
         Model.getCoreHelper().setName(modelElement, name);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-componentinstance";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {

@@ -98,7 +98,7 @@ class UMLNodeDeployedComponentListModel extends UMLModelElementListModel2 {
         super("deployedComponent");
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -108,7 +108,7 @@ class UMLNodeDeployedComponentListModel extends UMLModelElementListModel2 {
         }
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {

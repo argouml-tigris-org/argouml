@@ -42,7 +42,7 @@ public class UMLTagDefinitionMultiplicityComboBoxModel extends
         super("multiplicity");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {

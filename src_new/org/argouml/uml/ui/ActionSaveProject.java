@@ -70,7 +70,7 @@ public class ActionSaveProject extends AbstractAction {
         super(name, icon);
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

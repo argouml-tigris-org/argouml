@@ -269,7 +269,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
     
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
     protected void renderingChanged() {
@@ -626,7 +626,7 @@ class FigRole extends FigSingleLineText
         setText();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent pce) {
@@ -636,7 +636,7 @@ class FigRole extends FigSingleLineText
         super.propertyChange(pce);  // do we need this?
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
      */
     public void removeFromDiagram() {
@@ -646,26 +646,41 @@ class FigRole extends FigSingleLineText
         super.removeFromDiagram();
     }
 
+    /*
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationAdded(ArgoNotationEvent e) {
         getNewNotation();
         setText();
     }
 
+    /*
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationChanged(ArgoNotationEvent e) {
         getNewNotation();
         setText();
     }
 
+    /*
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationProviderAdded(ArgoNotationEvent e) {
         getNewNotation();
         setText();
     }
 
+    /*
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationProviderRemoved(ArgoNotationEvent e) {
         getNewNotation();
         setText();
     }
 
+    /*
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationRemoved(ArgoNotationEvent e) {
         getNewNotation();
         setText();
@@ -719,6 +734,9 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         addFig(ordering);
     }
     
+    /*
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object owner) {
         if (owner != null) {
             if (!Model.getFacade().isAAssociationEnd(owner)) {
@@ -735,7 +753,7 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public void removeFromDiagram() {
@@ -745,6 +763,9 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         super.removeFromDiagram();
     }
     
+    /*
+     * @see org.tigris.gef.presentation.Fig#propertyChange(java.beans.PropertyChangeEvent)
+     */
     public void propertyChange(PropertyChangeEvent pce) {
         if (pce instanceof AttributeChangeEvent
             && (pce.getPropertyName().equals("isNavigable")

@@ -57,14 +57,14 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
     	super(name, p);
     }
 
-    /**
+    /*
      * @see org.argouml.kernel.AbstractProjectMember#getType()
      */
     public String getType() {
         return "todo";
     }
 
-    /**
+    /*
      * @see org.argouml.kernel.AbstractProjectMember#getZipFileExtension()
      */
     public String getZipFileExtension() {

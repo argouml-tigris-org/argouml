@@ -53,7 +53,7 @@ public class ActionSetAssociationEndNavigable extends UndoableAction {
                 Translator.localize("action.set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -62,7 +62,7 @@ public class ActionSetAssociationEndNavigable extends UndoableAction {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
             if (Model.getFacade().isAAssociationEnd(target)) {
-                Object m = /*(MAssociationEnd)*/ target;
+                Object m = target;
                 Model.getCoreHelper().setNavigable(m, source.isSelected());
             }
         }

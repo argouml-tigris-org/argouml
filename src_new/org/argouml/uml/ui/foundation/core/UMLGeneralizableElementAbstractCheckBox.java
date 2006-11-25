@@ -44,7 +44,7 @@ public class UMLGeneralizableElementAbstractCheckBox extends UMLCheckBox2 {
                 "isAbstract");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {

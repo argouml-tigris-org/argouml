@@ -44,9 +44,11 @@ import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 public class StylePanelFigClass extends StylePanelFigNodeModelElement {
 
     /* TODO: i18n */
-    private JCheckBox attrCheckBox = new JCheckBox(Translator.localize("checkbox.attributes"));
+    private JCheckBox attrCheckBox =
+            new JCheckBox(Translator.localize("checkbox.attributes"));
 
-    private JCheckBox operCheckBox = new JCheckBox(Translator.localize("checkbox.operations"));
+    private JCheckBox operCheckBox =
+            new JCheckBox(Translator.localize("checkbox.operations"));
 
     /**
      * Flag to indicate that a refresh is going on.
@@ -72,7 +74,7 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
         operCheckBox.addItemListener(this);
     }
 
-    /**
+    /*
      * Only refresh the tab if the bounds propertyChange event arrives.
      *
      * @see org.argouml.ui.StylePanel#refresh(java.beans.PropertyChangeEvent)
@@ -87,7 +89,7 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
@@ -105,7 +107,7 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // event handling
 
-    /**
+    /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {

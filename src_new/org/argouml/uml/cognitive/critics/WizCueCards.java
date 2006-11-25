@@ -46,7 +46,7 @@ public class WizCueCards extends UMLWizard {
      */
     public WizCueCards() { }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
      */
     public int getNumSteps() { return cues.size(); }

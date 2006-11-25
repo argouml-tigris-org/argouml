@@ -311,16 +311,15 @@ public class ToDoList extends Observable implements Runnable {
         super.notifyObservers(v);
     }
 
-    /**
-     * @param o any Object.
-     * @see Observable#notifyObservers(Object)
+    /*
+     * @see java.util.Observable#notifyObservers(java.lang.Object)
      */
     public void notifyObservers(Object o) {
         setChanged();
         super.notifyObservers(o);
     }
 
-    /**
+    /*
      * @see Observable#notifyObservers()
      */
     public void notifyObservers() {
@@ -740,6 +739,9 @@ public class ToDoList extends Observable implements Runnable {
     ////////////////////////////////////////////////////////////////
     // internal methods
 
+    /*
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         StringBuffer res = new StringBuffer(100);
         res.append(getClass().getName()).append(" {\n");

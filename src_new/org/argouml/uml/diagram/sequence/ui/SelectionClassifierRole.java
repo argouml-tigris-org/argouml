@@ -46,11 +46,9 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
     }
 
     /**
-     * Make sure that the north facing handles cannot be dragged as
-     * part of a resize.
-     *
-     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
-     * org.tigris.gef.presentation.Handle)
+     * Make sure that the north facing handles cannot be dragged as part of a
+     * resize.
+     * {@inheritDoc}
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
 
@@ -69,7 +67,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
         super.dragHandle(mX, mY, anX, anY, hand);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {

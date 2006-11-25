@@ -111,7 +111,7 @@ class NavigatorPane
     ////////////////////////////////////////////////////////////////
     // methods
 
-    /**
+    /*
      * @see java.awt.Component#getMinimumSize()
      *
      * sets minimum size to 120,100
@@ -120,7 +120,7 @@ class NavigatorPane
         return new Dimension(120, 100);
     }
 
-    /**
+    /*
      * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
      */
     public int getQuadrant() {

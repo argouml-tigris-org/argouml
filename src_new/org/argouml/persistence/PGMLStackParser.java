@@ -91,7 +91,7 @@ class PGMLStackParser
             "org.argouml.uml.diagram.ui.FigEdgePort");
     }
 
-    /**
+    /*
      * @see org.tigris.gef.persistence.pgml.HandlerFactory#getHandler(
      *         HandlerStack, Object, String, String, String, Attributes)
      */

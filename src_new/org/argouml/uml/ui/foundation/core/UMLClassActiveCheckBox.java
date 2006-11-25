@@ -43,7 +43,7 @@ public class UMLClassActiveCheckBox extends UMLCheckBox2 {
                 ActionSetClassActive.getInstance(), "isActive");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {

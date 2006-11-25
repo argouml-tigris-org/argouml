@@ -49,14 +49,14 @@ public class ActionNavigateOppositeAssocEnd extends AbstractActionNavigate {
                 ResourceLoaderWrapper.lookupIconResource("AssociationEnd"));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object source) {
         return Model.getFacade().getOppositeEnd(source);
     }
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {

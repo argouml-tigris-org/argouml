@@ -68,7 +68,8 @@ public class ActionAddConcurrentRegion extends UndoableAction {
 
     public ActionAddConcurrentRegion() {
         super(Translator.localize("action.add-concurrent-region"),
-                ResourceLoaderWrapper.lookupIcon("action.add-concurrent-region"));
+                ResourceLoaderWrapper.lookupIcon(
+                        "action.add-concurrent-region"));
         // Set the tooltip string:
         putValue(Action.SHORT_DESCRIPTION, 
                 Translator.localize("action.add-concurrent-region"));
@@ -77,7 +78,7 @@ public class ActionAddConcurrentRegion extends UndoableAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {
@@ -86,14 +87,14 @@ public class ActionAddConcurrentRegion extends UndoableAction {
         return TargetManager.getInstance().getModelTargets().size() < 2;
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
         super.actionPerformed(ae);
         try {
             /*Here the actions to divide a region*/
-            Fig f = (Fig) TargetManager.getInstance().getFigTarget();
+            Fig f = TargetManager.getInstance().getFigTarget();
 
             if (Model.getFacade().isAConcurrentRegion(f.getOwner()))
                 f = f.getEnclosingFig();

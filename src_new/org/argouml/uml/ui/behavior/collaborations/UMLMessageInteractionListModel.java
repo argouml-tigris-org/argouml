@@ -41,7 +41,7 @@ public class UMLMessageInteractionListModel extends UMLModelElementListModel2 {
         super("interaction");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -51,10 +51,10 @@ public class UMLMessageInteractionListModel extends UMLModelElementListModel2 {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().isAInteraction(element)
             && Model.getFacade().getInteraction(getTarget()) == element;
     }

@@ -50,7 +50,7 @@ public class UMLStateMachineContextComboBoxModel
         super("context", false);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -66,15 +66,14 @@ public class UMLStateMachineContextComboBoxModel
                             model, Model.getMetaTypes().getClassifier()));
             elements.addAll(Model
                     .getModelManagementHelper().getAllModelElementsOfKind(
-                            model, Model.getMetaTypes().getBehavioralFeature()));
+                            model, 
+                            Model.getMetaTypes().getBehavioralFeature()));
         }
 
         setElements(elements);
     }
 
-    /**
-     * Not used.
-     * 
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
@@ -82,11 +81,14 @@ public class UMLStateMachineContextComboBoxModel
                 || Model.getFacade().isABehavioralFeature(element);
     }
 
+    /*
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
     protected Object getSelectedModelElement() {
         return Model.getFacade().getContext(getTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {

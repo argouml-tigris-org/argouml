@@ -57,16 +57,16 @@ public class RadioAction extends AbstractButtonAction {
         realAction = action;
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
         UMLDiagram diagram = (UMLDiagram)
             ProjectManager.getManager().getCurrentProject().getActiveDiagram();
         if (Globals.getSticky() && diagram.getSelectedAction() == this) {
-            // If the user selects an Action that is already selected in sticky mode
-            // (double clicked) then we turn off sticky mode and make sure no
-            // action is selected.
+            // If the user selects an Action that is already selected in sticky
+            // mode (double clicked) then we turn off sticky mode and make sure
+            // no action is selected.
             Globals.setSticky(false);
             diagram.deselectAllTools();
             Editor ce = Globals.curEditor();

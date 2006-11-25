@@ -43,7 +43,7 @@ public class UMLAssociationEndNavigableCheckBox extends UMLCheckBox2 {
                 ActionSetAssociationEndNavigable.getInstance(), "isNavigable");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {

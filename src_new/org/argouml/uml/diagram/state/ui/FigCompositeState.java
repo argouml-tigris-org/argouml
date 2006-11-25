@@ -100,7 +100,7 @@ public class FigCompositeState extends FigState {
         setOwner(node);
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -117,7 +117,7 @@ public class FigCompositeState extends FigState {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -134,14 +134,14 @@ public class FigCompositeState extends FigState {
         return new Dimension(w, h);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
     public boolean getUseTrapRect() {
         return true;
     }
 
-    /**
+    /*
      * Override setBounds to keep shapes looking right.
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
@@ -251,7 +251,7 @@ public class FigCompositeState extends FigState {
     ////////////////////////////////////////////////////////////////
     // fig accessors
 
-    /**
+    /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
@@ -267,7 +267,7 @@ public class FigCompositeState extends FigState {
         return popUpActions;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
@@ -275,28 +275,28 @@ public class FigCompositeState extends FigState {
         divider.setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return cover.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
         cover.setFillColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return cover.getFillColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
@@ -304,14 +304,14 @@ public class FigCompositeState extends FigState {
         getBigPort().setFilled(f);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return cover.getFilled();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
@@ -319,7 +319,7 @@ public class FigCompositeState extends FigState {
         divider.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -329,7 +329,7 @@ public class FigCompositeState extends FigState {
     ////////////////////////////////////////////////////////////////
     // event processing
 
-    /**
+    /*
      * Update the text labels.
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
@@ -345,28 +345,28 @@ public class FigCompositeState extends FigState {
 
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()
      */
     protected int getInitialHeight() {
         return 150;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialWidth()
      */
     protected int getInitialWidth() {
         return 180;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialX()
      */
     protected int getInitialX() {
         return 0;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialY()
      */
     protected int getInitialY() {

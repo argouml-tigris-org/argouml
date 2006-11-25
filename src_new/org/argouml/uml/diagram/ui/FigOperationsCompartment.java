@@ -56,7 +56,7 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
         super(x, y, w, h);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#getUmlCollection()
      */
     protected Collection getUmlCollection() {
@@ -64,14 +64,14 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
         return Model.getFacade().getOperations(classifier);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#getNotationType()
      */
     protected int getNotationType() {
         return NotationProviderFactory2.TYPE_OPERATION;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#addExtraVisualisations(java.lang.Object, org.argouml.uml.diagram.ui.CompartmentFigText)
      */
     protected void addExtraVisualisations(Object umlObject, 
@@ -113,7 +113,7 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#createFeature()
      */
     public void createFeature() {

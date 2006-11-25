@@ -173,12 +173,7 @@ public class WizOperName extends WizMEName {
         }
     }
 
-    /**
-     * Take action at the completion of a step. For example, when the given step
-     * is 0, do nothing; and when the given step is 1, do the first action. Argo
-     * non-modal wizards should take action as they do along, as soon as
-     * possible, they should not wait until the final step.
-     *
+    /*
      * @see org.argouml.uml.cognitive.critics.WizMEName#doAction(int)
      */
     public void doAction(int oldStep) {

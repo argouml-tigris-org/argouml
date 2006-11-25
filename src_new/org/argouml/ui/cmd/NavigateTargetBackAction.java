@@ -51,7 +51,7 @@ class NavigateTargetBackAction extends AbstractAction {
                 Translator.localize("action.navigate-back"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(
      *         java.awt.event.ActionEvent)
      */
@@ -60,7 +60,7 @@ class NavigateTargetBackAction extends AbstractAction {
     }
 
     /**
-     * Action is possible only if navigateForwardPossible on targetManager
+     * Action is possible only if navigateBackPossible on targetManager
      * returns true.
      *
      * @see javax.swing.Action#isEnabled()

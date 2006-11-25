@@ -43,7 +43,7 @@ public class UMLGeneralizableElementRootCheckBox extends UMLCheckBox2 {
                 ActionSetGeneralizableElementRoot.getInstance(), "isRoot");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {

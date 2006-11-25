@@ -63,14 +63,13 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
                 ActionSetChangeability.getInstance(), horizontal);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLRadioButtonPanel#buildModel()
      */
     public void buildModel() {
         if (getTarget() != null) {
-            Object target = /*(MStructuralFeature)*/ getTarget();
-            Object/*MChangeableKind*/ kind =
-                Model.getFacade().getChangeability(target);
+            Object target =  getTarget();
+            Object kind = Model.getFacade().getChangeability(target);
             if (kind == null
                     || kind.equals(
                             Model.getChangeableKind().getAddOnly())) {

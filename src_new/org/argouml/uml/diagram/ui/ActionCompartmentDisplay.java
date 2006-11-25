@@ -195,10 +195,11 @@ public class ActionCompartmentDisplay extends UndoableAction {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * Return the compartment show and/or hide actions
-     * needed for the selected Figs.
-     * Only returns the actions for the menu-items that make sense
-     * for the current selection.
+     * Return the compartment show and/or hide actions needed for the selected
+     * Figs.
+     * 
+     * @return Only returns the actions for the menu-items that make sense for
+     *         the current selection.
      */
     public static Collection getActions() {
         Collection actions = new ArrayList();
@@ -246,7 +247,8 @@ public class ActionCompartmentDisplay extends UndoableAction {
                 present++;
                 epPresent = true;
                 epVisible =
-                    ((ExtensionsCompartmentContainer) f).isExtensionPointVisible();
+                        ((ExtensionsCompartmentContainer) f)
+                                .isExtensionPointVisible();
                 if (epVisible) {
                     visible++;
                 }
@@ -255,7 +257,8 @@ public class ActionCompartmentDisplay extends UndoableAction {
                 present++;
                 enumPresent = true;
                 enumVisible =
-                    ((EnumLiteralsCompartmentContainer) f).isEnumLiteralsVisible();
+                        ((EnumLiteralsCompartmentContainer) f)
+                                .isEnumLiteralsVisible();
                 if (enumVisible) {
                     visible++;
                 }
@@ -344,7 +347,8 @@ public class ActionCompartmentDisplay extends UndoableAction {
             }
             if ((cType & COMPARTMENT_ENUMLITERAL) != 0) {
                 if (f instanceof EnumLiteralsCompartmentContainer) {
-                    ((EnumLiteralsCompartmentContainer) f).setEnumLiteralsVisible(display);
+                    ((EnumLiteralsCompartmentContainer) f)
+                            .setEnumLiteralsVisible(display);
                 }
             }
 	}

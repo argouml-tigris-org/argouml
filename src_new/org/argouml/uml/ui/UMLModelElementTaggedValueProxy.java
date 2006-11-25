@@ -34,7 +34,6 @@ import javax.swing.text.Element;
 import javax.swing.text.Position;
 import javax.swing.text.Segment;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
@@ -55,9 +54,6 @@ import org.tigris.gef.presentation.Fig;
  * @author Tom Morris (tfmorris@gmail.com)
  */
 public class UMLModelElementTaggedValueProxy implements UMLDocument {
-
-    private static final Logger LOG =
-        Logger.getLogger(UMLModelElementTaggedValueProxy.class);
 
     /**
      * The target of the propertypanel that's behind this property.
@@ -84,7 +80,7 @@ public class UMLModelElementTaggedValueProxy implements UMLDocument {
         document = new UMLModelElementTaggedValueDocument("");
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
@@ -147,7 +143,7 @@ public class UMLModelElementTaggedValueProxy implements UMLDocument {
                 }
                 panelTarget = target;
                 eventPump.addModelEventListener(this, panelTarget, EVENT_NAME);
-                // TODO: see if the new target has a taggedvalue that we can proxy
+                // TODO: see if the new target has a TV that we can proxy
                 document.setTarget(Model.getFacade().getTaggedValue(
                         panelTarget, tagName));
             }
@@ -157,28 +153,29 @@ public class UMLModelElementTaggedValueProxy implements UMLDocument {
     ///////////////////////////////////////////////////////////////////////
     // Proxy methods for real UMLModelElementTaggedValue
     ///////////////////////////////////////////////////////////////////////
-    /**
+    
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see javax.swing.text.Document#insertString(
      *         int, java.lang.String, javax.swing.text.AttributeSet)
      */
@@ -187,35 +184,35 @@ public class UMLModelElementTaggedValueProxy implements UMLDocument {
         document.insertString(offset, str, a);
     }
 
-    /**
+    /*
      * @see javax.swing.text.Document#remove(int, int)
      */
     public void remove(int offs, int len) throws BadLocationException {
         document.remove(offs, len);
     }
 
-    /**
+    /*
      * @see javax.swing.text.Document#getDefaultRootElement()
      */
     public Element getDefaultRootElement() {
         return document.getDefaultRootElement();
     }
 
-    /**
+    /*
      * @see javax.swing.text.Document#getLength()
      */
     public int getLength() {
         return document.getLength();
     }
 
-    /**
+    /*
      * @see javax.swing.text.Document#render(Runnable r)
      */
     public void render(Runnable r) {
         document.render(r);
     }
 
-    /**
+    /*
      * @see javax.swing.text.Document#getText(int, int)
      */
     public String getText(int offset, int length) throws BadLocationException {
@@ -254,7 +251,8 @@ public class UMLModelElementTaggedValueProxy implements UMLDocument {
         return document.createPosition(offs);
     }
 
-    public void getText(int offset, int length, Segment txt) throws BadLocationException {
+    public void getText(int offset, int length, Segment txt)
+        throws BadLocationException {
         document.getText(offset, length, txt);
     }
 

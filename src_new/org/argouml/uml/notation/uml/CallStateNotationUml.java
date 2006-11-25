@@ -61,7 +61,7 @@ public class CallStateNotationUml extends CallStateNotation {
         super(callState);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -201,14 +201,14 @@ public class CallStateNotationUml extends CallStateNotation {
         return callState;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-callstate";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {

@@ -118,19 +118,20 @@ public abstract class FileImportSupport implements PluggableImport {
                 theImport.setSrcPath(null);
             }
             return new Vector(FileImportUtils.getList(f, 
-                    theImport.isDiscendDirectoriesRecursively(), getSuffixFilters()));
+                    theImport.isDiscendDirectoriesRecursively(), 
+                    getSuffixFilters()));
         } else {
             return new Vector();
-                }
+        }
 
-                            }
+    }
 
     /*
      * @see org.argouml.application.api.PluggableImport#isParseable(java.lang.Object)
      */
     public boolean isParseable(Object f) {
         return FileImportUtils.matchesSuffix(f, getSuffixFilters());
-                }
+    }
 
     /*
      * @see org.argouml.application.api.PluggableImport#getLayout(org.argouml.uml.diagram.ui.UMLDiagram)
@@ -191,11 +192,9 @@ public abstract class FileImportSupport implements PluggableImport {
         return "";
     }
 
-    /**
-     * Calls all modules to let them add to a popup menu.
-     *
+    /*
      * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
-     * java.util.Vector, java.lang.Object)
+     *      java.util.Vector, java.lang.Object)
      */
     public Vector getModulePopUpActions(Vector popUpActions, Object context) {
         return null;
@@ -230,7 +229,7 @@ public abstract class FileImportSupport implements PluggableImport {
 
         private Import theImport;
 
-        /**
+        /*
          * @see javax.swing.JFileChooser#JFileChooser(String)
          */
         public ImportFileChooser(Import imp, String currentDirectoryPath) {
@@ -238,7 +237,7 @@ public abstract class FileImportSupport implements PluggableImport {
             theImport = imp;
         }
 
-        /**
+        /*
          * @see javax.swing.JFileChooser#JFileChooser(String, FileSystemView)
          */
         public ImportFileChooser(
@@ -249,7 +248,7 @@ public abstract class FileImportSupport implements PluggableImport {
             theImport = imp;
         }
 
-        /**
+        /*
          * @see javax.swing.JFileChooser#JFileChooser()
          */
         public ImportFileChooser(Import imp) {
@@ -257,7 +256,7 @@ public abstract class FileImportSupport implements PluggableImport {
             this.theImport = imp;
         }
 
-        /**
+        /*
          * @see javax.swing.JFileChooser#JFileChooser(FileSystemView)
          */
         public ImportFileChooser(
@@ -286,7 +285,7 @@ public abstract class FileImportSupport implements PluggableImport {
             }
         }
 
-        /**
+        /*
          * @see javax.swing.JFileChooser#cancelSelection()
          */
         public void cancelSelection() {

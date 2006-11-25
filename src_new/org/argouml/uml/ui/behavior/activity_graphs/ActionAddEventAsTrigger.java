@@ -53,7 +53,7 @@ public class ActionAddEventAsTrigger extends AbstractActionAddModelElement {
         setMultiSelect(false);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
@@ -71,7 +71,7 @@ public class ActionAddEventAsTrigger extends AbstractActionAddModelElement {
         return vec;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
@@ -82,14 +82,14 @@ public class ActionAddEventAsTrigger extends AbstractActionAddModelElement {
         return vec;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-events");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {

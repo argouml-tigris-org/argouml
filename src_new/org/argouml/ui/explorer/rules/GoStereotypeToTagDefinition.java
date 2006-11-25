@@ -44,7 +44,7 @@ public class GoStereotypeToTagDefinition extends AbstractPerspectiveRule {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
@@ -60,21 +60,21 @@ public class GoStereotypeToTagDefinition extends AbstractPerspectiveRule {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getRuleName()
      */
     public String getRuleName() {
         return "Stereotype->TagDefinition";
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#toString()
      */
     public String toString() {
         return super.toString();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {

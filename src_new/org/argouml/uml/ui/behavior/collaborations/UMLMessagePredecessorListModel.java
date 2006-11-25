@@ -44,11 +44,11 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
         super("predecessor");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object message = /*(MMessage)*/ getTarget();
+        Object message = getTarget();
         removeAllElements();
         Iterator it = Model.getFacade().getPredecessors(message).iterator();
         while (it.hasNext()) {
@@ -56,10 +56,10 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ elem) {
+    protected boolean isValidElement(Object elem) {
         return Model.getFacade().isAMessage(elem)
             && Model.getFacade().getInteraction(elem)
             	== Model.getFacade().getInteraction(getTarget())

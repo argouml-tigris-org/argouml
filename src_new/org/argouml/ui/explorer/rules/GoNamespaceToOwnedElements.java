@@ -40,14 +40,14 @@ import org.argouml.model.Model;
  */
 public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
         return Translator.localize ("misc.namespace.owned-element");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(
      *         java.lang.Object)
      */
@@ -82,7 +82,7 @@ public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
         return ret;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(
      *         java.lang.Object)
      */

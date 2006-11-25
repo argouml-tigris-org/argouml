@@ -44,7 +44,7 @@ public class ActionSetAssociationEndMultiplicity extends ActionSetMultiplicity {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionSetMultiplicity#setSelectedItem(
      *      java.lang.Object, java.lang.Object)
      */

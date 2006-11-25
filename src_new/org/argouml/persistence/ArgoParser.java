@@ -114,7 +114,7 @@ class ArgoParser extends SAXParserBase {
         ps = project.getProjectSettings();
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.SAXParserBase#handleStartElement(
      *         org.argouml.persistence.XMLElement)
      */
@@ -140,7 +140,7 @@ class ArgoParser extends SAXParserBase {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.SAXParserBase#handleEndElement(
      *         org.argouml.persistence.XMLElement)
      */
@@ -207,7 +207,7 @@ class ArgoParser extends SAXParserBase {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.SAXParserBase#isElementOfInterest(String)
      */
     protected boolean isElementOfInterest(String name) {

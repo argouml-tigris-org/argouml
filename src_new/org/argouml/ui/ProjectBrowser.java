@@ -289,7 +289,7 @@ public final class ProjectBrowser
             kfm.addPropertyChangeListener(new PropertyChangeListener() {
                 private Object obj;
 
-                /**
+                /*
                  * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
                  */
                 public void propertyChange(PropertyChangeEvent evt) {
@@ -615,7 +615,8 @@ public final class ProjectBrowser
                         + changeIndicator);
             }
         }
-        /**
+        
+        /*
          * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
          */
         public void propertyChange(PropertyChangeEvent evt) {
@@ -989,7 +990,7 @@ public final class ProjectBrowser
         System.exit(0);
     }
 
-    /**
+    /*
      * @see java.awt.Window#dispose()
      */
     public void dispose() {
@@ -1006,7 +1007,7 @@ public final class ProjectBrowser
         public WindowCloser() {
         }
 
-        /**
+        /*
          * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
          */
         public void windowClosing(WindowEvent e) {

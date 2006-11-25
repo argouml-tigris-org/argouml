@@ -34,7 +34,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1
+ * Well-formedness rule [2] for Classifier. See page 29 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
  *
  * @author jrobbins
@@ -56,7 +56,7 @@ public class CrOppEndVsAttr extends CrUML {
         addTrigger("structuralFeature");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *         java.lang.Object, org.argouml.cognitive.Designer)
      */

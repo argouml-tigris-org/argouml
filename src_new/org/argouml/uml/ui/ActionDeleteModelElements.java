@@ -78,9 +78,7 @@ public class ActionDeleteModelElements extends UndoableAction {
                 ResourceLoaderWrapper.lookupIcon("Delete"));
     }
 
-    /**
-     * Deletes the selected target.
-     * 
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

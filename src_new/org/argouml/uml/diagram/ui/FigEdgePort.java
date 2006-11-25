@@ -32,8 +32,8 @@ import org.tigris.gef.presentation.FigCircle;
 
 /**
  * This node cannot be dragged and manipulated in the same way as other
- * FigNodes in ArgoUML. It is actually an optional child fig (or more precisely a
- * path item) of a FigEdgeModelElement.
+ * FigNodes in ArgoUML. It is actually an optional child fig (or more precisely
+ * a path item) of a FigEdgeModelElement.
  * This allows the dashed edge of an association class to connect the
  * association edge and allows the dashed edge of a comment edge to attach a
  * comment to some other edge type.
@@ -57,14 +57,14 @@ public class FigEdgePort extends FigNodeModelElement {
         addFig(bigPort);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
      */
     public boolean hit(Rectangle r) {
         return false;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object own) {
@@ -72,10 +72,8 @@ public class FigEdgePort extends FigNodeModelElement {
         super.setOwner(own);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#classNameAndBounds()
-     * @deprecated in 0.11.1 use
-     * org.tigris.gef.persistence.pgml.PgmlUtility.getClassNameAndBounds(Fig)
      */
     // USED BY PGML.tee
     public String classNameAndBounds() {
@@ -84,28 +82,28 @@ public class FigEdgePort extends FigNodeModelElement {
             + getWidth() + ", " + getHeight() + "]";
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigNode#hitPort(int, int)
      */
     public Object hitPort(int x, int y) {
         return null;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigGroup#hitFig(java.awt.Rectangle)
      */
     public Fig hitFig(Rectangle r) {
         return null;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#isSelectable()
      */
     public boolean isSelectable() {
         return false;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigNode#getPortFig(java.lang.Object)
      */
     public Fig getPortFig(Object port) {

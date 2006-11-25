@@ -40,7 +40,7 @@ public class PredIsFinalState implements Predicate {
 
     private PredIsFinalState() { }
 
-    /**
+    /*
      * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
      */
     public boolean predicate(Object obj) {

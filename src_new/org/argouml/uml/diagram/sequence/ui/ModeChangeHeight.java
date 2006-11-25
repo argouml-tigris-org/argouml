@@ -47,7 +47,7 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
         rubberbandColor = Globals.getPrefs().getRubberbandColor();
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
@@ -61,7 +61,7 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
         me.consume();
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
      */
     public void mouseDragged(MouseEvent me) {
@@ -74,7 +74,7 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
         me.consume();
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
@@ -117,7 +117,7 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
         done();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.FigModifyingMode#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
@@ -125,7 +125,7 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
         g.drawLine(startX, startY, startX, currentY);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.FigModifyingMode#instructions()
      */
     public String instructions() {

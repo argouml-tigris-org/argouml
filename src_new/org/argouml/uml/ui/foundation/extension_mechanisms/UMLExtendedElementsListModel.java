@@ -42,7 +42,7 @@ class UMLExtendedElementsListModel
         super("extendedElement");
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -51,7 +51,7 @@ class UMLExtendedElementsListModel
         }
     }
     
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {

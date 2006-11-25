@@ -41,7 +41,7 @@ public class UMLTransitionTargetListModel extends UMLModelElementListModel2 {
         super("target");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -49,10 +49,10 @@ public class UMLTransitionTargetListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getTarget(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return element == Model.getFacade().getTarget(getTarget());
     }
 

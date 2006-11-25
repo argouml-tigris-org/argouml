@@ -1097,7 +1097,7 @@ public final class TargetManager {
             }
         }
 
-        /**
+        /*
          * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
          */
         public void propertyChange(PropertyChangeEvent evt) {

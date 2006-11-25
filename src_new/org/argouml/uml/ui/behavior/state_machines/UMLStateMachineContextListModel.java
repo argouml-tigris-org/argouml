@@ -43,9 +43,7 @@ public class UMLStateMachineContextListModel
         super("context");
     }
 
-
-
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -53,10 +51,10 @@ public class UMLStateMachineContextListModel
         addElement(Model.getFacade().getContext(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return element == Model.getFacade().getContext(getTarget());
     }
 }

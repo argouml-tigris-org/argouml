@@ -102,7 +102,7 @@ public class FigEdgeAssociationClass
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
     public void setFig(Fig f) {
@@ -110,14 +110,14 @@ public class FigEdgeAssociationClass
         getFig().setDashed(true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
      */
     protected boolean canEdit(Fig f) {
         return false;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {

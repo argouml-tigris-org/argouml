@@ -51,7 +51,7 @@ public class TransitionNotationUml extends TransitionNotation {
         super(transition);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -425,14 +425,14 @@ public class TransitionNotationUml extends TransitionNotation {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-transition";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {
@@ -518,7 +518,7 @@ public class TransitionNotationUml extends TransitionNotation {
             it = c.iterator();
             first = true;
             while (it.hasNext()) {
-                Object arg = /*(MArgument)*/ it.next();
+                Object arg = it.next();
                 if (!first) {
                     p += ", ";
                 }

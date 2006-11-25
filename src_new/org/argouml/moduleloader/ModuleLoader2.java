@@ -747,7 +747,7 @@ public final class ModuleLoader2 {
      * The file filter that selects Jar files.
      */
     static class JarFileFilter implements FileFilter {
-	/**
+	/*
 	 * @see java.io.FileFilter#accept(java.io.File)
 	 */
 	public boolean accept(File pathname) {

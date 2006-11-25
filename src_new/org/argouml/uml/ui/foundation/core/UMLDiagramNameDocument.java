@@ -42,7 +42,7 @@ public class UMLDiagramNameDocument extends UMLPlainTextDocument {
         super("name");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
@@ -57,7 +57,7 @@ public class UMLDiagramNameDocument extends UMLPlainTextDocument {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {

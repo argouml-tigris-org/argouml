@@ -51,7 +51,7 @@ public class ActionAddLiteral extends AbstractActionNewModelElement {
         putValue(Action.SMALL_ICON, icon);
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

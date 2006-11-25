@@ -37,14 +37,12 @@ public class AttributeNotationJava extends AttributeNotation {
 
     /**
      * The constructor.
-     *
-     * @param attribute the attribute that is represented
      */
     protected AttributeNotationJava() {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
@@ -52,7 +50,7 @@ public class AttributeNotationJava extends AttributeNotation {
         return "Parsing in Java not yet supported";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -60,7 +58,7 @@ public class AttributeNotationJava extends AttributeNotation {
             "Parsing in Java not yet supported");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {

@@ -84,14 +84,14 @@ public class SimpleTimer {
          */
         private int count = 1;
 
-        /**
+        /*
          * @see java.util.Enumeration#hasMoreElements()
          */
         public boolean hasMoreElements() {
             return count <= points.size();
         }
 
-        /**
+        /*
          * @see java.util.Enumeration#nextElement()
          */
         public Object nextElement() {
@@ -125,7 +125,7 @@ public class SimpleTimer {
         }
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

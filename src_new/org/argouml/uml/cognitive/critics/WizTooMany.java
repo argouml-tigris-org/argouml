@@ -55,14 +55,14 @@ public class WizTooMany extends UMLWizard {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
      */
     public int getNumSteps() {
         return 1;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
@@ -79,7 +79,7 @@ public class WizTooMany extends UMLWizard {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ui.Wizard#canFinish()
      */
     public boolean canFinish() {
@@ -97,7 +97,7 @@ public class WizTooMany extends UMLWizard {
         return false;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {

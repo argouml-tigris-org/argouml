@@ -52,7 +52,7 @@ public class ActionSetFeatureOwnerScope extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -61,7 +61,7 @@ public class ActionSetFeatureOwnerScope extends UndoableAction {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
             if (Model.getFacade().isAFeature(target)) {
-                Object m = /*(MFeature)*/ target;
+                Object m = target;
                 if (source.isSelected()) {
                     Model.getCoreHelper().setOwnerScope(m,
                             Model.getScopeKind().getClassifier());

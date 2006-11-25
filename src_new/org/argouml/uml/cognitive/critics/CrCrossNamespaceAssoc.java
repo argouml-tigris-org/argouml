@@ -102,4 +102,4 @@ public class CrCrossNamespaceAssoc extends CrUML {
         // If we drop out there is no problem
         return NO_PROBLEM;
     }
-} /* end class CrCrossNamespaceAssoc.java */
+} /* end class CrCrossNamespaceAssoc */

@@ -66,7 +66,7 @@ public class ActionRESequenceDiagram extends AbstractAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -130,7 +130,7 @@ public class ActionRESequenceDiagram extends AbstractAction {
         }
     }
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {

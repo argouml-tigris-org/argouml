@@ -53,7 +53,7 @@ public class ActionSetAssociationEndTargetScope extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -62,7 +62,7 @@ public class ActionSetAssociationEndTargetScope extends UndoableAction {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
             if (Model.getFacade().isAAssociationEnd(target)) {
-                Object m = /*(MAssociationEnd)*/ target;
+                Object m = target;
                 if (source.isSelected()) {
                     Model.getCoreHelper().setTargetScope(m,
                             Model.getScopeKind().getClassifier());

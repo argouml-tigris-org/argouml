@@ -40,7 +40,7 @@ public class UMLBehavioralFeatureQueryCheckBox extends UMLCheckBox2 {
                 ActionSetBehavioralFeatureQuery.getInstance(), "isQuery");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {

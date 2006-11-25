@@ -53,7 +53,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -61,14 +61,14 @@ public class UMLClassifierRoleAvailableFeaturesListModel
                 .allAvailableFeatures(getTarget()));
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent e) {
         if (e instanceof AddAssociationEvent) {
             if (e.getPropertyName().equals("base")
                     && e.getSource() == getTarget()) {
-                Object clazz = /*(MClassifier)*/ getChangedElement(e);
+                Object clazz = getChangedElement(e);
                 addAll(Model.getFacade().getFeatures(clazz));
                 Model.getPump().addModelEventListener(
                                       this,
@@ -83,7 +83,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
         } else if (e instanceof RemoveAssociationEvent) {
             if (e.getPropertyName().equals("base")
                     && e.getSource() == getTarget()) {
-                Object clazz = /*(MClassifier)*/ getChangedElement(e);
+                Object clazz = getChangedElement(e);
                 Model.getPump().removeModelEventListener(
                                      this,
                                      clazz,
@@ -100,7 +100,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
     public void setTarget(Object target) {
@@ -121,7 +121,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
         
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (!Model.getFacade().isAModelElement(target))
-            // TODO - isn't this an error condition? Should we not throw
+            // TODO: - isn't this an error condition? Should we not throw
             // an exception or at least log.
             return;
         
@@ -151,10 +151,10 @@ public class UMLClassifierRoleAvailableFeaturesListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return false;
     }
 }

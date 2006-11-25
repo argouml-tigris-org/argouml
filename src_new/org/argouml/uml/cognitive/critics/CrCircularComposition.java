@@ -54,9 +54,9 @@ public class CrCircularComposition extends CrUML {
 	// no good trigger
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAClassifier(dm))) return NO_PROBLEM;
@@ -66,9 +66,9 @@ public class CrCircularComposition extends CrUML {
 	return NO_PROBLEM;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
-     * org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 
@@ -93,9 +93,9 @@ public class CrCircularComposition extends CrUML {
 	return offs;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
@@ -110,11 +110,11 @@ public class CrCircularComposition extends CrUML {
 	return res;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) {
 	return WizBreakCircularComp.class;
     }
 
-} /* end class CrCircularComposition.java */
+} /* end class CrCircularComposition */

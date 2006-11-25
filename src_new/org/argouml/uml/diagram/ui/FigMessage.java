@@ -118,7 +118,7 @@ public class FigMessage extends FigNodeModelElement {
 	setOwner(node);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
@@ -130,12 +130,12 @@ public class FigMessage extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() { return "new Message"; }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -147,7 +147,7 @@ public class FigMessage extends FigNodeModelElement {
 	return figClone;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
@@ -155,46 +155,47 @@ public class FigMessage extends FigNodeModelElement {
 	getNameFig().setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return figPoly.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
 	//figPoly.setFillColor(col);
 	getNameFig().setFillColor(col);
     }
-    /**
+    
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return getNameFig().getFillColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return true;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) { figPoly.setLineWidth(w); }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() { return figPoly.getLineWidth(); }
@@ -248,7 +249,7 @@ public class FigMessage extends FigNodeModelElement {
      */
     public int getArrow() { return arrowDirection; }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -260,9 +261,8 @@ public class FigMessage extends FigNodeModelElement {
 	return new Dimension(w, h);
     }
 
-    /** 
+    /*
      * Override setBounds to keep shapes looking right.
-     * 
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
@@ -289,7 +289,7 @@ public class FigMessage extends FigNodeModelElement {
         updateEdges();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
@@ -297,7 +297,7 @@ public class FigMessage extends FigNodeModelElement {
         ft.setText(notationProvider.toString(getOwner(), null));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
@@ -351,7 +351,7 @@ public class FigMessage extends FigNodeModelElement {
 	}
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#paint(Graphics)
      */
     public void paint(Graphics g) {
@@ -359,7 +359,7 @@ public class FigMessage extends FigNodeModelElement {
 	super.paint(g);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
@@ -368,7 +368,7 @@ public class FigMessage extends FigNodeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {

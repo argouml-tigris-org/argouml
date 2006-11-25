@@ -55,7 +55,6 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
-import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -148,7 +147,7 @@ public class FigClass extends FigClassifierBox
         setOwner(node);
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -159,7 +158,7 @@ public class FigClass extends FigClassifierBox
             Fig thisFig = (Fig) thisIter.next();
             Fig cloneFig = (Fig) cloneIter.next();
             if (thisFig == borderFig) {
-                figClone.borderFig = (FigRect) thisFig;
+                figClone.borderFig = thisFig;
             }
         }
         return figClone;
@@ -169,7 +168,7 @@ public class FigClass extends FigClassifierBox
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
@@ -312,14 +311,14 @@ public class FigClass extends FigClassifierBox
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         borderFig.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -384,7 +383,7 @@ public class FigClass extends FigClassifierBox
         return aSize;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
     public void translate(int dx, int dy) {
@@ -399,7 +398,7 @@ public class FigClass extends FigClassifierBox
     ////////////////////////////////////////////////////////////////
     // internal methods
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
@@ -432,7 +431,7 @@ public class FigClass extends FigClassifierBox
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
@@ -518,7 +517,7 @@ public class FigClass extends FigClassifierBox
         return ft2;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
@@ -547,7 +546,7 @@ public class FigClass extends FigClassifierBox
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      * TODO: Refactor into FigClassifierBox
      */
@@ -582,7 +581,7 @@ public class FigClass extends FigClassifierBox
         calcBounds();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
@@ -735,7 +734,7 @@ public class FigClass extends FigClassifierBox
 
 
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
@@ -753,7 +752,7 @@ public class FigClass extends FigClassifierBox
         if (getOwner() == null) {
             return;
         }
-        Object cls = /*(MClass)*/ getOwner();
+        Object cls = getOwner();
         if (Model.getFacade().isAbstract(cls)) {
             getNameFig().setFont(getItalicLabelFont());
 	} else {
@@ -763,7 +762,7 @@ public class FigClass extends FigClassifierBox
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {

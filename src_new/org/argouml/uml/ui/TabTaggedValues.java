@@ -143,7 +143,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         table.doLayout();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object theTarget) {
@@ -182,17 +182,17 @@ public class TabTaggedValues extends AbstractArgoJPanel
         validate();
     }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() { return target; }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() { setTarget(target); }
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object theTarget) {
@@ -206,7 +206,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         return true;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -214,7 +214,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -222,7 +222,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -243,7 +243,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         return table;
     }
 
-    /**
+    /*
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent e) {
@@ -289,7 +289,7 @@ class ActionRemoveTaggedValue extends UndoableAction {
         table = tableTv;
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

@@ -126,7 +126,7 @@ public class SelectionActionState extends SelectionNodeClarifiers {
 	showOutgoingBelow = b;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
      *         org.tigris.gef.presentation.Handle)
      */
@@ -176,7 +176,7 @@ public class SelectionActionState extends SelectionNodeClarifiers {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
      */
     public void paintButtons(Graphics g) {
@@ -199,7 +199,7 @@ public class SelectionActionState extends SelectionNodeClarifiers {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
      *         org.tigris.gef.presentation.Handle)
      */
@@ -252,7 +252,7 @@ public class SelectionActionState extends SelectionNodeClarifiers {
 	if (edgeType != null && nodeType != null) {
 	    ModeCreateEdgeAndNode m =
                 //This fixes issue 2400:
-              new ModeCreateEdgeAndNode(ce, edgeType, false, this);
+	        new ModeCreateEdgeAndNode(ce, edgeType, false, this);
 	    m.setup((FigNode) getContent(), getContent().getOwner(),
 	            bx, by, reverse);
 	    ce.pushMode(m);
@@ -269,14 +269,14 @@ public class SelectionActionState extends SelectionNodeClarifiers {
         return Model.getMetaTypes().getActionState();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
         return Model.getActivityGraphsFactory().createActionState();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -285,7 +285,7 @@ public class SelectionActionState extends SelectionNodeClarifiers {
 			   (Class) Model.getMetaTypes().getTransition());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeLeft(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -294,7 +294,7 @@ public class SelectionActionState extends SelectionNodeClarifiers {
 			  (Class) Model.getMetaTypes().getTransition());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeRight(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -303,7 +303,7 @@ public class SelectionActionState extends SelectionNodeClarifiers {
 			  (Class) Model.getMetaTypes().getTransition());
     }
 
-    /**
+    /*
      * To enable this we need to add an icon.
      *
      * @see org.tigris.gef.base.SelectionButtons#createEdgeToSelf(
@@ -314,7 +314,7 @@ public class SelectionActionState extends SelectionNodeClarifiers {
 			  (Class) Model.getMetaTypes().getTransition());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */

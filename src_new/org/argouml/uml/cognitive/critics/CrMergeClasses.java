@@ -52,26 +52,26 @@ public class CrMergeClasses extends CrUML {
 
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAClass(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object cls = /*(MClass)*/ dm;
+	Object cls = dm;
 	Collection ends = Model.getFacade().getAssociationEnds(cls);
 	if (ends == null || ends.size() != 1) {
 	    return NO_PROBLEM;
 	}
-	Object myEnd = /*(MAssociationEnd)*/ ends.iterator().next();
+	Object myEnd = ends.iterator().next();
 	Object asc = Model.getFacade().getAssociation(myEnd);
 	List conns = new ArrayList(Model.getFacade().getConnections(asc));
         // Do we have 2 connection ends?
         if (conns == null || conns.size() != 2) {
             return NO_PROBLEM;
         }
-	Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
-	Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
+	Object ae0 = conns.get(0);
+	Object ae1 = conns.get(1);
 	// both ends must be classes, otherwise there is nothing to merge
 	if (!(Model.getFacade().isAClass(Model.getFacade().getType(ae0))
             && Model.getFacade().isAClass(Model.getFacade().getType(ae1)))) {

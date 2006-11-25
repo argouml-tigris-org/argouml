@@ -47,14 +47,14 @@ public class ObjectNotationUml extends ObjectNotation {
         super(theObject);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-object";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -95,7 +95,7 @@ public class ObjectNotationUml extends ObjectNotation {
         Model.getCoreHelper().setName(modelElement, name);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {

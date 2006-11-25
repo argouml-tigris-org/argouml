@@ -42,7 +42,7 @@ public class UMLClassifierAssociationEndListModel
         super("associationEnd");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -51,10 +51,10 @@ public class UMLClassifierAssociationEndListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().getAssociationEnds(getTarget())
         	.contains(element);
     }

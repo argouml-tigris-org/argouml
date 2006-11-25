@@ -46,7 +46,7 @@ class ActionOpenDecisions extends UndoableAction {
                 Translator.localize("action.design-issues"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

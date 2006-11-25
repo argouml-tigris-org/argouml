@@ -41,7 +41,7 @@ public class UMLStateVertexContainerListModel extends UMLModelElementListModel2
         super("container");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -49,10 +49,10 @@ public class UMLStateVertexContainerListModel extends UMLModelElementListModel2
         addElement(Model.getFacade().getContainer(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().getContainer(getTarget()) == element;
     }
 }

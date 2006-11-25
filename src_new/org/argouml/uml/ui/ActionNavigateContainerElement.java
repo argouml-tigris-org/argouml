@@ -36,7 +36,7 @@ import org.argouml.model.Model;
  */
 public class ActionNavigateContainerElement extends AbstractActionNavigate {
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object source) {

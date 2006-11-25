@@ -68,8 +68,9 @@ public abstract class UMLCheckBox2 extends JCheckBox
         setActionCommand((String) a.getValue(Action.ACTION_COMMAND_KEY));
     }
 
-    /**
+    /*
      * The property value has changed so rebuild our view.
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
         buildModel();
@@ -94,12 +95,14 @@ public abstract class UMLCheckBox2 extends JCheckBox
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (Model.getFacade().isAModelElement(checkBoxTarget)) {
-            Model.getPump().removeModelEventListener(this, checkBoxTarget, propertySetName);
+            Model.getPump().removeModelEventListener(
+                    this, checkBoxTarget, propertySetName);
         }
 
         if (Model.getFacade().isAModelElement(target)) {
             checkBoxTarget = target;
-            Model.getPump().addModelEventListener(this, checkBoxTarget, propertySetName);
+            Model.getPump().addModelEventListener(
+                    this, checkBoxTarget, propertySetName);
             buildModel();
         }
     }
@@ -112,21 +115,21 @@ public abstract class UMLCheckBox2 extends JCheckBox
     public abstract void buildModel();
 
 
-    /**
+    /*
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /**
+    /*
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {

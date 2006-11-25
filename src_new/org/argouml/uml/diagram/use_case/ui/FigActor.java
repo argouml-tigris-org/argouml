@@ -119,7 +119,7 @@ public class FigActor extends FigNodeModelElement {
         setOwner(node);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int width) {
@@ -131,7 +131,7 @@ public class FigActor extends FigNodeModelElement {
         getFigAt(RIGHT_LEG_POSN).setLineWidth(width);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean filled) {
@@ -139,7 +139,7 @@ public class FigActor extends FigNodeModelElement {
         getFigAt(HEAD_POSN).setFilled(filled);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {
@@ -149,14 +149,14 @@ public class FigActor extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
         return new SelectionActor(this);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(
      *         java.awt.event.MouseEvent)
      */
@@ -169,14 +169,14 @@ public class FigActor extends FigNodeModelElement {
         return popUpActions;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
     public boolean isResizable() {
         return false;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -186,7 +186,7 @@ public class FigActor extends FigNodeModelElement {
         return new Dimension(w, h);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
@@ -218,7 +218,7 @@ public class FigActor extends FigNodeModelElement {
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
      */
     public Object deepHitPort(int x, int y) {
@@ -232,7 +232,7 @@ public class FigActor extends FigNodeModelElement {
         return null;
     }
 
-    /**
+    /*
      * Makes sure that the edges stick to the outline of the fig.
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
@@ -262,11 +262,7 @@ public class FigActor extends FigNodeModelElement {
         return ret;
     }
 
-    /**
-     * Handles changes of the model. Takes into account the event that
-     * occured. If you need to update the whole fig, consider using
-     * renderingChanged.
-     *
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -319,7 +315,7 @@ public class FigActor extends FigNodeModelElement {
         if (getOwner() == null) {
             return;
         }
-        Object cls = /*(MClass)*/ getOwner();
+        Object cls = getOwner();
         if (Model.getFacade().isAbstract(cls)) {
             getNameFig().setFont(getItalicLabelFont());
 	} else {
@@ -329,7 +325,7 @@ public class FigActor extends FigNodeModelElement {
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {

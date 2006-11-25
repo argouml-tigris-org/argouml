@@ -55,26 +55,27 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
         Collections.sort((List) metaClasses);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            Collection baseClasses = Model.getFacade().getBaseClasses(getTarget());
+            Collection baseClasses =
+                    Model.getFacade().getBaseClasses(getTarget());
             Iterator iter = baseClasses != null ? baseClasses.iterator() : null;
             return iter != null ? iter.next() : null;
         }
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
         setElements(metaClasses);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {

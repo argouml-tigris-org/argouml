@@ -216,7 +216,7 @@ public class FigComment
         return figClone;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object own) {
@@ -241,7 +241,7 @@ public class FigComment
      * down to one of the internal Figs.  This allows the user to
      * initiate direct text editing.
      *
-     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     * {@inheritDoc}
      */
     public void mouseClicked(MouseEvent me) {
         if (!readyToEdit) {
@@ -269,7 +269,7 @@ public class FigComment
         me.consume();
     }
 
-    /**
+    /*
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {
@@ -284,7 +284,7 @@ public class FigComment
         }
     }
 
-    /**
+    /*
      * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
      */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
@@ -294,7 +294,7 @@ public class FigComment
         endTrans();
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent pve) {
@@ -316,21 +316,21 @@ public class FigComment
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
+        // Not used, do nothing.
     }
 
-    /**
-     * Not used, do nothing.
-     *
+    /*
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
     public void keyReleased(KeyEvent ke) {
+        // Not used, do nothing.
     }
 
-    /**
+    /*
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent ke) {
@@ -358,14 +358,14 @@ public class FigComment
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
         return new SelectionComment(this);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
@@ -374,14 +374,14 @@ public class FigComment
         urCorner.setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return outlineFig.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
@@ -389,14 +389,14 @@ public class FigComment
         urCorner.setFillColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return outlineFig.getFillColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
@@ -405,14 +405,14 @@ public class FigComment
         urCorner.setFilled(f);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return outlineFig.getFilled();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
@@ -422,7 +422,7 @@ public class FigComment
         urCorner.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -432,7 +432,7 @@ public class FigComment
     ////////////////////////////////////////////////////////////////
     // user interaction methods
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) {
@@ -441,14 +441,14 @@ public class FigComment
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
         showHelp("parsing.help.comment");
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
@@ -480,7 +480,7 @@ public class FigComment
             : null;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
     public boolean getUseTrapRect() {
@@ -489,6 +489,7 @@ public class FigComment
     
     /**
      * Always returns null as the FigComment does not display its name.
+     * @return null
      */
     public Rectangle getNameBounds() {
         return null;
@@ -521,7 +522,7 @@ public class FigComment
 			     aSize.height + 4);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     protected void setBoundsImpl(int px, int py, int w, int h) {
@@ -565,7 +566,7 @@ public class FigComment
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
      */
     protected void updateBounds() {
@@ -579,10 +580,7 @@ public class FigComment
     ///////////////////////////////////////////////////////////////////
     // Internal methods
 
-    /**
-     * This is called after any part of the UML ModelElement (the comment) has
-     * changed. This method automatically updates the note FigText.
-     *
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected final void modelChanged(PropertyChangeEvent mee) {
@@ -621,11 +619,11 @@ public class FigComment
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
-        Object me = /*(MModelElement)*/ getOwner();
+        Object me = getOwner();
 
         if (me == null) {
             return;
@@ -674,7 +672,7 @@ public class FigComment
         return bodyTextFig.getText();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
     public Point getClosestPoint(Point anotherPt) {
@@ -696,7 +694,7 @@ public class FigComment
         return p;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {

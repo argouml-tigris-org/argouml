@@ -88,7 +88,7 @@ class TodoTokenTable extends XMLTokenTableBase {
 	super(32);
     }
 
-    /**
+    /*
      * @see org.argouml.persistence.XMLTokenTableBase#setupTokens()
      */
     protected void setupTokens() {

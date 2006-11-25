@@ -41,17 +41,17 @@ public class UMLCollaborationInteractionListModel
         super("interaction");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
         setAllElements(Model.getFacade().getInteractions(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ elem) {
+    protected boolean isValidElement(Object elem) {
         return Model.getFacade().isAInteraction(elem)
             && Model.getFacade().getContext(elem) == getTarget();
     }

@@ -61,7 +61,7 @@ public class ActionNewPseudoState extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize(n));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

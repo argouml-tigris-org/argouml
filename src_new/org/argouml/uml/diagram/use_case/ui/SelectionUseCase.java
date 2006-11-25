@@ -79,20 +79,9 @@ public class SelectionUseCase extends SelectionNodeClarifiers {
         super(f);
     }
 
-    /**
-     * Return a handle ID for the handle under the mouse, or -1 if
-     * none. TODO: in the future, return a Handle instance or
-     * null. <p>
-     *  <pre>
-     *   0-------1-------2
-     *   |               |
-     *   3               4
-     *   |               |
-     *   5-------6-------7
-     * </pre>
-     *
+    /*
      * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
-     * org.tigris.gef.presentation.Handle)
+     *      org.tigris.gef.presentation.Handle)
      */
     public void hitHandle(Rectangle r, Handle h) {
         super.hitHandle(r, h);
@@ -137,7 +126,7 @@ public class SelectionUseCase extends SelectionNodeClarifiers {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
      */
     public void paintButtons(Graphics g) {
@@ -151,7 +140,7 @@ public class SelectionUseCase extends SelectionNodeClarifiers {
         paintButtonRight(assoc, g, cx, cy + ch / 2, 13);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
      * org.tigris.gef.presentation.Handle)
      */
@@ -213,7 +202,7 @@ public class SelectionUseCase extends SelectionNodeClarifiers {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -224,7 +213,7 @@ public class SelectionUseCase extends SelectionNodeClarifiers {
                (Class) Model.getMetaTypes().getGeneralization());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeLeft(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -235,7 +224,7 @@ public class SelectionUseCase extends SelectionNodeClarifiers {
             (Class) Model.getMetaTypes().getAssociation());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeRight(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -246,7 +235,7 @@ public class SelectionUseCase extends SelectionNodeClarifiers {
 			  (Class) Model.getMetaTypes().getAssociation());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -257,7 +246,7 @@ public class SelectionUseCase extends SelectionNodeClarifiers {
 			  (Class) Model.getMetaTypes().getGeneralization());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {

@@ -49,7 +49,7 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
         super("bound");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
@@ -61,7 +61,7 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {
@@ -73,9 +73,9 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
         }
     }
 
-    /**
+    /*
      * @see javax.swing.text.Document#insertString(int, java.lang.String,
-     * javax.swing.text.AttributeSet)
+     *      javax.swing.text.AttributeSet)
      */
     public void insertString(int offset, String str, AttributeSet a)
         throws BadLocationException {

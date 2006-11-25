@@ -48,7 +48,7 @@ class ActionOpenGoals extends UndoableAction {
                 Translator.localize("action.design-goals"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

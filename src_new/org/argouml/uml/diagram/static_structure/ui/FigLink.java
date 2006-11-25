@@ -62,7 +62,7 @@ public class FigLink extends FigEdgeModelElement {
 	setOwner(edge);
     }
 
-    /**
+    /*
      * TODO: should edit something...
      *
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
@@ -70,7 +70,7 @@ public class FigLink extends FigEdgeModelElement {
     protected boolean canEdit(Fig f) { return false; }
 
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getDestination()
      */
     protected Object getDestination() {
@@ -80,7 +80,7 @@ public class FigLink extends FigEdgeModelElement {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getSource()
      */
     protected Object getSource() {

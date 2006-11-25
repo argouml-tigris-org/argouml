@@ -46,15 +46,15 @@ public class CrIllegalName extends CrUML {
 	addTrigger("name");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAModelElement(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object me = /*(MModelElement)*/ dm;
+	Object me = dm;
 	String meName = Model.getFacade().getName(me);
 	if (meName == null || meName.equals("")) {
 	    return NO_PROBLEM;
@@ -74,7 +74,7 @@ public class CrIllegalName extends CrUML {
 	return NO_PROBLEM;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {

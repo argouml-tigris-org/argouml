@@ -40,14 +40,14 @@ public class UMLModelElementNameDocument extends UMLPlainTextDocument {
         super("name");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
         Model.getCoreHelper().setName(getTarget(), text);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {

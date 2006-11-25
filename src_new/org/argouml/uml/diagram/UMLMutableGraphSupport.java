@@ -111,7 +111,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#containsNode(java.lang.Object)
      */
     public boolean containsNode(Object node) {
@@ -156,8 +156,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * Assume that anything can be connected to anything unless overridden
      * in a subclass.
      *
-     * @see org.tigris.gef.graph.MutableGraphModel#canConnect(
-     *         java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     public boolean canConnect(Object fromP, Object toP) {
         return true;
@@ -168,8 +167,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * The connect method without specifying a connection
      * type is unavailable in the ArgoUML implmentation.
      *
-     * @see org.tigris.gef.graph.MutableGraphModel#connect(
-     *         java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     public Object connect(Object fromPort, Object toPort) {
         throw new UnsupportedOperationException(
@@ -202,8 +200,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * type by class is unavailable in the ArgoUML implementation.
      * TODO: This should be unsupported. Use the 3 Object version
      *
-     * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object,
-     * java.lang.Object, java.lang.Class)
+     * {@inheritDoc}
      */
     public Object connect(Object fromPort, Object toPort, Class edgeClass) {
         return connect(fromPort, toPort, (Object) edgeClass);
@@ -288,7 +285,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
@@ -362,7 +359,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
     public boolean canAddEdge(Object edge) {
@@ -380,7 +377,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         return false;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
      */
     public void addNodeRelatedEdges(Object node) {

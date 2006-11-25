@@ -53,7 +53,7 @@ class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement {
         setMultiSelect(false);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
@@ -66,7 +66,7 @@ class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement {
         return vec;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
@@ -78,14 +78,14 @@ class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement {
         return vec;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-signal");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {

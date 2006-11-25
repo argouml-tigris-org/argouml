@@ -45,7 +45,7 @@ public class UMLClassOperationListModel
         super("feature");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -54,14 +54,14 @@ public class UMLClassOperationListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return (Model.getFacade().getOperations(getTarget()).contains(element));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
      */
     protected void moveDown(int index1) {

@@ -72,7 +72,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
     public void addClass() {
         Object target = getTarget();
         if (Model.getFacade().isANamespace(target)) {
-            Object ns = /*(MNamespace)*/ target;
+            Object ns = target;
             Object ownedElem = Model.getCoreFactory().buildClass();
             Model.getCoreHelper().addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
@@ -85,7 +85,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
     public void addInterface() {
         Object target = getTarget();
         if (Model.getFacade().isANamespace(target)) {
-            Object ns = /*(MNamespace)*/ target;
+            Object ns = target;
             Object ownedElem = Model.getCoreFactory().createInterface();
             Model.getCoreHelper().addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
@@ -98,7 +98,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
     public void addPackage() {
         Object target = getTarget();
         if (Model.getFacade().isANamespace(target)) {
-            Object ns = /*(MNamespace)*/ target;
+            Object ns = target;
             Object ownedElem = Model.getModelManagementFactory()
                 .createPackage();
             Model.getCoreHelper().addOwnedElement(ns, ownedElem);

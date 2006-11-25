@@ -54,7 +54,7 @@ public class ActionSetClassActive extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -63,7 +63,7 @@ public class ActionSetClassActive extends UndoableAction {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
             if (Model.getFacade().isAClass(target)) {
-                Object m = /*(MGeneralizableElement)*/ target;
+                Object m = target;
                 Model.getCoreHelper().setActive(m, source.isSelected());
             }
         }

@@ -54,23 +54,22 @@ public class AttributeNotationUml extends AttributeNotation {
     private static final Logger LOG = 
         Logger.getLogger(AttributeNotationUml.class);
 
-    private static final AttributeNotationUml instance = new AttributeNotationUml();
+    private static final AttributeNotationUml INSTANCE =
+            new AttributeNotationUml();
     
     public static final AttributeNotationUml getInstance() {
-    	return instance;
+    	return INSTANCE;
     }
     
     /**
      * The constructor.
-     *
-     * @param attribute the attribute that is represented
      */
     protected AttributeNotationUml() {
         super();
         LOG.info("Creating AttributeNotationUml");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -465,7 +464,7 @@ public class AttributeNotationUml extends AttributeNotation {
         NotationUtilityUml.dealWithStereotypes(attribute, stereotype, true);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
@@ -480,7 +479,7 @@ public class AttributeNotationUml extends AttributeNotation {
      * Depending on settings in Notation, visibility, multiplicity,
      * type-expression, initial value and properties are shown/not shown.
      * 
-     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * {@inheritDoc}
      */
     public String toString(Object modelElement, HashMap args) {
         Project p = ProjectManager.getManager().getCurrentProject();

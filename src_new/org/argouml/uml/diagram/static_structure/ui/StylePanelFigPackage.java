@@ -65,7 +65,7 @@ public class StylePanelFigPackage extends StylePanelFigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
@@ -81,7 +81,7 @@ public class StylePanelFigPackage extends StylePanelFigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // event handling
 
-    /**
+    /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {

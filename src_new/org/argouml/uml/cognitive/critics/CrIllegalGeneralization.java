@@ -29,7 +29,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * Well-formedness rule [1] for MGeneralization. See page 32 of UML 1.1
+ * Well-formedness rule [1] for Generalization. See page 32 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
  * This critic checks that the parent and child in a generalization are
  * of the same metatype.
@@ -48,15 +48,15 @@ public class CrIllegalGeneralization extends CrUML {
 	addTrigger("subtype");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAGeneralization(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object gen = /*(MGeneralization)*/ dm;
+	Object gen = dm;
 	Object cls1 = Model.getFacade().getParent(gen);
 	Object cls2 = Model.getFacade().getChild(gen);
 	if (cls1 == null || cls2 == null) {
@@ -70,4 +70,4 @@ public class CrIllegalGeneralization extends CrUML {
 	return NO_PROBLEM;
     }
 
-} /* end class CrIllegalGeneralization.java */
+} /* end class CrIllegalGeneralization */

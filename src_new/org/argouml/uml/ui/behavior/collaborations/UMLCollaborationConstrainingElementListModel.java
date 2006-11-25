@@ -43,17 +43,17 @@ public class UMLCollaborationConstrainingElementListModel
         super("constrainingElement");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
         setAllElements(Model.getFacade().getConstrainingElements(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ elem) {
+    protected boolean isValidElement(Object elem) {
         return (Model.getFacade().getConstrainingElements(getTarget())
                 .contains(elem));
     }

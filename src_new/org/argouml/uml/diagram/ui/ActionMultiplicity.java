@@ -44,7 +44,7 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionMultiplicity extends UndoableAction {
     private String str = "";
-    private Object/*MMultiplicity*/ mult = null;
+    private Object mult = null;
 
 
     ////////////////////////////////////////////////////////////////
@@ -97,7 +97,7 @@ public class ActionMultiplicity extends UndoableAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

@@ -45,7 +45,7 @@ public class UMLEnumerationLiteralsListModel
         super("feature");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -55,7 +55,7 @@ public class UMLEnumerationLiteralsListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
@@ -67,7 +67,7 @@ public class UMLEnumerationLiteralsListModel
         return false;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
      */
     protected void moveDown(int index1) {

@@ -55,8 +55,8 @@ public class UMLReceptionSignalComboBox extends UMLComboBox2 {
      */
     protected void doIt(ActionEvent event) {
         Object o = getModel().getElementAt(getSelectedIndex());
-        Object signal = /*(MSignal)*/ o;
-        Object reception = /*(MReception)*/ getTarget();
+        Object signal = o;
+        Object reception = getTarget();
         if (signal != Model.getFacade().getSignal(reception)) {
             Model.getCommonBehaviorHelper().setSignal(reception, signal);
         }

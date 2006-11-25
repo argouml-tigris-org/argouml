@@ -32,7 +32,7 @@ package org.argouml.persistence;
  */
 class XmlFilePersister extends XmiFilePersister {
 
-    /**
+    /*
      * @see org.argouml.persistence.AbstractFilePersister#getExtension()
      */
     public String getExtension() {

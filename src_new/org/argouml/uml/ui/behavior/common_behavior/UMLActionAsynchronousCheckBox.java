@@ -43,7 +43,7 @@ public class UMLActionAsynchronousCheckBox extends UMLCheckBox2 {
                 ActionSetActionAsynchronous.getInstance(), "isAsynchronous");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {

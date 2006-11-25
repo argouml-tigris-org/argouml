@@ -47,18 +47,13 @@ public class ActionNewModelElementConstraint
         super();
     }
 
-
-
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Model.getCoreFactory().buildConstraint(/*(MModelElement)*/
-                getTarget());
+        Model.getCoreFactory().buildConstraint(getTarget());
     }
-
-
 
     /**
      * @return Returns the SINGLETON.

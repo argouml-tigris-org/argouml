@@ -48,7 +48,7 @@ public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule {
         return Translator.localize ("misc.use-case.extension-point");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
@@ -58,7 +58,7 @@ public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {

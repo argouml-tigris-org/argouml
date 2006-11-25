@@ -46,7 +46,7 @@ public class DelayedChangeNotify implements Runnable {
 	pce = p;
     }
 
-    /**
+    /*
      * @see java.lang.Runnable#run()
      */
     public void run() { listener.delayedVetoableChange(pce); }

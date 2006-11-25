@@ -45,14 +45,15 @@ public class UMLScriptExpressionModel extends UMLExpressionModel2 {
         super(container, propertyName);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        return Model.getFacade().getScript(TargetManager.getInstance().getTarget());
+        return Model.getFacade().getScript(
+                TargetManager.getInstance().getTarget());
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expression) {
@@ -60,7 +61,7 @@ public class UMLScriptExpressionModel extends UMLExpressionModel2 {
         	.setScript(TargetManager.getInstance().getTarget(), expression);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
      */
     public Object newExpression() {

@@ -51,7 +51,7 @@ public class CrNoOperations extends CrUML {
 	addTrigger("behavioralFeature");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
@@ -84,7 +84,7 @@ public class CrNoOperations extends CrUML {
 	return PROBLEM_FOUND;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {
@@ -118,7 +118,7 @@ public class CrNoOperations extends CrUML {
 	return false;
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
@@ -131,7 +131,7 @@ public class CrNoOperations extends CrUML {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) { return WizAddOperation.class; }

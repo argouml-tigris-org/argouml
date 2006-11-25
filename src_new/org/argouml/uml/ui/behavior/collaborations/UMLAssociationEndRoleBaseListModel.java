@@ -41,7 +41,7 @@ public class UMLAssociationEndRoleBaseListModel
         super("base");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -52,15 +52,15 @@ public class UMLAssociationEndRoleBaseListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ base) {
+    protected boolean isValidElement(Object base) {
         if (!Model.getFacade().isAAssociationEnd(base)) {
             return false;
         }
 
-        Object assocEndRole = /*(MAssociationEndRole)*/ getTarget();
+        Object assocEndRole = getTarget();
         Object assocRole =
             Model.getFacade().getAssociation(assocEndRole);
         return Model.getFacade().getConnections(

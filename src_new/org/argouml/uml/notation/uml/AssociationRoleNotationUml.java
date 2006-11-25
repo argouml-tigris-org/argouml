@@ -51,14 +51,14 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
         super(role);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
     public String getParsingHelp() {
         return "parsing.help.fig-association-role";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
     public void parse(Object modelElement, String text) {
@@ -186,7 +186,7 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
      * So, if both names are empty, then nothing is shown! 
      * See issue 2712.
      * 
-     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * {@inheritDoc}
      */
     public String toString(Object modelElement, HashMap args) {
         //get the associationRole name

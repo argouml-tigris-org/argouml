@@ -100,7 +100,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
 	showOutgoing = b;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
      *         org.tigris.gef.presentation.Handle)
      */
@@ -142,7 +142,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
 	}
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(java.awt.Graphics)
      */
     public void paintButtons(Graphics g) {
@@ -161,7 +161,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
      *         org.tigris.gef.presentation.Handle)
      */
@@ -222,7 +222,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
 	return Model.getCollaborationsFactory().createClassifierRole();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -231,7 +231,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
 			   (Class) Model.getMetaTypes().getAssociationRole());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeLeft(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -240,7 +240,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
 			  (Class) Model.getMetaTypes().getAssociationRole());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeRight(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -262,7 +262,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
 			  (Class) Model.getMetaTypes().getAssociationRole());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */

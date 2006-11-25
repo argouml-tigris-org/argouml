@@ -213,9 +213,9 @@ public class CrReservedName extends CrUML {
     ////////////////////////////////////////////////////////////////
     // Critic implementation
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isPrimaryObject(dm))) {
@@ -263,12 +263,12 @@ public class CrReservedName extends CrUML {
     }
 
 
-    /**
+    /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() { return ClClassName.getTheInstance(); }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
@@ -284,7 +284,7 @@ public class CrReservedName extends CrUML {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }

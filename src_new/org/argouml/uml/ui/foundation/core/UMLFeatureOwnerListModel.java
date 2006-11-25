@@ -40,7 +40,7 @@ public class UMLFeatureOwnerListModel extends UMLModelElementListModel2 {
 	super("owner");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -50,10 +50,10 @@ public class UMLFeatureOwnerListModel extends UMLModelElementListModel2 {
 	}
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
 	return Model.getFacade().getOwner(getTarget()) == o;
     }
 

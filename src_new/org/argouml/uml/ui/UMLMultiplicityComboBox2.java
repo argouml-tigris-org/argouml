@@ -53,15 +53,14 @@ public class UMLMultiplicityComboBox2 extends UMLSearchableComboBox {
      * to be set. If not, the combobox searches for a multiplicity starting with
      * the given text. If there is no multiplicity starting with the given text,
      * the old value is reset in the comboboxeditor.
-     * @see org.argouml.uml.ui.UMLEditableComboBox#doOnEdit(java.lang.Object)
+     * 
+     * {@inheritDoc}
      */
     protected void doOnEdit(Object item) {
         String text = (String) item;
-        Object/*MMultiplicity*/ multi = null;
+        Object multi = null;
         try {
-            multi =
-                Model.getDataTypesFactory()
-                	.createMultiplicity(text); //new MMultiplicity(text);
+            multi = Model.getDataTypesFactory().createMultiplicity(text);
         } catch (IllegalArgumentException e) {
             Object o = search(text);
             if (o != null ) {

@@ -86,12 +86,9 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
         super(f);
     }
 
-    /**
-     * Return a handle ID for the handle under the mouse, or -1 if
-     * none.
-     *
+    /*
      * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
-     * org.tigris.gef.presentation.Handle)
+     *      org.tigris.gef.presentation.Handle)
      */
     public void hitHandle(Rectangle r, Handle h) {
         super.hitHandle(r, h);
@@ -131,7 +128,7 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
         }
     }
     
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
      */
     public void paintButtons(Graphics g) {
@@ -152,9 +149,9 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
-     * org.tigris.gef.presentation.Handle)
+     *      org.tigris.gef.presentation.Handle)
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
         if (hand.index < 10) {
@@ -197,7 +194,7 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
 
     }
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) {
@@ -205,7 +202,7 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
         useComposite = me.isShiftDown();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
@@ -241,7 +238,7 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
         return null;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -252,7 +249,7 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
         return dep;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */

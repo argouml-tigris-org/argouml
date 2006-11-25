@@ -27,7 +27,6 @@ package org.argouml.uml.ui.foundation.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
@@ -39,7 +38,6 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 public class UMLClassAttributeListModel
     extends UMLModelElementOrderedListModel2 {
 
-    private static final Logger LOG = Logger.getLogger(UMLClassAttributeListModel.class);
     /**
      * Constructor for UMLClassifierStructuralFeatureListModel.
      */
@@ -47,7 +45,7 @@ public class UMLClassAttributeListModel
         super("feature");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -57,14 +55,14 @@ public class UMLClassAttributeListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return (Model.getFacade().getAttributes(getTarget()).contains(element));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
     protected void moveDown(int index1) {

@@ -40,14 +40,14 @@ import org.argouml.model.Model;
  */
 public class GoSummaryToAssociation extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
         return Translator.localize ("misc.summary.association");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
@@ -58,7 +58,7 @@ public class GoSummaryToAssociation extends AbstractPerspectiveRule {
 	return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {

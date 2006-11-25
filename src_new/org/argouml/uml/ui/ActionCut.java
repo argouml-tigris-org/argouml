@@ -79,9 +79,7 @@ public class ActionCut extends AbstractAction implements CaretListener {
 
     private JTextComponent textSource;
 
-    /**
-     * Cuts some text or a fig.
-     *
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -112,9 +110,8 @@ public class ActionCut extends AbstractAction implements CaretListener {
         return false;
     }
 
-    /**
-     * @see
-     * javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
+    /*
+     * @see javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
      */
     public void caretUpdate(CaretEvent e) {
         if (e.getMark() != e.getDot()) { // there is a selection

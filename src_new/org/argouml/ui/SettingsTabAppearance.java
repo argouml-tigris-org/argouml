@@ -150,7 +150,7 @@ class SettingsTabAppearance
         metalTheme.setEnabled(enabled);
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
@@ -164,7 +164,7 @@ class SettingsTabAppearance
             Argo.KEY_SMOOTH_EDGES, false));
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
@@ -185,24 +185,24 @@ class SettingsTabAppearance
         }
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() { }
 
-    /**
+    /*
      * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
      */
     public void handleResetToDefault() {
         // Do nothing - these buttons are not shown.
     }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() { return "tab.appearance"; }
 
-    /**
+    /*
      * @see GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() { return this; }
@@ -232,7 +232,7 @@ class MyLocale {
         return myLocale;
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

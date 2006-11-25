@@ -43,7 +43,7 @@ public class UMLCompositeStateConcurrentCheckBox extends UMLCheckBox2 {
             "isConcurent");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {

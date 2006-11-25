@@ -48,7 +48,7 @@ public class ActionNewSimpleState extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize("button.new-simplestate"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

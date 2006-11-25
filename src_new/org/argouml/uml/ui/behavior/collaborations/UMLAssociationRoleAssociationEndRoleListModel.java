@@ -46,22 +46,22 @@ public class UMLAssociationRoleAssociationEndRoleListModel
         super("connection");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
         setAllElements(Model.getFacade().getConnections(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isAAssociationEndRole(o)
             && Model.getFacade().getConnections(getTarget()).contains(o);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
     protected void moveDown(int index1) {

@@ -82,7 +82,7 @@ public class WizMEName extends UMLWizard {
 	return null;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.UMLWizard#setSuggestion(java.lang.String)
      */
     public void setSuggestion(String s) {
@@ -106,13 +106,7 @@ public class WizMEName extends UMLWizard {
 	return true;
     }
 
-    /**
-     * Take action at the completion of a step. For example, when the
-     * given step is 0, do nothing; and when the given step is 1, do
-     * the first action.  Argo non-modal wizards should take action as
-     * they do along, as soon as possible, they should not wait until
-     * the final step.
-     *
+    /*
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {

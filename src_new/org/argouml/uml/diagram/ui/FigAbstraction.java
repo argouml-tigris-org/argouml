@@ -76,7 +76,7 @@ public class FigAbstraction extends FigDependency {
 
 
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
     public void renderingChanged() {
@@ -85,7 +85,7 @@ public class FigAbstraction extends FigDependency {
         middleGroup.calcBounds();
     }
     
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     public void modelChanged(PropertyChangeEvent e) {

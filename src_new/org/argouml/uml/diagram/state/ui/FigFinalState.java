@@ -26,7 +26,6 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
@@ -100,7 +99,7 @@ public class FigFinalState extends FigStateVertex {
     	setOwner(node);
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -115,7 +114,7 @@ public class FigFinalState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
@@ -138,62 +137,63 @@ public class FigFinalState extends FigStateVertex {
 
     /**
      * Final states are fixed size.
-     *
+     * @return false
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
     public boolean isResizable() {
         return false;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
         getBigPort().setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return getBigPort().getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
         inCircle.setFillColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return inCircle.getFillColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
+        // ignored - rendering is fixed
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return true;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         getBigPort().setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -203,10 +203,11 @@ public class FigFinalState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Event handlers
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
+        // ignore mouse clicks
     }
 
     /**
@@ -230,7 +231,7 @@ public class FigFinalState extends FigStateVertex {
         inCircle.setY(boundY + 5);
     }*/
 
-    /**
+    /*
      * Makes sure that edges stick to the outer circle and not to the box.
      *
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()

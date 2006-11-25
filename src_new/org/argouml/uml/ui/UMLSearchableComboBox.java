@@ -62,11 +62,11 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
     /**
      * Searches amongst the modelelements (the elements in the listmodel) for an
      * item that conforms to the parameter item. If such an element is a
-     * MModelelement, the name should start with the item (which is a String).
+     * ModelElement, the name should start with the item (which is a String).
      * Otherwise the text that is shown in the combobox should start with the
      * text. As the element is found, this is made to the selected item.
      *
-     * @see org.argouml.uml.ui.UMLEditableComboBox#doOnEdit(Object)
+     * {@inheritDoc}
      */
     protected void doOnEdit(Object item) {
         Object element = search(item);

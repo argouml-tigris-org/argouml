@@ -52,7 +52,7 @@ public class ActionSetSubmachineStateSubmachine extends UndoableAction {
                 Translator.localize("action.set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

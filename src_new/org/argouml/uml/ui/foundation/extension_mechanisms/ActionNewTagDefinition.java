@@ -54,9 +54,9 @@ public class ActionNewTagDefinition extends UndoableAction {
                 Translator.localize("button.new-tagdefinition"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(
-     * java.awt.event.ActionEvent)
+     *      java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);

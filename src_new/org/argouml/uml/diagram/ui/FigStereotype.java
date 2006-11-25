@@ -27,15 +27,11 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.CompartmentFigText;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
@@ -51,9 +47,7 @@ public class FigStereotype extends CompartmentFigText {
      * The UID.
      */
     private static final long serialVersionUID = -6174252286709779782L;
-    
-    private static final Logger LOG = Logger.getLogger(FigStereotype.class);
-    
+
     /**
     * Constructor for FigFeature.
     * @param x x
@@ -91,8 +85,8 @@ public class FigStereotype extends CompartmentFigText {
     }
     
     /**
-     * Add guillemots to any text set to this Fig
-     * @see org.tigris.gef.presentation.FigText#setText(java.lang.String)
+     * Add guillemots to any text set to this Fig.
+     * {@inheritDoc}
      */
     public void setText(String text) {
         Project project = 

@@ -56,7 +56,7 @@ public class ActionSetGeneralizationPowertype extends UndoableAction {
 
 
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -69,16 +69,16 @@ public class ActionSetGeneralizationPowertype extends UndoableAction {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (Model.getFacade().isAGeneralization(o)) {
-                gen = /*(MGeneralization)*/ o;
+                gen = o;
                 oldClassifier = Model.getFacade().getPowertype(gen);
             }
             o = box.getSelectedItem();
             if (Model.getFacade().isAClassifier(o)) {
-                newClassifier = /*(MClassifier)*/ o;
+                newClassifier = o;
             }
         }
         if (newClassifier != oldClassifier && gen != null) {
-            newClassifier = /*(MClassifier)*/ Model.getModelManagementHelper()
+            newClassifier = Model.getModelManagementHelper()
                 .getCorrespondingElement(
                         newClassifier,
                         Model.getFacade().getModel(gen));

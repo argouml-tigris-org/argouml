@@ -45,7 +45,7 @@ public class UMLPartitionContentsListModel extends UMLModelElementListModel2 {
         // TODO: Auto-generated constructor stub
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -55,7 +55,7 @@ public class UMLPartitionContentsListModel extends UMLModelElementListModel2 {
 
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {

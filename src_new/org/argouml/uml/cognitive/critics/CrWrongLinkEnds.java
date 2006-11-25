@@ -55,7 +55,7 @@ public class CrWrongLinkEnds extends CrUML {
 
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
@@ -77,7 +77,7 @@ public class CrWrongLinkEnds extends CrUML {
 
     /*
      * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
@@ -145,4 +145,4 @@ public class CrWrongLinkEnds extends CrUML {
 	return offs;
     }
 
-} /* end class CrWrongLinkEnds.java */
+} /* end class CrWrongLinkEnds */

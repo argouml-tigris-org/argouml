@@ -167,7 +167,7 @@ abstract class SAXParserBase extends DefaultHandler {
     ////////////////////////////////////////////////////////////////
     // non-abstract methods
 
-    /**
+    /*
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
      *         java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
@@ -214,7 +214,7 @@ abstract class SAXParserBase extends DefaultHandler {
         return e;
     }
 
-    /**
+    /*
      * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
      *         java.lang.String, java.lang.String)
      */
@@ -250,7 +250,7 @@ abstract class SAXParserBase extends DefaultHandler {
     // TODO: remove when code below in characters() is removed
 //    private static final String    RETURNSTRING  = "\n      ";
     
-    /**
+    /*
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
     public void characters(char[] ch, int start, int length)
@@ -274,7 +274,7 @@ abstract class SAXParserBase extends DefaultHandler {
     }
 
 
-    /**
+    /*
      * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String,
      *         java.lang.String)
      */

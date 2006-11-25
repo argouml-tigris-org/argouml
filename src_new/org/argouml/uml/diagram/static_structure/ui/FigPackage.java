@@ -195,7 +195,7 @@ public class FigPackage extends FigNodeModelElement
         this(node, 0, 0);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
@@ -206,14 +206,14 @@ public class FigPackage extends FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {
         return "new Package";
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -234,7 +234,7 @@ public class FigPackage extends FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
@@ -245,14 +245,14 @@ public class FigPackage extends FigNodeModelElement
         stereoLineBlinder.setLineColor(stereoLineBlinder.getFillColor());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return body.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
@@ -263,14 +263,14 @@ public class FigPackage extends FigNodeModelElement
         stereoLineBlinder.setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
         return body.getFillColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
@@ -279,14 +279,14 @@ public class FigPackage extends FigNodeModelElement
         body.setFilled(f);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return body.getFilled();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
@@ -294,7 +294,7 @@ public class FigPackage extends FigNodeModelElement
         body.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -303,17 +303,15 @@ public class FigPackage extends FigNodeModelElement
 
     ////////////////////////////////////////////////////////////////
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
-     *
-     * Called to update the graphics.
      */
     public void renderingChanged() {
         super.renderingChanged();
         updateStereotypeText();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
@@ -397,14 +395,14 @@ public class FigPackage extends FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // accessor methods
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
     public boolean getUseTrapRect() {
         return true;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
@@ -657,7 +655,7 @@ public class FigPackage extends FigNodeModelElement
 	    super(xa, ya, w, h);
 	}
 
-	/**
+	/*
 	 * @see java.awt.event.MouseListener#mouseClicked(
          *         java.awt.event.MouseEvent)
 	 */
@@ -666,7 +664,7 @@ public class FigPackage extends FigNodeModelElement
 	    String lsDefaultName = "main";
 
 	    if (me.getClickCount() >= 2) {
-		Object lPkg = /*(MPackage)*/ FigPackage.this.getOwner();
+		Object lPkg = FigPackage.this.getOwner();
 		if (lPkg != null) {
 		    Object lNS = lPkg;
 
@@ -679,8 +677,7 @@ public class FigPackage extends FigNodeModelElement
 		    while (diagEnum.hasMoreElements()) {
 			UMLDiagram lDiagram =
 			    (UMLDiagram) diagEnum.nextElement();
-			Object lDiagramNS =
-			    /*(MNamespace)*/lDiagram.getNamespace();
+			Object lDiagramNS = lDiagram.getNamespace();
 			if ((lNS == null && lDiagramNS == null)
 			    || (lNS.equals(lDiagramNS))) {
 			    /* save first */
@@ -771,14 +768,14 @@ public class FigPackage extends FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.StereotypeContainer#isStereotypeVisible()
      */
     public boolean isStereotypeVisible() {
         return stereotypeVisible;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.StereotypeContainer#setStereotypeVisible(boolean)
      */
     public void setStereotypeVisible(boolean isVisible) {
@@ -787,14 +784,14 @@ public class FigPackage extends FigNodeModelElement
         damage();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.VisibilityContainer#isVisibilityVisible()
      */
     public boolean isVisibilityVisible() {
         return visibilityVisible;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.VisibilityContainer#setVisibilityVisible(boolean)
      */
     public void setVisibilityVisible(boolean isVisible) {
@@ -807,7 +804,7 @@ public class FigPackage extends FigNodeModelElement
         damage();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
@@ -829,7 +826,7 @@ public class FigPackage extends FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
     public Point getClosestPoint(Point anotherPt) {
@@ -870,7 +867,7 @@ public class FigPackage extends FigNodeModelElement
             super(Translator.localize(ACTION_KEY),
                     ResourceLoaderWrapper.lookupIcon(ACTION_KEY));
         }
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(
          *         java.awt.event.ActionEvent)
          */
@@ -900,7 +897,7 @@ public class FigPackage extends FigNodeModelElement
             super(Translator.localize(ACTION_KEY),
                     ResourceLoaderWrapper.lookupIcon(ACTION_KEY));
         }
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(
          *         java.awt.event.ActionEvent)
          */
@@ -930,7 +927,7 @@ public class FigPackage extends FigNodeModelElement
             super(Translator.localize(ACTION_KEY),
                     ResourceLoaderWrapper.lookupIcon(ACTION_KEY));
         }
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(
          *         java.awt.event.ActionEvent)
          */
@@ -960,7 +957,7 @@ public class FigPackage extends FigNodeModelElement
             super(Translator.localize(ACTION_KEY),
                     ResourceLoaderWrapper.lookupIcon(ACTION_KEY));
         }
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(
          *         java.awt.event.ActionEvent)
          */
@@ -1004,7 +1001,7 @@ class PackagePortFigRect extends FigRect {
         tabHeight = th;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
     public Point getClosestPoint(Point anotherPt) {

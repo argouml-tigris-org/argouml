@@ -82,7 +82,7 @@ public class ShadowComboBox extends JComboBox {
             super();
         }
 
-        /**
+        /*
          * @see javax.swing.ListCellRenderer#getListCellRendererComponent(
          *         javax.swing.JList, java.lang.Object, int, boolean, boolean)
          */
@@ -131,7 +131,7 @@ public class ShadowComboBox extends JComboBox {
             return this;
         }
 
-        /**
+        /*
          * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
          */
         protected void paintComponent(Graphics g) {

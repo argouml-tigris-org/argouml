@@ -29,7 +29,6 @@ import java.io.File;
 
 import javax.swing.AbstractAction;
 
-import org.apache.log4j.Logger;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -40,8 +39,6 @@ import org.argouml.ui.ProjectBrowser;
  * @since 10. November 2003 (0.15.2)
  */
 public class ActionReopenProject extends AbstractAction {
-    private static final Logger LOG =
-	Logger.getLogger(ActionReopenProject.class);
 
     private String filename;
 

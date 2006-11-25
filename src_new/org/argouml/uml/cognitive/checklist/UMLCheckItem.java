@@ -63,9 +63,9 @@ public class UMLCheckItem extends CheckItem {
     }
 
 
-    /**
+    /*
      * @see org.argouml.cognitive.checklist.CheckItem#expand(java.lang.String,
-     * java.lang.Object)
+     *      java.lang.Object)
      */
     public String expand(String res, Object dm) {
 	int searchPos = 0;

@@ -41,17 +41,17 @@ public class UMLExtensionPointUseCaseListModel
         super("useCase");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
         addElement(Model.getFacade().getUseCase(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isAUseCase(o)
             && Model.getFacade().getUseCase(getTarget()) == o;
     }

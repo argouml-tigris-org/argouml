@@ -44,13 +44,13 @@ public class CrForkOutgoingTransition extends CrUML {
         addTrigger("outgoing");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
-     * org.argouml.cognitive.Designer)
+     *      org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isATransition(dm))) return NO_PROBLEM;
-        Object tr = /*(MTransition)*/ dm;
+        Object tr = dm;
         Object target = Model.getFacade().getTarget(tr);
         Object source = Model.getFacade().getSource(tr);
         if (!(Model.getFacade().isAPseudostate(source))) return NO_PROBLEM;

@@ -36,14 +36,14 @@ import org.argouml.kernel.Project;
  */
 public class GoProjectToModel extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
 	return Translator.localize ("misc.project.model");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
@@ -53,7 +53,7 @@ public class GoProjectToModel extends AbstractPerspectiveRule {
 	return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {

@@ -122,7 +122,7 @@ class XmlInputStream extends BufferedInputStream {
         childOnly = false;
     }
 
-    /**
+    /*
      * @see java.io.InputStream#read()
      */
     public synchronized int read() throws IOException {
@@ -139,7 +139,7 @@ class XmlInputStream extends BufferedInputStream {
         return ch;
     }
 
-    /**
+    /*
      * @see java.io.InputStream#read(byte[], int, int)
      */
     public synchronized int read(byte[] b, int off, int len)

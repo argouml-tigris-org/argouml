@@ -40,7 +40,7 @@ public class ActionCollaborationDiagram extends ActionNewDiagram {
         super("action.collaboration-diagram");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
      */
     public UMLDiagram createDiagram() {

@@ -48,7 +48,7 @@ public class ActionStateDiagram extends ActionNewDiagram {
         super("action.state-diagram");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
      */
     protected UMLDiagram createDiagram() {

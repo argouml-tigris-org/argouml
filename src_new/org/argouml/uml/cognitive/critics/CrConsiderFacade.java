@@ -43,9 +43,9 @@ public class CrConsiderFacade extends CrUML {
 	addTrigger("ownedElement");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	/* TODO: Add implementation. */

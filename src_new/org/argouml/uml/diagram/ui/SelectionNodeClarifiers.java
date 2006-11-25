@@ -48,24 +48,22 @@ public class SelectionNodeClarifiers extends SelectionButtons {
         super(f);
     }
 
-    /**
-     * Paint the handles at the four corners and midway along each edge of the
-     * bounding box.
-     *
-     * @see org.tigris.gef.base.Selection#paint(java.awt.Graphics)
+    /*
+     * @see org.tigris.gef.base.SelectionButtons#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
         ((FigNodeModelElement) getContent()).paintClarifiers(g);
         super.paint(g);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(java.awt.Graphics)
      */
     public void paintButtons(Graphics g) {
+        // ignored
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int arg0) {

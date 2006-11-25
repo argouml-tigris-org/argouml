@@ -40,14 +40,14 @@ import org.argouml.model.Model;
  */
 public class GoMessageToAction extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
 	return Translator.localize ("misc.message.action");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(
      *         java.lang.Object)
      */
@@ -65,7 +65,7 @@ public class GoMessageToAction extends AbstractPerspectiveRule {
 	return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(
      *         java.lang.Object)
      */

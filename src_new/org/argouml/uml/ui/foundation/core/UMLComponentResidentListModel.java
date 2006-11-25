@@ -45,7 +45,7 @@ public class UMLComponentResidentListModel
         super("resident");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -60,7 +60,7 @@ public class UMLComponentResidentListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {

@@ -69,7 +69,7 @@ public class PathConvPercent2 extends PathConv {
         setPercentOffset(newPercent, newOffset);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.PathConv#stuffPoint(java.awt.Point)
      */
     public void stuffPoint(Point res) {
@@ -97,13 +97,13 @@ public class PathConvPercent2 extends PathConv {
         offset = newOffset;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.PathConv#setClosestPoint(java.awt.Point)
      */
     public void setClosestPoint(Point newPoint) {
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.PathConv#applyOffsetAmount(java.awt.Point, java.awt.Point, int, java.awt.Point)
      */
     protected void applyOffsetAmount(

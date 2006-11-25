@@ -84,7 +84,7 @@ public abstract class AbstractActionNavigate extends UndoableAction
      */
     protected abstract Object navigateTo(Object source);
 
-    /**
+    /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {
@@ -92,9 +92,7 @@ public abstract class AbstractActionNavigate extends UndoableAction
         return ((target != null) && (navigateTo(target) != null));
     }
 
-    /**
-     * Perform the work the action is supposed to do.
-     *
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -109,21 +107,21 @@ public abstract class AbstractActionNavigate extends UndoableAction
         }
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setEnabled(isEnabled());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setEnabled(isEnabled());
     }
 
-    /**
+    /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {

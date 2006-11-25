@@ -56,10 +56,10 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
 
-    /**
+    /*
      * @see javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent(
-     * javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int,
-     * boolean)
+     *      javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int,
+     *      boolean)
      */
     public Component getTreeCellRendererComponent(
         JTree tree,

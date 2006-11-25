@@ -64,7 +64,7 @@ public class UMLAssociationEndAggregationRadioButtonPanel
                 ActionSetAssociationEndAggregation.getInstance(), horizontal);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLRadioButtonPanel#buildModel()
      */
     public void buildModel() {

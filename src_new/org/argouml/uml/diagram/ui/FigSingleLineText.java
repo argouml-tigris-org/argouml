@@ -59,7 +59,7 @@ public class FigSingleLineText extends FigText {
      */
     private String[] properties;
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigText#FigText(
      *         int, int, int, int, boolean)
      */
@@ -74,7 +74,7 @@ public class FigSingleLineText extends FigText {
         setLineWidth(0);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigText#FigText(
      *         int, int, int, int, boolean)
      */
@@ -83,7 +83,7 @@ public class FigSingleLineText extends FigText {
         this(x, y, w, h, expandOnly, new String[] {property});
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigText#FigText(
      *         int, int, int, int, boolean)
      */

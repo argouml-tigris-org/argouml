@@ -41,7 +41,7 @@ public class UMLTransitionStatemachineListModel
         super("statemachine");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -49,10 +49,10 @@ public class UMLTransitionStatemachineListModel
         addElement(Model.getFacade().getStateMachine(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().getStateMachine(getTarget()) == element;
     }
 

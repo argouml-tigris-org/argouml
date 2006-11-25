@@ -43,7 +43,7 @@ public class UMLExtendBaseListModel extends UMLModelElementListModel2 {
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -52,7 +52,7 @@ public class UMLExtendBaseListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getBase(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {

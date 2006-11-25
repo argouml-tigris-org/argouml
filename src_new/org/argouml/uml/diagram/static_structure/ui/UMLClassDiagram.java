@@ -104,7 +104,7 @@ public class UMLClassDiagram extends UMLDiagram {
         } catch (PropertyVetoException pve) { }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#setNamespace(java.lang.Object)
      */
     public void setNamespace(Object ns) {
@@ -134,10 +134,7 @@ public class UMLClassDiagram extends UMLDiagram {
         }
     }
 
-    /**
-     * Get the actions from which to create a toolbar or equivilent
-     * graphic trigger.
-     *
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
@@ -253,7 +250,7 @@ public class UMLClassDiagram extends UMLDiagram {
         return name;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
@@ -560,14 +557,14 @@ public class UMLClassDiagram extends UMLDiagram {
         return actionStereotype;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base)  {
     	return Model.getFacade().isANamespace(base);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
     public boolean relocate(Object base) {

@@ -46,14 +46,14 @@ public class UMLTagDefinitionOwnerComboBoxModel extends UMLComboBoxModel2 {
             "ownedElement");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
         return Model.getFacade().isAStereotype(o);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -72,7 +72,7 @@ public class UMLTagDefinitionOwnerComboBoxModel extends UMLComboBoxModel2 {
                         Model.getMetaTypes().getStereotype()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {

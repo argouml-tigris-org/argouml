@@ -40,7 +40,7 @@ public class UMLStateExitListModel extends UMLModelElementListModel2 {
         super("exit");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -48,10 +48,10 @@ public class UMLStateExitListModel extends UMLModelElementListModel2 {
         addElement(Model.getFacade().getExit(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return element == Model.getFacade().getExit(getTarget());
     }
 

@@ -52,7 +52,7 @@ public class ActionSetBehavioralFeatureQuery extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -61,7 +61,7 @@ public class ActionSetBehavioralFeatureQuery extends UndoableAction {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
             if (Model.getFacade().isABehavioralFeature(target)) {
-                Object m = /*(MGeneralizableElement)*/ target;
+                Object m = target;
                 Model.getCoreHelper().setQuery(m, source.isSelected());
             }
         }

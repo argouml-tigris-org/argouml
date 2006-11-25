@@ -121,7 +121,7 @@ public class Language {
         this.title = theTitle;
     }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {

@@ -114,7 +114,7 @@ class ArgoTokenTable extends XMLTokenTableBase {
     ////////////////////////////////////////////////////////////////
     // protected methods
 
-    /**
+    /*
      * @see org.argouml.persistence.XMLTokenTableBase#setupTokens()
      */
     protected void setupTokens() {

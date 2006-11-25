@@ -56,7 +56,7 @@ public class ActionSetModelElementStereotype extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -68,10 +68,10 @@ public class ActionSetModelElementStereotype extends UndoableAction {
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2) source;
             if (Model.getFacade().isAStereotype(combo.getSelectedItem())) {
-                newStereo = /*(MStereotype)*/ combo.getSelectedItem();
+                newStereo = combo.getSelectedItem();
             }
             if (Model.getFacade().isAModelElement(combo.getTarget())) {
-                target = /*(MModelElement)*/ combo.getTarget();
+                target = combo.getTarget();
                 oldStereo = Model.getFacade().getStereotypes(target);
             }
 	    if ("".equals(combo.getSelectedItem())) {

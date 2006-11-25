@@ -50,7 +50,7 @@ public class ActionNewUseCase extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize("button.new-usecase"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

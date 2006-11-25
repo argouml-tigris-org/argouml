@@ -55,7 +55,7 @@ public class ActionSetFeatureOwner extends UndoableAction {
 
 
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -68,12 +68,12 @@ public class ActionSetFeatureOwner extends UndoableAction {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (Model.getFacade().isAFeature(o)) {
-                feature = /*(MFeature)*/ o;
+                feature = o;
                 oldClassifier = Model.getFacade().getOwner(feature);
             }
             o = box.getSelectedItem();
             if (Model.getFacade().isAClassifier(o)) {
-                newClassifier = /*(MClassifier)*/ o;
+                newClassifier = o;
             }
         }
         if (newClassifier != oldClassifier

@@ -43,7 +43,7 @@ public class ActionNewCallEvent extends ActionNewEvent {
         putValue(NAME, Translator.localize("button.new-callevent"));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.behavior.state_machines.ActionNewEvent#createEvent(java.lang.Object)
      */
     protected Object createEvent(Object ns) {

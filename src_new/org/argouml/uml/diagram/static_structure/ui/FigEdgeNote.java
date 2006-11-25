@@ -155,7 +155,7 @@ public class FigEdgeNote
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
     public void setFig(Fig f) {
@@ -165,19 +165,19 @@ public class FigEdgeNote
         //throw new IllegalArgumentException();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
      */
     protected boolean canEdit(Fig f) { return false; }
 
-    /**
+    /*
      * @see java.lang.Object#toString()
      */
     public String toString() {
         return Translator.localize("misc.comment-edge");
     }
 
-    /**
+    /*
      * Listen for a RemoveAssociationEvent between the comment
      * and the annotated element. When recieved delete the CommentEdge
      * and this FigEdgeNote.
@@ -190,7 +190,7 @@ public class FigEdgeNote
         }
     }
     
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
      */
     public String getTipString(MouseEvent me) {
@@ -198,7 +198,7 @@ public class FigEdgeNote
     }
 
     
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
@@ -210,7 +210,7 @@ public class FigEdgeNote
         owner = (CommentEdge) newOwner;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getOwner()
      */
     public Object getOwner() {
@@ -232,7 +232,7 @@ public class FigEdgeNote
         return null;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
     public void postLoad() {
@@ -256,13 +256,14 @@ public class FigEdgeNote
         return;
     }
     
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
+        // no listeners to update
     }
     
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent pve) {
@@ -270,7 +271,7 @@ public class FigEdgeNote
     }
 
     
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public void removeFromDiagramImpl() {
@@ -306,7 +307,7 @@ public class FigEdgeNote
         return null;
     }
     
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigEdge#setDestFigNode(org.tigris.gef.presentation.FigNode)
      */
     public void setDestFigNode(FigNode fn) {
@@ -330,7 +331,7 @@ public class FigEdgeNote
         super.setDestFigNode(fn);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.FigEdge#setSourceFigNode(org.tigris.gef.presentation.FigNode)
      */
     public void setSourceFigNode(FigNode fn) {

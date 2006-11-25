@@ -49,7 +49,7 @@ public class ActionNewSynchState extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize("button.new-synchstate"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

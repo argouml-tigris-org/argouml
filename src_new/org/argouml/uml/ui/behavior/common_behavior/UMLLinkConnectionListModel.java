@@ -57,7 +57,7 @@ public class UMLLinkConnectionListModel
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().getConnections(getTarget()).contains(element);
     }
 

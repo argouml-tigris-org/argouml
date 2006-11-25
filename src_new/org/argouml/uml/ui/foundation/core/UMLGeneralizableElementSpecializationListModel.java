@@ -42,7 +42,7 @@ public class UMLGeneralizableElementSpecializationListModel
         super("specialization");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -51,10 +51,10 @@ public class UMLGeneralizableElementSpecializationListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
+    protected boolean isValidElement(Object element) {
         return Model.getFacade().isAGeneralization(element)
             && Model.getFacade().getSpecializations(getTarget())
             	.contains(element);

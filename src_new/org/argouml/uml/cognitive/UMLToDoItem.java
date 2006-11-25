@@ -130,7 +130,7 @@ public class UMLToDoItem extends ToDoItem {
         select();
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ToDoItem#deselect()
      */
     public void deselect() {
@@ -153,7 +153,7 @@ public class UMLToDoItem extends ToDoItem {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.cognitive.ToDoItem#select()
      */
     public void select() {

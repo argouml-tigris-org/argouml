@@ -71,9 +71,9 @@ public class SelectionActor extends SelectionNodeClarifiers {
      */
     public SelectionActor(Fig f) { super(f); }
 
-    /**
+    /*
      * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
-     * org.tigris.gef.presentation.Handle)
+     *      org.tigris.gef.presentation.Handle)
      */
     public void hitHandle(Rectangle r, Handle h) {
 	super.hitHandle(r, h);
@@ -111,7 +111,7 @@ public class SelectionActor extends SelectionNodeClarifiers {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
      */
     public void paintButtons(Graphics g) {
@@ -124,7 +124,7 @@ public class SelectionActor extends SelectionNodeClarifiers {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
      * org.tigris.gef.presentation.Handle)
      */
@@ -168,14 +168,14 @@ public class SelectionActor extends SelectionNodeClarifiers {
     }
 
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
         return Model.getUseCasesFactory().createUseCase();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeLeft(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
@@ -186,7 +186,7 @@ public class SelectionActor extends SelectionNodeClarifiers {
 		  (Class) Model.getMetaTypes().getAssociation());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.base.SelectionButtons#createEdgeRight(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */

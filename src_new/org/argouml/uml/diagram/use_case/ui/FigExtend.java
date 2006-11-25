@@ -191,7 +191,7 @@ public class FigExtend extends FigEdgeModelElement {
         return false;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
@@ -199,9 +199,8 @@ public class FigExtend extends FigEdgeModelElement {
         super.paint(g);
     }
 
-    /**
-     * Handle changes to the model.  The only thing we need to deal with
-     * is updating is the condition text.<p>
+    /*
+     * The only thing we need to deal with is updating is the condition text.
      * 
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
@@ -217,7 +216,7 @@ public class FigExtend extends FigEdgeModelElement {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
     protected void renderingChanged() {

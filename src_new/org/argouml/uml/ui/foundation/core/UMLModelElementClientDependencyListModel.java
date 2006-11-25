@@ -43,7 +43,7 @@ public class UMLModelElementClientDependencyListModel
         super("clientDependency");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -53,10 +53,10 @@ public class UMLModelElementClientDependencyListModel
         }
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isADependency(o)
             && Model.getFacade().getClientDependencies(getTarget()).contains(o);
     }

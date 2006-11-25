@@ -65,7 +65,7 @@ public class PrintManager {
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void showPageSetupDialog() {

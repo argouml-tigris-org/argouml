@@ -144,7 +144,7 @@ public class PropPanelMethod extends PropPanelFeature {
                     Model.getMetaTypes().getOperation(), "method");
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(
          *         java.lang.Object)
          */
@@ -154,7 +154,7 @@ public class PropPanelMethod extends PropPanelFeature {
             return specification == element;
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
          */
         protected void buildModelList() {
@@ -165,14 +165,14 @@ public class PropPanelMethod extends PropPanelFeature {
             }
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
          */
         protected Object getSelectedModelElement() {
             return Model.getCoreHelper().getSpecification(getTarget());
         }
 
-        /**
+        /*
          * @see java.beans.PropertyChangeListener#propertyChange(
          *         java.beans.PropertyChangeEvent)
          */
@@ -206,7 +206,7 @@ public class PropPanelMethod extends PropPanelFeature {
                     Translator.localize("Set"));
         }
 
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
@@ -243,7 +243,7 @@ public class PropPanelMethod extends PropPanelFeature {
              super("language");
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
          */
         protected void setProperty(String text) {
@@ -260,7 +260,7 @@ public class PropPanelMethod extends PropPanelFeature {
             }
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
          */
         protected String getProperty() {
@@ -296,7 +296,7 @@ public class PropPanelMethod extends PropPanelFeature {
             putProperty("filterNewlines", Boolean.FALSE);
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
          */
         protected void setProperty(String text) {
@@ -313,7 +313,7 @@ public class PropPanelMethod extends PropPanelFeature {
             }
         }
 
-        /**
+        /*
          * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
          */
         protected String getProperty() {

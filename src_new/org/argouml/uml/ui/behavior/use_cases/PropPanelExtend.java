@@ -120,7 +120,9 @@ public class PropPanelExtend extends PropPanelModelElement {
     }
 
     /**
-     * @param list 
+     * Create a single row scroll pane backed by a JList.
+     * 
+     * @param list the list to be used to back the scroll pane
      * @return a scrollpane with a single row
      */
     protected JScrollPane getSingleRowScroll(JList list) {
@@ -157,7 +159,7 @@ public class PropPanelExtend extends PropPanelModelElement {
                     Translator.localize("button.new-extension-point"));
         }
 
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {

@@ -47,7 +47,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  */
 public class GoStatemachineToDiagram extends AbstractPerspectiveRule {
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
@@ -80,14 +80,14 @@ public class GoStatemachineToDiagram extends AbstractPerspectiveRule {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
         return Translator.localize ("misc.state-machine.diagram");
     }
 
-    /**
+    /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {

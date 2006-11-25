@@ -49,7 +49,7 @@ class UMLSignalEventSignalList extends UMLMutableLinkedList {
         setDeleteAction(null);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLMutableLinkedList#getPopupMenu()
      */
     public JPopupMenu getPopupMenu() {

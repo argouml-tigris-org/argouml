@@ -40,17 +40,17 @@ public class UMLModelElementElementResidenceListModel
         super("elementResidence");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
         setAllElements(Model.getFacade().getElementResidences(getTarget()));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ o) {
+    protected boolean isValidElement(Object o) {
         return Model.getFacade().isAElementResidence(o)
             && Model.getFacade().getElementResidences(getTarget()).contains(o);
     }

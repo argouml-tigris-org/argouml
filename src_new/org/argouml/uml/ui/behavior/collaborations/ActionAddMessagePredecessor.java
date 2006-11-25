@@ -49,7 +49,7 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
         super();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
@@ -60,7 +60,7 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
         return vec;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
@@ -72,22 +72,21 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
         return vec;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
         return Translator.localize("dialog.add-predecessors");
     }
 
-    /**
-     * @see
-     * org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+    /*
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
 	if (getTarget() == null)
 	    throw new IllegalStateException(
                 "doIt may not be called with null target");
-	Object message = /*(MMessage)*/ getTarget();
+	Object message = getTarget();
 	Model.getCollaborationsHelper().setPredecessors(message, selected);
     }
 

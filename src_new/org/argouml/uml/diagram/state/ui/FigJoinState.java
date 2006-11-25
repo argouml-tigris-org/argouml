@@ -80,7 +80,7 @@ public class FigJoinState extends FigStateVertex {
         setOwner(node);
     }
 
-    /**
+    /*
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -94,9 +94,7 @@ public class FigJoinState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /**
-     * Override setBounds to keep shapes looking right.
-     *
+    /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
@@ -114,28 +112,28 @@ public class FigJoinState extends FigStateVertex {
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
         head.setLineColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
         return head.getLineColor();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
         head.setFillColor(col);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
@@ -143,26 +141,28 @@ public class FigJoinState extends FigStateVertex {
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     * Ignored - figure has fixed rendering
+     * @param f ignored
      */
     public void setFilled(boolean f) {
+        // ignored
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
         return true;
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
         head.setLineWidth(w);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -172,10 +172,11 @@ public class FigJoinState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Event handlers
 
-    /**
+    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
+        // ignored
     }
 
     /**

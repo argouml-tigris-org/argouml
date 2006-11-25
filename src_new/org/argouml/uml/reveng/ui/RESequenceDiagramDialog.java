@@ -213,7 +213,7 @@ public class RESequenceDiagramDialog
         setContent(contentPanel);
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -242,7 +242,7 @@ public class RESequenceDiagramDialog
         }
     }
 
-    /**
+    /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {

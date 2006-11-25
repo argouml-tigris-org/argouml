@@ -50,7 +50,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
                 Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
@@ -60,7 +60,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -68,7 +68,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
         Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.getUserDefinedModels().iterator();
         while (it.hasNext()) {
-	    Object model = /*(MModel)*/ it.next();
+	    Object model = it.next();
 	    elements.addAll(Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(model,
                         Model.getMetaTypes().getClassifier()));
@@ -79,7 +79,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
         setElements(elements);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {

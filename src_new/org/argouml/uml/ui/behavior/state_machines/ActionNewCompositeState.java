@@ -50,7 +50,7 @@ public class ActionNewCompositeState extends AbstractActionNewModelElement {
                  Translator.localize("button.new-compositestate"));
     }
 
-    /**
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

@@ -66,7 +66,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // nestable nodes
 
-    /**
+    /*
      * Overriden to make it possible to include a statevertex in a composite
      * state.
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
@@ -90,7 +90,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
                             .getStateMachine(stateVertex));
         }
         if (compositeState != null) {
-            /* Do not change the model if not needed - this prevents issue 4446: */
+            /* Do not change the model unless needed - avoids issue 4446: */
             if (Model.getFacade().getContainer(stateVertex) != compositeState)
                 Model.getStateMachinesHelper().setContainer(stateVertex,
                         compositeState);
@@ -126,7 +126,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
      * return selectors, depending whether we deal with activity or state
      * diagrams.
      *
-     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     * {@inheritDoc}
      */
     public Selection makeSelection() {
         Object pstate = getOwner();

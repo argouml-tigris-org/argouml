@@ -50,7 +50,7 @@ public abstract class ActionNavigateUpPreviousDown
                 ResourceLoaderWrapper.lookupIconResource("NavigateUpPrevious"));
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object source) {

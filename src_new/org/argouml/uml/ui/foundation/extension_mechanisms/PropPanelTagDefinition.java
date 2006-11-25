@@ -223,14 +223,14 @@ class UMLTagDefinitionNamespaceComboBoxModel
      */
     private static final long serialVersionUID = -7055212587563120811L;
 
-    /**
+    /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
         return Model.getFacade().isANamespace(o);
     }
 
-    /**
+    /*
      * @see org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel#buildModelList()
      */
     protected void buildModelList() {
@@ -243,7 +243,7 @@ class UMLTagDefinitionNamespaceComboBoxModel
         setElements(c);
     }
 
-    /**
+    /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
@@ -277,7 +277,7 @@ class ActionSetTagDefinitionNamespace extends UndoableAction {
                 Translator.localize("Set"));
     }
 
-    /**
+    /*
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -290,12 +290,12 @@ class ActionSetTagDefinitionNamespace extends UndoableAction {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (Model.getFacade().isAModelElement(o)) {
-                m = /*(MModelElement)*/ o;
+                m = o;
                 oldNamespace = Model.getFacade().getNamespace(m);
             }
             o = box.getSelectedItem();
             if (Model.getFacade().isANamespace(o)) {
-                newNamespace = /*(MNamespace)*/ o;
+                newNamespace = o;
             }
         }
         if (newNamespace != oldNamespace && m != null && newNamespace != null) {
