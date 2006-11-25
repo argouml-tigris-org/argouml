@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8' ?>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Fri Nov 24 00:17:27 EST 2006'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Sat Nov 25 14:24:47 EST 2006'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>PRE-0.23.4(5) revised on $Date: 2006-11-06 13:55:22 -0500 (Mon, 06 Nov 2006) $ </XMI.exporterVersion>
@@ -9,7 +9,7 @@
     <UML:Model xmi.id = 'eee_1045467100313_135436_1' name = 'Data' isSpecification = 'false'
       isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
       <UML:ModelElement.comment>
-        <UML:Comment xmi.idref = '_9_5_1_163f041b_1164301343016_290521_0'/>
+        <UML:Comment xmi.idref = '_9_5_1_163f041b_1164482116688_234206_291'/>
       </UML:ModelElement.comment>
       <UML:Namespace.ownedElement>
         <UML:Package xmi.id = '_9_0_e8f0348_1104334875046_177200_0' name = 'Component View'
@@ -456,6 +456,698 @@
                       name = 'encoded' isSpecification = 'false'/>
                   </UML:Enumeration.literal>
                 </UML:Enumeration>
+              </UML:Namespace.ownedElement>
+            </UML:Package>
+            <UML:Package xmi.id = '_9_0_2_12ab03bf_1120852978046_265263_0' name = 'service'
+              isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+              <UML:Namespace.ownedElement>
+                <UML:Stereotype xmi.id = '_9_0_1fe00f9_1119337557859_21792_59' name = 'Service'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1142394060015_383850_2'/>
+                  </UML:ModelElement.comment>
+                  <UML:Stereotype.definedTag>
+                    <UML:TagDefinition xmi.id = '_9_0_66e017e_1125477765493_287886_0' name = '@andromda.spring.service.interceptors'
+                      isSpecification = 'false' tagType = 'String'>
+                      <UML:TagDefinition.multiplicity>
+                        <UML:Multiplicity xmi.id = '_9_0_66e017e_1125478129526_809711_1'>
+                          <UML:Multiplicity.range>
+                            <UML:MultiplicityRange xmi.id = '_9_0_66e017e_1125478129526_358937_2' lower = '1'
+                              upper = '1'/>
+                          </UML:Multiplicity.range>
+                        </UML:Multiplicity>
+                      </UML:TagDefinition.multiplicity>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_0_66e017e_1125478129526_50992_3'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                    <UML:TagDefinition xmi.id = '_9_0_66e017e_1125091573135_111389_0' name = '@andromda.spring.service.config.only'
+                      isSpecification = 'false' tagType = 'Boolean'>
+                      <UML:TagDefinition.multiplicity>
+                        <UML:Multiplicity xmi.id = '_9_0_66e017e_1125091618871_893190_1'>
+                          <UML:Multiplicity.range>
+                            <UML:MultiplicityRange xmi.id = '_9_0_66e017e_1125091618871_507042_2' lower = '1'
+                              upper = '1'/>
+                          </UML:Multiplicity.range>
+                        </UML:Multiplicity>
+                      </UML:TagDefinition.multiplicity>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_0_2_12ab03bf_1125896873500_975505_86'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265745726_503991_197' name = '@andromda.service.jndi.local'
+                      isSpecification = 'false' tagType = 'String'>
+                      <UML:TagDefinition.multiplicity>
+                        <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265883976_754446_203'>
+                          <UML:Multiplicity.range>
+                            <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265883976_862574_204'
+                              lower = '1' upper = '1'/>
+                          </UML:Multiplicity.range>
+                        </UML:Multiplicity>
+                      </UML:TagDefinition.multiplicity>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265883976_33185_205'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265870507_594474_198' name = '@andromda.service.jndi.remote'
+                      isSpecification = 'false' tagType = 'String'>
+                      <UML:TagDefinition.multiplicity>
+                        <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265883976_495554_206'>
+                          <UML:Multiplicity.range>
+                            <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265883976_476270_207'
+                              lower = '1' upper = '1'/>
+                          </UML:Multiplicity.range>
+                        </UML:Multiplicity>
+                      </UML:TagDefinition.multiplicity>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265883976_708748_208'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265870507_783181_201' name = '@andromda.service.security.realm'
+                      isSpecification = 'false' tagType = 'String'>
+                      <UML:TagDefinition.multiplicity>
+                        <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265883976_391872_215'>
+                          <UML:Multiplicity.range>
+                            <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265883976_589446_216'
+                              lower = '1' upper = '1'/>
+                          </UML:Multiplicity.range>
+                        </UML:Multiplicity>
+                      </UML:TagDefinition.multiplicity>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265883976_432720_217'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265870507_554302_202' name = '@andromda.service.type'
+                      isSpecification = 'false' tagType = '_9_5_1_192d044b_1141264833726_224593_102'>
+                      <UML:TagDefinition.multiplicity>
+                        <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265883976_270843_218'>
+                          <UML:Multiplicity.range>
+                            <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265883976_306666_219'
+                              lower = '1' upper = '1'/>
+                          </UML:Multiplicity.range>
+                        </UML:Multiplicity>
+                      </UML:TagDefinition.multiplicity>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265883976_895494_220'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                  </UML:Stereotype.definedTag>
+                </UML:Stereotype>
+                <UML:TagDefinition xmi.id = '_9_0_1fe00f9_1119337557859_415417_84' name = '@andromda.ejb.transaction.type'
+                  isSpecification = 'false' tagType = '_9_0_1fe00f9_1119337557859_467824_83'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_0_1fe00f9_1119337578296_405404_104'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_0_1fe00f9_1119337578296_638331_105'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_189659_106'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:TagDefinition xmi.id = '_9_0_1fe00f9_1119337557859_56258_61' name = '@andromda.spring.transaction.type'
+                  isSpecification = 'false' tagType = '_9_0_1fe00f9_1119337557859_949884_69'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_212443_90'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:Enumeration xmi.id = '_9_0_1fe00f9_1119337557859_990547_75' name = 'SpringRemotingProtocol'
+                  visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_517772_99'/>
+                  </UML:ModelElement.comment>
+                  <UML:Enumeration.literal>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_213374_70'
+                      name = 'none' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_349718_71'
+                      name = 'rmi' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_455110_72'
+                      name = 'httpinvoker' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_114029_73'
+                      name = 'burlap' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_753466_74'
+                      name = 'hessian' isSpecification = 'false'/>
+                  </UML:Enumeration.literal>
+                </UML:Enumeration>
+                <UML:TagDefinition xmi.id = '_9_0_1fe00f9_1119337557859_688397_76' name = '@andromda.spring.service.remoting.type'
+                  isSpecification = 'false' tagType = '_9_0_1fe00f9_1119337557859_990547_75'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_0_1fe00f9_1119337578296_382130_100'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_0_1fe00f9_1119337578296_888089_101'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_989813_102'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:Stereotype xmi.id = '_9_0_1fe00f9_1119337557859_652828_60' name = 'ServiceRef'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Dependency</UML:Stereotype.baseClass>
+                </UML:Stereotype>
+                <UML:TagDefinition xmi.id = '_9_0_1fe00f9_1119337557859_865340_85' name = '@andromda.spring.service.remote.port'
+                  isSpecification = 'false' tagType = 'String'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_0_1fe00f9_1119337578296_346090_107'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_0_1fe00f9_1119337578296_832800_108'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_289789_109'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:Enumeration xmi.id = '_9_0_1fe00f9_1119337557859_467824_83' name = 'EjbTransactionType'
+                  visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_698837_103'/>
+                  </UML:ModelElement.comment>
+                  <UML:Enumeration.literal>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_616847_77'
+                      name = 'NotSupported' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_618413_78'
+                      name = 'Supports' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_458612_79'
+                      name = 'Required' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_216523_80'
+                      name = 'RequiresNew' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_444979_81'
+                      name = 'Mandatory' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_200031_82'
+                      name = 'Never' isSpecification = 'false'/>
+                  </UML:Enumeration.literal>
+                </UML:Enumeration>
+                <UML:Enumeration xmi.id = '_9_0_1fe00f9_1119337557859_949884_69' name = 'SpringTransactionType'
+                  visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_728941_91'/>
+                  </UML:ModelElement.comment>
+                  <UML:Enumeration.literal>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_784968_62'
+                      name = 'PROPAGATION_MANDATORY' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_181161_92'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_931637_63'
+                      name = 'PROPAGATION_NESTED' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_787947_93'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_170854_64'
+                      name = 'PROPAGATION_NEVER' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_910198_94'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_364595_65'
+                      name = 'PROPAGATION_NOT_SUPPORTED' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_549289_95'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_374965_66'
+                      name = 'PROPAGATION_REQUIRED' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_425383_96'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_590090_67'
+                      name = 'PROPAGATION_REQUIRES_NEW' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_974270_97'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_1fe00f9_1119337557859_784722_68'
+                      name = 'PROPAGATION_SUPPORTS' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_945826_98'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                  </UML:Enumeration.literal>
+                </UML:Enumeration>
+                <UML:Enumeration xmi.id = '_9_0_2_12ab03bf_1122060056406_374453_0' name = 'EjbViewType'
+                  visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_0_2_12ab03bf_1122060141937_481582_3'/>
+                  </UML:ModelElement.comment>
+                  <UML:Enumeration.literal>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_2_12ab03bf_1122060139625_842625_1'
+                      name = 'local' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_0_2_12ab03bf_1122060141937_79247_4'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                    <UML:EnumerationLiteral xmi.id = '_9_0_2_12ab03bf_1122060139625_253621_2'
+                      name = 'remote' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_0_2_12ab03bf_1122060141937_726464_5'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141265094492_464382_162'
+                      name = 'both' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265146695_128007_167'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                  </UML:Enumeration.literal>
+                </UML:Enumeration>
+                <UML:Enumeration xmi.id = '_9_5_1_192d044b_1141264833711_619951_90' name = 'EjbMdbSubscriptionDurabilityType'
+                  visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264836257_586089_106'/>
+                  </UML:ModelElement.comment>
+                  <UML:Enumeration.literal>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833711_139601_88'
+                      name = 'Durable' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833711_611101_89'
+                      name = 'NonDurable' isSpecification = 'false'/>
+                  </UML:Enumeration.literal>
+                </UML:Enumeration>
+                <UML:Enumeration xmi.id = '_9_5_1_192d044b_1141264833711_204308_93' name = 'EjbMdbDestinationType'
+                  visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264836257_896543_107'/>
+                  </UML:ModelElement.comment>
+                  <UML:Enumeration.literal>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833711_370274_91'
+                      name = 'javax.jms.Queue' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833711_780857_92'
+                      name = 'javax.jms.Topic' isSpecification = 'false'/>
+                  </UML:Enumeration.literal>
+                </UML:Enumeration>
+                <UML:Enumeration xmi.id = '_9_5_1_192d044b_1141264833711_902139_96' name = 'EjbMdbAcknowledgeMode'
+                  visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264836257_558758_108'/>
+                  </UML:ModelElement.comment>
+                  <UML:Enumeration.literal>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833711_472200_94'
+                      name = 'AUTO_ACKNOWLEDGE' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833711_934031_95'
+                      name = 'DUPS_OK_ACKNOWLEDGE' isSpecification = 'false'/>
+                  </UML:Enumeration.literal>
+                </UML:Enumeration>
+                <UML:Enumeration xmi.id = '_9_5_1_192d044b_1141264833726_945883_99' name = 'EjbTransactionManagement'
+                  visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264836257_774484_109'/>
+                  </UML:ModelElement.comment>
+                  <UML:Enumeration.literal>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833726_439318_97'
+                      name = 'BEAN' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833726_448535_98'
+                      name = 'CONTAINER' isSpecification = 'false'/>
+                  </UML:Enumeration.literal>
+                </UML:Enumeration>
+                <UML:Enumeration xmi.id = '_9_5_1_192d044b_1141264833726_224593_102' name = 'EjbServiceType'
+                  visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264836257_751925_110'/>
+                  </UML:ModelElement.comment>
+                  <UML:Enumeration.literal>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833726_173542_100'
+                      name = 'Stateful' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264836257_726975_111'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833726_372498_101'
+                      name = 'Stateless' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264836257_156755_112'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                  </UML:Enumeration.literal>
+                </UML:Enumeration>
+                <UML:Enumeration xmi.id = '_9_5_1_192d044b_1141264833726_968699_105' name = 'EjbPersistenceUnitType'
+                  visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264836257_769441_113'/>
+                  </UML:ModelElement.comment>
+                  <UML:Enumeration.literal>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833726_469514_103'
+                      name = 'TRANSACTION' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264836257_317574_114'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141264833726_373799_104'
+                      name = 'EXTENDED' isSpecification = 'false'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264836257_371149_115'/>
+                      </UML:ModelElement.comment>
+                    </UML:EnumerationLiteral>
+                  </UML:Enumeration.literal>
+                </UML:Enumeration>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_845675_121' name = 'UserTransaction'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_543547_134'/>
+                  </UML:ModelElement.comment>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_822470_122' name = 'Timeout'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Operation</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_109599_135'/>
+                  </UML:ModelElement.comment>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_662921_123' name = 'RunAs'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Dependency</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_703856_136'/>
+                  </UML:ModelElement.comment>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_27265_124' name = 'ResourceRef'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Dependency</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_239613_137'/>
+                  </UML:ModelElement.comment>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_299020_125' name = 'PrePassivate'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Operation</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_260579_138'/>
+                  </UML:ModelElement.comment>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_886205_126' name = 'PreDestroy'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Operation</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_937074_139'/>
+                  </UML:ModelElement.comment>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_22970_127' name = 'PostConstruct'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Operation</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_611037_140'/>
+                  </UML:ModelElement.comment>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_269174_128' name = 'PostActivate'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Operation</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_963211_141'/>
+                  </UML:ModelElement.comment>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_422538_129' name = 'PersistenceContext'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_41729_142'/>
+                  </UML:ModelElement.comment>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_475801_130' name = 'MessageDriven'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_39974_143'/>
+                  </UML:ModelElement.comment>
+                  <UML:Stereotype.definedTag>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141264862914_853286_116' name = '@andromda.ejb.mdb.acknowledge.mode'
+                      isSpecification = 'false' tagType = '_9_5_1_192d044b_1141264833711_902139_96'>
+                      <UML:TagDefinition.multiplicity>
+                        <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265883992_546272_221'>
+                          <UML:Multiplicity.range>
+                            <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265883992_687685_222'
+                              lower = '1' upper = '1'/>
+                          </UML:Multiplicity.range>
+                        </UML:Multiplicity>
+                      </UML:TagDefinition.multiplicity>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_180730_146'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141264862914_304701_117' name = '@andromda.ejb.mdb.destination'
+                      isSpecification = 'false' tagType = 'String'>
+                      <UML:TagDefinition.multiplicity>
+                        <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141264867851_959864_147'>
+                          <UML:Multiplicity.range>
+                            <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141264867851_952987_148'
+                              lower = '1' upper = '1'/>
+                          </UML:Multiplicity.range>
+                        </UML:Multiplicity>
+                      </UML:TagDefinition.multiplicity>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_159989_149'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141264862914_770658_118' name = '@andromda.ejb.mdb.destination.type'
+                      isSpecification = 'false' tagType = '_9_5_1_192d044b_1141264833711_204308_93'>
+                      <UML:TagDefinition.multiplicity>
+                        <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141264867851_728371_150'>
+                          <UML:Multiplicity.range>
+                            <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141264867851_891637_151'
+                              lower = '1' upper = '1'/>
+                          </UML:Multiplicity.range>
+                        </UML:Multiplicity>
+                      </UML:TagDefinition.multiplicity>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_942077_152'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141264862914_751686_119' name = '@andromda.ejb.mdb.selector'
+                      isSpecification = 'false' tagType = 'String'>
+                      <UML:TagDefinition.multiplicity>
+                        <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265883992_208691_223'>
+                          <UML:Multiplicity.range>
+                            <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265883992_547414_224'
+                              lower = '1' upper = '1'/>
+                          </UML:Multiplicity.range>
+                        </UML:Multiplicity>
+                      </UML:TagDefinition.multiplicity>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_20035_155'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141264862914_9769_120' name = '@andromda.ejb.mdb.subscription.durability'
+                      isSpecification = 'false' tagType = '_9_5_1_192d044b_1141264833711_619951_90'>
+                      <UML:TagDefinition.multiplicity>
+                        <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265883992_765542_225'>
+                          <UML:Multiplicity.range>
+                            <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265883992_962766_226'
+                              lower = '1' upper = '1'/>
+                          </UML:Multiplicity.range>
+                        </UML:Multiplicity>
+                      </UML:TagDefinition.multiplicity>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_280302_158'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1149347441625_582934_0' name = '@andromda.ejb.mdb.pool.size.min'
+                      isSpecification = 'false' tagType = 'String'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1149347618593_511963_2'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1149347560843_996017_1' name = '@andromda.ejb.mdb.pool.size.max'
+                      isSpecification = 'false' tagType = 'String'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1149347618593_775983_3'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                  </UML:Stereotype.definedTag>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_698681_131' name = 'Listener'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_678140_159'/>
+                  </UML:ModelElement.comment>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_642587_132' name = 'Interceptor'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_938737_160'/>
+                  </UML:ModelElement.comment>
+                  <UML:Stereotype.definedTag>
+                    <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1142395992812_667803_0' name = '@andromda.service.interceptor.default'
+                      isSpecification = 'false' tagType = 'Boolean'>
+                      <UML:ModelElement.comment>
+                        <UML:Comment xmi.idref = '_9_5_1_192d044b_1142396098125_969305_1'/>
+                      </UML:ModelElement.comment>
+                    </UML:TagDefinition>
+                  </UML:Stereotype.definedTag>
+                </UML:Stereotype>
+                <UML:Stereotype xmi.id = '_9_5_1_192d044b_1141264862929_676122_133' name = 'DataSource'
+                  isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+                  <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141264867851_722662_161'/>
+                  </UML:ModelElement.comment>
+                </UML:Stereotype>
+                <UML:Enumeration xmi.id = '_9_5_1_192d044b_1141265110836_846841_163' name = 'EjbServiceFlushMode'
+                  visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265146711_762062_168'/>
+                  </UML:ModelElement.comment>
+                  <UML:Enumeration.literal>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141265142007_576649_164'
+                      name = 'AUTO' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141265142007_438509_165'
+                      name = 'COMMIT' isSpecification = 'false'/>
+                    <UML:EnumerationLiteral xmi.id = '_9_5_1_192d044b_1141265142007_927562_166'
+                      name = 'NEVER' isSpecification = 'false'/>
+                  </UML:Enumeration.literal>
+                </UML:Enumeration>
+                <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265214914_97936_170' name = '@andromda.ejb.transaction.management'
+                  isSpecification = 'false' tagType = '_9_5_1_192d044b_1141264833726_945883_99'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265292836_358052_174'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265292836_492945_175'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265292836_160933_176'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:TagDefinition xmi.id = '_9_0_1fe00f9_1119337557875_544393_86' name = '@andromda.ejb.viewType'
+                  isSpecification = 'false' tagType = '_9_0_2_12ab03bf_1122060056406_374453_0'>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_0_1fe00f9_1119337578296_421954_110'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265465632_401404_177' name = '@andromda.service.interceptor.excludeClass'
+                  isSpecification = 'false' tagType = 'Boolean'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265611664_613263_182'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265611664_448283_183'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265611664_556146_184'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265486132_787960_178' name = '@andromda.service.interceptor.excludeDefault'
+                  isSpecification = 'false' tagType = 'Boolean'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265611664_262213_185'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265611664_611436_186'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265611664_187618_187'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265510617_723032_179' name = '@andromda.service.persistence.flush.mode'
+                  isSpecification = 'false' tagType = '_9_5_1_192d044b_1141265110836_846841_163'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265611664_208955_188'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265611664_857640_189'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265611664_800902_190'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265571273_518464_180' name = '@andromda.service.security.denyAll'
+                  isSpecification = 'false' tagType = 'Boolean'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265611664_788052_191'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265611664_98250_192'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265611664_425039_193'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265599523_990559_181' name = '@andromda.service.security.permitAll'
+                  isSpecification = 'false' tagType = 'Boolean'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265611664_300852_194'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265611664_510047_195'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265611664_164497_196'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265870507_279114_200' name = '@andromda.service.persistence.context.unit.type'
+                  isSpecification = 'false' tagType = '_9_5_1_192d044b_1141264833726_968699_105'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265883976_669567_212'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265883976_49760_213'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265883976_417421_214'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1141265870507_248681_199' name = '@andromda.service.persistence.context.unit.name'
+                  isSpecification = 'false' tagType = 'String'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1141265883976_665510_209'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1141265883976_211852_210'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1141265883976_439368_211'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
+                <UML:TagDefinition xmi.id = '_9_5_1_192d044b_1142393749031_234326_0' name = '@andromda.service.persistence.context.datasource'
+                  isSpecification = 'false' tagType = 'String'>
+                  <UML:TagDefinition.multiplicity>
+                    <UML:Multiplicity xmi.id = '_9_5_1_192d044b_1142394060031_812081_3'>
+                      <UML:Multiplicity.range>
+                        <UML:MultiplicityRange xmi.id = '_9_5_1_192d044b_1142394060031_949768_4'
+                          lower = '1' upper = '1'/>
+                      </UML:Multiplicity.range>
+                    </UML:Multiplicity>
+                  </UML:TagDefinition.multiplicity>
+                  <UML:ModelElement.comment>
+                    <UML:Comment xmi.idref = '_9_5_1_192d044b_1142394060031_787525_5'/>
+                  </UML:ModelElement.comment>
+                </UML:TagDefinition>
               </UML:Namespace.ownedElement>
             </UML:Package>
             <UML:Package xmi.id = '_9_0_2_12ab03bf_1120853175671_502460_0' name = 'process'
@@ -3103,7 +3795,7 @@
         </UML:Package>
         <UML:Package xmi.id = '_9_0_2_12ab03bf_1120851286000_644385_0' name = 'Data types'
           isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'/>
-        <UML:Comment xmi.id = '_9_5_1_163f041b_1164301343016_290521_0' name = 'Author:.&#10;Created:.&#10;Title:AndroMDA 3.2 Profile for ArgoUML.&#10;Comment:Based on AndroMDA 3.2 profile with all external references (aka MagicDraw &quot;modules&quot;) imported..&#10;'
+        <UML:Comment xmi.id = '_9_5_1_163f041b_1164482116688_234206_291' name = 'AndroMDA 3.2 profile - single XMI file version created by tfmorris'
           isSpecification = 'false'>
           <UML:Comment.annotatedElement>
             <UML:Model xmi.idref = 'eee_1045467100313_135436_1'/>
@@ -3161,6 +3853,408 @@
           isSpecification = 'false'>
           <UML:Comment.annotatedElement>
             <UML:Enumeration xmi.idref = '_9_0_1fe00f9_1119337599234_508718_16'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1142394060015_383850_2' name = 'Indicates this bean is a session bean.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_0_1fe00f9_1119337557859_21792_59'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_66e017e_1125478129526_50992_3' name = 'A comma separated list of interceptor names.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_0_66e017e_1125477765493_287886_0'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_2_12ab03bf_1125896873500_975505_86' name = 'Whether or not only the spring configuration support should be generated (no java classes).'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_0_66e017e_1125091573135_111389_0'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265883976_33185_205' name = 'Specifies the JNDI name of the local interface bound to the session bean.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265745726_503991_197'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265883976_708748_208' name = 'Specifies the JNDI name of the remote interface bound to the session bean.&#10;Applies to cartridge: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265870507_594474_198'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265883976_432720_217' name = 'The security domain used for role based authorization.  The application server uses the security realm to match allowed roles.  This tag would specify a custom security realm different to the application wide default.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265870507_783181_201'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265883976_895494_220' name = 'Represents the type of session EJB.  This can be used to override the default which is determined by the existence of instance variables in the session bean.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265870507_554302_202'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_189659_106' name = 'Stores the transaction type on an EJB service operation or the EJB service bean.  This can also be modelled on message-driven beans with limitation.&#10;IMPORTANT: The EJB 3.0 spec defines that the transaction management type cannot be specified for EJB 3.0 entities.  These entities execute within the transactional context of the caller, which is the session bean.&#10;Applies to cartridges: EJB, EJB3, Hibernate, Spring'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_0_1fe00f9_1119337557859_415417_84'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_212443_90' name = 'Stores the transaction type of a Spring service operation.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_0_1fe00f9_1119337557859_56258_61'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_517772_99' name = 'The available Spring remoting protocol types. '
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Enumeration xmi.idref = '_9_0_1fe00f9_1119337557859_990547_75'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_989813_102' name = 'Services marked with this stereotype will be exported using Spring&apos;s remoting architecture.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_0_1fe00f9_1119337557859_688397_76'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_289789_109' name = 'Sets the port this service will be exported on. You must also tag the service using @andromda.spring.service.remote.port.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_0_1fe00f9_1119337557859_865340_85'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_698837_103' name = 'Represents the possible EJB transaction types.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Enumeration xmi.idref = '_9_0_1fe00f9_1119337557859_467824_83'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_728941_91' name = 'Represents the possible Spring transaction types.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Enumeration xmi.idref = '_9_0_1fe00f9_1119337557859_949884_69'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_181161_92' name = 'Support a current transaction, throw an exception if none exists.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_0_1fe00f9_1119337557859_784968_62'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_787947_93' name = 'Execute within a nested transaction if a current transaction exists, or behave like PROPAGATION_REQUIRED else.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_0_1fe00f9_1119337557859_931637_63'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_910198_94' name = 'Execute non-transactionally, throw an exception if a transaction exists.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_0_1fe00f9_1119337557859_170854_64'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_549289_95' name = 'Execute non-transactionally, suspending the current transaction if one exists.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_0_1fe00f9_1119337557859_364595_65'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_425383_96' name = 'Support a current transaction, create a new one if none exists.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_0_1fe00f9_1119337557859_374965_66'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_974270_97' name = 'Create a new transaction, suspending the current transaction if one exists.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_0_1fe00f9_1119337557859_590090_67'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_945826_98' name = 'Support a current transaction, execute non-transactionally if none exists.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_0_1fe00f9_1119337557859_784722_68'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_2_12ab03bf_1122060141937_481582_3' name = 'Represents the type of an Ejb view (local/remote).'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Enumeration xmi.idref = '_9_0_2_12ab03bf_1122060056406_374453_0'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_2_12ab03bf_1122060141937_79247_4' name = 'Represents a &apos;local&apos; view type (that is interfaces are NOT capable of remote communication).'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_0_2_12ab03bf_1122060139625_842625_1'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_2_12ab03bf_1122060141937_726464_5' name = 'Represents a &apos;remote&apos; view type (that is interfaces are capable of remote communication).'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_0_2_12ab03bf_1122060139625_253621_2'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265146695_128007_167' name = 'Allow both local and remote interfaces.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_5_1_192d044b_1141265094492_464382_162'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264836257_586089_106' name = 'Topic subscription durability options.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Enumeration xmi.idref = '_9_5_1_192d044b_1141264833711_619951_90'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264836257_896543_107' name = 'The available list of destination types for JMS message driven bean.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Enumeration xmi.idref = '_9_5_1_192d044b_1141264833711_204308_93'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264836257_558758_108' name = 'The acknowledge mode for JMS message driven bean.  Default is AUTO_ACKNOWLEDGE.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Enumeration xmi.idref = '_9_5_1_192d044b_1141264833711_902139_96'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264836257_774484_109' name = 'The options for transaction demaracation strategies.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Enumeration xmi.idref = '_9_5_1_192d044b_1141264833726_945883_99'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264836257_751925_110' name = 'The type of session EJB.  Supported values are Stateful or Stateless.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Enumeration xmi.idref = '_9_5_1_192d044b_1141264833726_224593_102'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264836257_726975_111' name = 'Stateful session bean.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_5_1_192d044b_1141264833726_173542_100'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264836257_156755_112' name = 'Stateless session bean.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_5_1_192d044b_1141264833726_372498_101'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264836257_769441_113' name = 'Represents the possible persistence unit types.  Either set to a transaction scope or extended persistence context.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Enumeration xmi.idref = '_9_5_1_192d044b_1141264833726_968699_105'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264836257_317574_114' name = 'Transaction scoped persistence context.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_5_1_192d044b_1141264833726_469514_103'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264836257_371149_115' name = 'Long lived extended persistence context.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:EnumerationLiteral xmi.idref = '_9_5_1_192d044b_1141264833726_373799_104'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_543547_134' name = 'Specifies a resource reference injection which will define a @Resource annotation and declare a javax.transaction.UserTransaction injection.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_845675_121'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_109599_135' name = 'Represents whether the session bean operation is a timeout callback method for the Timer Service.&#10;Applies to cartridge: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_822470_122'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_703856_136' name = 'Specifies whether the identity of the actor applies a run-as identity to the bean when making calls.  The Actor&apos;s name or corresponding @andromda.role.name contains the logical role name.  Only applicable on an the dependency between an Actor and a bean.  Applies the runAs identity to session bean and message driven beans.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_662921_123'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_239613_137' name = 'Set on dependency relationship to represent injection of a new javax.sql.DataSource into the session EJB. The name associated with the @Resource annotation, used as the JNDI name lookup for the datasource is the name of the class.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_27265_124'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_260579_138' name = 'Implies a lifecycle callback method for statefull session bean instances ONLY.  It signals the intent of the container to passivate the instance.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_299020_125'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_937074_139' name = 'Implies that the associated operation is a lifecycle callback handler and will be invoked when the bean is removed from the pool or destroyed.  For stateful session beans, this occurs before the @Remove annotated method is invoked.  In the EJB3 cartridge, it annotates the operation with @PreDestroy.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_886205_126'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_611037_140' name = 'Implies that the associated operation is a lifecycle callback handler and will be invoked when the bean is first created, after any dependency injection is required.  In the EJB3 cartridge, it annotates the operation with @PostConstruct.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_22970_127'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_963211_141' name = 'Implies a lifecycle callback method for statefull session bean instances ONLY.  It signals that the stateful session bean instance has just been reactivated.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_269174_128'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_41729_142' name = 'Modelled on a target class of a dependency from a bean to represent injection of a new persistence context into the session EJB.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_422538_129'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_39974_143' name = 'Specifies a message driven EJB.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_475801_130'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_180730_146' name = 'Specifies the acknowledge mode for JMS message driven bean.  Only needs to be specified if DUPS_OK_ACKNOWLEDGE mode is required.  Default is AUTO_ACKNOWLEDGE.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141264862914_853286_116'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_159989_149' name = 'Specifies the destination queue or topic name this message driven bean is associated with.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141264862914_304701_117'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_942077_152' name = 'The destination type of the JMS message driven bean.  Possible values are javax.jms.Queue or javax.jms.Topic.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141264862914_770658_118'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_20035_155' name = 'Specifies the JMS message selector used when determining the messages a JMS message driven bean is to receive.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141264862914_751686_119'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_280302_158' name = 'Specifies the JMS message driven bean subscription durability.  Queues are always durable.  The durability only needs to be specified on topics.  By default, topics are non-durable.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141264862914_9769_120'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1149347618593_511963_2' name = 'Set the message driven bean&apos;s minimum pool size.  This must be an integer and greater than 0, otherwise will not be set.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1149347441625_582934_0'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1149347618593_775983_3' name = 'Set the message driven bean&apos;s maximum pool size.  This must be an integer and greater than 0, otherwise will not be set.  It can be used to setup a singleton message driven bean by setting this value to 1.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1149347560843_996017_1'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_678140_159' name = 'Specified that a callback listener class for either the entity, session or message driven bean is to be created.  In EJB3, the entity, session or message driven bean is annotated to indicate the callback listener class.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_698681_131'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_938737_160' name = 'Specified that a callback listener class for either the entity, session or message driven bean is to be created.  In EJB3, the entity, session or message driven bean is annotated to indicate the callback listener class.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_642587_132'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1142396098125_969305_1' name = 'Indicates that this interceptor class is a default interceptor for all business methods of session or message driven beans within the deployment.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1142395992812_667803_0'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141264867851_722662_161' name = 'Specifies a resource reference injection which will define a @Resource annotation and declare a javax.sql.DataSource injection.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Stereotype xmi.idref = '_9_5_1_192d044b_1141264862929_676122_133'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265146711_762062_168' name = 'The available options for session bean operation flush mode.'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:Enumeration xmi.idref = '_9_5_1_192d044b_1141265110836_846841_163'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265292836_160933_176' name = 'The transaction demarcation strategy.  By default, this does not need to be set for CONTAINER managed transactions.  Only set for BEAN managed transactions.  Can be set on session and message-driven beans.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265214914_97936_170'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_0_1fe00f9_1119337578296_421954_110' name = 'Defines the view type for a Session EJB.  Can be &apos;remote&apos; or &apos;local&apos; or &apos;both&apos;.&#10;This tag is now available at the operation level as well as the class level.&#10;Applies to cartridges: EJB, EJB3, Hibernate, Spring'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_0_1fe00f9_1119337557875_544393_86'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265611664_556146_184' name = 'Specifies to the container to exclude the invocation of the class interceptors for the applied business method.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265465632_401404_177'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265611664_187618_187' name = 'Specifies to the container to exclude the invocation of the default interceptors for the applied business method.&#10;Applies to cartridge: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265486132_787960_178'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265611664_800902_190' name = 'Represents the flush mode for session operations to determine when the database changes are reflected to the database in a transaction.  Typically set in a stateful session bean where a transaction spans several method operations.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265510617_723032_179'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265611664_425039_193' name = 'If set to true on a session bean operation, then NO roles are permitted to execute that operation.  If set to true on a session bean, then NO roles are permitted to execute all operations in that session bean.  This tag will override any roles that may have been specified.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265571273_518464_180'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265611664_164497_196' name = 'If set to true on a session bean operation, then all roles are permitted to execute that operation.  If set to true on a session bean then all roles are permitted to execute all operations in that session bean.  This tag will override the specified roles.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265599523_990559_181'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265883976_417421_214' name = 'Specifies whether a transaction scoped or extended persistence context is to be used.  This can be modelled on a session bean or a class modelled with a PersistenceContext stereotype.&#10;Applies to cartridges: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265870507_279114_200'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1141265883976_439368_211' name = 'Specify the name of the persistence unit.  Only set if more than one persistence unit exists.  This can be modelled on a session bean or a class modelled with a PersistenceContext stereotype.&#10;Applies to cartridge: EJB3'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1141265870507_248681_199'/>
+          </UML:Comment.annotatedElement>
+        </UML:Comment>
+        <UML:Comment xmi.id = '_9_5_1_192d044b_1142394060031_787525_5' name = 'Specifies the persistence context datasource.  The default is derived from the application andromda descriptor.  This can be modelled on a session bean or a class with a PersistenceContext stereotype.  eg. java:/jdbc/TestDS'
+          isSpecification = 'false'>
+          <UML:Comment.annotatedElement>
+            <UML:TagDefinition xmi.idref = '_9_5_1_192d044b_1142393749031_234326_0'/>
           </UML:Comment.annotatedElement>
         </UML:Comment>
         <UML:Comment xmi.id = '_9_0_2_1fe00f9_1120567663125_22472_4' name = 'The number of times to repeat this timer.'
