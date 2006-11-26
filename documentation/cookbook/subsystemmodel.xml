@@ -463,15 +463,36 @@ Would this be an improvement?
   <sect2>
     <title>NSUML specifics</title>
     <para>
-This was implemented using NSUML internally to implement 
-the UML model.
-The NSUML implementation was replaced with the NetBeans
+Up to version 0.18.1, ArgoUML used the NSUML model repository internally 
+to implement the UML model.
+Since version 0.19.1, 
+the NSUML implementation was replaced with the NetBeans
 Model Data Repository (MDR) which implements the
 JSR-040 Java Metadata Interface.
 </para>
 
   </sect2>
 
+  <sect2>
+    <title>The use of IDs in MDR</title>
+    <para>
+All changes to the MDR repository are effectively
+serialized in the form of change events.  The ArgoUML Model-MDR subsystem
+gets notified before each change with the contents of the change that is
+about to be made and then again after the change is made.  The latter is
+what we propogate back to the ArgoUML application as model subsystem events.
+	</para>
+	<para>
+UUIDs aren't used internally by MDR.  
+We only maintain UUIDs because PGML requires them.  MDR has two
+types of IDs: 1) MOF ID - managed by the repository and guaranteed unique
+within it for the life of the repository, and 2) xmi.id - used within a
+single XMI file to link various items together (type references, etc).  What
+gets called a "UUID" is actually the MOF ID of the creating repository.  We
+maintain an internal mapping that gets created every time a new XMI file
+gets read to map from this "UUID" to the current internal MOF ID.
+    </para>
+  </sect2>
 
   <sect2 id="working-with-the-model">
     <title>How to work against the model</title>
