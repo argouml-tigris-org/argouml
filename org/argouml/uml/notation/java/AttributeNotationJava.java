@@ -42,6 +42,13 @@ public class AttributeNotationJava extends AttributeNotation {
         super();
     }
 
+    private static final AttributeNotationJava INSTANCE =
+        new AttributeNotationJava();
+
+    public static final AttributeNotationJava getInstance() {
+        return INSTANCE;
+    }
+
     /*
      * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
      */
