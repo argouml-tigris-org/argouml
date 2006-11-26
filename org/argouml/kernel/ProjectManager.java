@@ -301,6 +301,13 @@ public final class ProjectManager implements MementoCreationObserver {
         Model.getPump().setSaveAction(save);
         MutableGraphSupport.setSaveAction(save);
     }
+    
+    /**
+     * @return true is the save action is currently enabled
+     */
+    public boolean isSaveActionEnabled() {
+        return this.saveAction.isEnabled();
+    }
 
     /**
      * Notify the gui that the

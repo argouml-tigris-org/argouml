@@ -38,8 +38,11 @@ import javax.swing.event.MenuListener;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
+import org.argouml.kernel.ProjectTouchMemento;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
+import org.tigris.gef.undo.UndoManager;
 import org.tigris.gef.undo.UndoableAction;
 
 
@@ -89,11 +92,46 @@ public class ActionNotation extends UndoableAction
             if (o instanceof NotationName) {
                 NotationName nn = (NotationName) o;
                 if (key.equals(nn.getTitle())) {
-                    Project p = ProjectManager.getManager().getCurrentProject();
-                    p.getProjectSettings().setNotationLanguage(nn);
+                    NotationMemento memento = new NotationMemento(nn);
+                    if (UndoManager.getInstance().isGenerateMementos()) {
+                        UndoManager.getInstance().addMemento(memento);
+                    }
+                    memento.redo();
                     break;
                 }
             }
+        }
+    }
+
+    /**
+     * A Memento to enable Undo for setting the Notation language 
+     * of the project.
+     * 
+     * @author Michiel
+     */
+    private class NotationMemento extends ProjectTouchMemento {
+        
+        private NotationName oldNotationName, newNotationName;
+
+        /**
+         * @param newNN the new NotationName
+         */
+        NotationMemento(NotationName newNN) {
+            newNotationName = newNN;
+        }
+
+        public void redo() {
+            super.redo();
+            ProjectSettings ps = ProjectManager.getManager()
+                    .getCurrentProject().getProjectSettings();
+            oldNotationName = ps.getNotationName();
+            ps.setNotationLanguage(newNotationName);
+        }
+
+        public void undo() {
+            super.undo();
+            ProjectManager.getManager().getCurrentProject().getProjectSettings()
+                .setNotationLanguage(oldNotationName);
         }
     }
 
