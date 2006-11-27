@@ -39,9 +39,9 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
-import org.argouml.kernel.ProjectTouchMemento;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
+import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -109,7 +109,7 @@ public class ActionNotation extends UndoableAction
      * 
      * @author Michiel
      */
-    private class NotationMemento extends ProjectTouchMemento {
+    private class NotationMemento extends Memento {
         
         private NotationName oldNotationName, newNotationName;
 
@@ -121,7 +121,6 @@ public class ActionNotation extends UndoableAction
         }
 
         public void redo() {
-            super.redo();
             ProjectSettings ps = ProjectManager.getManager()
                     .getCurrentProject().getProjectSettings();
             oldNotationName = ps.getNotationName();
@@ -129,7 +128,6 @@ public class ActionNotation extends UndoableAction
         }
 
         public void undo() {
-            super.undo();
             ProjectManager.getManager().getCurrentProject().getProjectSettings()
                 .setNotationLanguage(oldNotationName);
         }
