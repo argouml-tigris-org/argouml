@@ -33,6 +33,8 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 /**
  * A datastructure for settings for a Project. <p>
@@ -113,10 +115,31 @@ public class ProjectSettings {
     /**
      * @param language the notation language.
      */
-    public void setNotationLanguage(String language) {
-        String oldValue = notationLanguage;
-        notationLanguage = language;
-        fireEvent(Notation.KEY_DEFAULT_NOTATION, oldValue, notationLanguage);
+    public void setNotationLanguage(final String language) {
+        if (notationLanguage.equals(language)) return;
+        
+        Memento memento = new Memento() {
+            private String oldNotation;
+            
+            public void redo() {
+                oldNotation = notationLanguage;
+                notationLanguage = language;
+                fireEvent(Notation.KEY_DEFAULT_NOTATION, oldNotation, 
+                        language);
+            }
+
+            public void undo() {
+                notationLanguage = oldNotation;
+                fireEvent(Notation.KEY_DEFAULT_NOTATION, language, 
+                        oldNotation);
+            }
+            
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
     
     /**

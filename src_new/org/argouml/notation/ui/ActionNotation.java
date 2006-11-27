@@ -92,44 +92,11 @@ public class ActionNotation extends UndoableAction
             if (o instanceof NotationName) {
                 NotationName nn = (NotationName) o;
                 if (key.equals(nn.getTitle())) {
-                    NotationMemento memento = new NotationMemento(nn);
-                    if (UndoManager.getInstance().isGenerateMementos()) {
-                        UndoManager.getInstance().addMemento(memento);
-                    }
-                    memento.redo();
+                    Project p = ProjectManager.getManager().getCurrentProject();
+                    p.getProjectSettings().setNotationLanguage(nn);
                     break;
                 }
             }
-        }
-    }
-
-    /**
-     * A Memento to enable Undo for setting the Notation language 
-     * of the project.
-     * 
-     * @author Michiel
-     */
-    private class NotationMemento extends Memento {
-        
-        private NotationName oldNotationName, newNotationName;
-
-        /**
-         * @param newNN the new NotationName
-         */
-        NotationMemento(NotationName newNN) {
-            newNotationName = newNN;
-        }
-
-        public void redo() {
-            ProjectSettings ps = ProjectManager.getManager()
-                    .getCurrentProject().getProjectSettings();
-            oldNotationName = ps.getNotationName();
-            ps.setNotationLanguage(newNotationName);
-        }
-
-        public void undo() {
-            ProjectManager.getManager().getCurrentProject().getProjectSettings()
-                .setNotationLanguage(oldNotationName);
         }
     }
 
