@@ -86,9 +86,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
         setNamespace(collaboration); //See issue 3373.
     }
 
-    /**
-     * Returns the owner of this diagram. 
-     *
+    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
     public Object getOwner() {
@@ -132,7 +130,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * <li>Action to add a return link
      * </ul>
      *
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
+     * {@inheritDoc}
      */
     protected Object[] getUmlActions() {
         if (actions == null) {
@@ -160,9 +158,9 @@ public class UMLSequenceDiagram extends UMLDiagram {
 			 ResourceLoaderWrapper
 			 .getImageBinding((String) actionList[i][1]));
 		actions[i + offset] =
-                    new RadioAction(new CmdSetMode(ModeCreateMessage.class,
-                    args,
-						   (String) actionList[i][1]));
+                    new RadioAction(new CmdSetMode(
+                        ModeCreateMessage.class, args,
+                        (String) actionList[i][1]));
 	    }
             Hashtable args = new Hashtable();
             args.put("name", SEQUENCE_EXPAND_BUTTON);

@@ -462,7 +462,7 @@ public class Import implements ImportSettings {
         if (module instanceof PluggableImport) {
             // Old style importer
             PluggableImport pi = (PluggableImport) module;
-            result = ((PluggableImport) pi).getConfigPanel();
+            result = pi.getConfigPanel();
         } else if (module instanceof ImportInterface) {
             // New style importers don't provide a config panel
             if (importConfigPanel == null) {
@@ -794,7 +794,7 @@ public class Import implements ImportSettings {
      */
     private JComponent getChooser() {
         if (module instanceof PluggableImport) {
-            return ((PluggableImport)module).getChooser(this);
+            return ((PluggableImport) module).getChooser(this);
         } else {
             String directory = Globals.getLastDirectory();
             
@@ -1055,8 +1055,8 @@ public class Import implements ImportSettings {
                                     .getModifiedDiagrams().elementAt(i);
                             ClassdiagramLayouter layouter;
                             if (module instanceof PluggableImport) {
-                                // There are no known modules which implement this,
-                                // but just in case ...
+                                // There are no known modules which implement 
+                                // this, but just in case ...
                                 layouter = ((PluggableImport) module)
                                         .getLayout(diagram);
                             } else {

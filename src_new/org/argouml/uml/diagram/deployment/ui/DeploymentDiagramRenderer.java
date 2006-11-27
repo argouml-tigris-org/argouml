@@ -61,9 +61,7 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
     private static final Logger LOG =
         Logger.getLogger(DeploymentDiagramRenderer.class);
 
-    /**
-     * Return a Fig that can be used to represent the given node.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
      *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      *         java.lang.Object, java.util.Map)
@@ -96,9 +94,7 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
         return null;
     }
 
-    /**
-     * Return a Fig that can be used to represent the given edge.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
      *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      *         java.lang.Object, java.util.Map)
@@ -204,10 +200,14 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
         }
 
         assert newEdge != null : "There has been no FigEdge created";
-        assert (newEdge.getDestFigNode() != null) : "The FigEdge has no dest node";
-        assert (newEdge.getDestPortFig() != null) : "The FigEdge has no dest port";
-        assert (newEdge.getSourceFigNode() != null) : "The FigEdge has no source node";;
-        assert (newEdge.getSourcePortFig() != null) : "The FigEdge has no source port";;
+        assert (newEdge.getDestFigNode() != null) 
+            : "The FigEdge has no dest node";
+        assert (newEdge.getDestPortFig() != null) 
+            : "The FigEdge has no dest port";
+        assert (newEdge.getSourceFigNode() != null) 
+            : "The FigEdge has no source node";
+        assert (newEdge.getSourcePortFig() != null) 
+            : "The FigEdge has no source port";
         
         return newEdge;
     }

@@ -58,7 +58,8 @@ public class StereotypeUtility {
 
             Iterator it = availableStereotypes.iterator();
             for (int i = 0; it.hasNext(); ++i) {
-                menuActions[i] = new ActionAddStereotype(modelElement, it.next());
+                menuActions[i] = new ActionAddStereotype(modelElement, 
+                        it.next());
             }
             return menuActions;
         }

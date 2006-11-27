@@ -62,11 +62,9 @@ public class Win32FileSystemView extends FileSystemView {
         super();
     }
 
-    /**
-    * Returns true if the given file is a root.
-    *
-    * @see javax.swing.filechooser.FileSystemView#isRoot(java.io.File)
-    */
+    /*
+     * @see javax.swing.filechooser.FileSystemView#isRoot(java.io.File)
+     */
     public boolean isRoot(File f) {
         if (!f.isAbsolute()) {
             return false;
@@ -81,11 +79,9 @@ public class Win32FileSystemView extends FileSystemView {
         }
     }
 
-    /**
-    * Creates a new folder with a default folder name.
-    *
-    * @see javax.swing.filechooser.FileSystemView#createNewFolder(java.io.File)
-    */
+    /*
+     * @see javax.swing.filechooser.FileSystemView#createNewFolder(java.io.File)
+     */
     public File createNewFolder(File containingDir) throws IOException {
         if (containingDir == null) {
             throw new IOException("Containing directory is null:");
@@ -116,21 +112,21 @@ public class Win32FileSystemView extends FileSystemView {
      * there is currently no way to get this information from
      * io.File, therefore always return false.
      *
-     * @see javax.swing.filechooser.FileSystemView#isHiddenFile(java.io.File)
+     * {@inheritDoc}
      */
     public boolean isHiddenFile(File f) {
         return false;
     }
 
     /**
-    * Returns all root partitians on this system. On Windows, this
+    * Returns all root partitions on this system. On Windows, this
     * will be the A: through Z: drives.
     *
     * Note - This appears to bypass the B drive!  Should
     * we treat the B drive the same as the A drive, or should
     * we continue to bypass it?
     *
-    * @see javax.swing.filechooser.FileSystemView#getRoots()
+    * {@inheritDoc}
     */
     public File[] getRoots() {
 

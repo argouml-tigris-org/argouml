@@ -79,9 +79,7 @@ public class ActionCopy extends AbstractAction implements CaretListener {
 
     private JTextComponent textSource;
 
-    /**
-     * Copies some text or a fig.
-     *
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {

@@ -249,7 +249,7 @@ public class SelectionComponent extends SelectionNodeClarifiers {
 				    Object newComponent) {
         if (!Model.getFacade().isAComponent(component)
 	    || !Model.getFacade().isAComponent(newComponent)) {
-               throw new IllegalArgumentException();
+            throw new IllegalArgumentException();
         }
 	return mgm.connect(component, newComponent,
                             (Class) Model.getMetaTypes().getDependency());
