@@ -35,6 +35,8 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 /**
  * Action that saves the project.
@@ -85,12 +87,30 @@ public class ActionSaveProject extends AbstractAction {
      * Set the enabled state of the save action.
      * When we become enabled inform the user by highlighting the title bar
      * with an asterisk.
+     * This method is undoable.
      * @param enabled new state for save command
      */
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(final boolean enabled) {
         if (enabled == this.enabled) {
             return;
         }
+    	Memento memento = new Memento() {
+    		public void undo() {
+    	        internalSetEnabled(!enabled);
+    		}
+    		public void redo() {
+    	        internalSetEnabled(enabled);
+    		}
+    	};
+    	UndoManager.getInstance().addMemento(memento);
+        internalSetEnabled(enabled);
+    }
+    
+    /**
+     * Set the enabled state of this action and displays the save indicator
+     * @param enabled true to enable the action
+     */
+    private void internalSetEnabled(boolean enabled) {
         super.setEnabled(enabled);
         ProjectBrowser.getInstance().showSaveIndicator();
     }
