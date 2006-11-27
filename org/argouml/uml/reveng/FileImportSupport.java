@@ -41,16 +41,15 @@ import org.argouml.util.SuffixFilter;
 import org.tigris.gef.base.Globals;
 
 /**
- * This is the base class for import from files.
- * It provides JFileChooser for file selection
- * and other methods common to file import.
- * It assumes that similar classes will be written
- * for other input sources.
- *
- * @deprecated by tfmorris for 0.23.2 - implement ImportInterface and ModuleInterface
- * directly, using the utility methods in FileImportUtils to replace some of the previous
- * functionality of this class.
- *
+ * This is the base class for import from files. It provides JFileChooser for
+ * file selection and other methods common to file import. It assumes that
+ * similar classes will be written for other input sources.
+ * 
+ * @deprecated by tfmorris for 0.23.2 - implement ImportInterface and
+ *             ModuleInterface directly, using the utility methods in
+ *             FileImportUtils to replace some of the previous functionality of
+ *             this class.
+ * 
  * @author Alexander Lepekhine
  */
 public abstract class FileImportSupport implements PluggableImport {

@@ -39,7 +39,7 @@ public class ThreadUtils {
     public static void checkIfInterrupted() throws InterruptedException {
     	// make this thread interruptible, if called from SwingWorker
     	if (Thread.interrupted()) {
-    		throw new InterruptedException();
+    	    throw new InterruptedException();
     	}
     }
 }

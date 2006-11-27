@@ -361,7 +361,8 @@ public class Modeller {
                     // we must guess if it's a class or an interface, so: class
                     LOG.info("Modeller.java: forced creation of unknown classifier "
                         + classifierName);
-                    mClassifier = Model.getCoreFactory().buildClass(classifierName, mPackage);
+                    mClassifier = Model.getCoreFactory().buildClass(
+                            classifierName, mPackage);
                 } else {
                     // information will be lost from source files
                     LOG.info("Modeller.java: a classifier that was in the source"
@@ -479,9 +480,10 @@ public class Modeller {
                         + superclassName);
                     String packageName = getPackageName(superclassName);
                     String classifierName = getClassifierName(superclassName);
-                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
-                    parentClass =
-                        Model.getCoreFactory().buildClass(classifierName, mPackage);
+                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName)
+                            : model;
+                    parentClass = Model.getCoreFactory().buildClass(
+                            classifierName, mPackage);
                     getGeneralization(currentPackage, parentClass, mClass);
                 } else {
                     // information will be lost from source files
@@ -633,10 +635,12 @@ public class Modeller {
                         + interfaceName);
                     String packageName = getPackageName(interfaceName);
                     String classifierName = getClassifierName(interfaceName);
-                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
-                    parentInterface =
-                        Model.getCoreFactory().buildInterface(classifierName, mPackage);
-                    getGeneralization(currentPackage, parentInterface, mInterface);
+                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName)
+                            : model;
+                    parentInterface = Model.getCoreFactory().buildInterface(
+                            classifierName, mPackage);
+                    getGeneralization(currentPackage, parentInterface,
+                            mInterface);
                 } else {
                     // information will be lost from source file
                     LOG.info("Modeller.java: a classifier that was in the source"
@@ -859,9 +863,10 @@ public class Modeller {
                         + returnType);
                     String packageName = getPackageName(returnType);
                     String classifierName = getClassifierName(returnType);
-                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
-                    mClassifier =
-                        Model.getCoreFactory().buildClass(classifierName, mPackage);
+                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName)
+                            : model;
+                    mClassifier = Model.getCoreFactory().buildClass(
+                            classifierName, mPackage);
                 } else {
                     // information will be lost from source files
                     LOG.info("Modeller.java: a classifier that was in the source "
@@ -898,9 +903,10 @@ public class Modeller {
                         + typeName);
                     String packageName = getPackageName(typeName);
                     String classifierName = getClassifierName(typeName);
-                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
-                    mClassifier =
-                        Model.getCoreFactory().buildClass(classifierName, mPackage);
+                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName)
+                            : model;
+                    mClassifier = Model.getCoreFactory().buildClass(
+                            classifierName, mPackage);
                 } else {
                     // information will be lost from source files
                     LOG.info("Modeller.java: a classifier that was in the source "
@@ -1022,7 +1028,8 @@ public class Modeller {
                     + typeSpec);
                 String packageName = getPackageName(typeSpec);
                 String classifierName = getClassifierName(typeSpec);
-                Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
+                Object mPackage = (packageName.length() > 0) ? getPackage(packageName)
+                        : model;
                 mClassifier =
                     Model.getCoreFactory().buildClass(classifierName, mPackage);
             } else {
@@ -1385,7 +1392,7 @@ public class Modeller {
             ProjectManager.getManager().getCurrentProject().getModels();
         Collection stereos =
             Model.getExtensionMechanismsHelper()
-               .getAllPossibleStereotypes(models, me);
+                .getAllPossibleStereotypes(models, me);
         Object stereotype =  null;
         if (stereos != null && stereos.size() > 0) {
             Iterator iter = stereos.iterator();

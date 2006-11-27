@@ -31,7 +31,6 @@ import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.ProgressMonitor;
 import org.argouml.i18n.Translator;
-import org.argouml.persistence.ProgressListener;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 

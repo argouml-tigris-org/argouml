@@ -24,7 +24,6 @@
 
 package org.argouml.ui.explorer;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,7 +47,6 @@ import org.argouml.uml.diagram.ui.ActionAddAllClassesFromModel;
 import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
-import org.argouml.uml.diagram.ui.AddExistingNodeCommand;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionAddPackage;
 import org.argouml.uml.ui.ActionClassDiagram;
@@ -61,10 +59,7 @@ import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.MutableGraphModel;
-import org.tigris.gef.undo.UndoableAction;
 
 /**
  * PopUp for extra functionality for the Explorer.
@@ -287,9 +282,11 @@ public class ExplorerPopup extends JPopupMenu {
      */
     private void addMenuItemForBothEndsOf(Object edge) {
         Collection coll = null;
-        if (Model.getFacade().isAAssociation(edge) || Model.getFacade().isALink(edge)) {
+        if (Model.getFacade().isAAssociation(edge)
+                || Model.getFacade().isALink(edge)) {
             coll = Model.getFacade().getConnections(edge);
-        } else if (Model.getFacade().isAAbstraction(edge) || Model.getFacade().isADependency(edge)) {
+        } else if (Model.getFacade().isAAbstraction(edge)
+                || Model.getFacade().isADependency(edge)) {
             coll = new ArrayList();
             coll.addAll(Model.getFacade().getClients(edge));
             coll.addAll(Model.getFacade().getSuppliers(edge));

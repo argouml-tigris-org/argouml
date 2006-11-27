@@ -134,7 +134,8 @@ class PGMLStackParser
      *         org.tigris.gef.presentation.Fig, org.xml.sax.Attributes)
      */
     protected final void setAttrs(Fig f, Attributes attrList)
-            throws SAXException {
+        throws SAXException {
+        
         if (f instanceof FigGroup) {
             FigGroup group = (FigGroup) f;
             String clsNameBounds = attrList.getValue("description");

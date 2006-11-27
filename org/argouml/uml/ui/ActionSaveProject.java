@@ -94,14 +94,14 @@ public class ActionSaveProject extends AbstractAction {
         if (enabled == this.enabled) {
             return;
         }
-    	Memento memento = new Memento() {
-    		public void undo() {
-    	        internalSetEnabled(!enabled);
-    		}
-    		public void redo() {
-    	        internalSetEnabled(enabled);
-    		}
-    	};
+        Memento memento = new Memento() {
+            public void undo() {
+                internalSetEnabled(!enabled);
+            }
+            public void redo() {
+                internalSetEnabled(enabled);
+            }
+        };
     	UndoManager.getInstance().addMemento(memento);
         internalSetEnabled(enabled);
     }

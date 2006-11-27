@@ -65,7 +65,8 @@ class UMLActivityGraphContextComboBoxModel
                             model, Model.getMetaTypes().getClassifier()));
             elements.addAll(Model
                     .getModelManagementHelper().getAllModelElementsOfKind(
-                            model, Model.getMetaTypes().getBehavioralFeature()));
+                            model, 
+                            Model.getMetaTypes().getBehavioralFeature()));
             elements.addAll(Model
                     .getModelManagementHelper().getAllModelElementsOfKind(
                             model, Model.getMetaTypes().getPackage()));

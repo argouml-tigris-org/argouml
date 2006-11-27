@@ -24,8 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.Vector;
-
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -34,7 +32,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -54,9 +51,6 @@ import org.tigris.swidgets.Orientation;
  *
  */
 public abstract class PropPanelModelElement extends PropPanel {
-
-    private static final Logger LOG = Logger
-            .getLogger(PropPanelModelElement.class);
 
     private JScrollPane namespaceScroll;
 

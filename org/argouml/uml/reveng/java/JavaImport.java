@@ -56,7 +56,8 @@ public class JavaImport implements ModuleInterface, ImportInterface {
      * @see org.argouml.uml.reveng.ImportInterface#parseFile(org.argouml.kernel.Project, java.lang.Object, org.argouml.uml.reveng.ImportSettings)
      */
     public void parseFile(Project p, Object o, ImportSettings settings)
-            throws ImportException {
+        throws ImportException {
+        
         if (o instanceof File) {
             File f = (File) o;
             try {
@@ -73,7 +74,8 @@ public class JavaImport implements ModuleInterface, ImportInterface {
 
                 // Create a parser that reads from the scanner
                 JavaRecognizer parser = new JavaRecognizer(lexer);
-                int parserMode = JavaRecognizer.MODE_IMPORT_PASS1 | JavaRecognizer.MODE_IMPORT_PASS2;
+                int parserMode = JavaRecognizer.MODE_IMPORT_PASS1
+                        | JavaRecognizer.MODE_IMPORT_PASS2;
                 if (settings.getImportLevel() == 1) {
                     // only for pass 1 of a 2-phase-run
                     parserMode = JavaRecognizer.MODE_IMPORT_PASS1;

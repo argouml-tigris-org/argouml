@@ -178,6 +178,7 @@ public final class SaveGraphicsManager {
 
     /**
      * @param chooser the filechooser of which the filters will be set
+     * @param defaultName default filename to show when chooser is displayed
      */
     public void setFileChooserFilters(
             JFileChooser chooser, String defaultName) {

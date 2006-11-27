@@ -83,7 +83,7 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
      * Creates the event, sets its role and namespace,
      * and navigates towards it.
      *
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * {@inheritDoc}
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);

@@ -259,8 +259,8 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements
 
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     * TODO: From ComboBox javadoc - "This method is public as an implementation side
-     * effect. do not call or override."
+     * TODO: From ComboBox javadoc - "This method is public as an 
+     * implementation side effect. do not call or override."
      * We should find some other way to implement this.
      */
     public void actionPerformed(ActionEvent e) {

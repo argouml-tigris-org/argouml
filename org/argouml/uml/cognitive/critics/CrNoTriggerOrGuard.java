@@ -94,8 +94,9 @@ public class CrNoTriggerOrGuard extends CrUML {
             || Model.getFacade().getExpression(guard) == null
             || Model.getFacade().getBody(
                 Model.getFacade().getExpression(guard)) == null
-            || Model.getFacade().getBody(
-                Model.getFacade().getExpression(guard)).toString().length() == 0);
+            || Model
+                .getFacade().getBody(Model.getFacade().getExpression(guard))
+                .toString().length() == 0);
 	if (noGuard) {
             return PROBLEM_FOUND;
         }
