@@ -113,27 +113,25 @@ public class ProjectSettings {
     }
 
     /**
-     * @param language the notation language.
+     * @param newLanguage the notation language.
      */
-    public void setNotationLanguage(final String language) {
-        if (notationLanguage.equals(language)) return;
+    public void setNotationLanguage(final String newLanguage) {
+        if (notationLanguage.equals(newLanguage)) return;
+        
+        final String oldLanguage = notationLanguage;
         
         Memento memento = new Memento() {
-            private String oldNotation;
-            
+            private final ConfigurationKey key = Notation.KEY_DEFAULT_NOTATION;
+
             public void redo() {
-                oldNotation = notationLanguage;
-                notationLanguage = language;
-                fireEvent(Notation.KEY_DEFAULT_NOTATION, oldNotation, 
-                        language);
+                notationLanguage = newLanguage;
+                fireEvent(key, oldLanguage, newLanguage);
             }
 
             public void undo() {
-                notationLanguage = oldNotation;
-                fireEvent(Notation.KEY_DEFAULT_NOTATION, language, 
-                        oldNotation);
+                notationLanguage = oldLanguage;
+                fireEvent(key, newLanguage, oldLanguage);
             }
-            
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
             UndoManager.getInstance().addMemento(memento);
@@ -173,12 +171,29 @@ public class ProjectSettings {
     }
 
     /**
-     * @param showbold <code>true</code> if names are to be shown in bold font.
+     * @param showem <code>true</code> if names are to be shown in bold font.
      */
-    public void setShowBoldNames(boolean showbold) {
-        boolean oldValue = showBoldNames;
-        showBoldNames = showbold;
-        fireEvent(Notation.KEY_SHOW_BOLD_NAMES, oldValue, showBoldNames);
+    public void setShowBoldNames(final boolean showem) {
+        if (showBoldNames == showem) return;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = Notation.KEY_SHOW_BOLD_NAMES;
+
+            public void redo() {
+                showBoldNames = showem;
+                fireEvent(key, showem, !showem);
+            }
+
+            public void undo() {
+                showBoldNames = !showem;
+                fireEvent(key, !showem, showem);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
     /**
@@ -208,10 +223,27 @@ public class ProjectSettings {
      * @param showem <code>true</code> if guillemots are to be shown.
      */
 
-    public void setUseGuillemots(boolean showem) {
-        boolean oldValue = useGuillemots;
-        useGuillemots = showem;
-        fireEvent(Notation.KEY_USE_GUILLEMOTS, oldValue, useGuillemots);
+    public void setUseGuillemots(final boolean showem) {
+        if (useGuillemots == showem) return;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = Notation.KEY_USE_GUILLEMOTS;
+
+            public void redo() {
+                useGuillemots = showem;
+                fireEvent(key, showem, !showem);
+            }
+
+            public void undo() {
+                useGuillemots = !showem;
+                fireEvent(key, !showem, showem);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
     /**
@@ -254,10 +286,27 @@ public class ProjectSettings {
     /**
      * @param showem <code>true</code> if visibilities are to be shown.
      */
-    public void setShowVisibility(boolean showem) {
-        boolean oldValue = showVisibility;
-        showVisibility = showem;
-        fireEvent(Notation.KEY_SHOW_VISIBILITY, oldValue, showVisibility);
+    public void setShowVisibility(final boolean showem) {
+        if (showVisibility == showem) return;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = Notation.KEY_SHOW_VISIBILITY;
+
+            public void redo() {
+                showVisibility = showem;
+                fireEvent(key, showem, !showem);
+            }
+
+            public void undo() {
+                showVisibility = !showem;
+                fireEvent(key, !showem, showem);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
     /**
@@ -286,10 +335,27 @@ public class ProjectSettings {
     /**
      * @param showem <code>true</code> if the multiplicity is to be shown.
      */
-    public void setShowMultiplicity(boolean showem) {
-        boolean oldValue = showMultiplicity;
-        showMultiplicity = showem;
-        fireEvent(Notation.KEY_SHOW_MULTIPLICITY, oldValue, showMultiplicity);
+    public void setShowMultiplicity(final boolean showem) {
+        if (showMultiplicity == showem) return;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = Notation.KEY_SHOW_MULTIPLICITY;
+
+            public void redo() {
+                showMultiplicity = showem;
+                fireEvent(key, showem, !showem);
+            }
+
+            public void undo() {
+                showMultiplicity = !showem;
+                fireEvent(key, !showem, showem);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
     /**
@@ -318,10 +384,28 @@ public class ProjectSettings {
     /**
      * @param showem <code>true</code> if initial values are to be shown.
      */
-    public void setShowInitialValue(boolean showem) {
-        boolean oldValue = showInitialValue;
-        showInitialValue = showem;
-        fireEvent(Notation.KEY_SHOW_INITIAL_VALUE, oldValue, showInitialValue);
+    public void setShowInitialValue(final boolean showem) {
+        if (showInitialValue == showem) return;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = 
+                Notation.KEY_SHOW_INITIAL_VALUE;
+
+            public void redo() {
+                showInitialValue = showem;
+                fireEvent(key, showem, !showem);
+            }
+
+            public void undo() {
+                showInitialValue = !showem;
+                fireEvent(key, !showem, showem);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
     /**
@@ -350,10 +434,28 @@ public class ProjectSettings {
     /**
      * @param showem <code>true</code> if properties are to be shown.
      */
-    public void setShowProperties(boolean showem) {
-        boolean oldValue = showProperties;
-        showProperties = showem;
-        fireEvent(Notation.KEY_SHOW_PROPERTIES, oldValue, showProperties);
+    public void setShowProperties(final boolean showem) {
+        if (showProperties == showem) return;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = 
+                Notation.KEY_SHOW_PROPERTIES;
+
+            public void redo() {
+                showProperties = showem;
+                fireEvent(key, showem, !showem);
+            }
+
+            public void undo() {
+                showProperties = !showem;
+                fireEvent(key, !showem, showem);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
     /**
@@ -382,10 +484,27 @@ public class ProjectSettings {
     /**
      * @param showem <code>true</code> if types are to be shown.
      */
-    public void setShowTypes(boolean showem) {
-        boolean oldValue = showTypes;
-        showTypes = showem;
-        fireEvent(Notation.KEY_SHOW_TYPES, oldValue, showTypes);
+    public void setShowTypes(final boolean showem) {
+        if (showTypes == showem) return;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = Notation.KEY_SHOW_TYPES;
+
+            public void redo() {
+                showTypes = showem;
+                fireEvent(key, showem, !showem);
+            }
+
+            public void undo() {
+                showTypes = !showem;
+                fireEvent(key, !showem, showem);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
 
@@ -415,10 +534,27 @@ public class ProjectSettings {
     /**
      * @param showem <code>true</code> if stereotypes are to be shown.
      */
-    public void setShowStereotypes(boolean showem) {
-        boolean oldValue = showStereotypes;
-        showStereotypes = showem;
-        fireEvent(Notation.KEY_SHOW_STEREOTYPES, oldValue, showStereotypes);
+    public void setShowStereotypes(final boolean showem) {
+        if (showStereotypes == showem) return;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = Notation.KEY_SHOW_STEREOTYPES;
+
+            public void redo() {
+                showStereotypes = showem;
+                fireEvent(key, showem, !showem);
+            }
+
+            public void undo() {
+                showStereotypes = !showem;
+                fireEvent(key, !showem, showem);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
     /**
@@ -438,13 +574,32 @@ public class ProjectSettings {
     }
 
     /**
-     * @param width The Shadow Width.
+     * @param newWidth The Shadow Width.
      */
-    public void setDefaultShadowWidth(int width) {
-        int oldValue = defaultShadowWidth;
-        defaultShadowWidth = width;
-        fireEvent(Notation.KEY_DEFAULT_SHADOW_WIDTH, oldValue,
-                defaultShadowWidth);
+    public void setDefaultShadowWidth(final int newWidth) {
+        if (defaultShadowWidth == newWidth) return;
+
+        final int oldValue = defaultShadowWidth;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = 
+                Notation.KEY_DEFAULT_SHADOW_WIDTH;
+
+            public void redo() {
+                defaultShadowWidth = newWidth;
+                fireEvent(key, oldValue, newWidth);
+            }
+
+            public void undo() {
+                defaultShadowWidth = oldValue;
+                fireEvent(key, newWidth, oldValue);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
     /**
