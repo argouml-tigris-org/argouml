@@ -46,6 +46,7 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.ActionAddAllClassesFromModel;
 import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
+import org.argouml.uml.diagram.ui.ActionAddExistingNodes;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionAddPackage;
@@ -232,6 +233,27 @@ public class ExplorerPopup extends JPopupMenu {
                     new ActionAddAllClassesFromModel(
                         menuLocalize("menu.popup.add-all-classes-to-diagram"),
                         selectedItem);
+                this.add(action);
+            }
+        }
+
+        if (ms) {
+            Collection coll = TargetManager.getInstance().getTargets();
+            Iterator iter = (coll != null) ? coll.iterator() : null;
+            ArrayList classifiers = new ArrayList();
+            while (iter != null && iter.hasNext()) {
+                Object o = iter.next();
+                if (Model.getFacade().isAClassifier(o)
+                     && !Model.getFacade().isADataType(selectedItem)
+                     && !Model.getFacade().isAClassifierAndARelationship(o)) {
+                    classifiers.add(o);
+                }
+            }
+            if (!classifiers.isEmpty()) {
+                Action action =
+                    new ActionAddExistingNodes(
+                        menuLocalize("menu.popup.add-to-diagram"),
+                        classifiers);
                 this.add(action);
             }
         }
