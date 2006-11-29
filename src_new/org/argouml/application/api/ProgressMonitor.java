@@ -45,9 +45,9 @@ public interface ProgressMonitor extends ProgressListener {
     
     /**
      * Updates the subtask that is in progress.
-     * @param action the name of the subtask
+     * @param name the name of the subtask
      */
-    void updateSubTask(String action);
+    void updateSubTask(String name);
     
     /**
      * Updates the major task that is going on.
@@ -61,7 +61,11 @@ public interface ProgressMonitor extends ProgressListener {
      * <p>
      * So in a long running action, you should query this periodicaly to see
      * if the user still wants to continue or he canceled the action.
-     * @return true if the user canceled the action and false otherwise
+     * <p>
+     * NOTE: It appears to be some kind of Java tradition to misspell
+     * the name of this method, so we follow the Swing and Eclipse tradition
+     * of spelling it with a single "L".
+     * @return true if the user cancelled the action and false otherwise
      */
     boolean isCanceled();
     
