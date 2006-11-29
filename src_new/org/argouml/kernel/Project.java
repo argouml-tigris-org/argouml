@@ -292,6 +292,8 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
+     * Used by "argo.tee".
+     * 
      * @return the search path
      */
     public Vector getSearchPath() {
@@ -309,6 +311,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Get all members of the project.
+     * Used by "argo2.tee".
      *
      * @return a Vector with all members.
      */
@@ -445,7 +448,8 @@ public class Project implements java.io.Serializable, TargetListener {
 
 
     /**
-     * Get the author name.
+     * Get the author name. 
+     * Used by "argo.tee".
      *
      * @return The author name.
      */
@@ -464,6 +468,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Get the author name.
+     * Used by "argo.tee".
      *
      * @return The author name.
      */
@@ -482,6 +487,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Get the version.
+     * Used by "argo.tee".
      *
      * @return the version.
      */
@@ -499,6 +505,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Get the description.
+     * Used by "argo.tee".
      *
      * @return the description.
      */
@@ -517,6 +524,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Get the history file.
+     * Used by "argo.tee".
      *
      * @return The history file.
      */
@@ -1270,6 +1278,8 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
+     * Used by "argo.tee".
+     * 
      * @return Returns the persistenceVersion.
      */
     public int getPersistenceVersion() {
@@ -1305,6 +1315,8 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
+     * Used by "argo.tee".
+     * 
      * @return the settings of this project
      */
     public ProjectSettings getProjectSettings() {
