@@ -96,7 +96,7 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
     // constructor
 
     /*
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see org.tigris.gef.base.Command#execute()
      */
     public void execute() {
         Editor ce = Globals.curEditor();
