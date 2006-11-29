@@ -48,7 +48,8 @@ public interface TreeModelUMLEventListener {
     void modelElementRemoved(Object node);
 
     /**
-     * The structure of the model is changed.
+     * The structure of the model is changed in an undefined way
+     * and needs to be rebuilt from scratch.
      */
     void structureChanged();
 }
