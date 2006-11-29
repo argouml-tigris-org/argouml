@@ -88,7 +88,8 @@ public final class ExplorerEventAdaptor
     }
 
     /**
-     * forwards this event to the tree model.
+     * The tree structure has changed significantly.  
+     * Inform the associated tree model.
      */
     public void structureChanged() {
         if (treeModel == null) {

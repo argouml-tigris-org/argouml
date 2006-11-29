@@ -257,7 +257,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
     }
 
     /*
-     * the model structure has changed, eg a new project.
+     * the model structure has changed significantly, eg a new project.
      * @see org.argouml.ui.explorer.TreeModelUMLEventListener#structureChanged()
      */
     public void structureChanged() {
