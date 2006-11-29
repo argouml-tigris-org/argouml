@@ -75,7 +75,13 @@ import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
 
 /**
- * Here it all starts...
+ * This is the main class for two of the types of ArgoUML application invocation: 
+ * non-GUI command line and Swing GUI.<p>
+ * 
+ * NOTE: Functionality which should be common to all types of application
+ * invocation (e.g. extension modules to be loaded) should added to some
+ * common class and <b>not</b> here.  Adding things here will cause behavior
+ * to diverge for other application invocation types (e.g. ArgoEclipse).
  *
  */
 public class Main {
