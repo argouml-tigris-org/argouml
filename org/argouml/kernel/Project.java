@@ -64,6 +64,8 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 /**
  * The Project is a datastructure that represents the designer's
@@ -462,8 +464,22 @@ public class Project implements java.io.Serializable, TargetListener {
      *
      * @param s The new author name.
      */
-    public void setAuthorname(String s) {
-        authorname = s;
+    public void setAuthorname(final String s) {
+        final String oldAuthorName = authorname;
+        Memento memento = new Memento() {
+            public void redo() {
+                authorname = s;
+            }
+
+            public void undo() {
+                authorname = oldAuthorName;
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
     /**
@@ -481,8 +497,22 @@ public class Project implements java.io.Serializable, TargetListener {
      *
      * @param s The new author name.
      */
-    public void setAuthoremail(String s) {
-        authoremail = s;
+    public void setAuthoremail(final String s) {
+        final String oldAuthorEmail = authoremail;
+        Memento memento = new Memento() {
+            public void redo() {
+                authoremail = s;
+            }
+
+            public void undo() {
+                authoremail = oldAuthorEmail;
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
     /**
@@ -518,8 +548,22 @@ public class Project implements java.io.Serializable, TargetListener {
      *
      * @param s The new description.
      */
-    public void setDescription(String s) {
-        description = s;
+    public void setDescription(final String s) {
+        final String oldDescription = description;
+        Memento memento = new Memento() {
+            public void redo() {
+                description = s;
+            }
+
+            public void undo() {
+                description = oldDescription;
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
     }
 
     /**
