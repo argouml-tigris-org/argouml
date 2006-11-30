@@ -32,6 +32,7 @@ import org.argouml.application.api.ProgressMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
+import org.tigris.gef.undo.UndoManager;
 
 /**
  * The specialized SwingWorker used for saving projects
@@ -88,6 +89,7 @@ public class SaveSwingWorker extends SwingWorker {
         super.finished();
         if (result) {
             ProjectBrowser.getInstance().buildTitleWithCurrentProjectName();
+            UndoManager.getInstance().empty();
         }
     }
 }
