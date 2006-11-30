@@ -88,30 +88,30 @@ public class ActionSaveProject extends AbstractAction {
      * When we become enabled inform the user by highlighting the title bar
      * with an asterisk.
      * This method is undoable.
-     * @param enabled new state for save command
+     * @param isEnabled new state for save command
      */
-    public void setEnabled(final boolean enabled) {
-        if (enabled == this.enabled) {
+    public void setEnabled(final boolean isEnabled) {
+        if (isEnabled == this.enabled) {
             return;
         }
         Memento memento = new Memento() {
             public void undo() {
-                internalSetEnabled(!enabled);
+                internalSetEnabled(!isEnabled);
             }
             public void redo() {
-                internalSetEnabled(enabled);
+                internalSetEnabled(isEnabled);
             }
         };
     	UndoManager.getInstance().addMemento(memento);
-        internalSetEnabled(enabled);
+        internalSetEnabled(isEnabled);
     }
     
     /**
      * Set the enabled state of this action and displays the save indicator
-     * @param enabled true to enable the action
+     * @param isEnabled true to enable the action
      */
-    private void internalSetEnabled(boolean enabled) {
-        super.setEnabled(enabled);
+    private void internalSetEnabled(boolean isEnabled) {
+        super.setEnabled(isEnabled);
         ProjectBrowser.getInstance().showSaveIndicator();
     }
 
