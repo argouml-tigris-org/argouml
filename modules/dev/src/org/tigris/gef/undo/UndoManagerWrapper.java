@@ -24,6 +24,9 @@
 
 package org.tigris.gef.undo;
 
+/**
+ * By using this wrapper we are able to show the contents of the Undo stack.
+ */
 public class UndoManagerWrapper extends UndoManager {
 
     /**
@@ -32,7 +35,7 @@ public class UndoManagerWrapper extends UndoManager {
     public UndoManagerWrapper() {
     }
 
-    /**
+    /*
      * @see org.tigris.gef.undo.UndoManager#addMemento(org.tigris.gef.undo.Memento)
      */
     public void addMemento(Memento memento) {
@@ -45,6 +48,7 @@ public class UndoManagerWrapper extends UndoManager {
      */
     public void empty() {
         super.empty();
+        UndoLogPanel.getInstance().removeAll();
     }
 
     /**
@@ -54,7 +58,7 @@ public class UndoManagerWrapper extends UndoManager {
         super.emptyUndo();
     }
 
-    /**
+    /*
      * @see org.tigris.gef.undo.UndoManager#redo(org.tigris.gef.undo.Memento)
      */
     protected void redo(Memento memento) {
@@ -62,7 +66,7 @@ public class UndoManagerWrapper extends UndoManager {
         super.redo(memento);
     }
 
-    /**
+    /*
      * @see org.tigris.gef.undo.UndoManager#undo(org.tigris.gef.undo.Memento)
      */
     protected void undo(Memento memento) {
