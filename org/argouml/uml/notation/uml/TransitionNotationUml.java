@@ -441,7 +441,7 @@ public class TransitionNotationUml extends TransitionNotation {
         Object effect = Model.getFacade().getEffect(modelElement);
         String t = generateEvent(trigger);
         String g = generateGuard(guard);
-        String e = generateAction(effect);
+        String e = generateActionSequence(effect);
         if (g.length() > 0) {
             t += " [" + g + "]";
         }
@@ -490,11 +490,29 @@ public class TransitionNotationUml extends TransitionNotation {
         return "";
     }
 
+    private String generateActionSequence(Object a) {
+        if (Model.getFacade().isAActionSequence(a)) {
+            StringBuffer str = new StringBuffer("");
+            Collection actions = Model.getFacade().getActions(a);
+            Iterator i = actions.iterator();
+            if (i.hasNext()) {
+                str.append(generateAction(i.next()));
+            }
+            while (i.hasNext()) {
+                str.append("; ");
+                str.append(generateAction(i.next()));
+            }
+            return str.toString();
+        } else {
+            return generateAction(a);
+        }
+    }
+
     /**
      * @param m the action
      * @return the generated text
      */
-    public String generateAction(Object m) {
+    private String generateAction(Object m) {
         Collection c;
         Iterator it;
         String s;
