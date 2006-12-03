@@ -83,7 +83,7 @@ public class ActionNewActionSequence extends ActionNewAction {
         Object icon = 
             ResourceLoaderWrapper.lookupIconResource("ActionSequence");
         a.putValue(SMALL_ICON, icon);
-//        a.putValue(ROLE, Roles.EFFECT);
+        a.putValue(ROLE, Roles.EFFECT);
         return a;
     }
 
