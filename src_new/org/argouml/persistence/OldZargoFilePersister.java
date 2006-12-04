@@ -49,7 +49,7 @@ import org.tigris.gef.ocl.TemplateReader;
  * To persist to and from zargo (zipped file) storage containing seperate
  * xmi, argo, plgml and todo zip entries.
  * @author Bob Tarling
- * @deprecated in 0.12.1 in favour of ZargoFilePersister
+ * TODO: Review use of this against ZargoFilePersister - Bob
  */
 class OldZargoFilePersister extends ZargoFilePersister {
     /**
