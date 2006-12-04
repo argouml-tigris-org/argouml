@@ -58,6 +58,7 @@ public class TestTransitionNotationUml extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
+        assertTrue("Model subsystem init failed.", Model.isInitiated());
         Project p = ProjectManager.getManager().getCurrentProject();
         Object model =
             Model.getModelManagementFactory().createModel();
@@ -160,6 +161,43 @@ public class TestTransitionNotationUml extends TestCase {
                     Model.getFacade().getEffect(it) == null);
         }
         return it;
+    }
+
+    /**
+     * Test creating modelelements from a given notation, and then 
+     * re-generate the notation-string again, and check if they are equal.
+     * Some of these tests are not very usefulll, 
+     * since they may fail on white space differences. 
+     * TODO: White space should best be ignored. 
+     */
+    public void testRoundTrip() {
+        checkGenerateRoundTrip(aState, "trigger [guard] / effect");
+        checkGenerateRoundTrip(aState, "trigger / effect");
+        checkGenerateRoundTrip(aState, "trigger [guard]");
+        checkGenerateRoundTrip(aState, " [guard] / effect");
+        checkGenerateRoundTrip(aState, " / effect");
+        checkGenerateRoundTrip(aState, "trigger");
+        checkGenerateRoundTrip(aState, " [guard]");
+        checkGenerateRoundTrip(aState, "");
+        checkGenerateRoundTrip(aState, "t(a : int = 3, b : double = 4.0)");
+        checkGenerateRoundTrip(aState, " / effect(a:2,r=6)");
+        checkGenerateRoundTrip(aState, "trigger [guard] / eff1; eff2; eff3");
+    }
+
+    private void checkGenerateRoundTrip(Object st, String text) {
+        Object it =
+            Model.getStateMachinesFactory().buildInternalTransition(st);
+        TransitionNotationUml notation = new TransitionNotationUml(it);
+        try {
+            notation.parseTransition(it, text);
+        } catch (ParseException e) {
+            assertTrue("Unexpected exception: " + e.getMessage(), true);
+        }
+        // try creating a string from the generated modelelements:
+        String notationStr = notation.toString(it, null); 
+        assertTrue("Notation not correctly generated for " + text + "\n"
+                + "Resulted in: '" + notationStr + "'", 
+                text.equals(notationStr));
     }
 
     /**
