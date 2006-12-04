@@ -181,12 +181,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showBoldNames = showem;
-                fireEvent(key, showem, !showem);
+                fireEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showBoldNames = !showem;
-                fireEvent(key, !showem, showem);
+                fireEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -231,12 +231,12 @@ public class ProjectSettings {
 
             public void redo() {
                 useGuillemots = showem;
-                fireEvent(key, showem, !showem);
+                fireEvent(key, !showem, showem);
             }
 
             public void undo() {
                 useGuillemots = !showem;
-                fireEvent(key, !showem, showem);
+                fireEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -294,12 +294,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showVisibility = showem;
-                fireEvent(key, showem, !showem);
+                fireEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showVisibility = !showem;
-                fireEvent(key, !showem, showem);
+                fireEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -343,12 +343,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showMultiplicity = showem;
-                fireEvent(key, showem, !showem);
+                fireEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showMultiplicity = !showem;
-                fireEvent(key, !showem, showem);
+                fireEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -393,12 +393,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showInitialValue = showem;
-                fireEvent(key, showem, !showem);
+                fireEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showInitialValue = !showem;
-                fireEvent(key, !showem, showem);
+                fireEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -443,12 +443,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showProperties = showem;
-                fireEvent(key, showem, !showem);
+                fireEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showProperties = !showem;
-                fireEvent(key, !showem, showem);
+                fireEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -492,12 +492,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showTypes = showem;
-                fireEvent(key, showem, !showem);
+                fireEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showTypes = !showem;
-                fireEvent(key, !showem, showem);
+                fireEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -542,12 +542,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showStereotypes = showem;
-                fireEvent(key, showem, !showem);
+                fireEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showStereotypes = !showem;
-                fireEvent(key, !showem, showem);
+                fireEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
