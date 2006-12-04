@@ -90,7 +90,7 @@ class UmlFilePersister extends AbstractFilePersister {
         Logger.getLogger(UmlFilePersister.class);
 
     private static final String ARGO_TEE =
-	"/org/argouml/persistence/argo2.tee";
+	"/org/argouml/persistence/argo.tee";
 
     /**
      * The constructor.

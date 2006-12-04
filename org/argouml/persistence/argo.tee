@@ -7,8 +7,8 @@
   <!ATTLIST template class CDATA #REQUIRED
                      guard CDATA #IMPLIED>
 ]>
-<!-- This is argo.tee, for ArgoUML to save project files. -->
-<!-- "tee" = Template with Embedded Expressions. -->
+<!-- This is argo.tee, for Argo/UML to save project -->
+<!-- files.  "tee" = Template with Embedded Expressions. -->
 
 <!-- Original Author: jrobbins@ics.uci.edu -->
 <!-- $Id$ -->
@@ -42,12 +42,26 @@
   </settings>
   
   <searchpath href="<ocl>self.searchPath</ocl>" />
+
+  <ocl>self.members</ocl>
+
   <historyfile name="<ocl>self.historyFile</ocl>" />
 
 </argo>
 ]]>
 </template>
 
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Write out the ProjectMember data. Note that this is not         -->
+<!-- required to reload a project for ArgoUML but is used by at      -->
+<!-- least one 3rd party tool. See -                                 -->
+<!-- http://argouml.tigris.org/issues/show_bug.cgi?id=4491           -->
+<template class="org.argouml.kernel.AbstractProjectMember">
+<![CDATA[
+<member type="<ocl>self.type</ocl>"
+        name="<ocl>self.zipName</ocl>" />
+]]>
+</template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.argouml.ui.UsageStatistic">
