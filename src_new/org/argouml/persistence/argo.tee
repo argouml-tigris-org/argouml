@@ -56,6 +56,20 @@
 <!-- required to reload a project for ArgoUML but is used by at      -->
 <!-- least one 3rd party tool. See -                                 -->
 <!-- http://argouml.tigris.org/issues/show_bug.cgi?id=4491           -->
+<template class="org.argouml.uml.diagram.ProjectMemberDiagram">
+<![CDATA[
+<member type="<ocl>self.type</ocl>"
+        name="<ocl>self.zipName</ocl>"
+        diagramclass="<ocl>self.diagram.class.name</ocl>"
+        diagramname="<ocl>self.diagram.name</ocl>" />
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Write out the ProjectMember data. Note that this is not         -->
+<!-- required to reload a project for ArgoUML but is used by at      -->
+<!-- least one 3rd party tool. See -                                 -->
+<!-- http://argouml.tigris.org/issues/show_bug.cgi?id=4491           -->
 <template class="org.argouml.kernel.AbstractProjectMember">
 <![CDATA[
 <member type="<ocl>self.type</ocl>"
