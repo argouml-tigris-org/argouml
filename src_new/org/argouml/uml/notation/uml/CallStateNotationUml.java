@@ -76,7 +76,7 @@ public class CallStateNotationUml extends CallStateNotation {
         }
     }
 
-    private Object parseCallState(Object callState, String s1)
+    protected Object parseCallState(Object callState, String s1)
         throws ParseException {
 
         String s = s1.trim();
