@@ -2538,7 +2538,8 @@ Build the pdf version of the documentation.
 </para>
 
         <para>
-The plan is to soon include this in the build-release.sh script.
+This is done using the command
+<command>./build-release.sh -d</command>
 </para>
       </listitem>
 
