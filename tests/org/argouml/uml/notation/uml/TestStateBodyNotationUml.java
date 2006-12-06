@@ -239,6 +239,15 @@ public class TestStateBodyNotationUml extends TestCase {
                 c.size() == internals);
     }
 
-
+    /**
+     * Test if help is correctly provided.
+     */
+    public void testGetHelp() {
+        StateBodyNotationUml notation = new StateBodyNotationUml(aState);
+        String help = notation.getParsingHelp();
+        assertTrue("No help at all given", help.length() > 0);
+        assertTrue("Parsing help not conform for translation", 
+                help.startsWith("parsing."));
+    }
 
 }

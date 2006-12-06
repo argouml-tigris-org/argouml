@@ -1,4 +1,4 @@
-// $Id $
+// $Id: TestNotationProvider.java $
 // Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,14 +24,24 @@
 
 package org.argouml.uml.notation;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+
 /**
  * @author Michiel
  */
-public class TestNotationProvider extends TestCase {
+public class TestNotationProvider extends TestCase 
+    implements PropertyChangeListener {
+
+    private Object aClass;
+    private boolean propChanged = false;
 
     /**
      * Test the existence of the 
@@ -77,13 +87,46 @@ public class TestNotationProvider extends TestCase {
             return null;
         }
 
+        /*
+         * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+         */
         public String toString(Object modelElement, HashMap args) {
             return modelElement.toString() + args.size();
         }
 
+        /*
+         * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
+         */
         public void parse(Object modelElement, String text) {
 
         }
+    }
+    
+    public void testListener() {
+        Object model =
+            Model.getModelManagementFactory().createModel();
+        Project p = ProjectManager.getManager().getCurrentProject();
+        p.setRoot(model);
+        aClass = Model.getCoreFactory().buildClass(model);
         
+        NotationProvider np = new NPImpl();
+        np.addListener(this, aClass);
+        
+        propChanged = false;
+        Model.getCoreHelper().setName(aClass, "ClassA1");
+        Model.getPump().flushModelEvents();
+        assertTrue("No event received", propChanged);
+        
+        np.removeListener(this, aClass);
+        propChanged = false;
+        Model.getCoreHelper().setName(aClass, "ClassA2");
+        Model.getPump().flushModelEvents();
+        assertTrue("Event received, despite not listening", !propChanged);
+
+        np.updateListener(this, aClass, null);
+    }
+
+    public void propertyChange(PropertyChangeEvent evt) {
+        propChanged = true;
     }
 }

@@ -40,7 +40,8 @@ import org.argouml.model.Model;
  * For that reason they cannot be run in Headless mode.
  */
 public class TestMessageNotationUml extends TestCase {
-    /**
+
+    /*
      * @see junit.framework.TestCase#TestCase(String)
      */
     public TestMessageNotationUml(String str) {
@@ -451,5 +452,18 @@ public class TestMessageNotationUml extends TestCase {
         } catch (ParseException pe) {
             // The expected exception is thrown.
         }
+    }
+
+    /**
+     * Test if help is correctly provided.
+     */
+    public void testGetHelp() {
+        Object m = Model.getCollaborationsFactory().createMessage();
+
+        MessageNotationUml notation = new MessageNotationUml(m);
+        String help = notation.getParsingHelp();
+        assertTrue("No help at all given", help.length() > 0);
+        assertTrue("Parsing help not conform for translation", 
+                help.startsWith("parsing."));
     }
 }

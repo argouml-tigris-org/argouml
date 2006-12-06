@@ -34,6 +34,7 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.notation.NotationProvider;
 
 /**
  * @author michiel
@@ -959,12 +960,15 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     private void checkStereotype(Object feature, String text, String[] val)
         throws ParseException {
 
+        NotationProvider np = null;
         if (Model.getFacade().isAAttribute(feature)) {
             AttributeNotationUml anu = new AttributeNotationUml(); 
             anu.parseAttribute(text, feature);
+            np = anu;
         } else if (Model.getFacade().isAOperation(feature)) {
             OperationNotationUml onu = new OperationNotationUml(feature);
             onu.parseOperation(text, feature);
+            np = onu;
         } else {
             fail("Unknown feature type " + feature);
         }
@@ -984,6 +988,44 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
                text + " gave wrong stereotype " + stereos.toArray(),
                   val.length == stereos.size()
                   && stereosMatch);
+        
+        String str = np.toString(feature, null);
+        assertTrue("Empty string", str.length() > 0);
+        // TODO: Test if the generated string is correct.
+    }
+
+    /**
+     * Test if help is correctly provided.
+     */
+    public void testGetHelpAttribute() {
+        AttributeNotationUml notation = new AttributeNotationUml();
+        String help = notation.getParsingHelp();
+        assertTrue("No help at all given", help.length() > 0);
+        assertTrue("Parsing help not conform for translation", 
+                help.startsWith("parsing."));
+    }
+
+    /**
+     * Test if help is correctly provided.
+     */
+    public void testGetHelpOperation() {
+        Object op;
+        Object cl = Model.getCoreFactory().buildClass();
+
+        Object ns =
+            ProjectManager.getManager().getCurrentProject().getModel();
+
+        Model.getCoreHelper().setNamespace(cl, ns);
+        Object voidType =
+            ProjectManager.getManager().getCurrentProject().findType("void");
+
+        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        
+        OperationNotationUml notation = new OperationNotationUml(op);
+        String help = notation.getParsingHelp();
+        assertTrue("No help at all given", help.length() > 0);
+        assertTrue("Parsing help not conform for translation", 
+                help.startsWith("parsing."));
     }
 
     /**

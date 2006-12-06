@@ -219,6 +219,13 @@ public class TestCallStateNotationUml extends TestCase {
             //ok
         }
         try {
+            notation.parseCallState(aCallState, "myOperX\n(ClassA)");
+            assertTrue("Expected 'Operation not found' exception "
+                        + "did not happen", true);
+        } catch (ParseException e) {
+            //ok
+        }
+        try {
             notation.parseCallState(aCallState, "myOper\n(ClassB)");
             assertTrue("Expected 'Operation not found' exception "
                         + "did not happen", true);
@@ -229,6 +236,12 @@ public class TestCallStateNotationUml extends TestCase {
             notation.parseCallState(aCallState, "myOper\n(ClassX)");
             assertTrue("Expected 'Classifier not found' exception "
                         + "did not happen", true);
+        } catch (ParseException e) {
+            //ok
+        }
+        try {
+            notation.parseCallState(aCallState, "X");
+            assertTrue("Expected exception did not happen", true);
         } catch (ParseException e) {
             //ok
         }
