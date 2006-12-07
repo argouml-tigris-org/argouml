@@ -117,7 +117,6 @@ public final class PersistenceManager {
         // These are the file formats I know about:
         defaultPersister = new OldZargoFilePersister();
         quickViewDump = new UmlFilePersister();
-        otherPersisters.add(quickViewDump);
         xmiPersister = new XmiFilePersister();
         otherPersisters.add(xmiPersister);
         xmlPersister = new XmlFilePersister();
