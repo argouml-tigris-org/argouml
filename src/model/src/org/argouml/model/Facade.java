@@ -264,13 +264,12 @@ public interface Facade {
 
     /**
      * Recognizer for a Element that is Classifier and RelationShip.
-     *
-     * TODO: Does this really belong here? Is it commonly used? If it really
-     * belongs here it is not a recognizer so it should be renamed to
-     * isClassifierAndRelationship. (comment by Bob from MDR impl - tfm)
-     *
-     * @param handle candidate
+     * 
+     * @param handle
+     *            candidate
      * @return true if handle is a Classifier and a Relationship
+     * @deprecated by tfmorris for 0.23.4 - use individual methods
+     *             isAClassififer and isARelationship.
      */
     boolean isAClassifierAndARelationship(Object handle);
 
