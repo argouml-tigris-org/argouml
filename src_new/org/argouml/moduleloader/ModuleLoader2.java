@@ -233,7 +233,7 @@ public final class ModuleLoader2 {
      * @param name The name of the module.
      * @param value Selected or not.
      */
-    public void setSelectedInternal(String name, boolean value) {
+    private void setSelectedInternal(String name, boolean value) {
 	Map.Entry entry = findModule(name);
 
 	if (entry != null) {
