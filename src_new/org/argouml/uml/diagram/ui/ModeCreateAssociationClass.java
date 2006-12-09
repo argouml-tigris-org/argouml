@@ -34,6 +34,14 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 
+/**
+ * Mode to manage interaction while user is drawing the pseudo-edge that will
+ * become an Association Class. The only difference from a basic edge is that
+ * the completion action is extended to draw the extra associated node and edge
+ * that are part of this composite figure.
+ * 
+ * @author Bob Tarling
+ */
 public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
 
     private static final long serialVersionUID = -8656139458297932182L;
@@ -50,16 +58,34 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
         createMemento(thisFig);
         buildParts(editor, thisFig, lay);
     }
+
+    /**
+     * Build the complex representation of an AssociationClass in the active
+     * layer of the current editor. This is a convenience function which is used
+     * when the pseudo-edge is added to a diagram via drag-and-drop or by using
+     * the "Add to Diagram" menu item.
+     * 
+     * @param editor
+     *            the GEF editor
+     * @param element
+     *            the model element
+     */
+    public static void buildInActiveLayer(Editor editor, Object element) {
+        Layer layer = editor.getLayerManager().getActiveLayer();
+        FigAssociationClass thisFig =
+            (FigAssociationClass) layer.presentationFor(element);
+        if (thisFig != null) {
+            buildParts(editor, thisFig, layer);
+        }
+    }
     
-    public static void buildParts(Editor editor, FigAssociationClass thisFig,
+    private static void buildParts(Editor editor, FigAssociationClass thisFig,
             Layer lay) {
         
         thisFig.removePathItem(thisFig.getMiddleGroup());
 
-        GraphModel graphModel = editor.getGraphModel();
-
         MutableGraphModel mutableGraphModel =
-            (MutableGraphModel) graphModel;
+            (MutableGraphModel) editor.getGraphModel();
         mutableGraphModel.addNode(thisFig.getOwner());
 
         Rectangle drawingArea =

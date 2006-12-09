@@ -88,11 +88,13 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     }
 
     /**
-     * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
-     *
      * Return all edges going to given port (read Model Element).
-     *
+     * 
      * Instances can't currently be added to a class diagram.
+     * 
+     * @param port
+     *            model element to query
+     * @return list of incoming connections
      */
     public List getInEdges(Object port) {
 
@@ -372,6 +374,10 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    return;
 	}
 	getNodes().add(node);
+        
+        // TODO: This is probably an undesirable side effect unless the user
+        // confirms it.  Placing an element on a second diagram is going to
+        // potentially change its namespace. - tfm 20061208
 	if (Model.getFacade().isAModelElement(node)
 	        && Model.getFacade().getNamespace(node) == null) {
             Model.getCoreHelper().addOwnedElement(getHomeModel(), node);
@@ -385,7 +391,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Throws IllegalArgumentException if edge is null or either of its
      * ends are null.
      *
-     * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
+     * @param edge the edge to be added
      */
     public void addEdge(Object edge) {
         if (edge == null) {
@@ -409,8 +415,11 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         }
 
         getEdges().add(edge);
-        
+ 
         // TODO: assumes public
+        // TODO: This is probably an undesirable side effect unless the user
+        // confirms it.  Placing an element on a second diagram is going to
+        // potentially change its namespace. - tfm 20061208
         if (Model.getFacade().isAModelElement(edge)
                 && Model.getFacade().getNamespace(edge) == null
                 && !Model.getFacade().isAAssociationEnd(edge)) {
@@ -421,9 +430,11 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 
     /**
-     * Adds the edges from the given node. For example, this method lets you add
-     * an already existing association between two figclassifiers.
-     * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(Object)
+     * Add the edges from the given node. For example, this method lets you add
+     * an existing association between two figclassifiers.
+     * 
+     * @param node
+     *            the model element to query for connections
      */
     public void addNodeRelatedEdges(Object node) {
         super.addNodeRelatedEdges(node);
@@ -434,9 +445,12 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             while (iter.hasNext()) {
                 Object association =
                         Model.getFacade().getAssociation(iter.next());
+                // TODO: We should be able to add AssociationClasses, but the
+                // way things are now, we only half add them, so just disable
+                // until fixed. - tfm  20061208
                 if (!Model.getFacade().isANaryAssociation(association)
-                    && canAddEdge(association)) {
-
+                        && !Model.getFacade().isAAssociationClass(association)
+                        && canAddEdge(association)) {
                     addEdge(association);
                 }
             }
@@ -655,7 +669,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     private void rerouteGeneralization(Object newNode, Object oldNode,
 				       Object edge, boolean isSource) {
-
+        // empty at the moment
     }
 
     /**
@@ -665,7 +679,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     private void rerouteDependency(Object newNode, Object oldNode,
 				   Object edge, boolean isSource) {
-
+        // empty at the moment
     }
 
     /**
@@ -675,6 +689,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     private void rerouteLink(Object newNode, Object oldNode,
 			     Object edge, boolean isSource) {
+        // empty at the moment
 
     }
 

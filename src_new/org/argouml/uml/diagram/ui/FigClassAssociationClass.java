@@ -30,8 +30,8 @@ import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * Class to display a class in an Association Class
- * It must be used only from a FigAssociationClass
+ * Class to display the Class box fig piece of an Association Class.
+ * <em>NOTE:</em> It must be used only from a FigAssociationClass
  *
  * @author pepargouml
  */
