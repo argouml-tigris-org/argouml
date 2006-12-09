@@ -38,9 +38,11 @@ import org.tigris.gef.presentation.FigPoly;
 
 
 /**
- * Class to display a connection linking the class and the
- * association in a Association Class
- * It must be used only from a FigAssociationClass
+ * Class to display the dashed line connecting the class box figure and the
+ * association line pieces of a composite Association Class group.  This should
+ * not be confused with the primary edge that forms the Association.  That is
+ * {@link FigAssociationClass}.
+ * <em>NOTE:</em> It must be used only from a FigAssociationClass.
  *
  * @author pepargouml
  */
@@ -126,8 +128,8 @@ public class FigEdgeAssociationClass
     }
 
     /**
-     * If the user requests deletion of this FIg then delgate to the attached
-     * FigAssociationClass
+     * If the user requests deletion of this Fig then delegate to the attached
+     * FigAssociationClass.
      * @return the attached FigAssociationClass
      */
     protected Fig getRemoveDelegate() {

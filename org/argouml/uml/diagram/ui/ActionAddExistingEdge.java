@@ -77,11 +77,8 @@ public class ActionAddExistingEdge extends UndoableAction {
         if (gm.canAddEdge(edge)) { // situation 1
             gm.addEdge(edge);
             if (Model.getFacade().isAAssociationClass(edge)) {
-                Editor editor = Globals.curEditor();
-                Layer lay = editor.getLayerManager().getActiveLayer();
-                FigAssociationClass fig =
-                    (FigAssociationClass) lay.presentationFor(edge);
-                ModeCreateAssociationClass.buildParts(editor, fig, lay);
+                ModeCreateAssociationClass.buildInActiveLayer(Globals
+                        .curEditor(), edge);
             }
         }
     }

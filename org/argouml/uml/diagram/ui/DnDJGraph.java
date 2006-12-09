@@ -196,15 +196,14 @@ class DnDJGraph
                 if (Model.getFacade().isAModelElement(me)) {
                     if (gm.canAddEdge(me)) {
                         gm.addEdge(me);
+                        // TODO: An AssociationClass should be possible to add
+                        // as a side effect of adding a node and its related
+                        // edges, but that doesn't work as things are currently
+                        // structured. - tfm 20061208
                         if (Model.getFacade().isAAssociationClass(me)) {
-                            Layer lay =
-                                getEditor().getLayerManager().getActiveLayer();
-                            FigAssociationClass thisFig =
-                                (FigAssociationClass) lay.presentationFor(me);
-                            ModeCreateAssociationClass.buildParts(
+                            ModeCreateAssociationClass.buildInActiveLayer(
                                     getEditor(), 
-                                    thisFig, 
-                                    lay);
+                                    me);
                         }
                     } else if (gm.canAddNode(me)) {
                         AddExistingNodeCommand cmd =

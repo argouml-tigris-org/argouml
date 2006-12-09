@@ -34,12 +34,13 @@ import org.tigris.gef.presentation.FigText;
 
 
 /**
- * An Association Class is represented by 3 seperate Figs
- * FigAssociationClass is the association edge drawn between two classifiers
- * this displays that association properties of the association class.
- * FigClassAssociationClass is the classifier box that displays the class
- * properties of the association class.
- * FigEdgeAssociationClass is the dashed line that joins these two.
+ * An Association Class is represented by 3 separate Figs: <nl>
+ * <li>FigAssociationClass is the association edge drawn between two classifiers
+ * this displays that association properties of the association class.</li>
+ * <li>FigClassAssociationClass is the classifier box that displays the class
+ * properties of the association class.</li>
+ * </li>FigEdgeAssociationClass is the dashed line that joins these two.</li>
+ * </nl>
  * 
  * Whenever the user attempts to remove or delete one of these parts then all
  * parts must go.
