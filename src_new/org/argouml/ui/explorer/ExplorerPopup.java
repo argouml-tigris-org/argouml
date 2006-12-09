@@ -84,7 +84,8 @@ public class ExplorerPopup extends JPopupMenu {
         super("Explorer popup menu");
 
         /* Check if multiple items are selected. */
-        boolean ms = TargetManager.getInstance().getTargets().size() > 1;
+        boolean multiSelect =
+                TargetManager.getInstance().getTargets().size() > 1;
 
         final Project currentProject =
             ProjectManager.getManager().getCurrentProject();
@@ -108,7 +109,7 @@ public class ExplorerPopup extends JPopupMenu {
         // this.add(action);
         // }
 
-        if (!ms) {
+        if (!multiSelect) {
             initMenuCreate();
             this.add(createDiagrams);
         }
@@ -120,12 +121,8 @@ public class ExplorerPopup extends JPopupMenu {
         if (modelElementSelected) {
             final boolean nAryAssociationSelected =
                 Model.getFacade().isANaryAssociation(selectedItem);
-            final boolean classifierAndRelationShipSelected =
-                Model.getFacade().isAClassifierAndARelationship(selectedItem);
             final boolean classifierSelected =
                 Model.getFacade().isAClassifier(selectedItem);
-            final boolean dataTypeSelected =
-                Model.getFacade().isADataType(selectedItem);
             final boolean packageSelected =
                 Model.getFacade().isAPackage(selectedItem);
             final boolean commentSelected =
@@ -162,10 +159,9 @@ public class ExplorerPopup extends JPopupMenu {
                 (activityDiagramActive)
                     ? ((UMLActivityDiagram) activeDiagram).getStateMachine()
                     : null;
-            if (!ms) {
-                if ((classifierSelected
-                        && !dataTypeSelected
-                        && !classifierAndRelationShipSelected)
+                    
+            if (!multiSelect) {
+                if ((classifierSelected && !relationshipSelected)
                         || (packageSelected && selectedItem != projectModel)
                         || (stateVertexSelected
                                 && activityDiagramActive
@@ -183,9 +179,7 @@ public class ExplorerPopup extends JPopupMenu {
                             selectedItem);
                     this.add(action);
                 }
-            }
 
-            if (!ms) {
                 if ((relationshipSelected
                         && !flowSelected
                         && !nAryAssociationSelected)
@@ -199,23 +193,17 @@ public class ExplorerPopup extends JPopupMenu {
                     this.add(action);
                     addMenuItemForBothEndsOf(selectedItem);
                 }
-            }
 
-            if (!ms) {
-                if (Model.getFacade().isAClassifier(selectedItem)
-                        || Model.getFacade().isAPackage(selectedItem)) {
+                if (classifierSelected
+                        || packageSelected) {
                     this.add(new ActionSetSourcePath());
                 }
-            }
 
-            if (!ms) {
                 if (Model.getFacade().isAOperation(selectedItem)) {
                     this.add(new ActionRESequenceDiagram());
                 }
-            }
 
-            if (!ms) {
-                if (Model.getFacade().isAPackage(selectedItem)
+                if (packageSelected
                         || Model.getFacade().isAModel(selectedItem)) {
                     this.add(new ActionAddPackage());
                 }
@@ -227,7 +215,7 @@ public class ExplorerPopup extends JPopupMenu {
         }
         // TODO: Make sure this shouldn't go into a previous
         // condition -tml
-        if (!ms) {
+        if (!multiSelect) {
             if (selectedItem instanceof UMLClassDiagram) {
                 Action action =
                     new ActionAddAllClassesFromModel(
@@ -237,15 +225,14 @@ public class ExplorerPopup extends JPopupMenu {
             }
         }
 
-        if (ms) {
+        if (multiSelect) {
             Collection coll = TargetManager.getInstance().getTargets();
             Iterator iter = (coll != null) ? coll.iterator() : null;
             ArrayList classifiers = new ArrayList();
             while (iter != null && iter.hasNext()) {
                 Object o = iter.next();
                 if (Model.getFacade().isAClassifier(o)
-                     && !Model.getFacade().isADataType(selectedItem)
-                     && !Model.getFacade().isAClassifierAndARelationship(o)) {
+                     && !Model.getFacade().isARelationship(o)) {
                     classifiers.add(o);
                 }
             }
