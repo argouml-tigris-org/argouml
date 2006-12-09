@@ -156,23 +156,6 @@ public final class Notation implements PropertyChangeListener {
     }
 
     /**
-     * Remove the notation change listener.
-     * <code>finalize</code> should never happen, but play it safe.
-     *
-     * TODO: Explain why we don't call super.finalize()!
-     */
-    protected void finalize() {
-        Configuration.removeListener(KEY_DEFAULT_NOTATION, this);
-        Configuration.removeListener(KEY_SHOW_BOLD_NAMES, this);
-        Configuration.removeListener(KEY_USE_GUILLEMOTS, this);
-        Configuration.removeListener(KEY_SHOW_TYPES, this);
-        Configuration.removeListener(KEY_SHOW_MULTIPLICITY, this);
-        Configuration.removeListener(KEY_SHOW_PROPERTIES, this);
-        Configuration.removeListener(KEY_SHOW_VISIBILITY, this);
-        Configuration.removeListener(KEY_SHOW_INITIAL_VALUE, this);
-    }
-
-    /**
      * @param n the NotationName that will become default
      */
     public static void setDefaultNotation(NotationName n) {
@@ -224,7 +207,7 @@ public final class Notation implements PropertyChangeListener {
         return SINGLETON;
     }
 
-    /**
+    /*
      * Called after the notation default property gets changed.
      *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
