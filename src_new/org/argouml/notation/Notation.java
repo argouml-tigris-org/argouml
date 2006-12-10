@@ -27,6 +27,8 @@ package org.argouml.notation;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.Icon;
 
@@ -240,7 +242,10 @@ public final class Notation implements PropertyChangeListener {
      *
      * @return list of available notations
      */
-    public static ArrayList getAvailableNotations() {
+    public static List getAvailableNotations() {
+        // TODO: This should return an immutable list
+//        return Collections.unmodifiableList(
+//                NotationNameImpl.getAvailableNotations());
         return NotationNameImpl.getAvailableNotations();
     }
 
