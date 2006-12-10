@@ -206,6 +206,9 @@ class NotationNameImpl
      * @return an ArrayList with all notations
      */
     static ArrayList getAvailableNotations() {
+        // TODO: This should return an immutable list (or set) and
+        // the implementation type shouldn't be exposed in the API
+//        return Collections.unmodifiableList(notations);
         return notations;
     }
 

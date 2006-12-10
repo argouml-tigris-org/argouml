@@ -312,8 +312,11 @@ public final class NotationProviderFactory2 {
             return false;
         }
         if (allLanguages.containsKey(notationName)) {
-            //TODO: Remove it here
-            return true;
+            return allLanguages.remove(notationName) != null
+                    // TODO: we need an API to remove notations here
+                    // we shouldn't be modify internals which are
+                    // inadvertently exposed through the API - tfm
+                    && Notation.getAvailableNotations().remove(notationName);
         }
         return false;
     }
