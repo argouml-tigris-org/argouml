@@ -239,14 +239,26 @@ public final class Notation implements PropertyChangeListener {
 
     /**
      * Get list of available notations, of type NotationName.
+     * This returns an immutable list so that 
+     * the implementation type isn't exposed in the API.
      *
      * @return list of available notations
      */
     public static List getAvailableNotations() {
-        // TODO: This should return an immutable list
-//        return Collections.unmodifiableList(
-//                NotationNameImpl.getAvailableNotations());
         return NotationNameImpl.getAvailableNotations();
+    }
+    
+    /**
+     * Remove a complete Notation language.
+     * This is to be used by plugins that implement their own notation, 
+     * and that are removed. <p>
+     * This function fails if the given notation does not exist.
+     * 
+     * @param theNotation the given NotationName
+     * @return true if the Notation indeed is removed
+     */
+    public static boolean removeNotation(NotationName theNotation)  {
+        return NotationNameImpl.removeNotation(theNotation);
     }
 
     /**
@@ -261,4 +273,4 @@ public final class Notation implements PropertyChangeListener {
         NotationName nn = NotationNameImpl.makeNotation(k1, k2, icon);
         return nn;
     }
-} // END NOTATION
+}
