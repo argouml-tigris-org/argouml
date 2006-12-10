@@ -25,6 +25,8 @@
 package org.argouml.notation;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.Icon;
@@ -199,17 +201,18 @@ class NotationNameImpl
 	}
         return nn;
     }
+    
+    static boolean removeNotation(NotationName theNotation)  {
+        return notations.remove(theNotation);
+    }
 
     /**
      * Get all of the registered notations.
      *
-     * @return an ArrayList with all notations
+     * @return a List with all notations
      */
-    static ArrayList getAvailableNotations() {
-        // TODO: This should return an immutable list (or set) and
-        // the implementation type shouldn't be exposed in the API
-//        return Collections.unmodifiableList(notations);
-        return notations;
+    static List getAvailableNotations() {
+        return Collections.unmodifiableList(notations);
     }
 
     /**
