@@ -34,7 +34,7 @@ import junit.framework.TestCase;
 /**
  * Tests for the new module loader.
  */
-public class TestModuleLoader2 extends TestCase {
+public class GUITestModuleLoader2 extends TestCase {
 
     public void testGetInstance() {
 	assertNotNull(ModuleLoader2.getInstance());

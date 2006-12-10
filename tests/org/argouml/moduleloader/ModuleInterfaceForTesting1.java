@@ -37,7 +37,7 @@ public class ModuleInterfaceForTesting1 implements ModuleInterface {
      * Constructor.
      */
     public ModuleInterfaceForTesting1() {
-	TestModuleLoader2.interfaceCreatedForTesting(this);
+	GUITestModuleLoader2.interfaceCreatedForTesting(this);
     }
 
     public static boolean isReadyToBeEnabled() {
