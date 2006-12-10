@@ -71,7 +71,7 @@ public class ProjectSettings {
         super();
         
         notationLanguage = 
-            Notation.getConfigueredNotation().getConfigurationValue();
+            Notation.getConfiguredNotation().getConfigurationValue();
         showBoldNames = Configuration.getBoolean(
                 Notation.KEY_SHOW_BOLD_NAMES);
         useGuillemots = Configuration.getBoolean(

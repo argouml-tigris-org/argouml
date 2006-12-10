@@ -176,10 +176,20 @@ public final class Notation implements PropertyChangeListener {
 
     /**
      * Returns the Notation as set in the menu.
+     * 
+     * @return the default NotationName
+     * @deprecated by tfmorris for 0.23.4 - use {@link #getConfiguredNotation()}
+     */
+    public static NotationName getConfigueredNotation() {
+        return getConfiguredNotation();
+    }
+    
+    /**
+     * Returns the Notation as set in the menu.
      *
      * @return the default NotationName
      */
-    public static NotationName getConfigueredNotation() {
+    public static NotationName getConfiguredNotation() {
         NotationName n =
             NotationNameImpl.findNotation(
                 Configuration.getString(

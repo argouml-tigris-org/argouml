@@ -165,7 +165,7 @@ public class SettingsTabNotation
                     Notation.KEY_SHOW_BOLD_NAMES));
             useGuillemots.setSelected(getBoolean(
                     Notation.KEY_USE_GUILLEMOTS));
-            notationLanguage.setSelectedItem(Notation.getConfigueredNotation());
+            notationLanguage.setSelectedItem(Notation.getConfiguredNotation());
             showVisibility.setSelected(getBoolean(
                     Notation.KEY_SHOW_VISIBILITY));
             showInitialValue.setSelected(getBoolean(
@@ -269,7 +269,7 @@ public class SettingsTabNotation
      */
     public void handleResetToDefault() {
         if (scope == GUI.SCOPE_PROJECT) {
-            notationLanguage.setSelectedItem(Notation.getConfigueredNotation());
+            notationLanguage.setSelectedItem(Notation.getConfiguredNotation());
             showBoldNames.setSelected(getBoolean(
                     Notation.KEY_SHOW_BOLD_NAMES));
             useGuillemots.setSelected(getBoolean(

@@ -462,7 +462,7 @@ public class ClassGenerationDialog
                             (Language) languages.get(j), cls)) {
                         checked[j].add(cls);
                     } else if (((Language) languages.get(j)).getName().equals(
-                            Notation.getConfigueredNotation()
+                            Notation.getConfiguredNotation()
                                     .getConfigurationValue())) {
                         checked[j].add(cls);
                     }
