@@ -33,11 +33,13 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -56,11 +58,18 @@ import org.tigris.gef.presentation.Fig;
  * @since 0.9
  */
 public class DiagramInterface {
+
+    private static final String DIAGRAM_SUFFIX = ".pgml";
+    private static final char DIAGRAM_NAME_SEPARATOR = '_';
+    private static final String DIAGRAM_NAME_SUFFIX = "classes";
+
     /**
      * Logger.
      */
     private static final Logger LOG =
         Logger.getLogger(DiagramInterface.class);
+    
+
 
     private Editor currentEditor;
 
@@ -142,10 +151,9 @@ public class DiagramInterface {
     public void addPackage(Object newPackage) {
 
         if (!isInDiagram(newPackage)) {
-
-            FigPackage newPackageFig = new FigPackage(currentGM, newPackage);
             if (currentGM.canAddNode(newPackage)) {
-
+                FigPackage newPackageFig = 
+                    new FigPackage(currentGM, newPackage);
                 currentLayer.add(newPackageFig);
                 currentGM.addNode(newPackage);
                 currentLayer.putInPosition(newPackageFig);
@@ -179,7 +187,7 @@ public class DiagramInterface {
     public boolean isDiagramInProject(String name) {
         Project project = ProjectManager.getManager().getCurrentProject();
 	return (findDiagramMemberByUniqueName(project,
-            getDiagramName(name) + ".pgml")) != null;
+            getDiagramName(name))) != null;
     }
 
     /**
@@ -189,11 +197,20 @@ public class DiagramInterface {
      * @return The name for the diagram.
      */
     private String getDiagramName(String packageName) {
-	return packageName.replace('.', '_') + "_classes";
+        /*
+         * TODO: This transformation is Java specific. We need a more
+         * language/notation scheme for specifying qualified names.
+         * Possible algorithm - replace all punctuation with our
+         * internal separator, replace multiple separators with a single
+         * instance (for languages like C++).  What about I18N? - tfm
+         */
+	return packageName.replace('.', DIAGRAM_NAME_SEPARATOR)
+                + DIAGRAM_NAME_SEPARATOR + DIAGRAM_NAME_SUFFIX;
     }
 
     /**
-     * Select or create a class diagram for a package.
+     * Select a class diagram as the current diagram, creating it
+     * if necessary.
      *
      * @param p The package.
      * @param name The fully qualified name of this package.
@@ -206,7 +223,7 @@ public class DiagramInterface {
             Project project = ProjectManager.getManager().getCurrentProject();
 	    m =
                 findDiagramMemberByUniqueName(project,
-                        getDiagramName(name) + ".pgml");
+                        getDiagramName(name));
 
 	    // The diagram already exists in this project. Select it
 	    // as the current target.
@@ -222,25 +239,31 @@ public class DiagramInterface {
 
     /**
      * Add a new class diagram for a package to the project.
-     *
-     * @param ns The package to attach the diagram to.
-     * @param name The fully qualified name of the package, which is
-     *             used to generate the diagram name from.
+     * 
+     * @param ns
+     *            The namespace to contain the diagram. If null, the root model
+     *            will be used.
+     * @param name
+     *            The fully qualified name of the package, which is used to
+     *            generate the diagram name from.
      */
     public void addClassDiagram(Object ns, String name) {
-	Project p = ProjectManager.getManager().getCurrentProject();
-	try {
-	    ArgoDiagram d =
-	        DiagramFactory.getInstance().createDiagram(
+        Project p = ProjectManager.getManager().getCurrentProject();
+
+        ArgoDiagram d =
+            DiagramFactory.getInstance().createDiagram(
                     UMLClassDiagram.class,
-                    ns,
+                    ns == null ? p.getRoot() : ns,
                     null);
 
+        try {
+            d.setName(getDiagramName(name));
+        } catch (PropertyVetoException pve) { 
+            LOG.error("Failed to set diagram name.", pve);
+        }
+        p.addMember(d);
+        setCurrentDiagram(d);
 
-	    d.setName(getDiagramName(name));
-            p.addMember(d);
-	    setCurrentDiagram(d);
-	} catch (PropertyVetoException pve) { }
     }
 
     /**
@@ -251,29 +274,56 @@ public class DiagramInterface {
      *                 (of attributes and operations)
      */
     public void addClass(Object newClass, boolean minimise) {
+        addClassifier(newClass, minimise);
+    }
 
-        // if the class is not in the current diagram, add it:
-        if (currentGM.canAddNode(newClass)) {
+    /**
+     * Add a classier to the current diagram.
+     *
+     * @param classifier The new class or interface to add to the editor.
+     * @param minimise minimise the class fig by hiding compartments
+     *                 (of attributes and operations)
+     */
+    private void addClassifier(Object classifier, boolean minimise) {
 
-	    FigClass newClassFig = new FigClass(currentGM, newClass);
-            currentLayer.add(newClassFig);
-            currentGM.addNode(newClass);
-            currentLayer.putInPosition(newClassFig);
+        String name = Model.getFacade().getName(classifier);
+        
+        // if the classifier is not in the current diagram, add it:
+        if (currentGM.canAddNode(classifier)) {
+            FigClassifierBox newFig;
+            if (Model.getFacade().isAClass(classifier)) {
+                newFig = new FigClass(currentGM, classifier);
+            } else if (Model.getFacade().isAInterface(classifier)) {
+                newFig = new FigInterface(currentGM, classifier);
+            } else {
+                return;
+            }
+            
+            /*
+             * The following calls are ORDER DEPENDENT. Not sure why, but the
+             * layer add must come before the model add or we'll end up with
+             * duplicate figures in the diagram. - tfm
+             */            
+            currentLayer.add(newFig);
+            currentGM.addNode(classifier);
+            currentLayer.putInPosition(newFig);
 
-            newClassFig.setAttributesVisible(!minimise);
-            newClassFig.setOperationsVisible(!minimise);
+            newFig.setOperationsVisible(!minimise);
+            if (Model.getFacade().isAClass(classifier)) {            
+                ((FigClass) newFig).setAttributesVisible(!minimise);
+            }
 
-            newClassFig.setSize(newClassFig.getMinimumSize());
+            newFig.setSize(newFig.getMinimumSize());
         } else {
             // the class is in the diagram
             // so we are on a second pass,
             // find the fig for this class can update its visible state.
-            FigClass existingFig = null;
+            FigClassifierBox existingFig = null;
             List figs = currentLayer.getContentsNoEdges();
             for (int i = 0; i < figs.size(); i++) {
                 Fig fig = (Fig) figs.get(i);
-                if (newClass == fig.getOwner()) {
-                    existingFig = (FigClass) fig;
+                if (classifier == fig.getOwner()) {
+                    existingFig = (FigClassifierBox) fig;
                 }
             }
             existingFig.renderingChanged();
@@ -282,7 +332,7 @@ public class DiagramInterface {
         // add edges
         // for a 2-pass r.e. process we might have already added the
         // class but not its edges
-	currentGM.addNodeRelatedEdges(newClass);
+	currentGM.addNodeRelatedEdges(classifier);
     }
 
     /**
@@ -293,71 +343,23 @@ public class DiagramInterface {
      *                 (of attributes and operations)
      */
     public void addInterface(Object newInterface, boolean minimise) {
-
-
-        // if the Interface is not in the current diagram, add it:
-        if (currentGM.canAddNode(newInterface)) {
-
-            FigInterface     newInterfaceFig =
-		new FigInterface(currentGM, newInterface);
-
-            currentLayer.add(newInterfaceFig);
-            currentGM.addNode(newInterface);
-            currentLayer.putInPosition(newInterfaceFig);
-
-            newInterfaceFig.setOperationsVisible(!minimise);
-            newInterfaceFig.setSize(newInterfaceFig.getMinimumSize());
-        } else {
-            // the class is in the diagram
-            // so we are on a second pass,
-            // find the fig for this class can update its visible state.
-            FigInterface existingFig = null;
-            List figs = currentLayer.getContentsNoEdges();
-            for (int i = 0; i < figs.size(); i++) {
-                Fig fig = (Fig) figs.get(i);
-                if (newInterface == fig.getOwner()) {
-                    existingFig = (FigInterface) fig;
-                }
-            }
-            existingFig.renderingChanged();
-        }
-
-        // add edges
-        // for a 2-pass r.e. process we might have already added the
-        // interface but not its edges
-	currentGM.addNodeRelatedEdges(newInterface);
+        addClassifier(newInterface, minimise);
     }
+
 
     /**
      * Creates new class diagram for package or selects existing one.
-     * @param currentPackage  The package to attach the diagram to.
-     * @param currentPackageName The fully qualified name of the
-     * package, which is used to generate the diagram name from.
+     * 
+     * @param currentPackage
+     *            The package to attach the diagram to.
+     * @param currentPackageName
+     *            The fully qualified name of the package, which is used to
+     *            generate the diagram name from.
+     * @deprecated by tfmorris for 0.23.4 - use selectClassDiagram
      */
     public void createOrSelectClassDiagram(Object currentPackage,
 					   String currentPackageName) {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        String diagramName = currentPackageName.replace('.', '_') + "_classes";
-        ArgoDiagram d =
-            DiagramFactory.getInstance().createDiagram(
-                    UMLClassDiagram.class,
-                    currentPackage == null ? p.getRoot() : currentPackage,
-                    null);
-
-	if (findDiagramMemberByUniqueName(p, diagramName + ".pgml") == null) {
-	    try {
-		d.setName(diagramName);
-	    } catch (Exception e) {
-		LOG.error("Failed to set diagram name.", e);
-	    }
-	    p.addMember(d);
-	    setCurrentDiagram(d);
-	} else {
-	    ArgoDiagram ddi =
-	        ((ProjectMemberDiagram) findDiagramMemberByUniqueName(p,
-	                diagramName + ".pgml")).getDiagram();
-	    setCurrentDiagram(ddi);
-	}
+        selectClassDiagram(currentPackage, currentPackageName);
     }
 
     /**
@@ -366,7 +368,7 @@ public class DiagramInterface {
      *
      */
     public void createRootClassDiagram() {
-	createOrSelectClassDiagram(null, "");
+	selectClassDiagram(null, "");
     }
 
     /**
@@ -388,12 +390,13 @@ public class DiagramInterface {
     }
 
     /**
-     * @param name the name of the member to be found
+     * @param name the public name of the member to be found
      * @param project the project
      * @return the member
      */
     public ProjectMember findDiagramMemberByUniqueName(Project project,
             String name) {
+        name = name + DIAGRAM_SUFFIX;
         Iterator iter = project.getMembers().iterator();
         while (iter.hasNext()) {
             ProjectMember element = (ProjectMember) iter.next();

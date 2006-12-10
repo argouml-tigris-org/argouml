@@ -25,8 +25,10 @@
 package org.argouml.uml.reveng;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
+import org.argouml.application.api.ProgressMonitor;
 import org.argouml.kernel.Project;
 import org.argouml.util.SuffixFilter;
 
@@ -48,7 +50,9 @@ public interface ImportInterface {
     SuffixFilter[] getSuffixFilters();
 
     /**
-     * Tells if the object is parseable or not.
+     * Tells if the object is parseable or not.  It's is up to the module
+     * to decide whether it does something simple like verify that the file
+     * has the correct extension, or something more complicated.
      * 
      * @param file
      *            object to be tested.
@@ -57,21 +61,31 @@ public interface ImportInterface {
     boolean isParseable(File file);
 
     /**
-     * One parseable object from the list will be parsed by this method. Objects
-     * will be parsed in order defined by getList().
+     * Parse a collection of source files. The collection includes the full set
+     * of files selected by the user.
+     * <p>
+     * If the import module needs multiple parsing passes to resolve identifiers
+     * or for other reasons it needs to implement that internally. In previous
+     * versions of ArgoUML the multipass behavior was implemented both in the
+     * calling code and in some import modules. It is now solely the
+     * responsibility of the module.
      * 
-     * @param p -
+     * @param p
      *            the current project
-     * @param o -
-     *            object to be parsed
+     * @param files
+     *            Collection of files to be parsed
      * @param settings
      *            Use this object to get common settings.
+     * @param monitor
+     *            ProgressMonitor which will be updated as files are parsed and
+     *            checked for user requests to cancel. It is mandatory for the
+     *            module to both update progress and check for cancel requests.
      * @throws ImportException
      *             if an error occurs, this will contain the nested exception
      *             that was originally thrown
      */
-    void parseFile(Project p, Object o, ImportSettings settings)
-        throws ImportException;
+    Collection parseFiles(Project p, final Collection files, ImportSettings settings,
+            ProgressMonitor monitor) throws ImportException;
 
     /**
      * Returns a list with objects that represent settings for this import.

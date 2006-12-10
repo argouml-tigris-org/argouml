@@ -25,7 +25,6 @@
 package org.argouml.uml.reveng;
 
 import java.awt.BorderLayout;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -34,15 +33,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
@@ -61,7 +53,9 @@ import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileSystemView;
 
@@ -69,21 +63,13 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.PluggableImport;
-import org.argouml.cognitive.Designer;
+import org.argouml.application.api.ProgressMonitor;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.persistence.ProgressEvent;
 import org.argouml.ui.ArgoFrame;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.explorer.ExplorerEventAdaptor;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
-import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.SuffixFilter;
 import org.argouml.util.UIUtils;
-import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.base.Globals;
 import org.tigris.swidgets.GridLayout2;
 
@@ -105,11 +91,9 @@ import org.tigris.swidgets.GridLayout2;
  *   <li> 2 - full import, feature detail (ie. operations with methods)
  * </ol>
  *
- * TODO: Add registration methods for new languages.
- *
  * @author Andreas Rueckert a_rueckert@gmx.net
  */
-public class Import implements ImportSettings {
+public class Import extends ImportCommon implements ImportSettings {
 
     private static final String SEPARATOR = "/";
     
@@ -117,26 +101,6 @@ public class Import implements ImportSettings {
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(Import.class);
-
-    /**
-     * Imported directory.
-     */
-    private String srcPath;
-
-    /**
-     * Create a interface to the current diagram.
-     */
-    private DiagramInterface diagramInterface;
-
-    /**
-     * Current language module.
-     */
-    private Object module;
-
-    /**
-     * keys are module name, values are PluggableImport instance.
-     */
-    private Hashtable modules;
 
     private JComponent configPanel;
 
@@ -160,7 +124,7 @@ public class Import implements ImportSettings {
     private JRadioButton fullImport;
 
     //import detail level var:
-    private int importLevel;
+//    private int importLevel;
 
     private JTextField inputSourceEncoding;
 
@@ -169,11 +133,8 @@ public class Import implements ImportSettings {
     private ImportStatusScreen iss;
 
     private StringBuffer problems = new StringBuffer();
-    
-    // current level / pass
-    private int level;
-    
-    private File selectedFile;
+
+
 
     /**
      * The default extended configuration panel.
@@ -186,35 +147,8 @@ public class Import implements ImportSettings {
      * Creates dialog window with chooser and configuration panel.
      */
     public Import() {
-        modules = new Hashtable();
-        
-        // Get all old style modules
-        List arraylist = Argo.getPlugins(PluggableImport.class);
-        ListIterator iterator = arraylist.listIterator();
-        while (iterator.hasNext()) {
-            PluggableImport pIModule = (PluggableImport) iterator.next();
-            modules.put(pIModule.getModuleName(), pIModule);
-        }
-        if (modules.size() == 0) {
-            LOG.warn("No old style import modules defined");
-        }
+        super();
 
-        Set newPlugins = ImporterManager.getInstance().getImporters();
-        for (Iterator it = newPlugins.iterator(); it.hasNext();) {
-            ModuleInterface mod = (ModuleInterface) it.next();
-            modules.put(mod.getName(), mod);
-        }
-        if (modules.size() == 0) {
-            throw new RuntimeException("Internal error. "
-                    + "No importer modules found.");
-        }
-
-        // "Java" is a default module
-        module = modules.get("Java");
-        if (module == null) {
-            throw new RuntimeException("Internal error. "
-                       + "Default import module not found");
-        }
         JComponent chooser = getChooser();
         dialog =
             new JDialog(ArgoFrame.getInstance(),
@@ -236,48 +170,6 @@ public class Import implements ImportSettings {
         UIUtils.loadCommonKeyMap(dialog);
         
         dialog.setVisible(true);
-    }
-
-    /**
-     * @param key the key of the attribute
-     * @return the value of the attribute
-     * @deprecated by tfmorris for 0.23.3, use getLevel()
-     */
-    public Object getAttribute(String key) {
-        if ("level".equals(key)) {
-            return new Integer(level);
-        } else {
-            throw new IllegalArgumentException("Unknown attribute name");
-        }
-    }
-
-    /**
-     * @param key the key of the attribute
-     * @param value the value of the attribute
-     * 
-     * @deprecated by tfmorris for 0.23.3, use setLevel()
-     */
-    public void setAttribute(String key, Object value) {
-        if ("level".equals(key) && value instanceof Integer) {
-            level = ((Integer) value).intValue();
-        } else {
-            throw new IllegalArgumentException("Unknown attribute name" 
-                    + " or invalid value");
-        }
-    }
-    
-    /*
-     * @see org.argouml.uml.reveng.ImportSettings#getImportLevel()
-     */
-    public int getImportLevel() {
-        return level;
-    }
-    
-    /*
-     * @param newLevel the import detail for the current pass
-     */
-    private void setImportLevel(int newLevel) {
-        level = newLevel;
     }
 
     /*
@@ -305,13 +197,6 @@ public class Import implements ImportSettings {
         return importConfigPanel.getDatatype().isSelected();
     }
 
-    /*
-     * @see org.argouml.uml.reveng.ImportSettings#getImportSession()
-     */
-    public Import getImportSession() {
-        return this;
-    }
-    
     /**
      * Close dialog window.
      * 
@@ -325,7 +210,7 @@ public class Import implements ImportSettings {
         dialog.setVisible(false);
         dialog.dispose();
     }
-
+  
     /**
      * Get the panel that lets the user set reverse engineering
      * parameters.
@@ -351,7 +236,8 @@ public class Import implements ImportSettings {
 
             Vector languages = new Vector();
 
-            for (Enumeration keys = modules.keys(); keys.hasMoreElements();) {
+            for (Enumeration keys = getModules().keys(); 
+                    keys.hasMoreElements();) {
                 languages.add(keys.nextElement());
             }
             JComboBox selectedLanguage = new JComboBox(languages);
@@ -442,10 +328,11 @@ public class Import implements ImportSettings {
 
             tab.add(general, Translator.localize("action.import-general"));
             String moduleName = "";
-            if (module instanceof PluggableImport) {
-                moduleName = ((PluggableImport) module).getModuleName();
-            } else if (module instanceof ModuleInterface) {
-                moduleName = ((ModuleInterface) module).getName();
+            if (getCurrentModule() instanceof PluggableImport) {
+                moduleName = 
+                    ((PluggableImport) getCurrentModule()).getModuleName();
+            } else if (getCurrentModule() instanceof ModuleInterface) {
+                moduleName = ((ModuleInterface) getCurrentModule()).getName();
             }
             tab.add(getConfigPanelExtension(), moduleName);
             configPanel = tab;
@@ -459,11 +346,11 @@ public class Import implements ImportSettings {
      */
     private JComponent getConfigPanelExtension() {
         JComponent result;
-        if (module instanceof PluggableImport) {
+        if (getCurrentModule() instanceof PluggableImport) {
             // Old style importer
-            PluggableImport pi = (PluggableImport) module;
+            PluggableImport pi = (PluggableImport) getCurrentModule();
             result = pi.getConfigPanel();
-        } else if (module instanceof ImportInterface) {
+        } else if (getCurrentModule() instanceof ImportInterface) {
             // New style importers don't provide a config panel
             if (importConfigPanel == null) {
                 importConfigPanel = new ConfigPanelExtension();
@@ -506,10 +393,10 @@ public class Import implements ImportSettings {
         public void actionPerformed(ActionEvent e) {
             JComboBox cb = (JComboBox) e.getSource();
             String selected = (String) cb.getSelectedItem();
-            Object oldModule = module;
-            module = modules.get(selected);
+            Object oldModule = getCurrentModule();
+            setCurrentModule(getModules().get(selected));
             if (oldModule instanceof PluggableImport
-                    || module instanceof PluggableImport) {
+                    || getCurrentModule() instanceof PluggableImport) {
                 dialog.getContentPane().remove(0);
                 JComponent chooser = getChooser();
                 if (chooser == null) {
@@ -523,179 +410,78 @@ public class Import implements ImportSettings {
                 tab.validate();
 
                 dialog.validate();
-            } else if (module instanceof ImportInterface) {
+            } else if (getCurrentModule() instanceof ImportInterface) {
                 updateFilters(
                         (JFileChooser) dialog.getContentPane().getComponent(0),
                         ((ImportInterface) oldModule).getSuffixFilters(),
-                        ((ImportInterface) module).getSuffixFilters());
+                        ((ImportInterface) getCurrentModule())
+                                .getSuffixFilters());
+                // TODO: Update configPanelExtension with extension settings
+                // for new language
             }
         }
     }
 
-
     /**
-     * This method is called by ActionImportFromSources to start the
-     * import run.<p>
-     *
-     * The method that for all parsing actions. It calls the actual
+     * Parse all selected files. It calls the actual
      * parser methods depending on the type of the file.<p>
      */
     public void doFile() {
-        // determine how many files to process
-        List files = getFileList();
-
-        if (changedOnly.isSelected()) {
-            // filter out all unchanged files
-            Object model =
-                ProjectManager.getManager().getCurrentProject().getModel();
-            for (int i = files.size() - 1; i >= 0; i--) {
-                File f = (File) files.get(i);
-                String fn = f.getAbsolutePath();
-                String lm = String.valueOf(f.lastModified());
-                if (lm.equals(
-                        Model.getFacade().getTaggedValueValue(model, fn))) {
-                    files.remove(i);
-                }
-            }
-        }
-
-        if (!classOnly.isSelected()) {
-            // 2 passes needed
-            files.addAll(files); // for the second pass
-
-            if (classAndFeatures.isSelected()) {
-                importLevel = 1;
-            } else {
-                importLevel = 2;
-            }
-        } else {
-            importLevel = 0;
-        }
-
-        // we always start with a level 0 import
-        setImportLevel(0);
-
-        diagramInterface = getCurrentDiagram();
-
-        ArgoFrame.getInstance().setCursor(
-                Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-        // now start importing (with an empty problem list)
-        problems = new StringBuffer();
         iss = new ImportStatusScreen("Importing", "Splash");
-        SwingUtilities.invokeLater(
-                   new ImportRun(files, layoutDiagrams.isSelected()));
-        iss.setVisible(true);
-    }
-
-    /**
-     * Get the files. For old style modules, this asks the module for the list.
-     * For new style modules we generate it ourselves based on their specified
-     * file suffixes.
-     * 
-     * @return the list of files to be imported
-     */
-    private List getFileList() {
-        List files;
-        if (module instanceof PluggableImport) {
-            // Old style importer
-            PluggableImport pi = (PluggableImport) module;
-            files = pi.getList(this);
-        } else if (module instanceof ImportInterface) {
-            // Old style importer - we did the file selection
-            if (selectedFile.isDirectory()) {
-                setSrcPath(selectedFile.getAbsolutePath());
-            } else {
-                setSrcPath(null);
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                doImport(iss);
+                // ExplorerEventAdaptor.getInstance().structureChanged();
+                // ProjectBrowser.getInstance().getStatusBar().showProgress(0);
             }
-            files = FileImportUtils.getList(selectedFile, isDescendSelected(),
-                    ((ImportInterface) module).getSuffixFilters());
-        } else {
-            throw new RuntimeException("Unrecognized module type");
-        }
-        return files;
-    }
-
-    /**
-     * Set path for processed directory.
-     *
-     * @param path the given path
-     */
-    public void setSrcPath(String path) {
-        srcPath = path;
-    }
-
-    /**
-     * @return path for processed directory.
-     */
-    public String getSrcPath() {
-        return srcPath;
-    }
-
-    /**
-     * Parse one source file.
-     *
-     * @param project the project
-     * @param f The file to parse.
-     * @exception Exception ??? 
-     * TODO: Couldn't we throw a narrower exception? - tfm
-     * TODO: Does this need to be public? - tfm
-     */
-    public void parseFile(Project project, Object f) throws Exception {
-        File file = (File) f;
-        if (module instanceof PluggableImport) {
-            // Old style importer
-            PluggableImport pi = (PluggableImport) module;
-            // Is this file a compatible source file?
-            if (pi.isParseable(file)) {
-                ProjectBrowser.getInstance()
-                    .showStatus("Parsing " + file.toString() + "...");
-                pi.parseFile(project, file, diagramInterface, this);
-                setLastModified(project, file);
-            }
-        } else if (module instanceof ImportInterface) {
-            // New style importer
-            ImportInterface im = (ImportInterface) module;
-            if (im.isParseable(file)) {
-                ProjectBrowser.getInstance()
-                    .showStatus("Parsing " + file.toString() + "...");
-                im.parseFile(project, file, this);
-                setLastModified(project, file);
-            }
-
-        } else {
-            throw new RuntimeException("Unrecognized module type");
-        }
-        
-
+        }, "Import Thread");
+        t.start();
     }
 
     /*
-     * Create a TaggedValue with a tag/type matching our source module
-     * filename and a value of the file's last modified timestamp.
-     * @param project
-     * @param f
+     * @see org.argouml.uml.reveng.ImportCommon#getImportLevel()
      */
-    private void setLastModified(Project project, File file) {
-        // set the lastModified value
-        String fn = file.getAbsolutePath();
-        String lm = String.valueOf(file.lastModified());
-        if (lm != null) {
-            Model.getCoreHelper()
-                .setTaggedValue(project.getModel(), fn, lm);
+    public int getImportLevel() {
+        if (classOnly != null && classOnly.isSelected()) {
+            return ImportSettings.DETAIL_CLASSIFIER;
+        } else if (classAndFeatures != null && classAndFeatures.isSelected()) {
+            return ImportSettings.DETAIL_CLASSIFIER_FEATURE;
+        } else if (fullImport != null && fullImport.isSelected()) {
+            return ImportSettings.DETAIL_FULL;
+        } else {
+            return ImportSettings.DETAIL_CLASSIFIER;
         }
     }
-
-    /**
-     * Check, if "Create diagrams from imported code" is selected.<p>
-     *
-     * @return true, if "Create diagrams from imported code" is selected
+    
+    /*
+     * @see org.argouml.uml.reveng.ImportCommon#isCreateDiagramsChecked()
      */
-    public boolean isCreateDiagramsChecked() {
+    public boolean isCreateDiagramsSelected() {
         if (createDiagrams != null) {
             return createDiagrams.isSelected();
         }
         return true;
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportCommon#isMinimiseFigsChecked()
+     */
+    public boolean isMinimizeFigsSelected() {
+        if (minimiseFigs != null) {
+            return minimiseFigs.isSelected();
+        }
+        return false;
+    }
+
+
+    /*
+     * @see org.argouml.uml.reveng.ImportCommon#isDiagramLayoutSelected()
+     */
+    public boolean isDiagramLayoutSelected() {
+        if (layoutDiagrams != null) {
+            return layoutDiagrams.isSelected();
+        }
+        return false;
     }
 
     /**
@@ -709,8 +495,9 @@ public class Import implements ImportSettings {
         return isDescendSelected();
     }
 
+
     /*
-     * @see org.argouml.uml.reveng.ImportSettings#isDescendSelected()
+     * @see org.argouml.uml.reveng.ImportCommon#isDescendSelected()
      */
     public boolean isDescendSelected() {
         if (descend != null) {
@@ -719,22 +506,8 @@ public class Import implements ImportSettings {
         return true;
     }
     
-    /**
-     * Check, if "Minimise Class icons in diagrams" is selected.<p>
-     *
-     * @deprecated by tfmorris for 0.23.2.  Adding figures to diagrams is
-     * no longer handled by pluggable importers.
-     * @return true, if "Minimise Class icons in diagrams" is selected
-     */
-    public boolean isMinimiseFigsChecked() {
-        if (minimiseFigs != null) {
-            return minimiseFigs.isSelected();
-        }
-        return false;
-    }
-
     /*
-     * @see org.argouml.uml.reveng.ImportSettings#isChangedOnlySelected()
+     * @see org.argouml.uml.reveng.ImportCommon#isChangedOnlySelected()
      */
     public boolean isChangedOnlySelected() {
         if (changedOnly != null) {
@@ -744,48 +517,6 @@ public class Import implements ImportSettings {
     }
 
 
-    /**
-     * If we have modified any diagrams, the project was modified and
-     * should be saved. I don't consider a import, that only modifies
-     * the metamodel, at this point (Andreas Rueckert).
-     * Calling Project.setNeedsSave(true) doesn't work here, because
-     * Project.postLoad() is called after the import and it sets the
-     * needsSave flag to false.<p>
-     *
-     * @return true, if any diagrams where modified and the project
-     * should be saved before exit.
-     * @deprecated by tfmorris for 0.23.2 - use standard project
-     * "save needed" mechanisms
-     */
-    public boolean needsSave() {
-        return (diagramInterface.getModifiedDiagrams().size() > 0);
-    }
-
-
-    /*
-     * @see org.argouml.uml.reveng.ImportSettings#getDiagramInterface()
-     */
-    public DiagramInterface getDiagramInterface() {
-        return diagramInterface;
-    }
-
-    /**
-     * Set target diagram.<p>
-     *
-     * @return selected diagram, if it is class diagram,
-     * else return null.
-     */
-    private DiagramInterface getCurrentDiagram() {
-        DiagramInterface result = null;
-        if (Globals.curEditor().getGraphModel()
-                instanceof ClassDiagramGraphModel) {
-
-            result =  new DiagramInterface(Globals.curEditor());
-
-        }
-        return result;
-    }
-
     /*
      * Create chooser for objects we are to import. Old style modules get to
      * provide their own (although I don't believe any of them do), while new
@@ -793,19 +524,19 @@ public class Import implements ImportSettings {
      * abstract class FileImportSupport used to provide).
      */
     private JComponent getChooser() {
-        if (module instanceof PluggableImport) {
-            return ((PluggableImport) module).getChooser(this);
+        if (getCurrentModule() instanceof PluggableImport) {
+            return ((PluggableImport) getCurrentModule()).getChooser(this);
         } else {
             String directory = Globals.getLastDirectory();
             
             final JFileChooser chooser = new ImportFileChooser(this, directory);
 
             chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            updateFilters(chooser, null, ((ImportInterface) module)
+            updateFilters(chooser, null, ((ImportInterface) getCurrentModule())
                     .getSuffixFilters());
 
             return chooser;
-        } 
+        }
     }
 
     private static void updateFilters(JFileChooser chooser,
@@ -813,7 +544,7 @@ public class Import implements ImportSettings {
         if (oldFilters != null) {
             for (int i = 0; i < oldFilters.length; i++) {
                 chooser.removeChoosableFileFilter(oldFilters[i]);
-            }
+            } 
         }
         if (newFilters != null) {
             for (int i = 0; i < newFilters.length; i++) {
@@ -821,12 +552,13 @@ public class Import implements ImportSettings {
             }
         }
     }
+    
 
     private class ImportFileChooser extends JFileChooser {
 
         private Import theImport;
 
-        /**
+        /*
          * @see javax.swing.JFileChooser#JFileChooser(String)
          */
         public ImportFileChooser(Import imp, String currentDirectoryPath) {
@@ -834,7 +566,7 @@ public class Import implements ImportSettings {
             theImport = imp;
         }
 
-        /**
+        /*
          * @see javax.swing.JFileChooser#JFileChooser(String, FileSystemView)
          */
         public ImportFileChooser(
@@ -845,7 +577,7 @@ public class Import implements ImportSettings {
             theImport = imp;
         }
 
-        /**
+        /*
          * @see javax.swing.JFileChooser#JFileChooser()
          */
         public ImportFileChooser(Import imp) {
@@ -853,7 +585,7 @@ public class Import implements ImportSettings {
             this.theImport = imp;
         }
 
-        /**
+        /*
          * @see javax.swing.JFileChooser#JFileChooser(FileSystemView)
          */
         public ImportFileChooser(
@@ -867,8 +599,8 @@ public class Import implements ImportSettings {
          * @see javax.swing.JFileChooser#approveSelection()
          */
         public void approveSelection() {
-            selectedFile = getSelectedFile();
-            if (selectedFile != null) {
+            theImport.setSelectedFile(getSelectedFile());
+            if (getSelectedFile() != null) {
                 String path = getSelectedFile().getParent();
                 String filename =
                     getSelectedFile().getName();
@@ -891,233 +623,24 @@ public class Import implements ImportSettings {
 
     }
 
-    /**
-     * This class parses each file in turn and allows the GUI to refresh
-     * itself by performing the run() once for each file.<p>
-     *
-     * This class also listens for a "Stop" message from the
-     * ImportStatusScreen, in order to cancel long import runs.<p>
-     */
-    class ImportRun implements Runnable {
-        private List filesLeft;
-
-        private int countFiles;
-
-        private int countFilesThisPass;
-
-        private Vector nextPassFiles;
-
-        private SimpleTimer st;
-
-        private boolean cancelled;
-
-        private boolean criticThreadWasOn;
-
-        private boolean doLayout;
-
-        /**
-         * The constructor.
-         *
-         * @param f the files left to parse/import
-         * @param layout do a autolayout afterwards
-         */
-        public ImportRun(List f,  boolean layout) {
-
-            iss.addCancelButtonListener(new ActionListener() {
-                public void actionPerformed(ActionEvent actionEvent) {
-                    cancel();
-                }
-            });
-
-            filesLeft = f;
-            countFiles = filesLeft.size();
-            countFilesThisPass = countFiles;
-            nextPassFiles = new Vector();
-            st = new SimpleTimer();
-            st.mark("start");
-            cancelled = false;
-            criticThreadWasOn = Designer.theDesigner().getAutoCritique();
-            if (criticThreadWasOn) {
-                Designer.theDesigner().setAutoCritique(false);
-            }
-            this.doLayout = layout;
-        }
-
-        /**
-         * Called once for each file to be parsed.<p>
-         *
-         * To refresh the GUI it calls itself again using the
-         * {@link SwingUtilities#invokeLater(Runnable)} method.<p>
-         */
-        public void run() {
-            // We shouldn't really turn off events, but as long
-            // as we are, wrap in try block to make sure they get
-            // turned back on.
-            Model.getPump().stopPumpingEvents();
-            try {
-                if (filesLeft.size() > 0) {
-
-                    // if there ae 2 passes:
-                    if (importLevel > 0) {
-                        if (filesLeft.size() <= countFiles / 2) {
-                            if (importLevel == 1) {
-                                setImportLevel(1);
-                            } else {
-                                setImportLevel(2);
-                            }
-                        }
-                    }
-
-                    Object curFile = filesLeft.get(0);
-                    filesLeft.remove(0);
-
-                    try {
-                        st.mark(curFile.toString());
-                        ProjectBrowser.getInstance().showStatus(
-                                "Importing " + curFile.toString());
-                        parseFile(
-                                ProjectManager.getManager()
-                                    .getCurrentProject(),
-                                curFile); // Try to parse this file.
-
-                        int tot = countFiles;
-                        if (diagramInterface != null) {
-                            tot +=
-                                diagramInterface.getModifiedDiagrams().size()
-                                / 10;
-                        }
-                        iss.setMaximum(tot);
-                        int act =
-                            countFiles
-                            - filesLeft.size()
-                            - nextPassFiles.size();
-                        iss.setValue(act);
-                        ProjectBrowser.getInstance().getStatusBar()
-                                .showProgress(100 * act / tot);
-                    } catch (Exception e1) {
-
-                        nextPassFiles.addElement(curFile);
-                        StringBuffer sb = new StringBuffer(80);
-                        // RuntimeExceptions should be reported here!
-                        if (e1 instanceof RuntimeException) {
-                            sb.append("Program bug encountered while parsing ");
-                            sb.append(curFile.toString());
-                            sb.append(", so some elements are not"
-                                    + " created in the model\n");
-                            StringWriter sw = new StringWriter();
-                            PrintWriter pw = new java.io.PrintWriter(sw);
-                            e1.printStackTrace(pw);
-                            sb.append(sw.getBuffer());
-                            LOG.error(sb.toString(), e1);
-                        } else {
-                            sb.append("Uncaught exception encountered"
-                                    + " while parsing ");
-                            sb.append(curFile.toString());
-                            sb.append(", so some elements are not "
-                                    + "created in the model\n");
-                            StringWriter sw = new StringWriter();
-                            PrintWriter pw = new java.io.PrintWriter(sw);
-                            e1.printStackTrace(pw);
-                            sb.append(sw.getBuffer());
-                            LOG.warn(sb.toString(), e1);
-                        }
-                        problems.append(sb);
-                    }
-
-                    if (!isCancelled()) {
-                        SwingUtilities.invokeLater(this);
-                        return;
-                    }
-                }
-
-                if (nextPassFiles.size() > 0
-                        && nextPassFiles.size() < countFilesThisPass) {
-                    filesLeft = nextPassFiles;
-                    nextPassFiles = new Vector();
-                    countFilesThisPass = filesLeft.size();
-                    SwingUtilities.invokeLater(this);
-                    return;
-                }
-
-                // Do post load processings.
-                st.mark("postprocessings");
-
-                ProjectBrowser.getInstance().showStatus("Import done");
-
-                // Layout the modified diagrams.
-                if (!isCancelled() && doLayout) {
-                    st.mark("layout");
-                    if (diagramInterface != null) {
-                        for (int i = 0; i < diagramInterface
-                                .getModifiedDiagrams().size(); i++) {
-                            UMLDiagram diagram =
-                                (UMLDiagram) diagramInterface
-                                    .getModifiedDiagrams().elementAt(i);
-                            ClassdiagramLayouter layouter;
-                            if (module instanceof PluggableImport) {
-                                // There are no known modules which implement 
-                                // this, but just in case ...
-                                layouter = ((PluggableImport) module)
-                                        .getLayout(diagram);
-                            } else {
-                                layouter = new ClassdiagramLayouter(diagram);
-                            }
-
-                            layouter.layout();
-
-                            // Resize the diagram???
-                            iss.setValue(countFiles + (i + 1) / 10);
-                        }
-                    }
-                }
-
-                iss.done();
-                ArgoFrame.getInstance().setCursor(
-                        Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
-                // if errors occured, display the collected messages here
-                if (problems != null && problems.length() > 0) {
-                    ProblemsDialog pd = new ProblemsDialog();
-                    pd.setVisible(true);
-                }
-                
-                // TODO: Inform user if no files were imported
-
-                // turn critiquing on again
-                if (criticThreadWasOn) {
-                    Designer.theDesigner().setAutoCritique(true);
-                }
-
-                ExplorerEventAdaptor.getInstance().structureChanged();
-
-                LOG.info(st);
-                ProjectBrowser.getInstance().getStatusBar().showProgress(0);
-            } finally {
-                // Be sure event pump gets turned back on again.
-                // Note: this doesn't deal with the critics
-                Model.getPump().startPumpingEvents();
-            }
-        }
-
-        private void cancel() { cancelled = true; }
-
-        private boolean isCancelled() { return cancelled; }
-
-    }
 
     /**
      * A window that shows the progress bar and a cancel button.
+     * As a convenience to callers which may be executing on a thread other
+     * than the Swing event thread, all methods use SwingUtilities.invokeLater()
+     * to make sure that Swing calls happen on the appropriate thread.
+     * 
      * TODO: React on the close button as if the Cancel button was pressed.
      */
-    class ImportStatusScreen extends JDialog {
+    class ImportStatusScreen extends JDialog implements ProgressMonitor {
 
         private JButton cancelButton;
 
         private JLabel progressLabel;
 
-        private int numberOfFiles;
-
         private JProgressBar progress;
+        
+        private boolean cancelled = false;
 
         /**
          * The constructor.
@@ -1126,79 +649,142 @@ public class Import implements ImportSettings {
          * @param iconName
          */
         public ImportStatusScreen(String title, String iconName) {
-
-            super();
+            super(ArgoFrame.getInstance(), true);
             if (title != null) {
                 setTitle(title);
             }
             Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-            getContentPane().setLayout(new BorderLayout(0, 0));
+            getContentPane().setLayout(new BorderLayout(4, 4));
 
             // Parsing file x of z.
             JPanel topPanel = new JPanel();
             progressLabel = new JLabel();
+            progressLabel.setPreferredSize(new Dimension(400, 20));
+            progressLabel.setHorizontalAlignment(SwingConstants.RIGHT);
             topPanel.add(progressLabel);
             getContentPane().add(topPanel, BorderLayout.NORTH);
 
             // progress bar
             progress = new JProgressBar();
+            progress.setPreferredSize(new Dimension(350, 20));
             getContentPane().add(progress, BorderLayout.CENTER);
 
             // stop button
-            cancelButton = new JButton("Stop");
+            cancelButton = new JButton(Translator.localize("button.cancel"));
             JPanel bottomPanel = new JPanel();
             bottomPanel.add(cancelButton);
             getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+            cancelButton.addActionListener(new ActionListener() {
 
+                public void actionPerformed(ActionEvent e) {
+                    cancelled = true;
+                    
+                }
+                
+            });
+
+            pack();
             Dimension contentPaneSize = getContentPane().getPreferredSize();
             setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
                     scrSize.height / 2 - contentPaneSize.height / 2);
-            pack();
-            this.setResizable(false);
-            this.setModal(true);        //MVW - Issue 2539.
+            setResizable(false);
         }
 
-        public void setMaximum(int i) {
-            progress.setMaximum(i);
-            numberOfFiles = i;
+        public void setMaximumProgress(final int i) {
+            SwingUtilities.invokeLater(new Runnable () {
+                public void run() {
+                    progress.setMaximum(i);
+                    setVisible(true);
+                }
+            });
         }
 
-        public void setValue(int i) {
-
-            progress.setValue(i);
-
-            String pass = "1-st pass";
-            // if there are 2 passes:
-            if (importLevel > 0 && i >= numberOfFiles / 2) {
-                pass = "2-nd pass";
-            }
-
-            int fileNumber =
-                (i != 1 && numberOfFiles != 0)
-                    ? ((i - 1) % (numberOfFiles / 2) + 1)
-                        : 1;
-
-            progressLabel.setText("Parsing file "
-                  + fileNumber + " of " + numberOfFiles / 2
-                  + ", " + pass + ". ");
-            pack(); // MVW: Is this not time-consuming?
-                    // Better make the window big enough at the start,
-                    // and only refresh the label.
+        public void updateProgress(final int i) {
+            SwingUtilities.invokeLater(new Runnable () {
+                public void run() {
+                    progress.setValue(i);
+                }
+            });
         }
 
-        public void addCancelButtonListener(ActionListener al) {
-            cancelButton.addActionListener(al);
-        }
-
+        /**
+         * @deprecated by tfmorris for 0.23.4 - use {@link #close}
+         */
         public void done() {
-            setVisible(false);
-            dispose();
+            close();
         }
 
         /**
          * The UID.
          */
         private static final long serialVersionUID = -1336242911879462274L;
+
+        /*
+         * @see org.argouml.application.api.ProgressMonitor#close()
+         */
+        public void close() {
+            SwingUtilities.invokeLater(new Runnable () {
+                public void run() {
+                    setVisible(false);
+                    dispose();
+                }
+            });
+        }
+
+        /*
+         * @see org.argouml.application.api.ProgressMonitor#isCanceled()
+         */
+        public boolean isCanceled() {
+            return cancelled;
+        }
+
+        /*
+         * @see org.argouml.application.api.ProgressMonitor#notifyMessage(java.lang.String, java.lang.String, java.lang.String)
+         */
+        public void notifyMessage(String title, String introduction,
+                String message) {
+            // TODO: Create an error dialog or panel
+//            JDialog problemsDialog = new ProblemsDialog();
+//            problemsDialog.setTitle(title);
+
+        }
+
+        /*
+         * @see org.argouml.application.api.ProgressMonitor#notifyNullAction()
+         */
+        public void notifyNullAction() {
+            // TODO: Notify user if there were no files to process 
+        }
+
+        /*
+         * @see org.argouml.application.api.ProgressMonitor#updateMainTask(java.lang.String)
+         */
+        public void updateMainTask(final String name) {
+            SwingUtilities.invokeLater(new Runnable () {
+                public void run() {
+                    setTitle(name);
+                }
+            });
+        }
+
+        /*
+         * @see org.argouml.application.api.ProgressMonitor#updateSubTask(java.lang.String)
+         */
+        public void updateSubTask(final String action) {
+            SwingUtilities.invokeLater(new Runnable () {
+                public void run() {
+                    progressLabel.setText(action);
+                }
+            });
+        }
+
+        /*
+         * @see org.argouml.persistence.ProgressListener#progress(org.argouml.persistence.ProgressEvent)
+         */
+        public void progress(ProgressEvent event) throws InterruptedException {
+            // ignored
+        }
+
     }
 
 
@@ -1255,7 +841,7 @@ public class Import implements ImportSettings {
             pack();
         }
 
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
@@ -1309,12 +895,20 @@ class ImportClasspathDialog extends JDialog {
 
         super();
         importClasspathDialog = this;
-        setTitle("Set up the import classpath"); //MVW - Issue 2539.
+        setTitle(Translator.localize("dialog.import.classpath.title"));
         importProcess = importProcess1;
 
         Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
         getContentPane().setLayout(new BorderLayout(0, 0));
 
+        // Explanatory text
+        JTextArea ta =
+                new JTextArea(Translator
+                        .localize("dialog.import.classpath.text"));
+        ta.setLineWrap(true);
+        ta.setWrapStyleWord(true);
+        getContentPane().add(ta, BorderLayout.NORTH);        
+        
         // paths list
         pathsModel = new DefaultListModel();
         paths = new JList(pathsModel);
@@ -1362,41 +956,44 @@ class ImportClasspathDialog extends JDialog {
         paths.setSelectedIndex(0);
     }
 
-
-    private void doFiles() {
-        importProcess.doFile();
-    }
-
+    
     class OkListener implements ActionListener {
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-
-            URL[] urls = new URL[pathsModel.size()];
-            for (int i = 0; i < urls.length; i++) {
-                try {
-                    urls[i] = new File((String) pathsModel.get(i)).toURL();
-                } catch (Exception e1) {
-                    LOG.warn("could not do ok: could not make"
-                            + "url " + pathsModel.get(i) + ", " + e1,
-                            e1);
-                }
-            }
-
             try {
-                ImportClassLoader.getInstance(urls);
-                ImportClassLoader.getInstance().saveUserPath();
-            } catch (Exception e1) {
-                LOG.warn("could not do ok", e1);
+                URL[] urls = new URL[pathsModel.size()];
+                for (int i = 0; i < urls.length; i++) {
+                    try {
+                        urls[i] = new File((String) pathsModel.get(i)).toURL();
+                    } catch (Exception e1) {
+                        LOG.warn("could not do ok: could not make"
+                                + "url " + pathsModel.get(i) + ", " + e1,
+                                e1);
+                    }
+                }
+
+                try {
+                    ImportClassLoader.getInstance(urls);
+                    ImportClassLoader.getInstance().saveUserPath();
+                } catch (Exception e1) {
+                    LOG.warn("could not do ok", e1);
+                }
+                setVisible(false);
+                setModal(false);
+                dispose();
+                importProcess.doFile();
+            } finally {
+                setVisible(false);
+                setModal(false);
+                dispose();
             }
-            doFiles();
-            dispose();
         }
     }
 
     class RemoveListener implements ActionListener {
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
@@ -1425,7 +1022,7 @@ class ImportClasspathDialog extends JDialog {
 
 
     class AddListener implements ActionListener {
-        /**
+        /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
@@ -1441,16 +1038,16 @@ class ImportClasspathDialog extends JDialog {
             chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
             chooser.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    if (e.getActionCommand().equals(
+                public void actionPerformed(ActionEvent e1) {
+                    if (e1.getActionCommand().equals(
                             JFileChooser.APPROVE_SELECTION)) {
                         File theFile = chooser.getSelectedFile();
                         if (theFile != null) {
                             pathsModel.addElement(theFile.toString());
                         }
-                    } else if (e.getActionCommand().equals(
+                    } else if (e1.getActionCommand().equals(
                             JFileChooser.CANCEL_SELECTION)) {
-                        // TODO: What shall we do here?
+                        ; // TODO: What shall we do here?
                     }
                     // bring the import classpath dialog to the front
                     importClasspathDialog.show();
