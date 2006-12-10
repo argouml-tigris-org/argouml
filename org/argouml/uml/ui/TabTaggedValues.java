@@ -43,8 +43,10 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
@@ -60,6 +62,8 @@ import org.tigris.toolbar.ToolBar;
  */
 public class TabTaggedValues extends AbstractArgoJPanel
     implements TabModelTarget, ListSelectionListener {
+    
+    private static final Logger LOG = Logger.getLogger(TabTaggedValues.class);
 
     /**
      * Serial version generated for rev 1.58
@@ -149,8 +153,17 @@ public class TabTaggedValues extends AbstractArgoJPanel
     public void setTarget(Object theTarget) {
         if (table.isEditing()) {
             TableCellEditor ce = table.getCellEditor();
-            if (ce != null && !ce.stopCellEditing()) {
-                ce.cancelCellEditing();
+            try {
+                if (ce != null && !ce.stopCellEditing()) {
+                    ce.cancelCellEditing();
+                }
+            } catch (InvalidElementException e) {
+                // Most likely cause of this is that someone deleted our
+                // target with the event pump turned off so we didn't
+                // get notification.  Nothing we can do about it now and
+                // we are changing targets anyway, so just log it.
+                LOG.warn("failed to cancel editing - " 
+                        + "model element deleted while edit in progress");
             }
         }
 
