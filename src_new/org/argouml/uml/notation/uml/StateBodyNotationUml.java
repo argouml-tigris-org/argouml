@@ -471,18 +471,4 @@ public class StateBodyNotationUml extends StateBodyNotation {
         }
     }
 
-    /**
-     * Make a string non-null.<p>
-     *
-     * What is the purpose of this function? Shouldn't it be private static?
-     *
-     * @param un The String.
-     * @return a non-null string.
-     */
-//    public String generateUninterpreted(String un) {
-//        if (un == null) {
-//            return "";
-//        }
-//        return un;
-//    }
 }
