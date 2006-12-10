@@ -25,67 +25,51 @@
 package org.argouml.uml.reveng;
 
 /**
- * Interface for the generic import settings that a pluggable importer module
- * can query the value of.
+ * Extended version of ImportSettings which must be implemented by GUI
+ * implementations. NOT FOR USE BY IMPORT MODULES. It is a superset of the
+ * settings available to pluggable import modules.
  */
 
-public interface ImportSettings {
+public interface ImportSettingsInternal extends ImportSettings {
 
     /**
-     * Import only classifiers
+     * @return true if the directory tree should be descended recursively
+     *         importing all parseable files.
      */
-    public static final int DETAIL_CLASSIFIER = 0;
+    public boolean isDescendSelected();
 
     /**
-     * Import classifiers and their features
+     * @return true if user as requested that only sources files which have been
+     *         changed since the last import should be imported this time. If
+     *         false, all files should be imported, regardless of their
+     *         modification date.
      */
-    public static final int DETAIL_CLASSIFIER_FEATURE = 1;
+    public boolean isChangedOnlySelected();
+    
 
     /**
-     * Import full detail
+     * @return true if the user has requested automatic layout for figures
+     *         placed on diagrams.
      */
-    public static final int DETAIL_FULL = 2;
+    public boolean isDiagramLayoutSelected();
 
     /**
-     * @return the level of import detail requested by the user. One of
-     *         DETAIL_CLASSIFIER, DETAIL_CLASSIFIER_FEATURE, or DETAIL_FULL.
-     */
-    public int getImportLevel();
-
-    /**
-     * @return string representing the character encoding of the input source
-     *         files.
-     */
-    public String getInputSourceEncoding();
-
-    // TODO: Change attribute and datatype to return a literal/enum
-    // instead? - tfm
-
-    /**
-     * @return true if associations should be modeled as attributes
-     */
-    public boolean isAttributeSelected();
-
-    /**
-     * @return true if arrays should be modeled as UML Datatypes
-     */
-    public boolean isDatatypeSelected();
-
-    /**
-     * TODO: This should be removed when diagram updating removed from the importers
-     * (as it should be). - tfm 20061129
+     * TODO: This should be moved from the superclass when diagram updating
+     * removed from the importers (as it should be). - tfm 20061129
+     * 
      * @return true if the user has request diagrams to be created for packages
      *         contained in the imported source code.
      */
-    public boolean isCreateDiagramsSelected();
+//    public boolean isCreateDiagramsSelected();
     
     /**
-     * TODO: This should be removed when diagram updating removed from the importers
-     * (as it should be). - tfm 20061129
+     * TODO: This should be moved from the superclass when diagram updating
+     * removed from the importers (as it should be). - tfm 20061129
+     * 
      * @return true, if user has requested that new figures placed in diagrams
      *         should be minimized so they don't show internal compartments.
      */
-    public boolean isMinimizeFigsSelected();
+//    public boolean isMinimizeFigsSelected();
 
 
 }

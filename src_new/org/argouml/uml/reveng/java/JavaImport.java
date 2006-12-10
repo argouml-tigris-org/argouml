@@ -29,15 +29,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.ProgressMonitor;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.uml.reveng.FileImportUtils;
 import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImportSettings;
 import org.argouml.uml.reveng.ImporterManager;
+import org.argouml.uml.reveng.ImportInterface.ImportException;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 
@@ -51,68 +57,132 @@ public class JavaImport implements ModuleInterface, ImportInterface {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(JavaImport.class);
-
-    /*
-     * @see org.argouml.uml.reveng.ImportInterface#parseFile(org.argouml.kernel.Project, java.lang.Object, org.argouml.uml.reveng.ImportSettings)
+    
+    /**
+     * New model elements that were added
      */
-    public void parseFile(Project p, Object o, ImportSettings settings)
+    private Collection newElements;
+    
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#parseFiles(org.argouml.kernel.Project, java.util.Collection, org.argouml.uml.reveng.ImportSettings, org.argouml.application.api.ProgressMonitor)
+     */
+    public Collection parseFiles(Project p, Collection files,
+            ImportSettings settings, ProgressMonitor monitor)
         throws ImportException {
-        
-        if (o instanceof File) {
-            File f = (File) o;
-            try {
-                // Create a scanner that reads from the input stream
-                String encoding = settings.getInputSourceEncoding();
-                FileInputStream in = new FileInputStream(f);
-                JavaLexer lexer = new JavaLexer(new BufferedReader(
-                        new InputStreamReader(in, encoding)));
 
-                // We use a special Argo token, that stores the preceding
-                // whitespaces.
-                lexer.setTokenObjectClass(
-                        "org.argouml.uml.reveng.java.ArgoToken");
-
-                // Create a parser that reads from the scanner
-                JavaRecognizer parser = new JavaRecognizer(lexer);
-                int parserMode = JavaRecognizer.MODE_IMPORT_PASS1
-                        | JavaRecognizer.MODE_IMPORT_PASS2;
-                if (settings.getImportLevel() == 1) {
-                    // only for pass 1 of a 2-phase-run
-                    parserMode = JavaRecognizer.MODE_IMPORT_PASS1;
-                } else if (settings.getImportLevel() == 2) {
-                    // only for pass 2 of a 2-phase-run
-                    parserMode = JavaRecognizer.MODE_IMPORT_PASS2;
-                }
-                parser.setParserMode(parserMode);
-
-                // Create a modeller for the parser
-                Modeller modeller = new Modeller(p.getModel(),
-                        settings.getDiagramInterface(),
-                        settings.getImportSession(),
-                        settings.isAttributeSelected(),
-                        settings.isDatatypeSelected(),
-                        f.getName());
-
-                // Print the name of the current file, so we can associate
-                // exceptions to the file.
-                LOG.info("Parsing " + f.getAbsolutePath());
-
-                modeller.setAttribute("level", 
-                        new Integer(settings.getImportLevel()));
-
-                try {
-                    // start parsing at the compilationUnit rule
-                    parser.compilationUnit(modeller, lexer);
-                } catch (Exception e) {
-                    String errorString = buildErrorString(f);
-                    LOG.error(e.getClass().getName()
-                            + errorString, e);
-                    throw new ImportException(errorString, e);
-                }
-                in.close();
-            } catch (IOException e) {
-                throw new ImportException(buildErrorString(f), e);
+        newElements = new HashSet();
+        monitor.updateMainTask(Translator.localize("dialog.import.pass1"));
+        if (settings.getImportLevel() == ImportSettings.DETAIL_CLASSIFIER_FEATURE
+                || settings.getImportLevel() == ImportSettings.DETAIL_FULL) {
+            monitor.setMaximumProgress(files.size() * 2);
+            doImportPass(p, files, settings, monitor, 0, 1);
+            if (!monitor.isCanceled()) {
+                monitor.updateMainTask(
+                        Translator.localize("dialog.import.pass2"));
+                doImportPass(p, files, settings, monitor, files.size(), 2);
             }
+        } else {
+            monitor.setMaximumProgress(files.size() * 2);
+            doImportPass(p, files, settings, monitor, 0, 0);
+        }
+        monitor.close();
+        return newElements;
+    }
+
+
+    private void doImportPass(Project p, Collection files,
+            ImportSettings settings, ProgressMonitor monitor, int startCount,
+            int pass) throws ImportException {
+        
+        int count = startCount;
+        for (Iterator it = files.iterator(); it.hasNext();) {
+            if (monitor.isCanceled()) {
+                monitor.updateSubTask(
+                        Translator.localize("dialog.import.cancelled"));
+                return;
+            }
+            Object file = it.next();
+            if (file instanceof File) {
+                parseFile(p, (File) file, settings, pass);
+                monitor.updateProgress(count++);
+                monitor.updateSubTask(Translator.localize(
+                        "dialog.import.parsingAction",
+                        new Object[] { ((File) file).getAbsolutePath() }));
+            } else {
+                throw new ImportException("Object isn't a file " + file);
+            }
+        }
+
+        return;
+    }
+   
+
+    /**
+     * Do a single import pass of a single file.
+     * 
+     * @param p
+     *            the project
+     * @param f
+     *            the source file
+     * @param settings
+     *            the user provided import settings
+     * @param pass
+     *            current import pass - 0 = single pass, 1 = pass 1 of 2, 2 =
+     *            pass 2 of 2
+     */
+    private void parseFile(Project p, File f, ImportSettings settings, int pass)
+        throws ImportException {
+
+        try {
+            // Create a scanner that reads from the input stream
+            String encoding = settings.getInputSourceEncoding();
+            FileInputStream in = new FileInputStream(f);
+            JavaLexer lexer = new JavaLexer(new BufferedReader(
+                    new InputStreamReader(in, encoding)));
+
+            // We use a special Argo token, that stores the preceding
+            // whitespaces.
+            lexer.setTokenObjectClass("org.argouml.uml.reveng.java.ArgoToken");
+
+            // Create a parser that reads from the scanner
+            JavaRecognizer parser = new JavaRecognizer(lexer);
+            
+            // Pass == 0 means single pass recognition
+            int parserMode =
+                    JavaRecognizer.MODE_IMPORT_PASS1
+                            | JavaRecognizer.MODE_IMPORT_PASS2;
+            if (pass == 1) {
+                parserMode = JavaRecognizer.MODE_IMPORT_PASS1;
+            } else if (pass == 2) {
+                parserMode = JavaRecognizer.MODE_IMPORT_PASS2;
+            }
+            parser.setParserMode(parserMode);
+
+            // Create a modeller for the parser
+            Modeller modeller = new Modeller(p.getModel(),
+                    settings,
+                    f.getName());
+
+            // Print the name of the current file, so we can associate
+            // exceptions to the file.
+            LOG.info("Parsing " + f.getAbsolutePath());
+
+            modeller.setAttribute("level", 
+                    new Integer(pass));
+
+            try {
+                // start parsing at the compilationUnit rule
+                parser.compilationUnit(modeller, lexer);
+            } catch (Exception e) {
+                String errorString = buildErrorString(f);
+                LOG.error(e.getClass().getName()
+                        + errorString, e);
+                throw new ImportException(errorString, e);
+            }
+            newElements.addAll(modeller.getNewElements());
+            in.close();
+        } catch (IOException e) {
+            throw new ImportException(buildErrorString(f), e);
         }
     }
 

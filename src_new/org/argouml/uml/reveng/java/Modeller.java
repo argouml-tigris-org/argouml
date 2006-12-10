@@ -40,8 +40,8 @@ import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.reveng.DiagramInterface;
-import org.argouml.uml.reveng.Import;
-import org.tigris.gef.base.Globals;
+import org.argouml.uml.reveng.ImportCommon;
+import org.argouml.uml.reveng.ImportSettings;
 
 /**
  * Modeller maps Java source code(parsed/recognised by ANTLR) to UML model
@@ -60,12 +60,15 @@ public class Modeller {
      */
     private Object model;
 
+    // TODO: This can be removed when we are sure there are no external users
+    // of the functionality.  Diagram creation has moved to ImportCommon where
+    // a single implementation is shared by all importers. - tfm 20061209
     private DiagramInterface diagram;
 
     /**
-     * Current import session.
+     * Current import settings.
      */
-    private Import importSession;
+    private ImportCommon importSession;
 
     /**
      * The package which the currentClassifier belongs to.
@@ -121,22 +124,36 @@ public class Modeller {
     private Hashtable localVariables = new Hashtable();
 
     /**
-     * Create a new modeller.
-     *
-     * TODO: Refactor diagram creation to be common to all importers and
-     * remove the need for the diagram interface to be passed in here. - tfm
-     *
-     * @param diag the interface to the diagram to add nodes and edges to
-     * @param imp The current Import session.
-     * @param noAss whether associations are modelled as attributes
-     * @param arraysAsDT whether darrays are modelled as dataypes
-     * @param fName the current file name
-     *
-     * @param m The model to work with.
+     * New model elements that were created during this
+     * reverse engineering session.
+     */
+    private Collection newElements;
+    
+    /**
+     * Create a new modeller which will do diagram creation.
+     * 
+     * @param m
+     *            The model to work with.
+     * @param diag
+     *            the interface to the diagram to add nodes and edges to
+     * @param imp
+     *            The current Import session.
+     * @param noAss
+     *            whether associations are modelled as attributes
+     * @param arraysAsDT
+     *            whether darrays are modelled as dataypes
+     * @param fName
+     *            the current file name
+     * @deprecated for 0.23.4 by tfmorris - use variant without diagram
+     *             interface
+     *             {@link #Modeller(Object, ImportCommon, boolean, boolean, String)}.
+     *             NOTE: This really is private to the Java RE module, but it
+     *             has also been used by other bundled importers, so it's
+     *             possible it was used by others outside the project as well.
      */
     public Modeller(Object m,
 		    DiagramInterface diag,
-		    Import imp,
+		    ImportCommon imp,
 		    boolean noAss,
 		    boolean arraysAsDT,
 		    String fName) {
@@ -149,8 +166,21 @@ public class Modeller {
 	parseStateStack = new Stack();
 	diagram = diag;
         fileName = fName;
+        newElements = new ArrayList();
     }
 
+    /**
+     * Create a new modeller.
+     *
+     * @param model The model to work with.
+     * @param settings the settings to use for this import
+     * @param fileName the current file name
+     */
+    public Modeller(Object model, ImportSettings settings, String fileName) {
+        this(model, null, null, settings.isAttributeSelected(), settings
+                .isDatatypeSelected(), fileName);
+    }
+    
     /**
      * @param key the key of the attribute to get
      * @return the value of the attribute
@@ -215,6 +245,7 @@ public class Modeller {
 
             component = Model.getCoreFactory().createComponent();
             Model.getCoreHelper().setName(component, fileName);
+            newElements.add(component);
         }
 
         parseState.addComponent(component);
@@ -230,17 +261,16 @@ public class Modeller {
      * @param name The name of the package.
      */
     public void addPackage(String name) {
-	// Add a package figure for this package to the owners class
+	// Add a package figure for this package to the owner's class
 	// diagram, if it's not in the diagram yet. I do this for all
 	// the class diagrams up to the top level, since I need
 	// diagrams for all the packages.
 	String ownerPackageName, currentName = name;
         ownerPackageName = getPackageName(currentName);
 	while (!"".equals(ownerPackageName)) {
-            // TODO: Refactor diagram creation to be common to all importers - tfm
 	    if (diagram != null
 	            && importSession != null
-	            && importSession.isCreateDiagramsChecked()
+	            && importSession.isCreateDiagramsSelected()
 	            && diagram.isDiagramInProject(ownerPackageName)) {
 
 	        diagram.selectClassDiagram(getPackage(ownerPackageName),
@@ -252,6 +282,8 @@ public class Modeller {
             ownerPackageName = getPackageName(currentName);
 	}
 	// Save src_path in the upper package
+        // TODO: Rework this so that we don't need importSession here.
+        // perhaps move to the common import code. - tfm
 	Object mPackage = getPackage(currentName);
 	if (importSession != null && importSession.getSrcPath() != null
 	    && Model.getFacade().getTaggedValue(mPackage, "src_path") == null) {
@@ -284,7 +316,9 @@ public class Modeller {
 
             // a component already exists,
             // so delete the latest one(the duplicate)
-            Model.getUmlFactory().delete(parseState.getComponent());
+            Object oldComponent = parseState.getComponent();
+            Model.getUmlFactory().delete(oldComponent);
+            newElements.remove(oldComponent);
         // change the parse state to the existing one.
             parseState.addComponent(component);
         }
@@ -359,19 +393,18 @@ public class Modeller {
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && classifierName != null && mPackage != null) {
                     // we must guess if it's a class or an interface, so: class
-                    LOG.info("Modeller.java: forced creation of unknown classifier "
-                        + classifierName);
+                    LOG.info("Modeller.java: " 
+                            + "forced creation of unknown classifier "
+                            + classifierName);
                     mClassifier = Model.getCoreFactory().buildClass(
                             classifierName, mPackage);
                 } else {
-                    // information will be lost from source files
-                    LOG.info("Modeller.java: a classifier that was in the source"
-                        + " file could not be generated in the model "
-                        + "(to generate an imported classifier)");
+                    warnClassifierNotFound(classifierName, e,
+                            "an imported classifier");
                 }
             }
             if (mClassifier != null) {
-                parseState.addClassifierContext(mClassifier);
+		parseState.addClassifierContext(mClassifier);
 
                 // try find an existing permission
                 Iterator dependenciesIt =
@@ -402,7 +435,9 @@ public class Modeller {
 			+ Model.getFacade().getName(mClassifier);
                     Model.getCoreHelper().setName(perm, newName);
                 }
-            }
+	    }
+
+
 	}
     }
 
@@ -475,22 +510,21 @@ public class Modeller {
 		        .get(getClassifierName(superclassName));
 		getGeneralization(currentPackage, parentClass, mClass);
 	    } catch (ClassifierNotFoundException e) {
-                if (forceIt && superclassName != null && model != null) {
-                    LOG.info("Modeller.java: forced creation of unknown class "
-                        + superclassName);
-                    String packageName = getPackageName(superclassName);
-                    String classifierName = getClassifierName(superclassName);
-                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName)
-                            : model;
-                    parentClass = Model.getCoreFactory().buildClass(
-                            classifierName, mPackage);
-                    getGeneralization(currentPackage, parentClass, mClass);
-                } else {
-                    // information will be lost from source files
-                    LOG.info("Modeller.java: a classifier that was in the source"
-                         + " file could not be generated in the model "
-                         + "(to generate a generalization)");
-                }
+	        if (forceIt && superclassName != null && model != null) {
+	            LOG.info("Modeller.java: forced creation of unknown class "
+	                    + superclassName);
+	            String packageName = getPackageName(superclassName);
+	            String classifierName = getClassifierName(superclassName);
+	            Object mPackage = (packageName.length() > 0) 
+                            ? getPackage(packageName)
+	                    : model;
+	            parentClass = Model.getCoreFactory().buildClass(
+	                    classifierName, mPackage);
+	            getGeneralization(currentPackage, parentClass, mClass);
+	        } else {
+	            warnClassifierNotFound(superclassName, e,
+	                    "a generalization");
+	        }
 	    }
 	}
 
@@ -504,18 +538,22 @@ public class Modeller {
 			    .getInterface(getClassifierName(interfaceName));
                 } catch (ClassifierNotFoundException e) {
                     if (forceIt && interfaceName != null && model != null) {
-                        LOG.info("Modeller.java: forced creation of unknown interface "
-                            + interfaceName);
+                        LOG.info("Modeller.java: " 
+                                + "forced creation of unknown interface "
+                                + interfaceName);
                         String packageName = getPackageName(interfaceName);
-                        String classifierName = getClassifierName(interfaceName);
-                        Object mPackage = (packageName.length() > 0) ? getPackage(packageName) : model;
+                        String classifierName =
+                                getClassifierName(interfaceName);
+                        Object mPackage = 
+                            (packageName.length() > 0) 
+                                        ? getPackage(packageName)
+                                        : model;
                         mInterface =
-                            Model.getCoreFactory().buildInterface(classifierName, mPackage);
+                                Model.getCoreFactory().buildInterface(
+                                        classifierName, mPackage);
                     } else {
-                        // information will be lost from source file
-                        LOG.info("Modeller.java: a classifier that was in "
-                             + "the source file could not be generated "
-                             + "in the model (to generate a abstraction)");
+                        warnClassifierNotFound(interfaceName, e,
+                                "an abstraction");
                     }
                 }
                 if (mInterface != null) {
@@ -534,7 +572,7 @@ public class Modeller {
 		    Model.getCoreHelper().addStereotype(
 		            mAbstraction,
 		            getStereotype("realize"));
-                }
+		}
 	    }
 	}
     }
@@ -569,7 +607,7 @@ public class Modeller {
 		     "",
                      forceIt);
         } catch (ClassifierNotFoundException e) {
-            // Must add it anyway, or the class poping will mismatch.
+            // Must add it anyway, or the class popping will mismatch.
             addClass(name, (short) 0, null, new Vector(), "", forceIt);
             LOG.info("Modeller.java: an anonymous class was created "
 		     + "although it could not be found in the classpath.");
@@ -584,7 +622,7 @@ public class Modeller {
      * @param interfaces Zero or more strings with the names of extended
      * interfaces. Can be fully qualified or just a simple interface name.
      * @param javadoc The javadoc comment. "" if no comment available.
-     */
+    */
     public void addInterface(String name,
                              short modifiers,
                              Vector interfaces,
@@ -631,21 +669,21 @@ public class Modeller {
                 getGeneralization(currentPackage, parentInterface, mInterface);
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && interfaceName != null && model != null) {
-                    LOG.info("Modeller.java: forced creation of unknown interface "
-                        + interfaceName);
+                    LOG.info("Modeller.java: " 
+                            + "forced creation of unknown interface "
+                            + interfaceName);
                     String packageName = getPackageName(interfaceName);
                     String classifierName = getClassifierName(interfaceName);
-                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName)
+                    Object mPackage = (packageName.length() > 0) 
+                            ? getPackage(packageName)
                             : model;
                     parentInterface = Model.getCoreFactory().buildInterface(
                             classifierName, mPackage);
                     getGeneralization(currentPackage, parentInterface,
                             mInterface);
                 } else {
-                    // information will be lost from source file
-                    LOG.info("Modeller.java: a classifier that was in the source"
-			 + " file could not be generated in the model "
-			 + "(to generate a generalization)");
+                    warnClassifierNotFound(interfaceName, e, 
+                            "a generalization");
                 }
             }
         }
@@ -681,18 +719,20 @@ public class Modeller {
 
 
         if (mClassifier == null) {
-            // if the classifier could not be could in the model
+            // if the classifier could not be found in the model
             if (LOG.isInfoEnabled()) {
                 LOG.info("Created new classifier for " + name);
             }
             mClassifier = newClassifier;
             Model.getCoreHelper().setName(mClassifier, name);
             Model.getCoreHelper().setNamespace(mClassifier, mNamespace);
+            newElements.add(mClassifier);
         } else {
             // it was found and we delete any existing tagged values.
             if (LOG.isInfoEnabled()) {
                 LOG.info("Found existing classifier for " + name);
             }
+            // TODO: Rewrite existing elements instead? - tfm
             cleanModelElement(mClassifier);
         }
 
@@ -719,7 +759,14 @@ public class Modeller {
         parseState = new ParseState(parseState, mClassifier, currentPackage);
 
         setVisibility(mClassifier, modifiers);
-        addDocumentationTag (mClassifier, javadoc);
+        
+        // Add classifier documentation tags during first (or only) pass only
+        Object level = this.getAttribute("level");
+        if (level != null) {
+            if (((Integer) level).intValue() <= 1) {
+                addDocumentationTag(mClassifier, javadoc);
+            }
+        }
 
         return mClassifier;
     }
@@ -729,41 +776,28 @@ public class Modeller {
     */
     public void popClassifier() {
         // now create diagram if it doesn't exists in project
-	if (importSession != null && importSession.isCreateDiagramsChecked()) {
-            // TODO: Refactor diagram creation to be common to all importers - tfm
-	    if (diagram == null) {
-		diagram = new DiagramInterface(Globals.curEditor());
-		if (currentPackageName != null
-		    && !currentPackageName.trim().equals("")) {
-		    // create new diagram or select existing diagram for package
-		    diagram.createOrSelectClassDiagram(currentPackage,
-							currentPackageName);
-		} else {
-		    // create new diagram in root for classifier without package
-		    diagram.createRootClassDiagram();
-		}
+	if (diagram != null 
+                && importSession != null 
+                && importSession.isCreateDiagramsSelected()) {
 
-	    } else {
-		if (currentPackageName != null) {
-		    diagram.selectClassDiagram(currentPackage,
-						    currentPackageName);
-		}
-		// the DiagramInterface is instantiated already
-		// but the class is in a source file
-		// with no package declaration
-		else {
-		    // create new diagram in root for classifier without package
-		    diagram.createRootClassDiagram();
-		}
+	    if (currentPackageName != null) {
+	        diagram.selectClassDiagram(currentPackage,
+	                currentPackageName);
+	    }
+	    // The class is in a source file
+	    // with no package declaration
+	    else {
+	        // create new diagram in root for classifier without package
+	        diagram.createRootClassDiagram();
 	    }
 	    // add the current classifier to the diagram.
 	    Object classifier = parseState.getClassifier();
 	    if (Model.getFacade().isAInterface(classifier)) {
 	        diagram.addInterface(classifier,
-	                importSession.isMinimiseFigsChecked());
+	                importSession.isMinimizeFigsSelected());
 	    } else if (Model.getFacade().isAClass(classifier)) {
 	        diagram.addClass(classifier,
-	                importSession.isMinimiseFigsChecked());
+	                importSession.isMinimizeFigsSelected());
 	    }
 	}
 
@@ -859,19 +893,19 @@ public class Modeller {
 		    getContext(returnType).get(getClassifierName(returnType));
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && returnType != null && model != null) {
-                    LOG.info("Modeller.java: forced creation of unknown classifier "
-                        + returnType);
+                    LOG.info("Modeller.java: " 
+                            + "forced creation of unknown classifier "
+                            + returnType);
                     String packageName = getPackageName(returnType);
                     String classifierName = getClassifierName(returnType);
-                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName)
-                            : model;
+                    Object mPackage =
+                            (packageName.length() > 0) ? getPackage(packageName)
+                                    : model;
                     mClassifier = Model.getCoreFactory().buildClass(
                             classifierName, mPackage);
                 } else {
-                    // information will be lost from source files
-                    LOG.info("Modeller.java: a classifier that was in the source "
-                         + "file could not be generated in the model "
-                         + "(for generating operation return type)");
+                    warnClassifierNotFound(returnType, e,
+                            "operation return type");
                 }
             }
             if (mClassifier != null) {
@@ -887,7 +921,7 @@ public class Modeller {
                         Model.getDirectionKind().getReturnParameter());
 
                 Model.getCoreHelper().setType(mParameter, mClassifier);
-            }
+	    }
 	}
 
 	for (Iterator i = parameters.iterator(); i.hasNext();) {
@@ -899,19 +933,19 @@ public class Modeller {
 		    getContext(typeName).get(getClassifierName(typeName));
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && typeName != null && model != null) {
-                    LOG.info("Modeller.java: forced creation of unknown classifier "
-                        + typeName);
+                    LOG.info("Modeller.java: " 
+                            + "forced creation of unknown classifier "
+                            + typeName);
                     String packageName = getPackageName(typeName);
                     String classifierName = getClassifierName(typeName);
-                    Object mPackage = (packageName.length() > 0) ? getPackage(packageName)
-                            : model;
+                    Object mPackage =
+                            (packageName.length() > 0) ? getPackage(packageName)
+                                    : model;
                     mClassifier = Model.getCoreFactory().buildClass(
                             classifierName, mPackage);
                 } else {
-                    // information will be lost from source files
-                    LOG.info("Modeller.java: a classifier that was in the source "
-                         + "file could not be generated in the model "
-                         + "(for generating operation params)");
+                    warnClassifierNotFound(typeName, e,
+                            "operation params");
                 }
             }
             if (mClassifier != null) {
@@ -944,12 +978,35 @@ public class Modeller {
 	return mOperation;
     }
 
+
     /**
-     * Called from the parser to add a method body to an operation.
-     * (An operation will have exactly one Java body.)
-     *
-     * @param op An operation.
-     * @param body A method body.
+     * Warn user that information available in input source will not be
+     * reflected accurately in the model.
+     * 
+     * @param name
+     *            name of the classifiere which wasn't found
+     * @param e
+     *            the exception -
+     * @param operation -
+     *            a string indicating what type of operation was being attempted
+     */
+    private void warnClassifierNotFound(String name, Throwable e, String operation) {
+        // TODO: The user will likely never see this error.  It
+        // needs to be more visible. - tfm
+        LOG.info("Modeller.java: a classifier (" + name
+                + ") that was in the source "
+                + "file could not be generated in the model " 
+                + "(while generating " + operation + ").");
+    }
+
+    /**
+     * Called from the parser to add a method body to an operation. (An
+     * operation will have exactly one Java body.)
+     * 
+     * @param op
+     *            An operation.
+     * @param body
+     *            A method body.
      */
     public void addBodyToOperation(Object op, String body) {
         if (op == null || !Model.getFacade().isAOperation(op)) {
@@ -1022,21 +1079,20 @@ public class Modeller {
 	try {
 	    // get the attribute type
 	    mClassifier = getContext(typeSpec).get(getClassifierName(typeSpec));
-        } catch (ClassifierNotFoundException e) {
+	} catch (ClassifierNotFoundException e) {
             if (forceIt && typeSpec != null && model != null) {
                 LOG.info("Modeller.java: forced creation of unknown classifier "
                     + typeSpec);
                 String packageName = getPackageName(typeSpec);
                 String classifierName = getClassifierName(typeSpec);
-                Object mPackage = (packageName.length() > 0) ? getPackage(packageName)
+                Object mPackage = (packageName.length() > 0) 
+                        ? getPackage(packageName)
                         : model;
                 mClassifier =
                     Model.getCoreFactory().buildClass(classifierName, mPackage);
             } else {
-                // information will be lost from source files
-                LOG.info("Modeller.java: a classifier that was in the source "
-                     + "file could not be generated in the model "
-                     + "(for generating an attribute)");
+                warnClassifierNotFound(typeSpec, e,
+                    "an attribute");
             }
         }
         if (mClassifier == null) {
@@ -1391,8 +1447,8 @@ public class Modeller {
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
         Collection stereos =
-            Model.getExtensionMechanismsHelper()
-                .getAllPossibleStereotypes(models, me);
+                Model.getExtensionMechanismsHelper().getAllPossibleStereotypes(
+                        models, me);
         Object stereotype =  null;
         if (stereos != null && stereos.size() > 0) {
             Iterator iter = stereos.iterator();
@@ -1431,8 +1487,10 @@ public class Modeller {
     private Object getTaggedValue(Object element, String name) {
         Object tv = Model.getFacade().getTaggedValue(element, name);
         if (tv == null) {
-            Model.getCoreHelper().setTaggedValue(element, name, "");
-            tv = Model.getFacade().getTaggedValue(element, name);
+            tv =
+                    Model.getExtensionMechanismsFactory().buildTaggedValue(
+                            name, "");
+            Model.getExtensionMechanismsHelper().addTaggedValue(element, tv);
         }
         return tv;
     }
@@ -1663,10 +1721,17 @@ public class Modeller {
                 sTagData = sb.toString();
 
             }
-            Model.getExtensionMechanismsHelper().addTaggedValue(
-                    me,
-                    Model.getExtensionMechanismsFactory().buildTaggedValue(
-                            sTagName, sTagData));
+            
+            Object tv = Model.getFacade().getTaggedValue(me, sTagName);
+            if (tv == null) {
+                Model.getExtensionMechanismsHelper().addTaggedValue(
+                        me,
+                        Model.getExtensionMechanismsFactory().buildTaggedValue(
+                                sTagName, sTagData));
+            } else {
+                Model.getExtensionMechanismsHelper()
+                        .setValueOfTag(tv, sTagData);
+            }
 
 	}
     }
@@ -1887,5 +1952,14 @@ public class Modeller {
      */
     public void clearLocalVariableDeclarations() {
         localVariables.clear();
+    }
+    
+    /**
+     * Get the elements which were created while reverse engineering this file.
+     * 
+     * @return the collection of elements
+     */
+    public Collection getNewElements() {
+        return newElements;
     }
 }
