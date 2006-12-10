@@ -74,6 +74,7 @@ public class WizAddInstanceVariable extends UMLWizard {
                 Model.getCoreFactory()
                 	.buildAttribute(me, model, intType);
             Model.getCoreHelper().setName(attr, newName);
+            break;
         }
     }
 
