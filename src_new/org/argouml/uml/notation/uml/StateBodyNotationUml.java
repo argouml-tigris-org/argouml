@@ -87,11 +87,12 @@ public class StateBodyNotationUml extends StateBodyNotation {
         Object exitAction = Model.getFacade().getExit(modelElement);
         Object doAction = Model.getFacade().getDoActivity(modelElement);
         if (entryAction != null) {
-            String entryStr = generateAction(entryAction);
+            String entryStr = 
+                NotationUtilityUml.generateActionSequence(entryAction);
             s.append("entry /").append(entryStr);
         }
         if (doAction != null) {
-            String doStr = generateAction(doAction);
+            String doStr = NotationUtilityUml.generateActionSequence(doAction);
             if (s.length() > 0) {
                 s.append("\n");
             }
@@ -99,7 +100,8 @@ public class StateBodyNotationUml extends StateBodyNotation {
 
         }
         if (exitAction != null) {
-            String exitStr = generateAction(exitAction);
+            String exitStr = 
+                NotationUtilityUml.generateActionSequence(exitAction);
             if (s.length() > 0) {
                 s.append("\n");
             }
@@ -469,65 +471,6 @@ public class StateBodyNotationUml extends StateBodyNotation {
         }
     }
 
-    protected String generateAction(Object m) {
-        Collection c;
-        Iterator it;
-        String s;
-        String p;
-        boolean first;
-
-        Object script = Model.getFacade().getScript(m);
-
-        if ((script != null) && (Model.getFacade().getBody(script) != null)) {
-            s = Model.getFacade().getBody(script).toString();
-        } else {
-            s = "";
-        }
-
-        p = "";
-        c = Model.getFacade().getActualArguments(m);
-        if (c != null) {
-            it = c.iterator();
-            first = true;
-            while (it.hasNext()) {
-                Object arg = it.next();
-                if (!first) {
-                    p += ", ";
-                }
-
-                if (Model.getFacade().getValue(arg) != null) {
-                    p += generateExpression(Model.getFacade().getValue(arg));
-                }
-                first = false;
-            }
-        }
-        if (s.length() == 0 && p.length() == 0) {
-            return "";
-        }
-
-        /* If there are no arguments, then do not show the ().
-         * This solves issue 1758.
-         * Arguments are not supported anyhow in the UI yet.
-         * These brackets are easily confused with the brackets
-         * for the Operation of a CallAction.
-         */
-        if (p.length() == 0) {
-            return s;
-        }
-
-        return s + " (" + p + ")";
-    }
-
-    private String generateExpression(Object expr) {
-        if (Model.getFacade().isAExpression(expr)) {
-            return generateUninterpreted(
-                    (String) Model.getFacade().getBody(expr));
-        } else if (Model.getFacade().isAConstraint(expr)) {
-            return generateExpression(Model.getFacade().getBody(expr));
-        }
-        return "";
-    }
-
     /**
      * Make a string non-null.<p>
      *
@@ -536,10 +479,10 @@ public class StateBodyNotationUml extends StateBodyNotation {
      * @param un The String.
      * @return a non-null string.
      */
-    public String generateUninterpreted(String un) {
-        if (un == null) {
-            return "";
-        }
-        return un;
-    }
+//    public String generateUninterpreted(String un) {
+//        if (un == null) {
+//            return "";
+//        }
+//        return un;
+//    }
 }
