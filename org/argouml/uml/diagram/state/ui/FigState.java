@@ -173,13 +173,21 @@ public abstract class FigState extends FigStateVertex {
         if (action != null) {
             addElementListener(action,
                     new String[] {
-                        "script", "actualArgument",
+                        "script", "actualArgument", "action"
                     });
             Collection args = Model.getFacade().getActualArguments(action);
             Iterator i = args.iterator();
             while (i.hasNext()) {
                 Object argument = i.next();
                 addElementListener(argument, "value");
+            }
+            if (Model.getFacade().isAActionSequence(action)) {
+                Collection subactions = Model.getFacade().getActions(action);
+                i = subactions.iterator();
+                while (i.hasNext()) {
+                    Object a = i.next();
+                    addListenersForAction(a);
+                }
             }
         }
     }

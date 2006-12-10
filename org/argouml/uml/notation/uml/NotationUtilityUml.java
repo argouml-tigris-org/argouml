@@ -1038,4 +1038,78 @@ public final class NotationUtilityUml {
         }
         return Model.getFacade().toString(m);
     }
+    
+    /**
+     * @param m the action
+     * @return the generated text
+     */
+    static String generateAction(Object m) {
+        Collection c;
+        Iterator it;
+        String s;
+        String p;
+        boolean first;
+        if (m == null) {
+            return "";
+        }
+
+        Object script = Model.getFacade().getScript(m);
+
+        if ((script != null) && (Model.getFacade().getBody(script) != null)) {
+            s = Model.getFacade().getBody(script).toString();
+        } else {
+            s = "";
+        }
+
+        p = "";
+        c = Model.getFacade().getActualArguments(m);
+        if (c != null) {
+            it = c.iterator();
+            first = true;
+            while (it.hasNext()) {
+                Object arg = it.next();
+                if (!first) {
+                    p += ", ";
+                }
+
+                if (Model.getFacade().getValue(arg) != null) {
+                    p += generateExpression(Model.getFacade().getValue(arg));
+                }
+                first = false;
+            }
+        }
+        if (s.length() == 0 && p.length() == 0) {
+            return "";
+        }
+
+        /* If there are no arguments, then do not show the ().
+         * This solves issue 1758.
+         * Arguments are not supported anyhow in the UI yet.
+         * These brackets are easily confused with the brackets
+         * for the Operation of a CallAction.
+         */
+        if (p.length() == 0) {
+            return s;
+        }
+
+        return s + " (" + p + ")";
+    }
+
+    static String generateActionSequence(Object a) {
+        if (Model.getFacade().isAActionSequence(a)) {
+            StringBuffer str = new StringBuffer("");
+            Collection actions = Model.getFacade().getActions(a);
+            Iterator i = actions.iterator();
+            if (i.hasNext()) {
+                str.append(generateAction(i.next()));
+            }
+            while (i.hasNext()) {
+                str.append("; ");
+                str.append(generateAction(i.next()));
+            }
+            return str.toString();
+        } else {
+            return generateAction(a);
+        }
+    }
 }
