@@ -295,6 +295,7 @@ public abstract class AbstractFilePersister extends FileFilter
      */
     public abstract boolean hasAnIcon();
     
+    // TODO: Document 
     class ProgressMgr implements ProgressListener {
         
         /**

@@ -168,6 +168,8 @@ class XmiFilePersister extends AbstractFilePersister
      *
      * @param project The project to output.
      * @param stream The stream to write to.
+     * @param progressMgr The progress manager/monitor, if any.  If null, no
+     *                    progress will be reported.
      * @throws SaveException If something goes wrong.
      * @throws InterruptedException     if the thread is interrupted
      */
