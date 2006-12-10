@@ -115,6 +115,7 @@ public class WizTooMany extends UMLWizard {
                     // we do not set the value
                 }
             }
+            break;
         }
     }
 }

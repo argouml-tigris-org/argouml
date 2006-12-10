@@ -565,6 +565,7 @@ public class FigClassifierRole extends FigNodeModelElement
                 case MessageNode.CREATED:
                     startActivationNode = node;
                     startFull = false;
+                    break;
                 default:
                 }
             } else {

@@ -125,6 +125,7 @@ public class WizManyNames extends UMLWizard {
             } catch (Exception pve) {
                 LOG.error("could not set name", pve);
             }
+            break;
 
         default:
         }

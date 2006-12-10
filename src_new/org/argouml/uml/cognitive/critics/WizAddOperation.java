@@ -69,6 +69,7 @@ public class WizAddOperation extends UMLWizard {
 	        	.getCurrentProject().findType("void");
 	    Model.getCoreFactory().buildOperation(me, model,
 	            voidType, newName);
+            break;
         }
     }
 

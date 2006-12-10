@@ -124,6 +124,7 @@ public class WizMEName extends UMLWizard {
 	    catch (Exception pve) {
 		LOG.error("could not set name", pve);
 	    }
+            break;
 	}
     }
 

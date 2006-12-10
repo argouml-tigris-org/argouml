@@ -91,6 +91,7 @@ public class WizAddConstructor extends UMLWizard {
 	    Model.getCoreHelper()
 	        .addStereotype(oper, getCreateStereotype(oper));
 	    TargetManager.getInstance().setTargets(savedTargets);
+            break;
 	}
     }
 
