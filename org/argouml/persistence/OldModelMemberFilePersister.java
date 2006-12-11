@@ -44,9 +44,9 @@ class OldModelMemberFilePersister extends ModelMemberFilePersister
      *
      * @see org.argouml.persistence.MemberFilePersister#save(
      *         org.argouml.kernel.ProjectMember, java.io.Writer,
-     *         java.lang.Integer)
+     *         boolean)
      */
-    public void save(ProjectMember member, Writer w, Integer indent)
+    public void save(ProjectMember member, Writer w, boolean xmlFragment)
     	throws SaveException {
 
         if (w == null) {

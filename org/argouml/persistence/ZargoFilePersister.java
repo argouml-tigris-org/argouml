@@ -143,7 +143,7 @@ class ZargoFilePersister extends UmlFilePersister {
                             new ZipEntry(projectMember.getZipName()));
                     MemberFilePersister persister =
                         getMemberFilePersister(projectMember);
-                    persister.save(projectMember, writer, null);
+                    persister.save(projectMember, writer);
                 }
             }
             // if save did not raise an exception
@@ -286,33 +286,7 @@ class ZargoFilePersister extends UmlFilePersister {
             zis.close();
             reader.close();
 
-            // Loop round loading the diagrams
-            zis = new ZipInputStream(file.toURL().openStream());
-            SubInputStream sub = new SubInputStream(zis);
-
-            ZipEntry currentEntry = null;
-            while ((currentEntry = sub.getNextEntry()) != null) {
-                if (currentEntry.getName().endsWith(".pgml")) {
-
-                    reader = new BufferedReader(
-                        new InputStreamReader(sub, 
-                                PersistenceManager.getEncoding()));
-                    String firstLine = reader.readLine();
-                    if (firstLine.startsWith("<?xml")) {
-                        // Skip the 2 lines
-                        //<?xml version="1.0" encoding="UTF-8" ?>
-                        //<!DOCTYPE pgml SYSTEM "pgml.dtd">
-                        reader.readLine();
-                    } else {
-                        writer.println(firstLine);
-                    }
-                    
-                    readerToWriter(reader, writer);
-                    sub.close();
-                    reader.close();
-                }
-            }
-            zis.close();
+            loadDiagrams(file, writer);
 
             // Alway load the todo items last so that any model
             // elements or figs that the todo items refer to
@@ -355,6 +329,39 @@ class ZargoFilePersister extends UmlFilePersister {
         } catch (IOException e) {
             throw new OpenException(e);
         }
+    }
+    
+    private void loadDiagrams(
+	    File file, 
+	    PrintWriter writer) throws IOException {
+	
+        // Loop round loading the diagrams
+	ZipInputStream zis = new ZipInputStream(file.toURL().openStream());
+        SubInputStream sub = new SubInputStream(zis);
+
+        ZipEntry currentEntry = null;
+        while ((currentEntry = sub.getNextEntry()) != null) {
+            if (currentEntry.getName().endsWith(".pgml")) {
+
+                BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(sub, 
+                            PersistenceManager.getEncoding()));
+                String firstLine = reader.readLine();
+                if (firstLine.startsWith("<?xml")) {
+                    // Skip the 2 lines
+                    //<?xml version="1.0" encoding="UTF-8" ?>
+                    //<!DOCTYPE pgml SYSTEM "pgml.dtd">
+                    reader.readLine();
+                } else {
+                    writer.println(firstLine);
+                }
+                
+                readerToWriter(reader, writer);
+                sub.close();
+                reader.close();
+            }
+        }
+        zis.close();
     }
 
     private void readerToWriter(

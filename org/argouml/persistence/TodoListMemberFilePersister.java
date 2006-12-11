@@ -86,9 +86,9 @@ class TodoListMemberFilePersister extends MemberFilePersister {
      *
      * @see org.argouml.persistence.MemberFilePersister#save(
      *         org.argouml.kernel.ProjectMember, java.io.Writer,
-     *         java.lang.Integer)
+     *         boolean)
      */
-    public void save(ProjectMember member, Writer writer, Integer indent)
+    public void save(ProjectMember member, Writer writer, boolean xmlFragment)
     	throws SaveException {
 
         LOG.info("Saving todo list");
@@ -106,7 +106,7 @@ class TodoListMemberFilePersister extends MemberFilePersister {
             throw new SaveException(e);
         }
 
-        if (indent == null) {
+        if (!xmlFragment) {
             try {
                 Designer.disableCritiquing();
                 expander.expand(writer, member);
@@ -122,10 +122,7 @@ class TodoListMemberFilePersister extends MemberFilePersister {
                 FileWriter w = new FileWriter(tempFile);
                 expander.expand(w, member);
                 w.close();
-                addXmlFileToWriter(
-                        (PrintWriter) writer,
-                        tempFile,
-                        indent.intValue());
+                addXmlFileToWriter((PrintWriter) writer, tempFile);
             } catch (ExpansionException e) {
                 throw new SaveException(e);
             } catch (IOException e) {

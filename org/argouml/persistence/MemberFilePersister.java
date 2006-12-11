@@ -63,14 +63,44 @@ abstract class MemberFilePersister {
      * Save the projectmember as XML to the given writer.
      *
      * @param member The project member to save.
-     * @param writer The Writer to which appen the save.
+     * @param writer The Writer to which to save the XML.
      * @param indent The offset to which to indent the XML
+     * @throws SaveException if the save fails
+     * @deprecated in 0.23.4 by Bob Tarling use
+     *     {@link #save(ProjectMember, Writer, boolean)}
+     */
+    public void save(ProjectMember member, Writer writer, Integer indent)
+	throws SaveException {
+	
+	save(member, writer, indent != null);
+    }
+
+    /**
+     * Save the projectmember as XML to the given writer.
+     *
+     * @param member The project member to save.
+     * @param writer The Writer to which to save the XML.
+     * @throws SaveException if the save fails
+     */
+    public void save(
+            ProjectMember member,
+            Writer writer) throws SaveException {
+	save(member, writer, false);
+    }
+
+    /**
+     * Save the projectmember as XML to the given writer.
+     *
+     * @param member The project member to save.
+     * @param writer The Writer to which to save the XML.
+     * @param xmlFragment true if the XML saved is a fragment os some other
+     *     XML file (ie part of .uml)
      * @throws SaveException if the save fails
      */
     public abstract void save(
             ProjectMember member,
             Writer writer,
-            Integer indent) throws SaveException;
+            boolean xmlFragment) throws SaveException;
 
     /**
      * Send an existing file of XML to the PrintWriter.
@@ -79,12 +109,9 @@ abstract class MemberFilePersister {
      * @param indent How far to indent in the writer.
      * @throws SaveException on any errors.
      */
-    protected void addXmlFileToWriter(PrintWriter writer, File file, int indent)
+    protected void addXmlFileToWriter(PrintWriter writer, File file)
         throws SaveException {
         try {
-            String padding =
-                "                                          "
-                	.substring(0, indent);
             BufferedReader reader =
                 new BufferedReader(
                         new InputStreamReader(
@@ -99,7 +126,6 @@ abstract class MemberFilePersister {
             }
 
             while (line != null) {
-                (writer).print(padding);
                 (writer).println(line);
                 line = reader.readLine();
             }
@@ -110,5 +136,4 @@ abstract class MemberFilePersister {
             throw new SaveException(e);
         }
     }
-
 }

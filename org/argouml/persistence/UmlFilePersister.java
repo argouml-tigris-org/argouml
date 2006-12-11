@@ -227,8 +227,6 @@ class UmlFilePersister extends AbstractFilePersister {
             new PrintWriter(new BufferedWriter(outputStreamWriter));
 
         try {
-            Integer indent = new Integer(4);
-
             writer.println("<?xml version = \"1.0\" "
                     + "encoding = \"" 
                     + PersistenceManager.getEncoding() + "\" ?>");
@@ -256,7 +254,7 @@ class UmlFilePersister extends AbstractFilePersister {
                     }
                     MemberFilePersister persister
                         = getMemberFilePersister(projectMember);
-                    persister.save(projectMember, writer, indent);
+                    persister.save(projectMember, writer, true);
                 }
             }
 
@@ -276,7 +274,7 @@ class UmlFilePersister extends AbstractFilePersister {
                     }
                     MemberFilePersister persister
                         = getMemberFilePersister(projectMember);
-                    persister.save(projectMember, writer, indent);
+                    persister.save(projectMember, writer, true);
                 }
             }
 
