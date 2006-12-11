@@ -102,7 +102,7 @@ public final class SaveGraphicsManager {
     /**
      * The singleton instance.
      */
-    private static SaveGraphicsManager INSTANCE;
+    private static SaveGraphicsManager instance;
 
     /**
      * The constructor.
@@ -160,10 +160,10 @@ public final class SaveGraphicsManager {
      * @return returns the singleton
      */
     public static SaveGraphicsManager getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE  = new SaveGraphicsManager();
+        if (instance == null) {
+            instance  = new SaveGraphicsManager();
         }
-        return INSTANCE;
+        return instance;
     }
 
     /**
@@ -205,9 +205,9 @@ public final class SaveGraphicsManager {
      *
      * @author mvw@tigris.org
      */
-    class FileFilterChangedListener implements PropertyChangeListener {
-        JFileChooser chooser;
-        String defaultName;
+    static class FileFilterChangedListener implements PropertyChangeListener {
+        private JFileChooser chooser;
+        private String defaultName;
 
         /**
          * Constructor.
@@ -345,16 +345,16 @@ class ActionSaveGraphicsCmdSaveEPS extends CmdSaveEPS {
                                 Rectangle drawingArea)
         throws IOException {
 
-        double scale = ce.getScale();
-        int x = (int) (drawingArea.x * scale);
-        int y = (int) (drawingArea.y * scale);
-        int h = (int) (drawingArea.height * scale);
-        int w = (int) (drawingArea.width * scale);
+        double editorScale = ce.getScale();
+        int x = (int) (drawingArea.x * editorScale);
+        int y = (int) (drawingArea.y * editorScale);
+        int h = (int) (drawingArea.height * editorScale);
+        int w = (int) (drawingArea.width * editorScale);
         drawingArea = new Rectangle(x, y, w, h);
 
         PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
 
-        ps.scale(scale, scale);
+        ps.scale(editorScale, editorScale);
 
         ce.print(ps);
         ps.dispose();

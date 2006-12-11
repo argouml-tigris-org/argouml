@@ -49,20 +49,20 @@ import org.tigris.gef.undo.UndoableAction;
 
 /**
  * The properties panel for a TaggedValue. <p>
- * 
+ *
  * TODO: Complete this panel.
  * See issue 2906.
  * And buttons for navigate up, new taggedValue, delete.
- * 
+ *
  * @author michiel
  */
 public class PropPanelTaggedValue extends PropPanelModelElement {
-    
+
     private JComponent modelElementSelector;
     private JComponent typeSelector;
     private JScrollPane referenceValuesScroll;
     private JScrollPane dataValuesScroll;
-    
+
     /**
      * The constructor.
      */
@@ -75,7 +75,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
                 getModelElementSelector());
         addField(Translator.localize("label.type"),
                 getTypeSelector());
-        
+
         addSeparator();
 
         addField(Translator.localize("label.reference-values"),
@@ -106,7 +106,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
     }
 
     /**
-     * Returns the modelelement selector. 
+     * Returns the modelelement selector.
      * This is a component which allows the
      * user to select a single item as the modelelement.
      *
@@ -126,7 +126,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
     }
 
     /**
-     * Returns the type selector. 
+     * Returns the type selector.
      * This is a component which allows the
      * user to select a single taggedValue as the type.
      *
@@ -145,7 +145,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
         return typeSelector;
     }
 
-    class ActionSetTaggedValueModelElement extends UndoableAction {
+    static class ActionSetTaggedValueModelElement extends UndoableAction {
 
         /**
          * Construct this action.
@@ -167,7 +167,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
                 final Object taggedValue = combo.getTarget();
                 if (Model.getFacade().isAModelElement(o)
                         && Model.getFacade().isATaggedValue(taggedValue)) {
-                    Object oldME = 
+                    Object oldME =
                         Model.getFacade().getModelElement(taggedValue);
                     Model.getExtensionMechanismsHelper()
                         .removeTaggedValue(oldME, taggedValue);
@@ -176,10 +176,10 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
                 }
             }
         }
-        
+
     }
-    
-    class UMLTaggedValueModelElementComboBoxModel 
+
+    static class UMLTaggedValueModelElementComboBoxModel
         extends UMLComboBoxModel2 {
 
         /**
@@ -200,7 +200,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
             Project p = ProjectManager.getManager().getCurrentProject();
             Object model = p.getRoot();
             setElements(Model.getModelManagementHelper()
-                .getAllModelElementsOfKindWithModel(model, 
+                .getAllModelElementsOfKindWithModel(model,
                         Model.getMetaTypes().getModelElement()));
         }
 
@@ -209,7 +209,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
          */
         protected Object getSelectedModelElement() {
             Object me = null;
-            if (getTarget() != null 
+            if (getTarget() != null
                     && Model.getFacade().isATaggedValue(getTarget())) {
                 me = Model.getFacade().getModelElement(getTarget());
             }
@@ -222,10 +222,10 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
         protected boolean isValidElement(Object element) {
             return Model.getFacade().isAModelElement(element);
         }
-        
+
     }
 
-    class ActionSetTaggedValueType extends UndoableAction {
+    static class ActionSetTaggedValueType extends UndoableAction {
 
         /**
          * Construct this action.
@@ -252,19 +252,19 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
                 }
             }
         }
-        
+
     }
-    
-    class UMLTaggedValueTypeComboBoxModel 
+
+    static class UMLTaggedValueTypeComboBoxModel
         extends UMLComboBoxModel2 {
-        
+
         /**
          * Constructor for UMLModelElementStereotypeComboBoxModel.
          */
         public UMLTaggedValueTypeComboBoxModel() {
             super("type", true);
         }
-        
+
         /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
          */
@@ -272,41 +272,41 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
             Project p = ProjectManager.getManager().getCurrentProject();
             Object model = p.getRoot();
             setElements(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKindWithModel(model, 
+                    .getAllModelElementsOfKindWithModel(model,
                             Model.getMetaTypes().getTagDefinition()));
         }
-        
+
         /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
          */
         protected Object getSelectedModelElement() {
             Object me = null;
-            if (getTarget() != null 
+            if (getTarget() != null
                     && Model.getFacade().isATaggedValue(getTarget())) {
                 me = Model.getFacade().getType(getTarget());
             }
             return me;
         }
-        
+
         /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
          */
         protected boolean isValidElement(Object element) {
             return Model.getFacade().isATagDefinition(element);
         }
-        
+
     }
 
-    class UMLReferenceValueListModel
+    static class UMLReferenceValueListModel
         extends UMLModelElementListModel2 {
-    
+
         /**
          * Constructor for UMLExtendedElementsListModel.
          */
         public UMLReferenceValueListModel() {
             super("referenceValue");
         }
-        
+
         /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
          */
@@ -316,7 +316,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
                         Model.getFacade().getReferenceValue(getTarget()));
             }
         }
-        
+
         /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
          */
@@ -328,16 +328,16 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
 
     }
 
-    class UMLDataValueListModel
+    static class UMLDataValueListModel
         extends UMLModelElementListModel2 {
-    
+
         /**
          * Constructor for UMLExtendedElementsListModel.
          */
         public UMLDataValueListModel() {
             super("dataValue");
         }
-        
+
         /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
          */
@@ -347,7 +347,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
                         Model.getFacade().getDataValue(getTarget()));
             }
         }
-        
+
         /*
          * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
          */

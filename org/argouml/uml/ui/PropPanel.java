@@ -64,13 +64,13 @@ import org.tigris.toolbar.ToolBar;
 
 /**
  * This abstract class provides the basic layout and event dispatching support
- * for all Property Panels.
- * <p>
+ * for all Property Panels.<p>
+ *
  * The property panel is {@link org.tigris.swidgets.LabelledLayout} layed out as
  * a number (specified in the constructor) of equally sized panels that split
  * the available space. Each panel has a column of "captions" and matching
- * column of "fields" which are laid out indepently from the other panels.
- * <p>
+ * column of "fields" which are laid out indepently from the other panels.<p>
+ *
  * The Properties panels for UML Model Elements are structured in an inheritance
  * hierarchy that matches the UML metamodel.
  */
@@ -92,12 +92,11 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     private JLabel titleLabel;
 
-    private static Font stdFont = 
+    private static Font stdFont =
         LookAndFeelMgr.getInstance().getStandardFont();
 
     /**
-     * Construct new PropPanel using LabelledLayout.
-     * <p>
+     * Construct new PropPanel using LabelledLayout.<p>
      *
      * @param icon
      *            The icon to display for the panel
@@ -112,10 +111,10 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         buttonPanel = new ToolBar();
         buttonPanel.setFloatable(false);
         // Set the tooltip of the arrow to open combined tools:
-        buttonPanel.putClientProperty("ToolBar.toolTipSelectTool", 
+        buttonPanel.putClientProperty("ToolBar.toolTipSelectTool",
                 Translator.localize("action.select"));
 
-        LabelledLayout layout = 
+        LabelledLayout layout =
             new LabelledLayout(orientation == Vertical.getInstance());
         layout.setHgap(5);
         setLayout(layout);
@@ -132,8 +131,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     /**
      * Constructs a new Proppanel without an icon. If there is an icon it's
-     * updated at runtime via settarget.
-     * <p>
+     * updated at runtime via settarget.<p>
      *
      * @param title
      *            the title
@@ -173,7 +171,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     protected void addAction(Action action, String tooltip) {
         JButton button = new TargettableButton(action);
-        if (tooltip != null) button.setToolTipText(tooltip);
+        if (tooltip != null) {
+            button.setToolTipText(tooltip);
+        }
         button.setText("");
         button.setFocusable(false);
         buttonPanel.add(button);
@@ -181,14 +181,14 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     /**
      * Add multiple buttons at once.
-     * 
+     *
      * @param actions the Actions.
      */
     protected void addAction(Object[] actions) {
         ToolBarUtility.addItemsToToolBar(buttonPanel, actions);
     }
-    
-    private class TargettableButton extends JButton 
+
+    private static class TargettableButton extends JButton
         implements TargettableModelView {
 
         public TargettableButton(Action action) {
@@ -201,12 +201,11 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
             }
             return null;
         }
-        
+
     }
-    
+
     /**
-     * Add a component with the specified label.
-     * <p>
+     * Add a component with the specified label.<p>
      *
      * @param label
      *            the label for the component
@@ -255,8 +254,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     /**
      * Add a component with the specified label positioned before another
-     * component.
-     * <p>
+     * component.<p>
      *
      * @param label
      *            the label for the component
@@ -291,12 +289,12 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         // so can't be corrected. - tfm
         add(LabelledLayout.getSeperator());
     }
-    
+
     /**
-     * Set the target to be associated with a particular property panel.
-     * <p>
+     * Set the target to be associated with a particular property panel.<p>
+     *
      * This involves resetting the third party listeners.
-     * 
+     *
      * @param t
      *            The object to be set as a target.
      */
@@ -339,7 +337,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         // MVW: This overrules the icon set initiallly... Why do we need this?
         if (titleLabel != null) {
             Icon icon = null;
-            if (t != null) { 
+            if (t != null) {
                 icon = ResourceLoaderWrapper.getInstance().lookupIcon(t);
             }
             if (icon != null) {
@@ -471,10 +469,10 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 //            }
 //        }
 //    }
-    
+
     /**
      * Get the delete action.
-     * 
+     *
      * @return the delete action
      */
     protected final Action getDeleteAction() {
@@ -521,8 +519,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     }
 
     private void fireTargetSet(TargetEvent targetEvent) {
-        if (listenerList == null)
+        if (listenerList == null) {
             listenerList = registrateTargetListeners(this);
+        }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -534,8 +533,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     }
 
     private void fireTargetAdded(TargetEvent targetEvent) {
-        if (listenerList == null)
+        if (listenerList == null) {
             listenerList = registrateTargetListeners(this);
+        }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
 
@@ -548,8 +548,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     }
 
     private void fireTargetRemoved(TargetEvent targetEvent) {
-        if (listenerList == null)
+        if (listenerList == null) {
             listenerList = registrateTargetListeners(this);
+        }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -575,7 +576,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     protected JLabel getTitleLabel() {
         return titleLabel;
     }
-    
+
     protected JPanel createBorderPanel(String title) {
     	JPanel panel = new JPanel(new GridLayout2());
     	TitledBorder border = new TitledBorder(title);
@@ -583,17 +584,18 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     	panel.setBorder(border);
     	return panel;
     }
-    
+
     /**
-     * If there are no buttons to show in the toolbar, 
+     * If there are no buttons to show in the toolbar,
      * then set the height to e.g. 18, so that the title
      * is aligned right by the LabelledLayout.
-     * 
+     *
      * @param height the height
      */
     protected void setButtonPanelSize(int height) {
-        /* Set the minimum and preferred equal, 
-         * so that the size is fixed for the labelledlayout. */
+        /* Set the minimum and preferred equal,
+         * so that the size is fixed for the labelledlayout.
+         */
         buttonPanel.setMinimumSize(new Dimension(0, height));
         buttonPanel.setPreferredSize(new Dimension(0, height));
     }

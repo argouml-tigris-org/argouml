@@ -123,7 +123,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         }
     }
 
-    private class ActionNewExtensionPoint
+    private static class ActionNewExtensionPoint
         extends AbstractActionNewModelElement {
 
         /**
