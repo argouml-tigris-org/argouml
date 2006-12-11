@@ -89,7 +89,7 @@ class DiagramMemberFilePersister extends MemberFilePersister {
      *         org.argouml.kernel.ProjectMember, java.io.Writer,
      *         java.lang.Integer)
      */
-    public void save(ProjectMember member, Writer writer, Integer indent)
+    public void save(ProjectMember member, Writer writer, boolean xmlFragment)
     	throws SaveException {
 
         ProjectMemberDiagram diagramMember = (ProjectMemberDiagram) member;
@@ -100,7 +100,7 @@ class DiagramMemberFilePersister extends MemberFilePersister {
         } catch (ExpansionException e) {
             throw new SaveException(e);
         }
-        if (indent == null) {
+        if (!xmlFragment) {
             try {
                 expander.expand(writer, diagramMember.getDiagram());
             } catch (ExpansionException e) {
@@ -113,10 +113,7 @@ class DiagramMemberFilePersister extends MemberFilePersister {
                 FileWriter w = new FileWriter(tempFile);
                 expander.expand(w, diagramMember.getDiagram());
                 w.close();
-                addXmlFileToWriter(
-                        (PrintWriter) writer,
-                        tempFile,
-                        indent.intValue());
+                addXmlFileToWriter((PrintWriter) writer, tempFile);
             } catch (ExpansionException e) {
                 throw new SaveException(e);
             } catch (IOException e) {
@@ -124,5 +121,4 @@ class DiagramMemberFilePersister extends MemberFilePersister {
             }
         }
     }
-
 }

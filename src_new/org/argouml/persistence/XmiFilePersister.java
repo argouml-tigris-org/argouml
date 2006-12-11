@@ -199,7 +199,7 @@ class XmiFilePersister extends AbstractFilePersister
                     }
                     MemberFilePersister persister
                         = new ModelMemberFilePersister();
-                    persister.save(projectMember, writer, null);
+                    persister.save(projectMember, writer);
                 }
             }
             

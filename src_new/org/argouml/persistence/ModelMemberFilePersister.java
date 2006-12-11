@@ -133,7 +133,7 @@ class ModelMemberFilePersister extends MemberFilePersister
      *         org.argouml.kernel.ProjectMember, java.io.Writer,
      *         java.lang.Integer)
      */
-    public void save(ProjectMember member, Writer w, Integer indent)
+    public void save(ProjectMember member, Writer w, boolean xmlFragment)
     	throws SaveException {
 
         if (w == null) {
@@ -143,16 +143,8 @@ class ModelMemberFilePersister extends MemberFilePersister
         try {
             ProjectMemberModel pmm = (ProjectMemberModel) member;
             Object model = pmm.getModel();
-//            XmiWriter xmiWriter = 
-//                Model.getXmiWriter(model, w, 
-//                        ArgoVersion.getVersion() + "(" 
-//                        + UmlFilePersister.PERSISTENCE_VERSION + ")");
-//            LOG.info("Registering extension writer to XmiWriter");
-//            //xmiWriter.setXmiExtensionWriter(this);
-//            xmiWriter.write();
             
-            
-            if (indent != null) {
+            if (xmlFragment) {
                 // If we have an indent then we are adding this file
                 // to a superfile.
                 // That is most likely inserting the XMI into the .uml file
@@ -169,8 +161,7 @@ class ModelMemberFilePersister extends MemberFilePersister
                             + UmlFilePersister.PERSISTENCE_VERSION + ")");
                 
                 xmiWriter.write();
-                addXmlFileToWriter((PrintWriter) w, tempFile,
-                                   indent.intValue());
+                addXmlFileToWriter((PrintWriter) w, tempFile);
             } else {
                 // Othewise we are writing into a zip writer or to XMI.
                 XmiWriter xmiWriter = 
