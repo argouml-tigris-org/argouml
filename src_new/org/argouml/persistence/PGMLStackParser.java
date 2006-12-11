@@ -103,6 +103,19 @@ class PGMLStackParser
                                              Attributes attributes)
         throws SAXException {
 
+        String href = attributes.getValue("href");
+        Object owner = null;
+        
+        if (href != null) {
+            owner = findOwner(href);
+            if (owner == null) {
+                LOG.warn("Found href of " 
+                	+ href
+                	+ " with no matching element in model");
+                return null;
+            }
+        }
+	
         // Ignore non-private elements within FigNode groups
         if (container instanceof FigGroupHandler) {
             FigGroup group = ((FigGroupHandler) container).getFigGroup();
@@ -290,7 +303,7 @@ class PGMLStackParser
         Iterator it = figEdges.iterator();
         while (it.hasNext()) {
             EdgeData edgeData = (EdgeData) it.next();
-            FigEdge edge = edgeData.getEdge();
+            FigEdge edge = edgeData.getFigEdge();
             
             boolean process = false;
             if (pass == 0 
@@ -401,15 +414,15 @@ class PGMLStackParser
     
     // TODO: Move to GEF
     private class EdgeData {
-        FigEdge edge;
-        String sourcePortFig;
-        String destPortFig;
-        String sourceFigNode;
-        String destFigNode;
+        private FigEdge figEdge;
+        private String sourcePortFig;
+        private String destPortFig;
+        private String sourceFigNode;
+        private String destFigNode;
         
         public EdgeData(FigEdge edge, String sourcePort, 
                 String destPort, String sourceNode, String destNode) {
-            this.edge = edge;
+            this.figEdge = edge;
             this.sourcePortFig = sourcePort;
             this.destPortFig = destPort;
             this.sourceFigNode = sourceNode;
@@ -422,8 +435,8 @@ class PGMLStackParser
         public String getDestPortFig() {
             return destPortFig;
         }
-        public FigEdge getEdge() {
-            return edge;
+        public FigEdge getFigEdge() {
+            return figEdge;
         }
         public String getSourceFigNode() {
             return sourceFigNode;
