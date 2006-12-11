@@ -71,7 +71,7 @@ public class PropPanelCallAction extends PropPanelAction {
     }
 
 
-    private class UMLCallActionOperationComboBox2
+    private static class UMLCallActionOperationComboBox2
         extends UMLSearchableComboBox {
         /**
          * The constructor.
@@ -89,7 +89,7 @@ public class PropPanelCallAction extends PropPanelAction {
         private static final long serialVersionUID = 1453984990567492914L;
     }
 
-    private class SetActionOperationAction extends UndoableAction {
+    private static class SetActionOperationAction extends UndoableAction {
 
         /**
          * The constructor.
@@ -123,7 +123,7 @@ public class PropPanelCallAction extends PropPanelAction {
         private static final long serialVersionUID = -3574312020866131632L;
     }
 
-    private class UMLCallActionOperationComboBoxModel
+    private static class UMLCallActionOperationComboBoxModel
         extends UMLComboBoxModel2 {
         /**
          * The constructor.

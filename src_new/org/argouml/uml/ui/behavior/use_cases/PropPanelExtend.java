@@ -66,7 +66,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
     /**
      * Construct a new property panel for an Extend.<p>
-     * 
+     *
      * TODO: improve the conditionfield so it can be checked and the
      * OCL editor can be used.
      */
@@ -121,7 +121,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
     /**
      * Create a single row scroll pane backed by a JList.
-     * 
+     *
      * @param list the list to be used to back the scroll pane
      * @return a scrollpane with a single row
      */
@@ -136,13 +136,12 @@ public class PropPanelExtend extends PropPanelModelElement {
     /**
      * Invoked by the "New Extension Point" toolbar button to create a new
      * extension point for this extend relationship in the same namespace as the
-     * current extend relationship.
-     * <p>
+     * current extend relationship.<p>
+     *
      * This code uses getFactory and adds the extension point to the current
      * extend relationship.
-     * <p>
      */
-    private class ActionNewExtensionPoint
+    private static class ActionNewExtensionPoint
         extends AbstractActionNewModelElement {
 
         /**

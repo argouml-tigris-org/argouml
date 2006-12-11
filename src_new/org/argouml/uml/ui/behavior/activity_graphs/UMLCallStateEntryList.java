@@ -36,9 +36,9 @@ import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
 
 /**
  * This class is very similar to the UMLStateEntryList,
- * but since it is used for a CallState, 
+ * but since it is used for a CallState,
  * it allows only the creation of one Action type: CallAction.
- * 
+ *
  * @author michiel
  */
 class UMLCallStateEntryList extends UMLMutableLinkedList {
@@ -59,7 +59,7 @@ class UMLCallStateEntryList extends UMLMutableLinkedList {
         return new PopupMenuNewCallAction(ActionNewAction.Roles.ENTRY, this);
     }
 
-    class PopupMenuNewCallAction extends JPopupMenu {
+    static class PopupMenuNewCallAction extends JPopupMenu {
 
         /**
          * Constructs a new popupmenu. The given parameter role determines what

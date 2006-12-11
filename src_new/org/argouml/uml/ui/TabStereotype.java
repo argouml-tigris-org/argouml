@@ -71,8 +71,6 @@ public class TabStereotype extends PropPanel {
         Configuration.getString(Configuration
             .makeKey("layout", "tabstereotype"));
 
-    private Object target;
-
     private UMLModelElementListModel2 selectedListModel;
     private UMLModelElementListModel2 availableListModel;
 
@@ -195,10 +193,8 @@ public class TabStereotype extends PropPanel {
             (theTarget instanceof Fig)
             ? ((Fig) theTarget).getOwner() : theTarget;
         if (!(Model.getFacade().isAModelElement(t))) {
-            target = null;
             return;
         }
-        target = t;
 
         selectedListModel.setTarget(t);
 
@@ -244,7 +240,7 @@ public class TabStereotype extends PropPanel {
      * The list model for all stereotypes available in all the models - except
      * the ones already applied.
      */
-    private class UMLModelStereotypeListModel
+    private static class UMLModelStereotypeListModel
         extends UMLModelElementListModel2 {
 
         /**
@@ -264,7 +260,7 @@ public class TabStereotype extends PropPanel {
                 s = StereotypeUtility.getAvailableStereotypes(getTarget());
                 // now remove the ones already applied.
                 s.removeAll(Model.getFacade().getStereotypes(getTarget()));
-                this.addAll(s);
+                addAll(s);
             }
         }
 

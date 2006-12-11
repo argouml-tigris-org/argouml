@@ -180,7 +180,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
     }
 
 
-    class UMLOFSStateListModel extends UMLModelElementListModel2 {
+    static class UMLOFSStateListModel extends UMLModelElementListModel2 {
 
         /**
          * Constructor for UMLOFSStateListModel.
@@ -230,7 +230,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         private static final long serialVersionUID = -7742772495832660119L;
     }
 
-    class ActionAddOFSState extends AbstractActionAddModelElement {
+    static class ActionAddOFSState extends AbstractActionAddModelElement {
         private Object choiceClass = Model.getMetaTypes().getState();
 
 
@@ -239,7 +239,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
          */
         public ActionAddOFSState() {
             super();
-            this.setMultiSelect(true);
+            setMultiSelect(true);
         }
 
         /*
@@ -316,7 +316,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         private static final long serialVersionUID = 7266495601719117169L;
     }
 
-    class ActionRemoveOFSState extends AbstractActionRemoveElement {
+    static class ActionRemoveOFSState extends AbstractActionRemoveElement {
 
         /**
          * Constructor.
