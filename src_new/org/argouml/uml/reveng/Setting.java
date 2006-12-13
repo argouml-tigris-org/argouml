@@ -41,15 +41,11 @@ public class Setting implements SettingsTypes.Setting {
         label = labelText;
     }
 
-    /*
-     * We return a new String with this message instead of the String that
-     * is the message because we don't want the user to be able to
-     * change the Label's message.
-     * 
+    /* 
      * @see org.argouml.uml.reveng.SettingsTypes.Setting#getLabel()
      */
     public final String getLabel() {
-        return new String(label);
+        return label;
     }
 
     /**
