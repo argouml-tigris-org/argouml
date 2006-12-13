@@ -322,33 +322,48 @@ class PGMLStackParser
                     edge.setOwner(modelElement);
                 }
                 
-                Fig spf = null;
-                Fig dpf = null;
-                FigNode sfn = null;
-                FigNode dfn = null;
+                Fig sourcePortFig = null;
+                Fig destPortFig = null;
+                FigNode sourceFigNode = null;
+                FigNode destFigNode = null;
                 
-                spf = findFig(edgeData.getSourcePortFig());
-                dpf = findFig(edgeData.getDestPortFig());
-                sfn = getFigNode(edgeData.getSourceFigNode());
-                dfn = getFigNode(edgeData.getDestFigNode());
+                try {
+                    sourcePortFig = findFig(edgeData.getSourcePortFig());
+                } catch (IllegalStateException e) {
+                    throw new SAXException("Can't find the source port of a "
+                	    + edge.getClass().getName() + " with id "
+                	    + edge.getId() + " on pass " + pass, e);
+                }
+                try {
+                    destPortFig = findFig(edgeData.getDestPortFig());
+                } catch (IllegalStateException e) {
+                    throw new SAXException("Can't find the dest port of a "
+                	    + edge.getClass().getName() + " with id "
+                	    + edge.getId() + " on pass " + pass, e);
+                }
+                sourceFigNode = getFigNode(edgeData.getSourceFigNode());
+                destFigNode = getFigNode(edgeData.getDestFigNode());
                 
-                if (spf == null && sfn != null) {
-                    spf = getPortFig(sfn);
+                if (sourcePortFig == null && sourceFigNode != null) {
+                    sourcePortFig = getPortFig(sourceFigNode);
                 }
 
-                if (dpf == null && dfn != null) {
-                    dpf = getPortFig(dfn);
+                if (destPortFig == null && destFigNode != null) {
+                    destPortFig = getPortFig(destFigNode);
                 }
 
-                if (spf == null || dpf == null || sfn == null || dfn == null) {
+                if (sourcePortFig == null
+                	|| destPortFig == null 
+                	|| sourceFigNode == null 
+                	|| destFigNode == null) {
                     throw new SAXException("Can't find nodes for FigEdge: "
                             + edge.getId() + ":"
                             + edge.toString());
                 } else {
-                    edge.setSourcePortFig(spf);
-                    edge.setDestPortFig(dpf);
-                    edge.setSourceFigNode(sfn);
-                    edge.setDestFigNode(dfn);
+                    edge.setSourcePortFig(sourcePortFig);
+                    edge.setDestPortFig(destPortFig);
+                    edge.setSourceFigNode(sourceFigNode);
+                    edge.setDestFigNode(destFigNode);
                     edge.computeRoute();
                 }
             }
@@ -368,6 +383,8 @@ class PGMLStackParser
      *
      * @param figId (In the form Figx.y.z)
      * @return the FigNode with the given id
+     * @throws IllegalArgumentException
+     *              if the figId supplied is not of a FigNode
      */
     private FigNode getFigNode(String figId) {
         if (figId.indexOf('.') < 0) {
@@ -377,6 +394,8 @@ class PGMLStackParser
             if (f instanceof FigNode) {
                 return (FigNode) f;
             } else {
+        	// Note for issue 4524. With changes to PGMLStackParser since
+        	// 0.22 the exception trigger would now be here.
                 throw new IllegalStateException("FigID " + figId
                         + " is not a node");
             }
