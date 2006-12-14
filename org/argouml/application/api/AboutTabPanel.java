@@ -30,6 +30,9 @@ import javax.swing.JPanel;
  * An interface which must be implemented as the UI for
  * tabs used on the about panel.
  *
+ * @deprecated by Linus Tolke from 0.23.5. This is never used so if your using
+ *             this it isn't working anyway.
+ *
  * @author Andreas Rueckert
  * @since 0.13.2
  */
