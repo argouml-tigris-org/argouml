@@ -96,11 +96,6 @@ import org.tigris.swidgets.GridLayout2;
 public class Import extends ImportCommon implements ImportSettings {
 
     private static final String SEPARATOR = "/";
-    
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(Import.class);
 
     private JComponent configPanel;
 
@@ -142,7 +137,7 @@ public class Import extends ImportCommon implements ImportSettings {
      * and it can be merged with our main configuration panel here.
      */
     private ConfigPanelExtension importConfigPanel;
-    
+
     /**
      * Creates dialog window with chooser and configuration panel.
      */
@@ -166,9 +161,9 @@ public class Import extends ImportCommon implements ImportSettings {
              - dialog.getSize().height)
             / 2;
         dialog.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
-        
+
         UIUtils.loadCommonKeyMap(dialog);
-        
+
         dialog.setVisible(true);
     }
 
@@ -187,7 +182,7 @@ public class Import extends ImportCommon implements ImportSettings {
         // the only ones invoking this method
         return importConfigPanel.getAttribute().isSelected();
     }
-    
+
     /*
      * @see org.argouml.uml.reveng.ImportSettings#isDatatypeSelected()
      */
@@ -199,7 +194,7 @@ public class Import extends ImportCommon implements ImportSettings {
 
     /**
      * Close dialog window.
-     * 
+     *
      * @deprecated by tfmorris for 0.23.2 - UI management is solely an internal
      *             matter. Visibility of this will be further reduced when no
      *             importers use FileImportSupport.
@@ -210,11 +205,11 @@ public class Import extends ImportCommon implements ImportSettings {
         dialog.setVisible(false);
         dialog.dispose();
     }
-  
+
     /**
      * Get the panel that lets the user set reverse engineering
      * parameters.
-     * 
+     *
      * @param importInstance the instance of the import
      * @return the panel
      * @deprecated by tfmorris for 0.23.3 - this is an internal method
@@ -236,7 +231,7 @@ public class Import extends ImportCommon implements ImportSettings {
 
             Vector languages = new Vector();
 
-            for (Enumeration keys = getModules().keys(); 
+            for (Enumeration keys = getModules().keys();
                     keys.hasMoreElements();) {
                 languages.add(keys.nextElement());
             }
@@ -329,7 +324,7 @@ public class Import extends ImportCommon implements ImportSettings {
             tab.add(general, Translator.localize("action.import-general"));
             String moduleName = "";
             if (getCurrentModule() instanceof PluggableImport) {
-                moduleName = 
+                moduleName =
                     ((PluggableImport) getCurrentModule()).getModuleName();
             } else if (getCurrentModule() instanceof ModuleInterface) {
                 moduleName = ((ModuleInterface) getCurrentModule()).getName();
@@ -338,9 +333,9 @@ public class Import extends ImportCommon implements ImportSettings {
             configPanel = tab;
         }
         return configPanel;
-        
+
     }
-    
+
     /*
      * Get the extension panel for the configuration settings.
      */
@@ -355,7 +350,7 @@ public class Import extends ImportCommon implements ImportSettings {
             if (importConfigPanel == null) {
                 importConfigPanel = new ConfigPanelExtension();
             }
-            result = importConfigPanel; 
+            result = importConfigPanel;
         } else {
             throw new RuntimeException("Unrecognized module type");
         }
@@ -452,7 +447,7 @@ public class Import extends ImportCommon implements ImportSettings {
             return ImportSettings.DETAIL_CLASSIFIER;
         }
     }
-    
+
     /*
      * @see org.argouml.uml.reveng.ImportCommon#isCreateDiagramsChecked()
      */
@@ -487,7 +482,7 @@ public class Import extends ImportCommon implements ImportSettings {
     /**
      * Check, if "Discend directories recursively" is selected.<p>
      *
-     * @deprecated by tfmorris for 0.23.3, use 
+     * @deprecated by tfmorris for 0.23.3, use
      * {@link ImportSettings#isDescendSelected()}
      * @return true, if "Discend directories recursively" is selected
      */
@@ -505,7 +500,7 @@ public class Import extends ImportCommon implements ImportSettings {
         }
         return true;
     }
-    
+
     /*
      * @see org.argouml.uml.reveng.ImportCommon#isChangedOnlySelected()
      */
@@ -528,7 +523,7 @@ public class Import extends ImportCommon implements ImportSettings {
             return ((PluggableImport) getCurrentModule()).getChooser(this);
         } else {
             String directory = Globals.getLastDirectory();
-            
+
             final JFileChooser chooser = new ImportFileChooser(this, directory);
 
             chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -544,7 +539,7 @@ public class Import extends ImportCommon implements ImportSettings {
         if (oldFilters != null) {
             for (int i = 0; i < oldFilters.length; i++) {
                 chooser.removeChoosableFileFilter(oldFilters[i]);
-            } 
+            }
         }
         if (newFilters != null) {
             for (int i = 0; i < newFilters.length; i++) {
@@ -552,9 +547,9 @@ public class Import extends ImportCommon implements ImportSettings {
             }
         }
     }
-    
 
-    private class ImportFileChooser extends JFileChooser {
+
+    private static class ImportFileChooser extends JFileChooser {
 
         private Import theImport;
 
@@ -582,7 +577,7 @@ public class Import extends ImportCommon implements ImportSettings {
          */
         public ImportFileChooser(Import imp) {
             super();
-            this.theImport = imp;
+            theImport = imp;
         }
 
         /*
@@ -592,7 +587,7 @@ public class Import extends ImportCommon implements ImportSettings {
                 Import imp,
                 FileSystemView fsv) {
             super(fsv);
-            this.theImport = imp;
+            theImport = imp;
         }
 
         /*
@@ -629,17 +624,17 @@ public class Import extends ImportCommon implements ImportSettings {
      * As a convenience to callers which may be executing on a thread other
      * than the Swing event thread, all methods use SwingUtilities.invokeLater()
      * to make sure that Swing calls happen on the appropriate thread.
-     * 
+     *
      * TODO: React on the close button as if the Cancel button was pressed.
      */
-    class ImportStatusScreen extends JDialog implements ProgressMonitor {
+    static class ImportStatusScreen extends JDialog implements ProgressMonitor {
 
         private JButton cancelButton;
 
         private JLabel progressLabel;
 
         private JProgressBar progress;
-        
+
         private boolean cancelled = false;
 
         /**
@@ -678,9 +673,9 @@ public class Import extends ImportCommon implements ImportSettings {
 
                 public void actionPerformed(ActionEvent e) {
                     cancelled = true;
-                    
+
                 }
-                
+
             });
 
             pack();
@@ -753,7 +748,7 @@ public class Import extends ImportCommon implements ImportSettings {
          * @see org.argouml.application.api.ProgressMonitor#notifyNullAction()
          */
         public void notifyNullAction() {
-            // TODO: Notify user if there were no files to process 
+            // TODO: Notify user if there were no files to process
         }
 
         /*
@@ -849,7 +844,7 @@ public class Import extends ImportCommon implements ImportSettings {
         }
 
         public void disposeDialog() {
-            setVisible(false); 
+            setVisible(false);
             dispose();
         }
 
@@ -888,7 +883,7 @@ class ImportClasspathDialog extends JDialog {
     /**
      * Construct a dialog to allow the user to set up the classpath for the
      * import.
-     * 
+     *
      * @param importProcess1
      */
     public ImportClasspathDialog(Import importProcess1) {
@@ -907,8 +902,8 @@ class ImportClasspathDialog extends JDialog {
                         .localize("dialog.import.classpath.text"));
         ta.setLineWrap(true);
         ta.setWrapStyleWord(true);
-        getContentPane().add(ta, BorderLayout.NORTH);        
-        
+        getContentPane().add(ta, BorderLayout.NORTH);
+
         // paths list
         pathsModel = new DefaultListModel();
         paths = new JList(pathsModel);
@@ -956,7 +951,7 @@ class ImportClasspathDialog extends JDialog {
         paths.setSelectedIndex(0);
     }
 
-    
+
     class OkListener implements ActionListener {
         /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

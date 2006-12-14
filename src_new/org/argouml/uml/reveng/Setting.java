@@ -32,7 +32,7 @@ package org.argouml.uml.reveng;
 public class Setting implements SettingsTypes.Setting {
 
     /**
-     * The message of the Label
+     * The message of the Label.
      */
     private String label;
 
@@ -52,16 +52,16 @@ public class Setting implements SettingsTypes.Setting {
      * Setting which specifies a boolean value.  Typical user presentation
      * would be labelled checkbox.
      */
-    public class BooleanSelection extends Setting implements
-            SettingsTypes.BooleanSelection {
-        
+    public static class BooleanSelection extends Setting
+        implements SettingsTypes.BooleanSelection {
+
         private boolean defaultValue;
         private boolean value;
 
-        
+
         /**
          * Construct a new setting object which specifies a boolean selection.
-         * 
+         *
          * @param labelText the string to use for the user visible label
          * @param initialValue the default value (true or false)
          */
@@ -70,7 +70,7 @@ public class Setting implements SettingsTypes.Setting {
             this.defaultValue = initialValue;
             value = initialValue;
         }
-        
+
         /*
          * @see org.argouml.uml.reveng.SettingsTypes.BooleanSelection#isSelected()
          */
