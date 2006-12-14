@@ -46,7 +46,6 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.QuadrantPanel;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
@@ -85,8 +84,7 @@ public class ToDoPane extends JPanel
     implements ItemListener,
         TreeSelectionListener,
         MouseListener,
-        ToDoListListener,
-        QuadrantPanel {
+        ToDoListListener {
     /**
      * Logger.
      */
@@ -442,12 +440,6 @@ public class ToDoPane extends JPanel
             tree.setVisible(true); // blinks?
         }
     }
-
-    /*
-     * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
-     */
-    public int getQuadrant() { return Q_BOTTOM_LEFT; }
-
 
     /**
      * Called when the user clicks once on an item in the tree. <p>

@@ -45,7 +45,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.QuadrantPanel;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.TabToDoTarget;
 import org.argouml.i18n.Translator;
@@ -74,7 +73,6 @@ import org.tigris.swidgets.Orientation;
 public class DetailsPane
     extends JPanel
     implements ChangeListener, MouseListener,
-	       QuadrantPanel,
 	       Orientable,
 	       TargetListener {
 
@@ -565,13 +563,6 @@ public class DetailsPane
      * Graphic that goes on the tab label.
      */
     private Icon leftArrowIcon = new LeftArrowIcon();
-
-    /*
-     * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
-     */
-    public int getQuadrant() {
-        return Q_BOTTOM_RIGHT;
-    }
 
     /*
      * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
