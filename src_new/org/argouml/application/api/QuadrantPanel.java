@@ -30,6 +30,7 @@ package org.argouml.application.api;
  *
  * @author Thierry Lach
  * @since 0.9.5
+ * @deprecated by Linus Tolke for 0.23.5. This is never used.
  */
 public interface QuadrantPanel {
 

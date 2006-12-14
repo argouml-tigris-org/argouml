@@ -39,7 +39,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.QuadrantPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -55,7 +54,7 @@ import org.tigris.swidgets.Horizontal;
  */
 public class MultiEditorPane
     extends JPanel
-    implements ChangeListener, MouseListener, QuadrantPanel, TargetListener {
+    implements ChangeListener, MouseListener, TargetListener {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(MultiEditorPane.class);
@@ -295,13 +294,6 @@ public class MultiEditorPane
         // Currently this feature is disabled for ArgoUML.
 //        if (t instanceof AbstractArgoJPanel)
 //             ((AbstractArgoJPanel) t).spawn();
-    }
-
-    /*
-     * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
-     */
-    public int getQuadrant() {
-        return Q_TOP_RIGHT;
     }
 
     /*

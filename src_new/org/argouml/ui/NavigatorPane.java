@@ -31,7 +31,6 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.QuadrantPanel;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.explorer.ActionPerspectiveConfig;
 import org.argouml.ui.explorer.DnDExplorerTree;
@@ -52,8 +51,7 @@ import org.tigris.toolbar.ToolBar;
  * Perspectives are now built in the Perspective Manager.<p>
  */
 class NavigatorPane
-    extends JPanel
-    implements QuadrantPanel {
+    extends JPanel {
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -118,13 +116,6 @@ class NavigatorPane
      */
     public Dimension getMinimumSize() {
         return new Dimension(120, 100);
-    }
-
-    /*
-     * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
-     */
-    public int getQuadrant() {
-        return Q_TOP_LEFT;
     }
 
     /**
