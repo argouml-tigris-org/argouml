@@ -79,7 +79,7 @@ public final class DiagramFactory {
 
 
     /**
-     * Factory method to create a new instance of a Class Diagram.
+     * Factory method to create a new instance of an ArgoDiagram.
      *
      * @param type The class of rendering diagram to create
      * @param namespace The namespace that (in)directly 
