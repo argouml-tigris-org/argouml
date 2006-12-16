@@ -55,7 +55,6 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
         Layer lay = editor.getLayerManager().getActiveLayer();
         FigAssociationClass thisFig =
             (FigAssociationClass) lay.presentationFor(getNewEdge());
-        createMemento(thisFig);
         buildParts(editor, thisFig, lay);
     }
 

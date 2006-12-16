@@ -179,7 +179,8 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                 mutableGraphModel.addEdge(it.next());
                 mutableGraphModel.addEdge(it.next());
                 mutableGraphModel.addEdge(it.next());
-                endAttached();
+                //TODO: Should we be passing the collection of edges???
+                endAttached(null);
                 done();
                 me.consume();
                 return;
@@ -259,7 +260,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                             if (destFigNode != null) {
                                 destFigNode.updateEdges();
                             }
-                            endAttached();
+                            endAttached(fe);
                         } else {
                             // The user must have release on some FigNode
                             // that is not valid
@@ -297,7 +298,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
      * binary association is removed and replaced with edges representing
      * the 2 association ends of that original fig.
      */
-    protected void endAttached() {
+    protected void endAttached(FigEdge fe) {
         if (newFigNodeAssociation != null) {
             newFigNodeAssociation.setVisible(true);
             oldFigAssociation.removeFromDiagram();
@@ -315,7 +316,7 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
                 mutableGraphModel.addNode(association);
             }
         }
-        super.endAttached();
+        super.endAttached(fe);
     }
 
     private FigNode placeTempNode(MouseEvent me) {
