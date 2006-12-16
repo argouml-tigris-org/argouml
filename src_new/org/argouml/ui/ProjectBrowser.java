@@ -1437,7 +1437,7 @@ public final class ProjectBrowser
 
         boolean wasGeneratingMementos = 
             UndoManager.getInstance().isGenerateMementos();
-        UndoManager.getInstance().setGenerateMementos(false);
+        UndoManager.getInstance().addMementoLock(this);
         Designer.disableCritiquing();
         Designer.clearCritiquing();
         clearDialogs();
@@ -1588,8 +1588,7 @@ public final class ProjectBrowser
                             + " members in the current project");
                 }
                 UndoManager.getInstance().empty();
-                UndoManager.getInstance().setGenerateMementos(
-                        wasGeneratingMementos);
+                UndoManager.getInstance().removeMementoLock(this);
                 Designer.enableCritiquing();
 
                 // Make sure save action is always reinstated

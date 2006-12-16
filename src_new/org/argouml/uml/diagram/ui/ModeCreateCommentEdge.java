@@ -199,7 +199,7 @@ public class ModeCreateCommentEdge extends ModeCreatePolyEdge {
                     if (destFigNode != null) {
                         destFigNode.updateEdges();
                     }
-                    endAttached();
+                    endAttached(fe);
                 }
                 done();
                 me.consume();
