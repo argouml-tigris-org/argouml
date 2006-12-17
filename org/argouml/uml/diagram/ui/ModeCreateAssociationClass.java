@@ -31,8 +31,8 @@ import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.FigEdge;
 
 /**
  * Mode to manage interaction while user is drawing the pseudo-edge that will
@@ -51,7 +51,7 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
 
     private static final int DISTANCE = 80;
     
-    protected void endAttached() {
+    protected void endAttached(FigEdge fe) {
         Layer lay = editor.getLayerManager().getActiveLayer();
         FigAssociationClass thisFig =
             (FigAssociationClass) lay.presentationFor(getNewEdge());
