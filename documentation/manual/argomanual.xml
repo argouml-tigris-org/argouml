@@ -10572,10 +10572,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Adjust Grid</title>
 
-          <para>This cycles the grid representation on the screen 
-          through the following sequence:</para>
+          <para>This allows selection of the grid representation on the screen 
+          between the following:</para>
 
           <itemizedlist>
+
+            <listitem>
+
+              <para>full grid at 16 pixel spacing; and</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para>full grid at 8 pixel spacing.</para>
+
+            </listitem>
 
             <listitem>
 
@@ -10595,18 +10607,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             </listitem>
 
-            <listitem>
-
-              <para>full grid at 16 pixel spacing; and</para>
-
-            </listitem>
-
-            <listitem>
-
-              <para>full grid at 8 pixel spacing.</para>
-
-            </listitem>
-
           </itemizedlist>
 
         </sect2>
@@ -10615,10 +10615,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Adjust Grid Snap</title>
 
-          <para>This cycles the spacing of grid snapping through the 
-          following sequence:</para>
+          <para>This allows selection of the spacing of grid snapping
+          between the following:</para>
 
           <itemizedlist>
+
+            <listitem>
+
+              <para>snap at 4 pixel spacing.</para>
+
+            </listitem>
 
             <listitem>
 
@@ -10638,12 +10644,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             </listitem>
 
-            <listitem>
-
-              <para>snap at 4 pixel spacing.</para>
-
-            </listitem>
-
           </itemizedlist>
 
           <note>
@@ -10653,22 +10653,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </note>
 
-          <caution>
-
-            <para>In the V0.22 version of ArgoUML this is not actually 
-            a true snap to grid. It just defines the increments by 
-            which model elements are moved around. Thus if an item has an X 
-            coordinate of 4 and Grid Snap is set to 8, moving will take 
-            it to X coordinates of 12, 20, 28 etc, 
-            <emphasis>not</emphasis> 8, 16, 24 etc</para>
-            <!-- This is issue 603. -->
+          <note>
 
             <para>If you wish to align on true grid snap boundaries, 
             you can use the <literal>
             Arrange &gt; Align To Grid</literal> menu (see 
             <xref linkend="s2.ref.menu_align"/>).</para>
 
-          </caution>
+          </note>
 
         </sect2>
 
