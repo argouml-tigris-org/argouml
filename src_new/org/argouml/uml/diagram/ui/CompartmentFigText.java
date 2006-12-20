@@ -40,6 +40,12 @@ import org.tigris.gef.presentation.Fig;
  * @author thn
  */
 public class CompartmentFigText extends FigSingleLineText {
+    
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3830572062785308980L;
+
     /**
      * Logger.
      */
@@ -57,11 +63,6 @@ public class CompartmentFigText extends FigSingleLineText {
      */
     private Fig           refFig;
 
-    /**
-     * The notation provider for the text shown in this compartment.
-     */
-    private NotationProvider notationProvider;
-    
     /**
      * Record whether we are currently highlighted.<p>
      */
@@ -98,7 +99,7 @@ public class CompartmentFigText extends FigSingleLineText {
         if (np == null) {
             LOG.warn("Need a NotationProvider for CompartmentFigText.");
         }
-        notationProvider = np;
+        setNotationProvider(np);
 
         // Set the enclosing compartment fig. Warn if its null (which will
         // break).
@@ -221,24 +222,5 @@ public class CompartmentFigText extends FigSingleLineText {
      */
     public boolean isHighlighted() {
         return isHighlighted;
-    }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 3830572062785308980L;
-
-    /**
-     * @return Returns the notationProvider for the text in this compartment.
-     */
-    public NotationProvider getNotationProvider() {
-        return notationProvider;
-    }
-
-    /**
-     * @param np The notationProvider to set.
-     */
-    void setNotationProvider(NotationProvider np) {
-        this.notationProvider = np;
     }
 } /* End of class CompartmentFigText */

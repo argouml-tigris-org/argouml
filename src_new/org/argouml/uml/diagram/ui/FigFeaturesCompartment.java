@@ -163,7 +163,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
 
         // We are going to add the ones still valid & new ones
         // in the right sequence:
-        CompartmentFigText comp = null;
+        FigSingleLineText comp = null;
         try {
             Collection umlObjects = getUmlCollection();
             int acounter = -1;
@@ -194,8 +194,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                 // If we don't have a fig for this feature, we'll need to add
                 // one. We set the bounds, but they will be reset later.
                 if (comp == null) {
-                    comp =
-                        new FigFeature(
+                    comp = createFigText(
                                 xpos + 1,
                                 ypos + 1 + acounter
                                 * FigNodeModelElement.ROWHEIGHT,
@@ -240,16 +239,23 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
             comp.setBotMargin(6); // the last one needs extra space below it
         }
     }
+    
+    protected FigSingleLineText createFigText(
+	    int x, int y, int w, int h, Fig aFig, NotationProvider np) {
+        return new FigFeature(x, y, w, h, aFig, np);
+    }
 
     /**
      * Add extra decorations to the compartment fig 
      * to visualise an UML object property.
-     * 
+     * TODO: This is being used to decorate the child Figs not this Fig
+     * The child Figs should control their own visualization so lets get rid
+     * of this.
      * @param umlObject the UML object shown in the given compartment fig
      * @param comp the given compartment fig to be decorated
      */
     protected void addExtraVisualisations(Object umlObject, 
-            CompartmentFigText comp) {
+            FigSingleLineText comp) {
         /* By default there are none.
          * Overrule if needed. */
     }

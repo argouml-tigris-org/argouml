@@ -34,6 +34,10 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.static_structure.ui.FigFeature;
+import org.argouml.uml.diagram.static_structure.ui.FigOperation;
+import org.argouml.uml.notation.NotationProvider;
+import org.tigris.gef.presentation.Fig;
 
 /**
  * @author Bob Tarling
@@ -72,10 +76,11 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
     }
 
     /*
+     * TODO: This logic should be within FigOperation
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#addExtraVisualisations(java.lang.Object, org.argouml.uml.diagram.ui.CompartmentFigText)
      */
     protected void addExtraVisualisations(Object umlObject, 
-            CompartmentFigText comp) {
+            FigSingleLineText comp) {
         // underline, if static
         comp.setUnderline(
                 Model.getScopeKind().
@@ -86,7 +91,7 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
     /**
      * Add handling abstract operations; they
      * are shown in italics.
-     * 
+     * TODO: This logic should be within FigOperation
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
      */
     public void populate() {
@@ -111,6 +116,11 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
                 }
             }
         }
+    }
+    
+    protected FigSingleLineText createFigText(
+	    int x, int y, int w, int h, Fig aFig, NotationProvider np) {
+        return new FigOperation(x, y, w, h, aFig, np);
     }
 
     /*
