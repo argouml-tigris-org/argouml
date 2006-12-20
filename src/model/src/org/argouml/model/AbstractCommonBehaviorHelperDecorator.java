@@ -92,6 +92,11 @@ public abstract class AbstractCommonBehaviorHelperDecorator
         impl.addActualArgument(handle, argument);
     }
 
+    public void addActualArgument(Object handle, int position, 
+            Object argument) {
+        impl.addActualArgument(handle, position, argument);
+    }
+
     public void addClassifier(Object handle, Object classifier) {
         impl.addClassifier(handle, classifier);
     }

@@ -120,6 +120,16 @@ public interface CommonBehaviorHelper {
     void addActualArgument(Object handle, Object argument);
 
     /**
+     * Adds an actual argument to an action.
+     *
+     * @param handle the action
+     * @param position the 0-based position at which 
+     *          to insert the actualArgument
+     * @param argument the argument
+     */
+    void addActualArgument(Object handle, int position, Object argument);
+
+    /**
      * Adds a Classifier to an Instance.
      *
      * @param handle Instance
