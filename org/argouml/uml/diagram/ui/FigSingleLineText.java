@@ -33,6 +33,7 @@ import java.util.Arrays;
 
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -58,6 +59,11 @@ public class FigSingleLineText extends FigText {
      * The properties of 'owner' that this is interested in
      */
     private String[] properties;
+    
+    /**
+     * The notation provider for the text shown in this compartment.
+     */
+    private NotationProvider notationProvider;
 
     /*
      * @see org.tigris.gef.presentation.FigText#FigText(
@@ -163,5 +169,20 @@ public class FigSingleLineText extends FigText {
      * TO be implemented as required by sub classes.
      */
     protected void setText() {
+    }
+    
+
+    /**
+     * @return Returns the notationProvider for the text in this compartment.
+     */
+    public NotationProvider getNotationProvider() {
+        return notationProvider;
+    }
+
+    /**
+     * @param np The notationProvider to set.
+     */
+    void setNotationProvider(NotationProvider np) {
+        this.notationProvider = np;
     }
 }
