@@ -89,6 +89,7 @@ import org.omg.uml.foundation.core.DataType;
 import org.omg.uml.foundation.core.Dependency;
 import org.omg.uml.foundation.core.ElementResidence;
 import org.omg.uml.foundation.core.Enumeration;
+import org.omg.uml.foundation.core.EnumerationLiteral;
 import org.omg.uml.foundation.core.Feature;
 import org.omg.uml.foundation.core.Flow;
 import org.omg.uml.foundation.core.GeneralizableElement;
@@ -295,6 +296,24 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
         throw new IllegalArgumentException("classifier: " + cls
                 + " or feature: " + feature);
+    }
+
+    /*
+     * @see org.argouml.model.CoreHelper#removeLiteral(java.lang.Object, 
+     * java.lang.Object)
+     */
+    public void removeLiteral(Object enu, Object literal) {
+        try {
+            if (enu instanceof Enumeration 
+                    && literal instanceof EnumerationLiteral) {
+                ((Enumeration) enu).getLiteral().remove(literal);
+                return;
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        throw new IllegalArgumentException("enumeration: " + enu
+                + " or literal: " + literal);
     }
 
     /*
@@ -2243,6 +2262,16 @@ public class CoreHelperMDRImpl implements CoreHelper {
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + " or f: " + f);
+    }
+
+    public void addLiteral(Object handle, int index, Object literal) {
+        if (handle instanceof Enumeration 
+                && literal instanceof EnumerationLiteral) {
+            ((Enumeration) handle).getLiteral().add(index, literal);
+            return;
+        }
+        throw new IllegalArgumentException("enumeration: " + handle 
+                + " or literal: " + literal);
     }
 
     /*
