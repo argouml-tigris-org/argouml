@@ -34,6 +34,7 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.InitNotationUml;
 import org.argouml.uml.notation.NotationProvider;
 
 /**

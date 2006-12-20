@@ -110,14 +110,14 @@ public class TestNotationProvider extends TestCase
         aClass = Model.getCoreFactory().buildClass(model);
         
         NotationProvider np = new NPImpl();
-        np.addListener(this, aClass);
+        np.initialiseListener(this, aClass);
         
         propChanged = false;
         Model.getCoreHelper().setName(aClass, "ClassA1");
         Model.getPump().flushModelEvents();
         assertTrue("No event received", propChanged);
         
-        np.removeListener(this, aClass);
+        np.cleanListener(this, aClass);
         propChanged = false;
         Model.getCoreHelper().setName(aClass, "ClassA2");
         Model.getPump().flushModelEvents();
