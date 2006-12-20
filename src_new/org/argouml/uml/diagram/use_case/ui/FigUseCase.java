@@ -1199,7 +1199,7 @@ public class FigUseCase extends FigNodeModelElement
         // Loop through all the extension points. epCount keeps track of the
         // fig's index as we go through the extension points.
         Collection eps =
-	    Model.getUseCasesHelper().getExtensionPoints(useCase);
+	    Model.getFacade().getExtensionPoints(useCase);
         int epCount = 1;
 
         if ((eps != null) && (eps.size() > 0)) {
