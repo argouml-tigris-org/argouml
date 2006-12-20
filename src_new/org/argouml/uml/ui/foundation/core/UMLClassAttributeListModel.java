@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -68,8 +67,11 @@ public class UMLClassAttributeListModel
     protected void moveDown(int index1) {
         int index2 = index1 + 1;
         Object clss = getTarget();
-        List c = new ArrayList(Model.getFacade().getAttributes(clss));
+        List c = Model.getFacade().getAttributes(clss);
         Object mem1 = c.get(index1);
+        Object mem2 = c.get(index2);
+        List f = Model.getFacade().getFeatures(clss);
+        index2 = f.indexOf(mem2);
         Model.getCoreHelper().removeFeature(clss, mem1);
         Model.getCoreHelper().addFeature(clss, index2, mem1);
     }

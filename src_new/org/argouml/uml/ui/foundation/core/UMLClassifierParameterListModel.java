@@ -24,8 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -72,24 +71,15 @@ public class UMLClassifierParameterListModel
      */
     protected void moveDown(int index1) {
         int index2 = index1 + 1;
-        Object classifier = getTarget();
-        List c = new ArrayList(Model.getFacade().getParameters(classifier));
-        // TODO: Verify that the following works now with MDR
-        // and replace code - tfm - 20051109
-
-        /* The following does not work, because NSUML does not
-         * fire an update event, since no parameters were added or removed...
-        Collections.swap(c, index1, index2);
-        Model.getFacade().setParameters(classifier, c);
-        ... So, lets delete them first, then add them in reverse: */
-        Object mem1 = c.get(index1);
-        Object mem2 = c.get(index2);
-        List cc = new ArrayList(c);
-        cc.remove(mem1);
-        cc.remove(mem2);
-        Model.getCoreHelper().setParameters(classifier, cc);
-        Collections.swap(c, index1, index2);
-        Model.getCoreHelper().setParameters(classifier, c);
+        Object clss = getTarget();
+        Collection c = Model.getFacade().getParameters(clss);
+        List list;
+        if (c instanceof List) {
+            list = (List) c;
+        } else return;
+        Object mem1 = list.get(index1);
+        Model.getCoreHelper().removeParameter(clss, mem1);
+        Model.getCoreHelper().addParameter(clss, index2, mem1);
         buildModelList();
     }
 
