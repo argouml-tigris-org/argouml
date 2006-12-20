@@ -32,7 +32,7 @@
   </indexterm>
 
   <para>
-    Purpose - To handle generating and editing 
+    Purpose - To handle generating, updating and editing 
     in different languages 
     of a textual representation 
     which represents 
@@ -44,8 +44,22 @@
   
   <para>
     The notation subsystem is located in
-    <classname>org.argouml.notation</classname>.
+    <classname>org.argouml.notation</classname>
+    and
+    <classname>org.argouml.uml.notation</classname>
+    and their sub-folders.
   </para>
+
+  <figure id="fig.notation.1" float="1">
+    <title>Notation subsystem part 1.</title>
+
+    <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                   fileref="images/cookbook/notation1.png"/>
+        </imageobject>
+      </mediaobject></screenshot>
+  </figure>
 
   <para>
     In the scope of issue 3140, 
@@ -65,8 +79,8 @@
   </para>
 
   <para>
-    The interface NotationProvider4 is at the center of the subsystem. 
-    There is an object implementing the NotationProvider4 interface 
+    The interface NotationProvider is at the center of the subsystem. 
+    There is an object implementing the NotationProvider interface 
     per string (i.e. textual model representation) 
     that is shown on the diagram: 
     e.g. TransitionNotation, StateBodyNotation, ModelElementNameNotation. 
@@ -79,53 +93,22 @@
   </para>
 
   <para>
-    Currently it does not, but
-    this notation object should listen to model changes, 
-    instead of the Fig. 
-    Putting the latter task into this Notation class 
+    The Fig refreshes the text by calling 
+    the toString() method of the Notationprovider, 
+    at initialisation time and
+    whenever the model changes. 
+    This latter works as follows:
+    The notation object defines the set of model change events that 
+    the Fig listens at. 
+    Putting this task into this Notation class 
     (instead of the Fig) 
     has the advantage that 
     the knowledge to which uml objects to listen 
     is centralised where it is needed, 
     and not any more in the Fig.
-  </para>
-
-  <figure id="fig.notation.1" float="1">
-    <title>Notation subsystem part 1.</title>
-
-    <screenshot><mediaobject>
-        <imageobject>
-          <imagedata format="PNG" align="center"
-                   fileref="images/cookbook/notation1.png"/>
-        </imageobject>
-      </mediaobject></screenshot>
-  </figure>
-
-  <para>
-    These Notation objects are abstract, 
-    since they are specialised in classes that implement them 
-    for a certain language, i.e. one per language. 
-    So, we will have: TransitionNotationUML, TransitionNotationJava, ... etc. 
-  </para>
-
-  <para>
-    The NotationProviderFactory2 is a singleton, 
-    since it is the accesspoint for all Figs to access 
-    the textual representation of modelobjects, 
-    and since plugin modules can add extra languages.
-</para>
-
-  <para>
-    The NotationProviderFactory2 creates a notation object 
-    on reguest for any Fig,
-    based on the current notation language 
-    selected by the user for the current project.
-    Hence, when the user changes the language (in the menu),
-    then it is the Fig's responsibility
-    to listen to the NotationEvent 
-    (hence the Fig shall implement ArgoNotationEventListener),
-    and ask the NotationProviderFactory2
-    to create a new NotationProvider4 child.
+    The Fig then receives a PropertyChangeEvent when the model changes.
+    This causes the Notationprovider to update the set of listeners, and 
+    the Fig refreshes the rendering of its string.
   </para>
 
   <figure id="fig.notation.2" float="1">
@@ -140,16 +123,47 @@
   </figure>
 
   <para>
-    The NotationContainer shown in the figure above,
-    is a proposal to make the NotationProviders listen to model
-    changes. Since there needs to be a way to trigger
-    a refresh of the FigText that shows the notation, 
-    the Fig shall implement the NotationContainer interface.
-    Then, at creation or initialisation time of the NotationProvider, 
-    it shall receive a pointer to a NotationContainer.
-    Hence, it will be able to call its function 
-    refreshNotationContainer(), which will repaint the FigText.
+    The NotationProvider objects 
+    TransitionNotation, StateBodyNotation, etc. 
+    are abstract, 
+    since they are specialised in classes that implement them 
+    for a certain language, i.e. one per language. 
+    So, we will have: TransitionNotationUML, TransitionNotationJava, ... etc. 
   </para>
+
+  <para>
+    The NotationProviderFactory2 is a singleton, 
+    since it is the accesspoint for all Figs to create 
+    the textual representation of modelobjects, 
+    and since plugin modules can add extra languages.
+</para>
+
+  <para>
+    The NotationProviderFactory2 creates 
+    a notation object 
+    on request for any Fig,
+    based on the current notation language 
+    selected by the user for the current project.
+    Hence, when the user changes the language 
+    (in the menu),
+    then it is the Fig's responsibility
+    to listen to the NotationEvent 
+    (hence the Fig shall implement 
+    ArgoNotationEventListener),
+    and ask the NotationProviderFactory2
+    to create a new NotationProvider child.
+  </para>
+
+  <figure id="fig.notation.3" float="1">
+    <title>Notation subsystem part 3.</title>
+
+    <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                   fileref="images/cookbook/notation3.png"/>
+        </imageobject>
+      </mediaobject></screenshot>
+  </figure>
 
 </sect1>
 
