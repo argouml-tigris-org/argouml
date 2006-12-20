@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -66,19 +65,16 @@ public class UMLActionArgumentListModel
     private static final long serialVersionUID = -3265997785192090331L;
 
 
+    /*
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
+     */
     protected void moveDown(int index1) {
         int index2 = index1 + 1;
         Object clss = getTarget();
-        List c = new ArrayList(Model.getFacade().getActualArguments(clss));
+        List c = Model.getFacade().getActualArguments(clss);
         Object mem1 = c.get(index1);
-        Object mem2 = c.get(index2);
-        List cc = new ArrayList(c);
-        cc.remove(mem1);
-        cc.remove(mem2);
-        Model.getCommonBehaviorHelper().setActualArguments(clss, cc);
-        c.set(index1, mem2);
-        c.set(index2, mem1);
-        Model.getCommonBehaviorHelper().setActualArguments(clss, c);
+        Model.getCommonBehaviorHelper().removeActualArgument(clss, mem1);
+        Model.getCommonBehaviorHelper().addActualArgument(clss, index2, mem1);
         buildModelList();
     }
 }
