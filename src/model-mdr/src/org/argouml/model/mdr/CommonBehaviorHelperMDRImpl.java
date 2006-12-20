@@ -218,6 +218,23 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     }
 
     /*
+     * @see org.argouml.model.CommonBehaviorHelper#addActualArgument(
+     * java.lang.Object, int, java.lang.Object)
+     */
+    public void addActualArgument(Object handle, int position, 
+            Object argument) {
+        if (!(handle instanceof Action) 
+                || !(argument instanceof Argument)) {
+            throw new IllegalArgumentException();
+        }
+        try {
+            ((Action) handle).getActualArgument().add(position, argument);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        } 
+    }
+
+    /*
      * @see org.argouml.model.CommonBehaviorHelper#addClassifier(java.lang.Object,
      *      java.lang.Object)
      */
