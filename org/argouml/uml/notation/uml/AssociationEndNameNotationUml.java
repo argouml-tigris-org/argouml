@@ -70,7 +70,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
     /*
      * @see org.argouml.uml.notation.NotationProvider#addListener(java.beans.PropertyChangeListener, java.lang.Object)
      */
-    public void addListener(PropertyChangeListener listener, 
+    public void initialiseListener(PropertyChangeListener listener, 
             Object modelElement) {
         Model.getPump().addModelEventListener(
                 listener, 
@@ -91,7 +91,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
     /*
      * @see org.argouml.uml.notation.NotationProvider#removeListener(java.beans.PropertyChangeListener, java.lang.Object)
      */
-    public void removeListener(PropertyChangeListener listener, 
+    public void cleanListener(PropertyChangeListener listener, 
             Object modelElement) {
         Model.getPump().removeModelEventListener(
                 listener, 

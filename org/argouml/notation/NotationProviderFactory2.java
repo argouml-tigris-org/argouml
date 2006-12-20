@@ -35,8 +35,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.notation.NotationProvider;
-import org.argouml.uml.notation.java.InitNotationJava;
-import org.argouml.uml.notation.uml.InitNotationUml;
 
 /**
  *  The NotationProviderFactory2 is a singleton, 
@@ -150,7 +148,7 @@ public final class NotationProviderFactory2 {
     /**
      * allLanguages is a HashMap with as key the notationName,
      * and as value a second HashMap. This latter HashMap has as key the "type"
-     * converted to Integer, and as value the provider (NotationProvider4).
+     * converted to Integer, and as value the provider (NotationProvider).
      */
     private Map allLanguages;
 
@@ -235,6 +233,8 @@ public final class NotationProviderFactory2 {
     }
 
     /**
+     * Create a new NotationProvider.
+     * 
      * @param type the provider type
      * @return the provider
      * @param object the constructor parameter
@@ -244,7 +244,7 @@ public final class NotationProviderFactory2 {
     public NotationProvider getNotationProvider(int type,
             Object object, PropertyChangeListener listener) {
         NotationProvider p = getNotationProvider(type, object);
-        p.addListener(listener, object);
+        p.initialiseListener(listener, object);
         return p;
     }
 

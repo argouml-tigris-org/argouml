@@ -1384,26 +1384,20 @@ public abstract class FigNodeModelElement
     /**
      * Implementations of this method should register/unregister the fig for all
      * (model)events. For FigNodeModelElement only the fig itself is registered
-     * as listening to events fired by the owner itself. But for, for example,
+     * as listening to (all) events fired by the owner itself. 
+     * But for, for example,
      * FigClass the fig must also register for events fired by the operations
      * and attributes of the owner. <p>
      * 
      * An explanation of the original 
      * purpose of this method is given in issue 1321.<p>
      * 
-     * This function is used in UMLDiagram, which removes all listeners 
-     * to all Figs when a diagram is not displayed, and restore them
-     * when it becomes visible again. <p>
+     * This function is used by the modelChanged()
+     * function.<p>
      * 
      * In this case, it is imperative that indeed ALL listeners are 
      * updated, since they are ALL removed by 
-     * the call to removeElementListener. <p>
-     * 
-     * Additionally, this function may be used by the modelChanged()
-     * function.<p>
-     * 
-     * In this case, it is also imperative that 
-     * all listeners get removed / added.
+     * the call to removeElementListener. 
      * 
      * @param newOwner null, or the owner of this. 
      *          The former means that listeners have to be removed, 
@@ -1413,7 +1407,7 @@ public abstract class FigNodeModelElement
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner == newOwner) {
-            LOG.warn("Listners being added and removed from the same owner");
+            LOG.warn("Listeners being added and removed from the same owner");
         }
         if (oldOwner != null) {
             removeElementListener(oldOwner);

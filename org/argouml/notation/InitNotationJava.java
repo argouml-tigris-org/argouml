@@ -22,12 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.notation.java;
+package org.argouml.notation;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationName;
-import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.notation.java.AssociationEndNameNotationJava;
+import org.argouml.uml.notation.java.AttributeNotationJava;
+import org.argouml.uml.notation.java.ModelElementNameNotationJava;
+import org.argouml.uml.notation.java.OperationNotationJava;
 
 /**
  * This class is the only one that has the knowledge of the complete list of

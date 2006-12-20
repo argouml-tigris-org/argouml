@@ -27,8 +27,6 @@ package org.argouml.uml.diagram.state.ui;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.util.Collection;
-import java.util.Iterator;
 
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -117,11 +115,14 @@ public abstract class FigState extends FigStateVertex {
      * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
+        if (notationProviderBody != null) {
+            notationProviderBody.cleanListener(this, own);
+        }
         super.initNotationProviders(own);
         if (Model.getFacade().isAState(own)) {
             notationProviderBody =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_STATEBODY, own);
+                        NotationProviderFactory2.TYPE_STATEBODY, own, this);
         }
     }
 
@@ -133,96 +134,18 @@ public abstract class FigState extends FigStateVertex {
         if (mee instanceof AssociationChangeEvent 
                 || mee instanceof AttributeChangeEvent) {
             renderingChanged();
-            updateListeners(getOwner(), getOwner());
+            notationProviderBody.updateListener(this, getOwner(), mee);
             damage();
         }
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#removeFromDiagramImpl()
      */
-    protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
-        /* Now, let's register for events from all modelelements
-         * that change the name or body text: 
-         */
-        if (newOwner != null) {
-            /* Many different event types are needed, 
-             * so let's register for them all: */
-            addElementListener(newOwner);
-            // register for internal transitions:
-            Iterator it =
-                Model.getFacade().getInternalTransitions(newOwner).iterator();
-            while (it.hasNext()) {
-                addListenersForTransition(it.next());
-            }
-            // register for the doactivity etc.
-            Object doActivity = Model.getFacade().getDoActivity(newOwner);
-            addListenersForAction(doActivity);
-            Object entryAction = Model.getFacade().getEntry(newOwner);
-            addListenersForAction(entryAction);
-            Object exitAction = Model.getFacade().getExit(newOwner);
-            addListenersForAction(exitAction);
-        }
+    public void removeFromDiagramImpl() {
+        notationProviderBody.cleanListener(this, getOwner());
+        super.removeFromDiagramImpl();
     }
-
-
-    private void addListenersForAction(Object action) {
-        if (action != null) {
-            addElementListener(action,
-                    new String[] {
-                        "script", "actualArgument", "action"
-                    });
-            Collection args = Model.getFacade().getActualArguments(action);
-            Iterator i = args.iterator();
-            while (i.hasNext()) {
-                Object argument = i.next();
-                addElementListener(argument, "value");
-            }
-            if (Model.getFacade().isAActionSequence(action)) {
-                Collection subactions = Model.getFacade().getActions(action);
-                i = subactions.iterator();
-                while (i.hasNext()) {
-                    Object a = i.next();
-                    addListenersForAction(a);
-                }
-            }
-        }
-    }
-
-    private void addListenersForEvent(Object event) {
-        if (event != null) {
-            addElementListener(event,
-                    new String[] {
-                        "parameter", "name",
-                    });
-            Collection prms = Model.getFacade().getParameters(event);
-            Iterator i = prms.iterator();
-            while (i.hasNext()) {
-                Object parameter = i.next();
-                addElementListener(parameter);
-            }
-        }
-    }
-    
-    private void addListenersForTransition(Object transition) {
-        addElementListener(transition, 
-                new String[] {"guard", "trigger", "effect"});
-
-        Object guard = Model.getFacade().getGuard(transition);
-        if (guard != null) {
-            addElementListener(guard, "expression");
-        }
-
-        Object trigger = Model.getFacade().getTrigger(transition);
-        addListenersForEvent(trigger);
-
-        Object effect = Model.getFacade().getEffect(transition);
-        addListenersForAction(effect);
-    }    
-    
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()

@@ -79,7 +79,7 @@ public final class NotationUtilityUml {
     /**
      * The constructor.
      */
-    NotationUtilityUml() { }
+    public NotationUtilityUml() { }
 
     /* TODO: Can we put the static block within the init()? */
     static {
@@ -103,38 +103,38 @@ public final class NotationUtilityUml {
         parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
     }
 
-    void init() {
+    public void init() {
 	int assPos = 0;
         attributeSpecialStrings[assPos++] =
             new PropertySpecialString("frozen",
                 new PropertyOperation() {
-                public void found(Object element, String value) {
-                    if (Model.getFacade().isAStructuralFeature(element)) {
-                        if ("false".equalsIgnoreCase(value)) {
-                            Model.getCoreHelper().setChangeability(element,
+                    public void found(Object element, String value) {
+                        if (Model.getFacade().isAStructuralFeature(element)) {
+                            if ("false".equalsIgnoreCase(value)) {
+                                Model.getCoreHelper().setChangeability(element,
                                     Model.getChangeableKind().getChangeable());
-                        } else {
-                            Model.getCoreHelper().setChangeability(element,
+                            } else {
+                                Model.getCoreHelper().setChangeability(element,
                                     Model.getChangeableKind().getFrozen());
+                            }
                         }
                     }
-                }
-            });
+                });
         attributeSpecialStrings[assPos++] =
             new PropertySpecialString("addonly",
                 new PropertyOperation() {
-                public void found(Object element, String value) {
-                    if (Model.getFacade().isAStructuralFeature(element)) {
-                        if ("false".equalsIgnoreCase(value)) {
-                            Model.getCoreHelper().setChangeability(element,
+                    public void found(Object element, String value) {
+                        if (Model.getFacade().isAStructuralFeature(element)) {
+                            if ("false".equalsIgnoreCase(value)) {
+                                Model.getCoreHelper().setChangeability(element,
                                     Model.getChangeableKind().getChangeable());
-                        } else {
-                            Model.getCoreHelper().setChangeability(element,
+                            } else {
+                                Model.getCoreHelper().setChangeability(element,
                                     Model.getChangeableKind().getAddOnly());
+                            }
                         }
                     }
-                }
-            });
+                });
 
         assert assPos == attributeSpecialStrings.length;
 

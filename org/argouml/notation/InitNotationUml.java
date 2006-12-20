@@ -22,12 +22,27 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.notation.uml;
+package org.argouml.notation;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationName;
-import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.notation.uml.ActionStateNotationUml;
+import org.argouml.uml.notation.uml.AssociationEndNameNotationUml;
+import org.argouml.uml.notation.uml.AssociationRoleNotationUml;
+import org.argouml.uml.notation.uml.AttributeNotationUml;
+import org.argouml.uml.notation.uml.CallStateNotationUml;
+import org.argouml.uml.notation.uml.ClassifierRoleNotationUml;
+import org.argouml.uml.notation.uml.ComponentInstanceNotationUml;
+import org.argouml.uml.notation.uml.ExtensionPointNotationUml;
+import org.argouml.uml.notation.uml.MessageNotationUml;
+import org.argouml.uml.notation.uml.ModelElementNameNotationUml;
+import org.argouml.uml.notation.uml.NodeInstanceNotationUml;
+import org.argouml.uml.notation.uml.NotationUtilityUml;
+import org.argouml.uml.notation.uml.ObjectFlowStateStateNotationUml;
+import org.argouml.uml.notation.uml.ObjectFlowStateTypeNotationUml;
+import org.argouml.uml.notation.uml.ObjectNotationUml;
+import org.argouml.uml.notation.uml.OperationNotationUml;
+import org.argouml.uml.notation.uml.StateBodyNotationUml;
+import org.argouml.uml.notation.uml.TransitionNotationUml;
 
 /**
  * This class initialises the Notation subsystem.

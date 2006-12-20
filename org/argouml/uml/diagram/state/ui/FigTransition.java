@@ -32,10 +32,9 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -134,11 +133,14 @@ public class FigTransition extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
+        if (notationProvider != null) {
+            notationProvider.cleanListener(this, own);
+        }
         super.initNotationProviders(own);
         if (Model.getFacade().isATransition(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_TRANSITION, own);
+                        NotationProviderFactory2.TYPE_TRANSITION, own, this);
         }
     }
 
@@ -232,103 +234,24 @@ public class FigTransition extends FigEdgeModelElement {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(PropertyChangeEvent e) {
-        super.modelChanged(e);
-        if (e == null) {
-            return;
-        }
-        // TODO: In case of AttributeChange we probably want to
-        // unregister old listener - tfm
-        if (e instanceof AddAssociationEvent
-                || e instanceof AttributeChangeEvent) {
-            // register the guard condition
-            if (Model.getFacade().isATransition(e.getSource())
-                    && (e.getSource() == getOwner()
-                            && e.getPropertyName().equals("guard"))) {
-                if (e.getNewValue() != null) {
-                    addElementListener(e.getNewValue(), "expression");
-                }
-                updateNameText();
-                damage();
-            } else if (Model.getFacade().isATransition(e.getSource())
-                    && e.getSource() == getOwner()
-                    && e.getPropertyName().equals("trigger")) {
-                // register the event (or trigger)
-                if (e.getNewValue() != null) {
-                    addElementListener(e.getNewValue(),
-                            new String[] {"parameter", "name"}
-                    // TODO: How to listen to time/change expression?
-                    );
-                }
-                updateNameText();
-                damage();
-            } else if (Model.getFacade().isATransition(e.getSource())
-                    && e.getSource() == getOwner()
-                    && e.getPropertyName().equals("effect")) {
-                // register the action
-                if (Model.getFacade().isAAction(e.getNewValue())) {
-                    addElementListener(e.getNewValue(),
-                            new String[] {"script", "actualArgument"});
-                }
-                /* The new value may be null if the effect is removed. */
-                updateNameText();
-                damage();
-            } else if (Model.getFacade().isAEvent(e.getSource())
-                    && Model.getFacade().getTransitions(e.getSource()).contains(
-                            getOwner())) {
-                // handle events send by the event for its parameter
-                if (e.getPropertyName().equals("parameter")) {
-                    if (e.getOldValue() != null) {
-                        removeElementListener(e.getOldValue());
-                    } else if (e.getNewValue() != null) {
-                        addElementListener(e.getNewValue());
-                    }
-                }
-                updateNameText();
-                damage();
-            } else if (Model.getFacade().isAGuard(e.getSource())) {
-                // handle events send by the guard
-                updateNameText();
-                damage();
-            } else if (Model.getFacade().isAAction(e.getSource())) {
-                // handle events send by the action-effect
-                // PropertyName is "trigger" or "script"
-                if (Model.getFacade().isAArgument(e.getNewValue())) {
-                    /* For arguments, listen to changes of the value */
-                    addElementListener(e.getNewValue(), "value");
-                }
-                /* The next lines outside the above if clause for the case
-                 * where the "script" changes!
-                 */
-                updateNameText();
-                damage();
-            } else if (Model.getFacade().isAArgument(e.getSource())) {
-                // handle events from the arguments of the effect action
-                updateNameText();
-                damage();
-            } else if (Model.getFacade().isAParameter(e.getSource())) {
-                // handle events send by the parameters of the event
-                updateNameText();
-                damage();
-            } else if ((e.getSource() == getOwner())
-                    && (e.getPropertyName().equals("source")
-                            || (e.getPropertyName().equals("target")))) {
-                dashed =
-                    Model.getFacade().isAObjectFlowState(getSource())
-                    || Model.getFacade().isAObjectFlowState(getDestination());
-                getFig().setDashed(dashed);
-            }
-        } else if (e instanceof RemoveAssociationEvent) {
-            /*
-             * If an association has been removed, stop listening to
-             * the element that was there (and update our figure just in case)
-             */
-            removeElementListener(e.getOldValue());
-            updateNameText();
+    protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            notationProvider.updateListener(this, getOwner(), mee);
             damage();
         }
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#removeFromDiagramImpl()
+     */
+    public void removeFromDiagramImpl() {
+        notationProvider.cleanListener(this, getOwner());
+        super.removeFromDiagramImpl();
     }
 
     /*
