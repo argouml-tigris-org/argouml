@@ -502,6 +502,11 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
+    public void addLiteral(Object handle, int index, Object literal) {
+        super.addLiteral(handle, index, literal);
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
     /**
      * @see org.argouml.model.AbstractCoreHelperDecorator#addFeature(
      * java.lang.Object, java.lang.Object)
@@ -688,6 +693,15 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      */
     public void removeFeature(Object cls, Object feature) {
         super.removeFeature(cls, feature);
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeLiteral(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeLiteral(Object enu, Object literal) {
+        super.removeLiteral(enu, literal);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 

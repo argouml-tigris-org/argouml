@@ -91,6 +91,10 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.removeFeature(cls, feature);
     }
 
+    public void removeLiteral(Object enu, Object literal) {
+        impl.removeLiteral(enu, literal);
+    }
+
     public List getOperations(Object classifier) {
         return impl.getOperations(classifier);
     }
@@ -351,6 +355,10 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
 
     public void addFeature(Object handle, Object f) {
         impl.addFeature(handle, f);
+    }
+
+    public void addLiteral(Object handle, int index, Object literal) {
+        impl.addLiteral(handle, index, literal);
     }
 
     public void addLink(Object handle, Object link) {

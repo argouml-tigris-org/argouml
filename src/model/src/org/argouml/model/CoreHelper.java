@@ -92,6 +92,14 @@ public interface CoreHelper {
     void removeFeature(Object cls, Object feature);
 
     /**
+     * This method removes a literal from an numeration.
+     *
+     * @param enu the enumeration
+     * @param literal the literal to be removed
+     */
+    void removeLiteral(Object enu, Object literal);
+
+    /**
      * This method returns all operations of a given Classifier.
      * 
      * @param classifier
@@ -677,6 +685,13 @@ public interface CoreHelper {
      * @param f feature
      */
     void addFeature(Object handle, int index, Object f);
+
+    /**
+     * @param handle the enumeration
+     * @param index the position
+     * @param literal the EnumerationLiteral to be added
+     */
+    void addLiteral(Object handle, int index, Object literal);
 
     /**
      * Adds a feature to some classifier.
