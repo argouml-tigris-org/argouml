@@ -1521,7 +1521,7 @@ public interface Facade {
     Object getExtensionPoint(Object handle, int index);
 
     /**
-     * Returns all extends of a use case.
+     * Returns all extends of a UseCase or Extend.
      *
      * @param handle is the use case or the extend
      * @return the extends

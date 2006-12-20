@@ -55,13 +55,13 @@ public abstract class AbstractUseCasesHelperDecorator
         return impl;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#getExtensionPoints(java.lang.Object)
-     */
     public Collection getExtensionPoints(Object useCase) {
-        return impl.getExtensionPoints(useCase);
+        return Model.getFacade().getExtensionPoints(useCase);
     }
 
+    /*
+     * @see org.argouml.model.UseCasesHelper#getAllUseCases(java.lang.Object)
+     */
     public Collection getAllUseCases(Object ns) {
         return impl.getAllUseCases(ns);
     }

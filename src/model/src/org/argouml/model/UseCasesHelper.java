@@ -39,6 +39,7 @@ public interface UseCasesHelper {
      * @param useCase  The use case for which we want the extension points.
      *
      * @return         A collection of the extension points.
+     * @deprecated by tfmorris for 0.23.5 use {@link Facade#getExtensionPoints(Object)}
      */
     Collection getExtensionPoints(Object useCase);
 
