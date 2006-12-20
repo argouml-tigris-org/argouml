@@ -24,7 +24,9 @@
 
 package org.argouml.uml.notation.uml;
 
+import java.beans.PropertyChangeListener;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -37,6 +39,8 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.TransitionNotation;
 
 /**
+ * UML Notation for the text shown next to a Transition.
+ *  
  * @author mvw@tigris.org
  */
 public class TransitionNotationUml extends TransitionNotation {
@@ -394,8 +398,9 @@ public class TransitionNotationUml extends TransitionNotation {
                 Model.getCoreHelper().setName(effect, "anon");
                 Model.getStateMachinesHelper().setEffect(trans, effect);
             } else { // case 2
-                String language =
-                    Model.getDataTypesHelper().getLanguage(
+                Object script = Model.getFacade().getScript(effect);
+                String language = (script == null) ? null
+                        : Model.getDataTypesHelper().getLanguage(
                             Model.getFacade().getScript(effect));
                 Model.getCommonBehaviorHelper().setScript(effect,
                         Model.getDataTypesFactory()
@@ -588,4 +593,70 @@ public class TransitionNotationUml extends TransitionNotation {
         }
         return Model.getFacade().getName(cls);
     }
+
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
+     */
+    public void initialiseListener(PropertyChangeListener listener, 
+            Object modelElement) {
+        addListenersForTransition(listener, modelElement);
+    }
+
+    private void addListenersForAction(PropertyChangeListener listener, 
+            Object action) {
+        if (action != null) {
+            addElementListener(listener, action,
+                    new String[] {
+                        "script", "actualArgument", "action"
+                    });
+            Collection args = Model.getFacade().getActualArguments(action);
+            Iterator i = args.iterator();
+            while (i.hasNext()) {
+                Object argument = i.next();
+                addElementListener(listener, argument, "value");
+            }
+            if (Model.getFacade().isAActionSequence(action)) {
+                Collection subactions = Model.getFacade().getActions(action);
+                i = subactions.iterator();
+                while (i.hasNext()) {
+                    Object a = i.next();
+                    addListenersForAction(listener, a);
+                }
+            }
+        }
+    }
+
+    private void addListenersForEvent(PropertyChangeListener listener, 
+            Object event) {
+        if (event != null) {
+            addElementListener(listener, event,
+                    new String[] {
+                        "parameter", "name", "when", "changeExpression"
+                    });
+            Collection prms = Model.getFacade().getParameters(event);
+            Iterator i = prms.iterator();
+            while (i.hasNext()) {
+                Object parameter = i.next();
+                addElementListener(listener, parameter);
+            }
+        }
+    }
+    
+    private void addListenersForTransition(PropertyChangeListener listener, 
+            Object transition) {
+        addElementListener(listener, transition, 
+                new String[] {"guard", "trigger", "effect"});
+
+        Object guard = Model.getFacade().getGuard(transition);
+        if (guard != null) {
+            addElementListener(listener, guard, "expression");
+        }
+
+        Object trigger = Model.getFacade().getTrigger(transition);
+        addListenersForEvent(listener, trigger);
+
+        Object effect = Model.getFacade().getEffect(transition);
+        addListenersForAction(listener, effect);
+    }    
+
 }

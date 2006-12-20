@@ -594,7 +594,7 @@ class FigRole extends FigSingleLineText
 
     private void getNewNotation() {
         if (notationProviderRole != null) {
-            notationProviderRole.removeListener(this, getOwner());
+            notationProviderRole.cleanListener(this, getOwner());
         }
         if (getOwner() != null) {
             notationProviderRole = 
@@ -640,7 +640,7 @@ class FigRole extends FigSingleLineText
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
      */
     public void removeFromDiagram() {
-        notationProviderRole.removeListener(this, getOwner());
+        notationProviderRole.cleanListener(this, getOwner());
         ArgoEventPump.removeListener(
                 ArgoEventTypes.ANY_NOTATION_EVENT, this);
         super.removeFromDiagram();

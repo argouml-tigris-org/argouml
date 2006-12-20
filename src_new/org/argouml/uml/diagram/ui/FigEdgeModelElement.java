@@ -872,24 +872,22 @@ public abstract class FigEdgeModelElement
     /**
      * Implementations of this method should register/unregister the fig for all
      * (model)events. For FigEdgeModelElement only the fig itself is registered
-     * as listening to events fired by the owner itself. But for, for example,
+     * as listening to (all) events fired by the owner itself. 
+     * But for, for example,
      * FigAssociation the fig must also register for events fired by the
      * stereotypes of the owner. <p>
      * 
-     * This function is used in UMLDiagram, which removes all listeners 
-     * to all Figs when a diagram is not displayed, and restore them
-     * when it becomes visible again. <p>
-     * 
-     * In this case, it is not imperative that indeed ALL listeners are 
-     * updated, as long as the ones removed get added again and vice versa. <p>
-     * 
-     * Additionally, this function may be used by the modelChanged() function.
+     * This function is used by the modelChanged() function.
      * <p>
      * 
-     * In this case, it IS imperative that all listeners get removed / added.
+     * In this case, it is imperative that indeed ALL listeners are 
+     * updated, since they are ALL removed by 
+     * the call to removeElementListener. 
      * 
-     * @param newOwner the new owner for the listeners
-     * @param oldOwner the previous owner
+     * @param newOwner the new owner for the listeners, 
+     *          or null if all listeners have to be removed
+     * @param oldOwner the previous owner, 
+     *          or null if there was none
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner == newOwner) {

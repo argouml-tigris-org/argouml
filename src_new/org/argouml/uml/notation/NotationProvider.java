@@ -26,7 +26,10 @@ package org.argouml.uml.notation;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.argouml.model.Model;
 
@@ -42,6 +45,12 @@ import org.argouml.model.Model;
  * @author mvw@tigris.org
  */
 public abstract class NotationProvider {
+    
+    /**
+     * A collection of listeners registered for this notation. 
+     * This facilitates easy removal of a complex set of listeners. 
+     */
+    private Collection listeners = new ArrayList();
 
     /**
      * @return a i18 key that represents a help string
@@ -88,38 +97,49 @@ public abstract class NotationProvider {
     public abstract String toString(Object modelElement, HashMap args);
     
     /**
-     * Add the appropriate model change listeners 
+     * Initialise the appropriate model change listeners 
      * for the given modelelement to the given listener.
+     * Overrule this when you need more than 
+     * listening to all events from the base modelelement.
      * 
      * @param listener the given listener
      * @param modelElement the modelelement that we provide 
      * notation for
      */
-    public void addListener(PropertyChangeListener listener, 
+    public void initialiseListener(PropertyChangeListener listener, 
             Object modelElement) {
-        Model.getPump().addModelEventListener(
-                listener, 
-                modelElement, 
-                "name");
+        addElementListener(listener, modelElement);
     }
     
     /**
-     * Remove the listeners registered before.
+     * Clean out the listeners registered before.
+     * The default implementation is to remove all listeners 
+     * that were remembered by the utility functions below.
      * 
      * @param listener the given listener
      * @param modelElement the modelelement that we provide 
      * notation for
      */
-    public void removeListener(PropertyChangeListener listener, 
+    public void cleanListener(PropertyChangeListener listener, 
             Object modelElement) {
-        Model.getPump().removeModelEventListener(
-                listener, 
-                modelElement, 
-                "name");
+        removeAllElementListeners(listener);
     }
     
     /**
-     * Update the set of listeners based on the given event.
+     * Update the set of listeners based on the given event. <p>
+     * 
+     * The default implementation just removes all listeners, and then 
+     * re-initialises completely - this is method 1. 
+     * A more efficient way would be to dissect 
+     * the propertyChangeEvent, and only adapt the listeners
+     * that need to be adapted - this is method 2. <p>
+     * 
+     * Method 2 is explained by the code below that is commented out.
+     * Method 1 is the easiest to implement, since at every arrival of an event,
+     * we just remove all old listeners, and then inspect the current model, 
+     * and add listeners where we need them. I.e. the advantage is 
+     * that we only need to traverse the model structure in one location, i.e. 
+     * the initialiseListener() method.
      * 
      * @param listener the given listener
      * @param modelElement the modelelement that we provide 
@@ -142,5 +162,96 @@ public abstract class NotationProvider {
         //             of "name", "type"
         //     end if
         // end if 
+        cleanListener(listener, modelElement);
+        initialiseListener(listener, modelElement);
     }
+    
+    /*
+     * Add an element listener and remember the registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected final void addElementListener(PropertyChangeListener listener, 
+            Object element) {
+        listeners.add(new Object[] {element, null});
+        Model.getPump().addModelEventListener(listener, element);
+    }
+    
+    /*
+     * Utility function to add a listener for a given property name 
+     * and remember the registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @param property
+     *            name of property to listen for changes of
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener,
+     *      Object, String)
+     */
+    protected final void addElementListener(PropertyChangeListener listener, 
+            Object element, String property) {
+        listeners.add(new Object[] {element, property});
+        Model.getPump().addModelEventListener(listener, element, property);
+    }
+
+    /*
+     * Utility function to add a listener for an array of property names 
+     * and remember the registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @param property
+     *            array of property names (Strings) to listen for changes of
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener,
+     *      Object, String)
+     */
+    protected final void addElementListener(PropertyChangeListener listener, 
+            Object element, String[] property) {
+        listeners.add(new Object[] {element, property});
+        Model.getPump().addModelEventListener(listener, element, property);
+    }
+    
+    /*
+     * Utility function to remove an element listener 
+     * and adapt the remembered list of registration.
+     * 
+     * @param element
+     *            element to listen for changes on
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected final void removeElementListener(PropertyChangeListener listener, 
+            Object element) {
+        listeners.remove(new Object[] {element, null});
+        Model.getPump().removeModelEventListener(listener, element);
+    }
+    
+    /*
+     * Utility function to unregister all listeners 
+     * registered through addElementListener.
+     * 
+     * @see #addElementListener(Object, String)
+     */
+    protected final void removeAllElementListeners(
+            PropertyChangeListener listener) {
+        for (Iterator iter = listeners.iterator(); iter.hasNext();) {
+            Object[] lis = (Object[]) iter.next();
+            Object property = lis[1];
+            if (property == null) {
+                Model.getPump().removeModelEventListener(listener, lis[0]);
+            } else if (property instanceof String[]) {
+                Model.getPump().removeModelEventListener(listener, lis[0],
+                        (String[]) property);
+            } else if (property instanceof String) {
+                Model.getPump().removeModelEventListener(listener, lis[0],
+                        (String) property);
+            } else {
+                throw new RuntimeException(
+                        "Internal error in removeAllElementListeners");
+            }
+        }
+        listeners.clear();
+    }
+
 }
