@@ -74,6 +74,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ActionGoToCritique;
@@ -988,8 +989,7 @@ public abstract class FigNodeModelElement
             // We catch the exception here so it is handled for all subclasses
             try {
                 modelChanged(pve);
-            } catch (Exception e) {
-                /* need to catch javax.jmi.reflect.InvalidObjectException */
+            } catch (InvalidElementException e) {
                 LOG.debug("modelChanged method accessed deleted element ", e);
             }
         }
