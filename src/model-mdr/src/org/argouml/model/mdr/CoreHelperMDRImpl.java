@@ -2172,6 +2172,28 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /*
+     * @see org.argouml.model.CoreHelper#addConnection(java.lang.Object, 
+     *        int, java.lang.Object)
+     */
+    public void addConnection(Object handle, int position, Object connection) {
+        if (handle instanceof UmlAssociation
+                && connection instanceof AssociationEnd) {
+            ((UmlAssociation) handle).getConnection().add(position, connection);
+            return;
+        }
+        /* Strange, but the Link.getConnection() 
+         * returns a Collection, not a List!
+         * This is a bug, compared to the UML standard (IMHO, mvw). 
+         * Hence, the LinkEnd is added to the end instead... */
+        if (handle instanceof Link && connection instanceof LinkEnd) {
+            ((Link) handle).getConnection().add(connection);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or connection: " + connection);
+    }
+    
+    /*
      * @see org.argouml.model.CoreHelper#addConstraint( java.lang.Object,
      *      java.lang.Object)
      */

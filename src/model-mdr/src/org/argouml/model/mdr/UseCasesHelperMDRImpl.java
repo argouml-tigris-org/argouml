@@ -412,6 +412,22 @@ public class UseCasesHelperMDRImpl implements UseCasesHelper {
     }
 
     /*
+     * @see org.argouml.model.UseCasesHelper#addExtensionPoint(java.lang.Object, int, java.lang.Object)
+     */
+    public void addExtensionPoint(Object handle, int position, 
+            Object extensionPoint) {
+        if (extensionPoint instanceof ExtensionPoint) {
+            if (handle instanceof Extend) {
+                ((Extend) handle).getExtensionPoint().add(position, 
+                        extensionPoint);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or extensionPoint: " + extensionPoint);
+    }
+
+    /*
      * @see org.argouml.model.UseCasesHelper#addInclude(java.lang.Object, java.lang.Object)
      */
     public void addInclude(Object usecase, Object include) {
