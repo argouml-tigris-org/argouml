@@ -467,6 +467,15 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     }
 
     /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addConnection(
+     * java.lang.Object, int, java.lang.Object)
+     */
+    public void addConnection(Object handle, int position, Object connection) {
+        super.addConnection(handle, position, connection);
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
      * @see org.argouml.model.AbstractCoreHelperDecorator#addConstraint(
      * java.lang.Object, java.lang.Object)
      */

@@ -151,12 +151,22 @@ public interface UseCasesHelper {
     void addExtend(Object elem, Object extend);
 
     /**
-     * Adds an extension point to some model element.
+     * Adds an extension point to some Use Case or Extend.
      *
-     * @param handle is the model element
-     * @param extensionPoint is the extension point
+     * @param handle is the Use Case or Extend
+     * @param extensionPoint is the Extension Point
      */
     void addExtensionPoint(Object handle, Object extensionPoint);
+
+    /**
+     * Adds an extension point to some Extend.
+     *
+     * @param handle is the Extend
+     * @param position the 0-based position at which
+     *          to insert the Extension Point
+     * @param extensionPoint is the Extension Point
+     */
+    void addExtensionPoint(Object handle, int position, Object extensionPoint);
 
     /**
      * Add an include to a Use Case.

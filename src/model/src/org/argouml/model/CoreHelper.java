@@ -664,6 +664,16 @@ public interface CoreHelper {
     void addConnection(Object handle, Object connection);
 
     /**
+     * Add an End to a connection.
+     *
+     * @param handle Association or Link
+     * @param position the 0-based position at which
+     *          to insert the AssociationEnd or LinkEnd
+     * @param connection AssociationEnd or LinkEnd
+     */
+    void addConnection(Object handle, int position, Object connection);
+
+    /**
      * Adds a constraint to some model element.
      *
      * @param handle model element

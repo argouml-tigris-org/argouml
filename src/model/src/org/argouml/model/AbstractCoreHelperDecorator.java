@@ -341,6 +341,10 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.addConnection(handle, connection);
     }
 
+    public void addConnection(Object handle, int position, Object connection) {
+        impl.addConnection(handle, position, connection);
+    }
+
     public void addConstraint(Object handle, Object mc) {
         impl.addConstraint(handle, mc);
     }

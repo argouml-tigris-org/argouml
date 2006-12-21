@@ -118,6 +118,11 @@ public abstract class AbstractUseCasesHelperDecorator
         impl.addExtensionPoint(handle, extensionPoint);
     }
 
+    public void addExtensionPoint(Object handle, int position, 
+            Object extensionPoint) {
+        impl.addExtensionPoint(handle, position, extensionPoint);
+    }
+
     public void addInclude(Object usecase, Object include) {
         impl.addInclude(usecase, include);
     }
