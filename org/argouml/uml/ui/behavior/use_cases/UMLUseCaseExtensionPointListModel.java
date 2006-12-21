@@ -33,7 +33,8 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 /**
  * Model for the ExtensionPoints of a UseCase. <p>
  * 
- * TODO: This should NOT be an ordered list, according the UML standard!
+ * TODO: This should NOT be an ordered list, according the UML standard! 
+ * Shall we stop supporting the move up/down features?
  * 
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl

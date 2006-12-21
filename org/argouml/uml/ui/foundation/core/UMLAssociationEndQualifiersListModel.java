@@ -25,7 +25,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -61,19 +60,15 @@ public class UMLAssociationEndQualifiersListModel
             && Model.getFacade().getQualifiers(getTarget()).contains(o);
     }
 
-
     /*
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
      */
     protected void moveDown(int index1) {
         int index2 = index1 + 1;
         Object assocEnd = getTarget();
-        List c = new ArrayList(Model.getFacade().getQualifiers(assocEnd));
+        List c = Model.getFacade().getQualifiers(assocEnd);
         Object mem1 = c.get(index1);
-        Object mem2 = c.get(index2);
-        c.set(index1, mem2);
-        c.set(index2, mem1);
-        Model.getCoreHelper().setQualifiers(assocEnd, c);
-        buildModelList();
+        Model.getCoreHelper().removeQualifier(assocEnd, mem1);
+        Model.getCoreHelper().addQualifier(assocEnd, index2, mem1);
     }
 }

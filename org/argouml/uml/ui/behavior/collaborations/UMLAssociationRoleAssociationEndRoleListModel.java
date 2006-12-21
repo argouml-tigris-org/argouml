@@ -24,20 +24,21 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * List model that shows the AssociationEndRoles belonging to some
- * AssociationRole.
+ * AssociationRole. <p>
+ * 
+ * This is NOT an ordered list, according to the UML 1.4 standard. 
+ * This is a derived association in the metamodel.
+ * 
  * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLAssociationRoleAssociationEndRoleListModel
-    extends UMLModelElementOrderedListModel2 {
+    extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLAssociationRoleAssociationEndRoleListModel.
@@ -61,18 +62,4 @@ public class UMLAssociationRoleAssociationEndRoleListModel
             && Model.getFacade().getConnections(getTarget()).contains(o);
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
-     */
-    protected void moveDown(int index1) {
-        int index2 = index1 + 1;
-        Object assocrole = getTarget();
-        List c = new ArrayList(Model.getFacade().getConnections(assocrole));
-        Object mem1 = c.get(index1);
-        Object mem2 = c.get(index2);
-        c.set(index1, mem2);
-        c.set(index2, mem1);
-        Model.getCoreHelper().setConnections(assocrole, c);
-        buildModelList();
-    }
 }
