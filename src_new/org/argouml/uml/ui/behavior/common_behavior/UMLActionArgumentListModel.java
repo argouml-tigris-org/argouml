@@ -75,6 +75,5 @@ public class UMLActionArgumentListModel
         Object mem1 = c.get(index1);
         Model.getCommonBehaviorHelper().removeActualArgument(clss, mem1);
         Model.getCommonBehaviorHelper().addActualArgument(clss, index2, mem1);
-        buildModelList();
     }
 }

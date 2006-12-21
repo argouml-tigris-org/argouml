@@ -31,6 +31,10 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
+ * Model for the ExtensionPoints of a UseCase. <p>
+ * 
+ * TODO: This should NOT be an ordered list, according the UML standard!
+ * 
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -74,6 +78,5 @@ public class UMLUseCaseExtensionPointListModel
         c.set(index1, mem2);
         c.set(index2, mem1);
         Model.getUseCasesHelper().setExtensionPoints(usecase, c);
-        buildModelList();
     }
 }

@@ -134,7 +134,9 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
                         addElement(o2);
                     }
                 } else {
-                    addElement(o);
+                    /* TODO: If this is an ordered list, then you have to 
+                        add in the right location! */
+                    addElement(o); 
                 }
             }
         } else if (e instanceof RemoveAssociationEvent) {

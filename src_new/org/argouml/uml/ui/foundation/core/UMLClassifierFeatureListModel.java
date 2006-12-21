@@ -70,6 +70,5 @@ public class UMLClassifierFeatureListModel
         Object mem1 = c.get(index1);
         Model.getCoreHelper().removeFeature(clss, mem1);
         Model.getCoreHelper().addFeature(clss, index2, mem1);
-        buildModelList();
     }
 }
