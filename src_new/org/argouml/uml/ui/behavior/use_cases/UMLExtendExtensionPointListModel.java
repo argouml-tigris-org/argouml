@@ -50,8 +50,6 @@ public class UMLExtendExtensionPointListModel
         setAllElements(Model.getFacade().getExtensionPoints(getTarget()));
     }
 
-
-
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */

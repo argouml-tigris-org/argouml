@@ -74,5 +74,11 @@ public class UMLLinkConnectionListModel
         c.set(index2, mem1);
         Model.getCoreHelper().setConnections(link, c);
         buildModelList();
+        
+        /* The MDR model does not support the 2nd method below for LinkEnds.
+         * Hence we can not replace the above inefficient code 
+         * by the code below. */
+//        Model.getCoreHelper().removeConnection(link, mem1);
+//        Model.getCoreHelper().addConnection(link, index2, mem1);
     }
 }
