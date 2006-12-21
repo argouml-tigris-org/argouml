@@ -111,12 +111,10 @@ public class UMLAssociationConnectionListModel
     protected void moveDown(int index1) {
         int index2 = index1 + 1;
         Object assoc = getTarget();
-        List c = new ArrayList(Model.getFacade().getConnections(assoc));
+        /* Since we are UML 1.4, this is surely a List! */
+        List c = (List) Model.getFacade().getConnections(assoc);
         Object mem1 = c.get(index1);
-        Object mem2 = c.get(index2);
-        c.set(index1, mem2);
-        c.set(index2, mem1);
-        Model.getCoreHelper().setConnections(assoc, c);
-        buildModelList();
+        Model.getCoreHelper().removeConnection(assoc, mem1);
+        Model.getCoreHelper().addConnection(assoc, index2, mem1);
     }
 }

@@ -80,7 +80,6 @@ public class UMLClassifierParameterListModel
         Object mem1 = list.get(index1);
         Model.getCoreHelper().removeParameter(clss, mem1);
         Model.getCoreHelper().addParameter(clss, index2, mem1);
-        buildModelList();
     }
 
 }

@@ -136,7 +136,6 @@ class UMLActionSequenceActionListModel
         Object item = c.get(index);
         Model.getCommonBehaviorHelper().removeAction(target, item);
         Model.getCommonBehaviorHelper().addAction(target, index + 1, item);
-        buildModelList();
     }
 }
 

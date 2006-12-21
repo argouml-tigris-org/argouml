@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -77,7 +76,6 @@ public class UMLEnumerationLiteralsListModel
         Object mem1 = c.get(index1);
         Model.getCoreHelper().removeLiteral(clss, mem1);
         Model.getCoreHelper().addLiteral(clss, index2, mem1);
-        buildModelList();
     }
 
     /**

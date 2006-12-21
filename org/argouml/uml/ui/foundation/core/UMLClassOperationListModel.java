@@ -73,6 +73,5 @@ public class UMLClassOperationListModel
         index2 = f.indexOf(op2);
         Model.getCoreHelper().removeFeature(clss, op1);
         Model.getCoreHelper().addFeature(clss, index2, op1);
-        buildModelList();
     }
 }
