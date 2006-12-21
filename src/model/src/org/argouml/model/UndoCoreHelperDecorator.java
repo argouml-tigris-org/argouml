@@ -571,6 +571,15 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     }
 
     /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#addQualifier(
+     * java.lang.Object, int, java.lang.Object)
+     */
+    public void addQualifier(Object handle, int index, Object qualifier) {
+        super.addQualifier(handle, index, qualifier);
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
      * @see org.argouml.model.AbstractCoreHelperDecorator#addRaisedSignal(
      * java.lang.Object, java.lang.Object)
      */
@@ -729,6 +738,15 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      */
     public void removeParameter(Object handle, Object parameter) {
         super.removeParameter(handle, parameter);
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeQualifier(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeQualifier(Object handle, Object qualifier) {
+        super.removeQualifier(handle, qualifier);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 

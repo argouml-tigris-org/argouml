@@ -584,6 +584,14 @@ public interface CoreHelper {
     void removeParameter(Object handle, Object parameter);
 
     /**
+     * Remove a Qualifier from a AssociationEnd.
+     * 
+     * @param handle the AssociationEnd
+     * @param qualifier the Qualifier attribute to be removed
+     */
+    void removeQualifier(Object handle, Object qualifier);
+
+    /**
      * Remove a source flow from a model element.
      *
      * @param handle The model element.
@@ -756,6 +764,14 @@ public interface CoreHelper {
      * @param parameter Object that will be added
      */
     void addParameter(Object handle, Object parameter);
+
+    /**
+     * @param handle the Association End
+     * @param position the 0-based position at which
+     *          to insert the Qualifier
+     * @param qualifier the Qualifier attribute
+     */
+    void addQualifier(Object handle, int position, Object qualifier);
 
     /**
      * Add a raised Signal to a Message or Operation.

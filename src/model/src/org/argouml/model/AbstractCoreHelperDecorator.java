@@ -301,6 +301,10 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.removeParameter(handle, parameter);
     }
 
+    public void removeQualifier(Object handle, Object parameter) {
+        impl.removeQualifier(handle, parameter);
+    }
+
     public void removeSourceFlow(Object handle, Object flow) {
         impl.removeSourceFlow(handle, flow);
     }
@@ -383,6 +387,10 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
 
     public void addParameter(Object handle, Object parameter) {
         impl.addParameter(handle, parameter);
+    }
+
+    public void addQualifier(Object handle, int index, Object qualifier) {
+        impl.addQualifier(handle, index, qualifier);
     }
 
     public void addRaisedSignal(Object handle, Object sig) {
