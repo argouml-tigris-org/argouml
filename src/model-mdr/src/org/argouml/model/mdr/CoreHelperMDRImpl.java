@@ -2031,6 +2031,26 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /*
+     * @see org.argouml.model.CoreHelper#removeQualifier(java.lang.Object, 
+     * java.lang.Object)
+     */
+    public void removeQualifier(Object handle, Object qualifier) {
+        try {
+            if (qualifier instanceof Attribute) {
+                if (handle instanceof AssociationEnd) {
+                    ((AssociationEnd) handle).getQualifier().remove(
+                            qualifier);
+                    return;
+                }
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or qualifier: " + qualifier);
+    }
+
+    /*
      * @see org.argouml.model.CoreHelper#removeSourceFlow( java.lang.Object,
      *      java.lang.Object)
      */
@@ -2397,6 +2417,22 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or parameter: " + parameter);
+    }
+
+    /*
+     * @see org.argouml.model.CoreHelper#addQualifier(java.lang.Object, 
+     * int, java.lang.Object)
+     */
+    public void addQualifier(Object handle, int index, Object qualifier) {
+        if (qualifier instanceof Attribute) {
+            if (handle instanceof AssociationEnd) {
+                ((AssociationEnd) handle).getQualifier().add(index,
+                        qualifier);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or qualifier: " + qualifier);
     }
 
     /*
