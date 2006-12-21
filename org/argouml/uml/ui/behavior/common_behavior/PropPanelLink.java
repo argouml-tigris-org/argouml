@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.Action;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -40,6 +41,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -53,7 +55,7 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class PropPanelLink extends PropPanelModelElement {
 
-    private JComponent associationSelector;
+    private JComboBox associationSelector;
     private UMLLinkAssociationComboBoxModel associationComboBoxModel =
         new UMLLinkAssociationComboBoxModel();
 
@@ -97,8 +99,10 @@ public class PropPanelLink extends PropPanelModelElement {
                     associationComboBoxModel,
                     new ActionSetLinkAssociation(), true);
         }
-        return associationSelector;
-
+        return new UMLComboBoxNavigator(
+                this,
+                Translator.localize("label.association.navigate.tooltip"),
+                associationSelector);
     }
 
     /**
