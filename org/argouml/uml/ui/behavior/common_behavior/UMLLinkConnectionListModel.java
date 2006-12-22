@@ -71,8 +71,6 @@ public class UMLLinkConnectionListModel
         if (index < c.size() - 1) {
             Collections.swap(c, index, index + 1);
             Model.getCoreHelper().setConnections(link, c);
-            // TODO: Should this buildModelList be here? - tfm
-            buildModelList();
         
         /* The MDR model does not support the 2nd method below for LinkEnds.
          * Hence we can not replace the above inefficient code 
