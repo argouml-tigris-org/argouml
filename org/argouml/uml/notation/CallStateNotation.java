@@ -24,6 +24,8 @@
 
 package org.argouml.uml.notation;
 
+import java.beans.PropertyChangeListener;
+
 import org.argouml.model.Model;
 
 /**
@@ -43,6 +45,34 @@ public abstract class CallStateNotation extends NotationProvider {
     public CallStateNotation(Object callState) {
         if (!Model.getFacade().isACallState(callState)) {
             throw new IllegalArgumentException("This is not an CallState.");
+        }
+    }
+
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#initialiseListener(
+     * java.beans.PropertyChangeListener, java.lang.Object)
+     */
+    public void initialiseListener(PropertyChangeListener listener, 
+            Object modelElement) {
+        // register for events from all modelelements
+        // that change the name and body text
+        // i.e. when the CallAction is replaced:
+        addElementListener(listener, modelElement, 
+                new String[] {"entry", "name", "remove"});
+        Object entryAction = Model.getFacade().getEntry(modelElement);
+        if (Model.getFacade().isACallAction(entryAction)) {
+            // and when the Operation is replaced:
+            addElementListener(listener, entryAction, "operation");
+            Object operation = Model.getFacade().getOperation(entryAction);
+            if (operation != null) {
+                // and when the owner is replaced (unlikely for operations),
+                // and when the operation changes name:
+                addElementListener(listener, operation,
+                        new String[] {"owner", "name"});
+                Object classifier = Model.getFacade().getOwner(operation);
+                // and when the class changes name:
+                addElementListener(listener, classifier, "name");
+            }
         }
     }
 

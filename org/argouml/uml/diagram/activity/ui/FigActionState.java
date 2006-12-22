@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.AddAssociationEvent;
@@ -64,7 +63,7 @@ public class FigActionState extends FigStateVertex {
     /**
      * The notation provider for the textfield.
      */
-    protected NotationProvider notationProvider;
+    private NotationProvider notationProvider;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -117,12 +116,25 @@ public class FigActionState extends FigStateVertex {
      * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
+        if (notationProvider != null) {
+            notationProvider.cleanListener(this, own);
+        }
         super.initNotationProviders(own);
         if (Model.getFacade().isAActionState(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_ACTIONSTATE, own);
+                        getNotationProviderType(), own, this);
         }
+    }
+    
+    /**
+     * Overrule this for subclasses of the FigActionState 
+     * that need a different NotationProvider.
+     * 
+     * @return the type of the notation provider
+     */
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_ACTIONSTATE;
     }
 
     /*
@@ -244,37 +256,18 @@ public class FigActionState extends FigStateVertex {
         if (mee instanceof AddAssociationEvent
                 || mee instanceof AttributeChangeEvent) {
             renderingChanged();
-            updateListeners(getOwner(), getOwner());
+            notationProvider.updateListener(this, getOwner(), mee);
             damage();
         }
     }
-    
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
-     */
-    protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
-        /* Now, let's register for events from all modelelements
-         * that change the body text: 
-         */
-        if (newOwner != null) {
-            addElementListener(newOwner, 
-                    new String[] {"entry", "remove", "stereotype"} );
-            Object entry = Model.getFacade().getEntry(newOwner);
-            if (entry != null) {
-                addElementListener(entry, "script");
-            }
-            Collection c = Model.getFacade().getStereotypes(newOwner);
-            Iterator i = c.iterator();
-            while (i.hasNext()) {
-                Object st = i.next();
-                addElementListener(st, "name");
-            }
-        }
-    }
 
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#removeFromDiagramImpl()
+     */
+    public void removeFromDiagramImpl() {
+        notationProvider.cleanListener(this, getOwner());
+        super.removeFromDiagramImpl();
+    }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()

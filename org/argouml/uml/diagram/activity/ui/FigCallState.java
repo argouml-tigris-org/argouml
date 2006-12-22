@@ -24,23 +24,21 @@
 
 package org.argouml.uml.diagram.activity.ui;
 
-import java.beans.PropertyChangeEvent;
-
-import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
-import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 
 
 /**
- * Class to display graphics for a UML CallState in a diagram.
+ * Class to display graphics for a UML CallState in a diagram.<p>
+ * 
  * The UML 1.3 standard does not contain a description of CallState
  * in the Notation Guide chapters. The later UML versions correct this omission.
- * So, for UML 1.3 it looks the same as an ActionState.
- * The only difference with an ActionState is
- * the extra Well-Formedness rule for a CallState.
+ * So, for UML 1.3 it looks the same as an ActionState, and
+ * the only difference with an ActionState is
+ * the extra Well-Formedness rule for a CallState.<p>
+ * 
+ * This Fig resembles the FigActionState very much!
  *
  * @author MVW
  */
@@ -68,60 +66,10 @@ public class FigCallState extends FigActionState {
     }
 
     /*
-     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
+     * @see org.argouml.uml.diagram.activity.ui.FigActionState#getNotationProviderType()
      */
-    protected void initNotationProviders(Object own) {
-        super.initNotationProviders(own);
-        if (Model.getFacade().isACallState(own)) {
-            notationProvider =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_CALLSTATE, own);
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent
-                || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
-            damage();
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
-     */
-    protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
-
-        if (newOwner != null) {
-            // register for events from all modelelements
-            // that change the name and body text
-            // i.e. when the CallAction is replaced:
-            addElementListener(newOwner, 
-                    new String[] {"entry", "name", "remove"});
-            Object entryAction = Model.getFacade().getEntry(newOwner);
-            if (Model.getFacade().isACallAction(entryAction)) {
-                // and when the Operation is replaced:
-                addElementListener(entryAction, "operation");
-                Object operation = Model.getFacade().getOperation(entryAction);
-                if (operation != null) {
-                    // and when the owner is replaced (unlikely for operations),
-                    // and when the operation changes name:
-                    addElementListener(operation,
-                            new String[] {"owner", "name"});
-                    Object classifier = Model.getFacade().getOwner(operation);
-                    // and when the class changes name:
-                    addElementListener(classifier, "name");
-                }
-            }
-        }
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_CALLSTATE;
     }
 
     /*
