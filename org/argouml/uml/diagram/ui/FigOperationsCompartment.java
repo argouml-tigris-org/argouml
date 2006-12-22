@@ -105,7 +105,12 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
         Object voidType = project.findType("void");
         Object oper = Model.getCoreFactory().buildOperation(classifier, model,
                 voidType);
+        
+        // TODO: Bob - Performance - we shouldn't rebuild the entire
+        // compartment in fact do we have to do this at all? The Fig should be
+        // listening for the change to the model and act accordingly
         populate();
+        
         TargetManager.getInstance().setTarget(oper);
 
     }

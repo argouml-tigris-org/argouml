@@ -93,7 +93,12 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
                 classifier,
                 model,
                 intType);
+        
+        // TODO: Bob - Performance - we shouldn't rebuild the entire
+        // compartment in fact do we have to do this at all? The Fig should be
+        // listening for the change to the model and act accordingly
         populate();
+        
         TargetManager.getInstance().setTarget(attr);
     }
 }
