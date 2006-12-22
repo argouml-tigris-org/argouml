@@ -62,17 +62,19 @@ public class UMLClassAttributeListModel
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
      */
     protected void moveDown(int index1) {
         int index2 = index1 + 1;
         Object clss = getTarget();
         List c = Model.getFacade().getAttributes(clss);
-        Object mem1 = c.get(index1);
-        Object mem2 = c.get(index2);
-        List f = Model.getFacade().getFeatures(clss);
-        index2 = f.indexOf(mem2);
-        Model.getCoreHelper().removeFeature(clss, mem1);
-        Model.getCoreHelper().addFeature(clss, index2, mem1);
+        if (index1 < c.size() - 1) {
+            Object mem1 = c.get(index1);
+            Object mem2 = c.get(index2);
+            List f = Model.getFacade().getFeatures(clss);
+            index2 = f.indexOf(mem2);
+            Model.getCoreHelper().removeFeature(clss, mem1);
+            Model.getCoreHelper().addFeature(clss, index2, mem1);
+        }
     }
 }

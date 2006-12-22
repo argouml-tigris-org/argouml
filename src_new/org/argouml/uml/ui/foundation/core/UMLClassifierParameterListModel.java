@@ -66,20 +66,18 @@ public class UMLClassifierParameterListModel
         return Model.getFacade().getParameters(getTarget()).contains(element);
     }
 
+
     /*
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
      */
-    protected void moveDown(int index1) {
-        int index2 = index1 + 1;
+    protected void moveDown(int index) {
         Object clss = getTarget();
         Collection c = Model.getFacade().getParameters(clss);
-        List list;
-        if (c instanceof List) {
-            list = (List) c;
-        } else return;
-        Object mem1 = list.get(index1);
-        Model.getCoreHelper().removeParameter(clss, mem1);
-        Model.getCoreHelper().addParameter(clss, index2, mem1);
+        if (c instanceof List && index < c.size() - 1) {
+            Object mem = ((List) c).get(index);
+            Model.getCoreHelper().removeParameter(clss, mem);
+            Model.getCoreHelper().addParameter(clss, index + 1, mem);
+        }
     }
 
 }

@@ -104,17 +104,17 @@ public class UMLAssociationConnectionListModel
             && Model.getFacade().getConnections(getTarget()).contains(o);
     }
 
-
     /*
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
      */
-    protected void moveDown(int index1) {
-        int index2 = index1 + 1;
+    protected void moveDown(int index) {
         Object assoc = getTarget();
         /* Since we are UML 1.4, this is surely a List! */
         List c = (List) Model.getFacade().getConnections(assoc);
-        Object mem1 = c.get(index1);
-        Model.getCoreHelper().removeConnection(assoc, mem1);
-        Model.getCoreHelper().addConnection(assoc, index2, mem1);
+        if (index < c.size() - 1) {
+            Object mem = c.get(index);
+            Model.getCoreHelper().removeConnection(assoc, mem);
+            Model.getCoreHelper().addConnection(assoc, index + 1, mem);
+        }
     }
 }

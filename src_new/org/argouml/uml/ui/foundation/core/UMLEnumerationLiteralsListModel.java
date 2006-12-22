@@ -69,13 +69,14 @@ public class UMLEnumerationLiteralsListModel
     /*
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
      */
-    protected void moveDown(int index1) {
-        int index2 = index1 + 1;
+    protected void moveDown(int index) {
         Object clss = getTarget();
         List c = Model.getFacade().getEnumerationLiterals(clss);
-        Object mem1 = c.get(index1);
-        Model.getCoreHelper().removeLiteral(clss, mem1);
-        Model.getCoreHelper().addLiteral(clss, index2, mem1);
+        if (index < c.size() - 1) {
+            Object mem = c.get(index);
+            Model.getCoreHelper().removeLiteral(clss, mem);
+            Model.getCoreHelper().addLiteral(clss, index + 1, mem);
+        }
     }
 
     /**

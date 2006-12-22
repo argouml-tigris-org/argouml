@@ -67,11 +67,13 @@ public class UMLClassOperationListModel
         int index2 = index1 + 1;
         Object clss = getTarget();
         List c = Model.getFacade().getOperations(clss);
-        Object op1 = c.get(index1);
-        Object op2 = c.get(index2);
-        List f = Model.getFacade().getFeatures(clss);
-        index2 = f.indexOf(op2);
-        Model.getCoreHelper().removeFeature(clss, op1);
-        Model.getCoreHelper().addFeature(clss, index2, op1);
+        if (index1 < c.size() - 1) {
+            Object op1 = c.get(index1);
+            Object op2 = c.get(index2);
+            List f = Model.getFacade().getFeatures(clss);
+            index2 = f.indexOf(op2);
+            Model.getCoreHelper().removeFeature(clss, op1);
+            Model.getCoreHelper().addFeature(clss, index2, op1);
+        }
     }
 }

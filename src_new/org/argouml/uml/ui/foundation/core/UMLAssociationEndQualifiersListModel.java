@@ -60,15 +60,17 @@ public class UMLAssociationEndQualifiersListModel
             && Model.getFacade().getQualifiers(getTarget()).contains(o);
     }
 
+
     /*
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveTo(int, int)
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
      */
-    protected void moveDown(int index1) {
-        int index2 = index1 + 1;
+    protected void moveDown(int index) {
         Object assocEnd = getTarget();
         List c = Model.getFacade().getQualifiers(assocEnd);
-        Object mem1 = c.get(index1);
-        Model.getCoreHelper().removeQualifier(assocEnd, mem1);
-        Model.getCoreHelper().addQualifier(assocEnd, index2, mem1);
+        if (index < c.size() - 1) {
+            Object mem = c.get(index);
+            Model.getCoreHelper().removeQualifier(assocEnd, mem);
+            Model.getCoreHelper().addQualifier(assocEnd, index + 1, mem);
+        }
     }
 }
