@@ -73,9 +73,10 @@ public abstract class UMLModelElementOrderedListModel2
     protected abstract boolean isValidElement(Object element);
 
     /**
-     * Move a element from the given position down one position. Anyone
+     * Move a element from the given position down one position, i.e.
+     * a swap of the two positions. Anyone
      * listening to the model will then be updated by the events/listener
-     * mechanism.  If the element is already the last elemnt in the list, 
+     * mechanism.  If the element is already the last element in the list, 
      * nothing is done.
      * 
      * @param index
