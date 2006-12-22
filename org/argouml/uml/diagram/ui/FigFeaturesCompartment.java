@@ -26,9 +26,10 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.InvalidElementException;
@@ -148,12 +149,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         int xpos = bigPort.getX();
         int ypos = bigPort.getY();
 
-        Vector figs = new Vector(getFigs());
-        if (figs.size() > 1) {
-            // Ignore the first 2 figs:
-            figs.removeElementAt(1); // the seperator
-            figs.removeElementAt(0); // the bigPort
-        }
+        List figs = getElementFigs();
         // We remove all of them:
         Iterator i = figs.iterator();
         while (i.hasNext()) {
@@ -170,23 +166,9 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
             Iterator iter = umlObjects.iterator();
             while (iter.hasNext()) {
                 Object umlObject = iter.next();
-                comp = null; // find the (next) compartment
+                comp = findCompartmentFig(figs, umlObject);
                 acounter++;                
-                
-                /* Find the compartment fig for this umlObject: */
-                Iterator it = figs.iterator();
-                while (it.hasNext()) {
-                    CompartmentFigText candidate;
-                    Object fig = it.next();
-                    if (fig instanceof CompartmentFigText) {
-                        candidate = (CompartmentFigText) fig;
-                        if (candidate.getOwner() == umlObject) {
-                            comp = candidate;
-                            break;
-                        }
-                    }
-                }
-                
+
                 NotationProvider np = 
                     NotationProviderFactory2.getInstance()
                         .getNotationProvider(getNotationType(), umlObject);
@@ -239,7 +221,33 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
             comp.setBotMargin(6); // the last one needs extra space below it
         }
     }
-    
+
+    /* Find the compartment fig for this umlObject: */
+    private CompartmentFigText findCompartmentFig(List figs, Object umlObject) {
+        Iterator it = figs.iterator();
+        while (it.hasNext()) {
+            CompartmentFigText candidate;
+            Object fig = it.next();
+            if (fig instanceof CompartmentFigText) {
+                candidate = (CompartmentFigText) fig;
+                if (candidate.getOwner() == umlObject) {
+                    return candidate;
+                }
+            }
+        }
+        return null;
+    }
+
+    private List getElementFigs() {
+        List figs = new ArrayList(getFigs());
+        if (figs.size() > 1) {
+            // Ignore the first 2 figs:
+            figs.remove(1); // the seperator
+            figs.remove(0); // the bigPort
+        }
+        return figs;
+    }
+
     protected FigSingleLineText createFigText(
 	    int x, int y, int w, int h, Fig aFig, NotationProvider np) {
         return new FigFeature(x, y, w, h, aFig, np);
