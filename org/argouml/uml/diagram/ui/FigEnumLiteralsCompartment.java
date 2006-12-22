@@ -72,22 +72,14 @@ public class FigEnumLiteralsCompartment extends FigFeaturesCompartment {
     }
 
     /**
-     * Despite its name it creates an EnumerationLiteral, not a feature. It
-     * needs this name because that's what FigNodeModelElement and
-     * FigClassifierBox expect. - tfm
-     *      
-     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#createFeature()
+     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#createModelElement()
      */
-    public void createFeature() {
+    protected void createModelElement() {
         Object enumeration = getGroup().getOwner();
         Object literal = Model.getCoreFactory().buildEnumerationLiteral(
                 "",  enumeration);
-        
-        // TODO: Bob - Performance - we shouldn't rebuild the entire
-        // compartment in fact do we have to do this at all? The Fig should be
-        // listening for the change to the model and act accordingly
-        populate();
-        
         TargetManager.getInstance().setTarget(literal);
     }
+    
+    
 }

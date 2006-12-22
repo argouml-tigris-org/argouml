@@ -289,4 +289,7 @@ public class FigStereotypesCompartment extends FigCompartment {
             lay.damageAll();
         }
     }
+
+    protected void createModelElement() {
+    }
 }

@@ -337,11 +337,6 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     }
 
     /**
-     * Create a new feature.
-     */
-    public abstract void createFeature();
-
-    /**
      * Fig representing separator for compartment.
      */
     protected static class FigSeperator extends FigLine {

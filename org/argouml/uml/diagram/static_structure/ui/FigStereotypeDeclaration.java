@@ -42,6 +42,7 @@ import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -79,7 +80,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
 //        addFig(tagsFig);
 //        addFig(constraintsFig);
 
-        addFig(borderFig);
+        addFig(getBorderFig());
 
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
@@ -198,7 +199,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
 
         // set bounds of big box
         getBigPort().setBounds(x, y, w, h);
-        borderFig.setBounds(x, y, w, h);
+        getBorderFig().setBounds(x, y, w, h);
 
         // Save our old boundaries (needed later), and get minimum size
         // info. "whitespace" will be used to maintain a running calculation

@@ -1091,7 +1091,7 @@ public abstract class FigNodeModelElement
                 if (f2 instanceof MouseListener) {
                     ((MouseListener) f2).mouseClicked(me);
                 } else {
-                    createFeatureIn((FigGroup) f, me);
+                    createContainedModelElement((FigGroup) f, me);
                 }
             }
         }
@@ -1185,8 +1185,22 @@ public abstract class FigNodeModelElement
      * @param fg The fig group to which this applies
      * @param me The input event that triggered us. In the current
      *            implementation a mouse double click.
+     *            @deprecated in 0.12.5 use {@link #createContainedModelElement(FigGroup, InputEvent)}
      */
-    protected void createFeatureIn(FigGroup fg, InputEvent me) {
+    protected final void createFeatureIn(FigGroup fg, InputEvent me) {
+	createContainedModelElement(fg, me);
+    }
+
+    /**
+     * Create a new model element contained in the fig owner.
+     * Used by subclasses to, for example, create an attribute
+     * within a class.
+     *
+     * @param fg The fig group to which this applies
+     * @param me The input event that triggered us. In the current
+     *            implementation a mouse double click.
+     */
+    protected void createContainedModelElement(FigGroup fg, InputEvent me) {
         // must be overridden to make sense
         // (I didn't want to make it abstract because it might not be required)
     }
