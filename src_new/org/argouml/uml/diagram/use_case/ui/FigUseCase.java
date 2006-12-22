@@ -993,7 +993,7 @@ public class FigUseCase extends FigNodeModelElement
 	} else if (me.getClickCount() >= 2
 		   && !(me.isPopupTrigger()
 			|| me.getModifiers() == InputEvent.BUTTON3_MASK)) {
-	    createFeatureIn(epVec, me);
+	    createContainedModelElement(epVec, me);
 	}
     }
 
@@ -1069,7 +1069,7 @@ public class FigUseCase extends FigNodeModelElement
      * @param ie  The input event that triggered us. In the current
      *            implementation a mouse double click.
      */
-    protected void createFeatureIn(FigGroup fg, InputEvent ie) {
+    protected void createContainedModelElement(FigGroup fg, InputEvent ie) {
 
         // Give up if we don't have an owner
         if (getOwner() == null) {

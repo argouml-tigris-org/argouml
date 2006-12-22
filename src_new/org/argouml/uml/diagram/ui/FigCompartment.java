@@ -117,4 +117,17 @@ public abstract class FigCompartment extends FigGroup {
         getBigPort().setBounds(x, y, newW, newH);
         calcBounds();
     }
+    
+    /**
+     * Create a new feature.
+     * @deprecated in 0.12.5 use {@link #createModelElement()}
+     */
+    public void createFeature() {
+	createModelElement();
+    }
+
+    /**
+     * Create a new model element for the compartment.
+     */
+    protected abstract void createModelElement();
 }

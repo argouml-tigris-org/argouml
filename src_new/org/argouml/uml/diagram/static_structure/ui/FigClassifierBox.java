@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.Iterator;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;

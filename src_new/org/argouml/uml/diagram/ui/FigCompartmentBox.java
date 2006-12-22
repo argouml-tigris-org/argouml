@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.static_structure.ui;
+package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -31,10 +31,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.CompartmentFigText;
-import org.argouml.uml.diagram.ui.FigEmptyRect;
-import org.argouml.uml.diagram.ui.FigFeaturesCompartment;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.static_structure.ui.SelectionClass;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -52,14 +49,14 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     /**
      * Text highlighted by mouse actions on the diagram.<p>
      */
-    protected CompartmentFigText highlightedFigText;
+    private CompartmentFigText highlightedFigText;
 
-    protected Fig borderFig;
+    private Fig borderFig;
     
     /**
      * Constructor.
      */
-    FigCompartmentBox() {
+    public FigCompartmentBox() {
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
@@ -182,15 +179,15 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#createFeatureIn(
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#createContainedModelElement(
      *         org.tigris.gef.presentation.FigGroup,
      *         java.awt.event.InputEvent)
      */
-    protected void createFeatureIn(FigGroup fg, InputEvent ie) {
+    protected void createContainedModelElement(FigGroup fg, InputEvent ie) {
         if (!(fg instanceof FigFeaturesCompartment)) {
             return;
         }
-        ((FigFeaturesCompartment) fg).createFeature();
+        ((FigFeaturesCompartment) fg).createModelElement();
         List figList = fg.getFigs();
         CompartmentFigText ft =
             (CompartmentFigText) figList.get(figList.size() - 1);
@@ -200,5 +197,9 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             highlightedFigText = ft;
         }
         ie.consume();
+    }
+    
+    protected Fig getBorderFig() {
+	return borderFig;
     }
 }

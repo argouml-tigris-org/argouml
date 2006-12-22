@@ -84,7 +84,7 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
     /*
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#createFeature()
      */
-    public void createFeature() {
+    protected void createModelElement() {
         Object classifier = getGroup().getOwner();
         Project project = ProjectManager.getManager().getCurrentProject();
         Object intType = project.findType("int");
@@ -93,12 +93,6 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
                 classifier,
                 model,
                 intType);
-        
-        // TODO: Bob - Performance - we shouldn't rebuild the entire
-        // compartment in fact do we have to do this at all? The Fig should be
-        // listening for the change to the model and act accordingly
-        populate();
-        
         TargetManager.getInstance().setTarget(attr);
     }
 }
