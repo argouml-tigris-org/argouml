@@ -72,6 +72,8 @@ import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.InvalidElementException;
@@ -1143,9 +1145,17 @@ public abstract class FigNodeModelElement
     // internal methods
 
     /**
-     * This is called after any part of the UML MModelElement has
-     * changed. This method automatically updates the name FigText.
-     * Subclasses should override and update other parts.
+     * This is called after any part of the UML ModelElement has
+     * changed. This method automatically updates the stereotype rendering, 
+     * and updates all listeners for the stereotypes.
+     * Updating the listeners for the name notation is delegated 
+     * to the notation provider for the name.
+     * Subclasses should override and update other parts. <p>
+     * 
+     * For e.g. a Package, if the visibility is changed 
+     * via the properties panel, then
+     * the display of it on the diagram has to follow the change.
+     * This is not handled here, but by the notationProviderName.
      *
      * @param mee the ModelElementEvent that caused the change
      */
@@ -1160,8 +1170,9 @@ public abstract class FigNodeModelElement
         if (owner == null) {
             return;
         }
-        if ("name".equals(mee.getPropertyName())
-                && mee.getSource() == owner) {
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            notationProviderName.updateListener(this, getOwner(), mee);
             updateNameText();
             damage();
         }
@@ -1306,10 +1317,13 @@ public abstract class FigNodeModelElement
      * @param own the current owner
      */
     protected void initNotationProviders(Object own) {
+        if (notationProviderName != null) {
+            notationProviderName.cleanListener(this, own);
+        }
         if (Model.getFacade().isAModelElement(own)) {
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_NAME, own);
+                        NotationProviderFactory2.TYPE_NAME, own, this);
             npArguments.put("pathVisible", Boolean.valueOf(isPathVisible()));
         }
     }
@@ -1577,6 +1591,7 @@ public abstract class FigNodeModelElement
     }
     
     protected void removeFromDiagramImpl() {
+        notationProviderName.cleanListener(this, getOwner());
         ArgoEventPump.removeListener(this);
         removeAllElementListeners();
         shadowSize = 0;

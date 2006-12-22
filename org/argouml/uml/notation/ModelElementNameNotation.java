@@ -24,6 +24,8 @@
 
 package org.argouml.uml.notation;
 
+import java.beans.PropertyChangeListener;
+
 import org.argouml.model.Model;
 
 /**
@@ -46,5 +48,21 @@ public abstract class ModelElementNameNotation extends NotationProvider {
         }
     }
 
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
+     */
+    public void initialiseListener(PropertyChangeListener listener, 
+            Object modelElement) {
+        /* Listen to the modelelement itself: */
+        addElementListener(listener, modelElement, 
+                new String[] {"name", "visibility"});
+        /* Listen to name changes in the path (usefull for e.g. Package): */
+        Object ns = Model.getFacade().getNamespace(modelElement);
+        while (ns != null && !Model.getFacade().isAModel(ns)) {
+            addElementListener(listener, ns,
+                new String[] {"name", "namespace"});
+            ns = Model.getFacade().getNamespace(ns);
+        }
+    }
 
 }
