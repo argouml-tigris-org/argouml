@@ -25,6 +25,7 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -66,18 +67,12 @@ public class UMLUseCaseExtensionPointListModel
     /*
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
      */
-    protected void moveDown(int index1) {
-        int index2 = index1 + 1;
+    protected void moveDown(int index) {
         Object usecase = getTarget();
         List c = new ArrayList(Model.getFacade().getExtensionPoints(usecase));
-        Object mem1 = c.get(index1);
-        Object mem2 = c.get(index2);
-        List cc = new ArrayList(c);
-        cc.remove(mem1);
-        cc.remove(mem2);
-        Model.getUseCasesHelper().setExtensionPoints(usecase, cc);
-        c.set(index1, mem2);
-        c.set(index2, mem1);
-        Model.getUseCasesHelper().setExtensionPoints(usecase, c);
+        if (index < c.size() - 1) {
+            Collections.swap(c, index, index + 1);
+            Model.getUseCasesHelper().setExtensionPoints(usecase, c);
+        }
     }
 }

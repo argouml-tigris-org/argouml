@@ -133,9 +133,11 @@ class UMLActionSequenceActionListModel
     protected void moveDown(int index) {
         Object target = getTarget();
         List c = Model.getFacade().getActions(target);
-        Object item = c.get(index);
-        Model.getCommonBehaviorHelper().removeAction(target, item);
-        Model.getCommonBehaviorHelper().addAction(target, index + 1, item);
+        if (index < c.size() - 1) {
+            Object item = c.get(index);
+            Model.getCommonBehaviorHelper().removeAction(target, item);
+            Model.getCommonBehaviorHelper().addAction(target, index + 1, item);
+        }
     }
 }
 

@@ -73,10 +73,13 @@ public abstract class UMLModelElementOrderedListModel2
     protected abstract boolean isValidElement(Object element);
 
     /**
-     * Move an elements from the given position down 1 index
-     * The list will then be updated by the events/listener mechanism.
-     *
-     * @param index the existing position
+     * Move a element from the given position down one position. Anyone
+     * listening to the model will then be updated by the events/listener
+     * mechanism.  If the element is already the last elemnt in the list, 
+     * nothing is done.
+     * 
+     * @param index
+     *            the current position
      */
     protected abstract void moveDown(int index);
 

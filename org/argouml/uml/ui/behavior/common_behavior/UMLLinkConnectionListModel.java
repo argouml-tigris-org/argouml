@@ -25,6 +25,7 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -64,21 +65,20 @@ public class UMLLinkConnectionListModel
     /*
      * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
      */
-    protected void moveDown(int index1) {
-        int index2 = index1 + 1;
+    protected void moveDown(int index) {
         Object link = getTarget();
         List c = new ArrayList(Model.getFacade().getConnections(link));
-        Object mem1 = c.get(index1);
-        Object mem2 = c.get(index2);
-        c.set(index1, mem2);
-        c.set(index2, mem1);
-        Model.getCoreHelper().setConnections(link, c);
-        buildModelList();
+        if (index < c.size() - 1) {
+            Collections.swap(c, index, index + 1);
+            Model.getCoreHelper().setConnections(link, c);
+            // TODO: Should this buildModelList be here? - tfm
+            buildModelList();
         
         /* The MDR model does not support the 2nd method below for LinkEnds.
          * Hence we can not replace the above inefficient code 
          * by the code below. */
 //        Model.getCoreHelper().removeConnection(link, mem1);
 //        Model.getCoreHelper().addConnection(link, index2, mem1);
+        }
     }
 }
