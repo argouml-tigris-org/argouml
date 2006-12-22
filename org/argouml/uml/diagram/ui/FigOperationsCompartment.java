@@ -26,15 +26,12 @@
 package org.argouml.uml.diagram.ui;
 
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.argouml.uml.diagram.static_structure.ui.FigOperation;
 import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
@@ -80,44 +77,18 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#addExtraVisualisations(java.lang.Object, org.argouml.uml.diagram.ui.CompartmentFigText)
      */
     protected void addExtraVisualisations(Object umlObject, 
-            FigSingleLineText comp) {
-        // underline, if static
-        comp.setUnderline(
-                Model.getScopeKind().
-                getClassifier().equals(Model.getFacade().
-                        getOwnerScope(umlObject)));
-    }
-
-    /**
-     * Add handling abstract operations; they
-     * are shown in italics.
-     * TODO: This logic should be within FigOperation
-     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#populate()
-     */
-    public void populate() {
-        super.populate();
-
-        if (!isVisible()) {
-            return;
-        }
-
-        List figs = getFigs();
-        Iterator i = figs.iterator();
-        while (i.hasNext()) {
-            Object candidate = i.next();
-            if (candidate instanceof CompartmentFigText) {
-                CompartmentFigText f = (CompartmentFigText) candidate;
-                Object owner = f.getOwner();
-                
-                if (Model.getFacade().isAbstract(owner)) {
-                    f.setFont(FigNodeModelElement.getItalicLabelFont());
-                } else {
-                    f.setFont(FigNodeModelElement.getLabelFont());
-                }
-            }
+            CompartmentFigText comp) {
+        // underline, if static (Classifier scope)
+        comp.setUnderline(Model.getScopeKind().getClassifier().equals(
+                Model.getFacade().getOwnerScope(umlObject)));
+        // Italics if abstract
+        if (Model.getFacade().isAbstract(umlObject)) {
+            comp.setFont(FigNodeModelElement.getItalicLabelFont());
+        } else {
+            comp.setFont(FigNodeModelElement.getLabelFont());
         }
     }
-    
+
     protected FigSingleLineText createFigText(
 	    int x, int y, int w, int h, Fig aFig, NotationProvider np) {
         return new FigOperation(x, y, w, h, aFig, np);
