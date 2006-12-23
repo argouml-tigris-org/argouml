@@ -63,6 +63,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
@@ -777,9 +778,13 @@ public abstract class FigEdgeModelElement
             // No need to update if model element went away
             return;
         }
-        if (e.getSource() == getOwner()
-                && "name".equals(e.getPropertyName())) {
-            updateNameText();
+        if (notationProviderName != null) {
+            if (e instanceof AssociationChangeEvent 
+                    || e instanceof AttributeChangeEvent) {
+                notationProviderName.updateListener(this, getOwner(), e);
+                updateNameText();
+                damage();
+            }
         }
 
         updateStereotypeText();
@@ -862,13 +867,26 @@ public abstract class FigEdgeModelElement
      * @param own the current owner
      */
     protected void initNotationProviders(Object own) {
+        if (notationProviderName != null) {
+            notationProviderName.cleanListener(this, own);
+        }
         if (Model.getFacade().isAModelElement(own)) {
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_NAME, own);
+                        getNotationProviderType(), own, this);
         }
     }
-    
+
+    /**
+     * Overrule this for subclasses 
+     * that need a different NotationProvider.
+     * 
+     * @return the type of the notation provider
+     */
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_NAME;
+    }
+
     /**
      * Implementations of this method should register/unregister the fig for all
      * (model)events. For FigEdgeModelElement only the fig itself is registered
@@ -1008,6 +1026,7 @@ public abstract class FigEdgeModelElement
             removeElementListener(o);
         }
         ArgoEventPump.removeListener(this);
+        notationProviderName.cleanListener(this, getOwner());
 
         Iterator it = getPathItemFigs().iterator();
         while (it.hasNext()) {

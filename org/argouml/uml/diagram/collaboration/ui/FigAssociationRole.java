@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigMessage;
@@ -72,33 +71,11 @@ public class FigAssociationRole extends FigAssociation {
     	setOwner(edge);
     }
 
-    /**
-     * Create the NotationProviders.
-     * 
-     * @param own the current owner
-     */
-    protected void initNotationProviders(Object own) {
-        if (Model.getFacade().isAAssociationRole(own)) {
-            notationProviderName =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_ASSOCIATION_ROLE, 
-                        own);
-        }
-    }
-    
     /*
-     * @see org.argouml.uml.diagram.ui.FigAssociation#updateListeners(
-     *      java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getNotationProviderType()
      */
-    public void updateListeners(Object oldOwner, Object newOwner) {
-        super.updateListeners(oldOwner, newOwner);
-        if (newOwner != null) {
-            /* Also listen to the base: */
-            Object assoc = Model.getFacade().getBase(newOwner);
-            if (assoc != null) {
-                addElementListener(assoc);
-            }
-        }
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_ASSOCIATION_ROLE;
     }
 
     /**
