@@ -24,6 +24,8 @@
 
 package org.argouml.uml.notation;
 
+import java.beans.PropertyChangeListener;
+
 import org.argouml.model.Model;
 
 /**
@@ -44,6 +46,17 @@ public abstract class AssociationRoleNotation extends NotationProvider {
         if (!Model.getFacade().isAAssociationRole(role)) {
             throw new IllegalArgumentException(
                     "This is not an AssociationRole.");
+        }
+    }
+
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
+     */
+    public void initialiseListener(PropertyChangeListener listener, Object modelElement) {
+        addElementListener(listener, modelElement);
+        Object assoc = Model.getFacade().getBase(modelElement);
+        if (assoc != null) {
+            addElementListener(listener, assoc);
         }
     }
 

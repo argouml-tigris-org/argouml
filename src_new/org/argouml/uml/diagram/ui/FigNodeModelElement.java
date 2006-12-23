@@ -1170,11 +1170,13 @@ public abstract class FigNodeModelElement
         if (owner == null) {
             return;
         }
-        if (mee instanceof AssociationChangeEvent 
-                || mee instanceof AttributeChangeEvent) {
-            notationProviderName.updateListener(this, getOwner(), mee);
-            updateNameText();
-            damage();
+        if (notationProviderName != null) {
+            if (mee instanceof AssociationChangeEvent 
+                    || mee instanceof AttributeChangeEvent) {
+                notationProviderName.updateListener(this, getOwner(), mee);
+                updateNameText();
+                damage();
+            }
         }
         if ((mee.getSource() == owner
                 && mee.getPropertyName().equals("stereotype"))) {
