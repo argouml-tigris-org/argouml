@@ -24,6 +24,15 @@
 
 package org.argouml.uml.notation;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+
 /**
  * This abstract class forms the basis of all Notation providers
  * for the text shown next to the end of an association.
@@ -37,6 +46,54 @@ public abstract class AssociationEndNameNotation extends NotationProvider {
      * The constructor. 
      */
     protected AssociationEndNameNotation() {
+    }
+
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#addListener(java.beans.PropertyChangeListener, java.lang.Object)
+     */
+    public void initialiseListener(PropertyChangeListener listener, 
+            Object modelElement) {
+        addElementListener(
+                listener, 
+                modelElement, 
+                new String[] {"name", "visibility", "stereotype"});
+        Collection stereotypes =
+                Model.getFacade().getStereotypes(modelElement);
+        Iterator iter = stereotypes.iterator();
+        while (iter.hasNext()) {
+            Object o = iter.next();
+            addElementListener(
+                    listener, 
+                    o, 
+                    new String[] {"name", "remove"});
+        }
+    }
+
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#updateListener(java.beans.PropertyChangeListener, java.lang.Object, java.beans.PropertyChangeEvent)
+     */
+    public void updateListener(PropertyChangeListener listener, 
+            Object modelElement,
+            PropertyChangeEvent pce) {
+        Object obj = pce.getSource();
+        if ((obj == modelElement) 
+                && "stereotype".equals(pce.getPropertyName())) {
+            if (pce instanceof AddAssociationEvent 
+                    && Model.getFacade().isAStereotype(pce.getNewValue())) {
+                // new stereotype
+                addElementListener(
+                        listener, 
+                        pce.getNewValue(), 
+                        new String[] {"name", "remove"});
+            }
+            if (pce instanceof RemoveAssociationEvent 
+                    && Model.getFacade().isAStereotype(pce.getOldValue())) {
+                // removed stereotype
+                removeElementListener(
+                        listener, 
+                        pce.getOldValue());
+            }
+        }
     }
 
 }
