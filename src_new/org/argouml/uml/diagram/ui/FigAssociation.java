@@ -83,12 +83,12 @@ public class FigAssociation extends FigEdgeModelElement {
     /**
      * Group for the FigTexts concerning the source association end.
      */
-    protected FigAssociationEndAnnotation srcGroup;
+    private FigAssociationEndAnnotation srcGroup;
 
     /**
      * Group for the FigTexts concerning the dest association end.
      */
-    protected FigAssociationEndAnnotation destGroup;
+    private FigAssociationEndAnnotation destGroup;
 
     /**
      * Group for the FigTexts concerning the name and stereotype of the
@@ -518,6 +518,7 @@ class FigMultiplicity extends FigSingleLineText
         assert getOwner() != null;
         Object multi = Model.getFacade().getMultiplicity(getOwner());
         setText(NotationUtilityUml.generateMultiplicity(multi));
+        damage();
     }
 }
 
@@ -540,6 +541,7 @@ class FigOrdering extends FigSingleLineText {
     protected void setText() {
         assert getOwner() != null;
         setText(getOrderingName(Model.getFacade().getOrdering(getOwner())));
+        damage();
     }
 
     /**
@@ -580,6 +582,8 @@ class FigRole extends FigSingleLineText
 
     FigRole() {
         super(10, 10, 90, 20, false/*, 
+        // no need to listen to these property changes - the 
+        // notationProvider takes care of this.
                 new String[] {"name", "visibility", "stereotype"}*/);
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
@@ -772,13 +776,14 @@ class FigAssociationEndAnnotation extends FigTextGroup {
                 || pce.getPropertyName().equals("aggregation"))) {
             determineArrowHead();
             ((FigAssociation) figEdge).applyArrowHeads();
+            damage();
         }
         if (pce instanceof AddAssociationEvent
                 && pce.getPropertyName().equals("participant")) {
             figEdge.determineFigNodes();
         }
     }
-    
+
     /**
      * Decide which arrow head should appear
      */
