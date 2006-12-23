@@ -26,8 +26,6 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
@@ -130,12 +128,23 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
+        if (notationProviderSrcRole != null) {
+            notationProviderSrcRole.cleanListener(this, own);
+        }
         if (Model.getFacade().isAAssociationEnd(own)) {
             notationProviderSrcRole =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                        own);
+                        own, this);
         }
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#removeFromDiagramImpl()
+     */
+    public void removeFromDiagramImpl() {
+        notationProviderSrcRole.cleanListener(this, getOwner());
+        super.removeFromDiagramImpl();
     }
 
     /*
@@ -155,12 +164,6 @@ public class FigAssociationEnd extends FigEdgeModelElement {
             /* Many different event types are needed, 
              * so let's register for them all: */
             addElementListener(newOwner);
-            /* Now let's collect related elements: */
-            ArrayList connections = new ArrayList();
-            connections.addAll(Model.getFacade().getStereotypes(newOwner));
-            for (Iterator i = connections.iterator(); i.hasNext();) {
-                addElementListener(i.next());
-            }
         }
     }
 
@@ -239,6 +242,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
                 || e instanceof AssociationChangeEvent) {
             renderingChanged();
             updateListeners(getOwner(), getOwner());
+            notationProviderSrcRole.updateListener(this, getOwner(), e);
         }
     }
 

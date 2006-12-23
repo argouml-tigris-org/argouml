@@ -24,17 +24,12 @@
 
 package org.argouml.uml.notation.uml;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
+
 import org.argouml.i18n.Translator;
-import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.AssociationEndNameNotation;
 import org.argouml.util.MyTokenizer;
@@ -46,11 +41,6 @@ import org.argouml.util.MyTokenizer;
  * @author michiel
  */
 public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
-
-    /**
-     * The stereotypes of interest to this notation
-     */
-    private ArrayList stereotypes;
 
     /**
      * Create a new instance of AssociationEndNameNotationUml
@@ -65,76 +55,6 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
      */
     protected AssociationEndNameNotationUml() {
         super();
-    }
-
-    /*
-     * @see org.argouml.uml.notation.NotationProvider#addListener(java.beans.PropertyChangeListener, java.lang.Object)
-     */
-    public void initialiseListener(PropertyChangeListener listener, 
-            Object modelElement) {
-        Model.getPump().addModelEventListener(
-                listener, 
-                modelElement, 
-                new String[] {"name", "visibility", "stereotype"});
-        stereotypes =
-        	new ArrayList(Model.getFacade().getStereotypes(modelElement));
-        Iterator iter = stereotypes.iterator();
-        while (iter.hasNext()) {
-            Object o = iter.next();
-            Model.getPump().addModelEventListener(
-                    listener, 
-                    o, 
-                    new String[] {"name", "remove"});
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.notation.NotationProvider#removeListener(java.beans.PropertyChangeListener, java.lang.Object)
-     */
-    public void cleanListener(PropertyChangeListener listener, 
-            Object modelElement) {
-        Model.getPump().removeModelEventListener(
-                listener, 
-                modelElement, 
-                new String[] {"name", "visibility", "stereotype"});
-        Iterator iter = stereotypes.iterator();
-        while (iter.hasNext()) {
-            Object o = iter.next();
-            Model.getPump().removeModelEventListener(
-                    listener, 
-                    o, 
-                    new String[] {"name", "remove"});
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.notation.NotationProvider#updateListener(java.beans.PropertyChangeListener, java.lang.Object, java.beans.PropertyChangeEvent)
-     */
-    public void updateListener(PropertyChangeListener listener, 
-            Object modelElement,
-            PropertyChangeEvent pce) {
-        Object obj = pce.getSource();
-        if ((obj == modelElement) 
-                && "stereotype".equals(pce.getPropertyName())) {
-            if (pce instanceof AddAssociationEvent 
-                    && Model.getFacade().isAStereotype(pce.getNewValue())) {
-                // new stereotype
-                Model.getPump().addModelEventListener(
-                        listener, 
-                        pce.getNewValue(), 
-                        new String[] {"name", "remove"});
-                stereotypes.add(pce.getNewValue());
-            }
-            if (pce instanceof RemoveAssociationEvent 
-                    && Model.getFacade().isAStereotype(pce.getOldValue())) {
-                // removed stereotype
-                Model.getPump().removeModelEventListener(
-                        listener, 
-                        pce.getOldValue(), 
-                        new String[] {"name", "remove"});
-                stereotypes.remove(pce.getOldValue());
-            }
-        }
     }
 
     /*
