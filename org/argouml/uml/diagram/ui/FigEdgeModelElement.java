@@ -782,12 +782,9 @@ public abstract class FigEdgeModelElement
             if (e instanceof AssociationChangeEvent 
                     || e instanceof AttributeChangeEvent) {
                 notationProviderName.updateListener(this, getOwner(), e);
-                updateNameText();
-                damage();
+                renderingChanged();
             }
         }
-
-        updateStereotypeText();
 
         // Update attached node figures
         // TODO: Presumably this should only happen on a add or remove event
