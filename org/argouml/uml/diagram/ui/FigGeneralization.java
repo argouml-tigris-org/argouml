@@ -39,6 +39,8 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 /**
+ * The Fig for a Generalization.
+ * 
  * @author abonner@ics.uci.edu, jaap.branderhorst@xs4all.nl
  */
 public class FigGeneralization extends FigEdgeModelElement {
@@ -58,14 +60,6 @@ public class FigGeneralization extends FigEdgeModelElement {
      */
     private FigText discriminator = new FigText(10, 30, 90, 20);
 
-    /**
-     * Group of text elements to be positioned at the middle of path.
-     */
-    private FigTextGroup middleGroup = new FigTextGroup();
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     private ArrowHeadTriangle endArrow;
 
     /**
@@ -73,22 +67,14 @@ public class FigGeneralization extends FigEdgeModelElement {
      */
     public FigGeneralization() {
         // UML spec for Generalizations doesn't call for name or stereotype
-//        middleGroup.addFig(getNameFig());
-//        middleGroup.addFig(getStereotypeFig());
-//        middleGroup.calcBounds();
-//        addPathItem(middleGroup,
-//                new PathConvPercent2(this, middleGroup, 50, 25));
-	endArrow = new ArrowHeadTriangle();
 
 	discriminator.setFont(getLabelFont());
-	discriminator.setTextColor(Color.black);
-	discriminator.setTextFilled(false);
-	discriminator.setFilled(false);
 	discriminator.setLineWidth(0);
-	discriminator.setExpandOnly(false);
 	discriminator.setReturnAction(FigText.END_EDITING);
 	discriminator.setTabAction(FigText.END_EDITING);
 	addPathItem(discriminator, new PathConvPercent(this, 40, -10));
+
+        endArrow = new ArrowHeadTriangle();
 	endArrow.setFillColor(Color.white);
 	setDestArrowHead(endArrow);
 	setBetweenNearestPoints(true);
@@ -97,7 +83,6 @@ public class FigGeneralization extends FigEdgeModelElement {
 	    setLayer(ProjectManager.getManager()
 		     .getCurrentProject().getActiveDiagram().getLayer());
 	}
-
     }
 
     /**
@@ -113,15 +98,6 @@ public class FigGeneralization extends FigEdgeModelElement {
 
     }
 
-//    /**
-//     * The constructor that hooks the Fig into the UML element
-//     * @param edge the UML element
-//     */
-//    private FigGeneralization(Object edge) {
-//  	this();
-//  	setOwner(edge);
-//    }
-
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
      */
@@ -136,8 +112,6 @@ public class FigGeneralization extends FigEdgeModelElement {
     protected void modelChanged(PropertyChangeEvent e) {
         // Name & stereotypes get updated by superclass
         super.modelChanged(e);
-        // But we need to recompute the textgroup
-        middleGroup.calcBounds();
         // Update the discriminator if it changed
         if (e instanceof AttributeChangeEvent
                 && "discriminator".equals(e.getPropertyName())) {
@@ -151,11 +125,12 @@ public class FigGeneralization extends FigEdgeModelElement {
      * and on construction time.
      */
     public void updateDiscriminatorText() {
-  	Object me = getOwner(); // MGeneralization
-  	if (me == null) {
+  	Object generalization = getOwner();
+  	if (generalization == null) {
 	    return;
   	}
-  	String disc = (String) Model.getFacade().getDiscriminator(me);
+  	String disc = 
+            (String) Model.getFacade().getDiscriminator(generalization);
   	if (disc == null) {
 	    disc = "";
   	}
@@ -178,10 +153,10 @@ public class FigGeneralization extends FigEdgeModelElement {
         if (Model.getFacade().isAGeneralization(own)) {
             Object gen = own;	// MGeneralization
             Object subType =
-        	Model.getFacade().getChild(gen); // MGeneralizableElement
+        	Model.getFacade().getChild(gen); // GeneralizableElement
             Object superType =
-        	Model.getFacade().getParent(gen); // MGeneralizableElement
-            // due to errors in earlier releases of argouml it can
+        	Model.getFacade().getParent(gen); // GeneralizableElement
+            // Due to errors in earlier releases of argouml it can
             // happen that there is a generalization without a child
             // or parent.
             // TODO: Move into XSL. We should not remove from the graph model
@@ -192,6 +167,7 @@ public class FigGeneralization extends FigEdgeModelElement {
                 removeFromDiagram();
         	return;
             }
+            updateDiscriminatorText(); // show it
         } else if (own != null) {
             throw new IllegalStateException(
                     "FigGeneralization has an illegal owner of "
