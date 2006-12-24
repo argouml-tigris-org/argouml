@@ -308,7 +308,7 @@ public abstract class FigNodeModelElement
      * The main constructor.
      *
      */
-    public FigNodeModelElement() {
+    protected FigNodeModelElement() {
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
         bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
@@ -348,14 +348,13 @@ public abstract class FigNodeModelElement
      *
      * @param gm ignored
      * @param node the owning UML element
+     * @deprecated in 0.23.5 not used in ArgoUML will be removed in future
      */
-    public FigNodeModelElement(GraphModel gm, Object node) {
+    protected FigNodeModelElement(GraphModel gm, Object node) {
         this();
         setOwner(node);
         nameFig.setText(placeString());
         readyToEdit = false;
-
-        //ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
     /**
@@ -365,13 +364,12 @@ public abstract class FigNodeModelElement
      * @param x horizontal location
      * @param y vertical location
      */
-    public FigNodeModelElement(Object element, int x, int y) {
+    protected FigNodeModelElement(Object element, int x, int y) {
         this();
         setOwner(element);
         nameFig.setText(placeString());
         readyToEdit = false;
         setLocation(x, y);
-        //ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
     /*
@@ -1198,7 +1196,8 @@ public abstract class FigNodeModelElement
      * @param fg The fig group to which this applies
      * @param me The input event that triggered us. In the current
      *            implementation a mouse double click.
-     *            @deprecated in 0.12.5 use {@link #createContainedModelElement(FigGroup, InputEvent)}
+     *            @deprecated in 0.12.5 use
+     *            {@link #createContainedModelElement(FigGroup, InputEvent)}
      */
     protected final void createFeatureIn(FigGroup fg, InputEvent me) {
 	createContainedModelElement(fg, me);
