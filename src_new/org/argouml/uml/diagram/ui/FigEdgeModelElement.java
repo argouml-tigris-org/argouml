@@ -782,6 +782,7 @@ public abstract class FigEdgeModelElement
             if (e instanceof AssociationChangeEvent 
                     || e instanceof AttributeChangeEvent) {
                 notationProviderName.updateListener(this, getOwner(), e);
+                updateListeners(getOwner(), getOwner());
                 renderingChanged();
             }
         }
@@ -854,8 +855,8 @@ public abstract class FigEdgeModelElement
             edgePort.setOwner(getOwner());
         }
         initNotationProviders(owner);
-        renderingChanged();
         updateListeners(null, owner);
+        renderingChanged();
     }
 
     /**
@@ -886,18 +887,18 @@ public abstract class FigEdgeModelElement
 
     /**
      * Implementations of this method should register/unregister the fig for all
-     * (model)events. For FigEdgeModelElement only the fig itself is registered
+     * (model)events that may cause a repaint to be necessary.
+     * For FigEdgeModelElement only the fig itself is registered
      * as listening to (all) events fired by the owner itself. 
      * But for, for example,
      * FigAssociation the fig must also register for events fired by the
      * stereotypes of the owner. <p>
      * 
-     * This function is used by the modelChanged() function.
-     * <p>
+     * In other cases, there is no need to register for any event, 
+     * e.g. when a notationProvider is used. <p>
      * 
-     * In this case, it is imperative that indeed ALL listeners are 
-     * updated, since they are ALL removed by 
-     * the call to removeElementListener. 
+     * This function is used in 2 places: at creation (load) time of this Fig, 
+     * and by the modelChanged() function, i.e. when the model changes.
      * 
      * @param newOwner the new owner for the listeners, 
      *          or null if all listeners have to be removed
