@@ -24,10 +24,12 @@
 
 package org.argouml.uml.notation;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 
 /**
@@ -71,6 +73,23 @@ public abstract class ObjectNotation extends NotationProvider {
         while (i.hasNext()) {
             Object st = i.next();
             addElementListener(listener, st, "name");
+        }
+    }
+
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#updateListener(java.beans.PropertyChangeListener, java.lang.Object, java.beans.PropertyChangeEvent)
+     */
+    public void updateListener(PropertyChangeListener listener, 
+            Object modelElement, PropertyChangeEvent pce) {
+        if (pce instanceof AttributeChangeEvent
+                && pce.getSource() == modelElement
+                && "classifier".equals(pce.getPropertyName())) {
+            if (pce.getOldValue() != null) {
+                removeElementListener(listener, pce.getOldValue());
+            }
+            if (pce.getNewValue() != null) {
+                addElementListener(listener, pce.getNewValue(), "name");
+            }
         }
     }
 
