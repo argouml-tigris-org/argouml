@@ -27,16 +27,11 @@ package org.argouml.uml.diagram.deployment.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
-import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -53,8 +48,6 @@ public class FigObject extends FigNodeModelElement {
     private FigRect cover;
     private Object resident =
             Model.getCoreFactory().createElementResidence();
-
-    private NotationProvider notationProvider;
 
     /**
      * Main constructor.
@@ -89,26 +82,10 @@ public class FigObject extends FigNodeModelElement {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#getNotationProviderType()
      */
-    protected void initNotationProviders(Object own) {
-        if (notationProvider != null) {
-            notationProvider.cleanListener(this, own);
-        }
-        super.initNotationProviders(own);
-        if (Model.getFacade().isAObject(own)) {
-            notationProvider =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_OBJECT, own, this);
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#removeFromDiagramImpl()
-     */
-    protected void removeFromDiagramImpl() {
-        notationProvider.cleanListener(this, getOwner());
-        super.removeFromDiagram();
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_OBJECT;
     }
 
     /*
@@ -126,19 +103,6 @@ public class FigObject extends FigNodeModelElement {
         figClone.cover = (FigRect) it.next();
         figClone.setNameFig((FigText) it.next());
         return figClone;
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent 
-                || mee instanceof AttributeChangeEvent) {
-            updateListeners(getOwner(), getOwner());
-            notationProvider.updateListener(this, getOwner(), mee);
-            renderingChanged();
-        }
     }
 
     /*
@@ -227,29 +191,6 @@ public class FigObject extends FigNodeModelElement {
         updateEdges();
     }
 
-
-    ////////////////////////////////////////////////////////////////
-    // user interaction methods
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        if (ft == getNameFig()) {
-            notationProvider.parse(getOwner(), ft.getText());
-            ft.setText(notationProvider.toString(getOwner(), null));
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
-     */
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp(notationProvider.getParsingHelp());
-        }
-    }
-
     /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
@@ -295,23 +236,6 @@ public class FigObject extends FigNodeModelElement {
             }
         }
 
-    }
-
-    /**
-     * The UID.
-     */
-    static final long serialVersionUID = -185736690375678962L;
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-     */
-    protected void updateNameText() {
-        if (isReadyToEdit()) {
-            getNameFig().setText(notationProvider.toString(getOwner(), null));
-        }
-        Dimension nameMin = getNameFig().getMinimumSize();
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, nameMin.width + 10, nameMin.height + 4);
     }
 
 } /* end class FigObject */
