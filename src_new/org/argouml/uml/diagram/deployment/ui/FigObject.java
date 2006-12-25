@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.AssociationChangeEvent;
@@ -51,17 +50,11 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigObject extends FigNodeModelElement {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private FigRect cover;
     private Object resident =
             Model.getCoreFactory().createElementResidence();
 
     private NotationProvider notationProvider;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Main constructor.
@@ -99,12 +92,23 @@ public class FigObject extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
     protected void initNotationProviders(Object own) {
+        if (notationProvider != null) {
+            notationProvider.cleanListener(this, own);
+        }
         super.initNotationProviders(own);
         if (Model.getFacade().isAObject(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_OBJECT, own);
+                    NotationProviderFactory2.TYPE_OBJECT, own, this);
         }
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#removeFromDiagramImpl()
+     */
+    protected void removeFromDiagramImpl() {
+        notationProvider.cleanListener(this, getOwner());
+        super.removeFromDiagram();
     }
 
     /*
@@ -131,35 +135,9 @@ public class FigObject extends FigNodeModelElement {
         super.modelChanged(mee);
         if (mee instanceof AssociationChangeEvent 
                 || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
             updateListeners(getOwner(), getOwner());
-            damage();
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
-     */
-    protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
-        if (newOwner != null) {
-            // add the listeners to the newOwner
-            addElementListener(newOwner);
-            // Add the following once we show stereotypes:
-//            Collection c = Model.getFacade().getStereotypes(newOwner);
-//            Iterator i = c.iterator();
-//            while (i.hasNext()) {
-//                Object st = i.next();
-//                addElementListener(st, "name");
-//            }
-            Collection c = Model.getFacade().getClassifiers(newOwner);
-            Iterator i = c.iterator();
-            while (i.hasNext()) {
-                Object st = i.next();
-                addElementListener(st, "name");
-            }
+            notationProvider.updateListener(this, getOwner(), mee);
+            renderingChanged();
         }
     }
 
