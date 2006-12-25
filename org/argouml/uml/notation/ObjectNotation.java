@@ -55,7 +55,8 @@ public abstract class ObjectNotation extends NotationProvider {
      */
     public void initialiseListener(PropertyChangeListener listener, 
             Object modelElement) {
-        addElementListener(listener, modelElement);
+        addElementListener(listener, modelElement, 
+                new String[] {"name", "classifier"});
 
         // Add the following once we show stereotypes:
 //      Collection c = Model.getFacade().getStereotypes(newOwner);
