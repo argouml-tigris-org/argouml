@@ -282,7 +282,9 @@ public class FigComponent extends FigNodeModelElement {
                 }
             }
         } else {
-            if (encloser == null && getEnclosingFig() != null) {
+            if (isVisible() 
+                    // If we are not visible most likely we're being deleted.
+                    && encloser == null && getEnclosingFig() != null) {
                 Object encloserOwner = getEnclosingFig().getOwner();
                 if (Model.getFacade().isANode(encloserOwner)
                         && (Model.getFacade().getDeploymentLocations(comp).
