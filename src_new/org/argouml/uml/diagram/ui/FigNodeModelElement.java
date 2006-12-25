@@ -1324,9 +1324,19 @@ public abstract class FigNodeModelElement
         if (Model.getFacade().isAModelElement(own)) {
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_NAME, own, this);
+                        getNotationProviderType(), own, this);
             npArguments.put("pathVisible", Boolean.valueOf(isPathVisible()));
         }
+    }
+
+    /**
+     * Overrule this for subclasses 
+     * that need a different NotationProvider.
+     * 
+     * @return the type of the notation provider
+     */
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_NAME;
     }
 
     /**
