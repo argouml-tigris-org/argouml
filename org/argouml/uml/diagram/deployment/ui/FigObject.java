@@ -211,7 +211,9 @@ public class FigObject extends FigNodeModelElement {
                         .setComponentInstance(me, mcompInst);
                 super.setEnclosingFig(encloser);
 
-            } else if (Model.getFacade().getComponentInstance(me) != null) {
+            } else if (isVisible() 
+                    // If we are not visible most likely we're being deleted.
+                    && Model.getFacade().getComponentInstance(me) != null) {
                 Model.getCommonBehaviorHelper().setComponentInstance(me, null);
                 super.setEnclosingFig(null);
             }

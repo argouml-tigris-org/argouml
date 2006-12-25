@@ -314,7 +314,9 @@ public class FigComponentInstance extends FigNodeModelElement {
                         }
                     }
                 }
-            } else if (encloser == null && getEnclosingFig() != null) {
+            } else if (isVisible() 
+                    // If we are not visible most likely we're being deleted.
+                    && encloser == null && getEnclosingFig() != null) {
                 if (Model.getFacade().getNodeInstance(comp) != null) {
                     Model.getCommonBehaviorHelper()
                             .setNodeInstance(comp, null);
