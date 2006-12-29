@@ -356,9 +356,10 @@ class PGMLStackParser
                 	|| destPortFig == null 
                 	|| sourceFigNode == null 
                 	|| destFigNode == null) {
-                    throw new SAXException("Can't find nodes for FigEdge: "
+                    LOG.error("Can't find nodes for FigEdge: "
                             + edge.getId() + ":"
                             + edge.toString());
+                    edge.removeFromDiagram();
                 } else {
                     edge.setSourcePortFig(sourcePortFig);
                     edge.setDestPortFig(destPortFig);
@@ -394,10 +395,8 @@ class PGMLStackParser
             if (f instanceof FigNode) {
                 return (FigNode) f;
             } else {
-        	// Note for issue 4524. With changes to PGMLStackParser since
-        	// 0.22 the exception trigger would now be here.
-                throw new IllegalStateException("FigID " + figId
-                        + " is not a node");
+        	LOG.error("FigID " + figId + " is not a node, edge ignored");
+                return null;
             }
         }
         // If the id does not look like a top-level Fig then we can assume that
