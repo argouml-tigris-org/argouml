@@ -460,7 +460,7 @@ public abstract class UMLDiagram
                 if (theAction instanceof RadioAction) {
                     otherAction = ((RadioAction) theAction).getAction();
                 }
-                if (!action.equals(otherAction)) {
+                if (action != null && !action.equals(otherAction)) {
                     tb.setSelected(false);
                     ButtonModel bm = tb.getModel();
                     bm.setRollover(false);

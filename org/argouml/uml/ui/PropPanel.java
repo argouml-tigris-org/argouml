@@ -24,11 +24,15 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -47,7 +51,6 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -60,7 +63,7 @@ import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.LabelledLayout;
 import org.tigris.swidgets.Orientation;
 import org.tigris.swidgets.Vertical;
-import org.tigris.toolbar.ToolBar;
+import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * This abstract class provides the basic layout and event dispatching support
@@ -88,9 +91,11 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     private EventListenerList listenerList;
 
-    private JToolBar buttonPanel;
+    private JPanel buttonPanel = new JPanel(new GridLayout());
 
     private JLabel titleLabel;
+    
+    private List actions = new ArrayList();
 
     private static Font stdFont =
         LookAndFeelMgr.getInstance().getStandardFont();
@@ -108,11 +113,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     public PropPanel(String title, ImageIcon icon, Orientation orientation) {
         super(title);
         setOrientation(orientation);
-        buttonPanel = new ToolBar();
-        buttonPanel.setFloatable(false);
-        // Set the tooltip of the arrow to open combined tools:
-        buttonPanel.putClientProperty("ToolBar.toolTipSelectTool",
-                Translator.localize("action.select"));
 
         LabelledLayout layout =
             new LabelledLayout(orientation == Vertical.getInstance());
@@ -157,7 +157,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      *            the action which will be used in the toolbar button.
      */
     protected void addAction(Action action) {
-        addAction(action, null);
+        this.actions.add(action);
     }
 
     /**
@@ -176,16 +176,26 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         }
         button.setText("");
         button.setFocusable(false);
-        buttonPanel.add(button);
+        actions.add(button);
     }
 
     /**
      * Add multiple buttons at once.
      *
-     * @param actions the Actions.
+     * @param actionArray the Actions.
      */
-    protected void addAction(Object[] actions) {
-        ToolBarUtility.addItemsToToolBar(buttonPanel, actions);
+    protected void addAction(Object[] actionArray) {
+        this.actions.add(actionArray);
+    }
+    
+    public void buildToolbar() {
+	JToolBar toolbar =
+	    ToolBarFactory.createToolBar(true, actions, false);
+	buttonPanel.removeAll();
+        buttonPanel.add(BorderLayout.WEST, toolbar);
+        // Set the tooltip of the arrow to open combined tools:
+        buttonPanel.putClientProperty("ToolBar.toolTipSelectTool",
+                Translator.localize("action.select"));
     }
 
     private static class TargettableButton extends JButton
