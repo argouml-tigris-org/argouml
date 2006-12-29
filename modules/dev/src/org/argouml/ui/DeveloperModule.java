@@ -30,6 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JTabbedPane;
 
+import org.apache.log4j.Logger;
 import org.argouml.dev.figinspector.FigInspectorPanel;
 import org.argouml.model.mdr.EventPumpInspectorPanel;
 import org.argouml.moduleloader.ModuleInterface;
@@ -45,6 +46,8 @@ import org.tigris.gef.undo.UndoManagerWrapper;
  */
 public final class DeveloperModule implements ModuleInterface {
 
+    private static final Logger LOG = Logger.getLogger(DeveloperModule.class);
+    
     /**
      * Wrapper.
      */
@@ -59,12 +62,12 @@ public final class DeveloperModule implements ModuleInterface {
     ////////////////////////////////////////////////////////////////
     // Main methods.
 
-    /**
+    /*
      * @see ModuleInterface#enable()
      */
     public boolean enable() {
         // TODO: Add a checkbox menu item to hide/show undo panel
-
+	LOG.info("Enabling developer module");
         UndoManager.setInstance(um);
         JMenu editMenu = ProjectBrowser.getInstance().getJMenuBar().getMenu(1);
         editMenu.getMenuComponent(0).setVisible(true);
@@ -90,11 +93,8 @@ public final class DeveloperModule implements ModuleInterface {
         return true;
     }
 
-    /**
+    /*
      * @see ModuleInterface#disable()
-     *
-     * This removes us from the Tools menu. If we were not registered there
-     * we don't care.
      */
     public boolean disable() {
         JMenu editMenu = ProjectBrowser.getInstance().getJMenuBar().getMenu(1);
@@ -109,14 +109,14 @@ public final class DeveloperModule implements ModuleInterface {
         return true;
     }
 
-    /**
+    /*
      * @see ModuleInterface#getName()
      */
     public String getName() {
         return "DeveloperModule";
     }
 
-    /**
+    /*
      * @see ModuleInterface#getInfo(int)
      */
     public String getInfo(int type) {
