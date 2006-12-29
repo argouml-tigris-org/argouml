@@ -284,18 +284,12 @@ class PGMLStackParser
     }
     
     /**
-     * This is called three times with the pass number incrementing
-     * First attaching all edges except FigEdgeAssociationClass and
-     * FigEdgeNote.
-     * Second for FigEdgeAssociationClass only and lastly for FigEdgeNote
-     * only.
-     * TODO: This was hacked up rather hurredly to fix a bug.
-     * A better implementation would be to pass through testing each
-     * edge to see if it is possible to attach and only attaching if so.
-     * The method should be called iteratively until all have been attached.
-     * If an iteration results in no attachments then an error has occured.
+     * This is called when all nodes and edges have been read and placed on
+     * the diagram. This method then attaches the edges to the correct node,
+     * including the nodes contained within edges allowing edge to edge
+     * connections for comment edges, association classes and dependencies.
      */
-    private void attachEdges() throws SAXException {
+    private void attachEdges() {
         Iterator it = figEdges.iterator();
         while (it.hasNext()) {
             EdgeData edgeData = (EdgeData) it.next();
@@ -311,20 +305,8 @@ class PGMLStackParser
             FigNode sourceFigNode = null;
             FigNode destFigNode = null;
             
-            try {
-                sourcePortFig = findFig(edgeData.getSourcePortFig());
-            } catch (IllegalStateException e) {
-                throw new SAXException("Can't find the source port of a "
-            	    + edge.getClass().getName() + " with id "
-            	    + edge.getId(), e);
-            }
-            try {
-                destPortFig = findFig(edgeData.getDestPortFig());
-            } catch (IllegalStateException e) {
-                throw new SAXException("Can't find the dest port of a "
-            	    + edge.getClass().getName() + " with id "
-            	    + edge.getId(), e);
-            }
+            sourcePortFig = findFig(edgeData.getSourcePortFig());
+            destPortFig = findFig(edgeData.getDestPortFig());
             sourceFigNode = getFigNode(edgeData.getSourceFigNode());
             destFigNode = getFigNode(edgeData.getDestFigNode());
             
