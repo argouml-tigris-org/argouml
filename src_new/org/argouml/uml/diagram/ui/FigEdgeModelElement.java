@@ -142,7 +142,7 @@ public abstract class FigEdgeModelElement
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    protected NotationProvider notationProviderName;
+    private NotationProvider notationProviderName;
     private HashMap npArguments = new HashMap();
 
     /**
@@ -627,10 +627,19 @@ public abstract class FigEdgeModelElement
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp(notationProviderName.getParsingHelp());
+            showHelp(getParsingHelp());
             ft.setText(notationProviderName.toString(getOwner(), npArguments));
         }
     }
+    
+    /**
+     * @return a i18 key that represents a help string
+     *         giving an explanation to the user of the syntax
+     */
+    protected String getParsingHelp() {
+	return notationProviderName.getParsingHelp();
+    }
+
 
     /**
      * Utility function to localize the given string with help text,
