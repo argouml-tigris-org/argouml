@@ -24,13 +24,16 @@
 
 package org.argouml.swingext;
 
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collection;
 
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.tigris.toolbar.ToolBarManager;
@@ -43,6 +46,9 @@ import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
  * @author Michiel
  */
 public class ToolBarUtility {
+    
+    private static final Logger LOG = Logger.getLogger(ToolBarUtility.class);
+    
     /**
      * Manages the selection of the default tool 
      * in a popup tool in the toolbar. <p>
@@ -138,6 +144,19 @@ public class ToolBarUtility {
         buttonPanel.add(button);
     }
     
+    /** 
+     * TODO: Use the following function to have a dropdown set of tools: 
+     * ToolBarFactory.addItemsToToolBar(buttonPanel, actions, true); 
+     * Instead, this temporary solution: 
+     *
+     * @param buttonPanel the toolbar
+     * @param actions an array of actions representing the tool layout
+     */
+    public static void addItemsToToolBar(JToolBar buttonPanel, 
+            Collection actions) {
+	addItemsToToolBar(buttonPanel, actions.toArray());
+    }
+    
     /**
      * TODO: Move this into the toolbar project.
      */
@@ -146,11 +165,14 @@ public class ToolBarUtility {
         PopupToolBoxButton toolBox = null;
         for (int i = 0; i < actions.length; ++i) {
             if (actions[i] instanceof Action) {
+                LOG.info("Adding a " + actions[i] + " to the toolbar");
                 Action a = (Action) actions[i];
                 if (toolBox == null) {
                     toolBox = new PopupToolBoxButton(a, 0, 1, rollover);
                 }
                 toolBox.add(a);
+            } else if (actions[i] instanceof Component) {
+                toolBox.add((Component) actions[i]);
             } else if (actions[i] instanceof Object[]) {
                 Object[] actionRow = (Object[]) actions[i];
                 for (int j = 0; j < actionRow.length; ++j) {
@@ -161,6 +183,8 @@ public class ToolBarUtility {
                     }
                     toolBox.add(a);
                 }
+            } else {
+        	LOG.error("Can't add a " + actions[i] + " to the toolbar");
             }
         }
         return toolBox;

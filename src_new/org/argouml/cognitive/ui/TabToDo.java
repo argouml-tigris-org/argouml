@@ -44,6 +44,7 @@ import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Vertical;
 import org.tigris.toolbar.ToolBar;
+import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * The ToDo Tab.
@@ -57,11 +58,6 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
     private static UndoableAction actionNewToDoItem = new ActionNewToDoItem();
     private static ToDoItemAction actionResolve = new ActionResolve();
     private static ToDoItemAction actionSnooze = new ActionSnooze();
-    //public static UMLAction _actionRecordFix = Actions.RecordFix;
-    //public static UMLAction _actionReplayFix = Actions.ReplayFix;
-    //public static UMLAction _actionFixItNext = Actions.FixItNext;
-    //public static UMLAction _actionFixItBack = Actions.FixItBack;
-    //public static UMLAction _actionFixItFinish = Actions.FixItFinish;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -93,11 +89,9 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
 
         setLayout(new BorderLayout());
 
-        JToolBar toolBar = new ToolBar(SwingConstants.VERTICAL);
-        toolBar.add(actionNewToDoItem);
-        toolBar.add(actionResolve);
-        toolBar.add(actionSnooze);
-        toolBar.setFloatable(false);
+        Object[] actions = {actionNewToDoItem, actionResolve, actionSnooze };
+        JToolBar toolBar = ToolBarFactory.createToolBar(true, actions, false);
+        toolBar.setOrientation(SwingConstants.VERTICAL);
 
         add(toolBar, BorderLayout.WEST);
 
