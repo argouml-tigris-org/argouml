@@ -34,10 +34,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
-import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer;
-import org.argouml.uml.diagram.ui.FigEdgeAssociationClass;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigEdgePort;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
@@ -280,9 +278,7 @@ class PGMLStackParser
         throws SAXException {
         Diagram d = super.readDiagram(is, closeStream);
         
-        for (int pass = 0; pass < 3; ++pass) {
-            attachEdges(pass);
-        }
+        attachEdges();
         
         return d;
     }
@@ -299,74 +295,61 @@ class PGMLStackParser
      * The method should be called iteratively until all have been attached.
      * If an iteration results in no attachments then an error has occured.
      */
-    private void attachEdges(int pass) throws SAXException {
+    private void attachEdges() throws SAXException {
         Iterator it = figEdges.iterator();
         while (it.hasNext()) {
             EdgeData edgeData = (EdgeData) it.next();
             FigEdge edge = edgeData.getFigEdge();
             
-            boolean process = false;
-            if (pass == 0 
-                    && !(edge instanceof FigEdgeAssociationClass)
-                    && !(edge instanceof FigEdgeNote)) {
-                process = true;
-            } else if (pass == 1 && edge instanceof FigEdgeAssociationClass) {
-                process = true;
-            } else if (pass == 2 && edge instanceof FigEdgeNote) {
-                process = true;
+            Object modelElement = modelElementsByFigEdge.get(edge);
+            if (modelElement != null) {
+                edge.setOwner(modelElement);
             }
             
-            if (process) {
-                Object modelElement = modelElementsByFigEdge.get(edge);
-                if (modelElement != null) {
-                    edge.setOwner(modelElement);
-                }
-                
-                Fig sourcePortFig = null;
-                Fig destPortFig = null;
-                FigNode sourceFigNode = null;
-                FigNode destFigNode = null;
-                
-                try {
-                    sourcePortFig = findFig(edgeData.getSourcePortFig());
-                } catch (IllegalStateException e) {
-                    throw new SAXException("Can't find the source port of a "
-                	    + edge.getClass().getName() + " with id "
-                	    + edge.getId() + " on pass " + pass, e);
-                }
-                try {
-                    destPortFig = findFig(edgeData.getDestPortFig());
-                } catch (IllegalStateException e) {
-                    throw new SAXException("Can't find the dest port of a "
-                	    + edge.getClass().getName() + " with id "
-                	    + edge.getId() + " on pass " + pass, e);
-                }
-                sourceFigNode = getFigNode(edgeData.getSourceFigNode());
-                destFigNode = getFigNode(edgeData.getDestFigNode());
-                
-                if (sourcePortFig == null && sourceFigNode != null) {
-                    sourcePortFig = getPortFig(sourceFigNode);
-                }
+            Fig sourcePortFig = null;
+            Fig destPortFig = null;
+            FigNode sourceFigNode = null;
+            FigNode destFigNode = null;
+            
+            try {
+                sourcePortFig = findFig(edgeData.getSourcePortFig());
+            } catch (IllegalStateException e) {
+                throw new SAXException("Can't find the source port of a "
+            	    + edge.getClass().getName() + " with id "
+            	    + edge.getId(), e);
+            }
+            try {
+                destPortFig = findFig(edgeData.getDestPortFig());
+            } catch (IllegalStateException e) {
+                throw new SAXException("Can't find the dest port of a "
+            	    + edge.getClass().getName() + " with id "
+            	    + edge.getId(), e);
+            }
+            sourceFigNode = getFigNode(edgeData.getSourceFigNode());
+            destFigNode = getFigNode(edgeData.getDestFigNode());
+            
+            if (sourcePortFig == null && sourceFigNode != null) {
+                sourcePortFig = getPortFig(sourceFigNode);
+            }
 
-                if (destPortFig == null && destFigNode != null) {
-                    destPortFig = getPortFig(destFigNode);
-                }
+            if (destPortFig == null && destFigNode != null) {
+                destPortFig = getPortFig(destFigNode);
+            }
 
-                if (sourcePortFig == null
-                	|| destPortFig == null 
-                	|| sourceFigNode == null 
-                	|| destFigNode == null) {
-                    LOG.error("Can't find nodes for FigEdge: "
-                            + edge.getId() + ":"
-                            + edge.toString());
-                    edge.removeFromDiagram();
-                } else {
-                    edge.setSourcePortFig(sourcePortFig);
-                    edge.setDestPortFig(destPortFig);
-                    edge.setSourceFigNode(sourceFigNode);
-                    edge.setDestFigNode(destFigNode);
-                    edge.computeRoute();
-                }
+            if (sourcePortFig == null
+            	|| destPortFig == null 
+            	|| sourceFigNode == null 
+            	|| destFigNode == null) {
+                LOG.error("Can't find nodes for FigEdge: "
+                        + edge.getId() + ":"
+                        + edge.toString());
+                edge.removeFromDiagram();
+            } else {
+                edge.setSourcePortFig(sourcePortFig);
+                edge.setDestPortFig(destPortFig);
+                edge.setSourceFigNode(sourceFigNode);
+                edge.setDestFigNode(destFigNode);
+                edge.computeRoute();
             }
         }
     }
