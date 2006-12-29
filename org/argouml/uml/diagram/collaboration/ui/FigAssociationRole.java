@@ -92,7 +92,7 @@ public class FigAssociationRole extends FigAssociation {
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp(notationProviderName.getParsingHelp());
+            showHelp(getParsingHelp());
         }
     }
 
