@@ -133,8 +133,8 @@ public abstract class FigNodeModelElement
     private static final Font BOLD_LABEL_FONT;
     private static final Font BOLD_ITALIC_LABEL_FONT;
 
-    protected NotationProvider notationProviderName;
-    protected HashMap npArguments = new HashMap();
+    private NotationProvider notationProviderName;
+    private HashMap npArguments = new HashMap();
     
     /**
      * True if an instance is allowed to be
@@ -1886,6 +1886,11 @@ public abstract class FigNodeModelElement
         listeners.clear();
     }
 
+    protected void putNotationArgument(String key, Object value) {
+        if (notationProviderName != null) {
+            npArguments.put(key, value);
+        }
+    }
 
 
 } /* end class FigNodeModelElement */
