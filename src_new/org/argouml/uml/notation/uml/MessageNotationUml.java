@@ -126,9 +126,10 @@ public class MessageNotationUml extends MessageNotation {
     }
 
     /*
-     * Generates a textual description for a MMessage m.
+     * Generates a textual description for a Message m.
      *
-     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, 
+     * java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {
         Iterator it;
@@ -248,45 +249,45 @@ public class MessageNotationUml extends MessageNotation {
         /**
          * The message pointed to.
          */
-        public Object/*MMessage*/ message;
+        public Object message;
     }
 
     /**
-     * Generates the textual number of MMessage m. The number is a string
+     * Generates the textual number of Message m. The number is a string
      * of numbers separated by points which describes the message's order
      * and level in a collaboration.<p>
      *
      * If you plan to modify this number, make sure that
      * ParserDisplay.parseMessage is adapted to the change.
      *
-     * @param m A Message to generate the number for.
+     * @param message A Message to generate the number for.
      * @return A String with the message number of m.
      */
-    private String generateMessageNumber(Object/*MMessage*/ m) {
+    private String generateMessageNumber(Object message) {
         MsgPtr ptr = new MsgPtr();
-        int pos = recCountPredecessors(m, ptr) + 1;
-        return generateMessageNumber(m, ptr.message, pos);
+        int pos = recCountPredecessors(message, ptr) + 1;
+        return generateMessageNumber(message, ptr.message, pos);
     }
 
     private int recCountPredecessors(Object message, MsgPtr ptr) {
-        Collection c;
+        Collection predecessors;
         Iterator it;
         int pre = 0;
         int local = 0;
         Object/*MMessage*/ maxmsg = null;
-        Object/*MMessage*/ act;
+        Object activatorMessage;
 
         if (message == null) {
             ptr.message = null;
             return 0;
         }
 
-        act = Model.getFacade().getActivator(message);
-        c = Model.getFacade().getPredecessors(message);
-        it = c.iterator();
+        activatorMessage = Model.getFacade().getActivator(message);
+        predecessors = Model.getFacade().getPredecessors(message);
+        it = predecessors.iterator();
         while (it.hasNext()) {
             Object msg = it.next();
-            if (Model.getFacade().getActivator(msg) != act) {
+            if (Model.getFacade().getActivator(msg) != activatorMessage) {
                 continue;
             }
             int p = recCountPredecessors(msg, null) + 1;
@@ -304,15 +305,15 @@ public class MessageNotationUml extends MessageNotation {
         return Math.max(pre, local);
     }
 
-    private int countSuccessors(Object/*MMessage*/ m) {
+    private int countSuccessors(Object message) {
         int count = 0;
-        Object act = Model.getFacade().getActivator(m);
-        Collection coll = Model.getFacade().getSuccessors(m);
-        if (coll != null) {
-            Iterator it = coll.iterator();
+        Object activator = Model.getFacade().getActivator(message);
+        Collection successors = Model.getFacade().getSuccessors(message);
+        if (successors != null) {
+            Iterator it = successors.iterator();
             while (it.hasNext()) {
-                Object msg = /*(MMessage)*/ it.next();
-                if (Model.getFacade().getActivator(msg) != act) {
+                Object msg = it.next();
+                if (Model.getFacade().getActivator(msg) != activator) {
                     continue;
                 }
                 count++;
@@ -335,14 +336,14 @@ public class MessageNotationUml extends MessageNotation {
         return Model.getFacade().getBody(expr).toString();
     }
 
-    private String generateAction(Object m) {
-        Collection c;
+    private String generateAction(Object theAction) {
+        Collection arguments;
         Iterator it;
         String s;
         String p;
         boolean first;
 
-        Object script = Model.getFacade().getScript(m);
+        Object script = Model.getFacade().getScript(theAction);
 
         if ((script != null) && (Model.getFacade().getBody(script) != null)) {
             s = Model.getFacade().getBody(script).toString();
@@ -351,12 +352,12 @@ public class MessageNotationUml extends MessageNotation {
         }
 
         p = "";
-        c = Model.getFacade().getActualArguments(m);
-        if (c != null) {
-            it = c.iterator();
+        arguments = Model.getFacade().getActualArguments(theAction);
+        if (arguments != null) {
+            it = arguments.iterator();
             first = true;
             while (it.hasNext()) {
-                Object arg = /*(MArgument)*/ it.next();
+                Object arg = it.next();
                 if (!first) {
                     p += ", ";
                 }
