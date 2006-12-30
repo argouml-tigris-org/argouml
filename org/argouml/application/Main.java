@@ -792,6 +792,7 @@ class PreloadClasses implements Runnable {
                 /* We don't care if optional modules aren't found. */
             }            
         }
+        ModuleLoader2.doLoad(false);
     }
 
     /*
