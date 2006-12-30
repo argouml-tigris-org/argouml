@@ -529,7 +529,7 @@ public class FigClass extends FigClassifierBox
         super.renderingChanged();
     }
     
-    /**
+    /*
      * Handles changes to the model. Takes into account the event that
      * occurred. If you need to update the whole fig, consider using
      * renderingChanged.
@@ -766,9 +766,9 @@ public class FigClass extends FigClassifierBox
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
+//        if (oldOwner != null) {
+//            removeAllElementListeners();
+//        }
         if (newOwner != null) {
             // add the listeners to the newOwner
             addElementListener(newOwner);
