@@ -67,6 +67,19 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2006-12-30</entry>
+          <entry>
+Change how we handle problems in 
+the JRE and
+other SW not delivered with ArgoUML.
+(See <xref linkend="issues_dependencies"/>).
+          </entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2006-10-07</entry>
           <entry>
 Removed mentions of CVS.

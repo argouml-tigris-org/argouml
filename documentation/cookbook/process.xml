@@ -101,7 +101,7 @@ These issues are blockers for all releases.
             <para>
 Examples:
 ArgoUML cannot start;
-Crashes program, jvm or computer; and
+Crashes program, JVM or computer; and
 Significant loss of user data.
 </para>
           </listitem>
@@ -886,7 +886,7 @@ with.
     <para>
 ArgoUML uses products internally and is very 
 dependent on that these products are functioning well.
-This are products like GEF, NS-UML, OCL, log4j, Xerxes, JRE, ...
+This are products like GEF, MDR, OCL, log4j, ...
 </para>
     <para>
 Occasionally a problem found in ArgoUML is found to be a problem in one
@@ -910,7 +910,7 @@ Do the following:
       <listitem>
         <para>
 During your examination of an issue you find that the problem
-is in one of the ArgoUML dependencies (GEF, NS-UML, OCL, JRE, ...).
+is in one of the ArgoUML dependencies (GEF, MDR, OCL, ...).
 </para>
       </listitem>
       <listitem>
@@ -994,6 +994,21 @@ and close the bugs registered in the dependency bug reporting tool.
 </para>
       </listitem>
     </orderedlist>
+
+    <para>
+For dependencies that are not delivered with ArgoUML
+(JRE, Xerces, OS, drivers, HW, ...),
+the same process is taken except that
+the issue solved when it is entered in the ArgoUML FAQ or documentation
+or in some cases as tests in the code testing that we are not using that
+version.
+At that point is resolved (as RESOLVED/FIXED).
+</para>
+    <para>
+The rationale for this is that we, the development team, help the user
+to the right version of these by the FAQ and documentation and by code
+testing the versions.
+</para>
   </sect1>
 
   <sect1 id="proc-create-stable-releases">
