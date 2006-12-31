@@ -11,21 +11,52 @@ VIEW=view.html
 SUBSCRIBERS=subs.html
 
 files="$EDIT $VIEW $SUBSCRIBERS"
+# First the projects directly under argouml
+# Then the projects under seeds
+# Last, all other projects
 projects="argouml \
-    argouml-gen argouml-mdr argoumlinstaller \
-    argouml-downloads argouml-stats \
-    argouml-ada argouml-classfile argouml-cpp argouml-csharp argouml-delphi \
-    argouml-idl argouml-java argouml-php argouml-python argouml-ruby \
-    argouml-sql \
-    argouml-ar \
-    argouml-ca argouml-de argouml-en-gb argouml-es argouml-fr \
-    argouml-hi \
+    argouml-andromda \
+    argouml-classfile \
+    argouml-cpp \
+    argouml-csharp \
+    argouml-de \
+    argouml-downloads \
+    argouml-en-gb \
+    argouml-es \
+    argouml-fr \
+    argouml-gen \
     argouml-i18n-zh \
-    argouml-it argouml-ja \
-    argouml-nb argouml-pt argouml-pt-br \
+    argouml-idl \
+    argouml-mdr \
+    argouml-nb \
+    argouml-php \
+    argouml-pt \
+    argouml-python \
+    argouml-ru \
+    argouml-ruby \
+    argouml-stats \
+    argoumlinstaller \
+    seeds \
+    argouml-ada \
+    argouml-ca \
+    argouml-delphi \
+    argouml-emf \
+    argouml-hi \
+    argouml-it \
+    argouml-ja \
+    argouml-java \
+    argouml-pattern-wizard \
+    argouml-pt-br \
     argouml-ro \
-    argouml-ru argouml-sv argouml-zh-cn argouml-zh-tw \
-    argoprint argouml-andromda argouml-emf"
+    argouml-sql \
+    argouml-sv \
+    argouml-zh-cn \
+    argouml-zh-tw \
+    \
+    argoprint \
+    argouml-ar \
+"
+
 
 lists="dev cvs issues users commits announce"
 
