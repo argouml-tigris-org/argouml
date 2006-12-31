@@ -4,7 +4,7 @@
 #
 # The reason for the need for this script is that it is somewhat cumbersome
 # to click through the Tigris site to examine that all mailing lists are
-# set correctly.
+# set correctly and to remember what they are supposed to be set to.
 
 EDIT=edit.html
 VIEW=view.html
@@ -97,7 +97,13 @@ delayincr=1000
 # 3 - the listname
 function onelist() {
     echo "<a href=\"http://$2.tigris.org/nonav/servlets/$1\" target=\"frame-$2-$3\">Refetch</a>"
-    echo "<a href=\"http://$2.tigris.org/servlets/$1\" target=\"_blank\">Open</a>"
+    echo "<a href=\"http://$2.tigris.org/servlets/MailingListEdit?list=$3\" target=\"_blank\">Open Edit</a>"
+    echo "<a href=\"http://$2.tigris.org/servlets/SummarizeList?list=$3\" target=\"_blank\">Open View</a>"
+    for subscribersalt in Subscribers Digest+Subscribers Moderators Allowed+Posters
+    do
+        echo "<a href=\"http://$2.tigris.org/servlets/MailingListMembers?list=$3&group=$subscribersalt\" target=\"_blank\">Open $subscribersalt</a>"
+    done
+
     echo "<br>"
     echo "<IFRAME name=\"frame-$2-$3\" width=\"800\" height=\"600\"></IFRAME>"
     echo "<script>"
@@ -111,6 +117,13 @@ function onelist() {
 
 for listname in $lists
 do
+    for f in $files
+    do
+	echo '<h1>' >> $f
+        echo "$listname" >> $f
+	echo '</h1>' >> $f
+    done
+
     for proj in $projects
     do
         for f in $files
@@ -120,6 +133,47 @@ do
 	    echo '</h2>' >> $f
             echo "<a href=\"#top\">Top</a> " >> $f
         done
+
+	case $listname in
+	announce)
+	    echo '<p>Announce list Moderated.</p>' >> $EDIT
+	    for f in $files
+	    do
+	        echo '<p>The announce mailing list is just present in the main project.</p>' >> $f
+	    done
+	    ;;
+        cvs)
+	    for f in $files
+	    do
+	        echo '<p>' >> $f
+	        echo 'The cvs mailing lists are to be removed' >> $f
+		echo 'autumn 2007' >> $f
+	        echo 'unless in new projects where they are empty.' >> $f
+	        echo '</p>' >> $f
+	    done
+	    ;;
+        dev|users)
+	    echo '<p>' >> $EDIT
+	    echo 'Description: Emphasize in the description on the purpose:' >> $EDIT
+	    echo 'this project.' >> $EDIT
+	    echo '</p>' >> $EDIT
+	    ;;
+        esac
+
+	echo '<p>' >> $EDIT
+	echo "<nobr>Owner: owner@$proj.tigris.org,</nobr>" >> $EDIT
+	echo "<nobr>Prefix: [$proj-$listname],</nobr>" >> $EDIT
+	echo '<nobr>Trailer: checked,</nobr>' >> $EDIT
+	echo '<nobr>Private: not checked,</nobr> and' >> $EDIT
+	case $listname in
+        announce)
+	    echo '<nobr>Type: moderated.</nobr>' >> $EDIT
+	    ;;
+	*)
+	    echo '<nobr>Type: discuss.</nobr>' >> $EDIT
+	    ;;
+	esac
+	echo '</p>' >> $EDIT
 
 	onelist MailingListEdit?list=$listname $proj $listname >> $EDIT
 	onelist SummarizeList?list=$listname $proj $listname >> $VIEW
