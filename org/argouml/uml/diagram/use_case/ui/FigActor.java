@@ -278,11 +278,9 @@ public class FigActor extends FigNodeModelElement {
             updateAbstract();
             damage = true;
         }
-        if (mee == null || mee.getPropertyName().equals("stereotype")) {
-            updateStereotypeText();
-            damage = true;
-        }
-        if (mee != null && Model.getFacade().getStereotypes(getOwner())
+        if (mee == null 
+                || mee.getPropertyName().equals("stereotype") 
+                || Model.getFacade().getStereotypes(getOwner())
                                 .contains(mee.getSource())) {
             updateStereotypeText();
             damage = true;
