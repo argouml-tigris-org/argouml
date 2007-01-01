@@ -101,10 +101,11 @@ public class FigLink extends FigEdgeModelElement {
             }
         }
         if (newOwner != null) {
-            addElementListener(newOwner);
+            addElementListener(newOwner, 
+                    new String[] {"remove", "name", "association"});
             Object newAssociation = Model.getFacade().getAssociation(newOwner);
             if (newAssociation != null) {
-                addElementListener(newAssociation);
+                addElementListener(newAssociation, "name");
             }
         }
     }

@@ -52,11 +52,13 @@ public abstract class AssociationRoleNotation extends NotationProvider {
     /*
      * @see org.argouml.uml.notation.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
      */
-    public void initialiseListener(PropertyChangeListener listener, Object modelElement) {
-        addElementListener(listener, modelElement);
+    public void initialiseListener(PropertyChangeListener listener, 
+            Object modelElement) {
+        addElementListener(listener, modelElement, 
+            new String[] {"name", "base"});
         Object assoc = Model.getFacade().getBase(modelElement);
         if (assoc != null) {
-            addElementListener(listener, assoc);
+            addElementListener(listener, assoc, "name");
         }
     }
 

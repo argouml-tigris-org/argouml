@@ -31,7 +31,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 /**
  * A class that implements this abstract class manages a text
@@ -45,6 +47,12 @@ import org.argouml.model.Model;
  * @author mvw@tigris.org
  */
 public abstract class NotationProvider {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(NotationProvider.class);
     
     /**
      * A collection of listeners registered for this notation. 
@@ -162,6 +170,11 @@ public abstract class NotationProvider {
         //             of "name", "type"
         //     end if
         // end if 
+        if (Model.getUmlFactory().isRemoved(modelElement)) {
+            LOG.warn("Encountered deleted object during delete of " 
+                    + modelElement);
+            return;
+        }
         cleanListener(listener, modelElement);
         initialiseListener(listener, modelElement);
     }
@@ -175,6 +188,10 @@ public abstract class NotationProvider {
      */
     protected final void addElementListener(PropertyChangeListener listener, 
             Object element) {
+        if (Model.getUmlFactory().isRemoved(element)) {
+            LOG.warn("Encountered deleted object during delete of " + element);
+            return;
+        }
         listeners.add(new Object[] {element, null});
         Model.getPump().addModelEventListener(listener, element);
     }
@@ -192,6 +209,10 @@ public abstract class NotationProvider {
      */
     protected final void addElementListener(PropertyChangeListener listener, 
             Object element, String property) {
+        if (Model.getUmlFactory().isRemoved(element)) {
+            LOG.warn("Encountered deleted object during delete of " + element);
+            return;
+        }
         listeners.add(new Object[] {element, property});
         Model.getPump().addModelEventListener(listener, element, property);
     }
@@ -209,6 +230,10 @@ public abstract class NotationProvider {
      */
     protected final void addElementListener(PropertyChangeListener listener, 
             Object element, String[] property) {
+        if (Model.getUmlFactory().isRemoved(element)) {
+            LOG.warn("Encountered deleted object during delete of " + element);
+            return;
+        }
         listeners.add(new Object[] {element, property});
         Model.getPump().addModelEventListener(listener, element, property);
     }

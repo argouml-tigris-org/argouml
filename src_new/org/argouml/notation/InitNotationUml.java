@@ -27,6 +27,7 @@ package org.argouml.notation;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.uml.notation.uml.ActionStateNotationUml;
 import org.argouml.uml.notation.uml.AssociationEndNameNotationUml;
+import org.argouml.uml.notation.uml.AssociationNameNotationUml;
 import org.argouml.uml.notation.uml.AssociationRoleNotationUml;
 import org.argouml.uml.notation.uml.AttributeNotationUml;
 import org.argouml.uml.notation.uml.CallStateNotationUml;
@@ -116,6 +117,9 @@ public class InitNotationUml {
         npf.addNotationProvider(
                 NotationProviderFactory2.TYPE_ASSOCIATION_ROLE,
                 name, AssociationRoleNotationUml.class);
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_ASSOCIATION_NAME,
+                name, AssociationNameNotationUml.class);
 
 
         NotationProviderFactory2.getInstance().setDefaultNotation(name);

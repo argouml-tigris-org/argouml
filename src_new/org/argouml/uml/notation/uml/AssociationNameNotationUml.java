@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -28,7 +28,6 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Stack;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -36,25 +35,33 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.notation.ModelElementNameNotation;
+import org.argouml.uml.notation.AssociationNameNotation;
 
 /**
- * Handles the notation of the name of a modelelement in UML,
+ * Handles the notation of the name of an association modelelement in UML,
  * ie a string on the format:<pre>
  *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#] [name]
  * </pre>
- *
- * @author mvw@tigris.org
+ * 
+ * @author Michiel
  */
-public class ModelElementNameNotationUml extends ModelElementNameNotation {
+public class AssociationNameNotationUml extends AssociationNameNotation {
 
     /**
      * The constructor.
-     *
-     * @param name the uml object
+     * 
+     * @param association the association modelelement 
+     * that we represent in textual form.
      */
-    public ModelElementNameNotationUml(Object name) {
-        super(name);
+    public AssociationNameNotationUml(Object association) {
+        super(association);
+    }
+
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
+     */
+    public String getParsingHelp() {
+        return "parsing.help.fig-association-name";
     }
 
     /*
@@ -64,7 +71,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
         try {
             NotationUtilityUml.parseModelElement(modelElement, text);
         } catch (ParseException pe) {
-            String msg = "statusmsg.bar.error.parsing.node-modelelement";
+            String msg = "statusmsg.bar.error.parsing.association-name";
             Object[] args = {
                 pe.getLocalizedMessage(),
                 new Integer(pe.getErrorOffset()),
@@ -75,20 +82,13 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
     }
 
     /*
-     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
-     */
-    public String getParsingHelp() {
-        return "parsing.help.fig-nodemodelelement";
-    }
-
-    /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {
         String name = Model.getFacade().getName(modelElement);
         StringBuffer sb = new StringBuffer("");
         if (isValue("fullyHandleStereotypes", args)) {
-            sb.append(generateStereotypes(modelElement, args));
+            sb.append(generateStereotypes(modelElement));
         }
         sb.append(generateVisibility(modelElement, args));
         if (isValue("pathVisible", args)) {
@@ -102,10 +102,9 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
 
     /**
      * @param modelElement the UML element to generate for
-     * @param args arguments that influence the generation
      * @return a string which represents the stereotypes
      */
-    protected String generateStereotypes(Object modelElement, HashMap args) {
+    protected static String generateStereotypes(Object modelElement) {
         Collection c = Model.getFacade().getStereotypes(modelElement);
         StringBuffer sb = new StringBuffer(50);
         Iterator i = c.iterator();
@@ -127,33 +126,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             + sb.toString()
             + ps.getRightGuillemot();
     }
-
-    /**
-     * @param modelElement the UML element to generate for
-     * @param args arguments that influence the generation
-     * @return a string which represents the path
-     */
-    protected String generatePath(Object modelElement, HashMap args) {
-        String s = "";
-        if (isValue("pathVisible", args)) {
-            Object p = modelElement;
-            Stack stack = new Stack();
-            Object ns = Model.getFacade().getNamespace(p);
-            while (ns != null && !Model.getFacade().isAModel(ns)) {
-                stack.push(Model.getFacade().getName(ns));
-                ns = Model.getFacade().getNamespace(ns);
-            }
-            while (!stack.isEmpty()) {
-                s += (String) stack.pop() + "::";
-            }
-
-            if (s.length() > 0 && !s.endsWith(":")) {
-                s += "::";
-            }
-        }
-        return s;
-    }
-
+    
     /**
      * @param modelElement the UML element to generate for
      * @param args arguments that influence the generation
@@ -173,9 +146,8 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             if (s.length() > 0) {
                 s = s + " ";
             }
-            /* This for when nothing is generated: omit the space. */
         }
+        /* This for when nothing is generated: omit the space. */
         return s;
     }
-
 }

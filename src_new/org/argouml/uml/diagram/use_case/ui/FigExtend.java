@@ -200,6 +200,17 @@ public class FigExtend extends FigEdgeModelElement {
     }
 
     /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
+     */
+    protected void updateListeners(Object oldOwner, Object newOwner) {
+        removeAllElementListeners();
+        if (newOwner != null) {
+            addElementListener(newOwner, new String[] {"condition", "remove"});
+        }
+    }
+
+
+    /*
      * The only thing we need to deal with is updating is the condition text.
      * 
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)

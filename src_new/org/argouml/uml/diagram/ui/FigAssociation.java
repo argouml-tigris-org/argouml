@@ -163,27 +163,26 @@ public class FigAssociation extends FigEdgeModelElement {
         
         destGroup.setOwner(dest);
         destMult.setOwner(dest);
-        
-        applyArrowHeads();
-        
-        updateStereotypeText();
-        updateAbstract();
-        
-        addElementListener(
-        		getOwner(),
-        		new String[] {"name", "isAbstract", "remove"});
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     public void updateListeners(Object oldOwner, Object newOwner) {
-        // We don't want to keep adding and removing listeners on a Fig
-        // I think this methiod should be deprecated - Bob
+        removeAllElementListeners();
+        if (newOwner != null) {
+            addElementListener(newOwner, new String[] {"isAbstract", "remove"});
+        }
+        /* No further listeners required in this case - the rest is handled 
+         * by the notationProvider and sub-Figs. */
     }
 
-    // //////////////////////////////////////////////////////////////
-    // event handlers
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getNotationProviderType()
+     */
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_ASSOCIATION_NAME;
+    }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
@@ -240,9 +239,7 @@ public class FigAssociation extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-association-name");
-        } else if (ft == srcGroup.role) {
+        if (ft == srcGroup.role) {
             showHelp(srcGroup.role.getParsingHelp());
         } else if (ft == destGroup.role) {
             showHelp(destGroup.role.getParsingHelp());
@@ -250,35 +247,45 @@ public class FigAssociation extends FigEdgeModelElement {
             showHelp("parsing.help.fig-association-source-multiplicity");
         } else if (ft == destMult) {
             showHelp("parsing.help.fig-association-destination-multiplicity");
+        } else {
+            super.textEditStarted(ft);
         }
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelAttributeChanged(AttributeChangeEvent e) {
+    protected void modelChanged(PropertyChangeEvent e) {
         if (getOwner() == null || getLayer() == null) {
             return;
         }
-        if (e.getPropertyName().equals("isAbstract")
-            || e.getPropertyName().equals("name")) {
-            updateAbstract();
-        } else {
-            LOG.warn("Got an event with a property we're not registered for "
-                    + e.getPropertyName() + " element is " + e.getSource());
+        super.modelChanged(e);
+        if (e instanceof AttributeChangeEvent) {
+            if (e.getPropertyName().equals("isAbstract")/*
+                    || e.getPropertyName().equals("name")*/) {
+                updateAbstract();
+            }
         }
     }
-    
+
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
     protected void renderingChanged() {
-        // We don't want to redraw everything everytime one things changes
-        // I think renderingChanged should be deprecated.
+        // We don't want to redraw everything everytime 
+        // one things changes - Bob.
+        // So, do not call this unless really needed! We need 
+        // this for e.g. when the Notation Language changes,
+        // and this is called by setOwner() - Michiel.
+        updateAbstract();
+        super.renderingChanged();
     }
 
     /**
-     * Choose the arrowhead style for each end.
+     * Choose the arrowhead style for each end. <p>
+     * 
+     * TODO: This is called from paint(). Would it not better 
+     * be called from renderingChanged()?
      */
     protected void applyArrowHeads() {
         int sourceArrowType = srcGroup.getArrowType();

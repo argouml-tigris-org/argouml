@@ -1168,13 +1168,15 @@ public abstract class FigNodeModelElement
         if (owner == null) {
             return;
         }
-        if (notationProviderName != null) {
-            if (mee instanceof AssociationChangeEvent 
-                    || mee instanceof AttributeChangeEvent) {
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            if (notationProviderName != null) {
                 notationProviderName.updateListener(this, getOwner(), mee);
                 updateNameText();
-                damage();
             }
+            updateListeners(getOwner(), getOwner());
+            damage();
+
         }
         if ((mee.getSource() == owner
                 && mee.getPropertyName().equals("stereotype"))) {
@@ -1434,19 +1436,25 @@ public abstract class FigNodeModelElement
      * This function is used by the modelChanged()
      * function.<p>
      * 
-     * In this case, it is imperative that indeed ALL listeners are 
-     * updated, since they are ALL removed by 
-     * the call to removeElementListener. 
+     * In certain cases, it is imperative that indeed ALL listeners are 
+     * updated, since they are ALL removed 
+     * by a call to removeElementListener. <p>
+     * 
+     *  IF this method is called with both the oldOwner and the 
+     *  newOwner equal and not null, 
+     *  AND we listen only to the owner itself,
+     *  THEN we can safely ignore the call, but 
+     *  ELSE we need to update the listeners of the related elements, 
+     *  since the related elements may have been replaced. 
      * 
      * @param newOwner null, or the owner of this. 
-     *          The former means that listeners have to be removed, 
-     *          the latter that they have to be set.
-     *          TODO: Should this not be boolean, to clarify?
-     * @param oldOwner the previous owner
+     *          The former means that all listeners have to be removed. 
+     * @param oldOwner null, or the previous owner
+     *          The former means that all listeners have to be set.
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner == newOwner) {
-            LOG.warn("Listeners being added and removed from the same owner");
+            return;
         }
         if (oldOwner != null) {
             removeElementListener(oldOwner);

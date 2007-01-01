@@ -35,7 +35,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
-import org.tigris.gef.presentation.FigText;
 
 
 /**
@@ -87,28 +86,14 @@ public class FigAssociationRole extends FigAssociation {
     	messages.damage();
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
-     */
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp(getParsingHelp());
-        }
-    }
-
 } /* end class FigAssociationRole */
 
 /**
+ * A Fig for the group of Messages shown above the Association Role.
+ * 
  * TODO: Should this be in its own source file?
- *
  */
 class FigMessageGroup extends FigGroup {
-
-    /**
-     * Serial version - Eclipse generated for rev 1.30
-     */
-    private static final long serialVersionUID = 6899342966031358691L;
-
 
     /**
      * Constructor for FigMessageGroup.
@@ -119,6 +104,7 @@ class FigMessageGroup extends FigGroup {
 
     /**
      * Constructor for FigMessageGroup.
+     * 
      * @param figs
      */
     public FigMessageGroup(List figs) {
@@ -131,21 +117,19 @@ class FigMessageGroup extends FigGroup {
     	if (!figs.isEmpty()) {
             FigMessage previousFig = null;
             for (int i = 0; it.hasNext(); i++) {
-                FigMessage fig = (FigMessage) it.next();
+                FigMessage figMessage = (FigMessage) it.next();
                 int y;
                 if (i != 0) {
                     y = previousFig.getY() + previousFig.getHeight() + 5;
                 } else {
                     y = getY();
                 }
-                fig.setLocation(getX(), y);
-                fig.endTrans();
-                previousFig = fig;
+                figMessage.setLocation(getX(), y);
+                figMessage.endTrans();
+                previousFig = figMessage;
             }
     	}
     }
-
-
 
     /*
      * @see org.tigris.gef.presentation.Fig#calcBounds()
@@ -181,8 +165,6 @@ class FigMessageGroup extends FigGroup {
 	    _h = 0;
 	}
     }
-
-
 
     /*
      * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
