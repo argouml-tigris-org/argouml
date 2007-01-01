@@ -162,11 +162,18 @@ do
 
 	echo '<p>' >> $EDIT
 	echo "<nobr>Owner: owner@$proj.tigris.org,</nobr>" >> $EDIT
-	echo "<nobr>Prefix: [$proj-$listname],</nobr>" >> $EDIT
+        case $listname in
+        commits)
+	    echo "<nobr>Prefix: none,</nobr>" >> $EDIT
+	    ;;
+        *)
+	    echo "<nobr>Prefix: [$proj-$listname],</nobr>" >> $EDIT
+	    ;;
+	esac
 	echo '<nobr>Trailer: checked,</nobr>' >> $EDIT
 	echo '<nobr>Private: not checked,</nobr> and' >> $EDIT
 	case $listname in
-        announce)
+        announce|cvs)
 	    echo '<nobr>Type: moderated.</nobr>' >> $EDIT
 	    ;;
 	*)
