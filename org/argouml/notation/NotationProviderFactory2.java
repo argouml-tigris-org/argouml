@@ -141,6 +141,11 @@ public final class NotationProviderFactory2 {
     public static final int TYPE_ASSOCIATION_ROLE = 17;
 
     /**
+     * The text shown for the association role name.
+     */
+    public static final int TYPE_ASSOCIATION_NAME = 18;
+
+    /**
      * defaultLanguage the Notation language used by default, i.e. UML
      */
     private NotationName defaultLanguage;

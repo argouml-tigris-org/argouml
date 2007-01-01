@@ -25,52 +25,44 @@
 package org.argouml.uml.notation;
 
 import java.beans.PropertyChangeListener;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.argouml.model.Model;
 
 /**
  * This abstract class forms the basis of all Notation providers
- * for the text shown in the Fig that represents the Message.
+ * for the text shown above the association Fig.
  * Subclass this for all languages.
- * 
- * @author michiel
+ *
+ * @author mvw@tigris.org
  */
-public abstract class MessageNotation extends NotationProvider {
-    
-    /**
-     * The constructor.
-     *
-     * @param message the UML element
-     */
-    public MessageNotation(Object message) {
-        if (!Model.getFacade().isAMessage(message)) {
-            throw new IllegalArgumentException("This is not an Message.");
+public abstract class AssociationNameNotation extends NotationProvider {
+
+    public AssociationNameNotation(Object modelElement) {
+        if (!Model.getFacade().isAAssociation(modelElement)) {
+            throw new IllegalArgumentException("This is not an Association.");
         }
     }
 
     /*
-     * @see org.argouml.uml.notation.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
+     * @see org.argouml.uml.notation.NotationProvider#initialiseListener(
+     * java.beans.PropertyChangeListener, java.lang.Object)
      */
     public void initialiseListener(PropertyChangeListener listener, 
-             Object modelElement) {
-        addElementListener(listener, modelElement,
-                new String[] {"activator", "predecessor", "successor", 
-                    "sender", "receiver", "action"});
-        Object action = Model.getFacade().getAction(modelElement);
-        if (action != null) {
-            addElementListener(listener, action,
-                    new String[] {"remove", "recurrence", "script", 
-                        "actualArgument"});
-            List args = Model.getFacade().getActualArguments(action);
-            Iterator it = args.iterator();
-            while (it.hasNext()) {
-                Object argument = it.next();
-                addElementListener(listener, argument,
-                        new String[] {"remove", "value"});
-            }
+            Object modelElement) {
+        /* Listen to the modelelement itself: */
+        addElementListener(listener, modelElement, 
+                new String[] {"name", "visibility", "stereotype"});
+        Collection stereotypes =
+            Model.getFacade().getStereotypes(modelElement);
+        Iterator iter = stereotypes.iterator();
+        while (iter.hasNext()) {
+            Object oneStereoType = iter.next();
+            addElementListener(
+                    listener, 
+                    oneStereoType, 
+                    new String[] {"name", "remove"});
         }
     }
-
 }

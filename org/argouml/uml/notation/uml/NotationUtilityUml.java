@@ -27,7 +27,10 @@ package org.argouml.uml.notation.uml;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Stack;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
@@ -250,6 +253,149 @@ public final class NotationUtilityUml {
     }
 
     /**
+     * Parse a string on the format:
+     * <pre>
+     *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#] [name]
+     * </pre>
+     * 
+     * @param me   The ModelElement <em>text</em> describes.
+     * @param text A String on the above format.
+     * @throws ParseException
+     *             when it detects an error in the attribute string. See also
+     *             ParseError.getErrorOffset().
+     */
+    protected static void parseModelElement(Object me, String text)
+        throws ParseException {
+        MyTokenizer st;
+
+        Vector path = null;
+        String name = null;
+        String stereotype = null;
+        String token;
+
+        try {
+            st = new MyTokenizer(text, "<<,\u00AB,\u00BB,>>,::");
+            while (st.hasMoreTokens()) {
+                token = st.nextToken();
+
+                if ("<<".equals(token) || "\u00AB".equals(token)) {
+                    if (stereotype != null) {
+                        String msg = 
+                            "parsing.error.model-element-name.twin-stereotypes";
+                        throw new ParseException(Translator.localize(msg),
+                                st.getTokenIndex());
+                    }
+
+                    stereotype = "";
+                    while (true) {
+                        token = st.nextToken();
+                        if (">>".equals(token) || "\u00BB".equals(token)) {
+                            break;
+                        }
+                        stereotype += token;
+                    }
+                } else if ("::".equals(token)) {
+                    if (name != null) {
+                        name = name.trim();
+                    }
+
+                    if (path != null && (name == null || "".equals(name))) {
+                        String msg = 
+                            "parsing.error.model-element-name.anon-qualifiers";
+                        throw new ParseException(Translator.localize(msg), 
+                                st.getTokenIndex());
+                    }
+
+                    if (path == null) {
+                        path = new Vector();
+                    }
+                    if (name != null) {
+                        path.add(name);
+                    }
+                    name = null;
+                } else {
+                    if (name != null) {
+                        String msg = 
+                            "parsing.error.model-element-name.twin-names";
+                        throw new ParseException(Translator.localize(msg), 
+                                st.getTokenIndex());
+                    }
+
+                    name = token;
+                }
+            }
+        } catch (NoSuchElementException nsee) {
+            String msg = 
+                "parsing.error.model-element-name.unexpected-name-element";
+            throw new ParseException(Translator.localize(msg),
+                    text.length());
+        } catch (ParseException pre) {
+            throw pre;
+        }
+
+        if (name != null) {
+            name = name.trim();
+        }
+
+        if (path != null && (name == null || "".equals(name))) {
+            String msg = "parsing.error.model-element-name.must-end-with-name";
+            throw new ParseException(Translator.localize(msg), 0);
+        }
+
+        if (name != null && name.startsWith("+")) {
+            name = name.substring(1).trim();
+            Model.getCoreHelper().setVisibility(me,
+                            Model.getVisibilityKind().getPublic());
+        }
+        if (name != null && name.startsWith("-")) {
+            name = name.substring(1).trim();
+            Model.getCoreHelper().setVisibility(me,
+                            Model.getVisibilityKind().getPrivate());
+        }
+        if (name != null && name.startsWith("#")) {
+            name = name.substring(1).trim();
+            Model.getCoreHelper().setVisibility(me,
+                            Model.getVisibilityKind().getProtected());
+        }
+        if (name != null && name.startsWith("~")) {
+            name = name.substring(1).trim();
+            Model.getCoreHelper().setVisibility(me,
+                            Model.getVisibilityKind().getPackage());
+        }
+        if (name != null) {
+            Model.getCoreHelper().setName(me, name);
+        }
+
+        NotationUtilityUml.dealWithStereotypes(me, stereotype, false);
+
+        if (path != null) {
+            Object nspe =
+                Model.getModelManagementHelper().getElement(
+                        path,
+                        Model.getFacade().getModel(me));
+
+            if (nspe == null || !(Model.getFacade().isANamespace(nspe))) {
+                String msg = 
+                        "parsing.error.model-element-name.namespace-unresolved";
+                throw new ParseException(Translator.localize(msg), 
+                        0);
+            }
+            Object model =
+                ProjectManager.getManager().getCurrentProject().getRoot();
+            if (!Model.getCoreHelper().getAllPossibleNamespaces(me, model)
+                        .contains(nspe)) {
+                String msg = 
+                        "parsing.error.model-element-name.namespace-invalid";
+                throw new ParseException(Translator.localize(msg), 
+                        0);
+            }
+
+            Model.getCoreHelper().addOwnedElement(nspe, me);
+        }
+    }
+
+    
+    /**
      * This function shall replace the previous set of stereotypes
      * of the given modelelement with a new set,
      * given in the form of a "," seperated string of stereotype names.
@@ -449,6 +595,29 @@ public final class NotationUtilityUml {
             }
         }
         return "";
+    }
+
+    /**
+     * @param modelElement the UML element to generate for
+     * @return a string which represents the path
+     */
+    protected static String generatePath(Object modelElement) {
+        String s = "";
+        Object p = modelElement;
+        Stack stack = new Stack();
+        Object ns = Model.getFacade().getNamespace(p);
+        while (ns != null && !Model.getFacade().isAModel(ns)) {
+            stack.push(Model.getFacade().getName(ns));
+            ns = Model.getFacade().getNamespace(ns);
+        }
+        while (!stack.isEmpty()) {
+            s += (String) stack.pop() + "::";
+        }
+
+        if (s.length() > 0 && !s.endsWith(":")) {
+            s += "::";
+        }
+        return s;
     }
 
     /**

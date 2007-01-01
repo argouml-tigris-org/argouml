@@ -556,15 +556,6 @@ public abstract class FigEdgeModelElement
                 && Boolean.TRUE.equals(pve.getNewValue())) {
             textEditStarted((FigText) src);
         } else {
-            // Add/remove name change listeners for applied stereotypes
-            if (src == getOwner()
-                    && "stereotype".equals(pName)) {
-                if (pve instanceof RemoveAssociationEvent) {
-                    removeElementListener(pve.getOldValue());
-                } else if (pve instanceof AddAssociationEvent) {
-                    addElementListener(pve.getNewValue(), "name");
-                }
-            }
             // Pass everything except editing events to superclass
             super.propertyChange(pve);
         }
@@ -576,15 +567,16 @@ public abstract class FigEdgeModelElement
              * then the UML model has been changed.*/
             modelChanged(pve);
         }
-        if (pve instanceof AttributeChangeEvent) {
-            modelAttributeChanged((AttributeChangeEvent) pve);
-        } else if (pve instanceof AddAssociationEvent) {
-            modelAssociationAdded((AddAssociationEvent) pve);
-        } else if (pve instanceof RemoveAssociationEvent) {
-            modelAssociationRemoved((RemoveAssociationEvent) pve);
-        }
-        damage();  // TODO: (MVW) Is this required?
-        // After all these events? I doubt it...
+        /* The following is a possible future improvement 
+         * of the modelChanged() function.
+         * Michiel: Propose not to do this to keep architecture stable. */
+//        if (pve instanceof AttributeChangeEvent) {
+//            modelAttributeChanged((AttributeChangeEvent) pve);
+//        } else if (pve instanceof AddAssociationEvent) {
+//            modelAssociationAdded((AddAssociationEvent) pve);
+//        } else if (pve instanceof RemoveAssociationEvent) {
+//            modelAssociationRemoved((RemoveAssociationEvent) pve);
+//        }
     }
     
     /**
@@ -627,19 +619,19 @@ public abstract class FigEdgeModelElement
      */
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
-            showHelp(getParsingHelp());
+            showHelp(notationProviderName.getParsingHelp());
             ft.setText(notationProviderName.toString(getOwner(), npArguments));
         }
     }
     
     /**
+     * TODO: Remove this - nobody should need this - Michiel.
      * @return a i18 key that represents a help string
      *         giving an explanation to the user of the syntax
      */
     protected String getParsingHelp() {
 	return notationProviderName.getParsingHelp();
     }
-
 
     /**
      * Utility function to localize the given string with help text,
@@ -756,15 +748,19 @@ public abstract class FigEdgeModelElement
 
 
     /**
-     * Rerenders the fig if needed. This functionality was originally
-     * the functionality of modelChanged but modelChanged takes the
-     * event now into account.<p>
+     * Rerenders the attached elements of the fig. <p>
      * 
-     * NOTE: If you override this method you probably also want to 
-     * override the modelChanged() method
-     * TODO: Call this method something sensible. What it does rather than
-     * one example of when it is called. Its purpose seems to be to update
-     * everything if anything has changed. Not very efficient.
+     * Warning: The purpose of this function is NOT 
+     * to redraw the whole Fig everytime
+     * something changes. That would be inefficient.<p>
+     * 
+     * Instead, this function should only be called
+     * for major changes that require a complete redraw, 
+     * such as change of owner, 
+     * and change of notation language. <p>
+     * 
+     * Overrule this function for subclasses that add extra
+     * or remove graphical parts.
      */
     protected void renderingChanged() {
         updateNameText();
@@ -787,13 +783,14 @@ public abstract class FigEdgeModelElement
             // No need to update if model element went away
             return;
         }
-        if (notationProviderName != null) {
-            if (e instanceof AssociationChangeEvent 
-                    || e instanceof AttributeChangeEvent) {
+        
+        if (e instanceof AssociationChangeEvent 
+                || e instanceof AttributeChangeEvent) {
+            if (notationProviderName != null) {
                 notationProviderName.updateListener(this, getOwner(), e);
-                updateListeners(getOwner(), getOwner());
-                renderingChanged();
+                updateNameText();
             }
+            updateListeners(getOwner(), getOwner());
         }
 
         // Update attached node figures
@@ -897,22 +894,36 @@ public abstract class FigEdgeModelElement
     /**
      * Implementations of this method should register/unregister the fig for all
      * (model)events that may cause a repaint to be necessary.
-     * For FigEdgeModelElement only the fig itself is registered
-     * as listening to (all) events fired by the owner itself. 
-     * But for, for example,
-     * FigAssociation the fig must also register for events fired by the
-     * stereotypes of the owner. <p>
+     * In the simplest case, the fig should register itself
+     * as listening to (all) events fired by (only) the owner. <p>
+     *  
+     * But for, for example, for a
+     * FigLink the fig must also register for events fired by the
+     * association of the owner - because the name of 
+     * the association is shown, not the name of the Link.<p>
      * 
      * In other cases, there is no need to register for any event, 
      * e.g. when a notationProvider is used. <p>
      * 
-     * This function is used in 2 places: at creation (load) time of this Fig, 
-     * and by the modelChanged() function, i.e. when the model changes.
+     * This function is called in 2 places: at creation (load) time of this Fig,
+     * i.e. when the owner changes, 
+     * and in some cases by the modelChanged() function, 
+     * i.e. when the model changes. <p>
+     * 
+     * This function shall always register for the "remove" event of the owner!
+     * Otherwise the Fig will not be deleted when the owner gets deleted.<p>
+     * 
+     *  IF this method is called with both the oldOwner and the 
+     *  newOwner equal and not null, 
+     *  AND we listen only to the owner itself,
+     *  THEN we can safely ignore the call, but 
+     *  ELSE we need to update the listeners of the related elements, 
+     *  since the related elements may have been replaced.
      * 
      * @param newOwner the new owner for the listeners, 
      *          or null if all listeners have to be removed
      * @param oldOwner the previous owner, 
-     *          or null if there was none
+     *          or null if there was none, and all listeners have to be set
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner == newOwner) {
@@ -922,7 +933,7 @@ public abstract class FigEdgeModelElement
             removeElementListener(oldOwner);
         }
         if (newOwner != null) {
-            addElementListener(newOwner);
+            addElementListener(newOwner, "remove");
         }
     }
 

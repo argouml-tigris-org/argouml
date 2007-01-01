@@ -29,14 +29,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.beans.PropertyVetoException;
 import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
-import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -44,8 +42,8 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
 
 /** 
- * Class to display graphics for a UML message in a 
- * collaborations diagram.
+ * Class to display graphics for a UML Message 
+ * above an AssociationRole in a collaborations diagram.
  *
  * @author agauthie
  */
@@ -64,11 +62,6 @@ public class FigMessage extends FigNodeModelElement {
      * The current arrow direction set to constants above.
      */
     private int arrowDirection = 0;
-
-    /**
-     * The notation provider for the textfield.
-     */
-    protected NotationProvider notationProvider;
 
     /**
      * The main constructor.
@@ -119,14 +112,22 @@ public class FigMessage extends FigNodeModelElement {
     }
 
     /*
-     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#getNotationProviderType()
      */
-    protected void initNotationProviders(Object own) {
-        super.initNotationProviders(own);
-        if (Model.getFacade().isAMessage(own)) {
-            notationProvider =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_MESSAGE, own);
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_MESSAGE;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(
+     * java.lang.Object, java.lang.Object)
+     */
+    protected void updateListeners(Object oldOwner, Object newOwner) {
+        if (oldOwner != null) {
+            removeElementListener(oldOwner);
+        }
+        if (newOwner != null) {
+            addElementListener(newOwner, "remove");
         }
     }
 
@@ -289,32 +290,15 @@ public class FigMessage extends FigNodeModelElement {
         updateEdges();
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        notationProvider.parse(getOwner(), ft.getText());
-        ft.setText(notationProvider.toString(getOwner(), null));
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
-     */
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp(notationProvider.getParsingHelp());
-        }
-    }
-
     /**
      * Determines the direction of the message arrow. Deetermination of the
      * type of arrow happens in modelchanged.
      */
     protected void updateArrow() {
-  	Object mes = getOwner(); // MMessage
+  	Object mes = getOwner(); // Message
 	if (mes == null || getLayer() == null) return;
-	Object sender = Model.getFacade().getSender(mes); // MClassifierRole
-	Object receiver = Model.getFacade().getReceiver(mes); // MClassifierRole
+	Object sender = Model.getFacade().getSender(mes); // ClassifierRole
+	Object receiver = Model.getFacade().getReceiver(mes); // ClassifierRole
 	Fig senderPort = getLayer().presentationFor(sender);
 	Fig receiverPort = getLayer().presentationFor(receiver);
 	if (senderPort == null || receiverPort == null) return;
@@ -357,15 +341,6 @@ public class FigMessage extends FigNodeModelElement {
     public void paint(Graphics g) {
 	updateArrow();
 	super.paint(g);
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-     */
-    protected void updateNameText() {
-        if (notationProvider != null) {
-            getNameFig().setText(notationProvider.toString(getOwner(), null));
-        }
     }
 
     /*
