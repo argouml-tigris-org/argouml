@@ -118,7 +118,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                     new FigStereotype(
                             bigPort.getX() + 1,
                             bigPort.getY() + 1
-                            + (stereotypeCount++)
+                            + (++stereotypeCount)
                                 * FigNodeModelElement.ROWHEIGHT,
                             0,
                             FigNodeModelElement.ROWHEIGHT - 2,
