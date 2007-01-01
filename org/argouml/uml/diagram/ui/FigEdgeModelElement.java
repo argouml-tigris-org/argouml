@@ -91,7 +91,9 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * Abstract class to display diagram lines (edges) for UML ModelElements that
- * look like lines and that have editable names.
+ * look like lines.
+ * This Fig is prepared to show a (possibly editable) name,
+ * and/or multiple stereotypes.
  */
 public abstract class FigEdgeModelElement
     extends FigEdgePoly
@@ -168,9 +170,10 @@ public abstract class FigEdgeModelElement
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    /** Partially construct a new FigNode.  This method creates the
-     *  _name element that holds the name of the model element and adds
-     *  itself as a listener. */
+    /** 
+     * Partially construct a new FigNode.  This method creates the
+     * name element that holds the name of the model element and adds
+     * itself as a listener. */
     public FigEdgeModelElement() {
 
         nameFig = new FigSingleLineText(10, 30, 90, 20, false);
