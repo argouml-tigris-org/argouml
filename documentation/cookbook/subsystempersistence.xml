@@ -59,6 +59,14 @@ During load the persistence subsystem unwraps the persistence data and passes
 these to the relevant subsystems for those subsystems to build themselves.
 </para>
 
+  <para>Edges and nodes are now saved and loaded in z order.
+Previously, edges were connected as they were loaded, 
+and if the node had not already been read then this was a problem.
+We now load all nodes and edges (unconnected) 
+and then connect the edges post load.
+<!-- See issue 3645 -->
+</para>
+
 </sect1>
 
 
