@@ -36,12 +36,12 @@ import org.argouml.uml.notation.java.OperationNotationJava;
  *
  * @author mvw@tigris.org
  */
-public class InitNotationJava {
+class InitNotationJava {
 
     /**
      * static initializer, register all appropriate notations.
      */
-    public static void init() {
+    static void init() {
         NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();
         NotationName name = /*Notation.findNotation("Java");*/
             Notation.makeNotation(
