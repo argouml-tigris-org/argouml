@@ -53,12 +53,12 @@ import org.argouml.uml.notation.uml.TransitionNotationUml;
  * 
  * @author mvw@tigris.org
  */
-public class InitNotationUml {
+class InitNotationUml {
 
     /**
      * static initializer, register all appropriate notations.
      */
-    public static void init() {
+    static void init() {
         NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();
         NotationName name =
             Notation.makeNotation(
