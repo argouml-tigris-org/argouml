@@ -35,8 +35,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.di.GraphElement;
 import org.tigris.gef.graph.MutableGraphSupport;
-import org.tigris.gef.presentation.Connecter;
 import org.tigris.gef.presentation.Fig;
 
 
@@ -74,7 +74,7 @@ public class ActionRemoveFromDiagram extends AbstractAction {
         for (int i = 0; i < size; i++) {
             Fig f = (Fig) figs.elementAt(i);
             if (!(f.getOwner() instanceof CommentEdge)) {
-                if (f instanceof Connecter) {
+                if (f instanceof GraphElement) {
                     f.removeFromDiagram();
                 } else {
                     graph.removeFig(f);
