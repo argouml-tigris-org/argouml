@@ -117,7 +117,19 @@ public class FigGeneralization extends FigEdgeModelElement {
                 && "discriminator".equals(e.getPropertyName())) {
             updateDiscriminatorText();
         }
+    }
 
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
+     */
+    protected void updateListeners(Object oldOwner, Object newOwner) {
+        if (oldOwner != null) {
+            removeElementListener(oldOwner);
+        }
+        if (newOwner != null) {
+            addElementListener(newOwner, 
+                    new String[] {"remove", "discriminator"});
+        }
     }
 
     /**
