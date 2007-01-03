@@ -27,13 +27,13 @@ package org.argouml.uml.diagram.ui;
 import org.argouml.model.Model;
 
 /**
- * A Mode to interpret user input while creating a usage edge.
- * The usage can connect any model element including those represented
+ * A Mode to interpret user input while creating a permission edge.
+ * The permission can connect any model elements including those represented
  * by edges as well as nodes.
  */
-public class ModeCreatePermission extends ModeCreateDependency {
+public final class ModeCreatePermission extends ModeCreateDependency {
 
-    protected Object getMetaType() {
+    protected final Object getMetaType() {
 	return Model.getMetaTypes().getPermission();
     }
 

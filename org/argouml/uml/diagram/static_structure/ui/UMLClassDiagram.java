@@ -360,10 +360,7 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionGeneralization() {
         if (actionGeneralization == null) {
-            actionGeneralization =
-                makeCreateEdgeAction(
-                        Model.getMetaTypes().getGeneralization(),
-                        "button.new-generalization");
+            actionGeneralization = makeCreateGeneralizationAction();
         }
 
         return actionGeneralization;
