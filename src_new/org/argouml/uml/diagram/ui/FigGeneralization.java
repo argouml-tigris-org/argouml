@@ -69,6 +69,7 @@ public class FigGeneralization extends FigEdgeModelElement {
         // UML spec for Generalizations doesn't call for name or stereotype
 
 	discriminator.setFont(getLabelFont());
+	discriminator.setFilled(false);
 	discriminator.setLineWidth(0);
 	discriminator.setReturnAction(FigText.END_EDITING);
 	discriminator.setTabAction(FigText.END_EDITING);
