@@ -223,39 +223,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     private static final Object[][] VALID_CONNECTIONS = {
         {Generalization.class,   GeneralizableElement.class, },
         {Dependency.class,       ModelElement.class, },
-        {Dependency.class,       Package.class, },
-        {Dependency.class,       UmlClass.class, },
-        {Dependency.class,       Interface.class, },
-        {Dependency.class, Interface.class, UmlClass.class, },
-        {Dependency.class, Interface.class, Package.class, },
-        {Dependency.class, UmlClass.class, Package.class, },
-        {Dependency.class,       UseCase.class, },
-        {Dependency.class,       Actor.class, },
-        {Dependency.class, Actor.class, UseCase.class, },
-        {Dependency.class,       Component.class, },
-        {Dependency.class,       ComponentInstance.class, },
-        {Dependency.class,       Object.class, },
-        {Dependency.class, Component.class, Node.class, null, },
-        {Dependency.class, Object.class, Component.class, null, },
-        {Dependency.class, ComponentInstance.class, NodeInstance.class,
-            null, },
-        {Dependency.class,
-            org.omg.uml.behavioralelements.commonbehavior.Object.class,
-            ComponentInstance.class, null, },
-        {Dependency.class, Component.class, Interface.class, null, },
-        {Dependency.class,       ClassifierRole.class, },
-        {Usage.class,            UmlClass.class, },
-        {Usage.class,            Interface.class, },
-        {Usage.class,            UmlPackage.class, },
-        {Usage.class, Class.class, Package.class, },
-        {Usage.class, Class.class, Interface.class, },
-        {Usage.class, Interface.class, Package.class, },
-        {Permission.class,       UmlClass.class, },
-        {Permission.class,       Interface.class, },
-        {Permission.class,       UmlPackage.class, },
-        {Permission.class, UmlClass.class, Package.class, },
-        {Permission.class, UmlClass.class, Interface.class, },
-        {Permission.class, Interface.class, Package.class, },
+        {Usage.class,            ModelElement.class, },
+        {Permission.class,       ModelElement.class, },
         {Abstraction.class, UmlClass.class, Interface.class, null, },
         {Abstraction.class, UmlClass.class, UmlClass.class, null, },
         {Abstraction.class, UmlPackage.class, UmlPackage.class, null, },
@@ -273,9 +242,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         {Transition.class,       StateVertex.class, },
         {AssociationClass.class, UmlClass.class, },
         {AssociationEnd.class, UmlClass.class, UmlAssociation.class, },
-        {Message.class, ClassifierRole.class }, };
-
-
+        {Message.class, ClassifierRole.class },
+    };
 
     /**
      * Don't allow external instantiation.
