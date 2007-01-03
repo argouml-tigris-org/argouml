@@ -543,6 +543,20 @@ public abstract class UMLDiagram
     }
 
     /**
+     * Factory method to build an Action for creating an edge in the
+     * diagram.
+     * @return The action to create a new generalization mode.
+     */
+    protected Action makeCreateGeneralizationAction() {
+        return new RadioAction(
+            new CmdSetMode(
+        	    ModeCreateGeneralization.class, 
+        	    "edgeClass", 
+        	    Model.getMetaTypes().getGeneralization(), 
+        	    "button.new-generalization"));
+    }
+
+    /**
      * Factory method to build an Action for creating an association edge in
      * the diagram.
      *

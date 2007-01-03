@@ -25,29 +25,32 @@
 package org.argouml.uml.diagram.ui;
 
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * A Mode to interpret user input while creating a comment edge.
- * The comment can connect an existing comment node to any other existing
- * node or edge.
+ * A Mode to interpret user input while creating a generalization edge.
+ * The generalization can connect any model element including those
+ * represented by edges as well as nodes. The source and destination
+ * must be of the same type.
  */
-public final class ModeCreateCommentEdge extends ModeCreateGraphEdge {
+public final class ModeCreateGeneralization extends ModeCreateGraphEdge {
     
     /*
-     * If we're drawing to an edge then only allow if the start is a comment
-     * @see org.argouml.uml.diagram.ui.ModeCreateGraphEdge#isConnectionValid(org.tigris.gef.presentation.Fig, org.tigris.gef.presentation.Fig)
+     * The drop is only valid if source and dest are of the same type
+     * @see org.argouml.uml.diagram.ui.ModeCreateGraphEdge#isDestFigEdgeValid(org.tigris.gef.presentation.FigEdge)
      */
-    protected final boolean isConnectionValid(Fig source, Fig dest) {
-	if (dest instanceof FigNodeModelElement) {
-            return Model.getFacade().isAComment(source.getOwner());
-	} else {
-	    return true;
-	}
+    protected final boolean isConnectionValid(
+	    Fig source,
+	    Fig dest) {
+	return source.getClass() == dest.getClass();
     }
 
+    /**
+     * Return the meta type of the element that this mode is designed to
+     * create. In the case the dependency metatype.
+     * @return the dependency meta type.
+     */
     protected final Object getMetaType() {
-	return CommentEdge.class;
+	return Model.getMetaTypes().getGeneralization();
     }
 }

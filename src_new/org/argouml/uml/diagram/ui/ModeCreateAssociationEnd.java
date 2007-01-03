@@ -53,6 +53,7 @@ import org.tigris.gef.presentation.FigPoly;
  * the edge is simply added.
  * If the association is a binary association edge then that edge is
  * transformed into a n-ary association.
+ * TODO: Investigate if this can extend ModeCreateGraphEdge
  *
  * @author pepargouml@yahoo.es
  */

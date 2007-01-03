@@ -28,12 +28,12 @@ import org.argouml.model.Model;
 
 /**
  * A Mode to interpret user input while creating a usage edge.
- * The usage can connect any model element including those represented
+ * The usage can connect any model elements including those represented
  * by edges as well as nodes.
  */
-public class ModeCreateUsage extends ModeCreateDependency {
+public final class ModeCreateUsage extends ModeCreateDependency {
 
-    protected Object getMetaType() {
+    protected final Object getMetaType() {
 	return Model.getMetaTypes().getUsage();
     }
 
