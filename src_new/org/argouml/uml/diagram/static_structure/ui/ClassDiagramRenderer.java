@@ -251,7 +251,9 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             } else {
                 source = Model.getUmlHelper().getSource(edge);
             }
-            setSourcePort(newEdge, getNodePresentationFor(lay, source));
+            FigNode sourceNode = getNodePresentationFor(lay, source);
+            assert (sourceNode != null) : "No FigNode found for " + source;
+            setSourcePort(newEdge, sourceNode);
         }
 
         if (newEdge.getDestPortFig() == null) {
@@ -261,6 +263,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             } else {
                 dest = Model.getUmlHelper().getDestination(edge);
             }
+            LOG.info("The dest model element is " + dest);
             setDestPort(newEdge, getNodePresentationFor(lay, dest));
         }
 
@@ -300,9 +303,10 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
     /**
      * Get the FigNode from the given layer that represents the given
      * model element.
-     * This is required to make sure that a FigNode is always returned
-     * when getting the presentation of a model element and that we do
-     * not get the edge portion of an association class.
+     * The FigNode portion of an association class is returned in preference
+     * to the FigEdge portion.
+     * If no FigNode is found then a FIgEdge is searched for and the FigNode
+     * that acts as its edge port is returned.
      * @param lay the layer containing the Fig
      * @param modelElement the model element to find presentation for
      * @return the FigNode presentation of the model element
@@ -315,6 +319,15 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             if (fig instanceof FigNode
                     && ((FigNode) fig).getOwner().equals(modelElement)) {
                 return ((FigNode) fig);
+            }
+        }
+        for (Iterator it = lay.getContentsEdgesOnly().iterator();
+            it.hasNext(); ) {
+            Object fig = it.next();
+            if (fig instanceof FigEdgeModelElement
+                    && modelElement.equals(((FigEdgeModelElement) fig)
+                	    .getOwner())) {
+                return ((FigEdgeModelElement) fig).getEdgePort();
             }
         }
         return null;

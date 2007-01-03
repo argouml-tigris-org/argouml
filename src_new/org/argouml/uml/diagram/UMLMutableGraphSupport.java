@@ -440,6 +440,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
                             toStyle,
                             unidirectional,
                             namespace);
+        	LOG.info("Created " + connection + " between " + fromElement + " and " + toElement);
             } catch (UmlException ex) {
                 // fail silently as we expect users to accidentally drop
                 // on to wrong component
