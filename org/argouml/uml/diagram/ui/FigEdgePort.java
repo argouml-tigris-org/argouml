@@ -53,7 +53,7 @@ public class FigEdgePort extends FigNodeModelElement {
      */
     public FigEdgePort() {
         invisibleAllowed = true;
-        bigPort = new FigCircle(0, 0, 10, 10, Color.black, Color.white);
+        bigPort = new FigCircle(0, 0, 1, 1, Color.black, Color.white);
         addFig(bigPort);
     }
 

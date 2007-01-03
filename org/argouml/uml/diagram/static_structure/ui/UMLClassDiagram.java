@@ -35,6 +35,9 @@ import org.argouml.model.Model;
 import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.argouml.uml.diagram.ui.ModeCreateDependency;
+import org.argouml.uml.diagram.ui.ModeCreatePermission;
+import org.argouml.uml.diagram.ui.ModeCreateUsage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
@@ -332,16 +335,26 @@ public class UMLClassDiagram extends UMLDiagram {
     /**
      * @return Returns the actionDepend.
      */
+//    protected Action getActionDependency() {
+//        if (actionDependency == null) {
+//            actionDependency =
+//                makeCreateEdgeAction(
+//                        Model.getMetaTypes().getDependency(),
+//                        "button.new-dependency");
+//        }
+//        return actionDependency;
+//    }
+    
     protected Action getActionDependency() {
         if (actionDependency == null) {
-            actionDependency =
-                makeCreateEdgeAction(
-                        Model.getMetaTypes().getDependency(),
-                        "button.new-dependency");
+            actionDependency = makeCreateDependencyAction(
+        	    ModeCreateDependency.class,
+        	    Model.getMetaTypes().getDependency(),
+        	    "button.new-dependency");
         }
         return actionDependency;
     }
-
+    
     /**
      * @return Returns the actionGeneralize.
      */
@@ -409,10 +422,10 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionPermission() {
         if (actionPermission == null) {
-            actionPermission =
-                makeCreateEdgeAction(
-                        Model.getMetaTypes().getPermission(),
-                        "button.new-permission");
+            actionPermission = makeCreateDependencyAction(
+        	    ModeCreatePermission.class,
+        	    Model.getMetaTypes().getPermission(),
+        	    "button.new-permission");
         }
 
         return actionPermission;
@@ -492,9 +505,10 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionUsage() {
         if (actionUsage == null) {
-            actionUsage =
-                makeCreateEdgeAction(Model.getMetaTypes().getUsage(),
-                        "button.new-usage");
+            actionUsage = makeCreateDependencyAction(
+        	    ModeCreateUsage.class,
+        	    Model.getMetaTypes().getUsage(),
+        	    "button.new-usage");
         }
         return actionUsage;
     }

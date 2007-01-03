@@ -526,6 +526,23 @@ public abstract class UMLDiagram
     }
 
     /**
+     * Factory method to build an Action for creating an edge in the
+     * diagram.
+     *
+     * @param modeClass the mode class to instantiate drawing
+     * @param metaType identifies the model element type to make
+     * @param descr the description to give this action.
+     * @return The action to create a new node.
+     */
+    protected Action makeCreateDependencyAction(
+	    Class modeClass, 
+	    Object metaType, 
+	    String descr) {
+        return new RadioAction(
+            new CmdSetMode(modeClass, "edgeClass", metaType, descr));
+    }
+
+    /**
      * Factory method to build an Action for creating an association edge in
      * the diagram.
      *
