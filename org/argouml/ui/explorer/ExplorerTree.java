@@ -27,9 +27,7 @@ package org.argouml.ui.explorer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -37,8 +35,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
@@ -73,12 +69,6 @@ public class ExplorerTree
     private boolean updatingSelection;
 
     /**
-     * Prevents target event cycles between this and the Targetmanager
-     * for tree selection events.
-     */
-    private boolean updatingSelectionViaTreeSelection;
-
-    /**
      * Creates a new instance of ExplorerTree.
      */
     public ExplorerTree() {
@@ -94,7 +84,7 @@ public class ExplorerTree
         this.setModel(new ExplorerTreeModel(ProjectManager.getManager()
 			                    .getCurrentProject(), this));
         this.addMouseListener(new ExplorerMouseListener(this));
-        this.addTreeSelectionListener(new ExplorerTreeSelectionListener());
+        //this.addTreeSelectionListener(new ExplorerTreeSelectionListener());
         this.addTreeWillExpandListener(new ExplorerTreeWillExpandListener());
         this.addTreeExpansionListener(new ExplorerTreeExpansionListener());
 
@@ -160,6 +150,28 @@ public class ExplorerTree
             if (me.isPopupTrigger()) {
                 me.consume();
                 showPopupMenu(me);
+            }
+            TreePath selPath = mLTree.getPathForLocation(me.getX(), me.getY());
+            
+            if (selPath != null) {
+                
+                Object selectedItem =
+                    ((DefaultMutableTreeNode) selPath.getLastPathComponent())
+                            .getUserObject();
+                
+                Collection currentTargets =
+                    TargetManager.getInstance().getTargets();
+                boolean selected =
+                    currentTargets.contains(selectedItem);
+                if (me.getModifiersEx() == MouseEvent.CTRL_DOWN_MASK) {
+                    if (selected) {
+                        TargetManager.getInstance().removeTarget(selectedItem);
+                    } else {
+                        TargetManager.getInstance().addTarget(selectedItem);
+                    }
+                } else if (!selected || currentTargets.size() > 1) {
+                    TargetManager.getInstance().setTarget(selectedItem);
+                }
             }
             if (me.getClickCount() >= 2) {
                 myDoubleClick();
@@ -274,9 +286,7 @@ public class ExplorerTree
      */
     public void refreshSelection() {
         Collection targets = TargetManager.getInstance().getTargets();
-        updatingSelectionViaTreeSelection = true;
         setSelection(targets.toArray());
-        updatingSelectionViaTreeSelection = false;
     }
 
     /**
@@ -285,8 +295,6 @@ public class ExplorerTree
      * @param targets the targets
      */
     private void setSelection(Object[] targets) {
-        updatingSelectionViaTreeSelection = true;
-
         this.clearSelection();
         int rows = getRowCount();
         for (int i = 0; i < targets.length; i++) {
@@ -303,110 +311,9 @@ public class ExplorerTree
                 }
             }
         }
-        updatingSelectionViaTreeSelection = false;
 
         if (this.getSelectionCount() > 0) {
             scrollRowToVisible(this.getSelectionRows()[0]);
-        }
-    }
-
-    /**
-     * Manages selecting the item to show in Argo's other
-     * views based on the highlighted row.
-     */
-    class ExplorerTreeSelectionListener implements TreeSelectionListener {
-
-        /**
-         * @see javax.swing.event.TreeSelectionListener#valueChanged(
-         *         javax.swing.event.TreeSelectionEvent)
-         *
-         * Change in explorer tree selection -> set target in target manager.
-         */
-        public void valueChanged(TreeSelectionEvent e) {
-
-            if (!updatingSelectionViaTreeSelection) {
-                updatingSelectionViaTreeSelection = true;
-
-                // get the elements
-                TreePath[] addedOrRemovedPaths = e.getPaths();
-                TreePath[] selectedPaths = getSelectionPaths();
-                List elementsAsList = new ArrayList();
-                for (int i = 0;
-                    selectedPaths != null && i < selectedPaths.length; i++) {
-                    Object element =
-                        ((DefaultMutableTreeNode)
-                                selectedPaths[i].getLastPathComponent())
-                                .getUserObject();
-                    elementsAsList.add(element);
-                    // scan the visible rows for duplicates of
-                    // this elem and select them
-                    int rows = getRowCount();
-                    for (int row = 0; row < rows; row++) {
-                        Object rowItem =
-			    ((DefaultMutableTreeNode) getPathForRow(row)
-			            .getLastPathComponent())
-			            .getUserObject();
-                        if (rowItem == element
-			    && !(isRowSelected(row))) {
-                            addSelectionRow(row);
-                        }
-                    }
-                }
-
-                // check which targetmanager method to call
-                boolean callSetTarget = true;
-                List addedElements = new ArrayList();
-                for (int i = 0; i < addedOrRemovedPaths.length; i++) {
-                    Object element =
-                        ((DefaultMutableTreeNode)
-                            addedOrRemovedPaths[i].getLastPathComponent())
-                            .getUserObject();
-                    if (!e.isAddedPath(i)) {
-                        callSetTarget = false;
-                        break;
-                    }
-                    addedElements.add(element);
-                }
-
-                if (callSetTarget && addedElements.size()
-                        == elementsAsList.size()
-                        && elementsAsList.containsAll(addedElements)) {
-                    TargetManager.getInstance().setTargets(elementsAsList);
-                } else {
-                    // we must call the correct method on targetmanager
-                    // for each added or removed target
-                    List removedTargets = new ArrayList();
-                    List addedTargets = new ArrayList();
-                    for (int i = 0; i < addedOrRemovedPaths.length; i++) {
-                        Object element =
-                            ((DefaultMutableTreeNode)
-                                addedOrRemovedPaths[i]
-                                        .getLastPathComponent())
-                                .getUserObject();
-                        if (e.isAddedPath(i)) {
-                            addedTargets.add(element);
-                        } else {
-                            removedTargets.add(element);
-                        }
-                    }
-                    // we can't remove the targets in one go, we have to
-                    // do it one by one.
-                    if (!removedTargets.isEmpty()) {
-                        Iterator it = removedTargets.iterator();
-                        while (it.hasNext()) {
-                            TargetManager.getInstance().removeTarget(it.next());
-                        }
-                    }
-                    if (!addedTargets.isEmpty()) {
-                        Iterator it = addedTargets.iterator();
-                        while (it.hasNext()) {
-                            TargetManager.getInstance().addTarget(it.next());
-                        }
-                    }
-                }
-
-                updatingSelectionViaTreeSelection = false;
-            }
         }
     }
 
@@ -451,9 +358,7 @@ public class ExplorerTree
                                     getPathForRow(j).getLastPathComponent())
                             .getUserObject();
                         if (rowItem == target) {
-                            updatingSelectionViaTreeSelection = true;
                             addSelectionRow(j);
-                            updatingSelectionViaTreeSelection = false;
                         }
                     }
                 }
@@ -488,9 +393,7 @@ public class ExplorerTree
                                     getPathForRow(j).getLastPathComponent())
                             .getUserObject();
                         if (rowItem == target) {
-                            updatingSelectionViaTreeSelection = true;
                             removeSelectionRow(j);
-                            updatingSelectionViaTreeSelection = false;
                         }
                     }
                 }
@@ -500,7 +403,6 @@ public class ExplorerTree
                 }
                 updatingSelection = false;
             }
-            // setTargets(e.getNewTargets());
         }
 
         /*
