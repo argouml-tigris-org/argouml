@@ -28,7 +28,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JPopupMenu;
