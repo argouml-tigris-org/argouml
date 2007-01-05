@@ -26,6 +26,7 @@ package org.argouml.notation;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.uml.notation.java.AssociationEndNameNotationJava;
+import org.argouml.uml.notation.java.AssociationNameNotationJava;
 import org.argouml.uml.notation.java.AttributeNotationJava;
 import org.argouml.uml.notation.java.ModelElementNameNotationJava;
 import org.argouml.uml.notation.java.OperationNotationJava;
@@ -61,6 +62,9 @@ class InitNotationJava {
         npf.addNotationProvider(
                 NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME,
                 name, AssociationEndNameNotationJava.class);
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_ASSOCIATION_NAME,
+                name, AssociationNameNotationJava.class);
     }
 
 }

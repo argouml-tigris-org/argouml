@@ -24,7 +24,11 @@
 
 package org.argouml.uml.notation.java;
 
+import java.util.HashMap;
+import java.util.Stack;
+
 import org.argouml.model.Model;
+import org.argouml.uml.notation.NotationProvider;
 
 /**
  * This class is a utility for the Java notation.
@@ -152,5 +156,104 @@ public class NotationUtilityJava {
         sb.append(Model.getFacade().getName(parameter));
         //TODO: initial value
         return sb.toString();
+    }
+    
+    /**
+     * @param modelElement the UML element
+     * @param args a set of arguments that may influence 
+     * the generated notation
+     * @return a string which represents abstractness
+     */
+    static String generateAbstract(Object modelElement, HashMap args) {
+        if (supportsAbstract(modelElement)
+                && Model.getFacade().isAbstract(modelElement)) {
+            return "abstract ";
+        }
+        return "";
+    }
+
+    /**
+     * TODO: it would be nice to have this defined in the
+     * {@link org.argouml.model.Facade Facade} interface.
+     * 
+     * @param modelElement the UML element
+     * @return true if the modelElement supports the 
+     * {@link org.argouml.model.Facade#isAbstract(Object) isAbstract} call.
+     */
+    private static boolean supportsAbstract(Object modelElement) {
+        return Model.getFacade().isAGeneralizableElement(modelElement)
+                || Model.getFacade().isAOperation(modelElement)
+                || Model.getFacade().isAReception(modelElement)
+                || Model.getFacade().isAAssociation(modelElement);
+    }
+
+     /**
+     * @param modelElement the UML element
+     * @param args a set of arguments that may influence 
+     * the generated notation
+     * @return a string which represents leaf
+     */
+    static String generateLeaf(Object modelElement, HashMap args) {
+        if (supportsLeaf(modelElement)
+                && Model.getFacade().isLeaf(modelElement)) {
+            return "final ";
+        }
+        return "";
+    }
+
+    /**
+     * TODO: it would be nice to have this defined in the
+     * {@link org.argouml.model.Facade Facade} interface.
+     * 
+     * @param modelElement the UML element
+     * @return true if the modelElement supports the 
+     * {@link org.argouml.model.Facade#isLeaf(Object) isLeaf} call.
+     */
+    private static boolean supportsLeaf(Object modelElement) {
+        return Model.getFacade().isAGeneralizableElement(modelElement)
+                || Model.getFacade().isAOperation(modelElement)
+                || Model.getFacade().isAReception(modelElement);
+    }
+
+    /**
+     * @param modelElement the UML element
+     * @param args a set of arguments that may influence 
+     * the generated notation
+     * @return a string which represents the path
+     */
+    static String generatePath(Object modelElement, 
+            HashMap args) {
+        String s = "";
+        if (NotationProvider.isValue("pathVisible", args)) {
+            Stack stack = new Stack();
+            Object ns = Model.getFacade().getNamespace(modelElement);
+            while (ns != null && !Model.getFacade().isAModel(ns)) {
+                stack.push(Model.getFacade().getName(ns));
+                ns = Model.getFacade().getNamespace(ns);
+            }
+            while (!stack.isEmpty()) {
+                s += (String) stack.pop() + ".";
+            }
+
+            if (s.length() > 0 && !s.endsWith(".")) {
+                s += ".";
+            }
+        }
+        return s;
+    }
+
+    /**
+     * @param modelElement the UML element
+     * @param args a set of arguments that may influence 
+     * the generated notation
+     * @return a string which represents the visibility
+     */
+    static String generateVisibility(Object modelElement, 
+            HashMap args) {
+        String s = "";
+        if (NotationProvider.isValue("visibilityVisible", args)) {
+            s = NotationUtilityJava.generateVisibility(modelElement);
+        }
+        return s;
     }
 }
