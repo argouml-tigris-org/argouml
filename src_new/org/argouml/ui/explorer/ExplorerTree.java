@@ -177,7 +177,8 @@ public class ExplorerTree
                     } else {
                         TargetManager.getInstance().addTarget(selectedItem);
                     }
-                } else if (!selected || currentTargets.size() > 1) {
+                } else if (!me.isPopupTrigger()
+                	&& (!selected || currentTargets.size() > 1)) {
                     TargetManager.getInstance().setTarget(selectedItem);
                 }
             }
