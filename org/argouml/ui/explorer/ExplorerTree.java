@@ -27,6 +27,7 @@ package org.argouml.ui.explorer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
 
@@ -67,6 +68,12 @@ public class ExplorerTree
      */
     private boolean updatingSelection;
 
+    /**
+     * Set on click or ctrl-click. Used on shift click to determine range to
+     * select.
+     */
+    private TreePath lastSelectedPath;
+    
     /**
      * Creates a new instance of ExplorerTree.
      */
@@ -155,7 +162,43 @@ public class ExplorerTree
             selectItem(me);
             if (me.getClickCount() >= 2) {
                 myDoubleClick();
+            } else if (me.getModifiersEx() == MouseEvent.SHIFT_DOWN_MASK) {
+        	// On a shift click select everything from the last clicked
+        	// item up to this clicked item
+                int lastSelectedRow;
+        	if (lastSelectedPath == null) {
+                    lastSelectedRow = 0;
+        	} else {
+                    lastSelectedRow =
+                        this.mLTree.getRowForPath(lastSelectedPath);
+        	}
+                TreePath selPath =
+                    mLTree.getPathForLocation(me.getX(), me.getY());
+                if (selPath != null) {
+                    int currentSelectedRow =
+                        this.mLTree.getRowForPath(selPath);
+                    selectItems(
+                    	Math.min(lastSelectedRow, currentSelectedRow), 
+                    	Math.max(lastSelectedRow, currentSelectedRow));
+                }
             }
+        }
+        
+        /**
+         * Set the target manager contents to the given range of tree rows
+         * @param firstRow The first row to place in the target manager
+         * @param lastRow The last row to place in the target manager
+         */
+        private void selectItems(int firstRow, int lastRow) {
+            ArrayList targets = new ArrayList();
+            for (int i = firstRow; i <= lastRow; ++i) {
+                TreePath path = mLTree.getUI().getPathForRow(mLTree, i);
+                Object selectedItem =
+                    ((DefaultMutableTreeNode) path.getLastPathComponent())
+                            .getUserObject();
+                targets.add(selectedItem);
+            }
+            TargetManager.getInstance().setTargets(targets);
         }
         
         private void selectItem(MouseEvent me) {
@@ -166,6 +209,10 @@ public class ExplorerTree
                 Object selectedItem =
                     ((DefaultMutableTreeNode) selPath.getLastPathComponent())
                             .getUserObject();
+                
+                if (me.getModifiersEx() != MouseEvent.SHIFT_DOWN_MASK) {
+                    lastSelectedPath = selPath;
+                }
                 
                 Collection currentTargets =
                     TargetManager.getInstance().getTargets();
