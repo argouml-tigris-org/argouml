@@ -117,6 +117,7 @@ public class ExplorerTree
         public void mousePressed(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
+                selectItem(me);
                 showPopupMenu(me);
             }
         }
@@ -135,6 +136,7 @@ public class ExplorerTree
         public void mouseReleased(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
+                selectItem(me);
                 showPopupMenu(me);
             }
         }
@@ -150,6 +152,13 @@ public class ExplorerTree
                 me.consume();
                 showPopupMenu(me);
             }
+            selectItem(me);
+            if (me.getClickCount() >= 2) {
+                myDoubleClick();
+            }
+        }
+        
+        private void selectItem(MouseEvent me) {
             TreePath selPath = mLTree.getPathForLocation(me.getX(), me.getY());
             
             if (selPath != null) {
@@ -171,9 +180,6 @@ public class ExplorerTree
                 } else if (!selected || currentTargets.size() > 1) {
                     TargetManager.getInstance().setTarget(selectedItem);
                 }
-            }
-            if (me.getClickCount() >= 2) {
-                myDoubleClick();
             }
         }
 
