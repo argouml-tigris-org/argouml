@@ -32,7 +32,6 @@ import java.util.Collection;
 import java.util.Vector;
 
 import javax.swing.JPopupMenu;
-import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeWillExpandListener;
@@ -89,7 +88,7 @@ public class ExplorerTree
 
         this.setModel(new ExplorerTreeModel(ProjectManager.getManager()
 			                    .getCurrentProject(), this));
-        this.addMouseListener(new ExplorerMouseListener(this));
+        this.addMouseListener(new ExplorerMouseListener());
         //this.addTreeSelectionListener(new ExplorerTreeSelectionListener());
         this.addTreeWillExpandListener(new ExplorerTreeWillExpandListener());
         this.addTreeExpansionListener(new ExplorerTreeExpansionListener());
@@ -104,15 +103,12 @@ public class ExplorerTree
      */
     class ExplorerMouseListener extends MouseAdapter {
 
-        private JTree mLTree;
-
         /**
          * The constructor.
          * @param newtree
          */
-        public ExplorerMouseListener(JTree newtree) {
+        public ExplorerMouseListener() {
             super();
-            mLTree = newtree;
         }
 
         /**
@@ -170,13 +166,13 @@ public class ExplorerTree
                     lastSelectedRow = 0;
         	} else {
                     lastSelectedRow =
-                        this.mLTree.getRowForPath(lastSelectedPath);
+                        ExplorerTree.this.getRowForPath(lastSelectedPath);
         	}
                 TreePath selPath =
-                    mLTree.getPathForLocation(me.getX(), me.getY());
+                    ExplorerTree.this.getPathForLocation(me.getX(), me.getY());
                 if (selPath != null) {
                     int currentSelectedRow =
-                        this.mLTree.getRowForPath(selPath);
+                	ExplorerTree.this.getRowForPath(selPath);
                     selectItems(
                     	Math.min(lastSelectedRow, currentSelectedRow), 
                     	Math.max(lastSelectedRow, currentSelectedRow));
@@ -192,24 +188,32 @@ public class ExplorerTree
         private void selectItems(int firstRow, int lastRow) {
             ArrayList targets = new ArrayList();
             for (int i = firstRow; i <= lastRow; ++i) {
-                TreePath path = mLTree.getUI().getPathForRow(mLTree, i);
-                Object selectedItem =
-                    ((DefaultMutableTreeNode) path.getLastPathComponent())
-                            .getUserObject();
+                TreePath path =
+                    ExplorerTree.this.getUI().getPathForRow(
+                	    ExplorerTree.this, i);
+                Object selectedItem = getUserObject(path);
                 targets.add(selectedItem);
             }
             TargetManager.getInstance().setTargets(targets);
         }
         
+        /**
+         * Amends the target manager according to the mouse event.
+         * A Click sets the target manager to contain only the clicked item.
+         * A Ctrl-Click adds the selected item to the target manager unless
+         * it is already slected in which case it removes it.
+         * @param me the mouse event.
+         */
         private void selectItem(MouseEvent me) {
-            TreePath selPath = mLTree.getPathForLocation(me.getX(), me.getY());
+            TreePath selPath =
+        	ExplorerTree.this.getPathForLocation(me.getX(), me.getY());
             
             if (selPath != null) {
                 
-                Object selectedItem =
-                    ((DefaultMutableTreeNode) selPath.getLastPathComponent())
-                            .getUserObject();
+                Object selectedItem = getUserObject(selPath);
                 
+                // If this wasn't a shifted click then remember this
+                // path for any possible future shift click to select from.
                 if (me.getModifiersEx() != MouseEvent.SHIFT_DOWN_MASK) {
                     lastSelectedPath = selPath;
                 }
@@ -230,7 +234,7 @@ public class ExplorerTree
                 }
             }
         }
-
+        
         /**
          * Double-clicking on an item attempts
          * to show the item in a diagram.
@@ -265,13 +269,11 @@ public class ExplorerTree
                 getSelectionModel().setSelectionPath(path);
             }
 
-            Object selectedItem =
-                ((DefaultMutableTreeNode) path.getLastPathComponent())
-                        .getUserObject();
+            Object selectedItem = getUserObject(path);
             JPopupMenu popup = new ExplorerPopup(selectedItem, me);
 
             if (popup.getComponentCount() > 0) {
-                popup.show(mLTree, me.getX(), me.getY());
+                popup.show(ExplorerTree.this, me.getX(), me.getY());
             }
         }
 
@@ -356,9 +358,7 @@ public class ExplorerTree
                 target = ((Fig) target).getOwner();
             }
             for (int j = 0; j < rows; j++) {
-                Object rowItem =
-		    ((DefaultMutableTreeNode) getPathForRow(j)
-		            .getLastPathComponent()).getUserObject();
+                Object rowItem = getUserObject(getPathForRow(j));
                 if (rowItem == target) {
                     this.addSelectionRow(j);
                 }
@@ -369,6 +369,18 @@ public class ExplorerTree
             scrollRowToVisible(this.getSelectionRows()[0]);
         }
     }
+    
+    /**
+     * Get the object (typically a model element or a diagram) that is
+     * represented by the given tree path
+     * @param path the path item
+     * @return the represented object
+     */
+    protected Object getUserObject(TreePath path) {
+        return ((DefaultMutableTreeNode) path.getLastPathComponent())
+                    .getUserObject();
+    }
+
 
     class ExplorerTargetListener implements TargetListener {
 
@@ -406,10 +418,7 @@ public class ExplorerTree
                         target = ((Fig) target).getOwner();
                     }
                     for (int j = 0; j < rows; j++) {
-                        Object rowItem =
-                            ((DefaultMutableTreeNode)
-                                    getPathForRow(j).getLastPathComponent())
-                            .getUserObject();
+                        Object rowItem = getUserObject(getPathForRow(j));
                         if (rowItem == target) {
                             addSelectionRow(j);
                         }
@@ -441,10 +450,7 @@ public class ExplorerTree
                         target = ((Fig) target).getOwner();
                     }
                     for (int j = 0; j < rows; j++) {
-                        Object rowItem =
-                            ((DefaultMutableTreeNode)
-                                    getPathForRow(j).getLastPathComponent())
-                            .getUserObject();
+                        Object rowItem = getUserObject(getPathForRow(j));
                         if (rowItem == target) {
                             removeSelectionRow(j);
                         }

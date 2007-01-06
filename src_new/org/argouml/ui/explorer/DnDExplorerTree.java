@@ -66,7 +66,6 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -201,9 +200,7 @@ public class DnDExplorerTree
         Collection targets = new ArrayList();
         for (int i = 0; i < selectedRows.length; ++i) {
             TreePath path = getUI().getPathForRow(this, selectedRows[i]);
-            Object selectedItem =
-                ((DefaultMutableTreeNode) path.getLastPathComponent())
-                        .getUserObject();
+            Object selectedItem = getUserObject(path);
             targets.add(selectedItem);
         }
         
@@ -300,9 +297,7 @@ public class DnDExplorerTree
             LOG.debug("No valid Drag: flavor not supported.");
             return false;
         }
-        Object dest =
-            ((DefaultMutableTreeNode) destinationPath
-                .getLastPathComponent()).getUserObject();
+        Object dest = getUserObject(destinationPath);
 
         /* TODO: support other types of drag.
          * Here you set the owner by dragging into a namespace.
@@ -660,9 +655,7 @@ public class DnDExplorerTree
                 return;
             }
 
-            Object dest =
-                ((DefaultMutableTreeNode) path
-                    .getLastPathComponent()).getUserObject();
+            Object dest = getUserObject(path);
 
             /* If the destination is not a NameSpace, then reject: */
             if (!Model.getFacade().isANamespace(dest)) {
@@ -732,12 +725,8 @@ public class DnDExplorerTree
                         TransferableModelElements.UML_COLLECTION_FLAVOR);
                 LOG.debug("transfer data = " + modelElements);
 
-                Object dest =
-                    ((DefaultMutableTreeNode) destinationPath
-                        .getLastPathComponent()).getUserObject();
-                Object src =
-                    ((DefaultMutableTreeNode) sourcePath
-                        .getLastPathComponent()).getUserObject();
+                Object dest = getUserObject(destinationPath);
+                Object src = getUserObject(sourcePath);
 
                 int action = dropTargetDropEvent.getDropAction();
                 /* The user-DropActions are:
