@@ -194,10 +194,19 @@ public class DnDExplorerTree
          * Get the selected targets (UML ModelElements)
          * from the TargetManager.
          */
-        Collection targets = TargetManager.getInstance().getModelTargets();
-        if (targets.size() < 1) {
+        int[] selectedRows = this.getSelectionRows();
+        if (selectedRows == null || selectedRows.length < 1) {
             return;
         }
+        Collection targets = new ArrayList();
+        for (int i = 0; i < selectedRows.length; ++i) {
+            TreePath path = getUI().getPathForRow(this, selectedRows[i]);
+            Object selectedItem =
+                ((DefaultMutableTreeNode) path.getLastPathComponent())
+                        .getUserObject();
+            targets.add(selectedItem);
+        }
+        
         LOG.debug("Drag: start transferring " + targets.size() + " targets.");
         TransferableModelElements tf =
             new TransferableModelElements(targets);
