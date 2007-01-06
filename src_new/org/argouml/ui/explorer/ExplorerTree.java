@@ -188,10 +188,7 @@ public class ExplorerTree
         private void selectItems(int firstRow, int lastRow) {
             ArrayList targets = new ArrayList();
             for (int i = firstRow; i <= lastRow; ++i) {
-                TreePath path =
-                    ExplorerTree.this.getUI().getPathForRow(
-                	    ExplorerTree.this, i);
-                Object selectedItem = getUserObject(path);
+                Object selectedItem = getUserObject(i);
                 targets.add(selectedItem);
             }
             TargetManager.getInstance().setTargets(targets);
@@ -358,7 +355,7 @@ public class ExplorerTree
                 target = ((Fig) target).getOwner();
             }
             for (int j = 0; j < rows; j++) {
-                Object rowItem = getUserObject(getPathForRow(j));
+                Object rowItem = getUserObject(j);
                 if (rowItem == target) {
                     this.addSelectionRow(j);
                 }
@@ -380,7 +377,16 @@ public class ExplorerTree
         return ((DefaultMutableTreeNode) path.getLastPathComponent())
                     .getUserObject();
     }
-
+    
+    /**
+     * Get the object (typically a model element or a diagram) that is
+     * represented on the given row
+     * @param row the row containing the item
+     * @return the represented object
+     */
+    protected Object getUserObject(int row) {
+        return getUserObject(getPathForRow(row));
+    }
 
     class ExplorerTargetListener implements TargetListener {
 
@@ -418,7 +424,7 @@ public class ExplorerTree
                         target = ((Fig) target).getOwner();
                     }
                     for (int j = 0; j < rows; j++) {
-                        Object rowItem = getUserObject(getPathForRow(j));
+                        Object rowItem = getUserObject(j);
                         if (rowItem == target) {
                             addSelectionRow(j);
                         }
@@ -450,7 +456,7 @@ public class ExplorerTree
                         target = ((Fig) target).getOwner();
                     }
                     for (int j = 0; j < rows; j++) {
-                        Object rowItem = getUserObject(getPathForRow(j));
+                        Object rowItem = getUserObject(j);
                         if (rowItem == target) {
                             removeSelectionRow(j);
                         }
