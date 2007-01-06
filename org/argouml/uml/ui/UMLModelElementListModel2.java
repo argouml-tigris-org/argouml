@@ -72,6 +72,16 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      */
     private boolean buildingModel = false;
 
+    /**
+     * The type of model elements this list model is designed to hold.
+     */
+    private Object metaType;
+    
+    /**
+     * Indicates that drops onto this list should connect in the opposite
+     * way to standard.
+     */
+    private boolean reverseDropConnection;
 
     /**
      * Constructor to be used if the subclass does not depend on the
@@ -91,6 +101,52 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
     public UMLModelElementListModel2(String name) {
         super();
         eventName = name;
+    }
+    
+    /**
+     * Constructor for UMLModelElementListModel2.
+     *
+     * @param name the name of the event to listen to, which triggers us
+     *             to update the list model from the UML data
+     * @param metaType the type of model element that the list model
+     *                 is designed to contain.
+     */
+    public UMLModelElementListModel2(String name, Object metaType) {
+        super();
+        this.metaType = metaType;
+        eventName = name;
+    }
+    
+    /**
+     * Constructor for UMLModelElementListModel2.
+     *
+     * @param name the name of the event to listen to, which triggers us
+     *             to update the list model from the UML data
+     * @param metaType the type of model element that the list model
+     *                 is designed to contain.
+     * @param reverseDropConnection tells the JList to reverse the
+     *              connection made and drop during dnd.
+     */
+    public UMLModelElementListModel2(
+	    String name, 
+	    Object metaType, 
+	    boolean reverseDropConnection) {
+        super();
+        this.metaType = metaType;
+        eventName = name;
+        this.reverseDropConnection = reverseDropConnection;
+    }
+    
+    /**
+     * Get the type of objects that this list model is designed to contain.
+     * @return metaType the meta type.
+     */
+    public Object getMetaType() {
+	return metaType;
+    }
+    
+    public boolean isReverseDropConnection() {
+	return reverseDropConnection;
     }
 
     /**

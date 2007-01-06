@@ -26,9 +26,26 @@
 package org.argouml.uml.ui;
 
 import java.awt.Color;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+
+import org.apache.log4j.Logger;
+import org.argouml.model.IllegalModelElementConnectionException;
+import org.argouml.model.Model;
+import org.argouml.ui.TransferableModelElements;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * An UMLList2 that implements 'jump' behaviour. As soon as the user
@@ -39,25 +56,31 @@ import javax.swing.ListSelectionModel;
  *
  * And, in case the listed item has no name, a default name is generated.
  *
+ * It accepts a drop of a model element onto this list and attempts to
+ * create a model element to connect the target of this list with the
+ * dropped item.
+ * 
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLLinkedList extends UMLList2 {
+public class UMLLinkedList extends UMLList2 implements DropTargetListener {
 
+    private static final Logger LOG = Logger.getLogger(UMLLinkedList.class);
+    
     /**
      * Constructor for UMLLinkedList.
      *
      * @param dataModel the data model
      * @param showIcon true if an icon should be shown
      */
-    public UMLLinkedList(ListModel dataModel,
-            boolean showIcon) {
+    public UMLLinkedList(ListModel dataModel, boolean showIcon) {
         super(dataModel, new UMLLinkedListCellRenderer(showIcon));
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setForeground(Color.blue);
         setSelectionForeground(Color.blue.darker());
         UMLLinkMouseListener mouseListener = new UMLLinkMouseListener(this);
         addMouseListener(mouseListener);
+        makeDropTarget();
     }
 
     /**
@@ -68,5 +91,92 @@ public class UMLLinkedList extends UMLList2 {
     public UMLLinkedList(ListModel dataModel) {
         this(dataModel, true);
     }
+    
+    
+    public void dragEnter(DropTargetDragEvent dtde) {
+	// Do nothing
+    }
 
+    public void dragExit(DropTargetEvent dte) {
+	// Do nothing
+    }
+
+    public void dragOver(DropTargetDragEvent dtde) {
+	// Do nothing
+    }
+
+    public void drop(DropTargetDropEvent dropTargetDropEvent) {
+        ListModel model = getModel();
+        if (!(model instanceof UMLModelElementListModel2)) {
+            dropTargetDropEvent.rejectDrop();
+            return;
+        }
+        UMLModelElementListModel2 listModel =
+            (UMLModelElementListModel2) model;
+        
+        Object metaType = listModel.getMetaType();
+        if (metaType == null) {
+            dropTargetDropEvent.rejectDrop();
+            return;
+        }
+        Transferable tr = dropTargetDropEvent.getTransferable();
+        //if the flavor is not supported, then reject the drop:
+        if (!tr.isDataFlavorSupported(
+                     TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+            dropTargetDropEvent.rejectDrop();
+            return;
+        }
+        
+        dropTargetDropEvent.acceptDrop(dropTargetDropEvent.getDropAction());
+        
+        try {
+            Collection oldTargets =
+                TargetManager.getInstance().getTargets();
+            Collection modelElements =
+                (Collection) tr.getTransferData(
+                    TransferableModelElements.UML_COLLECTION_FLAVOR);
+            Iterator it = modelElements.iterator();
+            while (it.hasNext()) {
+                if (listModel.isReverseDropConnection()) {
+                    buildConnection(metaType, it.next(), getTarget());
+                } else {
+                    buildConnection(metaType, getTarget(), it.next());
+                }
+            }
+            TargetManager.getInstance().setTargets(oldTargets);
+            dropTargetDropEvent.getDropTargetContext().dropComplete(true);
+        } catch (UnsupportedFlavorException e) {
+            LOG.debug(e);
+        } catch (IOException e) {
+            LOG.debug(e);
+        }
+    }
+    
+    private void buildConnection(
+	    Object elementType, 
+	    Object source, 
+	    Object dest) {
+        try {
+	    Model.getUmlFactory().buildConnection(
+	    	elementType,
+	            source,
+	            null,
+	            dest,
+	            null,
+	            null,
+	            Model.getFacade().getNamespace(source));
+	} catch (IllegalModelElementConnectionException e) {
+	    // Ignore, we expect the user to make such an error.
+	}
+    }
+    
+    public void dropActionChanged(DropTargetDragEvent dtde) {
+	// Do nothing
+    }
+
+    private void makeDropTarget() {
+        new DropTarget(this,
+                DnDConstants.ACTION_COPY_OR_MOVE,
+                this);
+    }
 }

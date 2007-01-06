@@ -48,6 +48,7 @@ public abstract class UMLModelElementOrderedListModel2
 
     /**
      * The constructor.
+     * @deprecated by Bob in 0.23.4. Use constructor specifying a name.
      */
     public UMLModelElementOrderedListModel2() {
         super();

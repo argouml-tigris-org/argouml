@@ -40,7 +40,7 @@ public class UMLModelElementClientDependencyListModel
      * Constructor for UMLModelElementClientDependencyListModel.
      */
     public UMLModelElementClientDependencyListModel() {
-        super("clientDependency");
+        super("clientDependency", Model.getMetaTypes().getDependency());
     }
 
     /*
