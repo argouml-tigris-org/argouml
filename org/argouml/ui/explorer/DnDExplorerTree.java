@@ -199,9 +199,7 @@ public class DnDExplorerTree
         }
         Collection targets = new ArrayList();
         for (int i = 0; i < selectedRows.length; ++i) {
-            TreePath path = getUI().getPathForRow(this, selectedRows[i]);
-            Object selectedItem = getUserObject(path);
-            targets.add(selectedItem);
+            targets.add(getUserObject(selectedRows[i]));
         }
         
         LOG.debug("Drag: start transferring " + targets.size() + " targets.");
@@ -357,6 +355,17 @@ public class DnDExplorerTree
     		DragSourceDropEvent dragSourceDropEvent) {
         sourcePath = null;
         ghostImage = null;
+        if (!dragSourceDropEvent.getDropSuccess()) {
+            // If items were dragged to some illegal place then make
+            // sure the target manager contains the selected items
+            // from the explorer.
+            ArrayList targets = new ArrayList(getSelectionCount());
+            TreePath[] paths = getSelectionPaths();
+            for (int i = 0; i < paths.length; ++i) {
+                targets.add(getUserObject(paths[i]));
+            }
+            TargetManager.getInstance().setTargets(targets);
+        }
     }
 
     /*
