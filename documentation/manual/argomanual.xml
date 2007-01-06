@@ -3,7 +3,7 @@
 "../docbook-setup/docbookx/docbookx.dtd">
 <!-- $Id$ -->
 <!--
-Copyright (c) 1996-2006 The Regents of the University of California. All
+Copyright (c) 1996-2007 The Regents of the University of California. All
 Rights Reserved. Permission to use, copy, modify, and distribute this
 software and its documentation without fee, and without a written
 agreement is hereby granted, provided that the above copyright notice
@@ -552,7 +552,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         the Developers Cookbook</ulink>, 
         <ulink url="http://argouml.tigris.org/faqs/users.html">the 
         FAQ</ulink>, and 
-        <ulink url="http://argouml.tigris.org/documentation/defaulthtml/quickguide/">
+        <ulink url="http://argouml-stats.tigris.org/documentation/quick-guide-0.22/">
         the Quick Guide</ulink>.</para>
 
       </sect2>
