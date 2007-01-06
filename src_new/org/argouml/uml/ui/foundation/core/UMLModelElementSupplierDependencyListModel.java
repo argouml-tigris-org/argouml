@@ -38,7 +38,7 @@ public class UMLModelElementSupplierDependencyListModel
      * Constructor for UMLModelElementSupplierDependencyListModel.
      */
     public UMLModelElementSupplierDependencyListModel() {
-        super("supplierDependency");
+        super("supplierDependency", Model.getMetaTypes().getDependency(), true);
     }
 
     /*
