@@ -89,7 +89,7 @@ public class ExplorerTree
 
         this.setModel(new ExplorerTreeModel(ProjectManager.getManager()
 			                    .getCurrentProject(), this));
-        this.addMouseListener(new ExplorerMouseListener(this));
+        this.addMouseListener(new ExplorerMouseListener());
         //this.addTreeSelectionListener(new ExplorerTreeSelectionListener());
         this.addTreeWillExpandListener(new ExplorerTreeWillExpandListener());
         this.addTreeExpansionListener(new ExplorerTreeExpansionListener());
