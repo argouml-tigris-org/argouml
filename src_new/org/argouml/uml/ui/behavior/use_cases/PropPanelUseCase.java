@@ -62,7 +62,12 @@ public class PropPanelUseCase extends PropPanelClassifier {
                 getNamespaceSelector());
 
         add(getModifiersPanel());
-
+        
+        addField(Translator.localize("label.client-dependencies"),
+                getClientDependencyScroll());
+        addField(Translator.localize("label.supplier-dependencies"),
+                getSupplierDependencyScroll());
+        
 	addSeparator();
 
 	addField(Translator.localize("label.generalizations"),
@@ -80,8 +85,8 @@ public class PropPanelUseCase extends PropPanelClassifier {
 	addField(Translator.localize("label.includes"),
 		 new JScrollPane(includesList));
 
-	addSeparator();
-
+        addSeparator();
+        
         addField(Translator.localize("label.attributes"),
                 getAttributeScroll());
 

@@ -106,8 +106,10 @@ public class UMLLinkedList extends UMLList2 implements DropTargetListener {
     }
 
     public void drop(DropTargetDropEvent dropTargetDropEvent) {
+	LOG.info("Dropped elements");
         ListModel model = getModel();
         if (!(model instanceof UMLModelElementListModel2)) {
+            LOG.info("Drop rejected because not correct model");
             dropTargetDropEvent.rejectDrop();
             return;
         }
@@ -116,6 +118,7 @@ public class UMLLinkedList extends UMLList2 implements DropTargetListener {
         
         Object metaType = listModel.getMetaType();
         if (metaType == null) {
+            LOG.info("Drop rejected because model has no meta type");
             dropTargetDropEvent.rejectDrop();
             return;
         }
@@ -123,6 +126,8 @@ public class UMLLinkedList extends UMLList2 implements DropTargetListener {
         //if the flavor is not supported, then reject the drop:
         if (!tr.isDataFlavorSupported(
                      TransferableModelElements.UML_COLLECTION_FLAVOR)) {
+            LOG.info(
+        	    "Drop rejected because model doesn't contain model elements");
             dropTargetDropEvent.rejectDrop();
             return;
         }
@@ -146,9 +151,9 @@ public class UMLLinkedList extends UMLList2 implements DropTargetListener {
             TargetManager.getInstance().setTargets(oldTargets);
             dropTargetDropEvent.getDropTargetContext().dropComplete(true);
         } catch (UnsupportedFlavorException e) {
-            LOG.debug(e);
+            LOG.error(e);
         } catch (IOException e) {
-            LOG.debug(e);
+            LOG.error(e);
         }
     }
     
