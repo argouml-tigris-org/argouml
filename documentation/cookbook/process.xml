@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,6 +50,7 @@ them on the
 Here is the big picture of the life of an Issue.
 </para>
 
+ <!--
     <note>
       <para>
 A decision was made in October 2005 to have new issues be created
@@ -58,6 +59,7 @@ process of being implemented and neither this picture nor the
 processes around the issues are not yet updated.
 </para>
     </note>
+ -->
 
     <mediaobject>
       <imageobject>
@@ -308,7 +310,7 @@ noticing that this problem was fixed.
     </indexterm>
     <para>
 The roles described below are per issue, i.e. for every issue, there
-is at least a reporter, a resolver and a verifier.
+is at least a reporter and a resolver.
 
 Hence, each person involved in issues for the ArgoUML project can -
 at the same time - have different roles, and consequently, has 
@@ -362,11 +364,11 @@ the Reporter has some more work to do.
 Close the issue
 </para>
             <para>
-This applies to an issue that is in verified state only.
-At the end of processing the issue, 
-the reporter has the final word: 
-he can check the result, 
-and if he agrees with the solution, 
+This applies to an issue that is in the resolved or verified state.
+At the end of processing the issue,
+the reporter has the final word:
+he can check the result,
+and if he agrees with the solution,
 close the issue himself.
 Closing an issue requires at least "observer" role
 in the ArgoUML project.
@@ -377,10 +379,13 @@ in the ArgoUML project.
 Reopen the issue
 </para>
             <para>
-This applies to an issue that is in verified state only.
+This applies to an issue that is in
+the resolved,
+verified, or
+closed state.
 The reporter has the final word:
-he can check the result, 
-and when he does not agree that the solution is correct, 
+he can check the result,
+and when he does not agree that the solution is correct,
 he can reopen the issue himself.
 Reopening an issue requires at least "observer" role
 in the ArgoUML project.
@@ -398,8 +403,8 @@ The "developer" role is only needed to commit things into the repository
 (e.g. submit changed Java code, scripts or documentation).
 </para>
       <para>
-Remark: Someone who does not have the developer role, 
-but solves the issue and convinces someone else to commit the solution, 
+Remark: Someone who does not have the developer role,
+but solves the issue and convinces someone else to commit the solution,
 is still the Resolver even though he cannot commit things into the repository.
 </para>
       <para>
@@ -412,16 +417,16 @@ Responsibilities:
         <itemizedlist>
           <listitem>
             <para>
-Decide usefulness 
+Decide usefulness
 (if this issue is really a bug or enhancement and if it is worth solving)
 </para>
             <para>
-The Resolver has to decide if solving the issue is 
+The Resolver has to decide if solving the issue is
 really a useful improvement for ArgoUML.
 The Reporter of the issue may very well be mistaken
 in entering a bug-issue for what is in fact a feature,
 or entering an enhancement-issue which is not really an enhancement.
-Another thing that could be is a bug that appears in 
+Another thing that could be is a bug that appears in
 very exceptional circumstances and that
 may have large impact on ArgoUML architecture.
 If the Resolver decides after the investigation that this bug
@@ -451,7 +456,7 @@ If applicable, write test cases
 Set the issue in the end on "RESOLVED".
 </para>
             <para>
-When the resolver is finished with the issue, 
+When the resolver is finished with the issue,
 he puts it in "RESOLVED" status, and indicates the
 "resolution" is FIXED, WORKSFORME, INVALID, WONTFIX, or DUPLICATE.
 </para>
@@ -476,7 +481,7 @@ in the ArgoUML project and the object is to make sure that a resolved
 issue is in fact resolved.
 </para>
       <para>
-The test must be done on the "Target Milestone" version of the issue, 
+The test must be done on the "Target Milestone" version of the issue,
 or any later version released to the public.
 </para>
       <para>
@@ -489,12 +494,20 @@ Check that the issue is solved in the stated version of ArgoUML
           </listitem>
           <listitem>
             <para>
-Mark the issue as "verified"
+Verify the issue.
 </para>
             <para>
 If the Verifier can conclude that the problem does not exist or
-the feature/enhancement is now present
-the issue is marked as verified.
+the feature/enhancement is now present.
+</para>
+          </listitem>
+          <listitem>
+            <para>
+Close the issue.
+</para>
+            <para>
+If someone else has already verified the issue then 
+the issue can be closed.
 </para>
           </listitem>
           <listitem>
@@ -525,8 +538,8 @@ He doesn't need to know how it is actually solved.
     </indexterm>
     <para>
 This can be performed by any member of the project (any role).
-Persons without the Developer role need a person 
-with the Developer role to actually commit the work if the resolution 
+Persons without the Developer role need a person
+with the Developer role to actually commit the work if the resolution
 involves changing some artifact.
 There might be special skills involved but it differs widely depending
 on the nature of the Issue.
@@ -539,7 +552,7 @@ Do the following:
         <para>
 Pick any Issue that is NEW or REOPENED
 that you from the description think that you are able to solve.
-Best result if you also find some Issue that you really feel 
+Best result if you also find some Issue that you really feel
 needs to be solved.
 <ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=NEW&amp;issue_status=REOPENED">The list of all of them</ulink>.
 </para>
@@ -561,7 +574,7 @@ Set the Target Milestone to the release you have chosen.
       </listitem>
       <listitem>
         <para>
-Make sure you have a checked out copy of ArgoUML or else check out 
+Make sure you have a checked out copy of ArgoUML or else check out
 a new one.
 </para>
         <para>
@@ -622,14 +635,18 @@ Commit your changes and the JUnit test cases stating
 the number of the Issue in the comment.
 </para>
         <para>
-If you don't have a developer role in the project, 
-this involves sending your changes to someone who has 
+If you don't have a developer role in the project,
+this involves sending your changes to someone who has
 and then convincing him to commit them for you.
 </para>
       </listitem>
       <listitem>
         <para>
 "Resolve" the Issue with the resolution "FIXED".
+</para>
+        <para>
+Also set the target milestone of the upcoming release
+that will include the fix.
 </para>
       </listitem>
       <listitem>
@@ -666,6 +683,9 @@ according to the rule for creating Issues.
 This can be performed by any member of the project (any role).
 There might be special skills involved but it differs widely depending
 on the nature of the Issue.
+</para>
+    <para>
+If you are the Reporter of the issue, you Close the issue instead.
 </para>
     <para>
 Do the following:
@@ -774,6 +794,9 @@ There might be special skills involved but it differs widely depending
 on the nature of the Issue.
 </para>
     <para>
+If you are the Reporter of the issue, you Close the issue instead.
+</para>
+    <para>
 Do the following:
 </para>
     <orderedlist>
@@ -825,8 +848,9 @@ Do this as many times as you like until there are no Issues left.
       <secondary>Closing</secondary>
     </indexterm>
     <para>
-This is performed by the person that originally raised the Issue
-or by the QA responsible for that area.
+This is performed by the person that originally raised the Issue,
+by the QA responsible for that area,
+or by anyone for issues that are verified.
 You need to be a member of the project (any role).
 This can also be done by someone who would raise the issue but
 did not because it was already present in Issuezilla.
@@ -834,12 +858,12 @@ did not because it was already present in Issuezilla.
     <orderedlist>
       <listitem>
         <para>
-Pick any Issue that is Verified and that you have raised or that you
-have found and refrained from raising because somebody else already
-had written it. 
-<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=VERIFIED">
-The list of all VERIFIED issues
-</ulink>.
+Pick any Issue that is Verified
+(<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=VERIFIED">
+all VERIFIED issues
+</ulink>)
+or that you have raised or refrained from raising because
+somebody else already had written it. 
 </para>
       </listitem>
       <listitem>
@@ -856,13 +880,13 @@ Do one of the following:
         <itemizedlist>
           <listitem>
             <para>
-If you are satisfied, put the Issue in Status CLOSED.
+If you are satisfied, Close the issue.
 </para>
           </listitem>
           <listitem>
             <para>
 If you are not satisfied but the problem is solved as it is written in
-the Issue, put the Issue in Status CLOSED and open a new Issue with
+the Issue, Close the issue and open a new Issue with
 the rest of the problem.
 </para>
           </listitem>

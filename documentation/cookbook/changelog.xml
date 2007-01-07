@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,7 +55,7 @@ responsibilities or functions of the subsystems.
 
       <tbody valign="top">
         <row>
-          <entry>2006-10-</entry>
+          <entry>2007-01-</entry>
           <entry>
 Change to XXX.
 (See <xref linkend="xxx"/>).
@@ -64,6 +64,22 @@ Change to XXX.
         </row>
       </tbody>
       -->
+
+      <tbody valign="top">
+        <row>
+          <entry>2007-01-07</entry>
+          <entry>
+Change to the process of verifying issues to allow the reporter to
+more freedom.
+(See <xref linkend="rolesofworkers"/>,
+<xref linkend="verify_resolved_fixed"/>,
+<xref linkend="verify_resolved_invalid"/>, and
+<xref linkend="close_verified_issue"/>).
+          </entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
 
       <tbody valign="top">
         <row>
