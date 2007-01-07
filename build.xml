@@ -807,10 +807,9 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
-  <target name="tests"
+  <target name="tests-dont-fail"
           depends="compile,junit-setup,junit-report-clean,
-                   ant.optional.init"
-          description="Run all tests that don't require any GUI components in headleass mode.">
+                   ant.optional.init">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
     <!-- This should never be committed as "withOutAndErr", but    -->
@@ -848,6 +847,10 @@ Property files to be searched:
     </junit>
 
     <antcall target="junit-report-create"/>
+  </target>
+
+  <target name="tests" depends="tests-dont-fail"
+          description="Run all tests that don't require any GUI components in headleass mode.">
     <fail message="JUnit tests failed." if="junit.failure"/>
   </target>
 
