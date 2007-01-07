@@ -972,10 +972,9 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         ModelElement client = (ModelElement) clientObj;
         ModelElement supplier = (ModelElement) supplierObj;
-        if (client == null || supplier == null || client.getNamespace() == null
-                || supplier.getNamespace() == null) {
+        if (client == null || supplier == null) {
             throw new IllegalArgumentException("client or supplier is null "
-                    + "or their namespaces.");
+                    + "client = " + client + " supplier = " + supplier);
         }
         Dependency dep = (Dependency) createDependency();
         dep.getSupplier().add(supplier);
