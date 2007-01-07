@@ -42,7 +42,8 @@ import org.tigris.gef.presentation.FigText;
 /**
  * Class to display graphics for N-ary association edges (association ends).<p>
  *
- * This class represents an association End Fig on a diagram.
+ * This class represents an association End Fig on a diagram, 
+ * i.e. the line between the diamond and a node (like a class).
  *
  * @author pepargouml@yahoo.es
  */
