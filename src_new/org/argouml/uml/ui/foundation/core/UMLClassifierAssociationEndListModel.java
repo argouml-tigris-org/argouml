@@ -39,7 +39,7 @@ public class UMLClassifierAssociationEndListModel
      * Constructor for UMLClassifierAssociationEndListModel.
      */
     public UMLClassifierAssociationEndListModel() {
-        super("associationEnd");
+        super("associationEnd", Model.getMetaTypes().getAssociation());
     }
 
     /*

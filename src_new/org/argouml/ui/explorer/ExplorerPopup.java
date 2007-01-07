@@ -24,18 +24,25 @@
 
 package org.argouml.ui.explorer;
 
+import java.awt.MenuItem;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -87,6 +94,14 @@ public class ExplorerPopup extends JPopupMenu {
         boolean multiSelect =
                 TargetManager.getInstance().getTargets().size() > 1;
 
+        boolean modelElementsOnly = true;
+        for (Iterator it = TargetManager.getInstance().getTargets().iterator();
+                it.hasNext() && modelElementsOnly; ) {
+            if (!Model.getFacade().isAModelElement(it.next())) {
+        	modelElementsOnly = false;
+            }
+        }
+
         final Project currentProject =
             ProjectManager.getManager().getCurrentProject();
         final Diagram activeDiagram = currentProject.getActiveDiagram();
@@ -110,8 +125,12 @@ public class ExplorerPopup extends JPopupMenu {
         // }
 
         if (!multiSelect) {
-            initMenuCreate();
+            initMenuCreateDiagrams();
             this.add(createDiagrams);
+        }
+        
+        if (modelElementsOnly) {
+            initMenuCreateModelElements();
         }
 
         final Object projectModel = currentProject.getModel();
@@ -256,7 +275,7 @@ public class ExplorerPopup extends JPopupMenu {
      * initialize the menu for diagram construction in the explorer popup menu.
      *
      */
-    private void initMenuCreate() {
+    private void initMenuCreateDiagrams() {
         createDiagrams.add(new ActionUseCaseDiagram());
 
         createDiagrams.add(new ActionClassDiagram());
@@ -270,6 +289,61 @@ public class ExplorerPopup extends JPopupMenu {
         createDiagrams.add(new ActionActivityDiagram());
 
         createDiagrams.add(new ActionDeploymentDiagram());
+    }
+
+    /**
+     * initialize the menu for diagram construction in the explorer popup menu.
+     *
+     */
+    private void initMenuCreateModelElements() {
+	ArrayList targets = TargetManager.getInstance().getTargets();
+        ArrayList actions = new ArrayList();
+	if (targets.size() >= 2) {
+	    // Check to see if all targets are classifiers
+	    // before adding an option to create an association between
+	    // them all
+	    boolean classifiersOnly = true;
+	    for (Iterator it = targets.iterator();
+	            it.hasNext() && classifiersOnly; ) {
+		if (!Model.getFacade().isAClassifier(it.next())) {
+		    classifiersOnly = false;
+		}
+	    }
+            if (classifiersOnly) {
+                actions.add(new ActionCreateAssociation(
+                	Model.getMetaTypes().getAssociation(), 
+                	targets));
+            }
+	}
+	if (targets.size() == 2) {
+            addCreateModelElementAction(
+        	    actions,
+        	    Model.getMetaTypes().getDependency());
+            addCreateModelElementAction(
+        	    actions,
+        	    Model.getMetaTypes().getGeneralization());
+	}
+	if (actions.size() == 1) {
+	    add((Action) actions.get(0));
+	} else if (actions.size() > 1) {
+	    JMenu menu = new JMenu("Create Model Element");
+	    add(menu);
+	    for (Iterator it = actions.iterator(); it.hasNext(); ) {
+                menu.add((Action) it.next());
+	    }
+	}
+    }
+    
+    private void addCreateModelElementAction(
+	        Collection actions,
+		Object metaType) {
+	ArrayList targets = TargetManager.getInstance().getTargets();
+	Object source = targets.get(0);
+	Object dest = targets.get(1);
+	if (Model.getUmlFactory().isConnectionValid(
+		    metaType, source, dest)) {
+	    actions.add(new ActionCreateModelElement(metaType, source, dest));
+	}
     }
 
     /**
@@ -366,4 +440,81 @@ public class ExplorerPopup extends JPopupMenu {
             return gm.canAddNode(object);
         }
     } /* end class ActionAddExistingRelatedNode */
+    
+    private class ActionCreateModelElement extends AbstractAction {
+	
+	private Object metaType; 
+	private Object source; 
+	private Object dest;
+	
+	private final Logger LOG =
+	    Logger.getLogger(ActionCreateModelElement.class);
+	
+	public ActionCreateModelElement(
+		Object metaType, 
+		Object source, 
+		Object dest) {
+	    super("Create " + Model.getMetaTypes().getName(metaType));
+	    this.metaType = metaType;
+	    this.source = source;
+	    this.dest = dest;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+            try {
+		Model.getUmlFactory().buildConnection(
+		    metaType,
+		    source,
+		    null,
+		    dest,
+		    null,
+		    null,
+		    null);
+	    } catch (IllegalModelElementConnectionException e1) {
+		LOG.error("Exception", e1);
+	    }
+	}
+    }
+    
+    private class ActionCreateAssociation extends AbstractAction {
+	
+	private Object metaType; 
+	private List classifiers;
+	
+	private final Logger LOG =
+	    Logger.getLogger(ActionCreateModelElement.class);
+	
+	public ActionCreateAssociation(
+		Object metaType, 
+		List classifiers) {
+	    super("Create " + Model.getMetaTypes().getName(metaType));
+	    this.metaType = metaType;
+	    this.classifiers = classifiers;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+            try {
+		Object newElement = Model.getUmlFactory().buildConnection(
+		    metaType,
+		    classifiers.get(0),
+		    null,
+		    classifiers.get(1),
+		    null,
+		    null,
+		    null);
+		for (int i = 2; i < classifiers.size(); ++i) {
+                    Model.getUmlFactory().buildConnection(
+			    Model.getMetaTypes().getAssociationEnd(),
+			    newElement,
+			    null,
+			    classifiers.get(i),
+			    null,
+			    null,
+			    null);
+		}
+	    } catch (IllegalModelElementConnectionException e1) {
+		LOG.error("Exception", e1);
+	    }
+	}
+    }
 }
