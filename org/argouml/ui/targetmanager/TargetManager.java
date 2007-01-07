@@ -691,7 +691,7 @@ public final class TargetManager {
      *
      * @return A collection with all targets.
      */
-    public synchronized Collection getTargets() {
+    public synchronized ArrayList getTargets() {
         return new ArrayList(targets);
     }
 
