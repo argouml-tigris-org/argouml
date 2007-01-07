@@ -1043,7 +1043,9 @@ public abstract class FigEdgeModelElement
             removeElementListener(o);
         }
         ArgoEventPump.removeListener(this);
-        notationProviderName.cleanListener(this, getOwner());
+        if (notationProviderName != null) {
+            notationProviderName.cleanListener(this, getOwner());
+        }
 
         Iterator it = getPathItemFigs().iterator();
         while (it.hasNext()) {
