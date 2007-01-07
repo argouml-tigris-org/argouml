@@ -193,7 +193,12 @@ class DnDJGraph
             Iterator i = modelElements.iterator();
             while (i.hasNext()) {
                 Object me = i.next();
-                if (Model.getFacade().isAModelElement(me)) {
+                if (Model.getFacade().isANaryAssociation(me)) {
+                    AddExistingNodeCommand cmd =
+                        new AddExistingNodeCommand(me, dropTargetDropEvent,
+                                count++);
+                    cmd.execute();
+                } else if (Model.getFacade().isAModelElement(me)) {
                     if (gm.canAddEdge(me)) {
                         gm.addEdge(me);
                         // TODO: An AssociationClass should be possible to add
