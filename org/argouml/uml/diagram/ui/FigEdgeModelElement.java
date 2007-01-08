@@ -171,9 +171,10 @@ public abstract class FigEdgeModelElement
     // constructors
 
     /** 
-     * Partially construct a new FigNode.  This method creates the
+     * Partially construct a new FigEdge.  This method creates the
      * name element that holds the name of the model element and adds
-     * itself as a listener. */
+     * itself as a listener. Also a stereotype is constructed. 
+     */
     public FigEdgeModelElement() {
 
         nameFig = new FigSingleLineText(10, 30, 90, 20, false);
