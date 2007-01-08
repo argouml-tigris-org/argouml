@@ -226,10 +226,10 @@ public class FigEdgeNote
      * Overrides the standard method to return null. A note edge
      * cannot have a stereotype.
      *
-     * @return null.
+     * @return empty array of actions.
      */
     protected final Action[] getApplyStereotypeActions() {
-        return null;
+        return new Action[0];
     }
 
     /*

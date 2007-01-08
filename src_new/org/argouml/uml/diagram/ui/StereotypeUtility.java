@@ -63,7 +63,7 @@ public class StereotypeUtility {
             }
             return menuActions;
         }
-        return null;
+        return new Action[0];
     }
 
     /**
