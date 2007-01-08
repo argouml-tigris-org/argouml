@@ -349,10 +349,10 @@ class PGMLStackParser
      *
      * @param figId (In the form Figx.y.z)
      * @return the FigNode with the given id
-     * @throws IllegalArgumentException
+     * @throws IllegalStateException
      *              if the figId supplied is not of a FigNode
      */
-    private FigNode getFigNode(String figId) {
+    private FigNode getFigNode(String figId) throws IllegalStateException {
         if (figId.indexOf('.') < 0) {
             // If there is no dot then this must be a top level Fig and can be
             // assumed to be a FigNode.
