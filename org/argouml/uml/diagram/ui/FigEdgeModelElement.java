@@ -309,7 +309,7 @@ public abstract class FigEdgeModelElement
         }
         // Add stereotypes submenu
         Action[] stereoActions = getApplyStereotypeActions();
-        if (stereoActions != null) {
+        if (stereoActions != null && stereoActions.length > 0) {
             popUpActions.insertElementAt(new JSeparator(), 0);
             ArgoJMenu stereotypes = new ArgoJMenu(
                     "menu.popup.apply-stereotypes");
