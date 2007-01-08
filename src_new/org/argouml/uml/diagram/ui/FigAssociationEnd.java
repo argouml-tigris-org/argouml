@@ -25,15 +25,17 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.uml.notation.NotationProvider;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.uml.NotationUtilityUml;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
@@ -57,10 +59,8 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      * Group for the FigTexts concerning the association end.
      */
     private FigTextGroup srcGroup = new FigTextGroup();
-    private FigText srcMult, srcRole;
+    private FigText srcMult; 
     private FigText srcOrdering;
-    
-    private NotationProvider notationProviderSrcRole;
     
     private Logger LOG = Logger.getLogger(FigAssociationEnd.class);
 
@@ -87,17 +87,9 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         srcOrdering.setLineWidth(0);
         srcOrdering.setReturnAction(FigText.END_EDITING);
         srcOrdering.setJustification(FigText.JUSTIFY_CENTER);
+        srcOrdering.setEditable(false);
 
-        srcRole = new FigText(10, 10, 90, 20);
-        srcRole.setFont(getLabelFont());
-        srcRole.setTextColor(Color.black);
-        srcRole.setTextFilled(false);
-        srcRole.setFilled(false);
-        srcRole.setLineWidth(0);
-        srcRole.setReturnAction(FigText.END_EDITING);
-        srcRole.setJustification(FigText.JUSTIFY_CENTER);
-
-        srcGroup.addFig(srcRole);
+        srcGroup.addFig(getNameFig());
         srcGroup.addFig(srcOrdering);
 
         addPathItem(srcMult, new PathConvPercentPlusConst(this, 100, -15, -15));
@@ -107,7 +99,6 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         // next line necessary for loading
         setLayer(ProjectManager.getManager().getCurrentProject()
                 .getActiveDiagram().getLayer());
-
     }
 
     /**
@@ -126,26 +117,10 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#initNotationProviders(java.lang.Object)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getNotationProviderType()
      */
-    protected void initNotationProviders(Object own) {
-        if (notationProviderSrcRole != null) {
-            notationProviderSrcRole.cleanListener(this, own);
-        }
-        if (Model.getFacade().isAAssociationEnd(own)) {
-            notationProviderSrcRole =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                        own, this);
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#removeFromDiagramImpl()
-     */
-    public void removeFromDiagramImpl() {
-        notationProviderSrcRole.cleanListener(this, getOwner());
-        super.removeFromDiagramImpl();
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME;
     }
 
     /*
@@ -196,15 +171,25 @@ public class FigAssociationEnd extends FigEdgeModelElement {
             return;
         }
         super.textEdited(ft);
-
-        if (ft == srcRole) {
-            notationProviderSrcRole.parse(getOwner(), ft.getText());
-            ft.setText(notationProviderSrcRole.toString(getOwner(), null));
-        } else if (ft == srcMult) {
-            Object multi =
-                Model.getDataTypesFactory()
-                    .createMultiplicity(srcMult.getText());
-            Model.getCoreHelper().setMultiplicity(getOwner(), multi);
+        if (ft == srcMult) {
+            /* The text the user has filled in the textfield is first checked
+             * to see if it's a valid multiplicity. If so then that is the 
+             * multiplicity to be set. If not the input is rejected. */
+            String msg =
+                Translator.localize("statusmsg.bar.error.parsing.multiplicity");
+            Object multi = null;
+            try {
+                multi = Model.getDataTypesFactory().createMultiplicity(
+                        srcMult.getText());
+                Model.getCoreHelper().setMultiplicity(getOwner(), multi);
+            } catch (IllegalArgumentException e) {
+                Object[] args = {e.getLocalizedMessage()};
+                ProjectBrowser.getInstance().getStatusBar().showStatus(
+                    Translator.messageFormat(msg, args));
+                srcMult.setText(Model.getFacade().toString(
+                        Model.getFacade().getMultiplicity(getOwner())));
+            }            
+            
         }
     }
 
@@ -212,10 +197,10 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     protected void textEditStarted(FigText ft) {
-        if (ft == srcRole) {
-            showHelp(notationProviderSrcRole.getParsingHelp());
-        } else if (ft == srcMult) {
+        if (ft == srcMult) {
             showHelp("parsing.help.fig-association-source-multiplicity");
+        } else {
+            super.textEditStarted(ft);
         }
     }
 
@@ -242,8 +227,6 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         if (e instanceof AttributeChangeEvent
                 || e instanceof AssociationChangeEvent) {
             renderingChanged();
-            updateListeners(getOwner(), getOwner());
-            notationProviderSrcRole.updateListener(this, getOwner(), e);
         }
     }
 
@@ -252,11 +235,24 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      */
     protected void renderingChanged() {
         updateEnd(srcMult, srcOrdering);
-        if (notationProviderSrcRole != null) {
-            srcRole.setText(notationProviderSrcRole.toString(getOwner(), null));
-        }
         srcMult.calcBounds();
         srcGroup.calcBounds();
         super.renderingChanged();
     }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateStereotypeText()
+     */
+    protected void updateStereotypeText() {
+        /* There is none... */
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#paintClarifiers(java.awt.Graphics)
+     */
+    public void paintClarifiers(Graphics g) {
+        indicateBounds(getNameFig(), g);
+        indicateBounds(srcMult, g);
+        super.paintClarifiers(g);
+    }    
 }  /* end class FigAssociationEnd */
