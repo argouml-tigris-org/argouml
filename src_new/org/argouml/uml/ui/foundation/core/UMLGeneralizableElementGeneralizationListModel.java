@@ -39,7 +39,7 @@ public class UMLGeneralizableElementGeneralizationListModel
      * Constructor for UMLGeneralizableElementGeneralizationListModel.
      */
     public UMLGeneralizableElementGeneralizationListModel() {
-        super("generalization");
+        super("generalization", Model.getMetaTypes().getGeneralization());
     }
 
     /*
