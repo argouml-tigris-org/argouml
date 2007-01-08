@@ -29,6 +29,7 @@ import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -679,20 +680,20 @@ public final class TargetManager {
     }
 
     /**
-     * Returns a collection with all targets. Returns an empty collection
+     * Returns a list of all targets. Returns an empty list
      * if there are no targets. If there are several targets then the first
-     * Object by an Iterator on the returned Collection or the zero'th Object
-     * in an array on this Collection is guaranteed to be the object returned
-     * by getTarget.
+     * Object by an Iterator on the returned List or the zero'th Object
+     * in an array on this List is guaranteed to be the object returned
+     * by {@link #getSingleTarget()}.
      *
      * The value will be that of the new target(s) during a targetSet/
      * targetAdded/targetRemoved notification, since they are just that,
      * notifications that the target(s) has just changed.
      *
-     * @return A collection with all targets.
+     * @return A list with all targets.
      */
-    public synchronized ArrayList getTargets() {
-        return new ArrayList(targets);
+    public synchronized List getTargets() {
+        return Collections.unmodifiableList(targets);
     }
 
     /**
