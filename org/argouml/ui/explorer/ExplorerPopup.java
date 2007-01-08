@@ -24,7 +24,6 @@
 
 package org.argouml.ui.explorer;
 
-import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
@@ -296,8 +294,8 @@ public class ExplorerPopup extends JPopupMenu {
      *
      */
     private void initMenuCreateModelElements() {
-	ArrayList targets = TargetManager.getInstance().getTargets();
-        ArrayList actions = new ArrayList();
+	List targets = TargetManager.getInstance().getTargets();
+        List actions = new ArrayList();
 	if (targets.size() >= 2) {
 	    // Check to see if all targets are classifiers
 	    // before adding an option to create an association between
@@ -337,7 +335,7 @@ public class ExplorerPopup extends JPopupMenu {
     private void addCreateModelElementAction(
 	        Collection actions,
 		Object metaType) {
-	ArrayList targets = TargetManager.getInstance().getTargets();
+	List targets = TargetManager.getInstance().getTargets();
 	Object source = targets.get(0);
 	Object dest = targets.get(1);
 	if (Model.getUmlFactory().isConnectionValid(
