@@ -217,31 +217,35 @@ public class FigMessage extends FigNodeModelElement {
 
 	arrowDirection = direction;
 	switch (direction) {
-	case SOUTH: {
-	    int[] xpoints = {75, 75, 77, 75, 73, 75};
-	    int[] ypoints = {15, 24, 24, 33, 24, 24};
-	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
-	    figPoly.setPolygon(polygon);
-	    break;
-	} case EAST: {
-	    int[] xpoints = {66, 75, 75, 84, 75, 75};
-	    int[] ypoints = {24, 24, 26, 24, 22, 24};
-	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
-	    figPoly.setPolygon(polygon);
-	    break;
-	} case WEST: {
-	    int[] xpoints = {84, 75, 75, 66, 75, 75};
-	    int[] ypoints = {24, 24, 26, 24, 22, 24};
-	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
-	    figPoly.setPolygon(polygon);
-	    break;
-	} default: { // north
-	    int[] xpoints = {75, 75, 77, 75, 73, 75};
-	    int[] ypoints = {33, 24, 24, 15, 24, 24};
-	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
-	    figPoly.setPolygon(polygon);
-	}
-	}
+        case SOUTH: {
+            int[] xpoints = {75, 75, 77, 75, 73, 75};
+            int[] ypoints = {15, 24, 24, 33, 24, 24};
+            Polygon polygon = new Polygon(xpoints, ypoints, 6);
+            figPoly.setPolygon(polygon);
+            break;
+        }
+        case EAST: {
+            int[] xpoints = {66, 75, 75, 84, 75, 75};
+            int[] ypoints = {24, 24, 26, 24, 22, 24};
+            Polygon polygon = new Polygon(xpoints, ypoints, 6);
+            figPoly.setPolygon(polygon);
+            break;
+        }
+        case WEST: {
+            int[] xpoints = {84, 75, 75, 66, 75, 75};
+            int[] ypoints = {24, 24, 26, 24, 22, 24};
+            Polygon polygon = new Polygon(xpoints, ypoints, 6);
+            figPoly.setPolygon(polygon);
+            break;
+        }
+        default: { // north
+            int[] xpoints = {75, 75, 77, 75, 73, 75};
+            int[] ypoints = {33, 24, 24, 15, 24, 24};
+            Polygon polygon = new Polygon(xpoints, ypoints, 6);
+            figPoly.setPolygon(polygon);
+            break;
+        }
+        }
 	setBounds(bbox);
     }
 

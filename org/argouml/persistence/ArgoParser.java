@@ -204,6 +204,7 @@ class ArgoParser extends SAXParserBase {
             if (DBG) {
                 LOG.warn("WARNING: unknown end tag:" + e.getName());
             }
+            break;
         }
     }
 
