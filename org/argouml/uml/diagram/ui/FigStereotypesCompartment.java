@@ -274,19 +274,6 @@ public class FigStereotypesCompartment extends FigCompartment {
     public void setKeyword(String word) {
         keyword = word;
     }
-    
-    // TODO: Delete after GEF 0.12.1 commited
-    public void damage() {
-        Layer lay = getLayer();
-        Fig group = getGroup();
-        while (lay == null && group != null) {
-            lay = group.getLayer();
-            group = group.getGroup();
-        }
-        if (lay != null) {
-            lay.damageAll();
-        }
-    }
 
     protected void createModelElement() {
     }
