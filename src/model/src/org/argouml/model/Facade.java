@@ -199,9 +199,13 @@ public interface Facade {
     boolean isAsynchronous(Object handle);
 
     /**
-     * Recognizer for abstract classes and operations.
-     *
-     * @param handle candidate
+     * Recognizer for abstract classes and operations. True if it has an
+     * <code>isAbstract</code> attribute with a value of <code>true</code>.
+     * If there's no such attribute (ie it isn't a type which has that attribute
+     * in the UML metamodel), it will return false without throwing an error.
+     * 
+     * @param handle
+     *            candidate
      * @return true if handle is abstract.
      */
     boolean isAbstract(Object handle);
@@ -1050,18 +1054,25 @@ public interface Facade {
     boolean isInternal(Object handle);
 
     /**
-     * Recognizer for leafs.
-     *
-     * @param handle candidate GeneralizableElement
+     * Recognizer for leaf element. True if it has an <code>isLeaf</code>
+     * attribute with a value of <code>true</code>. If there's no such
+     * attribute (ie it isn't a type which has that attribute in the UML
+     * metamodel), it will return false without throwing an error.
+     * 
+     * @param handle
+     *            candidate GeneralizableElement
      * @return true if handle is a leaf
      */
     boolean isLeaf(Object handle);
 
     /**
-     * Recognizer for roots.
+     * Recognizer for roots.  True if it has an <code>isRoot</code>
+     * attribute with a value of <code>true</code>.  If there's no such
+     * attribute (ie it isn't a type which has that attribute in the UML
+     * metamodel), it will return false without throwing an error.
      *
      * @param handle candidate GeneralizableElement
-     * @return true if handle is a leaf
+     * @return true if handle is a root
      */
     boolean isRoot(Object handle);
 
