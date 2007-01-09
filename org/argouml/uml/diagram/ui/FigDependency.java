@@ -26,7 +26,6 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.beans.PropertyChangeEvent;
 
 import org.argouml.kernel.ProjectManager;
 import org.tigris.gef.base.Layer;
@@ -123,20 +122,13 @@ public class FigDependency extends FigEdgeModelElement {
         super.paint(g);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
-     */
-    protected void renderingChanged() {
-        updateStereotypeText();
-        super.renderingChanged();
+    protected void updateNameText() {
+        super.updateNameText();
         middleGroup.calcBounds();
     }
-    
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    public void modelChanged(PropertyChangeEvent e) {
-        super.modelChanged(e);
+
+    protected void updateStereotypeText() {
+        super.updateStereotypeText();
         middleGroup.calcBounds();
     }
 
