@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
-import java.beans.PropertyChangeEvent;
 
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 
@@ -44,11 +43,6 @@ import org.tigris.gef.presentation.ArrowHeadTriangle;
 public class FigAbstraction extends FigDependency {
 
     private ArrowHeadTriangle endArrow;
-    
-    /*
-     * Text group to contain name & stereotypes
-     */
-    private FigTextGroup middleGroup = new FigTextGroup();
 
     /**
      * The constructor.
@@ -71,31 +65,5 @@ public class FigAbstraction extends FigDependency {
         setOwner(edge);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
-
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
-     */
-    public void renderingChanged() {
-        updateStereotypeText();
-        super.renderingChanged();
-        middleGroup.calcBounds();
-    }
-    
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    public void modelChanged(PropertyChangeEvent e) {
-        super.modelChanged(e);
-        middleGroup.calcBounds();
-    }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -5688833795126793130L;
 } /* end class FigRealization */
 
