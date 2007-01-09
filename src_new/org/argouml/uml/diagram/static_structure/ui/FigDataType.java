@@ -103,7 +103,7 @@ public class FigDataType extends FigClassifierBox {
         addFig(getBigPort());
         addFig(getStereotypeFig());
         addFig(getNameFig());
-        addFig(operationsFig);
+        addFig(getOperationsFig());
         addFig(borderFig);
 
         setSuppressCalcBounds(false);
@@ -191,25 +191,25 @@ public class FigDataType extends FigClassifierBox {
      */
     public void setOperationsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
-        if (operationsFig.isVisible()) {
+        if (isOperationsVisible()) {
             if (!isVisible) {
                 damage();
-                Iterator it = operationsFig.getFigs().iterator();
+                Iterator it = getOperationsFig().getFigs().iterator();
                 while (it.hasNext()) {
                     ((Fig) (it.next())).setVisible(false);
                 }
-                operationsFig.setVisible(false);
+                getOperationsFig().setVisible(false);
                 Dimension aSize = this.getMinimumSize();
                 setBounds(rect.x, rect.y,
                           (int) aSize.getWidth(), (int) aSize.getHeight());
             }
         } else {
             if (isVisible) {
-                Iterator it = operationsFig.getFigs().iterator();
+                Iterator it = getOperationsFig().getFigs().iterator();
                 while (it.hasNext()) {
                     ((Fig) (it.next())).setVisible(true);
                 }
-                operationsFig.setVisible(true);
+                getOperationsFig().setVisible(true);
                 Dimension aSize = this.getMinimumSize();
                 setBounds(rect.x, rect.y,
                           (int) aSize.getWidth(), (int) aSize.getHeight());
@@ -249,7 +249,7 @@ public class FigDataType extends FigClassifierBox {
             aSize.height += stereoMin.height;
         }
 
-        if (operationsFig.isVisible()) {
+        if (getOperationsFig().isVisible()) {
             Dimension operMin = getOperationsFig().getMinimumSize();
             aSize.width = Math.max(aSize.width, operMin.width);
             aSize.height += operMin.height;
@@ -344,7 +344,7 @@ public class FigDataType extends FigClassifierBox {
         if (cls == null) {
             return;
         }
-        int i = operationsFig.getFigs().indexOf(ft);
+        int i = getOperationsFig().getFigs().indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
