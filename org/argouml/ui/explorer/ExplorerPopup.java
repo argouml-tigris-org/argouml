@@ -315,6 +315,7 @@ public class ExplorerPopup extends JPopupMenu {
             }
 	}
 	if (targets.size() == 2) {
+	    // TODO: i18n
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getDependency(),
@@ -331,10 +332,25 @@ public class ExplorerPopup extends JPopupMenu {
         	    menuItems,
         	    Model.getMetaTypes().getExtend(),
         	    " " + "Extends" + " ");
+            addCreateModelElementAction(
+        	    menuItems,
+        	    Model.getMetaTypes().getPermission(),
+        	    " " + "Has Permission On" + " ");
+            addCreateModelElementAction(
+        	    menuItems,
+        	    Model.getMetaTypes().getUsage(),
+        	    " " + "Uses" + " ");
+            // TODO: Why doesn't this work? It creates a stereotype
+            // instead!
+//            addCreateModelElementAction(
+//        	    menuItems,
+//        	    Model.getMetaTypes().getAbstraction(),
+//        	    " " + "Realizes" + " ");
 	}
 	if (menuItems.size() == 1) {
 	    add((Action) menuItems.get(0));
 	} else if (menuItems.size() > 1) {
+	    // TODO: i18n
 	    JMenu menu = new JMenu("Create Model Element");
 	    add(menu);
 	    for (Iterator it = menuItems.iterator(); it.hasNext(); ) {
@@ -350,6 +366,7 @@ public class ExplorerPopup extends JPopupMenu {
 	List targets = TargetManager.getInstance().getTargets();
 	Object source = targets.get(0);
 	Object dest = targets.get(1);
+	    // TODO: i18n
         JMenu subMenu =
             new JMenu("Create" + " " + Model.getMetaTypes().getName(metaType));
         buildDirectionalCreateMenuItem(
@@ -488,6 +505,11 @@ public class ExplorerPopup extends JPopupMenu {
         }
     } /* end class ActionAddExistingRelatedNode */
     
+    /**
+     * An action to create a relation between 2 model elements.
+     *
+     * @author Bob Tarling
+     */
     private class ActionCreateModelElement extends AbstractAction {
 	
 	private Object metaType; 
@@ -526,6 +548,11 @@ public class ExplorerPopup extends JPopupMenu {
 	}
     }
     
+    /**
+     * An action to create an association between 2 or more model elements.
+     *
+     * @author Bob Tarling
+     */
     private class ActionCreateAssociation extends AbstractAction {
 	
 	private Object metaType; 
