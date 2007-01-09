@@ -35,6 +35,11 @@ import org.tigris.gef.presentation.FigEdge;
 public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
     private static final Logger LOG = Logger
             .getLogger(ClassdiagramInheritanceEdge.class);
+    
+    /**
+     * The largest difference that we consider equivalent to zero
+     */
+    private static final int EPSILON = 5;
 
     /**
      * The figures which are connected by this edge
@@ -110,14 +115,27 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
         // the amount of the "sidestep"
         int difference = centerHigh - centerLow;
 
-        fig.addPoint(centerLow, (int) (low.getLocation().getY()));
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Point: x: " + centerLow + " y: " + low.getLocation().y);
-        }
+        /*
+         * If center points are "close enough" we just adjust the endpoints
+         * of the line a little bit.  Otherwise we add a jog in the middle to
+         * deal with the offset.
+         * 
+         * TODO: Epsilon is currently fixed, but could probably be computed
+         * dynamically as 10% of the width of the narrowest figure or some
+         * other value which is visually not noticeable.
+         */
+        if (Math.abs(difference) < EPSILON) {
+            fig.addPoint(centerLow + (difference / 2 + (difference % 2)), 
+                    (int) (low.getLocation().getY()));
+            fig.addPoint(centerHigh - (difference / 2),
+                    high.getLocation().y + high.getSize().height);
+        } else {
+            fig.addPoint(centerLow, (int) (low.getLocation().getY()));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Point: x: " + centerLow + " y: " 
+                        + low.getLocation().y);
+            }
 
-        // if the Figs are directly under each other we
-        // do not need to add these points
-        if (difference != 0) {
             getUnderlyingFig().addPoint(centerHigh - difference, getDownGap());
             getUnderlyingFig().addPoint(centerHigh, getDownGap());
             if (LOG.isDebugEnabled()) {
@@ -126,12 +144,12 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
                 LOG.debug("Point: x: " + centerHigh + " y: " + getDownGap());
             }
 
-        }
-
-        fig.addPoint(centerHigh, high.getLocation().y + high.getSize().height);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Point x: " + centerHigh + " y: "
-                    + (high.getLocation().y + high.getSize().height));
+            fig.addPoint(centerHigh, 
+                    high.getLocation().y + high.getSize().height);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Point x: " + centerHigh + " y: "
+                        + (high.getLocation().y + high.getSize().height));
+            }
         }
         fig.setFilled(false);
         getCurrentEdge().setFig(getUnderlyingFig());
