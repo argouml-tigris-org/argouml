@@ -824,7 +824,6 @@ public abstract class FigEdgeModelElement
         }
         Object modelElement = getOwner();
         stereotypeFig.setOwner(modelElement);
-        ((FigStereotypesCompartment) stereotypeFig).populate();
     }
 
     /**
