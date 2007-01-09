@@ -339,7 +339,11 @@ class FacadeMDRImpl implements Facade {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return illegalArgumentBoolean(handle);
+        if (handle instanceof ModelElement) {
+            return false;
+        } else {
+            return illegalArgumentBoolean(handle);
+        }
     }
 
     /**
@@ -1248,7 +1252,11 @@ class FacadeMDRImpl implements Facade {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return illegalArgumentBoolean(handle);
+        if (handle instanceof ModelElement) {
+            return false;
+        } else {
+            return illegalArgumentBoolean(handle);
+        }
     }
 
     /**
@@ -1268,7 +1276,11 @@ class FacadeMDRImpl implements Facade {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return illegalArgumentBoolean(handle);
+        if (handle instanceof ModelElement) {
+            return false;
+        } else {
+            return illegalArgumentBoolean(handle);
+        }
     }
 
     /**
