@@ -43,6 +43,8 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 
 /**
+ * UML Class Diagram.
+ * 
  * @author jrobbins@ics.uci.edy
  */
 public class UMLClassDiagram extends UMLDiagram {
@@ -102,9 +104,12 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     public UMLClassDiagram(Object m) {
         super(m);
+        String name = getNewDiagramName();
         try {
-            setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) { }
+            setName(name);
+        } catch (PropertyVetoException pve) {
+            LOG.warn("Generated diagram name '" + name + "' was vetoed by setName");
+        }
     }
 
     /*
@@ -241,7 +246,7 @@ public class UMLClassDiagram extends UMLDiagram {
     }
 
     /**
-     * Creates a new diagramname.
+     * Create a new diagram name.
      * @return String
      */
     protected String getNewDiagramName() {
@@ -332,29 +337,20 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return actionComposition;
     }
+    
     /**
      * @return Returns the actionDepend.
      */
-//    protected Action getActionDependency() {
-//        if (actionDependency == null) {
-//            actionDependency =
-//                makeCreateEdgeAction(
-//                        Model.getMetaTypes().getDependency(),
-//                        "button.new-dependency");
-//        }
-//        return actionDependency;
-//    }
-    
     protected Action getActionDependency() {
         if (actionDependency == null) {
             actionDependency = makeCreateDependencyAction(
         	    ModeCreateDependency.class,
-        	    Model.getMetaTypes().getDependency(),
-        	    "button.new-dependency");
+                        Model.getMetaTypes().getDependency(),
+                        "button.new-dependency");
         }
         return actionDependency;
     }
-    
+
     /**
      * @return Returns the actionGeneralize.
      */
@@ -421,8 +417,8 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionPermission == null) {
             actionPermission = makeCreateDependencyAction(
         	    ModeCreatePermission.class,
-        	    Model.getMetaTypes().getPermission(),
-        	    "button.new-permission");
+                        Model.getMetaTypes().getPermission(),
+                        "button.new-permission");
         }
 
         return actionPermission;
@@ -505,7 +501,7 @@ public class UMLClassDiagram extends UMLDiagram {
             actionUsage = makeCreateDependencyAction(
         	    ModeCreateUsage.class,
         	    Model.getMetaTypes().getUsage(),
-        	    "button.new-usage");
+                        "button.new-usage");
         }
         return actionUsage;
     }
