@@ -31,6 +31,8 @@ package org.argouml.uml.diagram.ui;
  * Implementation has been moved to FigAbstraction for alignment
  * with UML spec and to allow reuse for other abstractions such
  * as Derivation, Refinement, or Trace.
+ * TODO: Bob says - looks like this should be deprecated with FigAbstraction
+ * used instead. Make sure any persistence impact is addressed first.
  */
 public class FigRealization extends FigAbstraction {
     /**
