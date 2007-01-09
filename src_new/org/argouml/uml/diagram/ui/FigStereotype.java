@@ -95,16 +95,4 @@ public class FigStereotype extends CompartmentFigText {
         super.setText(ps.getLeftGuillemot() + text + ps.getRightGuillemot());
     }
     
-    // TODO: Delete after GEF 0.12.1 commited
-    public void damage() {
-        Layer lay = getLayer();
-        Fig group = getGroup();
-        while (lay == null && group != null) {
-            lay = group.getLayer();
-            group = group.getGroup();
-        }
-        if (lay != null) {
-            lay.damageAll();
-        }
-    }
 }
