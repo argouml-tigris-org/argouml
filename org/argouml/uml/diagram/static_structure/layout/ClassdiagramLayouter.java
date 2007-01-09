@@ -26,8 +26,10 @@ package org.argouml.uml.diagram.static_structure.layout;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
 
@@ -68,7 +70,7 @@ public class ClassdiagramLayouter implements Layouter {
         /**
          * Keeps all nodes of this row.
          */
-        private Vector nodes = new Vector();
+        private List nodes = new ArrayList();
 
         /**
          * The row number of this row.
@@ -154,7 +156,7 @@ public class ClassdiagramLayouter implements Layouter {
                     : split;
                 width += node.getSize().width + gap;
             }
-            nodes = new Vector(ts.headSet(split));
+            nodes = new ArrayList(ts.headSet(split));
             for (iter = ts.tailSet(split).iterator(); iter.hasNext();) {
                 newRow.addNode((ClassdiagramNode) iter.next());
             }
@@ -167,8 +169,17 @@ public class ClassdiagramLayouter implements Layouter {
 
         /**
          * @return Returns the nodes.
+         * @deprecated use {@link #getNodeList()}
          */
         public Vector getNodes() {
+            return new Vector(nodes);
+        }
+
+
+        /**
+         * @return Returns the nodes.
+         */
+        public List getNodeList() {
             return nodes;
         }
 
@@ -224,7 +235,7 @@ public class ClassdiagramLayouter implements Layouter {
         private void adjustRowNodes() {
             int col = 0;
             int numNodesWithDownlinks = 0;
-            Vector v = new Vector();
+            List v = new ArrayList();
             for (Iterator iter = getSortedIterator(); iter.hasNext();) {
                 ClassdiagramNode node = (ClassdiagramNode) iter.next();
                 node.setRank(rowNumber);
@@ -285,22 +296,22 @@ public class ClassdiagramLayouter implements Layouter {
      * layoutedClassNodes is a convenience which holds a subset of
      * layoutedObjects (only ClassNodes).
      */
-    private Vector layoutedClassNodes = new Vector();
+    private List layoutedClassNodes = new ArrayList();
 
     /**
      * Holds all edges - subset of layoutedObjects.
      */
-    private Vector layoutedEdges = new Vector();
+    private List layoutedEdges = new ArrayList();
 
     /**
      * Attribute layoutedObjects holds the objects to layout.
      */
-    private Vector layoutedObjects = new Vector();
+    private List layoutedObjects = new ArrayList();
 
     /**
      * nodeRows contains all DiagramRows of the diagram.
      */
-    private Vector nodeRows = new Vector();
+    private List nodeRows = new ArrayList();
 
     /**
      * internal.
@@ -386,7 +397,7 @@ public class ClassdiagramLayouter implements Layouter {
      * @return The LayoutedObject for the given index.
      */
     public LayoutedObject getObject(int index) {
-        return (LayoutedObject) (layoutedObjects.elementAt(index));
+        return (LayoutedObject) (layoutedObjects.get(index));
     }
 
     /**
@@ -396,10 +407,7 @@ public class ClassdiagramLayouter implements Layouter {
      * @return An array holding all the object in the layouter.
      */
     public LayoutedObject[] getObjects() {
-        // Create an array for the result.
-        LayoutedObject[] result = new LayoutedObject[layoutedObjects.size()];
-        layoutedObjects.copyInto(result); // Copy the objects into the array.
-        return result; // And return the array.
+        return (LayoutedObject[]) layoutedObjects.toArray();
     }
 
     /**
@@ -453,8 +461,8 @@ public class ClassdiagramLayouter implements Layouter {
      * @param node To be placed.
      */
     private void placeNode(ClassdiagramNode node) {
-        Vector uplinks = node.getUplinks();
-        Vector downlinks = node.getDownlinks();
+        List uplinks = node.getUplinks();
+        List downlinks = node.getDownlinks();
         int curW = node.getSize().width;
         double xOffset = node.getSize().width + getHGap();
         int bumpX = getHGap() / 2; // (xOffset - curW) / 2;
@@ -508,7 +516,7 @@ public class ClassdiagramLayouter implements Layouter {
     private void rankAndWeightNodes() {
         int row = -1;
         int currentRank = -1;
-        Vector comments = new Vector();
+        List comments = new ArrayList();
         nodeRows.clear();
         NodeRow nodeRow = new NodeRow(0);
         TreeSet nodeTree = new TreeSet(layoutedClassNodes);
@@ -541,7 +549,7 @@ public class ClassdiagramLayouter implements Layouter {
 		: (((ClassdiagramNode) node.getUplinks().firstElement())
 		   .getRank());
 
-            ((NodeRow) nodeRows.elementAt(rowInd)).addNode(node);
+            ((NodeRow) nodeRows.get(rowInd)).addNode(node);
         }
         for (row = 0; row < nodeRows.size();) {
             NodeRow diaRow = (NodeRow) nodeRows.get(row);
@@ -588,9 +596,9 @@ public class ClassdiagramLayouter implements Layouter {
                 if (parent != null && child != null) {
                     parent.addDownlink(child);
                     child.addUplink(parent);
-                    Vector v = (Vector) figParentEdges.get(parentFig);
+                    List v = (List) figParentEdges.get(parentFig);
                     if (v == null) {
-                        v = new Vector();
+                        v = new ArrayList();
                         figParentEdges.put(parentFig, v);
                     }
                     v.add(edge);
