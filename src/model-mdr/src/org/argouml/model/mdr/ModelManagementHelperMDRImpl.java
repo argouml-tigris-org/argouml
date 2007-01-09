@@ -216,6 +216,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         Collection returnElements = new ArrayList();
         for (Iterator i = allOfType.iterator(); i.hasNext();) {
             Object me = i.next();
+            // TODO: Optimize for root model case? - tfm
             if (contained(nsa, me)) {
                 returnElements.add(me);
             } 
@@ -224,7 +225,8 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     }
 
     /*
-     * Check whether model element is contained in given namespace/container
+     * Check whether model element is contained in given namespace/container.
+     * TODO: Investigate a faster way to do this
      */
     private boolean contained(Object container, Object candidate) {
         Object current = candidate;
