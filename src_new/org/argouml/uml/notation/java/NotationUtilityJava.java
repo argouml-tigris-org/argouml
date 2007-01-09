@@ -165,26 +165,10 @@ public class NotationUtilityJava {
      * @return a string which represents abstractness
      */
     static String generateAbstract(Object modelElement, HashMap args) {
-        if (supportsAbstract(modelElement)
-                && Model.getFacade().isAbstract(modelElement)) {
+        if (Model.getFacade().isAbstract(modelElement)) {
             return "abstract ";
         }
         return "";
-    }
-
-    /**
-     * TODO: it would be nice to have this defined in the
-     * {@link org.argouml.model.Facade Facade} interface.
-     * 
-     * @param modelElement the UML element
-     * @return true if the modelElement supports the 
-     * {@link org.argouml.model.Facade#isAbstract(Object) isAbstract} call.
-     */
-    private static boolean supportsAbstract(Object modelElement) {
-        return Model.getFacade().isAGeneralizableElement(modelElement)
-                || Model.getFacade().isAOperation(modelElement)
-                || Model.getFacade().isAReception(modelElement)
-                || Model.getFacade().isAAssociation(modelElement);
     }
 
      /**
@@ -194,25 +178,10 @@ public class NotationUtilityJava {
      * @return a string which represents leaf
      */
     static String generateLeaf(Object modelElement, HashMap args) {
-        if (supportsLeaf(modelElement)
-                && Model.getFacade().isLeaf(modelElement)) {
+        if (Model.getFacade().isLeaf(modelElement)) {
             return "final ";
         }
         return "";
-    }
-
-    /**
-     * TODO: it would be nice to have this defined in the
-     * {@link org.argouml.model.Facade Facade} interface.
-     * 
-     * @param modelElement the UML element
-     * @return true if the modelElement supports the 
-     * {@link org.argouml.model.Facade#isLeaf(Object) isLeaf} call.
-     */
-    private static boolean supportsLeaf(Object modelElement) {
-        return Model.getFacade().isAGeneralizableElement(modelElement)
-                || Model.getFacade().isAOperation(modelElement)
-                || Model.getFacade().isAReception(modelElement);
     }
 
     /**
