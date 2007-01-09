@@ -34,6 +34,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
@@ -295,7 +296,7 @@ public class ExplorerPopup extends JPopupMenu {
      */
     private void initMenuCreateModelElements() {
 	List targets = TargetManager.getInstance().getTargets();
-        List actions = new ArrayList();
+        List menuItems = new ArrayList();
 	if (targets.size() >= 2) {
 	    // Check to see if all targets are classifiers
 	    // before adding an option to create an association between
@@ -308,41 +309,89 @@ public class ExplorerPopup extends JPopupMenu {
 		}
 	    }
             if (classifiersOnly) {
-                actions.add(new ActionCreateAssociation(
+                menuItems.add(new JMenuItem(new ActionCreateAssociation(
                 	Model.getMetaTypes().getAssociation(), 
-                	targets));
+                	targets)));
             }
 	}
 	if (targets.size() == 2) {
             addCreateModelElementAction(
-        	    actions,
-        	    Model.getMetaTypes().getDependency());
+        	    menuItems,
+        	    Model.getMetaTypes().getDependency(),
+        	    " " + "Depends On" + " ");
             addCreateModelElementAction(
-        	    actions,
-        	    Model.getMetaTypes().getGeneralization());
+        	    menuItems,
+        	    Model.getMetaTypes().getGeneralization(),
+        	    " " + "Generalizes" + " ");
+            addCreateModelElementAction(
+        	    menuItems,
+        	    Model.getMetaTypes().getInclude(),
+        	    " " + "Includes" + " ");
+            addCreateModelElementAction(
+        	    menuItems,
+        	    Model.getMetaTypes().getExtend(),
+        	    " " + "Extends" + " ");
 	}
-	if (actions.size() == 1) {
-	    add((Action) actions.get(0));
-	} else if (actions.size() > 1) {
+	if (menuItems.size() == 1) {
+	    add((Action) menuItems.get(0));
+	} else if (menuItems.size() > 1) {
 	    JMenu menu = new JMenu("Create Model Element");
 	    add(menu);
-	    for (Iterator it = actions.iterator(); it.hasNext(); ) {
-                menu.add((Action) it.next());
+	    for (Iterator it = menuItems.iterator(); it.hasNext(); ) {
+                menu.add((JMenuItem) it.next());
 	    }
 	}
     }
     
     private void addCreateModelElementAction(
-	        Collection actions,
-		Object metaType) {
+	        Collection menuItems,
+		Object metaType,
+		String relationshipDescr) {
 	List targets = TargetManager.getInstance().getTargets();
 	Object source = targets.get(0);
 	Object dest = targets.get(1);
-	if (Model.getUmlFactory().isConnectionValid(
-		    metaType, source, dest)) {
-	    actions.add(new ActionCreateModelElement(metaType, source, dest));
+        JMenu subMenu =
+            new JMenu("Create" + " " + Model.getMetaTypes().getName(metaType));
+        buildDirectionalCreateMenuItem(
+            metaType, dest, source, relationshipDescr, subMenu);
+        buildDirectionalCreateMenuItem(
+            metaType, source, dest, relationshipDescr, subMenu);
+	if (subMenu.getMenuComponents().length > 0) {
+            menuItems.add(subMenu);
 	}
     }
+    
+    /**
+     * Attempt to build a menu item to create the given model element type
+     * as a relation betwen two existing model elements.
+     * If succesful then the menu item is added to the given menu
+     * @param metaType The type of model element the menu item should create
+     * @param source The source model element
+     * @param dest The destination model element
+     * @param relationshipDescr A textual description that describes how
+     *                          source relates to dest
+     * @param menu The menu to which the menu item should be added
+     */
+    private void buildDirectionalCreateMenuItem(
+	    Object metaType, 
+	    Object source, 
+	    Object dest, 
+	    String relationshipDescr,
+	    JMenu menu) {
+	if (Model.getUmlFactory().isConnectionValid(
+		    metaType, source, dest)) {
+	    JMenuItem menuItem = new JMenuItem(
+		    new ActionCreateModelElement(
+			    metaType, 
+			    source, 
+			    dest, 
+			    relationshipDescr));
+            if (menuItem != null) {
+                menu.add(menuItem);
+            }
+	}
+    }
+
 
     /**
      * Locale a popup menu item in the navigator pane.
@@ -451,8 +500,11 @@ public class ExplorerPopup extends JPopupMenu {
 	public ActionCreateModelElement(
 		Object metaType, 
 		Object source, 
-		Object dest) {
-	    super("Create " + Model.getMetaTypes().getName(metaType));
+		Object dest,
+		String relationshipDescr) {
+	    super(Model.getFacade().getName(source) 
+		    + " " + relationshipDescr + " "
+		    + Model.getFacade().getName(dest)); 
 	    this.metaType = metaType;
 	    this.source = source;
 	    this.dest = dest;
