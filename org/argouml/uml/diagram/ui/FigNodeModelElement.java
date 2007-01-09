@@ -1355,9 +1355,6 @@ public abstract class FigNodeModelElement
 
         Object modelElement = getOwner();
         stereotypeFig.setOwner(modelElement);
-        if (modelElement != null) {
-            ((FigStereotypesCompartment) stereotypeFig).populate();
-        }
     }
 
     /**

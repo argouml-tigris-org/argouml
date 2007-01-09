@@ -561,7 +561,6 @@ public class FigClass extends FigClassifierBox
         int heightWithoutStereo = getHeight() - stereotypeHeight;
 
         getStereotypeFig().setOwner(getOwner());
-        ((FigStereotypesCompartment) getStereotypeFig()).populate();
 
         stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {

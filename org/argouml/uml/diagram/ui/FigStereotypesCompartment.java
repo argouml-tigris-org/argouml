@@ -232,8 +232,6 @@ public class FigStereotypesCompartment extends FigCompartment {
                     stereotypeTextFig =
                         (CompartmentFigText) figs.get(acounter);
                 }
-                stereotypeTextFig.setText(
-                        Model.getFacade().getName(stereotype));
                 stereotypeTextFig.setOwner(stereotype);
 
                 acounter++;
