@@ -1143,13 +1143,13 @@ public abstract class FigNodeModelElement
     // internal methods
 
     /**
-     * This is called after any part of the UML ModelElement has
+      * This is called after any part of the UML ModelElement has
      * changed. This method automatically updates the stereotype rendering, 
      * and updates all listeners for the stereotypes.
      * Updating the listeners for the name notation is delegated 
      * to the notation provider for the name.
      * Subclasses should override and update other parts. <p>
-     * 
+     *
      * For e.g. a Package, if the visibility is changed 
      * via the properties panel, then
      * the display of it on the diagram has to follow the change.
@@ -1168,15 +1168,14 @@ public abstract class FigNodeModelElement
         if (owner == null) {
             return;
         }
-        if (mee instanceof AssociationChangeEvent 
-                || mee instanceof AttributeChangeEvent) {
+            if (mee instanceof AssociationChangeEvent 
+                    || mee instanceof AttributeChangeEvent) {
             if (notationProviderName != null) {
                 notationProviderName.updateListener(this, getOwner(), mee);
-                updateNameText();
+            updateNameText();
             }
             updateListeners(getOwner(), getOwner());
             damage();
-
         }
         if ((mee.getSource() == owner
                 && mee.getPropertyName().equals("stereotype"))) {
@@ -1355,7 +1354,7 @@ public abstract class FigNodeModelElement
 
         Object modelElement = getOwner();
         stereotypeFig.setOwner(modelElement);
-    }
+        }
 
     /**
      * Updates the text of the name FigText.
@@ -1504,11 +1503,12 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Rerenders the fig. <p>
-     * 
-     * This functionality was originally
-     * the functionality of modelChanged but modelChanged takes the
-     * event now into account.
+     * Rerenders the entire fig.
+     * <p>
+     * This is may be an expensive operation for subclasses which are complex,
+     * so should be used sparingly. This functionality was originally the
+     * functionality of modelChanged but modelChanged takes the event now into
+     * account.
      */
     public void renderingChanged() {
         updateNameText();
