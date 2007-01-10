@@ -284,6 +284,8 @@ public class FigComponent extends FigNodeModelElement {
         } else {
             if (isVisible() 
                     // If we are not visible most likely we're being deleted.
+                    // TODO: This indicates a more fundamental problem that should
+                    // be investigated - tfm - 20061230
                     && encloser == null && getEnclosingFig() != null) {
                 Object encloserOwner = getEnclosingFig().getOwner();
                 if (Model.getFacade().isANode(encloserOwner)

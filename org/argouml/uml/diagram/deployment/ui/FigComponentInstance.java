@@ -314,8 +314,10 @@ public class FigComponentInstance extends FigNodeModelElement {
                         }
                     }
                 }
-            } else if (isVisible() 
+            } else if (isVisible()
                     // If we are not visible most likely we're being deleted.
+                    // TODO: This indicates a more fundamental problem that should
+                    // be investigated - tfm - 20061230
                     && encloser == null && getEnclosingFig() != null) {
                 if (Model.getFacade().getNodeInstance(comp) != null) {
                     Model.getCommonBehaviorHelper()
