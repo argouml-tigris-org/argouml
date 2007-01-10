@@ -66,6 +66,7 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -193,15 +194,10 @@ public class DnDExplorerTree
          * Get the selected targets (UML ModelElements)
          * from the TargetManager.
          */
-        int[] selectedRows = this.getSelectionRows();
-        if (selectedRows == null || selectedRows.length < 1) {
+        Collection targets = TargetManager.getInstance().getModelTargets();
+        if (targets.size() < 1) {
             return;
         }
-        Collection targets = new ArrayList();
-        for (int i = 0; i < selectedRows.length; ++i) {
-            targets.add(getUserObject(selectedRows[i]));
-        }
-        
         LOG.debug("Drag: start transferring " + targets.size() + " targets.");
         TransferableModelElements tf =
             new TransferableModelElements(targets);
@@ -295,7 +291,9 @@ public class DnDExplorerTree
             LOG.debug("No valid Drag: flavor not supported.");
             return false;
         }
-        Object dest = getUserObject(destinationPath);
+        Object dest =
+            ((DefaultMutableTreeNode) destinationPath
+                .getLastPathComponent()).getUserObject();
 
         /* TODO: support other types of drag.
          * Here you set the owner by dragging into a namespace.
@@ -355,17 +353,6 @@ public class DnDExplorerTree
     		DragSourceDropEvent dragSourceDropEvent) {
         sourcePath = null;
         ghostImage = null;
-        if (!dragSourceDropEvent.getDropSuccess()) {
-            // If items were dragged to some illegal place then make
-            // sure the target manager contains the selected items
-            // from the explorer.
-            ArrayList targets = new ArrayList(getSelectionCount());
-            TreePath[] paths = getSelectionPaths();
-            for (int i = 0; i < paths.length; ++i) {
-                targets.add(getUserObject(paths[i]));
-            }
-            TargetManager.getInstance().setTargets(targets);
-        }
     }
 
     /*
@@ -664,7 +651,9 @@ public class DnDExplorerTree
                 return;
             }
 
-            Object dest = getUserObject(path);
+            Object dest =
+                ((DefaultMutableTreeNode) path
+                    .getLastPathComponent()).getUserObject();
 
             /* If the destination is not a NameSpace, then reject: */
             if (!Model.getFacade().isANamespace(dest)) {
@@ -734,8 +723,12 @@ public class DnDExplorerTree
                         TransferableModelElements.UML_COLLECTION_FLAVOR);
                 LOG.debug("transfer data = " + modelElements);
 
-                Object dest = getUserObject(destinationPath);
-                Object src = getUserObject(sourcePath);
+                Object dest =
+                    ((DefaultMutableTreeNode) destinationPath
+                        .getLastPathComponent()).getUserObject();
+                Object src =
+                    ((DefaultMutableTreeNode) sourcePath
+                        .getLastPathComponent()).getUserObject();
 
                 int action = dropTargetDropEvent.getDropAction();
                 /* The user-DropActions are:
