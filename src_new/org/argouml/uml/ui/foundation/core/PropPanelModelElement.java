@@ -201,8 +201,13 @@ public abstract class PropPanelModelElement extends PropPanel {
      */
     protected JComponent getSupplierDependencyScroll() {
         if (supplierDependencyScroll == null) {
-            supplierDependencyScroll = new ScrollList(
-                    new UMLModelElementSupplierDependencyListModel());
+            JList list = new UMLMutableLinkedList(
+                    new UMLModelElementSupplierDependencyListModel(),
+                    new ActionAddSupplierDependencyAction(),
+                    null,
+                    null,
+                    true);
+            supplierDependencyScroll = new JScrollPane(list);
         }
         return supplierDependencyScroll;
     }
@@ -212,7 +217,13 @@ public abstract class PropPanelModelElement extends PropPanel {
      */
     protected JComponent getClientDependencyScroll() {
         if (clientDependencyScroll == null) {
-            clientDependencyScroll = new ScrollList(clientDependencyListModel);
+            JList list = new UMLMutableLinkedList(
+                    clientDependencyListModel,
+                    new ActionAddClientDependencyAction(),
+                    null,
+                    null,
+                    true);
+            clientDependencyScroll = new JScrollPane(list);
         }
         return clientDependencyScroll;
     }
