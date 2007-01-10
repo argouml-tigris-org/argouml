@@ -259,7 +259,9 @@ public class FigMNodeInstance extends FigNodeModelElement {
                 if (isVisible() 
                         // If we are not visible most likely 
                         // we're being deleted.
-                        && Model.getFacade().getComponentInstance(nod) 
+                    // TODO: This indicates a more fundamental problem that should
+                    // be investigated - tfm - 20061230
+                    && Model.getFacade().getComponentInstance(nod) 
                                     != null) {
                     Model.getCommonBehaviorHelper()
                             .setComponentInstance(nod, null);
