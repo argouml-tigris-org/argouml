@@ -55,6 +55,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -1284,6 +1285,7 @@ public final class ProjectBrowser
             String report = project.repair();
             if (report.length() > 0) {
                 reportError(
+                        pmw, 
                         Translator.localize("dialog.repair"), true, report);
             }
             
@@ -1326,6 +1328,7 @@ public final class ProjectBrowser
                           JOptionPane.ERROR_MESSAGE);
 
             reportError(
+                    pmw,
                     Translator.localize(
                             "dialog.error.save.error",
                             new Object[] {file.getName()}),
@@ -1444,7 +1447,7 @@ public final class ProjectBrowser
         Project project = null;
 
         if (!(file.canRead())) {
-            reportError("File not found " + file + ".", showUI);
+            reportError(pmw, "File not found " + file + ".", showUI);
             Designer.enableCritiquing();
             success = false;
         } else {
@@ -1504,6 +1507,7 @@ public final class ProjectBrowser
                 project = oldProject;
                 success = false;
                 reportError(
+                        pmw,
                         Translator.localize(
                                 "dialog.error.file.version",
                                 new Object[] {ex.getMessage()}),
@@ -1513,6 +1517,7 @@ public final class ProjectBrowser
                 success = false;
                 LOG.error("Out of memory while loading project", ex);
                 reportError(
+                        pmw,
                         Translator.localize("dialog.error.memory.limit.error"),
                         showUI);
             } catch (java.lang.InterruptedException ex) {
@@ -1523,6 +1528,7 @@ public final class ProjectBrowser
                 project = oldProject;
                 success = false;
                 reportError(
+                        pmw,
                         Translator.localize(
                                 "dialog.error.file.version.error",
                                 new Object[] {ex.getMessage()}),
@@ -1531,6 +1537,7 @@ public final class ProjectBrowser
                 project = oldProject;
                 success = false;
                 reportError(
+                        pmw,
                         Translator.localize(
                                 "dialog.error.xmi.format.error",
                                 new Object[] {ex.getMessage()}),
@@ -1540,6 +1547,7 @@ public final class ProjectBrowser
                 project = oldProject;
                 LOG.error("Exception while loading project", ex);
                 reportError(
+                        pmw,
                         Translator.localize(
                                 "dialog.error.open.error",
                                 new Object[] {file.getName()}),
@@ -1553,6 +1561,7 @@ public final class ProjectBrowser
                     // for now I've made the message more generic, but it
                     // should be removed at a convenient time - tfm
                     reportError(
+                            pmw,
                             "Problem loading the project "
                             + file.getName()
                             + "\n"
@@ -1609,13 +1618,22 @@ public final class ProjectBrowser
      * @param showUI true if an error message may be shown to the user,
      *               false if run in commandline mode
      */
-    private void reportError(String message, boolean showUI) {
+    private void reportError(ProgressMonitor monitor, final String message,
+            boolean showUI) {
         if (showUI) {
-            JOptionPane.showMessageDialog(
-                      ArgoFrame.getInstance(),
-                      message,
-                      "Error",
-                      JOptionPane.ERROR_MESSAGE);
+            if (monitor != null) {
+                monitor.notifyMessage("Error" , "Error load/saving", message);
+            } else {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        JOptionPane.showMessageDialog(
+                                ArgoFrame.getInstance(),
+                                message,
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                });
+            }
         } else {
             System.err.print(message);
         }
@@ -1633,18 +1651,27 @@ public final class ProjectBrowser
      * without updating the Javadoc. Not sure what the difference
      * is meant to be... - tfm
      */
-    private void reportError(String message, boolean showUI, String error) {
+    private void reportError(ProgressMonitor monitor, final String message,
+            boolean showUI, final String error) {
         if (showUI) {
-            JDialog dialog =
-                new ExceptionDialog(
-                        ArgoFrame.getInstance(),
-                        message,
-                        error);
-            dialog.setVisible(true);
+            if (monitor != null) {
+                monitor.notifyMessage("Error" , "Error load/saving", message);
+            } else {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        JDialog dialog =
+                            new ExceptionDialog(
+                                    ArgoFrame.getInstance(),
+                                    message,
+                                    error);
+                        dialog.setVisible(true);
+                    }
+                });
+            }
         } else {
             // TODO:  Does anyone use command line?
             // If so, localization is needed - tfm
-            reportError("Please report the error below to the ArgoUML"
+            reportError(monitor, "Please report the error below to the ArgoUML"
                     + "development team at http://argouml.tigris.org.\n"
                     + message + "\n\n" + error, showUI);
         }
@@ -1658,15 +1685,24 @@ public final class ProjectBrowser
      *               false if run in commandline mode
      * @param ex The exception that was thrown.
      */
-    private void reportError(String message, boolean showUI, Throwable ex) {
+    private void reportError(ProgressMonitor monitor, final String message,
+            boolean showUI, final Throwable ex) {
         if (showUI) {
-            JDialog dialog =
-                new ExceptionDialog(
-                        ArgoFrame.getInstance(),
-                        message,
-                        ex,
-                        ex instanceof OpenException);
-            dialog.setVisible(true);
+            if (monitor != null) {
+                monitor.notifyMessage("Error" , "Error load/saving", message);
+            } else {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        JDialog dialog =
+                            new ExceptionDialog(
+                                    ArgoFrame.getInstance(),
+                                    message,
+                                    ex,
+                                    ex instanceof OpenException);
+                        dialog.setVisible(true);
+                    }
+                });
+            }
         } else {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
@@ -1674,7 +1710,7 @@ public final class ProjectBrowser
             String exception = sw.toString();
             // TODO:  Does anyone use command line?
             // If so, localization is needed - tfm
-            reportError("Please report the error below to the ArgoUML"
+            reportError(monitor, "Please report the error below to the ArgoUML"
                     + "development team at http://argouml.tigris.org.\n"
                     + message + "\n\n" + exception, showUI);
         }
