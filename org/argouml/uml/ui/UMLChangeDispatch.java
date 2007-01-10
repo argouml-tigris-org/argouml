@@ -78,8 +78,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         }
     }
 
-    /**
-     * Configures this instance to dispatch a targetChanged event.
+    /*
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */
     public void targetChanged() {
         eventType = 0;
@@ -95,8 +95,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     /**
      * Called by InvokeLater on user interface thread.  Dispatches
      * event to all contained objects implementing
-     * UMLUserInterfaceComponent.  If event == -1, adds change listener to
-     * new target on completion of dispatch.
+     * UMLUserInterfaceComponent.  If event == TARGET_CHANGED_ADD, adds change
+     * listener to new target on completion of dispatch.
      */
     public void run() {
         if (target != null) {
@@ -108,7 +108,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
 
     /**
      * Iterates through all children of this container.  If a child
-     * is another container then calls dispatch iteratively, if
+     * is another container then calls dispatch recursively, if
      * a child supports UMLUserInterfaceComponent then calls the
      * appropriate method.
      *
@@ -120,18 +120,19 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         Component component;
         for (int i = 0; i < count; i++) {
             component = theAWTContainer.getComponent(i);
-            if (component instanceof Container)
+            if (component instanceof Container) {
                 dispatch((Container) component);
+            }
             if (component instanceof UMLUserInterfaceComponent
                     && component.isVisible()) {
 
                 switch(eventType) {
-                case -1:
-                case 0:
+                case TARGET_CHANGED_ADD:
+                case TARGET_CHANGED:
                     ((UMLUserInterfaceComponent) component).targetChanged();
                     break;
 
-                case 7:
+                case TARGET_REASSERTED:
                     ((UMLUserInterfaceComponent) component).targetReasserted();
                     break;
                 }
