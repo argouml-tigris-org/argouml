@@ -27,26 +27,18 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-
-import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.ActionAddNote;
-import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
-import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -155,47 +147,12 @@ public class FigInterface extends FigClassifierBox {
         return new SelectionInterface(this);
     }
 
-    /**
-     * Build a collection of menu items relevant for a right-click
-     * popup menu on an Interface.
-     *
-     * @param     me     a mouse event
-     * @return           a collection of menu items
-     */
-    public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = super.getPopUpActions(me);
-
-        // Add ...
-        ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
-        addMenu.add(TargetManager.getInstance().getAddOperationAction());
-        addMenu.add(new ActionAddNote());
-        addMenu.add(ActionEdgesDisplay.getShowEdges());
-        addMenu.add(ActionEdgesDisplay.getHideEdges());
-        popUpActions.insertElementAt(addMenu,
-                popUpActions.size() - getPopupAddOffset());
-
-        // Show ...
-        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-        Iterator i = ActionCompartmentDisplay.getActions().iterator();
-        while (i.hasNext()) {
-            showMenu.add((Action) i.next());
-        }
-        popUpActions.insertElementAt(showMenu,
-                popUpActions.size() - getPopupAddOffset());
-
-        // Modifier ...
-        popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - getPopupAddOffset());
-
-        // Visibility ...
-        popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - getPopupAddOffset());
-
-        return popUpActions;
-    }
-
-    /**
-     * @param isVisible true will show the operations compartiment
+    /*
+     * @see org.argouml.uml.diagram.ui.FigCompartmentBox#setOperationsVisible(boolean)
+     * 
+     * TODO: This differs only very slightly from the version in the superclass
+     *       It probably can be merged, but I don't have time to verify
+     *       right now. - tfm - 20070109
      */
     public void setOperationsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
@@ -426,18 +383,18 @@ public class FigInterface extends FigClassifierBox {
      */
     protected FigText getNextVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
-        Vector v = new Vector(operationsFig.getFigs());
-        if (i < 1 || i >= v.size()
-                || !((FigText) v.elementAt(i)).isVisible()) {
+        List operations = getOperationsFig().getFigs();
+        if (i < 1 || i >= operations.size()
+                || !((FigText) operations.get(i)).isVisible()) {
             return null;
         }
 
         do {
             i++;
-            if (i >= v.size()) {
+            if (i >= operations.size()) {
                 i = 1;
             }
-            ft2 = (FigText) v.elementAt(i);
+            ft2 = (FigText) operations.get(i);
             if (!ft2.isVisible()) {
                 ft2 = null;
             }

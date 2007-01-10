@@ -27,21 +27,11 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.util.Iterator;
-import java.util.Vector;
-
-import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.ActionAddNote;
-import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
-import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -145,77 +135,6 @@ public class FigDataType extends FigClassifierBox {
      */
     public Selection makeSelection() {
         return new SelectionDataType(this);
-    }
-
-    /**
-     * Build a collection of menu items relevant for a right-click
-     * popup menu on an Interface.
-     *
-     * @param     me     a mouse event
-     * @return           a collection of menu items
-     */
-    public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = super.getPopUpActions(me);
-
-        // Add ...
-        ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
-        addMenu.add(TargetManager.getInstance().getAddOperationAction());
-        addMenu.add(new ActionAddNote());
-        addMenu.add(ActionEdgesDisplay.getShowEdges());
-        addMenu.add(ActionEdgesDisplay.getHideEdges());
-        popUpActions.insertElementAt(addMenu,
-                popUpActions.size() - getPopupAddOffset());
-
-        // Show ...
-        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-        Iterator i = ActionCompartmentDisplay.getActions().iterator();
-        while (i.hasNext()) {
-            showMenu.add((Action) i.next());
-        }
-        popUpActions.insertElementAt(showMenu,
-                popUpActions.size() - getPopupAddOffset());
-
-        // Modifier ...
-        popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - getPopupAddOffset());
-
-        // Visibility ...
-        popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - getPopupAddOffset());
-
-        return popUpActions;
-    }
-
-    /**
-     * @param isVisible true will show the operations compartiment
-     */
-    public void setOperationsVisible(boolean isVisible) {
-        Rectangle rect = getBounds();
-        if (isOperationsVisible()) {
-            if (!isVisible) {
-                damage();
-                Iterator it = getOperationsFig().getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(false);
-                }
-                getOperationsFig().setVisible(false);
-                Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y,
-                          (int) aSize.getWidth(), (int) aSize.getHeight());
-            }
-        } else {
-            if (isVisible) {
-                Iterator it = getOperationsFig().getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(true);
-                }
-                getOperationsFig().setVisible(true);
-                Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y,
-                          (int) aSize.getWidth(), (int) aSize.getHeight());
-                damage();
-            }
-        }
     }
 
     /**
@@ -377,37 +296,6 @@ public class FigDataType extends FigClassifierBox {
                 + "operationsVisible=" + isOperationsVisible();
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    protected void modelChanged(PropertyChangeEvent mee) {
-        if (getOwner() == null) {
-            return;
-        }
-        super.modelChanged(mee);
-        boolean damage = false;
-        // operations
-        if (mee == null
-                || Model.getFacade().isAOperation(mee.getSource())
-                || Model.getFacade().isAParameter(mee.getSource())
-                || (mee.getSource() == getOwner()
-                && mee.getPropertyName().equals("feature"))) {
-            updateOperations();
-            damage = true;
-        }
-
-        if (damage) {
-            damage();
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
-     */
-    public void renderingChanged() {
-        updateOperations();
-        super.renderingChanged();
-    }
 
     /**
      * Sets the bounds, but the size will be at least the one returned by
