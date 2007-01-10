@@ -77,8 +77,7 @@ import org.tigris.gef.presentation.Fig;
  * <li>org.argouml.ui.StylePanelFigNodeModelElement
  * <li>org.argouml.ui.SPFigNodeModelElement
  * </ul>
- * If a stylepanel had been found, it will be stored in a cache, which can also
- * be initialized in <code>initPanels()</code> <p>
+ * If a stylepanel had been found, it will be stored in a cache.<p>
  *
  * According the decision taken in issue 502, this tab is renamed "Presentation"
  * for the user. And the Presentation tab shall contain presentation options,
@@ -128,7 +127,6 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         super(tabName);
         this.stylePanelNames = spn;
         setLayout(new BorderLayout());
-        initPanels();
     }
 
     /**
@@ -141,10 +139,9 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
     /**
      * Initialize the hashtable of pre lookup panels.
-     *
+     * @deprecated for 0.24 by tfmorris - noop - remove any references
      */
     protected void initPanels() {
-
     }
 
     /**
@@ -174,6 +171,8 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
      */
     public void setTarget(Object t) {
         if (target != null) target.removePropertyChangeListener(this);
+        
+        // TODO: Defer most of this work if the panel isn't visible - tfm
 
         // the responsibility of determining if the given target is a
         // correct one for this tab has been moved from the
@@ -368,6 +367,10 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
         shouldBeEnabled = true;
 
+        // TODO: It would be better to defer this initialization until the panel
+        // actually needs to be displayed. Perhaps optimistically always return
+        // true and figure out later if we've got something to display - tfm -
+        // 20070110
         Class targetClass = targetItem.getClass();
         stylePanel = findPanelFor(targetClass);
         targetClass = targetClass.getSuperclass();
@@ -378,41 +381,6 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
         return shouldBeEnabled;
     }
-
-//    /**
-//     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
-//     */
-//    public boolean shouldBeEnabled(Object targetItem) {
-//
-//        if (!(targetItem instanceof Fig)) {
-//            if (Model.getFacade().isAModelElement(targetItem)) {
-//                Project p = ProjectManager.getManager().getCurrentProject();
-//                Fig f = p.getActiveDiagram().presentationFor(targetItem);
-//
-//                if (f != null)
-//                    targetItem = f;
-//                else {
-//                    _shouldBeEnabled = false;
-//                    return false;
-//                }
-//            } else {
-//                _shouldBeEnabled = false;
-//                return false;
-//            }
-//        }
-//
-//        _shouldBeEnabled = true;
-//
-//        Class targetClass = targetItem.getClass();
-//        stylePanel = findPanelFor(targetClass);
-//        targetClass = targetClass.getSuperclass();
-//
-//        if (stylePanel == null) {
-//            _shouldBeEnabled = false;
-//        }
-//
-//        return _shouldBeEnabled;
-//    }
 
     /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)

@@ -77,7 +77,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         if (LOG.isDebugEnabled()) {
             LOG.debug("Set target to " + t);
         }
-        if (!Model.getFacade().isAModelElement(t)) {
+        if (t != null && !Model.getFacade().isAModelElement(t)) {
             throw new IllegalArgumentException();
         }
         if (target != t) {

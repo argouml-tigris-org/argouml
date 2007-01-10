@@ -183,22 +183,17 @@ public class TabStereotype extends PropPanel {
     }
 
     /*
-     * TODO: This does not seem to get called...
-     *
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object theTarget) {
-
-        Object t =
-            (theTarget instanceof Fig)
-            ? ((Fig) theTarget).getOwner() : theTarget;
-        if (!(Model.getFacade().isAModelElement(t))) {
-            return;
+        super.setTarget(theTarget);
+        if (isVisible()) {
+            Object me = getModelElement();
+            if (me != null) {
+                selectedListModel.setTarget(me);
+                validate();
+            }
         }
-
-        selectedListModel.setTarget(t);
-
-        validate();
     }
 
     /**

@@ -25,6 +25,8 @@
 package org.argouml.cognitive.ui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -43,14 +45,15 @@ import org.tigris.gef.undo.UndoableAction;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Vertical;
-import org.tigris.toolbar.ToolBar;
 import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * The ToDo Tab.
  *
  */
-public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
+public class TabToDo extends AbstractArgoJPanel 
+    implements TabToDoTarget, ComponentListener {
+    
     ////////////////////////////////////////////////////////////////
     // static variables
     private static int numHushes;
@@ -98,6 +101,8 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
         splitPane = new BorderSplitPane();
         add(splitPane, BorderLayout.CENTER);
         setTarget(null);
+        
+        addComponentListener(this);
     }
 
     /**
@@ -148,14 +153,19 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
      * @param item the new target
      */
     public void setTarget(Object item) {
-        Object t = item;
-        target = t;
-        // the target of description will allways be set directly by tabtodo
-        description.setTarget(t);
+        target = item;
+        if (isVisible()) {
+            setTargetInternal(item);
+        }
+    }
+
+    private void setTargetInternal(Object item) {
+        // the target of description will always be set directly by tabtodo
+        description.setTarget(item);
         Wizard w = null;
-        if (t instanceof ToDoItem) {
-            w = ((ToDoItem) t).getWizard();
-	}
+        if (item instanceof ToDoItem) {
+            w = ((ToDoItem) item).getWizard();
+        }
         if (w != null) {
             showStep(w.getCurrentPanel());
         } else {
@@ -222,4 +232,30 @@ public class TabToDo extends AbstractArgoJPanel implements TabToDoTarget {
      * The UID.
      */
     private static final long serialVersionUID = 4819730646847978729L;
+
+    /*
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    public void componentShown(ComponentEvent e) {
+        // Update our model with our saved target
+        setTargetInternal(target);
+    }
+    
+    /*
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    public void componentHidden(ComponentEvent e) {
+        // Stop updating model when we're not visible
+        setTargetInternal(null);
+    }
+
+    public void componentMoved(ComponentEvent e) {
+        // ignored
+    }
+
+    public void componentResized(ComponentEvent e) {
+        // ignored
+    }
+
+    
 } /* end class TabToDo */
