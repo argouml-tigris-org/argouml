@@ -26,6 +26,7 @@ package org.argouml.ui.explorer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -44,6 +45,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -67,6 +69,8 @@ import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.MutableGraphModel;
+
+import com.sun.corba.se.internal.iiop.messages.Message;
 
 /**
  * PopUp for extra functionality for the Explorer.
@@ -318,32 +322,32 @@ public class ExplorerPopup extends JPopupMenu {
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getDependency(),
-        	    " " + menuLocalize("menu.popup.create-dependency") + " ");
+        	    " " + menuLocalize("menu.popup.depends-on") + " ");
             
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getGeneralization(),
-        	    " " + menuLocalize("menu.popup.create-generalization") + " ");
+        	    " " + menuLocalize("menu.popup.generalizes") + " ");
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getInclude(),
-        	    " " + menuLocalize("menu.popup.create-includes") + " ");
+        	    " " + menuLocalize("menu.popup.includes") + " ");
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getExtend(),
-        	    " " + menuLocalize("menu.popup.create-includes") + " ");
+        	    " " + menuLocalize("menu.popup.extends") + " ");
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getPermission(),
-        	    " " + menuLocalize("menu.popup.create-permission") + " ");
+        	    " " + menuLocalize("menu.popup.has-permission-on") + " ");
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getUsage(),
-        	    " " + menuLocalize("menu.popup.create-usage") + " ");
+        	    " " + menuLocalize("menu.popup.uses") + " ");
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getAbstraction(),
-        	    " " + menuLocalize("menu.popup.create-abstraction") + " ");
+        	    " " + menuLocalize("menu.popup.realizes") + " ");
 	}
 	if (menuItems.size() == 1) {
 	    add((Action) menuItems.get(0));
@@ -409,7 +413,7 @@ public class ExplorerPopup extends JPopupMenu {
 
 
     /**
-     * Locale a popup menu item in the navigator pane.
+     * Localize a popup menu item in the navigator pane.
      *
      * @param key
      *            The key for the string to localize.
@@ -522,9 +526,11 @@ public class ExplorerPopup extends JPopupMenu {
 		Object source, 
 		Object dest,
 		String relationshipDescr) {
-	    super(Model.getFacade().getName(source) 
-		    + " " + relationshipDescr + " "
-		    + Model.getFacade().getName(dest)); 
+	    super(MessageFormat.format(
+		    relationshipDescr,
+		    new Object[] {
+			    DisplayTextTree.getModelElementDisplayName(source),
+			    DisplayTextTree.getModelElementDisplayName(dest)}));
 	    this.metaType = metaType;
 	    this.source = source;
 	    this.dest = dest;

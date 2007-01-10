@@ -24,6 +24,7 @@
 
 package org.argouml.ui;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -199,15 +200,9 @@ public class DisplayTextTree extends JTree {
                     name = (tagName + " = " + theValue);
 
                 } else {
-                    name = Model.getFacade().getName(value);
+                    name = getModelElementDisplayName(value);
                 }
 
-                if (name == null || name.equals("")) {
-                    // TODO: Localize
-                    name =
-                        "(unnamed " + Model.getFacade().getUMLClassName(value)
-                            + ")";
-                }
                 /*
                  * If the name is too long or multi-line (e.g. for comments)
                  * then we reduce to the first line or 80 chars.
@@ -289,6 +284,19 @@ public class DisplayTextTree extends JTree {
             return value.toString();
         }
         return "-";
+    }
+    
+    public static final String getModelElementDisplayName(Object modelElement) {
+        String name = Model.getFacade().getName(modelElement);
+        if (name == null || name.equals("")) {
+            name = MessageFormat.format(
+        	    Translator.localize("misc.unnamed"),
+                    new Object[] {
+        		Model.getFacade().getUMLClassName(modelElement)
+                    }
+    	    );
+        }
+        return name;
     }
 
     /**
