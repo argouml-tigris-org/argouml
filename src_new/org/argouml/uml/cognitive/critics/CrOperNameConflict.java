@@ -48,11 +48,8 @@ import org.argouml.uml.cognitive.UMLDecision;
  * classes have a lot of operations. See the {@link #predicate2}
  * method for possible solutions.<p>
  *
- * See <a href=
- * "http://argouml.tigris.org/documentation/printablehtml/manual/argouml.html/
- * #s2.ref.oper_name_conflict">
- * ArgoUML User Manual: Change Names or Signatures in &lt;artifact&gt;
- * </a>
+ * See the ArgoUML User Manual: Change Names or Signatures in &lt;artifact&gt;
+ *
  * @author jrobbins@ics.uci.edu
  */
 

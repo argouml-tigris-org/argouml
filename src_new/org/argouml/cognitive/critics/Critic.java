@@ -167,7 +167,7 @@ public class Critic extends Observable implements Poster, Serializable {
     public final String defaultMoreInfoURL() {
 	String clsName = getClass().getName();
 	clsName = clsName.substring(clsName.lastIndexOf(".") + 1);
-	return "http://argouml.tigris.org/documentation/printablehtml/"
+	return "http://argouml-stats.tigris.org/documentation/printablehtml/"
 	    + "manual/argomanual.html"
 	    + "#critics." + clsName;
     }

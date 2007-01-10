@@ -41,10 +41,7 @@ import org.argouml.uml.cognitive.UMLDecision;
  * This is the first well-formedness rule for associations in the UML 1.3
  * standard (see section 2.5.3 of the standard).<p>
  *
- * See <a href=
- * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
- * #s2.ref.critics_dup_role_names">
- * ArgoUML User Manual: Duplicate end (role) names for &lt;association&gt;</a>
+ * See ArgoUML User Manual: Duplicate end (role) names for &lt;association&gt;
  *
  * @author Jason Robbins
  */
