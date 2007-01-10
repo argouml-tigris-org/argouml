@@ -25,8 +25,25 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
+import java.util.Vector;
+
+import javax.swing.Action;
+
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.ActionAddNote;
+import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
+import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
@@ -49,7 +66,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     /**
      * The Fig for the operations compartment (if any).
      */
-    protected FigOperationsCompartment operationsFig;
+    private FigOperationsCompartment operationsFig;
 
     /**
      * Text highlighted by mouse actions on the diagram.<p>
@@ -120,6 +137,69 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         setBounds(rect.x, rect.y, rect.width, rect.height);
         damage();
     }
+    
+    /**
+     * Updates the name if modelchanged receives an "isAbstract" event.
+     * 
+     * TODO:  This really belongs in (the non-existent) FigGeneralizableElement.
+     */
+    protected void updateAbstract() {
+        Rectangle rect = getBounds();
+        if (getOwner() == null) {
+            return;
+        }
+        Object cls = getOwner();
+        if (Model.getFacade().isAbstract(cls)) {
+            getNameFig().setFont(getItalicLabelFont());
+        } else {
+            getNameFig().setFont(getLabelFont());
+        }
+        super.updateNameText();
+        setBounds(rect.x, rect.y, rect.width, rect.height);
+    }
+
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+        updateOperations();
+        updateAbstract();
+        super.renderingChanged();
+    }
+
+    protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        if (mee instanceof AttributeChangeEvent) {
+            Object source = mee.getSource();
+            if (Model.getFacade().isAOperation(source) 
+                    || Model.getFacade().isAMethod(source)
+                    || Model.getFacade().isAParameter(source)) {
+                // TODO: We just need to get someone to rerender a single line
+                // of text which represents the element here, but I'm not sure
+                // how to do that, so redraw the whole compartment. - tfm
+                updateOperations();
+            } else if (source.equals(getOwner()) 
+                    && "isAbstract".equals(mee.getPropertyName())) {
+                updateAbstract();
+            }
+        } else if (mee instanceof AssociationChangeEvent 
+                && getOwner().equals(mee.getSource())) {
+            Object o = null;
+            if (mee instanceof AddAssociationEvent) {
+                o = mee.getNewValue();
+            } else if (mee instanceof RemoveAssociationEvent) {
+                o = mee.getOldValue();
+            }
+            if (Model.getFacade().isAOperation(o)) {
+                updateOperations();
+            }
+            
+            // We need to update listeners on connected model elements
+            // if any association changes
+            updateListeners(getOwner(), getOwner());
+        }
+    }
 
     /**
      * @return The vector of graphics for operations (if any).
@@ -138,17 +218,46 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         return operationsFig.getBounds();
     }
 
-    /**
-     * Returns the visibility status of the operations compartment.
-     *
-     * @return true if the operations are visible, false otherwise
-     *
+
+    /*
      * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#isOperationsVisible()
      */
     public boolean isOperationsVisible() {
         return operationsFig.isVisible();
     }
 
+    /*
+     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#setOperationsVisible(boolean)
+     */
+    public void setOperationsVisible(boolean isVisible) {
+        Rectangle rect = getBounds();
+        if (isOperationsVisible()) { // if displayed
+            if (!isVisible) {
+                damage();
+                Iterator it = getOperationsFig().getFigs().iterator();
+                while (it.hasNext()) {
+                    ((Fig) (it.next())).setVisible(false);
+                }
+                getOperationsFig().setVisible(false);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y,
+                          (int) aSize.getWidth(), (int) aSize.getHeight());
+            }
+        } else {
+            if (isVisible) {
+                Iterator it = getOperationsFig().getFigs().iterator();
+                while (it.hasNext()) {
+                    ((Fig) (it.next())).setVisible(true);
+                }
+                getOperationsFig().setVisible(true);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y,
+                    (int) aSize.getWidth(), (int) aSize.getHeight());
+                damage();
+            }
+        }
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
@@ -159,5 +268,53 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         if (sel instanceof SelectionClass) {
             ((SelectionClass) sel).hideButtons();
         }
+    }
+
+    /**
+     * Build a collection of menu items relevant for a right-click
+     * popup menu on an Interface.
+     *
+     * @param     me     a mouse event
+     * @return           a collection of menu items
+     */
+    public Vector getPopUpActions(MouseEvent me) {
+        Vector popUpActions = super.getPopUpActions(me);
+    
+        // Add ...
+        ArgoJMenu addMenu = buildAddMenu();
+        popUpActions.insertElementAt(addMenu,
+                popUpActions.size() - getPopupAddOffset());
+    
+        // Show ...
+        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
+        Iterator i = ActionCompartmentDisplay.getActions().iterator();
+        while (i.hasNext()) {
+            showMenu.add((Action) i.next());
+        }
+        popUpActions.insertElementAt(showMenu,
+                popUpActions.size() - getPopupAddOffset());
+    
+        // Modifier ...
+        popUpActions.insertElementAt(buildModifierPopUp(),
+                popUpActions.size() - getPopupAddOffset());
+    
+        // Visibility ...
+        popUpActions.insertElementAt(buildVisibilityPopUp(),
+                popUpActions.size() - getPopupAddOffset());
+    
+        return popUpActions;
+    }
+
+    protected ArgoJMenu buildAddMenu() {
+        ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
+        addMenu.add(TargetManager.getInstance().getAddOperationAction());
+        addMenu.add(new ActionAddNote());
+        addMenu.add(ActionEdgesDisplay.getShowEdges());
+        addMenu.add(ActionEdgesDisplay.getHideEdges());
+        return addMenu;
+    }
+
+    protected Object buildModifierPopUp() {
+        return buildModifierPopUp(ABSTRACT | LEAF | ROOT);
     }
 }

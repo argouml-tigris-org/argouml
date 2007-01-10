@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
@@ -35,20 +34,16 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.Action;
-
+import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.ActionAddNote;
-import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
-import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
-import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -102,6 +97,12 @@ public class FigClass extends FigClassifierBox
      * high in the parent, but we change it to 19 pixels, 1 more than
      * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
      * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
+     * 
+     * @param modelElement model element to be represented by this fig.
+     * @param x x-position
+     * @param y y-position
+     * @param w width
+     * @param h height
      */
     public FigClass(Object modelElement, int x, int y, int w, int h) {
         this(null, modelElement);
@@ -141,7 +142,7 @@ public class FigClass extends FigClassifierBox
         addFig(getBigPort());
         addFig(getStereotypeFig());
         addFig(getNameFig());
-        addFig(operationsFig);
+        addFig(getOperationsFig());
         addFig(attributesFigCompartment);
         addFig(borderFig);
         setOwner(node);
@@ -175,47 +176,19 @@ public class FigClass extends FigClassifierBox
         return new SelectionClass(this);
     }
 
-    /**
-     * Build a collection of menu items relevant for a right-click
-     * popup menu on a Class.
-     *
-     * @param     me     a mouse event
-     * @return           a collection of menu items
-     *
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+    /*
+     * Insert an Add Attribute entry before the default menu.
+     * 
+     * @see org.argouml.uml.diagram.static_structure.ui.FigClassifierBox#buildAddMenu()
      */
-    public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = super.getPopUpActions(me);
+    protected ArgoJMenu buildAddMenu() {
+        ArgoJMenu addMenu = super.buildAddMenu();
+        addMenu.insert(TargetManager.getInstance().getAddAttributeAction(), 0);
+        return addMenu;
+    }
 
-        // Add...
-        ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
-        addMenu.add(TargetManager.getInstance().getAddAttributeAction());
-        addMenu.add(TargetManager.getInstance().getAddOperationAction());
-        addMenu.add(new ActionAddNote());
-        addMenu.add(ActionEdgesDisplay.getShowEdges());
-        addMenu.add(ActionEdgesDisplay.getHideEdges());
-        popUpActions.insertElementAt(addMenu,
-            popUpActions.size() - getPopupAddOffset());
-
-        // Show ...
-        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-        Iterator i = ActionCompartmentDisplay.getActions().iterator();
-        while (i.hasNext()) {
-            showMenu.add((Action) i.next());
-        }
-        popUpActions.insertElementAt(showMenu,
-            popUpActions.size() - getPopupAddOffset());
-
-        // Modifiers ...
-        popUpActions.insertElementAt(
-                buildModifierPopUp(ABSTRACT | LEAF | ROOT | ACTIVE),
-                popUpActions.size() - getPopupAddOffset());
-
-        // Visibility ...
-        popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - getPopupAddOffset());
-
-        return popUpActions;
+    protected Object buildModifierPopUp() {
+        return buildModifierPopUp(ABSTRACT | LEAF | ROOT | ACTIVE);
     }
 
     /**
@@ -272,40 +245,6 @@ public class FigClass extends FigClassifierBox
                 Dimension aSize = this.getMinimumSize();
                 setBounds(rect.x, rect.y,
 			  (int) aSize.getWidth(), (int) aSize.getHeight());
-                damage();
-            }
-        }
-    }
-
-    /**
-     * @param isVisible true if the operation compartment is visible
-     *
-     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#setOperationsVisible(boolean)
-     */
-    public void setOperationsVisible(boolean isVisible) {
-        Rectangle rect = getBounds();
-        if (isOperationsVisible()) { // if displayed
-            if (!isVisible) {
-                damage();
-                Iterator it = getOperationsFig().getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(false);
-                }
-                getOperationsFig().setVisible(false);
-                Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y,
-			  (int) aSize.getWidth(), (int) aSize.getHeight());
-            }
-        } else {
-            if (isVisible) {
-                Iterator it = getOperationsFig().getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(true);
-                }
-                getOperationsFig().setVisible(true);
-                Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y,
-                    (int) aSize.getWidth(), (int) aSize.getHeight());
                 damage();
             }
         }
@@ -523,8 +462,6 @@ public class FigClass extends FigClassifierBox
     public void renderingChanged() {
         if (getOwner() != null) {
             updateAttributes();
-            updateOperations();
-            updateAbstract();
         }
         super.renderingChanged();
     }
@@ -539,10 +476,28 @@ public class FigClass extends FigClassifierBox
     protected void modelChanged(PropertyChangeEvent mee) {
         // Let our superclass sort itself out first
         super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent 
-                || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
+
+        if (mee instanceof AttributeChangeEvent) {
+            Object source = mee.getSource();
+            if (Model.getFacade().isAAttribute(source)) {
+                // TODO: We just need to get someone to rerender a single line
+                // of text which represents the element here, but I'm not sure
+                // how to do that. - tfm
+                updateAttributes();
+            }
+        } else if (mee instanceof AssociationChangeEvent 
+                && getOwner().equals(mee.getSource())) {
+            Object o = null;
+            if (mee instanceof AddAssociationEvent) {
+                o = mee.getNewValue();
+            } else if (mee instanceof RemoveAssociationEvent) {
+                o = mee.getOldValue();
+            }
+            if (Model.getFacade().isAAttribute(o)) {
+                updateAttributes();
+            }
+            
+            // Our superclass has already updated all listeners
         }
     }
 
@@ -714,24 +669,6 @@ public class FigClass extends FigClassifierBox
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
-    /**
-     * Updates the operations box. Called from modelchanged if there is
-     * a modelevent effecting the attributes and from renderingChanged in all
-     * cases.
-     */
-    protected void updateOperations() {
-        if (!isOperationsVisible()) {
-            return;
-        }
-        operationsFig.populate();
-
-        Rectangle rect = getBounds();
-        // ouch ugly but that's for a next refactoring
-        // TODO: make setBounds, calcBounds and updateBounds consistent
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-    }
-
-
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
@@ -742,29 +679,13 @@ public class FigClass extends FigClassifierBox
         setBounds(getBounds());
     }
 
-    /**
-     * Updates the name if modelchanged receives an "isAbstract" event.
-     * TODO: Move up to ClassifierBox (should be GeneralizableElement)
-     */
-    protected void updateAbstract() {
-        Rectangle rect = getBounds();
-        if (getOwner() == null) {
-            return;
-        }
-        Object cls = getOwner();
-        if (Model.getFacade().isAbstract(cls)) {
-            getNameFig().setFont(getItalicLabelFont());
-	} else {
-            getNameFig().setFont(getLabelFont());
-	}
-        super.updateNameText();
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-    }
-
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
+        // Note: although this never removes listeners for features which have
+        // been deleted, they should get cleaned up as part of 
+        // the delete process.
 //        if (oldOwner != null) {
 //            removeAllElementListeners();
 //        }
@@ -772,6 +693,7 @@ public class FigClass extends FigClassifierBox
             // add the listeners to the newOwner
             addElementListener(newOwner);
             // and its stereotypes
+            // TODO: Aren't stereotypes handled elsewhere?
             Collection c = new ArrayList(
                     Model.getFacade().getStereotypes(newOwner));
             // and its features
