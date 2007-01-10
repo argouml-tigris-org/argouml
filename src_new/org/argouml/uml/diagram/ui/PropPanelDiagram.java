@@ -48,7 +48,9 @@ public class PropPanelDiagram extends PropPanel {
 
     /**
      * Constructs a proppanel with a given name.
-     * @see org.argouml.ui.AbstractArgoJPanel#AbstractArgoJPanel(String)
+     * 
+     * @param diagramName the diagram name to use as the title of the panel
+     * @param icon an icon to display on the panel
      */
     protected PropPanelDiagram(String diagramName, ImageIcon icon) {
         super(diagramName, icon, ConfigLoader.getTabPropsOrientation());
@@ -72,28 +74,6 @@ public class PropPanelDiagram extends PropPanel {
         this("Diagram", null);
     }
 
-//    /**
-//     * @see org.argouml.uml.ui.PropPanel#removeElement()
-//     */
-//    public void removeElement() {
-//        Object target = getTarget();
-//        if (target instanceof ArgoDiagram) {
-//            try {
-//                ArgoDiagram diagram = (ArgoDiagram) target;
-//                Project project =
-//		    ProjectManager.getManager().getCurrentProject();
-//                //
-//                //  can't easily find owner of diagram
-//                //    set new target to the model
-//                //
-//                Object newTarget = project.getModel();
-//                project.moveToTrash(diagram);
-//                TargetManager.getInstance().setTarget(newTarget);
-//            } catch (Exception e) {
-//                LOG.error(e);
-//            }
-//        }
-//    }
 
 } /* end class PropPanelDiagram */
 
