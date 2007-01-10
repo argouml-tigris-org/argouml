@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -154,7 +155,7 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     public Collection parse(InputSource pIs, boolean profile)
         throws UmlException {
 
-        Collection newElements = null;
+        Collection newElements = Collections.EMPTY_LIST;
         RefPackage extent = modelPackage;
 
         try {
@@ -290,13 +291,13 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                 LOG.error("Unexpected number of profile model elements"
                         + " (must be 1) : "
                         + newElements.size());
-                return null;
+                return Collections.EMPTY_LIST;
             } else {
                 RefObject model = (RefObject) newElements.iterator().next();
                 if (!(model instanceof Model)) {
                     LOG.error("Profile XMI doesn't contain Model as top level"
                             + " element.");
-                    return null;
+                    return Collections.EMPTY_LIST;
                 } else {
                     LOG.debug("Saving profile with MofID : "
                             + model.refMofId());
