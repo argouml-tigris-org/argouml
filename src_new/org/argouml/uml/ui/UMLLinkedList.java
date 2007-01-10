@@ -26,6 +26,7 @@
 package org.argouml.uml.ui;
 
 import java.awt.Color;
+import java.awt.GraphicsEnvironment;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
@@ -127,7 +128,7 @@ public class UMLLinkedList extends UMLList2 implements DropTargetListener {
         if (!tr.isDataFlavorSupported(
                      TransferableModelElements.UML_COLLECTION_FLAVOR)) {
             LOG.info(
-        	    "Drop rejected because model doesn't contain model elements");
+        	    "Drop rejected because it doesn't contain model elements");
             dropTargetDropEvent.rejectDrop();
             return;
         }
@@ -180,8 +181,13 @@ public class UMLLinkedList extends UMLList2 implements DropTargetListener {
     }
 
     private void makeDropTarget() {
-        new DropTarget(this,
-                DnDConstants.ACTION_COPY_OR_MOVE,
-                this);
+        // TODO: This test is *solely*  to allow tests to complete without
+        // error in current environment.  Tests need to be reorganize to
+        // accommodate DnD (and to provide test coverage for it).
+        if (!GraphicsEnvironment.isHeadless()) {
+            new DropTarget(this,
+                    DnDConstants.ACTION_COPY_OR_MOVE,
+                    this);
+        }
     }
 }
