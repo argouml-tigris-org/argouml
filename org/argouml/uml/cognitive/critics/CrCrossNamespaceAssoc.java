@@ -38,10 +38,8 @@ import org.argouml.uml.cognitive.UMLDecision;
  * This is the fourth well-formedness rule for associations in the UML 1.3
  * standard (see section 2.5.3 of the standard).<p>
  *
- * See <a href=
- * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
- * #s2.ref.critics_cross_namespace_assoc">
- * ArgoUML User Manual: Classifier not in Namespace of its Association</a>
+ * See the ArgoUML User Manual: Classifier not in Namespace of its Association
+ *
  * @author Jason Robbins
  */
 public class CrCrossNamespaceAssoc extends CrUML {

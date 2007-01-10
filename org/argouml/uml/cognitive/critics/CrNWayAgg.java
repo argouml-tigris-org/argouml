@@ -44,11 +44,7 @@ import org.argouml.uml.cognitive.UMLDecision;
  * org.argouml.uml.cognitive.critics.CrMultipleAgg}) which deals with
  * 2-way assocations. <p>
  *
- * See <a href=
- * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
- * #s2.ref.critics_multiple_agg">
- * ArgoUML User Manual: Two Aggregate ends (roles) in binary
- * Association</a>
+ * See ArgoUML User Manual: Two Aggregate ends (roles) in binary Association
  *
  * @author jrobbins
  */
