@@ -987,8 +987,9 @@ public class Project implements java.io.Serializable, TargetListener {
         if (obj instanceof Collection) {
             Iterator i = ((Collection) obj).iterator();
             while (i.hasNext()) {
-                if (!trashcan.contains(obj)) {
-                    trashInternal(i.next());
+                Object trash = i.next();
+                if (!trashcan.contains(trash)) {
+                    trashInternal(trash);
                 }
             }
         } else {
