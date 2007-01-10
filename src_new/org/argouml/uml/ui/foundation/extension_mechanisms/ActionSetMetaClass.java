@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.swing.Action;
 
@@ -38,6 +37,9 @@ import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to set the baseclass of a stereotype.
+ * 
+ * TODO: This needs to be extended to support multiple bases classes for a
+ * stereotype as added in UML 1.4.
  * 
  * @author mkl
  */
@@ -61,36 +63,28 @@ public class ActionSetMetaClass extends UndoableAction {
     }
 
     /*
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
         Object newBase = null;
-        Object oldBase = null;
         Object stereo = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2) source;
             stereo = combo.getTarget();
             if (Model.getFacade().isAStereotype(stereo)) {
-                Collection baseClasses =
-                        Model.getFacade().getBaseClasses(stereo);
-                Iterator iter =
-                        baseClasses != null ? baseClasses.iterator() : null;
-                oldBase = iter != null ? iter.next() : null;
+                Collection oldBases = Model.getFacade().getBaseClasses(stereo);
                 newBase = combo.getSelectedItem();
                 if (newBase != null) { // TODO: How come this happens?
-                    if (newBase != oldBase) {
-                        Model.getFacade().getBaseClasses(stereo).clear(); // TODO: this works?
+                    if (!oldBases.contains(newBase)) {
                         Model.getExtensionMechanismsHelper().addBaseClass(
                                 stereo,
                                 newBase);
                     } else {
                         if (newBase != null && newBase.equals("")) {
-                            Model.getFacade().getBaseClasses(stereo).clear(); // TODO: this works?
                             Model.getExtensionMechanismsHelper().addBaseClass(
-                                    stereo,
-                                    "ModelElement");
+                                    stereo, "ModelElement");
                         }
                     }
                 }
