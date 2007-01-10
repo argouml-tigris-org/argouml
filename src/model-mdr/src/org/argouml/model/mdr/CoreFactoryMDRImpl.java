@@ -1179,9 +1179,10 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 || supplier.getNamespace() == null) {
             throw new IllegalArgumentException("faulty arguments.");
         }
-        Object realization = createAbstraction();
+        Abstraction realization = (Abstraction) createAbstraction();
         Namespace nsc = client.getNamespace();
         Namespace nss = supplier.getNamespace();
+        realization.setNamespace(nsc);
         Namespace ns = null;
         if (nsc.equals(nss)) {
             ns = nsc;

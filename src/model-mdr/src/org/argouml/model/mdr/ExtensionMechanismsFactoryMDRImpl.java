@@ -129,7 +129,11 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         
         if (theModelElementObject == null || theName == null
                 || theNamespaceObject == null) {
-            throw new IllegalArgumentException("one of the arguments is null");
+            throw new IllegalArgumentException(
+                    "one of the arguments is null: modelElement="
+                    + theModelElementObject
+                    + " name=" + theName
+                    + " namespace=" + theNamespaceObject);
         }
         
         ModelElement me = (ModelElement) theModelElementObject;
