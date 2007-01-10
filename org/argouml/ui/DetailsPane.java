@@ -34,8 +34,9 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.JPanel;
@@ -97,7 +98,7 @@ public class DetailsPane
     /**
      * a list of all the tabs, which are JPanels, in the JTabbedPane tabs.
      */
-    private Vector tabPanelList = new Vector();
+    private List tabPanelList = new ArrayList();
 
     /**
      * index of the selected tab in the JTabbedPane.
@@ -150,7 +151,7 @@ public class DetailsPane
 
         for (int i = 0; i < tabPanelList.size(); i++) {
             String titleKey = "tab";
-            JPanel t = (JPanel) tabPanelList.elementAt(i);
+            JPanel t = (JPanel) tabPanelList.get(i);
             if (t instanceof AbstractArgoJPanel) {
                 titleKey = ((AbstractArgoJPanel) t).getTitle();
             }
@@ -206,7 +207,7 @@ public class DetailsPane
     public boolean setToDoItem(Object item) {
         enableTabs(item);
         for (int i = 0; i < tabPanelList.size(); i++) {
-            JPanel t = (JPanel) tabPanelList.elementAt(i);
+            JPanel t = (JPanel) tabPanelList.get(i);
             if (t instanceof TabToDo) {
                 ((TabToDo) t).setTarget(item);
                 topLevelTabbedPane.setSelectedComponent(t);
@@ -387,8 +388,8 @@ public class DetailsPane
      */
     public void addToPropTab(Class c, PropPanel p) {
         for (int i = 0; i < tabPanelList.size(); i++) {
-            if (tabPanelList.elementAt(i) instanceof TabProps) {
-                ((TabProps) tabPanelList.elementAt(i)).addPanel(c, p);
+            if (tabPanelList.get(i) instanceof TabProps) {
+                ((TabProps) tabPanelList.get(i)).addPanel(c, p);
             }
         }
     }
@@ -569,7 +570,7 @@ public class DetailsPane
      */
     public void setOrientation(Orientation orientation) {
         for (int i = 0; i < tabPanelList.size(); i++) {
-            JPanel t = (JPanel) tabPanelList.elementAt(i);
+            JPanel t = (JPanel) tabPanelList.get(i);
             if (t instanceof Orientable) {
                 Orientable o = (Orientable) t;
                 o.setOrientation(orientation);
@@ -612,7 +613,7 @@ public class DetailsPane
         // iterate through the tabbed panels to determine wether they
         // should be enabled.
         for (int i = 0; i < tabPanelList.size(); i++) {
-            JPanel tab = (JPanel) tabPanelList.elementAt(i);
+            JPanel tab = (JPanel) tabPanelList.get(i);
             boolean shouldEnable = false;
             if (tab instanceof TargetListener) {
                 if (tab instanceof TabTarget) {

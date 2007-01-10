@@ -30,7 +30,8 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -64,7 +65,7 @@ public class MultiEditorPane
 
     private JTabbedPane tabs = new JTabbedPane(SwingConstants.BOTTOM);
 
-    private Vector tabPanels = new Vector();
+    private List tabPanels = new ArrayList();
     private Component lastTab;
 
     ////////////////////////////////////////////////////////////////
@@ -87,7 +88,7 @@ public class MultiEditorPane
         // _tabs.addChangeListener(this);
         for (int i = 0; i < tabPanels.size(); i++) {
             String title = "tab";
-            JPanel t = (JPanel) tabPanels.elementAt(i);
+            JPanel t = (JPanel) tabPanels.get(i);
             if (t instanceof AbstractArgoJPanel) {
                 title = ((AbstractArgoJPanel) t).getTitle();
             }

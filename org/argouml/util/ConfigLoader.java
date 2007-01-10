@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -68,8 +69,26 @@ public class ConfigLoader {
      * @param tabs the list of tabs in the panel
      * @param panelName the panel name
      * @param orientation the orientation
+     * @deprecated for 0.24 by tfmorris, 
+     *          use {@link #loadTabs(List, String, Orientation)}
      */
     public static void loadTabs(Vector tabs, String panelName,
+            Orientation orientation) {
+        loadTabs((List) tabs, panelName, orientation);
+    }
+    
+    /**
+     * Load the tab panels as defined in the configuration file.
+     * 
+     * @param tabs
+     *            the list of tabs in the panel
+     * @param panelName
+     *            the panel name
+     * @param orientation
+     *            the orientation
+     * 
+     */
+    public static void loadTabs(List tabs, String panelName,
             Orientation orientation) {
 
         String position = null;
@@ -137,7 +156,7 @@ public class ConfigLoader {
                                         tabPropsOrientation = orientation;
                                     }
                                     Object newTab = tabClass.newInstance();
-                                    tabs.addElement(newTab);
+                                    tabs.add(newTab);
                                 }
                             }
                             catch (InstantiationException ex) {
