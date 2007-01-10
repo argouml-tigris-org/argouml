@@ -27,6 +27,7 @@ package org.argouml.model.mdr;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -83,8 +84,10 @@ public class TestMDRModelImplementationCreate extends TestCase {
         File fileModel = new File(model);
         assertTrue(fileModel.exists());
         InputSource source = new InputSource(new FileInputStream(fileModel));
-        Model aLittleBit = (Model) xmiReader.parse(source);
-        assertNotNull(aLittleBit);
+        //Model aLittleBit = (Model) xmiReader.parse(source);
+        Collection modelElements = xmiReader.parse(source);
+        assertNotNull(modelElements);
+        assertEquals(1, modelElements.size());
     }
 
 }
