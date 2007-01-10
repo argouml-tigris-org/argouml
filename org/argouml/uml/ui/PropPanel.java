@@ -30,6 +30,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -78,7 +80,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * hierarchy that matches the UML metamodel.
  */
 public abstract class PropPanel extends AbstractArgoJPanel implements
-        TabModelTarget, UMLUserInterfaceContainer {
+        TabModelTarget, UMLUserInterfaceContainer, ComponentListener {
 
     /**
      * Logger.
@@ -89,6 +91,11 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     private Object modelElement;
 
+    /**
+     * List of event listeners to notify. This is computed one time and frozen
+     * the first time any target change method (e.g. setTarget, targetAdded) is
+     * called.
+     */
     private EventListenerList listenerList;
 
     private JPanel buttonPanel = new JPanel(new GridLayout());
@@ -127,6 +134,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         titleLabel.setLabelFor(buttonPanel);
         add(titleLabel);
         add(buttonPanel);
+        
+        addComponentListener(this);
     }
 
     /**
@@ -323,7 +332,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
             target = t;
             modelElement = null;
             if (listenerList == null) {
-                listenerList = registrateTargetListeners(this);
+                listenerList = collectTargetListeners(this);
             }
 
             if (Model.getFacade().isAModelElement(target)) {
@@ -358,14 +367,16 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     /**
      * Builds a eventlistenerlist of all targetlisteners that are part of this
-     * container and its children.
-     *
+     * container and its children. Components do not need to register
+     * themselves. They are registered implicitly if they implement the
+     * TargetListener interface.
+     * 
      * @param container
      *            the container to search for targetlisteners
      * @return an EventListenerList with all TargetListeners on this container
      *         and its children.
      */
-    private EventListenerList registrateTargetListeners(Container container) {
+    private EventListenerList collectTargetListeners(Container container) {
         Component[] components = container.getComponents();
         EventListenerList list = new EventListenerList();
         for (int i = 0; i < components.length; i++) {
@@ -378,7 +389,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
                                 .getTargettableModel());
             }
             if (components[i] instanceof Container) {
-                EventListenerList list2 = registrateTargetListeners(
+                EventListenerList list2 = collectTargetListeners(
                                                 (Container) components[i]);
                 Object[] objects = list2.getListenerList();
                 for (int j = 1; j < objects.length; j += 2) {
@@ -462,23 +473,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         return getProfile().formatCollection(iter, namespace);
     }
 
-    /**
-     * Remove this element.
-     */
-//final public void removeElement() {
-//        Object theTarget = getTarget();
-//        if (Model.getFacade().isAModelElement(theTarget)) {
-//            Object newTarget = Model.getFacade().getModelElementContainer(
-//                    theTarget);
-//            Object base = theTarget;
-//            TargetManager.getInstance().setTarget(base);
-//            ActionEvent event = new ActionEvent(this, 1, "delete");
-//            new ActionDeleteSingleModelElement().actionPerformed(event);
-//            if (newTarget != null) {
-//                TargetManager.getInstance().setTarget(newTarget);
-//            }
-//        }
-//    }
 
     /**
      * Get the delete action.
@@ -506,10 +500,12 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public void targetAdded(TargetEvent e) {
         if (listenerList == null) {
-            listenerList = registrateTargetListeners(this);
+            listenerList = collectTargetListeners(this);
         }
         setTarget(e.getNewTarget());
-        fireTargetAdded(e);
+        if (isVisible()) {
+            fireTargetAdded(e);
+        }
     }
 
     /*
@@ -517,7 +513,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
-        fireTargetRemoved(e);
+        if (isVisible()) {
+            fireTargetRemoved(e);
+        }
     }
 
     /*
@@ -525,18 +523,19 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
-        fireTargetSet(e);
+        if (isVisible()) {
+            fireTargetSet(e);
+        }
     }
 
     private void fireTargetSet(TargetEvent targetEvent) {
         if (listenerList == null) {
-            listenerList = registrateTargetListeners(this);
+            listenerList = collectTargetListeners(this);
         }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:
                 ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
             }
         }
@@ -544,14 +543,13 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     private void fireTargetAdded(TargetEvent targetEvent) {
         if (listenerList == null) {
-            listenerList = registrateTargetListeners(this);
+            listenerList = collectTargetListeners(this);
         }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
 
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:
                 ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
             }
         }
@@ -559,13 +557,12 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     private void fireTargetRemoved(TargetEvent targetEvent) {
         if (listenerList == null) {
-            listenerList = registrateTargetListeners(this);
+            listenerList = collectTargetListeners(this);
         }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:
                 ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
             }
         }
@@ -620,5 +617,40 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     protected static ImageIcon lookupIcon(String name) {
         return ResourceLoaderWrapper.lookupIconResource(name);
     }
+
+
+    /*
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    public void componentHidden(ComponentEvent e) {
+        // TODO: do we want to fire targetRemoved here or is it enough to just
+        // stop updating the targets?
+    }
+    
+    /*
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    public void componentShown(ComponentEvent e) {
+        // Refresh the target for all our children which weren't getting
+        // while not visible
+        fireTargetSet(new TargetEvent(
+                this, TargetEvent.TARGET_SET, null, new Object[] {target}));
+    }
+    
+    /*
+     * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
+     */
+    public void componentMoved(ComponentEvent e) {
+        // ignored
+    }
+
+    /*
+     * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+     */
+    public void componentResized(ComponentEvent e) {
+        // ignored        
+    }
+
+
 
 } /* end class PropPanel */

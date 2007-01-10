@@ -25,6 +25,8 @@
 package org.argouml.uml.ui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -64,7 +66,7 @@ import tudresden.ocl.parser.node.TName;
   * @author v2.0: Steffen Zschaler
   */
 public class TabConstraints extends AbstractArgoJPanel
-    implements TabModelTarget {
+    implements TabModelTarget, ComponentListener {
 
     private static final Logger LOG = Logger.getLogger(TabConstraints.class);
 
@@ -95,6 +97,8 @@ public class TabConstraints extends AbstractArgoJPanel
         setToolbarFloatable(false);
 
         add(mOcleEditor);
+        
+        addComponentListener(this);
     }
 
     /**
@@ -177,8 +181,14 @@ public class TabConstraints extends AbstractArgoJPanel
 
         mMmeiTarget = oTarget;
 
+        if (isVisible()) {
+            setTargetInternal(mMmeiTarget);
+        }
+    }
+
+    private void setTargetInternal(Object oTarget) {
         // Set editor's model
-        mOcleEditor.setModel(new ConstraintModel(mMmeiTarget));
+        mOcleEditor.setModel(new ConstraintModel(oTarget));
     }
 
     /**
@@ -728,6 +738,7 @@ public class TabConstraints extends AbstractArgoJPanel
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
+        // TODO: Why is this ignored? - tfm - 20070110
     }
 
     /*
@@ -745,4 +756,29 @@ public class TabConstraints extends AbstractArgoJPanel
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
+    
+    /*
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    public void componentShown(ComponentEvent e) {
+        // Update our model with our saved target
+        setTargetInternal(mMmeiTarget);
+    }
+    
+    /*
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    public void componentHidden(ComponentEvent e) {
+        // We have no model event listeners, so no need to do anything
+    }
+
+    public void componentMoved(ComponentEvent e) {
+        // ignored
+    }
+
+    public void componentResized(ComponentEvent e) {
+        // ignored
+    }
+
+
 }

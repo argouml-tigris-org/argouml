@@ -29,6 +29,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
@@ -59,7 +61,8 @@ import org.tigris.gef.presentation.Fig;
  * Tab to show the checklist for a certain element.
  */
 public class TabChecklist extends AbstractArgoJPanel
-    implements TabModelTarget, ActionListener, ListSelectionListener {
+    implements TabModelTarget, ActionListener, ListSelectionListener,
+            ComponentListener {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -100,6 +103,8 @@ public class TabChecklist extends AbstractArgoJPanel
 	add(new JLabel(Translator.localize("tab.checklist.warning")),
 	    BorderLayout.NORTH);
 	add(sp, BorderLayout.CENTER);
+	
+	addComponentListener(this);
     }
 
 
@@ -139,16 +144,24 @@ public class TabChecklist extends AbstractArgoJPanel
         }
 
 	shouldBeEnabled = true;
-	Checklist cl = CheckManager.getChecklistFor(target);
-	if (cl == null) {
-	    target = null;
-	    shouldBeEnabled = false;
-	    return;
-	}
+        if (isVisible()) {
+            setTargetInternal(target);
+        }
+    }
 
-	tableModel.setTarget(target);
 
-	resizeColumns();
+    private void setTargetInternal(Object t) {
+        if (t == null) {
+            return;
+        }
+        Checklist cl = CheckManager.getChecklistFor(t);
+        if (cl == null) {
+            target = null;
+            shouldBeEnabled = false;
+            return;
+        }
+        tableModel.setTarget(t);
+        resizeColumns();
     }
 
     /*
@@ -233,6 +246,31 @@ public class TabChecklist extends AbstractArgoJPanel
      */
     public void targetSet(TargetEvent e) {
 	setTarget(e.getNewTarget());
+    }
+
+
+    /*
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    public void componentShown(ComponentEvent e) {
+        // Update our model with our saved target
+        setTargetInternal(target);
+    }
+    
+    /*
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    public void componentHidden(ComponentEvent e) {
+        // Stop updating model when we're not visible
+        setTargetInternal(null);
+    }
+
+    public void componentMoved(ComponentEvent e) {
+        // ignored
+    }
+
+    public void componentResized(ComponentEvent e) {
+        // ignored
     }
 
 } /* end class TabChecklist */

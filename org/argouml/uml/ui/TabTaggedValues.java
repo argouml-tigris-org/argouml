@@ -27,6 +27,8 @@ package org.argouml.uml.ui;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 
 import javax.swing.Action;
@@ -61,7 +63,7 @@ import org.tigris.toolbar.ToolBar;
  * Table view of a Model Element's Tagged Values.
  */
 public class TabTaggedValues extends AbstractArgoJPanel
-    implements TabModelTarget, ListSelectionListener {
+    implements TabModelTarget, ListSelectionListener, ComponentListener {
     
     private static final Logger LOG = Logger.getLogger(TabTaggedValues.class);
 
@@ -130,6 +132,8 @@ public class TabTaggedValues extends AbstractArgoJPanel
 
         add(topPane, BorderLayout.NORTH);
         add(sp, BorderLayout.CENTER);
+        
+        addComponentListener(this);
     }
 
     /**
@@ -177,18 +181,25 @@ public class TabTaggedValues extends AbstractArgoJPanel
         target = t;
         shouldBeEnabled = true;
 
+        // Only update our model if we're visible
+        if (isVisible()) {
+            setTargetInternal(target);
+        } 
+    }
+
+    private void setTargetInternal(Object t) {
         tagDefinitionsComboBoxModel.setTarget(t);
 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-        ((TabTaggedValuesModel) table.getModel()).setTarget(target);
+        ((TabTaggedValuesModel) table.getModel()).setTarget(t);
         table.sizeColumnsToFit(0);
 
-        if (target != null) {
+        if (t != null) {
             titleLabel.setText("Target: "
-				+ Model.getFacade().getUMLClassName(target)
-				+ " ("
-				+ Model.getFacade().getName(target) + ")");
+                    + Model.getFacade().getUMLClassName(t)
+                    + " ("
+                    + Model.getFacade().getName(t) + ")");
         } else {
             titleLabel.setText("none");
         }
@@ -273,6 +284,31 @@ public class TabTaggedValues extends AbstractArgoJPanel
             }
         }
     }
+
+    /*
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    public void componentShown(ComponentEvent e) {
+        // Update our model with our saved target
+        setTargetInternal(target);
+    }
+    
+    /*
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    public void componentHidden(ComponentEvent e) {
+        // Stop updating model when we're not visible
+        setTargetInternal(null);
+    }
+
+    public void componentMoved(ComponentEvent e) {
+        // ignored
+    }
+
+    public void componentResized(ComponentEvent e) {
+        // ignored
+    }
+
 
 } /* end class TabTaggedValues */
 
