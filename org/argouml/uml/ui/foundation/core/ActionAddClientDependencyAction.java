@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -53,7 +54,7 @@ public class ActionAddClientDependencyAction extends
 
     /*
      * Constraint: This code only deals with 1 supplier per dependency!
-     * TODO: Do we need more?
+     * TODO: How to support more?
      * 
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
@@ -68,6 +69,19 @@ public class ActionAddClientDependencyAction extends
                 Model.getCoreFactory().buildDependency(getTarget(), client);
             }
         }
+
+        Collection toBeDeleted = new ArrayList();
+        Collection c =  Model.getFacade().getClientDependencies(getTarget());
+        i = c.iterator();
+        while (i.hasNext()) {
+            Object dependency = i.next();
+            if (oldSet.containsAll(
+                    Model.getFacade().getSuppliers(dependency))) {
+                toBeDeleted.add(dependency);
+            }
+        }
+        ProjectManager.getManager().getCurrentProject()
+            .moveToTrash(toBeDeleted);
     }
 
     /*

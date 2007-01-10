@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -62,11 +63,25 @@ public class ActionAddSupplierDependencyAction extends
         Iterator i = selected.iterator();
         while (i.hasNext()) {
             Object supplier = i.next();
-            if (!oldSet.contains(supplier)) {
+            if (oldSet.contains(supplier)) {
+                oldSet.remove(supplier); //to be able to remove dep's later
+            } else {
                 Model.getCoreFactory().buildDependency(supplier, getTarget());
             }
         }
-        
+
+        Collection toBeDeleted = new ArrayList();
+        Collection c =  Model.getFacade().getSupplierDependencies(getTarget());
+        i = c.iterator();
+        while (i.hasNext()) {
+            Object dependency = i.next();
+            if (oldSet.containsAll(
+                    Model.getFacade().getClients(dependency))) {
+                toBeDeleted.add(dependency);
+            }
+        }
+        ProjectManager.getManager().getCurrentProject()
+                .moveToTrash(toBeDeleted);
     }
 
     /*
