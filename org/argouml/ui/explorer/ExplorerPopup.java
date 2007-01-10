@@ -340,12 +340,10 @@ public class ExplorerPopup extends JPopupMenu {
         	    menuItems,
         	    Model.getMetaTypes().getUsage(),
         	    " " + "Uses" + " ");
-            // TODO: Why doesn't this work? It creates a stereotype
-            // instead!
-//            addCreateModelElementAction(
-//        	    menuItems,
-//        	    Model.getMetaTypes().getAbstraction(),
-//        	    " " + "Realizes" + " ");
+            addCreateModelElementAction(
+        	    menuItems,
+        	    Model.getMetaTypes().getAbstraction(),
+        	    " " + "Realizes" + " ");
 	}
 	if (menuItems.size() == 1) {
 	    add((Action) menuItems.get(0));
@@ -533,6 +531,8 @@ public class ExplorerPopup extends JPopupMenu {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+	    Object rootModel = 
+                ProjectManager.getManager().getCurrentProject().getModel();
             try {
 		Model.getUmlFactory().buildConnection(
 		    metaType,
@@ -541,7 +541,7 @@ public class ExplorerPopup extends JPopupMenu {
 		    dest,
 		    null,
 		    null,
-		    null);
+		    rootModel);
 	    } catch (IllegalModelElementConnectionException e1) {
 		LOG.error("Exception", e1);
 	    }
