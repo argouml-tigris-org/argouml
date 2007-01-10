@@ -315,41 +315,41 @@ public class ExplorerPopup extends JPopupMenu {
             }
 	}
 	if (targets.size() == 2) {
-	    // TODO: i18n
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getDependency(),
-        	    " " + "Depends On" + " ");
+        	    " " + menuLocalize("menu.popup.create-dependency") + " ");
+            
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getGeneralization(),
-        	    " " + "Generalizes" + " ");
+        	    " " + menuLocalize("menu.popup.create-generalization") + " ");
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getInclude(),
-        	    " " + "Includes" + " ");
+        	    " " + menuLocalize("menu.popup.create-includes") + " ");
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getExtend(),
-        	    " " + "Extends" + " ");
+        	    " " + menuLocalize("menu.popup.create-includes") + " ");
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getPermission(),
-        	    " " + "Has Permission On" + " ");
+        	    " " + menuLocalize("menu.popup.create-permission") + " ");
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getUsage(),
-        	    " " + "Uses" + " ");
+        	    " " + menuLocalize("menu.popup.create-usage") + " ");
             addCreateModelElementAction(
         	    menuItems,
         	    Model.getMetaTypes().getAbstraction(),
-        	    " " + "Realizes" + " ");
+        	    " " + menuLocalize("menu.popup.create-abstraction") + " ");
 	}
 	if (menuItems.size() == 1) {
 	    add((Action) menuItems.get(0));
 	} else if (menuItems.size() > 1) {
-	    // TODO: i18n
-	    JMenu menu = new JMenu("Create Model Element");
+	    JMenu menu =
+		new JMenu(menuLocalize("menu.popup.create-model-element"));
 	    add(menu);
 	    for (Iterator it = menuItems.iterator(); it.hasNext(); ) {
                 menu.add((JMenuItem) it.next());
@@ -364,9 +364,9 @@ public class ExplorerPopup extends JPopupMenu {
 	List targets = TargetManager.getInstance().getTargets();
 	Object source = targets.get(0);
 	Object dest = targets.get(1);
-	    // TODO: i18n
-        JMenu subMenu =
-            new JMenu("Create" + " " + Model.getMetaTypes().getName(metaType));
+        JMenu subMenu = new JMenu(
+        	menuLocalize("menu.popup.create") + " "
+        	+ Model.getMetaTypes().getName(metaType));
         buildDirectionalCreateMenuItem(
             metaType, dest, source, relationshipDescr, subMenu);
         buildDirectionalCreateMenuItem(
@@ -564,7 +564,8 @@ public class ExplorerPopup extends JPopupMenu {
 	public ActionCreateAssociation(
 		Object metaType, 
 		List classifiers) {
-	    super("Create " + Model.getMetaTypes().getName(metaType));
+	    super(menuLocalize("menu.popup.create") + " "
+		    + Model.getMetaTypes().getName(metaType));
 	    this.metaType = metaType;
 	    this.classifiers = classifiers;
 	}
