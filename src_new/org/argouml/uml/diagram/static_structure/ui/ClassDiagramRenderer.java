@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
 import org.argouml.ui.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
@@ -209,11 +210,11 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             while (i.hasNext()) {
                 Object o = i.next();
                 name = Model.getFacade().getName(o);
-                if ("realize".equals(name)) {
+                if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
                     break;
                 }
             }
-            if ("realize".equals(name)) {
+            if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
                 FigRealization realFig = new FigRealization(edge);
 
                 Object supplier =

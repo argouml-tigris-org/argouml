@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.activity.ui.FigCallState;
@@ -272,11 +273,11 @@ public abstract class UmlDiagramRenderer
             while (i.hasNext()) {
                 Object o = i.next();
                 name = Model.getFacade().getName(o);
-                if ("realize".equals(name)) {
+                if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
 		    break;
 		}
             }
-            if ("realize".equals(name)) {
+            if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
                 newEdge = new FigRealization();
             } else {
                 newEdge = new FigDependency();
