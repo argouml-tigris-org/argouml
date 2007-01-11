@@ -35,6 +35,10 @@ import java.util.Vector;
  */
 public interface ModelManagementHelper {
     
+    public String FRIEND_STEREOTYPE = "friend";
+    public String IMPORT_STEREOTYPE = "import";
+    public String ACCESS_STEREOTYPE = "access";
+    
     /**
      * Returns all subsystems found in this namespace and in its children.
      *

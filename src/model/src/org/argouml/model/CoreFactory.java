@@ -30,6 +30,8 @@ package org.argouml.model;
  */
 public interface CoreFactory extends Factory {
     
+    public String REALIZE_STEREOTYPE = "realize";
+    
     /**
      * Create an empty but initialized instance of a UML Abstraction.
      * 
