@@ -43,6 +43,7 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
@@ -60,6 +61,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
+import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.api.ProgressMonitor;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
@@ -92,6 +94,7 @@ import org.argouml.util.ThreadUtils;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.IStatusBar;
@@ -511,67 +514,55 @@ public final class ProjectBrowser
      */
     private void restorePanelSizes() {
         if (northPane != null) {
-            northPane.setPreferredSize(
-                    new Dimension(0,
-                                  Configuration.getInteger(
-                                          Argo.KEY_SCREEN_NORTH_HEIGHT,
-                                          DEFAULT_COMPONENTHEIGHT)));
+            northPane.setPreferredSize(new Dimension(
+                    0, getSavedHeight(Argo.KEY_SCREEN_NORTH_HEIGHT)));
         }
         if (southPane != null) {
-            southPane.setPreferredSize(
-                    new Dimension(0,
-                                  Configuration.getInteger(
-                                          Argo.KEY_SCREEN_SOUTH_HEIGHT,
-                                          DEFAULT_COMPONENTHEIGHT)));
+            southPane.setPreferredSize(new Dimension(
+                    0, getSavedHeight(Argo.KEY_SCREEN_SOUTH_HEIGHT)));
         }
         if (eastPane != null) {
-            eastPane.setPreferredSize(
-                    new Dimension(Configuration.getInteger(
-                                          Argo.KEY_SCREEN_EAST_WIDTH,
-                                          DEFAULT_COMPONENTWIDTH),
-                                  0));
+            eastPane.setPreferredSize(new Dimension(
+                    getSavedWidth(Argo.KEY_SCREEN_EAST_WIDTH), 0));
         }
         if (explorerPane != null) {
-            explorerPane.setPreferredSize(
-                    new Dimension(Configuration.getInteger(
-                                          Argo.KEY_SCREEN_WEST_WIDTH,
-                                          DEFAULT_COMPONENTWIDTH),
-                                  0));
+            explorerPane.setPreferredSize(new Dimension(
+                    getSavedWidth(Argo.KEY_SCREEN_WEST_WIDTH), 0));
         }
-        //        if (_northWestPane != null) {
-        //            _northWestPane.setPreferredSize(new Dimension(
-        //                Configuration.getInteger(
-        // Argo.KEY_SCREEN_NORTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-        //                Configuration.getInteger(
-        // Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-        //            ));
-        //        }
-        //        if (_todoPane != null) {
-        //            _todoPane.setPreferredSize(new Dimension(
-        //                Configuration.getInteger(
-        // Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-        //                Configuration.getInteger(
-        // Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-        //            ));
-        //        }
-        //        if (_northEastPane != null) {
-        //            _northEastPane.setPreferredSize(new Dimension(
-        //                Configuration.getInteger(
-        // Argo.KEY_SCREEN_NORTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
-        //                Configuration.getInteger(
-        // Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-        //            ));
-        //        }
-        //        if (_southEastPane != null) {
-        //            _southEastPane.setPreferredSize(new Dimension(
-        //                Configuration.getInteger(
-        // Argo.KEY_SCREEN_SOUTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
-        //                Configuration.getInteger(
-        // Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-        //            ));
-        //        }
+        if (northWestPane != null) {
+            northWestPane.setPreferredSize(getSavedDimensions(
+                    Argo.KEY_SCREEN_NORTHWEST_WIDTH,
+                    Argo.KEY_SCREEN_NORTH_HEIGHT));
+        }
+        if (todoPane != null) {
+            todoPane.setPreferredSize(getSavedDimensions(
+                    Argo.KEY_SCREEN_SOUTHWEST_WIDTH,
+                    Argo.KEY_SCREEN_SOUTH_HEIGHT));
+        }
+        if (northEastPane != null) {
+            northEastPane.setPreferredSize(getSavedDimensions(
+                    Argo.KEY_SCREEN_NORTHEAST_WIDTH,
+                    Argo.KEY_SCREEN_NORTH_HEIGHT));
+        }
+        if (southEastPane != null) {
+            southEastPane.setPreferredSize(getSavedDimensions(
+                    Argo.KEY_SCREEN_SOUTHEAST_WIDTH,
+                    Argo.KEY_SCREEN_SOUTH_HEIGHT));
+        }
     }
 
+    // Convenience methods to return saved width and height values
+    private Dimension getSavedDimensions(ConfigurationKey width,
+            ConfigurationKey height) {
+        return new Dimension(getSavedWidth(width), getSavedHeight(height));
+    }
+    private int getSavedWidth(ConfigurationKey width) {
+        return Configuration.getInteger(width, DEFAULT_COMPONENTWIDTH);
+    }
+    private int getSavedHeight(ConfigurationKey height) {
+        return Configuration.getInteger(height, DEFAULT_COMPONENTHEIGHT);
+    }
+    
     /**
      * Handle the title-bar of the window.
      * 
@@ -873,9 +864,6 @@ public final class ProjectBrowser
         }
     }
 
-    ////////////////////////////////////////////////////////////////
-    // window operations
-
     /*
      * @see java.awt.Component#setVisible(boolean)
      */
@@ -886,8 +874,6 @@ public final class ProjectBrowser
         }
     }
 
-    ////////////////////////////////////////////////////////////////
-    // IStatusBar
     /*
      * @see org.tigris.gef.ui.IStatusBar#showStatus(java.lang.String)
      */
@@ -904,34 +890,35 @@ public final class ProjectBrowser
             Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH,
                                      explorerPane.getWidth());
         }
-
         if (eastPane != null) {
             Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH,
                                      eastPane.getWidth());
         }
-
         if (northPane != null) {
             Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT,
                                      northPane.getHeight());
         }
-
         if (southPane != null) {
             Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT,
                                      southPane.getHeight());
         }
-
-        //        if (_todoPane != null)
-        // Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH,
-        // _todoPane.getWidth());
-        //        if (_southEastPane != null)
-        // Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH,
-        // _southEastPane.getWidth());
-        //        if (_northWestPane != null)
-        // Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH,
-        // _northWestPane.getWidth());
-        //        if (_northEastPane != null)
-        // Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH,
-        // _northEastPane.getWidth());
+        if (todoPane != null) {
+            Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH,
+                    todoPane.getWidth());
+        }
+        if (southEastPane != null) {
+            Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH,
+                    southEastPane.getWidth());
+        }
+        if (northWestPane != null) {
+            Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH,
+                    northWestPane.getWidth());
+        }
+        if (northEastPane != null) {
+            Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH,
+                    northEastPane.getWidth());
+        }
+        
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
@@ -1257,29 +1244,7 @@ public final class ProjectBrowser
                             + " is not of a known file type");
             }
 
-            // Simulate some errors to repair.
-            // TODO: Replace with junits - Bob
-//            Layer lay =
-//                Globals.curEditor().getLayerManager().getActiveLayer();
-//            List figs = lay.getContentsNoEdges();
-//            // A Fig with a null owner
-//            if (figs.size() > 0) {
-//                Fig fig = (Fig)figs.get(0);
-//                LOG.error("Setting owner of " 
-//                    + fig.getClass().getName() + " to null");
-//                fig.setOwner(null);
-//            }
-//            // A Fig with a null layer
-//            if (figs.size() > 1) {
-//                Fig fig = (Fig)figs.get(1);
-//                fig.setLayer(null);
-//            }
-//            // A Fig with a removed model element
-//            if (figs.size() > 2) {
-//                Fig fig = (Fig)figs.get(2);
-//                Object owner = fig.getOwner();
-//                Model.getUmlFactory().delete(owner);
-//            }
+            testSimulateErrors();
 
             // Repair any errors in the project
             String report = project.repair();
@@ -1338,6 +1303,37 @@ public final class ProjectBrowser
         }
 
         return false;
+    }
+
+    /*
+     * Simulate some errors to repair.
+     * Replace with junits - Bob
+     */
+    private void testSimulateErrors() {
+        // Change to true to enable testing
+        if (false) {
+            Layer lay =
+                Globals.curEditor().getLayerManager().getActiveLayer();
+            List figs = lay.getContentsNoEdges();
+            // A Fig with a null owner
+            if (figs.size() > 0) {
+                Fig fig = (Fig) figs.get(0);
+                LOG.error("Setting owner of " 
+                        + fig.getClass().getName() + " to null");
+                fig.setOwner(null);
+            }
+            // A Fig with a null layer
+            if (figs.size() > 1) {
+                Fig fig = (Fig) figs.get(1);
+                fig.setLayer(null);
+            }
+            // A Fig with a removed model element
+            if (figs.size() > 2) {
+                Fig fig = (Fig) figs.get(2);
+                Object owner = fig.getOwner();
+                Model.getUmlFactory().delete(owner);
+            }
+        }
     }
 
     /**
