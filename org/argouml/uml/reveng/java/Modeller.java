@@ -36,6 +36,7 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.CoreFactory;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.ocl.OCLUtil;
@@ -556,6 +557,7 @@ public class Modeller {
                                 "an abstraction");
                     }
                 }
+                // TODO: This should use the Model subsystem's buildAbstraction - tfm
                 if (mInterface != null) {
 		    Object mAbstraction =
 			getAbstraction(mInterface, mClass);
@@ -571,7 +573,7 @@ public class Modeller {
 		            currentPackage);
 		    Model.getCoreHelper().addStereotype(
 		            mAbstraction,
-		            getStereotype("realize"));
+		            getStereotype(CoreFactory.REALIZE_STEREOTYPE));
 		}
 	    }
 	}
