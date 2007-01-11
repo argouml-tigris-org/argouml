@@ -32,6 +32,8 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
+ * This panel contains radio buttons that represent the Changeability
+ * of an sssociation-end.
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
@@ -72,13 +74,13 @@ public class UMLAssociationEndChangeabilityRadioButtonPanel
             Object target = getTarget();
             Object kind = Model.getFacade().getChangeability(target);
             if (kind == null
-                || kind.equals(ActionSetChangeability.CHANGEABLE_COMMAND)) {
+                || kind.equals(Model.getChangeableKind().getChangeable())) {
                 setSelected(ActionSetChangeability.CHANGEABLE_COMMAND);
             } else
-		if (kind.equals(ActionSetChangeability.ADDONLY_COMMAND)) {
+		if (kind.equals(Model.getChangeableKind().getAddOnly())) {
 		    setSelected(ActionSetChangeability.ADDONLY_COMMAND);
 		} else
-		    if (kind.equals(ActionSetChangeability.FROZEN_COMMAND)) {
+		    if (kind.equals(Model.getChangeableKind().getFrozen())) {
 			setSelected(ActionSetChangeability.FROZEN_COMMAND);
 		    } else {
 		        setSelected(ActionSetChangeability.CHANGEABLE_COMMAND);
