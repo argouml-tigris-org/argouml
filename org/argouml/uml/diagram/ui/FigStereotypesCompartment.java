@@ -33,7 +33,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
@@ -111,26 +110,28 @@ public class FigStereotypesCompartment extends FigCompartment {
     public void propertyChange(PropertyChangeEvent event) {
         if (event instanceof AddAssociationEvent) {
             AddAssociationEvent aae = (AddAssociationEvent) event;
-            Object stereotype = aae.getChangedValue();
             if (event.getPropertyName().equals("stereotype")) {
-                Fig bigPort = this.getBigPort();
-                FigText stereotypeTextFig =
-                    new FigStereotype(
-                            bigPort.getX() + 1,
-                            bigPort.getY() + 1
-                            + (++stereotypeCount)
+                Object stereotype = aae.getChangedValue();
+                if (findFig(stereotype) == null) {
+                    Fig bigPort = this.getBigPort();
+                    FigText stereotypeTextFig =
+                        new FigStereotype(
+                                bigPort.getX() + 1,
+                                bigPort.getY() + 1
+                                + (++stereotypeCount)
                                 * FigNodeModelElement.ROWHEIGHT,
-                            0,
-                            FigNodeModelElement.ROWHEIGHT - 2,
-                            bigPort,
-                            stereotype);
-                stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
-                stereotypeTextFig.setEditable(false);
-                stereotypeTextFig.setText(
-                        Model.getFacade().getName(stereotype));
-                stereotypeTextFig.setOwner(stereotype);
-                addFig(stereotypeTextFig);
-                damage();
+                                0,
+                                FigNodeModelElement.ROWHEIGHT - 2,
+                                bigPort,
+                                stereotype);
+                    stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
+                    stereotypeTextFig.setEditable(false);
+                    stereotypeTextFig.setText(
+                            Model.getFacade().getName(stereotype));
+                    stereotypeTextFig.setOwner(stereotype);
+                    addFig(stereotypeTextFig);
+                    damage();
+                }
             } else {
                 LOG.warn("Unexpected property " + event.getPropertyName());
             }
@@ -139,18 +140,25 @@ public class FigStereotypesCompartment extends FigCompartment {
             if (event.getPropertyName().equals("stereotype")) {
                 RemoveAssociationEvent rae = (RemoveAssociationEvent) event;
                 Object stereotype = rae.getChangedValue();
-                for (Iterator it = getFigs().iterator(); it.hasNext(); ) {
-                    Fig f = (Fig) it.next();
-                    if (f.getOwner() == stereotype) {
-                        removeFig(f);
-                        --stereotypeCount;
-                        return;
-                    }
+                Fig f = findFig(stereotype);
+                if (f != null) {
+                    removeFig(f);
+                    --stereotypeCount;
                 }
             } else {
                 LOG.warn("Unexpected property " + event.getPropertyName());
             }
         }
+    }
+
+    private Fig findFig(Object stereotype) {
+        for (Iterator it = getFigs().iterator(); it.hasNext(); ) {
+            Fig f = (Fig) it.next();
+            if (f.getOwner() == stereotype) {
+                return f;
+            }
+        }
+        return null;
     }
     
     /**
