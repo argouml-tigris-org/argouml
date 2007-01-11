@@ -593,7 +593,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 Object dep = i.next();
                 if (dep instanceof Permission) {
                     if (nsmodel.getExtensionMechanismsHelper()
-                            .hasStereoType(dep, "friend")) {
+                            .hasStereoType(dep, FRIEND_STEREOTYPE)) {
                         Collection mes = nsmodel.getFacade().getSuppliers(dep);
                         Iterator mei = mes.iterator();
                         while (mei.hasNext()) {
@@ -605,9 +605,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                             }
                         }
                     } else if (nsmodel.getExtensionMechanismsHelper()
-                            .hasStereoType(dep, "import")
+                            .hasStereoType(dep, IMPORT_STEREOTYPE)
                             || nsmodel.getExtensionMechanismsHelper()
-                                    .hasStereoType(dep, "access")) {
+                                    .hasStereoType(dep, ACCESS_STEREOTYPE)) {
                         Collection mes = nsmodel.getFacade().getSuppliers(dep);
                         Iterator mei = mes.iterator();
                         while (mei.hasNext()) {

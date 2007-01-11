@@ -40,6 +40,7 @@ import javax.jmi.reflect.RefFeatured;
 import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.CoreFactory;
 import org.argouml.model.Facade;
 import org.argouml.model.InvalidElementException;
 import org.omg.uml.behavioralelements.activitygraphs.ActionState;
@@ -1420,7 +1421,7 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isRealize(java.lang.Object)
      */
     public boolean isRealize(Object handle) {
-        return isStereotype(handle, "realize");
+        return isStereotype(handle, CoreFactory.REALIZE_STEREOTYPE);
     }
 
     /**

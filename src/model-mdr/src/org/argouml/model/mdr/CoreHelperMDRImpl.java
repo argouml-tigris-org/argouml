@@ -37,6 +37,7 @@ import java.util.Vector;
 import javax.jmi.reflect.InvalidObjectException;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.CoreFactory;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
@@ -654,7 +655,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
                     for (Iterator s = stereos.iterator(); s.hasNext();) {
                         Stereotype stereo = (Stereotype) s.next();
                         if (stereo != null
-                                && "realize".equals(stereo.getName())
+                                && CoreFactory.REALIZE_STEREOTYPE.equals(stereo
+                                        .getName())
                                 // the following should always be true
                                 && stereo.getBaseClass()
                                         .contains("Abstraction")) {
@@ -1832,7 +1834,8 @@ public class CoreHelperMDRImpl implements CoreHelper {
                         (Stereotype) getFirstItemOrNull(
                                 dependency.getStereotype());
                     if (dependency instanceof Abstraction && stereo != null
-                            && "realize".equals(stereo.getName())
+                            && CoreFactory.REALIZE_STEREOTYPE.equals(stereo
+                                    .getName())
                             && "Abstraction".equals(stereo.getBaseClass())) {
 
                         col.addAll(dependency.getSupplier());

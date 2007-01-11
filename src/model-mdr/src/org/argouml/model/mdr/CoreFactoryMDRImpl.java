@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.CoreFactory;
+import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.foundation.core.Abstraction;
 import org.omg.uml.foundation.core.Artifact;
@@ -995,6 +996,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         ModelElement client = (ModelElement) clientObj;
         ModelElement supplier = (ModelElement) supplierObj;
+        // TODO: Supplier must be a namespace per UML 1.4 spec - tfm
         if (client == null || supplier == null || client.getNamespace() == null
                 || supplier.getNamespace() == null) {
             throw new IllegalArgumentException("client or supplier is null "
@@ -1008,7 +1010,10 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (client.getNamespace() != null) {
             per.setNamespace(client.getNamespace());
         }
-        nsmodel.getExtensionMechanismsFactory().buildStereotype(per, "import",
+        // TODO: In addition to "import," a Permission can also take "friend"
+        // and "access" stereotypes, each with its own semantics
+        nsmodel.getExtensionMechanismsFactory().buildStereotype(per, 
+                ModelManagementHelper.IMPORT_STEREOTYPE,
                 per.getNamespace());
         return per;
     }
@@ -1182,6 +1187,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Abstraction realization = (Abstraction) createAbstraction();
         Namespace nsc = client.getNamespace();
         Namespace nss = supplier.getNamespace();
+        // TODO: Shouldn't this use this computed nsc value below? - tfm
         realization.setNamespace(nsc);
         Namespace ns = null;
         if (nsc.equals(nss)) {
@@ -1190,7 +1196,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             ns = (Namespace) model;
         }
         nsmodel.getExtensionMechanismsFactory().buildStereotype(realization,
-                "realize", ns);
+                CoreFactory.REALIZE_STEREOTYPE, ns);
         nsmodel.getCoreHelper().addClientDependency(client, realization);
         nsmodel.getCoreHelper().addSupplierDependency(supplier, realization);
         return realization;
@@ -1210,7 +1216,9 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (!(supplier instanceof ModelElement)) {
             throw new IllegalArgumentException("supplier ModelElement");
         }
-        Usage usage = (Usage) nsmodel.getCoreFactory().createUsage();
+        // TODO: UML 1.4 spec requires both client and supplier to be
+        // in the same model - tfm
+        Usage usage = (Usage) createUsage();
         usage.getSupplier().add(supplier);
         usage.getClient().add(client);
         if (((ModelElement) supplier).getNamespace() != null) {
@@ -1218,6 +1226,8 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (((ModelElement) client).getNamespace() != null) {
             usage.setNamespace(((ModelElement) client).getNamespace());
         }
+        // TODO: Add standard stereotype?  Set is open ended, but 
+        // predefined names include: call, create, instantiate, send
         return usage;
     }
 
