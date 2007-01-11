@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -69,8 +69,6 @@ import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.MutableGraphModel;
-
-import com.sun.corba.se.internal.iiop.messages.Message;
 
 /**
  * PopUp for extra functionality for the Explorer.
