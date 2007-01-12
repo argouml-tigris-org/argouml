@@ -303,17 +303,34 @@ public class ExplorerPopup extends JPopupMenu {
 	    // Check to see if all targets are classifiers
 	    // before adding an option to create an association between
 	    // them all
-	    boolean classifiersOnly = true;
+	    boolean classifierRoleFound = false;
+	    boolean classifierRolesOnly = true;
 	    for (Iterator it = targets.iterator();
-	            it.hasNext() && classifiersOnly; ) {
-		if (!Model.getFacade().isAClassifier(it.next())) {
-		    classifiersOnly = false;
+	            it.hasNext() && classifierRolesOnly; ) {
+		if (Model.getFacade().isAClassifierRole(it.next())) {
+		    classifierRoleFound = true;
+		} else {
+		    classifierRolesOnly = false;
 		}
 	    }
-            if (classifiersOnly) {
-                menuItems.add(new JMenuItem(new ActionCreateAssociation(
-                	Model.getMetaTypes().getAssociation(), 
+            if (classifierRolesOnly) {
+                menuItems.add(new JMenuItem(new ActionCreateAssociationRole(
+                	Model.getMetaTypes().getAssociationRole(), 
                 	targets)));
+            }
+            if (!classifierRoleFound) {
+                boolean classifiersOnly = true;
+                for (Iterator it = targets.iterator();
+                        it.hasNext() && classifiersOnly; ) {
+                    if (!Model.getFacade().isAClassifier(it.next())) {
+                        classifiersOnly = false;
+                    }
+                }
+                if (classifiersOnly) {
+                    menuItems.add(new JMenuItem(new ActionCreateAssociation(
+                    	Model.getMetaTypes().getAssociation(), 
+                    	targets)));
+                }
             }
 	}
 	if (targets.size() == 2) {
@@ -590,6 +607,55 @@ public class ExplorerPopup extends JPopupMenu {
 			    newElement,
 			    null,
 			    classifiers.get(i),
+			    null,
+			    null,
+			    null);
+		}
+	    } catch (IllegalModelElementConnectionException e1) {
+		LOG.error("Exception", e1);
+	    }
+	}
+    }
+    
+    
+    /**
+     * An action to create an association between 2 or more model elements.
+     *
+     * @author Bob Tarling
+     */
+    private class ActionCreateAssociationRole extends AbstractAction {
+	
+	private Object metaType; 
+	private List classifierRoles;
+	
+	private final Logger LOG =
+	    Logger.getLogger(ActionCreateModelElement.class);
+	
+	public ActionCreateAssociationRole(
+		Object metaType, 
+		List classifierRoles) {
+	    super(menuLocalize("menu.popup.create") + " "
+		    + Model.getMetaTypes().getName(metaType));
+	    this.metaType = metaType;
+	    this.classifierRoles = classifierRoles;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+            try {
+		Object newElement = Model.getUmlFactory().buildConnection(
+		    metaType,
+		    classifierRoles.get(0),
+		    null,
+		    classifierRoles.get(1),
+		    null,
+		    null,
+		    null);
+		for (int i = 2; i < classifierRoles.size(); ++i) {
+                    Model.getUmlFactory().buildConnection(
+			    Model.getMetaTypes().getAssociationEndRole(),
+			    newElement,
+			    null,
+			    classifierRoles.get(i),
 			    null,
 			    null,
 			    null);
