@@ -65,7 +65,11 @@ public class ObjectFlowStateTypeNotationUml
     }
 
     /**
-     * Do the actual parsing.
+     * Do the actual parsing. <p>
+     * 
+     * This method does create a Class 
+     * if a Classifier with the given name is not encountered. 
+     * See for explanation issue 4382.
      *
      * @param objectFlowState the given element to be altered
      * @param s the new string
@@ -78,15 +82,29 @@ public class ObjectFlowStateTypeNotationUml
             Model.getActivityGraphsHelper()
                     .findClassifierByName(objectFlowState, s);
         if (c != null) {
+            /* Great! The class already existed - just use it. */
             Model.getCoreHelper().setType(objectFlowState, c);
-        } else {
-            String msg = "parsing.error.object-flow-type.classifier-not-found";
-            Object[] args = {s};
-            throw new ParseException(
-                    Translator.localize(msg, args), 
-                    0);
+            return objectFlowState;
+        } 
+        /* Let's create a class with the given name, otherwise
+         * the user will not understand why we refuse his input! */
+        if (s != null && s.length() > 0) {
+            Object topState = Model.getFacade().getContainer(objectFlowState);
+            if (topState != null) {
+                Object machine = Model.getFacade().getStateMachine(topState);
+                if (machine != null) {
+                    Object ns = Model.getFacade().getNamespace(machine);
+                    if (ns != null) {
+                        Object clazz = Model.getCoreFactory().buildClass(s, ns);
+                        Model.getCoreHelper().setType(objectFlowState, clazz);
+                        return objectFlowState;
+                    } 
+                }
+            }
         }
-        return objectFlowState;
+        String msg = "parsing.error.object-flow-type.classifier-not-found";
+        Object[] args = {s};
+        throw new ParseException(Translator.localize(msg, args), 0);
     }
 
     /*
