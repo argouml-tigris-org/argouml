@@ -34,7 +34,8 @@ import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * Critic to detect whether a package name obeys to certain rules.
+ * Critic to detect whether a package name obeys to certain rules:
+ * it should only contain lower case alpha chars.
  */
 public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
 
@@ -68,7 +69,7 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
 	int size = nameStr.length();
 	for (int i = 0; i < size; i++) {
 	    char c = nameStr.charAt(i);
-	    if (!Character.isLowerCase(c) && c != '.') {
+	    if (!Character.isLowerCase(c)) {
 	        return PROBLEM_FOUND;
 	    }
 	}
@@ -108,7 +109,7 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
             int size = nameStr.length();
             for (int i = 0; i < size; i++) {
                 char c = nameStr.charAt(i);
-                if (Character.isLowerCase(c) || c == '.') {
+                if (Character.isLowerCase(c)) {
                     sug += c;
                 } else if (Character.isUpperCase(c)) {
                     sug += Character.toLowerCase(c);
