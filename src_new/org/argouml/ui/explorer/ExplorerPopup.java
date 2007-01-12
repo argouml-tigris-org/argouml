@@ -348,7 +348,7 @@ public class ExplorerPopup extends JPopupMenu {
         	    " " + menuLocalize("menu.popup.realizes") + " ");
 	}
 	if (menuItems.size() == 1) {
-	    add((Action) menuItems.get(0));
+	    add((JMenuItem) menuItems.get(0));
 	} else if (menuItems.size() > 1) {
 	    JMenu menu =
 		new JMenu(menuLocalize("menu.popup.create-model-element"));
