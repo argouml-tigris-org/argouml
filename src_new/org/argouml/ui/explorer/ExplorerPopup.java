@@ -317,8 +317,7 @@ public class ExplorerPopup extends JPopupMenu {
                 menuItems.add(new JMenuItem(new ActionCreateAssociationRole(
                 	Model.getMetaTypes().getAssociationRole(), 
                 	targets)));
-            }
-            if (!classifierRoleFound) {
+            } else if (!classifierRoleFound) {
                 boolean classifiersOnly = true;
                 for (Iterator it = targets.iterator();
                         it.hasNext() && classifiersOnly; ) {
