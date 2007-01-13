@@ -51,6 +51,8 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
     private static ImageIcon icon = ResourceLoaderWrapper
             .lookupIconResource("ComboNav");
 
+    // TODO: Get rid of this and adjust/deprecate
+    // constructor
     private UMLUserInterfaceContainer theContainer;
 
     private JComboBox theComboBox;
