@@ -130,52 +130,52 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         addAction(new ActionNewStereotype());
         addAction(getDeleteAction());
     }
+    
+    private class UMLInitialValueExpressionModel extends UMLExpressionModel2 {
 
+        /**
+         * The constructor.
+         *
+         * @param container the container of UML user interface components
+         * @param propertyName the name of the property
+         */
+        public UMLInitialValueExpressionModel(UMLUserInterfaceContainer container,
+                String propertyName) {
+            super(container, propertyName);
+        }
+
+        /*
+         * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
+         */
+        public Object getExpression() {
+            Object target = TargetManager.getInstance().getTarget();
+            if (target == null) {
+                return null;
+            }
+            return Model.getFacade().getInitialValue(target);
+        }
+
+        /*
+         * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
+         */
+        public void setExpression(Object expression) {
+            Object target = getTarget();
+    
+            if (target == null) {
+                throw new IllegalStateException(
+                        "There is no target for " + getContainer());
+            }
+            Model.getCoreHelper().setInitialValue(target, expression);
+        }
+    
+        /*
+         * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
+         */
+        public Object newExpression() {
+            return Model.getDataTypesFactory().createExpression("", "");
+        }
+
+    }
 
 } /* end class PropPanelAttribute */
 
-class UMLInitialValueExpressionModel extends UMLExpressionModel2 {
-
-    /**
-     * The constructor.
-     *
-     * @param container the container of UML user interface components
-     * @param propertyName the name of the property
-     */
-    public UMLInitialValueExpressionModel(UMLUserInterfaceContainer container,
-            String propertyName) {
-        super(container, propertyName);
-    }
-
-    /*
-     * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
-     */
-    public Object getExpression() {
-        Object target = TargetManager.getInstance().getTarget();
-        if (target == null) {
-            return null;
-        }
-        return Model.getFacade().getInitialValue(target);
-    }
-
-    /*
-     * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
-     */
-    public void setExpression(Object expression) {
-        Object target = TargetManager.getInstance().getTarget();
-
-        if (target == null) {
-            throw new IllegalStateException(
-                    "There is no target for " + getContainer());
-        }
-        Model.getCoreHelper().setInitialValue(target, expression);
-    }
-
-    /*
-     * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
-     */
-    public Object newExpression() {
-        return Model.getDataTypesFactory().createExpression("", "");
-    }
-
-}
