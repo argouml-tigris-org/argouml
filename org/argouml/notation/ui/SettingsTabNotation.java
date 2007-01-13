@@ -73,6 +73,7 @@ public class SettingsTabNotation
     private JCheckBox showProperties;
     private JCheckBox showTypes;
     private JCheckBox showStereotypes;
+    private JCheckBox showSingularMultiplicities;
     private ShadowComboBox defaultShadowWidth;
     
     private int scope;
@@ -141,6 +142,10 @@ public class SettingsTabNotation
 
         showStereotypes = createCheckBox("label.show-stereotypes");
         top.add(showStereotypes, constraints);
+        
+        showSingularMultiplicities = 
+            createCheckBox("label.show-singular-multiplicities");
+        top.add(showSingularMultiplicities, constraints);
 
         constraints.insets = new Insets(5, 30, 0, 4);
         JPanel defaultShadowWidthPanel =
@@ -182,6 +187,14 @@ public class SettingsTabNotation
                     Notation.KEY_SHOW_MULTIPLICITY));
             showStereotypes.setSelected(getBoolean(
                     Notation.KEY_SHOW_STEREOTYPES));
+            /*
+             * The next one defaults to TRUE, despite that this is
+             * NOT compatible with older ArgoUML versions 
+             * (before 0.24) that did 
+             * not have this setting - see issue 1395 for the rationale:
+             */
+            showSingularMultiplicities.setSelected(Configuration.getBoolean(
+                    Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true));
             defaultShadowWidth.setSelectedIndex(Configuration.getInteger(
                     Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
         }
@@ -199,6 +212,8 @@ public class SettingsTabNotation
             showProperties.setSelected(ps.getShowPropertiesValue());
             showTypes.setSelected(ps.getShowTypesValue());
             showStereotypes.setSelected(ps.getShowStereotypesValue());
+            showSingularMultiplicities.setSelected(
+                    ps.getShowSingularMultiplicitiesValue());
             defaultShadowWidth.setSelectedIndex(
                     ps.getDefaultShadowWidthValue());
         }
@@ -237,6 +252,8 @@ public class SettingsTabNotation
                     showTypes.isSelected());
             Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES,
                     showStereotypes.isSelected());
+            Configuration.setBoolean(Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES,
+                    showSingularMultiplicities.isSelected());
             Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH,
                     defaultShadowWidth.getSelectedIndex());
         }
@@ -253,6 +270,8 @@ public class SettingsTabNotation
             ps.setShowProperties(showProperties.isSelected());
             ps.setShowTypes(showTypes.isSelected());
             ps.setShowStereotypes(showStereotypes.isSelected());
+            ps.setShowSingularMultiplicities(
+                    showSingularMultiplicities.isSelected());
             ps.setDefaultShadowWidth(defaultShadowWidth.getSelectedIndex());
         }
     }
@@ -286,6 +305,8 @@ public class SettingsTabNotation
                     Notation.KEY_SHOW_TYPES, true));
             showStereotypes.setSelected(Configuration.getBoolean(
                     Notation.KEY_SHOW_STEREOTYPES));
+            showSingularMultiplicities.setSelected(Configuration.getBoolean(
+                    Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES));
             defaultShadowWidth.setSelectedIndex(Configuration.getInteger(
                     Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
         }

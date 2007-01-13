@@ -83,6 +83,13 @@ public final class Notation implements PropertyChangeListener {
         Configuration.makeKey("notation", "navigation", "show", "stereotypes");
 
     /**
+     * The configuration key that indicates whether to show stereotypes
+     * in the navigation panel.
+     */
+    public static final ConfigurationKey KEY_SHOW_SINGULAR_MULTIPLICITIES =
+        Configuration.makeKey("notation", "show", "singularmultiplicities");
+
+    /**
      * The configuration key that indicates whether to show bold names.
      */
     public static final ConfigurationKey KEY_SHOW_BOLD_NAMES =

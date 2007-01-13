@@ -186,7 +186,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
                 Object[] args = {e.getLocalizedMessage()};
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
-                srcMult.setText(Model.getFacade().toString(
+                srcMult.setText(NotationUtilityUml.generateMultiplicity(
                         Model.getFacade().getMultiplicity(getOwner())));
             }            
             

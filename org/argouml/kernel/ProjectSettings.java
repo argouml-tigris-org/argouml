@@ -57,6 +57,7 @@ public class ProjectSettings {
     private boolean showProperties;
     private boolean showTypes;
     private boolean showStereotypes;
+    private boolean showSingularMultiplicities;
     private int defaultShadowWidth;
 
 
@@ -91,6 +92,14 @@ public class ProjectSettings {
         showTypes = Configuration.getBoolean(Notation.KEY_SHOW_TYPES, true);
         showStereotypes = Configuration.getBoolean(
                 Notation.KEY_SHOW_STEREOTYPES);
+        /*
+         * The next one defaults to TRUE, despite that this is
+         * NOT compatible with older ArgoUML versions 
+         * (before 0.24) that did 
+         * not have this setting - see issue 1395 for the rationale:
+         */
+        showSingularMultiplicities = Configuration.getBoolean(
+                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true); 
         defaultShadowWidth = Configuration.getInteger(
                 Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
     }
@@ -547,6 +556,56 @@ public class ProjectSettings {
 
             public void undo() {
                 showStereotypes = !showem;
+                fireEvent(key, showem, !showem);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
+    }
+
+    /**
+     * Used by "argo.tee".
+     * 
+     * @return Returns "true" if we show "1" Multiplicities.
+     */
+    public String getShowSingularMultiplicities() {
+        return Boolean.toString(showSingularMultiplicities);
+    }
+
+    /**
+     * @return Returns <code>true</code> if we show  "1" Multiplicities.
+     */
+    public boolean getShowSingularMultiplicitiesValue() {
+        return showSingularMultiplicities;
+    }
+
+    /**
+     * @param showem <code>true</code> if "1" Multiplicities are to be shown.
+     */
+    public void setShowSingularMultiplicities(String showem) {
+        setShowSingularMultiplicities(Boolean.valueOf(showem).booleanValue());
+    }
+
+    /**
+     * @param showem <code>true</code> if "1" Multiplicities are to be shown.
+     */
+    public void setShowSingularMultiplicities(final boolean showem) {
+        if (showSingularMultiplicities == showem) return;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = 
+                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES;
+
+            public void redo() {
+                showSingularMultiplicities = showem;
+                fireEvent(key, !showem, showem);
+            }
+
+            public void undo() {
+                showSingularMultiplicities = !showem;
                 fireEvent(key, showem, !showem);
             }
         };

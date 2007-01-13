@@ -216,7 +216,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	        Object[] args = {e.getLocalizedMessage()};
 	        ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
-	        srcMult.setText(Model.getFacade().toString(
+	        srcMult.setText(NotationUtilityUml.generateMultiplicity(
                         Model.getFacade().getMultiplicity(srcAE)));
 	    }
 	} else if (ft == destMult) {
@@ -229,7 +229,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	        Object[] args = {e.getLocalizedMessage()};
 	        ProjectBrowser.getInstance().getStatusBar().showStatus(
                     Translator.messageFormat(msg, args));
-                srcMult.setText(Model.getFacade().toString(
+                destMult.setText(NotationUtilityUml.generateMultiplicity(
                         Model.getFacade().getMultiplicity(destAE)));
 	    }
 	}
