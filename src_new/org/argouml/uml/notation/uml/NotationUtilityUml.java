@@ -33,11 +33,13 @@ import java.util.NoSuchElementException;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
 import org.argouml.util.MyTokenizer;
@@ -1202,10 +1204,15 @@ public final class NotationUtilityUml {
      * @return a string (guaranteed not null)
      */
     public static String generateMultiplicity(Object m) {
-        if (m == null || "1".equals(Model.getFacade().toString(m))) {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        String s = Model.getFacade().toString(m);
+        if (m == null
+                || (!ps.getShowSingularMultiplicitiesValue() 
+                        && "1".equals(s))) {
             return "";
         }
-        return Model.getFacade().toString(m);
+        return s;
     }
     
     /**

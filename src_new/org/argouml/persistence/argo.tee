@@ -38,6 +38,7 @@
     <showproperties><ocl>self.projectSettings.showProperties</ocl></showproperties>
     <showtypes><ocl>self.projectSettings.showTypes</ocl></showtypes>
     <showstereotypes><ocl>self.projectSettings.showStereotypes</ocl></showstereotypes>
+    <showsingularmultiplicities><ocl>self.projectSettings.showSingularMultiplicities</ocl></showsingularmultiplicities>
     <defaultshadowwidth><ocl>self.projectSettings.defaultShadowWidth</ocl></defaultshadowwidth>
   </settings>
   
