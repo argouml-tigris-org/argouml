@@ -96,8 +96,8 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     private FigTextGroup middleGroup = new FigTextGroup();
 
-    private FigText srcMult;
-    private FigText destMult;
+    private FigMultiplicity srcMult;
+    private FigMultiplicity destMult;
 
     /**
      * Don't call this constructor directly. It is public since this
@@ -278,6 +278,7 @@ public class FigAssociation extends FigEdgeModelElement {
         // this for e.g. when the Notation Language changes,
         // and this is called by setOwner() - Michiel.
         updateAbstract();
+        updateMultiplicity();
         super.renderingChanged();
     }
 
@@ -414,6 +415,18 @@ public class FigAssociation extends FigEdgeModelElement {
 	}
 
 	return popUpActions;
+    }
+
+    /**
+     * Updates the multiplicity fields.
+     */
+    protected void updateMultiplicity() {
+        if (getOwner() != null 
+                && srcMult.getOwner() != null 
+                && destMult.getOwner() != null) {
+            srcMult.setText();
+            destMult.setText();
+        }
     }
 
     /**
