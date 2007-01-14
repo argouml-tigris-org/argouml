@@ -148,7 +148,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
          * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
          */
         public Object getExpression() {
-            Object target = TargetManager.getInstance().getTarget();
+            Object target = getTarget();
             if (target == null) {
                 return null;
             }
