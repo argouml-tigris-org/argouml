@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,10 +26,10 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -66,43 +66,17 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
                 || Model.getFacade().isADataType(element);
     }
 
-    /**
-     * Helper method for buildModelList.
-     * <p>
-     * Adds those elements from source that do not have the same path as any
-     * path in paths to elements, and its path to paths. Thus elements will
-     * never contain two objects with the same path, unless they are added by
-     * other means.
-     *
-     * @param elements the Set with the results
-     * @param paths the Set with the paths
-     * @param source a Collection with elements to add
-     */
-    private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
-            Collection source) {
-        Iterator it2 = source.iterator();
-
-        while (it2.hasNext()) {
-            Object obj = it2.next();
-            Object path = Model.getModelManagementHelper().getPath(obj);
-            if (!paths.contains(path)) {
-                paths.add(path);
-                elements.add(obj);
-            }
-        }
-    }
-
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Set paths = new HashSet();
         Set elements = new TreeSet(new Comparator() {
             public int compare(Object o1, Object o2) {
-                String name1 = getName(o1);
-                String name2 = getName(o2);
-
-                return name1.compareTo(name2);
+                List path1 = Model.getModelManagementHelper().getPath(o1);
+                Collections.reverse(path1);
+                List path2 = Model.getModelManagementHelper().getPath(o2);
+                Collections.reverse(path2);
+                return compareStringLists(path1, path2);
             }
         });
 
@@ -113,25 +87,51 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         Iterator it = (new ArrayList(p.getUserDefinedModels())).iterator();
 
         while (it.hasNext()) {
-            Object model = /* (MModel) */it.next();
+            Object model = it.next();
 
-            addAllUniqueModelElementsFrom(elements, paths, Model
-                    .getModelManagementHelper().getAllModelElementsOfKind(
+            elements.addAll(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKind(
                             model, Model.getMetaTypes().getUMLClass()));
-            addAllUniqueModelElementsFrom(elements, paths, Model
-                    .getModelManagementHelper().getAllModelElementsOfKind(
+            elements.addAll(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKind(
                             model, Model.getMetaTypes().getInterface()));
-            addAllUniqueModelElementsFrom(elements, paths, Model
-                    .getModelManagementHelper().getAllModelElementsOfKind(
+            elements.addAll(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKind(
                             model, Model.getMetaTypes().getDataType()));
         }
 
-        addAllUniqueModelElementsFrom(elements, paths, Model
-                .getModelManagementHelper().getAllModelElementsOfKind(
+        elements.addAll(Model.getModelManagementHelper()
+                .getAllModelElementsOfKind(
                         p.getDefaultModel(),
                         Model.getMetaTypes().getClassifier()));
-
         setElements(elements);
+    }
+    
+    /**
+     * Compare two lists of strings using case-insensitive comparison.
+     * @return equivalent of list1.compareTo(list2)
+     */
+    private static int compareStringLists(List list1, List list2) {
+        Iterator i2 = list2.iterator();
+        Iterator i1 = list1.iterator();
+        while (i2.hasNext()) {
+            String name2 = (String) i2.next();
+            if (!i1.hasNext()) {
+                return -1;
+            }
+            String name1 = (String) i1.next();
+            if (name1 == null) {
+                return -1;
+            }
+            int comparison = name1.compareToIgnoreCase(name2);
+            if (comparison != 0) {
+                return comparison;
+            }
+        }
+        if (i2.hasNext()) {
+            return 1;
+        }
+        return 0;
     }
 
     /*
