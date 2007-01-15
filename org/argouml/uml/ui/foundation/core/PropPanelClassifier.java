@@ -35,6 +35,12 @@ import org.tigris.swidgets.Orientation;
 
 /**
  * The abstract properties panel for Classifiers.
+ * 
+ * TODO: A number of the get*Scroll() methods and the associated
+ * UMLClassifier*Model classes are unused and don't appear to provide
+ * useful functionality for the UML 1.4 metamodel (ie they map 
+ * unnavigable or non-existent association ends in the metamodel).
+ * The marked 
  *
  */
 public abstract class PropPanelClassifier extends PropPanelNamespace {
@@ -49,6 +55,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
     private JScrollPane generalizationScroll;
     private JScrollPane specializationScroll;
     private JScrollPane featureScroll;
+    // TODO: participant list is unused (and appears incorrect to me) - tfm
     private JScrollPane participantScroll;
     private JScrollPane createActionScroll;
     private JScrollPane instanceScroll;
@@ -76,20 +83,26 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
             new UMLGeneralizableElementSpecializationListModel();
     private static UMLClassifierFeatureListModel featureListModel =
         new UMLClassifierFeatureListModel();
+    // TODO: participant list is unused (and appears incorrect to me) - tfm
     private static UMLClassifierParticipantListModel participantListModel =
         new UMLClassifierParticipantListModel();
     private static UMLClassifierCreateActionListModel createActionListModel =
         new UMLClassifierCreateActionListModel();
+    // TODO: Unused - tfm 20070114
     private static UMLClassifierInstanceListModel instanceListModel =
         new UMLClassifierInstanceListModel();
+    // TODO: Unused - tfm 20070114
     private static UMLClassifierCollaborationListModel collaborationListModel =
         new UMLClassifierCollaborationListModel();
+    // TODO: Unused - tfm 20070114
     private static UMLClassifierClassifierRoleListModel
         classifierRoleListModel =
             new UMLClassifierClassifierRoleListModel();
+    // TODO: Unused - tfm 20070114
     private static UMLClassifierClassifierInStateListModel
         classifierInStateListModel =
             new UMLClassifierClassifierInStateListModel();
+    // TODO: Unused - tfm 20070114
     private static UMLClassifierObjectFlowStateListModel
         objectFlowStateListModel =
             new UMLClassifierObjectFlowStateListModel();
@@ -99,8 +112,10 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
     private static UMLClassifierAssociationEndListModel
         associationEndListModel =
             new UMLClassifierAssociationEndListModel();
+    // TODO: Unused - tfm 20070114
     private static UMLClassifierParameterListModel parameterListModel =
         new UMLClassifierParameterListModel();
+    // TODO: Unused - tfm 20070114
     private static UMLClassifierStructuralFeatureListModel
         structuralFeatureListModel =
             new UMLClassifierStructuralFeatureListModel();
@@ -166,6 +181,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      * @return JScrollPane
      */
     public JScrollPane getClassifierInStateScroll() {
+        // TODO: Unused - tfm 20070114
         if (classifierInStateScroll == null) {
             classifierInStateScroll = 
                 new ScrollList(classifierInStateListModel);
@@ -178,6 +194,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      * @return JScrollPane
      */
     public JScrollPane getClassifierRoleScroll() {
+        // TODO: Unused - tfm 20070114
         if (classifierRoleScroll == null) {
             classifierRoleScroll = new ScrollList(classifierRoleListModel);
         }
@@ -189,6 +206,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      * @return JScrollPane
      */
     public JScrollPane getCollaborationScroll() {
+        // TODO: Unused - tfm 20070114
         if (collaborationScroll == null) {
             collaborationScroll = new ScrollList(collaborationListModel);
         }
@@ -233,6 +251,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      * @return JScrollPane
      */
     public JScrollPane getInstanceScroll() {
+        // TODO: Unused - tfm 20070114
         if (instanceScroll == null) {
             instanceScroll = new ScrollList(instanceListModel);
         }
@@ -244,6 +263,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      * @return JScrollPane
      */
     public JScrollPane getObjectFlowStateScroll() {
+        // TODO: Unused - tfm 20070114
         if (objectFlowStateScroll == null) {
             objectFlowStateScroll = new ScrollList(objectFlowStateListModel);
         }
@@ -255,6 +275,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      * @return JScrollPane
      */
     public JScrollPane getParameterScroll() {
+        // TODO: Unused - tfm 20070114
         if (parameterScroll == null) {
             parameterScroll = new ScrollList(parameterListModel);
         }
@@ -266,6 +287,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      * @return JScrollPane
      */
     public JScrollPane getParticipantScroll() {
+        // TODO: participant list is unused (and appears incorrect to me) - tfm
         if (participantScroll == null) {
             participantScroll = new ScrollList(participantListModel);
         }
@@ -300,6 +322,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      * @return JScrollPane
      */
     public JScrollPane getStructuralFeatureScroll() {
+        // TODO: Unused - tfm 20070114
         if (structuralFeatureScroll == null) {
             structuralFeatureScroll = 
                 new ScrollList(structuralFeatureListModel);
