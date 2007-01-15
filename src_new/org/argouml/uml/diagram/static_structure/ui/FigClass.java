@@ -458,6 +458,7 @@ public class FigClass extends FigClassifierBox
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     * TODO: Does this have to be public?
      */
     public void renderingChanged() {
         if (getOwner() != null) {
@@ -472,6 +473,8 @@ public class FigClass extends FigClassifierBox
      * renderingChanged.
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     * TODO: Based on my comments below, with that work done,
+     * this method can be removed - Bob.
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         // Let our superclass sort itself out first
@@ -483,6 +486,9 @@ public class FigClass extends FigClassifierBox
                 // TODO: We just need to get someone to rerender a single line
                 // of text which represents the element here, but I'm not sure
                 // how to do that. - tfm
+        	// TODO: Bob replies - we shouldn't be interested in this event
+        	// here. The FigFeature (or its notation) should be listen for
+        	// change and the FigFeature should be update from that.
                 updateAttributes();
             }
         } else if (mee instanceof AssociationChangeEvent 
@@ -494,6 +500,9 @@ public class FigClass extends FigClassifierBox
                 o = mee.getOldValue();
             }
             if (Model.getFacade().isAAttribute(o)) {
+        	// TODO: Bob says - we should not be listening here for
+        	// addition and removal of attributes. This should be done in
+        	// FigAttributesCompartment.
                 updateAttributes();
             }
             
@@ -656,6 +665,7 @@ public class FigClass extends FigClassifierBox
      * Updates the attributes in the fig. Called from modelchanged if there is
      * a modelevent effecting the attributes and from renderingChanged in all
      * cases.
+     * TODO: Looks like this should be private - Bob.
      */
     protected void updateAttributes() {
         if (!isAttributesVisible()) {
