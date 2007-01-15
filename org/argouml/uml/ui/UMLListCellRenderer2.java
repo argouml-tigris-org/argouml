@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,6 +27,7 @@ package org.argouml.uml.ui;
 import java.awt.Component;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
@@ -59,17 +60,34 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     private boolean showIcon;
 
     /**
+     * True if the containment path should be shown 
+     * (to help the user disambiguate elements with the same name);
+     */
+    private boolean showPath;
+
+    /**
      * Constructor for UMLListCellRenderer2.
      *
      * @param showTheIcon true if the list should show icons
      */
     public UMLListCellRenderer2(boolean showTheIcon) {
+        this(showTheIcon, true);
+    }
+    
+    /**
+     * Constructor for UMLListCellRenderer2.
+     *
+     * @param showTheIcon true if the list should show icons
+     * @param showThePath true if the list should show containment path
+     */
+    public UMLListCellRenderer2(boolean showTheIcon, boolean showThePath) {
 
         // only need to this from super()
         updateUI();
         setAlignmentX(LEFT_ALIGNMENT);
 
         showIcon = showTheIcon;
+        showPath = showThePath;
     }
 
     /*
@@ -144,34 +162,53 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
         String name = null;
         if (Model.getFacade().isAParameter(value)) {
             Object type = Model.getFacade().getType(value);
-            name = Model.getFacade().getName(value);
-            if (name == null || name.equals("")) {
-                name = "(unnamed " + makeTypeName(value) + ")";
-            }
+            name = getName(value);
             String typeName = null;
             if (type != null) typeName = Model.getFacade().getName(type);
             if (typeName != null || "".equals(typeName)) {
-                name = name + ":" + typeName;
+                name = Translator.localize(
+                        "misc.name.withType",
+                        new Object[] {name, typeName});
             }
             return name;
         }
         if (Model.getFacade().isAModelElement(value)) {
             try {
-                name = Model.getFacade().getName(value);
-                if (name == null || name.equals("")) {
-                    name = "(unnamed " + makeTypeName(value) + ")";
-                }
+                name = getName(value);
                 if (Model.getFacade().isAStereotype(value)) {
-                    Collection bases = Model.getFacade().getBaseClasses(value);
-                    StringBuffer sb = new StringBuffer();
-                    sb.append(" [");
-                    for (Iterator it = bases.iterator(); it.hasNext();) {
-                        sb.append(makeText(it.next()));
-                        if (it.hasNext()) {
-                            sb.append(", ");
+                    String baseString = "";
+                    Iterator bases =
+                            Model.getFacade().getBaseClasses(value).iterator();
+                    if (bases.hasNext()) {
+                        baseString = makeText(bases.next());
+                        while (bases.hasNext()) {
+                            baseString = Translator.localize(
+                                    "misc.name.baseClassSeparator",
+                                    new Object[] {baseString, 
+                                                  makeText(bases.next())
+                                    }
+                            );
                         }
                     }
-                    name = name + sb.toString() + "]";
+                    name = Translator.localize(
+                            "misc.name.withBaseClasses",
+                            new Object[] {name, baseString});
+                } else if (showPath) {
+                    List pathList =
+                            Model.getModelManagementHelper().getPath(value);
+                    String path;
+                    if (pathList.size() > 1) {
+                        path = (String) pathList.get(0);
+                        for (int i = 1; i < pathList.size() - 1; i++) {
+                            String n = (String) pathList.get(i);
+                            path = Translator.localize(
+                                            "misc.name.pathSeparator",
+                                            new Object[] {path, n});
+                        }
+                        name = Translator.localize(
+                                        "misc.name.withPath",
+                                        new Object[] {name, path});
+                    }
                 }
             } catch (InvalidElementException e) {
                 name = Translator.localize("misc.name.deleted");
@@ -183,6 +220,16 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
         }
         return name;
 
+    }
+
+    private String getName(Object value) {
+        String name = Model.getFacade().getName(value);
+        if (name == null || name.equals("")) {
+            name = Translator.localize(
+                            "misc.name.unnamed",
+                            new Object[] {makeTypeName(value)});
+        }
+        return name;
     }
 
     private String makeTypeName(Object elem) {
