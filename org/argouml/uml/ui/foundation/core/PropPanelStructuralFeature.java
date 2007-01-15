@@ -24,10 +24,12 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.JPanel;
+
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLMultiplicityComboBox2;
+import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.tigris.swidgets.Orientation;
 
@@ -37,13 +39,11 @@ import org.tigris.swidgets.Orientation;
  */
 public class PropPanelStructuralFeature extends PropPanelFeature {
 
-    private UMLComboBox2 multiplicityComboBox;
+    private JPanel multiplicityComboBox;
     private UMLComboBox2 typeComboBox;
     private UMLRadioButtonPanel changeabilityRadioButtonPanel;
     private UMLCheckBox2 targetScopeCheckBox;
 
-    private static UMLStructuralFeatureMultiplicityComboBoxModel
-        multiplicityComboBoxModel;
     private static UMLStructuralFeatureTypeComboBoxModel typeComboBoxModel;
 
     /**
@@ -61,16 +61,10 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
      * Returns the multiplicityComboBox.
      * @return UMLMultiplicityComboBox2
      */
-    public UMLComboBox2 getMultiplicityComboBox() {
+    public JPanel getMultiplicityComboBox() {
 	if (multiplicityComboBox == null) {
-	    if (multiplicityComboBoxModel == null) {
-		multiplicityComboBoxModel =
-		    new UMLStructuralFeatureMultiplicityComboBoxModel();
-	    }
 	    multiplicityComboBox =
-		new UMLMultiplicityComboBox2(multiplicityComboBoxModel,
-		    ActionSetStructuralFeatureMultiplicity.getInstance());
-	    multiplicityComboBox.setEditable(true);
+		new UMLMultiplicityPanel();
 	}
 	return multiplicityComboBox;
     }

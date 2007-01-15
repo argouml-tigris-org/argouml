@@ -25,14 +25,13 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLMultiplicityComboBox2;
-import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
+import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -52,12 +51,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     /**
      * The combobox for the multiplicity of this type.
      */
-    private UMLComboBox2 multiplicityComboBox;
-
-    /**
-     * Model for the MultiplicityComboBox
-     */
-    private static UMLMultiplicityComboBoxModel multiplicityComboBoxModel;
+    private UMLMultiplicityPanel multiplicityComboBox;
 
     /**
      * Construct a property panel for a ClassifierRole.
@@ -117,17 +111,10 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
      * Returns the multiplicityComboBox.
      * @return UMLMultiplicityComboBox2
      */
-    protected UMLComboBox2 getMultiplicityComboBox() {
+    protected JPanel getMultiplicityComboBox() {
 	if (multiplicityComboBox == null) {
-	    if (multiplicityComboBoxModel == null) {
-		multiplicityComboBoxModel =
-		    new UMLClassifierRoleMultiplicityComboBoxModel();
-	    }
 	    multiplicityComboBox =
-		new UMLMultiplicityComboBox2(
-		        multiplicityComboBoxModel,
-		        ActionSetClassifierRoleMultiplicity.getInstance());
-	    multiplicityComboBox.setEditable(true);
+		new UMLMultiplicityPanel();
 	}
 	return multiplicityComboBox;
     }

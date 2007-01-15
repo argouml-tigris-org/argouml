@@ -36,8 +36,7 @@ import org.argouml.uml.ui.ActionNavigateAssociation;
 import org.argouml.uml.ui.ActionNavigateOppositeAssocEnd;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLMultiplicityComboBox2;
-import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
+import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -66,12 +65,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     /**
      * The combobox for the multiplicity of this type.
      */
-    private UMLComboBox2 multiplicityComboBox;
-
-    /**
-     * Model for the MultiplicityComboBox
-     */
-    private static UMLMultiplicityComboBoxModel multiplicityComboBoxModel;
+    private UMLMultiplicityPanel multiplicityComboBox;
 
     /**
      * The checkbox that shows if this association end is navigable.
@@ -238,16 +232,9 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      *
      * @return UMLMultiplicityComboBox2
      */
-    protected UMLComboBox2 getMultiplicityComboBox() {
+    protected JPanel getMultiplicityComboBox() {
         if (multiplicityComboBox == null) {
-            if (multiplicityComboBoxModel == null) {
-                multiplicityComboBoxModel =
-                    new UMLAssociationEndMultiplicityComboBoxModel();
-            }
-            multiplicityComboBox = new UMLMultiplicityComboBox2(
-                    multiplicityComboBoxModel,
-                    ActionSetAssociationEndMultiplicity.getInstance());
-            multiplicityComboBox.setEditable(true);
+            multiplicityComboBox = new UMLMultiplicityPanel();
         }
         return multiplicityComboBox;
     }

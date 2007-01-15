@@ -34,6 +34,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
@@ -46,8 +47,7 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLMultiplicityComboBox2;
-import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
+import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -84,12 +84,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
     /**
      * The combobox for the multiplicity of this type.
      */
-    private UMLComboBox2 multiplicityComboBox;
-
-    /**
-     * Model for the MultiplicityComboBox
-     */
-    private static UMLMultiplicityComboBoxModel multiplicityComboBoxModel;
+    private JPanel multiplicityComboBox;
 
     /**
      * Construct a property panel for TagDefinition elements.
@@ -161,16 +156,9 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
      *
      * @return UMLMultiplicityComboBox2
      */
-    protected UMLComboBox2 getMultiplicityComboBox() {
+    protected JPanel getMultiplicityComboBox() {
         if (multiplicityComboBox == null) {
-            if (multiplicityComboBoxModel == null) {
-                multiplicityComboBoxModel =
-                    new UMLTagDefinitionMultiplicityComboBoxModel();
-            }
-            multiplicityComboBox = new UMLMultiplicityComboBox2(
-                    multiplicityComboBoxModel,
-                    new ActionSetTagDefinitionMultiplicity());
-            multiplicityComboBox.setEditable(true);
+            multiplicityComboBox = new UMLMultiplicityPanel();
         }
         return multiplicityComboBox;
     }
