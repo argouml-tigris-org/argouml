@@ -27,7 +27,9 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- *
+ * TODO: This is unused (although initialized in PropPanelClassifier) and doesn't appear
+ * to me to be something relevant for the UML 1.4 metamodel - tfm 20070114
+ * 
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 26, 2003
  */
@@ -45,7 +47,6 @@ public class UMLClassifierParticipantListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-
     }
 
     /*
