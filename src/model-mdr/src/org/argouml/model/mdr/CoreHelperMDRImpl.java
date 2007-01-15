@@ -2941,7 +2941,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
             }
         }
 
-        if (arg instanceof Multiplicity) {
+        if (arg == null || arg instanceof Multiplicity) {
             Multiplicity mult = (Multiplicity) arg;
 
             if (handle instanceof AssociationRole) {
@@ -2957,6 +2957,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 return;
             }
             if (handle instanceof AssociationEnd) {
+                LOG.info("Setting association end mult to " + mult);
                 ((AssociationEnd) handle).setMultiplicity(mult);
                 return;
             }
