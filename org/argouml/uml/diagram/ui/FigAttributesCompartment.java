@@ -69,7 +69,7 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
     }
 
     /*
-     * TODO: This logic should be within FigOperation
+     * TODO: This logic should be within FigFeature
      * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#addExtraVisualisations(java.lang.Object, org.argouml.uml.diagram.ui.CompartmentFigText)
      */
     protected void addExtraVisualisations(Object umlObject, 

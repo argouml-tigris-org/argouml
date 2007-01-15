@@ -41,6 +41,10 @@ import org.tigris.gef.presentation.Handle;
  * TODO: This doesn't have any behavior specific to Features.  It's really
  * just an item for a ListCompartment and should probably have a better name
  * tfm - 20060310
+ * TODO: Bob replies - it is intended that some code from
+ * FigAttributesCompartment moves here. So this _will_ be Features specific.
+ * See FigAttributesCompartment.addExtraVisualisations. For a common
+ * compartment text fig use CompartmentFigText
  *
  * @since Dec 1, 2002
  * @author jaap.branderhorst@xs4all.nl
