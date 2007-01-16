@@ -1,5 +1,4 @@
 // $Id$
-// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -44,9 +43,10 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.behavior.collaborations.ActionSetClassifierRoleMultiplicity;
 
 /**
- * A compound control containing all the visual controls 
- * @author Curt Arnold
- * @since 0.9
+ * A compound control containing all the visual controls for specifying
+ * multiplicity.
+ * @author Bob Tarling
+ * @since 0.23 alpha2
  */
 public class UMLMultiplicityPanel extends JPanel implements ItemListener {
 
