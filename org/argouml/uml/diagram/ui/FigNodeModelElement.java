@@ -85,10 +85,12 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphSupport;
@@ -1896,6 +1898,11 @@ public abstract class FigNodeModelElement
             npArguments.put(key, value);
         }
     }
-
-
+    
+    protected Project getProject() {
+	LayerPerspective layer = (LayerPerspective) getLayer();
+	UMLMutableGraphSupport gm = 
+	    (UMLMutableGraphSupport) layer.getGraphModel();
+	return gm.getProject();
+    }
 } /* end class FigNodeModelElement */
