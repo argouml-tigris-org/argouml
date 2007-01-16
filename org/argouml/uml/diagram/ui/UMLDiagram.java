@@ -35,7 +35,7 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.Project;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.swingext.ToolBarUtility;
@@ -181,7 +181,7 @@ public abstract class UMLDiagram
     private JToolBar toolBar;
 
     private Action selectedAction;
-
+    
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -228,7 +228,7 @@ public abstract class UMLDiagram
             setNamespace(owner);
         }
     }
-
+    
     ////////////////////////////////////////////////////////////////
     // accessors
 
@@ -435,7 +435,7 @@ public abstract class UMLDiagram
 
             Model.getPump().removeModelEventListener(this, namespace, "remove");
 
-            ProjectManager.getManager().getCurrentProject().moveToTrash(this);
+            getProject().moveToTrash(this);
         }
     }
 

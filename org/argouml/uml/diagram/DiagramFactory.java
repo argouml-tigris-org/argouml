@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.argouml.kernel.Project;
 import org.argouml.model.ActivityDiagram;
 import org.argouml.model.ClassDiagram;
 import org.argouml.model.CollaborationDiagram;
@@ -78,6 +79,12 @@ public final class DiagramFactory {
     }
 
 
+//    public ArgoDiagram createDiagram(Class type, Object namespace,
+//            Object machine) {
+//	
+//    }
+    
+    
     /**
      * Factory method to create a new instance of an ArgoDiagram.
      *
@@ -120,7 +127,7 @@ public final class DiagramFactory {
         if (diagram == null) {
             throw new IllegalArgumentException ("Unknown diagram type");
         }
-
+        
         if (Model.getDiagramInterchangeModel() != null) {
             diagram.getGraphModel().addGraphEventListener(
                  GraphChangeAdapter.getInstance());

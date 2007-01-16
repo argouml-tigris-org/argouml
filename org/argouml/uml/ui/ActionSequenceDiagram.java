@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
