@@ -2957,7 +2957,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
                 return;
             }
             if (handle instanceof AssociationEnd) {
-                LOG.info("Setting association end mult to " + mult);
+                LOG.debug("Setting association end mult to " + mult);
                 ((AssociationEnd) handle).setMultiplicity(mult);
                 return;
             }
