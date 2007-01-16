@@ -189,12 +189,14 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         }
         ((FigFeaturesCompartment) fg).createModelElement();
         List figList = fg.getFigs();
-        CompartmentFigText ft =
-            (CompartmentFigText) figList.get(figList.size() - 1);
-        if (ft != null) {
-            ft.startTextEditor(ie);
-            ft.setHighlighted(true);
-            highlightedFigText = ft;
+        if (figList.size() > 0) {
+            Fig fig = (Fig) figList.get(figList.size() - 1);
+            if (fig != null && fig instanceof CompartmentFigText) {
+                CompartmentFigText ft = (CompartmentFigText) fig;
+                ft.startTextEditor(ie);
+                ft.setHighlighted(true);
+                highlightedFigText = ft;
+            }
         }
         ie.consume();
     }
