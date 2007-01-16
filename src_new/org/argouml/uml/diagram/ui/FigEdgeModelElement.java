@@ -61,6 +61,7 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
@@ -77,10 +78,12 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
@@ -1356,15 +1359,14 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * Returns all texts shown in a TextFig that are editable.
-     * This is used to meke these texts stand out when the edge is selected.
-     * 
-     * @return a collection of TextFigs
+     * Get the Project that the Fig belongs to
+     * @return the project
      */
-//    Collection getEditableTextFigs() {
-//        Collection c = new ArrayList();
-//        c.add(nameFig);
-//        return c;
-//    }
+    protected Project getProject() {
+	LayerPerspective layer = (LayerPerspective) getLayer();
+	UMLMutableGraphSupport gm = 
+	    (UMLMutableGraphSupport) layer.getGraphModel();
+	return gm.getProject();
+    }
 
 } /* end class FigEdgeModelElement */
