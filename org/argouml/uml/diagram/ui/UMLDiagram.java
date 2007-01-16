@@ -44,6 +44,7 @@ import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.ui.explorer.Relocatable;
 import org.argouml.uml.UUIDHelper;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.tigris.gef.base.ModeBroom;
 import org.tigris.gef.base.ModeCreateFigCircle;
 import org.tigris.gef.base.ModeCreateFigInk;
@@ -641,6 +642,12 @@ public abstract class UMLDiagram
      * @see org.argouml.ui.explorer.Relocatable#relocate(java.lang.Object)
      */
     public abstract boolean relocate(Object base);
+    
+    public final void setProject(Project p) {
+	super.setProject(p);
+	UMLMutableGraphSupport gm = (UMLMutableGraphSupport) getGraphModel();
+	gm.setProject(p);
+    }
 
     /**
      * The UID.
