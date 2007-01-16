@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
@@ -88,16 +89,24 @@ public class FigAssociationClass extends FigAssociation {
      * before removing this.
      */
     protected void removeFromDiagramImpl() {
-        FigEdgePort figEdgePort = getEdgePort();
-        
         FigEdgeAssociationClass figEdgeLink = null;
-        Iterator it = figEdgePort.getFigEdges().iterator();
-        while (it.hasNext() && figEdgeLink == null) {
-            Object o = it.next();
-            if (o instanceof FigEdgeAssociationClass) {
-                figEdgeLink = (FigEdgeAssociationClass) o;
+        List edges = null;
+        
+        FigEdgePort figEdgePort = getEdgePort();
+        if (figEdgePort != null) {
+            edges = figEdgePort.getFigEdges();
+        }
+        
+        if (edges != null) {
+            for (Iterator it = edges.iterator();
+                    it.hasNext() && figEdgeLink == null; ) {
+                Object o = it.next();
+                if (o instanceof FigEdgeAssociationClass) {
+                    figEdgeLink = (FigEdgeAssociationClass) o;
+                }
             }
         }
+        
         if (figEdgeLink != null) {
             FigNode figClassBox = figEdgeLink.getDestFigNode();
             if (!(figClassBox instanceof FigClassAssociationClass)) {
@@ -106,6 +115,7 @@ public class FigAssociationClass extends FigAssociation {
             figEdgeLink.removeFromDiagramImpl();
             ((FigClassAssociationClass) figClassBox).removeFromDiagramImpl();
         }
+        
         super.removeFromDiagramImpl();
     }
 

@@ -1448,7 +1448,9 @@ public final class ProjectBrowser
             success = false;
         } else {
             // Hide save action during load. Otherwise we get the
-            // * appearing in title bar as models are updated
+            // * appearing in title bar and the save enabling as models are
+            // updated
+            // TODO: Do we still need this now the save enablement is improved?
             AbstractAction rememberedSaveAction = this.saveAction;
             this.saveAction = null;
             ProjectManager.getManager().setSaveAction(null);
@@ -1538,7 +1540,27 @@ public final class ProjectBrowser
                                 "dialog.error.xmi.format.error",
                                 new Object[] {ex.getMessage()}),
                         showUI, ex);
-            } catch (Exception ex) {
+            } catch (IOException ex) {
+                success = false;
+                project = oldProject;
+                LOG.error("Exception while loading project", ex);
+                reportError(
+                        pmw,
+                        Translator.localize(
+                                "dialog.error.open.error",
+                                new Object[] {file.getName()}),
+                        showUI, ex);
+            } catch (OpenException ex) {
+                success = false;
+                project = oldProject;
+                LOG.error("Exception while loading project", ex);
+                reportError(
+                        pmw,
+                        Translator.localize(
+                                "dialog.error.open.error",
+                                new Object[] {file.getName()}),
+                        showUI, ex);
+            } catch (RuntimeException ex) {
                 success = false;
                 project = oldProject;
                 LOG.error("Exception while loading project", ex);
@@ -1550,58 +1572,60 @@ public final class ProjectBrowser
                         showUI, ex);
             } finally {
 
-                if (!PersistenceManager.getInstance().getLastLoadStatus()) {
-                    project = oldProject;
-                    success = false;
-                    // TODO: This seems entirely redundant
-                    // for now I've made the message more generic, but it
-                    // should be removed at a convenient time - tfm
-                    reportError(
-                            pmw,
-                            "Problem loading the project "
-                            + file.getName()
-                            + "\n"
-                            + "Error message:\n"
-                            + PersistenceManager.getInstance()
-                                .getLastLoadMessage()
-                            + "\n"
-                            + "Some (or all) information may be missing "
-                            + "from the project.\n"
-                            + "Please report this problem at "
-                            + "http://argouml.tigris.org\n",
-                            showUI);
-                } else if (oldProject != null) {
-                    // if p equals oldProject there was an exception and we do
-                    // not have to gc (garbage collect) the old project
-                    if (project != null && !project.equals(oldProject)) {
-                        //prepare the old project for gc
-                        LOG.info("There are " + oldProject.getMembers().size()
-                                + " members in the old project");
-                        LOG.info("There are " + project.getMembers().size()
-                                + " members in the new project");
-                        // Set new project before removing old so we always have
-                        // a valid current project
-                        ProjectManager.getManager().setCurrentProject(project);
-                        ProjectManager.getManager().removeProject(oldProject);
+        	try {
+                    if (!PersistenceManager.getInstance().getLastLoadStatus()) {
+                        project = oldProject;
+                        success = false;
+                        // TODO: This seems entirely redundant
+                        // for now I've made the message more generic, but it
+                        // should be removed at a convenient time - tfm
+                        reportError(
+                                pmw,
+                                "Problem loading the project "
+                                + file.getName()
+                                + "\n"
+                                + "Error message:\n"
+                                + PersistenceManager.getInstance()
+                                    .getLastLoadMessage()
+                                + "\n"
+                                + "Some (or all) information may be missing "
+                                + "from the project.\n"
+                                + "Please report this problem at "
+                                + "http://argouml.tigris.org\n",
+                                showUI);
+                    } else if (oldProject != null) {
+                        // if p equals oldProject there was an exception and we do
+                        // not have to gc (garbage collect) the old project
+                        if (project != null && !project.equals(oldProject)) {
+                            //prepare the old project for gc
+                            LOG.info("There are " + oldProject.getMembers().size()
+                                    + " members in the old project");
+                            LOG.info("There are " + project.getMembers().size()
+                                    + " members in the new project");
+                            // Set new project before removing old so we always have
+                            // a valid current project
+                            ProjectManager.getManager().setCurrentProject(project);
+                            ProjectManager.getManager().removeProject(oldProject);
+                        }
                     }
-                }
 
-                if (project == null) {
-                    LOG.info("The current project is null");
-                } else {
-                    LOG.info("There are " + project.getMembers().size()
-                            + " members in the current project");
-                }
-                UndoManager.getInstance().empty();
-                UndoManager.getInstance().removeMementoLock(this);
-                Designer.enableCritiquing();
-
-                // Make sure save action is always reinstated
-                this.saveAction = rememberedSaveAction;
-                ProjectManager.getManager().setSaveAction(rememberedSaveAction);
-                if (success) {
-                    rememberedSaveAction.setEnabled(false);
-                }
+                    if (project == null) {
+                        LOG.info("The current project is null");
+                    } else {
+                        LOG.info("There are " + project.getMembers().size()
+                                + " members in the current project");
+                    }
+                    UndoManager.getInstance().empty();
+                    UndoManager.getInstance().removeMementoLock(this);
+                    Designer.enableCritiquing();
+        	} finally {
+                    // Make sure save action is always reinstated
+                    this.saveAction = rememberedSaveAction;
+                    ProjectManager.getManager().setSaveAction(rememberedSaveAction);
+                    if (success) {
+                        rememberedSaveAction.setEnabled(false);
+                    }
+        	}
             }
         }
         return success;

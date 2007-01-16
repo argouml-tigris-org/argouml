@@ -25,6 +25,7 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramFactory;
@@ -63,8 +64,8 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     public UMLDiagram createDiagram(Object notUsedHandle) {
         // a deployment diagram shows something about the whole model
         // according to the uml spec
-	Object handle =
-            ProjectManager.getManager().getCurrentProject().getRoot();
+	Project p = ProjectManager.getManager().getCurrentProject();
+	Object handle = p.getRoot();
         if (!Model.getFacade().isANamespace(handle)) {
             LOG.error("No namespace as argument");
             LOG.error(handle);

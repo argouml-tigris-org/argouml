@@ -277,11 +277,11 @@ public final class ProjectManager implements MementoCreationObserver {
         currentProject.setRoot(model);
         currentProject.setCurrentNamespace(model);
         currentProject.addMember(model);
-        ArgoDiagram d = DiagramFactory.getInstance().createDiagram(
-                UMLClassDiagram.class, model, null);
+        DiagramFactory df = DiagramFactory.getInstance();
+        ArgoDiagram d = df.createDiagram(UMLClassDiagram.class, model, null);
         currentProject.addMember(d);
-        currentProject.addMember(DiagramFactory.getInstance()
-                .createDiagram(UMLUseCaseDiagram.class, model, null));
+        currentProject.addMember(
+        	df.createDiagram(UMLUseCaseDiagram.class, model, null));
         currentProject.addMember(new ProjectMemberTodoList("",
                 currentProject));
         currentProject.setActiveDiagram(d);

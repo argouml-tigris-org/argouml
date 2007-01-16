@@ -388,16 +388,18 @@ class ModelMemberFilePersister extends MemberFilePersister
                 LOG.info("Creating activity diagram for "
                         + facade.getUMLClassName(statemachine)
                         + "<<" + facade.getName(statemachine) + ">>");
-                diagram =
-                    diagramFactory.createDiagram(UMLActivityDiagram.class,
-                            namespace, statemachine);
+                diagram = diagramFactory.createDiagram(
+                	UMLActivityDiagram.class,
+                	namespace,
+                	statemachine);
             } else {
                 LOG.info("Creating state diagram for "
                         + facade.getUMLClassName(statemachine)
                         + "<<" + facade.getName(statemachine) + ">>");
-                diagram =
-                    diagramFactory.createDiagram(UMLStateDiagram.class,
-                            namespace, statemachine);
+                diagram = diagramFactory.createDiagram(
+                	UMLStateDiagram.class,
+                	namespace,
+                	statemachine);
             }
             if (diagram != null) {
                 project.addMember(diagram);
@@ -407,9 +409,8 @@ class ModelMemberFilePersister extends MemberFilePersister
         // ISSUE 3516 : Make sure there is at least one diagram because
         // ArgoUML requires it for correct operation
         if (atLeastOne && project.getDiagramCount() < 1) {
-            ArgoDiagram d =
-                diagramFactory.createDiagram(UMLClassDiagram.class,
-                                             curModel, null);
+            ArgoDiagram d = diagramFactory.createDiagram(
+        	    UMLClassDiagram.class, curModel, null);
             project.addMember(d);
         }
         if (project.getDiagramCount() >= 1
