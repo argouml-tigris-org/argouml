@@ -1007,7 +1007,8 @@ public interface CoreHelper {
      * Sets a multiplicity of some model element.
      *
      * @param handle model element
-     * @param arg multiplicity as string OR multiplicity object
+     * @param arg multiplicity as string OR multiplicity object,
+     *            null is a valid value (unspecified)
      */
     void setMultiplicity(Object handle, Object arg);
 
