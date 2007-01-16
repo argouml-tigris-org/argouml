@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DiDiagram;
 import org.argouml.model.Model;
@@ -83,6 +84,11 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     private Object homeModel;
 
     /**
+     * The project this graph model is in.
+     */
+    private Project project;
+    
+    /**
      * Constructor.
      *
      * @see org.tigris.gef.graph.MutableGraphSupport
@@ -109,8 +115,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     public List getEdges() {
         return edges;
     }
-
-
+    
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#containsNode(java.lang.Object)
      */
@@ -544,5 +549,21 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      */
     public boolean isRemoveFromDiagramAllowed(Collection figs) {
         return !figs.isEmpty();
+    }
+    
+    /**
+     * Set the project that the graph model is inside.
+     * @param p the project
+     */
+    public void setProject(Project p) {
+	this.project = p;
+    }
+    
+    /**
+     * Get the project that the graph model is inside.
+     * @return the project
+     */
+    public Project getProject() {
+	return project;
     }
 }
