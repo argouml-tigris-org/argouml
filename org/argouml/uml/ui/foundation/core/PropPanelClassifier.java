@@ -76,10 +76,10 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
     // registered for some modelevent and not an instance per proppanel.
 
     private static UMLGeneralizableElementGeneralizationListModel
-        generalizationListModel =
+    generalizationListModel =
             new UMLGeneralizableElementGeneralizationListModel();
     private static UMLGeneralizableElementSpecializationListModel
-        specializationListModel =
+    specializationListModel =
             new UMLGeneralizableElementSpecializationListModel();
     private static UMLClassifierFeatureListModel featureListModel =
         new UMLClassifierFeatureListModel();
@@ -107,10 +107,10 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
         objectFlowStateListModel =
             new UMLClassifierObjectFlowStateListModel();
     private static UMLClassifierPowertypeRangeListModel
-        powertypeRangeListModel =
+    powertypeRangeListModel =
             new UMLClassifierPowertypeRangeListModel();
     private static UMLClassifierAssociationEndListModel
-        associationEndListModel =
+    associationEndListModel =
             new UMLClassifierAssociationEndListModel();
     // TODO: Unused - tfm 20070114
     private static UMLClassifierParameterListModel parameterListModel =
@@ -230,7 +230,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getFeatureScroll() {
         if (featureScroll == null) {
-            featureScroll = new ScrollList(featureListModel);
+            featureScroll = new ScrollList(featureListModel, true, false);
         }
         return featureScroll;
     }
@@ -337,7 +337,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getAttributeScroll() {
         if (attributeScroll == null) {
-            attributeScroll = new ScrollList(attributeListModel);
+            attributeScroll = new ScrollList(attributeListModel, true, false);
         }
         return attributeScroll;
     }
@@ -349,7 +349,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public JScrollPane getOperationScroll() {
         if (operationScroll == null) {
-            operationScroll = new ScrollList(operationListModel);
+            operationScroll = new ScrollList(operationListModel, true, false);
         }
         return operationScroll;
     }

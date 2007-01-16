@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import java.awt.Component;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 

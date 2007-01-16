@@ -44,15 +44,17 @@ import javax.swing.ListSelectionModel;
  */
 public class UMLLinkedList extends UMLList2 {
 
+
     /**
      * Constructor for UMLLinkedList.
      *
      * @param dataModel the data model
      * @param showIcon true if an icon should be shown
+     * @param showPath true if containment path should be shown
      */
     public UMLLinkedList(ListModel dataModel,
-            boolean showIcon) {
-        super(dataModel, new UMLLinkedListCellRenderer(showIcon));
+            boolean showIcon, boolean showPath) {
+        super(dataModel, new UMLLinkedListCellRenderer(showIcon, showPath));
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setForeground(Color.blue);
         setSelectionForeground(Color.blue.darker());
@@ -69,4 +71,15 @@ public class UMLLinkedList extends UMLList2 {
         this(dataModel, true);
     }
 
+    /**
+     * Constructor for UMLLinkedList.
+     *
+     * @param dataModel the data model
+     * @param showIcon true if an icon should be shown
+     */
+    public UMLLinkedList(ListModel dataModel,
+            boolean showIcon) {
+        this(dataModel, showIcon, true);
+    }
+    
 }

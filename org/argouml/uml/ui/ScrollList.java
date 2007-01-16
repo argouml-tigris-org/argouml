@@ -40,9 +40,20 @@ public class ScrollList extends JScrollPane {
      * @param listModel The model from which to build the list
      */
     public ScrollList(ListModel listModel) {
+        this(listModel, true, true);
+    }
+
+    /**
+     * Builds a JList from a given list model and wraps
+     * in a scrollable view.
+     * @param listModel The model from which to build the list
+     * @param showIcon show an icon with elements in the list
+     * @param showPath show containment path for elements in list
+     */
+    public ScrollList(ListModel listModel, boolean showIcon, boolean showPath) {
         setHorizontalScrollBarPolicy(
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        setViewportView(new UMLLinkedList(listModel));
+        setViewportView(new UMLLinkedList(listModel, showIcon, showPath));
     }
 
     /**

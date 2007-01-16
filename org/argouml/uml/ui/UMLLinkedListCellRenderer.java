@@ -49,6 +49,15 @@ public class UMLLinkedListCellRenderer extends UMLListCellRenderer2 {
         super(showIcon);
     }
 
+    /**
+     * Constructor for UMLLinkedListCellRenderer.
+     * @param showIcon true if the icon should be shown
+     * @param showPath true if the element containment path should be shown
+     */
+    public UMLLinkedListCellRenderer(boolean showIcon, boolean showPath) {
+        super(showIcon, showPath);
+    }
+    
     /*
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(
      * javax.swing.JList, java.lang.Object, int, boolean, boolean)
