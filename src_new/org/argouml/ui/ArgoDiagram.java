@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ItemUID;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
@@ -75,6 +76,11 @@ public class ArgoDiagram extends Diagram {
         // really dirty hack to remove unwanted listeners
         getLayer().getGraphModel().removeGraphEventListener(getLayer());
     }
+    
+    /**
+     * The project this disagram is contained in.
+     */
+    private Project project;
 
     /**
      * The constructor.
@@ -466,6 +472,14 @@ public class ArgoDiagram extends Diagram {
             f.removeFromDiagram();
         }
         super.remove();
+    }
+    
+    public void setProject(Project p) {
+	this.project = p;
+    }
+    
+    protected Project getProject() {
+	return project;
     }
     
 } /* end class ArgoDiagram */

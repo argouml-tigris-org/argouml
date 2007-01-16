@@ -466,6 +466,8 @@ public class RESequenceDiagramDialog
      * Builds the sequence diagram for a classifier.
      */
     private void buildSequenceDiagram(Object theClassifier) {
+        Project p = ProjectManager.getManager().getCurrentProject();
+
         collaboration =
             Model.getCollaborationsFactory().buildCollaboration(
                 Model.getFacade().getNamespace(theClassifier),
@@ -476,7 +478,7 @@ public class RESequenceDiagramDialog
                 collaboration,
                 null);
         graphModel = (SequenceDiagramGraphModel) diagram.getGraphModel();
-        ProjectManager.getManager().getCurrentProject().addMember(diagram);
+        p.addMember(diagram);
         TargetManager.getInstance().setTarget(diagram);
     }
 

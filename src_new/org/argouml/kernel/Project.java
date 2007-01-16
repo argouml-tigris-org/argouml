@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -115,7 +116,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     // TODO: break into 3 main member types
     // model, diagram and other
-    private MemberList members;
+    private final MemberList members = new MemberList();
 
     private String historyFile;
 
@@ -133,7 +134,7 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Instances of the uml diagrams.
      */
-    private Vector diagrams;
+    private final List diagrams = new ArrayList();
     private Object defaultModel;
     private Object currentNamespace;
     private Map uuidRefs;
@@ -180,10 +181,8 @@ public class Project implements java.io.Serializable, TargetListener {
         version = ArgoVersion.getVersion();
 
         searchpath = new Vector();
-        members = new MemberList();
         historyFile = "";
         models = new Vector();
-        diagrams = new Vector();
         cgPrefs = new GenerationPreferences();
         defaultModelTypeCache = new HashMap();
 
@@ -411,7 +410,7 @@ public class Project implements java.io.Serializable, TargetListener {
             models.addElement(model);
         }
         setCurrentNamespace(model);
-        ProjectManager.getManager().setSaveEnabled(true);
+        setSaveEnabled(true);
     }
 
     /**
@@ -427,8 +426,10 @@ public class Project implements java.io.Serializable, TargetListener {
                 Object treeRoot =
                     Model.getModelManagementFactory().getRootModel();
                 defaultDiagram =
-                    DiagramFactory.getInstance()
-                        .createDiagram(UMLClassDiagram.class, treeRoot, null);
+                    DiagramFactory.getInstance().createDiagram(
+                	    UMLClassDiagram.class,
+                	    treeRoot,
+                	    null);
                 addMember(defaultDiagram);
             } else {
                 // Make the topmost diagram (that is not the one being deleted)
@@ -445,7 +446,18 @@ public class Project implements java.io.Serializable, TargetListener {
         removeDiagram(d);
         members.remove(d);
         d.remove();
-        ProjectManager.getManager().setSaveEnabled(true);
+        setSaveEnabled(true);
+    }
+    
+    /**
+     * Enables the save action if this project is the current project
+     * @param enable true to enable
+     */
+    private void setSaveEnabled(boolean enable) {
+        ProjectManager pm = ProjectManager.getManager();
+        if (pm.getCurrentProject() == this) {
+            pm.setSaveEnabled(enable);
+        }
     }
 
 
@@ -479,7 +491,7 @@ public class Project implements java.io.Serializable, TargetListener {
             UndoManager.getInstance().addMemento(memento);
         }
         memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        setSaveEnabled(true);
     }
 
     /**
@@ -512,7 +524,7 @@ public class Project implements java.io.Serializable, TargetListener {
             UndoManager.getInstance().addMemento(memento);
         }
         memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        setSaveEnabled(true);
     }
 
     /**
@@ -563,7 +575,7 @@ public class Project implements java.io.Serializable, TargetListener {
             UndoManager.getInstance().addMemento(memento);
         }
         memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        setSaveEnabled(true);
     }
 
     /**
@@ -771,9 +783,11 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * @return the diagrams
+     * TODO: Whats the best way of changing this to List without effecting
+     * modules or argoeclipse?
      */
     public Vector getDiagrams() {
-        return diagrams;
+        return new Vector(diagrams);
     }
 
     /**
@@ -811,9 +825,10 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void addDiagram(ArgoDiagram d) {
         // send indeterminate new value instead of making copy of vector
-        diagrams.addElement(d);
+	d.setProject(this);
+        diagrams.add(d);
         d.addVetoableChangeListener(new Vcl());
-        ProjectManager.getManager().setSaveEnabled(true);
+        setSaveEnabled(true);
     }
 
     /**
@@ -828,7 +843,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     protected void removeDiagram(ArgoDiagram d) {
         d.removeVetoableChangeListener(new Vcl());
-        diagrams.removeElement(d);
+        diagrams.remove(d);
         if (d instanceof UMLDiagram) {
             /* If this is a UML diagram, then remove the dependent
              * modelelements, such as the statemachine
@@ -848,11 +863,11 @@ public class Project implements java.io.Serializable, TargetListener {
      *
      * @author mvw@tigris.org
      */
-    private static class Vcl implements VetoableChangeListener {
+    private class Vcl implements VetoableChangeListener {
         public void vetoableChange(PropertyChangeEvent evt)
             throws PropertyVetoException {
             if (evt.getPropertyName().equals("name")) {
-                ProjectManager.getManager().setSaveEnabled(true);
+                setSaveEnabled(true);
             }
         }
     }
@@ -871,7 +886,7 @@ public class Project implements java.io.Serializable, TargetListener {
         int presentations = 0;
         int size = diagrams.size();
         for (int i = 0; i < size; i++) {
-            Diagram d = (Diagram) diagrams.elementAt(i);
+            Diagram d = (Diagram) diagrams.get(i);
             presentations += d.getLayer().presentationCountFor(me);
         }
         return presentations;
@@ -882,7 +897,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public Object getInitialTarget() {
         if (diagrams.size() > 0) {
-            return diagrams.elementAt(0);
+            return diagrams.get(0);
         }
         if (models.size() > 0) {
             return models.elementAt(0);
@@ -923,7 +938,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void preSave() {
         for (int i = 0; i < diagrams.size(); i++) {
-            ((Diagram) diagrams.elementAt(i)).preSave();
+            ((Diagram) diagrams.get(i)).preSave();
         }
         // TODO: is preSave needed for models?
     }
@@ -933,10 +948,10 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void postSave() {
         for (int i = 0; i < diagrams.size(); i++) {
-            ((Diagram) diagrams.elementAt(i)).postSave();
+            ((Diagram) diagrams.get(i)).postSave();
         }
         // TODO: is postSave needed for models?
-        ProjectManager.getManager().setSaveEnabled(true);
+        setSaveEnabled(true);
     }
 
     /**
@@ -944,7 +959,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void postLoad() {
         for (int i = 0; i < diagrams.size(); i++) {
-            ((Diagram) diagrams.elementAt(i)).postLoad();
+            ((Diagram) diagrams.get(i)).postLoad();
         }
         // issue 1725: the root is not set, which leads to problems
         // with displaying prop panels
@@ -954,7 +969,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
         setRoot(model);
 
-        ProjectManager.getManager().setSaveEnabled(true);
+        setSaveEnabled(true);
         // we don't need this HashMap anymore so free up the memory
         uuidRefs = null;
     }
@@ -1307,9 +1322,7 @@ public class Project implements java.io.Serializable, TargetListener {
             defaultModelTypeCache.clear();
         }
 
-        members = null;
         models = null;
-        diagrams = null;
         uuidRefs = null;
         defaultModelTypeCache = null;
 

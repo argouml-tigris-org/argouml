@@ -51,6 +51,8 @@ public class ActionSaveProject extends AbstractAction {
      */
     private static final Logger LOG = Logger.getLogger(ActionSaveProject.class);
 
+    private static int count;
+    
     /**
      * The constructor.
      */
@@ -93,6 +95,9 @@ public class ActionSaveProject extends AbstractAction {
     public void setEnabled(final boolean isEnabled) {
         if (isEnabled == this.enabled) {
             return;
+        }
+        if (isEnabled && ++count ==2) {
+//            throw new IllegalArgumentException();
         }
         Memento memento = new Memento() {
             public void undo() {
