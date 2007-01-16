@@ -184,7 +184,8 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
 	    super.targetSet(e);
 	    Object target = getTarget();
 	    boolean exists = Model.getFacade().getMultiplicity(target) != null;
-	    multiplicityComboBox.setVisible(exists);
+	    multiplicityComboBox.setEnabled(exists);
+	    multiplicityComboBox.setEditable(exists);
 	    checkBox.setSelected(exists);
 	}
     }
@@ -274,14 +275,15 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
                 Object multi =
                     Model.getDataTypesFactory().createMultiplicity(comboText);
 		if (multi == null) {
-                    System.out.println("Seting mult to 1");
                     Model.getCoreHelper().setMultiplicity(getTarget(), "1");
 		} else {
                     Model.getCoreHelper().setMultiplicity(getTarget(), multi);
 		}
-		multiplicityComboBox.setVisible(true);
+		multiplicityComboBox.setEnabled(true);
+		multiplicityComboBox.setEditable(true);
 	    } else {
-		multiplicityComboBox.setVisible(false);
+		multiplicityComboBox.setEnabled(false);
+		multiplicityComboBox.setEditable(false);
                 Model.getCoreHelper().setMultiplicity(getTarget(), null);
 	    }
 	}
