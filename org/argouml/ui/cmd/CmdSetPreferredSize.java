@@ -38,39 +38,18 @@ import org.tigris.gef.presentation.Fig;
 
 
 /**
- * A command to set selected figs to their preferred size or minimum size.
+ * A command to set selected figs to their minimum size. <p>
+ * Despite its name, really the minimum size is selected here! 
  *
  * @author Markus Klink
  */
 public class CmdSetPreferredSize extends Cmd {
 
-    /** constant for PREFERRED_SIZE */
-    public static final int PREFERRED_SIZE = 0;
-
-    /** constant for MINIMUM_SIZE */
-    public static final int MINIMUM_SIZE = 1;
-
-    private int mode;
-
     /**
      * Constructor for the command.
-     *
-     * @param theMode one of the defined constants
      */
-    public CmdSetPreferredSize(int theMode) {
-	super(Translator.localize("action.set-" + wordFor(theMode) + "-size"));
-        mode = theMode;
-    }
-
-    private static String wordFor(int r) {
-        switch (r) {
-        case PREFERRED_SIZE: 
-            return "preferred";
-        case MINIMUM_SIZE: 
-            return "minimum";
-        }
-        throw new IllegalArgumentException("CmdSetPreferredSize invoked with "
-					   + "incompatible mode: " + r);
+    public CmdSetPreferredSize() {
+	super(Translator.localize("action.size-to-fit-contents"));
     }
 
     /**
@@ -120,10 +99,8 @@ public class CmdSetPreferredSize extends Cmd {
             // to resize.
             if (fi.isResizable() && (!((fi instanceof FigPackage)
 		                     || (fi instanceof FigCompositeState)))) {
-                if (mode == PREFERRED_SIZE)
-                    fi.setSize(fi.getPreferredSize());
-                else
-                    fi.setSize(fi.getMinimumSize());
+                fi.setSize(fi.getMinimumSize());
+                /* TODO: Beautify the 2nd part of this string: */
                 Globals.showStatus("Setting size for " + fi);
             }
             fi.endTrans();

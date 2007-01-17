@@ -690,7 +690,7 @@ public class ShortcutMgr {
 
         // arrange menu
         putDefaultShortcut(ACTION_PREFERRED_SIZE, null,
-                new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE));
+                new CmdSetPreferredSize());
 
         // align submenu
         putDefaultShortcut(ACTION_ALIGN_TOPS, null, new AlignAction(
