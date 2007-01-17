@@ -31,10 +31,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.LayerDiagram;
-import org.tigris.gef.base.LayerPerspective;
 
 /**
  * @author Bob Tarling
@@ -91,8 +87,6 @@ public class FigAttributesCompartment extends FigFeaturesCompartment {
     protected void createModelElement() {
         Object classifier = getGroup().getOwner();
         Project project = ProjectManager.getManager().getCurrentProject();
-        LayerPerspective layer = (LayerPerspective) getLayer();
-        UMLMutableGraphSupport gm = (UMLMutableGraphSupport) layer.getGraphModel();
         Object intType = project.findType("int");
         Object model = project.getModel();
         Object attr = Model.getCoreFactory().buildAttribute(
