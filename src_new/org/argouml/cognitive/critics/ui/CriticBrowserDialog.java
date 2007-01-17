@@ -163,7 +163,6 @@ public class CriticBrowserDialog extends ArgoDialog
 
     /**
      * The constructor.
-     *
      */
     public CriticBrowserDialog() {
 	super(Translator.localize("dialog.browse.label.critics"), false);
@@ -210,9 +209,8 @@ public class CriticBrowserDialog extends ArgoDialog
 	// Set tableSP's preferred height to 0 so that details height
 	// is used in pack()
 	tableSP.setPreferredSize(new Dimension(checkCol.getWidth()
-					       + descCol.getWidth()
-					       + actCol.getWidth() + 20,
-					       0));
+	        + descCol.getWidth() + actCol.getWidth() + 20,
+	        0));
         bsp.add(tablePanel, BorderSplitPane.CENTER);
         
 	// Critic Details panel
@@ -301,8 +299,9 @@ public class CriticBrowserDialog extends ArgoDialog
 	fieldConstraints.gridy = 6;
 	JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	buttonPanel.add(wakeButton);
+        /* TODO: These buttons for future enhancement:
 	buttonPanel.add(configButton);
-	buttonPanel.add(networkButton);
+	buttonPanel.add(networkButton); */
 	detailsPanel.add(new JLabel(""), labelConstraints);
 	detailsPanel.add(buttonPanel, fieldConstraints);
         bsp.add(detailsPanel, BorderSplitPane.EAST);
