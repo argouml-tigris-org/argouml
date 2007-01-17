@@ -619,8 +619,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         JMenu reorder = (JMenu) arrange.add(new JMenu(menuLocalize("Reorder")));
         setMnemonic(reorder, "Reorder");
 
-        JMenuItem preferredSize = arrange.add(new CmdSetPreferredSize(
-                CmdSetPreferredSize.MINIMUM_SIZE));
+        JMenuItem preferredSize = arrange.add(new CmdSetPreferredSize());
         setMnemonic(preferredSize, "Preferred Size");
         ShortcutMgr.assignAccelerator(preferredSize,
                 ShortcutMgr.ACTION_PREFERRED_SIZE);
