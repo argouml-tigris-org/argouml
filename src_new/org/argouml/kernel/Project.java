@@ -129,7 +129,7 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Instances of the uml model.
      */
-    private Vector models;
+    private final Vector models = new Vector();
 
     /**
      * Instances of the uml diagrams.
@@ -182,7 +182,6 @@ public class Project implements java.io.Serializable, TargetListener {
 
         searchpath = new Vector();
         historyFile = "";
-        models = new Vector();
         cgPrefs = new GenerationPreferences();
         defaultModelTypeCache = new HashMap();
 
@@ -1282,26 +1281,20 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void remove() {
 
-        if (diagrams != null) {
-            for (Iterator it = diagrams.iterator(); it.hasNext();) {
-                Diagram diagram = (Diagram) it.next();
-                diagram.remove();
-            }
+        for (Iterator it = diagrams.iterator(); it.hasNext();) {
+            Diagram diagram = (Diagram) it.next();
+            diagram.remove();
         }
 
-        if (members != null) {
-            members.clear();
-        }
+        members.clear();
 
-        if (models != null) {
-            for (Iterator it = models.iterator(); it.hasNext();) {
-                Object model = it.next();
-                LOG.debug("Deleting project model "
-                        + Model.getFacade().getName(model));
-                Model.getUmlFactory().delete(model);
-            }
-            models.clear();
+        for (Iterator it = models.iterator(); it.hasNext();) {
+            Object model = it.next();
+            LOG.debug("Deleting project model "
+                    + Model.getFacade().getName(model));
+            Model.getUmlFactory().delete(model);
         }
+        models.clear();
 
         if (defaultModel != null) {
             LOG.debug("Deleting profile model "
@@ -1310,9 +1303,7 @@ public class Project implements java.io.Serializable, TargetListener {
             defaultModel = null;
         }
 
-        if (diagrams != null) {
-            diagrams.clear();
-        }
+        diagrams.clear();
 
         if (uuidRefs != null) {
             uuidRefs.clear();
@@ -1322,7 +1313,6 @@ public class Project implements java.io.Serializable, TargetListener {
             defaultModelTypeCache.clear();
         }
 
-        models = null;
         uuidRefs = null;
         defaultModelTypeCache = null;
 
