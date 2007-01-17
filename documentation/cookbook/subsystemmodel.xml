@@ -67,21 +67,22 @@ repository implementation contain such.
   <para>
 A ModelEventPump interface is provided through which ArgoUML can listen for
 changes in the repository in a consistent way. Implementations of this pump
-convert from the repoiroys specific events to ???
+convert from the repository specific events to ???
 </para>
-  <para>
+  <!--para>
 There are discussion underway to provide a facade (GOF p185) to this model.
 Once the facade is complete this is likely to take over as a replacement model
 interface. This will allow the complexities of the existing interfaces to be
-rationalized without affcting the facade user.
-</para>
+rationalized without affecting the facade user.
+</para-->
 
   <para>
 The factories contain all methods that deal with
 creating and building model elements.
 The helpers contain all utility methods needed to manipulate
 the model elements.
-Per section of chapter 2 of the UML 1.3 specification there is one factory
+Per section of the semantics chapter of the UML 
+specification there is one factory
 and one helper. 
 </para>
   <para>
@@ -112,10 +113,12 @@ The build methods have a signature like
       </methodsynopsis>.
 </para>
     <para>
-Each build method verifies the wellformedness rules
-as defined in the UML spec 1.3.
-The reason for this is that NS-UML does not enforce
-the wellformedness rules even though non-well-formed UML can lead to
+Each build method is intended to follow the wellformedness rules
+as defined in the UML spec.
+The reason for having extar build methods, 
+is that the model repository does not enforce
+the wellformedness rules even though, in som cases, 
+non-well-formed UML can lead to
 non-well-formed XMI which leads to saving/loading issues and
 all kinds of illegal states of ArgoUML.
 </para>
@@ -434,11 +437,11 @@ with <classname>PropertyChangeListener</classname> and
 <classname>MElementEvent</classname>
 with <classname>PropertyChangeEvent</classname>?
 
-One reason we havn't done so yet is that it involves a lot of work and
+One reason we have not done so yet is that it involves a lot of work and
 testing.
 </para>
       <para>
-Change the implementation of the Event pump
+Should we change the implementation of the Event pump
 itself?
 
 Not the API but the implementation!
@@ -599,6 +602,7 @@ to create them completely empty.
                 </entry>
             <entry>
 Model&#8203;.getUmlFactory()&#8203;.delete(&#8203;<replaceable>object</replaceable>) 
+ ... but only call this function from Project.moveToTrash(Object).
       </entry>
           </row>
           <row>
@@ -713,6 +717,13 @@ Create it in the correct factory.
         <para>
 Create it in the correct helper.
 </para>
+      </listitem>
+      <listitem>
+        <para>...delete a model element?</para>
+        <para>
+Project.moveToTrash(Object obj).
+</para>
+<para>(See issue 2353.)</para>
       </listitem>
     </itemizedlist>
   </sect2>
