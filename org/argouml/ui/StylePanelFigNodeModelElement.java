@@ -31,12 +31,10 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyListener;
 
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.PathContainer;
 import org.tigris.gef.ui.ColorRenderer;
 
@@ -54,15 +52,11 @@ public class StylePanelFigNodeModelElement
      */
     private boolean refreshTransaction;
 
-    private JLabel shadowLabel =
-        new JLabel(Translator.localize("label.stylepane.shadow") + ": ");
+    private JLabel displayLabel = new JLabel(
+            Translator.localize("label.stylepane.display"));
 
-    /* TODO: i18n */
-    private JLabel displayLabel = new JLabel("Display: ");
-
-    private JCheckBox pathCheckBox = new JCheckBox("Path");
-
-    private JComboBox shadowField = new ShadowComboBox();
+    private JCheckBox pathCheckBox = new JCheckBox(
+            Translator.localize("label.stylepane.path"));
 
     private JPanel displayPane;
 
@@ -72,14 +66,9 @@ public class StylePanelFigNodeModelElement
      */
     public StylePanelFigNodeModelElement() {
         super();
-        shadowField.addItemListener(this);
 
         getFillField().setRenderer(new ColorRenderer());
         getLineField().setRenderer(new ColorRenderer());
-
-        shadowLabel.setLabelFor(shadowField);
-        add(shadowLabel);
-        add(shadowField);
 
         displayPane = new JPanel();
         displayPane.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -116,34 +105,8 @@ public class StylePanelFigNodeModelElement
         pathCheckBox.setSelected(pc.isPathVisible());
         refreshTransaction = false;
 
-        // Change the shadow size if appropriate
-        if (getPanelTarget() instanceof FigNodeModelElement) {
-
-            int shadowSize =
-                ((FigNodeModelElement) getPanelTarget()).getShadowSize();
-
-            if (shadowSize > 0) {
-                shadowField.setSelectedIndex(shadowSize);
-            } else {
-                shadowField.setSelectedIndex(0);
-            }
-        }
         // lets redraw the box
         setTargetBBox();
-    }
-
-    /**
-     * Handle changes in the shadowfield.
-     */
-    public void setTargetShadow() {
-        int i = shadowField.getSelectedIndex();
-        if (getPanelTarget() == null
-                || !(getPanelTarget() instanceof FigNodeModelElement)) {
-            return;
-        }
-        FigNodeModelElement nodeTarget = (FigNodeModelElement) getPanelTarget();
-        nodeTarget.setShadowSize(i);
-        getPanelTarget().endTrans();
     }
 
     /*
@@ -152,9 +115,7 @@ public class StylePanelFigNodeModelElement
     public void itemStateChanged(ItemEvent e) {
         if (!refreshTransaction) {
             Object src = e.getSource();
-            if (src == shadowField) {
-                setTargetShadow();
-            } else if (src == pathCheckBox) {
+            if (src == pathCheckBox) {
                 PathContainer pc = (PathContainer) getPanelTarget();
                 pc.setPathVisible(pathCheckBox.isSelected());
             } else {
@@ -163,9 +124,4 @@ public class StylePanelFigNodeModelElement
         }
     }
 
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 2976511918225030560L;
 } /* end class StylePanelFigNodeModelElement */
