@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -215,6 +215,132 @@ If the previous step put the extracted file elsewhere, copy or move this file in
 </para>
 	</listitem>
       </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Configuring Subversion</title>
+      <para>
+To reduce problems with line endings and
+to get the headers working,
+we use the properties on files in the Subversion repository
+according to the table below.
+</para>
+      <table>
+        <title>Changes done</title>
+        <tgroup cols="3">
+          <colspec colnum="1" colname="property" colwidth="2*"/>
+          <colspec colnum="2" colname="value" colwidth="1*"/>
+          <colspec colnum="3" colname="comment" colwidth="5*"/>
+          <thead>
+            <row>
+              <entry>Property</entry>
+              <entry>Value</entry>
+              <entry>Comment</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+            <row>
+              <entry>svn:keywords</entry>
+              <entry>Author Date Id Revision</entry>
+              <entry>
+All text files, java files, xml files.
+This is for the &dollar;Id&dollar;-tag at the top of all source files
+and the &dollar;Date&dollar; tag on some web pages.
+</entry>
+            </row>
+          </tbody>
+
+          <tbody valign="top">
+            <row>
+              <entry>svn:eol-style</entry>
+              <entry>native</entry>
+              <entry>
+All text files, java files, xml files,
+i.e. almost all non-binary files.
+</entry>
+            </row>
+          </tbody>
+
+          <tbody valign="top">
+            <row>
+              <entry>svn:executable</entry>
+              <entry>*</entry>
+              <entry>
+This is for the tools of the development environment to work properly.
+</entry>
+            </row>
+          </tbody>
+
+        </tgroup>
+      </table>
+
+      <para>
+The properties described here are project conventions and should be
+applied to the files in the repository.
+This is normally only interesting when creating new files because
+the old files where set correctly from the conversion from CVS.
+</para>
+      <para>
+Alas, Subversion and the Tigris set-up does not allow us in the project
+to enforce this from the Subversion server end.
+Instead we rely on each developer and the subversion client installation
+on each developer's machine to perform this correctly.
+</para>
+      <para>
+To get your subversion client to help you in this,
+make sure the configuration in your subversion client config file
+contains settings for this.
+Your subversion client config file is
+<itemizedlist>
+          <listitem>
+            <para>
+On Windows:
+<filename>%APPDATA%\Subversion\config</filename>
+where %APPDATA% is
+<filename>C:\Documents and Settings\<replaceable>your username</replaceable>\Application Data</filename>.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+On Unix/Linux:
+<filename>$HOME/.subversion/config</filename>.
+</para>
+          </listitem>
+        </itemizedlist>
+</para>
+
+      <para>
+Suggested settings:
+<programlisting>
+[miscellany]
+enable-auto-props = yes
+
+[auto-props]
+### The format of the entries is:
+###   file-name-pattern = propname[=value][;propname[=value]...]
+### The file-name-pattern can contain wildcards (such as '*' and
+### '?').  All entries which match will be applied to the file.
+### Note that auto-props functionality must be enabled, which
+### is typically done by setting the 'enable-auto-props' option.
+*.java = svn:eol-style=native; svn:keywords=Id Author Date Revision
+*.properties = svn:eol-style=native
+*.sh = svn:eol-style=native;svn:executable; svn:keywords=Id Author Date Revision
+*.txt = svn:eol-style=native; svn:keywords=Id Author Date Revision
+*.xml = svn:eol-style=native
+*.zargo = svn:needs-lock=*
+
+# Picture formats
+*.eps = svn:needs-lock=*
+*.jpg = svn:mime-type=image/jpeg; svn:needs-lock=*
+*.png = svn:mime-type=image/png; svn:needs-lock=*
+*.gif = svn:mime-type=image/gif; svn:needs-lock=*
+
+*.pdf = svn:mime-type=application/octet-stream; svn:needs-lock=*
+*.PDF = svn:mime-type=application/octet-stream; svn:needs-lock=*
+</programlisting>
+</para>
     </sect2>
   </sect1>
 
