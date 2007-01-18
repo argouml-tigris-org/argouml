@@ -67,6 +67,17 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2007-01-18</entry>
+          <entry>
+Added instructions on how to configure Subversion.
+(See <xref linkend="starting"/>).
+          </entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2007-01-07</entry>
           <entry>
 Change to the process of verifying issues to allow the reporter to
