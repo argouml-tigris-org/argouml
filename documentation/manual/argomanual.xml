@@ -7676,10 +7676,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Mouse Button Terminology</title>
 
           <para>ArgoUML assumes a two button mouse. We will refer to 
-          the buttons as <quote>button 1</quote> and 
-          <quote>button 2</quote>. Button 1 is the leftmost button on a 
+          the buttons as <quote>button 1</quote> and 
+          <quote>button 2</quote>. Button 1 is the leftmost button on a 
           right-handed mouse, and sometimes referred to as the 
-          <emphasis>select</emphasis> button. Button 2 is the rightmost 
+          <emphasis>select</emphasis> button. Button 2 is the rightmost 
           button on a right-handed mouse, and is sometimes referred to 
           as the <emphasis>adjust</emphasis> button.</para>
 
@@ -7696,7 +7696,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Button 1 Click</title>
+          <title>Button 1 Click</title>
 
           <para>Clicking on an user-interface object or on a diagram 
           model element may establish many different things. Most of the 
@@ -7722,11 +7722,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Selection</title>
 
-            <para>Here button 1 is used to choose (select) a model element 
+            <para>Here button 1 is used to choose (select) a model element 
             (in a list or tree or on a diagram) on which subsequent 
             operations will take place. Multiple model elements may be 
             selected by using Shift and/or Ctrl in combination with 
-            button 1, see <xref linkend="s2.ref.mouse.shift_control"/>. 
+            button 1, see <xref linkend="s2.ref.mouse.shift_control"/>. 
             Selection is always clearly indicated by a colored 
             background.</para>
 
@@ -7739,7 +7739,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Button 1 click. Deselects all model elements, and 
+                <para>Button 1 click. Deselects all model elements, and 
                 selects the one clicked on.</para>
 
               </listitem>
