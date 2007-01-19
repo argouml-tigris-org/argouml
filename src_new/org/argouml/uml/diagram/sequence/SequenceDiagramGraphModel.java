@@ -223,25 +223,6 @@ public class SequenceDiagramGraphModel
     }
 
     /*
-     * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
-     */
-    public void addNodeRelatedEdges(Object node) {
-        super.addNodeRelatedEdges(node);
-
-        if (Model.getFacade().isAClassifierRole(node)) {
-            Collection ends = Model.getFacade().getSentMessages(node);
-            Iterator iter = ends.iterator();
-            while (iter.hasNext()) {
-                addEdge(iter.next());
-            }
-            iter = Model.getFacade().getReceivedMessages(node).iterator();
-            while (iter.hasNext()) {
-                addEdge(iter.next());
-            }
-        }
-    }
-
-    /*
      * @see org.tigris.gef.graph.MutableGraphModel#canConnect( java.lang.Object,
      *      java.lang.Object)
      */
