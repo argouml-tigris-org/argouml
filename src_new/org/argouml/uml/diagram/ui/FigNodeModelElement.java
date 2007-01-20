@@ -1637,6 +1637,8 @@ public abstract class FigNodeModelElement
 
     /**
      * Get the Fig containing the stereotype.
+     * TODO: Should return FigStereotypesCompartment or at the very least
+     * a FigGroup
      *
      * @return the stereotype Fig
      */
