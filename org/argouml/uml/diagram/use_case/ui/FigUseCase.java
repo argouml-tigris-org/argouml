@@ -695,6 +695,8 @@ public class FigUseCase extends FigNodeModelElement
         _y = y;
         _w = newW;
         _h = newH;
+        
+        positionStereotypes();
 
         firePropChange("bounds", oldBounds, getBounds());
         updateEdges();
@@ -1349,19 +1351,21 @@ public class FigUseCase extends FigNodeModelElement
         if (getOwner() == null) {
             return;
         }
-        if (!Model.getFacade().getStereotypes(getOwner()).isEmpty()) {
-            getStereotypeFig().setBounds((bigPort.getX()
-					  + bigPort.getWidth() / 2
-					  - getStereotypeFig().getWidth() / 2),
-					 (bigPort.getY()
-					  + bigPort.getHeight()
-					  + MIN_VERT_PADDING),
-					 getStereotypeFig().getWidth(),
-					 getStereotypeFig().getHeight());
+        positionStereotypes();
+        damage();
+    }
+    
+    private void positionStereotypes() {
+        if (((FigGroup) getStereotypeFig()).getFigCount() > 0) {
+            getStereotypeFig().setBounds(
+        	    (getX() + getWidth() / 2
+        		    - getStereotypeFig().getWidth() / 2),
+        	    (getY() + bigPort.getHeight() + MIN_VERT_PADDING),
+                    getStereotypeFig().getWidth(),
+                    getStereotypeFig().getHeight());
         } else {
             getStereotypeFig().setBounds(0, 0, 0, 0);
         }
-        damage();
     }
 
     /**
