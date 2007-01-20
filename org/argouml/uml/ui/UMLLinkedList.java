@@ -56,6 +56,7 @@ public class UMLLinkedList extends UMLList2 {
             boolean showIcon, boolean showPath) {
         super(dataModel, new UMLLinkedListCellRenderer(showIcon, showPath));
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        // TODO: Can we find a better way to do this than hard coding colour?
         setForeground(Color.blue);
         setSelectionForeground(Color.blue.darker());
         UMLLinkMouseListener mouseListener = new UMLLinkMouseListener(this);

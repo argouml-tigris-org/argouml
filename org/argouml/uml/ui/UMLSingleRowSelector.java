@@ -32,17 +32,19 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 
 /**
- * A control for displaying the association (or association role) of and
- * association end (or association end role) property.
+ * A control for displaying the contents of a list model that is know to only
+ * ever contain one item. Preferred, maximum and minimum size are all returned
+ * as the height of one row.
+ * 
  * @author Bob Tarling
  * @since 0.23 alpha3
  */
 public class UMLSingleRowSelector extends JPanel {
     
     /**
-     * The scrollpane showing the association that owns this associationend
+     * The scrollpane that will contain the list
      */
-    private JScrollPane associationScroll;
+    private JScrollPane scroll;
 
     private Dimension preferredSize = null;
     
@@ -55,15 +57,15 @@ public class UMLSingleRowSelector extends JPanel {
         
         JList associationList = new UMLLinkedList(model);
         associationList.setVisibleRowCount(1);
-        associationScroll = new JScrollPane(associationList);
-        add(associationScroll);
+        scroll = new JScrollPane(associationList);
+        add(scroll);
         
-        preferredSize = associationScroll.getPreferredSize();
+        preferredSize = scroll.getPreferredSize();
 
-        associationScroll.setVerticalScrollBarPolicy(
+        scroll.setVerticalScrollBarPolicy(
         	JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
-        associationScroll.setHorizontalScrollBarPolicy(
+        scroll.setHorizontalScrollBarPolicy(
         	JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
     
