@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -38,6 +37,7 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.UMLSingleRowSelector;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
@@ -60,7 +60,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     /**
      * The scrollpane showing the association that owns this associationend
      */
-    private JScrollPane associationScroll;
+    private JPanel associationScroll;
 
     /**
      * The combobox for the multiplicity of this type.
@@ -149,10 +149,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         typeCombobox = new UMLComboBox2(
                 new UMLAssociationEndTypeComboBoxModel(),
                 ActionSetAssociationEndType.getInstance(), true);
-        JList associationList = new UMLLinkedList(
-                new UMLAssociationEndAssociationListModel());
-        associationList.setVisibleRowCount(1);
-        associationScroll = new JScrollPane(associationList);
+        associationScroll = new UMLSingleRowSelector(
+        	new UMLAssociationEndAssociationListModel());
         navigabilityCheckBox = new UMLAssociationEndNavigableCheckBox();
         orderingCheckBox = new UMLAssociationEndOrderingCheckBox();
         targetScopeCheckBox = new UMLAssociationEndTargetScopeCheckbox();
