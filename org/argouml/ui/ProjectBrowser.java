@@ -974,7 +974,6 @@ public final class ProjectBrowser
             }
         }
         saveScreenConfiguration();
-        Configuration.save();
         System.exit(0);
     }
 

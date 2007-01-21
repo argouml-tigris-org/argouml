@@ -35,6 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
+import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 
 /**
@@ -140,6 +141,7 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
             }
         }
         windowOpen = false;
+        Configuration.save();
     }
 
     /*
