@@ -482,6 +482,12 @@ public class AttributeNotationUml extends AttributeNotation {
      * {@inheritDoc}
      */
     public String toString(Object modelElement, HashMap args) {
+        if (Model.getUmlFactory().isRemoved(modelElement)) {
+            /* This is a normal situation, 
+             * e.g. when an attribute is removed by parsing, 
+             * see issue 4596. */
+            return "";
+        }
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
         
