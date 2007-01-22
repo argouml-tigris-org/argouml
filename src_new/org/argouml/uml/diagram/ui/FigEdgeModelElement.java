@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -212,7 +212,11 @@ public abstract class FigEdgeModelElement
             edgePort.setVisible(false);
             addPathItem(edgePort,
                     new PathConvPercent(this, 50, 0));
-            computeRoute();
+
+	    // According to Bob Tarling, removing this fixes issue 4599.
+	    // Changed by Linus Tolke just before 0.24.alpha3 without
+	    // time to investigate.
+            // computeRoute();
         }
     }
 
