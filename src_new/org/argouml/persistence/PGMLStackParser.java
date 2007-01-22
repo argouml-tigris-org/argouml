@@ -278,7 +278,7 @@ class PGMLStackParser
         throws SAXException {
         Diagram d = super.readDiagram(is, closeStream);
         
-        attachEdges();
+        attachEdges(d);
         
         return d;
     }
@@ -288,10 +288,11 @@ class PGMLStackParser
      * the diagram. This method then attaches the edges to the correct node,
      * including the nodes contained within edges allowing edge to edge
      * connections for comment edges, association classes and dependencies.
+     * @param d the Diagram
      */
-    private void attachEdges() {
-        Iterator it = figEdges.iterator();
-        while (it.hasNext()) {
+    private void attachEdges(Diagram d) {
+        for (Iterator it = figEdges.iterator();
+                it.hasNext(); ) {
             EdgeData edgeData = (EdgeData) it.next();
             FigEdge edge = edgeData.getFigEdge();
             
@@ -331,8 +332,16 @@ class PGMLStackParser
                 edge.setDestPortFig(destPortFig);
                 edge.setSourceFigNode(sourceFigNode);
                 edge.setDestFigNode(destFigNode);
-                edge.computeRoute();
             }
+        }
+        
+        // Once all edges are connected do a compute route on each to make
+        // sure that annotations and the edge port is positioned correctly
+        // Only do this after all edges are connected as compute route
+        // requires all edges to be connected to nodes.
+        for (Iterator it = d.getLayer().getContentsEdgesOnly().iterator();
+                it.hasNext(); ) {
+            ((FigEdge) it.next()).computeRouteImpl();
         }
     }
     
