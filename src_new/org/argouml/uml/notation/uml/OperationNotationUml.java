@@ -466,7 +466,7 @@ public class OperationNotationUml extends OperationNotation {
         return "parsing.help.operation";
     }
 
-    /**
+    /*
      *Generates an operation according to the UML 1.3 notation:
      *
      *         stereotype visibility name (parameter-list) :
@@ -481,6 +481,12 @@ public class OperationNotationUml extends OperationNotation {
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {
+        if (Model.getUmlFactory().isRemoved(modelElement)) {
+            /* This is a normal situation, 
+             * e.g. when an operation is removed by parsing, 
+             * see issue 4596. */
+            return "";
+        }
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
         
