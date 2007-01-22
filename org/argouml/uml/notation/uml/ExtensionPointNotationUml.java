@@ -55,8 +55,7 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
         /* TODO: This try-catch will be needed 
          * once the code below is improved. */
 //        try {
-        parseExtensionPointFig(Model.getFacade()
-                    .getUseCase(modelElement), modelElement, text);
+        parseExtensionPointFig(modelElement, text);
 //        } catch (ParseException pe) {
 //            String msg = "statusmsg.bar.error.parsing.extensionpoint";
 //            Object[] args = {
@@ -73,15 +72,17 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
      * The syntax is "name: location", "name:", "location" or "". The fields of
      * the extension point are updated appropriately.
      *
-     * @param useCase The use case that owns this extension point
      * @param ep      The extension point concerned
      * @param text    The text to parse
      */
-    public void parseExtensionPointFig(Object useCase, Object ep, String text) {
-
+    public void parseExtensionPointFig(Object ep, String text) {
         // We can do nothing if we don't have both the use case and extension
         // point.
-        if ((useCase == null) || (ep == null)) {
+        if (ep == null) {
+            return;
+        }
+        Object useCase = Model.getFacade().getUseCase(ep);
+        if (useCase == null) {
             return;
         }
 
@@ -124,8 +125,8 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
      */
     private Object parseExtensionPoint(String text) {
 
-        // If we are given the null string, return immediately
-
+        // If we are given the null string, return immediately, 
+        // so that the extensionpoint is removed.
         if (text == null) {
             return null;
         }
@@ -214,6 +215,16 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
      * {@inheritDoc}
      */
     public String toString(Object modelElement, HashMap args) {
+//        if (Model.getUmlFactory().isRemoved(modelElement)) {
+//            /* This is a normal situation, 
+//             * e.g. when an extensionpoint is removed by parsing, 
+//             * see issue 4596. */
+//            return "";
+//        }
+
+        if(modelElement == null) {
+            return "";
+        }
 
         // The string to build
         String s = "";
