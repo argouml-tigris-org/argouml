@@ -36,6 +36,7 @@ import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -89,10 +90,11 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * Constructor.
      */
     public UMLDeploymentDiagram() {
-
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
+        // TODO: All super constrcutors should take a GraphModel
+        setGraphModel(new DeploymentDiagramGraphModel ());
     }
 
     /**
