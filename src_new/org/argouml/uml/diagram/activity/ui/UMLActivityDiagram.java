@@ -44,6 +44,7 @@ import org.argouml.uml.diagram.state.ui.ButtonActionNewCallEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewChangeEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewSignalEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewTimeEvent;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
@@ -106,6 +107,8 @@ public class UMLActivityDiagram extends UMLDiagram {
         } catch (PropertyVetoException pve) {
             // no action required in case of veto on setName
         }
+        // TODO: All super constrcutors should take a GraphModel
+        setGraphModel(new ActivityDiagramGraphModel ());
     }
 
     /**

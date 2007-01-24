@@ -82,10 +82,12 @@ public class UMLClassDiagram extends UMLDiagram {
     private Action actionStereotype;
 
     /**
-     * Constructor.
+     * Constructor used by reflection in persistence
      */
     public UMLClassDiagram() {
         super();
+        // TODO: All super constrcutors should take a GraphModel
+        setGraphModel(new ClassDiagramGraphModel ());
     }
 
     /**

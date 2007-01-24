@@ -122,6 +122,8 @@ public class UMLStateDiagram extends UMLDiagram {
         } catch (PropertyVetoException pve) {
             // nothing we can do about veto, so just ignore it
         }
+        // TODO: All super constrcutors should take a GraphModel
+        setGraphModel(new StateDiagramGraphModel());
     }
 
     /**

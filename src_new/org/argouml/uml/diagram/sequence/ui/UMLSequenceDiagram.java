@@ -33,6 +33,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -58,10 +59,12 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * but that's plain misuse.
      */
     public UMLSequenceDiagram() {
+        // TODO: All super constrcutors should take a GraphModel
         super();
         // Dirty hack to remove the trash the Diagram constructor leaves
         SequenceDiagramGraphModel gm =
             new SequenceDiagramGraphModel();
+        setGraphModel(gm);
         SequenceDiagramLayer lay =
             new SequenceDiagramLayer(this.getName(), gm);
         SequenceDiagramRenderer rend = new SequenceDiagramRenderer();

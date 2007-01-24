@@ -37,6 +37,7 @@ import org.argouml.model.Model;
 import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.argouml.uml.diagram.ui.FigMessage;
@@ -92,6 +93,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
+        // TODO: All super constrcutors should take a GraphModel
+        setGraphModel(new CollabDiagramGraphModel ());
     }
 
     /**

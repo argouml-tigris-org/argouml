@@ -35,6 +35,7 @@ import org.argouml.model.Model;
 import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
+import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.RadioAction;
@@ -122,6 +123,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
+        // TODO: All super constrcutors should take a GraphModel
+        setGraphModel(new StateDiagramGraphModel());
     }
 
     /**
