@@ -29,7 +29,7 @@ import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
 import junit.framework.TestCase;
 
 /**
- * General test methods for UMLUseCaseDiagrams
+ * General test methods for UMLActivityDiagrams
  */
 public class TestUMLActivityDiagram extends TestCase {
 
@@ -43,8 +43,8 @@ public class TestUMLActivityDiagram extends TestCase {
     }
 
     /**
-     * Test the UMLUseCaseDiagram emtpy constructor.
-     * The graph model should always be a UseCaseDiagramGraphModel
+     * Test the UMLActivityDiagram emtpy constructor.
+     * The graph model should always be a ActivityDiagramGraphModel
      */
     public void testUMLActivityDiagram() {
 	UMLActivityDiagram diagram = new UMLActivityDiagram();
