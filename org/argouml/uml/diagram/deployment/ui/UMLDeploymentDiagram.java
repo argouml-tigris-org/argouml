@@ -94,7 +94,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
         // TODO: All super constrcutors should take a GraphModel
-        setGraphModel(new DeploymentDiagramGraphModel ());
+        setGraphModel(createGraphModel());
     }
 
     /**
@@ -130,7 +130,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         Object m = handle;
         super.setNamespace(m);
-        DeploymentDiagramGraphModel gm = new DeploymentDiagramGraphModel();
+        DeploymentDiagramGraphModel gm = createGraphModel();
         gm.setHomeModel(m);
         LayerPerspective lay =
             new LayerPerspectiveMutable(Model.getFacade().getName(m), gm);
@@ -141,6 +141,16 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
         // singleton
 
+    }
+    
+    // TODO: Needs to be tidied up after stable release. Graph model
+    // should be created in constructor
+    private DeploymentDiagramGraphModel createGraphModel() {
+	if ((getGraphModel() instanceof DeploymentDiagramGraphModel)) {
+	    return (DeploymentDiagramGraphModel) getGraphModel();
+	} else {
+	    return new DeploymentDiagramGraphModel();
+	}
     }
 
     /*

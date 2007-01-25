@@ -37,7 +37,6 @@ import org.argouml.model.Model;
 import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.argouml.uml.diagram.ui.FigMessage;
@@ -94,7 +93,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
         // TODO: All super constrcutors should take a GraphModel
-        setGraphModel(new CollabDiagramGraphModel ());
+        setGraphModel(createGraphModel());
     }
 
     /**
@@ -148,7 +147,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
                 "Illegal argument. Object " + handle + " is not a namespace");
         }
         super.setNamespace(handle);
-        CollabDiagramGraphModel gm = new CollabDiagramGraphModel();
+        CollabDiagramGraphModel gm = createGraphModel();
         gm.setCollaboration(handle);
         LayerPerspective lay =
             new LayerPerspectiveMutable(Model.getFacade().getName(handle), gm);
@@ -156,6 +155,17 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
+    }
+    
+    
+    // TODO: Needs to be tidied up after stable release. Graph model
+    // should be created in constructor
+    private CollabDiagramGraphModel createGraphModel() {
+	if ((getGraphModel() instanceof CollabDiagramGraphModel)) {
+	    return (CollabDiagramGraphModel) getGraphModel();
+	} else {
+	    return new CollabDiagramGraphModel();
+	}
     }
 
     /**
