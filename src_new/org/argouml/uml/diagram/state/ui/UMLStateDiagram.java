@@ -39,6 +39,7 @@ import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
@@ -123,7 +124,7 @@ public class UMLStateDiagram extends UMLDiagram {
             // nothing we can do about veto, so just ignore it
         }
         // TODO: All super constrcutors should take a GraphModel
-        setGraphModel(new StateDiagramGraphModel());
+        setGraphModel(createGraphModel());
     }
 
     /**
@@ -262,7 +263,7 @@ public class UMLStateDiagram extends UMLDiagram {
 
         theStateMachine = machine;
 
-        StateDiagramGraphModel gm = new StateDiagramGraphModel();
+        StateDiagramGraphModel gm = createGraphModel();
         gm.setHomeModel(namespace);
         if (theStateMachine != null) {
             gm.setMachine(theStateMachine);
@@ -279,6 +280,17 @@ public class UMLStateDiagram extends UMLDiagram {
          * to delete the diagram. */
         Model.getPump().addModelEventListener(this, theStateMachine, 
                 new String[] {"remove", "namespace"});
+    }
+    
+    
+    // TODO: Needs to be tidied up after stable release. Graph model
+    // should be created in constructor
+    private StateDiagramGraphModel createGraphModel() {
+	if ((getGraphModel() instanceof StateDiagramGraphModel)) {
+	    return (StateDiagramGraphModel) getGraphModel();
+	} else {
+	    return new StateDiagramGraphModel();
+	}
     }
 
     /*

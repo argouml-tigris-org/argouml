@@ -44,7 +44,6 @@ import org.argouml.uml.diagram.state.ui.ButtonActionNewCallEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewChangeEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewSignalEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewTimeEvent;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
@@ -108,7 +107,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             // no action required in case of veto on setName
         }
         // TODO: All super constrcutors should take a GraphModel
-        setGraphModel(new ActivityDiagramGraphModel ());
+        setGraphModel(createGraphModel());
     }
 
     /**
@@ -195,7 +194,9 @@ public class UMLActivityDiagram extends UMLDiagram {
 
         theActivityGraph = agraph;
         
-        ActivityDiagramGraphModel gm = new ActivityDiagramGraphModel();
+        
+        ActivityDiagramGraphModel gm = createGraphModel();
+        
         gm.setHomeModel(namespace);
         if (theActivityGraph != null) {
             gm.setMachine(theActivityGraph);
@@ -213,7 +214,17 @@ public class UMLActivityDiagram extends UMLDiagram {
         Model.getPump().addModelEventListener(this, theActivityGraph, 
                 new String[] {"remove", "namespace"});
     }
-
+    
+    // TODO: Needs to be tidied up after stable release. Graph model
+    // should be created in constructor
+    private ActivityDiagramGraphModel createGraphModel() {
+	if ((getGraphModel() instanceof ActivityDiagramGraphModel)) {
+	    return (ActivityDiagramGraphModel) getGraphModel();
+	} else {
+	    return new ActivityDiagramGraphModel();
+	}
+    }
+    
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#propertyChange(java.beans.PropertyChangeEvent)
      */

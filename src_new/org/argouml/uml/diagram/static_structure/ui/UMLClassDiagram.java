@@ -87,7 +87,7 @@ public class UMLClassDiagram extends UMLDiagram {
     public UMLClassDiagram() {
         super();
         // TODO: All super constrcutors should take a GraphModel
-        setGraphModel(new ClassDiagramGraphModel ());
+        setGraphModel(createGraphModel());
     }
 
     /**
@@ -127,12 +127,7 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         boolean init = (null == getNamespace());
         super.setNamespace(ns);
-        ClassDiagramGraphModel gm;
-        if (init) {
-            gm = new ClassDiagramGraphModel();
-        } else {
-            gm = (ClassDiagramGraphModel) this.getGraphModel();
-        }
+        ClassDiagramGraphModel gm = createGraphModel();
         gm.setHomeModel(ns);
         if (init) {
             LayerPerspective lay =
@@ -143,6 +138,17 @@ public class UMLClassDiagram extends UMLDiagram {
             setLayer(lay);
         }
     }
+    
+    // TODO: Needs to be tidied up after stable release. Graph model
+    // should be created in constructor
+    private ClassDiagramGraphModel createGraphModel() {
+	if ((getGraphModel() instanceof ClassDiagramGraphModel)) {
+	    return (ClassDiagramGraphModel) getGraphModel();
+	} else {
+	    return new ClassDiagramGraphModel();
+	}
+    }
+    
 
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()

@@ -35,7 +35,6 @@ import org.argouml.model.Model;
 import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
-import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.RadioAction;
@@ -124,7 +123,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
         // TODO: All super constrcutors should take a GraphModel
-        setGraphModel(new StateDiagramGraphModel());
+        setGraphModel(createGraphModel());
     }
 
     /**
@@ -200,7 +199,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         Object m = handle;
         super.setNamespace(m);
 
-        UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
+        UseCaseDiagramGraphModel gm = createGraphModel();
         gm.setHomeModel(m);
         LayerPerspective lay =
             new LayerPerspectiveMutable(Model.getFacade().getName(m), gm);
@@ -211,6 +210,17 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
         // The renderer should be a singleton
 
+    }
+    
+    
+    // TODO: Needs to be tidied up after stable release. Graph model
+    // should be created in constructor
+    private UseCaseDiagramGraphModel createGraphModel() {
+	if ((getGraphModel() instanceof UseCaseDiagramGraphModel)) {
+	    return (UseCaseDiagramGraphModel) getGraphModel();
+	} else {
+	    return new UseCaseDiagramGraphModel();
+	}
     }
 
     /*
