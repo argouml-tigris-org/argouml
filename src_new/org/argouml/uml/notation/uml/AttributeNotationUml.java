@@ -35,6 +35,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -482,81 +483,84 @@ public class AttributeNotationUml extends AttributeNotation {
      * {@inheritDoc}
      */
     public String toString(Object modelElement, HashMap args) {
-        if (Model.getUmlFactory().isRemoved(modelElement)) {
-            /* This is a normal situation, 
-             * e.g. when an attribute is removed by parsing, 
-             * see issue 4596. */
-            return "";
-        }
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
-        
-        String visibility = NotationUtilityUml.generateVisibility(modelElement);
-        // generateStereotype accepts a collection, despite its name
-        String stereo = NotationUtilityUml.generateStereotype(
-                Model.getFacade().getStereotypes(modelElement));
-        String name = Model.getFacade().getName(modelElement);
-        String multiplicity = generateMultiplicity(
-                Model.getFacade().getMultiplicity(modelElement));
-        String type = ""; // fix for loading bad projects
-        if (Model.getFacade().getType(modelElement) != null) {
-            type = Model.getFacade().getName(
-                    Model.getFacade().getType(modelElement));
-        }
-        String initialValue = "";
-        if (Model.getFacade().getInitialValue(modelElement) != null) {
-            initialValue =
-                (String) Model.getFacade().getBody(
-                        Model.getFacade().getInitialValue(modelElement));
-        }
-        String changeableKind = "";
-        if (Model.getFacade().getChangeability(modelElement) != null) {
-            if (Model.getChangeableKind().getFrozen().equals(
-                    Model.getFacade().getChangeability(modelElement))) {
-                changeableKind = "frozen";
-            } else if (Model.getChangeableKind().getAddOnly().equals(
-                    Model.getFacade().getChangeability(modelElement))) {
-                changeableKind = "addOnly";
-            }
-        }
-        StringBuffer properties = new StringBuffer();
-        if (changeableKind.length() > 0) {
-            properties.append("{ ").append(changeableKind).append(" }");
-        }
 
-        StringBuffer sb = new StringBuffer(20);
-        if ((stereo != null) && (stereo.length() > 0)) {
-            sb.append(stereo).append(" ");
+        try {
+            String visibility =
+                    NotationUtilityUml.generateVisibility(modelElement);
+            // generateStereotype accepts a collection, despite its name
+            String stereo = NotationUtilityUml.generateStereotype(
+                    Model.getFacade().getStereotypes(modelElement));
+            String name = Model.getFacade().getName(modelElement);
+            String multiplicity = generateMultiplicity(
+                    Model.getFacade().getMultiplicity(modelElement));
+            String type = ""; // fix for loading bad projects
+            if (Model.getFacade().getType(modelElement) != null) {
+                type = Model.getFacade().getName(
+                        Model.getFacade().getType(modelElement));
+            }
+            String initialValue = "";
+            if (Model.getFacade().getInitialValue(modelElement) != null) {
+                initialValue =
+                    (String) Model.getFacade().getBody(
+                            Model.getFacade().getInitialValue(modelElement));
+            }
+            String changeableKind = "";
+            if (Model.getFacade().getChangeability(modelElement) != null) {
+                if (Model.getChangeableKind().getFrozen().equals(
+                        Model.getFacade().getChangeability(modelElement))) {
+                    changeableKind = "frozen";
+                } else if (Model.getChangeableKind().getAddOnly().equals(
+                        Model.getFacade().getChangeability(modelElement))) {
+                    changeableKind = "addOnly";
+                }
+            }
+            StringBuffer properties = new StringBuffer();
+            if (changeableKind.length() > 0) {
+                properties.append("{ ").append(changeableKind).append(" }");
+            }
+
+            StringBuffer sb = new StringBuffer(20);
+            if ((stereo != null) && (stereo.length() > 0)) {
+                sb.append(stereo).append(" ");
+            }
+            if ((visibility != null)
+                    && (visibility.length() > 0)
+                    && ps.getShowVisibilityValue()) {
+                sb.append(visibility);
+            }
+            if ((name != null) && (name.length() > 0)) {
+                sb.append(name).append(" ");
+            }
+            if ((multiplicity != null)
+                    && (multiplicity.length() > 0)
+                    && ps.getShowMultiplicityValue()) {
+                sb.append("[").append(multiplicity).append("]").append(" ");
+            }
+            if ((type != null) && (type.length() > 0)
+                    /*
+                     * The "show types" defaults to TRUE, to stay compatible
+                     * with older ArgoUML versions that did not have this
+                     * setting:
+                     */
+                    && ps.getShowTypesValue()) {
+                sb.append(": ").append(type).append(" ");
+            }
+            if ((initialValue != null)
+                    && (initialValue.length() > 0)
+                    && ps.getShowInitialValueValue()) {
+                sb.append(" = ").append(initialValue).append(" ");
+            }
+            if ((properties.length() > 0)
+                    && ps.getShowPropertiesValue()) {
+                sb.append(properties);
+            }
+            return sb.toString().trim();
+        } catch (InvalidElementException e) {
+            // The element was deleted while we were processing it
+            return "";
         }
-        if ((visibility != null)
-            && (visibility.length() > 0)
-            && ps.getShowVisibilityValue()) {
-            sb.append(visibility);
-        }
-        if ((name != null) && (name.length() > 0)) {
-            sb.append(name).append(" ");
-        }
-        if ((multiplicity != null)
-            && (multiplicity.length() > 0)
-            && ps.getShowMultiplicityValue()) {
-            sb.append("[").append(multiplicity).append("]").append(" ");
-        }
-        if ((type != null) && (type.length() > 0)
-            /* The "show types" defaults to TRUE, to stay compatible with older
-             * ArgoUML versions that did not have this setting: */
-            && ps.getShowTypesValue()) {
-            sb.append(": ").append(type).append(" ");
-        }
-        if ((initialValue != null)
-            && (initialValue.length() > 0)
-            && ps.getShowInitialValueValue()) {
-            sb.append(" = ").append(initialValue).append(" ");
-        }
-        if ((properties.length() > 0)
-            && ps.getShowPropertiesValue()) {
-            sb.append(properties);
-        }
-        return sb.toString().trim();
     }
     
     private static String generateMultiplicity(Object m) {
