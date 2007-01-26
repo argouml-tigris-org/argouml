@@ -68,7 +68,7 @@ public class PropPanelOperation extends PropPanelFeature {
                 getOwnerScroll());
         addField(Translator.localize("label.parameters"),
                 new JScrollPane(new UMLLinkedList(
-                        new UMLClassifierParameterListModel())));
+                        new UMLClassifierParameterListModel(), true, false)));
 
         addSeparator();
 

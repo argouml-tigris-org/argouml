@@ -114,7 +114,8 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      */
     public JScrollPane getOwnedElementsScroll() {
         if (ownedElementsScroll == null) {
-            ownedElementsScroll = new ScrollList(ownedElementListModel);
+            ownedElementsScroll =
+                    new ScrollList(ownedElementListModel, true, false);
         }
         return ownedElementsScroll;
 
