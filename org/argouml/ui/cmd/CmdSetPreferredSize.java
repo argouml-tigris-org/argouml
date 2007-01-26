@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,8 @@
 
 package org.argouml.ui.cmd;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
@@ -46,10 +48,45 @@ import org.tigris.gef.presentation.Fig;
 public class CmdSetPreferredSize extends Cmd {
 
     /**
-     * Constructor for the command.
+     * Constant to indicate command should set preferred size of Fig.
+     * @deprecated by mvw for 0.24.alpha3
+     */
+    public static final int PREFERRED_SIZE = 0;
+
+    /** constant for MINIMUM_SIZE */
+    public static final int MINIMUM_SIZE = 1;
+
+    private int mode;
+
+    /**
+     * Default constructor - set minimum size command.
      */
     public CmdSetPreferredSize() {
-	super(Translator.localize("action.size-to-fit-contents"));
+        this(MINIMUM_SIZE);
+    }
+    
+    /**
+     * Constructor for the command.
+     *
+     * @param theMode one of the defined constants
+     */
+    public CmdSetPreferredSize(int theMode) {
+//        super(Translator.localize("action.size-to-fit-contents"));
+	super(Translator.localize("action.set-" + wordFor(theMode) + "-size"));
+        mode = theMode;
+    }
+
+    private static String wordFor(int r) {
+        switch (r) {
+        case PREFERRED_SIZE: 
+            return "preferred";
+        case MINIMUM_SIZE: 
+            return "minimum";
+        default:
+            throw new IllegalArgumentException(
+                    "CmdSetPreferredSize invoked with " 
+                            + "incompatible mode: " + r);
+        }
     }
 
     /**
@@ -58,7 +95,7 @@ public class CmdSetPreferredSize extends Cmd {
      * @param f the fig to resize
      */
     public void setFigToResize(Fig f) {
-        Vector figs = new Vector(1);
+        List figs = new ArrayList(1);
         figs.add(f);
         setArg("figs", figs);
     }
@@ -79,7 +116,7 @@ public class CmdSetPreferredSize extends Cmd {
      */
     public void doIt() {
         Editor ce = Globals.curEditor();
-        Vector figs = (Vector) getArg("figs");
+        List figs = (List) getArg("figs");
         if (figs == null) {
             SelectionManager sm = ce.getSelectionManager();
             if (sm.getLocked()) {
@@ -94,12 +131,16 @@ public class CmdSetPreferredSize extends Cmd {
         if (size == 0) return;
 
         for (int i = 0; i < size; i++) {
-            Fig fi = (Fig) figs.elementAt(i);
+            Fig fi = (Fig) figs.get(i);
             // only resize elements which the user would also be able
             // to resize.
             if (fi.isResizable() && (!((fi instanceof FigPackage)
 		                     || (fi instanceof FigCompositeState)))) {
-                fi.setSize(fi.getMinimumSize());
+                if (mode == PREFERRED_SIZE) {
+                    fi.setSize(fi.getPreferredSize());
+                } else {
+                    fi.setSize(fi.getMinimumSize());
+                }
                 /* TODO: Beautify the 2nd part of this string: */
                 Globals.showStatus("Setting size for " + fi);
             }
