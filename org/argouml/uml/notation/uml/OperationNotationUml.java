@@ -36,6 +36,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -467,7 +468,7 @@ public class OperationNotationUml extends OperationNotation {
     }
 
     /*
-     *Generates an operation according to the UML 1.3 notation:
+     * Generates an operation according to the UML notation:
      *
      *         stereotype visibility name (parameter-list) :
      *                         return-type-expression {property-string}
@@ -481,126 +482,127 @@ public class OperationNotationUml extends OperationNotation {
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
     public String toString(Object modelElement, HashMap args) {
-        if (Model.getUmlFactory().isRemoved(modelElement)) {
-            /* This is a normal situation, 
-             * e.g. when an operation is removed by parsing, 
-             * see issue 4596. */
-            return "";
-        }
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
-        
-        String stereoStr = NotationUtilityUml.generateStereotype(
-                Model.getFacade().getStereotypes(modelElement));
-        String visStr = NotationUtilityUml.generateVisibility(modelElement);
-        String nameStr = Model.getFacade().getName(modelElement);
 
-        // the parameters
-        StringBuffer parameterListBuffer = new StringBuffer();
-        Collection coll = Model.getFacade().getParameters(modelElement);
-        Iterator it = coll.iterator();
-        int counter = 0;
-        while (it.hasNext()) {
-            Object parameter = it.next();
-            if (!Model.getFacade().hasReturnParameterDirectionKind(parameter)) {
-                counter++;
-                parameterListBuffer.append(
-                        NotationUtilityUml.generateParameter(parameter));
-                parameterListBuffer.append(",");
-            }
-        }
-        if (counter > 0) {
-            parameterListBuffer.delete(
-                parameterListBuffer.length() - 1,
-                parameterListBuffer.length());
-        }
+        try {
+            String stereoStr = NotationUtilityUml.generateStereotype(
+                    Model.getFacade().getStereotypes(modelElement));
+            String visStr = NotationUtilityUml.generateVisibility(modelElement);
+            String nameStr = Model.getFacade().getName(modelElement);
 
-        StringBuffer parameterStr = new StringBuffer();
-        parameterStr.append("(").append(parameterListBuffer).append(")");
-
-        // the returnparameters
-        coll = Model.getCoreHelper().getReturnParameters(modelElement);
-        StringBuffer returnParasSb = new StringBuffer();
-        if (coll != null && coll.size() > 0) {
-            returnParasSb.append(": ");
-            Iterator it2 = coll.iterator();
-            while (it2.hasNext()) {
-                Object type = Model.getFacade().getType(it2.next());
-                if (type != null) {
-                    returnParasSb.append(Model.getFacade().getName(type));
+            // the parameters
+            StringBuffer parameterListBuffer = new StringBuffer();
+            Collection coll = Model.getFacade().getParameters(modelElement);
+            Iterator it = coll.iterator();
+            int counter = 0;
+            while (it.hasNext()) {
+                Object parameter = it.next();
+                if (!Model.getFacade().hasReturnParameterDirectionKind(
+                        parameter)) {
+                    counter++;
+                    parameterListBuffer.append(
+                            NotationUtilityUml.generateParameter(parameter));
+                    parameterListBuffer.append(",");
                 }
-                returnParasSb.append(",");
             }
-            returnParasSb.delete(
-                returnParasSb.length() - 1,
-                returnParasSb.length());
+            if (counter > 0) {
+                parameterListBuffer.delete(
+                        parameterListBuffer.length() - 1,
+                        parameterListBuffer.length());
+            }
+
+            StringBuffer parameterStr = new StringBuffer();
+            parameterStr.append("(").append(parameterListBuffer).append(")");
+
+            // the returnparameters
+            coll = Model.getCoreHelper().getReturnParameters(modelElement);
+            StringBuffer returnParasSb = new StringBuffer();
+            if (coll != null && coll.size() > 0) {
+                returnParasSb.append(": ");
+                Iterator it2 = coll.iterator();
+                while (it2.hasNext()) {
+                    Object type = Model.getFacade().getType(it2.next());
+                    if (type != null) {
+                        returnParasSb.append(Model.getFacade().getName(type));
+                    }
+                    returnParasSb.append(",");
+                }
+                returnParasSb.delete(
+                        returnParasSb.length() - 1,
+                        returnParasSb.length());
+            }
+
+            // the properties
+            StringBuffer propertySb = new StringBuffer().append("{");
+            // the query state
+            if (Model.getFacade().isQuery(modelElement)) {
+                propertySb.append("query,");
+            }
+            if (Model.getFacade().isRoot(modelElement)) {
+                propertySb.append("root,");
+            }
+            if (Model.getFacade().isLeaf(modelElement)) {
+                propertySb.append("leaf,");
+            }
+            if (Model.getFacade().getConcurrency(modelElement) != null) {
+                propertySb.append(Model.getFacade().getName(
+                        Model.getFacade().getConcurrency(modelElement)));
+                propertySb.append(',');
+            }
+            Iterator it3 = Model.getFacade().getTaggedValues(modelElement);
+            StringBuffer taggedValuesSb = new StringBuffer();
+            if (it3 != null && it3.hasNext()) {
+                while (it3.hasNext()) {
+                    taggedValuesSb.append(
+                            NotationUtilityUml.generateTaggedValue(it3.next()));
+                    taggedValuesSb.append(",");
+                }
+                taggedValuesSb.delete(
+                        taggedValuesSb.length() - 1,
+                        taggedValuesSb.length());
+            }
+            if (propertySb.length() > 1) {
+                propertySb.delete(propertySb.length() - 1, propertySb.length());
+                // remove last ,
+                propertySb.append("}");
+            } else {
+                propertySb = new StringBuffer();
+            }
+
+            // lets concatenate it to the resulting string (genStr)
+            StringBuffer genStr = new StringBuffer(30);
+            if ((stereoStr != null) && (stereoStr.length() > 0)) {
+                genStr.append(stereoStr).append(" ");
+            }
+            if ((visStr != null)
+                    && (visStr.length() > 0)
+                    && ps.getShowVisibilityValue()) {
+                genStr.append(visStr);
+            }
+            if ((nameStr != null) && (nameStr.length() > 0)) {
+                genStr.append(nameStr);
+            }
+            /* The "show types" defaults to TRUE, to stay compatible with older
+             * ArgoUML versions that did not have this setting: */
+            if (ps.getShowTypesValue()) {
+                genStr.append(parameterStr).append(" ");
+                if ((returnParasSb != null) && (returnParasSb.length() > 0)) {
+                    genStr.append(returnParasSb).append(" ");
+                }
+            } else {
+                genStr.append("()");
+            }
+            if ((propertySb.length() > 0)
+                    && ps.getShowPropertiesValue()) {
+                genStr.append(propertySb);
+            }
+            return genStr.toString().trim();
+        } catch (InvalidElementException e) {
+            // The model element was deleted while we were working on it
+            return "";   
         }
 
-        // the properties
-        StringBuffer propertySb = new StringBuffer().append("{");
-        // the query state
-        if (Model.getFacade().isQuery(modelElement)) {
-            propertySb.append("query,");
-        }
-        if (Model.getFacade().isRoot(modelElement)) {
-            propertySb.append("root,");
-        }
-        if (Model.getFacade().isLeaf(modelElement)) {
-            propertySb.append("leaf,");
-        }
-        if (Model.getFacade().getConcurrency(modelElement) != null) {
-            propertySb.append(Model.getFacade().getName(
-                    Model.getFacade().getConcurrency(modelElement)));
-            propertySb.append(',');
-        }
-        Iterator it3 = Model.getFacade().getTaggedValues(modelElement);
-        StringBuffer taggedValuesSb = new StringBuffer();
-        if (it3 != null && it3.hasNext()) {
-            while (it3.hasNext()) {
-                taggedValuesSb.append(
-                        NotationUtilityUml.generateTaggedValue(it3.next()));
-                taggedValuesSb.append(",");
-            }
-            taggedValuesSb.delete(
-                taggedValuesSb.length() - 1,
-                taggedValuesSb.length());
-        }
-        if (propertySb.length() > 1) {
-            propertySb.delete(propertySb.length() - 1, propertySb.length());
-            // remove last ,
-            propertySb.append("}");
-        } else {
-            propertySb = new StringBuffer();
-        }
-
-        // lets concatenate it to the resulting string (genStr)
-        StringBuffer genStr = new StringBuffer(30);
-        if ((stereoStr != null) && (stereoStr.length() > 0)) {
-            genStr.append(stereoStr).append(" ");
-        }
-        if ((visStr != null)
-            && (visStr.length() > 0)
-            && ps.getShowVisibilityValue()) {
-            genStr.append(visStr);
-        }
-        if ((nameStr != null) && (nameStr.length() > 0)) {
-            genStr.append(nameStr);
-        }
-        /* The "show types" defaults to TRUE, to stay compatible with older
-         * ArgoUML versions that did not have this setting: */
-        if (ps.getShowTypesValue()) {
-            genStr.append(parameterStr).append(" ");
-            if ((returnParasSb != null) && (returnParasSb.length() > 0)) {
-                genStr.append(returnParasSb).append(" ");
-            }
-        } else {
-            genStr.append("()");
-        }
-        if ((propertySb.length() > 0)
-            && ps.getShowPropertiesValue()) {
-            genStr.append(propertySb);
-        }
-        return genStr.toString().trim();
     }
 
 }
