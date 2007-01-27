@@ -212,12 +212,6 @@ public class ExceptionDialog extends JDialog implements ActionListener {
             }
         });
 
-        // TODO: i18n
-        error = "An inconsistency has been detected when saving the model."
-            + "These have been repaired and are reported below. "
-            + "The save will continue with the model having been "
-            + "amended as described.\n" + error;
-        
         // These shouldn't really be <br> instead of <p> elements, but
         // the lines all get run together when pasted into a browser window.
         textArea.setText(error.replaceAll("\n", "<br>"));

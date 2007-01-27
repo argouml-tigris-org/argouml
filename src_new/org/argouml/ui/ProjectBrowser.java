@@ -1248,6 +1248,12 @@ public final class ProjectBrowser
             // Repair any errors in the project
             String report = project.repair();
             if (report.length() > 0) {
+                // TODO: i18n
+                report = 
+                    "An inconsistency has been detected when saving the model."
+                        + "These have been repaired and are reported below. "
+                        + "The save will continue with the model having been "
+                        + "amended as described.\n" + report;
                 reportError(
                         pmw, 
                         Translator.localize("dialog.repair"), true, report);
