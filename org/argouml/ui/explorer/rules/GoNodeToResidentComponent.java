@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,9 +32,9 @@ import org.argouml.model.Model;
 
 /**
  * Rule for Node -> Resident Component.
+ * Should in fact be named Node -> Deployed Component.
  *
- * @author mvw@tigris.org
- *
+ * @author mvw
  */
 public class GoNodeToResidentComponent extends AbstractPerspectiveRule {
 
@@ -50,7 +50,7 @@ public class GoNodeToResidentComponent extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
         if (Model.getFacade().isANode(parent)) {
-            return Model.getFacade().getResidents(parent);
+            return Model.getFacade().getDeployedComponents(parent);
         }
         return null;
     }
