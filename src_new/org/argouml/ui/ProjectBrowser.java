@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1256,7 +1256,7 @@ public final class ProjectBrowser
                         + "amended as described.\n" + report;
                 reportError(
                         pmw, 
-                        Translator.localize("dialog.repair"), true, report);
+                        Translator.localize("dialog.repair") + report, true);
             }
             
             if (pmw != null) {
@@ -1599,18 +1599,21 @@ public final class ProjectBrowser
                                 + "http://argouml.tigris.org\n",
                                 showUI);
                     } else if (oldProject != null) {
-                        // if p equals oldProject there was an exception and we do
-                        // not have to gc (garbage collect) the old project
+                        // if p equals oldProject there was an exception and we
+                        // do not have to gc (garbage collect) the old project
                         if (project != null && !project.equals(oldProject)) {
                             //prepare the old project for gc
-                            LOG.info("There are " + oldProject.getMembers().size()
+                            LOG.info("There are "
+                                    + oldProject.getMembers().size()
                                     + " members in the old project");
                             LOG.info("There are " + project.getMembers().size()
                                     + " members in the new project");
-                            // Set new project before removing old so we always have
-                            // a valid current project
-                            ProjectManager.getManager().setCurrentProject(project);
-                            ProjectManager.getManager().removeProject(oldProject);
+                            // Set new project before removing old so we always
+                            // have a valid current project
+                            ProjectManager.getManager().setCurrentProject(
+                                    project);
+                            ProjectManager.getManager().removeProject(
+                                    oldProject);
                         }
                     }
 
@@ -1626,7 +1629,8 @@ public final class ProjectBrowser
         	} finally {
                     // Make sure save action is always reinstated
                     this.saveAction = rememberedSaveAction;
-                    ProjectManager.getManager().setSaveAction(rememberedSaveAction);
+                    ProjectManager.getManager().setSaveAction(
+                            rememberedSaveAction);
                     if (success) {
                         rememberedSaveAction.setEnabled(false);
                     }
@@ -1651,54 +1655,21 @@ public final class ProjectBrowser
             } else {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        JOptionPane.showMessageDialog(
-                                ArgoFrame.getInstance(),
-                                message,
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
-                });
-            }
-        } else {
-            System.err.print(message);
-        }
-    }
-
-    /**
-     * Open a Message Dialog with an error message.
-     *
-     * @param message the message to display.
-     * @param showUI true if an error message may be shown to the user,
-     *               false if run in commandline mode
-     * @param error the error
-     * 
-     * TODO: This appears to have been cloned from the method below
-     * without updating the Javadoc. Not sure what the difference
-     * is meant to be... - tfm
-     */
-    private void reportError(ProgressMonitor monitor, final String message,
-            boolean showUI, final String error) {
-        if (showUI) {
-            if (monitor != null) {
-                monitor.notifyMessage("Error" , "Error load/saving", message);
-            } else {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
+//                        JOptionPane.showMessageDialog(
+//                                ArgoFrame.getInstance(),
+//                                message,
+//                                "Error",
+//                                JOptionPane.ERROR_MESSAGE);
                         JDialog dialog =
                             new ExceptionDialog(
                                     ArgoFrame.getInstance(),
-                                    message,
-                                    error);
+                                    message);
                         dialog.setVisible(true);
                     }
                 });
             }
         } else {
-            // TODO:  Does anyone use command line?
-            // If so, localization is needed - tfm
-            reportError(monitor, "Please report the error below to the ArgoUML"
-                    + "development team at http://argouml.tigris.org.\n"
-                    + message + "\n\n" + error, showUI);
+            System.err.print(message);
         }
     }
 

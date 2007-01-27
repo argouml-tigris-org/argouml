@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -94,30 +94,11 @@ public class ExceptionDialog extends JDialog implements ActionListener {
      */
     public ExceptionDialog(Frame f, String message, Throwable e,
             boolean highlightCause) {
-        super(f);
-        setResizable(true);
-        setModal(false);
-        setTitle(Translator.localize("dialog.exception.title"));
+        this(f, formatException(message, e, highlightCause));
+    }
 
-        Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-        getContentPane().setLayout(new BorderLayout(0, 0));
-
-        // the introducing label
-        northLabel =
-            new JLabel(Translator.localize("dialog.exception.message"));
-        northLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        getContentPane().add(northLabel, BorderLayout.NORTH);
-
-        // the text box containing the problem messages
-        textArea = new JEditorPane();
-        textArea.setContentType("text/html");
-        textArea.setEditable(false);
-        textArea.addHyperlinkListener(new HyperlinkListener() {
-            public void hyperlinkUpdate(HyperlinkEvent hle) {
-                linkEvent(hle);
-            }
-        });
-
+    private static String formatException(String message, Throwable e,
+            boolean highlightCause) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
 
@@ -135,59 +116,17 @@ public class ExceptionDialog extends JDialog implements ActionListener {
             pw.print("-------<p>Full exception : ");
         }
         e.printStackTrace(pw);
-        // These shouldn't really be <br> instead of <p> elements, but
-        // the lines all get run together when pasted into a browser window.
-        textArea.setText(sw.toString().replaceAll("\n", "<p>"));
-        textArea.setCaretPosition(0);
-
-        JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.add(new JScrollPane(textArea));
-        centerPanel.setPreferredSize(new Dimension(500, 200));
-        getContentPane().add(centerPanel);
-
-        copyButton =
-            new JButton(Translator.localize("button.copy-to-clipboard"));
-        copyButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                copyActionPerformed(evt);
-            }
-        });
-
-        closeButton = new JButton(Translator.localize("button.close"));
-        closeButton.addActionListener(this);
-        JPanel bottomPanel = new JPanel();
-
-        bottomPanel.add(copyButton);
-        bottomPanel.add(closeButton);
-        getContentPane().add(bottomPanel, BorderLayout.SOUTH);
-
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent evt) {
-                disposeDialog();
-            }
-        });
-
-        Dimension contentPaneSize = getContentPane().getPreferredSize();
-        setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
-                scrSize.height / 2 - contentPaneSize.height / 2);
-        pack();
+        return sw.toString();
     }
 
     /**
-     * Construct an exception dialog with the given parameters.
+     * Construct an exception dialog with a preformatted error string.
      *
      * @param f   the <code>Frame</code> from which the dialog is displayed
      * @param message
      *            the message
-     * @param error
-     *            give priority to Throwable.cause in display. Use this if the
-     *            main exception is mostly boilerplate and the really useful
-     *            information is in the enclosed cause.
-     *            
-     * TODO: This is a 90% clone of the constructor above.
-     * Eliminate duplicate code! - tfm
      */
-    public ExceptionDialog(Frame f, String message, String error) {
+    public ExceptionDialog(Frame f, String message) {
         super(f);
         setResizable(true);
         setModal(false);
@@ -214,7 +153,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
 
         // These shouldn't really be <br> instead of <p> elements, but
         // the lines all get run together when pasted into a browser window.
-        textArea.setText(error.replaceAll("\n", "<br>"));
+        textArea.setText(message.replaceAll("\n", "<p>"));
         textArea.setCaretPosition(0);
 
         JPanel centerPanel = new JPanel(new BorderLayout());
