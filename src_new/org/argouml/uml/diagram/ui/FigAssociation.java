@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -801,6 +801,23 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         if (pce instanceof AddAssociationEvent
                 && pce.getPropertyName().equals("participant")) {
             figEdge.determineFigNodes();
+        }
+
+        String pName = pce.getPropertyName();
+        if (pName.equals("editing")
+                && Boolean.FALSE.equals(pce.getNewValue())) {
+            // Finished editing.
+            // Parse the text that was edited.
+            role.parse();
+            calcBounds();
+            endTrans();
+        } else if (pName.equals("editing")
+                && Boolean.TRUE.equals(pce.getNewValue())) {
+            figEdge.showHelp(role.getParsingHelp());
+            role.setText();
+        } else {
+            // Pass everything else to superclass
+            super.propertyChange(pce);
         }
     }
 
