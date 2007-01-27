@@ -31,7 +31,10 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.CoreHelper;
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
+import org.argouml.model.ModelManagementHelper;
 import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
@@ -483,4 +486,25 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     public boolean relocate(Object base) {
         return false;
     }
+    
+    /**
+     * Provides the standard functionality of the superclass only for
+     * deployment diagram specific model elements
+     * @param modelElement the model element
+     * @param namespace the namespace (or null for diagram)
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#setModelElementNamespace(java.lang.Object, Object)
+     */
+    protected void setModelElementNamespace(
+	    Object modelElement, 
+	    Object namespace) {
+	Facade facade = Model.getFacade();
+	if (facade.isANode(modelElement)
+		|| facade.isANodeInstance(modelElement)
+		|| facade.isAComponent(modelElement)
+		|| facade.isAComponentInstance(modelElement)) {
+	    LOG.info("Setting namespace of " + modelElement);
+	    super.setModelElementNamespace(modelElement, namespace);
+	}
+    }
+
 } /* end class UMLDeploymentDiagram */
