@@ -80,7 +80,6 @@ import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ActionGoToCritique;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
@@ -619,41 +618,17 @@ public abstract class FigNodeModelElement
 	Fig oldEncloser = encloser;
 	super.setEnclosingFig(newEncloser);
 	if (newEncloser != oldEncloser) {
-	    Object owningModelelement = null;
-	    if (newEncloser == null && isVisible()) {
-	        // If we are not visible most likely we're being deleted.
-
-		// moved outside another fig onto the diagram canvas
-		Project currentProject =
-		    ProjectManager.getManager().getCurrentProject();
-                ArgoDiagram diagram = currentProject.getActiveDiagram();
-                // TODO: Who said this was about the active diagram?
-                if (diagram instanceof UMLDiagram
-			&& ((UMLDiagram) diagram).getNamespace() != null) {
-                    owningModelelement = ((UMLDiagram) diagram).getNamespace();
-                } else {
-                    owningModelelement = currentProject.getRoot();
-                }
-	    } else if (newEncloser != null
-                    && Model.getFacade()
-                            .isAModelElement(newEncloser.getOwner())) {
-                owningModelelement = newEncloser.getOwner();
+            Project currentProject =
+                ProjectManager.getManager().getCurrentProject();
+            UMLDiagram diagram =
+        	(UMLDiagram) currentProject.getActiveDiagram();
+            
+            Object namespace = null;
+            if (newEncloser != null) {
+        	namespace = newEncloser.getOwner();
             }
-            if (owningModelelement != null
-		&& getOwner() != null
-		&& (!Model.getModelManagementHelper()
-		    .isCyclicOwnership(owningModelelement, getOwner()))
-		&& ((Model.getCoreHelper()
-			.isValidNamespace(getOwner(),
-					  owningModelelement)))) {
-                Model.getCoreHelper().setModelElementContainer(getOwner(),
-						     owningModelelement);
-                /* TODO: move the associations to the correct owner (namespace)
-                 * i.e. issue 2151
-                 */
-            }
-        }
-	if (newEncloser != encloser) {
+            diagram.setModelElementNamespace(getOwner(), namespace);
+            
 	    if (encloser instanceof FigNodeModelElement) {
 		((FigNodeModelElement) encloser).removeEnclosedFig(this);
             }

@@ -36,8 +36,10 @@ import javax.swing.JToolBar;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
+import org.argouml.model.CoreHelper;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
+import org.argouml.model.ModelManagementHelper;
 import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.CmdCreateNode;
@@ -647,6 +649,50 @@ public abstract class UMLDiagram
 	super.setProject(p);
 	UMLMutableGraphSupport gm = (UMLMutableGraphSupport) getGraphModel();
 	gm.setProject(p);
+    }
+    
+    /**
+     * Set the namespace of a model element to the owner of
+     * the given namespace. If the namespace is null
+     * the namespace of the diagram is used instead.
+     * If the modelElement is not valid in the given namespace
+     * this method takes no action.
+     * @param modelElement the model element
+     * @param namespace the namespace
+     */
+    protected void setModelElementNamespace(
+	    Object modelElement, 
+	    Object namespace) {
+	if (modelElement == null) {
+	    return;
+	}
+	
+	// If we're not provided a namespace then get it from the diagram or
+	// the root
+        if (namespace == null) {
+            if (getNamespace() != null) {
+        	namespace = getNamespace();
+            } else {
+        	namespace = getProject().getRoot();
+            }
+        }
+        
+        // If we haven't succeeded in getting a namespace then abort
+        if (namespace == null) {
+            return;
+        }
+        
+        CoreHelper coreHelper = Model.getCoreHelper();
+        ModelManagementHelper modelHelper = Model.getModelManagementHelper();
+        
+        if (!modelHelper.isCyclicOwnership(namespace, modelElement)
+                && coreHelper.isValidNamespace(modelElement, namespace)) {
+            
+            coreHelper.setModelElementContainer(modelElement, namespace);
+            /* TODO: move the associations to the correct owner (namespace)
+             * i.e. issue 2151
+             */
+        }
     }
 
     /**
