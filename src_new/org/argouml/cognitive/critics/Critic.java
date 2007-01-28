@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -167,8 +167,8 @@ public class Critic extends Observable implements Poster, Serializable {
     public final String defaultMoreInfoURL() {
 	String clsName = getClass().getName();
 	clsName = clsName.substring(clsName.lastIndexOf(".") + 1);
-	return "http://argouml-stats.tigris.org/documentation/printablehtml/"
-	    + "manual/argomanual.html"
+	return "http://argouml-stats.tigris.org/documentation/"
+	    + "manual-0.24-single/argomanual.html"
 	    + "#critics." + clsName;
     }
 
