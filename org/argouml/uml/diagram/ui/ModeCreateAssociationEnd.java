@@ -26,11 +26,13 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
 import org.tigris.gef.base.Editor;
@@ -58,6 +60,15 @@ import org.tigris.gef.presentation.FigPoly;
  * @author pepargouml@yahoo.es
  */
 public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -7249069222789301797L;
+    
+    private static final Logger LOG =
+	Logger.getLogger(ModeCreateAssociationEnd.class);
+    
     private FigNode newFigNodeAssociation;
     private FigEdge oldFigAssociation;
     private Object association;
@@ -331,11 +342,20 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         figNode.setLocation(
                 me.getX() - figNode.getWidth() / 2,
                 me.getY() - figNode.getHeight() / 2);
-        figNode.setVisible(false);
+        //figNode.setVisible(false);
         editor.add(figNode);
         editor.getSelectionManager().deselectAll();
 
         return figNode;
+    }
+    
+    public void keyTyped(KeyEvent ke) {
+        if (ke.getKeyChar() == KeyEvent.VK_ESCAPE) {
+            LOG.debug("Esc pressed");
+            abort();
+            done();
+            ke.consume();
+        }
     }
 
     /**
@@ -345,11 +365,11 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
      * when drawing started from a FigAssociation edge.
      */
     private void abort() {
+	LOG.info("Drawing association end aborted");
         if (newFigNodeAssociation != null) {
             Editor editor = Globals.curEditor();
             editor.remove(newFigNodeAssociation);
             newFigNodeAssociation.removeFromDiagram();
-            oldFigAssociation.setOwner(association);
         }
     }
 
@@ -360,9 +380,4 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         abort();
         super.leave();
     }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -7249069222789301797L;
 } /* end class ModeCreateAssociation */
