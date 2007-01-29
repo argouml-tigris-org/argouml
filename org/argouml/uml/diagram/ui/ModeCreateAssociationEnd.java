@@ -24,19 +24,16 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.graph.GraphModel;
@@ -70,7 +67,6 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
 	Logger.getLogger(ModeCreateAssociationEnd.class);
     
     private FigNode newFigNodeAssociation;
-    private FigEdge oldFigAssociation;
     private Object association;
     private Collection associationEnds;
 
@@ -98,9 +94,10 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         Object modelElement = underMouse.getOwner();
 
         if (!Model.getFacade().isAAssociationClass(modelElement)) {
+            if (Model.getFacade().isAAssociation(underMouse.getOwner())) {
+                association = underMouse.getOwner();
+            }
             if (underMouse instanceof FigAssociation) {
-                oldFigAssociation = (FigEdge) underMouse;
-                association = oldFigAssociation.getOwner();
                 associationEnds =
                     Model.getFacade().getConnections(association);
                 newFigNodeAssociation = placeTempNode(me);
@@ -131,11 +128,11 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         createFig(me);
         me.consume();
     }
-
+    
     /*
      * @see org.tigris.gef.base.ModeCreatePolyEdge#mouseReleased(java.awt.event.MouseEvent)
      */
-    public void mouseReleased(MouseEvent me) {
+    public void mouseReleased(final MouseEvent me) {
         if (me.isConsumed()) {
             return;
         }
@@ -144,151 +141,31 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
             me.consume();
             return;
         }
-        int x = me.getX(), y = me.getY();
+        final int x = me.getX();
+        final int y = me.getY();
         Fig destFig = editor.hit(x, y);
         if (destFig == null) {
             destFig = editor.hit(x - 16, y - 16, 32, 32);
         }
-        GraphModel graphModel = editor.getGraphModel();
-        if (!(graphModel instanceof MutableGraphModel)) {
-            destFig = null;
-        }
-
-        Object newAssociationEnd = null;
-
-        MutableGraphModel mutableGraphModel = (MutableGraphModel) graphModel;
-        // TODO: potential class cast exception
-        if (destFig instanceof FigAssociation
-                && !(destFig instanceof FigAssociationClass)) {
-            Object association = destFig.getOwner();
-            boolean isValid =
-                Model.getUmlFactory().isConnectionValid(
-                    Model.getMetaTypes().getAssociationEnd(),
-                    getStartPort(),
-                    association);
-            if (isValid) {
-                // Order here is very important!
-                // 1. Remove the old association FigEdge first
-                Layer lay = editor.getLayerManager().getActiveLayer();
-                mutableGraphModel.removeEdge(association);
-                destFig.removeFromDiagram();
-                
-                // 2. Add a new association end to the association
-                Object edgeType = getArg("edgeClass");
-                newAssociationEnd = mutableGraphModel.connect(
-                        getStartPort(), association, edgeType);
-                
-                // 2. Create a new FigNode representing the n-ary assoc
-                mutableGraphModel.addNode(association);
-                FigNode figNode = (FigNode) lay.presentationFor(association);
-                figNode.setLocation(
-                        x - figNode.getWidth() / 2,
-                        y - figNode.getHeight() / 2);
-                editor.add(figNode);
-                associationEnds =
-                    Model.getFacade().getConnections(association);
-                Iterator it = associationEnds.iterator();
-                mutableGraphModel.addEdge(it.next());
-                mutableGraphModel.addEdge(it.next());
-                mutableGraphModel.addEdge(it.next());
-                //TODO: Should we be passing the collection of edges???
-                endAttached(null);
-                done();
-                me.consume();
+        
+        if (destFig != null) {
+            Object source = getSourceFigNode().getOwner();
+            Object dest = destFig.getOwner();
+            
+            if (Model.getFacade().isAAssociationClass(source)
+            	|| Model.getFacade().isAAssociationClass(dest)) {
+                // TODO: http://argouml.tigris.org/issues/show_bug.cgi?id=2991
+            } else if (Model.getFacade().isAAssociation(source)
+            	|| Model.getFacade().isAClassifier(dest)) {
+                mouseReleasedOnClassifier(me, destFig);
+                return;
+            } else if (Model.getFacade().isAClassifier(dest)
+            	|| Model.getFacade().isAAssociation(dest)) {
+                mouseReleasedOnAssociation(me, destFig);
                 return;
             }
         }
-
-        if (destFig instanceof FigNode) {
-            if (!(destFig instanceof FigClassAssociationClass)
-                    && !Model.getFacade().isANaryAssociation(
-                            destFig.getOwner())) {
-                FigNode destFigNode = (FigNode) destFig;
-                // If its a FigNode, then check within the
-                // FigNode to see if a port exists
-                Object foundPort = destFigNode.deepHitPort(x, y);
-
-                if (foundPort == getStartPort() && _npoints < 4) {
-                    // user made a false start
-                    abort();
-                    done();
-                    me.consume();
-                    return;
-                }
-                if (foundPort != null) {
-                    Fig destPortFig = destFigNode.getPortFig(foundPort);
-                    FigPoly p = (FigPoly) _newItem;
-                    editor.damageAll();
-                    p.setComplete(true);
-
-                    Object edgeType = getArg("edgeClass");
-                    if (newAssociationEnd == null
-                            && !mutableGraphModel.canConnect(
-                                    getStartPort(), foundPort, edgeType)) {
-                        abort();
-                    } else {
-                        if (newAssociationEnd == null) {
-                            newAssociationEnd = mutableGraphModel.connect(
-                                    getStartPort(), foundPort, edgeType);
-                        }
-                        setNewEdge(newAssociationEnd);
-
-                        // Calling connect() will add the edge to the
-                        // GraphModel and any LayerPersectives on that
-                        // GraphModel will get a edgeAdded event and
-                        // will add an appropriate FigEdge
-                        // (determined by the GraphEdgeRenderer).
-
-                        if (getNewEdge() != null) {
-                            getSourceFigNode().damage();
-                            destFigNode.damage();
-                            Layer lay =
-                                editor.getLayerManager().getActiveLayer();
-                            FigEdge fe =
-                                (FigEdge) lay.presentationFor(getNewEdge());
-                            _newItem.setLineColor(Color.black);
-                            fe.setFig(_newItem);
-                            fe.setSourcePortFig(getStartPortFig());
-                            fe.setSourceFigNode(getSourceFigNode());
-                            fe.setDestPortFig(destPortFig);
-                            fe.setDestFigNode(destFigNode);
-
-                            if (fe != null) {
-                                editor.getSelectionManager().select(fe);
-                            }
-                            editor.damageAll();
-
-                            // if the new edge implements the MouseListener
-                            // interface it has to receive the mouseReleased()
-                            // event
-                            if (fe instanceof MouseListener) {
-                                ((MouseListener) fe).mouseReleased(me);
-                            }
-
-                            // set the new edge in place
-                            if (getSourceFigNode() != null) {
-                                getSourceFigNode().updateEdges();
-                            }
-                            if (destFigNode != null) {
-                                destFigNode.updateEdges();
-                            }
-                            endAttached(fe);
-                        } else {
-                            // The user must have release on some FigNode
-                            // that is not valid
-                            abort();
-                        }
-                    }
-                    done();
-                    me.consume();
-                    return;
-                }
-            } else {
-                // The user must have release on some FigNode that is not valid
-                abort();
-            }
-        }
-
+        
         if (!nearLast(x, y)) {
             editor.damageAll();
             Point snapPt = new Point(x, y);
@@ -302,37 +179,103 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
         me.consume();
     }
 
+    /*
+     * @see org.tigris.gef.base.ModeCreatePolyEdge#mouseReleased(java.awt.event.MouseEvent)
+     */
+    private void mouseReleasedOnClassifier(
+	    final MouseEvent me,
+	    final Fig destFig) {
+        MutableGraphModel graphModel =
+            (MutableGraphModel) editor.getGraphModel();
+
+        // Order here is very important!
+        // 1. Remove the old association FigEdge first
+        graphModel.removeEdge(association);
+        
+        try {
+	    Model.getUmlFactory().buildConnection(
+	    	Model.getMetaTypes().getAssociationEnd(),
+	    	getSourceFigNode().getOwner(), 
+	    	null, 
+	    	destFig.getOwner(), 
+	    	null, 
+	    	null, 
+	    	null);
+	} catch (IllegalModelElementConnectionException e) {
+	    LOG.error("Exception", e);
+	}
+	
+        // 3. Make sure the association is a node in the graph model
+        graphModel.addNode(association);
+        
+        associationEnds =
+            Model.getFacade().getConnections(association);
+        
+        endAttached(null);
+        me.consume();
+    }
+
+
+    /*
+     * @see org.tigris.gef.base.ModeCreatePolyEdge#mouseReleased(java.awt.event.MouseEvent)
+     */
+    private void mouseReleasedOnAssociation(
+	    final MouseEvent me,
+	    final Fig destFig) {
+        int x = me.getX();
+        int y = me.getY();
+        
+        MutableGraphModel graphModel =
+            (MutableGraphModel) editor.getGraphModel();
+
+        Object destAssociation = destFig.getOwner();
+        
+        // Order here is very important!
+        // 1. Remove the old association FigEdge first
+        graphModel.removeEdge(destAssociation);
+        destFig.removeFromDiagram();
+        
+        // 2. Add a new association end to the association
+        graphModel.connect(
+                getStartPort(),
+                destAssociation,
+                Model.getMetaTypes().getAssociationEnd());
+        
+        // 3. Create a new FigNode representing the n-ary assoc
+        graphModel.addNode(destAssociation);
+        
+        // 4. Create a new FigNode representing the n-ary assoc
+        Layer lay = editor.getLayerManager().getActiveLayer();
+        FigNode figNode = (FigNode) lay.presentationFor(destAssociation);
+        figNode.setLocation(
+                x - figNode.getWidth() / 2,
+                y - figNode.getHeight() / 2);
+        editor.add(figNode);
+        
+        associationEnds =
+            Model.getFacade().getConnections(destAssociation);
+        
+        endAttached(null);
+        me.consume();
+    }
+
     /**
      * This will be called when the edge is successfully connected.
-     * What we do in this class is to determine if we are creating
-     * an n-ary association. If so then FigNode representing the n-ary
-     * association is made visible. The FigEdge representing the old
-     * binary association is removed and replaced with edges representing
-     * the 2 association ends of that original fig.
+     * This method is extended to make sure that all edges are in the
+     * graph model
+     * @param fe the FigEdge drawn
      */
     protected void endAttached(FigEdge fe) {
-        if (newFigNodeAssociation != null) {
-            newFigNodeAssociation.setVisible(true);
-            oldFigAssociation.removeFromDiagram();
-
-            Editor editor = Globals.curEditor();
-
-            GraphModel gm = editor.getGraphModel();
-            if (gm instanceof MutableGraphModel) {
-                MutableGraphModel mutableGraphModel = (MutableGraphModel) gm;
-                Iterator it = associationEnds.iterator();
-                mutableGraphModel.addEdge(it.next());
-                mutableGraphModel.addEdge(it.next());
-                mutableGraphModel.addEdge(it.next());
-                editor.getSelectionManager().deselectAll();
-                mutableGraphModel.addNode(association);
-            }
+        MutableGraphModel graphModel =
+            (MutableGraphModel) editor.getGraphModel();
+        for (Iterator it = associationEnds.iterator(); it.hasNext(); ) {
+            graphModel.addEdge(it.next());
         }
         super.endAttached(fe);
+        done();
     }
 
     private FigNode placeTempNode(MouseEvent me) {
-        Editor editor = Globals.curEditor();
         FigNode figNode = null;
         GraphModel gm = editor.getGraphModel();
 
@@ -367,7 +310,6 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
     private void abort() {
 	LOG.info("Drawing association end aborted");
         if (newFigNodeAssociation != null) {
-            Editor editor = Globals.curEditor();
             editor.remove(newFigNodeAssociation);
             newFigNodeAssociation.removeFromDiagram();
         }
