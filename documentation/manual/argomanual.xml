@@ -2671,17 +2671,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             use.</para>
 
             <para>ArgoUML assumes a two button mouse. We will refer to 
-            the buttons as <quote>button 1</quote> and <quote>button 
-            2</quote>. Button 1 is the leftmost button on a 
+            the buttons as <quote>button 1</quote> and <quote>button 
+            2</quote>. Button 1 is the leftmost button on a 
             right-handed mouse, and sometimes referred to as the 
-            <quote>select</quote> button. Button 2 is sometimes 
+            <quote>select</quote> button. Button 2 is sometimes 
             referred to as the <quote>adjust</quote> button.</para>
 
             <orderedlist>
 
               <listitem>
 
-                <para><emphasis>Button 1 click</emphasis>. This action 
+                <para><emphasis>Button 1 click</emphasis>. This action 
                 is generally used to select an item for subsequent 
                 operations. If the item is a model element in the explorer 
                 or the editing pane it will be highlighted.</para>
@@ -2697,7 +2697,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><emphasis>Button 1 double click</emphasis>. This 
+                <para><emphasis>Button 1 double click</emphasis>. This 
                 action is identical to a single click 
                 <emphasis>except</emphasis>, when it is used with the 
                 edit pane toolbar. Under these circumstances the 
@@ -2710,7 +2710,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><emphasis>Button 2 click</emphasis>. When used 
+                <para><emphasis>Button 2 click</emphasis>. When used 
                 over text items in the the explorer or details panes, 
                 or graphical model elements in the editing pane, this will 
                 display a context dependent drop-down menu.</para>
@@ -2722,19 +2722,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><emphasis>Button 1 motion</emphasis>. Where 
-                button 1 click has been used to pull down a menu from 
-                the menu bar, button 1 motion is used to select items 
+                <para><emphasis>Button 1 motion</emphasis>. Where 
+                button 1 click has been used to pull down a menu from 
+                the menu bar, button 1 motion is used to select items 
                 on that menu.</para>
 
-                <para>Button 1 motion also has an effect in the editing 
+                <para>Button 1 motion also has an effect in the editing 
                 pane. Over graphical model elements it will move the 
                 model element to a new position. Graphical model elements that 
                 are selected show handles, and these can be used for 
                 re-sizing.</para>
 
                 <para>Where the model element is some form of connector 
-                between other items, button 1 motion other than at a 
+                between other items, button 1 motion other than at a 
                 handle will cause a new handle to be created, allowing 
                 the connector to be articulated at that point. Such new 
                 handles can be removed by moving them to the end of the 
@@ -2744,9 +2744,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><emphasis>Button 2 motion</emphasis>. This is 
+                <para><emphasis>Button 2 motion</emphasis>. This is 
                 used to select items in a context sensitive menu popped 
-                up by use of button 2 click.</para>
+                up by use of button 2 click.</para>
 
               </listitem>
 
@@ -2769,8 +2769,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>Model elements that are already in the model, but not on a 
             diagram, may be added to a diagram by selecting the 
             model element in the explorer, using <literal>
-            Add to Diagram</literal> from the drop down menu (button 2) 
-            over that model element, and then clicking button 1 at the 
+            Add to Diagram</literal> from the drop down menu (button 2) 
+            over that model element, and then clicking button 1 at the 
             desired location on the diagram.</para>
 
             <para>As well as UML model elements, the Edit pane toolbar 
@@ -4660,7 +4660,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <para>ArgoUML allows you to draw use case diagrams. When you 
         create a new project it has a use case diagram created by 
         default, named <literal>use case diagram 1</literal>. Select 
-        this by button 1 click on the diagram name in the explorer (the 
+        this by button 1 click on the diagram name in the explorer (the 
         upper left quadrant of the user screen).</para>
 
         <para>New use case diagrams can be created as needed through 
@@ -4675,20 +4675,20 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <indexterm><primary>Create 
           New</primary><secondary>Actor</secondary></indexterm>
           <indexterm><primary>Actor</primary></indexterm>
-          <para>To add an actor to the diagram use button 1 click on 
+          <para>To add an actor to the diagram use button 1 click on 
           the actor icon on the editing pane toolbar (
           <guiicon><inlinemediaobject><imageobject>
           <imagedata align="center" fileref="images/icons/actor.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon>) 
-          and then button 1 click at the location where you wish to 
-          place it. The actor can be moved subsequently by button 1 
-          motion (i.e. button 1 down over the actor to select it, move 
-          to the new position and button 1 release to drop the actor in 
+          and then button 1 click at the location where you wish to 
+          place it. The actor can be moved subsequently by button 1 
+          motion (i.e. button 1 down over the actor to select it, move 
+          to the new position and button 1 release to drop the actor in 
           place.</para>
 
           <para>Multiple actors can be added in one go, by using 
-          button 1 double click on the actor icon. Each subsequent 
-          button 1 click will drop an actor on the diagram. A button 1 
+          button 1 double click on the actor icon. Each subsequent 
+          button 1 click will drop an actor on the diagram. A button 1 
           click on the select icon (
           <guiicon><inlinemediaobject><imageobject>
           <imagedata align="center" fileref="images/icons/select.gif"
@@ -4697,12 +4697,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>The actors name is set in its property panel. First 
           select the actor (if not already selected) on the editing 
-          pane using button 1 click. Then click on the <literal>
+          pane using button 1 click. Then click on the <literal>
           Properties</literal> tab in the details pane. The name is 
           entered in the name field, and will appear on the 
           screen.</para>
 
-          <para>As a shortcut, double button 1 click on the name of the 
+          <para>As a shortcut, double button 1 click on the name of the 
           actor in the editing pane (or just typing on the keyboard 
           when an actor is selected) will allow the name to be edited 
           directly. This is a convenient way to enter a name for a new 
@@ -4742,8 +4742,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para>Select the use case in the editing pane with 
-              button 1 click, then select the <literal>Style</literal> 
-              tab in the details pane and button 1 click on the 
+              button 1 click, then select the <literal>Style</literal> 
+              tab in the details pane and button 1 click on the 
               <literal>Display: Extension Points</literal> check 
               box.</para>
 
@@ -4751,7 +4751,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para>Use button 2 click over the use case in the editing 
+              <para>Use button 2 click over the use case in the editing 
               pane to display a context-sensitive pop-up menu and from 
               that choose <literal>Show/Show Extension Point 
               Compartment</literal>.</para>
@@ -4779,7 +4779,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Select the use case on the editing pane with 
-                button 1 click. Then click on the <literal>Add 
+                button 1 click. Then click on the <literal>Add 
                 Extension Point</literal> icon (
                 <guiicon><inlinemediaobject><imageobject>
                 <imagedata align="center"
@@ -4802,8 +4802,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Select the use case on the editing pane with 
-                button 1 click and then select its property tab in the 
-                details pane. A button 2 click over the <literal>
+                button 1 click and then select its property tab in the 
+                details pane. A button 2 click over the <literal>
                 Extension Points:</literal> field will bring up a 
                 context-sensitive pop-up menu. Select <literal>
                 Add</literal> to add a new extension point.</para>
@@ -4836,8 +4836,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>If the extension point compartment for the use 
                 case is displayed on the diagram, select the use case 
-                with button 1 click and then select the extension point 
-                with a further button 1 click. The property tab can 
+                with button 1 click and then select the extension point 
+                with a further button 1 click. The property tab can 
                 then be selected in the details pane.</para>
 
               </listitem>
@@ -4845,7 +4845,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Otherwise select the use case and its property 
-                tab in the details pane. A button 1 click on the 
+                tab in the details pane. A button 1 click on the 
                 desired entry in the <literal>Extension 
                 Points</literal> field will bring up the property tab 
                 for the extension point in the details pane.</para>
@@ -4863,7 +4863,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             and location for the extension point.</para>
 
             <para>Extension points may be deleted, or their ordering 
-            changed by using the button 2 pop-up menu over the <literal>
+            changed by using the button 2 pop-up menu over the <literal>
             Extension Points</literal> field in the use case property 
             tab.</para>
 
@@ -4886,26 +4886,26 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <indexterm><primary>Association</primary><secondary>in a Use 
           Case Diagram</secondary></indexterm>
           <para>To join a use case to an actor on the diagram use 
-          button 1 click on the association icon on the editing pane 
+          button 1 click on the association icon on the editing pane 
           toolbar (<guiicon><inlinemediaobject><imageobject>
           <imagedata align="center"
            fileref="images/icons/association.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon>). 
-          Hold button 1 down at the use case, move to the actor and 
-          release button 1 (or alternatively start at the actor and 
+          Hold button 1 down at the use case, move to the actor and 
+          release button 1 (or alternatively start at the actor and 
           finish at the use case).</para>
 
           <para>This will create a straight line between actor and use 
-          case. You can segment the line by holding down button 1 down 
+          case. You can segment the line by holding down button 1 down 
           on the line and moving before releasing. A vertex will be 
-          added to the line, which you can move by button 1 motion. A 
+          added to the line, which you can move by button 1 motion. A 
           vertex can be removed by picking it up and sliding to one end 
           of the line.</para>
 
           <para>Multiple associations can be added in one go, by using 
-          button 1 double click on the association icon. Each 
-          subsequent button 1 down/motion/release sequence will join an 
-          actor to a use case. Use button 1 on the select icon (
+          button 1 double click on the association icon. Each 
+          subsequent button 1 down/motion/release sequence will join an 
+          actor to a use case. Use button 1 on the select icon (
           <guiicon><inlinemediaobject><imageobject>
           <imagedata align="center" fileref="images/icons/select.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon>) 
@@ -4945,7 +4945,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Use button 2 click on the association to bring up 
+                <para>Use button 2 click on the association to bring up 
                 a context-sensitive pop-up menu. The <literal>
                 Navigability</literal> sub-menu has options for 
                 bi-directional navigation (the default, with no arrows) 
@@ -4956,14 +4956,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Use button 1 to select the association and select 
+                <para>Use button 1 to select the association and select 
                 its property tab in the details pane. This shows a 
                 field named <literal>Association Ends:</literal>, with 
                 entries for each end labeled by the actor or use case 
                 name and its multiplicity. Select the end that should 
-                be at the tail of the arrow with button 1 click. This 
+                be at the tail of the arrow with button 1 click. This 
                 brings up the property tab for the association end. Use 
-                button 1 click to uncheck the <literal>
+                button 1 click to uncheck the <literal>
                 Navigability</literal> box.</para>
 
                 <note>
@@ -5010,7 +5010,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Button 2 click over the end of an association 
+                <para>Button 2 click over the end of an association 
                 will cause a context-sensitive pop-up menu to appear 
                 with a sub-menu labeled <literal>
                 Multiplicity</literal>. This allows you to select from 
@@ -5081,9 +5081,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>Since include relationships are directional the order 
             in which the two ends are selected is important. The 
             <emphasis>including</emphasis> (main) use case should be 
-            selected first (button 1 down) and the 
+            selected first (button 1 down) and the 
             <emphasis>included</emphasis> (subsidiary) use case second 
-            (button 1 release).</para>
+            (button 1 release).</para>
 
             <para>It is possible to name include relationships using 
             the property tab, but this is rarely done, and will not be 
@@ -5112,9 +5112,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>As with include relationships, the order of selection 
             matters. In this case, the <emphasis>extending</emphasis> 
-            (subsidiary) use case should be selected first (button 1 
+            (subsidiary) use case should be selected first (button 1 
             down) and the <emphasis>extending</emphasis> (main) use 
-            case second (button 1 release).</para>
+            case second (button 1 release).</para>
 
             <note>
 
@@ -5128,8 +5128,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>To set a condition for the extend relationship, 
             select the extend relationship in the editing pane 
-            (button 1 click) and then bring up its property tab in the 
-            details pane ((button 1 click on the tab). The text of the 
+            (button 1 click) and then bring up its property tab in the 
+            details pane ((button 1 click on the tab). The text of the 
             condition may be typed in the <literal>Condition</literal> 
             field. Long conditions may be split over several lines if 
             desired. The condition is displayed under the <literal>
@@ -5163,8 +5163,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>Since generalization is a directed relationship, the 
             order of selection matters. The specialized use case should 
-            be selected first (button 1 down) and the generalized 
-            second (button 1 release).</para>
+            be selected first (button 1 down) and the generalized 
+            second (button 1 release).</para>
 
             <para>It is also possible to add generalizations using 
             small <quote>handles</quote> that appear to the top and 
@@ -5306,7 +5306,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           ).</para>
 
           <para>The rectangle tool can be used to draw the boundary 
-          box. Use the button 2 context-sensitive <literal>
+          box. Use the button 2 context-sensitive <literal>
           Ordering</literal> pop-up menu to place it behind everything 
           else. However there is no way to change its fill color from 
           the default white. You may therefore prefer to draw the 
@@ -7677,7 +7677,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>ArgoUML assumes a two button mouse. We will refer to 
           the buttons as <quote>button 1</quote> and 
-          <quote>button 2</quote>. Button 1 is the leftmost button on a 
+          <quote>button 2</quote>. Button 1 is the leftmost button on a 
           right-handed mouse, and sometimes referred to as the 
           <emphasis>select</emphasis> button. Button 2 is the rightmost 
           button on a right-handed mouse, and is sometimes referred to 
@@ -7715,7 +7715,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           selects or activates the object beneath the mouse-pointer, 
           and moves the focus (i.e. navigation).</para>
 
-          <para>More in detail, the button 1 click may cause the 
+          <para>More in detail, the button 1 click may cause the 
           following result:</para>
 
           <sect3>
@@ -7773,7 +7773,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Activation</title>
 
-            <para>Here button 1 is used to activate the user interface 
+            <para>Here button 1 is used to activate the user interface 
             component, e.g. a button. The object is usually highlighted 
             when the mouse button is pressed and then activated when 
             the mouse button is released. Activating an user-interface 
@@ -7785,7 +7785,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Navigation</title>
 
-            <para>Here button 1 is used to move the focus from one user 
+            <para>Here button 1 is used to move the focus from one user 
             interface component or diagram model element to another. It is 
             better known under the term keyboard focus. This because 
             keyboard commands usually work on the model element that has the 
@@ -7799,7 +7799,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>General Behavior When Editing Text</title>
 
-            <para>Here button 1 is used to select the point within the 
+            <para>Here button 1 is used to select the point within the 
             text at which operations (text entry and deletion) will 
             take place.</para>
 
@@ -7811,14 +7811,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Button 1 Double Click</title>
 
-          <para>The behavior of button 1 double click varies betweens 
+          <para>The behavior of button 1 double click varies betweens 
           panes and is discussed in their chapters.</para>
 
           <sect3>
 
             <title>General Behavior When Editing Text</title>
 
-            <para>Here button 1 double click is used to select a 
+            <para>Here button 1 double click is used to select a 
             complete word, or other syntactic unit within the text. 
             Subsequent operations (text entry and deletion) will 
             replace the selected text.</para>
@@ -7835,7 +7835,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>General Behavior When Editing Text</title>
 
-            <para>Here button 1 motion is used to select a range of 
+            <para>Here button 1 motion is used to select a range of 
             text. Subsequent operations (text entry and deletion) will 
             replace the selected text.</para>
 
@@ -7857,13 +7857,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             be selected.</para>
 
             <para>Where selections are to be made, the SHIFT key is 
-            used to with button 1 to <emphasis>extend</emphasis> from 
-            the original button 1 selection to the current 
+            used to with button 1 to <emphasis>extend</emphasis> from 
+            the original button 1 selection to the current 
             position.</para>
 
-            <para>Similarly the CTRL key with button 1 is used to 
+            <para>Similarly the CTRL key with button 1 is used to 
             add individual items to the current selection. Where 
-            Ctrl-button 1 is used on an item already selected, that 
+            Ctrl-button 1 is used on an item already selected, that 
             item is removed from the selection.</para>
 
             <caution>
@@ -7886,7 +7886,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>In a number of places in ArgoUML text may be directly 
             edited (for example when naming a model—element in the 
             properties pane, or when typing a UML note / comment). Here 
-            SHIFT button 1 is used to select a range of text from the 
+            SHIFT button 1 is used to select a range of text from the 
             previously selected point. Subsequent operations (text 
             entry and deletion) will replace the selected text.</para>
 
@@ -7898,7 +7898,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Alt with Button 1: Panning</title>
 
-          <para>When holding down the Alt key during button 1 down on a 
+          <para>When holding down the Alt key during button 1 down on a 
           diagram, movement of the mouse pans the drawing area. The 
           function is indicated by the mousepointer which turns into a 
           crosshair with arrows.</para>
@@ -7974,7 +7974,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           pane and one at the top of the vertical divider bar between 
           to-do pane and details pane. Button 1 click on the first of 
           these will expand the editing pane to the full width of the 
-          window, button 1 click on the second will expand the details 
+          window, button 1 click on the second will expand the details 
           pane to the full width of the window.</para>
 
           <para>There is also a small downward pointing arrow within 
@@ -8179,7 +8179,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                This is a different version of the menu-item for 
               zooming, as described in 
               <xref linkend="s2.ref.menu_zoom"/>
-              . Clicking with button 1 on the zoom-icon opens a panel 
+              . Clicking with button 1 on the zoom-icon opens a panel 
               as in the figure below.
               <figure float="1" id="fig.ref.toolbar_zoom">
 
@@ -8199,15 +8199,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Clicking with button 1 on the &quot;knob&quot; 
-                followed by button 1 movement will adjust the 
+                <para>Clicking with button 1 on the &quot;knob&quot; 
+                followed by button 1 movement will adjust the 
                 zoomfactor.</para>
 
               </listitem>
 
               <listitem>
 
-                <para>Clicking with button 1 on the shown percentage 
+                <para>Clicking with button 1 on the shown percentage 
                 allows editing the given zoomfactor (in percent) 
                 directly with the keyboard. Double clicking on the 
                 value shown selects the whole entry for easy 
@@ -8217,7 +8217,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Clicking with button 1 below or above the knob 
+                <para>Clicking with button 1 below or above the knob 
                 increases or decreass the zoom factor with 1%. Use this 
                 function to easily fine-adjust the percentage.</para>
 
@@ -8225,7 +8225,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Clicking with button 1 or button 2 on the 
+                <para>Clicking with button 1 or button 2 on the 
                 <literal>Zoom</literal> tool, or anywhere outside the 
                 slider panel closes the panel.</para>
 
@@ -8579,7 +8579,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_open_project">
 
             <title>The file selection dialog for <literal>
-            Open Project...</literal>.</title>
+            Open Project...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -8595,14 +8595,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Navigating in the directory tree is possible by 
           selecting a directory in the drop down selector at the top of 
           this dialog. Navigating deeper in the tree may be done by 
-          double clicking button 1 on the directory shown in the main 
+          double clicking button 1 on the directory shown in the main 
           text area.</para>
 
           <para>In the lower portion of the dialog is a text box 
           labeled <literal>File name:</literal> for the name of the 
           file to be opened. The file name may be typed directly in 
           here, or selected from the directory listing above using 
-          button 1 click.</para>
+          button 1 click.</para>
 
           <para>Beneath this is a drop down selector labeled <literal>
           Files of type:</literal> to specify a filter on the files to 
@@ -8686,7 +8686,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           the first time if the project is a new project).</para>
 
           <para>The dialog box is almost identical to that for <literal>
-          Open Project</literal> (see 
+          Open Project</literal> (see 
           <xref linkend="fig.ref.menu_open_project"/>). The extension 
           of the filename is automatically set.</para>
 
@@ -8815,7 +8815,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           imported for reverse engineering.</para>
 
           <para>The dialog box is similar to that for <literal>
-          Open Project</literal> (see 
+          Open Project</literal> (see 
           <xref linkend="fig.ref.menu_open_project"/>), but with two 
           extra tabs placed alongside the directory listing, as shown 
           in <xref linkend="fig.ref.menu_import_sources"/>).</para>
@@ -8832,7 +8832,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </figure>
 
           <para>Those fields that are the same as <literal>
-          Open Project</literal> behave in the same way (see 
+          Open Project</literal> behave in the same way (see 
           <xref linkend="s2.ref.menu_open_project"/>).</para>
 
           <para>Next to the &quot;All Files&quot; file filter, there is 
@@ -8840,7 +8840,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           (*.java)&quot;.</para>
 
           <para>The first of the two tabs is labeled <literal>
-          General</literal> and is selected by button 1 click on its 
+          General</literal> and is selected by button 1 click on its 
           tab. It provides a combo box for the language selection (in 
           V0.18 of ArgoUML only Java can be chosen), and the following 
           selections:</para>
@@ -8914,7 +8914,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </itemizedlist>
 
           <para>The second of the two tabs is labeled <literal>
-          Java</literal> and is selected by button 1 click on its tab. 
+          Java</literal> and is selected by button 1 click on its tab. 
           It provides two pairs of radio boxes.</para>
 
           <itemizedlist>
@@ -9018,7 +9018,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           in one of a number of graphic formats.</para>
 
           <para>The dialog box is identical to that for <literal>
-          Open Project</literal> (see 
+          Open Project</literal> (see 
           <xref linkend="fig.ref.menu_open_project"/>), except for the 
           <literal>Files of type:</literal>. The chosen filetype 
           specifies the graphics format used for saving. The filename 
@@ -9641,7 +9641,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           diagram, but not from the model.</para>
 
           <para>The modelelement can be re-added to the diagram by 
-          button 2 click on the modelelement in the explorer, 
+          button 2 click on the modelelement in the explorer, 
           or by dragging it onto the diagram.</para>
 
         </sect2>
@@ -9749,7 +9749,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para><literal>OK</literal>. Activating this button 
-              (button 1 click) applies the chosen settings and exits 
+              (button 1 click) applies the chosen settings and exits 
               the dialog.</para>
 
             </listitem>
@@ -9757,7 +9757,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para><literal>Cancel</literal>. Selecting this button 
-              (button 1 click) exits the dialog without applying any 
+              (button 1 click) exits the dialog without applying any 
               settings changed since the last <literal>Apply</literal> 
               (or since the dialog started if <literal>Apply</literal> 
               has not been used).</para>
@@ -9767,7 +9767,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para><literal>Apply</literal>. Selecting this button 
-              (button 1 click) applies the chosen settings and remains 
+              (button 1 click) applies the chosen settings and remains 
               in the dialog.</para>
 
             </listitem>
@@ -9783,7 +9783,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>Preferences Tab</title>
 
             <para>Selecting the <literal>Preferences</literal> tab 
-            (button 1 click on the tab) gives the following options as 
+            (button 1 click on the tab) gives the following options as 
             check boxes.</para>
 
             <itemizedlist>
@@ -9864,7 +9864,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>Environment Tab</title>
 
             <para>Selecting the <literal>Environment</literal> tab 
-            (button 1 click on the tab) lists several environmental items. 
+            (button 1 click on the tab) lists several environmental items. 
             Note that none of the paths can be altered — these are 
             just a matter of record.</para>
 
@@ -10292,7 +10292,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>The dialog box contains a table with three columns and 
           one row for each diagram in the current project. A scroll bar 
           gives access if the table is too long for the box. Double 
-          button 1 click on any row will select that diagram in the 
+          button 1 click on any row will select that diagram in the 
           editing pane. The three columns are as follows.</para>
 
           <itemizedlist>
@@ -10383,7 +10383,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para>A text box labeled <literal>In Diagram:</literal> 
+              <para>A text box labeled <literal>In Diagram:</literal> 
               specifies which diagrams are to be searched. Again wild 
               cards may be used. Both these two text boxes have a 
               default entry of <literal>*</literal>, i.e. match 
@@ -10662,7 +10662,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>If you wish to align existing elements to changed
             snap boundaries, 
             you can use the <literal>
-            Arrange &gt; Align To Grid Snap</literal> menu (see 
+            Arrange &gt; Align To Grid Snap</literal> menu (see 
             <xref linkend="s2.ref.menu_align"/>).</para>
 
           </note>
@@ -10737,7 +10737,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>This does not prevent model elements from other 
             namespaces/packages appearing on the diagram. They can be 
             added from the explorer using <literal>Add to 
-            Diagram</literal> from the button 2 pop-up menu.</para>
+            Diagram</literal> from the button 2 pop-up menu.</para>
 
           </tip>
 
@@ -10766,7 +10766,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>This does not prevent model elements from other 
             namespaces/packages appearing on the diagram. They can be 
             added from the explorer using <literal>Add to 
-            Diagram</literal> from the button 2 pop-up menu.</para>
+            Diagram</literal> from the button 2 pop-up menu.</para>
 
           </tip>
 
@@ -10831,7 +10831,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             added from the explorer by 
             dragging or by 
             using <literal>Add to Diagram</literal> 
-            from the button 2 pop-up menu.</para>
+            from the button 2 pop-up menu.</para>
 
           </tip>
 
@@ -10930,7 +10930,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             added from the explorer by
             dragging or by
             using <literal>Add to Diagram</literal> 
-            from the button 2 pop-up menu.</para>
+            from the button 2 pop-up menu.</para>
 
           </tip>
 
@@ -11295,7 +11295,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Finally, at the bottom of the dialog box are two 
           buttons, labeled <literal>Generate</literal> and <literal>
           Cancel</literal>. Button 1 click on the former will cause the 
-          code to be generated, button 1 click on the latter will 
+          code to be generated, button 1 click on the latter will 
           cancel code generation.</para>
 
         </sect2>
@@ -11397,7 +11397,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_design_issues">
 
             <title>The dialog for <literal>
-            Design Issues...</literal>.</title>
+            Design Issues...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -11441,7 +11441,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_design_goals">
 
             <title>The dialog for <literal>
-            Design Goals...</literal>.</title>
+            Design Goals...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -11514,7 +11514,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           there are three columns, labeled <literal>Active</literal>, 
           <literal>Headline</literal> and <literal>Snoozed</literal>. 
           The first of these is a check box, which may be toggled with 
-          button 1 click. The second is the headline name of the 
+          button 1 click. The second is the headline name of the 
           critic, the third indicates if the critic has been snoozed 
           from the to-do pane (see <xref linkend="ch.ref.todopane"/>. A 
           critic is only really active if the box in the first column 
@@ -11769,7 +11769,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
              format="PNG"/></imageobject></mediaobject></screenshot>
           </figure>
 
-          <para>The window has six tabs, which are selected by button 1 
+          <para>The window has six tabs, which are selected by button 1 
           click. By default the first tab (<literal>Splash</literal>) 
           is shown.</para>
 
@@ -11939,9 +11939,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </note>
 
-          <para>Where button 2 click has been used to bring up a 
-          context sensitive pop-up menu (see below), button 1 click is 
-          used to select the menu entry required. button 1 click 
+          <para>Where button 2 click has been used to bring up a 
+          context sensitive pop-up menu (see below), button 1 click is 
+          used to select the menu entry required. button 1 click 
           outside the menu area will remove it.</para>
 
         </sect2>
@@ -11950,7 +11950,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Button 1 Double Click</title>
 
-          <para>This has the effect of a button 1 single click, and if 
+          <para>This has the effect of a button 1 single click, and if 
           the tree item was not a leaf, it will toggle the hierarchy 
           open or close.</para>
 
@@ -12006,7 +12006,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           selection dependent pop-up menu. Menu entries are highlighted 
           (but not selected) and sub-menus exposed by subsequent mouse 
           motion (without any buttons). Menu entry selection is with 
-          button 1 or button 2.</para>
+          button 1 or button 2.</para>
 
         </sect2>
 
@@ -12014,7 +12014,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Button 2 Double Click</title>
 
-          <para>This has no effect other than that of button 2 single 
+          <para>This has no effect other than that of button 2 single 
           click.</para>
 
         </sect2>
@@ -12183,7 +12183,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>The Configure Perspectives dialog</title>
 
-          <para>button 1 click on the &quot;Configure 
+          <para>button 1 click on the &quot;Configure 
           Perspectives&quot; icon (
           <guiicon><inlinemediaobject><imageobject>
           <imagedata align="center"
@@ -12296,7 +12296,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>At the very bottom right is a button labeled <literal>
           OK</literal> to be used when all changes are complete. 
-          button 1 click on this button will close the dialog window. 
+          button 1 click on this button will close the dialog window. 
           The changes are saved when you exit ArgoUML (or inmediately 
           by activating the menuitem File-&gt;Save Configuration) in 
           the <literal>argo.user.properties</literal> file.</para>
@@ -12412,7 +12412,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>The item can be placed in a diagram by moving the 
           cursor to the editing pane or a spawned editing pane window 
           (where it will appear as a cross) and clicking 
-          button 1.</para>
+          button 1.</para>
 
           <caution>
 
@@ -12564,14 +12564,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Button 1 Click</title>
 
-          <para>In the tool bar of the editing pane, button 1 click is 
+          <para>In the tool bar of the editing pane, button 1 click is 
           used to select a tool for creating a new model element and adding 
           it to the diagram (see double clicking for creating multiple 
           model elements). For most tools, adding a new model element to the 
           diagram is achieved by moving the mouse into the editing area 
           and clicking again.</para>
 
-          <para>In the main editing area button 1 click is used to 
+          <para>In the main editing area button 1 click is used to 
           select an individual model element.</para>
 
           <para>Many model elements (e.g. actor, class) show special handles 
@@ -12586,10 +12586,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           handles are shown, which stand for different relation 
           types.</para>
 
-          <para>Where button 2 click has been used to bring up a 
-          context sensitive pop-up menu (see below), button 1 click is 
+          <para>Where button 2 click has been used to bring up a 
+          context sensitive pop-up menu (see below), button 1 click is 
           used to select the menu entry required. The pop-up menu will 
-          be removed by any button 1 click outside of the menu 
+          be removed by any button 1 click outside of the menu 
           area.</para>
 
           <para>There are various more detailed effects, which are 
@@ -12640,21 +12640,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Button 1 Motion</title>
 
           <!-- This has never worked AFAIK!
-          <para>When adding a model element using the toolbar, button 1 
+          <para>When adding a model element using the toolbar, button 1 
           motion can generally be used to define the size of the new 
           model element. Its dimensions (line ends, diagonal corners of a 
-          rectangular model element etc) are defined by button 1 down and 
-          button 1 up.</para>
+          rectangular model element etc) are defined by button 1 down and 
+          button 1 up.</para>
           -->
 
           <para>Where the model element being added is some form of 
-          connector its termination point is shown with button 1 up 
-          over the terminating model element. button 1 click may be used in 
+          connector its termination point is shown with button 1 up 
+          over the terminating model element. button 1 click may be used in 
           the space between model elements to create articulation points in 
           the connector. This is particularly useful where connectors 
           must loopback on themselves.</para>
 
-          <para>Over graphical model elements button 1 motion will move the 
+          <para>Over graphical model elements button 1 motion will move the 
           model element to a new position.</para>
 
           <para>Graphical model elements that are selected show handles at 
@@ -12668,7 +12668,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           types of relationship with other model elements.</para>
 
           <para>Where the model element is some form of connector between 
-          other items, button 1 motion other than at a handle will 
+          other items, button 1 motion other than at a handle will 
           cause a new handle to be created, allowing the connector to 
           be articulated at that point. This only works when the 
           connecting line is not straight angled. Such new handles can 
@@ -12685,7 +12685,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Shift and Ctrl modifiers with Button 1</title>
 
           <para>Where multiple selections are to be made, the CTRL key 
-          is used with button 1 to <emphasis>add</emphasis> unselected 
+          is used with button 1 to <emphasis>add</emphasis> unselected 
           model elements to the current selection. Where a model element is 
           already selected, it is removed from the current 
           selection.</para>
@@ -12703,7 +12703,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>Button 1 down anywhere in the diagram while the ALT key 
           is pressed, allows to scroll the canvas in all directions 
-          with button 1 motion.</para>
+          with button 1 motion.</para>
 
         </sect2>
 
@@ -12715,7 +12715,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           will display a context dependent pop-up menu. Menu entries 
           are highlighted (but not selected) and sub-menus exposed by 
           subsequent mouse motion (without any buttons). Menu entry 
-          selection is with button 1 or button 2. See 
+          selection is with button 1 or button 2. See 
           <xref linkend="s1.ref.edit_pane_pop_up"/> for details of the 
           specific pop-up menus.</para>
 
@@ -12730,7 +12730,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Button 2 Double Click</title>
 
-          <para>This has no effect other than that of button 2 single 
+          <para>This has no effect other than that of button 2 single 
           click.</para>
 
         </sect2>
@@ -12740,7 +12740,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Button 2 Motion</title>
 
           <para>This is used to select items in a context sensitive 
-          menu popped up by use of button 2 click.</para>
+          menu popped up by use of button 2 click.</para>
 
         </sect2>
 
@@ -12786,8 +12786,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         Select</literal> tool (<guiicon><inlinemediaobject><imageobject>
         <imagedata align="center" fileref="images/icons/select.gif"
          format="GIF"/></imageobject></inlinemediaobject></guiicon>). 
-        In general button 1 click on any tool selects a tool for one 
-        use, before reverting to the default tool, and button 1 double 
+        In general button 1 click on any tool selects a tool for one 
+        use, before reverting to the default tool, and button 1 double 
         click selects a tool for repeated use.</para>
 
         <para>The tools fall into four categories.</para>
@@ -12853,7 +12853,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Select</literal>. This tool provides for general 
               selection of model elements on the diagram. Button 1 click 
-              will select a model element. CTRL with button 1 can be used 
+              will select a model element. CTRL with button 1 can be used 
               to select (or deselect) multiple model elements. Button 1 
               motion will move selected 2D items or add and move a new 
               control point on a link. Button 1 motion on a selected 
@@ -12873,7 +12873,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               things up.</para>
 
               <para>The Broom can also be invoked by using SHIFT with 
-              button 1 motion when the <literal>Select</literal> tool 
+              button 1 motion when the <literal>Select</literal> tool 
               is in use.</para>
 
               <para>The Broom is discussed at length in its own 
@@ -12908,7 +12908,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>Unlike most other tools you use the <literal>
             Select</literal> tool to select a model element, and then 
-            button 1 click on <literal>Comment</literal> to create the 
+            button 1 click on <literal>Comment</literal> to create the 
             comment. If no element is selected when the comment tool is 
             clicked, then the comment is created and put at the left 
             top corner.</para>
@@ -12916,7 +12916,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </caution>
 
           <para>The comment is created alongside the selected model element, 
-          empty by default. The text can be selected with button 1 
+          empty by default. The text can be selected with button 1 
           double-click and edited from the keyboard.</para>
 
           <para>The UML standard allows comments to be attached to any 
@@ -12955,12 +12955,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <xref linkend="fig.ref.edit_graphical_tools"/>. Button 1 
           click on the diagram will place an instance of the graphical 
           item of the same size as the last one placed. The size can be 
-          controlled by button 1 motion during placement. One side or 
-          end of the element will be at button 1 down, the other side 
-          or end at button 1 up. In general after they are placed on 
+          controlled by button 1 motion during placement. One side or 
+          end of the element will be at button 1 down, the other side 
+          or end at button 1 up. In general after they are placed on 
           the diagram, graphical elements can be dragged with the 
-          <literal>Select</literal> tool and button 1 and re-sized by 
-          button 1 motion on the handles after they have been 
+          <literal>Select</literal> tool and button 1 and re-sized by 
+          button 1 motion on the handles after they have been 
           selected.</para>
 
           <figure float="1" id="fig.ref.edit_graphical_tools">
@@ -13036,8 +13036,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/polygon.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Polygon</literal>. Provides a polygon. The 
-              points of the polygon are selected by button 1 click and 
-              the polygon closed with button 1 double click (which will 
+              points of the polygon are selected by button 1 click and 
+              the polygon closed with button 1 double click (which will 
               link the final point to the first point).</para>
 
             </listitem>
@@ -13049,8 +13049,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/spline.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Spline</literal>. Provide an open spline. The 
-              control points of the spline are selected with button 1 
-              and the last point selected with button 1 double 
+              control points of the spline are selected with button 1 
+              and the last point selected with button 1 double 
               click.</para>
 
             </listitem>
@@ -13061,7 +13061,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <imagedata align="center" fileref="images/icons/ink.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Ink</literal>. Provide a polyline. The points 
-              are provided by button 1 motion.</para>
+              are provided by button 1 motion.</para>
 
             </listitem>
 
@@ -13115,7 +13115,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/association_plain.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Association</literal>. Add an association 
-              between two model elements selected using button 1 motion 
+              between two model elements selected using button 1 motion 
               (from the first model element to the second). There are 6 
               types of association offered here, see 
               <xref linkend="fig.ref.edit_association_tools"/>: 
@@ -13144,7 +13144,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/dependency.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Dependency</literal>. Add a dependency between 
-              two model elements selected using button 1 motion (from the 
+              two model elements selected using button 1 motion (from the 
               dependent model element).</para>
 
             </listitem>
@@ -13156,7 +13156,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/generalization.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Generalization</literal>. Add a generalization 
-              between two model elements selected using button 1 motion 
+              between two model elements selected using button 1 motion 
               (from the child to the parent).</para>
 
             </listitem>
@@ -13168,7 +13168,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/extend.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Extend</literal>. Add an extend relationship 
-              between two model elements selected using button 1 motion 
+              between two model elements selected using button 1 motion 
               (from the extended to the extending use case).</para>
 
             </listitem>
@@ -13180,7 +13180,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/include.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Include</literal>. Add an include relationship 
-              between two model elements selected using button 1 motion 
+              between two model elements selected using button 1 motion 
               (from the including to the included use case).</para>
 
             </listitem>
@@ -13196,8 +13196,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               given the default name <literal>newEP</literal> and 
               location <literal>loc</literal>. Where the extension 
               point compartment is displayed, the extension point may 
-              be edited by button 1 double click and using the 
-              keyboard, or by selecting with button 1 click (after the 
+              be edited by button 1 double click and using the 
+              keyboard, or by selecting with button 1 click (after the 
               use case has been selected) and using the property tab. 
               Otherwise it may be edited through its property tab, 
               selected through the property tab of the owning use 
@@ -13262,7 +13262,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/association_plain.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Association</literal>. Add an association 
-              between two model elements selected using button 1 motion 
+              between two model elements selected using button 1 motion 
               (from the first model element to the second). There are 2 
               types of association offered here, <literal>
               bidirectional</literal> or <literal>
@@ -13277,7 +13277,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/composition_plain.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Composition</literal>. Add an composition 
-              between two model elements selected using button 1 motion 
+              between two model elements selected using button 1 motion 
               (from the first model element to the second). There are 2 
               types of composition offered here, <literal>
               bidirectional</literal> or <literal>
@@ -13292,7 +13292,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/aggregation_plain.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Aggregation</literal>. Add an aggregation
-              between two model elements selected using button 1 motion 
+              between two model elements selected using button 1 motion 
               (from the first model element to the second). There are 2
               types of aggregation offered here, <literal>
               bidirectional</literal> or <literal>
@@ -13307,7 +13307,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/generalization.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Generalization</literal>. Add a generalization 
-              between two model elements selected using button 1 (from the 
+              between two model elements selected using button 1 (from the 
               child to the parent).</para>
 
             </listitem>
@@ -13333,7 +13333,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/realization.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Realization</literal>. Add a realization between 
-              a class and an interface selected using button 1 motion 
+              a class and an interface selected using button 1 motion 
               (from the realizing class to the realized 
               interface).</para>
 
@@ -13346,7 +13346,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/dependency.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Dependency</literal>. Add a dependency between 
-              two model elements selected using button 1 motion (from the 
+              two model elements selected using button 1 motion (from the 
               dependent model element). There are also 2 special types of 
               dependency offered here, <literal>Permission</literal> (
               <guiicon><inlinemediaobject><imageobject>
@@ -13373,8 +13373,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <literal>Attribute</literal>. Add a new attribute to the 
               currently selected class. The attribute is given the 
               default name <literal>newAttr</literal> of type <literal>
-              int</literal> and may be edited by button 1 double click 
-              and using the keyboard, or by selecting with button 1 
+              int</literal> and may be edited by button 1 double click 
+              and using the keyboard, or by selecting with button 1 
               click (after the class has been selected) and using the 
               property tab.</para>
 
@@ -13397,8 +13397,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               currently selected class or interface. The operation is 
               given the default name <literal>newOperation</literal> 
               with no arguments and return type <literal>void</literal> 
-              and may be edited by button 1 double click and using the 
-              keyboard, or by selecting with button 1 click (after the 
+              and may be edited by button 1 double click and using the 
+              keyboard, or by selecting with button 1 click (after the 
               class has been selected) and using the property 
               tab.</para>
 
@@ -13419,7 +13419,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Association Class</literal>. 
               Add a new association class 
-              between two model elements selected using button 1 motion 
+              between two model elements selected using button 1 motion 
               (from the first model element to the second).</para>
 
             </listitem>
@@ -13494,7 +13494,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Message with Call Action</literal>. 
               Add a call message 
-              between two classifierroles selected using button 1 motion (from 
+              between two classifierroles selected using button 1 motion (from 
               the originating classifierrole to the receiving classifierrole).
               </para>
 
@@ -13508,7 +13508,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Message with Return Action</literal>. 
               Add a return message 
-              between two classifierroles selected using button 1 motion (from 
+              between two classifierroles selected using button 1 motion (from 
               the originating classifierrole to the receiving classifierrole).
               </para>
 
@@ -13522,7 +13522,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Message with Create Action</literal>. 
               Add a create message 
-              between two classifierroles selected using button 1 motion (from 
+              between two classifierroles selected using button 1 motion (from 
               the originating classifierrole to the receiving classifierrole).
               </para>
 
@@ -13536,7 +13536,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Message with Destroy Action</literal>. 
               Add a destroy message 
-              between two classifierroles selected using button 1 motion (from 
+              between two classifierroles selected using button 1 motion (from 
               the originating classifierrole to the receiving classifierrole).
               </para>
 
@@ -13606,7 +13606,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/association_plain.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Association Role</literal>. Add an association 
-              role between two classifier roles selected using button 1 
+              role between two classifier roles selected using button 1 
               motion (from the originating classifier role to the 
               receiving classifier role). There are 6 types of 
               association roles offered here, see 
@@ -13626,7 +13626,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/generalization.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Generalization</literal>. Add a generalization 
-              between two model elements selected using button 1 (from the 
+              between two model elements selected using button 1 (from the 
               child to the parent).</para>
 
             </listitem>
@@ -13638,7 +13638,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/dependency.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Dependency</literal>. Add a dependency between 
-              two model elements selected using button 1 motion (from the 
+              two model elements selected using button 1 motion (from the 
               dependent model element).</para>
 
             </listitem>
@@ -13706,7 +13706,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/transition.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Transition</literal>. Add a transition between 
-              two states selected using button 1 motion (from the 
+              two states selected using button 1 motion (from the 
               originating state to the receiving state).</para>
 
             </listitem>
@@ -13907,7 +13907,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/transition.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Transition</literal>. Add a transition between 
-              two action states selected using button 1 motion (from 
+              two action states selected using button 1 motion (from 
               the originating action state to the receiving action 
               state).</para>
 
@@ -14117,7 +14117,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/generalization.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Generalization</literal>. Add a generalization 
-              between two model elements selected using button 1 (from the 
+              between two model elements selected using button 1 (from the 
               child to the parent).</para>
 
             </listitem>
@@ -14129,7 +14129,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/realization.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Realization</literal>. Add a realization between 
-              a class and an interface selected using button 1 motion 
+              a class and an interface selected using button 1 motion 
               (from the realizing class to the realized 
               interface).</para>
 
@@ -14142,7 +14142,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                fileref="images/icons/dependency.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Dependency</literal>. Add a dependency between 
-              two model elements selected using button 1 motion (from the 
+              two model elements selected using button 1 motion (from the 
               dependent model element).</para>
 
             </listitem>
@@ -14155,7 +14155,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Association</literal>. Add an association 
               between two model elements (node, component, class or 
-              interface) selected using button 1 motion (from the first 
+              interface) selected using button 1 motion (from the first 
               model element to the second model element). There are 6 types of 
               association offered here, see 
               <xref linkend="fig.ref.edit_association_tools"/>: 
@@ -14196,7 +14196,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Link</literal>. Add a link between two model elements 
               (node instance, component instance or object) selected 
-              using button 1 motion.</para>
+              using button 1 motion.</para>
 
             </listitem>
 
@@ -14224,7 +14224,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         left-alignment to right-alignment.</para>
 
         <para>The T-shaped icon in ArgoUML&apos;s diagram toolbar 
-        invokes the broom alignment tool. When the mouse button 1 is 
+        invokes the broom alignment tool. When the mouse button 1 is 
         pressed while in broom-mode, the designer&apos;s initial mouse 
         movement orients the broom to face in one of four directions: 
         north, south, east, or west. After that, mouse drag events 
@@ -14417,7 +14417,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
              format="PNG"/></imageobject></inlinemediaobject></guiicon>). 
             Not seen in ordinary editing, but used when a to-do item is 
             highlighted from the to-do pane (see 
-            <xref linkend="ch.ref.todopane"/>) by button 1 double 
+            <xref linkend="ch.ref.todopane"/>) by button 1 double 
             click. The solid line is used to show all the model elements 
             affected by the critic, for example all stimuli that are 
             out of order.</para>
@@ -14451,7 +14451,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         as <literal>As Diagram</literal>. The concept is that a UML 
         diagram can be displayed in a number of ways, for example as a 
         graphical diagram or as a table. Each representation would have 
-        its own tab and be selected by button 1 click on the tab.</para>
+        its own tab and be selected by button 1 click on the tab.</para>
 
         <para>Earlier versions of ArgoUML did implement a tabular 
         representation, but the current release only supports a diagram 
@@ -14463,7 +14463,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Pop-Up Menus</title>
 
-        <para>Within the editing pane, button 2 click over a model element 
+        <para>Within the editing pane, button 2 click over a model element 
         will bring up a pop-up menu with a variable number of main 
         entries, many with a sub-menu.</para>
 
@@ -15118,7 +15118,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         all its associated data is viewed and entered.</para>
 
         <para>The Pane has a series of tabs at the top, which are 
-        selected by button 1 click The body of a tab is a menu of items 
+        selected by button 1 click The body of a tab is a menu of items 
         to be checked, selected or entered specific to the particular 
         tab selected.</para>
 
@@ -15142,7 +15142,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <literal>Critique</literal> menu—see 
         <xref linkend="s1.ref.menu_critique"/>). 
         <xref linkend="fig.ref.details_to_do"/> shows a typical pane. 
-        The to-do item is selected with button 1 in the to-do pane (see 
+        The to-do item is selected with button 1 in the to-do pane (see 
         <xref linkend="ch.ref.todopane"/>) or by using the <literal>
         Critiques</literal> context sensitive pop-up menu on the 
         editing pane.</para>
@@ -15444,7 +15444,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         sometimes by just typing the required value.</para>
 
         <para>However for many text boxes and text areas, data entry is 
-        via a context sensitive pop-up menu (using button 2 click), 
+        via a context sensitive pop-up menu (using button 2 click), 
         which offers options to add a new entry, delete an entry or 
         move entries up and down (in text areas with multiple 
         entries).</para>
@@ -16071,13 +16071,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </itemizedlist>
 
-        <para>Finer control can be achieved by using button 1 motion to 
+        <para>Finer control can be achieved by using button 1 motion to 
         drag the dividing bar to left and right.</para>
 
         <para>The box on the left is titled <literal>Constraint 
         Name</literal> and lists all the constraints (if any) so far 
         defined for the selected model element. A constraint may be selected 
-        by button 1 click.</para>
+        by button 1 click.</para>
 
         <para>The box on the right is labeled <literal>
         Preview</literal> and contains the text of the constraint. This 
@@ -16175,7 +16175,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           be inserted into the constraint being edited.</para>
 
           <para>The syntax assistant can be made floating in a separate 
-          window by button 1 motion on the small divider area to the 
+          window by button 1 motion on the small divider area to the 
           left of the row of drop-down menus.</para>
 
           <itemizedlist>
@@ -16233,7 +16233,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               Entries: <literal>or</literal>; <literal>and</literal>; 
               <literal>xor</literal>; <literal>not</literal>; <literal>
               implies</literal>; and <literal>
-              if then else</literal>.</para>
+              if then else</literal>.</para>
 
             </listitem>
 
@@ -16250,7 +16250,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                   <para><literal>General</literal>. Functions that 
                   apply to all types of collection. Entries: <literal>
-                  Collection {}</literal> (insert a new collection); 
+                  Collection {}</literal> (insert a new collection); 
                   <literal>Set {}</literal> (insert a a new set); 
                   <literal>Bag {}</literal> (insert a new bag); 
                   <literal>Sequence {}</literal> (insert a new 
@@ -16512,7 +16512,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           when the hierarchy is open.</para>
 
           <para>When these icons are displayed, the display of the 
-          hierarchy is toggled by button 1 click on these icons.</para>
+          hierarchy is toggled by button 1 click on these icons.</para>
 
           <para>Button 1 click over the headline of any to-do item will 
           cause its details to be shown in the <literal>
@@ -16529,7 +16529,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           category, this will cause the display of that hierarchy to be 
           toggled.</para>
 
-          <para>When applied to a headline, button 1 double click will 
+          <para>When applied to a headline, button 1 double click will 
           show the diagram for the model element to which the to-do item 
           applies in the editing pane and select the model element on the 
           diagram using an appropriate clarifier (the model element may be 
@@ -16542,7 +16542,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Button 2 Actions</title>
 
-          <para>There are no button 2 functions in the to-do 
+          <para>There are no button 2 functions in the to-do 
           pane.</para>
 
         </sect2>
@@ -16551,7 +16551,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Button 2 Double Click</title>
 
-          <para>There are no button 2 functions in the to-do 
+          <para>There are no button 2 functions in the to-do 
           pane.</para>
 
         </sect2>
@@ -16594,7 +16594,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Containment</literal>, <literal>
             Planned Extensions</literal>, <literal>
             State Machines</literal>, <literal>
-            Design Patterns</literal>, <literal>
+            Design Patterns</literal>, <literal>
             Relationships</literal>, <literal>Instantiation</literal>, 
             <literal>Modularity</literal>, <literal>
             Expected Usage</literal>, <literal>Methods</literal>, 
@@ -16937,7 +16937,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>To fix this, manually select the association and change 
           the names of one or more of the offending ends (roles) using 
-          the button 2 pop-up menu or the property sheet.</para>
+          the button 2 pop-up menu or the property sheet.</para>
 
         </sect2>
 
@@ -18227,7 +18227,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>To fix this, identify the <quote>part</quote> end of 
           the association, and use the critic wizard (the <literal>
           Next&gt;</literal> button, or manually set its aggregation to 
-          <literal>none</literal> using the button 2 pop-up menu or the 
+          <literal>none</literal> using the button 2 pop-up menu or the 
           property sheet.</para>
 
           <para>Composition (more correctly called composite 
@@ -18272,7 +18272,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>To fix this, manually select the association, and set 
           the aggregation of each of its ends (roles) to <literal>
-          none</literal> using the button 2 pop-up menu or the property 
+          none</literal> using the button 2 pop-up menu or the property 
           sheet.</para>
 
         </sect2>
@@ -19447,7 +19447,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Text area. Lists all the operations defined on 
                 this datatype. Button 1 double click navigates to the 
-                selected operation. button 2 click brings up a pop up 
+                selected operation. button 2 click brings up a pop up 
                 menu with two entries.</para>
 
                 <itemizedlist>
@@ -19503,7 +19503,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Datatype</secondary></indexterm>
                 <para>Text area. Lists all the enumeration literals 
                 defined for this datatype. Button 1 double click 
-                navigates to the selected literal, button 2 click 
+                navigates to the selected literal, button 2 click 
                 brings up a pop up menu with two entries.</para>
 
                 <itemizedlist>
@@ -20057,7 +20057,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Text area. Lists all the operations defined on 
                 this enumeration. Button 1 double click navigates to the 
-                selected operation. button 2 click brings up a pop up 
+                selected operation. button 2 click brings up a pop up 
                 menu with two entries.</para>
 
                 <itemizedlist>
@@ -20113,7 +20113,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Enumeration</secondary></indexterm>
                 <para>Text area. Lists all the enumeration literals 
                 defined for this enumeration. Button 1 double click 
-                navigates to the selected literal, button 2 click 
+                navigates to the selected literal, button 2 click 
                 brings up a pop up menu with two entries.</para>
 
                 <itemizedlist>
@@ -21441,7 +21441,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>By default ArgoUML does not show the extension point 
           compartment. It may be revealed by the context sensitive 
-          <literal>Show</literal> menu (using button 2 click), or from 
+          <literal>Show</literal> menu (using button 2 click), or from 
           the Presentation tab.</para>
 
         </caution>
@@ -21879,7 +21879,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </note>
 
                 <para>Where an extension point has been created (see 
-                below), button 1 Double Click will navigate to that 
+                below), button 1 Double Click will navigate to that 
                 relationship. Button 2 gives a pop up menu with one 
                 entry.</para>
 
@@ -21957,7 +21957,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 this use case.</para>
 
                 <para>Where an extends relationship has been created, 
-                button 1 double click will navigate to that 
+                button 1 double click will navigate to that 
                 relationship.</para>
 
               </listitem>
@@ -21979,7 +21979,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 includes.</para>
 
                 <para>Where an include relationship has been created, 
-                button 1 Double Click will navigate to that 
+                button 1 Double Click will navigate to that 
                 relationship.</para>
 
               </listitem>
@@ -22383,7 +22383,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <para>Text box. Lists all use cases which extend the 
                 base use case through this extension point.</para>
 
-                <para>Where an extending use case exists, button 1 
+                <para>Where an extending use case exists, button 1 
                 double click will navigate to that relationship.</para>
 
               </listitem>
@@ -23332,7 +23332,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 being extended by this extend relationship. Button 1 
                 click on this entry will give a drop down menu of all 
                 available use cases (and an empty entry) which may be 
-                selected by button 1 click.</para>
+                selected by button 1 click.</para>
 
               </listitem>
 
@@ -23352,7 +23352,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 doing the extending through this extend relationship. 
                 Button 1 click on this entry will give a drop down menu 
                 of all available use cases (and an empty entry) which 
-                may be selected by button 1 click.</para>
+                may be selected by button 1 click.</para>
 
               </listitem>
 
@@ -23381,7 +23381,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </note>
 
                 <para>Where an extension point has been created, 
-                button 1 double click will navigate to that 
+                button 1 double click will navigate to that 
                 relationship. Button 2 gives a pop up menu with two 
                 entries.</para>
 
@@ -23774,7 +23774,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 doing the including in this include relationship. 
                 Button 1 click on this entry will give a drop down menu 
                 of all available use cases which may be selected by 
-                button 1 click.</para>
+                button 1 click.</para>
 
               </listitem>
 
@@ -23795,7 +23795,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 being included by this include relationship. Button 1 
                 click on this entry will give a drop down menu of all 
                 available use cases (and an empty entry) which may be 
-                selected by button 1 click.</para>
+                selected by button 1 click.</para>
 
               </listitem>
 
@@ -24350,7 +24350,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <para>Text box. Lists any specialized package (i.e. for 
                 which this package is a generalization.</para>
 
-                <para>button 1 double click navigates to the 
+                <para>button 1 double click navigates to the 
                 generalization and opens its property tab.</para>
 
               </listitem>
@@ -25471,7 +25471,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   the whole attribute compartment can be hidden on the 
                   diagram using the <emphasis>style</emphasis> tab (see 
                   <xref linkend="s2.ref.attribute_property_toolbar"/>) 
-                  or the button 2 pop up menu for the class on the 
+                  or the button 2 pop up menu for the class on the 
                   diagram.</para>
 
                 </warning>
@@ -26196,7 +26196,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   diagram using the <emphasis>presentation</emphasis> 
                   tab (see 
                   <xref linkend="s2.ref.operation_property_toolbar"/>) 
-                  or the button 2 pop up menu for the class on the 
+                  or the button 2 pop up menu for the class on the 
                   diagram.</para>
 
                 </warning>
@@ -26294,7 +26294,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                  fileref="images/icons/navigate_stereotype.gif"
                  format="GIF"/></imageobject></inlinemediaobject></guiicon> 
                 icon. If a stereotype has been selected, clicking 
-                button 1 will navigate to the stereotype property panel 
+                button 1 will navigate to the stereotype property panel 
                 (see <xref linkend="s1.ref.stereotype_class"/>).</para>
 
               </listitem>
