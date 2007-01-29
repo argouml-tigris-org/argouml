@@ -9363,31 +9363,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </sect2>
 
-        <sect2 id="s2.ref.menu_save_config">
-
-          <title>Save Configuration</title>
-
-          <para>ArgoUML has various user specific configurations that 
-          can be set, through the <literal>Settings...</literal> entry on 
-          the <literal>Edit</literal> menu (see 
-          <xref linkend="s2.ref.menu_settings"/>) or directly on the 
-          various panes. Also the main window size and location is such 
-          a setting. Activating this menu entry causes the information 
-          to be saved in the file <literal>
-          argo.user.properties</literal>. The location of this file is 
-          in the &quot;users home directory&quot;, which is defined as 
-          <literal>${user.home}</literal>, and can be determined as 
-          described in <xref linkend="s3.ref.menu.environment"/>.</para>
-
-          <tip>
-
-            <para>This is a text file, which you can edit to configure 
-            ArgoUML.</para>
-
-          </tip>
-
-        </sect2>
-
         <sect2>
 
           <title>Most Recent Used Files</title>
@@ -9730,7 +9705,30 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>This menu entry brings up a dialog box, which allows 
           the user to set various options that control the behavior of 
           ArgoUML (see <xref linkend="fig.ref.menu_settings"/>).</para>
+          <para>These settings are saved persistently for use by
+          	subsequent ArgoUML sessions.
+          </para>
+          
+          <para>ArgoUML has various user specific configurations that can
+          	be set in this dialog box,
+          	or directly on the various panes. Also the main window
+          	size and location is such a setting. Activating this menu
+          	entry causes the information to be saved in the file
+          	<literal>argo.user.properties</literal>.
+          	The location of this file is in the &quot;users home
+          	directory&quot;, which is defined as
+          	<literal>${user.home}</literal>
+          	, and can be determined as described in
+          	<xref linkend="s3.ref.menu.environment" />
+          	.
+          </para>
 
+          <tip>
+            <para>This is a text file, which you can edit to configure
+            	ArgoUML.
+            </para>
+          </tip>
+          
           <figure float="1" id="fig.ref.menu_settings">
 
             <title>The dialog for <literal>Settings - 
@@ -9779,9 +9777,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Closing the dialog (with the close button in the top 
           corner in the border of the window) causes the same effect as 
           <literal>Cancel</literal>.</para>
-
-          <para>These settings are saved persistently for use by subsequent 
-          ArgoUML sessions.</para>
 
           <sect3>
 
@@ -10579,31 +10574,36 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para>full grid at 16 pixel spacing; and</para>
+              <para><literal>Lines 16</literal>: 
+              full grid at 16 pixel spacing. </para>
 
             </listitem>
 
             <listitem>
 
-              <para>full grid at 8 pixel spacing.</para>
+              <para><literal>Lines 8</literal>:
+              full grid at 8 pixel spacing.</para>
 
             </listitem>
 
             <listitem>
 
-              <para>dots at 16 pixel spacing (the default);</para>
+              <para><literal>Dots 16</literal>:
+              dots at 16 pixel spacing (the default).</para>
 
             </listitem>
 
             <listitem>
 
-              <para>dots at 32 pixel spacing;</para>
+              <para><literal>Dots 32</literal>:
+              dots at 32 pixel spacing.</para>
 
             </listitem>
 
             <listitem>
 
-              <para>no grid of any form;</para>
+              <para><literal>None</literal>:
+              no grid of any form.</para>
 
             </listitem>
 
@@ -10613,7 +10613,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="s2.ref.menu_grid_snap">
 
-          <title>Adjust Grid Snap</title>
+          <title>Adjust Snap</title>
 
           <para>This allows selection of the spacing of grid snapping
           between the following:</para>
@@ -10622,25 +10622,29 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para>snap at 4 pixel spacing.</para>
+              <para><literal>Snap 4</literal>:
+              snap at 4 pixel spacing.</para>
 
             </listitem>
 
             <listitem>
 
-              <para>snap at 8 pixel spacing (the default);</para>
+              <para><literal>Snap 8</literal>:
+              snap at 8 pixel spacing (the default).</para>
 
             </listitem>
 
             <listitem>
 
-              <para>snap at 16 pixel spacing;</para>
+              <para><literal>Snap 16</literal>:
+              snap at 16 pixel spacing.</para>
 
             </listitem>
 
             <listitem>
 
-              <para>snap at 32 pixel spacing; and</para>
+              <para><literal>Snap 32</literal>:
+              snap at 32 pixel spacing.</para>
 
             </listitem>
 
@@ -10655,9 +10659,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <note>
 
-            <para>If you wish to align on true grid snap boundaries, 
+            <para>If you wish to align existing elements to changed
+            snap boundaries, 
             you can use the <literal>
-            Arrange &gt; Align To Grid</literal> menu (see 
+            Arrange &gt; Align To Grid Snap</literal> menu (see 
             <xref linkend="s2.ref.menu_align"/>).</para>
 
           </note>
@@ -10672,17 +10677,31 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           diagram (as white dotted lines).</para>
 
           <warning>
-            <para>This menu item does not work in ArgoUML V0.22.</para>
+            <para>This menu item does not work in ArgoUML V0.24.</para>
             <!-- This menu-item is incorrectly implemented in the 
             V0.22 version of ArgoUML, since it should be a tick box 
             toggle.  This is issue  604.
             Also, the lines are reported to be incorrect 
             regarding the chosen paper format and orientation.
             This is issue 1874. 
-            And the lines are reported not visible at all in ArgoUML V0.22.
+            And the lines are reported not visible at all in ArgoUML V0.24.
             This is mentioned in issue 604 and in issue 1874. 
             -->
           </warning>
+
+        </sect2>
+
+        <sect2>
+
+        	<title>XML Dump</title>
+
+        	<para>
+        		This activates a window that shows the complete contents 
+        		of the current project in XML format. 
+        	</para>
+
+        	<para>Although very useful for debugging ArgoUML, 
+        	this menu function is hardly interesting to the common user.</para>
 
         </sect2>
 
@@ -11170,16 +11189,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2>
 
-          <title>Set Preferred Size</title>
+          <title>Size To Fit Contents</title>
 
           <para>This menu-item acts on all selected items on the 
           current diagram. It resets all sizes of all model elements to its 
-          <quote>preferred</quote> size, i.e. the minimum size for 
+          minimum size for 
           which all text fits inside.</para>
 
         </sect2>
 
-        <sect2>
+        <!--sect2>
 
           <title>Toggle Auto Resizing</title>
 
@@ -11187,7 +11206,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           that currently does not do anything.
           </para>
 
-        </sect2>
+        </sect2-->
 
         <sect2>
 
