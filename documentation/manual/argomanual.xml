@@ -179,9 +179,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
     <para>The current version (@VERSION@) of ArgoUML implements all the 
     diagram types of the 
     
-    <ulink url="http://www.omg.org/cgi-bin/doc?formal/01-09-67">UML 1.4 
+    <ulink url="http://www.omg.org/cgi-bin/doc?formal/01-09-67">UML 1.4 
     standard</ulink> (versions of ArgoUML prior to 0.20 implemented the
-    <ulink url="http://www.omg.org/cgi-bin/doc?formal/00-03-01">UML 1.3 
+    <ulink url="http://www.omg.org/cgi-bin/doc?formal/00-03-01">UML 1.3 
     standard</ulink>). It is written in Java and runs on every computer 
     which provides a Java 2 platform of Java 1.4 or newer. It uses the 
     open file formats 
@@ -263,7 +263,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         development life cycle.</para>
 
         <para>Programming language support for objects began with 
-        Simula 67, but it was the emergence in the 1980&apos;s of 
+        Simula 67, but it was the emergence in the 1980&apos;s of 
         hybrid languages, such as C++, Ada and Object Pascal that 
         allowed OOA&amp;D to take off. These languages provided support 
         for both OO and procedural programming. Object Oriented 
@@ -1785,10 +1785,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>On Unix. Use GNU tar to unzip and break out the 
                 files to a directory of your choice <literal>
-                tar zxvf &lt;file&gt;.tar.gz</literal>. If you have an 
+                tar zxvf &lt;file&gt;.tar.gz</literal>. If you have an 
                 older version of tar, the <literal>z</literal> option 
                 may not be available, so use <literal>
-                gunzip &lt; file.tar.gz | tar xvf -</literal>.</para>
+                gunzip &lt; file.tar.gz | tar xvf -</literal>.</para>
 
               </listitem>
 
@@ -1846,7 +1846,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   On Windows. Start an MSDOS shell window by e.g. 
                   using Start/Run with <quote>command</quote> in the text window.
                   In the window change to the directory holding your ArgoUML files
-                  and type <literal>java -jar argouml.jar</literal>.
+                  and type <literal>java -jar argouml.jar</literal>.
                   This method has the advantage that progress and debugging
                   information is visible in the DOS window. 
                   Alternatively create a batch file (.bat) containing the above
@@ -1866,7 +1866,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>
                   On Unix. Start a shell window and type
-                  <literal>java -jar argouml.jar</literal>
+                  <literal>java -jar argouml.jar</literal>
                 </para>
 
               </listitem>
@@ -2769,7 +2769,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>Model elements that are already in the model, but not on a 
             diagram, may be added to a diagram by selecting the 
             model element in the explorer, using <literal>
-            Add to Diagram</literal> from the drop down menu (button 2) 
+            Add to Diagram</literal> from the drop down menu (button 2) 
             over that model element, and then clicking button 1 at the 
             desired location on the diagram.</para>
 
@@ -2859,9 +2859,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               file as an argument, a new blank project is created. This 
               project contains a model called <literal>
               untitledModel</literal>. This model contains a blank 
-              Class Diagram, called <literal>class diagram 1</literal>, 
+              Class Diagram, called <literal>class diagram 1</literal>, 
               and a blank Use Case Diagram called <literal>
-              use case diagram 1</literal>.</para>
+              use case diagram 1</literal>.</para>
 
               <para>The model and both empty diagrams can be seen in 
               the explorer, which is the main tool for you to navigate 
@@ -2893,13 +2893,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <para>First, let&apos;s save the model in it&apos;s 
               current (empty and unnamed) state. On the menu bar, click 
               on <literal>File</literal>, then on <literal>
-              Save Project As...</literal> as shown in 
+              Save Project As...</literal> as shown in 
               <xref linkend="fig.tut.saveas"/>.</para>
 
               <figure float="1" id="fig.tut.saveas">
 
                 <title>Invoking
-                <literal>Save Project As...</literal></title>
+                <literal>Save Project As...</literal></title>
 
                 <screenshot><mediaobject><imageobject>
                 <imagedata align="center"
@@ -2934,7 +2934,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <title>The File Chooser Dialog</title>
 
               <para>But let&apos;s go back to saving our project. After 
-              clicking on the <literal>Save Project As...</literal> menu 
+              clicking on the <literal>Save Project As...</literal> menu 
               command, we get the file chooser dialog to enter the file 
               name we wish to use as shown in 
               <xref linkend="fig.tut.filechoose"/>.</para>
@@ -2971,11 +2971,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               is currently set up in order to show only ArgoUML project 
               files with an extension of <literal>.zargo</literal>, as 
               can be seen on the lower drop-down control labeled 
-              <literal>Files of Type:</literal>.</para>
+              <literal>Files of Type:</literal>.</para>
 
               <para>Also notice that the currently selected 
               folder&apos;s name is displayed in the upper drop-down 
-              control labeled <literal>Look in:</literal>. A single 
+              control labeled <literal>Look in:</literal>. A single 
               click on a folder inside the scrollable area does select 
               that folder on screen but does not select the folder for 
               saving.</para>
@@ -3045,7 +3045,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para>OK, now we navigate to the directory where we want 
               to save our ArgoUML project, fill in the <literal>
-              File name:</literal> with an appropriate name, such as 
+              File name:</literal> with an appropriate name, such as 
               <quote>FirstProject</quote> and click on the <literal>
               Save</literal> button.</para>
 
@@ -3145,7 +3145,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <title>Printing Diagrams</title>
 
               <para>Select a diagram, then go to <literal>
-              File</literal>→<literal>Export Diagrams</literal>. You 
+              File</literal>→<literal>Export Diagrams</literal>. You 
               can generate GIF, PostScript, Encapsulated PostScript or 
               SVG format.</para>
 
@@ -3304,7 +3304,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <title>Generating XMI Format</title>
 
               <para>Select the command <literal>File</literal>→
-              <literal>Export as XMI</literal> and choose a 
+              <literal>Export as XMI</literal> and choose a 
               filename.</para>
 
             </sect4>
@@ -3414,7 +3414,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <inlinegraphic fileref="images/tutorial/guitreefoldercloseicon.gif"
              format="GIF"/></guiicon> icon next to the <literal>
             Medium</literal> folder, and click on the <literal>
-            Revise Package Name UntitledModel</literal> item.</para>
+            Revise Package Name UntitledModel</literal> item.</para>
 
             <para><xref linkend="fig.tut.critrevname"/> shows how your 
             screen should now look.</para>
@@ -3422,7 +3422,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <figure float="1" id="fig.tut.critrevname">
 
               <title>ArgoUML Window Showing the Critic Item <literal>
-              Revise Package Name UntitledModel</literal></title>
+              Revise Package Name UntitledModel</literal></title>
 
               <screenshot><mediaobject><imageobject>
               <imagedata align="center"
@@ -3485,7 +3485,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>Watch now how the design critic note in the To Do 
             panel disappears, leaving only the <literal>
-            Add Elements to Package purchasingmodel</literal> note in 
+            Add Elements to Package purchasingmodel</literal> note in 
             the To-Do list.</para>
 
             <para>If this doesn&apos;t happen at once, wait for a few 
@@ -3503,7 +3503,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             done so far.</para>
 
             <para>Click on the <literal>File</literal> menu item, and 
-            select <literal>Save Project</literal>. You can now safely 
+            select <literal>Save Project</literal>. You can now safely 
             exit ArgoUML without losing your work so far, or go on 
             creating your first diagram.</para>
 
@@ -5403,21 +5403,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><emphasis>Engineering</emphasis>.  Bunny, 
+                <para><emphasis>Engineering</emphasis>.  Bunny, 
                 Bugs</para>
 
               </listitem>
 
               <listitem>
 
-                <para><emphasis>Maintenance</emphasis>.  Hardy, 
+                <para><emphasis>Maintenance</emphasis>.  Hardy, 
                 Oliver</para>
 
               </listitem>
 
               <listitem>
 
-                <para><emphasis>Computer Facility</emphasis>.  Laurel, 
+                <para><emphasis>Computer Facility</emphasis>.  Laurel, 
                 Stanley</para>
 
               </listitem>
@@ -5425,13 +5425,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para><emphasis>Chief Executive Officer</emphasis>. 
-                 Hun, Atilla The</para>
+                 Hun, Atilla The</para>
 
               </listitem>
 
               <listitem>
 
-                <para><emphasis>Marketing</emphasis>.  Harry, Oil 
+                <para><emphasis>Marketing</emphasis>.  Harry, Oil 
                 Can</para>
 
               </listitem>
@@ -5985,7 +5985,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>Creating a Sequence Diagram</title>
 
             <para>Normally, you can just start a sequence diagram right 
-            away. On the <literal>Create Diagram</literal> menu choose 
+            away. On the <literal>Create Diagram</literal> menu choose 
             <literal>Sequence</literal>.</para>
 
           </sect3>
@@ -8599,13 +8599,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           text area.</para>
 
           <para>In the lower portion of the dialog is a text box 
-          labeled <literal>File name:</literal> for the name of the 
+          labeled <literal>File name:</literal> for the name of the 
           file to be opened. The file name may be typed directly in 
           here, or selected from the directory listing above using 
           button 1 click.</para>
 
           <para>Beneath this is a drop down selector labeled <literal>
-          Files of type:</literal> to specify a filter on the files to 
+          Files of type:</literal> to specify a filter on the files to 
           be shown in the directory listing. Only files that match the 
           filter are listed. The available filters are listed below. 
           The default filter is the first one, 
@@ -8655,7 +8655,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Shortcut Ctrl-S.</para>
 
           <para>This saves the project using its current file name. Use 
-          <literal>Save Project As...</literal> to save the project to a 
+          <literal>Save Project As...</literal> to save the project to a 
           different file. If no filename is given yet (e.g. after 
           <literal>New</literal>), then this function works exactly as 
           <literal>Save Project As...</literal>.</para>
@@ -8764,7 +8764,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_import_xmi">
 
             <title>The dialog for <literal>
-            Import XMI...</literal>.</title>
+            Import XMI...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -8791,7 +8791,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_export_xmi">
 
             <title>The dialog for <literal>
-            Export XMI...</literal>.</title>
+            Export XMI...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -8823,7 +8823,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_import_sources">
 
             <title>The file selection dialog for <literal>
-            Import Sources...</literal>.</title>
+            Import Sources...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -8849,7 +8849,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>Descend directories recursively</literal>. 
+              <para><literal>Descend directories recursively</literal>. 
               If enabled (the default), reverse engineering will track 
               through sub-directories for any further Java files. If 
               not it will restrict to the selected directory.</para>
@@ -8947,7 +8947,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <imagedata align="center"
            fileref="images/icons/page_setup.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-          Page Setup...</title>
+          Page Setup...</title>
 
           <indexterm><primary>Page Setup ...</primary></indexterm>
           <para>This brings up the standard dialog box provided by the 
@@ -9020,7 +9020,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>The dialog box is identical to that for <literal>
           Open Project</literal> (see 
           <xref linkend="fig.ref.menu_open_project"/>), except for the 
-          <literal>Files of type:</literal>. The chosen filetype 
+          <literal>Files of type:</literal>. The chosen filetype 
           specifies the graphics format used for saving. The filename 
           is automatically extended with the corresponding ending (if 
           not entered already). A default filename is generated based 
@@ -10358,22 +10358,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </figure>
 
           <para>At the top, the dialog box has four tabs labeled 
-          <literal>Name and Location</literal>, <literal>
-          Last Modified</literal>, <literal>Tagged Values</literal> and 
+          <literal>Name and Location</literal>, <literal>
+          Last Modified</literal>, <literal>Tagged Values</literal> and 
           <literal>Constraints</literal>. Of these all but the first 
           are grayed out in the V0.22 version of ArgoUML (because they 
           <!-- This is issue 2501 -->
           are not imlemented yet), so the first tab is always 
           selected.</para>
 
-          <para>The <literal>Name and Location</literal> specifies the 
+          <para>The <literal>Name and Location</literal> specifies the 
           search to be made. It contains the following:</para>
 
           <itemizedlist>
 
             <listitem>
 
-              <para>A text box labeled <literal>Element Name:</literal> 
+              <para>A text box labeled <literal>Element Name:</literal> 
               specifies the name of the model element to search 
               for. Wild cards (<literal>*</literal>, <literal>
               ?</literal>) may be used here. A drop down gives access 
@@ -10394,7 +10394,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para>To the right of these two text boxes, a selector 
-              labeled <literal>Element Type:</literal> allows you to 
+              labeled <literal>Element Type:</literal> allows you to 
               specify the UML metaclass for which you are 
               searching.</para>
 
@@ -10436,8 +10436,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           tab (labeled <literal>Help</literal>) giving summary help, 
           and further tabs displaying the results of searches. These 
           search tabs are labeled with a summary of the search 
-          <emphasis>element</emphasis> 
-          <literal>in</literal> <emphasis>diagram</emphasis> and are 
+          <emphasis>element</emphasis> 
+          <literal>in</literal> <emphasis>diagram</emphasis> and are 
           divided horizontally in two halves.</para>
 
           <para>Button 1 double clicking on these tabs removes the tab, 
@@ -10493,7 +10493,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           selected.</para>
 
           <para>The bottom half of the tab is a table labeled <literal>
-          Related Elements:</literal> and is a table with the same 
+          Related Elements:</literal> and is a table with the same 
           columns as the top half. When a model element has been 
           selected in the top half, this table shows the details of any 
           related elements.</para>
@@ -10662,7 +10662,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>If you wish to align existing elements to changed
             snap boundaries, 
             you can use the <literal>
-            Arrange &gt; Align To Grid Snap</literal> menu (see 
+            Arrange &gt; Align To Grid Snap</literal> menu (see 
             <xref linkend="s2.ref.menu_align"/>).</para>
 
           </note>
@@ -11280,11 +11280,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           all these languages.</para>
 
           <para>The buttons <literal>Select All</literal> and <literal>
-          Select None</literal> may help when a lot of items have to be 
+          Select None</literal> may help when a lot of items have to be 
           selected or deselected.</para>
 
           <para>In the lower portion of the dialog box is an editable 
-          combo box labeled <literal>Output Directory</literal> to 
+          combo box labeled <literal>Output Directory</literal> to 
           specify the directory in which code is generated. Within this 
           directory, a top level directory will be created with the 
           name of the model. Further sub-directories will be created to 
@@ -11310,7 +11310,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Shortcut F7.</para>
 
           <para>This function behaves as <literal>
-          Generate Selected Classes...</literal> (see 
+          Generate Selected Classes...</literal> (see 
           <xref linkend="s2.ref.menu_generate_selected_classes"/>) 
           would with all classes in the current diagram selected.</para>
 
@@ -11500,7 +11500,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_browse_critics">
 
             <title>The dialog for <literal>
-            Browse Critics...</literal>.</title>
+            Browse Critics...</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -11594,8 +11594,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </note>
 
           <para>The last field is a drop-down selector labeled <literal>
-          Use Clarifier</literal>, with three options, <literal>
-          Always</literal>, <literal>If Only One</literal> and <literal>
+          Use Clarifier</literal>, with three options, <literal>
+          Always</literal>, <literal>If Only One</literal> and <literal>
           Never</literal>.</para>
 
           <para>Clarifiers are the icons and wavy red underlines drawn 
@@ -11733,7 +11733,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <figure float="1" id="fig.ref.menu_help_system_info">
 
             <title>The dialog for <literal>
-            System Information</literal>.</title>
+            System Information</literal>.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -12214,9 +12214,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>The lower half of the dialog contains two list areas. 
           The one on the left, labeled <literal>
-          Rules Library</literal>, contains the list of available rules 
+          Rules Library</literal>, contains the list of available rules 
           that may be used to create the perspective. The one on the 
-          right, labeled <literal>Selected Rules</literal> contains the 
+          right, labeled <literal>Selected Rules</literal> contains the 
           actual rules chosen for the perspective that has been 
           selected in the list of perspectives at the top. In both 
           lists, you can select only one rule at a time.</para>
@@ -12545,7 +12545,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         documentation that is still being updated.</para>
 
         <para>The pane has a tool bar at the top, and a single tab 
-        labeled <literal>As Diagram</literal> at the bottom, which has 
+        labeled <literal>As Diagram</literal> at the bottom, which has 
         no function in the 0.20 version of ArgoUML. The main area shows 
         the currently selected diagram, of which the name is shown in 
         the window title bar.</para>
@@ -15184,7 +15184,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <figure float="1" id="fig.ref.details_new_to_do">
 
               <title>Dialog box for <literal>
-              New To Do Item</literal></title>
+              New To Do Item</literal></title>
 
               <screenshot><mediaobject><imageobject>
               <imagedata align="center"
@@ -15217,7 +15217,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <figure float="1" id="fig.ref.details_resolve_to_do">
 
               <title>Dialog box for <literal>
-              Resolve Item</literal></title>
+              Resolve Item</literal></title>
 
               <screenshot><mediaobject><imageobject>
               <imagedata align="center"
@@ -15273,7 +15273,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Initially this period is 10 minutes, but it doubles on each 
             successive application of the Snooze button. The critic can 
             be awakened explicitly through the <literal>
-            Critique &gt; Browse Critics...</literal> menu (see 
+            Critique &gt; Browse Critics...</literal> menu (see 
             <xref linkend="s2.ref.menu_browse_critics"/>).</para>
 
             <tip>
@@ -15295,7 +15295,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>Some of the more common critics have a 
           <quote>wizard</quote> available to help in fixing the 
           problem. The wizard comprises a series of pages (one or more) 
-          in the <literal>ToDo Item</literal> tab that step you through 
+          in the <literal>ToDo Item</literal> tab that step you through 
           the changes. Start the wizard by clicking the 
           <literal>Next&gt;</literal> button.
           </para>
@@ -15311,7 +15311,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </figure>
 
           <para>The wizard is driven through the first three buttons at 
-          the bottom of the <literal>ToDo Item</literal> tab.</para>
+          the bottom of the <literal>ToDo Item</literal> tab.</para>
 
           <itemizedlist>
 
@@ -15363,7 +15363,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>The Help Button</title>
 
           <para>There is one remaining button at the bottom of the 
-          <literal>To Do Item</literal> tab, labeled <literal>
+          <literal>To Do Item</literal> tab, labeled <literal>
           Help</literal>. This will fire up a browser to a URL with 
           further help.</para>
 
@@ -15432,7 +15432,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>To the right of this is a toolbar of icons relevant to 
         this property tab. The first one is always navigation <literal>
-        Go up</literal>. The last is always <literal>Delete</literal> 
+        Go up</literal>. The last is always <literal>Delete</literal> 
         to delete the selected model element from the model. The ones in 
         between depend on the model element.</para>
 
@@ -15482,14 +15482,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <title>Documentation Tab</title>
 
-        <para>Within the UML 1.4 standard, all model elements are children 
+        <para>Within the UML 1.4 standard, all model elements are children 
         of the <literal>Element</literal> metaclass. The <literal>
         Element</literal> metaclass defines a tagged value <literal>
         documentation</literal> for comment, description or explanation 
         of the element to which it is attached. Since this tagged value 
         applies to every model element, it is given its own tab in the 
         details pane, rather than being part of the <literal>
-        Tagged Values</literal> tab.</para>
+        Tagged Values</literal> tab.</para>
 
         <para><xref linkend="fig.ref.details_documentation"/> shows a 
         typical documentation tab for a model element in ArgoUML.</para>
@@ -15811,7 +15811,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <para>Constraints are one of the extension mechanisms provided 
         for UML. ArgoUML is equipped with a powerful constraint editor 
         based on the <emphasis>Object Constraint Language 
-        (OCL)</emphasis> defined in the UML 1.4 standard.</para>
+        (OCL)</emphasis> defined in the UML 1.4 standard.</para>
 
         <caution>
 
@@ -15955,7 +15955,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
              format="GIF"/></imageobject></inlinemediaobject></guiicon> 
             <literal>Delete Constraint</literal>. The constraint 
             currently selected in the <literal>
-            Constraint Name</literal> box (see below) is deleted.</para>
+            Constraint Name</literal> box (see below) is deleted.</para>
 
             <caution>
 
@@ -15977,7 +15977,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             constraint editor in the <literal>Constraints</literal> tab 
             (see <xref linkend="s2.ref.details_constraint_editor"/>). 
             The editor is invoked on the constraint currently selected 
-            in the <literal>Constraint Name</literal> box.</para>
+            in the <literal>Constraint Name</literal> box.</para>
 
             <caution>
 
@@ -16051,7 +16051,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
              format="GIF"/></imageobject></inlinemediaobject></guiicon> 
             <literal>Shrink Left</literal>. Button 1 click on this icon 
             shrinks the box on the left. Its effect may be reversed by 
-            use of the <literal>Shrink Right</literal> button (see 
+            use of the <literal>Shrink Right</literal> button (see 
             below).</para>
 
           </listitem>
@@ -16064,7 +16064,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
              format="GIF"/></imageobject></inlinemediaobject></guiicon> 
             <literal>Shrink Right</literal>. Button 1 click on this 
             icon shrinks the box on the right. Its effect may be 
-            reversed by use of the <literal>Shrink Left</literal> 
+            reversed by use of the <literal>Shrink Left</literal> 
             button (see above).</para>
 
           </listitem>
@@ -16090,7 +16090,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>The Constraint Editor</title>
 
           <para>This is invoked through the use of the <literal>
-          Edit Constraint</literal> button on the main <literal>
+          Edit Constraint</literal> button on the main <literal>
           Constraints</literal> tab. The constraint editor takes up the 
           whole tab (see 
           <xref linkend="fig.ref.details_constraint_editor"/>).</para>
@@ -16138,7 +16138,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Whether type checking is included should be 
                 configurable with the <literal>
-                Configure Constraint Editor</literal> button (see 
+                Configure Constraint Editor</literal> button (see 
                 below). But ArgoUML V0.20 does always check, and 
                 refuses to accept any constraint with the slightest 
                 error.</para>
@@ -16233,7 +16233,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               Entries: <literal>or</literal>; <literal>and</literal>; 
               <literal>xor</literal>; <literal>not</literal>; <literal>
               implies</literal>; and <literal>
-              if then else</literal>.</para>
+              if then else</literal>.</para>
 
             </listitem>
 
@@ -16251,9 +16251,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <para><literal>General</literal>. Functions that 
                   apply to all types of collection. Entries: <literal>
                   Collection {}</literal> (insert a new collection); 
-                  <literal>Set {}</literal> (insert a a new set); 
-                  <literal>Bag {}</literal> (insert a new bag); 
-                  <literal>Sequence {}</literal> (insert a new 
+                  <literal>Set {}</literal> (insert a a new set); 
+                  <literal>Bag {}</literal> (insert a new bag); 
+                  <literal>Sequence {}</literal> (insert a new 
                   sequence); <literal>size</literal>; <literal>
                   count</literal>; <literal>isEmpty</literal>; <literal>
                   notEmpty</literal>; <literal>includes</literal>; 
@@ -16366,11 +16366,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           available to all model elements. In ArgoUML documentation values 
           are provided through the <literal>Documentation</literal> 
           tab, rather than by using the <literal>
-          Tagged Values</literal> tab.</para>
+          Tagged Values</literal> tab.</para>
 
         </note>
 
-        <para>The <literal>Tagged Values</literal> tab in ArgoUML 
+        <para>The <literal>Tagged Values</literal> tab in ArgoUML 
         comprises a two column table, with a combo-box on 
         the left to select the tagdefinition
         and an editable box on the right for 
@@ -16516,7 +16516,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>Button 1 click over the headline of any to-do item will 
           cause its details to be shown in the <literal>
-          To Do Item</literal> tab of the details pane. That tab is 
+          To Do Item</literal> tab of the details pane. That tab is 
           automatically selected if it is not currently visible.</para>
 
         </sect2>
@@ -16578,7 +16578,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Medium</literal> and <literal>Low</literal>. The priority 
             associated with the to-do items generated by a particular 
             critic may be altered through the <literal>
-            Critique &gt; Browse Critics...</literal> menu (see 
+            Critique &gt; Browse Critics...</literal> menu (see 
             <xref linkend="s2.ref.menu_browse_critics"/>).</para>
 
           </listitem>
@@ -16588,17 +16588,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para><literal>By Decision</literal>. The to-do items are 
             organized into 17 hierarchies by design issue: <literal>
             Uncategorized</literal>, <literal>
-            Class Selection</literal>, <literal>Behavior</literal>, 
+            Class Selection</literal>, <literal>Behavior</literal>, 
             <literal>Naming</literal>, <literal>Storage</literal>, 
             <literal>Inheritance</literal>, <literal>
             Containment</literal>, <literal>
-            Planned Extensions</literal>, <literal>
-            State Machines</literal>, <literal>
+            Planned Extensions</literal>, <literal>
+            State Machines</literal>, <literal>
             Design Patterns</literal>, <literal>
             Relationships</literal>, <literal>Instantiation</literal>, 
             <literal>Modularity</literal>, <literal>
-            Expected Usage</literal>, <literal>Methods</literal>, 
-            <literal>Code Generation</literal> and <literal>
+            Expected Usage</literal>, <literal>Methods</literal>, 
+            <literal>Code Generation</literal> and <literal>
             Stereotypes</literal>. The details of the critics in each 
             category are discussed in 
             <xref linkend="s2.ref.menu_design_issues"/>.</para>
@@ -18850,10 +18850,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         language like Java. The integer <quote>3</quote> stands on its 
         own—it has no inner structure. There are operations (for 
         example addition) on the integers, but when I perform <literal>
-        3 + 4</literal> the result is a new number, <quote>3</quote> 
+        3 + 4</literal> the result is a new number, <quote>3</quote> 
         and <quote>4</quote> are unchanged by the exercise.</para>
 
-        <para>Within UML 1.3, <literal>DataType</literal> is a 
+        <para>Within UML 1.3, <literal>DataType</literal> is a 
         sub-class of the <literal>Classifier</literal> metaclass. It 
         embraces the predefined primitive types (
         <literal>byte</literal>, <literal>char</literal>, <literal>
@@ -18878,7 +18878,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <note>
 
-          <para>UML 1.3 allows user defined datatypes to be placed on 
+          <para>UML 1.3 allows user defined datatypes to be placed on 
           class diagrams. This is not permitted in ArgoUML.</para>
 
         </note>
@@ -19565,7 +19565,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         and the original 2 booleans <quote>true</quote> 
         are unchanged by the exercise.</para>
 
-        <para>Within UML 1.4, <literal>Enumeration</literal> is a 
+        <para>Within UML 1.4, <literal>Enumeration</literal> is a 
         sub-class of the <literal>DataType</literal> metaclass.  
         </para>
 
@@ -19584,7 +19584,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <note>
 
-          <para>UML 1.4 allows user defined datatypes to be placed on 
+          <para>UML 1.4 allows user defined datatypes to be placed on 
           class diagrams. This is not yet possible in ArgoUML.</para>
 
         </note>
@@ -20840,7 +20840,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <para>The name of the diagram. There are no conventions 
                 for naming diagrams. By default, ArgoUML uses the 
                 (space separated) diagram name and a sequence number, 
-                thus <literal>Use Case Diagram 1</literal>.</para>
+                thus <literal>Use Case Diagram 1</literal>.</para>
 
                 <tip>
 
@@ -22787,7 +22787,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <primary>Discriminator</primary><secondary>of 
                 Generalization</secondary></indexterm>
                 <para>Text box. The name of a discriminator for the 
-                specialization. UML 1.3 allows grouping of 
+                specialization. UML 1.3 allows grouping of 
                 specializations into a number of sets, on the basis of 
                 this value.</para>
 
@@ -26868,7 +26868,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <emphasis>not</emphasis> just the diagram. If desired 
                   the whole operation compartment can be hidden on the 
                   diagram using the <emphasis>presentation</emphasis> 
-                  tab or the button 2 pop up menu for the class on the 
+                  tab or the button 2 pop up menu for the class on the 
                   diagram.</para>
 
                 </warning>
@@ -27484,7 +27484,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Signal</secondary></indexterm>
                 <para>Text area. Lists all the contexts defined for 
                 this signal. Button 1 double click navigates to the 
-                selected context, button 2 click brings up a pop up 
+                selected context, button 2 click brings up a pop up 
                 menu with one entry.</para>
 
                 <itemizedlist>
@@ -27555,7 +27555,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         this.</para>
 
         <para>Associations are permitted between interfaces and 
-        classes, but UML 1.3 specifies they must only be navigable 
+        classes, but UML 1.3 specifies they must only be navigable 
         toward the interface—in other words the interface cannot see 
         the class. ArgoUML will draw such associations with the 
         appropriate navigation.</para>
@@ -27581,7 +27581,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Three-way and Greater Associations and Association 
           Classes</title>
 
-          <para>UML 1.3 provides for N-ary associations and 
+          <para>UML 1.3 provides for N-ary associations and 
           associations that are governed by a third 
           <emphasis>associative class</emphasis>. Both are supported by 
           ArgoUML.</para>
@@ -28044,7 +28044,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <note>
 
           <para>ArgoUML does not currently support showing qualifiers 
-          on the diagram, as described in the UML 1.3 standard.</para>
+          on the diagram, as described in the UML 1.3 standard.</para>
 
         </note>
 
@@ -28543,7 +28543,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 classifier is indicated by an icon.</para>
 
                 <para>Button 1 double click navigates to the selected 
-                classifier, button 2 click brings a pop up menu with 
+                classifier, button 2 click brings a pop up menu with 
                 one entry.</para>
 
                 <itemizedlist>
@@ -28946,7 +28946,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <indexterm><primary>Stereotype</primary><secondary>of 
                 Dependency</secondary></indexterm>
                 <para>Drop down selector. Dependency has no standard 
-                stereotypes of its own under UML 1.3. and so ArgoUML 
+                stereotypes of its own under UML 1.3. and so ArgoUML 
                 does not provide any. The stereotype is shown between « 
                 and » above or across the generalization.</para>
 
@@ -29475,7 +29475,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <caution>
 
                       <para>This is meaningless, since by definition an 
-                      interface is an abstract entity. The UML 1.3 
+                      interface is an abstract entity. The UML 1.3 
                       standard offers no clarification.</para>
 
                     </caution>
@@ -30853,7 +30853,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 stimulus.</para>
 
                 <para>Button 1 click navigates to the sender instance, 
-                button 2 gives a pop up menu with one entry.</para>
+                button 2 gives a pop up menu with one entry.</para>
 
                 <itemizedlist>
 
@@ -30880,7 +30880,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 this stimulus.</para>
 
                 <para>Button 1 click navigates to the receiver 
-                instance, button 2 gives a pop up menu with one 
+                instance, button 2 gives a pop up menu with one 
                 entry.</para>
 
                 <itemizedlist>
@@ -31704,7 +31704,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </note>
 
                 <para>Button 1 double-click navigates to the selected 
-                entry, button 2 gives a pop up menu with two 
+                entry, button 2 gives a pop up menu with two 
                 entries:</para>
 
                 <itemizedlist>
@@ -31743,7 +31743,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 executed on exit from this state.</para>
 
                 <para>Button 1 click navigates to the selected action, 
-                button 2 gives a pop up menu with two entries.</para>
+                button 2 gives a pop up menu with two entries.</para>
 
                 <itemizedlist>
 
@@ -31781,7 +31781,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 executed while being in this state.</para>
 
                 <para>Button 1 click navigates to the selected action, 
-                button 2 gives a pop up menu with two entries.</para>
+                button 2 gives a pop up menu with two entries.</para>
 
                 <itemizedlist>
 
@@ -31823,7 +31823,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </para>
 
                 <para>Button 1 click navigates to the selected event, 
-                button 2 on an event 
+                button 2 on an event 
                 gives a pop up menu with the following entries.
                 </para>
 
@@ -31914,7 +31914,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </note>
 
                 <para>Button 1 double-click navigates to the selected 
-                transition, button 2 gives a pop up menu with one 
+                transition, button 2 gives a pop up menu with one 
                 entry.</para>
 
                 <itemizedlist>
@@ -32259,7 +32259,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </para>
 				
 				<para>Button 1 double-click on any of the arguments 
-                navigates to that argument, button 2 click brings up a 
+                navigates to that argument, button 2 click brings up a 
                 pop up menu with two entries.</para>
 
                 <itemizedlist>
@@ -32290,7 +32290,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </para>
 				
 				<para>Button 1 double-click on the classifier 
-                navigates to that argument, button 2 click brings up a 
+                navigates to that argument, button 2 click brings up a 
                 pop up menu with one entry.</para>
 
                 <itemizedlist>
@@ -32384,7 +32384,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               within this composite state.</para>
 
               <para>Button 1 double-click navigates to the selected 
-              entry, button 2 gives a pop up menu with two 
+              entry, button 2 gives a pop up menu with two 
               entries.</para>
 
               <itemizedlist>
@@ -32861,7 +32861,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </note>
 
                 <para>Button 1 double-click navigates to the selected 
-                entry, button 2 gives a pop up menu with three 
+                entry, button 2 gives a pop up menu with three 
                 entries.</para>
 
                 <itemizedlist>
@@ -32909,7 +32909,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 transition can be taken.</para>
 
                 <para>Button 1 double-click navigates to the selected 
-                entry, button 2 gives a pop up menu with one 
+                entry, button 2 gives a pop up menu with one 
                 entry.</para>
 
                 <itemizedlist>
@@ -32937,7 +32937,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 as this transition is taken.</para>
 
                 <para>Button 1 double-click navigates to the selected 
-                action, button 2 gives a pop up menu with two 
+                action, button 2 gives a pop up menu with two 
                 entries.</para>
 
                 <itemizedlist>
@@ -33279,7 +33279,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <xref linkend="s1.ref.parameter"/>).</para>
 
                 <para>Button 1 double-click on any of the parameters 
-                navigates to that parameter, button 2 click brings up a 
+                navigates to that parameter, button 2 click brings up a 
                 pop up menu with one entry.</para>
 
                 <itemizedlist>
@@ -33338,7 +33338,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 the event when called.</para>
                 
                 <para>Button 1 double-click navigates to the selected 
-                signal, button 2 gives a pop up menu with two 
+                signal, button 2 gives a pop up menu with two 
                 entries.</para>
 
                 <itemizedlist>
@@ -34199,7 +34199,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 to be executed on entry to this final state.</para>
 
                 <para>Button 1 double-click navigates to the selected 
-                entry, button 2 gives a pop up menu with two 
+                entry, button 2 gives a pop up menu with two 
                 entries:</para>
 
                 <itemizedlist>
@@ -34344,7 +34344,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <tip>
 
           <para>This bar can be made vertical by selecting the fork, 
-          and dragging with button 1 one of its corners.</para>
+          and dragging with button 1 one of its corners.</para>
 
         </tip>
 
@@ -34371,7 +34371,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <tip>
 
           <para>This bar can be made vertical by selecting the join, 
-          and dragging with button 1 one of its corners.</para>
+          and dragging with button 1 one of its corners.</para>
 
         </tip>
 
@@ -35275,7 +35275,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 (i.e. for which this classifierrole is a 
                 generalization).</para>
 
-                <para>button 1 double click navigates to the 
+                <para>button 1 double click navigates to the 
                 generalization and opens its property tab.</para>
 
               </listitem>
@@ -35325,7 +35325,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 base classifier which is used in the 
                 collaboration.</para>
 
-                <para>button 1 double click navigates to the feature 
+                <para>button 1 double click navigates to the feature 
                 and opens its property tab.</para>
 
               </listitem>
@@ -35752,7 +35752,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         diagram, although its stereotype, name and multiplicity is 
         shown at the relevant end of the parent association role (see 
         <xref linkend="fig.ref.collaboration_diagram"/>), and some of 
-        its properties can be directly adjusted with button 2 click. 
+        its properties can be directly adjusted with button 2 click. 
         Where shared or composite aggregation is selected for one 
         association end role, the opposite end is shown as a solid 
         diamond (composite aggregation) or hollow diamond (shared 
@@ -35761,7 +35761,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <note>
 
           <para>ArgoUML does not currently (V0.18) support showing 
-          qualifiers on the diagram, as described in the UML 1.4 
+          qualifiers on the diagram, as described in the UML 1.4 
           standard.</para>
 
         </note>
@@ -36571,7 +36571,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 invokes to raise a stimulus.</para>
 
                 <para>Button 1 double click navigates to the selected 
-                action, button 2 gives a pop up menu with the following 
+                action, button 2 gives a pop up menu with the following 
                 entry.</para>
 
                 <itemizedlist>
@@ -36603,7 +36603,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 message.</para>
 
                 <para>Button 1 double click navigates to the selected 
-                message, button 2 gives a pop up menu with one 
+                message, button 2 gives a pop up menu with one 
                 entry.</para>
 
                 <itemizedlist>
@@ -36978,7 +36978,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Entry-Action.</para>
 
                 <para>Button 1 double-click navigates to the shown 
-                entry, button 2 gives a pop up menu with two 
+                entry, button 2 gives a pop up menu with two 
                 entries.</para>
 
                 <itemizedlist>
@@ -39324,7 +39324,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <caution>
 
-          <para>Not all stereotypes defined by UML 1.4 appear in 
+          <para>Not all stereotypes defined by UML 1.4 appear in 
           ArgoUML V0.20 due to 
           the fact that they were not yet updated 
           from previous versions of ArgoUML 
@@ -39339,7 +39339,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <caution>
 
-          <para>The UML 1.4 standard also specifies many stereotypes in 
+          <para>The UML 1.4 standard also specifies many stereotypes in 
           the chapters <quote>Example Profiles</quote>: one for 
           <quote>Software Development</quote> and one for 
           <quote>Business Modeling</quote>. Due to the specialized 
@@ -40255,11 +40255,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       <glossentry id="gl.simula67">
 
-        <glossterm>Simula 67</glossterm>
+        <glossterm>Simula 67</glossterm>
 
         <glossdef>
 
-          <indexterm><primary>Simula 67</primary></indexterm>
+          <indexterm><primary>Simula 67</primary></indexterm>
           <para>A procedural programming language intended for 
           simulation. Noted for its introduction of 
           <emphasis>objects</emphasis> and 
