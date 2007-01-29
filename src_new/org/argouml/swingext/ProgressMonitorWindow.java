@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,12 +24,16 @@
 
 package org.argouml.swingext;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.ProgressMonitor;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.argouml.i18n.Translator;
 import org.argouml.persistence.ProgressEvent;
+import org.argouml.ui.ArgoFrame;
+import org.argouml.ui.ExceptionDialog;
 
 /**
  * Manages a ProgressMonitor dialog.
@@ -106,9 +110,19 @@ public class ProgressMonitorWindow implements
     /*
      * @see org.argouml.application.api.ProgressMonitor#notifyMessage(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void notifyMessage(String title, String introduction, 
-            String message) {
-        pbar.setNote(introduction + " : " + message);
+    public void notifyMessage(String title, final String introduction, 
+            final String message) {
+        final String messageString = introduction + " : " + message; 
+        pbar.setNote(messageString);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                JDialog dialog =
+                    new ExceptionDialog(
+                            ArgoFrame.getInstance(),
+                            messageString);
+                dialog.setVisible(true);
+            }
+        });
     }
 
     /*
@@ -126,12 +140,12 @@ public class ProgressMonitorWindow implements
     }
 
     public void updateSubTask(String action) {
-        // TODO Auto-generated method stub
-        
+        // TODO: concatenate? - tfm
+        // overwrite for now
+        pbar.setNote(action);
     }
 
     public void updateMainTask(String name) {
-        // TODO Auto-generated method stub
-        
+        pbar.setNote(name);
     }
 }
