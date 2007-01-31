@@ -336,7 +336,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <listitem>
 
-            <para>ArgoUML supports open standards extensively—UML, XMI, 
+            <para>ArgoUML supports open standards extensively - UML, XMI, 
             SVG, OCL and others.</para>
 
           </listitem>
@@ -837,11 +837,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <indexterm><primary>Analysis</primary></indexterm> 
 
             <para>Analysis. We take the requirements and start to 
-            recast them in the language of a putative solution—the 
+            recast them in the language of a putative solution&mdash;the 
             <emphasis>solution domain</emphasis>. At this stage, 
             although thinking in terms of a solution, we ensure we keep 
             things at a high level, away from concrete details of a 
-            specific solution—what is known as 
+            specific solution&mdash;what is known as 
             <emphasis>abstraction</emphasis>.</para>
 
           </listitem>
@@ -892,7 +892,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>The Waterfall Process</title>
 
             <para>In this process, each stage of the 
-            process—requirements, analysis, design and build (code and 
+            process&mdash;requirements, analysis, design and build (code and 
             test) is completed before the next one starts. This is 
             illustrated in <xref linkend="fig.waterfallsteps"/>.</para>
 
@@ -1197,7 +1197,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>During the analysis stage, we will introduce the UML 
             concept of <emphasis>classes</emphasis> to allow us to 
             build a top level view of the objects that will make up the 
-            solution—sometimes known as a <emphasis>concept 
+            solution&mdash;sometimes known as a <emphasis>concept 
             diagram</emphasis>.</para>
 
             <para>We will introduce the UML <emphasis>sequence 
@@ -1502,7 +1502,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 the GIF format with an image file format that does not require
                 a patent license to use.
                 PNG is officially pronounced "ping" but it is often just
-                spelled out — probably to avoid confusion with the
+                spelled out &mdash; probably to avoid confusion with the
                 network tool ping.
                 PNG is supported by the libpng reference library,
                 a platform-independent library that contains C functions for
@@ -2689,7 +2689,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>In the case of the Edit Pane Toolbar, that 
                 model element is selected as the next to be added to the 
-                diagram (but only once—see double clicking for adding 
+                diagram (but only once&mdash;see double clicking for adding 
                 multiple model elements). The adding to the diagram is 
                 achieved by moving the mouse to the editing area and 
                 clicking again.</para>
@@ -3335,7 +3335,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               but the changes are ignored. ArgoUML is a pure design 
               tool for now, no IDE functionality but the desire is 
               there. You might consider using Forte and ArgoUML 
-              together—it&apos;s a good work around!</para>
+              together&mdash;it&apos;s a good work around!</para>
 
               <para>You can help us out there if you&apos;d like!</para>
 
@@ -3451,7 +3451,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>We will do nothing of this (we&apos;ll come back to 
             it when we talk about the design critics in more detail) 
-            but we&apos;ll use another handy feature of ArgoUML—an 
+            but we&apos;ll use another handy feature of ArgoUML&mdash;an 
             auto-correct feature.</para>
 
             <para>In order to do that, just click on the <literal>
@@ -4051,7 +4051,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             cases is shown in UML by using an <emphasis>include 
             relationship</emphasis>, a dotted arrow from the main use 
             case to the subsidiary, with the label 
-            <emphasis>«include»</emphasis>.</para>
+            <emphasis>&laquo;include&raquo;</emphasis>.</para>
 
             <figure float="1" id="fig.tut.atm_use_case_diagram_include">
 
@@ -4087,7 +4087,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             name and location are shown in a separate compartment 
             within the use case oval. The representation extend 
             relationship is the same as the include relationship, but 
-            with the label <emphasis>«extend»</emphasis>. Alongside the 
+            with the label <emphasis>&laquo;extend&raquo;</emphasis>. Alongside the 
             extend relationship, we specify the condition under which 
             that behavior will be attached.</para>
 
@@ -4362,7 +4362,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Case</secondary></indexterm>
             <indexterm><primary>Use Case</primary><secondary>Basic 
             Flow</secondary></indexterm>
-            <para>All flows in a use case specification are linear—that 
+            <para>All flows in a use case specification are linear&mdash;that 
             is there is no conditional branching. Any choices in flows 
             are handled by specifying another alternate flow that takes 
             over at the choice point. It is important to remember we 
@@ -5134,7 +5134,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             condition may be typed in the <literal>Condition</literal> 
             field. Long conditions may be split over several lines if 
             desired. The condition is displayed under the <literal>
-            «extend»</literal> label on the diagram.</para>
+            &laquo;extend&raquo;</literal> label on the diagram.</para>
 
             <para>It is possible to name extend relationships using the 
             property tab, but this is rarely done, and will not be 
@@ -5218,7 +5218,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para><emphasis>Stereotypes</emphasis> are used to label UML 
           model elements such as use cases, to indicate that they belong to 
           a certain category. Such labels are shown in guillemots (
-          <literal>«»</literal>) above the name of the model element on the 
+          <literal>&laquo;&nbsp;&raquo;</literal>) above the name of the model element on the 
           diagram. The UML standard defines a number of standard 
           stereotypes, and the user may define more stereotypes of his 
           own.</para>
@@ -5585,7 +5585,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <para>In 
           <xref linkend="fig.tut.atm_use_case_diagram_include"/> we see 
-          a use case diagram for an ATM system consisting of «include» 
+          a use case diagram for an ATM system consisting of &laquo;include&raquo; 
           relationships for the use cases, Maintain ATM and Use ATM. 
           Maintain ATM was further defined by two use cases, 
           &quot;Maintain Equipment&quot; and &quot;Reload ATM&quot;. 
@@ -5895,7 +5895,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             Windows</title>
 
             <para>Click directly in the class model element and start 
-            typing. Do not use the properties window dialog fields—they 
+            typing. Do not use the properties window dialog fields&mdash;they 
             are not fully functional and liable to cause you a little 
             frustration.</para>
 
@@ -7577,8 +7577,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       <title>Introduction</title>
 
       <para>This chapter describes the overall behavior of the user 
-      interface. Description of the various component parts—the menu 
-      bar, panes and various diagrams— is in separate chapters.</para>
+      interface. Description of the various component parts&mdash;the menu 
+      bar, panes and various diagrams&mdash; is in separate chapters.</para>
 
       <sect1>
 
@@ -7667,7 +7667,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         all of ArgoUML.</para>
 
         <para>In a number of places in ArgoUML text may be directly 
-        edited (for example the constraint editor—see 
+        edited (for example the constraint editor&mdash;see 
         <xref linkend="s2.ref.details_constraint_editor"/>). The 
         behavior of the mouse when handling text is discussed in the 
         sections that follow.</para>
@@ -7885,7 +7885,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>General Behavior When Editing Text</title>
 
             <para>In a number of places in ArgoUML text may be directly 
-            edited (for example when naming a model—element in the 
+            edited (for example when naming a model&mdash;element in the 
             properties pane, or when typing a UML note / comment). Here 
             SHIFT button&nbsp;1 is used to select a range of text from the 
             previously selected point. Subsequent operations (text 
@@ -9269,13 +9269,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </listitem>
 
           <listitem>
-            <para><literal>Use guillemots</literal> (« ») for 
+            <para><literal>Use guillemots</literal> (&laquo;&nbsp;&raquo;) for 
                 stereotypes (clear by default). By default ArgoUML uses 
                 pairs of <emphasis>less than</emphasis> and 
                 <emphasis>greater than</emphasis> (&lt;&lt; &gt;&gt;) 
                 characters for stereotypes. If this box is checked 
                 stereotypes on diagrams are shown between true 
-                guillemots (« »).</para>
+                guillemots (&laquo;&nbsp;&raquo;).</para>
 
             <para>This feature is presumably added to ArgoUML 
                 because guillemots are poorly supported by various 
@@ -9866,7 +9866,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>Selecting the <literal>Environment</literal> tab 
             (button&nbsp;1 click on the tab) lists several environmental items. 
-            Note that none of the paths can be altered — these are 
+            Note that none of the paths can be altered &mdash; these are 
             just a matter of record.</para>
 
             <figure float="1">
@@ -9925,7 +9925,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para><literal>${argo.ext.dir}</literal>. The directory 
-                holding ArgoUML extensions—by default the <literal>
+                holding ArgoUML extensions&mdash;by default the <literal>
                 ext</literal> sub-directory of the ArgoUML build 
                 directory.</para>
 
@@ -10110,13 +10110,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><literal>Use guillemots</literal> (« ») for 
+                <para><literal>Use guillemots</literal> (&laquo;&nbsp;&raquo;) for 
                 stereotypes (clear by default). By default ArgoUML uses 
                 pairs of <emphasis>less than</emphasis> and 
                 <emphasis>greater than</emphasis> (&lt;&lt; &gt;&gt;) 
                 characters for stereotypes. If this box is checked 
                 stereotypes on diagrams are shown between true 
-                guillemots (« »).</para>
+                guillemots (&laquo;&nbsp;&raquo;).</para>
 
                 <para>This feature is presumably added to ArgoUML 
                 because guillemots are poorly supported by various 
@@ -11341,7 +11341,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>The Critique Menu</title>
 
         <para>This menu controls one of ArgoUML&apos;s unique 
-        features—the use of critics to guide the designer. The theory 
+        features&mdash;the use of critics to guide the designer. The theory 
         behind this is well described in Jason Robbins&apos; PhD 
         dissertation 
         <ulink url="http://argouml.tigris.org/docs/robbins_dissertation/">
@@ -11356,7 +11356,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           every design criterion.</para>
 
           <para>The output of a critic is a 
-          <emphasis>critique</emphasis>—a statement about some aspect 
+          <emphasis>critique</emphasis>&mdash;a statement about some aspect 
           of the model that does not appear to follow good design 
           practice.</para>
 
@@ -11804,7 +11804,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para><literal>Contact Info</literal>. This gives the 
-              major contact points for the ArgoUML project—the web 
+              major contact points for the ArgoUML project&mdash;the web 
               site, and the developers mailing list.</para>
 
             </listitem>
@@ -12226,9 +12226,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           dialog are buttons labeled <literal>&gt;&gt;</literal> and 
           <literal>&lt;&lt;</literal>. The first of these transfers the 
           rule selected in the library on the left to the list of rules 
-          on the right—i.e. it adds a rule to the perspective. The 
+          on the right&mdash;i.e. it adds a rule to the perspective. The 
           second one transfers the rule selected on the right to the 
-          library list on the left—i.e. it removes a rule from the 
+          library list on the left&mdash;i.e. it removes a rule from the 
           perspective.</para>
 
           <para>If you hover the mouse over the horizontal line that 
@@ -12508,7 +12508,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>This entry on the pop-up menu is available for Class 
           Diagrams only. Activating this menu-item will add all classes 
           in the current namespace to the diagram. They will be located 
-          at the top left corner—obviously a perfect occasion to use 
+          at the top left corner&mdash;obviously a perfect occasion to use 
           the <quote>Arrange-&gt;Layout</quote> function in the 
           menu.</para>
 
@@ -13454,7 +13454,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               These two have similar handles, 
               except the one at the top of a stereotype: 
               when clicked, it creates a metaclass, 
-              connected by a dependency marked with «stereotype».
+              connected by a dependency marked with &laquo;stereotype&raquo;.
               This eases the creation of "stereotype declaration" diagrams - 
               see the literature on the subject.
               </para>
@@ -15140,7 +15140,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <para>This tab provides control over the various to-do items 
         created by the user, or raised automatically by the ArgoUML 
         critics (discussed in more detail in the section on the 
-        <literal>Critique</literal> menu—see 
+        <literal>Critique</literal> menu&mdash;see 
         <xref linkend="s1.ref.menu_critique"/>). 
         <xref linkend="fig.ref.details_to_do"/> shows a typical pane. 
         The to-do item is selected with button&nbsp;1 in the to-do pane (see 
@@ -16241,7 +16241,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para><literal>Collections</literal>. Operators and 
-              functions on collections—bags, sets and sequences. The 
+              functions on collections&mdash;bags, sets and sequences. The 
               large number of functions are organized into 
               sub-groups.</para>
 
@@ -16717,7 +16717,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           critic for every design criterion.</para>
 
           <para>The output of a critic is a 
-          <emphasis>critique</emphasis>—a statement about some aspect 
+          <emphasis>critique</emphasis>&mdash;a statement about some aspect 
           of the model that does not appear to follow good design 
           practice.</para>
 
@@ -17077,7 +17077,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             give their constructors the same name as the class, which 
             begins with an upper case character. In ArgoUML, this will 
             trigger this critic, unless the constructor is stereotyped 
-            <literal>«create»</literal>.</para>
+            <literal>&laquo;create&raquo;</literal>.</para>
 
             <para>It is important to remember that critics offer 
             guidance, and are not always correct. ArgoUML lets you 
@@ -17153,7 +17153,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           specified for the given class. Such classes may be created to 
           specify static attributes and methods, but by convention 
           should then be given the stereotype <literal>
-          «utility»</literal>.</para>
+          &laquo;utility&raquo;</literal>.</para>
 
         </sect2>
 
@@ -17179,15 +17179,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           Operation</literal> tool.</para>
 
           <para>In the UML 1.4 standard, a constructor is an operation 
-          with the stereotype «create». Although not strictly standard, 
-          ArgoUML will also accept «Create» as a stereotype for 
+          with the stereotype &laquo;create&raquo;. Although not strictly standard, 
+          ArgoUML will also accept &laquo;Create&raquo; as a stereotype for 
           constructors.</para>
 
           <para>By convention in Java and C++ a constructor has the 
           same name as the class, is not static, and returns no value. 
           ArgoUML will also accept any operation that follows these 
           conventions as a constructor even if it is not stereotyped 
-          «create».</para>
+          &laquo;create&raquo;.</para>
 
           <caution>
 
@@ -17431,7 +17431,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>It is not clear that this is a valid critic. It is 
             perfectly acceptable to have a transition without a 
-            guard—the transition is always taken when the trigger is 
+            guard&mdash;the transition is always taken when the trigger is 
             invoked.</para>
 
           </caution>
@@ -17509,7 +17509,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           explicit that you have exactly one instance of this class, by 
           using the singleton Pattern. Using the singleton pattern can 
           save time and memory space. Within ArgoUML this can be done 
-          by using the «singleton» stereotype on this class.</para>
+          by using the &laquo;singleton&raquo; stereotype on this class.</para>
 
           <para>If it is not your intent to have a single instance, you 
           should define instance variables (i.e. non-static attributes) 
@@ -17563,9 +17563,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <title>Singleton Stereotype Violated in &lt;class&gt;</title>
 
-          <para>This class is marked with the «singleton» stereotype, 
+          <para>This class is marked with the &laquo;singleton&raquo; stereotype, 
           but it does not satisfy the constraints imposed on singletons 
-          (ArgoUML will also accept «Singleton» stereotype as defining 
+          (ArgoUML will also accept &laquo;Singleton&raquo; stereotype as defining 
           a singleton). A singleton class can have at most one 
           instance. This means that the class must meet the design 
           criteria for a singleton (see 
@@ -17578,7 +17578,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           space.</para>
 
           <para>If you no longer want this class to be a singleton, 
-          remove the «singleton» stereotype by clicking on the class 
+          remove the &laquo;singleton&raquo; stereotype by clicking on the class 
           and selecting the blank selection on the stereotype drop-down 
           within the properties tab.</para>
 
@@ -18430,7 +18430,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     superclass, <literal>ModelElement</literal>).</para>
 
                     <para>Values <literal>true</literal>, meaning the 
-                    class is redundant — it can be formally derived 
+                    class is redundant &mdash; it can be formally derived 
                     from other elements, or <literal>false</literal> 
                     meaning it cannot.</para>
 
@@ -18849,7 +18849,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         no attributes, and any operations on them must have no 
         side-effects. A useful analogy is primitive datatypes in a 
         language like Java. The integer <quote>3</quote> stands on its 
-        own—it has no inner structure. There are operations (for 
+        own&mdash;it has no inner structure. There are operations (for 
         example addition) on the integers, but when I perform <literal>
         3&nbsp;+&nbsp;4</literal> the result is a new number, <quote>3</quote> 
         and <quote>4</quote> are unchanged by the exercise.</para>
@@ -19006,7 +19006,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the class 
-                    is redundant—it can be formally derived from other 
+                    is redundant&mdash;it can be formally derived from other 
                     elements, or <literal>false</literal> meaning it 
                     cannot.</para>
 
@@ -19560,7 +19560,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         no attributes, and any operations on them must have no 
         side-effects. A useful analogy is primitive datatypes in a 
         language like Java. The boolean <quote>true</quote> stands on its 
-        own—it has no inner structure. There are operations (for 
+        own&mdash;it has no inner structure. There are operations (for 
         example logical xor) on the booleans, but when I perform <literal>
         true xor true</literal> the result is a new boolean, 
         and the original 2 booleans <quote>true</quote> 
@@ -20232,8 +20232,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Standard tab. This contains the representation of 
-                the stereotype on diagrams (its name between « and 
-                »).</para>
+                the stereotype on diagrams (its name between &laquo; and 
+                &raquo;).</para>
 
                 <warning>
 
@@ -20264,7 +20264,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the class 
-                    is redundant—it can be formally derived from other 
+                    is redundant&mdash;it can be formally derived from other 
                     elements, or <literal>false</literal> meaning it 
                     cannot.</para>
 
@@ -21085,7 +21085,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the actor 
-                    is redundant—it can be formally derived from other 
+                    is redundant&mdash;it can be formally derived from other 
                     elements, or <literal>false</literal> meaning it 
                     cannot.</para>
 
@@ -21579,7 +21579,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the use 
-                    case is redundant—it can be formally derived from 
+                    case is redundant&mdash;it can be formally derived from 
                     other elements, or <literal>false</literal> meaning 
                     it cannot.</para>
 
@@ -22129,7 +22129,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    extension point is redundant—it can be formally 
+                    extension point is redundant&mdash;it can be formally 
                     derived from other elements, or <literal>
                     false</literal> meaning it cannot.</para>
 
@@ -22583,7 +22583,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    generalization is redundant—it can be formally 
+                    generalization is redundant&mdash;it can be formally 
                     derived from other elements, or <literal>
                     false</literal> meaning it cannot.</para>
 
@@ -22742,7 +22742,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <para>Drop down selector. Generalization is provided by 
                 default with the UML standard stereotype <literal>
                 implementation</literal>. The stereotype is shown 
-                between « and » above or across the 
+                between &laquo; and &raquo; above or across the 
                 generalization.</para>
 
                 <tip>
@@ -22953,8 +22953,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>An extend relationship is represented as a dotted link 
         with an open arrow head and a label <literal>
-        «extend»</literal>. If a condition is defined, it is shown 
-        under the <literal>«extend»</literal> label (see 
+        &laquo;extend&raquo;</literal>. If a condition is defined, it is shown 
+        under the <literal>&laquo;extend&raquo;</literal> label (see 
         <xref linkend="fig.ref.use_case_diagram"/>).</para>
 
         <sect2>
@@ -23068,7 +23068,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the extend 
-                    relationship is redundant—it can be formally 
+                    relationship is redundant&mdash;it can be formally 
                     derived from other elements, or <literal>
                     false</literal> meaning it cannot.</para>
 
@@ -23451,7 +23451,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>An include relationship is represented as a dotted link 
         with an open arrow head and a label <literal>
-        «include»</literal> (see 
+        &laquo;include&raquo;</literal> (see 
         <xref linkend="fig.ref.use_case_diagram"/>).</para>
 
         <sect2>
@@ -23552,7 +23552,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the include 
-                    relationship is redundant—it can be formally 
+                    relationship is redundant&mdash;it can be formally 
                     derived from other elements, or <literal>
                     false</literal> meaning it cannot.</para>
 
@@ -24007,7 +24007,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the package 
-                    is redundant—it can be formally derived from other 
+                    is redundant&mdash;it can be formally derived from other 
                     elements, or <literal>false</literal> meaning it 
                     cannot.</para>
 
@@ -24280,7 +24280,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                       abstract classes without realizations. This is 
                       probably better handled through stereotyping of 
                       the package (for example <literal>
-                      «facade»</literal>).</para>
+                      &laquo;facade&raquo;</literal>).</para>
 
                     </tip>
 
@@ -24563,7 +24563,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the class 
-                    is redundant—it can be formally derived from other 
+                    is redundant&mdash;it can be formally derived from other 
                     elements, or <literal>false</literal> meaning it 
                     cannot.</para>
 
@@ -25997,7 +25997,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    operation is redundant—it can be formally derived 
+                    operation is redundant&mdash;it can be formally derived 
                     from other elements, or <literal>false</literal> 
                     meaning it cannot.</para>
 
@@ -26719,7 +26719,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    parameter is redundant—it can be formally derived 
+                    parameter is redundant&mdash;it can be formally derived 
                     from other elements, or <literal>false</literal> 
                     meaning it cannot.</para>
 
@@ -27136,7 +27136,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>In general there is limited value at present in 
           defining signals within ArgoUML. It may prove more useful to 
           define signals as classes, with a (user defined) stereotype 
-          of <literal>«signal»</literal> as suggested in the UML 1.4 
+          of <literal>&laquo;signal&raquo;</literal> as suggested in the UML 1.4 
           standard. This allows any dependency relationships between 
           signals to be shown.</para>
 
@@ -27249,7 +27249,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the signal 
-                    is redundant—it can be formally derived from other 
+                    is redundant&mdash;it can be formally derived from other 
                     elements, or <literal>false</literal> meaning it 
                     cannot.</para>
 
@@ -27557,7 +27557,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>Associations are permitted between interfaces and 
         classes, but UML&nbsp;1.3 specifies they must only be navigable 
-        toward the interface—in other words the interface cannot see 
+        toward the interface&mdash;in other words the interface cannot see 
         the class. ArgoUML will draw such associations with the 
         appropriate navigation.</para>
 
@@ -27720,7 +27720,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    association is redundant—it can be formally derived 
+                    association is redundant&mdash;it can be formally derived 
                     from other elements, or <literal>false</literal> 
                     meaning it cannot.</para>
 
@@ -27903,7 +27903,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 capture) and solution domain (analysis), as well as for 
                 processes based on patterns.</para>
 
-                <para>The stereotype is shown between « and » below the 
+                <para>The stereotype is shown between &laquo; and &raquo; below the 
                 name of the association on the diagram.</para>
 
               </listitem>
@@ -28151,7 +28151,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    association end is redundant—it can be formally 
+                    association end is redundant&mdash;it can be formally 
                     derived from other elements, or <literal>
                     false</literal> meaning it cannot.</para>
 
@@ -28791,7 +28791,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    dependency relationship is redundant—it can be 
+                    dependency relationship is redundant&mdash;it can be 
                     formally derived from other elements, or <literal>
                     false</literal> meaning it cannot.</para>
 
@@ -28948,8 +28948,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Dependency</secondary></indexterm>
                 <para>Drop down selector. Dependency has no standard 
                 stereotypes of its own under UML&nbsp;1.3. and so ArgoUML 
-                does not provide any. The stereotype is shown between « 
-                and » above or across the generalization.</para>
+                does not provide any. The stereotype is shown between  &laquo;
+                and &raquo; above or across the generalization.</para>
 
               </listitem>
 
@@ -29068,7 +29068,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <para>An interface is represented on a class diagram as a 
         rectangle with two horizontal compartments. The top compartment 
         displays the interface name (and above it <literal>
-        «interface»</literal>) and the second any operations. Just like 
+        &laquo;interface&raquo;</literal>) and the second any operations. Just like 
         a class, the operations compartment can be hidden.</para>
 
         <sect2>
@@ -29197,7 +29197,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    interface is redundant—it can be formally derived 
+                    interface is redundant&mdash;it can be formally derived 
                     from other elements, or <literal>false</literal> 
                     meaning it cannot.</para>
 
@@ -29737,7 +29737,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    abstraction is redundant—it can be formally derived 
+                    abstraction is redundant&mdash;it can be formally derived 
                     from other elements, or <literal>false</literal> 
                     meaning it cannot.</para>
 
@@ -30161,7 +30161,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the object 
-                    is redundant—it can be formally derived from other 
+                    is redundant&mdash;it can be formally derived from other 
                     elements, or <literal>false</literal> meaning it 
                     cannot.</para>
 
@@ -30427,7 +30427,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>A stimulus is a communication between two instances and 
         is generated by an action. On a sequence diagram a stimulus is 
-        associated with a link—an instance of an association linking 
+        associated with a link&mdash;an instance of an association linking 
         two object instances. In the UML metamodel <literal>
         Stimulus</literal> is a sub-class of <literal>
         ModelElement</literal>.</para>
@@ -30655,7 +30655,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    stimulus is redundant—it can be formally derived 
+                    stimulus is redundant&mdash;it can be formally derived 
                     from other elements, or <literal>false</literal> 
                     meaning it cannot.</para>
 
@@ -31177,7 +31177,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the link is 
-                    redundant—it can be formally derived from other 
+                    redundant&mdash;it can be formally derived from other 
                     elements, or <literal>false</literal> meaning it 
                     cannot.</para>
 
@@ -34970,7 +34970,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    classifier role is redundant—it can be formally 
+                    classifier role is redundant&mdash;it can be formally 
                     derived from other elements, or <literal>
                     false</literal> meaning it cannot.</para>
 
@@ -35492,7 +35492,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    association is redundant—it can be formally derived 
+                    association is redundant&mdash;it can be formally derived 
                     from other elements, or <literal>false</literal> 
                     meaning it cannot.</para>
 
@@ -35856,7 +35856,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the 
-                    association end role is redundant—it can be 
+                    association end role is redundant&mdash;it can be 
                     formally derived from other elements, or <literal>
                     false</literal> meaning it cannot.</para>
 
@@ -36310,7 +36310,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the message 
-                    is redundant—it can be formally derived from other 
+                    is redundant&mdash;it can be formally derived from other 
                     elements, or <literal>false</literal> meaning it 
                     cannot.</para>
 
@@ -37383,7 +37383,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     <para><literal>derived</literal> (from the 
                     superclass, <literal>ModelElement</literal>). 
                     Values <literal>true</literal>, meaning the node is 
-                    redundant—it can be formally derived from other 
+                    redundant&mdash;it can be formally derived from other 
                     elements, or <literal>false</literal> meaning it 
                     cannot.</para>
 
@@ -40801,7 +40801,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><literal>false</literal> (default) – no default 
               constructor is generated, unless it is explicitly modeled 
-              with the <literal>«create»</literal> stereotype.</para>
+              with the <literal>&laquo;create&raquo;</literal> stereotype.</para>
 
             </listitem>
 
