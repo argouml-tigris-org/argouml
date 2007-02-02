@@ -51,6 +51,10 @@ import org.argouml.util.osdep.StartBrowser;
 /**
  * A window that displays an exception to the user if we can't handle it
  * in any other way.
+ * 
+ * TODO: This has been partly converted to be a generic error dialog 
+ * rather than something specific to exceptions.  This should be renamed
+ * when that process is complete.
  */
 public class ExceptionDialog extends JDialog implements ActionListener {
 
@@ -97,18 +101,16 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         this(f, formatException(message, e, highlightCause));
     }
 
-    private static String formatException(String message, Throwable e,
+    public static String formatException(String message, Throwable e,
             boolean highlightCause) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
 
         if (highlightCause && e.getCause() != null) {
-            // Instructions with clickable link for user
-            pw.print(Translator.localize("dialog.exception.link.report"));
 
             // This text is for the developers.
             // It doesn't need to be localized.
-            pw.print("<p>" + message);
+            pw.print(message );
             pw.print("<hr>System Info:<p>" + SystemInfoDialog.getInfo());
             pw.print("<p><hr>Error occurred at : " + new Date());
             pw.print("<p>  Cause : ");
@@ -125,23 +127,47 @@ public class ExceptionDialog extends JDialog implements ActionListener {
      * @param f   the <code>Frame</code> from which the dialog is displayed
      * @param message
      *            the message
+     * @deprecated by tfmorris for 0.24, use 
+     * {@link #ExceptionDialog(Frame, String, String, String)}
      */
     public ExceptionDialog(Frame f, String message) {
+        this(f, Translator.localize("dialog.exception.title"), 
+                Translator.localize("dialog.exception.message"), 
+                message);
+    }
+    
+    /**
+     * Construct an exception dialog with given title, introduction, and detail
+     * message.
+     * 
+     * @param f
+     *            the <code>Frame</code> from which the dialog is displayed
+     * @param title
+     *            string to use as title of dialog box
+     * @param intro
+     *            introductory text (summary of error)
+     * @param message
+     *            the message
+     */
+    public ExceptionDialog(Frame f, String title, String intro, 
+            String message) {
         super(f);
         setResizable(true);
         setModal(false);
-        setTitle(Translator.localize("dialog.exception.title"));
+        setTitle(title);
 
         Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
         getContentPane().setLayout(new BorderLayout(0, 0));
 
         // the introducing label
         northLabel =
-            new JLabel(Translator.localize("dialog.exception.message"));
+            new JLabel(intro);
         northLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         getContentPane().add(northLabel, BorderLayout.NORTH);
 
         // the text box containing the problem messages
+        // TODO: This should be hidden by default, but accessible on 
+        // via a "details" button or tab to provide more info to the user.
         textArea = new JEditorPane();
         textArea.setContentType("text/html");
         textArea.setEditable(false);
@@ -183,10 +209,10 @@ public class ExceptionDialog extends JDialog implements ActionListener {
             }
         });
 
-        Dimension contentPaneSize = getContentPane().getPreferredSize();
+        pack();
+        Dimension contentPaneSize = getContentPane().getSize();
         setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
                 scrSize.height / 2 - contentPaneSize.height / 2);
-        pack();
     }
 
     /*
