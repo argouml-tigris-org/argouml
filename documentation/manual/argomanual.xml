@@ -12158,7 +12158,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           
           <listitem>
 
-            <para><literal>Composition-centric</literal>. In this 
+            <para><literal>Composite-centric</literal>. In this 
             view, all modelelements are shown
             according their composition in the UML metamodel.</para>
 
@@ -12237,8 +12237,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           drag it up or down.</para>
 
           <para>All three titles of the lists show the number of 
-          items in the list. ArgoUML V0.20 has 8 default perspectives, 
-          and 68 rules in the library to build perspectives from.</para>
+          items in the list. ArgoUML V0.24 has 9 default perspectives, 
+          and 72 rules in the library to build perspectives from.</para>
 
           <para>The buttons at the top right are explained as 
           follows:</para>
@@ -12298,8 +12298,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <para>At the very bottom right is a button labeled <literal>
           OK</literal> to be used when all changes are complete. 
           button&nbsp;1 click on this button will close the dialog window. 
-          The changes are saved when you exit ArgoUML (or inmediately 
-          by activating the menuitem File-&gt;Save Configuration) in 
+          The changes are saved when you exit ArgoUML in 
           the <literal>argo.user.properties</literal> file.</para>
 
           <para>Then there is the <literal>Cancel</literal> button, 
@@ -12403,6 +12402,40 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <para>Button&nbsp;2 Click over any selected model element in the main 
         area of the explorer will cause a pop-up menu to appear.</para>
 
+        <sect2>
+          <title>Create Diagram</title>
+          
+          <para>This entry on the pop-up menu opens a choice
+            of submenus, one for each diagram type. </para>
+          <para>The namespace of the new diagram 
+            will be based on the selected modelelement.</para>
+        </sect2>
+
+        <sect2>
+          <title>Copy Diagram to Clipboard as Image</title>
+          
+          <para>This entry on the pop-up menu creates a graphical file,
+          in the default graphical format, and puts it on the clipboard of your PC. 
+          The graphics can inmediately be pasted into 
+          e.g. a requirements document in OpenOffice.Org.</para>
+          
+          <para>The graphics format and its resolution are determined by 
+          ArgoUML's default setting: Select in the menu 
+          <literal>Edit</literal>, then <literal>Settings...</literal>,
+          then the tab <literal>Environment</literal>.
+          The PNG and GIF formats are advised, 
+          and the resolution <literal>Standard</literal>.
+          </para>
+          
+          <tip><para>Some applications (such as Doors from Telelogic) 
+          require the background color 
+          of the generated graphics to be adapted (else the image is empty). 
+          This can be done with a tool like IrfanView; 
+          it is as easy as clicking its paste button, 
+          and then its copy button.
+          </para></tip>
+        </sect2>
+         
         <sect2>
 
           <title>Add to Diagram</title>
