@@ -59,7 +59,7 @@ If you are using Windows, the follow commands will build ArgoUML from source and
 run it.  If you using Unix/Linux, the comparable commands modified slightly for
 your particular shell will do work.
 <programlisting>
-C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/src http://argouml.tigris.org/svn/argouml/trunk/src_new http://argouml.tigris.org/svn/argouml/trunk/tools http://argouml.tigris.org/svn/argouml/trunk/lib argouml --username guest
+C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/src http://argouml.tigris.org/svn/argouml/trunk/src_new http://argouml.tigris.org/svn/argouml/trunk/tools http://argouml.tigris.org/svn/argouml/trunk/lib http://argouml.tigris.org/svn/argouml/trunk/tests argouml --username guest
 Password:  (give empty as password)
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml\src_new
