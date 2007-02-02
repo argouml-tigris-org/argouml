@@ -110,7 +110,7 @@ public class ProgressMonitorWindow implements
     /*
      * @see org.argouml.application.api.ProgressMonitor#notifyMessage(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void notifyMessage(String title, final String introduction, 
+    public void notifyMessage(final String title, final String introduction, 
             final String message) {
         final String messageString = introduction + " : " + message; 
         pbar.setNote(messageString);
@@ -119,7 +119,9 @@ public class ProgressMonitorWindow implements
                 JDialog dialog =
                     new ExceptionDialog(
                             ArgoFrame.getInstance(),
-                            messageString);
+                            title,
+                            introduction,
+                            message);
                 dialog.setVisible(true);
             }
         });

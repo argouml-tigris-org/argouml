@@ -1652,18 +1652,19 @@ public final class ProjectBrowser
             boolean showUI) {
         if (showUI) {
             if (monitor != null) {
-                monitor.notifyMessage("Error" , "Error load/saving", message);
+                monitor.notifyMessage(
+                        Translator.localize("dialog.error.title"), 
+                        Translator.localize("dialog.error.open.save.error"),
+                        message);
             } else {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-//                        JOptionPane.showMessageDialog(
-//                                ArgoFrame.getInstance(),
-//                                message,
-//                                "Error",
-//                                JOptionPane.ERROR_MESSAGE);
                         JDialog dialog =
                             new ExceptionDialog(
                                     ArgoFrame.getInstance(),
+                                    Translator.localize("dialog.error.title"),
+                                    Translator.localize(
+                                            "dialog.error.open.save.error"),
                                     message);
                         dialog.setVisible(true);
                     }
@@ -1686,16 +1687,22 @@ public final class ProjectBrowser
             boolean showUI, final Throwable ex) {
         if (showUI) {
             if (monitor != null) {
-                monitor.notifyMessage("Error" , "Error load/saving", message);
+                monitor.notifyMessage(
+                        Translator.localize("dialog.error.title"),
+                        message, 
+                        ExceptionDialog.formatException(
+                                message, ex, ex instanceof OpenException));
             } else {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         JDialog dialog =
                             new ExceptionDialog(
                                     ArgoFrame.getInstance(),
-                                    message,
-                                    ex,
-                                    ex instanceof OpenException);
+                                    Translator.localize("dialog.error.title"),
+                                    message, 
+                                    ExceptionDialog.formatException(
+                                                message, ex,
+                                                ex instanceof OpenException));
                         dialog.setVisible(true);
                     }
                 });
