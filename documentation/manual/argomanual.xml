@@ -13311,6 +13311,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
+               fileref="images/icons/aggregation_plain.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Aggregation</literal>. Add an aggregation
+              between two model elements selected using button&nbsp;1 motion 
+              (from the first model element to the second). There are 2
+              types of aggregation offered here, <literal>
+              bidirectional</literal> or <literal>
+              unidirectional</literal>.</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
                fileref="images/icons/composition_plain.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Composition</literal>. Add an composition 
@@ -13326,14 +13341,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
-               fileref="images/icons/aggregation_plain.gif"
+               fileref="images/icons/association_end.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>Aggregation</literal>. Add an aggregation
-              between two model elements selected using button&nbsp;1 motion 
-              (from the first model element to the second). There are 2
-              types of aggregation offered here, <literal>
-              bidirectional</literal> or <literal>
-              unidirectional</literal>.</para>
+              <literal>Association-end</literal>. Add 
+              another end to an already existing association 
+              using button&nbsp;1 (from the 
+              association middle to a class, or vice versa).
+              This is the way to create so-calld N-ary associations.</para>
 
             </listitem>
 
@@ -13908,6 +13922,57 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Deep History</literal>. Add a deep history 
               pseudostate to the diagram.</para>
+
+            </listitem>
+            
+            <listitem>
+
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/call_event.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Call Event</literal>. Add a Call Event as trigger
+              to a transition.
+              There are 4 types of 
+              events offered here: 
+              <literal>Call Event</literal>, <literal>
+              Change Event</literal>, 
+              <literal>Signal Event</literal> and <literal>
+              Time Event</literal>.</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/guard.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Guard</literal>. Add a guard 
+              to a transition.</para>
+
+            </listitem>
+
+            <listitem>
+
+              <para><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/call_action.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Call Action</literal>. Add a call action 
+              (i.e. the effect)
+              to a transition.
+              There are 7 types of 
+              actions offered here: 
+              <literal>Call Action</literal>, 
+              <literal>Create Action</literal>, 
+              <literal>Destroy Action</literal>, 
+              <literal>Return Action</literal>, 
+              <literal>Send Action</literal>, 
+              <literal>Terminate Action</literal>, 
+              <literal>Uninterpreted Action</literal> and 
+              <literal>Action Sequence</literal>.
+              </para>
 
             </listitem>
 
@@ -15020,9 +15085,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         Java and UML.
         With plugin modules, 
         it is even possible to select other languages, 
-        such as C++ and PHP,
-        but the current (0.22) version of ArgoUML 
-        does not show any difference.
+        such as C++.
         </para>
         
         <para><xref linkend="fig.ref.notation_uml"/>
@@ -15083,7 +15146,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         
         <para>An association (e.g. between two classes) is showing many
         texts close to its middle and ends, 
-        so its deserves some extra explanation.
+        so it deserves some extra explanation.
         <xref linkend="fig.ref.notation_association"/> shows two associations
         to clarify the following:
         </para>
@@ -15109,7 +15172,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         but it is not shown 
         for an unnamed association end.</para>
         
-        <para>Likewise, the multiplicity is not shown if it is 1.</para>
+        <para>Likewise, the multiplicity is not shown if it is 1, 
+        unless the setting 
+        <literal>Show "1" multiplicities</literal>
+        in the menu 
+        <literal>File&rArr;Properties</literal>
+        is checked.</para>
         
         <para>The example figure does not demonstrate this, but 
         stereotypes of an association are shown on the diagram, 
@@ -15404,13 +15472,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           Help</literal>. This will fire up a browser to a URL with 
           further help.</para>
 
-          <warning>
+          <!--warning>
 
             <para>In the V0.20 release of ArgoUML the URLs are 
             generally invalid. The few that are valid have no 
             information.</para>
 
-          </warning>
+          </warning-->
 
         </sect2>
 
