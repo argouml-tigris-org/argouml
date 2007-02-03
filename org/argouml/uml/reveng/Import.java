@@ -318,8 +318,19 @@ public class Import extends ImportCommon implements ImportSettings {
                     new JTextField(System.getProperty("file.encoding"));
             } else {
                 inputSourceEncoding = new JTextField(enc);
+
             }
             general.add(inputSourceEncoding);
+
+            // TODO: Encoding needs to be validated against set of 
+            // available encodings using {@link Charset.isSupported(String)}
+            // -- or use a menu with the contents of 
+            // {@link Charset.availableCharsets()}            
+//            JComboBox encoding =
+//                    new JComboBox(Charset.availableCharsets().keySet()
+//                            .toArray());
+//            encoding.setSelectedItem(inputSourceEncoding.getText());
+//            general.add(encoding);
 
             tab.add(general, Translator.localize("action.import-general"));
             String moduleName = "";
@@ -626,8 +637,11 @@ public class Import extends ImportCommon implements ImportSettings {
      * to make sure that Swing calls happen on the appropriate thread.
      *
      * TODO: React on the close button as if the Cancel button was pressed.
+     * 
+     * TODO: Refactor to use a common progress dialog.  There's really no reason
+     * to have our own specific implementation - tfm - 20070201
      */
-    static class ImportStatusScreen extends JDialog implements ProgressMonitor {
+    class ImportStatusScreen extends JDialog implements ProgressMonitor {
 
         private JButton cancelButton;
 
@@ -738,17 +752,23 @@ public class Import extends ImportCommon implements ImportSettings {
          */
         public void notifyMessage(String title, String introduction,
                 String message) {
-            // TODO: Create an error dialog or panel
-//            JDialog problemsDialog = new ProblemsDialog();
-//            problemsDialog.setTitle(title);
-
+            // TODO: Create an error dialog or panel in our progress dialog
+            // for now we just use our old style separate error dialog
+            JDialog problemsDialog = new ProblemsDialog(message);
+            problemsDialog.setTitle(title);
+            problemsDialog.setVisible(true);
+            // TODO: Only needed while we have a separate problem dialog
+            // (see above)
+            setVisible(false);
+            dispose();
         }
 
         /*
          * @see org.argouml.application.api.ProgressMonitor#notifyNullAction()
          */
         public void notifyNullAction() {
-            // TODO: Notify user if there were no files to process
+            String msg = Translator.localize("label.import.empty");
+            notifyMessage(msg, msg, msg);
         }
 
         /*
@@ -795,9 +815,16 @@ public class Import extends ImportCommon implements ImportSettings {
          * The constructor.
          */
         public ProblemsDialog() {
+            this(problems.toString());
+        }
+
+        /**
+         * The constructor.
+         */
+        public ProblemsDialog(String errors) {
             super();
             setResizable(true);
-            setModal(false);
+            setModal(true);
             setTitle(Translator.localize("dialog.title.import-problems"));
 
             Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -810,10 +837,10 @@ public class Import extends ImportCommon implements ImportSettings {
 
             // the text box containing the problem messages
             JEditorPane textArea = new JEditorPane();
-            textArea.setText(problems.toString());
+            textArea.setText(errors);
             JPanel centerPanel = new JPanel(new BorderLayout());
             centerPanel.add(new JScrollPane(textArea));
-            centerPanel.setPreferredSize(new Dimension(300, 200));
+            centerPanel.setPreferredSize(new Dimension(600, 200));
             getContentPane().add(centerPanel);
 
             // close button
@@ -830,10 +857,10 @@ public class Import extends ImportCommon implements ImportSettings {
                 }
             });
 
-            Dimension contentPaneSize = getContentPane().getPreferredSize();
+            pack();
+            Dimension contentPaneSize = getContentPane().getSize();
             setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
                     scrSize.height / 2 - contentPaneSize.height / 2);
-            pack();
         }
 
         /*
@@ -1045,7 +1072,7 @@ class ImportClasspathDialog extends JDialog {
                         ; // TODO: What shall we do here?
                     }
                     // bring the import classpath dialog to the front
-                    importClasspathDialog.show();
+                    importClasspathDialog.setVisible(true);
                 }
             });
 
