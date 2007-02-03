@@ -1617,7 +1617,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           a way of learning <quote>hands-on</quote> about leading edge 
           software. Its a way of getting a lot of visibility (over 
           1,125,000 people had downloaded ArgoUML by the end of 2005). 
-          That&apos;s a lot of good experience on a resumé and a lot of 
+          That&apos;s a lot of good experience on a r&eacute;sum&eacute;
+          and a lot of 
           potential employers seeing you!</para>
 
           <para>And its great for the ego!</para>
@@ -3145,8 +3146,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Printing Diagrams</title>
 
-              <para>Select a diagram, then go to <literal>
-              File</literal>→<literal>Export Diagrams</literal>. You 
+              <para>Select a diagram, then go to 
+              <literal>File</literal>&rArr;<literal>Export Diagrams</literal>.
+              You 
               can generate GIF, PostScript, Encapsulated PostScript or 
               SVG format.</para>
 
@@ -3304,8 +3306,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <title>Generating XMI Format</title>
 
-              <para>Select the command <literal>File</literal>→
-              <literal>Export as XMI</literal> and choose a 
+              <para>Select the command
+              <literal>File</literal>&rArr;<literal>Export as XMI</literal>
+              and choose a 
               filename.</para>
 
             </sect4>
@@ -4950,8 +4953,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 a context-sensitive pop-up menu. The <literal>
                 Navigability</literal> sub-menu has options for 
                 bi-directional navigation (the default, with no arrows) 
-                and for navigability Actor→Use Case and Use 
-                Case→Actor.</para>
+                and for navigability Actor&rarr;Use Case and
+                Use Case&rarr;Actor.</para>
 
               </listitem>
 
@@ -12075,7 +12078,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para><literal>Class-centric</literal>. 
             Shows classes in their package hierarchy as well as  
             datatypes and use case diagram elements. Similar to the  
-            Package-centric view but it doesn’t show connecting or  
+            Package-centric view but it doesn't show connecting or  
             associating elements.  
             <!-- Got this from 
             http://www.devshed.com/c/a/Practices/Design-with-ArgoUML/3/ -->
@@ -40775,7 +40778,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       UML.</para>
 
       <para>Tagged values are one of the main means by which we can 
-      define code generation behavior. They have a name – the tag – and 
+      define code generation behavior. They have a name - the tag - and 
       a value, and are applied to model elements.</para>
 
       <para>The tagged values in use for the C++ module have two 
@@ -40785,14 +40788,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <listitem>
 
-          <para>free format values – any <literal>String</literal> is 
+          <para>free format values - any <literal>String</literal> is 
           valid, except the empty <literal>String</literal></para>
 
         </listitem>
 
         <listitem>
 
-          <para>formated values – the value must obey some 
+          <para>formated values - the value must obey some 
           restrictions, e.g., be one of <literal>true</literal> or 
           <literal>false</literal> (abbreviated to <literal>true || 
           false</literal>)</para>
@@ -40829,10 +40832,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>true</literal> – generates a default 
+              <para><literal>true</literal> - generates a default 
               constructor for the <literal>class</literal>.</para>
 
-              <para><literal>false</literal> (default) – no default 
+              <para><literal>false</literal> (default) - no default 
               constructor is generated, unless it is explicitly modeled 
               with the <literal>&laquo;create&raquo;</literal> stereotype.</para>
 
@@ -40884,7 +40887,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para><literal>&lt;source type&gt; 
-              &lt;type_name&gt;</literal> – creates <literal>
+              &lt;type_name&gt;</literal> - creates <literal>
               typedef</literal> line in the public area of the <literal>
               class</literal> with <literal>typedef &lt;source type&gt; 
               &lt;type name&gt;</literal>.</para>
@@ -40951,7 +40954,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>Directory</literal> – will search in the 
+              <para><literal>Directory</literal> - will search in the 
               specified directory for the template files 
               &quot;header_template&quot; and &quot;cpp_template&quot; 
               which are placed in top of the corresponding file. The 
@@ -40971,7 +40974,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>name@domain.country</literal> – replaces 
+              <para><literal>name@domain.country</literal> - replaces 
               the tag |EMAIL| of the template file.</para>
 
             </listitem>
@@ -40984,7 +40987,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>name</literal> – replaces the tag |AUTHOR| 
+              <para><literal>name</literal> - replaces the tag |AUTHOR| 
               of the template file.</para>
 
               <note>
@@ -41017,7 +41020,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>true</literal> – the type of the member 
+              <para><literal>true</literal> - the type of the member 
               variable will be a pointer to the attribute type.</para>
 
               <para>For example, if you have the UML <literal>
@@ -41027,7 +41030,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               member variable would be: <literal>std::string* 
               name;</literal></para>
 
-              <para><literal>false</literal> (default) – no pointer 
+              <para><literal>false</literal> (default) - no pointer 
               modifier is applied.</para>
 
             </listitem>
@@ -41040,10 +41043,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>true</literal> – the type of the member 
+              <para><literal>true</literal> - the type of the member 
               variable will be a reference to the attribute type.</para>
 
-              <para><literal>false</literal> (default) – no reference 
+              <para><literal>false</literal> (default) - no reference 
               modifier is applied.</para>
 
             </listitem>
@@ -41056,7 +41059,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>header</literal> – will lead for class 
+              <para><literal>header</literal> - will lead for class 
               types to a pre-declaration in the header, and the include 
               of the remote class header in the header of the generated 
               class.</para>
@@ -41072,7 +41075,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <listitem>
 
               <para><literal>list || slist || vector || map || stack || 
-              stringmap</literal> – will define a multiplicity as the 
+              stringmap</literal> - will define a multiplicity as the 
               corresponding STL container, if the <literal>
               Multiplicity</literal> range of the attribute is variable 
               (for fixed size ranges this setting is ignored).</para>
@@ -41087,7 +41090,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>private || protected || public</literal> – 
+              <para><literal>private || protected || public</literal> - 
               creates a simple function to set the attribute by a 
               function (call by reference is used for class-types, else 
               call by value); place the function in the given 
@@ -41103,7 +41106,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>private || protected || public</literal> – 
+              <para><literal>private || protected || public</literal> - 
               as for <literal>set</literal>.</para>
 
             </listitem>
@@ -41126,7 +41129,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           Operation</literal> is marked as <literal>out</literal> or 
           <literal>inout</literal> the variable will be passed by 
           reference (default) or pointer (needs tagged value <literal>
-          pointer</literal> – see above), otherwise by value.</para>
+          pointer</literal> - see above), otherwise by value.</para>
 
           <para>Return values in UML are simply <literal>
           Parameters</literal> marked as <literal>return</literal>, 
@@ -41141,7 +41144,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>This problem is being handled in 
             <ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=3553">
-            issue #3553 – handle multiple return 
+            issue #3553 - handle multiple return 
             parameters</ulink>.</para>
 
           </warning>
@@ -41160,7 +41163,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><literal>true || false</literal> (default) – same 
+                <para><literal>true || false</literal> (default) - same 
                 as for <literal>Attributes</literal>.</para>
 
               </listitem>
@@ -41217,8 +41220,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
   // section 603522:ec4c7ff768:-7ffc end
       </programlisting>
         <para>If you delete an Operation in the model. The next time 
-        the class is generated, the lost code – i.e., the whole member 
-        function definition – will be added as comment to the end of 
+        the class is generated, the lost code - i.e., the whole member 
+        function definition - will be added as comment to the end of 
         the file.</para>
 
       </sect2>
