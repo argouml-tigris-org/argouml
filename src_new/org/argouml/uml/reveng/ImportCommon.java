@@ -546,6 +546,8 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                             Translator.localize(
                             "label.import-problems"),        //$NON-NLS-1$
                             problems.toString());
+        } else {
+            monitor.close();
         }
     }
 
