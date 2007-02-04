@@ -3147,7 +3147,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <title>Printing Diagrams</title>
 
               <para>Select a diagram, then go to 
-              <literal>File</literal>&rArr;<literal>Export Diagrams</literal>.
+              <literal>File</literal>=&gt;<literal>Export Diagrams</literal>.
               You 
               can generate GIF, PostScript, Encapsulated PostScript or 
               SVG format.</para>
@@ -3307,7 +3307,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <title>Generating XMI Format</title>
 
               <para>Select the command
-              <literal>File</literal>&rArr;<literal>Export as XMI</literal>
+              <literal>File</literal>=&gt;<literal>Export as XMI</literal>
               and choose a 
               filename.</para>
 
@@ -4953,8 +4953,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 a context-sensitive pop-up menu. The <literal>
                 Navigability</literal> sub-menu has options for 
                 bi-directional navigation (the default, with no arrows) 
-                and for navigability Actor&rarr;Use Case and
-                Use Case&rarr;Actor.</para>
+                and for navigability Actor-&gt;Use Case and
+                Use Case-&gt;Actor.</para>
 
               </listitem>
 
@@ -15176,7 +15176,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         unless the setting 
         <literal>Show "1" multiplicities</literal>
         in the menu 
-        <literal>File&rArr;Properties</literal>
+        <literal>File=&gt;Properties</literal>
         is checked.</para>
         
         <para>The example figure does not demonstrate this, but 
