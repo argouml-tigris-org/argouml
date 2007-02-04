@@ -15821,14 +15821,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </listitem>
 
-          <listitem>
-
-            <para><literal>Shadow:</literal> This drop-down selector 
-            specifies the width of the shadow (if any) for 2D 
-            model elements. It is not present for line model elements.</para>
-
-          </listitem>
-
         </itemizedlist>
 
         <figure float="1" id="fig.ref.details_style_colorpicker1">
