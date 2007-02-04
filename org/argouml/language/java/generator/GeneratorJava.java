@@ -146,6 +146,12 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         Language lang =
             GeneratorHelper.makeLanguage(cv, nn.getTitle(), nn.getIcon());
         GeneratorManager.getInstance().addGenerator(lang, this);
+        
+      //TODO: Replace this function by:  
+//        Language java = GeneratorHelper.makeLanguage(
+//                "Java", "Java", 
+//                ResourceLoaderWrapper.lookupIconResource("JavaNotation"));
+//        GeneratorManager.getInstance().addGenerator(java, this);
     }
 
     /**

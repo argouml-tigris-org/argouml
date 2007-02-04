@@ -59,6 +59,7 @@ import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.language.java.generator.GeneratorJava;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.persistence.PersistenceManager;
@@ -252,6 +253,9 @@ public class Main {
             return;
         }
 
+        // Initialize the Java code generator.
+        GeneratorJava.getInstance();
+        
 	// The reason the gui is initialized before the commands are run
 	// is that some of the commands will use the projectbrowser.
 	st.mark("initialize gui");
