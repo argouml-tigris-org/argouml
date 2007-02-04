@@ -81,6 +81,8 @@ class PGMLStackParser
         // TODO: Use stylesheet to convert or wait till we use Fig
         // factories in diagram subsystem.
         // What is the last version that used FigNote?
+        addTranslation("org.argouml.uml.diagram.ui.FigNote",
+        	"org.argouml.uml.diagram.static_structure.ui.FigComment");
         addTranslation("org.argouml.uml.diagram.static_structure.ui.FigNote",
             "org.argouml.uml.diagram.static_structure.ui.FigComment");
         addTranslation("org.argouml.uml.diagram.state.ui.FigState",
