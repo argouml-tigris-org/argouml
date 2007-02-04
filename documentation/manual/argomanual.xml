@@ -15912,7 +15912,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <caution>
 
-          <para>The OCL editor implementation for ArgoUML V0.20 
+          <para>The OCL editor implementation for ArgoUML V0.24 
           doesn&apos;t support OCL constraints for elements other than 
           Classes and Features.</para>
 
@@ -16028,7 +16028,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <warning>
 
               <para>It seems logical, that when a new constraint is 
-              created, it needs to be edited. But ArgoUML V0.20 fails 
+              created, it needs to be edited. But ArgoUML V0.24 fails 
               to start the OCL editor upon creation; you have to do 
               this by primo selecting the new constraint first, secundo 
               rename it, and tertio press the <literal>Edit 
@@ -16056,7 +16056,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <caution>
 
-              <para>In V0.20 of ArgoUML this button is not downlighted 
+              <para>In V0.24 of ArgoUML this button is not downlighted 
               when it is not functional, i.e. when no constraint is 
               selected.</para>
 
@@ -16078,7 +16078,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <caution>
 
-              <para>In V0.18 of ArgoUML this button is not downlighted 
+              <para>In V0.24 of ArgoUML this button is not downlighted 
               when it is not functional, i.e. when no constraint is 
               selected.</para>
 
@@ -16538,7 +16538,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <caution>
 
-          <para>In the V0.20 release of ArgoUML, this tab is not 
+          <para>In the V0.22 release of ArgoUML, this tab is not 
           completely implemented. E.g. the checks are not saved.</para>
 
         </caution>
@@ -17054,7 +17054,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Choose a Name (Classes and Interfaces)</title>
 
           <para>The class or interface concerned has been given no name 
-          (it will appear in the model as <literal>anon</literal>). 
+          (it will appear in the model as <literal>Unnamed</literal>). 
           Suggestion that good design requires that all interfaces and 
           classes are named.</para>
 
@@ -17076,7 +17076,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Choose a Name (Attributes)</title>
 
           <para>The attribute concerned has been given no name (it will 
-          appear in the model as <literal>(anon Attribute)</literal>). 
+          appear in the model as <literal>(Unnamed Attribute)</literal>). 
           Suggestion that good design requires that all attributes are 
           named.</para>
 
@@ -17087,7 +17087,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Choose a Name (Operations)</title>
 
           <para>The operation concerned has been given no name (it will 
-          appear in the model as <literal>(anon Operation)</literal>). 
+          appear in the model as <literal>(Unnamed Operation)</literal>). 
           Suggestion that good design requires that all operations are 
           named.</para>
 
@@ -17098,7 +17098,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Choose a Name (States)</title>
 
           <para>The state concerned has been given no name (it will 
-          appear in the model as <literal>(anon State)</literal>). 
+          appear in the model as <literal>(Unnamed State)</literal>). 
           Suggestion that good design requires that all states are 
           named.</para>
 
@@ -18950,7 +18950,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         3&nbsp;+&nbsp;4</literal> the result is a new number, <quote>3</quote> 
         and <quote>4</quote> are unchanged by the exercise.</para>
 
-        <para>Within UML&nbsp;1.3, <literal>DataType</literal> is a 
+        <para>Within UML&nbsp;1.4, <literal>DataType</literal> is a 
         sub-class of the <literal>Classifier</literal> metaclass. It 
         embraces the predefined primitive types (
         <literal>byte</literal>, <literal>char</literal>, <literal>
@@ -18971,14 +18971,20 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <literal>New datatype</literal> button on the property tabs of 
         the model and packages (in which case the new datatype is 
         restricted in scope to the package), as well as the properties 
-        tab for datatype.</para>
+        tab for datatype. 
+        Datatypes can also be created with the tool 
+        in the diagram toolbar of a class diagram.</para>
 
-        <note>
-
-          <para>UML&nbsp;1.3 allows user defined datatypes to be placed on 
-          class diagrams. This is not permitted in ArgoUML.</para>
-
-        </note>
+        <para>The UML&nbsp;1.4 standard 
+        allows user defined datatypes to be placed on 
+        class diagrams to define their inheritence structure. 
+        This is also possible in ArgoUML.
+        It is represented on the diagram by a box with two compartments, of
+        which the top one is marked with 
+        <literal>&laquo;datatype&raquo;</literal>, 
+        and contains the name. 
+        The lower one contains operations.
+        </para>
 
         <sect2>
 
@@ -19183,28 +19189,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <term><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
-               fileref="images/icons/enumeration_literal.gif"
+               fileref="images/icons/enumeration.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-              <literal>New enumeration literal</literal></term>
+              <literal>New Enumeration</literal></term>
 
               <listitem>
 
-                <para>This creates a new enumeration literal within the 
-                datatype, navigating immediately to the properties tab 
-                for that literal.</para>
-
-                <caution>
-
-                  <para>ArgoUML does not actually have a separate 
-                  concept of a literal. The navigation will navigate to 
-                  the property sheet for an attribute of a class (see 
-                  <xref linkend="s1.ref.attribute"/>). When defining a 
-                  literal, all that matters is its name. Other parts of 
-                  the attribute property sheet should be ignored. Also 
-                  the name of the literal must obey the rules for an 
-                  Attribute or a critic will fire.</para>
-
-                </caution>
+                <indexterm><primary>Add Enumeration</primary></indexterm>
+                <indexterm><primary>New Enumeration</primary></indexterm>
+                <indexterm><primary>Create 
+                New</primary><secondary>Enumeration</secondary></indexterm>
+                <para>This creates a new Enumeration (see 
+                <xref linkend="s1.ref.enumeration"/>) 
+                in the same package as the datatype, 
+                navigating immediately 
+                to the properties tab for that Enumeration.</para>
 
               </listitem>
 
@@ -19299,67 +19298,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <para>The default name supplied for a newly created 
                   datatype is the empty string <quote />. Datatypes 
                   with empty string names will appear with the name 
-                  <literal>(anon Datatype)</literal> in the 
+                  <literal>(Unnamed Datatype)</literal> in the 
                   explorer.</para>
 
                 </note>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Stereotype</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Datatype 
-                Stereotype</primary></indexterm>
-                <indexterm><primary>Stereotype</primary><secondary>of 
-                Datatype</secondary></indexterm>
-                <para>Drop down selector. Stereotype is provided by 
-                default with the UML standard stereotypes for 
-                classifier (<literal>metaclass</literal>, <literal>
-                powertype</literal>, <literal>process</literal>, 
-                <literal>thread</literal> and <literal>
-                utility</literal>).</para>
-
-                <tip>
-
-                  <para>The stereotype <literal>enumeration</literal> 
-                  should always be used for any created enumeration 
-                  datatypes.</para>
-
-                </tip>
-
-                <caution>
-
-                  <para>In ArgoUML version 0.18 the stereotype <literal>
-                  enumeration</literal> must be created before it can 
-                  be used. However, by creating an Enumeration Literal, 
-                  the stereotype <literal>enumeration</literal> is 
-                  created automatically.</para>
-
-                </caution>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype"/>).</para>
 
               </listitem>
 
@@ -19371,7 +19313,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Drop down selector. Allows changeing the 
+                <para>Drop down selector with navigate button. 
+                Allows changing the 
                 namespace for the datatype. This is the package 
                 hierarchy.</para>
 
@@ -19420,10 +19363,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                     <tip>
 
-                      <para>In the absence of specialization of 
-                      datatypes within ArgoUML these have little value. 
-                      In effect all datatypes are both <literal>
-                      Root</literal> and <literal>Final</literal></para>
+                      <para>You can define the specialization of 
+                      datatypes in a class diagram 
+                      by drawing generalizations between them.</para>
 
                     </tip>
 
@@ -19505,13 +19447,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <para>Text area. Lists any datatype that 
                 <emphasis>generalizes</emphasis> this datatype.</para>
 
-                <caution>
-
-                  <para>It is not clear that generalizing datatypes 
-                  makes much sense.</para>
-
-                </caution>
-
               </listitem>
 
             </varlistentry>
@@ -19524,13 +19459,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Text box. Lists any specialized datatype (i.e. 
                 for which this datatype is a generalization.</para>
-
-                <caution>
-
-                  <para>It is not clear that specializing datatypes 
-                  makes much sense.</para>
-
-                </caution>
 
               </listitem>
 
@@ -19581,59 +19509,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   (they are read-only). This means the <literal>
                   query</literal> modifier <emphasis>must</emphasis> be 
                   checked for all operations.</para>
-
-                </caution>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Literals</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Datatype 
-                Literals</primary></indexterm>
-                <indexterm><primary>Literals</primary><secondary>of 
-                Datatype</secondary></indexterm>
-                <para>Text area. Lists all the enumeration literals 
-                defined for this datatype. Button&nbsp;1 double click 
-                navigates to the selected literal, button&nbsp;2 click 
-                brings up a pop up menu with two entries.</para>
-
-                <itemizedlist>
-
-                  <listitem>
-
-                    <para><literal>Move Up</literal>. Only available 
-                    where there are two or more literals, and the 
-                    literal selected is not at the top. It is moved up 
-                    one.</para>
-
-                  </listitem>
-
-                  <listitem>
-
-                    <para><literal>Move Down</literal>. Only available 
-                    where there are two or more literals listed, and 
-                    the literal selected is not at the bottom. It is 
-                    moved down one.</para>
-
-                  </listitem>
-
-                </itemizedlist>
-
-                <caution>
-
-                  <para>ArgoUML does not actually have a separate 
-                  concept of a literal. The navigations listed above 
-                  will all navigate to a property sheet equal to an 
-                  attribute of a class (see 
-                  <xref linkend="s1.ref.attribute"/>). When defining a 
-                  literal, all that matters is its name. Other parts of 
-                  the attribute property sheet should be ignored.</para>
 
                 </caution>
 
@@ -19980,7 +19855,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <para>The default name supplied for a newly created 
                   datatype is the empty string <quote />. Enumerations 
                   with empty string names will appear with the name 
-                  <literal>(anon Enumeration)</literal> in the 
+                  <literal>(Unnamed Enumeration)</literal> in the 
                   explorer.</para>
 
                 </note>
@@ -19995,7 +19870,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Drop down selector. Allows changeing the 
+                <para>Drop down selector with navigation button. 
+                Allows changing the 
                 namespace for the enumeration. This is the composition 
                 hierarchy.</para>
 
@@ -24265,7 +24141,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <note>
 
                   <para>By default a new package has no name defined. 
-                  The package will appear with the name <literal>(anon 
+                  The package will appear with the name <literal>(Unnamed 
                   Package)</literal> in the explorer.</para>
 
                 </note>
@@ -28056,7 +27932,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>The names of the association ends are listed, 
                 unless the association end has no name (the case when 
-                it is first created), in which case <literal>(anon 
+                it is first created), in which case <literal>(Unnamed 
                 AssociationEnd)</literal> is shown.</para>
 
                 <note>
@@ -35798,7 +35674,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <xref linkend="s1.ref.association_end_role"/>.</para>
 
                 <para>The names are listed, unless the association end 
-                role has no name, then it is shown as <literal>(anon 
+                role has no name, then it is shown as <literal>(Unnamed 
                 AssociationEndRole)</literal>.</para>
 
                 <para>Button&nbsp;1 double click on an association end role 
