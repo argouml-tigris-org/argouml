@@ -19552,14 +19552,23 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <literal>New Enumeration</literal> button on the property tabs of 
         the model and packages (in which case the new enumeration is 
         restricted in scope to the package), as well as the properties 
-        tab for datatype and enumeration.</para>
+        tab for datatype and enumeration. 
+        Enumerations can also be created with the tool 
+        in the diagram toolbar of a class diagram.
+        </para>
 
-        <note>
-
-          <para>UML&nbsp;1.4 allows user defined datatypes to be placed on 
-          class diagrams. This is not yet possible in ArgoUML.</para>
-
-        </note>
+        <para>The UML&nbsp;1.4 standard allows user defined 
+          enumerations to be placed on class diagrams 
+          to define their inheritence structure. 
+          This is also possible in ArgoUML. 
+          It is represented on the diagram by a box 
+          with three compartments, 
+          of which the top one is marked with 
+          <literal>&laquo;enumeration&raquo;</literal>, 
+          and contains the name. 
+          The middle compartment shows the enumeration literals.
+          The lower one contains operations.
+        </para>
 
         <sect2>
 
@@ -19620,6 +19629,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
+              <term><literal>Presentation</literal></term>
+
+              <listitem>
+
+                <para>Standard tab. 
+                </para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
               <term><literal>Source</literal></term>
 
               <listitem>
@@ -19647,12 +19669,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <listitem>
                     <para><literal>metaclass</literal> (from the 
                     superclass, <literal>Classifier</literal>). 
+                    <!-- TODO: Not present! -->
                     </para>
                   </listitem>
 
                   <listitem>
                     <para><literal>powertype</literal> (from the 
                     superclass, <literal>Classifier</literal>). 
+                    <!-- TODO: Not present! -->
                     </para>
                   </listitem>
 
@@ -19743,6 +19767,25 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <para>This creates a new datatype (see 
                 <xref linkend="s1.ref.class_class"/>) within the same 
                 package as the current enumeration.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/enumeration.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New enumeration</literal></term>
+
+              <listitem>
+
+                <para>This creates a new enumeration within the 
+                same namespace as the current enumeration, 
+                navigating immediately to the properties tab 
+                for new enumeration.</para>
 
               </listitem>
 
