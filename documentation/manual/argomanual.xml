@@ -19527,11 +19527,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title>Enumeration</title>
 
         <indexterm><primary>Enumeration</primary></indexterm>
-        <para>Enumeration can be thought of as simple classes. They have 
-        no attributes, and any operations on them must have no 
-        side-effects. A useful analogy is primitive datatypes in a 
-        language like Java. The boolean <quote>true</quote> stands on its 
-        own&mdash;it has no inner structure. There are operations (for 
+        <para>An enumeration is a primitive datatype 
+        that can have a fixed short list of values. 
+        It has no attributes, 
+        and any operations on them must have no 
+        side-effects. A useful analogy is the primitive datatype
+        boolean in a language like Java.
+        The boolean stands on its 
+        own&mdash;it has no inner structure. 
+        There are operations (for 
         example logical xor) on the booleans, but when I perform <literal>
         true xor true</literal> the result is a new boolean, 
         and the original 2 booleans <quote>true</quote> 
@@ -19944,14 +19948,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     declare that this enumeration cannot be instantiated, 
                     but must always be specialized.</para>
 
-                    <note>
-
-                      <para>ArgoUML provides no mechanism for 
-                      specializing enumerations, so this check box is of 
-                      little use.</para>
-
-                    </note>
-
                   </listitem>
 
                   <listitem>
@@ -19960,15 +19956,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                     enumeration can have no further sub-types, while 
                     <literal>Root</literal> indicates it is a top level 
                     enumeration.</para>
-
-                    <tip>
-
-                      <para>In the absence of specialization of 
-                      enumerations within ArgoUML these have little value. 
-                      In effect all enumerations are both <literal>
-                      Root</literal> and <literal>Final</literal></para>
-
-                    </tip>
 
                   </listitem>
 
@@ -20006,14 +19993,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Text area. Lists any elements that depend on this 
-                enumeration.</para>
+                enumeration. Button&nbsp;1 double click navigates to the 
+                selected modelelement. Button&nbsp;2 click brings up a pop up 
+                menu with following entry.</para>
 
-                <caution>
+                <itemizedlist>
 
-                  <para>It is not clear that defining dependencies between 
-                  enumerations makes much sense.</para>
+                  <listitem>
 
-                </caution>
+                    <para><literal>Add...</literal>. 
+                    This brings up a dialog box 
+                    that allows to create dependencies 
+                    from other modelelements.</para>
+
+                  </listitem>
+
+                </itemizedlist>
 
               </listitem>
 
@@ -20026,14 +20021,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>Text area. Lists any elements that this enumeration 
-                depends on.</para>
+                depends on. Button&nbsp;1 double click navigates to the 
+                selected modelelement. Button&nbsp;2 click brings up a pop up 
+                menu with the following entry.</para>
 
-                <caution>
+                <itemizedlist>
 
-                  <para>It is not clear that defining dependencies between 
-                  enumeration makes much sense.</para>
+                  <listitem>
 
-                </caution>
+                    <para><literal>Add...</literal>. 
+                    This brings up a dialog box 
+                    that allows to create dependencies 
+                    to other modelelements.</para>
+
+                  </listitem>
+
+                </itemizedlist>
 
               </listitem>
 
@@ -20073,7 +20076,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Text area. Lists all the operations defined on 
                 this enumeration. Button&nbsp;1 double click navigates to the 
-                selected operation. button&nbsp;2 click brings up a pop up 
+                selected operation. Button&nbsp;2 click brings up a pop up 
                 menu with two entries.</para>
 
                 <itemizedlist>
