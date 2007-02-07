@@ -28,8 +28,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -262,14 +260,14 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
     }
     
     private class MultiplicityCheckBox extends JCheckBox
-        implements MouseListener {
+        implements ItemListener {
 	
 	public MultiplicityCheckBox() {
-	    addMouseListener(this);
+	    addItemListener(this);
 	}
 
-	public void mouseClicked(MouseEvent e) {
-	    if (Model.getFacade().getMultiplicity(getTarget()) == null) {
+	public void itemStateChanged(ItemEvent e) {
+	    if (e.getStateChange() == ItemEvent.SELECTED) {
 		String comboText =
 		    (String) multiplicityComboBox.getSelectedItem();
                 Object multi =
@@ -286,22 +284,6 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
 		multiplicityComboBox.setEditable(false);
                 Model.getCoreHelper().setMultiplicity(getTarget(), null);
 	    }
-	}
-
-	public void mouseEntered(MouseEvent e) {
-	    // Do nothing
-	}
-
-	public void mouseExited(MouseEvent e) {
-	    // Do nothing
-	}
-
-	public void mousePressed(MouseEvent e) {
-	    // Do nothing
-	}
-
-	public void mouseReleased(MouseEvent e) {
-	    // Do nothing
 	}
     }
 }
