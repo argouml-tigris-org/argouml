@@ -44,6 +44,11 @@ import org.tigris.gef.util.EnumerationSingle;
  * Project, to Models, to ModelElements.  Argo's critic Agency uses
  * this to apply critics where appropriate.
  *
+ * TODO: This thinks it knows all the composition associations of the
+ * the UML metamodel, but it is a) incomplete and b) not updated for
+ * UML 1.4.  This should be done using information from the metamodel
+ * rather than hardwired code. - tfm - 20070205
+ * 
  * @see org.argouml.cognitive.critics.Agency
  * @see org.argouml.cognitive.Designer
  * @author jrobbins
