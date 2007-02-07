@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -37,8 +36,8 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.UMLSingleRowSelector;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -56,23 +55,15 @@ public class PropPanelMessage extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        JList interactionList =
-            new UMLLinkedList(new UMLMessageInteractionListModel());
-        interactionList.setVisibleRowCount(1);
+        
         addField(Translator.localize("label.interaction"),
-        	 new JScrollPane(interactionList));
+       	        new UMLSingleRowSelector(new UMLMessageInteractionListModel()));
 
-        JList senderList = new UMLLinkedList(new UMLMessageSenderListModel());
-        senderList.setVisibleRowCount(1);
-        JScrollPane senderScroll = new JScrollPane(senderList);
-        addField(Translator.localize("label.sender"), senderScroll);
+        addField(Translator.localize("label.sender"),
+       	        new UMLSingleRowSelector(new UMLMessageSenderListModel()));
 
-        JList receiverList =
-            new UMLLinkedList(new UMLMessageReceiverListModel());
-        receiverList.setVisibleRowCount(1);
-        JScrollPane receiverScroll = new JScrollPane(receiverList);
         addField(Translator.localize("label.receiver"),
-                receiverScroll);
+       	        new UMLSingleRowSelector(new UMLMessageReceiverListModel()));
 
         addSeparator();
 
@@ -80,12 +71,9 @@ public class PropPanelMessage extends PropPanelModelElement {
         	 new UMLMessageActivatorComboBox(this,
         		 new UMLMessageActivatorComboBoxModel()));
 
-        JList actionList =
-        	 new UMLMutableLinkedList(new UMLMessageActionListModel(),
-        	         null, ActionNewActionForMessage.getInstance());
-        actionList.setVisibleRowCount(1);
-        JScrollPane actionScroll = new JScrollPane(actionList);
-        addField(Translator.localize("label.action"), actionScroll);
+        addField(Translator.localize("label.action"),
+       	        new UMLSingleRowSelector(new UMLMessageActionListModel()));
+
 
         JScrollPane predecessorScroll =
                 new JScrollPane(
