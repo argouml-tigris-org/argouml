@@ -70,24 +70,27 @@ public class UMLSingleRowSelector extends JPanel {
     }
     
     /**
-     * Make sure the control is always a fixed size
+     * Make sure the control is always a fixed height
      * @return the minimum size as the height of one row in a JList
      */
     public Dimension getMinimumSize() {
-        return preferredSize;
+        Dimension size = super.getMinimumSize();
+        size.height = preferredSize.height;
+        return size;
     }
     
     /**
-     * Make sure the control is always a fixed size
+     * Make sure the control is always a fixed height
      * @return the maximum size as the height of one row in a JList
      */
     public Dimension getMaximumSize() {
-        return preferredSize;
+        Dimension size = super.getMaximumSize();
+        size.height = preferredSize.height;
+        return size;
     }
     
     
     /**
-     * Make sure the control is always a fixed size
      * @return the preferred size as the height of one row in a JList
      */
     public Dimension getPreferredSize() {
