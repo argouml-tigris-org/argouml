@@ -32,17 +32,20 @@ import org.tigris.gef.presentation.Fig;
  * The generalization can connect any model element including those
  * represented by edges as well as nodes. The source and destination
  * must be of the same type.
+ * TODO: It should be possible to delete this class when issue 4632 is fixed.
  */
 public final class ModeCreateGeneralization extends ModeCreateGraphEdge {
     
     /*
-     * The drop is only valid if source and dest are of the same type
+     * Well-formedness rule UML 1.4.2 Spec section 4.5.3.20 [5]
+     * A GeneralizableElement may only be a child of GeneralizableElement of
+     * the same kind.
      * @see org.argouml.uml.diagram.ui.ModeCreateGraphEdge#isDestFigEdgeValid(org.tigris.gef.presentation.FigEdge)
      */
     protected final boolean isConnectionValid(
 	    Fig source,
 	    Fig dest) {
-	return source.getClass() == dest.getClass();
+	return dest != null && source.getClass() == dest.getClass();
     }
 
     /**
