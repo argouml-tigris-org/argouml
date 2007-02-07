@@ -133,7 +133,7 @@ public abstract class PropPanelModelElement extends PropPanel {
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.namespace"),
-                getNamespaceScroll());
+                getNamespaceSelector());
 
         addSeparator();
 
@@ -168,6 +168,7 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     /**
      * @return a scrollpane for the namespace
+     * @deprecated use {@link #getNamespaceSelector()}
      */
     protected JComponent getNamespaceScroll() {
         if (namespaceScroll == null) {

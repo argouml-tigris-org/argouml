@@ -63,8 +63,8 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 	    getNameTextField());
 
         addField(Translator.localize("label.namespace"),
-	    getNamespaceScroll());
-
+                getNamespaceSelector());
+        
 	addField(Translator.localize("label.multiplicity"),
             getMultiplicityComboBox());
 
