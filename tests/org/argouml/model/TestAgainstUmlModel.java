@@ -240,7 +240,7 @@ public class TestAgainstUmlModel extends TestCase {
         refs.put("TemplateParameter",     Model.getCoreFactory());
         refs.put("TemplateArgument",      Model.getCoreFactory());
         refs.put("Stereotype", 
-        		new CannotTestFactoryMethod());
+                Model.getExtensionMechanismsFactory());
         refs.put("TaggedValue",
 		 Model.getExtensionMechanismsFactory());
         refs.put("TagDefinition",
