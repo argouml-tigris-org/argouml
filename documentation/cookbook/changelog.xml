@@ -199,9 +199,9 @@ Renamed subprojects to dependencies.
         <row>
           <entry>2006-05-14</entry>
           <entry>
-Splitted and moved the cvs chapter.
+Split and moved the CVS chapter.
 One part goes into the Standards for coding chapter and
-one part goes into a newly created appendixex.
+one part goes into a newly created appendix.
 (See <xref linkend="groundrules"/>,
 and
 <xref linkend="repository-contents"/>).

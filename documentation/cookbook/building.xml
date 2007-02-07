@@ -29,25 +29,17 @@
   <title>Building from source</title>
   <para>
 Building ArgoUML from source requires a SVN client, a current JDK (1.4 or later),
-and 150MB of free disk space.
+and 350MB of free disk space.
 All other tools, including the Ant build tool upon which
 the build is based, are included in the project source tree.
 
 If you have these tools and are familiar with them, the next section contains
-quick instructions to build ArgoUML from source.  For more detailed directions
-follow that.
+quick instructions to build ArgoUML from source.  For more detailed directions,
+see the following sections.
 </para>
 
   <sect1 id="quickbuild">
     <title>Quick Start</title>
-    <warning>
-      <para>
-This instruction was last updated just before the change from CVS to Subversion
-with the hope that it will be correct for Subversion.
-Once the changes is made, we are able to test this.
-</para>
-    </warning>
-
 
     <para>
 If you are using Eclipse 3.1 or later, see <xref linkend="eclipse3"></xref>
@@ -56,11 +48,11 @@ for quick setup instructions.
 
     <para>
 If you are using Windows, the follow commands will build ArgoUML from source and
-run it.  If you using Unix/Linux, the comparable commands modified slightly for
-your particular shell will do work.
+run it.  If you using Unix/Linux, the comparable commands, modified slightly for
+your particular shell, should work.
 <programlisting>
 C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/src http://argouml.tigris.org/svn/argouml/trunk/src_new http://argouml.tigris.org/svn/argouml/trunk/tools http://argouml.tigris.org/svn/argouml/trunk/lib http://argouml.tigris.org/svn/argouml/trunk/tests argouml --username guest
-Password:  (give empty as password)
+Password:  (give empty password if prompted)
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml\src_new
 C:\Work\argouml\src_new&gt;build run
@@ -70,18 +62,8 @@ A newly compiled ArgoUML will open in a new window.
     <note>
       <para>JDK 1.4 or later is required</para>
     </note>
-    <note>
-      <para>
-On Windows, the directory path for the JDK installation directory
-must not contain any spaces.
-<!-- MVW: This is not required, 
-at least the statements above work with spaces in the path. -->
-</para>
-    </note>
     <para>
 That was the compact version for Windows + JDK.
-(Note: JDK cannot be installed in a directory that contains space in its
-name. <!-- MVW: idem -->)  
 Modifying these steps slightly as appropriate for your shell should
 work on Unix/Linux systems as well. 
 </para>
@@ -244,7 +226,7 @@ according to the table below.
               <entry>svn:keywords</entry>
               <entry>Author Date Id Revision</entry>
               <entry>
-All text files, java files, xml files.
+All text files, Java files, XML files.
 This is for the &dollar;Id&dollar;-tag at the top of all source files
 and the &dollar;Date&dollar; tag on some web pages.
 </entry>
@@ -256,7 +238,7 @@ and the &dollar;Date&dollar; tag on some web pages.
               <entry>svn:eol-style</entry>
               <entry>native</entry>
               <entry>
-All text files, java files, xml files,
+All text files, Java files, XML files,
 i.e. almost all non-binary files.
 </entry>
             </row>
@@ -278,8 +260,8 @@ This is for the tools of the development environment to work properly.
       <para>
 The properties described here are project conventions and should be
 applied to the files in the repository.
-This is normally only interesting when creating new files because
-the old files where set correctly from the conversion from CVS.
+This is normally only needed when creating new files because
+the existing files should have their properties set correctly..
 </para>
       <para>
 Alas, Subversion and the Tigris set-up does not allow us in the project
@@ -459,22 +441,10 @@ GEF graph editing framework, available from
 <ulink url="http://gef.tigris.org">gef.tigris.org</ulink>.
 </para>
           <para>
-It is also recommended that you check out GEF at the same time as you
-check out ArgoUML because many things in Argo relate to GEF and it is
-quite handy to have the source code available.
-GEF is also residing at Tigris so you can do a simple
-<command>cvs <replaceable>-d :user@cvs.tigris.org:/cvs</replaceable> co gef</command>
-(with the same checkout arguments you had when you checked out ArgoUML)
-to get it.
+If you would like the GEF sources for reference, please
+consult their web site for directions on checking them out.
 </para>
 
-          <note>
-            <para>
-It is no longer the same arguments since argouml is converted to Subversion.
-Eventually GEF will be converted too and the the line above will be incorrect.
-Please let the editor know what the correct line is.
-</para>
-          </note>
         </listitem>
 
         <listitem>
@@ -535,15 +505,6 @@ jmi.jar, jmiutils.jar, mdrapi.jar, mof.jar, nbmdr.jar, openide-util.jar.
     <indexterm>
       <primary>Checking out from Subversion</primary>
     </indexterm>
-
-    <warning>
-      <para>
-The Subversion repository was a CVS repository for the first six years
-of ArgoUML development.
-If you find any remnants of that, any mention of CVS,
-fix it or mention it to someone that can fix it.
-</para>
-    </warning>
 
     <para>
 The easiest thing to do now, is
@@ -1907,7 +1868,7 @@ Press OK.
 
           <para>
 This will set up templates to be used when using the Eclipse functions
-for creating files, functions, types and javadoc...
+for creating files, functions, types and Javadoc...
 </para>
 
         </listitem>
@@ -1976,7 +1937,7 @@ Suggested settings for these tabs
           <itemizedlist>
             <listitem>
               <para>
-Javadoc => Malformed javadoc comments:
+Javadoc => Malformed Javadoc comments:
 Warning,
 Private,
 Check all reports.
@@ -1984,20 +1945,20 @@ Check all reports.
             </listitem>
             <listitem>
               <para>
-Javadoc => Missing javadoc tags: Warning, Private,
+Javadoc => Missing Javadoc tags: Warning, Private,
 check Check overriding and implementing methods.
 </para>
             </listitem>
             <listitem>
               <para>
-Javadoc => Missing javadoc comments: Warning, Protected,
+Javadoc => Missing Javadoc comments: Warning, Protected,
 uncheck Check overriding and implementing methods.
 </para>
             </listitem>
           </itemizedlist>
           <para>
 These problems
-(except missing javadoc comments)
+(except missing Javadoc comments)
 are also found by Checkstyle so if you are
 running Checkclipse (See <xref linkend="checkclipse"/>)
 put this in Ignore instead.
@@ -2763,7 +2724,7 @@ This is what you do:
         <para>
 Create the zip files and the tgz files,
 copy the documentation,
-copy changed java web start files and create new java web start jnlp files.
+copy changed Java web start files and create new Java web start jnlp files.
 </para>
         <para>
 This is done by the command
@@ -2793,7 +2754,7 @@ Update the index file for the downloads project to point out the new release.
         <para>
 It should point out the release at 
 <filename>/argouml-<replaceable>RELEASENAME</replaceable>/</filename>,
-the java web start file at
+the Java web start file at
 <filename>/jws/argouml-<replaceable>RELEASENAME</replaceable>.jnlp</filename>.
 </para>
       </listitem>
