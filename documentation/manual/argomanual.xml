@@ -20183,7 +20183,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <para>New stereotypes are added from the property tab of almost 
         any model element. Properties of existing stereotypes can be reached 
         by selecting the property tab for any model element with that 
-        stereotype and using the navstereo button (
+        stereotype and using the navigate button (
         <guiicon><inlinemediaobject><imageobject>
         <imagedata align="center"
          fileref="images/icons/navigate_stereotype.gif"
@@ -20245,19 +20245,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Source</literal></term>
+              <term><literal>Stereotype</literal></term>
 
               <listitem>
 
-                <para>Standard tab. This contains the representation of 
-                the stereotype on diagrams (its name between &laquo; and 
-                &raquo;).</para>
+                <para>Standard tab.</para>
 
                 <warning>
 
-                  <para>You can edit this entry, but it has no effect 
-                  and when you return to the entry it will be restored 
-                  to its original value.</para>
+                  <para>Here you can set stereotypes of stereotypes, 
+                  not a very usefull thing to do.</para>
 
                 </warning>
 
@@ -20367,6 +20364,25 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <term><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
+               fileref="images/icons/tag_definition.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Tag Definition</literal></term>
+
+              <listitem>
+
+                <para>This creates a new tag definition (see 
+                <xref linkend="s1.ref.tagdefinition"/>) within the model 
+                (which appears on no diagram), navigating immediately 
+                to the properties tab for that tagdefinition.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
                fileref="images/icons/property_delete.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Delete</literal></term>
@@ -20434,7 +20450,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Stereotype</secondary></indexterm>
                 <para>Drop down selector. Any stereotype must be 
                 derived from one of the metaclasses in the UML 
-                metamodel <literal>Abstraction</literal>, <literal>
+                metamodel <!--
+                <literal>Abstraction</literal>, <literal>
                 Actor</literal>, <literal>Association</literal>, 
                 <literal>AssociationEnd</literal>, <literal>
                 Attribute</literal>, <literal>
@@ -20453,7 +20470,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Operation</literal>, <literal>Package</literal>, 
                 <literal>Permission</literal>, <literal>
                 Signal</literal>, <literal>Subsystem</literal> and 
-                <literal>Usage</literal>) or the model element classes that 
+                <literal>Usage</literal>) -->
+                or the model element classes that 
                 derive from them. The stereotype will then be available 
                 to model elements that derive from that same metaclass or 
                 that model element.</para>
@@ -20472,9 +20490,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Namespace</primary></indexterm>
                 <indexterm><primary>Namespace</primary><secondary>of 
                 Stereotype</secondary></indexterm>
-                <para>Drop down selector. Records the namespace for the 
-                stereotype. This is the package hierarchy.</para>
-
+                <para>Drop down selector with navigation button. 
+                Records the namespace for the stereotype. 
+                This is the package hierarchy.</para>
+ 
               </listitem>
 
             </varlistentry>
@@ -20519,7 +20538,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                   <para>Remember that these modifiers apply to the 
                   model elements using the stereotype, not just the 
-                  stereotype.</para>
+                  stereotype.
+                  <!-- TODO: MVW: I strongly doubt this. 
+                  The standard says: "Tag definitions and constraints 
+                  attached to a stereotype apply to all model elements 
+                  branded by that stereotype." 
+                  But it does not say the same for modifiers. -->
+                  </para>
 
                 </caution>
 
@@ -20536,6 +20561,23 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             </varlistentry>
 
             <varlistentry>
+              <term><literal>Visibility</literal></term>
+              <listitem>
+                <indexterm><primary>Stereotype 
+                Visibility</primary></indexterm>
+                <indexterm><primary>Visibility</primary><secondary>of 
+                Stereotype</secondary></indexterm>
+                <para>Radio box, with entries <literal>
+                public</literal>, <literal>private</literal>, 
+                <literal>protected</literal>, and
+                <literal>package</literal>.</para>
+
+                <para>Records the visibility for the stereotype.</para>
+
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
 
               <term><literal>Generalizations</literal></term>
 
@@ -20543,13 +20585,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Text area. Lists any stereotype that 
                 <emphasis>generalizes</emphasis> this stereotype.</para>
-
-                <caution>
-
-                  <para>It is not clear that generalizing stereotypes 
-                  makes much sense.</para>
-
-                </caution>
 
               </listitem>
 
@@ -20561,15 +20596,34 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Text box. Lists any specialized stereotype (i.e. 
+                <para>Text area. Lists any specialized stereotype (i.e. 
                 for which this stereotype is a generalization.</para>
 
-                <caution>
+              </listitem>
 
-                  <para>It is not clear that specializing stereotypes 
-                  makes much sense.</para>
+            </varlistentry>
 
-                </caution>
+            <varlistentry>
+
+              <term><literal>Tag Definitions</literal></term>
+
+              <listitem>
+
+                <para>Text area. Lists any tag definitions 
+                that are defined for this stereotype.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Extended Elements</literal></term>
+
+              <listitem>
+
+                <para>Text area. Lists all modelelements 
+                that are stereotyped by this stereotype.</para>
 
               </listitem>
 
@@ -20579,6 +20633,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </sect2>
 
+      </sect1>
+
+      <sect1 id="s1.ref.tagdefinition">
+
+        <title>Tag Definition</title>
+        
+        <para>(To Be Written)</para>
+        
       </sect1>
 
       <sect1 id="s1.ref.diagram_types">
@@ -20722,7 +20784,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <para>Diagrams are created using the <literal>Create</literal> 
         drop down menu (see <xref linkend="s1.ref.create.diagram.menu"/>
         ), or with the tools on the toolbar (see 
-        <xref linkend="ch.ref.toolbar.create"/>).</para>
+        <xref linkend="ch.ref.toolbar.create"/>),
+        or with the pop-up menus in the explorer.</para>
 
         <note>
 
@@ -20742,7 +20805,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <warning>
 
-          <para>In ArgoUML version 0.20, the UML 1.4 object diagram as 
+          <para>In ArgoUML version 0.24, the UML 1.4 object diagram as 
           a variant of the class diagram is not directly supported. 
           However, it is possible to create simple object diagrams 
           within the ArgoUML deployment diagram.</para>
@@ -20870,6 +20933,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </tip>
 
               </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><literal>Home Model</literal></term>
+              <listitem>
+
+                <indexterm><primary>Home Model</primary></indexterm>
+                <indexterm><primary>Home Model</primary><secondary>of 
+                Diagrams</secondary></indexterm>
+                <para>The Home Model of the diagram
+                is not something defined in the UML specification.
+                The Home Model is the modelelement represented by the diagram.
+                Hence its type depends on the type of diagram: e.g. 
+                it is the namespace represented by a class diagram, 
+                or the statemachine in case of a Statechart diagram.
+                </para>
+
+              </listitem>
 
             </varlistentry>
 
@@ -20902,11 +20983,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         specific model elements.</para>
 
         <para><xref linkend="fig.ref.use_case_diagram"/> shows a use 
-        case diagram with all possible model elements displayed.</para>
+        case diagram with all typical model elements displayed.</para>
 
         <figure float="1" id="fig.ref.use_case_diagram">
 
-          <title>Possible model elements on a use case diagram.</title>
+          <title>Typical model elements on a use case diagram.</title>
 
           <screenshot><mediaobject><imageobject>
           <imagedata align="center"
@@ -20920,10 +21001,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           Diagrams</title>
 
           <para>Use case diagrams are now well supported within 
-          ArgoUML. There still are some minor limitations though. One 
-          is that extension points may be shown in a separate 
-          compartment on the use case, but this is not retained after 
-          saving and reloading.</para>
+          ArgoUML. There still are some minor limitations though,
+          especially with extension points.</para>
 
           <note>
 
@@ -21032,27 +21111,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <para>Standard tab. Usually, no code is provided for an 
                 actor, since it is external to the system.</para>
 
-                <note>
-
-                  <para>The source tab content can be changed, but the 
-                  changes are not retained.</para>
-
-                </note>
-
               </listitem>
 
             </varlistentry>
 
             <varlistentry>
 
-              <term><literal>Constraints</literal></term>
+              <term><literal>Stereotype</literal></term>
 
               <listitem>
 
-                <para>Standard tab. ArgoUML only supports constraints 
-                on Classes and Features (Attributes, Operations, 
-                Receptions, and Methods), so this tab is grayed 
-                out.</para>
+                <para>Standard tab.</para>
 
               </listitem>
 
@@ -21193,6 +21262,36 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             </varlistentry>
 
             <varlistentry>
+            
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center" fileref="images/icons/reception.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Reception</literal></term>
+            
+              <listitem>
+
+                <indexterm><primary>Add Reception</primary></indexterm>
+                <indexterm><primary>New Reception</primary></indexterm>
+                <indexterm><primary>Create 
+                New</primary><secondary>Reception</secondary></indexterm>
+
+                <para>This creates a new reception within the model,(but 
+                not within the diagram), navigating immediately to the 
+                properties tab for that rception.</para>
+
+                <tip>
+
+                  <para>A reception is a declaration that the actor
+                  handles a signal, but the actual handling 
+                  is specified by a state machine.</para>
+
+                </tip>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
 
               <term><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
@@ -21258,50 +21357,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Stereotype</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Actor 
-                Stereotype</primary></indexterm>
-                <indexterm><primary>Stereotype</primary><secondary>of 
-                Actor</secondary></indexterm>
-                <para>Drop down selector. Actor is provided by default 
-                with the UML standard stereotypes (
-                <literal>metaclass</literal>, <literal>
-                powertype</literal>, <literal>process</literal>, 
-                <literal>thread</literal>, <literal>utility</literal>) 
-                for classifiers. Stereotypes are of limited value with 
-                actors. The stereotypes <literal>machine</literal>, 
-                <literal>organization</literal>, <literal>
-                person</literal> and <literal>singleton</literal> are 
-                probably of most use. However, they are not provided by 
-                default with ArgoUML.</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype"/>).</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
               <term><literal>Namespace</literal></term>
 
               <listitem>
@@ -21310,7 +21365,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Namespace</primary></indexterm>
                 <indexterm><primary>Namespace</primary><secondary>of 
                 Actor</secondary></indexterm>
-                <para>Text box. Records the namespace for the actor. 
+                <para>Text box with navigation button. 
+                Records the namespace for the actor. 
                 This is the package hierarchy.</para>
 
               </listitem>
@@ -21549,6 +21605,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               </listitem>
 
             </varlistentry>
+            <varlistentry>
+
+              <term><literal>Stereotype</literal></term>
+
+              <listitem>
+
+                <para>Standard tab.</para>
+
+              </listitem>
+
+            </varlistentry>
 
             <varlistentry>
 
@@ -21716,6 +21783,70 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <term><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
+               fileref="images/icons/attribute.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Attribute</literal></term>
+
+              <listitem>
+                <para>This creates a new attribute within the 
+                current use case, 
+                navigating immediately 
+                to the properties tab for that attribute.</para>
+              </listitem>
+            </varlistentry>
+            
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/operation.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Operation</literal></term>
+
+              <listitem>
+                <para>This creates a new operation within the 
+                current use case, 
+                navigating immediately 
+                to the properties tab for that operation.</para>
+              </listitem>
+            </varlistentry>
+            
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/reception.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Reception</literal></term>
+
+              <listitem>
+                <para>This creates a new reception within the 
+                current use case, 
+                navigating immediately 
+                to the properties tab for that reception.</para>
+              </listitem>
+            </varlistentry>
+            
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/stereotype.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Stereotype</literal></term>
+
+              <listitem>
+                <para>This creates a new stereotype within the 
+                current use case, 
+                navigating immediately 
+                to the properties tab for that stereotype.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
                fileref="images/icons/property_delete.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>Delete</literal></term>
@@ -21778,49 +21909,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Stereotype</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Use Case 
-                Stereotype</primary></indexterm>
-                <indexterm><primary>Stereotype</primary><secondary>of 
-                Use Case</secondary></indexterm>
-                <para>Drop down selector. Use case is provided by 
-                default with the UML standard stereotypes (
-                <literal>metaclass</literal>, <literal>
-                powertype</literal>, <literal>process</literal>, 
-                <literal>thread</literal>, <literal>utility</literal>) 
-                for classifiers. Stereotyping can be useful when 
-                creating use cases in the problem domain (requirements 
-                capture) and solution domain (analysis), but none of 
-                the predefined stereotypes are well suited to 
-                this.</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype"/>).</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
               <term><literal>Namespace</literal></term>
 
               <listitem>
@@ -21829,7 +21917,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Namespace</primary></indexterm>
                 <indexterm><primary>Namespace</primary><secondary>of 
                 Use Case</secondary></indexterm>
-                <para>Text box. Records the namespace for the use case. 
+                <para>Text box with navigation button. 
+                Records the namespace for the use case. 
                 This is the package hierarchy.</para>
 
               </listitem>
@@ -21877,43 +21966,41 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Extension Points</literal></term>
+              <term><literal>Client Dependencies</literal></term>
 
               <listitem>
 
-                <indexterm><primary>Use Case Extension 
-                Points</primary></indexterm>
-                <indexterm><primary>Extension 
-                Point</primary><secondary>of Use 
-                Case</secondary></indexterm>
-                <para>Text box. If this use case is, or can be 
-                extended, this field lists the extension points for the 
-                use case.</para>
+                <para>Text area. Lists the <quote>depending</quote> 
+                ends of the relationship, i.e. the end that makes use 
+                of the other end.</para>
 
-                <note>
+                <para>Button&nbsp;1 double click navigates to the dependency 
+                and opens its property tab.</para>
+                <para>Button&nbsp;2 click shows a pop-up menu with one entry
+                <literal>Add...</literal> that
+                opens a dialog box where you can add and remove 
+                depending modelelements.</para>
 
-                  <para>Extension points are listed by their location 
-                  point rather than their name.</para>
+              </listitem>
 
-                </note>
+            </varlistentry>
 
-                <para>Where an extension point has been created (see 
-                below), button&nbsp;1 Double Click will navigate to that 
-                relationship. Button&nbsp;2 gives a pop up menu with one 
-                entry.</para>
+            <varlistentry>
 
-                <itemizedlist>
+              <term><literal>Supplier Dependencies</literal></term>
 
-                  <listitem>
+              <listitem>
 
-                    <para><literal>New</literal>. Add a new extension 
-                    point and navigate to it, making this use case the 
-                    owning use case of the extension point.</para>
+                <para>Text area. Lists the <quote>supplying</quote> 
+                ends of the relationship, i.e. the end supplying what 
+                is needed by the other end.</para>
 
-                  </listitem>
-
-                </itemizedlist>
-
+                <para>Button&nbsp;1 double click navigates to the dependency 
+                and opens its property tab.</para>
+                <para>Button&nbsp;2 click shows a pop-up menu with one entry
+                <literal>Add...</literal> that
+                opens a dialog box where you can add and remove 
+                dependent modelelements.</para>
               </listitem>
 
             </varlistentry>
@@ -22007,6 +22094,44 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
+              <term><literal>Attributes</literal></term>
+
+              <listitem>
+
+                <para>Text area. Lists all the attributes (see 
+                <xref linkend="s1.ref.attribute"/>) defined for this 
+                use case. Button&nbsp;1 double click navigates to the selected 
+                attribute. Button&nbsp;2 gives a pop up menu with two 
+                entries, which allow reordering the attributes.</para>
+
+                <itemizedlist>
+
+                  <listitem>
+
+                    <para><literal>Move Up</literal>. Only available 
+                    where there are two or more attributes listed, and 
+                    the attribute selected is not at the top. It moves 
+                    the attribute up one position.</para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para><literal>Move Down</literal>. Only available 
+                    where there are two or more attributes listed, and 
+                    the attribute selected is not at the bottom. It 
+                    moves the attribute down one position.</para>
+
+                  </listitem>
+
+                </itemizedlist>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
               <term><literal>Association Ends</literal></term>
 
               <listitem>
@@ -22017,6 +22142,106 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Button&nbsp;1 double click navigates to the selected 
                 entry.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Operations</literal></term>
+
+              <listitem>
+
+                <para>Text area. Lists all the operations (see 
+                <xref linkend="s1.ref.operation"/>) defined on this 
+                use case. Button&nbsp;1 click navigates to the selected 
+                operation. Button&nbsp;2 gives a pop up menu with two 
+                entries, which allow reordering the operations.</para>
+
+                <itemizedlist>
+
+                  <listitem>
+
+                    <para><literal>Move Up</literal>. Only available 
+                    where there are two or more operations listed, and 
+                    the operation selected is not at the top. It moves 
+                    the operation up one position.</para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para><literal>Move Down</literal>. Only available 
+                    where there are two or more operations listed, and 
+                    the operation selected is not at the bottom. It 
+                    moves the operation down one position.</para>
+
+                  </listitem>
+
+                </itemizedlist>
+
+              </listitem>
+
+            </varlistentry>
+
+
+            <varlistentry>
+
+              <term><literal>Extension Points</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Use Case Extension 
+                Points</primary></indexterm>
+                <indexterm><primary>Extension 
+                Point</primary><secondary>of Use 
+                Case</secondary></indexterm>
+                <para>Text box. If this use case is, or can be 
+                extended, this field lists the extension points for the 
+                use case.</para>
+
+                <note>
+
+                  <para>Extension points are listed by their location 
+                  point rather than their name.</para>
+
+                </note>
+
+                <para>Where an extension point has been created (see 
+                below), button&nbsp;1 Double Click will navigate to that 
+                relationship. Button&nbsp;2 gives a pop up menu with
+                the following entries.</para>
+
+                <itemizedlist>
+
+                  <listitem>
+
+                    <para><literal>New</literal>. Add a new extension 
+                    point and navigate to it, making this use case the 
+                    owning use case of the extension point.</para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para><literal>Move Up</literal>. Only available 
+                    where there are two or more extension points listed, and 
+                    the extension point selected is not at the top. It moves 
+                    the extension point up one position.</para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para><literal>Move Down</literal>. Only available 
+                    where there are two or more extension points listed, and 
+                    the extension point selected is not at the bottom. It 
+                    moves the extension point down one position.</para>
+
+                  </listitem>
+
+                </itemizedlist>
 
               </listitem>
 
