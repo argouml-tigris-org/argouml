@@ -99,9 +99,10 @@ exception in the GUI components?</a>
 <li><a href="#bunch_link">I've got a bunch of people working on the same diagrams. How do I track who is doing what on the diagram? How do I use ArgoUML with CVS?</a>
 <li><a href="#sanity_link">Is there a mechanism to do a sanity check in ArgoUML and enforce that sanity check?</a>
 <li><a href="#empty_zargo">I saved a project from ArgoUML, and then when I opened it later ArgoUML said it was empty. What can I do?</a>
-<li><a href="#strange_language">I started ArgoUML and it is in
-Russian/Spanish/French/German.
-Why? How can I configure it so it will be in English?</a> 
+<li><a href="#strange_language">I started ArgoUML and it is in a foreign
+language.  How can I configure it so it will be in my language?</a> 
+<li><a href="#lc_ctype">Why does ArgoUML use the environment variable
+LC_CTYPE instead of LANG to determine the language when both are set?</a> 
 <li><a href="#ati_bug">Why are the links not displayed correctly?</a>
 </ul>
 
@@ -412,8 +413,8 @@ page</a>.
 
 <DT><a name="jwshowtoinstall" />How do I install Java Web Start?</a>
 <DD>
-If you have a recent JRE, you probably don't need to, but if you do,
-see the installation instructions on the Sun web site: 
+If you have a recent JRE (Java 1.4 or later), you probably don't need to, 
+but if you do, see the installation instructions on the Sun web site: 
 <a href="http://java.sun.com/products/javawebstart/">Java Web Start</a>.
 <P>
 In particular, note that Mozilla and Netscape 6.x 
@@ -424,7 +425,8 @@ to register the helper application in your browser preferences.
 <DT><a name="jwsbadmime" />Web Start returns a Bad MIME Type error. What's wrong?</a>
 <DD>
 This is from 
-<a href="http://www.vamphq.com/jwsfaq.html#badmimetype">the JWS FAQ at VampHQ</a>.
+<a href="http://lopica.sourceforge.net/faq.html#badmimetype">the Lopica 
+Unofficial JWS FAQ</a>.
 
 <P>This is a very common problem and most likely caused by Web Start's
 failed attempt to automatically detect your proxy settings. The "Bad
@@ -791,7 +793,7 @@ generate gif, postscript, eps or .svg format.
 <DT><a name="svg_link">What does SVG stand for?</a>
 <DD>Scalable Vector Graphics.  It's a standard of the 
 World Wide Web Consortium (W3C).  Find out more at the 
-    <a href="http://www.w3.org/Graphics/SVG/Overview.htm8">www.w3.org</a>.
+    <a href="http://www.w3.org/Graphics/SVG/">www.w3.org</a>.
 
 
 <DT><a name="savsvg_link">How do I save my diagram as .SVG?</a>
@@ -813,9 +815,9 @@ Example myumldiagram.svg
 
 
 <DT><a name="xmic_link">Does ArgoUML generate an XMI document?</a>
-<DD>Yes!
-It is one of the files zipped into the save file (the .zargo file).
-Unpack with jar.
+<DD>Yes, models can be saved in XMI format (without the graphical information).
+It is also one of the files zipped into the .zargo file, which can be
+unpacked with the Java jar utility or a Zip utility.
 </DL>
 
 <H3>Other Topics</H3>
@@ -861,15 +863,15 @@ the root cause (in addition to repairing your file).
 
 
 <DT><a name="strange_language">I started ArgoUML and it is in
-Russian/Spanish/French/German.
-Why? How can I configure it so it will be in English?</a> 
+the wrong language.
+Why? How can I configure it so it will be in my desired language?</a> 
 <DD>ArgoUML attempts to detect the language settings from your
-environment and start with the language you prefer.
+operating system environment and start with the language you prefer.
 <p>
 There are two known problems with this approach:<ul>
-<li>The quality of some of the translations is poor and
-ArgoUML will, because of that, present a mix between English and the
-configured language.
+<li>Some of the translations are incomplete and
+ArgoUML will use English fallbacks instead of the configured language
+in places where there is no translated text.
 <li>If you are borrowing someone else's computer or working in
 an foreign office you might not understand the GUI.
 </ul>
@@ -884,17 +886,22 @@ and restart ArgoUML.</li>
 <p>The combobox contains the supported languages. 
 To see the effect of your change, you have to restart ArgoUML.</p>
 
+<DT><a name="lc_ctype">Why does ArgoUML use the environment variable
+LC_CTYPE instead of LANG to determine the language when both are set?</a> 
+<DD>This is a Java bug.  Please see 
+<a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5033780">
+bug #5033780</a> in Sun's bug database for more information on when it will
+be fixed.  It is present in Java 1.4, 5, and 6.
 
 
 <DT><a name="ati_bug">Why are the links not displayed correctly?</a>
 <DD>
-There is a bug in JDK 1.4 or later with Windows 2000 and the ATI graphic card.
+This may be a result of a bug in the ATI graphics card drivers.
 <p>
 See this report 
 <a href="http://developer.java.sun.com/developer/bugParade/bugs/4756347.html">
-  in Sun's bug database
-</a>
-about it.
+  in Sun's bug database</a>
+for possible workarounds such as disabling Java's use of DirectDraw.
 
 </DL>
 
