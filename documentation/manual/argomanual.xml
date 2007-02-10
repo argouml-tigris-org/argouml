@@ -20167,6 +20167,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
       </sect1>
 
+      <sect1 id="s1.ref.enumeration-literal">
+        <title>Enumeration Literal</title>
+        <indexterm><primary>Enumeration Literal</primary></indexterm>
+        <para>An enumeration literal is one of the predefined values 
+        of an Enumeration.</para>
+      </sect1>
+
       <sect1 id="s1.ref.stereotype">
 
         <title>Stereotype</title>
@@ -22336,20 +22343,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Source</literal></term>
+              <term><literal>Stereotype</literal></term>
 
               <listitem>
 
-                <para>Standard tab. It would not be usual to provide 
-                any code for an extension point, since it is external 
-                to the system.</para>
+                <para>Standard tab. </para>
 
-                <note>
-
-                  <para>The source tab content can be changed, but this 
-                  has no effect.</para>
-
-                </note>
+                <para>Extensionpoints do not have 
+                any stereotypes defined by default.</para>
 
               </listitem>
 
@@ -22521,48 +22522,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   for extension points.</para>
 
                 </note>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Stereotype</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Extension Point 
-                Stereotype</primary></indexterm>
-                <indexterm><primary>Stereotype</primary><secondary>of 
-                Extension Point</secondary></indexterm>
-                <para>Drop down selector. ArgoUML does not provide any 
-                stereotypes for extension points.</para>
-
-                <tip>
-
-                  <para>Stereotyping does not have great value on an 
-                  extension point.</para>
-
-                </tip>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype"/>).</para>
 
               </listitem>
 
@@ -22780,14 +22739,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Standard tab</para>
+                <para>Standard tab.</para>
 
                 <note>
 
                   <para>The values for the bounds of the generalization 
                   are downlighted, since they have no meaning, given 
-                  that the generalization is tied to a particular actor 
-                  and use case.</para>
+                  that the generalization is tied to a particular 
+                  couple of actors 
+                  or use cases.</para>
 
                 </note>
 
@@ -22797,13 +22757,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Source</literal></term>
+              <term><literal>Stereotype</literal></term>
 
               <listitem>
 
-                <para>Standard tab. You would not expect to generate 
-                any code for a generalization end so this is 
-                empty.</para>
+                <para>Standard tab. </para>
 
               </listitem>
 
@@ -22974,53 +22932,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Stereotype</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Generalization 
-                Stereotype</primary></indexterm>
-                <indexterm><primary>Stereotype</primary><secondary>of 
-                Generalization</secondary></indexterm>
-                <para>Drop down selector. Generalization is provided by 
-                default with the UML standard stereotype <literal>
-                implementation</literal>. The stereotype is shown 
-                between &laquo; and &raquo; above or across the 
-                generalization.</para>
-
-                <tip>
-
-                  <para>Stereotyping generalization does not have great 
-                  value on a use case diagram. The standard stereotype 
-                  is about implementation, and suited to the use of 
-                  generalization on class diagrams.</para>
-
-                </tip>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype"/>).</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
               <term><literal>Discriminator</literal></term>
 
               <listitem>
@@ -23031,7 +22942,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <primary>Discriminator</primary><secondary>of 
                 Generalization</secondary></indexterm>
                 <para>Text box. The name of a discriminator for the 
-                specialization. UML&nbsp;1.3 allows grouping of 
+                specialization. UML&nbsp;1.4 allows grouping of 
                 specializations into a number of sets, on the basis of 
                 this value.</para>
 
@@ -23067,7 +22978,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Namespace</primary></indexterm>
                 <indexterm><primary>Namespace</primary><secondary>of 
                 Generalization</secondary></indexterm>
-                <para>Text box. Records the namespace for the 
+                <para>Text box with navigation button. 
+                Records the namespace for the 
                 generalization. This is the package hierarchy.</para>
 
               </listitem>
@@ -23088,9 +23000,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <emphasis>parent</emphasis> in this relationship, i.e. 
                 the more general end of the relationship. Button&nbsp;1 
                 Double Click on this entry will navigate to that use 
-                case or actor. Button&nbsp;2 click will give a pop up menu, 
-                with a single entry, <literal>Open</literal> which will 
-                also navigate to that use case or actor.</para>
+                case or actor. </para>
 
               </listitem>
 
@@ -23110,9 +23020,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <emphasis>child</emphasis> in this relationship, i.e. 
                 the more specific end of the relationship. Button&nbsp;1 
                 Double Click on this entry will navigate to that use 
-                case or actor. Button&nbsp;2 click will give a pop up menu, 
-                with a single entry, <literal>Open</literal> which will 
-                also navigate to that use case or actor.</para>
+                case or actor. </para>
 
               </listitem>
 
@@ -23171,10 +23079,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <indexterm><primary>Extend Relationship</primary></indexterm>
         <para>Extend is a relationship between two use cases. Where A 
-        extends B, it means A describes more specific behavior and B 
-        the general version of that behavior.</para>
+        extends B, it means A describes some additional behavior 
+        that is executed conditionally (under exceptional circumstances)
+        at some point
+        during the normal behavior of B.
+        </para>
 
-        <para>In many respects extend is like generalization. However 
+        <para>In some respects extend is like generalization. However 
         the key difference is that the extended use case defines 
         <emphasis>extension points</emphasis> (see 
         <xref linkend="s1.ref.extension_point"/>), which are the only 
@@ -23282,13 +23193,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Source</literal></term>
+              <term><literal>Stereotype</literal></term>
 
               <listitem>
 
-                <para>Standard tab. You would not expect to generate 
-                any code for an extend relationship so this is 
-                empty.</para>
+                <para>Standard tab. </para>
 
               </listitem>
 
@@ -23493,55 +23402,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Stereotype</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Extend Relationship 
-                Stereotype</primary></indexterm>
-                <indexterm><primary>Stereotype</primary><secondary>of 
-                Extend Relationship</secondary></indexterm>
-                <para>Drop down selector. ArgoUML does not provide any 
-                stereotypes by default.</para>
-
-                <tip>
-
-                  <para>Stereotyping does not have great value on an 
-                  extend relationship.</para>
-
-                </tip>
-
-                <note>
-
-                  <para>There is no representation of the stereotype of 
-                  an extend relationship on the diagram.</para>
-
-                </note>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype"/>).</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
               <term><literal>Namespace</literal></term>
 
               <listitem>
@@ -23572,11 +23432,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <indexterm><primary>Base Use 
                 Case</primary><secondary>of Extend 
                 Relationship</secondary></indexterm>
-                <para>Drop down selector. Shows the use case that is 
+                <para>Text box. Shows the use case that is 
                 being extended by this extend relationship. Button&nbsp;1 
-                click on this entry will give a drop down menu of all 
-                available use cases (and an empty entry) which may be 
-                selected by button&nbsp;1 click.</para>
+                double
+                click on this entry will navigate 
+                to the base use case.</para>
 
               </listitem>
 
@@ -23592,11 +23452,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Extension</primary></indexterm>
                 <indexterm><primary>Extension</primary><secondary>of 
                 Extend Relationship</secondary></indexterm>
-                <para>Drop down selector. Show the use case that is 
+                <para>Text box. Show the use case that is 
                 doing the extending through this extend relationship. 
-                Button&nbsp;1 click on this entry will give a drop down menu 
-                of all available use cases (and an empty entry) which 
-                may be selected by button&nbsp;1 click.</para>
+                Button&nbsp;1 double click on this entry 
+                will navigate 
+                to the extension use case.</para>
 
               </listitem>
 
@@ -23613,20 +23473,36 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <indexterm><primary>Extension 
                 Point</primary><secondary>of Extend 
                 Relationship</secondary></indexterm>
-                <para>Text box. If this use case is, or can be 
-                extended, this field lists the extension points for the 
-                use case.</para>
+                <para>Text box. Lists the extension points 
+                of the base use case where the extension 
+                will be applied if the condition holds.
+                </para>
 
                 <note>
 
-                  <para>Extension points are listed by their location 
-                  point rather than their name.</para>
+                  <para>If the condition
+                  is fulfilled, the sequence obeyed by the use-case instance 
+                  is extended to include the sequence of the extending use case.
+                  The different parts of the extending use case are inserted 
+                  at the locations defined by the sequence of extension points 
+                  in the relationship -- one part at each referenced 
+                  extension point. 
+                  Note that the condition is only evaluated once: 
+                  at the first referenced extension point, 
+                  and if it is fulfilled all of the extending use case 
+                  is inserted in the original sequence.</para>
+                  <para>Hence, the sequence of the extension points is 
+                  irrelevant, except for the position of the first one; 
+                  since that one determines 
+                  where the condition is evaluated.
+                  </para>
 
                 </note>
 
                 <para>Where an extension point has been created, 
                 button&nbsp;1 double click will navigate to that 
-                relationship. Button&nbsp;2 gives a pop up menu with two 
+                relationship. Button&nbsp;2 gives a pop up menu with
+                the following
                 entries.</para>
 
                 <itemizedlist>
@@ -23650,6 +23526,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                   </listitem>
 
+                  <listitem>
+
+                    <para><literal>Move Up</literal>. Only available 
+                    where there are two or more extension points listed, and 
+                    the extension point selected is not at the top. It moves 
+                    the extension point up one position.</para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para><literal>Move Down</literal>. Only available 
+                    where there are two or more extension points listed, and 
+                    the extension point selected is not at the bottom. It 
+                    moves the extension point down one position.</para>
+
+                  </listitem>
+
                 </itemizedlist>
 
               </listitem>
@@ -23664,6 +23558,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Text area. Multi-line textual description of any 
                 condition attached to the extend relationship.</para>
+                <para>The text entered here is shown on the diagram.</para>
 
               </listitem>
 
