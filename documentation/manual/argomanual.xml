@@ -23831,55 +23831,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Stereotype</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Include Relationship 
-                Stereotype</primary></indexterm>
-                <indexterm><primary>Stereotype</primary><secondary>of 
-                Include Relationship</secondary></indexterm>
-                <para>Drop down selector. ArgoUML does not provide any 
-                stereotypes for include relationships.</para>
-
-                <tip>
-
-                  <para>Stereotyping does not have great value on an 
-                  include relationship.</para>
-
-                </tip>
-
-                <note>
-
-                  <para>There is no representation of the stereotype of 
-                  an include relationship on the diagram.</para>
-
-                </note>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype"/>).</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
               <term><literal>Namespace</literal></term>
 
               <listitem>
@@ -24003,18 +23954,52 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
            format="GIF"/></imageobject></mediaobject></screenshot>
         </figure>
 
+        <para><xref linkend="fig.ref.datatype_diagram"/> shows a 
+        datatype 
+        diagram with a datatype and an enumeration displayed.</para>
+
+        <figure float="1" id="fig.ref.datatype_diagram">
+
+          <title>Possible model elements on a datatype diagram.</title>
+          <!-- See ClassDiagram-Datatypes.zargo -->
+
+          <screenshot><mediaobject><imageobject>
+          <imagedata align="center"
+           fileref="images/reference/classdiagram-datatypes.png"
+           format="PNG"/></imageobject></mediaobject></screenshot>
+        </figure>
+
+        <para><xref linkend="fig.ref.stereotype_diagram"/> shows a 
+        stereotype definition
+        diagram with all possible model elements displayed.</para>
+
+        <figure float="1" id="fig.ref.stereotype_diagram">
+
+          <title>Possible model elements on a 
+          stereotype definition diagram.</title>
+          <!-- See ClassDiagram-Datatypes.zargo -->
+
+          <screenshot><mediaobject><imageobject>
+          <imagedata align="center"
+           fileref="images/reference/classdiagram-stereotype-definition.png"
+           format="PNG"/></imageobject></mediaobject></screenshot>
+        </figure>
+
         <sect2>
 
           <title>Limitations Concerning Class Diagrams in 
           ArgoUML</title>
 
-          <para>The current implementation does not allow datatypes to 
-          be shown on class diagrams.</para>
+          <para>Various limitations exist in V0.24 of ArgoUML 
+          for stereotype definition diagrams. 
+          E.g. the current implementation does not allow 
+          stereotype compartments
+          to be shown on stereotype definition diagrams.</para>
 
-          <para>A variant of the class diagram within the UML standard 
+          <para>Another variant of the class diagram within the UML standard 
           is the <emphasis>object diagram</emphasis>. There is 
           currently no support for objects or links within ArgoUML 
-          Class diagrams;. Instead the ArgoUML deployment diagram does 
+          class diagrams. Instead the ArgoUML deployment diagram does 
           have both objects and links, and can be used to draw object 
           diagrams.</para>
 
@@ -24105,7 +24090,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Standard tab. The <literal>Bounds:</literal> 
+                <para>Standard tab. The editable <literal>Bounds</literal> 
                 field defines the bounding box for the package on the 
                 diagram.</para>
 
@@ -24115,14 +24100,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Source</literal></term>
+              <term><literal>Stereotype</literal></term>
 
               <listitem>
 
-                <para>Standard tab. This contains a template package 
-                declaration appropriate to the entire package. In the 
-                future this would be part of the code generation 
-                activity.</para>
+                <para>Standard tab. </para>
 
               </listitem>
 
@@ -24236,6 +24218,29 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <term><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
+               fileref="images/icons/enumeration.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Enumeration</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Add Enumeration</primary></indexterm>
+                <indexterm><primary>New Enumeration</primary></indexterm>
+                <indexterm><primary>Create 
+                New</primary><secondary>Enumeration</secondary></indexterm>
+                <para>This creates a new Enumeration (see 
+                <xref linkend="s1.ref.enumeration"/>) for the selected 
+                package, navigating immediately to the properties tab 
+                for that enumeration.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
                fileref="images/icons/stereotype.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>New Stereotype</literal></term>
@@ -24250,6 +24255,26 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <xref linkend="s1.ref.stereotype"/>) for the selected 
                 package, navigating immediately to the properties tab 
                 for that stereotype.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/tag_definition.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Tag Definition</literal></term>
+
+              <listitem>
+
+                <para>This creates a new tag definition (see 
+                <xref linkend="s1.ref.tagdefinition"/>) within the 
+                package 
+                (which appears on no diagram), navigating immediately 
+                to the properties tab for that tagdefinition.</para>
 
               </listitem>
 
@@ -24302,7 +24327,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Package</secondary></indexterm>
                 <para>Text box. The name of the package. The name of a 
                 package, like all packages, is by convention all lower 
-                case, not containing any periods.</para>
+                case, not containing any punctuation marks.</para>
 
                 <note>
 
@@ -24311,45 +24336,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   Package)</literal> in the explorer.</para>
 
                 </note>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Stereotype</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Package 
-                Stereotype</primary></indexterm>
-                <indexterm><primary>Stereotype</primary><secondary>of 
-                Package</secondary></indexterm>
-                <para>Drop down selector. Package is provided by 
-                default with the UML standard stereotypes for package (
-                <literal>facade</literal>, <literal>
-                framework</literal>, <literal>metamodel</literal>, 
-                <literal>stub</literal>, <literal>topLevel</literal>, 
-                <literal>systemModel</literal>).</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype_class"/>).</para>
 
               </listitem>
 
@@ -24509,7 +24495,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Package</secondary></indexterm>
                 <para>Text area. A listing of all the packages, 
                 classes, interfaces, datatypes, actors, use cases, 
-                associations, generalizations and stereotypes within 
+                associations, generalizations, stereotypes, etc. within 
                 the package.</para>
 
                 <para>Button&nbsp;1 double click on any item listed here 
@@ -24517,6 +24503,49 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               </listitem>
 
+            </varlistentry>
+            
+            <varlistentry>
+            
+              <term><literal>Imported Elements</literal></term>
+              
+              <listitem>
+                <indexterm><primary>Package Imported 
+                Elements</primary></indexterm>
+                <indexterm><primary>Imported 
+                Elements</primary><secondary>of 
+                Package</secondary></indexterm>
+                <para>Text Area. A listing of all imported elements,
+                i.e. elements that are owned by a different package, but 
+                are explicitely made visible in this package.</para>
+                
+                <para>Button&nbsp;1 double click on any item listed here 
+                navigates to that model element.
+                Button&nbsp;2 gives a pop up menu with
+                the following entries.</para>
+
+                <itemizedlist>
+
+                  <listitem>
+
+                    <para><literal>Add</literal>. The <quote>Add/Remove 
+                    Imported Elements</quote> window opens. In this 
+                    window it is possible to build a list of imported 
+                    elements.</para>
+
+                  </listitem>
+
+                  <listitem>
+
+                    <para><literal>Remove</literal>.  
+                    Removes the import.</para>
+
+                  </listitem>
+
+                </itemizedlist>
+
+              </listitem>
+              
             </varlistentry>
 
           </variablelist>
@@ -24532,6 +24561,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <para>Datatypes are not specific to packages or class diagrams, 
         and are discussed within the chapter on top level model elements 
         (see <xref linkend="s1.ref.datatype"/>).</para>
+
+      </sect1>
+
+      <sect1 id="s1.ref.enumeration_class">
+
+        <title>Enumeration</title>
+
+        <para>Enumeration are not specific to packages or class diagrams, 
+        and are discussed within the chapter on top level model elements 
+        (see <xref linkend="s1.ref.enumeration"/>).</para>
 
       </sect1>
 
@@ -24556,9 +24595,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         GeneralizableElement</literal>.</para>
 
         <para>A class is represented on a class diagram as a rectangle 
-        with three horizontal compartments. The top compartment 
-        displays the class name (and stereotype), the second 
-        compartment any attributes and the third any operations. The 
+        with three compartments. The top compartment 
+        displays the class name (and stereotypes), the second 
+        compartment any attributes and the third any operations. These 
         last two compartments may optionally be hidden.</para>
 
         <sect2>
@@ -24624,7 +24663,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 allow the attributes and operations compartments to be 
                 shown (the default) or hidden. This is a setting valid 
                 for only the current diagram that shows the class. The 
-                <literal>Bounds:</literal> field defines the bounding 
+                editable
+                <literal>Bounds</literal> field defines the bounding 
                 box for the package on the diagram.</para>
 
               </listitem>
@@ -24654,6 +24694,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <para>Standard tab. There are no standard constraints 
                 defined for <literal>Class</literal> within the UML 
                 metamodel.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Stereotypes</literal></term>
+
+              <listitem>
+
+                <para>Standard tab. </para>
 
               </listitem>
 
@@ -24965,65 +25017,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Stereotype</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Class 
-                Stereotype</primary></indexterm>
-                <indexterm><primary>Stereotype</primary><secondary>of 
-                Class</secondary></indexterm>
-                <para>Drop down selector. Class is provided by default 
-                with the UML standard stereotypes for <literal>
-                Class</literal> (<literal>implementationClass</literal> 
-                and <literal>type</literal>) and for <literal>
-                Classifier</literal> (<literal>metaclass</literal>, 
-                <literal>powertype</literal>, <literal>
-                process</literal>, <literal>thread</literal> and 
-                <literal>utility</literal>).</para>
-
-                <tip>
-
-                  <para>One stereotype that is not part of the UML 
-                  standard, but is widely used is <literal>
-                  Singleton</literal>, used to distinguish classes 
-                  which have a single static instance, and no public 
-                  constructor. Although not part of ArgoUML by default, 
-                  this stereotype is understood by the critics. You may 
-                  find it useful to create this stereotype for yourself 
-                  (see <xref linkend="s1.ref.stereotype"/>).</para>
-
-                </tip>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype_class"/>).</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
               <term><literal>Namespace</literal></term>
 
               <listitem>
 
-                <para>Drop down selector. Records and allows setting of 
+                <para>Drop down selector with navigation button. 
+                Records and allows setting of 
                 the namespace for the class. This is the package 
                 hierarchy.</para>
 
@@ -25120,6 +25119,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Button&nbsp;1 double click navigates to the dependency 
                 and opens its property tab.</para>
+                <para>Button&nbsp;2 click shows a pop-up menu with one entry
+                <literal>Add...</literal> that
+                opens a dialog box where you can add and remove 
+                depending modelelements.</para>
 
               </listitem>
 
@@ -25137,6 +25140,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>Button&nbsp;1 double click navigates to the dependency 
                 and opens its property tab.</para>
+                <para>Button&nbsp;2 click shows a pop-up menu with one entry
+                <literal>Add...</literal> that
+                opens a dialog box where you can add and remove 
+                dependent modelelements.</para>
 
               </listitem>
 
@@ -25404,19 +25411,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Source</literal></term>
-
-              <listitem>
-
-                <para>Standard tab. This contains a declaration for the 
-                attribute.</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
               <term><literal>Constraints</literal></term>
 
               <listitem>
@@ -25424,6 +25418,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <para>Standard tab. There are no standard constraints 
                 defined for <literal>Attribute</literal> within the UML 
                 metamodel.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Stereotype</literal></term>
+
+              <listitem>
+
+                <para>Standard tab. </para>
 
               </listitem>
 
@@ -25524,6 +25530,45 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <term><guiicon><inlinemediaobject><imageobject>
               <imagedata align="center"
+               fileref="images/icons/navigate_up_previous.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Go to Previous</literal></term>
+
+              <listitem>
+
+                <para>Navigate to the previous attribute 
+                of the class that owns them. 
+                This button is downlighted 
+                if the current attribute is the first one.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/navigate_up_next.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>Go to Next</literal></term>
+
+              <listitem>
+
+                <para>Navigate to the next attribute 
+                of the class that owns them. 
+                This button is downlighted 
+                if the current attribute is the last one.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
                fileref="images/icons/attribute.gif"
                format="GIF"/></imageobject></inlinemediaobject></guiicon> 
               <literal>New attribute</literal></term>
@@ -25563,6 +25608,30 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <xref linkend="s1.ref.datatype"/>) for the selected 
                 attribute, navigating immediately to the properties tab 
                 for that datatype.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><guiicon><inlinemediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/icons/enumeration.gif"
+               format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+              <literal>New Enumeration</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Add Enumeration</primary></indexterm>
+                <indexterm><primary>New Enumeration</primary></indexterm>
+                <indexterm><primary>Create 
+                New</primary><secondary>Enumeration</secondary></indexterm>
+                <para>This creates a new Enumeration (see 
+                <xref linkend="s1.ref.enumeration"/>) for the  
+                package that owns the class,
+                navigating immediately to the properties tab 
+                for that enumeration.</para>
 
               </listitem>
 
@@ -25660,37 +25729,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Stereotype</literal></term>
-
-              <listitem>
-
-                <para>Drop down selector. There are no UML standard 
-                stereotypes for <literal>Attribute</literal>.</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Stereotype</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_stereotype.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <xref linkend="s1.ref.stereotype"/>).</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
               <term><literal>Owner</literal></term>
 
               <listitem>
@@ -25715,11 +25753,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Multiplicity</primary></indexterm>
                 <indexterm><primary>Multiplicity</primary><secondary>of 
                 Attribute</secondary></indexterm>
-                <para>Editable drop down selector. The default value 
+                <para>Editable drop down selector with checkmark. 
+                The default value 
                 (1) is that there is one instance of this attribute for 
                 each instance of the class, i.e. it is a scalar. The 
                 drop down provides a number of commonly used 
                 specifications for non-scalar attributes.</para>
+                <para>When the checkmark is unchecked, 
+                then the multiplicity remains undefind in the model
+                (and the drop down selector is downlighted).</para>
 
                 <note>
 
@@ -25734,82 +25776,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   optional scalar attribute.</para>
 
                 </note>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Type</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Attribute Type</primary></indexterm>
-                <indexterm><primary>Type</primary><secondary>of 
-                Attribute</secondary></indexterm>
-                <para>Drop down selector. The type of this attribute. 
-                This can be any UML <literal>Classifier</literal>, 
-                although in practice only <literal>Class</literal>, 
-                <literal>DataType</literal>, or <literal>
-                Interface</literal> make any sense.</para>
-
-                <note>
-
-                  <para>A type must be declared (it can be <literal>
-                  void</literal>). By default ArgoUML supplies <literal>
-                  int</literal> as the type.</para>
-
-                </note>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Navigate Type</literal></term>
-
-              <listitem>
-
-                <para><guiicon><inlinemediaobject><imageobject>
-                <imagedata align="center"
-                 fileref="images/icons/navigate_type.gif"
-                 format="GIF"/></imageobject></inlinemediaobject></guiicon> 
-                icon. This will navigate to the property panel for the 
-                currently selected type. (see 
-                <xref linkend="s1.ref.class_class"/>, 
-                <xref linkend="s1.ref.datatype_class"/> and 
-                <xref linkend="s1.ref.interface_class"/>).</para>
-
-              </listitem>
-
-            </varlistentry>
-
-            <varlistentry>
-
-              <term><literal>Initial Value</literal></term>
-
-              <listitem>
-
-                <indexterm><primary>Attribute Initial 
-                Value</primary></indexterm>
-                <indexterm><primary>Initial 
-                Value</primary><secondary>of 
-                Attribute</secondary></indexterm>
-                <para>Text box with drop down. This allows you to set 
-                an initial value for the attribute if desired (this is 
-                optional). The drop down menu provides access to the 
-                common values <literal>0</literal>, <literal>
-                1</literal>, <literal>2</literal>, and <literal>
-                null</literal>.</para>
-
-                <caution>
-
-                  <para>Any constructor operation may ignore this 
-                  initial value.</para>
-
-                </caution>
 
               </listitem>
 
@@ -25926,7 +25892,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <varlistentry>
 
-              <term><literal>Static</literal></term>
+              <term><literal>Modifiers</literal></term>
 
               <listitem>
 
@@ -25936,6 +25902,81 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 attribute is static, i.e. it has <quote>class 
                 scope</quote>. Static attributes are indicated on the 
                 diagram by underlining.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Type</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Attribute Type</primary></indexterm>
+                <indexterm><primary>Type</primary><secondary>of 
+                Attribute</secondary></indexterm>
+                <para>Drop down selector with navigation button. 
+                The type of this attribute. 
+                This can be any UML <literal>Classifier</literal>, 
+                although in practice only <literal>Class</literal>, 
+                <literal>DataType</literal>, or <literal>
+                Interface</literal> make any sense.</para>
+                
+                <para>Pressing the navigation button
+                will navigate to the property panel for the 
+                currently selected type. (see 
+                <xref linkend="s1.ref.class_class"/>, 
+                <xref linkend="s1.ref.datatype_class"/> and 
+                <xref linkend="s1.ref.interface_class"/>).</para>
+
+                <note>
+
+                  <para>A type must be declared (it can be <literal>
+                  void</literal>). By default ArgoUML supplies <literal>
+                  int</literal> as the type.</para>
+
+                </note>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>Initial Value</literal></term>
+
+              <listitem>
+
+                <indexterm><primary>Attribute Initial 
+                Value</primary></indexterm>
+                <indexterm><primary>Initial 
+                Value</primary><secondary>of 
+                Attribute</secondary></indexterm>
+                <para>Text box with 2 compartments. 
+                This allows you to set 
+                an initial value for the attribute if desired (this is 
+                optional). The drop down menu provides access to the 
+                common values <literal>0</literal>, <literal>
+                1</literal>, <literal>2</literal>, and <literal>
+                null</literal>.</para>
+                
+                <para>The left hand side of this field contains 
+                the body of the expression that forms the initial value.
+                The right hand side defines 
+                the language in which the expression is written.</para>
+                
+                <para>Hovering the mouse pointer over these fields, 
+                reveals a tooltip <literal>Body</literal> or 
+                <literal>Language</literal>, 
+                to help remember which is which.</para>
+
+                <caution>
+
+                  <para>Any constructor operation may ignore this 
+                  initial value.</para>
+
+                </caution>
 
               </listitem>
 
