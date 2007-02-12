@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -225,7 +225,7 @@ public class AboutBox extends ArgoDialog {
         buf.append(Translator.messageFormat(
                 "aboutbox.contrib-developers-for-release",
                 new Object[] {
-                    "0.22",
+                    "0.24",
                 }));
         buf.append("\n");
 
@@ -233,16 +233,27 @@ public class AboutBox extends ArgoDialog {
         buf.append("+ Bob Tarling\n");
         buf.append("+ Hans Fredrik Nordhaug\n");
         buf.append("+ Harald Braun\n");
-        buf.append("+ Jeff Liu\n");
+        buf.append("+ Jan Magne Andersen\n");
         buf.append("+ Linus Tolke\n");
         buf.append("+ Luis Sergio Oliveira\n");
-        buf.append("+ Ludovic Maitre\n");
         buf.append("+ Markus Klink\n");
         buf.append("+ Michiel van der Wulp\n");
         buf.append("+ Sergio Agostinho\n");
         buf.append("+ Stewart Munoz\n");
         buf.append("+ Thomas Neustupny\n");
         buf.append("+ Tom Morris (tfmorris@gmail.com)\n");
+
+        buf.append("\n");
+
+        buf.append(Translator.messageFormat(
+                "aboutbox.contrib-developers-for-release",
+                new Object[] {
+                    "0.22",
+                }));
+        buf.append("\n");
+
+        buf.append("+ Jeff Liu\n");
+        buf.append("+ Ludovic Maitre\n");
 
         buf.append("\n");
 
@@ -259,8 +270,6 @@ public class AboutBox extends ArgoDialog {
         // Alphabetic order!
         buf.append("+ Decki" + cpbi + "\n");
         buf.append("+ Endi" + cpbi + "\n");
-        buf.append("+ Jan Magne Andersen\n");
-        buf.append("+ Jeff Liu\n");
         buf.append("+ Kai Schroeder\n");
         buf.append("+ Michael A. MacDonald\n");
         buf.append("+ Yayan" + cpbi + "\n");
