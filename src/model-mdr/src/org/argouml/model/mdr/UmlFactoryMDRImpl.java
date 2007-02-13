@@ -474,10 +474,40 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Class[] modeElementPair = (Class[]) it.next();
             if (modeElementPair[0].isInstance(fromElement)
                 && modeElementPair[1].isInstance(toElement)) {
-                return true;
+                return isConnectionWellformed(
+                        connectionType,
+                        fromElement,
+                        toElement);
             }
         }
         return false;
+    }
+    
+    /**
+     * Run through any well formedness rules we wish to enforce for a
+     * connection.
+     * @param connectionType
+     * @param fromElement
+     * @param toElement
+     * @return true if the connection satisfies the wellformedness rules
+     */
+    private boolean isConnectionWellformed(
+            Object connectionType,
+            Object fromElement,
+            Object toElement) {
+            
+        if (connectionType == Generalization.class) {
+            /*
+             * UML 1.4.2 Spec section 4.5.3.20 [5]
+             * A GeneralizableElement may only be a child of
+             * GeneralizableElement of the same kind.
+             */
+            if (fromElement.getClass() != toElement.getClass()) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     /**
