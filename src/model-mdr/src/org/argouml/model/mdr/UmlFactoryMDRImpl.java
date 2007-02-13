@@ -475,9 +475,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             if (modeElementPair[0].isInstance(fromElement)
                 && modeElementPair[1].isInstance(toElement)) {
                 return isConnectionWellformed(
-                        connectionType,
-                        fromElement,
-                        toElement);
+                        (Class) connectionType,
+                        (ModelElement) fromElement,
+                        (ModelElement) toElement);
             }
         }
         return false;
@@ -492,9 +492,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return true if the connection satisfies the wellformedness rules
      */
     private boolean isConnectionWellformed(
-            Object connectionType,
-            Object fromElement,
-            Object toElement) {
+            Class connectionType,
+            ModelElement fromElement,
+            ModelElement toElement) {
             
         if (connectionType == Generalization.class) {
             /*
