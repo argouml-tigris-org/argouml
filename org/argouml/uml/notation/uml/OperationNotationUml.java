@@ -157,7 +157,7 @@ public class OperationNotationUml extends OperationNotation {
 
 
     /**
-     * Parse a line of text and aligns the MOperation to the specification
+     * Parse a line of text and aligns the Operation to the specification
      * given. The line should be on the following form:<ul>
      * <li> visibility name (parameter list) : return-type-expression
      * {property-string}

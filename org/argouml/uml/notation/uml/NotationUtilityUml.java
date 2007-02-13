@@ -254,7 +254,7 @@ public final class NotationUtilityUml {
     /**
      * Parse a string on the format:
      * <pre>
-     *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#] [name]
+     *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#|~] [name]
      * </pre>
      * 
      * @param me   The ModelElement <em>text</em> describes.
