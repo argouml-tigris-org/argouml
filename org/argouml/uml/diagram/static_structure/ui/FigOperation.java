@@ -24,13 +24,16 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import java.beans.PropertyChangeEvent;
+
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * Fig with specific knowledge of Operation display. Handles
- * the like of underline for leaf and italic for abstract
- * TODO: Logic from FigOperationsCompartment should move here.
+ * Fig with specific knowledge of Operation display. 
+ * Makes the text italic in case the Operation is abstract.
  *
  * @since 0.23.5
  * @author Bob Tarling
@@ -40,5 +43,51 @@ public class FigOperation extends FigFeature {
     public FigOperation(int x, int y, int w, int h, Fig aFig, 
             NotationProvider np) {
         super(x, y, w, h, aFig, np);
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigSingleLineText#setOwner(java.lang.Object)
+     */
+    public void setOwner(Object owner) {
+        super.setOwner(owner);
+
+        if (owner != null) {
+            updateAbstract(Model.getFacade().isAbstract(getOwner()));
+            Model.getPump().addModelEventListener(this, owner, "isAbstract");
+        }
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
+     */
+    public void removeFromDiagram() {
+        Model.getPump().removeModelEventListener(this, getOwner(), 
+                "isAbstract");
+        super.removeFromDiagram();
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigSingleLineText#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent pce) {
+        super.propertyChange(pce);
+        if ("isAbstract".equals(pce.getPropertyName())) {
+            if (pce.getNewValue() instanceof Boolean)
+                updateAbstract(
+                        ((Boolean) pce.getNewValue()).booleanValue());    
+        }
+    }
+
+    /**
+     * If the Operation is abstract, then the text will be set to italics.
+     * 
+     * @param isAbstract true will cause italic text
+     */
+    protected void updateAbstract(boolean isAbstract) {
+        if (isAbstract) {
+            setFont(FigNodeModelElement.getItalicLabelFont());
+        } else {
+            setFont(FigNodeModelElement.getLabelFont());
+        }
     }
 }

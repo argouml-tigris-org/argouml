@@ -26,7 +26,9 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
 
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.notation.NotationProvider;
@@ -36,15 +38,19 @@ import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.Handle;
 
 /**
- * Fig to show features in class or interface like attributes or operations.
+ * Fig to show features in class or interface like attributes or operations.<p>
  *
  * TODO: This doesn't have any behavior specific to Features.  It's really
  * just an item for a ListCompartment and should probably have a better name
- * tfm - 20060310
+ * tfm - 20060310 <p>
  * TODO: Bob replies - it is intended that some code from
  * FigAttributesCompartment moves here. So this _will_ be Features specific.
  * See FigAttributesCompartment.addExtraVisualisations. For a common
- * compartment text fig use CompartmentFigText
+ * compartment text fig use CompartmentFigText.<p>
+ * 
+ * MVW: This class is responsible to listen to "ownerScope" 
+ * changes in the model, so that the text can be shown underlined 
+ * if the ownerScope becomes "classifier" iso "instance".
  *
  * @since Dec 1, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -107,6 +113,39 @@ public class FigFeature extends CompartmentFigText {
     }
 
     /*
+     * @see org.argouml.uml.diagram.ui.FigSingleLineText#setOwner(java.lang.Object)
+     */
+    public void setOwner(Object owner) {
+        super.setOwner(owner);
+        
+        if (owner != null) {
+            updateOwnerScope(Model.getScopeKind().getClassifier().equals(
+                    Model.getFacade().getOwnerScope(owner)));
+            Model.getPump().addModelEventListener(this, owner, "ownerScope");
+        }
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
+     */
+    public void removeFromDiagram() {
+        Model.getPump().removeModelEventListener(this, getOwner(), 
+                "ownerScope");
+        super.removeFromDiagram();
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigSingleLineText#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent pce) {
+        super.propertyChange(pce);
+        if ("ownerScope".equals(pce.getPropertyName())) {
+            updateOwnerScope(Model.getScopeKind().getClassifier().equals(
+                    pce.getNewValue()));    
+        }
+    }
+
+    /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
@@ -128,7 +167,11 @@ public class FigFeature extends CompartmentFigText {
     }
 
     /**
-     * The UID.
+     * Underline if the scope is Classifier.
+     * 
+     * @param isClassifier true will cause underlining
      */
-    private static final long serialVersionUID = -6174252286709779782L;
+    protected void updateOwnerScope(boolean isClassifier) {
+        setUnderline(isClassifier);
+    }
 }
