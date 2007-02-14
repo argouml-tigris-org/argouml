@@ -72,23 +72,6 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
         return NotationProviderFactory2.TYPE_OPERATION;
     }
 
-    /*
-     * TODO: This logic should be within FigOperation
-     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#addExtraVisualisations(java.lang.Object, org.argouml.uml.diagram.ui.CompartmentFigText)
-     */
-    protected void addExtraVisualisations(Object umlObject, 
-            CompartmentFigText comp) {
-        // underline, if static (Classifier scope)
-        comp.setUnderline(Model.getScopeKind().getClassifier().equals(
-                Model.getFacade().getOwnerScope(umlObject)));
-        // Italics if abstract
-        if (Model.getFacade().isAbstract(umlObject)) {
-            comp.setFont(FigNodeModelElement.getItalicLabelFont());
-        } else {
-            comp.setFont(FigNodeModelElement.getLabelFont());
-        }
-    }
-
     protected FigSingleLineText createFigText(
 	    int x, int y, int w, int h, Fig aFig, NotationProvider np) {
         return new FigOperation(x, y, w, h, aFig, np);
