@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,7 +44,6 @@ import org.argouml.uml.reveng.FileImportUtils;
 import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImportSettings;
 import org.argouml.uml.reveng.ImporterManager;
-import org.argouml.uml.reveng.ImportInterface.ImportException;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 
@@ -107,7 +107,7 @@ public class JavaImport implements ModuleInterface, ImportInterface {
                 monitor.updateProgress(count++);
                 monitor.updateSubTask(Translator.localize(
                         "dialog.import.parsingAction",
-                        new Object[] { ((File) file).getAbsolutePath() }));
+                        new Object[] {((File) file).getAbsolutePath()}));
             } else {
                 throw new ImportException("Object isn't a file " + file);
             }
@@ -137,8 +137,14 @@ public class JavaImport implements ModuleInterface, ImportInterface {
             // Create a scanner that reads from the input stream
             String encoding = settings.getInputSourceEncoding();
             FileInputStream in = new FileInputStream(f);
-            JavaLexer lexer = new JavaLexer(new BufferedReader(
-                    new InputStreamReader(in, encoding)));
+            InputStreamReader isr;
+            try {
+                isr = new InputStreamReader(in, encoding);
+            } catch (UnsupportedEncodingException e) {
+                // fall back to default encoding
+                isr = new InputStreamReader(in);
+            }
+            JavaLexer lexer = new JavaLexer(new BufferedReader(isr));
 
             // We use a special Argo token, that stores the preceding
             // whitespaces.
