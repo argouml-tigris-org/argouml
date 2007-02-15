@@ -161,7 +161,8 @@ public class ArgoDiagram extends Diagram {
 	    // maybe we have a modelelement that is part of some other
             // fig
             if (Model.getFacade().isAOperation(obj)
-		|| Model.getFacade().isAAttribute(obj)) {
+                    || Model.getFacade().isAReception(obj)
+                    || Model.getFacade().isAAttribute(obj)) {
 
                 // get all the classes from the diagram
                 return presentationFor(Model.getFacade().getOwner(obj));

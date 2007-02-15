@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -488,6 +488,11 @@ public class OperationNotationUml extends OperationNotation {
         try {
             String stereoStr = NotationUtilityUml.generateStereotype(
                     Model.getFacade().getStereotypes(modelElement));
+            boolean isReception = Model.getFacade().isAReception(modelElement);
+            // TODO: needs I18N ?
+            if (isReception) {
+                stereoStr = "<<signal>> " + stereoStr;
+            }
             String visStr = NotationUtilityUml.generateVisibility(modelElement);
             String nameStr = Model.getFacade().getName(modelElement);
 
@@ -516,22 +521,26 @@ public class OperationNotationUml extends OperationNotation {
             parameterStr.append("(").append(parameterListBuffer).append(")");
 
             // the returnparameters
-            coll = Model.getCoreHelper().getReturnParameters(modelElement);
             StringBuffer returnParasSb = new StringBuffer();
-            if (coll != null && coll.size() > 0) {
-                returnParasSb.append(": ");
-                Iterator it2 = coll.iterator();
-                while (it2.hasNext()) {
-                    Object type = Model.getFacade().getType(it2.next());
-                    if (type != null) {
-                        returnParasSb.append(Model.getFacade().getName(type));
+            if (!isReception) {
+                coll = Model.getCoreHelper().getReturnParameters(modelElement);
+                if (coll != null && coll.size() > 0) {
+                    returnParasSb.append(": ");
+                    Iterator it2 = coll.iterator();
+                    while (it2.hasNext()) {
+                        Object type = Model.getFacade().getType(it2.next());
+                        if (type != null) {
+                            returnParasSb.append(Model.getFacade()
+                                    .getName(type));
+                        }
+                        returnParasSb.append(",");
                     }
-                    returnParasSb.append(",");
+                    returnParasSb.delete(
+                            returnParasSb.length() - 1,
+                            returnParasSb.length());
                 }
-                returnParasSb.delete(
-                        returnParasSb.length() - 1,
-                        returnParasSb.length());
             }
+
 
             // the properties
             StringBuffer propertySb = new StringBuffer().append("{");
@@ -539,16 +548,24 @@ public class OperationNotationUml extends OperationNotation {
             if (Model.getFacade().isQuery(modelElement)) {
                 propertySb.append("query,");
             }
+            /*
+             * Although Operation and Signal are peers in the UML type 
+             * hierarchy they share the attributes isRoot, isLeaf, 
+             * isAbstract, and  specification. Concurrency is *not* 
+             * shared and is specific to Operation.
+             */
             if (Model.getFacade().isRoot(modelElement)) {
                 propertySb.append("root,");
             }
             if (Model.getFacade().isLeaf(modelElement)) {
                 propertySb.append("leaf,");
             }
-            if (Model.getFacade().getConcurrency(modelElement) != null) {
-                propertySb.append(Model.getFacade().getName(
-                        Model.getFacade().getConcurrency(modelElement)));
-                propertySb.append(',');
+            if (!isReception) {
+                if (Model.getFacade().getConcurrency(modelElement) != null) {
+                    propertySb.append(Model.getFacade().getName(
+                            Model.getFacade().getConcurrency(modelElement)));
+                    propertySb.append(',');
+                }
             }
             Iterator it3 = Model.getFacade().getTaggedValues(modelElement);
             StringBuffer taggedValuesSb = new StringBuffer();
