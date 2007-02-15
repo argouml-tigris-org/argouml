@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -82,30 +82,49 @@ public class TestZargoFilePersister extends TestCase {
     }
 
     /**
-     * Test loading a zargo.
+     * Test loading an old empty zargo.
      *
-     * @throws Exception when e.g. the filke is not found
+     * @throws Exception when e.g. the file is not found
      */
     public void testDoLoad1() throws Exception {
-        doLoad("/testmodels/Empty.zargo");
+        doLoad("/testmodels/uml13/Empty.zargo");
     }
 
     /**
-     * Test loading a zargo.
+     * Test loading a new empty zargo.
      *
-     * @throws Exception when e.g. the filke is not found
+     * @throws Exception when e.g. the file is not found
      */
-    public void testDoLoad2() throws Exception {
-        doLoad("/testmodels/Alittlebitofeverything.zargo");
+    public void testDoLoad1a() throws Exception {
+        doLoad("/testmodels/uml14/EmptyProject024.zargo");
     }
 
+    /**
+     * Test loading UML 1.3 which needs to be upgraded on load zargo.
+     *
+     * @throws Exception when e.g. the file is not found
+     */
+    public void testDoLoad2() throws Exception {
+        doLoad("/testmodels/uml13/Alittlebitofeverything.zargo");
+    }
+
+    /**
+     * Test loading a native UML 1.4 zargo.
+     *
+     * @throws Exception when e.g. the file is not found
+     */
+    public void testDoLoad2a() throws Exception {
+        doLoad("/testmodels/uml14/Alittlebitofeverything.zargo");
+    }
+
+    
     /**
      * Test saving a zargo.
      *
-     * @throws Exception when e.g. the filke is not found
+     * @throws Exception when e.g. the file is not found
      */
     public void testSave() throws Exception {
-        Project p = doLoad("/testmodels/Alittlebitofeverything.zargo");
+        Project p = doLoad("/testmodels/uml13/Alittlebitofeverything.zargo");
         ZargoFilePersister persister = new ZargoFilePersister();
         persister.save(p, new File("Alittlebitofeverything2.zargo"));
     }
