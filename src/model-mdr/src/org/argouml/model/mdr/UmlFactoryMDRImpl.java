@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -206,10 +206,10 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * <li>The existence of a 4th column indicates that the connection is valid
      * in one direction only.
      * </ul>
-     * NOTE: This encodes not only what is legal in UML, but also what ArgoUML
+     * TODO: This encodes not only what is legal in UML, but also what ArgoUML
      * knows how to create, so not all legal connections are included. Probably
      * should be split into two pieces: 1) legal UML (here) and 2) supported (in
-     * ArgoUML application someplace) - tfm<p>
+     * ArgoUML application someplace) - tfm - 20060325<p>
      *
      * Most of these are subtypes of Relationship which includes Association,
      * Dependency, Flow, Generalization, Extend, and Include. Dependency
@@ -223,25 +223,25 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     private static final Object[][] VALID_CONNECTIONS = {
         {Generalization.class,   GeneralizableElement.class, },
         {Dependency.class,       ModelElement.class, },
+        // Although Usage & Permission are Dependencies, they need to
+        // be include separately because of the way lookup works
         {Usage.class,            ModelElement.class, },
         {Permission.class,       ModelElement.class, },
+        // The following is specifically for Realizations
         {Abstraction.class, UmlClass.class, Interface.class, null, },
+        // The next 3 restrictions for Abstraction seem to be Argo specific
+        // not something the UML spec requires - tfm - 20070215
         {Abstraction.class, UmlClass.class, UmlClass.class, null, },
         {Abstraction.class, UmlPackage.class, UmlPackage.class, null, },
         {Abstraction.class, Component.class, Interface.class, null, },
-        {UmlAssociation.class,      UmlClass.class, },
-        {UmlAssociation.class, UmlClass.class, Interface.class, },
-        {UmlAssociation.class,      Actor.class, },
-        {UmlAssociation.class,      UseCase.class, },
-        {UmlAssociation.class, Actor.class, UseCase.class, },
-        {UmlAssociation.class,      Node.class, },
+        {UmlAssociation.class,     Classifier.class, }, 
         {AssociationRole.class,  ClassifierRole.class, },
         {Extend.class,           UseCase.class, },
         {Include.class,          UseCase.class, },
-        {Link.class, NodeInstance.class, }, {Link.class, Object.class, },
+        {Link.class, Instance.class, }, 
         {Transition.class,       StateVertex.class, },
-        {AssociationClass.class, UmlClass.class, },
-        {AssociationEnd.class, UmlClass.class, UmlAssociation.class, },
+        {AssociationClass.class, UmlClass.class, }, 
+        {AssociationEnd.class, Classifier.class, UmlAssociation.class, },
         {Message.class, ClassifierRole.class },
     };
 
@@ -462,6 +462,14 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     public boolean isConnectionValid(Object connectionType, Object fromElement,
             Object toElement) {
+        return isConnectionValid(connectionType, fromElement, toElement, true);
+    }
+    
+    /*
+     * @see org.argouml.model.UmlFactory#isConnectionValid(java.lang.Object, java.lang.Object, java.lang.Object, boolean)
+     */
+    public boolean isConnectionValid(Object connectionType, Object fromElement,
+            Object toElement, boolean checkWFR) {
         // Get the list of valid model item pairs for the given connection type
         List validItems = (ArrayList) validConnectionMap.get(connectionType);
         if (validItems == null) {
@@ -474,10 +482,14 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Class[] modeElementPair = (Class[]) it.next();
             if (modeElementPair[0].isInstance(fromElement)
                 && modeElementPair[1].isInstance(toElement)) {
-                return isConnectionWellformed(
-                        (Class) connectionType,
-                        (ModelElement) fromElement,
-                        (ModelElement) toElement);
+                if (checkWFR) {
+                    return isConnectionWellformed(
+                            (Class) connectionType,
+                            (ModelElement) fromElement,
+                            (ModelElement) toElement);
+                } else {
+                    return true;
+                }
             }
         }
         return false;
