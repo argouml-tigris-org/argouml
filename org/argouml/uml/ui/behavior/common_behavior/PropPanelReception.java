@@ -32,6 +32,8 @@ import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.core.PropPanelFeature;
+import org.argouml.uml.ui.foundation.core.UMLBehavioralFeatureQueryCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerScopeCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
@@ -62,16 +64,15 @@ public class PropPanelReception extends PropPanelFeature {
         addField(Translator.localize("label.owner"),
                 getOwnerScroll());
 
+        add(getVisibilityPanel());
+        
         modifiersPanel = createBorderPanel(Translator.localize(
                     "label.modifiers"));
-
-        modifiersPanel.add(
-                            new UMLGeneralizableElementAbstractCheckBox());
-        modifiersPanel.add(
-                            new UMLGeneralizableElementLeafCheckBox());
-        modifiersPanel.add(
-                            new UMLGeneralizableElementRootCheckBox());
-
+        modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
+        modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
+        modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
+        modifiersPanel.add(new UMLBehavioralFeatureQueryCheckBox());
+        modifiersPanel.add(new UMLFeatureOwnerScopeCheckBox());
         add(modifiersPanel);
 
         addSeparator();
