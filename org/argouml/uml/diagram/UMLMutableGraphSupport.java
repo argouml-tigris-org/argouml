@@ -520,7 +520,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         return Model.getUmlFactory().isConnectionValid(
                 edgeType,
                 fromElement,
-                toElement);
+                toElement,
+                true);
     }
 
     /**
