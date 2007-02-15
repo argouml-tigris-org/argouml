@@ -122,8 +122,8 @@ public class TestModelFacade2 extends TestCase {
 	Model.getCoreHelper().setTaggedValue(cls, "fooValue", "foo");
 	assertEquals(Model.getFacade().getValueOfTag(
 		Model.getFacade().getTaggedValue(cls, "fooValue")), "foo");
-	Model.getCoreHelper().removeTaggedValue(cls, "fooValue");
-	Model.getCoreHelper().removeTaggedValue(cls, "nonExistingValue");
+	Model.getExtensionMechanismsHelper().removeTaggedValue(cls, "fooValue");
+	Model.getExtensionMechanismsHelper().removeTaggedValue(cls, "nonExistingValue");
 	assertNull(Model.getFacade().getTaggedValue(cls, "fooValue"));
     }
 
