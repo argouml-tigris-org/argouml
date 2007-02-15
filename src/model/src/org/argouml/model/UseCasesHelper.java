@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,15 +33,6 @@ import java.util.Collection;
  * Created from the old UseCasesHelper.
  */
 public interface UseCasesHelper {
-    /**
-     * This method returns all extension points of a given use case.<p>
-     *
-     * @param useCase  The use case for which we want the extension points.
-     *
-     * @return         A collection of the extension points.
-     * @deprecated by tfmorris for 0.23.5 use {@link Facade#getExtensionPoints(Object)}
-     */
-    Collection getExtensionPoints(Object useCase);
 
     /**
      * Returns all usecases in some namespace ns.

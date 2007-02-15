@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -778,15 +778,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     }
 
     /**
-     * @see org.argouml.model.AbstractCoreHelperDecorator#removeTaggedValue(
-     * java.lang.Object, java.lang.String)
-     */
-    public void removeTaggedValue(Object handle, String name) {
-        super.removeTaggedValue(handle, name);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
-    }
-
-    /**
      * @see org.argouml.model.AbstractCoreHelperDecorator#removeTargetFlow(
      * java.lang.Object, java.lang.Object)
      */
@@ -810,15 +801,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      */
     public void setAssociation(Object handle, Object association) {
         super.setAssociation(handle, association);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
-    }
-
-    /**
-     * @see org.argouml.model.AbstractCoreHelperDecorator#setAttributes(
-     * java.lang.Object, java.util.Collection)
-     */
-    public void setAttributes(Object classifier, Collection attributes) {
-        super.setAttributes(classifier, attributes);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
@@ -943,15 +925,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
     /**
      * @see org.argouml.model.AbstractCoreHelperDecorator#setOperations(
-     * java.lang.Object, java.util.Collection)
-     */
-    public void setOperations(Object classifier, Collection operations) {
-        super.setOperations(classifier, operations);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
-    }
-
-    /**
-     * @see org.argouml.model.AbstractCoreHelperDecorator#setOperations(
      * java.lang.Object, java.util.List)
      */
     public void setOperations(Object classifier, List operations) {
@@ -992,15 +965,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      */
     public void setParent(Object handle, Object parent) {
         super.setParent(handle, parent);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
-    }
-
-    /**
-     * @see org.argouml.model.AbstractCoreHelperDecorator#setQualifiers(
-     * java.lang.Object, java.util.Collection)
-     */
-    public void setQualifiers(Object handle, Collection elems) {
-        super.setQualifiers(handle, elems);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 

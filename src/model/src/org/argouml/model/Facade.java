@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -265,17 +265,6 @@ public interface Facade {
      * @return true if handle is an AssociationClass
      */
     boolean isAAssociationClass(Object handle);
-
-    /**
-     * Recognizer for a Element that is Classifier and RelationShip.
-     * 
-     * @param handle
-     *            candidate
-     * @return true if handle is a Classifier and a Relationship
-     * @deprecated by tfmorris for 0.23.4 - use individual methods
-     *             isAClassififer and isARelationship.
-     */
-    boolean isAClassifierAndARelationship(Object handle);
 
     /**
      * Recognizer for Classifier.
@@ -1502,17 +1491,6 @@ public interface Facade {
      * @return the extends
      */
     Collection getExtenders(Object handle);
-    
-    /**
-     * Returns all extends of a use case.
-     *
-     * @deprecated by tfmorris for 0.23.4
-     * use {@link #getExtenders(Object)}
-     * 
-     * @param handle is the use case
-     * @return the extends
-     */
-    Collection getExtends2(Object handle);
 
     /**
      * Gets the use case extension of an extend.
@@ -1589,17 +1567,6 @@ public interface Facade {
      */
     Collection getIncludes(Object handle);
 
-    /**
-     * Returns the includers for some use case.<p>
-     *
-     * @deprecated by tfmorris for 0.23.4 
-     * use {@link #getIncluders(Object)}
-     * 
-     * @param handle is the use case
-     * @return the includes as a Collection
-     */
-    Collection getIncludes2(Object handle);
-    
     /**
      * Returns the includers for some use case.<p>
      *
@@ -1683,33 +1650,11 @@ public interface Facade {
     /**
      * Returns the messages belonging to some other message.
      *
-     * @deprecated by tfmorris for 0.23.4 use {@link #getSuccessors(Object)}
-     * 
-     * @param handle is the message
-     * @return Collection
-     */
-    Collection getMessages3(Object handle);
-
-    /**
-     * Returns the messages belonging to some other message.
-     *
      * @param handle is the message
      * @return Collection
      */
     Collection getSuccessors(Object handle);
-    
-    /**
-     * Get the messages that are activated by the given message.
-     * 
-     * @deprecated by tfmorris for 0.23.4 
-     * use {@link #getActivatedMessages(Object)}
-     * 
-     * @param handle Message
-     * @return the Collection of Messages
-     */
-    Collection getMessages4(Object handle);
 
-    
     /**
      * Get the messages that are activated by the given message.
      *
@@ -1721,34 +1666,10 @@ public interface Facade {
     /**
      * Returns the messages received by the given classifier role.
      *
-     * @deprecated by tfmorris for 0.23.4 
-     * use {@link #getReceivedMessages(Object)}
-     * 
-     * @param handle is the classifier role
-     * @return Collection
-     */
-    Collection getMessages1(Object handle);
-
-
-    /**
-     * Returns the messages received by the given classifier role.
-     *
      * @param handle is the classifier role
      * @return Collection
      */
     Collection getReceivedMessages(Object handle);
-
-
-    /**
-     * Returns the messages sent by the given classifier role.
-     *
-     * @deprecated by tfmorris for 0.23.4 
-     * use {@link #getSentMessages(Object)}
-     * 
-     * @param handle is the classifier role
-     * @return Collection
-     */
-    Collection getMessages2(Object handle);
 
     /**
      * Returns the messages sent by the given classifier role.
@@ -2117,6 +2038,14 @@ public interface Facade {
     List getOperations(Object handle);
 
     /**
+     * Get the list of operations and receptions.
+     *
+     * @param handle classifier to examine.
+     * @return list of operations.
+     */
+    List getOperationsAndReceptions(Object handle);
+    
+    /**
      * Returns the opposite end of an association end.
      *
      * @param handle is the association end
@@ -2435,34 +2364,10 @@ public interface Facade {
     /**
      * Returns the Stimuli that are received by the given Instance.
      *
-     * @deprecated by tfmorris for 0.23.4 
-     * use {@link #getReceivedStimuli(Object)}
-     * 
-     * @param handle the Instance
-     * @return the collection of stimuli
-     */
-    Collection getStimuli2(Object handle);
-
-
-    /**
-     * Returns the Stimuli that are received by the given Instance.
-     *
      * @param handle the Instance
      * @return the collection of stimuli
      */
     Collection getReceivedStimuli(Object handle);
-
-
-    /**
-     * Returns the Stimuli that are send by the given Instance.
-     *
-     * @deprecated by tfmorris for 0.23.4 
-     * use {@link #getSentStimuli(Object)}
-     * 
-     * @param handle the Instance
-     * @return the collection of stimuli
-     */
-    Collection getStimuli3(Object handle);
 
     /**
      * Returns the Stimuli that are send by the given Instance.

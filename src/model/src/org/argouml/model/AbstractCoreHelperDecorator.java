@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -95,28 +94,8 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.removeLiteral(enu, literal);
     }
 
-    public List getOperations(Object classifier) {
-        return impl.getOperations(classifier);
-    }
-
-    public void setOperations(Object classifier, Collection operations) {
-        List operList = new ArrayList();
-        operList.addAll(operations);
-        impl.setOperations(classifier, operList);
-    }
-
     public void setOperations(Object classifier, List operations) {
         impl.setOperations(classifier, operations);
-    }
-
-    public List getAttributes(Object classifier) {
-        return impl.getAttributes(classifier);
-    }
-
-    public void setAttributes(Object classifier, Collection attributes) {
-        List attrList = new ArrayList();
-        attrList.addAll(attributes);
-        impl.setAttributes(classifier, attrList);
     }
 
     public void setAttributes(Object classifier, List attributes) {
@@ -317,10 +296,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.removeStereotype(modelElement, stereotype);
     }
 
-    public void removeTaggedValue(Object handle, String name) {
-        impl.removeTaggedValue(handle, name);
-    }
-
     public void removeTargetFlow(Object handle, Object flow) {
         impl.removeTargetFlow(handle, flow);
     }
@@ -495,12 +470,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
 
     public void setParent(Object handle, Object parent) {
         impl.setParent(handle, parent);
-    }
-
-    public void setQualifiers(Object handle, Collection elems) {
-        List elemList = new ArrayList();
-        elemList.addAll(elems);
-        impl.setQualifiers(handle, elemList);
     }
 
     public void setQualifiers(Object handle, List elems) {

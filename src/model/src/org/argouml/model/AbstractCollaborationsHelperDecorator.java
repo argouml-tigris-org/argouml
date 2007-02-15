@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -155,10 +155,6 @@ public abstract class AbstractCollaborationsHelperDecorator
         impl.addMessage(handle, elem);
     }
 
-    public void addMessage3(Object handle, Object mess) {
-        impl.addMessage3(handle, mess);
-    }
-
     public void addSuccessor(Object handle, Object mess) {
         impl.addSuccessor(handle, mess);
     }
@@ -173,10 +169,6 @@ public abstract class AbstractCollaborationsHelperDecorator
 
     public void setContext(Object handle, Object col) {
         impl.setContext(handle, col);
-    }
-
-    public void setMessages3(Object handle, Collection messages) {
-        impl.setMessages3(handle, messages);
     }
 
     public void setSuccessors(Object handle, Collection messages) {

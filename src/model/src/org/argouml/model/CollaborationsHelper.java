@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -230,18 +230,6 @@ public interface CollaborationsHelper {
     /**
      * Removes a successor message.
      * 
-     * @deprecated by tfmorris for 0.23.4 
-     * use {@link #removeSuccessor(Object, Object)}
-     * 
-     * @param handle the Message that needs to loose a successor
-     * @param mess the Message that is removed
-     */
-    void removeMessage3(Object handle, Object mess);
-
-
-    /**
-     * Removes a successor message.
-     * 
      * @param handle the Message that needs to loose a successor
      * @param mess the Message that is removed
      */
@@ -282,17 +270,6 @@ public interface CollaborationsHelper {
     /**
      * Add Message to a predecessor Message.
      * 
-     * @deprecated by tfmorris for 0.23.4 
-     * use {@link #addSuccessor(Object, Object)}
-     * 
-     * @param handle predecessor Message
-     * @param mess Message to be added
-     */
-    void addMessage3(Object handle, Object mess);
-
-    /**
-     * Add Message to a predecessor Message.
-     * 
      * @param handle predecessor Message
      * @param mess Message to be added
      */
@@ -321,18 +298,6 @@ public interface CollaborationsHelper {
      * @param col The context to set.
      */
     void setContext(Object handle, Object col);
-
-    /**
-     * Set the successors of a message.
-     * 
-     * @deprecated by tfmorris for 0.23.4 
-     * use {@link #setSuccessors(Object, Collection)}
-     * 
-     * @param handle Message
-     * @param messages Collection of successor messages
-     */
-    void setMessages3(Object handle, Collection messages);
-
 
     /**
      * Set the successors of a message.

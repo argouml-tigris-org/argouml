@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -100,31 +100,6 @@ public interface CoreHelper {
     void removeLiteral(Object enumeration, Object literal);
 
     /**
-     * This method returns all operations of a given Classifier.
-     * 
-     * @param classifier
-     *            the classifier you want to have the operations for
-     * @return a collection of the operations
-     * @deprecated by tfmorris for 0.23.4 use
-     *             {@link Facade#getOperations(Object)}
-     */
-    List getOperations(Object classifier);
-
-    /**
-     * This method replaces all operations of the given classifier by the given
-     * collection of operations.
-     * 
-     * @param classifier
-     *            the given classifier
-     * @param operations
-     *            the new operations
-     * @deprecated by tfmorris for 0.23.4, use variant which takes a List of
-     *             operations as a parameter
-     *             {@link #setOperations(Object, List)}
-     */
-    void setOperations(Object classifier, Collection operations);
-
-    /**
      * This method replaces all operations of the given classifier
      * by the given list of operations.
      *
@@ -132,27 +107,6 @@ public interface CoreHelper {
      * @param operations the new operations
      */
     void setOperations(Object classifier, List operations);
-
-    /**
-     * This method returns all attributes of a given Classifier.
-     * 
-     * @param classifier
-     *            the classifier you want to have the attributes for
-     * @return a collection of the attributes
-     * @deprecated by tfmorris for 0.23.4 use
-     *             {@link Facade#getAttributes(Object)}
-     */
-    List getAttributes(Object classifier);
-
-    /**
-     * This method replaces all attributes of the given classifier
-     * by the given collection of attributes.
-     * @param classifier the classifier
-     * @param attributes the new attributes
-     * @deprecated by tfmorris for 0.23.4, use the variant that takes a List 
-     * of attributes {@link #setAttributes(Object, List)}
-     */
-    void setAttributes(Object classifier, Collection attributes);
 
     /**
      * This method replaces all attributes of the given classifier
@@ -606,20 +560,6 @@ public interface CoreHelper {
      * @param dependency the dependency
      */
     void removeSupplierDependency(Object supplier, Object dependency);
-
-    /**
-     * Removes a named tagged value from a model element, ie subsequent calls
-     * to getTaggedValue will return null for name, at least until a tagged
-     * value with that name has been added again.
-     *
-     * @param handle the model element to remove the tagged value from
-     * @param name the name of the tagged value
-     * @throws IllegalArgumentException if handle isn't a model element
-     * 
-     * @deprecated by tfmorris for 0.23.3 - 
-     * use {@link ExtensionMechanismsHelper#removeTaggedValue(Object, Object)}
-     */
-    void removeTaggedValue(Object handle, String name);
 
     /**
      * Add a target flow to a model element.
@@ -1096,16 +1036,6 @@ public interface CoreHelper {
      * @param pt Classifier
      */
     void setPowertype(Object handle, Object pt);
-
-    /**
-     * Sets the qualified attributes of an association end.
-     *
-     * @param handle the association end
-     * @param elems is a Collection of qualifiers
-     * @deprecated by tfmorris for 0.23.4,
-     * use {@link #setQualifiers(Object, List)}
-     */
-    void setQualifiers(Object handle, Collection elems);
 
     /**
      * Sets the qualified attributes of an association end.
