@@ -106,7 +106,8 @@ public class SourcePathControllerImpl implements SourcePathController {
      * @see org.argouml.uml.ui.SourcePathController#deleteSourcePath(java.lang.Object)
      */
     public void deleteSourcePath(Object modelElement) {
-        Model.getCoreHelper().removeTaggedValue(modelElement, SRC_PATH_TAG);
+        Model.getExtensionMechanismsHelper().removeTaggedValue(
+                modelElement, SRC_PATH_TAG);
     }
 
     /*
