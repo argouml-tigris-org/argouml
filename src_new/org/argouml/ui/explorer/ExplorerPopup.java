@@ -412,7 +412,7 @@ public class ExplorerPopup extends JPopupMenu {
 	    String relationshipDescr,
 	    JMenu menu) {
 	if (Model.getUmlFactory().isConnectionValid(
-		    metaType, source, dest)) {
+		    metaType, source, dest, true)) {
 	    JMenuItem menuItem = new JMenuItem(
 		    new ActionCreateModelElement(
 			    metaType, 
