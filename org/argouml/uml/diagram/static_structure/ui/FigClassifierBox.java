@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -174,7 +174,8 @@ public abstract class FigClassifierBox extends FigCompartmentBox
             Object source = mee.getSource();
             if (Model.getFacade().isAOperation(source) 
                     || Model.getFacade().isAMethod(source)
-                    || Model.getFacade().isAParameter(source)) {
+                    || Model.getFacade().isAParameter(source)
+                    || Model.getFacade().isAReception(source)) {
                 // TODO: We just need to get someone to rerender a single line
                 // of text which represents the element here, but I'm not sure
                 // how to do that, so redraw the whole compartment. - tfm
@@ -191,7 +192,8 @@ public abstract class FigClassifierBox extends FigCompartmentBox
             } else if (mee instanceof RemoveAssociationEvent) {
                 o = mee.getOldValue();
             }
-            if (Model.getFacade().isAOperation(o)) {
+            if (Model.getFacade().isAOperation(o) 
+                    || Model.getFacade().isAReception(o)) {
                 updateOperations();
             }
             

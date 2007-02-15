@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,8 +41,10 @@ public abstract class OperationNotation extends NotationProvider {
      * @param operation The operation.
      */
     public OperationNotation(Object operation) {
-        if (!Model.getFacade().isAOperation(operation)) {
-            throw new IllegalArgumentException("This is not an Operation.");
+        if (!Model.getFacade().isAOperation(operation) 
+                && !Model.getFacade().isAReception(operation)) {
+            throw new IllegalArgumentException(
+                    "This is not an Operation or Reception.");
         }
     }
 

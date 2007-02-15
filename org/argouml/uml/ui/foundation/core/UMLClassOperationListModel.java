@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,15 +49,19 @@ public class UMLClassOperationListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(Model.getFacade().getOperations(getTarget()));
+            List opsAndReceps =
+                    Model.getFacade().getOperationsAndReceptions(getTarget());
+            setAllElements(opsAndReceps);
         }
     }
+
 
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return (Model.getFacade().getOperations(getTarget()).contains(element));
+        return (Model.getFacade().getOperationsAndReceptions(getTarget())
+                .contains(element));
     }
 
     /*
@@ -66,7 +70,7 @@ public class UMLClassOperationListModel
     protected void moveDown(int index1) {
         int index2 = index1 + 1;
         Object clss = getTarget();
-        List c = Model.getFacade().getOperations(clss);
+        List c = Model.getFacade().getOperationsAndReceptions(clss);
         if (index1 < c.size() - 1) {
             Object op1 = c.get(index1);
             Object op2 = c.get(index2);
@@ -76,4 +80,6 @@ public class UMLClassOperationListModel
             Model.getCoreHelper().addFeature(clss, index2, op1);
         }
     }
+    
+
 }
