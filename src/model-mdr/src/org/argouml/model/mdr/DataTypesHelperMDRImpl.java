@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -88,27 +88,6 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /**
-     * TODO: This isn't in public API. Reduce visibility or remove (it is unused
-     * currently) - tfm
-     * 
-     * @param from
-     *            The MultiplicityRange to copy
-     * @param to
-     *            The MultiplicityRange on which copy the 'from' object
-     */
-    public void copyMultiplicityRange(Object from, Object to) {
-        if (from instanceof MultiplicityRange
-                && to instanceof MultiplicityRange) {
-            MultiplicityRange mto = (MultiplicityRange) to;
-            MultiplicityRange mfrom = (MultiplicityRange) from;
-            mto.setLower(mfrom.getLower());
-            mto.setUpper(mfrom.getUpper());
-            return;
-        }
-        throw new IllegalArgumentException("from: " + from + ", to: " + to);
-    }
-	
     /*
      * @see org.argouml.model.DataTypesHelper#equalsINITIALKind(java.lang.Object)
      */

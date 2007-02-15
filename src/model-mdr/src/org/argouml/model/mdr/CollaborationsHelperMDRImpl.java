@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -772,14 +772,6 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
     }
 
     /*
-     * @see org.argouml.model.CollaborationsHelper#removeMessage3(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public void removeMessage3(Object handle, Object mess) {
-        removeSuccessor(handle, mess);
-    }
-    
-    /*
      * @see org.argouml.model.CollaborationsHelper#removeSuccessor(java.lang.Object,
      *      java.lang.Object)
      */
@@ -864,15 +856,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         throw new IllegalArgumentException("handle: " + handle + " or elem: "
                 + elem);
     }
-
-    /*
-     * @see org.argouml.model.CollaborationsHelper#addMessage3(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public void addMessage3(Object handle, Object mess) {
-        addSuccessor(handle, mess);
-    }
-    
+ 
     /*
      * @see org.argouml.model.CollaborationsHelper#addSuccessor(java.lang.Object,
      *      java.lang.Object)
@@ -933,14 +917,6 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
         throw new IllegalArgumentException("handle: " + handle + " or col: "
                 + col);
-    }
-
-    /*
-     * @see org.argouml.model.CollaborationsHelper#setMessages3(java.lang.Object,
-     *      java.util.Collection)
-     */
-    public void setMessages3(Object handle, Collection messages) {
-        setSuccessors(handle, messages);
     }
 
     /*

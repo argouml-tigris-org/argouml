@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -318,17 +318,10 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /*
-     * @see org.argouml.model.CoreHelper#getOperations(java.lang.Object)
-     */
-    public List getOperations(Object classifier) {
-        return Model.getFacade().getOperations(classifier);
-    }
-
-    /*
      * @see org.argouml.model.CoreHelper#setOperations( java.lang.Object,
-     *      java.util.Collection)
+     *      java.util.List)
      */
-    public void setOperations(Object classifier, Collection operations) {
+    public void setOperations(Object classifier, List operations) {
         if (classifier instanceof Classifier) {
             Classifier mclassifier = (Classifier) classifier;
             List result = new ArrayList(mclassifier.getFeature());
@@ -351,25 +344,10 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /*
-     * @see org.argouml.model.CoreHelper#setOperations( java.lang.Object,
+     * @see org.argouml.model.CoreHelper#setAttributes( java.lang.Object,
      *      java.util.List)
      */
-    public void setOperations(Object classifier, List operations) {
-        setOperations(classifier, (Collection) operations);
-    }
-    
-    /*
-     * @see org.argouml.model.CoreHelper#getAttributes(java.lang.Object)
-     */
-    public List getAttributes(Object classifier) {
-        return Model.getFacade().getAttributes(classifier);
-    }
-
-    /*
-     * @see org.argouml.model.CoreHelper#setAttributes( java.lang.Object,
-     *      java.util.Collection)
-     */
-    public void setAttributes(Object classifier, Collection attributes) {
+    public void setAttributes(Object classifier, List attributes) {
         if (classifier instanceof Classifier) {
             Classifier mclassifier = (Classifier) classifier;
             List result = new ArrayList(mclassifier.getFeature());
@@ -386,14 +364,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
             mclassifier.getFeature().clear();
             mclassifier.getFeature().addAll(result);
         }
-    }
-    
-    /*
-     * @see org.argouml.model.CoreHelper#setAttributes( java.lang.Object,
-     *      java.util.List)
-     */
-    public void setAttributes(Object classifier, List attributes) {
-        setAttributes(classifier, (Collection) attributes);
     }
 
     /*
@@ -1355,10 +1325,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
         ModelElement modelElement = (ModelElement) mObj;
         Namespace ns = (Namespace) nsObj;
 
-        if (modelElement == null || ns == null) {
-            return false;
-        }
-
         try {
             if (Model.getFacade().getModel(ns) != Model.getFacade().getModel(
                     modelElement)) {
@@ -2086,24 +2052,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
         throw new IllegalArgumentException("supplier: " + supplier
                 + " or dependency: " + dependency);
-    }
-
-    /*
-     * @see org.argouml.model.CoreHelper#removeTaggedValue( java.lang.Object,
-     *      java.lang.String)
-     */
-    public void removeTaggedValue(Object handle, String name) {
-        try {
-            Object taggedValue = Model.getFacade().getTaggedValue(handle, 
-                    name);
-            // TODO: This removes the first only.  Should we remove all?
-            if (taggedValue != null) {
-                modelImpl.getExtensionMechanismsHelper().removeTaggedValue(
-                        handle, taggedValue);
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
     }
 
     /*
@@ -3133,18 +3081,6 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
         throw new IllegalArgumentException("handle: " + handle + " or pt: "
                 + pt);
-    }
-
-    /*
-     * @see org.argouml.model.CoreHelper#setQualifiers( java.lang.Object,
-     *      java.util.Collection)
-     */
-    public void setQualifiers(Object handle, Collection elems) {
-        if (elems instanceof List) {
-            setQualifiers(handle, (List) elems);
-            return;
-        }
-        throw new IllegalArgumentException("handle: " + handle);
     }
 
     /*

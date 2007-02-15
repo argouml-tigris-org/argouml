@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -394,13 +394,6 @@ class FacadeMDRImpl implements Facade {
      */
     public boolean isAAssociationClass(Object handle) {
         return handle instanceof AssociationClass;
-    }
-
-    /**
-     * @see org.argouml.model.Facade#isAClassifierAndARelationship(java.lang.Object)
-     */
-    public boolean isAClassifierAndARelationship(Object handle) {
-        return isAClassifier(handle) && isARelationship(handle);
     }
 
     /**
@@ -2062,13 +2055,6 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-
-    public Collection getExtends2(Object handle) {
-        return getExtenders(handle);
-        
-    }
-    
-
     public Collection getExtenders(Object handle) {
         try {
             if (handle instanceof UseCase) {
@@ -2259,10 +2245,6 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    public Collection getIncludes2(Object handle) {
-        return getIncluders(handle);
-    }
-    
     public Collection getIncluders(Object handle) {
         try {
             if (handle instanceof UseCase) {
@@ -2274,7 +2256,7 @@ class FacadeMDRImpl implements Facade {
         }
         return illegalArgumentCollection(handle);
     }
-
+    
     /**
      * @see org.argouml.model.Facade#getIncomings(java.lang.Object)
      */
@@ -2426,12 +2408,6 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    
-    public Collection getMessages3(Object handle) {
-        return getSuccessors(handle);
-    }
-
-    
     public Collection getSuccessors(Object handle) {
         try {
             if (handle instanceof Message) {
@@ -2445,13 +2421,6 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-
-    public Collection getMessages4(Object handle) {
-        return getActivatedMessages(handle);
-        
-    }
-    
-
     public Collection getActivatedMessages(Object handle) {
         try {
             if (handle instanceof Message) {
@@ -2463,12 +2432,6 @@ class FacadeMDRImpl implements Facade {
         }
         return illegalArgumentCollection(handle);
     }
-
-
-    public Collection getMessages1(Object handle) {
-        return getReceivedMessages(handle);
-    }
-    
 
     public Collection getReceivedMessages(Object handle) {
         try {
@@ -2482,12 +2445,6 @@ class FacadeMDRImpl implements Facade {
         }
         return illegalArgumentCollection(handle);
     }
-
-
-    public Collection getMessages2(Object handle) {
-        return getSentMessages(handle);
-    }
-    
 
     public Collection getSentMessages(Object handle) {
         try {
@@ -3212,6 +3169,17 @@ class FacadeMDRImpl implements Facade {
         return result;
     }
 
+    public List getOperationsAndReceptions(Object classifier) {
+        List opsAndReceps = new ArrayList();
+        for (Iterator it = getFeatures(classifier).iterator(); it.hasNext();) {
+            Object o = it.next();
+            if (isAOperation(o) || isAReception(o)) {
+                opsAndReceps.add(o);
+            }
+        }
+        return opsAndReceps;
+    }
+    
     /**
      * @see org.argouml.model.Facade#getOppositeEnd(java.lang.Object)
      */
@@ -3850,12 +3818,6 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-
-    public Collection getStimuli2(Object handle) {
-        return getReceivedStimuli(handle);
-    }
-    
-
     public Collection getReceivedStimuli(Object handle) {
         try {
             if (handle instanceof Instance) {
@@ -3867,12 +3829,6 @@ class FacadeMDRImpl implements Facade {
             throw new InvalidElementException(e);
         }
     }
-
-
-    public Collection getStimuli3(Object handle) {
-        return getSentStimuli(handle);
-    }
-    
 
     public Collection getSentStimuli(Object handle) {
         try {
