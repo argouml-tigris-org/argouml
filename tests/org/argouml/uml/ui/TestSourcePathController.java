@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.io.File;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.reveng.ImportInterface;
 
 /**
  * Test SourcePathController implementation.
@@ -56,10 +57,7 @@ public class TestSourcePathController extends TestCase {
     
     /** The SourcePathController instance. */
     private SourcePathController srcCtrl;
-    
-    /** The string used to store source path string as tagged value. */
-    private static final String SRC_PATH_TAG = "src_path";
-    
+
     /**
      * Creates a new instance of TestSourcePathController.
      * 
@@ -77,14 +75,15 @@ public class TestSourcePathController extends TestCase {
         // setup the Project due to its use in SourcePathTableModel ctor
         ProjectManager.getManager().makeEmptyProject();
         model = ProjectManager.getManager().getCurrentProject().getRoot();
-        Object taggedValue = Model.getExtensionMechanismsFactory().
-            buildTaggedValue(SRC_PATH_TAG, modelElemSourcePath);
+        Object taggedValue = Model.getExtensionMechanismsFactory()
+                .buildTaggedValue(ImportInterface.SOURCE_PATH_TAG,
+                        modelElemSourcePath);
         Model.getCoreHelper().addTaggedValue(model, taggedValue);
         
         // create a class model element
         modelElem = Model.getCoreFactory().buildClass("AClass", model);
-        taggedValue = Model.getExtensionMechanismsFactory().
-            buildTaggedValue(SRC_PATH_TAG, modelElemSourcePath);
+        taggedValue = Model.getExtensionMechanismsFactory().buildTaggedValue(
+                ImportInterface.SOURCE_PATH_TAG, modelElemSourcePath);
         Model.getCoreHelper().addTaggedValue(modelElem, taggedValue);
         modelElemSourcePathFile = new File(modelElemSourcePath);
         
