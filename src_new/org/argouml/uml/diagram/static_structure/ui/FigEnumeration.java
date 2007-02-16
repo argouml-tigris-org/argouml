@@ -26,13 +26,11 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -82,7 +80,7 @@ public class FigEnumeration extends FigDataType
         setBounds(getBounds());
     }
 
-    /**
+    /*
      * Constructor for use if this figure is created for an
      * existing interface node in the metamodel.
      *
@@ -116,22 +114,15 @@ public class FigEnumeration extends FigDataType
             (FigEnumLiteralsCompartment) literalsCompartment.clone();
         return clone;
     }
- 
-    
-    /*
-     * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#getPopUpActions(java.awt.event.MouseEvent)
-     */
-    public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = super.getPopUpActions(me);
 
-        // Add ...
-        ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
+    /*
+     * @see org.argouml.uml.diagram.static_structure.ui.FigClassifierBox#buildAddMenu()
+     */
+    protected ArgoJMenu buildAddMenu() {
+        ArgoJMenu addMenu = super.buildAddMenu();
         addMenu.add(TargetManager.getInstance()
                 .getAddEnumerationLiteralAction());
-        popUpActions.insertElementAt(addMenu,
-                popUpActions.size() - getPopupAddOffset());
-
-        return popUpActions;
+        return addMenu;
     }
 
     /*
