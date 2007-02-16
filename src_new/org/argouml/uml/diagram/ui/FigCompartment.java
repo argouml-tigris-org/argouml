@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -118,14 +118,6 @@ public abstract class FigCompartment extends FigGroup {
         calcBounds();
     }
     
-    /**
-     * Create a new feature.
-     * @deprecated in 0.12.5 use {@link #createModelElement()}
-     */
-    public void createFeature() {
-	createModelElement();
-    }
-
     /**
      * Create a new model element for the compartment.
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,8 +40,15 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 
 /**
- * Presentation logic which is common to both an operations
+ * Presentation logic for a boxed compartment,
+ * which is common to e.g. an operations
  * compartment and an attributes compartment.<p>
+ * 
+ * This class is adds the possibility to 
+ * make the whole compartment invisible, and
+ * a NotationProvideer is used to handle (generate and parse) 
+ * the texts shown in the compartment, i.e. 
+ * the compartment texts are editable by the user.
  *
  * TODO: This is really just a generic list compartment.  It doesn't have
  * any behavior specific to features.  Rename to something more appropriate and
@@ -50,7 +57,7 @@ import org.tigris.gef.presentation.FigLine;
  * TODO: Investigate if this could be renamed to AbstractFigFeaturesCompartment?
  * @author Bob Tarling
  */
-public abstract class FigFeaturesCompartment extends FigCompartment {
+public abstract class FigEditableCompartment extends FigCompartment {
 
     /**
      * Logger.
@@ -71,7 +78,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      * @param w width
      * @param h height
      */
-    public FigFeaturesCompartment(int x, int y, int w, int h) {
+    public FigEditableCompartment(int x, int y, int w, int h) {
         super(x, y, w, h); // This adds bigPort, i.e. number 1
         compartmentSeperator = new FigSeperator(10, 10, 11);
         addFig(compartmentSeperator); // number 2
@@ -85,7 +92,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
     }
 
     /**
-     * If a features compartment is set to invisible then remove all its
+     * If a boxed compartment is set to invisible then remove all its
      * children.
      * This is to save on resources and increase efficiency as multiple
      * figs need not exist and be resized, moved etc if they are not visible.
@@ -115,11 +122,12 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
      */
     public void addFig(Fig fig) {
         if (fig != getBigPort()
-                && !(fig instanceof FigFeature)
+                && !(fig instanceof CompartmentFigText)
                 && !(fig instanceof FigSeperator)) {
-            LOG.error("Illegal Fig added to a FigFeature");
+            LOG.error("Illegal Fig added to a FigEditableCompartment");
             throw new IllegalArgumentException(
-                    "A FigFeaturesCompartment can only contain FigFeatures, "
+                    "A FigEditableCompartment can only "
+                    + "contain CompartmentFigTexts, "
                     + "received a " + fig.getClass().getName());
         }
         super.addFig(fig);
@@ -208,8 +216,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
                     ftText = "";
                 }
                 comp.setText(ftText);
-                
-                addExtraVisualisations(umlObject, comp);
+
                 comp.setBotMargin(0);
             }
         } catch (InvalidElementException e) {
@@ -248,26 +255,9 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         return figs;
     }
 
-    protected FigSingleLineText createFigText(
-	    int x, int y, int w, int h, Fig aFig, NotationProvider np) {
-        return new FigFeature(x, y, w, h, aFig, np);
-    }
+    protected abstract FigSingleLineText createFigText(
+	    int x, int y, int w, int h, Fig aFig, NotationProvider np);
 
-    /**
-     * Add extra decorations to the compartment fig 
-     * to visualise an UML object property.
-     * TODO: This is being used to decorate the child Figs not this Fig
-     * The child Figs should control their own visualization so lets get rid
-     * of this.
-     * @param umlObject the UML object shown in the given compartment fig
-     * @param comp the given compartment fig to be decorated
-     */
-    protected void addExtraVisualisations(Object umlObject, 
-            FigSingleLineText comp) {
-        /* By default there are none.
-         * Overrule if needed. */
-    }
-    
     /**
      * Returns the new size of the FigGroup (either attributes or
      * operations) after calculation new bounds for all sub-figs,

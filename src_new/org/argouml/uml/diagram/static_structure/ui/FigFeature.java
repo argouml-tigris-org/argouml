@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,23 +39,18 @@ import org.tigris.gef.presentation.Handle;
 
 /**
  * Fig to show features in class or interface like attributes or operations.<p>
- *
- * TODO: This doesn't have any behavior specific to Features.  It's really
- * just an item for a ListCompartment and should probably have a better name
- * tfm - 20060310 <p>
- * TODO: Bob replies - it is intended that some code from
- * FigAttributesCompartment moves here. So this _will_ be Features specific.
- * See FigAttributesCompartment.addExtraVisualisations. For a common
- * compartment text fig use CompartmentFigText.<p>
  * 
- * MVW: This class is responsible to listen to "ownerScope" 
+ * This class is responsible to listen to "ownerScope" 
  * changes in the model, so that the text can be shown underlined 
- * if the ownerScope becomes "classifier" iso "instance".
+ * if the ownerScope becomes "classifier" iso "instance". <p>
+ * 
+ * This class is abstract, since its corresponding class in the
+ * UML metamodel is, too.
  *
  * @since Dec 1, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class FigFeature extends CompartmentFigText {
+public abstract class FigFeature extends CompartmentFigText {
 
     private static class SelectionFeature extends Selection {
         /**
@@ -101,15 +96,6 @@ public class FigFeature extends CompartmentFigText {
     public FigFeature(int x, int y, int w, int h, Fig aFig, 
             NotationProvider np) {
         super(x, y, w, h, aFig, np);
-        setFilled(false);
-        setLineWidth(0);
-        setFont(FigNodeModelElement.getLabelFont());
-        setTextColor(Color.black);
-        setTextFilled(false);
-        setJustification(FigText.JUSTIFY_LEFT);
-        setReturnAction(FigText.END_EDITING);
-        setRightMargin(3);
-        setLeftMargin(3);
     }
 
     /*

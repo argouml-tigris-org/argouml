@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -117,8 +117,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
                 2);
 
         Fig f = hitFig(r);
-        if (f instanceof FigFeaturesCompartment) {
-            FigFeaturesCompartment figCompartment = (FigFeaturesCompartment) f;
+        if (f instanceof FigEditableCompartment) {
+            FigEditableCompartment figCompartment = (FigEditableCompartment) f;
             f = figCompartment.hitFig(r);
             if (f instanceof CompartmentFigText) {
                 ((CompartmentFigText) f).setHighlighted(true);
@@ -146,9 +146,9 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         // Search all feature compartments for a text fig to unhighlight
         for (int i = 1; i < getFigs().size(); i++) {
             fc = getFigAt(i);
-            if (fc instanceof FigFeaturesCompartment) {
+            if (fc instanceof FigEditableCompartment) {
                 CompartmentFigText ft = 
-                    unhighlight((FigFeaturesCompartment) fc);
+                    unhighlight((FigEditableCompartment) fc);
                 if (ft != null) {
                     return ft;
                 }
@@ -164,7 +164,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      * @param fc compartment to search for highlight item
      * @return item that was unhighlighted or null if no action was taken
      */
-    protected final CompartmentFigText unhighlight(FigFeaturesCompartment fc) {
+    protected final CompartmentFigText unhighlight(FigEditableCompartment fc) {
         Fig ft;
         for (int i = 1; i < fc.getFigs().size(); i++) {
             ft = fc.getFigAt(i);
@@ -184,10 +184,10 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      *         java.awt.event.InputEvent)
      */
     protected void createContainedModelElement(FigGroup fg, InputEvent ie) {
-        if (!(fg instanceof FigFeaturesCompartment)) {
+        if (!(fg instanceof FigEditableCompartment)) {
             return;
         }
-        ((FigFeaturesCompartment) fg).createModelElement();
+        ((FigEditableCompartment) fg).createModelElement();
         List figList = fg.getFigs();
         if (figList.size() > 0) {
             Fig fig = (Fig) figList.get(figList.size() - 1);
