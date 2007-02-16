@@ -1039,8 +1039,15 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     /*
      * @see org.argouml.model.CoreFactory#buildGeneralization(java.lang.Object,
      *      java.lang.Object)
+     *      
+     * The well-formedness rules should move to
+     * UmlFactoryMDRImpl.isConnectionWellFormed and buildGeneralization should
+     * become private.
      */
     public Object buildGeneralization(Object child1, Object parent1) {
+        // TODO: This is a part implementation of well-formedness rule
+        // UML1.4.2 - 4.5.3.20 [3] Circular inheritance is not allowed.
+        // not self.allParents->includes(self)
         if ((!(child1 instanceof GeneralizableElement) 
                 || !(parent1 instanceof GeneralizableElement))
                 && child1 != parent1) {
@@ -1052,6 +1059,9 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         GeneralizableElement parent = (GeneralizableElement) parent1;
 
         // Check that the two elements aren't already linked the opposite way
+        // TODO: This is a part implementation of well-formedness rule
+        // UML1.4.2 - 4.5.3.20 [3] Circular inheritance is not allowed.
+        // not self.allParents->includes(self)
         Iterator it = parent.getGeneralization().iterator();
         while (it.hasNext()) {
             Generalization gen = (Generalization) it.next();
@@ -1061,12 +1071,22 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             }
         }
 
+        // TODO: What well-formedness rule is this?
         if (parent.getNamespace() == null) {
             throw new IllegalArgumentException("parent has no namespace");
         }
+        
+        // TODO: This is well-formedness rule from UML1.4.2
+        // 4.5.3.20 [2] No GeneralizableElement can have a parent
+        // Generalization to an element that is a leaf.
+        // self.parent->forAll(s | not s.isLeaf)
         if (parent.isLeaf()) {
             throw new IllegalArgumentException("parent is leaf");
         }
+        
+        // TODO: This is well-formedness rule from UML1.4.2
+        // 4.5.3.20 [1] A root cannot have any Generalizations.
+        // self.isRoot implies self.generalization->isEmpty        
         if (child.isRoot()) {
             throw new IllegalArgumentException("child is root");
         }
