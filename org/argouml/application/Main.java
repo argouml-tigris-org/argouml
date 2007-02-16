@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,7 +53,6 @@ import org.apache.log4j.PropertyConfigurator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.modules.ModuleLoader;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
@@ -341,23 +340,18 @@ public class Main {
         }
 
         st.mark("set project");
-
         Designer.enableCritiquing();
 
         st.mark("perspectives");
-
         if (splash != null) {
             splash.getStatusBar().showProgress(75);
         }
 
         // Initialize the module loader.
         st.mark("modules");
-
         ModuleLoader2.doLoad(false);
-        ModuleLoader.getInstance().initialize();
 
         st.mark("open window");
-
         updateProgress(splash, 95, "statusmsg.bar.open-project-browser");
 
         ArgoFrame.getInstance().setVisible(true);

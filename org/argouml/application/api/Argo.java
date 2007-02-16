@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,14 +24,8 @@
 
 package org.argouml.application.api;
 
-import java.util.ArrayList;
-
-import javax.swing.Icon;
-
 import org.apache.log4j.Category;
 import org.apache.log4j.Level;
-import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.application.modules.ModuleLoader;
 
 /**
  * The <code>Argo</code> class provides static methods and definitions
@@ -318,91 +312,6 @@ public final class Argo {
 	return Configuration.getString(KEY_STARTUP_DIR,
 				       org.tigris.gef.base.Globals
 				           .getLastDirectory());
-    }
-
-    /**
-     * Returns a vector of plugins of the class type passed
-     * which satisfy both of the contexts required.
-     *
-     * If no plugins are available, returns null.
-     *
-     * @param pluginType class of the plugin to search for
-     * @param context plugin-specific query parameters
-     * @return a vector of plugins or null
-     * @deprecated by Linus Tolke for 0.21.3. This is replaced by the
-     *         new module loader.
-     */
-    public static ArrayList getPlugins(Class pluginType,
-                                       Object[] context) {
-	return ModuleLoader.getInstance().getPlugins(pluginType, context);
-    }
-
-    /**
-     * Returns a vector of all plugins of the class type passed.
-     *
-     * If no plugins are available, returns null.
-     *
-     * @param pluginType class of the plugin to search for
-     * @return a vector of plugins or null
-     * @deprecated by Linus Tolke for 0.21.3. This is replaced by the
-     *         new module loader.
-     */
-    public static ArrayList getPlugins(Class pluginType) {
-	return ModuleLoader.getInstance().getPlugins(pluginType, null);
-    }
-
-    /**
-     * Initializes the module loader.  Multiple calls are ignored.
-     * @deprecated by Linus Tolke for 0.21.3. There is no reason to
-     *         let this call go through the Argo class.
-     */
-    public static void initializeModules() {
-	ModuleLoader.getInstance().initialize();
-    }
-
-    /**
-     * Convenience helper to access the argo home directory.
-     *
-     * @return the argo home directory
-     * @deprecated by Linus Tolke for 0.21.3. I don't think there is
-     *         a reason to let this call go through the Argo class.
-     */
-    public static String getArgoHome() {
-	return ModuleLoader.getInstance().getArgoHome();
-    }
-
-    /**
-     * Convenience helper to access the argo root directory.
-     *
-     * @return the argo root directory
-     * @deprecated by Linus Tolke for 0.21.3. I don't think there is
-     *         a reason to let this call go through the Argo class.
-     */
-    public static String getArgoRoot() {
-	return ModuleLoader.getInstance().getArgoRoot();
-    }
-
-    /**
-     * Look up an icon resource.
-     *
-     * @param arg1 the name of the resource to find.
-     * @return an Icon
-     * @deprecated by tfmorris for 0.22.1.  Use ResourceLoaderWrapper directly.
-     */
-    public static Icon lookupIconResource(String arg1) {
-	return ResourceLoaderWrapper.lookupIconResource(arg1);
-    }
-
-    /**
-     * Look up an icon resource.
-     *
-     * @param arg1 the name of the resource to find.
-     * @param arg2 the description of the resource
-     * @return an Icon
-     * @deprecated by tfmorris for 0.22.1.  Use ResourceLoaderWrapper directly.
-     */
-    public static Icon lookupIconResource(String arg1, String arg2) {
-	return ResourceLoaderWrapper.lookupIconResource(arg1, arg2);
     }
 
     static {

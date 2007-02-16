@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,7 +62,6 @@ import javax.swing.filechooser.FileSystemView;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.api.PluggableImport;
 import org.argouml.application.api.ProgressMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.moduleloader.ModuleInterface;
@@ -334,10 +333,7 @@ public class Import extends ImportCommon implements ImportSettings {
 
             tab.add(general, Translator.localize("action.import-general"));
             String moduleName = "";
-            if (getCurrentModule() instanceof PluggableImport) {
-                moduleName =
-                    ((PluggableImport) getCurrentModule()).getModuleName();
-            } else if (getCurrentModule() instanceof ModuleInterface) {
+            if (getCurrentModule() instanceof ModuleInterface) {
                 moduleName = ((ModuleInterface) getCurrentModule()).getName();
             }
             tab.add(getConfigPanelExtension(), moduleName);
@@ -352,11 +348,7 @@ public class Import extends ImportCommon implements ImportSettings {
      */
     private JComponent getConfigPanelExtension() {
         JComponent result;
-        if (getCurrentModule() instanceof PluggableImport) {
-            // Old style importer
-            PluggableImport pi = (PluggableImport) getCurrentModule();
-            result = pi.getConfigPanel();
-        } else if (getCurrentModule() instanceof ImportInterface) {
+        if (getCurrentModule() instanceof ImportInterface) {
             // New style importers don't provide a config panel
             if (importConfigPanel == null) {
                 importConfigPanel = new ConfigPanelExtension();
@@ -401,22 +393,7 @@ public class Import extends ImportCommon implements ImportSettings {
             String selected = (String) cb.getSelectedItem();
             Object oldModule = getCurrentModule();
             setCurrentModule(getModules().get(selected));
-            if (oldModule instanceof PluggableImport
-                    || getCurrentModule() instanceof PluggableImport) {
-                dialog.getContentPane().remove(0);
-                JComponent chooser = getChooser();
-                if (chooser == null) {
-                    chooser = new JPanel();
-                }
-                dialog.getContentPane().add(chooser, 0);
-
-                JComponent config = getConfigPanelExtension();
-                tab.remove(1);
-                tab.add(config, selected, 1);
-                tab.validate();
-
-                dialog.validate();
-            } else if (getCurrentModule() instanceof ImportInterface) {
+            if (getCurrentModule() instanceof ImportInterface) {
                 updateFilters(
                         (JFileChooser) dialog.getContentPane().getComponent(0),
                         ((ImportInterface) oldModule).getSuffixFilters(),
@@ -530,19 +507,15 @@ public class Import extends ImportCommon implements ImportSettings {
      * abstract class FileImportSupport used to provide).
      */
     private JComponent getChooser() {
-        if (getCurrentModule() instanceof PluggableImport) {
-            return ((PluggableImport) getCurrentModule()).getChooser(this);
-        } else {
-            String directory = Globals.getLastDirectory();
+        String directory = Globals.getLastDirectory();
 
-            final JFileChooser chooser = new ImportFileChooser(this, directory);
+        final JFileChooser chooser = new ImportFileChooser(this, directory);
 
-            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            updateFilters(chooser, null, ((ImportInterface) getCurrentModule())
-                    .getSuffixFilters());
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        updateFilters(chooser, null, ((ImportInterface) getCurrentModule())
+                .getSuffixFilters());
 
-            return chooser;
-        }
+        return chooser;
     }
 
     private static void updateFilters(JFileChooser chooser,

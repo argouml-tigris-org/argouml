@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,23 +35,18 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.api.PluggableImport;
 import org.argouml.application.api.ProgressMonitor;
-import org.argouml.application.modules.ModuleLoader;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleInterface;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
@@ -67,10 +62,7 @@ import org.tigris.gef.base.Globals;
  * @author Tom Morris
  */
 public abstract class ImportCommon implements ImportSettingsInternal {
-    
-    private Logger LOG = Logger.getLogger(ImportCommon.class);
-    
-    
+
     /**
      * The % maximum progress required to preparing for import. 
      */
@@ -108,18 +100,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         super();
         modules = new Hashtable();
         
-        // Get all old style modules
-        List arraylist = 
-            ModuleLoader.getInstance().getPlugins(PluggableImport.class, null);
-        ListIterator iterator = arraylist.listIterator();
-        while (iterator.hasNext()) {
-            PluggableImport pIModule = (PluggableImport) iterator.next();
-            modules.put(pIModule.getModuleName(), pIModule);
-        }
-        if (modules.size() == 0) {
-            LOG.warn("No old style import modules defined");
-        }
-
         Set newPlugins = ImporterManager.getInstance().getImporters();
         for (Iterator it = newPlugins.iterator(); it.hasNext();) {
             ModuleInterface mod = (ModuleInterface) it.next();
@@ -220,16 +200,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      */
     protected List getFileList() {
         List files;
-        if (currentModule instanceof PluggableImport) {
-            // Old style importer
-            PluggableImport pi = (PluggableImport) currentModule;
-            if (this instanceof Import) {
-                files = pi.getList((Import) this);
-            } else {
-                throw new RuntimeException(
-                        "Old style modules only supported for Swing");
-            }
-        } else if (currentModule instanceof ImportInterface) {
+        if (currentModule instanceof ImportInterface) {
             files = FileImportUtils.getList(
                     getSelectedFile(), isDescendSelected(),
                     ((ImportInterface) currentModule)
@@ -278,42 +249,12 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         return srcPath;
     }
 
-    /**
-     * Parse a source file or directory.
-     *
-     * @param project the project
-     * @param f The file to parse.
-     * @exception Exception ??? 
-     * TODO: Couldn't we throw a narrower exception? - tfm
-     * TODO: Does this need to be public? - tfm
-     */
-    public void parseFile(Project project, Object f) throws Exception {
-        File file = (File) f;
-        if (currentModule instanceof PluggableImport) {
-            // Old style importer
-            PluggableImport pi = (PluggableImport) currentModule;
-            // Is this file a compatible source file?
-            if (pi.isParseable(file)) {
-                ProjectBrowser.getInstance()
-                    .showStatus("Parsing " + file.toString() + "...");
-                if (this instanceof Import) {
-                    pi.parseFile(project, file, diagramInterface, (Import) this);
-                } else {
-                    throw new RuntimeException(
-                            "Old style modules only supported for Swing");
-                }
-            }
-        } else {
-            throw new RuntimeException("Unrecognized module type " 
-                    + currentModule);
-        }
-    }
-
     /*
      * Create a TaggedValue with a tag/type matching our source module
      * filename and a value of the file's last modified timestamp.
-     * @param project
-     * @param f
+     * 
+     * TODO: This functionality needs to be moved someplace useful if
+     * it's needed, otherwise it can be deleted. - tfm - 20070217
      */
     private void setLastModified(Project project, File file) {
         // set the lastModified value
@@ -437,16 +378,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                 / 10;
         for (int i = 0; i < diagrams.size(); i++) {
             UMLDiagram diagram = (UMLDiagram) diagrams.elementAt(i);
-            ClassdiagramLayouter layouter;
-            if (getCurrentModule() instanceof PluggableImport) {
-                // There are no known modules which implement this,
-                // but just in case ...
-                layouter = 
-                    ((PluggableImport) getCurrentModule()).getLayout(diagram);
-            } else {
-                layouter = new ClassdiagramLayouter(diagram);
-            }
-
+            ClassdiagramLayouter layouter = new ClassdiagramLayouter(diagram);
             layouter.layout();
             int act = startingProgress + (i + 1) / 10;
             int progress = MAX_PROGRESS_PREPARE 
@@ -522,9 +454,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                 addFiguresToDiagrams(newElements);
             }
         } else {
-            progress =
-                    processFiles(
-                            filesLeft, monitor, progress, project, problems);
+            throw new RuntimeException("Unrecognized module type");
         }
         
         // TODO: Skip layout if problems during import? 
@@ -620,76 +550,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         return sb.toString();
     }
         
-
-    /*
-     * This is the functional equivalent of the old Import.ImportRun.run(). It
-     * used to implement a two-pass reverse engineering process as used by the
-     * Java importer, but the interface has been changed so that it is now up to
-     * the importers to decide what processing heuristics they want to use
-     * internally.
-     */
-    private int processFiles(List filesLeft, final ProgressMonitor monitor,
-            int progress, Project project, final StringBuffer problems) {
-        int countFiles = filesLeft.size();
-        int countFilesThisPass = countFiles;
-        List nextPassFiles = new ArrayList();
-
-        while (filesLeft.size() > 0) {
-
-            File curFile = (File) filesLeft.get(0);
-            filesLeft.remove(0);
-    
-            try {
-                int tot = countFiles;
-                if (getDiagramInterface() != null) {
-                    tot += 
-                        getDiagramInterface().getModifiedDiagrams().size() / 10;
-                }
-                int act = countFiles - filesLeft.size() - nextPassFiles.size();
-                monitor.updateMainTask(
-                        Translator.localize("dialog.import.pass1"));
-                monitor.updateSubTask(Translator.localize(
-                        "dialog.import.parsingAction", 
-                        new Object[] {curFile.toString() }));
-                parseFile(
-                       project,
-                        curFile);
-                setLastModified(project, curFile);
-                progress = MAX_PROGRESS_PREPARE + MAX_PROGRESS_IMPORT * act
-                        / tot;
-                monitor.updateProgress(progress);
-            } catch (Exception e) {
-                nextPassFiles.add(curFile);
-                StringBuffer sb = new StringBuffer(80);
-                if (e instanceof RuntimeException) {
-                    sb.append(Translator.localize(
-                            "dialog.import.runtimeException",
-                            new Object[] {curFile.toString()}));
-                } else {
-                    sb.append(Translator.localize(
-                            "dialog.import.nonRuntimeException",
-                            new Object[] {curFile.toString()}));
-                }
-                sb.append("\n"); //$NON-NLS-1$
-                sb.append(printToBuffer(e));
-                problems.append(sb);
-            }
-    
-            if (monitor.isCanceled()) {         // if the user hit cancel
-                return 0;
-            }
-            
-            if (filesLeft.size() == 0 && nextPassFiles.size() > 0
-                    && nextPassFiles.size() < countFilesThisPass) {
-                filesLeft = nextPassFiles;
-                nextPassFiles = new ArrayList();
-                countFilesThisPass = filesLeft.size();
-            }
-        }
-        return progress;
-    }
-
-
     /*
      * Print an exception trace to a string buffer
      */

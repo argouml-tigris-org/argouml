@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -145,38 +145,6 @@ public final class ArgoEventPump {
     }
 
     /**
-     * Handle firing a module event to a given listener.
-     *
-     * @param event The event fired.
-     * @param listener The listener.
-     */
-    private void handleFireModuleEvent(
-        ArgoModuleEvent event,
-        ArgoModuleEventListener listener) {
-        switch (event.getEventType()) {
-	case ArgoEventTypes.MODULE_LOADED :
-	    listener.moduleLoaded(event);
-	    break;
-
-	case ArgoEventTypes.MODULE_UNLOADED :
-	    listener.moduleUnloaded(event);
-	    break;
-
-	case ArgoEventTypes.MODULE_ENABLED :
-	    listener.moduleEnabled(event);
-	    break;
-
-	case ArgoEventTypes.MODULE_DISABLED :
-	    listener.moduleDisabled(event);
-	    break;
-
-	default :
-	    LOG.error("Invalid event:" + event.getEventType());
-	    break;
-        }
-    }
-
-    /**
      * Handle firing a notation event.
      *
      * @param event The event to be fired.
@@ -242,22 +210,11 @@ public final class ArgoEventPump {
 
     private void handleFireEvent(ArgoEvent event, ArgoEventListener listener) {
         if (event.getEventType() == ArgoEventTypes.ANY_EVENT) {
-            if (listener instanceof ArgoModuleEventListener) {
-                handleFireModuleEvent((ArgoModuleEvent) event,
-				      (ArgoModuleEventListener) listener);
-            }
             if (listener instanceof ArgoNotationEventListener) {
                 handleFireNotationEvent((ArgoNotationEvent) event,
 					(ArgoNotationEventListener) listener);
             }
         } else {
-            if (event.getEventType() >= ArgoEventTypes.ANY_MODULE_EVENT
-                && event.getEventType() < ArgoEventTypes.LAST_MODULE_EVENT) {
-                if (listener instanceof ArgoModuleEventListener) {
-                    handleFireModuleEvent((ArgoModuleEvent) event,
-					  (ArgoModuleEventListener) listener);
-                }
-            }
             if (event.getEventType() >= ArgoEventTypes.ANY_NOTATION_EVENT
                 && event.getEventType() < ArgoEventTypes.LAST_NOTATION_EVENT) {
                 if (listener instanceof ArgoNotationEventListener) {

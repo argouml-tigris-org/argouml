@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,8 +34,6 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoModuleEvent;
-import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.application.events.ArgoNotationEvent;
 
 /**
@@ -49,7 +47,7 @@ import org.argouml.application.events.ArgoNotationEvent;
  * @since 0.9.4
  */
 class NotationNameImpl
-    implements NotationName, ArgoModuleEventListener {
+    implements NotationName {
 
     /**
      * Logger.
@@ -268,31 +266,4 @@ class NotationNameImpl
         return findNotation(getNotationNameString(k1, k2));
     }
 
-    /*
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleLoaded(org.argouml.application.events.ArgoModuleEvent)
-     */
-    public void moduleLoaded(ArgoModuleEvent event) {
-        LOG.info ("notation.moduleLoaded(" + event + ")");
-    }
-
-    /*
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleUnloaded(org.argouml.application.events.ArgoModuleEvent)
-     */
-    public void moduleUnloaded(ArgoModuleEvent event) {
-        // ignored
-    }
-
-    /*
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleEnabled(org.argouml.application.events.ArgoModuleEvent)
-     */
-    public void moduleEnabled(ArgoModuleEvent event) {
-        // ignored
-    }
-
-    /*
-     * @see org.argouml.application.events.ArgoModuleEventListener#moduleDisabled(org.argouml.application.events.ArgoModuleEvent)
-     */
-    public void moduleDisabled(ArgoModuleEvent event) {
-        // ignored
-    }
 }
