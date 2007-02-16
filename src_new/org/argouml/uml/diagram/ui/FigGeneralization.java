@@ -187,32 +187,4 @@ public class FigGeneralization extends FigEdgeModelElement {
                     + own.getClass().getName());
         }
     }
-
-    /**
-     * This method is called after the fig is loaded from pgml. Implemented here
-     * to fix errors with the model concerning the fig not having an owner.
-     * @see org.tigris.gef.presentation.Fig#postLoad()
-     */
-    public void postLoad() {
-        super.postLoad();
-        Object own = getOwner();
-        if (own == null) {
-            fixModel();
-        }
-    }
-
-    private void fixModel() {
-        Fig sourceFig = getSourceFigNode();
-        Fig destFig = getDestFigNode();
-        Object source = sourceFig.getOwner();
-        Object dest = destFig.getOwner();
-        LOG.error("Missing Generalization for figure in PGML -"
-                + " attempting to recreate between " + source
-                + " and " + dest);
-        if (Model.getFacade().isAGeneralizableElement(source)
-	        && Model.getFacade().isAGeneralizableElement(dest)) {
-            setOwner(Model.getCoreFactory().buildGeneralization(source,
-								  dest));
-        }
-    }
 } /* end class FigGeneralization */
