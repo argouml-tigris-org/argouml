@@ -34,7 +34,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.model.InvalidElementException;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.uml.diagram.static_structure.ui.FigFeature;
 import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
@@ -110,7 +109,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
         } else {
             for (int i = getFigs().size() - 1; i >= 0; --i) {
                 Fig f = getFigAt(i);
-                if (f instanceof FigFeature) {
+                if (f instanceof CompartmentFigText) {
                     removeFig(f);
                 }
             }
@@ -135,7 +134,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
 
     /**
      * @return the collection of UML objects 
-     *              on which this compartment of features is based
+     *              on which this compartment is based
      */
     protected abstract Collection getUmlCollection();
 
@@ -181,7 +180,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
                     NotationProviderFactory2.getInstance()
                         .getNotationProvider(getNotationType(), umlObject);
 
-                // If we don't have a fig for this feature, we'll need to add
+                // If we don't have a fig for this UML object, we'll need to add
                 // one. We set the bounds, but they will be reset later.
                 if (comp == null) {
                     comp = createFigText(
@@ -220,7 +219,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
                 comp.setBotMargin(0);
             }
         } catch (InvalidElementException e) {
-            LOG.debug("Attempted to populate a FigFeatureCompartment" 
+            LOG.debug("Attempted to populate a FigEditableCompartment" 
                     + " using a deleted model element - aborting", e);
         } 
 
@@ -283,7 +282,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
     }
 
     /**
-     * The minimum width is the minimum width of the widest child feature.
+     * The minimum width is the minimum width of the widest child element.
      * The minimum height is the total minimum height of all child figs but no
      * less than 21 pixels.
      * @return the minimum width
