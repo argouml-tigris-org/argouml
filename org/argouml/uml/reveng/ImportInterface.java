@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,6 +43,13 @@ import org.argouml.util.SuffixFilter;
 public interface ImportInterface {
 
     /**
+     * The name of the TagDefinition which types the TaggedValues used store the
+     * source path of a ModelElement. Used for round trip engineering purposes.
+     * Set during reverse engineering and used during code generation.
+     */
+    public static final String SOURCE_PATH_TAG = "src_path";
+
+    /**
      * Provides an array of suffix filters for the module.
      * 
      * @return SuffixFilter[] suffixes for processing
@@ -80,12 +87,14 @@ public interface ImportInterface {
      *            ProgressMonitor which will be updated as files are parsed and
      *            checked for user requests to cancel. It is mandatory for the
      *            module to both update progress and check for cancel requests.
+     * @return a collection of model elements parsed from the given files
      * @throws ImportException
      *             if an error occurs, this will contain the nested exception
      *             that was originally thrown
      */
-    Collection parseFiles(Project p, final Collection files, ImportSettings settings,
-            ProgressMonitor monitor) throws ImportException;
+    Collection parseFiles(Project p, final Collection files,
+            ImportSettings settings, ProgressMonitor monitor)
+        throws ImportException;
 
     /**
      * Returns a list with objects that represent settings for this import.

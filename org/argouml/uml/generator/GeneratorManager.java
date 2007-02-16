@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,6 +34,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoGeneratorEvent;
 import org.argouml.model.Model;
+import org.argouml.uml.reveng.ImportInterface;
 
 /**
  * Keeps an instance of each CodeGenerator implementation module registered,
@@ -204,14 +205,15 @@ public final class GeneratorManager {
      * If empty or not existing return <code>null</code>.
      *
      * @param me The model element
-     * @return String representation of "src_path" tagged value.
+     * @return String representation of SOURCE_PATH_TAG tagged value.
      */
     public static String getCodePath(Object me) {
         if (me == null) {
             return null;
         }
 
-        Object taggedValue = Model.getFacade().getTaggedValue(me, "src_path");
+        Object taggedValue = Model.getFacade().getTaggedValue(me,
+                ImportInterface.SOURCE_PATH_TAG);
         String s;
         if (taggedValue == null) {
             return null;

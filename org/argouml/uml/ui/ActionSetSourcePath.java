@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,6 +34,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.reveng.ImportInterface;
 import org.tigris.gef.undo.UndoableAction;
 
 
@@ -67,8 +68,8 @@ public class ActionSetSourcePath extends UndoableAction {
 	if (f != null) {
 	    Object obj = TargetManager.getInstance().getTarget();
 	    if (Model.getFacade().isAModelElement(obj)) {
-		Model.getCoreHelper().setTaggedValue(obj, "src_path",
-		        f.getPath());
+		Model.getCoreHelper().setTaggedValue(obj,
+                        ImportInterface.SOURCE_PATH_TAG, f.getPath());
 	    }
 	}
     }
@@ -83,7 +84,8 @@ public class ActionSetSourcePath extends UndoableAction {
 	String path = null;
 	if (Model.getFacade().isAModelElement(obj)) {
 	    name = Model.getFacade().getName(obj);
-            Object tv = Model.getFacade().getTaggedValue(obj, "src_path");
+            Object tv = Model.getFacade().getTaggedValue(obj,
+                    ImportInterface.SOURCE_PATH_TAG);
             if (tv != null) {
                 path = Model.getFacade().getValueOfTag(tv);
             }
