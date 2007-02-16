@@ -82,10 +82,10 @@ public class ActionBooleanTaggedValue extends UndoableAction {
         Object taggedValue = Model.getFacade().getTaggedValue(obj, tagName);
         if (taggedValue == null) {
             taggedValue =
-                Model.getExtensionMechanismsFactory().createTaggedValue();
+                Model.getExtensionMechanismsFactory().buildTaggedValue(tagName, "");
             // TODO: Rework to use UML 1.4 TagDefinitions - tfm
-            Model.getExtensionMechanismsHelper().setTag(taggedValue, tagName);
-            Model.getCoreHelper().addTaggedValue(obj, taggedValue);
+            Model.getExtensionMechanismsHelper().addTaggedValue(
+                    obj, taggedValue);
         }
         if (newState) {
             Model.getCommonBehaviorHelper().setValue(taggedValue, "true");

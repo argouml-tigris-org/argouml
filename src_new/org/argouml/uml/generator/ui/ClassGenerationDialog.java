@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -73,6 +73,8 @@ public class ClassGenerationDialog
     extends ArgoDialog
     implements ActionListener {
 
+    private static final String SOURCE_LANGUAGE_TAG = "src_lang";
+    
     /**
      * Logger.
      */
@@ -354,7 +356,7 @@ public class ClassGenerationDialog
                             // languages
                             Object taggedValue =
                                 Model.getFacade().getTaggedValue(
-                                        node, "src_lang");
+                                        node, SOURCE_LANGUAGE_TAG);
                             String savedLang = null;
                             if (taggedValue != null) {
                                 savedLang =
@@ -364,7 +366,7 @@ public class ClassGenerationDialog
                             if (taggedValue == null || !language.getName()
                                     .equals(savedLang)) {
                                 Model.getCoreHelper().setTaggedValue(node,
-                                        "src_lang", language.getName());
+                                        SOURCE_LANGUAGE_TAG, language.getName());
                             }
                         }
                     } // end for (all nodes)
@@ -477,15 +479,12 @@ public class ClassGenerationDialog
         private boolean isSupposedToBeGeneratedAsLanguage(
             Language lang,
             Object cls) {
-            if (lang == null) {
-                return false;
-            }
-            if (cls == null) {
+            if (lang == null || cls == null) {
                 return false;
             }
 
             Object taggedValue =
-                Model.getFacade().getTaggedValue(cls, "src_lang");
+                Model.getFacade().getTaggedValue(cls, SOURCE_LANGUAGE_TAG);
             if (taggedValue == null) {
                 return false;
             }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,6 +27,7 @@ package org.argouml.uml;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.application.api.Argo;
 import org.argouml.model.Model;
 import org.argouml.util.MyTokenizer;
 
@@ -74,10 +75,11 @@ public class DocumentationManager {
                 while (iter.hasNext()) {
                     Object tv = iter.next();
                     String tag = Model.getFacade().getTagOfTag(tv);
-                    if ("documentation".equals(tag) || "javadocs".equals(tag)) {
+                    if (Argo.DOCUMENTATION_TAG.equals(tag) 
+                            || Argo.DOCUMENTATION_TAG_ALT.equals(tag)) {
                         sResult = Model.getFacade().getValueOfTag(tv);
-                        // give priority to "documentation"
-                        if ("documentation".equals(tag)) {
+                        // give priority to standard documentation tag
+                        if (Argo.DOCUMENTATION_TAG.equals(tag)) {
                             break;
                         }
                     }
@@ -118,7 +120,16 @@ public class DocumentationManager {
      * @param s the string representing the documentation
      */
     public static void setDocs(Object o, String s) {
-        Model.getCoreHelper().setTaggedValue(o, "documentation", s);
+        Object taggedValue =
+                Model.getFacade().getTaggedValue(o, Argo.DOCUMENTATION_TAG);
+        if (taggedValue == null) {
+            taggedValue =
+                    Model.getExtensionMechanismsFactory().buildTaggedValue(
+                            Argo.DOCUMENTATION_TAG, s);
+            Model.getExtensionMechanismsHelper().addTaggedValue(o, taggedValue);
+        } else {
+            Model.getExtensionMechanismsHelper().setValueOfTag(taggedValue, s);
+        }
     }
 
     /**
@@ -140,7 +151,8 @@ public class DocumentationManager {
                     Object tv = i.next();
                     String tag = Model.getFacade().getTagOfTag(tv);
                     String value = Model.getFacade().getValueOfTag(tv);
-                    if (("documentation".equals(tag) || "javadocs".equals(tag))
+                    if ((Argo.DOCUMENTATION_TAG.equals(tag) 
+                            || Argo.DOCUMENTATION_TAG_ALT.equals(tag))
                         && value != null && value.trim().length() > 0) {
                         return true;
                     }

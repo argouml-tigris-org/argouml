@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 
 import javax.swing.JScrollPane;
 
+import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -36,8 +37,6 @@ import org.tigris.swidgets.Vertical;
 
 /**
  * This the tab in the details pane for documentation.<p>
- *
- * This prop panel now uses the new (0.13.*) event implementation.<p>
  *
  * All data in this tab is stored as Tagged Values,
  * and saved and reloaded correctly.<p>
@@ -81,19 +80,19 @@ public class TabDocumentation extends PropPanel {
                 .getInstance() : Horizontal.getInstance());
 
         addField(Translator.localize("label.author"), new UMLTextField2(
-                new UMLModelElementTaggedValueDocument("author")));
+                new UMLModelElementTaggedValueDocument(Argo.AUTHOR_TAG)));
 
         addField(Translator.localize("label.version"), new UMLTextField2(
-                new UMLModelElementTaggedValueDocument("version")));
+                new UMLModelElementTaggedValueDocument(Argo.VERSION_TAG)));
 
         addField(Translator.localize("label.since"), new UMLTextField2(
-                new UMLModelElementTaggedValueDocument("since")));
+                new UMLModelElementTaggedValueDocument(Argo.SINCE_TAG)));
 
         addField(Translator.localize("label.deprecated"),
                 new UMLDeprecatedCheckBox());
 
         UMLTextArea2 see = new UMLTextArea2(
-                new UMLModelElementTaggedValueDocument("see"));
+                new UMLModelElementTaggedValueDocument(Argo.SEE_TAG));
         see.setRows(2);
         see.setLineWrap(true);
         see.setWrapStyleWord(true);
@@ -105,7 +104,7 @@ public class TabDocumentation extends PropPanel {
         add(LabelledLayout.getSeperator());
 
         UMLTextArea2 doc = new UMLTextArea2(
-                new UMLModelElementTaggedValueDocument("documentation"));
+                new UMLModelElementTaggedValueDocument(Argo.DOCUMENTATION_TAG));
         doc.setRows(2);
         doc.setLineWrap(true);
         doc.setWrapStyleWord(true);

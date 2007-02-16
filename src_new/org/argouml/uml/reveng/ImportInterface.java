@@ -50,6 +50,14 @@ public interface ImportInterface {
     public static final String SOURCE_PATH_TAG = "src_path";
 
     /**
+     * The name of the TagDefinition which types the TaggedValues used store
+     * information about a ModelElement which can't be stored in the model. Used
+     * for round trip engineering purposes. Set during reverse engineering and
+     * used during code generation.
+     */
+    public static final String SOURCE_MODIFIERS_TAG = "src_modifiers";
+
+    /**
      * Provides an array of suffix filters for the module.
      * 
      * @return SuffixFilter[] suffixes for processing

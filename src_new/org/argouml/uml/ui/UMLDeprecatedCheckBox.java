@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.application.api.Argo;
 import org.argouml.model.Model;
 
 /**
@@ -43,7 +44,8 @@ public class UMLDeprecatedCheckBox extends UMLCheckBox2 {
      *
      */
     public UMLDeprecatedCheckBox() {
-        super(null, new ActionBooleanTaggedValue("deprecated"), "deprecated");
+        super(null, new ActionBooleanTaggedValue(Argo.DEPRECATED_TAG),
+                Argo.DEPRECATED_TAG);
     }
 
     /**
@@ -53,7 +55,7 @@ public class UMLDeprecatedCheckBox extends UMLCheckBox2 {
      */
     public void buildModel() {
 
-        String tagName = "deprecated";
+        String tagName = Argo.DEPRECATED_TAG;
         setSelected(false);
 
         Object tv = Model.getFacade().getTaggedValue(getTarget(), tagName);
