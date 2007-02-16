@@ -129,7 +129,7 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
         super.mousePressed(me);
     }
 
-    /**
+    /*
      * Need to 'arm' the rerouting capability with mouseDragged().
      * <p>
      * Don't arm if the edtior's current mode is a figedge create mode,
@@ -150,12 +150,12 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
         super.mouseDragged(me);
     }
 
-    /**
+    /*
      * Perform re-routing if src/dest nodes have changed.
      *
      * <p>This method needs to be 'armed' by a previous mouseDragged()
-     * to avoid the situation where the user just clicks on the message
-     * then clicks on some unrelated Fig, without moving the association...
+     * to avoid the situation where the user just clicks on the node
+     * then clicks on some unrelated Fig, without moving the edge...
      *
      * <p>TODO: improve the fig finding algorithm to find the top most fig
      * in the layer. will be useful for nested states in a statechart.
