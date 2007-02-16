@@ -24,8 +24,6 @@
 
 package org.argouml.ui;
 
-import java.awt.Frame;
-
 import javax.swing.AbstractButton;
 
 import org.argouml.i18n.Translator;
@@ -66,20 +64,6 @@ public class ArgoDialog extends Dialog {
      */
     public ArgoDialog(String title, int optionType, boolean modal) {
         super(ArgoFrame.getInstance(), title, optionType, modal);
-        init();
-    }
-
-    /**
-     * @see Dialog#Dialog(Frame, String, int, boolean)
-     *
-     * Creates a new ArgoDialog with the specified optionType.
-     *
-     * @deprecated in 0.21.3 by Linus Tolke.
-     *         Use {@link #ArgoDialog(String, int, boolean)}.
-     */
-    public ArgoDialog(Frame owner,
-                      String title, int optionType, boolean modal) {
-        super(owner, title, optionType, modal);
         init();
     }
 

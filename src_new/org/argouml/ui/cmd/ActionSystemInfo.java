@@ -33,8 +33,8 @@ import javax.swing.JFrame;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.SystemInfoDialog;
-import org.tigris.swidgets.ActionUtilities;
 
 /**
  * System information dialog.
@@ -56,8 +56,8 @@ public class ActionSystemInfo extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	JFrame jFrame = (JFrame) ActionUtilities.getActionRoot(ae);
-	SystemInfoDialog sysInfoDialog = new SystemInfoDialog(jFrame, true);
+	JFrame jFrame = ArgoFrame.getInstance();
+	SystemInfoDialog sysInfoDialog = new SystemInfoDialog(true);
 	Dimension siDim = sysInfoDialog.getSize();
 	Dimension pbDim = jFrame.getSize();
 

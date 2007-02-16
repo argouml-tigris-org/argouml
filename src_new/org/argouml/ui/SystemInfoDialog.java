@@ -62,24 +62,29 @@ public class SystemInfoDialog extends ArgoDialog {
     /** Insets in pixels  */
     private static final int INSET_PX = 3;
 
-    ////////////////////////////////////////////////////////////////
-    // instance varaibles
-
     private JTextArea   info = new JTextArea();
     private JButton     runGCButton = new JButton();
     private JButton     copyButton = new JButton();
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * The constructor.
      *
-     * @param owner the parent frame
+     * @param owner - ignored - for backward compatibility only
      * @param modal true if the dialog is modal
+     * @deprecated for 0.25.1 by tfmorris - 
+     * use {@link #SystemInfoDialog(boolean)}
      */
     public SystemInfoDialog(Frame owner, boolean modal) {
-	super(owner, Translator.localize("dialog.title.system-information"),
+        this(modal);
+    }
+    
+    /**
+     * The constructor.
+     * 
+     * @param modal true if the dialog is modal
+     */
+    public SystemInfoDialog(boolean modal) {
+	super(Translator.localize("dialog.title.system-information"),
 		ArgoDialog.CLOSE_OPTION, modal);
 
 	info.setEditable(false);
@@ -105,10 +110,10 @@ public class SystemInfoDialog extends ArgoDialog {
 	addWindowListener(new WindowAdapter() {
 	    public void windowActivated(WindowEvent e) {
 		updateInfo();
-	    } // end windowActivated()
+	    }
 	});
         pack();
-    } // end SystemInfoDialog()
+    }
 
     /**
      * Run garbage collector.
