@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -110,21 +110,29 @@ public class TestModelFacade2 extends TestCase {
                 .getModelElementContainer(parentComposite)));
     }
 
+
     /**
      * Test some Tagged Value functions.
      */
+    private static final String TAG_TYPE = "fooTagType";
+    private static final String TAG_VALUE = "fooTagValue";
+    
     public void testTaggedValue() {
         Model.getModelManagementFactory().setRootModel(
                 Model.getModelManagementFactory().createModel());
         Object cls = Model.getCoreFactory().buildClass();
 
-	assertNull(Model.getFacade().getTaggedValue(cls, "fooValue"));
-	Model.getCoreHelper().setTaggedValue(cls, "fooValue", "foo");
-	assertEquals(Model.getFacade().getValueOfTag(
-		Model.getFacade().getTaggedValue(cls, "fooValue")), "foo");
-	Model.getExtensionMechanismsHelper().removeTaggedValue(cls, "fooValue");
-	Model.getExtensionMechanismsHelper().removeTaggedValue(cls, "nonExistingValue");
-	assertNull(Model.getFacade().getTaggedValue(cls, "fooValue"));
+	assertNull(Model.getFacade().getTaggedValue(cls, TAG_TYPE));
+        Model.getCoreHelper().setTaggedValue(cls, TAG_TYPE, TAG_VALUE);
+        Object taggedValue = Model.getFacade().getTaggedValue(cls, TAG_TYPE);
+        assertEquals(Model.getFacade().getValueOfTag(taggedValue), TAG_VALUE);
+        Model.getExtensionMechanismsHelper()
+                .removeTaggedValue(cls, taggedValue);
+        Object unusedTaggedValue = Model.getExtensionMechanismsFactory()
+                .buildTaggedValue("xxx", "yyy");
+        Model.getExtensionMechanismsHelper().removeTaggedValue(cls,
+                unusedTaggedValue);
+        assertNull(Model.getFacade().getTaggedValue(cls, TAG_TYPE));
     }
 
     /**
