@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -570,9 +570,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      */
     public void removeTaggedValue(Object handle, Object taggedValue) {
         if (handle instanceof ModelElement
-                && taggedValue instanceof TaggedValue
-                && ((ModelElement) handle).getTaggedValue()
-                    .contains(taggedValue)) {
+                && taggedValue instanceof TaggedValue) {
             ((ModelElement) handle).getTaggedValue().remove(taggedValue);
             return;
         }
