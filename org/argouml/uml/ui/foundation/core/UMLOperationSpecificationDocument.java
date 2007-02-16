@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,7 +48,8 @@ public class UMLOperationSpecificationDocument extends UMLPlainTextDocument {
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
-        if (Model.getFacade().isAOperation(getTarget())) {
+        if (Model.getFacade().isAOperation(getTarget())
+                || Model.getFacade().isAReception(getTarget())) {
             Model.getCoreHelper().setSpecification(getTarget(), text);
         }
 
@@ -58,7 +59,8 @@ public class UMLOperationSpecificationDocument extends UMLPlainTextDocument {
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {
-        if (Model.getFacade().isAOperation(getTarget())) {
+        if (Model.getFacade().isAOperation(getTarget())
+                || Model.getFacade().isAReception(getTarget())) {
             return Model.getFacade().getSpecification(getTarget());
         }
         return null;
