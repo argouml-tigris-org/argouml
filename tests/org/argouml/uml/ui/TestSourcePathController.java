@@ -78,13 +78,14 @@ public class TestSourcePathController extends TestCase {
         Object taggedValue = Model.getExtensionMechanismsFactory()
                 .buildTaggedValue(ImportInterface.SOURCE_PATH_TAG,
                         modelElemSourcePath);
-        Model.getCoreHelper().addTaggedValue(model, taggedValue);
+        Model.getExtensionMechanismsHelper().addTaggedValue(model, taggedValue);
         
         // create a class model element
         modelElem = Model.getCoreFactory().buildClass("AClass", model);
         taggedValue = Model.getExtensionMechanismsFactory().buildTaggedValue(
                 ImportInterface.SOURCE_PATH_TAG, modelElemSourcePath);
-        Model.getCoreHelper().addTaggedValue(modelElem, taggedValue);
+        Model.getExtensionMechanismsHelper().addTaggedValue(
+                modelElem, taggedValue);
         modelElemSourcePathFile = new File(modelElemSourcePath);
         
         modelElemWithoutSrcPath = Model.getCoreFactory().buildClass(
