@@ -67,6 +67,24 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2007-01-16</entry>
+          <entry>
+Change to the definition of the subsystem.
+Added the responsibility for wellformedness rules.
+(See <xref linkend="comp-model-purpose"/>).
+            <note>
+              <title>Design decision - Bob Tarling 2007-02-16</title>
+              <para>
+The Model subsystem implements wellformedness rules.
+</para>
+            </note>
+          </entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2007-01-18</entry>
           <entry>
 Added instructions on how to configure Subversion.

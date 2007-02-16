@@ -43,19 +43,15 @@ The Model is located in <classname>org.argouml.model</classname>.
 The Model is a Model subsystem. See <xref linkend="model_subsystems"></xref>.
 </para>
   <para>
-Currently there is a full implementation using NetBeans MDR to store
-the OMG UML 1.4 metamodel.  The previous implementation used the NSUML
-library to implement a UML 1.3 metamodel.
-</para>
-  <para>
-The decision of which implementation to use is controlled by the Model class
-which contols the implementations as alternative strategies (as in the Strategy
-Pattern - GOF p315)
-</para>
-  <para>
 The Model class provides the rest of ArgoUML with various interfaces through
 which ArgoUML can manipulate the repository.
 </para>
+
+  <para>
+The Model subsystem also contains the handling of the wellformedness rules 
+for the data in the repository.
+</para>
+
   <para>
 Currenty there are factory and helper interfaces for controlling the lifetime
 and properties of elements in the repository.
@@ -67,7 +63,7 @@ repository implementation contain such.
   <para>
 A ModelEventPump interface is provided through which ArgoUML can listen for
 changes in the repository in a consistent way. Implementations of this pump
-convert from the repository specific events to ???
+convert from the repository specific events to PropertyChangeEvents.
 </para>
   <!--para>
 There are discussion underway to provide a facade (GOF p185) to this model.
@@ -85,14 +81,30 @@ Per section of the semantics chapter of the UML
 specification there is one factory
 and one helper. 
 </para>
-  <para>
+
+  <sect2>
+    <title>Design of the subsystem</title>
+    <para>
+Currently there is a full implementation using NetBeans MDR to store
+the OMG UML 1.4 metamodel.  The previous implementation used the NSUML
+library to implement a UML 1.3 metamodel.
+</para>
+    <para>
+The decision of which implementation to use is controlled by the Model class
+which contols the implementations as alternative strategies (as in the Strategy
+Pattern - GOF p315)
+</para>
+
+    <para>
 Both helpers and factories (and the Facade and ModelEventPump)
 are interfaces that are fetched through static methods in the Model object.
 </para>
-  <para>
+    <para>
 Because the same interface is used internally
 each implementation must provide objects for each of these interfaces.
 </para>
+  </sect2>
+
   <sect2 id="model_factories">
     <title>Factories</title>
     <para>
