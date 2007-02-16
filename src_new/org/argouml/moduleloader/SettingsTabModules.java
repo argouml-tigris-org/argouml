@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import org.argouml.application.modules.ModuleLoader;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.GUISettingsTabInterface;
 
@@ -124,8 +123,7 @@ class SettingsTabModules extends JPanel
 	 * @see javax.swing.table.TableModel#getRowCount()
 	 */
 	public int getRowCount() {
-	    return elements.length
-		+ ModuleLoader.getInstance().getModules().size();
+	    return elements.length;
 	}
 
 	/*
@@ -135,17 +133,8 @@ class SettingsTabModules extends JPanel
 	    if (row < elements.length) {
 		return elements[row][col];
 	    } else {
-		switch (col) {
-		case 0:
-		    return ModuleLoader.getInstance()
-			.getModules().get(row - elements.length);
-		case 1:
-		    return Boolean.TRUE;
-
-		default:
-		    throw new IllegalArgumentException("Too many columns");
-		}
-	    }
+	        return null;       
+            }
 	}
 
 	/*
