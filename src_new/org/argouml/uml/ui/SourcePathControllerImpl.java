@@ -32,6 +32,7 @@ import java.util.Iterator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.reveng.ImportInterface;
 
 /**
  * Implements the source path controller.
@@ -48,18 +49,12 @@ import org.argouml.model.Model;
  */
 public class SourcePathControllerImpl implements SourcePathController {
 
-    /**
-     * The string used to store source path string as tagged value.
-     * [Shouldn't this be in the Model subsystem?]
-     */
-    private static final String SRC_PATH_TAG = "src_path";
-
     /*
      * @see org.argouml.uml.ui.SourcePathController#getSourcePath(java.lang.Object)
      */
     public File getSourcePath(Object modelElement) {
-        Object tv =
-            Model.getFacade().getTaggedValue(modelElement, SRC_PATH_TAG);
+        Object tv = Model.getFacade().getTaggedValue(modelElement,
+                ImportInterface.SOURCE_PATH_TAG);
         if (tv != null) {
             String srcPath = Model.getFacade().getValueOfTag(tv);
             if (srcPath != null) {
@@ -91,8 +86,8 @@ public class SourcePathControllerImpl implements SourcePathController {
      * java.lang.Object, java.io.File)
      */
     public void setSourcePath(Object modelElement, File sourcePath) {
-        Model.getCoreHelper().setTaggedValue(modelElement, SRC_PATH_TAG,
-            sourcePath.toString());
+        Model.getCoreHelper().setTaggedValue(modelElement,
+                ImportInterface.SOURCE_PATH_TAG, sourcePath.toString());
     }
 
     /*
@@ -107,7 +102,7 @@ public class SourcePathControllerImpl implements SourcePathController {
      */
     public void deleteSourcePath(Object modelElement) {
         Object taggedValue = Model.getFacade().getTaggedValue(modelElement,
-                SRC_PATH_TAG);
+                ImportInterface.SOURCE_PATH_TAG);
         Model.getExtensionMechanismsHelper().removeTaggedValue(modelElement,
                 taggedValue);
     }

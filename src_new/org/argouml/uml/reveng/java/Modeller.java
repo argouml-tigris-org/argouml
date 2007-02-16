@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,6 +42,7 @@ import org.argouml.model.Model;
 import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.reveng.DiagramInterface;
 import org.argouml.uml.reveng.ImportCommon;
+import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImportSettings;
 
 /**
@@ -147,7 +148,7 @@ public class Modeller {
      *            the current file name
      * @deprecated for 0.23.4 by tfmorris - use variant without diagram
      *             interface
-     *             {@link #Modeller(Object, ImportCommon, boolean, boolean, String)}.
+     *      {@link #Modeller(Object, ImportCommon, boolean, boolean, String)}.
      *             NOTE: This really is private to the Java RE module, but it
      *             has also been used by other bundled importers, so it's
      *             possible it was used by others outside the project as well.
@@ -173,13 +174,14 @@ public class Modeller {
     /**
      * Create a new modeller.
      *
-     * @param model The model to work with.
+     * @param theModel The model to work with.
      * @param settings the settings to use for this import
-     * @param fileName the current file name
+     * @param theFileName the current file name
      */
-    public Modeller(Object model, ImportSettings settings, String fileName) {
-        this(model, null, null, settings.isAttributeSelected(), settings
-                .isDatatypeSelected(), fileName);
+    public Modeller(Object theModel, ImportSettings settings, 
+            String theFileName) {
+        this(theModel, null, null, settings.isAttributeSelected(), settings
+                .isDatatypeSelected(), theFileName);
     }
     
     /**
@@ -287,9 +289,11 @@ public class Modeller {
         // perhaps move to the common import code. - tfm
 	Object mPackage = getPackage(currentName);
 	if (importSession != null && importSession.getSrcPath() != null
-	    && Model.getFacade().getTaggedValue(mPackage, "src_path") == null) {
-	    Model.getCoreHelper().setTaggedValue(mPackage, "src_path",
-				       importSession.getSrcPath());
+	    && Model.getFacade().getTaggedValue(mPackage,
+                        ImportInterface.SOURCE_PATH_TAG) == null) {
+            Model.getCoreHelper()
+                    .setTaggedValue(mPackage, ImportInterface.SOURCE_PATH_TAG,
+                            importSession.getSrcPath());
 	}
 
 	// Find or create a Package model element for this package.
@@ -557,7 +561,7 @@ public class Modeller {
                                 "an abstraction");
                     }
                 }
-                // TODO: This should use the Model subsystem's buildAbstraction - tfm
+                // TODO: This should use the Model API's buildAbstraction - tfm
                 if (mInterface != null) {
 		    Object mAbstraction =
 			getAbstraction(mInterface, mClass);
@@ -992,7 +996,8 @@ public class Modeller {
      * @param operation -
      *            a string indicating what type of operation was being attempted
      */
-    private void warnClassifierNotFound(String name, Throwable e, String operation) {
+    private void warnClassifierNotFound(String name, Throwable e,
+            String operation) {
         // TODO: The user will likely never see this error.  It
         // needs to be more visible. - tfm
         LOG.info("Modeller.java: a classifier (" + name

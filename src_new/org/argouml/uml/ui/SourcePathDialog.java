@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,7 +44,7 @@ import org.argouml.ui.ArgoDialog;
  * <code>Generation -> Settings for Generate for Project...</code>
  * in the menu.<p>
  *
- * Provides support for setting a "src_path" tagged value used in Java
+ * Provides support for setting a source path tagged value used in Java
  * round trip engineering.
  */
 public class SourcePathDialog extends ArgoDialog implements ActionListener {
