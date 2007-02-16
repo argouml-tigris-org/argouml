@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -155,21 +155,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object theTarget) {
-        if (table.isEditing()) {
-            TableCellEditor ce = table.getCellEditor();
-            try {
-                if (ce != null && !ce.stopCellEditing()) {
-                    ce.cancelCellEditing();
-                }
-            } catch (InvalidElementException e) {
-                // Most likely cause of this is that someone deleted our
-                // target with the event pump turned off so we didn't
-                // get notification.  Nothing we can do about it now and
-                // we are changing targets anyway, so just log it.
-                LOG.warn("failed to cancel editing - " 
-                        + "model element deleted while edit in progress");
-            }
-        }
+        stopEditing();
 
         Object t = (theTarget instanceof Fig)
                     ? ((Fig) theTarget).getOwner() : theTarget;
@@ -185,6 +171,27 @@ public class TabTaggedValues extends AbstractArgoJPanel
         if (isVisible()) {
             setTargetInternal(target);
         } 
+    }
+
+    /**
+     * Make sure any pending edits are flushed.
+     */
+    private void stopEditing() {
+        if (table.isEditing()) {
+            TableCellEditor ce = table.getCellEditor();
+            try {
+                if (ce != null && !ce.stopCellEditing()) {
+                    ce.cancelCellEditing();
+                }
+            } catch (InvalidElementException e) {
+                // Most likely cause of this is that someone deleted our
+                // target with the event pump turned off so we didn't
+                // get notification.  Nothing we can do about it now and
+                // we are changing targets anyway, so just log it.
+                LOG.warn("failed to cancel editing - " 
+                        + "model element deleted while edit in progress");
+            }
+        }
     }
 
     private void setTargetInternal(Object t) {
@@ -298,6 +305,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
      */
     public void componentHidden(ComponentEvent e) {
         // Stop updating model when we're not visible
+        stopEditing();
         setTargetInternal(null);
     }
 
