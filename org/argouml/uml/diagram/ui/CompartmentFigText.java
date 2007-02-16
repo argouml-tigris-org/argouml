@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.awt.Color;
 import org.apache.log4j.Logger;
 import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 
 /**
  * A FigText class extension for FigClass/FigInterface/FigUseCase
@@ -109,6 +110,11 @@ public class CompartmentFigText extends FigSingleLineText {
             LOG.warn(this.getClass().toString()
 		     + ": Cannot create with null compartment fig");
         }
+
+        setTextFilled(false);
+        setJustification(FigText.JUSTIFY_LEFT);
+        setRightMargin(3);
+        setLeftMargin(3);
     }
 
     /**

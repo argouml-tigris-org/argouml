@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,12 +32,11 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Fig to show a stereotype within a FigStereotypeCompartment
+ * Fig to show one stereotype within a FigStereotypeCompartment.
  *
  * @author Bob Tarling
  */
@@ -55,10 +54,12 @@ public class FigStereotype extends CompartmentFigText {
     * @param w w
     * @param h h
     * @param figCompartment the fig
+    * @param owner the UML element
     */
     public FigStereotype(int x, int y, int w, int h, Fig figCompartment, 
             Object owner) {
         super(x, y, w, h, figCompartment, "name");
+
         setFilled(false);
         setLineWidth(0);
         setFont(FigNodeModelElement.getLabelFont());

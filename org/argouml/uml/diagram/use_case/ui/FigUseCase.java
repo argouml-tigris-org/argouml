@@ -706,7 +706,7 @@ public class FigUseCase extends FigNodeModelElement
      * Returns the new size of the FigGroup (either attributes or operations)
      * after calculation new bounds for all sub-figs, considering their minimal
      * sizes; FigGroup need not be displayed; no update event is fired.
-     * TODO: This is a duplicate method from FigFeaturesCompartment
+     * TODO: This is a duplicate method from FigEditableCompartment
      * it should just be in one place.<p>
      *
      * This method has side effects that are sometimes used.
@@ -1184,7 +1184,7 @@ public class FigUseCase extends FigNodeModelElement
      * 
      * A difference in behaviour of this function
      * compared to the similar 
-     * FigFeaturesCompartment.populate()
+     * FigEditableCompartment.populate()
      * is that the extensionpoints 
      * are not ordered, while features are.
      */

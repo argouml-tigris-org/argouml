@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,9 @@ import java.util.Collection;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.static_structure.ui.FigEnumerationLiteral;
+import org.argouml.uml.notation.NotationProvider;
+import org.tigris.gef.presentation.Fig;
 
 /**
  * The Fig for the compartment of an Enumeration 
@@ -36,7 +39,7 @@ import org.argouml.ui.targetmanager.TargetManager;
  * 
  * @author Tom Morris
  */
-public class FigEnumLiteralsCompartment extends FigFeaturesCompartment {
+public class FigEnumLiteralsCompartment extends FigEditableCompartment {
     /**
      * Serial version for initial implementation.
      */
@@ -55,7 +58,7 @@ public class FigEnumLiteralsCompartment extends FigFeaturesCompartment {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#getUmlCollection()
+     * @see org.argouml.uml.diagram.ui.FigEditableCompartment#getUmlCollection()
      */
     protected Collection getUmlCollection() {
         Object enumeration = getGroup().getOwner();
@@ -63,22 +66,31 @@ public class FigEnumLiteralsCompartment extends FigFeaturesCompartment {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#getNotationType()
+     * @see org.argouml.uml.diagram.ui.FigEditableCompartment#getNotationType()
      */
     protected int getNotationType() {
         /* TODO: Make a dedicated notation that supports 
-         * parsing "name1;name2" and maybe other notation... */
+         * parsing "name1;name2" and maybe other notation... 
+         * Also needs to support deleting literal by erasing text. */
         return NotationProviderFactory2.TYPE_NAME;
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigFeaturesCompartment#createModelElement()
+     * @see org.argouml.uml.diagram.ui.FigEditableCompartment#createModelElement()
      */
     protected void createModelElement() {
         Object enumeration = getGroup().getOwner();
         Object literal = Model.getCoreFactory().buildEnumerationLiteral(
                 "",  enumeration);
         TargetManager.getInstance().setTarget(literal);
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEditableCompartment#createFigText(int, int, int, int, org.tigris.gef.presentation.Fig, org.argouml.uml.notation.NotationProvider)
+     */
+    protected FigSingleLineText createFigText(int x, int y, int w, int h, 
+            Fig aFig, NotationProvider np) {
+        return new FigEnumerationLiteral(x, y, w, h, aFig, np);
     }
     
     
