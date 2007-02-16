@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -258,7 +258,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      */
     public void removeRow(int row) {
         Collection c = Model.getFacade().getTaggedValuesCollection(target);
-        if ((row >= 0) && (row <= c.size())) {
+        if ((row >= 0) && (row < c.size())) {
             Object element = getFromCollection(c, row);
             Model.getUmlFactory().delete(element);
             fireTableChanged(new TableModelEvent(this));
