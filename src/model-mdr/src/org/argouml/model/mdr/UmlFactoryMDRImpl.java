@@ -507,6 +507,10 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Class connectionType,
             ModelElement fromElement,
             ModelElement toElement) {
+        
+        if (fromElement == null || toElement == null) {
+            return false;
+        }
             
         if (connectionType == Generalization.class) {
             /*
