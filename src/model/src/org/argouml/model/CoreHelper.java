@@ -750,6 +750,8 @@ public interface CoreHelper {
      *
      * @param handle ModelElement
      * @param taggedValue TaggedValue
+     * @deprecated for 0.25.1 by tfmorris - use 
+     * {@link ExtensionMechanismsHelper#addTaggedValue(Object, Object)}
      */
     void addTaggedValue(Object handle, Object taggedValue);
 
@@ -1161,6 +1163,8 @@ public interface CoreHelper {
      *
      * @param handle ModelElement
      * @param taggedValues Collection of TaggedValues
+     * @deprecated for 0.25.1 by tfmorris - use 
+     * {@link ExtensionMechanismsHelper#setTaggedValue(Object, Collection)}
      */
     void setTaggedValues(Object handle, Collection taggedValues);
 
