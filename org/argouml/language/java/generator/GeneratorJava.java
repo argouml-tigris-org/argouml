@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -61,6 +61,7 @@ import org.argouml.uml.generator.GeneratorHelper;
 import org.argouml.uml.generator.GeneratorManager;
 import org.argouml.uml.generator.Language;
 import org.argouml.uml.generator.TempFileUtils;
+import org.argouml.uml.reveng.ImportInterface;
 
 import tudresden.ocl.OclTree;
 import tudresden.ocl.parser.analysis.DepthFirstAdapter;
@@ -794,18 +795,29 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
             sb.append(generateVisibility(Model.getFacade().getVisibility(cls)));
         }
 
-        // Add other modifiers
+        // Add other modifiers in JLS order
         if (Model.getFacade().isAbstract(cls)
                 && !(Model.getFacade().isAInterface(cls))) {
             sb.append("abstract ");
         }
 
+        if (Model.getFacade().getOwnerScope(cls).equals(
+                Model.getScopeKind().getClassifier())) {
+            sb.append("static ");
+        }
+        
         if (Model.getFacade().isLeaf(cls)) {
             sb.append("final ");
         }
 
         // add additional modifiers
-	Object smod = Model.getFacade().getTaggedValue(cls, "src_modifiers");
+        // TODO: This is for backward compatibility with old models reverse 
+        // engineered with earlier versions of ArgoUML.  As of 0.24, and probably
+        // earlier, ArgoUML is able to capture all necessary information in the
+        // model itself. - tfm - 20070217
+	Object smod =
+                Model.getFacade().getTaggedValue(
+                        cls, ImportInterface.SOURCE_MODIFIERS_TAG);
         if (smod != null && Model.getFacade().getValue(smod) != null) {
             sb.append(" ");
 	    sb.append(Model.getFacade().getValue(smod));
@@ -1206,7 +1218,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
             return "";
 	}
         String t = Model.getFacade().getTagOfTag(tv);
-        if ("documentation".equals(t)) {
+        if (Argo.DOCUMENTATION_TAG.equals(t)) {
             return "";
 	}
         return generateName(t) + "=" + s;

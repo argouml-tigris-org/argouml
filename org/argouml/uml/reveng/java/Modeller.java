@@ -34,6 +34,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.CoreFactory;
@@ -1576,12 +1577,6 @@ public class Modeller {
     */
     private void setVisibility(Object element,
                                short modifiers) {
-	if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-            Model.getCoreHelper().setTaggedValue(
-                    element,
-                    "src_modifiers",
-                    "static");
-	}
 	if ((modifiers & JavaRecognizer.ACC_PRIVATE) > 0) {
 	    Model.getCoreHelper().setVisibility(
 	            element,
@@ -1865,7 +1860,7 @@ public class Modeller {
 	    Model.getExtensionMechanismsHelper().addTaggedValue(
                     modelElement,
                     Model.getExtensionMechanismsFactory().buildTaggedValue(
-                            "documentation", sJavaDocs));
+                            Argo.DOCUMENTATION_TAG, sJavaDocs));
 	    addStereotypes(modelElement);
         }
     }

@@ -281,7 +281,51 @@ public final class Argo {
      * console log.
      */
     public static final String ARGO_CONSOLE_PREFIX = "argo.console.prefix";
+    
+    /**
+     * Name of the TagDefinition which is used as the type of tagged values
+     * containing documentation for a model element.
+     */
+    public static final String DOCUMENTATION_TAG = "documentation";
 
+    /**
+     * Name of the TagDefinition for tagged values containing
+     * the author's name.
+     */
+    public static final String AUTHOR_TAG = "author";
+
+    /**
+     * Name of the TagDefinition for tagged values containing
+     * since date.
+     */
+    public static final String SINCE_TAG = "since";
+
+    /**
+     * Name of the TagDefinition for tagged values containing
+     * "see" reference.
+     */
+    public static final String SEE_TAG = "see";
+
+    /**
+     * Name of the TagDefinition for tagged values containing
+     * deprecated flag.
+     */
+    public static final String DEPRECATED_TAG = "deprecated";
+
+    /**
+     * Name of the TagDefinition for tagged values containing
+     * version string.
+     */
+    public static final String VERSION_TAG = "version";
+
+    /**
+     * Alternate name for the TagDefinition which presumably was used at some 
+     * point in the past to contain documentation for a model element.  Only
+     * used for backward compatibilty.
+     * @deprecated for 0.25.1 by tfmorris - don't use for new code.
+     */
+    public static final String DOCUMENTATION_TAG_ALT = "javadocs";
+    
     /**
      * Don't let this class be instantiated.
      */
