@@ -220,7 +220,9 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
 
         editor.getSelectionManager().deselect(getContent());
         armed = false;
-        ((FigEdgeModelElement) getContent()).computeRoute();
+        FigEdgeModelElement figEdge = (FigEdgeModelElement) getContent();
+        figEdge.determineFigNodes();
+        figEdge.computeRoute();
         super.mouseReleased(me);
         return;
     }
