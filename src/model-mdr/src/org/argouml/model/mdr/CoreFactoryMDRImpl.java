@@ -812,16 +812,26 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                         contains(clsType.getNamespace()))) {
             clsType.setNamespace((Model) model);
         }
+        Attribute attr = buildAttribute();
+        attr.setType(clsType);
+        return attr;
+    }
+    
+    /**
+     * Build a new attribute with no type
+     * @return the new attribute
+     */
+    Attribute buildAttribute() {
         Attribute attr = (Attribute) createAttribute();
         attr.setName("newAttr");
         attr.setMultiplicity(getMultiplicity11());
-        attr.setType(clsType);
         attr.setVisibility(VisibilityKindEnum.VK_PUBLIC);
         attr.setOwnerScope(ScopeKindEnum.SK_INSTANCE);
         attr.setChangeability(ChangeableKindEnum.CK_CHANGEABLE);
         attr.setTargetScope(ScopeKindEnum.SK_INSTANCE);
         return attr;
     }
+    
 
     /*
      * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object, 

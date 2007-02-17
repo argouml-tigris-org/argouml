@@ -445,6 +445,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             return getCore().createEnumeration();
         } else if (elementType == metaTypes.getStereotype()) {
             return getExtensionMechanisms().createStereotype();
+        } else if (elementType == metaTypes.getAttribute()) {
+            return getCore().buildAttribute();
         }
         return modelElement;
     }
