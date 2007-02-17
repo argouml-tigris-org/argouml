@@ -104,6 +104,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Class.
      *
      * @return an initialized UML Class instance.
+     * @deprecated in 0.25.1 use
+     * Model.getUmlFactory().buildNode(Model.getMetatData().getClass())
      */
     Object createClass();
 
@@ -111,6 +113,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Comment.
      *
      * @return an initialized UML Comment instance.
+     * @deprecated in 0.25.1 use
+     * Model.getUmlFactory().buildNode(Model.getMetatData().getComment())
      */
     Object createComment();
 
@@ -118,6 +122,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Component.
      *
      * @return an initialized UML Component instance.
+     * @deprecated in 0.25.1 use
+     * Model.getUmlFactory().buildNode(Model.getMetatData().getComponent())
      */
     Object createComponent();
 
@@ -125,6 +131,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Constraint.
      *
      * @return an initialized UML Constraint instance.
+     * @deprecated in 0.25.1 use
+     * Model.getUmlFactory().buildNode(Model.getMetatData().getConstraint())
      */
     Object createConstraint();
 
@@ -132,6 +140,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML DataType.
      *
      * @return an initialized UML DataType instance.
+     * @deprecated in 0.25.1 use
+     * Model.getUmlFactory().buildNode(Model.getMetatData().getDataType())
      */
     Object createDataType();
     
@@ -147,6 +157,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML ElementResidence.
      *
      * @return an initialized UML ElementResidence instance.
+     * @deprecated in 0.25.1 use
+     * Model.getUmlFactory().buildNode(Model.getMetatData().getElementResidence())
      */
     Object createElementResidence();
     
@@ -178,6 +190,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Interface.
      *
      * @return an initialized UML Interface instance.
+     * @deprecated in 0.25.1 use
+     * Model.getUmlFactory().buildNode(Model.getMetatData().getInterface())
      */
     Object createInterface();
 
@@ -193,6 +207,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Node.
      *
      * @return an initialized UML Node instance.
+     * @deprecated in 0.25.1 use
+     * Model.getUmlFactory().buildNode(Model.getMetatData().getNode())
      */
     Object createNode();
 
