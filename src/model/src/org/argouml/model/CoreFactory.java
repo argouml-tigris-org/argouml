@@ -289,6 +289,7 @@ public interface CoreFactory extends Factory {
      * @param aggregationKind2 the second aggregationkind
      * @param unidirectional true if unidirectional
      * @return the newly build binary associationrole
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildAssociation(Object fromClassifier, Object aggregationKind1,
             Object toClassifier, Object aggregationKind2,
@@ -302,6 +303,7 @@ public interface CoreFactory extends Factory {
      * @param classifier1 The first classifier to connect
      * @param classifier2 The second classifier to connect
      * @return MAssociation
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildAssociation(Object classifier1, Object classifier2);
 
@@ -326,6 +328,7 @@ public interface CoreFactory extends Factory {
      * @param end1 the first given classifier
      * @param end2 the second given classifier
      * @return MAssociationClass
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildAssociationClass(Object end1, Object end2);
 
@@ -346,6 +349,7 @@ public interface CoreFactory extends Factory {
      * @param changeable the changeablekind
      * @param visibility the visibilitykind
      * @return MAssociationEnd
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildAssociationEnd(
         Object assoc,
@@ -366,6 +370,7 @@ public interface CoreFactory extends Factory {
      * @param type the given classifier
      * @param assoc the given association
      * @return the newly build associationend
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildAssociationEnd(Object type, Object assoc);
 
@@ -441,6 +446,7 @@ public interface CoreFactory extends Factory {
      * @param owner is the owner
      * @return MInterface
      * @see #buildInterface()
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildInterface(Object owner);
 
@@ -450,6 +456,7 @@ public interface CoreFactory extends Factory {
      * @param name is the given name.
      * @return MInterface
      * @see #buildInterface()
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildInterface(String name);
 
@@ -523,6 +530,7 @@ public interface CoreFactory extends Factory {
      * @param child is the child
      * @param parent is the parent
      * @return MGeneralization
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildGeneralization(Object child, Object parent);
 
@@ -577,6 +585,7 @@ public interface CoreFactory extends Factory {
      * @param model the namespace to use if client and
      * supplier are of different namespace
      * @return Object the created abstraction
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildRealization(Object clnt, Object spplr, Object model);
 
@@ -588,6 +597,7 @@ public interface CoreFactory extends Factory {
      * @param client is the client
      * @param supplier is the supplier
      * @return MUsage
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildUsage(Object client, Object supplier);
 
