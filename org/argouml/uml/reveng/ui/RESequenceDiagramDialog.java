@@ -792,11 +792,22 @@ public class RESequenceDiagramDialog
         }
         if (assocEnd == null) {
             String assocName = fromName + " -> " + toName;
-            Model.getCoreFactory()
-                .buildAssociation(fromCls, false, toCls, true, assocName);
+            Modeller
+                .buildDirectedAssociation(assocName, fromCls, toCls);
         }
 
     }
+    
+
+    private Object buildDirectedAssociation(
+	    String name,
+	    Object sourceClassifier, 
+	    Object destClassifier) {
+        return Model.getCoreFactory().buildAssociation(
+                sourceClassifier, true, destClassifier, false,
+                name);
+    }
+    
 
     /**
      * Get the classifier with the given name from a permission
