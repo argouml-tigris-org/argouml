@@ -137,8 +137,18 @@ public class AttributeNotationUml extends AttributeNotation {
                 // yes, there are more:
                 Object model = project.getModel();
                 Object intType = project.findType("int");
+                // Force type element into given namespace if not already there
+                if (model != Model.getFacade().getNamespace(intType)
+                        && !(Model.getModelManagementHelper().getAllNamespaces(model).
+                                contains(Model.getFacade().getNamespace(intType)))) {
+                    Model.getCoreHelper().setNamespace(intType, model);
+                }
+                
                 Object newAttribute =
-                    Model.getCoreFactory().buildAttribute(model, intType);
+                    Model.getUmlFactory().buildNode(Model.getMetaTypes().getAttribute());
+                
+                Model.getCoreHelper().setType(newAttribute, intType);
+                
                 if (newAttribute != null) {
                     try {
                         parseAttribute(s, newAttribute);
