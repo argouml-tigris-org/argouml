@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1061,6 +1061,7 @@ public final class NotationUtilityUml {
 
     /**
      * @param st a stereotype UML object
+     *                 or a string
      *                 or a collection of stereotypes
      *                 or a modelelement of which the stereotypes are retrieved
      * @return a string representing the given stereotype(s)
@@ -1073,17 +1074,13 @@ public final class NotationUtilityUml {
             ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = project.getProjectSettings();
 
-        if (Model.getFacade().isAStereotype(st)) {
-            if (Model.getFacade().getName(st) == null) {
-                return ""; // Patch by Jeremy Bennett
-            }
-            if (Model.getFacade().getName(st).length() == 0) {
-                return "";
-            }
-            return ps.getLeftGuillemot()
-                + Model.getFacade().getName(st)
-                + ps.getRightGuillemot();
+        if (st instanceof String) {
+            return formatSingleStereotype((String) st, ps);
         }
+        if (Model.getFacade().isAStereotype(st)) {
+            return formatSingleStereotype(Model.getFacade().getName(st), ps);
+        }
+
         if (Model.getFacade().isAModelElement(st)) {
             st = Model.getFacade().getStereotypes(st);
         }
@@ -1111,13 +1108,21 @@ public final class NotationUtilityUml {
         return "";
     }
 
+    private static String formatSingleStereotype(String name, 
+            ProjectSettings ps) {
+        if (name == null || name.length() == 0) {
+            return "";
+        }
+        return ps.getLeftGuillemot() + name + ps.getRightGuillemot();
+    }
+
     /**
-     * Generates the representation of a parameter on the display
-     * (diagram). The string to be returned will have the following
-     * syntax:<p>
-     *
+     * Generates the representation of a parameter on the display (diagram). The
+     * string to be returned will have the following syntax:
+     * <p>
+     * 
      * kind name : type-expression = default-value
-     *
+     * 
      * @see org.argouml.notation.NotationProvider2#generateParameter(java.lang.Object)
      */
     static String generateParameter(Object parameter) {

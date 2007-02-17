@@ -44,12 +44,14 @@ import org.argouml.uml.notation.OperationNotation;
 import org.argouml.util.MyTokenizer;
 
 /**
- * The UML notation for an Operation.
+ * The UML notation for an Operation or a Reception.
  * 
  * @author mvw@tigris.org
  */
 public class OperationNotationUml extends OperationNotation {
 
+    private static final String RECEPTION_KEYWORD = "signal";
+    
     /**
      * The constructor.
      *
@@ -180,7 +182,7 @@ public class OperationNotationUml extends OperationNotation {
      * name(params)[;] )
      *
      * @param s   The String to parse.
-     * @param op  The MOperation to adjust to the spcification in s.
+     * @param op  The Operation to adjust to the specification in s.
      * @throws ParseException
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
@@ -346,7 +348,12 @@ public class OperationNotationUml extends OperationNotation {
                     NotationUtilityUml.operationSpecialStrings);
         }
 
-        NotationUtilityUml.dealWithStereotypes(op, stereotype, true);
+        // Don't create a stereotype for <<signal>> on a Reception
+        // but create any other parsed stereotypes as needed
+        if (!Model.getFacade().isAReception(op) 
+                || !RECEPTION_KEYWORD.equals(stereotype)) {
+            NotationUtilityUml.dealWithStereotypes(op, stereotype, true);
+        }
     }
 
     /**
@@ -489,9 +496,12 @@ public class OperationNotationUml extends OperationNotation {
             String stereoStr = NotationUtilityUml.generateStereotype(
                     Model.getFacade().getStereotypes(modelElement));
             boolean isReception = Model.getFacade().isAReception(modelElement);
-            // TODO: needs I18N ?
+            // TODO: needs I18N
             if (isReception) {
-                stereoStr = "<<signal>> " + stereoStr;
+                stereoStr =
+                        NotationUtilityUml
+                                .generateStereotype(RECEPTION_KEYWORD)
+                                + " " + stereoStr;
             }
             String visStr = NotationUtilityUml.generateVisibility(modelElement);
             String nameStr = Model.getFacade().getName(modelElement);
