@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.ui;
 
 import org.argouml.model.Model;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * A Mode to interpret user input while creating a generalization edge.
@@ -36,18 +35,6 @@ import org.tigris.gef.presentation.Fig;
  */
 public final class ModeCreateGeneralization extends ModeCreateGraphEdge {
     
-    /*
-     * Well-formedness rule UML 1.4.2 Spec section 4.5.3.20 [5]
-     * A GeneralizableElement may only be a child of GeneralizableElement of
-     * the same kind.
-     * @see org.argouml.uml.diagram.ui.ModeCreateGraphEdge#isDestFigEdgeValid(org.tigris.gef.presentation.FigEdge)
-     */
-    protected final boolean isConnectionValid(
-	    Fig source,
-	    Fig dest) {
-	return dest != null && source.getClass() == dest.getClass();
-    }
-
     /**
      * Return the meta type of the element that this mode is designed to
      * create. In the case the dependency metatype.

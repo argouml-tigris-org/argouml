@@ -29,6 +29,9 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import org.apache.log4j.Logger;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.ModeCreatePolyEdge;
@@ -39,12 +42,15 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 
 /**
- * A Mode to interpret user input while creating a dependency edge.
- * The dependency can connect any model element including those represented
- * by edges as well as nodes.
+ * A Mode to interpret user input while creating an edge.
+ * The edge can connect any two model element prooviding isConnectionValid
+ * return true.
  */
 public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
 
+    private static final Logger LOG =
+	Logger.getLogger(ModeCreateGraphEdge.class);
+    
     /**
      * The Fig from which drawing starts, either a FigNode or a FigEdge
      */
@@ -131,6 +137,8 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
         
         if (!isConnectionValid(sourceFig, destFig)) {
             destFig = null;
+        } else {
+            LOG.info("Connection valid");
         }
 
         if (destFig instanceof FigEdgeModelElement
@@ -159,7 +167,8 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
                 }
                 editor.damageAll();
                 p.setComplete(true);
-
+                
+                LOG.info("Connecting");
                 Object modelElement = graphModel.connect(
                         getStartPort(), 
                         foundPort, 
@@ -238,6 +247,9 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
      * @return true if drop on an edge is valid.
      */
     protected boolean isConnectionValid(Fig source, Fig dest) {
-	return true;
+	return Model.getUmlFactory().isConnectionValid(
+		getMetaType(), 
+		source.getOwner(), 
+		dest.getOwner());
     }
 }
