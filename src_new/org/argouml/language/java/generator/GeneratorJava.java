@@ -387,10 +387,10 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
             for (j = c.iterator(); j.hasNext();) {
                 Object mFeature = j.next();
                 if (Model.getFacade().isAAttribute(mFeature)) {
-                    if ((ftype =
-			    generateImportType(Model.getFacade()
-				.getType(mFeature), packagePath))
-                            != null) {
+                    ftype =
+                            generateImportType(Model.getFacade().getType(
+                                    mFeature), packagePath);
+                    if (ftype != null) {
                         importSet.add(ftype);
                     }
                 } else if (Model.getFacade().isAOperation(mFeature)) {
@@ -599,15 +599,11 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
 	    }
         }
 
-        // 2002-07-14
-        // Jaap Branderhorst
-        // missing concurrency generation
-	//sb.append(INDENT); fixed issue 1505
-        sb.append(generateConcurrency(op));
-        sb.append(generateAbstractness(op));
-        sb.append(generateChangeability(op));
-        sb.append(generateScope(op));
         sb.append(generateVisibility(op));
+        sb.append(generateAbstractness(op));
+        sb.append(generateScope(op));
+        sb.append(generateChangeability(op));
+        sb.append(generateConcurrency(op));
 
         // pick out return type
         Collection returnParams = Model.getCoreHelper().getReturnParameters(op);
@@ -801,20 +797,15 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
             sb.append("abstract ");
         }
 
-        if (Model.getFacade().getOwnerScope(cls).equals(
-                Model.getScopeKind().getClassifier())) {
-            sb.append("static ");
-        }
-        
         if (Model.getFacade().isLeaf(cls)) {
             sb.append("final ");
         }
 
         // add additional modifiers
         // TODO: This is for backward compatibility with old models reverse 
-        // engineered with earlier versions of ArgoUML.  As of 0.24, and probably
-        // earlier, ArgoUML is able to capture all necessary information in the
-        // model itself. - tfm - 20070217
+        // engineered with earlier versions of ArgoUML.  As of 0.24, and 
+        // probably earlier, ArgoUML should be able to capture all necessary
+        // information in the model itself. - tfm - 20070217
 	Object smod =
                 Model.getFacade().getTaggedValue(
                         cls, ImportInterface.SOURCE_MODIFIERS_TAG);
