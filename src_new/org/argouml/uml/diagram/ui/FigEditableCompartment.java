@@ -48,13 +48,6 @@ import org.tigris.gef.presentation.FigLine;
  * a NotationProvideer is used to handle (generate and parse) 
  * the texts shown in the compartment, i.e. 
  * the compartment texts are editable by the user.
- *
- * TODO: This is really just a generic list compartment.  It doesn't have
- * any behavior specific to features.  Rename to something more appropriate and
- * create a named list compartment variant. - tfm - 20060313
- * 
- * TODO: Investigate if this could be renamed to AbstractFigFeaturesCompartment?
- * @author Bob Tarling
  */
 public abstract class FigEditableCompartment extends FigCompartment {
 
