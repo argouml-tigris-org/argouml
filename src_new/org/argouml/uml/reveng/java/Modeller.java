@@ -1395,10 +1395,8 @@ public class Modeller {
                 Model.getFacade().getName(parseState.getClassifier())
                     + " -> " + Model.getFacade().getName(mClassifier);
 
-            Object mAssociation =
-                Model.getCoreFactory().buildAssociation(
-                        mClassifier, true, parseState.getClassifier(), false,
-                        newName);
+            Object mAssociation = buildDirectedAssociation(
+                        newName, parseState.getClassifier(), mClassifier);
             mAssociationEnd =
                 Model.getFacade().getAssociationEnd(
                         mClassifier,
@@ -1407,6 +1405,15 @@ public class Modeller {
         return mAssociationEnd;
     }
 
+    public static Object buildDirectedAssociation(
+	    String name,
+	    Object sourceClassifier, 
+	    Object destClassifier) {
+        return Model.getCoreFactory().buildAssociation(
+                sourceClassifier, false, destClassifier, true,
+                name);
+    }
+    
     /**
        Get the stereotype with a specific name.
 
