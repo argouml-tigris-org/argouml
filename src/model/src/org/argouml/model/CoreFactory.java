@@ -380,6 +380,7 @@ public interface CoreFactory extends Factory {
      * @param model The model the attribute belongs to.
      * @param type The type of the attribute.
      * @return The newly built attribute.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildAttribute(Object model, Object type);
 
