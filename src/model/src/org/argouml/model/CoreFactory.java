@@ -36,6 +36,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Abstraction.
      * 
      * @return an initialized UML Abstraction instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createAbstraction();
     
@@ -55,6 +56,7 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 1.4
      * @return an initialized Artifact instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createArtifact();
     
@@ -62,6 +64,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Association.
      * 
      * @return an initialized UML Association instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createAssociation();
 
@@ -69,6 +72,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML AssociationClass.
      * 
      * @return an initialized UML AssociationClass instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createAssociationClass();
     
@@ -76,6 +80,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML AssociationEnd.
      *
      * @return an initialized UML AssociationEnd instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createAssociationEnd();
 
@@ -83,6 +88,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Attribute.
      *
      * @return an initialized UML Attribute instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createAttribute();
 
@@ -90,6 +96,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Binding.
      *
      * @return an initialized UML Binding instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createBinding();
 
@@ -132,6 +139,7 @@ public interface CoreFactory extends Factory {
     * Create an empty but initialized instance of a UML Dependency.
     *
     * @return an initialized UML Dependency instance.
+    * @deprecated in 0.25.1 This is not used outside the model subsystem
     */
     public Object createDependency();
 
@@ -146,6 +154,7 @@ public interface CoreFactory extends Factory {
      * Create an Enumeration.
      * @return Object new Enumeration
      * @since UML 1.4
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createEnumeration();
 
@@ -153,6 +162,7 @@ public interface CoreFactory extends Factory {
      * Create an EnumerationLiteral.
      * @return Object new Enumeration
      * @since UML 1.4
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createEnumerationLiteral();
 
@@ -160,6 +170,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Flow.
      *
      * @return an initialized UML Flow instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createFlow();
 
@@ -174,6 +185,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Method.
      *
      * @return an initialized UML Method instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createMethod();
 
@@ -188,6 +200,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Operation.
      *
      * @return an initialized UML Operation instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createOperation();
 
@@ -195,6 +208,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Parameter.
      *
      * @return an initialized UML Parameter instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createParameter();
 
@@ -202,6 +216,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Permission.
      *
      * @return an initialized UML Permission instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createPermission();
     
@@ -210,6 +225,7 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 1.4
      * @return an initialized UML Primitive instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createPrimitive();
 
@@ -218,6 +234,7 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 1.4
      * @return an initialized ProgrammingLanguageDataType
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createProgrammingLanguageDataType();
 
@@ -226,6 +243,7 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 1.4
      * @return an initialized TemplateArgument instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createTemplateArgument();
 
@@ -233,6 +251,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML TemplateParameter.
      *
      * @return an initialized UML TemplateParameter instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createTemplateParameter();
 
@@ -240,6 +259,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Usage.
      *
      * @return an initialized UML Usage instance.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createUsage();
 
@@ -620,6 +640,7 @@ public interface CoreFactory extends Factory {
      * Additional support for generalization.
      *
      * @return A generalization.
+     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createGeneralization();
 
