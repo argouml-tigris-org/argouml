@@ -24,15 +24,20 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelStateMachine;
 import org.argouml.util.ConfigLoader;
 
 /**
  * PropertyPanel for Activitygraphs. It inherits almost everything from
  * PropPanelStateMachine.
- * 
- * TODO: implement partitions
  */
 public class PropPanelActivityGraph extends PropPanelStateMachine {
 
@@ -45,5 +50,51 @@ public class PropPanelActivityGraph extends PropPanelStateMachine {
     
     protected UMLComboBoxModel2 getContextComboBoxModel() {
         return new UMLActivityGraphContextComboBoxModel();
+    }
+
+    /**
+     * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateMachine#initialize()
+     */
+    protected void initialize() {
+        super.initialize();
+        
+        addSeparator();
+        
+        JList partitionList = new UMLLinkedList(
+                new UMLActivityGraphPartiitionListModel());
+        addField(Translator.localize("label.partition"),
+                new JScrollPane(partitionList));
+    }
+    
+    /**
+     * The model for the partitions of a ActivityGraph.
+     *
+     * @author Michiel
+     */
+    public class UMLActivityGraphPartiitionListModel
+        extends UMLModelElementListModel2 {
+
+        /**
+         * Constructor for UMLActivityGraphPartiitionListModel.
+         */
+        public UMLActivityGraphPartiitionListModel() {
+            super("partition");
+        }
+
+        /*
+         * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+         */
+        protected void buildModelList() {
+            setAllElements(Model.getFacade().getPartitions(getTarget()));
+        }
+
+        /*
+         * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
+         */
+        protected boolean isValidElement(Object element) {
+            return Model.getFacade().getPartitions(getTarget())
+                .contains(element);
+        }
+
     }
 }
