@@ -409,6 +409,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             return getActivityGraphs().createActionState();
         } else if (elementType == metaTypes.getSubactivityState()) {
             return getActivityGraphs().createSubactivityState();
+        } else if (elementType == metaTypes.getPartition()) {
+            return getActivityGraphs().createPartition();
         } else if (elementType == metaTypes.getStubState()) {
             return getStateMachines().createStubState();
         } else if (elementType == metaTypes.getSubmachineState()) {
