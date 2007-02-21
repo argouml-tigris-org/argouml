@@ -49,7 +49,6 @@ public class FigPartition extends FigNodeModelElement {
 
     /**
      * Constructor.
-     *
      */
     public FigPartition() {
         setBigPort(new FigRect(10, 10, 150, 200, Color.white, Color.white));
