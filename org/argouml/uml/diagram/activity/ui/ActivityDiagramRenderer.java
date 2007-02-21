@@ -54,6 +54,7 @@ import org.tigris.gef.presentation.FigNode;
  *  Transition          ---  FigTransition
  *  CallState           ---  FigCallState
  *  ObjectFlowState     ---  FigObjectFlowState
+ *  Partition              --- FigPartition
  *  SubactivityState    ---  FigSubactivityState
  *  more...
  *  </pre>
