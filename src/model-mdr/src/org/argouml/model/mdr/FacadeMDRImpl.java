@@ -3952,7 +3952,7 @@ class FacadeMDRImpl implements Facade {
     public Object getType(Object handle) {
         try {
             if (handle instanceof StructuralFeature) {
-                return ((Attribute) handle).getType();
+                return ((StructuralFeature) handle).getType();
             }
             if (handle instanceof AssociationEnd) {
                 return ((AssociationEnd) handle).getParticipant();
