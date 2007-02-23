@@ -102,6 +102,7 @@ public class FigPartition extends FigNodeModelElement {
     public void setEnclosingFig(Fig newEncloser) {
         super.setEnclosingFig(newEncloser);
         LayerPerspective layer = (LayerPerspective) getLayer();
+        // If the layer is null, then most likely we are being deleted.
         if (newEncloser == null && layer != null) {
             UMLActivityDiagram diagram = 
                 (UMLActivityDiagram) getProject().getActiveDiagram();
