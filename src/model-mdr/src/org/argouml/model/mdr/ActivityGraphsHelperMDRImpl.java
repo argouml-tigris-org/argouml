@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,6 +31,7 @@ import org.argouml.model.ActivityGraphsHelper;
 import org.argouml.model.Model;
 import org.omg.uml.behavioralelements.activitygraphs.ClassifierInState;
 import org.omg.uml.behavioralelements.activitygraphs.ObjectFlowState;
+import org.omg.uml.behavioralelements.activitygraphs.Partition;
 import org.omg.uml.behavioralelements.statemachines.CompositeState;
 import org.omg.uml.behavioralelements.statemachines.State;
 import org.omg.uml.behavioralelements.statemachines.StateMachine;
@@ -160,6 +161,19 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         } else {
             throw new IllegalArgumentException(
                     "classifierInState: " + classifierInState);
+        }
+    }
+
+    /*
+     * @see org.argouml.model.ActivityGraphsHelper#setContents(java.lang.Object, java.util.Collection)
+     */
+    public void setContents(Object partition, Collection contents) {
+        if (partition instanceof Partition) {
+            Partition p = (Partition) partition;
+            CollectionHelper.update(p.getContents(), contents);
+        } else {
+            throw new IllegalArgumentException(
+                    "Partition: " + partition);
         }
     }
 

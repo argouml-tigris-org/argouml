@@ -4272,6 +4272,20 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
+     * @see org.argouml.model.Facade#getActivityGraph(java.lang.Object)
+     */
+    public Object getActivityGraph(Object handle) {
+        try {
+            if (handle instanceof Partition) {
+                return ((Partition) handle).getActivityGraph();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        return illegalArgumentObject(handle);
+    }
+
+    /**
      * @see org.argouml.model.Facade#getActualArguments(java.lang.Object)
      */
     public List getActualArguments(Object handle) {
