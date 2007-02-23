@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.AddAssociationEvent;
@@ -38,7 +39,9 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.notation.NotationProvider;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -148,6 +151,39 @@ public class FigActionState extends FigStateVertex {
         figClone.setNameFig((FigText) it.next());
         /* TODO: Do we need to clone the stereotype(s)? */
         return figClone;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#setEnclosingFig(org.tigris.gef.presentation.Fig)
+     */
+    public void setEnclosingFig(Fig encloser) {
+        LayerPerspective layer = (LayerPerspective) getLayer();
+        // If the layer is null, then most likely we are being deleted.
+        if (layer == null) return;
+
+        // remove from old partition
+        if (encloser == null || encloser != getEncloser()) {
+            if (getEncloser() != null) {
+                Object partition = getEncloser().getOwner();
+                if (partition != null 
+                        && Model.getFacade().isAPartition(partition)) {
+                    Collection c = Model.getFacade().getContents(partition);
+                    c.remove(getOwner());
+                    Model.getActivityGraphsHelper().setContents(partition, c);
+                }
+            }
+        }
+        
+        // add to new partition
+        if (encloser != null) {
+            Object partition = encloser.getOwner();
+            if (Model.getFacade().isAPartition(partition)) {
+                Collection c = Model.getFacade().getContents(partition);
+                c.add(getOwner());
+                Model.getActivityGraphsHelper().setContents(partition, c);
+            }
+        }
+        super.setEnclosingFig(encloser);
     }
 
     /*
