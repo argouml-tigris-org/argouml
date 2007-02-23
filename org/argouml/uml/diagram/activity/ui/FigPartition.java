@@ -29,10 +29,9 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Iterator;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
@@ -54,17 +53,15 @@ public class FigPartition extends FigNodeModelElement {
      * Constructor.
      */
     public FigPartition() {
-        setBigPort(new FigRect(10, 10, 150, 200, Color.white, Color.white));
-        getBigPort().setFilled(true);
-        leftLine = new FigLine(10, 10, 10, 300, Color.gray);
-        rightLine = new FigLine(150, 10, 150, 300, Color.gray);
-        leftLine.setDashed(true);
-        rightLine.setDashed(true);
+        setBigPort(new FigRect(10, 10, 160, 200, Color.cyan, Color.cyan));
+        getBigPort().setFilled(false);
+        getBigPort().setLineWidth(0);
+        leftLine = new FigLine(10, 10, 10, 300);
+        rightLine = new FigLine(150, 10, 160, 300);
 
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(10 + PADDING, 10, 50 - PADDING * 2, 25);
         getNameFig().setFilled(false);
-        getNameFig().setReturnAction(FigText.INSERT);
 
         addFig(getBigPort());
         addFig(rightLine);
@@ -104,11 +101,10 @@ public class FigPartition extends FigNodeModelElement {
      */
     public void setEnclosingFig(Fig newEncloser) {
         super.setEnclosingFig(newEncloser);
-        if (newEncloser == null) {
-            Project currentProject =
-                ProjectManager.getManager().getCurrentProject();
+        LayerPerspective layer = (LayerPerspective) getLayer();
+        if (newEncloser == null && layer != null) {
             UMLActivityDiagram diagram = 
-                (UMLActivityDiagram) currentProject.getActiveDiagram();
+                (UMLActivityDiagram) getProject().getActiveDiagram();
             Object machine = diagram.getStateMachine();
             Model.getCoreHelper().setModelElementContainer(
                     getOwner(), machine);
@@ -188,6 +184,11 @@ public class FigPartition extends FigNodeModelElement {
         Dimension nameDim = getNameFig().getMinimumSize();
         int w = nameDim.width + PADDING * 2;
         int h = nameDim.height;
+
+        // we want to maintain a minimum size for the partition
+        w = Math.max(64, w);
+        h = Math.max(256, h);
+
         return new Dimension(w, h);
     }
 
