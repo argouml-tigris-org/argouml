@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -80,7 +80,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     private Action actionJoinPseudoState;
     private Action actionTransition;
     private Action actionObjectFlowState;
-    private Action actionNewSwimlane;
+    private Action actionSwimlane;
     private Action actionCallState;
     private Action actionSubactivityState;
     private Action actionCallEvent;
@@ -432,15 +432,15 @@ public class UMLActivityDiagram extends UMLDiagram {
         return actionJunctionPseudoState;
     }
     /**
-     * @return Returns the actionNewSwimlane.
+     * @return Returns the actionSwimlane.
      */
     protected Action getActionNewSwimlane() {
-        if (actionNewSwimlane == null) {
-            actionNewSwimlane =
+        if (actionSwimlane == null) {
+            actionSwimlane =
                 new CmdCreateNode(Model.getMetaTypes().getPartition(),
                         	  "button.new-partition");
         }
-        return actionNewSwimlane;
+        return actionSwimlane;
     }
     /**
      * @return Returns the actionObjectFlowState.
