@@ -658,37 +658,37 @@ public abstract class UMLDiagram
      * If the modelElement is not valid in the given namespace
      * this method takes no action.
      * @param modelElement the model element
-     * @param namespace the namespace
+     * @param ns the namespace
      */
     protected void setModelElementNamespace(
 	    Object modelElement, 
-	    Object namespace) {
+	    Object ns) {
 	if (modelElement == null) {
 	    return;
 	}
 	
 	// If we're not provided a namespace then get it from the diagram or
 	// the root
-        if (namespace == null) {
+        if (ns == null) {
             if (getNamespace() != null) {
-        	namespace = getNamespace();
+        	ns = getNamespace();
             } else {
-        	namespace = getProject().getRoot();
+        	ns = getProject().getRoot();
             }
         }
         
         // If we haven't succeeded in getting a namespace then abort
-        if (namespace == null) {
+        if (ns == null) {
             return;
         }
         
         CoreHelper coreHelper = Model.getCoreHelper();
         ModelManagementHelper modelHelper = Model.getModelManagementHelper();
         
-        if (!modelHelper.isCyclicOwnership(namespace, modelElement)
-                && coreHelper.isValidNamespace(modelElement, namespace)) {
+        if (!modelHelper.isCyclicOwnership(ns, modelElement)
+                && coreHelper.isValidNamespace(modelElement, ns)) {
             
-            coreHelper.setModelElementContainer(modelElement, namespace);
+            coreHelper.setModelElementContainer(modelElement, ns);
             /* TODO: move the associations to the correct owner (namespace)
              * i.e. issue 2151
              */
