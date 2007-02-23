@@ -78,7 +78,7 @@ public class ArgoDiagram extends Diagram {
     }
     
     /**
-     * The project this disagram is contained in.
+     * The project this diagram is contained in.
      */
     private Project project;
 
