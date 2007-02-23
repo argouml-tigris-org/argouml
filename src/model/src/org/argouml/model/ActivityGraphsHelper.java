@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -93,4 +93,14 @@ public interface ActivityGraphsHelper {
      * @param newStates the collection of states
      */
     void setInStates(Object classifierInState, Collection newStates);
+    
+    /**
+     * Replace the complete collection of the partition contents 
+     * by the given new one. 
+     * This function only modifies the model for added or removed modelelements.
+     * 
+     * @param partition the partition to be altered
+     * @param newContents the new contents of the partition (modelelements)
+     */
+    void setContents(Object partition, Collection newContents);
 }

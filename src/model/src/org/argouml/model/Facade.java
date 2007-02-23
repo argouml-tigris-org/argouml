@@ -2594,6 +2594,14 @@ public interface Facade {
      * @return the activator
      */
     Object getActivator(Object handle);
+    
+    /**
+     * Returns the activityGraph of the given partition.
+     * 
+     * @param handle is the partition
+     * @return the activityGraph
+     */
+    Object getActivityGraph(Object handle);
 
     /**
      * Returns the actual arguments for a given action.
