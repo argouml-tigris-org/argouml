@@ -618,10 +618,8 @@ public abstract class FigNodeModelElement
 	Fig oldEncloser = encloser;
 	super.setEnclosingFig(newEncloser);
 	if (newEncloser != oldEncloser) {
-            Project currentProject =
-                ProjectManager.getManager().getCurrentProject();
             UMLDiagram diagram =
-        	(UMLDiagram) currentProject.getActiveDiagram();
+        	(UMLDiagram) getProject().getActiveDiagram();
             
             Object namespace = null;
             if (newEncloser != null) {
