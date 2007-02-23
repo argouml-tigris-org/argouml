@@ -33,7 +33,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.base.Editor;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
@@ -44,7 +43,6 @@ import org.tigris.gef.presentation.FigText;
  * This class represents a Partition or Swimlane for Activity diagrams.
  *
  * @author mkl
- *
  */
 public class FigPartition extends FigNodeModelElement {
 
@@ -109,7 +107,6 @@ public class FigPartition extends FigNodeModelElement {
         if (newEncloser == null) {
             Project currentProject =
                 ProjectManager.getManager().getCurrentProject();
-            Editor e = (Editor) getLayer().getEditors().get(0);
             UMLActivityDiagram diagram = 
                 (UMLActivityDiagram) currentProject.getActiveDiagram();
             Object machine = diagram.getStateMachine();
