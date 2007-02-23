@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,8 +29,13 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Iterator;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.Editor;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -94,6 +99,23 @@ public class FigPartition extends FigNodeModelElement {
         figClone.leftLine = (FigLine) it.next();
         figClone.setNameFig((FigText) it.next());
         return figClone;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#setEnclosingFig(org.tigris.gef.presentation.Fig)
+     */
+    public void setEnclosingFig(Fig newEncloser) {
+        super.setEnclosingFig(newEncloser);
+        if (newEncloser == null) {
+            Project currentProject =
+                ProjectManager.getManager().getCurrentProject();
+            Editor e = (Editor) getLayer().getEditors().get(0);
+            UMLActivityDiagram diagram = 
+                (UMLActivityDiagram) currentProject.getActiveDiagram();
+            Object machine = diagram.getStateMachine();
+            Model.getCoreHelper().setModelElementContainer(
+                    getOwner(), machine);
+        }
     }
 
     /*
