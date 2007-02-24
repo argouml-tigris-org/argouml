@@ -40,8 +40,10 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
 import org.argouml.uml.notation.NotationProvider;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -206,6 +208,18 @@ public class FigObjectFlowState extends FigNodeModelElement {
         figClone.setNameFig((FigText) it.next());
         figClone.state = (FigText) it.next();
         return figClone;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#setEnclosingFig(org.tigris.gef.presentation.Fig)
+     */
+    public void setEnclosingFig(Fig encloser) {
+        LayerPerspective layer = (LayerPerspective) getLayer();
+        // If the layer is null, then most likely we are being deleted.
+        if (layer == null) return;
+
+        PartitionUtility.handleEnclosing(getEncloser(), encloser, getOwner());
+        super.setEnclosingFig(encloser);
     }
 
     /*

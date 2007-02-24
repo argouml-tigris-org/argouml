@@ -27,11 +27,13 @@ package org.argouml.uml.diagram.state.ui;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.activity.ui.PartitionUtility;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerDiagram;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -72,7 +74,13 @@ public abstract class FigStateVertex extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
+        LayerPerspective layer = (LayerPerspective) getLayer();
+        // If the layer is null, then most likely we are being deleted.
+        if (layer == null) return;
+
+        PartitionUtility.handleEnclosing(getEncloser(), encloser, getOwner());
         super.setEnclosingFig(encloser);
+        
         /* If this fig is not visible, do not adapt the UML model!
          * This is used for deleting. See issue 3042. */
         if  (!isVisible())

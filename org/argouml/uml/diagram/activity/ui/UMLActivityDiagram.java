@@ -63,7 +63,7 @@ import org.tigris.gef.graph.GraphModel;
 /**
  * The Activity diagram.<p>
  *
- * TODO: Finish the work on swimlanes, subactivity states.
+ * TODO: Finish the work on subactivity states.
  */
 public class UMLActivityDiagram extends UMLDiagram {
     
@@ -306,7 +306,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    getActionJunctionPseudoState(),
 	    getActionForkPseudoState(),
 	    getActionJoinPseudoState(),
-//	    getActionNewSwimlane(), // uncomment this ...
+	    getActionNewSwimlane(),
 	    null,
 	    getActionCallState(),
             getActionObjectFlowState(),
