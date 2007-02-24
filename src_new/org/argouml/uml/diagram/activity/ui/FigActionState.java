@@ -154,39 +154,6 @@ public class FigActionState extends FigStateVertex {
     }
 
     /*
-     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#setEnclosingFig(org.tigris.gef.presentation.Fig)
-     */
-    public void setEnclosingFig(Fig encloser) {
-        LayerPerspective layer = (LayerPerspective) getLayer();
-        // If the layer is null, then most likely we are being deleted.
-        if (layer == null) return;
-
-        // remove from old partition
-        if (encloser == null || encloser != getEncloser()) {
-            if (getEncloser() != null) {
-                Object partition = getEncloser().getOwner();
-                if (partition != null 
-                        && Model.getFacade().isAPartition(partition)) {
-                    Collection c = Model.getFacade().getContents(partition);
-                    c.remove(getOwner());
-                    Model.getActivityGraphsHelper().setContents(partition, c);
-                }
-            }
-        }
-        
-        // add to new partition
-        if (encloser != null) {
-            Object partition = encloser.getOwner();
-            if (Model.getFacade().isAPartition(partition)) {
-                Collection c = Model.getFacade().getContents(partition);
-                c.add(getOwner());
-                Model.getActivityGraphsHelper().setContents(partition, c);
-            }
-        }
-        super.setEnclosingFig(encloser);
-    }
-
-    /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
