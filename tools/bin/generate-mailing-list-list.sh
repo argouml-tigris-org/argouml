@@ -6,9 +6,12 @@
 # to click through the Tigris site to examine that all mailing lists are
 # set correctly and to remember what they are supposed to be set to.
 
-EDIT=edit.html
-VIEW=view.html
-SUBSCRIBERS=subs.html
+dir=generated
+test -d $dir || mkdir $dir
+
+EDIT=$dir/edit.html
+VIEW=$dir/view.html
+SUBSCRIBERS=$dir/subs.html
 
 files="$EDIT $VIEW $SUBSCRIBERS"
 # First the projects directly under argouml
@@ -96,7 +99,7 @@ delayincr=1000
 # 2 - the project
 # 3 - the listname
 function onelist() {
-    echo "<a href=\"http://$2.tigris.org/nonav/servlets/$1\" target=\"frame-$2-$3\">Refetch</a>"
+    echo "<a href=\"http://$2.tigris.org/nonav/servlets/$1\" target=\"frame-$2-$3$4\">Refetch</a>"
     echo "<a href=\"http://$2.tigris.org/servlets/MailingListEdit?list=$3\" target=\"_blank\">Open Edit</a>"
     echo "<a href=\"http://$2.tigris.org/servlets/SummarizeList?list=$3\" target=\"_blank\">Open View</a>"
     for subscribersalt in Subscribers Digest+Subscribers Moderators Allowed+Posters
@@ -105,9 +108,9 @@ function onelist() {
     done
 
     echo "<br>"
-    echo "<IFRAME name=\"frame-$2-$3\" width=\"800\" height=\"600\"></IFRAME>"
+    echo "<IFRAME name=\"frame-$2-$3$4\" width=\"800\" height=\"600\"></IFRAME>"
     echo "<script>"
-    echo "setTimeout(\"document.frames('frame-$2-$3').location.href='http://$2.tigris.org/nonav/servlets/$1'\", $delay)"
+    echo "setTimeout(\"document.frames('frame-$2-$3$4').location.href='http://$2.tigris.org/nonav/servlets/$1'\", $delay)"
     echo "</script>"
     echo "<br>"
     delay=`expr $delay + $delayincr`
@@ -191,7 +194,7 @@ do
             echo "$subscribersalt for $listname in the project $proj" >> $SUBSCRIBERS
 	    echo '</h3>' >> $SUBSCRIBERS
 
-	    onelist "MailingListMembers?list=$listname&group=$subscribersalt" $proj $listname-$subscribersalt >> $SUBSCRIBERS
+	    onelist "MailingListMembers?list=$listname&group=$subscribersalt" $proj $listname $subscribersalt >> $SUBSCRIBERS
 
 	    echo '</DIV>' >> $SUBSCRIBERS
         done
