@@ -618,15 +618,17 @@ public abstract class FigNodeModelElement
 	Fig oldEncloser = encloser;
 	super.setEnclosingFig(newEncloser);
 	if (newEncloser != oldEncloser) {
-            UMLDiagram diagram =
-        	(UMLDiagram) getProject().getActiveDiagram();
-            
             Object namespace = null;
             if (newEncloser != null) {
-        	namespace = newEncloser.getOwner();
+                namespace = newEncloser.getOwner();
             }
-            diagram.setModelElementNamespace(getOwner(), namespace);
-            
+            LayerPerspective layer = (LayerPerspective) getLayer();
+            if (layer != null) {
+                UMLDiagram diagram =
+                    (UMLDiagram) getProject().getActiveDiagram();
+                diagram.setModelElementNamespace(getOwner(), namespace);
+            }
+
 	    if (encloser instanceof FigNodeModelElement) {
 		((FigNodeModelElement) encloser).removeEnclosedFig(this);
             }
