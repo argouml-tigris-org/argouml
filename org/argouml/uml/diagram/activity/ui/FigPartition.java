@@ -604,15 +604,21 @@ public class FigPartition extends FigNodeModelElement {
     /**
      * @param nextPartition The nextPartition to set.
      */
-    private void setNextPartition(FigPartition next) {
+    void setNextPartition(FigPartition next) {
         this.nextPartition = next;
+        if (next != null) {
+            next.getLayer().bringInFrontOf(this, next);
+        }
     }
 
     /**
      * @param previousPartition The previousPartition to set.
      */
-    private void setPreviousPartition(FigPartition previous) {
+    void setPreviousPartition(FigPartition previous) {
         this.previousPartition = previous;
+        if (previous != null) {
+            previous.getLayer().bringInFrontOf(previous, this);
+        }
         leftLine.setVisible(previousPartition == null);
     }
 }
