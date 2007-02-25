@@ -556,7 +556,6 @@ public class FigPartition extends FigNodeModelElement {
                 newHeight = (newHeight < minHeight) ? minHeight : newHeight;
                 newX = x + w - newWidth;
                 newY = y + h - newHeight;
-                fig.setHandleBox(newX, newY, newWidth, newHeight);
                 if ((newX + newWidth) != (x + w)) {
                     newX += (newX + newWidth) - (x + w);
                 }
@@ -579,7 +578,6 @@ public class FigPartition extends FigNodeModelElement {
                 newHeight = y + h - mY;
                 newHeight = (newHeight < minHeight) ? minHeight : newHeight;
                 newY = y + h - newHeight;
-                fig.setHandleBox(newX, newY, newWidth, newHeight);
                 if ((newY + newHeight) != (y + h)) {
                     newY += (newY + newHeight) - (y + h);
                 }
@@ -601,7 +599,6 @@ public class FigPartition extends FigNodeModelElement {
                 newHeight = mY - y;
                 newHeight = (newHeight < minHeight) ? minHeight : newHeight;
                 newX = x + w - newWidth;
-                fig.setHandleBox(newX, newY, newWidth, newHeight);
                 if ((newX + newWidth) != (x + w)) {
                     newX += (newX + newWidth) - (x + w);
                 }
@@ -639,20 +636,24 @@ public class FigPartition extends FigNodeModelElement {
         	int width, 
         	int height) {
             
+            int newNeighbourWidth = 0;
+            if (neighbour != null) {
+                newNeighbourWidth = 
+                    (neighbour.getWidth() + getContent().getWidth()) - width;
+        	if (neighbour.getMinimumSize().width > newNeighbourWidth) {
+        	    return;
+        	}
+            }
+            
             Iterator it = partitions.iterator();
             while (it.hasNext()) {
         	Fig f = (Fig) it.next();
         	if (f == getContent()) {
                     f.setHandleBox(x, y, width, height);
         	} else if (f == neighbour && f == previousPartition) {
-                    f.setHandleBox(
-                	    f.getX(), y, x - f.getX(), height);
+                    f.setHandleBox(f.getX(), y, newNeighbourWidth, height);
         	} else if (f == neighbour && f == nextPartition) {
-                    f.setHandleBox(
-                	    x + width,
-                	    y,
-                	    f.getWidth() - (f.getX() - x),
-                	    height);
+                    f.setHandleBox(x + width, y, newNeighbourWidth, height);
         	} else {
                     f.setHandleBox(f.getX(), y, f.getWidth(), height);
         	}
