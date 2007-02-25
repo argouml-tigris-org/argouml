@@ -628,11 +628,17 @@ public abstract class FigNodeModelElement
         	// Set the namespace of the enclosed model element to the
         	// namespace of the encloser.
                 Object namespace = null;
-                if (newEncloser != null) {
-                    namespace = newEncloser.getOwner();
-                }
                 UMLDiagram diagram = (UMLDiagram) project.getActiveDiagram();
-                diagram.setModelElementNamespace(getOwner(), namespace);
+                if (newEncloser == null) {
+                    // The node's been placed on the diagram
+                    diagram.setModelElementNamespace(getOwner(), null);
+                } else { 
+                    // The node's been placed within some Fig
+                    namespace = newEncloser.getOwner();
+                    if (Model.getFacade().isANamespace(namespace)) {
+                        diagram.setModelElementNamespace(getOwner(), namespace);
+                    }
+                }
             }
 
 	    if (encloser instanceof FigNodeModelElement) {
