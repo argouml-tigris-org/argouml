@@ -72,7 +72,7 @@ public class FigPartition extends FigNodeModelElement {
         bottomLine = new FigLine(10, 300, 150, 300);
         topLine = new FigLine(10, 10, 150, 10);
 
-        getNameFig().setLineWidth(0);
+        getNameFig().setLineWidth(1);
         getNameFig().setBounds(10 + PADDING, 10, 50 - PADDING * 2, 25);
         getNameFig().setFilled(false);
 
@@ -232,12 +232,11 @@ public class FigPartition extends FigNodeModelElement {
         Rectangle oldBounds = getBounds();
 
         Rectangle nameBounds = getNameFig().getBounds();
-        getNameFig().setBounds(x + PADDING, y, w - PADDING * 2,
-                nameBounds.height);
+        getNameFig().setBounds(x, y, w, nameBounds.height);
 
         getBigPort().setBounds(x, y, w, h);
         leftLine.setBounds(x, y, 0, h);
-        rightLine.setBounds(x + w , y, 0, h);
+        rightLine.setBounds(x + (w - 1) , y, 0, h);
         topLine.setBounds(x, y, w, 0);
         bottomLine.setBounds(x, y + h, w, 0);
 
