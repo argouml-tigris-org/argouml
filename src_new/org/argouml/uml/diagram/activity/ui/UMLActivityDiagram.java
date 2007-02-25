@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.activity.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.Action;
@@ -655,7 +656,7 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     public void postLoad() {
 	FigPartition previous = null;
-	Iterator it = getLayer().getContents().iterator();
+	Iterator it = new ArrayList(getLayer().getContents()).iterator();
 	while (it.hasNext()) {
 	    Fig f = (Fig) it.next();
 	    if (f instanceof FigPartition) {
