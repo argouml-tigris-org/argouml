@@ -56,10 +56,12 @@ public class FigPartition extends FigNodeModelElement {
     private FigLine rightLine;
     private FigLine topLine;
     private FigLine bottomLine;
+    private FigLine seperator;
     private boolean placed;
-
-    private static final int PADDING = 8;
-
+    
+    private FigPartition previousPartition;
+    private FigPartition nextPartition;
+    
     /**
      * Constructor.
      */
@@ -72,9 +74,11 @@ public class FigPartition extends FigNodeModelElement {
         bottomLine = new FigLine(10, 300, 150, 300);
         topLine = new FigLine(10, 10, 150, 10);
 
-        getNameFig().setLineWidth(1);
-        getNameFig().setBounds(10 + PADDING, 10, 50 - PADDING * 2, 25);
+        getNameFig().setLineWidth(0);
+        getNameFig().setBounds(10, 10, 50, 25);
         getNameFig().setFilled(false);
+        
+        seperator = new FigLine(10, 25, 150, 25);
 
         addFig(getBigPort());
         addFig(rightLine);
@@ -82,6 +86,7 @@ public class FigPartition extends FigNodeModelElement {
         addFig(topLine);
         addFig(bottomLine);
         addFig(getNameFig());
+        addFig(seperator);
 
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
@@ -97,7 +102,7 @@ public class FigPartition extends FigNodeModelElement {
         this();
         setOwner(node);
     }
-
+    
     /*
      * @see java.lang.Object#clone()
      */
@@ -110,6 +115,7 @@ public class FigPartition extends FigNodeModelElement {
         figClone.bottomLine = (FigLine) it.next();
         figClone.topLine = (FigLine) it.next();
         figClone.setNameFig((FigText) it.next());
+//        figClone.seperator = (FigLine) it.next();
         return figClone;
     }
 
@@ -135,6 +141,9 @@ public class FigPartition extends FigNodeModelElement {
     public void setLineColor(Color col) {
         rightLine.setLineColor(col);
         leftLine.setLineColor(col);
+        bottomLine.setLineColor(col);
+        topLine.setLineColor(col);
+        getNameFig().setLineColor(col);
     }
 
     /*
@@ -200,7 +209,7 @@ public class FigPartition extends FigNodeModelElement {
      */
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
-        int w = nameDim.width + PADDING * 2;
+        int w = nameDim.width;
         int h = nameDim.height;
 
         // we want to maintain a minimum size for the partition
@@ -237,8 +246,9 @@ public class FigPartition extends FigNodeModelElement {
         getBigPort().setBounds(x, y, w, h);
         leftLine.setBounds(x, y, 0, h);
         rightLine.setBounds(x + (w - 1) , y, 0, h);
-        topLine.setBounds(x, y, w, 0);
-        bottomLine.setBounds(x, y + h, w, 0);
+        topLine.setBounds(x, y, w - 1, 0);
+        bottomLine.setBounds(x, y + h, w - 1, 0);
+        seperator.setBounds(x, y + nameBounds.height, w - 1, 0);
 
         firePropChange("bounds", oldBounds, getBounds());
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
@@ -267,45 +277,80 @@ public class FigPartition extends FigNodeModelElement {
      * FigPartitions. If so place to the right and resize height.
      */
     public void postPlacement() {
-	List partitions = getPartitions();
+	List partitions = getPartitions(getLayer());
 	
 	if (partitions.size() > 1) {
             int x = 0;
-            int y = 0;
-            int height = 0;
 	    Iterator it = partitions.iterator();
-            Fig f = null;
+	    FigPartition f = null;
+	    FigPartition previousFig = null;
 	    while (it.hasNext()) {
-		f = (Fig) it.next();
+		f = (FigPartition) it.next();
 		if (f != this && f.getX() + f.getWidth() > x) {
-		    x = f.getX() + f.getWidth();
-		    y = f.getY();
-		    height = f.getHeight();
+		    previousFig = f;
+		    x = f.getX();
 		}
 	    }
-	    setBounds(x, y, getWidth(), height);
+	    setPreviousPartition(previousFig);
+	    previousPartition.setNextPartition(this);
+	    setBounds(
+		    x + previousFig.getWidth(),
+		    previousFig.getY(),
+		    getWidth(),
+		    previousFig.getHeight());
 	}
+    }
+    
+    public void removeFromDiagramImpl() {
+	int width = getWidth();
+	
+	super.removeFromDiagramImpl();
+	
+	FigPartition next = nextPartition;
+	while (next != null) {
+	    next.translateWithContents(-width);
+            next = next.nextPartition;
+	}
+	
+	if (nextPartition != null) {
+	    nextPartition.setPreviousPartition(previousPartition);
+	}
+	
+	if (previousPartition != null) {
+	    previousPartition.setNextPartition(nextPartition);
+	}
+	
+	setPreviousPartition(null);
+	setNextPartition(null);
+    }
+    
+    private void translateWithContents(int dx) {
+	Iterator it = getEnclosedFigs().iterator();
+	while (it.hasNext()) {
+	    Fig f = (Fig) it.next();
+            f.setX(f.getX() + dx);
+	}
+	setX(getX() + dx);
+	damage();
     }
     
     /**
      * Get all the partitions on the same layer as this FigPartition
      * @return th partitions
      */
-    private List getPartitions() {
+    private List getPartitions(Layer layer) {
         final List partitions = new ArrayList();
         
-        if (getLayer() != null) {
-            Iterator it = getLayer().getContents().iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
-                if (o instanceof FigPartition) {
-                    partitions.add(o);
-                }
+        Iterator it = layer.getContents().iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof FigPartition) {
+                partitions.add(o);
             }
         }
+        
         return partitions;
     }
-    
     
     /**
      * A specialist Selection class for FigPartitions.
@@ -468,7 +513,7 @@ public class FigPartition extends FigNodeModelElement {
         public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
             
             final Fig fig = getContent();
-            final List partitions = getPartitions();
+            final List partitions = getPartitions(getLayer());
 
             updateHandleBox();
         
@@ -554,6 +599,21 @@ public class FigPartition extends FigNodeModelElement {
             }
             
         }
+    }
+
+    /**
+     * @param nextPartition The nextPartition to set.
+     */
+    private void setNextPartition(FigPartition next) {
+        this.nextPartition = next;
+    }
+
+    /**
+     * @param previousPartition The previousPartition to set.
+     */
+    private void setPreviousPartition(FigPartition previous) {
+        this.previousPartition = previous;
+        leftLine.setVisible(previousPartition == null);
     }
 }
 
