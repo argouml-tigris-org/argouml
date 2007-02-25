@@ -660,11 +660,13 @@ public class UMLActivityDiagram extends UMLDiagram {
 	while (it.hasNext()) {
 	    Fig f = (Fig) it.next();
 	    if (f instanceof FigPartition) {
+		FigPartition fp = (FigPartition) f;
 		if (previous != null) {
-		    previous.setNextPartition((FigPartition) f);
+		    previous.setNextPartition(fp);
 		}
-		((FigPartition) f).setPreviousPartition(previous);
-		previous = (FigPartition) f; 
+		fp.setPreviousPartition(previous);
+		fp.setNextPartition(null);
+		previous = fp; 
 	    }
 	}
     }
