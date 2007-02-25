@@ -35,6 +35,7 @@ import java.util.List;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -51,7 +52,11 @@ import org.tigris.gef.presentation.Handle;
  */
 public class FigPartition extends FigNodeModelElement {
 
-    private FigLine leftLine, rightLine;
+    private FigLine leftLine;
+    private FigLine rightLine;
+    private FigLine topLine;
+    private FigLine bottomLine;
+    private boolean placed;
 
     private static final int PADDING = 8;
 
@@ -64,6 +69,8 @@ public class FigPartition extends FigNodeModelElement {
         getBigPort().setLineWidth(0);
         leftLine = new FigLine(10, 10, 10, 300);
         rightLine = new FigLine(150, 10, 160, 300);
+        bottomLine = new FigLine(10, 300, 150, 300);
+        topLine = new FigLine(10, 10, 150, 10);
 
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(10 + PADDING, 10, 50 - PADDING * 2, 25);
@@ -72,6 +79,8 @@ public class FigPartition extends FigNodeModelElement {
         addFig(getBigPort());
         addFig(rightLine);
         addFig(leftLine);
+        addFig(topLine);
+        addFig(bottomLine);
         addFig(getNameFig());
 
         Rectangle r = getBounds();
@@ -98,6 +107,8 @@ public class FigPartition extends FigNodeModelElement {
         figClone.setBigPort((FigRect) it.next());
         figClone.rightLine = (FigLine) it.next();
         figClone.leftLine = (FigLine) it.next();
+        figClone.bottomLine = (FigLine) it.next();
+        figClone.topLine = (FigLine) it.next();
         figClone.setNameFig((FigText) it.next());
         return figClone;
     }
@@ -227,6 +238,8 @@ public class FigPartition extends FigNodeModelElement {
         getBigPort().setBounds(x, y, w, h);
         leftLine.setBounds(x, y, 0, h);
         rightLine.setBounds(x + w , y, 0, h);
+        topLine.setBounds(x, y, w, 0);
+        bottomLine.setBounds(x, y + h, w, 0);
 
         firePropChange("bounds", oldBounds, getBounds());
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
@@ -236,6 +249,64 @@ public class FigPartition extends FigNodeModelElement {
     public Selection makeSelection() {
 	return new SelectionPartition(this);
     }
+    
+    /**
+     * TODO: Create an abstract postPlacement method in Fig and have ModePlace
+     * call. This method can then be removed.
+     * @param layer The Layer containing this Fig
+     */
+    public void setLayer(Layer layer) {
+	super.setLayer(layer);
+	if (!placed && layer != null) {
+	    placed = true;
+	    postPlacement();
+	}
+    }
+    
+    /**
+     * On post placement look to see if there are any other
+     * FigPartitions. If so place to the right and resize height.
+     */
+    public void postPlacement() {
+	List partitions = getPartitions();
+	
+	if (partitions.size() > 1) {
+            int x = 0;
+            int y = 0;
+            int height = 0;
+	    Iterator it = partitions.iterator();
+            Fig f = null;
+	    while (it.hasNext()) {
+		f = (Fig) it.next();
+		if (f != this && f.getX() + f.getWidth() > x) {
+		    x = f.getX() + f.getWidth();
+		    y = f.getY();
+		    height = f.getHeight();
+		}
+	    }
+	    setBounds(x, y, getWidth(), height);
+	}
+    }
+    
+    /**
+     * Get all the partitions on the same layer as this FigPartition
+     * @return th partitions
+     */
+    private List getPartitions() {
+        final List partitions = new ArrayList();
+        
+        if (getLayer() != null) {
+            Iterator it = getLayer().getContents().iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof FigPartition) {
+                    partitions.add(o);
+                }
+            }
+        }
+        return partitions;
+    }
+    
     
     /**
      * A specialist Selection class for FigPartitions.
@@ -398,15 +469,7 @@ public class FigPartition extends FigNodeModelElement {
         public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
             
             final Fig fig = getContent();
-            final List partitions = new ArrayList();
-        
-            Iterator it = fig.getLayer().getContents().iterator();
-            while (it.hasNext()) {
-        	Object o = it.next();
-        	if (o instanceof FigPartition) {
-        	    partitions.add(o);
-        	}
-            }
+            final List partitions = getPartitions();
 
             updateHandleBox();
         
