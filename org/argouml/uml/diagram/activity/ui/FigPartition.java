@@ -352,6 +352,28 @@ public class FigPartition extends FigNodeModelElement {
         return partitions;
     }
     
+
+    /**
+     * @param nextPartition The nextPartition to set.
+     */
+    void setNextPartition(FigPartition next) {
+        this.nextPartition = next;
+        if (next != null) {
+            next.getLayer().bringInFrontOf(this, next);
+        }
+    }
+
+    /**
+     * @param previousPartition The previousPartition to set.
+     */
+    void setPreviousPartition(FigPartition previous) {
+        this.previousPartition = previous;
+        if (previous != null) {
+            previous.getLayer().bringInFrontOf(previous, this);
+        }
+        leftLine.setVisible(previousPartition == null);
+    }
+    
     /**
      * A specialist Selection class for FigPartitions.
      * This ensures that all swimlanes are the same length (ie height).
@@ -507,8 +529,7 @@ public class FigPartition extends FigNodeModelElement {
         
         /**
          * Change some attribute of the selected Fig when the user drags one
-         * of its handles. Needs-More-Work: someday I might implement resizing
-         * that maintains the aspect ratio.
+         * of its handles.
          */
         public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
             
@@ -542,7 +563,13 @@ public class FigPartition extends FigNodeModelElement {
                 if ((newY + newHeight) != (y + h)) {
                     newY += (newY + newHeight) - (y + h);
                 }
-                setHandleBox(partitions, newX, newY, newWidth, newHeight);
+                setHandleBox(
+                	previousPartition, 
+                	partitions, 
+                	newX, 
+                	newY, 
+                	newWidth, 
+                	newHeight);
                 return;
             case Handle.NORTH :
                 break;
@@ -556,7 +583,13 @@ public class FigPartition extends FigNodeModelElement {
                 if ((newY + newHeight) != (y + h)) {
                     newY += (newY + newHeight) - (y + h);
                 }
-                setHandleBox(partitions, newX, newY, newWidth, newHeight);
+                setHandleBox(
+                	nextPartition, 
+                	partitions, 
+                	newX, 
+                	newY, 
+                	newWidth, 
+                	newHeight);
                 break;
             case Handle.WEST :
                 break;
@@ -572,7 +605,13 @@ public class FigPartition extends FigNodeModelElement {
                 if ((newX + newWidth) != (x + w)) {
                     newX += (newX + newWidth) - (x + w);
                 }
-                setHandleBox(partitions, newX, newY, newWidth, newHeight);
+                setHandleBox(
+                	previousPartition, 
+                	partitions, 
+                	newX, 
+                	newY, 
+                	newWidth, 
+                	newHeight);
                 break;
             case Handle.SOUTH :
                 break;
@@ -581,45 +620,45 @@ public class FigPartition extends FigNodeModelElement {
                 newWidth = (newWidth < minWidth) ? minWidth : newWidth;
                 newHeight = mY - y;
                 newHeight = (newHeight < minHeight) ? minHeight : newHeight;
-                setHandleBox(partitions, newX, newY, newWidth, newHeight);
+                setHandleBox(
+                	nextPartition, 
+                	partitions, 
+                	newX, 
+                	newY, 
+                	newWidth, 
+                	newHeight);
                 break;
             }
         }
         
         private void setHandleBox(
-        	List partitions, int x, int y, int width, int height) {
+        	FigPartition neighbour, 
+        	List partitions, 
+        	int x, 
+        	int y, 
+        	int width, 
+        	int height) {
+            
             Iterator it = partitions.iterator();
             while (it.hasNext()) {
         	Fig f = (Fig) it.next();
         	if (f == getContent()) {
                     f.setHandleBox(x, y, width, height);
+        	} else if (f == neighbour && f == previousPartition) {
+                    f.setHandleBox(
+                	    f.getX(), y, x - f.getX(), height);
+        	} else if (f == neighbour && f == nextPartition) {
+                    f.setHandleBox(
+                	    x + width,
+                	    y,
+                	    f.getWidth() - (f.getX() - x),
+                	    height);
         	} else {
                     f.setHandleBox(f.getX(), y, f.getWidth(), height);
         	}
             }
             
         }
-    }
-
-    /**
-     * @param nextPartition The nextPartition to set.
-     */
-    void setNextPartition(FigPartition next) {
-        this.nextPartition = next;
-        if (next != null) {
-            next.getLayer().bringInFrontOf(this, next);
-        }
-    }
-
-    /**
-     * @param previousPartition The previousPartition to set.
-     */
-    void setPreviousPartition(FigPartition previous) {
-        this.previousPartition = previous;
-        if (previous != null) {
-            previous.getLayer().bringInFrontOf(previous, this);
-        }
-        leftLine.setVisible(previousPartition == null);
     }
 }
 
