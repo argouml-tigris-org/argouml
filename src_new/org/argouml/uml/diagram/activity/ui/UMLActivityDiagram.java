@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.activity.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.util.Iterator;
 
 import javax.swing.Action;
 
@@ -59,6 +60,7 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
 
 /**
  * The Activity diagram.<p>
@@ -66,6 +68,11 @@ import org.tigris.gef.graph.GraphModel;
  * TODO: Finish the work on subactivity states.
  */
 public class UMLActivityDiagram extends UMLDiagram {
+    
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6223128918989919230L;
     
     /**
      * this diagram needs to be deleted when its statemachine is deleted.
@@ -641,9 +648,24 @@ public class UMLActivityDiagram extends UMLDiagram {
     public boolean relocate(Object base) {
         return false;
     }
-
+    
     /**
-     * The UID.
+     * Once the diagram has loaded we build the previous/next links between
+     * any swimlanes.
      */
-    private static final long serialVersionUID = 6223128918989919230L;
+    public void postLoad() {
+	FigPartition previous = null;
+	Iterator it = getLayer().getContents().iterator();
+	while (it.hasNext()) {
+	    Fig f = (Fig) it.next();
+	    if (f instanceof FigPartition) {
+		if (previous != null) {
+		    previous.setNextPartition((FigPartition) f);
+		}
+		((FigPartition) f).setPreviousPartition(previous);
+		previous = (FigPartition) f; 
+	    }
+	}
+    }
+
 } /* end class UMLActivityDiagram */
