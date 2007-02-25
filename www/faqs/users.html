@@ -474,11 +474,11 @@ avoid the warning.
 <DD>
 <h5>For the impatient:</h5>
 <ol>
-<li>Download "argouml-linus-1.cer"
+<li>Download "argouml-linus-2.cer"
 <li>Use keytool to import the certificate to <tt>jre/javaws/cacerts</tt>
 (Give password: changeit)
     <pre>
-keytool -import -alias linus@tigris.org -file argouml-linus-1.cer -keystore cacerts
+keytool -import -alias linus@tigris.org -file argouml-linus-2.cer -keystore cacerts
     </pre>
 <li>Verify the fingerprints.
 </ol>
@@ -492,18 +492,19 @@ what you are doing</h5>
    ( To be honest you can't be sure that it is not a fake what you are seeing
      unless tigris.org will supply a https://argouml.tigris.org )
 
-<li>Download "argouml-linus-1.cer".
+<li>Download "argouml-linus-2.cer".
    ( The self signed certificate of the public key that Linus Tolke
      uses to make the ArgoUML releases.
      You must trust that it was put there by Linus Tolke and
      that it has not been compromised on the tigris server or
      while moving it from the tigris server to your computer. )
-    Starting with release 0.23.3 there is a new certificate called
-    "argouml-linus-2.cer".
+    Before the release 0.23.3 the certificate was called
+    "argouml-linus-1.cer".
      
-<li>Note one of the hashcodes:<pre>
-   MD5: F1:A9:ED:79:88:91:19:31:AA:69:EE:A0:8F:AF:4A:43
-   SHA1: B5:F4:02:AC:7D:34:FF:61:D4:56:CF:AE:10:F8:1D:B9:24:AB:DF:AA
+<li>Note one of the hashcodes:
+   <pre>
+   MD5:  88:B9:BB:BE:B8:53:F8:97:FC:B4:AE:9F:E2:2F:21:50
+   SHA1: 1C:5D:60:B3:77:29:94:4A:1F:BE:B0:0E:D5:D9:66:63:9B:EC:E5:E6
    </pre>
    that are published together with the file on tigris.org.
    Be sure to get it from there!
@@ -512,12 +513,12 @@ what you are doing</h5>
      and that they have not been compromised while on the tigris server or
      while moving them from the tigris server to your computer. )
 
-   Starting with release 0.23.3 there is a new certificate called
-    "argouml-linus-2.cer".
-   The new certificate has the hash codes
+   Before release 0.23.3 the certificate file was called
+    "argouml-linus-1.cer".
+   The old certificate had the hash codes
    <pre>
-   MD5:  88:B9:BB:BE:B8:53:F8:97:FC:B4:AE:9F:E2:2F:21:50
-   SHA1: 1C:5D:60:B3:77:29:94:4A:1F:BE:B0:0E:D5:D9:66:63:9B:EC:E5:E6
+   MD5: F1:A9:ED:79:88:91:19:31:AA:69:EE:A0:8F:AF:4A:43
+   SHA1: B5:F4:02:AC:7D:34:FF:61:D4:56:CF:AE:10:F8:1D:B9:24:AB:DF:AA
    </pre>
 
 <li>Import the certificate to your local installation of Java Web Start.
@@ -526,7 +527,7 @@ what you are doing</h5>
    <li>In a terminal window (DOS-Box) change to your Java Web Start folder,
        usually this would be $JAVA_HOME/jre/javaws (%JAVA_HOME%\jre\javaws)
    <li>Enter<pre>
-keytool -import -alias linus@tigris.org -file argouml-linus-1.cer -keystore cacerts
+keytool -import -alias linus@tigris.org -file argouml-linus-2.cer -keystore cacerts
        </pre>
    <li>If you are asked for the password enter the default "changeit" or
        the appropriate one that you have assigned
@@ -547,18 +548,18 @@ is highly recommended not to install and run this code."
 Now <em>you</em> are trusting the updates from ArgoUML issued by
 Linus Tolke using this certificate.<p>
 
-If you notice that the current (September 2004) certificate
+If you notice that the September 2004 certificate
 ("argouml-linus-1.cer")
-expires in November 2006,
-you understand that Linus Tolke
-created a new certificate (in October 2006) and then the
+expired in November 2006,
+that was the reason Linus Tolke
+created a new certificate (in October 2006) and the
 fingerprints for the new certificate are different.
 The new certificate ("argouml-linus-2.cer")
-expires in March 2012 and then a new certificate will be created
+expires in March 2012 and then a new certificate will be created then
 unless something has happened that changes this.
-Another thing that might happen is that Linus Tolke will let someone
+If Linus Tolke will let someone
 else do the release work and sign the Java Web Start releases with
-a new key.
+a new key the key will change.
 In both of these cases you will have to do this all over again to trust
 the new certificate.<p>
 
