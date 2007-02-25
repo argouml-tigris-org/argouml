@@ -143,7 +143,7 @@ public class FigPartition extends FigNodeModelElement {
         leftLine.setLineColor(col);
         bottomLine.setLineColor(col);
         topLine.setLineColor(col);
-        getNameFig().setLineColor(col);
+        seperator.setLineColor(col);
     }
 
     /*
