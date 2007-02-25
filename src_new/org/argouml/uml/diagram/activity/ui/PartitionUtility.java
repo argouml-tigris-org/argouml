@@ -43,7 +43,10 @@ public class PartitionUtility {
      * This method handles 3 cases: 
      * moving a element from the diagram on a partition, 
      * from a partition onto the diagram, 
-     * and from one partition to another.
+     * and from one partition to another. <p>
+     * 
+     * This code adds the following constraint on top of the UML standard:
+     * An element can only be contained by at most one partition.
      * 
      * @param oldEncloser the old encloser fig (or null)
      * @param newEncloser the new encloser fig (or null)

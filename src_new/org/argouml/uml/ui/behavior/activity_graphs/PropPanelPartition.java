@@ -82,6 +82,20 @@ public class PropPanelPartition extends PropPanelModelElement {
     }
 
     /**
+     * This field intentionally allows to do far more things 
+     * than would be possible by dragging elements in or out 
+     * of the FigPartition. <p>
+     * 
+     * E.g. if you only use dragging, then an element belongs to 
+     * at most one partition, a logical presumption. 
+     * The ActionAddPartitionContent however,
+     * allows modifying the model in such way that
+     * elements belong to more than one partition,
+     * which is not prohibited by the UML standard. <p>
+     * 
+     * These extra possibilities are needed e.g. to amend 
+     * a model loaded in XMI format.
+     * 
      * @return a textfield for the name
      */
     protected JComponent getContentsField() {
