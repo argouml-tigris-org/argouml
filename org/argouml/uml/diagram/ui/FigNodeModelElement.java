@@ -618,14 +618,20 @@ public abstract class FigNodeModelElement
 	Fig oldEncloser = encloser;
 	super.setEnclosingFig(newEncloser);
 	if (newEncloser != oldEncloser) {
-            Object namespace = null;
-            if (newEncloser != null) {
-                namespace = newEncloser.getOwner();
-            }
-            LayerPerspective layer = (LayerPerspective) getLayer();
-            if (layer != null) {
-                UMLDiagram diagram =
-                    (UMLDiagram) getProject().getActiveDiagram();
+            Project project = getProject();
+            if (project == null) {
+        	// If the project is null then the diagram is still loading
+        	// and we don't effect the model.
+        	// Reminder - make sure that this is still the case when moving
+        	// knowedge of Project out of the diagram subsystem - Bob
+            } else {
+        	// Set the namespace of the enclosed model element to the
+        	// namespace of the encloser.
+                Object namespace = null;
+                if (newEncloser != null) {
+                    namespace = newEncloser.getOwner();
+                }
+                UMLDiagram diagram = (UMLDiagram) project.getActiveDiagram();
                 diagram.setModelElementNamespace(getOwner(), namespace);
             }
 
