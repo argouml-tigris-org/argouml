@@ -37,6 +37,7 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
@@ -144,7 +145,12 @@ class ActionSetClassifierInStateType extends UndoableAction {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object obj = box.getTarget();
             if (Model.getFacade().isAClassifierInState(obj)) {
-                oldClassifier = Model.getFacade().getType(obj);
+                try {
+					oldClassifier = Model.getFacade().getType(obj);
+				} catch (InvalidElementException e1) {
+					/* No problem - this ClassifierInState was just erased. */
+					return;
+				}
                 cis = obj;
             }
             Object cl = box.getSelectedItem();
