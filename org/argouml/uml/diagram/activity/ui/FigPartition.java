@@ -375,6 +375,14 @@ public class FigPartition extends FigNodeModelElement {
     }
     
     /**
+     * When dragging this partition drag all other partitions with it.
+     * @return all the partitions to drag togther.
+     */
+    public List getDragDependencies() {
+	return getPartitions(getLayer());
+    }
+    
+    /**
      * A specialist Selection class for FigPartitions.
      * This ensures that all swimlanes are the same length (ie height).
      * TODO: Make sure that all swimlanes appear side by side (UML spec
