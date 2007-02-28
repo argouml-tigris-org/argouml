@@ -32,11 +32,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -117,22 +115,6 @@ public class FigPartition extends FigNodeModelElement {
         figClone.setNameFig((FigText) it.next());
 //        figClone.seperator = (FigLine) it.next();
         return figClone;
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#setEnclosingFig(org.tigris.gef.presentation.Fig)
-     */
-    public void setEnclosingFig(Fig newEncloser) {
-        super.setEnclosingFig(newEncloser);
-        LayerPerspective layer = (LayerPerspective) getLayer();
-        // If the layer is null, then most likely we are being deleted.
-        if (newEncloser == null && layer != null) {
-            UMLActivityDiagram diagram = 
-                (UMLActivityDiagram) getProject().getActiveDiagram();
-            Object machine = diagram.getStateMachine();
-            Model.getCoreHelper().setModelElementContainer(
-                    getOwner(), machine);
-        }
     }
 
     /*
@@ -219,17 +201,6 @@ public class FigPartition extends FigNodeModelElement {
         return new Dimension(w, h);
     }
 
-    /**
-     * Using a traprect enables us to move containing figs easily.
-     *
-     * @return <code>true</code>
-     *
-     * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
-     */
-    public boolean getUseTrapRect() {
-        return true;
-    }
-
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
@@ -279,7 +250,14 @@ public class FigPartition extends FigNodeModelElement {
     public void postPlacement() {
 	List partitions = getPartitions(getLayer());
 	
-	if (partitions.size() > 1) {
+	if (partitions.size() == 1) {
+	    FigPool fp = new FigPool();
+	    getLayer().add(fp);
+	    fp.setBounds(getBounds());
+	} else if (partitions.size() > 1) {
+	    FigPool fp = getFigPool();
+	    fp.setWidth(fp.getWidth() + getWidth());
+	    
             int x = 0;
 	    Iterator it = partitions.iterator();
 	    FigPartition f = null;
@@ -324,6 +302,9 @@ public class FigPartition extends FigNodeModelElement {
 	setNextPartition(null);
     }
     
+    // TODO: Needs work. Must determine which Figs enclosed
+    // in the pool are within the bounds of this Fig
+    // and translate those.
     private void translateWithContents(int dx) {
 	Iterator it = getEnclosedFigs().iterator();
 	while (it.hasNext()) {
@@ -352,6 +333,22 @@ public class FigPartition extends FigNodeModelElement {
         return partitions;
     }
     
+    /**
+     * Get all the partitions on the same layer as this FigPartition
+     * @return th partitions
+     */
+    private FigPool getFigPool() {
+        Iterator it = getLayer().getContents().iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof FigPool) {
+                return (FigPool) o;
+            }
+        }
+        
+        return null;
+    }
+    
 
     /**
      * @param nextPartition The nextPartition to set.
@@ -373,7 +370,9 @@ public class FigPartition extends FigNodeModelElement {
      * @return all the partitions to drag togther.
      */
     public List getDragDependencies() {
-	return getPartitions(getLayer());
+	List dependents = getPartitions(getLayer());
+	dependents.add(getFigPool());
+	return dependents;
     }
     
     /**
@@ -536,7 +535,6 @@ public class FigPartition extends FigNodeModelElement {
         public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
             
             final Fig fig = getContent();
-            final List partitions = getPartitions(getLayer());
 
             updateHandleBox();
         
@@ -566,7 +564,6 @@ public class FigPartition extends FigNodeModelElement {
                 }
                 setHandleBox(
                 	previousPartition, 
-                	partitions, 
                 	newX, 
                 	newY, 
                 	newWidth, 
@@ -585,7 +582,6 @@ public class FigPartition extends FigNodeModelElement {
                 }
                 setHandleBox(
                 	nextPartition, 
-                	partitions, 
                 	newX, 
                 	newY, 
                 	newWidth, 
@@ -606,7 +602,6 @@ public class FigPartition extends FigNodeModelElement {
                 }
                 setHandleBox(
                 	previousPartition, 
-                	partitions, 
                 	newX, 
                 	newY, 
                 	newWidth, 
@@ -621,7 +616,6 @@ public class FigPartition extends FigNodeModelElement {
                 newHeight = (newHeight < minHeight) ? minHeight : newHeight;
                 setHandleBox(
                 	nextPartition, 
-                	partitions, 
                 	newX, 
                 	newY, 
                 	newWidth, 
@@ -632,11 +626,12 @@ public class FigPartition extends FigNodeModelElement {
         
         private void setHandleBox(
         	FigPartition neighbour, 
-        	List partitions, 
         	int x, 
         	int y, 
         	int width, 
         	int height) {
+            
+            final List partitions = getPartitions(getLayer());
             
             int newNeighbourWidth = 0;
             if (neighbour != null) {
@@ -647,6 +642,8 @@ public class FigPartition extends FigNodeModelElement {
         	}
             }
             
+            int lowX = 0;
+            int totalWidth = 0;
             Iterator it = partitions.iterator();
             while (it.hasNext()) {
         	Fig f = (Fig) it.next();
@@ -659,8 +656,13 @@ public class FigPartition extends FigNodeModelElement {
         	} else {
                     f.setHandleBox(f.getX(), y, f.getWidth(), height);
         	}
+        	if (f.getHandleBox().getX() < lowX || totalWidth == 0) {
+        	    lowX = f.getHandleBox().x;
+        	}
+        	totalWidth += f.getHandleBox().width;
             }
-            
+            FigPool pool = getFigPool();
+            pool.setBounds(lowX, y, totalWidth, height);
         }
     }
 }
