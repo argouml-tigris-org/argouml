@@ -27,7 +27,10 @@ package org.argouml.uml.diagram.activity.ui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -656,9 +659,27 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     public void postLoad() {
 	FigPartition previous = null;
+
+	// Create a mpa of partions keyed by x co-ordinate
+	HashMap map = new HashMap();
+	
 	Iterator it = new ArrayList(getLayer().getContents()).iterator();
 	while (it.hasNext()) {
 	    Fig f = (Fig) it.next();
+	    if (f instanceof FigPartition) {
+		map.put(new Integer(f.getX()), f);
+	    }
+	}
+	
+	// Sort the x co-ordinates into order
+	List xList = new ArrayList(map.keySet());
+        Collections.sort(xList);
+	
+        // Link the previous/next reference of the swimlanes
+        // according to the x order.
+	it = xList.iterator();
+	while (it.hasNext()) {
+	    Fig f = (Fig) map.get(it.next());
 	    if (f instanceof FigPartition) {
 		FigPartition fp = (FigPartition) f;
 		if (previous != null) {

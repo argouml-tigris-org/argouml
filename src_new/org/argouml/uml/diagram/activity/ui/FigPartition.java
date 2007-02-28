@@ -358,9 +358,6 @@ public class FigPartition extends FigNodeModelElement {
      */
     void setNextPartition(FigPartition next) {
         this.nextPartition = next;
-        if (next != null) {
-            next.getLayer().bringInFrontOf(this, next);
-        }
     }
 
     /**
@@ -368,9 +365,6 @@ public class FigPartition extends FigNodeModelElement {
      */
     void setPreviousPartition(FigPartition previous) {
         this.previousPartition = previous;
-        if (previous != null) {
-            previous.getLayer().bringInFrontOf(previous, this);
-        }
         leftLine.setVisible(previousPartition == null);
     }
     
