@@ -317,7 +317,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    getActionJunctionPseudoState(),
 	    getActionForkPseudoState(),
 	    getActionJoinPseudoState(),
-	    getActionNewSwimlane(),
+	    //getActionNewSwimlane(),
 	    null,
 	    getActionCallState(),
             getActionObjectFlowState(),
