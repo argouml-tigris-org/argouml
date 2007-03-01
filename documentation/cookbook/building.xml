@@ -536,23 +536,25 @@ respectively.
 </para>
     <para>
 If you just want to build the documentation you check out the directories
-<filename class="directory">argouml/lib</filename>,
 <filename class="directory">argouml/tools</filename>
 and
 <filename class="directory">argouml/documentation</filename>.
 These are located at the subversion URLs
-<filename>http://argouml.tigris.org/svn/argouml/trunk/lib</filename>,
 <filename>http://argouml.tigris.org/svn/argouml/trunk/tools</filename>
 and
 <filename>http://argouml.tigris.org/svn/argouml/trunk/documentation</filename>
-respectively
+respectively.
+For the documentation you will also need the file
+<filename>default.properties</filename>
+from 
+<filename>http://argouml.tigris.org/svn/argouml/trunk/src_new/default.properties</filename>.
 </para>
     <para>
 If you want to work with the web site you check out 
 the directory
 <parameter>argouml/www</parameter>.
 This is located at the subversion URLs
-<filename>http://argouml.tigris.org/svn/argouml/trunk/www</filename>,
+<filename>http://argouml.tigris.org/svn/argouml/trunk/www</filename>.
 </para>
 
     <para>
