@@ -86,6 +86,7 @@ import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Comment;
 import org.omg.uml.foundation.core.Component;
 import org.omg.uml.foundation.core.Constraint;
+import org.omg.uml.foundation.core.CorePackage;
 import org.omg.uml.foundation.core.DataType;
 import org.omg.uml.foundation.core.Dependency;
 import org.omg.uml.foundation.core.ElementResidence;
@@ -1587,12 +1588,17 @@ public class CoreHelperMDRImpl implements CoreHelper {
         return false;
     }
 
-    private boolean isValidNamespace(GeneralizableElement gen, Namespace ns) {
-        Iterator it =
-            modelImpl.getUmlPackage().getCore()
-                .getAChildGeneralization().getGeneralization(gen).iterator();
-        while (it.hasNext()) {
-            Generalization gen2 = (Generalization) it.next();
+    private boolean isValidNamespace(
+            GeneralizableElement generalizableElement,
+            Namespace namespace) {
+        
+        CorePackage corePackage = modelImpl.getUmlPackage().getCore();
+        Collection generalizations =
+            corePackage.getAChildGeneralization().
+                getGeneralization(generalizableElement); 
+        
+        for (Iterator it = generalizations.iterator(); it.hasNext(); ) {
+            Generalization generalization = (Generalization) it.next();
             /* TODO: Fix the following problem, as described in issue 3772:
              * Both implementations for valid namespace check whether
              * the parents are owned by the namespace. This is invalid.
@@ -1614,7 +1620,15 @@ public class CoreHelperMDRImpl implements CoreHelper {
             // This will do it:
 //            if(!modelImpl.getModelManagementHelper().getAllContents(ns)
 //                    .contains(gen2.getParent())) {
-            if (!ns.getOwnedElement().contains(gen2.getParent())) {
+            GeneralizableElement parent = generalization.getParent();
+            if (!namespace.getOwnedElement().contains(parent)) {
+                LOG.warn(parent.getName() + " is the ancestor of "
+                        + generalizableElement.getName()
+                        + ". It is not in the same namespace "
+                        + namespace.getName()
+                        + " that we are trying to assign to "
+                        + generalizableElement.getName()
+                        + ". So namespace rejected");
                 return false;
             }
         }
