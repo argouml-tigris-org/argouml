@@ -347,6 +347,8 @@ public interface CoreHelper {
      *
      * @param clazz is the classifier
      * @return Collection
+     * @deprecated for 0.25.1 by tfmorris - 
+     * use {@link ModelManagementHelper#getAllContents(Object)}
      */
     Collection getAllContents(Object clazz);
 
