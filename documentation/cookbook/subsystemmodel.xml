@@ -48,8 +48,9 @@ which ArgoUML can manipulate the repository.
 </para>
 
   <para>
-The Model subsystem also contains the handling of the wellformedness rules 
-for the data in the repository.
+The Model subsystem manages the well-formedness rules for the data in the
+repository for those well-formedness rules that are considered important to
+enforce.
 </para>
 
   <para>
