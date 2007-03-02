@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.omg.uml.foundation.core.DataType;
+import org.omg.uml.foundation.core.Feature;
 import org.omg.uml.foundation.core.Interface;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
@@ -98,6 +99,9 @@ final class CopyHelper implements org.argouml.model.CopyHelper {
         }
         if (element instanceof Interface) {
             return nsmodel.getCoreFactory().copyInterface(element, ns);
+        }
+        if (element instanceof Feature) {
+            return nsmodel.getCoreFactory().copyFeature(element, ns);
         }
         if (element instanceof Stereotype) {
             return nsmodel.getExtensionMechanismsFactory().copyStereotype(

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.argouml.model.CoreFactory;
 import org.argouml.model.ModelManagementHelper;
+import org.omg.uml.behavioralelements.commonbehavior.Reception;
 import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.foundation.core.Abstraction;
 import org.omg.uml.foundation.core.Artifact;
@@ -84,6 +85,7 @@ import org.omg.uml.foundation.datatypes.MultiplicityRange;
 import org.omg.uml.foundation.datatypes.OrderingKind;
 import org.omg.uml.foundation.datatypes.OrderingKindEnum;
 import org.omg.uml.foundation.datatypes.ParameterDirectionKindEnum;
+import org.omg.uml.foundation.datatypes.ProcedureExpression;
 import org.omg.uml.foundation.datatypes.ScopeKind;
 import org.omg.uml.foundation.datatypes.ScopeKindEnum;
 import org.omg.uml.foundation.datatypes.VisibilityKind;
@@ -1837,6 +1839,67 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         ((Namespace) ns).getOwnedElement().add(c);
         doCopyClass(source, c);
         return c;
+    }
+
+    /**
+     * Copies a feature from one classifier to another.
+     *
+     * @param source is the feature to copy.
+     * @param classifier is the classifier to put the copy in.
+     * @return a newly created feature.
+     */
+    public Object copyFeature(Object source, Object classifier) {
+        if (!(source instanceof Feature && classifier instanceof Classifier)) {
+            throw new IllegalArgumentException("source: " + source 
+                    + ",classifier: " + classifier);
+        }
+
+        Feature f = null;
+        if (source instanceof Attribute) {
+            Attribute attr = (Attribute) createAttribute();
+            attr.setMultiplicity(getMultiplicity11());
+            attr.setChangeability(((Attribute) source).getChangeability());
+            attr.setTargetScope(((Attribute) source).getTargetScope());
+            attr.setType(((Attribute) source).getType());
+            f = attr;
+        }
+        if (source instanceof Operation) {
+            Operation oper = (Operation) createOperation();
+            oper.setAbstract(((Operation) source).isAbstract());
+            oper.setLeaf(((Operation) source).isLeaf());
+            oper.setRoot(((Operation) source).isRoot());
+            oper.setConcurrency(((Operation) source).getConcurrency());
+            oper.setSpecification(((Operation) source).getSpecification());
+            // TODO: build a return parameter
+            f = oper;
+        }
+        if (source instanceof Method) {
+            Method method = (Method) createMethod();
+            ProcedureExpression pe = ((Method) source).getBody();
+            method.setBody((ProcedureExpression) 
+                    nsmodel.getDataTypesFactory().createProcedureExpression(
+                            pe.getLanguage(), pe.getBody()));
+            f = method;
+        }
+        if (source instanceof Reception) {
+            Reception reception = (Reception) 
+                nsmodel.getCommonBehaviorFactory().createReception();
+            reception.setAbstract(((Reception) source).isAbstract());
+            reception.setLeaf(((Reception) source).isLeaf());
+            reception.setRoot(((Reception) source).isRoot());
+            reception.setSpecification(((Reception) source).getSpecification());
+            f = reception;
+        }
+        if (source instanceof BehavioralFeature) {
+            ((BehavioralFeature) f).setQuery(
+                    ((BehavioralFeature) source).isQuery());
+        }
+        f.setName(((Feature) source).getName());
+        f.setVisibility(((Feature) source).getVisibility());
+        f.setOwnerScope(((Feature) source).getOwnerScope());
+        f.setOwner((Classifier) classifier);
+        ((Classifier) classifier).getFeature().add(f);
+        return f;
     }
 
     /**
