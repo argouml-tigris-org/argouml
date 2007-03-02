@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -183,6 +184,7 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {
+	// TODO: i18n
         return "new Swimlane";
     }
 
@@ -250,6 +252,12 @@ public class FigPartition extends FigNodeModelElement {
     public void postPlacement() {
 	List partitions = getPartitions(getLayer());
 	
+        UMLActivityDiagram diagram = 
+            (UMLActivityDiagram) getProject().getActiveDiagram();
+        Object machine = diagram.getStateMachine();
+        Model.getCoreHelper().setModelElementContainer(
+                getOwner(), machine);
+	
 	if (partitions.size() == 1) {
 	    FigPool fp = new FigPool();
 	    getLayer().add(fp);
@@ -300,13 +308,15 @@ public class FigPartition extends FigNodeModelElement {
 	
 	setPreviousPartition(null);
 	setNextPartition(null);
+	
+	getFigPool().setWidth(getFigPool().getWidth() - width);
     }
     
     // TODO: Needs work. Must determine which Figs enclosed
     // in the pool are within the bounds of this Fig
     // and translate those.
     private void translateWithContents(int dx) {
-	Iterator it = getEnclosedFigs().iterator();
+	Iterator it = getFigPool().getEnclosedFigs().iterator();
 	while (it.hasNext()) {
 	    Fig f = (Fig) it.next();
             f.setX(f.getX() + dx);

@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.state.ui.FigState;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
@@ -89,18 +90,19 @@ public class FigPool extends FigNodeModelElement {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#setEnclosingFig(org.tigris.gef.presentation.Fig)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#addEnclosedFig(org.tigris.gef.presentation.Fig)
      */
-    public void setEnclosingFig(Fig newEncloser) {
-        super.setEnclosingFig(newEncloser);
-        LayerPerspective layer = (LayerPerspective) getLayer();
-        // If the layer is null, then most likely we are being deleted.
-        if (newEncloser == null && layer != null) {
-            UMLActivityDiagram diagram = 
-                (UMLActivityDiagram) getProject().getActiveDiagram();
-            Object machine = diagram.getStateMachine();
-            Model.getCoreHelper().setModelElementContainer(
-                    getOwner(), machine);
+    public void addEnclosedFig(Fig figState) {
+        super.addEnclosedFig(figState);
+        System.out.println("Set enclosing fig");
+        Iterator it = getLayer().getContentsNoEdges().iterator();
+        while (it.hasNext()) {
+            Fig f = (Fig) it.next();
+            if (f instanceof FigPartition
+            	&& f.getBounds().intersects(figState.getBounds())) { 
+                Model.getCoreHelper().setModelElementContainer(
+                            figState.getOwner(), f.getOwner());
+            }
         }
     }
 
