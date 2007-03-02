@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -333,6 +333,14 @@ public class DnDExplorerTree
                     UMLDiagram d = (UMLDiagram) me;
                     if (d.isRelocationAllowed(dest)) {
                         LOG.debug("Valid Drag: diagram " + dest);
+                        return true;
+                    }
+                }
+                if (!(Model.getFacade().isAInterface(dest) 
+                        && (Model.getFacade().isAMethod(me) 
+                                || Model.getFacade().isAAttribute(me)))) {
+                    if (Model.getFacade().isAFeature(me) 
+                            && Model.getFacade().isAClassifier(dest)) {
                         return true;
                     }
                 }
@@ -771,6 +779,21 @@ public class DnDExplorerTree
                                     makeVisible(destinationPath);
                                     expandPath(destinationPath);
                                     newTargets.add(me);
+                                }
+                            }
+                        }
+                        if (!(Model.getFacade().isAInterface(dest) 
+                                && (Model.getFacade().isAMethod(me) 
+                                    || Model.getFacade().isAAttribute(me)))) {
+                            if (Model.getFacade().isAFeature(me) 
+                                    && Model.getFacade().isAClassifier(dest)) {
+                                if (moveAction) {
+                                    Model.getCoreHelper().removeFeature(
+                                            Model.getFacade().getOwner(me), me);
+                                    Model.getCoreHelper().addFeature(dest, me);
+                                }
+                                if (copyAction) {
+                                    Model.getCopyHelper().copy(me, dest);
                                 }
                             }
                         }
