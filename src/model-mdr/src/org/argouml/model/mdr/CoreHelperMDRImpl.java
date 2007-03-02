@@ -1030,27 +1030,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         if (!(clazz instanceof Classifier)) {
             throw new IllegalArgumentException();
         }
-
-        List list = new ArrayList();
-        try {
-            Iterator it = ((Namespace) clazz).getOwnedElement().iterator();
-            while (it.hasNext()) {
-                ModelElement element = (ModelElement) it.next();
-                if (element.getVisibility()
-                        .equals(VisibilityKindEnum.VK_PUBLIC)
-                        || element.getVisibility().equals(
-                                VisibilityKindEnum.VK_PROTECTED)) {
-                    list.add(element);
-                }
-            }
-            it = modelImpl.getFacade().getGeneralizations(clazz).iterator();
-            while (it.hasNext()) {
-                list.addAll(getAllContents(it.next()));
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-        return list;
+        return modelImpl.getModelManagementHelper().getAllContents(clazz);
     }
 
     /*
@@ -1615,20 +1595,20 @@ public class CoreHelperMDRImpl implements CoreHelper {
              * Load the project attached to issue 3772. Select the "class1".
              * The UMLModelElementNamespaceComboBoxModel gives
              * a warning. Then add an import permission.
-             * The warning should not be given anymore.
+             * The warning should not be given anymore. - mvw 20060408
              */
-            // This will do it:
+            // The following will do it when called method is implemented:
 //            if(!modelImpl.getModelManagementHelper().getAllContents(ns)
 //                    .contains(gen2.getParent())) {
             GeneralizableElement parent = generalization.getParent();
             if (!namespace.getOwnedElement().contains(parent)) {
-                LOG.warn(parent.getName() + " is the ancestor of "
+                LOG.debug(parent.getName() + " is the ancestor of "
                         + generalizableElement.getName()
                         + ". It is not in the same namespace "
                         + namespace.getName()
                         + " that we are trying to assign to "
                         + generalizableElement.getName()
-                        + ". So namespace rejected");
+                        + ". So namespace is not valid.");
                 return false;
             }
         }

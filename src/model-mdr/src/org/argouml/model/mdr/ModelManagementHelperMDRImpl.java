@@ -46,6 +46,7 @@ import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Permission;
+import org.omg.uml.foundation.datatypes.VisibilityKindEnum;
 import org.omg.uml.modelmanagement.ElementImport;
 import org.omg.uml.modelmanagement.Model;
 import org.omg.uml.modelmanagement.Subsystem;
@@ -635,6 +636,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      */
     public Collection getAllContents(Object pack) {
         Set results = new HashSet();
+        if (pack == null) {
+            return results;
+        }
         
         /*
          * For a Namespace:
@@ -669,9 +673,27 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
          * </pre><p>
          */
         if (pack instanceof Classifier) {
-            // TODO: Not implemented
-            throw new RuntimeException("Not implement - getAllContents for: "
-                    + pack);
+
+            // Implementation from CoreHelperMDRImpl.getAllContents();
+            try {
+                Iterator it = ((Namespace) pack).getOwnedElement().iterator();
+                while (it.hasNext()) {
+                    ModelElement element = (ModelElement) it.next();
+                    if (element.getVisibility()
+                            .equals(VisibilityKindEnum.VK_PUBLIC)
+                            || element.getVisibility().equals(
+                                    VisibilityKindEnum.VK_PROTECTED)) {
+                        results.add(element);
+                    }
+                }
+                it = nsmodel.getFacade().getGeneralizations(pack).iterator();
+                while (it.hasNext()) {
+                    results.addAll(getAllContents(it.next()));
+                }
+            } catch (InvalidObjectException e) {
+                throw new InvalidElementException(e);
+            }
+            
         }
         
         /*
