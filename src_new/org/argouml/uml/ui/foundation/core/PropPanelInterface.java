@@ -65,7 +65,7 @@ public class PropPanelInterface extends PropPanelClassifier {
         
         addField(Translator.localize("label.association-ends"),
                 getAssociationEndScroll());
-        addField(Translator.localize("label.operations"),
+        addField(Translator.localize("label.features"),
                 getFeatureScroll());
         
         addAction(new ActionNavigateNamespace());
