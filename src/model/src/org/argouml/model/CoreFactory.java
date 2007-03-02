@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -642,6 +642,15 @@ public interface CoreFactory extends Factory {
      * @return a newly created class.
      */
     Object copyClass(Object source, Object ns);
+
+    /**
+     * Copies a feature from one classifier to another.
+     *
+     * @param source is the feature to copy.
+     * @param classifier is the classifier to put the copy in.
+     * @return a newly created feature.
+     */
+    Object copyFeature(Object source, Object classifier);
 
     /**
      * Copies a datatype, and it's features. This may also require other
