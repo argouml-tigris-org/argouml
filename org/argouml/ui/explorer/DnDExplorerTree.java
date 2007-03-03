@@ -762,8 +762,21 @@ public class DnDExplorerTree
                         Object me = i.next();
                         LOG.debug((moveAction ? "move " : "copy ") + me);
                         if (Model.getCoreHelper().isValidNamespace(me, dest)) {
-                            Model.getCoreHelper().setNamespace(me, dest);
-                            newTargets.add(me);
+                            if (moveAction) {
+                                Model.getCoreHelper().setNamespace(me, dest);
+                                newTargets.add(me);
+                            }
+                            if (copyAction) {
+                                try {
+                                    newTargets.add(Model.getCopyHelper()
+                                            .copy(me, dest));
+                                } catch (RuntimeException e) {
+                                    /* TODO: The copy function is not yet 
+                                     * completely implemented - so we will 
+                                     * have some exceptions here and there.*/
+                                    LOG.error("Exception", e);
+                                }
+                            }
                         }
                         if (me instanceof UMLDiagram) {
                             UMLDiagram d = (UMLDiagram) me;
@@ -791,9 +804,11 @@ public class DnDExplorerTree
                                     Model.getCoreHelper().removeFeature(
                                             Model.getFacade().getOwner(me), me);
                                     Model.getCoreHelper().addFeature(dest, me);
+                                    newTargets.add(me);
                                 }
                                 if (copyAction) {
-                                    Model.getCopyHelper().copy(me, dest);
+                                    newTargets.add(
+                                        Model.getCopyHelper().copy(me, dest));
                                 }
                             }
                         }
