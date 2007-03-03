@@ -1876,9 +1876,11 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (source instanceof Method) {
             Method method = (Method) createMethod();
             ProcedureExpression pe = ((Method) source).getBody();
-            method.setBody((ProcedureExpression) 
-                    nsmodel.getDataTypesFactory().createProcedureExpression(
-                            pe.getLanguage(), pe.getBody()));
+            if (pe != null) {
+                method.setBody((ProcedureExpression) 
+                        nsmodel.getDataTypesFactory().createProcedureExpression(
+                                pe.getLanguage(), pe.getBody()));
+            }
             f = method;
         }
         if (source instanceof Reception) {
@@ -2035,7 +2037,13 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         doCopyNamespace(source, target);
         doCopyGeneralizableElement(source, target);
 
-        // TODO: Features
+        // Copy all the Features
+        List features = ((Classifier) source).getFeature();
+        Iterator i = features.iterator();
+        while (i.hasNext()) {
+            Feature f = (Feature) i.next();
+            copyFeature(f, target);
+        }
     }
 
     /**
