@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,14 +45,43 @@ public class GUITestActionOpenProject extends TestCase {
     }
 
     /**
-     * Test an empty project.
-     *
-     * TODO: This tests is deactivated by Linus Tolke in 0.23.1 since
-     * it fails in. Investigate and fix! Issue 4443.
+     * Test an empty 1.3 project.
      */
-    public void testEmptyProject() {
+    public void testEmptyProject13() {
+	doTestActionOpenProject("testmodels/uml13/EmptyProject0161.zargo",
+				"EmptyProject0161");
+    }
+
+    /**
+     * Test a 1.3 project with contents.
+     */
+    public void testProjectWithContents13() {
+        doTestActionOpenProject("testmodels/uml13/GUITestPropertyPanels.zargo",
+				"GUITestPropertyPanels");
+    }
+
+    /**
+     * Test an empty 1.4 project.
+     */
+    public void testEmptyProject14() {
+	doTestActionOpenProject("testmodels/uml14/EmptyProject024.zargo",
+				"EmptyProject024");
+    }
+
+    /**
+     * Test a 1.4 project with contents.
+     */
+    public void testProjectWithContents14() {
+        doTestActionOpenProject("testmodels/uml14/GUITestPropertyPanels.zargo",
+				"GUITestPropertyPanels");
+    }
+
+    /**
+     * Do the actual testing.
+     */
+    private void doTestActionOpenProject(String fileName, String projectName) {
         File file
-            = CheckMain.getTestModel("testmodels/EmptyProject0161.zargo");
+            = CheckMain.getTestModel(fileName);
 
         CheckMain.callMain(new String[] {
             "-nosplash",
@@ -60,34 +89,8 @@ public class GUITestActionOpenProject extends TestCase {
             "org.argouml.uml.ui.ActionOpenProject=" + file.getAbsolutePath(),
         });
 
-        assertEquals("EmptyProject0161",
+        assertEquals(projectName,
 		ProjectManager.getManager().getCurrentProject().getBaseName());
-    }
-
-    /**
-     * Test a project with contents.
-     *
-     * TODO: This tests is deactivated by Linus Tolke in 0.23.1 since
-     * it fails in. Investigate and fix! Issue 4443.
-     */
-    public void testProjectWithContents() {
-        File file =
-            CheckMain.getTestModel("testmodels/GUITestPropertyPanels.zargo");
-
-        CheckMain.callMain(new String[] {
-            "-nosplash",
-            "-command",
-            "org.argouml.uml.ui.ActionOpenProject=" + file.getAbsolutePath(),
-        });
-
-        assertEquals("GUITestPropertyPanels",
-		ProjectManager.getManager().getCurrentProject().getBaseName());
-    }
-
-    /**
-     * Dummy test.
-     */
-    public void testDummy() {
     }
 }
 
