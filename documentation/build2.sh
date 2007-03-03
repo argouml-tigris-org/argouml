@@ -32,7 +32,7 @@ fi
 #
 # build.sh always calls the version of ant distributed with ArgoUML
 #
-ANT_HOME=`pwd`/../argouml-core-tools/ant-1.6.2
+ANT_HOME=`pwd`/../argouml-core-tools/apache-ant-1.6.5
 
 echo ANT_HOME is: $ANT_HOME
 echo
