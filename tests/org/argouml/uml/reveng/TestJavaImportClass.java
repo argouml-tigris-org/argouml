@@ -322,7 +322,7 @@ public class TestJavaImportClass extends TestCase {
                 associationEnds.size());
         Object associationEnd = null;
         Object association = null;
-        boolean unidirectional = false;
+        int navigableCount = 0;
         Iterator iter = associationEnds.iterator();
         while (iter.hasNext()) {
             associationEnd = iter.next();
@@ -347,11 +347,11 @@ public class TestJavaImportClass extends TestCase {
                         Model.getFacade().getAssociation(associationEnd));
             }
             if (Model.getFacade().isNavigable(associationEnd)) {
-                unidirectional = !unidirectional;
+                ++navigableCount;
             }
         }
-        assertTrue("Only one association end must be navigable.",
-                unidirectional);
+        assertEquals("Only one association end must be navigable.",
+                1, navigableCount);
     }
 
     /**
