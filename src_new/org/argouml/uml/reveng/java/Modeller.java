@@ -1410,7 +1410,7 @@ public class Modeller {
 	    Object sourceClassifier, 
 	    Object destClassifier) {
         return Model.getCoreFactory().buildAssociation(
-                sourceClassifier, false, destClassifier, true,
+                destClassifier, true, sourceClassifier, false, 
                 name);
     }
     
