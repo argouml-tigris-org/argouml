@@ -1171,7 +1171,14 @@ public class Modeller {
             if ((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
                 Model.getCoreHelper().setChangeable(mAssociationEnd, false);
             }
-            Model.getCoreHelper().setNavigable(mAssociationEnd, true);
+            if (!mClassifier.equals(parseState.getClassifier())) {
+                // Because if they are equal,
+                // then getAssociationEnd(name, mClassifier) could return
+                // the wrong assoc end, on the other hand the navigability
+                // is already set correctly (at least in this case), so the
+                // next line is not necessary. (maybe never necessary?) - thn
+                Model.getCoreHelper().setNavigable(mAssociationEnd, true);
+            }
             addDocumentationTag(mAssociationEnd, javadoc);
 	}
     }
@@ -1397,6 +1404,8 @@ public class Modeller {
 
             Object mAssociation = buildDirectedAssociation(
                         newName, parseState.getClassifier(), mClassifier);
+            // this causes a problem when mClassifier is not only at one assoc end:
+            //(which one is the right one?)
             mAssociationEnd =
                 Model.getFacade().getAssociationEnd(
                         mClassifier,
