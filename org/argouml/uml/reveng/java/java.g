@@ -539,24 +539,27 @@ classTypeSpec returns [String type=null]
 
 // A non-built in type name, with possible type parameters
 classOrInterfaceType returns [String type=null]
-    {StringBuffer sb = new StringBuffer();}
-    :    t1:IDENT {sb.append(t1.getText());} (typeArguments)?
+    {StringBuffer sb = new StringBuffer();
+     String name = null;
+     String gtype = null;}
+    :    t1:IDENT {name = t1.getText();} (gtype=typeArguments)?
+        {sb.append(name);}
         (options{greedy=true;}: // match as many as possible
             DOT
-            t3:IDENT {sb.append('.').append(t3.getText());} (typeArguments)?
+            t3:IDENT {sb.append('.').append(t3.getText());} (gtype=typeArguments)?
         )*
-        {type = sb.toString();}
+        {type = gtype == null ? sb.toString() : gtype;}
     ;
 
 // A specialised form of typeSpec where built in types must be arrays
-typeArgumentSpec
-    :    classTypeSpec
+typeArgumentSpec returns [String type=null]
+    :    type=classTypeSpec
     |    builtInTypeArraySpec
     ;
 
 // A generic type argument is a class type, a possibly bounded wildcard type or a built-in type array
-typeArgument
-    :    (    typeArgumentSpec
+typeArgument returns [String type=null]
+    :    (    type=typeArgumentSpec
         |    wildcardType
         )
     ;
@@ -568,15 +571,16 @@ wildcardType
     ;
 
 // Type arguments to a class or interface type
-typeArguments
-{int currentLtLevel = 0;}
+typeArguments returns [String gtype=null]
+{int currentLtLevel = 0;
+ String t = null;}
     :
         {currentLtLevel = ltCounter;}
         LT {ltCounter++;}
-        typeArgument
+        t=typeArgument {if (t != null) gtype = t + "[]";}
         (options{greedy=true;}: // match as many as possible
             {inputState.guessing !=0 || ltCounter == currentLtLevel + 1}?
-            COMMA! typeArgument
+            COMMA! t=typeArgument {if (t != null) gtype = t + "[]";}
         )*
 
         (    // turn warning off since Antlr generates the right code,
