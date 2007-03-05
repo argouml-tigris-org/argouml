@@ -172,5 +172,14 @@ public class FigPool extends FigNodeModelElement {
         firePropChange("bounds", oldBounds, getBounds());
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     }
+    
+    /**
+     * A FigPool can't be selected. Instead it is dragged or resized whenever
+     * one of its swimlanes is dragged or resized.
+     * @return false at all times
+     */
+    public boolean isSelectable() {
+	return false;
+    }
 }
 

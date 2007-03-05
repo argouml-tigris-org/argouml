@@ -262,6 +262,7 @@ public class FigPartition extends FigNodeModelElement {
 	    FigPool fp = new FigPool();
 	    getLayer().add(fp);
 	    fp.setBounds(getBounds());
+	    getLayer().bringToFront(this);
 	} else if (partitions.size() > 1) {
 	    FigPool fp = getFigPool();
 	    fp.setWidth(fp.getWidth() + getWidth());
@@ -382,6 +383,7 @@ public class FigPartition extends FigNodeModelElement {
     public List getDragDependencies() {
 	List dependents = getPartitions(getLayer());
 	dependents.add(getFigPool());
+	dependents.addAll(getFigPool().getEnclosedFigs());
 	return dependents;
     }
     
