@@ -26,26 +26,15 @@ package org.argouml.uml.diagram.activity.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.state.ui.FigState;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
-import org.tigris.gef.presentation.FigText;
-import org.tigris.gef.presentation.Handle;
 
 /**
  * This class represents a Partition or Swimlane for Activity diagrams.
@@ -94,7 +83,6 @@ public class FigPool extends FigNodeModelElement {
      */
     public void addEnclosedFig(Fig figState) {
         super.addEnclosedFig(figState);
-        System.out.println("Set enclosing fig");
         Iterator it = getLayer().getContentsNoEdges().iterator();
         while (it.hasNext()) {
             Fig f = (Fig) it.next();
