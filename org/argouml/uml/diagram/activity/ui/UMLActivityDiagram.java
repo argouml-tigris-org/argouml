@@ -317,7 +317,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    getActionJunctionPseudoState(),
 	    getActionForkPseudoState(),
 	    getActionJoinPseudoState(),
-	    //getActionNewSwimlane(),
+	    getActionSwimlane(),
 	    null,
 	    getActionCallState(),
             getActionObjectFlowState(),
@@ -445,7 +445,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     /**
      * @return Returns the actionSwimlane.
      */
-    protected Action getActionNewSwimlane() {
+    protected Action getActionSwimlane() {
         if (actionSwimlane == null) {
             actionSwimlane =
                 new CmdCreateNode(Model.getMetaTypes().getPartition(),
