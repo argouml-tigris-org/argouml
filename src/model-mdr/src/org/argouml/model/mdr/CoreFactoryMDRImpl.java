@@ -32,6 +32,7 @@ import java.util.List;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.behavioralelements.commonbehavior.Reception;
+import org.omg.uml.behavioralelements.commonbehavior.Signal;
 import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.foundation.core.Abstraction;
 import org.omg.uml.foundation.core.Artifact;
@@ -1765,7 +1766,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (!(elem instanceof PresentationElement)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
-
     }
 
     /**
@@ -1816,8 +1816,59 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (!(elem instanceof Usage)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
-
     }
+
+    /**
+     * Delete an Enumeration.
+     * @param elem
+     *            the element to be deleted
+     * @since UML 1.4
+     */
+    void deleteEnumeration(Object elem) {
+        if (!(elem instanceof Enumeration)) {
+            throw new IllegalArgumentException("elem: " + elem);
+        }
+        // EnumerationLiterals should get deleted implicitly
+        // since they are associated by composition
+    }
+
+    /**
+     * Delete EnumerationLiteral.
+     * @param elem
+     *            the element to be deleted
+     * @since UML 1.4
+     */
+    void deleteEnumerationLiteral(Object elem) {
+        if (!(elem instanceof EnumerationLiteral)) {
+            throw new IllegalArgumentException("elem: " + elem);
+        }
+    }
+
+    /**
+     * Delete the given UML Primitive.
+     * 
+     * @param elem the element to be deleted
+     * @since UML 1.4
+     */
+    void deletePrimitive(Object elem) {
+        if (!(elem instanceof Primitive)) {
+            throw new IllegalArgumentException("elem: " + elem);
+        }
+    }
+
+    /**
+     * Delete the given ProgrammingLanguageDataType.
+     * 
+     * @param elem the element to be deleted
+     * @since UML 1.4
+     */
+    void deleteProgrammingLanguageDataType(Object elem) {
+        if (!(elem instanceof ProgrammingLanguageDataType)) {
+            throw new IllegalArgumentException("elem: " + elem);
+        }
+    }
+
+
 
     /**
      * Copies a class, and it's features. This may also require other
@@ -1857,48 +1908,27 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Feature f = null;
         if (source instanceof Attribute) {
             Attribute attr = (Attribute) createAttribute();
-            attr.setMultiplicity(getMultiplicity11());
-            attr.setChangeability(((Attribute) source).getChangeability());
-            attr.setTargetScope(((Attribute) source).getTargetScope());
-            attr.setType(((Attribute) source).getType());
+            doCopyAttribute((Attribute) source, attr);
             f = attr;
         }
         if (source instanceof Operation) {
             Operation oper = (Operation) createOperation();
-            oper.setAbstract(((Operation) source).isAbstract());
-            oper.setLeaf(((Operation) source).isLeaf());
-            oper.setRoot(((Operation) source).isRoot());
-            oper.setConcurrency(((Operation) source).getConcurrency());
-            oper.setSpecification(((Operation) source).getSpecification());
+            doCopyOperation((Operation) source, oper);
             // TODO: build a return parameter
             f = oper;
         }
         if (source instanceof Method) {
             Method method = (Method) createMethod();
-            ProcedureExpression pe = ((Method) source).getBody();
-            if (pe != null) {
-                method.setBody((ProcedureExpression) 
-                        nsmodel.getDataTypesFactory().createProcedureExpression(
-                                pe.getLanguage(), pe.getBody()));
-            }
+            doCopyMethod((Method) source, method);
             f = method;
         }
         if (source instanceof Reception) {
             Reception reception = (Reception) 
                 nsmodel.getCommonBehaviorFactory().createReception();
-            reception.setAbstract(((Reception) source).isAbstract());
-            reception.setLeaf(((Reception) source).isLeaf());
-            reception.setRoot(((Reception) source).isRoot());
-            reception.setSpecification(((Reception) source).getSpecification());
+            doCopyReception((Reception) source, reception);
             f = reception;
         }
-        if (source instanceof BehavioralFeature) {
-            ((BehavioralFeature) f).setQuery(
-                    ((BehavioralFeature) source).isQuery());
-        }
-        f.setName(((Feature) source).getName());
-        f.setVisibility(((Feature) source).getVisibility());
-        f.setOwnerScope(((Feature) source).getOwnerScope());
+
         f.setOwner((Classifier) classifier);
         ((Classifier) classifier).getFeature().add(f);
         return f;
@@ -2179,62 +2209,103 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // Nothing more to do, don't copy owned elements.
     }
 
-    // / UML 1.4+
-
-
-    
     /**
-     * Delete an Enumeration.
-     * @param elem
-     *            the element to be deleted
-     * @since UML 1.4
-     */
-    void deleteEnumeration(Object elem) {
-        if (!(elem instanceof Enumeration)) {
-            throw new IllegalArgumentException("elem: " + elem);
-        }
-        // EnumerationLiterals should get deleted implicitly
-        // since they are associated by composition
-    }
-
-
-
-    
-    /**
-     * Delete EnumerationLiteral.
-     * @param elem
-     *            the element to be deleted
-     * @since UML 1.4
-     */
-    void deleteEnumerationLiteral(Object elem) {
-        if (!(elem instanceof EnumerationLiteral)) {
-            throw new IllegalArgumentException("elem: " + elem);
-        }
-    }
-    
-    
-    /**
-     * Delete the given UML Primitive.
+     * Copy the meta-attributes of an Attribute to another.
      * 
-     * @param elem the element to be deleted
-     * @since UML 1.4
+     * @param source the source attribute
+     * @param target the new attribute to be adapted
      */
-    void deletePrimitive(Object elem) {
-        if (!(elem instanceof Primitive)) {
-            throw new IllegalArgumentException("elem: " + elem);
-        }
+    void doCopyAttribute(Attribute source, Attribute target) {
+        target.setMultiplicity(getMultiplicity11());
+        target.setChangeability(source.getChangeability());
+        target.setTargetScope(source.getTargetScope());
+        target.setType(source.getType());
+        
+        doCopyFeature(source, target);
     }
 
     /**
-     * Delete the given ProgrammingLanguageDataType.
+     * Copy the attributes of an Operation to another.
      * 
-     * @param elem the element to be deleted
-     * @since UML 1.4
+     * @param source the source operation
+     * @param target the new operation to be modified
      */
-    void deleteProgrammingLanguageDataType(Object elem) {
-        if (!(elem instanceof ProgrammingLanguageDataType)) {
-            throw new IllegalArgumentException("elem: " + elem);
+    void doCopyOperation(Operation source, Operation target) {
+        target.setAbstract(source.isAbstract());
+        target.setLeaf(source.isLeaf());
+        target.setRoot(source.isRoot());
+        target.setConcurrency(source.getConcurrency());
+        target.setSpecification(source.getSpecification());
+        
+        doCopyBehavioralFeature(source, target);
+    }
+
+    /**
+     * Copy the attributes of one Method to another.
+     * 
+     * @param source the method to copy attributes from
+     * @param target the method to be adapted
+     */
+    void doCopyMethod(Method source, Method target) {
+        ProcedureExpression pe = source.getBody();
+        if (pe != null) {
+            target.setBody((ProcedureExpression) 
+                    nsmodel.getDataTypesFactory().createProcedureExpression(
+                            pe.getLanguage(), pe.getBody()));
         }
+
+        doCopyBehavioralFeature(source, target);
+    }
+
+    /**
+     * Copy the attributes of one Reception to another.
+     * 
+     * @param source the rception to copy attributes from
+     * @param target the reception to be adapted
+     */
+    void doCopyReception(Reception source, Reception target) {
+        target.setAbstract(source.isAbstract());
+        target.setLeaf(source.isLeaf());
+        target.setRoot(source.isRoot());
+        target.setSpecification(source.getSpecification());
+        target.setSignal(source.getSignal());
+
+        doCopyBehavioralFeature(source, target);
+    }
+
+    /**
+     * Copy the attributes of one BehavioralFeature to another.
+     * 
+     * @param source the BehavioralFeature to copy from
+     * @param target the BehavioralFeature to b adapted
+     */
+    void doCopyBehavioralFeature(BehavioralFeature source, 
+            BehavioralFeature target) {
+        target.setQuery(source.isQuery());
+        // copy raised signals:
+        Collection c = nsmodel.getUmlPackage().getCommonBehavior()
+            .getAContextRaisedSignal().getRaisedSignal(source);
+        Iterator i = c.iterator();
+        while (i.hasNext()) {
+            nsmodel.getUmlPackage().getCommonBehavior()
+                .getAContextRaisedSignal().add(target, (Signal) i.next());
+        }
+
+        doCopyFeature(source, target);
+    }
+
+    /**
+     * Copy the attributes of one Feature to another.
+     * 
+     * @param source the Feature to copy from
+     * @param target the Feature to copy to
+     */
+    void doCopyFeature(Feature source, Feature target) {
+        target.setVisibility(source.getVisibility());
+        target.setOwnerScope(source.getOwnerScope());
+
+        doCopyModelElement(source, target);
     }
 
 }
+
