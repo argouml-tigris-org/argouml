@@ -48,7 +48,9 @@ import org.argouml.uml.reveng.ImportSettings;
 
 /**
  * Modeller maps Java source code(parsed/recognised by ANTLR) to UML model
- * elements, it applies some of the semantics in JSR26.
+ * elements, it applies some of the semantics in JSR-26.  Note: JSR-26 was
+ * withdrawn in March, 2004, so it obviously provides no guideance for
+ * more recent language features such as Java 5.
  *
  * @author Marcus Andersson
  */
@@ -465,6 +467,7 @@ public class Modeller {
                          String superclassName,
                          Vector interfaces,
                          String javadoc) {
+        // TODO: Won't this cause an infinite recursion? - tfm - 20070305
         addClass(name, modifiers, superclassName, interfaces, javadoc);
     }
 
@@ -696,6 +699,113 @@ public class Modeller {
         }
     }
 
+    /**
+     * Called from the parser when an enumeration declaration is found.
+     *
+     * @param name The name of the class.
+     * @param modifiers A sequence of class modifiers.
+     * @param interfaces Zero or more strings with the names of implemented
+     *        interfaces. Can be fully qualified or just a
+     *        simple interface name.
+     * @param javadoc The javadoc comment. null or "" if no comment available.
+     * @param forceIt Force addition by creating all that's missing.
+     */
+    void addEnumeration(String name,
+                         short modifiers,
+                         Vector interfaces,
+                         String javadoc,
+                         boolean forceIt) {
+        Object mClass =
+            addClassifier(Model.getCoreFactory().createEnumeration(),
+                          name, modifiers, javadoc);
+
+        Model.getCoreHelper().setAbstract(
+                mClass,
+                (modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
+        Model.getCoreHelper().setLeaf(
+                mClass,
+                (modifiers & JavaRecognizer.ACC_FINAL) > 0);
+        Model.getCoreHelper().setRoot(mClass, false);
+
+        // only do realizations on the 2nd pass.
+        Object level = this.getAttribute("level");
+        if (level != null) {
+            if (level.equals(new Integer(0))) {
+                return;
+            }
+        }
+
+
+        if (interfaces != null) {
+            for (Iterator i = interfaces.iterator(); i.hasNext();) {
+                String interfaceName = (String) i.next();
+                Object mInterface = null;
+                try {
+                    mInterface =
+                        getContext(interfaceName)
+                            .getInterface(getClassifierName(interfaceName));
+                } catch (ClassifierNotFoundException e) {
+                    if (forceIt && interfaceName != null && model != null) {
+                        LOG.info("Modeller.java: " 
+                                + "forced creation of unknown interface "
+                                + interfaceName);
+                        String packageName = getPackageName(interfaceName);
+                        String classifierName =
+                                getClassifierName(interfaceName);
+                        Object mPackage = 
+                            (packageName.length() > 0) 
+                                        ? getPackage(packageName)
+                                        : model;
+                        mInterface =
+                                Model.getCoreFactory().buildInterface(
+                                        classifierName, mPackage);
+                    } else {
+                        warnClassifierNotFound(interfaceName, e,
+                                "an abstraction");
+                    }
+                }
+                // TODO: This should use the Model API's buildAbstraction - tfm
+                if (mInterface != null) {
+                    Object mAbstraction =
+                        getAbstraction(mInterface, mClass);
+                    if (Model.getFacade().getSuppliers(mAbstraction).size()
+                            == 0) {
+                        Model.getCoreHelper().addSupplier(
+                                mAbstraction,
+                                mInterface);
+                        Model.getCoreHelper().addClient(mAbstraction, mClass);
+                    }
+                    Model.getCoreHelper().setNamespace(
+                            mAbstraction,
+                            currentPackage);
+                    Model.getCoreHelper().addStereotype(
+                            mAbstraction,
+                            getStereotype(CoreFactory.REALIZE_STEREOTYPE));
+                }
+            }
+        }
+    }
+    
+    /**
+     * Called from the parser when an enumeration literal is found.
+     *
+     * @param name The name of the enumerationLiteral.
+     */
+    void addEnumerationLiteral(String name) {
+        Object enumerationLiteral = Model.getCoreFactory()
+                .createEnumerationLiteral();
+        Model.getCoreHelper().setName(enumerationLiteral, name);
+        Object enumeration = parseState.getClassifier();
+        if (!Model.getFacade().isAEnumeration(enumeration)) {
+            throw new RuntimeException(
+                    "Unexpected parser state - not an Enumeration");
+        }
+        int index = 
+            Model.getFacade().getEnumerationLiterals(enumeration).size();
+        Model.getCoreHelper()
+                .addLiteral(enumeration, index, enumerationLiteral);
+    }
+    
     /**
        Common code used by addClass and addInterface.
 

@@ -711,6 +711,7 @@ anntotationMemberValuePairs
     :    annotationMemberValuePair ( COMMA annotationMemberValuePair )*
     ;
 
+// TODO: unused ident
 annotationMemberValuePair
     :    IDENT ASSIGN annotationMemberValueInitializer
     ;
@@ -792,15 +793,25 @@ ie, javadoc, (parserMode == MODE_IMPORT_PASS2));}
     ;
 
 enumDefinition[String javadoc, short modifiers]
-    :    "enum" IDENT
+{Vector ic=null;}
+    :    "enum" enumName:IDENT
         // it might implement some interfaces...
         implementsClause
+                ic=implementsClause
+        {
+        if (!isInCompoundStatement()) {
+            getModeller().addEnumeration(enumName.getText(), modifiers, ic, javadoc,
+                (parserMode == MODE_IMPORT_PASS2));
+        }
+        }
         // now parse the body of the enum
         enumBlock
+               {getModeller().popClassifier();}
     ;
 
+// TODO: Unimplemented annotation definition
 annotationDefinition[String javadoc, short modifiers]
-    :    AT "interface" IDENT
+    :    AT "interface" annotationName:IDENT
         // now parse the body of the annotation
         annotationBlock
     ;
@@ -818,6 +829,7 @@ typeParameters
         {(currentLtLevel != 0) || ltCounter == currentLtLevel}?
     ;
 
+// TODO: unused ident - generic type 
 typeParameter
     :
         // I'm pretty sure Antlr generates the right thing here:
@@ -886,8 +898,14 @@ annotationField
 //a class body
 enumConstant
     :    annotations
-        IDENT
+        enumConstantName:IDENT
+        {
+            if (parserMode == MODE_IMPORT_PASS2) {
+                getModeller().addEnumerationLiteral(enumConstantName.getText());
+            }
+        }
         (    LPAREN
+        // TODO: How do we model an enum constants argument?
             argList
             RPAREN
         )?
@@ -913,6 +931,7 @@ enumConstantField
             // This is not allowed for variable definitions, but this production
             // allows it, a semantic check could be used if you wanted.
             (typeParameters)? t=typeSpec        // method or variable declaration(s)
+            // TODO: unused ident - enumeration method
             (    IDENT                                    // the name of the method
 
                 // parse the formal parameter declarations.
@@ -1194,6 +1213,7 @@ parameterDeclaration returns [Vector pd=new Vector()]
           pd.add(id.getText());}
     ;
 
+// TODO: unused ident
 variableLengthParameterDeclaration
     :    parameterModifier typeSpec TRIPLE_DOT IDENT
         declaratorBrackets
