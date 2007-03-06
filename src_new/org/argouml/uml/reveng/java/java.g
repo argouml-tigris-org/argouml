@@ -325,20 +325,20 @@ tokens {
         if (lvl != null) {
           level = ((Integer)lvl).intValue();
         }
-        }
+    }
     
-        // A reference to the last added MOperation (here: method)
+        // A reference to the last added Operation (here: method)
         private Object _currentMethod = null;
 
     /**
-     * get reference to the last added MOperation (here: method)
+     * get reference to the last added Operation (here: method)
      */
     Object getMethod() {
         return _currentMethod;
     }
 
     /**
-     * set reference to the last added MOperation (here: method)
+     * set reference to the last added Operation (here: method)
      */
     void setMethod(Object method) {
         _currentMethod = method;
@@ -2146,9 +2146,15 @@ VOCAB
 // an identifier. Note that testLiterals is set to true! This means
 // that after we match the rule, we look in the literals table to see
 // if it's a literal or really an identifer
+// TODO: The identifier character set is incomplete
+// Java identifiers are allowed to be from any Unicode character category of
+// Lu,Ll,Lt,Lm,Lo followed categories Lu,Ll,Lt,Lm,Lo,Nd
+// The following definition includes only the letters from the Latin-1 
+// and Latin Extended A sets
 IDENT
     options {testLiterals=true;}
-    :    ('a'..'z'|'A'..'Z'|'_'|'$') ('a'..'z'|'A'..'Z'|'_'|'0'..'9'|'$')*
+    :    ('a'..'z'|'A'..'Z'|'_'|'$'|'\u00c0'..'\u00d6'|'\u00d8'..'\u00f6'|'\u00f8'..'\u00ff'|'\u0100'..'\u017f') 
+         ('a'..'z'|'A'..'Z'|'_'|'0'..'9'|'$'|'\u00c0'..'\u00d6'|'\u00d8'..'\u00f6'|'\u00f8'..'\u00ff'|'\u0100'..'\u017f')*
         {
             // check if "assert" keyword is enabled
             if (assertEnabled && "assert".equals($getText)) {
