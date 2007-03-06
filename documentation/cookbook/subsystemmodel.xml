@@ -108,6 +108,8 @@ each implementation must provide objects for each of these interfaces.
 
   <sect2 id="model_factories">
     <title>Factories</title>
+    <sect3>
+    <title>Create and Build</title>
     <para>
 The factories contain in most cases a create method for each model element.
 Example: <methodname>createClass</methodname>
@@ -128,9 +130,9 @@ The build methods have a signature like
     <para>
 Each build method is intended to follow the wellformedness rules
 as defined in the UML spec.
-The reason for having extar build methods, 
+The reason for having extra build methods, 
 is that the model repository does not enforce
-the wellformedness rules even though, in som cases, 
+the wellformedness rules even though, in some cases, 
 non-well-formed UML can lead to
 non-well-formed XMI which leads to saving/loading issues and
 all kinds of illegal states of ArgoUML.
@@ -144,11 +146,58 @@ existing build methods and utility methods in the helpers.
 The reason for this is that the event listeners for
 the newly created model element are setup correctly.
 </para>
-    <para>
+    </sect3>
+
+    <sect3>
+      <title>Copy and DoCopy</title>
+      <para>The factories also contain methods that deal with copying
+      modelelements. 
+      They are not supposed to be called directly 
+      from outside the model-subsystem, but only from the 
+      <classname>CopyHelper</classname>-implementation. 
+      The <classname>CopyHelper</classname> has one method
+      that copies any modelelement into a new 
+      "location" (mostly a namespace). 
+      This method determines the type of element to copy, 
+      and then dispatches the call to the appropriate method 
+      of a Factory that is named 
+      similar to <methodname>copyClass</methodname>.
+      </para>
+
+      <para>
+      The responsability of the <methodname>copyModelElement</methodname>
+      method is to create the new element 
+      (with <methodname>createModelElement</methodname>)
+      and set the containment.
+      Then, if necessary, sub-elements are to be created. 
+      E.g. the <classname>CoreFactoryMDRImpl</classname>.
+      <methodname>copyEnumeration</methodname> method
+      also creates EnumerationLiterals, with the
+      <methodname>createEnumerationLiteral</methodname> method.
+      </para>
+
+      <para>
+      Then a next method is called to copy all the attributes 
+      from the old element to the newly created one:
+      <methodname>doCopyModelElement</methodname>. 
+      This type of method shall 
+      only set attributes and lay associations,
+      but not create any more elements.
+      </para>
+      
+      <para>The implementation of these copy related methods 
+      is far from complete. 
+      Only the CoreFactory already has 
+      the most important functions.</para>
+    </sect3>
+    <sect3>
+      <title>Multi-threading</title>
+      <para>
 Question: Am I allowed to call the factories from any thread?
 Answer: The current checks are not written to allow for multiple threads
 so don't!
 </para>
+    </sect3>
   </sect2>
   <sect2 id="model_helpers">
     <title>Helpers</title>
