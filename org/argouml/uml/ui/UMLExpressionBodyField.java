@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,16 +53,18 @@ public class UMLExpressionBodyField extends JTextArea
 
     /**
      * The constructor.
-     *
-     * @param m Expression model, should be shared between
-     * Language and Body fields
-     * @param n Only one of Language and Body fields should
-     * forward events to model
+     * 
+     * @param expressionModel
+     *            Expression model, should be shared between Language and Body
+     *            fields
+     * @param notify
+     *            Set to true to forward events to model. Only one of Language
+     *            and Body fields should have this set to true.
      */
-    public UMLExpressionBodyField(UMLExpressionModel2 m,
-				  boolean n) {
-        model = m;
-        notifyModel = n;
+    public UMLExpressionBodyField(UMLExpressionModel2 expressionModel,
+				  boolean notify) {
+        model = expressionModel;
+        notifyModel = notify;
         getDocument().addDocumentListener(this);
         setToolTipText(Translator.localize("label.body.tooltip"));
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
@@ -94,11 +96,9 @@ public class UMLExpressionBodyField extends JTextArea
     private void update() {
         String oldText = getText();
         String newText = model.getBody();
-        LOG.debug("UMLExpressionBodyField: update: " + oldText + " " + newText);
 
         if (oldText == null || newText == null || !oldText.equals(newText)) {
             if (oldText != newText) {
-                LOG.debug("setNewText!!");
                 setText(newText);
             }
         }
