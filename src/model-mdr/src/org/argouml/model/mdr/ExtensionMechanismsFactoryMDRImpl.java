@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -206,13 +206,11 @@ public class ExtensionMechanismsFactoryMDRImpl extends
     public Object buildStereotype(String text, Object ns) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException(
-                    "Namespace is not of the good type! text:" + text + ",ns:"
+                    "Namespace is wrong type - text:" + text + ",ns:"
                             + ns);
         }
         Stereotype stereo = buildStereotype(text);
-        if (ns != null && ns instanceof Namespace) {
-            stereo.setNamespace((Namespace) ns);
-        }
+        stereo.setNamespace((Namespace) ns);
         return stereo;
     }
 
@@ -234,6 +232,38 @@ public class ExtensionMechanismsFactoryMDRImpl extends
         return tv;
     }
 
+    /*
+     * @see org.argouml.model.ExtensionMechanismsFactory#copyTaggedValues(java.lang.Object, java.lang.Object)
+     */
+    public void copyTaggedValues(Object source, Object target) {    
+        if (!(source instanceof ModelElement)
+                || !(target instanceof ModelElement)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it = ((ModelElement) source).getTaggedValue().iterator();
+        Collection taggedValues = ((ModelElement) target).getTaggedValue();
+        // Clear target so that multiple copies have no effect 
+        // (other than inefficiency)
+        taggedValues.clear();
+        while (it.hasNext()) {
+            taggedValues.add(copyTaggedValue((TaggedValue) it.next()));
+        }
+    }
+    
+    /**
+     * Copy a single TaggedValue and return the copy.
+     * 
+     * @param source the TaggedValue to copy
+     * @return the newly cloned copy
+     */
+    private Object copyTaggedValue(TaggedValue source) {
+        TaggedValue tv = (TaggedValue) createTaggedValue();
+        tv.setType(source.getType());
+        tv.getDataValue().addAll(source.getDataValue());
+        tv.getReferenceValue().addAll(source.getReferenceValue());
+        return tv;
+    }
 
     /**
      * @param elem

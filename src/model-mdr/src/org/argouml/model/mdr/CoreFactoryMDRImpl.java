@@ -1861,7 +1861,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     void deleteEnumeration(Object elem) {
         if (!(elem instanceof Enumeration)) {
             throw new IllegalArgumentException("elem: " + elem);
-    }
+        }
         // EnumerationLiterals should get deleted implicitly
         // since they are associated by composition
     }
@@ -2098,6 +2098,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
 
         // TODO: how to merge multiple inheritance? Necessary?
+        // This currently copies the common ancestors multiple times
         doCopyNamespace(source, target);
         doCopyGeneralizableElement(source, target);
 
@@ -2205,7 +2206,8 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         targetME.setSpecification(sourceME.isSpecification());
         targetME.setVisibility(sourceME.getVisibility());
-        nsmodel.getDataTypesHelper().copyTaggedValues(source, target);
+        nsmodel.getExtensionMechanismsFactory()
+                .copyTaggedValues(source, target);
 
         if (!sourceME.getStereotype().isEmpty()) {
             // Note that if we're copying this element then we
@@ -2308,7 +2310,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         target.setSignal(source.getSignal());
 
         doCopyBehavioralFeature(source, target);
-        }
+    }
     
     
     /**
@@ -2343,6 +2345,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         target.setOwnerScope(source.getOwnerScope());
 
         doCopyModelElement(source, target);
-        }
+    }
 
 }

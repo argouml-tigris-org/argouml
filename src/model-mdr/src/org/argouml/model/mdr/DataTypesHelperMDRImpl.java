@@ -62,30 +62,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
      *      java.lang.Object, java.lang.Object)
      */
     public void copyTaggedValues(Object from, Object to) {
-        if (!(from instanceof ModelElement)) {
-            throw new IllegalArgumentException();
-        }
-        if (!(to instanceof ModelElement)) {
-            throw new IllegalArgumentException();
-        }
-
-        Iterator it = ((ModelElement) from).getTaggedValue().iterator();
-        TaggedValue tv;
-        TaggedValue newTv;
-        String value;
-        while (it.hasNext()) {
-            tv = (TaggedValue) it.next();
-            if (!tv.getDataValue().isEmpty())
-                value = tv.getDataValue().iterator().next().toString();
-            else
-                value = "";
-            modelImpl.getCoreHelper().setTaggedValue(to,
-                    tv.getType().getName(), value);
-            newTv = (TaggedValue) modelImpl.getFacade().getTaggedValue(to,
-                    tv.getType().getName());
-            newTv.getType().setTagType(tv.getType().getTagType());
-            // TODO: Should we also copy the ReferenceValue collection ?
-        }
+        modelImpl.getExtensionMechanismsFactory().copyTaggedValues(from, to);
     }
 
     /*
