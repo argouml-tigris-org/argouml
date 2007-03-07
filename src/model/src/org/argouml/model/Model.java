@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -481,22 +481,6 @@ public final class Model {
      */
     public static XmiReader getXmiReader() throws UmlException {
         return impl.getXmiReader();
-    }
-
-    /**
-     * Get the XmiWriter.
-     *
-     * @param model the project member model
-     * @param writer the writer
-     * @return the object implementing the XmiWriter interface
-     * @throws UmlException on any error while writing
-     * @deprecated for 0.22.1 by Tom Morris - use three argument version 
-     * {@link #getXmiWriter(Object, Writer, String)}
-     */
-    public static XmiWriter getXmiWriter(Object model, Writer writer)
-        throws UmlException {
-        return getXmiWriter(model, writer, 
-                "unknown version (0.22 or earlier)");
     }
 
     /**

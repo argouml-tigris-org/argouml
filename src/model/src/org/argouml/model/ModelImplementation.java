@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -269,23 +269,6 @@ public interface ModelImplementation {
      */
     XmiReader getXmiReader() throws UmlException;
 
-    /**
-     * A factory method that creates a new instance of an XmiWriter on each
-     * call.
-     * 
-     * @param model
-     *            the project member model
-     * @param writer
-     *            the writer
-     * @return the object implementing the XmiWriter interface
-     * @throws UmlException
-     *             on any error while writing
-     * @deprecated for 0.22.1 by tfmorris - use 3 argument version 
-     * {@link #getXmiWriter(Object, Writer, String)}
-     */
-    XmiWriter getXmiWriter(Object model, Writer writer)
-        throws UmlException;
-    
     /**
      * A factory method that creates a new instance of an XmiWriter on each
      * call.
