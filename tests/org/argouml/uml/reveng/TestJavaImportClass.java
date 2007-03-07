@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,7 +46,7 @@ import antlr.TokenStreamException;
  * setUp method need not be changed).<p>
  */
 public class TestJavaImportClass extends TestCase {
-    /**
+    /*
      * @see junit.framework.TestCase#TestCase(String)
      */
     public TestJavaImportClass(String str) {
@@ -75,8 +75,8 @@ public class TestJavaImportClass extends TestCase {
         Model.getModelManagementFactory().setRootModel(parsedModel);
 
         Modeller modeller =
-                new Modeller(parsedModel, null, null, false, false,
-                    "TestClass.java");
+            new Modeller(parsedModel, new DummyImportSettings(),
+                "TestClass.java");
         assertNotNull("Creation of Modeller instance failed.", modeller);
 
         try {
@@ -370,7 +370,7 @@ public class TestJavaImportClass extends TestCase {
             assertNotNull("No class \"TestClass\" found.", parsedClass);
         }
         Collection operations = Model.getFacade().getOperations(parsedClass);
-        assertNotNull("No operations found ib class.", operations);
+        assertNotNull("No operations found in class.", operations);
         assertEquals("Number of operations is wrong", 4, operations.size());
         Object operation = null;
         Object operationForTestClass = null;
@@ -443,7 +443,7 @@ public class TestJavaImportClass extends TestCase {
     private static boolean isParsed;
 
     /**
-     * Instances of the model and it's components.
+     * Instances of the model and its components.
      */
     private static Object parsedModel;
     private static Object parsedPackage;

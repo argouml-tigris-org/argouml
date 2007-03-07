@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,14 +39,14 @@ import antlr.TokenStreamException;
 /**
  * Test case to test the import of a Java source file. The content of the Java
  * source file is a private constant at the bottom of the source of this
- * interface. The test methods are specially designed for this Java source
+ * class. The test methods are specially designed for this Java source
  * constant. Feeding of the diagram subsystem is disabled; only model elements
  * are created and checked. For testing with another Java source file, copy this
  * test case, change the Java source constant and modify the test method (the
  * setUp method need not be changed).<p>
  */
 public class TestJavaImportInterface extends TestCase {
-    /**
+    /*
      * @see junit.framework.TestCase#TestCase(String)
      */
     public TestJavaImportInterface(String str) {
@@ -75,7 +75,7 @@ public class TestJavaImportInterface extends TestCase {
         Model.getModelManagementFactory().setRootModel(parsedModel);
 
         Modeller modeller =
-                new Modeller(parsedModel, null, null, false, false,
+                new Modeller(parsedModel, new DummyImportSettings(),
                     "TestInterface.java");
         assertNotNull("Creation of Modeller instance failed.", modeller);
 
