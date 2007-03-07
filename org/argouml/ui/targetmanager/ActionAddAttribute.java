@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -72,14 +72,11 @@ class ActionAddAttribute extends UndoableAction {
         }
 
         Project project = ProjectManager.getManager().getCurrentProject();
-
-        Object intType = project.findType("int");
-        Object model = project.getModel();
+        Object attrType = project.getDefaultAttributeType();
         Object attr =
-            Model.getCoreFactory().buildAttribute(
+            Model.getCoreFactory().buildAttribute2(
                 classifier,
-                model,
-                intType);
+                attrType);
         TargetManager.getInstance().setTarget(attr);
     }
 

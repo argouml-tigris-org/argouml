@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -85,7 +85,7 @@ public class ObjectNotationUml extends ObjectNotation {
             while (baseTokens.hasMoreElements()) {
                 String typeString = baseTokens.nextToken();
                 Object type =
-                /* (MClassifier) */ProjectManager.getManager()
+                ProjectManager.getManager()
                         .getCurrentProject().findType(typeString);
                 Model.getCommonBehaviorHelper().addClassifier(modelElement, 
                         type);

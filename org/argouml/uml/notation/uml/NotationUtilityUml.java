@@ -764,16 +764,12 @@ public final class NotationUtilityUml {
             }
 
             if (p == null) {
-                Object model =
-                    ProjectManager.getManager().getCurrentProject().getModel();
-                Object voidType =
+                Object returnType =
                     ProjectManager.getManager()
                         .getCurrentProject().findType("void");
-                p =
-                    Model.getCoreFactory().buildParameter(
+                p = Model.getCoreFactory().buildParameter(
                             op,
-                            model,
-                            voidType);
+                            returnType);
                 // op.addParameter(p);
             }
 

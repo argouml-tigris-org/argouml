@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -126,15 +126,12 @@ public class PropPanelDataType extends PropPanelClassifier {
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAClassifier(target)) {
-                Object model =
+                Object returnType =
                     ProjectManager.getManager()
-                    	.getCurrentProject().getModel();
-                Object voidType =
-                    ProjectManager.getManager()
-                    	.getCurrentProject().findType("void");
+                    	.getCurrentProject().getDefaultReturnType();
                 Object newOper =
                     Model.getCoreFactory()
-                    	.buildOperation(target, model, voidType);
+                    	.buildOperation(target, returnType);
                 // due to Well Defined rule [2.5.3.12/1]
                 Model.getCoreHelper().setQuery(newOper, true);
                 TargetManager.getInstance().setTarget(newOper);

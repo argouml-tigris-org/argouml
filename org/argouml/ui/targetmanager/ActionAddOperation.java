@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -75,11 +75,9 @@ class ActionAddOperation extends UndoableAction {
             return;
         }
 
-        Object model = project.getModel();
-        Object voidType = project.findType("void");
-        Object oper =
-            Model.getCoreFactory().buildOperation(
-                classifier, model, voidType);
+        Object returnType = project.getDefaultReturnType();
+        Object oper = 
+            Model.getCoreFactory().buildOperation(classifier, returnType);
         TargetManager.getInstance().setTarget(oper);
 
     }

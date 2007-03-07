@@ -35,7 +35,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.Facade;
@@ -146,7 +145,7 @@ public class Modeller {
      * @param noAss
      *            whether associations are modelled as attributes
      * @param arraysAsDT
-     *            whether darrays are modelled as dataypes
+     *            whether arrays are modelled as dataypes
      * @param fName
      *            the current file name
      * @deprecated for 0.23.4 by tfmorris - use variant without diagram
@@ -1026,18 +1025,12 @@ public class Modeller {
                 }
             }
             if (mClassifier != null) {
-		Object mdl = ProjectManager.getManager()
-		    .getCurrentProject().getModel();
-		Object voidType = ProjectManager.getManager()
-		    .getCurrentProject().findType("void");
 		mParameter = Model.getCoreFactory().buildParameter(
-		        mOperation, mdl, voidType);
+		        mOperation, mClassifier);
                 Model.getCoreHelper().setName(mParameter, "return");
                 Model.getCoreHelper().setKind(
                         mParameter,
                         Model.getDirectionKind().getReturnParameter());
-
-                Model.getCoreHelper().setType(mParameter, mClassifier);
 	    }
 	}
 
@@ -1066,19 +1059,13 @@ public class Modeller {
                 }
             }
             if (mClassifier != null) {
-                Object mdl = ProjectManager.getManager()
-                    .getCurrentProject().getModel();
-                Object voidType = ProjectManager.getManager()
-                    .getCurrentProject().findType("void");
                 mParameter = Model.getCoreFactory().buildParameter(
-                        mOperation, mdl, voidType);
+                        mOperation, mClassifier);
 		Model.getCoreHelper().setName(mParameter,
 				    (String) parameter.elementAt(2));
 		Model.getCoreHelper().setKind(mParameter,
                         Model.getDirectionKind().getInParameter());
-                if (Model.getFacade().isAClassifier(mClassifier)) {
-                    Model.getCoreHelper().setType(mParameter, mClassifier);
-                } else {
+                if (!Model.getFacade().isAClassifier(mClassifier)) {
                     // the type resolution failed to find a valid classifier.
                     LOG.warn("Modeller.java: a valid type for a parameter "
 			     + "could not be resolved:\n "
@@ -1225,7 +1212,8 @@ public class Modeller {
 
             Object mAttribute = parseState.getAttribute(name);
             if (mAttribute == null) {
-                mAttribute = buildAttribute(parseState.getClassifier(), name);
+                mAttribute = buildAttribute(parseState.getClassifier(),
+                        mClassifier, name);
             }
             parseState.feature(mAttribute);
 
@@ -1372,6 +1360,7 @@ public class Modeller {
 	    mPackage =
 		Model.getModelManagementFactory()
 		    .buildPackage(getRelativePackageName(name), name);
+            // TODO: This is redundant - tfm
 	    Model.getCoreHelper().setNamespace(mPackage, model);
 
 	    // Find the owner for this package.
@@ -1420,31 +1409,10 @@ public class Modeller {
         } else {
             LOG.info("Creating a new operation " + name);
             Object cls = parseState.getClassifier();
-            Object mdl = ProjectManager.getManager()
-                .getCurrentProject().getModel();
-            Object voidType = ProjectManager.getManager()
-                .getCurrentProject().findType("void");
-            mOperation =
-        		Model.getCoreFactory().buildOperation(
-                        cls, mdl, voidType, name);
-//            Iterator it2 =
-//		  ProjectManager.getManager().getCurrentProject()
-//                .findFigsForMember(parseState.getClassifier()).iterator();
-//            while (it2.hasNext()) {
-//                Object listener = it2.next();
-//                // UmlModelEventPump.getPump()
-//                //     .removeModelEventListener(listener,
-//                // mOperation);
-//                UmlModelEventPump.getPump().addModelEventListener(listener,
-//								  mOperation);
-//                // UmlModelEventPump.getPump()
-//                //     .removeModelEventListener(listener,
-//                // mOperation.getParameter(0));
-//                UmlModelEventPump.getPump()
-//		    .addModelEventListener(listener,
-//				Model.getFacade().getParameter(mOperation,
-//								    0));
-//            }
+            Object returnType = ProjectManager.getManager()
+                .getCurrentProject().getDefaultReturnType();
+            mOperation = Model.getCoreFactory().buildOperation2(cls, returnType,
+                    name);
         }
         return mOperation;
     }
@@ -1471,30 +1439,33 @@ public class Modeller {
     }
 
     /**
-       Find an attribute in the currentClassifier. If the attribute is
-       not found, a new one is created.
-
-       @param name The name of the attribute.
-       @return The attribute found or created.
-    */
-    private Object buildAttribute(Object classifier, String name) {
-        Project project = ProjectManager.getManager().getCurrentProject();
-        Object intType = project.findType("int");
-        Object myModel = project.getModel();
-        Object mAttribute = Model.getCoreFactory().buildAttribute(classifier,
-                myModel, intType);
+     * Build a new attribute in the current classifier.
+     * 
+     * @param classifier
+     *            the model were are reverse engineering into
+     * @param type
+     *            the the type of the new attribute
+     * @param name
+     *            The name of the attribute.
+     * @return The attribute found or created.
+     */
+    private Object buildAttribute(Object classifier, Object type, String name) {
+        Object mAttribute = 
+            Model.getCoreFactory().buildAttribute2(classifier, type);
         Model.getCoreHelper().setName(mAttribute, name);
         return mAttribute;
     }
 
     /**
-       Find an associationEnd from the currentClassifier to the type
-       specified. If not found, a new is created.
-
-       @param name The name of the attribute.
-       @param mClassifier Where the association ends.
-       @return The attribute found or created.
-    */
+     * Find an associationEnd from the currentClassifier to the type specified.
+     * If not found, a new is created.
+     * 
+     * @param name
+     *            The name of the attribute.
+     * @param mClassifier
+     *            Where the association ends.
+     * @return The attribute found or created.
+     */
     private Object getAssociationEnd(String name, Object mClassifier) {
         Object mAssociationEnd = null;
         for (Iterator i = Model.getFacade().getAssociationEnds(mClassifier)

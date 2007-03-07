@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -79,15 +79,11 @@ public class WizAddConstructor extends UMLWizard {
 	    }
 	    Object me = getModelElement();
 	    savedTargets = TargetManager.getInstance().getTargets();
-	    Object model =
+	    Object returnType =
 	        ProjectManager.getManager().getCurrentProject()
-	        	.getModel();
-	    Object voidType =
-	        ProjectManager.getManager().getCurrentProject()
-	        	.findType("void");
+	        	.getDefaultReturnType();
 	    oper =
-	        Model.getCoreFactory().buildOperation(me, model,
-	                voidType, newName);
+	        Model.getCoreFactory().buildOperation2(me, returnType, newName);
 	    Model.getCoreHelper()
 	        .addStereotype(oper, getCreateStereotype(oper));
 	    TargetManager.getInstance().setTargets(savedTargets);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Vector;
@@ -126,8 +125,7 @@ public class AttributeNotationUml extends AttributeNotation {
             return;
         }
         parseAttribute(s, attribute);
-        int i = new ArrayList(
-                Model.getFacade().getFeatures(classifier)).indexOf(attribute);
+        int i = Model.getFacade().getFeatures(classifier).indexOf(attribute);
         // check for more attributes (';' separated):
         start = end + 1;
         end = NotationUtilityUml.indexOfNextCheckedSemicolon(text, start);
@@ -136,18 +134,21 @@ public class AttributeNotationUml extends AttributeNotation {
             if (s.length() > 0) {
                 // yes, there are more:
                 Object model = project.getModel();
-                Object intType = project.findType("int");
+                Object attrType = project.getDefaultAttributeType();
                 // Force type element into given namespace if not already there
-                if (model != Model.getFacade().getNamespace(intType)
-                        && !(Model.getModelManagementHelper().getAllNamespaces(model).
-                                contains(Model.getFacade().getNamespace(intType)))) {
-                    Model.getCoreHelper().setNamespace(intType, model);
+                // TODO: Dangerous! Why are we changing the model 
+                // as a side effect? - tfm 20070307
+                if (model != Model.getFacade().getNamespace(attrType)
+                        && !(Model.getModelManagementHelper().getAllNamespaces(
+                                model).contains(Model.getFacade().getNamespace(
+                                attrType)))) {
+                    Model.getCoreHelper().setNamespace(attrType, model);
                 }
                 
-                Object newAttribute =
-                    Model.getUmlFactory().buildNode(Model.getMetaTypes().getAttribute());
+                Object newAttribute = Model.getUmlFactory().buildNode(
+                        Model.getMetaTypes().getAttribute());
                 
-                Model.getCoreHelper().setType(newAttribute, intType);
+                Model.getCoreHelper().setType(newAttribute, attrType);
                 
                 if (newAttribute != null) {
                     try {
