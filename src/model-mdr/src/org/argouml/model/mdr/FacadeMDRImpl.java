@@ -1313,10 +1313,7 @@ class FacadeMDRImpl implements Facade {
     public boolean isPrimaryObject(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                Collection c =
-                    implementation.getUmlPackage().getCore()
-                        .getAReferenceValueReferenceTag().getReferenceTag(
-                                (ModelElement) handle);
+                Collection c = ((ModelElement) handle).getTaggedValue();
                 for (Iterator i = c.iterator(); i.hasNext();) {
                     TaggedValue tv = (TaggedValue) i.next();
                     if (GENERATED_TAG.equals(tv.getType().getTagType())) {
