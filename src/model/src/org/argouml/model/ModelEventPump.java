@@ -26,7 +26,6 @@ package org.argouml.model;
 
 import java.beans.PropertyChangeListener;
 
-import javax.swing.Action;
 
 /**
  * This is the interface for registering interest in events sent from
@@ -212,14 +211,6 @@ public interface ModelEventPump {
     void removeClassModelEventListener(PropertyChangeListener listener,
 				       Object modelClass,
 				       String propertyName);
-
-    /**
-     * Register an Action with the pump that is used to perform saving.
-     * This action will be enabled by any change to the model.
-     *
-     * @param saveAction the action to enable on change to model.
-     */
-    void setSaveAction(Action saveAction);
 
     /**
      * Start the ModelEventPump firing events.
