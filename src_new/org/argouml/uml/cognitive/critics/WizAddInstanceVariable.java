@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -64,15 +64,12 @@ public class WizAddInstanceVariable extends UMLWizard {
                 newName = step1.getText();
             }
             Object me = getModelElement();
-            Object intType =
+            Object attrType =
                 ProjectManager.getManager()
-                	.getCurrentProject().findType("int");
-            Object model =
-                ProjectManager.getManager()
-                	.getCurrentProject().getModel();
+                	.getCurrentProject().getDefaultAttributeType();
             attr =
                 Model.getCoreFactory()
-                	.buildAttribute(me, model, intType);
+                	.buildAttribute2(me, attrType);
             Model.getCoreHelper().setName(attr, newName);
             break;
         }
@@ -86,16 +83,7 @@ public class WizAddInstanceVariable extends UMLWizard {
 	instructions = s;
     }
 
-    /**
-     * @param b
-     */
-    /*public void setMustEdit(boolean b) {
-	mustEdit = b;
-    }*/
-
-    /**
-     * Create a new panel for the given step.
-     *
+    /*
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {

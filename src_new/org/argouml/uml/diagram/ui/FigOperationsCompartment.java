@@ -84,10 +84,9 @@ public class FigOperationsCompartment extends FigEditableCompartment {
         Object classifier = getGroup().getOwner();
         Project project = ProjectManager.getManager().getCurrentProject();
 
-        Object model = project.getModel();
-        Object voidType = project.findType("void");
-        Object oper = Model.getCoreFactory().buildOperation(classifier, model,
-                voidType);
+        Object returnType = project.getDefaultReturnType();
+        Object oper = Model.getCoreFactory().buildOperation(classifier,
+                returnType);
         TargetManager.getInstance().setTarget(oper);
     }
 }

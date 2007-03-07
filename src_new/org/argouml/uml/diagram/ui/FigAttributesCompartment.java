@@ -77,12 +77,10 @@ public class FigAttributesCompartment extends FigEditableCompartment {
     protected void createModelElement() {
         Object classifier = getGroup().getOwner();
         Project project = ProjectManager.getManager().getCurrentProject();
-        Object intType = project.findType("int");
-        Object model = project.getModel();
-        Object attr = Model.getCoreFactory().buildAttribute(
+        Object attrType = project.getDefaultAttributeType();
+        Object attr = Model.getCoreFactory().buildAttribute2(
                 classifier,
-                model,
-                intType);
+                attrType);
         TargetManager.getInstance().setTarget(attr);
     }
     

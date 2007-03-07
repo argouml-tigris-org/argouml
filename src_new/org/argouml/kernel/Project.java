@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -633,13 +633,45 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Searches for a type/classifier with name s. If the type is not found,
-     * a new type is created and added to the current namespace.
-     * @param s the name of the type/classifier to be found
-     * @return MClassifier
+     * Searches for a type/classifier with name s. If the type is not found, a
+     * new type is created and added to the current namespace.
+     * <p>
+     * @param s
+     *            the name of the type/classifier to be found
+     * @return Classifier
      */
     public Object findType(String s) {
         return findType(s, true);
+    }
+
+    /**
+     * Return the default type for an attribute.
+     * 
+     * @return a Classifier to use as the default type
+     */
+    public Object getDefaultAttributeType() {
+        // TODO: Move this to a profile - tfm - 20070307
+        return findType("int");
+    }
+
+    /**
+     * Return the default type for a parameter.
+     * 
+     * @return a Classifier to use as the default type
+     */
+    public Object getDefaultParameterType() {
+        // TODO: Move this to a profile - tfm - 20070307
+        return findType("int");
+    }
+    
+    /**
+     * Return the default type for the return parameter of a method.
+     * 
+     * @return a Classifier to use as the default type
+     */
+    public Object getDefaultReturnType() {
+        // TODO: Move this to a profile - tfm - 20070307
+        return findType("void");
     }
 
     /**
@@ -647,9 +679,12 @@ public class Project implements java.io.Serializable, TargetListener {
      * true, a new type is defined if the type/classifier is not
      * found. The newly created type is added to the currentNamespace
      * and given the name s.
+     * 
+     * TODO: Move to Model subsystem - tfm 20070307
+     * 
      * @param s the name of the type/classifier to be found
      * @param defineNew if true, define a new one
-     * @return MClassifier the found classifier
+     * @return Classifier the found classifier
      */
     public Object findType(String s, boolean defineNew) {
         if (s != null) {
@@ -666,7 +701,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 return cls;
             }
         }
-        cls = findTypeInModel(s, defaultModel);
+        cls = findTypeInDefaultModel(s);
         // hey, now we should move it to the model the user is working in
         if (cls != null) {
             cls =
@@ -728,6 +763,8 @@ public class Project implements java.io.Serializable, TargetListener {
      *
      * Will only return first classifier with the matching name.
      *
+     * TODO: Move to Model subsystem - tfm 20070307
+     * 
      * @param s is short name.
      * @param ns Namespace where we do the search.
      * @return the found classifier (or <code>null</code> if not found).

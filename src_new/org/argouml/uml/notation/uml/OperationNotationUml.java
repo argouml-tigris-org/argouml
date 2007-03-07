@@ -25,7 +25,6 @@
 package org.argouml.uml.notation.uml;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -116,8 +115,7 @@ public class OperationNotationUml extends OperationNotation {
             return;
         }
         parseOperation(s, operation);
-        int i = new ArrayList(
-                Model.getFacade().getFeatures(classifier)).indexOf(operation);
+        int i = Model.getFacade().getFeatures(classifier).indexOf(operation);
         // check for more operations (';' separated):
         start = end + 1;
         end = NotationUtilityUml.indexOfNextCheckedSemicolon(text, start);
@@ -125,11 +123,10 @@ public class OperationNotationUml extends OperationNotation {
             s = text.substring(start, end).trim();
             if (s.length() > 0) {
                 // yes, there are more:
-                Object model = currentProject.getModel();
-                Object voidType = currentProject.findType("void");
+                Object returnType = currentProject.getDefaultReturnType();
                 Object newOp =
                     Model.getCoreFactory()
-                        .buildOperation(classifier, model, voidType);
+                        .buildOperation(classifier, returnType);
                 if (newOp != null) {
                     try {
                         parseOperation(s, newOp);
@@ -453,16 +450,10 @@ public class OperationNotationUml extends OperationNotation {
             }
         }
         if (param == null) {
-            Object model =
+            Object returnType =
                 ProjectManager.getManager()
-                        .getCurrentProject().getModel();
-            Object voidType =
-                ProjectManager.getManager()
-                        .getCurrentProject().findType("void");
-            param =
-                Model.getCoreFactory()
-                        .buildParameter(
-                                op, model, voidType);
+                        .getCurrentProject().getDefaultReturnType();
+            param = Model.getCoreFactory().buildParameter(op, returnType);
         }
         Model.getCoreHelper().setType(param, type);
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1572,16 +1572,11 @@ public class MessageNotationUml extends MessageNotation {
             // Jaap Branderhorst 2002-23-09 added next lines to link
             // parameters and operations to the figs that represent
             // them
-            Object cls = /* (MClassifier) */it.next();
-            Object model =
+            Object cls = it.next();
+            Object returnType =
                 ProjectManager.getManager()
-                        .getCurrentProject().getModel();
-            Object voidType =
-                ProjectManager.getManager()
-                        .getCurrentProject().findType("void");
-            Object op =
-                Model.getCoreFactory()
-                        .buildOperation(cls, model, voidType);
+                        .getCurrentProject().getDefaultReturnType();
+            Object op = Model.getCoreFactory().buildOperation(cls, returnType);
 
             try {
                 (new OperationNotationUml(op)).parseOperation(expr, op);
