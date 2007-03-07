@@ -815,8 +815,16 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                         contains(clsType.getNamespace()))) {
             clsType.setNamespace((Model) model);
         }
+        return buildAttribute2(theType);
+    }
+    
+    /*
+     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object,
+     *      java.lang.Object)
+     */
+    public Object buildAttribute2(Object theType) {
         Attribute attr = buildAttribute();
-        attr.setType(clsType);
+        attr.setType((Classifier) theType);
         return attr;
     }
     
@@ -841,19 +849,33 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *      java.lang.Object, java.lang.Object)
      */
     public Object buildAttribute(Object handle, Object model, Object type) {
-        if (!(handle instanceof Classifier)
-                && !(handle instanceof AssociationEnd)) {
-            throw new IllegalArgumentException();
-        }
         Attribute attr = (Attribute) buildAttribute(model, type);
         if (handle instanceof Classifier) {
             Classifier cls = (Classifier) handle;
             cls.getFeature().add(attr);
-            attr.setOwner(cls);
-        }
-        if (handle instanceof AssociationEnd) {
+        } else if (handle instanceof AssociationEnd) {
             AssociationEnd assend = (AssociationEnd) handle;
             assend.getQualifier().add(attr);
+        } else {
+            throw new IllegalArgumentException();            
+        }
+        return attr;
+    }
+    
+
+    /*
+     * @see org.argouml.model.CoreFactory#buildAttribute2(java.lang.Object, java.lang.Object)
+     */
+    public Object buildAttribute2(Object handle, Object type) {
+        Attribute attr = (Attribute) buildAttribute2(type);
+        if (handle instanceof Classifier) {
+            Classifier cls = (Classifier) handle;
+            cls.getFeature().add(attr);
+        } else if (handle instanceof AssociationEnd) {
+            AssociationEnd assend = (AssociationEnd) handle;
+            assend.getQualifier().add(attr);
+        } else {
+            throw new IllegalArgumentException();            
         }
         return attr;
     }
@@ -1128,6 +1150,13 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     public Object buildOperation(Object classifier, Object model,
             Object returnType) {
+        return buildOperation(classifier, returnType);
+    }
+
+    /*
+     * @see org.argouml.model.CoreFactory#buildOperation(java.lang.Object, java.lang.Object)
+     */
+    public Object buildOperation(Object classifier, Object returnType) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException("Handle is not a classifier");
         }
@@ -1143,7 +1172,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         oper.setOwnerScope(ScopeKindEnum.SK_INSTANCE);
         oper.setConcurrency(CallConcurrencyKindEnum.CCK_SEQUENTIAL);
 
-        Parameter returnParameter = (Parameter) buildParameter(oper, model,
+        Parameter returnParameter = (Parameter) buildParameter(oper, 
                 returnType);
         returnParameter.setKind(ParameterDirectionKindEnum.PDK_RETURN);
         returnParameter.setName("return");
@@ -1156,7 +1185,14 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     public Object buildOperation(Object cls, Object model, Object returnType,
             String name) {
-        Object oper = buildOperation(cls, model, returnType);
+        return buildOperation2(cls, returnType, name);
+    }
+    
+    /*
+     * @see org.argouml.model.CoreFactory#buildOperation2(java.lang.Object, java.lang.Object, java.lang.String)
+     */
+    public Object buildOperation2(Object cls, Object returnType, String name) {
+        Object oper = buildOperation(cls, returnType);
         if (oper != null) {
             ((Operation) oper).setName(name);
         }
@@ -1168,11 +1204,9 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * 
      * @return The newly created parameter.
      */
-    private Object buildParameter(Model model, Classifier type) {
-        Parameter param = corePackage.getParameter().
-                createParameter();
+    private Object buildParameter(Classifier type) {
+        Parameter param = corePackage.getParameter().createParameter();
         param.setType(type);
-        param.setNamespace(model.getNamespace());
         return param;
     }
 
@@ -1181,25 +1215,24 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *      java.lang.Object, java.lang.Object)
      */
     public Object buildParameter(Object o, Object model, Object type) {
+        return buildParameter(o, type);
+    }
+    
+    /*
+     * @see org.argouml.model.CoreFactory#buildParameter(java.lang.Object, java.lang.Object)
+     */
+    public Object buildParameter(Object o, Object type) {
         if (o instanceof Event) {
             Event event = (Event) o;
-            Parameter res = (Parameter) buildParameter((Model) model,
-                    (Classifier) type);
+            Parameter res = (Parameter) buildParameter((Classifier) type);
             res.setKind(ParameterDirectionKindEnum.PDK_IN);
             event.getParameter().add(res);
             return res;
         } else if (o instanceof BehavioralFeature) {
             BehavioralFeature oper = (BehavioralFeature) o;
-            if (oper == null || oper.getOwner() == null) {
-                throw new IllegalArgumentException(
-                        "operation is null or does not have an owner");
-            }
-            Parameter res = (Parameter) buildParameter((Model) model,
-                    (Classifier) type);
-
+            Parameter res = (Parameter) buildParameter((Classifier) type);
             oper.getParameter().add(res);
             res.setName("arg" + oper.getParameter().size());
-
             return res;
         } else {
             throw new IllegalArgumentException("Unsupported object type");
@@ -1766,6 +1799,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (!(elem instanceof PresentationElement)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
+
     }
 
     /**
@@ -1827,7 +1861,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     void deleteEnumeration(Object elem) {
         if (!(elem instanceof Enumeration)) {
             throw new IllegalArgumentException("elem: " + elem);
-        }
+    }
         // EnumerationLiterals should get deleted implicitly
         // since they are associated by composition
     }
@@ -2220,7 +2254,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         target.setChangeability(source.getChangeability());
         target.setTargetScope(source.getTargetScope());
         target.setType(source.getType());
-        
+
         doCopyFeature(source, target);
     }
 
@@ -2236,7 +2270,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         target.setRoot(source.isRoot());
         target.setConcurrency(source.getConcurrency());
         target.setSpecification(source.getSpecification());
-        
+    
         doCopyBehavioralFeature(source, target);
     }
 
@@ -2257,6 +2291,9 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         doCopyBehavioralFeature(source, target);
     }
 
+
+
+    
     /**
      * Copy the attributes of one Reception to another.
      * 
@@ -2271,8 +2308,9 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         target.setSignal(source.getSignal());
 
         doCopyBehavioralFeature(source, target);
-    }
-
+        }
+    
+    
     /**
      * Copy the attributes of one BehavioralFeature to another.
      * 
@@ -2305,7 +2343,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         target.setOwnerScope(source.getOwnerScope());
 
         doCopyModelElement(source, target);
-    }
+        }
 
 }
-
