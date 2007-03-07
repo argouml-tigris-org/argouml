@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,7 +41,6 @@ import org.argouml.uml.notation.NotationProvider;
  */
 public class TestTransitionNotationUml extends TestCase {
     private Object aClass;
-    private Object aOper;
     private Object aStateMachine;
     private Object aState;
 
@@ -63,16 +62,12 @@ public class TestTransitionNotationUml extends TestCase {
         Object model =
             Model.getModelManagementFactory().createModel();
         aClass = Model.getCoreFactory().buildClass(model);
-        Object mdl = p.getModel();
-        Object voidType = p.findType("void");
-        aOper =
-            Model.getCoreFactory().buildOperation(aClass, mdl,
-                    voidType, "myOper");
+        Object returnType = p.getDefaultReturnType();
+        Model.getCoreFactory().buildOperation2(aClass, returnType, "myOper");
         aStateMachine =
             Model.getStateMachinesFactory().buildStateMachine(aClass);
         Object top = Model.getFacade().getTop(aStateMachine);
-        aState =
-            Model.getStateMachinesFactory().buildCompositeState(top);
+        aState = Model.getStateMachinesFactory().buildCompositeState(top);
     }
 
 

@@ -1,5 +1,5 @@
-// $Id: eclipse-argo-codetemplates.xml 10612 2006-05-25 12:58:04Z linus $
-// Copyright (c) 2006 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -64,14 +64,13 @@ public class TestCallStateNotationUml extends TestCase {
         p.setRoot(model);
         aClass = Model.getCoreFactory().buildClass(model);
         aClass2 = Model.getCoreFactory().buildClass(model);
-        Object mdl = p.getModel();
-        Object voidType = p.findType("void");
-        aOper = Model.getCoreFactory().buildOperation(aClass, mdl,
-                voidType, "myOper");
-        aOper2 = Model.getCoreFactory().buildOperation(aClass, mdl,
-                voidType, "myOper2");
-        aOperB = Model.getCoreFactory().buildOperation(aClass2, mdl,
-                voidType, "myOperB");
+        Object returnType = p.getDefaultReturnType();
+        aOper = Model.getCoreFactory().buildOperation2(aClass, returnType,
+                "myOper");
+        aOper2 = Model.getCoreFactory().buildOperation2(aClass, returnType,
+                "myOper2");
+        aOperB = Model.getCoreFactory().buildOperation2(aClass2, returnType,
+                "myOperB");
         aStateMachine =
             Model.getStateMachinesFactory().buildStateMachine(aClass);
         Object top = Model.getFacade().getTop(aStateMachine);

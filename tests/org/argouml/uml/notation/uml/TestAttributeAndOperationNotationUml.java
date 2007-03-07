@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -126,34 +126,34 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         Project p = ProjectManager.getManager().getCurrentProject();
         Object model = p.getModel();
-        Object intType = p.findType("int");
+        Object attrType = p.getDefaultAttributeType();
 
-        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR01, "name");
 
-        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR02, "name");
 
-        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR03, "name");
 
-        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR04, "name");
 
-        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR05, "name");
 
-        attr = Model.getCoreFactory().buildAttribute(model, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR06, "name");
@@ -170,24 +170,24 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         Project project = ProjectManager.getManager().getCurrentProject();
         Object ns = project.getModel();
-        Object intType = project.findType("int");
+        Object attrType = project.getDefaultAttributeType();
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkType(attr, ATTR03, "void");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkType(attr, ATTR04, "int");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkType(attr, ATTR05, "int");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkType(attr, ATTR06, "int");
@@ -203,41 +203,41 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         Project project = ProjectManager.getManager().getCurrentProject();
         Object ns = project.getModel();
-        Object intType = project.findType("int");
+        Object attrType = project.getDefaultAttributeType();
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR02, "public");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR03, "private");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR04, "protected");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR05, "public");
         checkVisibility(attr, ATTR01, "public");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR06, "private");
         checkVisibility(attr, ATTR01, "private");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR08, "public");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR11, "public");
@@ -263,20 +263,20 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
-        Object intType =
-            ProjectManager.getManager().getCurrentProject().findType("int");
+        Object attrType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultAttributeType();
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkProperties(attr, ATTR04, res1);
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkProperties(attr, ATTR05, res2);
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkProperties(attr, ATTR06, res3);
@@ -292,22 +292,22 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
-        Object intType =
-            ProjectManager.getManager().getCurrentProject().findType("int");
+        Object attrType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultAttributeType();
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkMultiplicity(attr, ATTR04,
                 Model.getDataTypesFactory().createMultiplicity("1..1"));
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkMultiplicity(attr, ATTR05,
                 Model.getDataTypesFactory().createMultiplicity("1..*"));
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkMultiplicity(attr, ATTR06,
@@ -322,10 +322,10 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
-        Object intType =
-            ProjectManager.getManager().getCurrentProject().findType("int");
+        Object attrType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultAttributeType();
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkThrows(attr, NATTR01, true, false, false);
@@ -353,42 +353,42 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
-        Object intType =
-            ProjectManager.getManager().getCurrentProject().findType("int");
+        Object attrType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultAttributeType();
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR05, "0");
         checkValue(attr, ATTR01, "0");
         checkValue(attr, ATTR06, "15");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR07, "\'val[15] \'");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR08, "\"a <<string>>\"");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR09, "(a * (b+c) - d)");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR10, "2 * (b+c) - 10");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR11, "a[15]");
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR12, "a << 5");
@@ -427,31 +427,31 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
-        Object intType =
-            ProjectManager.getManager().getCurrentProject().findType("int");
+        Object attrType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultAttributeType();
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         softAddStereotype("attrstereo1", attr);
         softAddStereotype("attrstereo2", attr);
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR01, new String[] {});
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR10, new String[] {"attrstereo1"});
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR11, new String[] {"attrstereo2"});
 
-        attr = Model.getCoreFactory().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR13, new String[] {"attrstereo1",
@@ -472,16 +472,16 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
             ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
-        Object voidType =
-            ProjectManager.getManager().getCurrentProject().findType("void");
+        Object returnType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultReturnType();
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkName(op, OPER01, "name");
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkName(op, OPER02, "name");
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkName(op, OPER03, "name2");
     }
 
@@ -497,17 +497,17 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         Object ns = ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
-        Object voidType =
+        Object returnType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkType(op, OPER01, "void");
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkType(op, OPER02, "int");
         checkType(op, OPER01, "int");
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkType(op, OPER03, "String");
     }
 
@@ -523,21 +523,21 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         Object ns = ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
-        Object voidType =
-            ProjectManager.getManager().getCurrentProject().findType("void");
+        Object returnType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultReturnType();
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkVisibility(op, OPER01, "public");
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkVisibility(op, OPER02, "private");
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkVisibility(op, OPER03, "protected");
         checkVisibility(op, OPER01, "protected");
         checkVisibility(op, OPER02, "private");
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkVisibility(op, OPER04, "protected");
     }
 
@@ -551,8 +551,8 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         Object cl = Model.getCoreFactory().buildClass();
         Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
-        Object voidType =
-            ProjectManager.getManager().getCurrentProject().findType("void");
+        Object returnType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultReturnType();
 
         Model.getCoreHelper().setNamespace(cl, ns);
 
@@ -572,13 +572,13 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
             "\"\"some\"\"",
         };
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkParameters(op, OPER01, res1);
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkParameters(op, OPER02, res2);
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkParameters(op, OPER03, res3);
         checkParameters(op, OPER01, res1);
         checkParameters(op, OPER02, res2);
@@ -593,8 +593,8 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
         Object ns = ProjectManager.getManager().getCurrentProject().getModel();
-        Object voidType =
-            ProjectManager.getManager().getCurrentProject().findType("void");
+        Object returnType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultReturnType();
 
         Model.getCoreHelper().setNamespace(cl, ns);
 
@@ -609,13 +609,13 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
             "sequential", null,
         };
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkProperties(op, OPER01, res1);
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkProperties(op, OPER02, res1);
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkProperties(op, OPER03, res1);
     }
 
@@ -634,20 +634,20 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
             ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
-        Object voidType =
-            ProjectManager.getManager().getCurrentProject().findType("void");
+        Object returnType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultReturnType();
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         softAddStereotype("opstereo1", op);
         softAddStereotype("opstereo2", op);
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkStereotype(op, OPER01, new String[] {});
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkStereotype(op, OPER02, new String[] {"opstereo1"});
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkStereotype(op, OPER03, new String [] {"opstereo2"});
         checkStereotype(op, OPER04, new String[] {});
         checkStereotype(op, OPER05, new String [] {"opstereo1", "opstereo2"});
@@ -663,10 +663,10 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
             ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
-        Object voidType =
-            ProjectManager.getManager().getCurrentProject().findType("void");
+        Object returnType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultReturnType();
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkThrows(op, NOPER01, true, false, false);
         checkThrows(op, NOPER02, true, false, false);
         checkThrows(op, NOPER03, true, false, false);
@@ -1013,14 +1013,13 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         Object op;
         Object cl = Model.getCoreFactory().buildClass();
 
-        Object ns =
-            ProjectManager.getManager().getCurrentProject().getModel();
+        Object ns = ProjectManager.getManager().getCurrentProject().getModel();
 
         Model.getCoreHelper().setNamespace(cl, ns);
-        Object voidType =
-            ProjectManager.getManager().getCurrentProject().findType("void");
+        Object returnType = ProjectManager.getManager().getCurrentProject()
+                .getDefaultReturnType();
 
-        op = Model.getCoreFactory().buildOperation(cl, ns, voidType);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
         
         OperationNotationUml notation = new OperationNotationUml(op);
         String help = notation.getParsingHelp();

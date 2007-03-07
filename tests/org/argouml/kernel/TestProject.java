@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -111,17 +111,14 @@ public class TestProject extends TestCase {
         Object cls2 = Model.getCoreFactory().buildClass(aClass);
         Object cls3 = Model.getCoreFactory().buildClass(aClass);
         Object typ = Model.getCoreFactory().buildClass(p.getRoot());
-        Object oper2a =
-            Model.getCoreFactory().buildOperation(cls2, p.getRoot(), cls3);
+        Object oper2a = Model.getCoreFactory().buildOperation(cls2, cls3);
         assertNotNull(oper2a);
-        Object oper2b =
-            Model.getCoreFactory().buildOperation(cls2, p.getRoot(), typ);
+        Object oper2b = Model.getCoreFactory().buildOperation(cls2, typ);
         assertNotNull(oper2b);
         
         p.moveToTrash(aClass);
         Model.getPump().flushModelEvents();
         
-        //Collection c = Model.getFacade().getOwnedElements(p.getRoot());
         assertTrue("Package not in trash", p.isInTrash(aClass));
         assertTrue("Package not deleted",
                 Model.getUmlFactory().isRemoved(aClass));
@@ -337,12 +334,10 @@ public class TestProject extends TestCase {
             Model.getModelManagementFactory().buildPackage("test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
-        Object model = p.getModel();
-        Object voidType = p.findType("void");
+        Object voidType = p.getDefaultReturnType();
         Object oper =
             Model.getCoreFactory().buildOperation(
                     aClass,
-                    model,
                     voidType);
 
         // try with Statediagram

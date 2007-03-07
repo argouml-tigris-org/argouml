@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,10 +60,8 @@ public class TestStateBodyNotationUml extends TestCase {
             Model.getModelManagementFactory().createModel();
         Project p = ProjectManager.getManager().getCurrentProject();
         aClass = Model.getCoreFactory().buildClass(model);
-        Object mdl = p.getModel();
-        Object voidType = p.findType("void");
-        Model.getCoreFactory().buildOperation(aClass, mdl,
-                voidType, "myOper");
+        Object returnType = p.getDefaultReturnType();
+        Model.getCoreFactory().buildOperation2(aClass, returnType, "myOper");
         aStateMachine =
             Model.getStateMachinesFactory().buildStateMachine(aClass);
         Object top = Model.getFacade().getTop(aStateMachine);

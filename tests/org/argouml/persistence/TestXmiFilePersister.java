@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,14 +58,11 @@ public class TestXmiFilePersister extends TestCase {
         try {
             Project p = ProjectManager.getManager().makeEmptyProject();
             Object clazz = Model.getCoreFactory().buildClass(p.getModel());
-            Object model =
+            Object returnType =
                 ProjectManager.getManager()
-                	.getCurrentProject().getModel();
-            Object voidType =
-                ProjectManager.getManager()
-                	.getCurrentProject().findType("void");
+                	.getCurrentProject().getDefaultReturnType();
             Object oper =
-                Model.getCoreFactory().buildOperation(clazz, model, voidType);
+                Model.getCoreFactory().buildOperation(clazz, returnType);
             Model.getCoreHelper().setType(
                     Model.getFacade().getParameter(oper, 0),
                     p.findType("String"));

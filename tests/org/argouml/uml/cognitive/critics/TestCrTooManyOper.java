@@ -40,7 +40,7 @@ public class TestCrTooManyOper extends AbstractTestCrTooMany {
     }
 
     protected void createNewModelElement() {
-        Model.getCoreFactory().buildOperation(dm, model, null);
+        Model.getCoreFactory().buildOperation(dm, null);
     }
 
 }
