@@ -385,22 +385,39 @@ public interface CoreFactory extends Factory {
     Object buildAttribute(Object model, Object type);
 
     /**
-     * Builds an attribute owned by some classifier cls. I don't know
-     * if this is legal for an interface (purely UML speaking). In
-     * this method it is.<p>
+     * Builds a default attribute.
+     *
+     * @param type The type of the attribute.
+     * @return The newly built attribute.
+     */
+    Object buildAttribute2(Object type);
+    
+    /**
+     * Builds an attribute owned by some classifier cls. 
      *
      * @param handle the given classifier
      * @param model the enclosing model
      * @param type the type
      * @return the newly build attribute
+     * @deprecated for 0.25.2 by tfmorris - use the side effect free version
+     * {@link #buildAttribute2(Object, Object)}
      */
     Object buildAttribute(Object handle, Object model, Object type);
 
     /**
+     * Builds an attribute owned by some classifier cls. <p>
+     *
+     * @param handle the given classifier
+     * @param type the type
+     * @return the newly built attribute
+     */
+    Object buildAttribute2(Object handle, Object type);
+    
+    /**
      * Builds a default implementation for a class. The class is not owned by
      * any model element by default. Users should not forget to add ownership.
      *
-     * @return MClass
+     * @return newly created Class
      */
     Object buildClass();
 
@@ -408,7 +425,7 @@ public interface CoreFactory extends Factory {
      * Builds a class with a given namespace.
      *
      * @param owner the namespace
-     * @return MClass
+     * @return Class
      * @see #buildClass()
      */
     Object buildClass(Object owner);
@@ -417,7 +434,7 @@ public interface CoreFactory extends Factory {
      * Builds a class with a given name.
      *
      * @param name the given name
-     * @return MClass
+     * @return Class
      * @see #buildClass()
      */
     Object buildClass(String name);
@@ -427,7 +444,7 @@ public interface CoreFactory extends Factory {
      *
      * @param name the given name
      * @param owner the namespace
-     * @return MClass
+     * @return Class
      * @see #buildClass()
      */
     Object buildClass(String name, Object owner);
@@ -437,7 +454,7 @@ public interface CoreFactory extends Factory {
      * is not owned by any model element by default. Users should not
      * forget to add ownership.
      *
-     * @return MInterface
+     * @return Interface
      */
     Object buildInterface();
 
@@ -551,8 +568,18 @@ public interface CoreFactory extends Factory {
      * @param model is the model to which the class belongs
      * @param returnType the type of the return parameter
      * @return the operation
+     * @deprecated for 0.25.2 by tfmorris use {@link #buildOperation(Object, Object)}
      */
     Object buildOperation(Object classifier, Object model, Object returnType);
+
+    /**
+     * Builds an operation for a classifier.
+     *
+     * @param classifier is the given classifier
+     * @param returnType the type of the return parameter
+     * @return the operation
+     */
+    Object buildOperation(Object classifier, Object returnType);
 
     /**
      * Builds an operation with a given name for classifier.
@@ -562,21 +589,56 @@ public interface CoreFactory extends Factory {
      * @param returnType the type of the return parameter
      * @param name the given name for the operation
      * @return the operation
+     * @deprecated for 0.25.2 by tfmorris - use 
+     * {@link #buildOperation2(Object, Object, String)}
      */
     Object buildOperation(Object cls, Object model, Object returnType,
             String name);
+
+
+    /**
+     * Builds an operation with a given name for classifier.
+     * <p>
+     * NOTE: This is given a new method name so there won't be a name clash for
+     * the case where the old 3-param method was called with null arguments.
+     * <p>
+     * 
+     * @param cls
+     *            is the classifier that shall own the operation
+     * @param returnType
+     *            the type of the return parameter
+     * @param name
+     *            the given name for the operation
+     * @return the operation
+     */
+    Object buildOperation2(Object cls, Object returnType, String name);
+
+    /**
+     * Adds a parameter initialized to default values to a given event or
+     * behavioral feature.
+     * 
+     * @param o
+     *            an event or behavioral feature
+     * @param model
+     *            the model to which the event or behavioral feature belongs
+     * @param type
+     *            the type of the parameter
+     * @return the parameter
+     * @deprecated for 0.25.2 by tfmorris - use
+     *             {@link #buildParameter(Object, Object)}
+     */
+    Object buildParameter(Object o, Object model, Object type);
 
     /**
      * Adds a parameter initialized to default values to a given event
      * or behavioral feature.
      *
      * @param o an event or behavioral feature
-     * @param model the model to which the event or behavioral feature belongs
      * @param type the type of the parameter
      * @return the parameter
      */
-    Object buildParameter(Object o, Object model, Object type);
-
+    Object buildParameter(Object o, Object type);
+    
     /**
      * Builds a realization between some supplier (for example an
      * interface in Java) and a client who implements the realization.
