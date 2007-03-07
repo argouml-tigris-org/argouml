@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -617,17 +617,7 @@ public class MDRModelImplementation implements ModelImplementation {
         XmiReader reader = new XmiReaderImpl(this, umlPackage);
         return reader;
     }
-
-    /*
-     * @see org.argouml.model.ModelImplementation#getXmiWriter(Object, Writer)
-     * @deprecated in 0.23.2 in favour of 
-     * {@link #getXmiWriter(Object, Writer, String)}
-     */
-    public XmiWriter getXmiWriter(Object model, Writer writer)
-        throws UmlException {
-        return getXmiWriter(model, writer, "unknown");
-    }
-    
+ 
     /*
      * @see org.argouml.model.ModelImplementation#getXmiWriter(Object, Writer, String)
      */
