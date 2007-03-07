@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,8 +32,12 @@ package org.argouml.model;
  */
 public interface DataTypesHelper {
     /**
-     * @param from source
-     * @param to destination
+     * @param from
+     *            source
+     * @param to
+     *            destination
+     * @deprecated for 0.25.2 by tfmorris - use
+     *             {@link ExtensionMechanismsFactory#copyTaggedValues(Object, Object)}
      */
     void copyTaggedValues(Object from, Object to);
 

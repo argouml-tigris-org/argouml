@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -95,6 +95,18 @@ public interface ExtensionMechanismsFactory extends Factory {
      * @return an initialized UML TaggedValue instance.
      */
     Object buildTaggedValue(String tag, String value);
+    
+    /**
+     * Copy tagged value collection from one model element to another. New
+     * copies are created of the tagged values themselves and of the dataValues
+     * they contain, but not of the referenced type or reference values.
+     * 
+     * @param source
+     *            ModelElement to copy from
+     * @param target
+     *            ModelElement to copy to
+     */
+    public void copyTaggedValues(Object source, Object target);
 
     /**
      * Copies a stereotype.
