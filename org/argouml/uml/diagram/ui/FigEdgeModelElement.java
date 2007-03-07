@@ -883,7 +883,8 @@ public abstract class FigEdgeModelElement
         if (Model.getFacade().isAModelElement(own)) {
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        getNotationProviderType(), own, this);
+                        getNotationProviderType(), own, this,
+                        getProject().getProjectSettings().getNotationName());
         }
     }
 

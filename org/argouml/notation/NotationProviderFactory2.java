@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -183,16 +183,33 @@ public final class NotationProviderFactory2 {
     }
 
     /**
-     * Get a NotationProvider for the current project.
+     * Get a NotationProvider for the given language.
      * 
      * @param type the provider type
      * @return the provider
      * @param object the constructor parameter
+     * 
+     * @deprecated by MVW due to issue 4640. 
+     * Use the 3 parameter variant instead.
      */
     public NotationProvider getNotationProvider(int type,
             Object object) {
         Project proj = ProjectManager.getManager().getCurrentProject();
         NotationName name = proj.getProjectSettings().getNotationName();
+        return getNotationProvider(type, object, name);
+    }
+
+    /**
+     * Get a NotationProvider for the current project.
+     * 
+     * @param type the provider type
+     * @param object the constructor parameter
+     * @param name the name of the notation language to use
+     * @return the provider
+     */
+    public NotationProvider getNotationProvider(int type,
+            Object object, NotationName name) {
+
         Class clazz = getNotationProviderClass(type, name);
         if (clazz != null) {
             try {
@@ -245,10 +262,32 @@ public final class NotationProviderFactory2 {
      * @param object the constructor parameter
      * @param listener the fig
      * that refreshes after the NotationProvider has changed
+     * 
+     * @deprecated by MVW due to issue 4640. 
+     * Use the 4 parameter variant instead.
      */
     public NotationProvider getNotationProvider(int type,
             Object object, PropertyChangeListener listener) {
-        NotationProvider p = getNotationProvider(type, object);
+        Project proj = ProjectManager.getManager().getCurrentProject();
+        NotationName name = proj.getProjectSettings().getNotationName();
+        return getNotationProvider(type, object, listener, name);
+    }
+
+    /**
+     * Get a NotationProvider for the current project.
+     * 
+     * @param type the provider type
+     * @param object the constructor parameter
+     * @param listener the fig
+     * that refreshes after the NotationProvider has changed
+     * @param name the name of the notation language to use
+     * @return the provider
+     */
+    public NotationProvider getNotationProvider(int type,
+            Object object, PropertyChangeListener listener, 
+            NotationName name) {
+
+        NotationProvider p = getNotationProvider(type, object, name);
         p.initialiseListener(listener, object);
         return p;
     }

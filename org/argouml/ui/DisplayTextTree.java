@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,6 +44,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.notation.uml.NotationUtilityUml;
@@ -146,9 +147,9 @@ public class DisplayTextTree extends JTree {
         }
 
         if (Model.getFacade().isAModelElement(value)) {
-
             String name = null;
-
+            NotationName nn = ProjectManager.getManager()
+                .getCurrentProject().getProjectSettings().getNotationName();
             try {
                 // Jeremy Bennett patch
                 if (Model.getFacade().isATransition(value)) {
@@ -157,7 +158,7 @@ public class DisplayTextTree extends JTree {
                         NotationProviderFactory2.getInstance()
                             .getNotationProvider(
                                     NotationProviderFactory2.TYPE_TRANSITION,
-                                    value);
+                                    value, nn);
                     String signature = notationProvider.toString(value, null);
                     if (name != null && name.length() > 0) {
                         name += ": " + signature;
@@ -169,7 +170,7 @@ public class DisplayTextTree extends JTree {
                         NotationProviderFactory2.getInstance()
                             .getNotationProvider(
                                 NotationProviderFactory2.TYPE_EXTENSION_POINT,
-                                value);
+                                value, nn);
                     name = notationProvider.toString(value, null);
                 } else if (Model.getFacade().isAComment(value)) {
                     /*
