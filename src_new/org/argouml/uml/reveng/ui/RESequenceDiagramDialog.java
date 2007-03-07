@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -792,22 +792,9 @@ public class RESequenceDiagramDialog
         }
         if (assocEnd == null) {
             String assocName = fromName + " -> " + toName;
-            Modeller
-                .buildDirectedAssociation(assocName, fromCls, toCls);
+            Modeller.buildDirectedAssociation(assocName, fromCls, toCls);
         }
-
     }
-    
-
-    private Object buildDirectedAssociation(
-	    String name,
-	    Object sourceClassifier, 
-	    Object destClassifier) {
-        return Model.getCoreFactory().buildAssociation(
-                sourceClassifier, true, destClassifier, false,
-                name);
-    }
-    
 
     /**
      * Get the classifier with the given name from a permission
