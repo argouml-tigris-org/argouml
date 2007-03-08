@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>ArgoUML Directory Structure</title>
+  </head>
+  
+  <body>
+    <table cellpadding=0 cellspacing=0>
+      <tr bgcolor="#CCCCCC">
+        <td>
+        <h1>Diagram Elements and Mapping to Model Elements</h1>
+        
+        The sequence diagram maps onto a single interaction.
+<p>
+There are 2 required specialist top level diagram elements (Figs)
+FigClassifierRole and FigMessage
+<p>
+
+FigClassifierRole represents a classifierrole in the model. It's
+composite diagram elements will be FigLifeLine and FigHead
+<p>
+FigMessage represents a message between two classifier roles in the
+model (or a self message back to the same classifier role).
+
+<p>
+<h3>Suggested composite structure of FigClassifierRole</h3>
+The y co-ordinate a FigHead within FigClassifierRole is zero unless
+there is an incoming FigMessage[Create]. In this case the FigHead is
+positioned so that the first incoming FigMessage[Create] is the centre
+of FigHead (see fig 89 of UML1.4.2 spec).
+<p>
+FigHead will be composed of either FigHeadObject or FigHeadActor.
+FigHeadActor will only be used if their is a classifier attached of
+type actor.
+<p>
+FigLifeLine will be a transparent rectangle displayed immediately
+below FigHead. It will contain a single dashed line down from the top
+and a variable number of FigActivations. The dashed line ends at the
+end of the FigLifeLine or at the last outgoing
+FigMessage[DestroyAction]
+
+<p>
+FigActivations are created and modified dynamically when the user adds, removes
+repositions an incoming or outgoing message.
+
+An X at the end of a FigActivation respresentats destruction of that instance.
+
+The algorithm for creating FigActivations on a FigLifeLine is -
+<b>TBD</b>
+
+<h3>Modes and Selections for user interaction</h3>
+<p>
+A specialist Mode is required for drawing a FigMessage. This will not
+allow the source end to move while drawing. When placing the
+destination end on another FigClassifierRole the edge should snap to a
+horizontal line if the height difference is within n pixels. Otherwise the
+message edge should be placed at the diagonal angle gestured by the user
+(see fig 88 of UML1.4.2 spec).
+<p>
+
+It should also be possible to click on the diagram to insert a vertex
+point before directing the message back to the original
+FigClassifierRole or to some other.
+<p>
+
+Dragging FigClassifierRoles should be limited to the horizontal plane.
+<p>
+Resizing the height of one FigClassifierRole should resize the height of all
+but it should not be possible to resize so that any FigMessage is forced to
+move.
+<p>
+
+It should be possible to drag a FigMessages up and down with such a drag
+forcing reposition or rebuilding of FigActivations.
+
+<h3>Assumptions</h3>
+It is not possible to reassign a different action to an existing message.
+       </td>
+     </tr>
+   </table>
+   <hr align="CENTER">
+   <p>
+     <a href="../index.html">Proposals</a>
+     |
+     <a href="/index.html">ArgoUML Home</a>
+     |
+     <a href="/dev.html">Developer Zone</a>
+   </p>
+  </body>
+</html>
