@@ -87,11 +87,13 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
@@ -1891,6 +1893,14 @@ public abstract class FigNodeModelElement
     
     protected Project getProject() {
 	LayerPerspective layer = (LayerPerspective) getLayer();
+        if (layer == null) {
+            /* TODO: Without this, we fail to draw e.g. a Class.
+             * But is this a good solution? 
+             * Why is the Layer not set in the constructor? */
+            Editor editor = Globals.curEditor();
+            Layer lay = editor.getLayerManager().getActiveLayer();
+            if (lay instanceof LayerPerspective) layer = (LayerPerspective) lay;
+        }
 	UMLMutableGraphSupport gm = 
 	    (UMLMutableGraphSupport) layer.getGraphModel();
 	return gm.getProject();
