@@ -26,8 +26,6 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
@@ -48,10 +46,9 @@ import org.argouml.util.ConfigLoader;
  * The properties panel of a Signal.
  * <p>
  * 
- * NOTE: Although the UML 1.4 spec (sec. 2.9.2.20) says that "parameters are
- * specified as Attributes" the WFR in sect 2.9.3.20 is
+ * NOTE: Although the UML 1.4 spec (both sec. 2.9.2.20 and 3.77.2) says that
+ * "parameters are specified as Attributes" the WFR in sect 2.9.3.20 is
  * <code>self.contents->isEmpty</code>, effectively prohibiting this.
- * 
  */
 public class PropPanelSignal extends PropPanelClassifier {
 
@@ -61,10 +58,24 @@ public class PropPanelSignal extends PropPanelClassifier {
     private static final long serialVersionUID = -4496838172438164508L;
 
     /**
-     * Construct a new property panel for a Signal.
+     * Construct a default property panel for a Signal.
      */
     public PropPanelSignal() {
-        super("Signal", lookupIcon("SignalSending"),
+        this("Signal", "SignalSending");
+    }
+    
+    /**
+     * Construct a new property panel for a Signal with the given name and icon.
+     * Use for subclasses that want the same layout/constructor, but a different
+     * name e.g. Exception.
+     * 
+     * @param title
+     *            title of the property panel
+     * @param iconName
+     *            name of the image icon to use
+     */
+    public PropPanelSignal(String title, String iconName) {
+        super(title, lookupIcon(iconName),
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
@@ -242,14 +253,11 @@ class ActionRemoveContextSignal extends AbstractActionRemoveElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Object ctxt = getObjectToRemove(); 
-        if (ctxt != null) {
+        Object context = getObjectToRemove(); 
+        if (context != null) {
             Object signal = getTarget();
             if (Model.getFacade().isASignal(signal)) {
-                Collection contexts = new ArrayList(
-                        Model.getFacade().getContexts(signal));
-                contexts.remove(ctxt);
-                Model.getCommonBehaviorHelper().setContexts(signal, contexts);
+                Model.getCommonBehaviorHelper().removeContext(signal, context);
             }
         }
     }
@@ -280,15 +288,15 @@ class ActionRemoveReceptionSignal extends AbstractActionRemoveElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Object rec = getObjectToRemove(); 
-        if (rec != null) {
+        Object reception = getObjectToRemove(); 
+        if (reception != null) {
             Object signal = getTarget();
             if (Model.getFacade().isASignal(signal)) {
-                Collection receptions = new ArrayList(
-                        Model.getFacade().getReceptions(signal));
-                receptions.remove(rec);
-                Model.getCommonBehaviorHelper().setReception(signal, 
-                        receptions);
+                // TODO: Should we delete the Reception?  A Reception
+                // without a Signal violates the cardinality of 1 in
+                // the metamodel - tfm - 20070308
+                Model.getCommonBehaviorHelper().removeReception(signal, 
+                        reception);
             }
         }
     }

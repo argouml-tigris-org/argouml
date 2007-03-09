@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -128,6 +128,8 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             figNode = new FigDataType(gm, node);
         } else if (Model.getFacade().isAStereotype(node)) {
             figNode = new FigStereotypeDeclaration(gm, node);
+        } else if (Model.getFacade().isASignal(node)) {
+            figNode = new FigSignal(gm, node);
         } else {
             LOG.error("TODO: ClassDiagramRenderer getFigNodeFor " + node);
             throw new IllegalArgumentException(
