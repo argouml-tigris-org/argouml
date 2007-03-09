@@ -194,6 +194,8 @@ public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     public void removeReception(Object handle, Object reception) {
         try {
             if (handle instanceof Signal && reception instanceof Reception) {
+                // TODO: Doing this violates the minimal cardinality of 1
+                // if we allow it we at least need a critic to warn about it
                 ((Reception) reception).setSignal(null);
                 return;
             }
