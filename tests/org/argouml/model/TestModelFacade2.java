@@ -123,7 +123,10 @@ public class TestModelFacade2 extends TestCase {
         Object cls = Model.getCoreFactory().buildClass();
 
 	assertNull(Model.getFacade().getTaggedValue(cls, TAG_TYPE));
-        Model.getCoreHelper().setTaggedValue(cls, TAG_TYPE, TAG_VALUE);
+        Model.getExtensionMechanismsHelper().addTaggedValue(
+                cls,
+                Model.getExtensionMechanismsFactory().buildTaggedValue(
+                        TAG_TYPE, TAG_VALUE));
         Object taggedValue = Model.getFacade().getTaggedValue(cls, TAG_TYPE);
         assertEquals(Model.getFacade().getValueOfTag(taggedValue), TAG_VALUE);
         Model.getExtensionMechanismsHelper()
