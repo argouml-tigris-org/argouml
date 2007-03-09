@@ -128,6 +128,8 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             figNode = new FigDataType(gm, node);
         } else if (Model.getFacade().isAStereotype(node)) {
             figNode = new FigStereotypeDeclaration(gm, node);
+        } else if (Model.getFacade().isAException(node)) {
+            figNode = new FigException(gm, node);
         } else if (Model.getFacade().isASignal(node)) {
             figNode = new FigSignal(gm, node);
         } else {
