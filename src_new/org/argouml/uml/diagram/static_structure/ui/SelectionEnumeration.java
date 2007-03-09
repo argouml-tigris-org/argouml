@@ -24,11 +24,8 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Rectangle;
-
 import org.argouml.model.Model;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.Handle;
 
 /**
  * The buttons on selection for an Enumeration.
@@ -44,14 +41,19 @@ class SelectionEnumeration extends SelectionDataType {
         super(f);
     }
 
+
     /*
-     * @see org.argouml.uml.diagram.static_structure.ui.SelectionDataType#hitHandle(java.awt.Rectangle, org.tigris.gef.presentation.Handle)
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#getInstructions(int)
      */
-    public void hitHandle(Rectangle r, Handle h) {
-        super.hitHandle(r, h);
-        
-        if (h.index == 10) h.instructions = "Add a super-enumeration";
-        if (h.index == 11) h.instructions = "Add a sub-enumeration";
+    protected String getInstructions(int i) {
+        if (i == 10) {
+            return "Add a super-enumeration";
+        } else if (i == 10) {
+            return "Add a sub-enumeration";
+        } else if (i == -1) {
+            return "Move object(s)";
+        }
+        return null;
     }
 
     /*

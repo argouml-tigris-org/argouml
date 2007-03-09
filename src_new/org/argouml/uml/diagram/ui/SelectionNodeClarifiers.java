@@ -24,21 +24,18 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Graphics;
+import javax.swing.Icon;
 
-import org.tigris.gef.base.SelectionButtons;
 import org.tigris.gef.presentation.Fig;
 
 /**
- *
- *
- *
- * @author jrobbins
+ * Class to decorate or paint "clarifiers" for a figure.
+ * 
+ * @deprecated for 0.25.2 by tfmorris - use {@link SelectionNodeClarifiers2} for
+ *             new implementations
  */
-public class SelectionNodeClarifiers extends SelectionButtons {
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
+public class SelectionNodeClarifiers extends SelectionNodeClarifiers2 {
+    
 
     /** Construct a new SelectionNodeClarifiers for the given Fig
      *
@@ -49,26 +46,45 @@ public class SelectionNodeClarifiers extends SelectionButtons {
     }
 
     /*
-     * @see org.tigris.gef.base.SelectionButtons#paint(java.awt.Graphics)
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getIcons()
      */
-    public void paint(Graphics g) {
-        ((FigNodeModelElement) getContent()).paintClarifiers(g);
-        super.paint(g);
-    }
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#paintButtons(java.awt.Graphics)
-     */
-    public void paintButtons(Graphics g) {
-        // ignored
-    }
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
-     */
-    protected Object getNewNode(int arg0) {
+    protected Icon[] getIcons() {
         return null;
     }
 
-} /* end class SelectionNodeClarifiers */
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getInstructions(int)
+     */
+    protected String getInstructions(int index) {
+        return null;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewNodeType(int)
+     */
+    protected Object getNewNodeType(int index) {
+        return null;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewEdgeType(int)
+     */
+    protected Object getNewEdgeType(int index) {
+        return null;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#isDragEdgeReverse(int)
+     */
+    protected boolean isDragEdgeReverse(int index) {
+        return false;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#isEdgePostProcessRequested()
+     */
+    protected boolean isEdgePostProcessRequested() {
+        return false;
+    }
+} 
 

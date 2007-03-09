@@ -249,7 +249,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
 			  (Class) Model.getMetaTypes().getAssociationRole());
     }
 
-    /**
+    /*
      * To enable this we need to add an icon.
      *
      * @see org.tigris.gef.base.SelectionButtons#createEdgeToSelf(

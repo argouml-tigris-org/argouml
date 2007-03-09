@@ -24,8 +24,6 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
@@ -34,30 +32,20 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
-import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.ModeCreateEdgeAndNode;
-import org.tigris.gef.base.ModeManager;
-import org.tigris.gef.base.ModeModify;
-import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.Handle;
 
 /**
  * Buttons for a selected GeneralizableElement.
  * 
- * TODO: This was refactored out of SelectionDataType which appears to have been
- * created by cutting down SelectionClass. Additional refactoring need to factor
- * common code out of SelectionClass.
- * 
  * @author Tom Morris
  */
 public abstract class SelectionGeneralizableElement extends
-        SelectionNodeClarifiers {
+        SelectionNodeClarifiers2 {
 
     /**
      * Logger.
@@ -68,117 +56,113 @@ public abstract class SelectionGeneralizableElement extends
     private static Icon inherit =
             ResourceLoaderWrapper.lookupIconResource("Generalization");
 
+    private static Icon icons[] = {null,
+                                   null,
+                                   null,
+                                   null,
+                                   null,
+                                   null,
+                                   null,                                   
+                                   null,
+                                   null,
+                                   null, // 9
+                                   inherit,
+                                   inherit,
+                                   null,
+                                   null,
+                                   null,
+    };
+    
+
     private boolean useComposite;
 
+    
+    /**
+     * Construct a SelectionGeneralizableElement
+     * 
+     * @param f
+     *            Fig for which to construct the selection object
+     */
     public SelectionGeneralizableElement(Fig f) {
         super(f);
     }
 
-    public void hitHandle(Rectangle r, Handle h) {
-        super.hitHandle(r, h);
-        if (h.index != -1) {
-            return;
-        }
-        if (!isPaintButtons()) {
-            return;
-        }
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        if (sm.size() != 1) {
-            return;
-        }
-        ModeManager mm = ce.getModeManager();
-        if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
-            return;
-        }
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
-        int iw = inherit.getIconWidth();
-        int ih = inherit.getIconHeight();
-    
-        if (hitAbove(cx + cw / 2, cy, iw, ih, r)) {
-            h.index = 10;
-            h.instructions = "Add a supertype";
-        } else if (hitBelow(cx + cw / 2, cy + ch, iw, ih, r)) {
-            h.index = 11;
-            h.instructions = "Add a subtype";
-        } else {
-            h.index = -1;
-            h.instructions = "Move object(s)";
-        }
-    }
-
-    public void paintButtons(Graphics g) {
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
-    
-        // The next two lines are necessary to get the GraphModel,
-        // in the DeploymentDiagram there are no Generalizations
+ 
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#getIcons()
+     */
+    protected Icon[] getIcons() {
         Editor ce = Globals.curEditor();
         GraphModel gm = ce.getGraphModel();
     
-        if (!(gm instanceof DeploymentDiagramGraphModel)) {
-            paintButtonAbove(inherit, g, cx + cw / 2, cy, 10);
-            paintButtonBelow(inherit, g, cx + cw / 2, cy + ch + 2, 11);
+        // No generalizations in Deployment Diagrams
+        if (gm instanceof DeploymentDiagramGraphModel) {
+            return null;
+        } else {
+            return icons;
         }
     }
-
-    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-        if (hand.index < 10) {
-            setPaintButtons(false);
-            super.dragHandle(mX, mY, anX, anY, hand);
-            return;
-        }
-        int cx = getContent().getX(), cy = getContent().getY();
-        int cw = getContent().getWidth(), ch = getContent().getHeight();
-        Object edgeType = null;
-        Object nodeType = getNewNodeType(hand.index);
-        int bx = mX, by = mY;
-        boolean reverse = false;
-        switch (hand.index) {
-        case 10: //add superdatatype
-            edgeType = Model.getMetaTypes().getGeneralization();
-            by = cy;
-            bx = cx + cw / 2;
-            break;
-        case 11: //add subdatatype
-            edgeType = Model.getMetaTypes().getGeneralization();
-            reverse = true;
-            by = cy + ch;
-            bx = cx + cw / 2;
-            break;
-        default:
-            LOG.warn("invalid handle number");
-            break;
-        }
-        if (edgeType != null && nodeType != null) {
-            Editor ce = Globals.curEditor();
-            ModeCreateEdgeAndNode m =
-                new ModeCreateEdgeAndNode(ce,
-                        edgeType, useComposite, this);
-            m.setup((FigNode) getContent(), getContent().getOwner(),
-                    bx, by, reverse);
-            ce.pushMode(m);
-        }
     
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#getInstructions(int)
+     */
+    protected String getInstructions(int i) {
+        if (i == 10) {
+            return "Add a supertype";
+        } else if (i == 10) {
+            return "Add a subtype";
+        } else if (i == -1) {
+            return "Move object(s)";
+        }
+        return null;
     }
+    
 
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewEdgeType(int)
+     */
+    protected Object getNewEdgeType(int i) {
+        if (i == 10 || i == 11) {
+            return Model.getMetaTypes().getGeneralization();
+        }
+        return null;
+    }
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#isDragEdgeReverse(int)
+     */
+    protected boolean isDragEdgeReverse(int i) {
+        if (i == 11) {
+            return true;
+        }
+        return false;
+    }
+ 
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#isEdgePostProcessRequested()
+     */
+    protected boolean isEdgePostProcessRequested() {
+        return useComposite;
+    }
+    
+    /*
+     * @see org.tigris.gef.base.SelectionButtons#mouseEntered(java.awt.event.MouseEvent)
+     */
     public void mouseEntered(MouseEvent me) {
         super.mouseEntered(me);
         useComposite = me.isShiftDown();
     }
 
-    protected abstract Object getNewNodeType(int buttonCode);
-
+    /*
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
         return mgm.connect(getContent().getOwner(), newNode,
                            (Class) Model.getMetaTypes().getGeneralization());
     }
 
+    /*
+     * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
     protected Object createEdgeUnder(MutableGraphModel mgm, Object newNode) {
         return mgm.connect(newNode, getContent().getOwner(),
                            (Class) Model.getMetaTypes().getGeneralization());

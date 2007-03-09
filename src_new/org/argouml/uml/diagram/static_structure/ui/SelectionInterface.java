@@ -24,36 +24,18 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
-
 import javax.swing.Icon;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.ModeCreateEdgeAndNode;
-import org.tigris.gef.base.ModeManager;
-import org.tigris.gef.base.ModeModify;
-import org.tigris.gef.base.SelectionManager;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.Handle;
 
 /**
  * @author jrobbins@ics.uci.edu
  */
-public class SelectionInterface extends SelectionNodeClarifiers {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(SelectionInterface.class);
-
+public class SelectionInterface extends SelectionNodeClarifiers2 {
     /**
      * Remember the pressed button, 
      * for the case where the mouse is released not above a fig.
@@ -66,7 +48,23 @@ public class SelectionInterface extends SelectionNodeClarifiers {
     private static Icon inherit =
         ResourceLoaderWrapper.lookupIconResource("Generalization");
 
-
+    private static Icon icons[] = {null,
+                                   null,
+                                   null,
+                                   null,
+                                   null,
+                                   null,
+                                   null,                                   
+                                   null,
+                                   null,
+                                   null, // 9
+                                   inherit,
+                                   realiz,
+                                   null,
+                                   null,
+                                   null,
+    };
+    
     /**
      * Construct a new SelectionInterface for the given Fig.
      *
@@ -75,107 +73,6 @@ public class SelectionInterface extends SelectionNodeClarifiers {
      */
     public SelectionInterface(Fig f) {
         super(f);
-    }
-
-    /*
-     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
-     *      org.tigris.gef.presentation.Handle)
-     */
-    public void hitHandle(Rectangle r, Handle h) {
-        super.hitHandle(r, h);
-        if (h.index != -1) {
-            return;
-        }
-        if (!isPaintButtons()) {
-            return;
-        }
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        if (sm.size() != 1) {
-            return;
-        }
-        ModeManager mm = ce.getModeManager();
-        if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
-            return;
-        }
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
-        int iw = realiz.getIconWidth();
-        int ih = realiz.getIconHeight();
-        int gw = inherit.getIconWidth();
-        int gh = inherit.getIconHeight();
-        if (hitAbove(cx + cw / 2, cy, gw, gh, r)) {
-            h.index = 10;
-            h.instructions = "Add an interface";
-        } else if (hitBelow(cx + cw / 2, cy + ch, iw, ih, r)) {
-            h.index = 11;
-            h.instructions = "Add a realization";
-        } else {
-            h.index = -1;
-            h.instructions = "Move object(s)";
-        }
-    }
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#paintButtons(
-     *      java.awt.Graphics)
-     */
-    public void paintButtons(Graphics g) {
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
-        paintButtonAbove(inherit, g, cx + cw / 2, cy, 10);
-        paintButtonBelow(realiz, g, cx + cw / 2, cy + ch, 11);
-    }
-
-    /*
-     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
-     *      org.tigris.gef.presentation.Handle)
-     */
-    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-        if (hand.index < 10) {
-            setPaintButtons(false);
-            super.dragHandle(mX, mY, anX, anY, hand);
-            return;
-        }
-        int cx = getContent().getX(), cy = getContent().getY();
-        int cw = getContent().getWidth(), ch = getContent().getHeight();
-        Object edgeType = null;
-        Object nodeType = null;
-        int bx = mX, by = mY;
-        boolean reverse = false;
-        switch (hand.index) {
-        case 10: //add superclass
-            edgeType = Model.getMetaTypes().getGeneralization();
-            nodeType = Model.getMetaTypes().getInterface();
-            by = cy;
-            bx = cx + cw / 2;
-            reverse = false;
-            break;
-        case 11: // add realization
-            edgeType = Model.getMetaTypes().getAbstraction();
-            nodeType = Model.getMetaTypes().getUMLClass();
-            reverse = true;
-            by = cy + ch;
-            bx = cx + cw / 2;
-            break;
-        default:
-            LOG.warn("invalid handle number");
-            break;
-        }
-        code = hand.index;
-        if (edgeType != null && nodeType != null) {
-            Editor ce = Globals.curEditor();
-            ModeCreateEdgeAndNode m =
-                new ModeCreateEdgeAndNode(ce, edgeType, false, this);
-            m.setup((FigNode) getContent(), getContent().getOwner(), bx, by,
-                    reverse);
-            ce.pushMode(m);
-        }
-
     }
 
     /*
@@ -214,4 +111,67 @@ public class SelectionInterface extends SelectionNodeClarifiers {
      * The UID.
      */
     private static final long serialVersionUID = 7209387830978444644L;
-} /* end class SelectionInterface */
+
+
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewEdgeType(int)
+     */
+    protected Object getNewEdgeType(int index) {
+        if (index == 10) {
+            return Model.getMetaTypes().getGeneralization();
+        } else if (index == 11) {
+            return Model.getMetaTypes().getAbstraction();
+        }
+        return null;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewNodeType(int)
+     */
+    protected Object getNewNodeType(int index) {
+        if (index == 10) {
+            return Model.getMetaTypes().getInterface();
+        } else if (index == 11) {
+            return Model.getMetaTypes().getUMLClass();
+        }
+        return null;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getIcons()
+     */
+    protected Icon[] getIcons() {
+        return icons;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getInstructions(int)
+     */
+    protected String getInstructions(int index) {
+        if (index == 10) {
+            return "Add an interface";
+        } else if (index == 11) {
+            return "Add a realization";
+        } else if (index == -1) {
+            return "Move object(s)";
+        }
+        return null;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#isDragEdgeReverse(int)
+     */
+    protected boolean isDragEdgeReverse(int index) {
+        if (index == 11) {
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#isEdgePostProcessRequested()
+     */
+    protected boolean isEdgePostProcessRequested() {
+        return false;
+    }
+}
