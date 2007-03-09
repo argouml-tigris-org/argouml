@@ -118,8 +118,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
         if (Model.getFacade().isANodeInstance(own)) {
             notationProvider = 
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_NODEINSTANCE, own,
-                    getProject().getProjectSettings().getNotationName());
+                    NotationProviderFactory2.TYPE_NODEINSTANCE, own);
         }
     }
 

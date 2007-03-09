@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.AddAssociationEvent;
@@ -39,9 +38,7 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.notation.NotationProvider;
-import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -126,8 +123,7 @@ public class FigActionState extends FigStateVertex {
         if (Model.getFacade().isAActionState(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        getNotationProviderType(), own, this, 
-                        getProject().getProjectSettings().getNotationName());
+                        getNotationProviderType(), own, this);
         }
     }
     
