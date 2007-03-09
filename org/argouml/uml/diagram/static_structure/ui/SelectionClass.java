@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,6 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
@@ -34,23 +32,15 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
-import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
-import org.tigris.gef.base.Editor;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.ModeCreateEdgeAndNode;
-import org.tigris.gef.base.ModeManager;
-import org.tigris.gef.base.ModeModify;
-import org.tigris.gef.base.SelectionManager;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.Handle;
 
 /**
  * @author jrobbins@ics.uci.edu
  */
-public class SelectionClass extends SelectionNodeClarifiers {
+public class SelectionClass extends SelectionNodeClarifiers2 {
 
     /**
      * Logger.
@@ -58,8 +48,6 @@ public class SelectionClass extends SelectionNodeClarifiers {
     private static final Logger LOG =
         Logger.getLogger(SelectionClass.class);
 
-    ////////////////////////////////////////////////////////////////
-    // constants
     private static Icon inherit =
         ResourceLoaderWrapper.lookupIconResource("Generalization");
 
@@ -72,172 +60,126 @@ public class SelectionClass extends SelectionNodeClarifiers {
     private static Icon selfassoc =
         ResourceLoaderWrapper.lookupIconResource("SelfAssociation");
 
-
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
     private boolean useComposite;
 
+    private static Icon icons[] = {null,
+                                   null,
+                                   null,
+                                   null,
+                                   null,
+                                   null,
+                                   null,                                   
+                                   null,
+                                   null,
+                                   null, // 9
+                                   inherit,
+                                   inherit,
+                                   assoc,
+                                   assoc,
+                                   selfassoc,
+    };
+    
+    // TODO: I18N required
+    private static String instructions[] = {null,
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null, // 9
+                                            "Add a superclass",
+                                            "Add a subclass",
+                                            "Add an associated class",
+                                            "Add an associated class",
+                                            "Add a self association",
+                                            "Move object(s)",
+    };
 
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
+    private static Object edgeType[] = {null,
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        null,                                   
+                                        null,
+                                        null,
+                                        null, // 9
+                                        Model.getMetaTypes().getGeneralization(),
+                                        Model.getMetaTypes().getGeneralization(),
+                                        Model.getMetaTypes().getAssociation(),
+                                        Model.getMetaTypes().getAssociation(),
+                                        null, // no drag for self-association
+    };
 
     /**
      * Construct a new SelectionClass for the given Fig.
      *
      * @param f The given Fig.
      */
-    public SelectionClass(Fig f) { super(f); }
-
-    /*
-     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
-     * org.tigris.gef.presentation.Handle)
-     */
-    public void hitHandle(Rectangle r, Handle h) {
-        super.hitHandle(r, h);
-        if (h.index != -1) {
-            return;
-        }
-        if (!isPaintButtons()) {
-            return;
-        }
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        if (sm.size() != 1) {
-            return;
-        }
-        ModeManager mm = ce.getModeManager();
-        if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
-            return;
-        }
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
-        int iw = inherit.getIconWidth();
-        int ih = inherit.getIconHeight();
-        int aw = assoc.getIconWidth();
-        int ah = assoc.getIconHeight();
-        int saw = selfassoc.getIconWidth();
-        int sah = selfassoc.getIconHeight();
-
-        if (hitAbove(cx + cw / 2, cy, iw, ih, r)) {
-            h.index = 10;
-            h.instructions = "Add a superclass";
-        } else if (hitBelow(cx + cw / 2, cy + ch, iw, ih, r)) {
-            h.index = 11;
-            h.instructions = "Add a subclass";
-        } else if (hitLeft(cx + cw, cy + ch / 2, aw, ah, r)) {
-            h.index = 12;
-            h.instructions = "Add an associated class";
-        } else if (hitRight(cx, cy + ch / 2, aw, ah, r)) {
-            h.index = 13;
-            h.instructions = "Add an associated class";
-        } else if (hitRight(cx, cy + ch - 10, saw, sah, r)) {
-            h.index = 14;
-            h.instructions = "Add a self association";
-        } else {
-            h.index = -1;
-            h.instructions = "Move object(s)";
-        }
+    public SelectionClass(Fig f) { 
+        super(f);
     }
 
-
     /*
-     * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getIcons()
      */
-    public void paintButtons(Graphics g) {
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
+    protected Icon[] getIcons() {
+        Icon workingIcons[] = icons;
 
-        // The next two lines are necessary to get the GraphModel,
-        // in the DeploymentDiagram there are no Generalizations
-        Editor ce = Globals.curEditor();
-        GraphModel gm = ce.getGraphModel();
-
-        if (!(gm instanceof DeploymentDiagramGraphModel)) {
-            paintButtonAbove(inherit, g, cx + cw / 2, cy, 10);
-            paintButtonBelow(inherit, g, cx + cw / 2, cy + ch + 2, 11);
+        // No Generalizations on Deployment Diagram
+        if (Globals.curEditor().getGraphModel() instanceof DeploymentDiagramGraphModel) {
+            workingIcons[10] = null;
+            workingIcons[11] = null;
         }
         if (useComposite) {
-            paintButtonLeft(compos, g, cx + cw + 2, cy + ch / 2, 12);
-            paintButtonRight(compos, g, cx, cy + ch / 2, 13);
-            paintButtonRight(selfassoc, g, cx, cy + ch, 14);
-        } else {
-            paintButtonLeft(assoc, g, cx + cw + 2, cy + ch / 2, 12);
-            paintButtonRight(assoc, g, cx, cy + ch / 2, 13);
-            paintButtonRight(selfassoc, g, cx, cy + ch, 14);
-        }
+            workingIcons[12] = compos;
+            workingIcons[12] = compos;
+        } 
+        return workingIcons;
     }
-
+    
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getInstructions(int)
+     */
+    protected String getInstructions(int index) {
+        return instructions[index];
+    }
 
     /*
-     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
-     * org.tigris.gef.presentation.Handle)
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewNodeType(int)
      */
-    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-        if (hand.index < 10) {
-            setPaintButtons(false);
-            super.dragHandle(mX, mY, anX, anY, hand);
-            return;
-        }
-        int cx = getContent().getX(), cy = getContent().getY();
-        int cw = getContent().getWidth(), ch = getContent().getHeight();
-        Object edgeType = null;
-        Object nodeType = Model.getMetaTypes().getUMLClass();
-        int bx = mX, by = mY;
-        boolean reverse = false;
-        switch (hand.index) {
-        case 10: //add superclass
-            edgeType = Model.getMetaTypes().getGeneralization();
-            by = cy;
-            bx = cx + cw / 2;
-            break;
-        case 11: //add subclass
-            edgeType = Model.getMetaTypes().getGeneralization();
-            reverse = true;
-            by = cy + ch;
-            bx = cx + cw / 2;
-            break;
-        case 12: //add assoc
-            edgeType = Model.getMetaTypes().getAssociation();
-            by = cy + ch / 2;
-            bx = cx + cw;
-            break;
-        case 13: // add assoc
-            edgeType = Model.getMetaTypes().getAssociation();
-            reverse = true;
-            by = cy + ch / 2;
-            bx = cx;
-            break;
-        case 14: // selfassociation
-            // do not want to drag this
-            break;
-        default:
-            LOG.warn("invalid handle number");
-            break;
-        }
-        if (edgeType != null && nodeType != null) {
-            Editor ce = Globals.curEditor();
-            ModeCreateEdgeAndNode m =
-                new ModeCreateEdgeAndNode(ce,
-            // This fixes issue 2400:
-                      edgeType, useComposite, this);
-            m.setup((FigNode) getContent(), getContent().getOwner(),
-                    bx, by, reverse);
-            ce.pushMode(m);
-        }
-
+    protected Object getNewNodeType(int i) {
+        return Model.getMetaTypes().getUMLClass();
     }
-
-
-    ////////////////////////////////////////////////////////////////
-    // event handlers
-
-
+    
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewEdgeType(int)
+     */
+    protected Object getNewEdgeType(int i) {
+        return edgeType[i];
+    }
+    
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#isDragEdgeReverse(int)
+     */
+    protected boolean isDragEdgeReverse(int i) {
+        if (i == 11 || i == 13) {
+            return true;
+        } 
+        return false;
+    }
+   
+    /*
+     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#isEdgePostProcessRequested()
+     */
+    protected boolean isEdgePostProcessRequested() {
+        return useComposite;
+    }
+    
     /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
