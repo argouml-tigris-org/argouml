@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,7 @@ import org.argouml.model.Model;
 
 /**
  * This class provides a text field that can be used to access
- * tagged values of a MModelElement object.
+ * tagged values of a ModelElement object.
  * UMLModelElementTaggedValueDocument is especially useful when
  * using LabelledLayout.
  *
@@ -39,7 +39,7 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
 
     /**
      * Creates a UMLPlainTextDocument object that represents a tagged value of
-     * an MModelElement object.
+     * an ModelElement object.
      *
      * @param taggedValue the tagged value
      */

@@ -31,6 +31,7 @@ import javax.swing.Action;
 import javax.swing.JFileChooser;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -68,8 +69,20 @@ public class ActionSetSourcePath extends UndoableAction {
 	if (f != null) {
 	    Object obj = TargetManager.getInstance().getTarget();
 	    if (Model.getFacade().isAModelElement(obj)) {
-		Model.getCoreHelper().setTaggedValue(obj,
-                        ImportInterface.SOURCE_PATH_TAG, f.getPath());
+                Object tv =
+                        Model.getFacade().getTaggedValue(
+                                obj, ImportInterface.SOURCE_PATH_TAG);
+                if (tv == null) {
+                    Model.getExtensionMechanismsHelper().addTaggedValue(
+                            obj,
+                            Model.getExtensionMechanismsFactory()
+                                    .buildTaggedValue(
+                                            ImportInterface.SOURCE_PATH_TAG,
+                                            f.getPath()));
+                } else {
+                    Model.getExtensionMechanismsHelper().setValueOfTag(
+                            tv, f.getPath());
+                }
 	    }
 	}
     }
