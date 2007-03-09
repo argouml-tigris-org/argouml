@@ -451,10 +451,13 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             return getCommonBehavior().createSignal();
         } else if (elementType == metaTypes.getException()) {
             return getCommonBehavior().createException();
-        } 
+        } else if (elementType == metaTypes.getTransition()) {
+            return getStateMachines().createTransition();
+        }
             
         throw new IllegalArgumentException(
-                "Attempted to create unsupported model element type");
+                "Attempted to create unsupported model element type: " 
+                + elementType);
     }
 
     /*
