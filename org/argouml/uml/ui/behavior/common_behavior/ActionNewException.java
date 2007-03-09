@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,54 +27,43 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
-import javax.swing.Icon;
 
-import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
+
 /**
- * Create a new Signal.
+ * This action creates a new Signal.
+ *
+ * @author Tom Morris
  */
-public class ActionNewSignal extends AbstractActionNewModelElement {
+public class ActionNewException extends AbstractActionNewModelElement {
 
     /**
      * The constructor.
      */
-    public ActionNewSignal() {
-        super("button.new-signal");
-        putValue(Action.NAME, Translator.localize("button.new-signal"));
-        Icon icon = ResourceLoaderWrapper.lookupIcon("SignalSending");
-        putValue(Action.SMALL_ICON, icon);
+    public ActionNewException() {
+        super("button.new-exception");
+        putValue(Action.NAME, Translator.localize("button.new-exception"));
     }
 
-    /**
-     * Creates a new signal and in case of a SignalEvent as target also set the
-     * Signal for this event.<p>
-     * {@inheritDoc}
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (Model.getFacade().isASignalEvent(target)
-                || Model.getFacade().isASendAction(target)
-                || Model.getFacade().isAReception(target)
-                || Model.getFacade().isABehavioralFeature(target)) {
-            Object newSig = 
-                Model.getCommonBehaviorFactory().buildSignal(target);
-            TargetManager.getInstance().setTarget(newSig);
+        Object ns = null;
+        if (Model.getFacade().isANamespace(target)) {
+            ns = target;
         } else {
-            Object ns = null;
-            if (Model.getFacade().isANamespace(target)) {
-                ns = target;
-            } else {
-                ns = Model.getFacade().getNamespace(target);
-            }
-            Object newElement = Model.getCommonBehaviorFactory().createSignal();
-            TargetManager.getInstance().setTarget(newElement);
-            Model.getCoreHelper().setNamespace(newElement, ns);
+            ns = Model.getFacade().getNamespace(target);
         }
+
+        Object newElement = Model.getCommonBehaviorFactory().createException();
+        Model.getCoreHelper().setNamespace(newElement, ns);
+        TargetManager.getInstance().setTarget(newElement);
         super.actionPerformed(e);
     }
 }

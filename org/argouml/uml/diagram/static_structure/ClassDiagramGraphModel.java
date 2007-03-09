@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.static_structure;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -58,24 +59,21 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
     public List getPorts(Object nodeOrEdge) {
-	Vector res = new Vector();  // wasteful!
-	if (Model.getFacade().isAClass(nodeOrEdge)) {
-	    res.addElement(nodeOrEdge);
-	}
-	if (Model.getFacade().isAInterface(nodeOrEdge)) {
-	    res.addElement(nodeOrEdge);
+	List res = new ArrayList(); 
+	if (Model.getFacade().isAClassifier(nodeOrEdge)) {
+	    res.add(nodeOrEdge);
 	}
 	if (Model.getFacade().isAInstance(nodeOrEdge)) {
-	    res.addElement(nodeOrEdge);
+	    res.add(nodeOrEdge);
 	}
 	if (Model.getFacade().isAModel(nodeOrEdge)) {
-	    res.addElement(nodeOrEdge);
+	    res.add(nodeOrEdge);
 	}
-        if (Model.getFacade().isADataType(nodeOrEdge)) {
-            res.addElement(nodeOrEdge);
-        }
         if (Model.getFacade().isAStereotype(nodeOrEdge)) {
-            res.addElement(nodeOrEdge);
+            res.add(nodeOrEdge);
+        }
+        if (Model.getFacade().isASignal(nodeOrEdge)) {
+            res.add(nodeOrEdge);
         }
 	return res;
     }
@@ -90,15 +88,13 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     /**
      * Return all edges going to given port (read Model Element).
      * 
-     * Instances can't currently be added to a class diagram.
-     * 
      * @param port
      *            model element to query
      * @return list of incoming connections
      */
     public List getInEdges(Object port) {
 
-	Vector edges = new Vector();
+	List edges = new ArrayList();
 
 	// top of the hierarchy is ME:
 	if (Model.getFacade().isAModelElement(port)) {
@@ -115,58 +111,27 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 		edges.add(it.next());
 	    }
 	}
-	// then Classifier
-	if (Model.getFacade().isAClassifier(port)) {
-	    Iterator it = Model.getFacade().getAssociationEnds(port).iterator();
-	    while (it.hasNext()) {
-		Object nextAssocEnd = it.next();
-		// navigable.... only want incoming
-		if (Model.getFacade().isNavigable(nextAssocEnd)) {
-		    edges.add(nextAssocEnd);
-		}
-	    }
-	}
+	// then Classifier & Package
+        if (Model.getFacade().isAClassifier(port)
+                || Model.getFacade().isAPackage(port)) {
+            Iterator it = Model.getFacade().getAssociationEnds(port).iterator();
+            while (it.hasNext()) {
+                Object nextAssocEnd = it.next();
+                // navigable.... only want incoming
+                if (Model.getFacade().isNavigable(nextAssocEnd)) {
+                    edges.add(nextAssocEnd);
+                }
+            }
+        }
+
+        if (Model.getFacade().isAInstance(port)) {
+            Iterator it = Model.getFacade().getLinkEnds(port).iterator();
+            while (it.hasNext()) {
+                edges.add(it.next());
+            }
+        }
 
 	return edges;
-
-	//    Vector res = new Vector(); //wasteful!
-	//    if (port instanceof MClass) {
-	//      MClass cls = (MClass) port;
-	//      Collection ends = cls.getAssociationEnds();
-	//      if (ends == null) return res; // empty Vector
-	//      //java.util.Enumeration endEnum = ends.elements();
-	//      Iterator iter = ends.iterator();
-	//      while (iter.hasNext()) {
-	//          MAssociationEnd ae = (MAssociationEnd) iter.next();
-	//          res.add(ae.getAssociation());
-	//      }
-	//    }
-	//    if (port instanceof MInterface) {
-	//      MInterface Intf = (MInterface) port;
-	//      Collection ends = Intf.getAssociationEnds();
-	//      if (ends == null) return res; // empty Vector
-	//      Iterator endEnum = ends.iterator();
-	//      while (endEnum.hasNext()) {
-	//        MAssociationEnd ae = (MAssociationEnd) endEnum.next();
-	//        res.addElement(ae.getAssociation());
-	//      }
-	//    }
-	//    if (port instanceof MPackage) {
-	//      MPackage cls = (MPackage) port;
-	//      Vector ends = cls.getAssociationEnd();
-	//      if (ends == null) return res; // empty Vector
-	//      java.util.Enumeration endEnum = ends.elements();
-	//      while (endEnum.hasMoreElements()) {
-	//        MAssociationEnd ae = (MAssociationEnd) endEnum.nextElement();
-	//        res.addElement(ae.getAssociation());
-	//      }
-	//    }
-	//    if (port instanceof MInstance) {
-	//      MInstance inst = (MInstance) port;
-	//      Collection ends = inst.getLinkEnds();
-	//      res.addAll(ends);
-	//    }
-	//    return res;
     }
 
     /*
@@ -174,7 +139,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     public List getOutEdges(Object port) {
 
-	Vector edges = new Vector();
+	List edges = new ArrayList();
 
 	// top of the hierarchy is ME:
 	if (Model.getFacade().isAModelElement(port)) {
@@ -254,11 +219,10 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (Model.getFacade().isAModel(node)) {
             return false; // issue 3774
         }
-        return Model.getFacade().isAClass(node)
-            || Model.getFacade().isAInterface(node)
+        return Model.getFacade().isAClassifier(node)
             || Model.getFacade().isAPackage(node)
-            || Model.getFacade().isADataType(node)
-            || Model.getFacade().isAStereotype(node);
+            || Model.getFacade().isAStereotype(node)
+            || Model.getFacade().isASignal(node);
     }
 
     /*
@@ -478,8 +442,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             }
         }
         if (Model.getFacade().isAModelElement(node)) {
-            Vector specs =
-        	new Vector(Model.getFacade().getClientDependencies(node));
+            Collection specs = Model.getFacade().getClientDependencies(node);
             specs.addAll(Model.getFacade().getSupplierDependencies(node));
             Iterator iter = specs.iterator();
             while (iter.hasNext()) {

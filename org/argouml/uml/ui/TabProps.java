@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import java.awt.BorderLayout;
-import java.lang.reflect.Modifier;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -73,6 +72,7 @@ import org.argouml.uml.ui.behavior.common_behavior.PropPanelCallAction;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelComponentInstance;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelCreateAction;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelDestroyAction;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelException;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelLink;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelLinkEnd;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelNodeInstance;
@@ -139,20 +139,14 @@ import org.tigris.swidgets.Orientation;
 
 /**
  * This is the tab on the details panel (DetailsPane) that holds the property
- * panel. On change of target, the property panel in TabProps is changed. <p>
- *
- * With the introduction of the TargetManager,
- * this class holds its original power
- * of controlling its target. The property panels (subclasses of PropPanel) for
- * which this class is the container are being registered as TargetListeners in
- * the setTarget method of this class.
- * They are not registered with TargetManager
- * but with this class to prevent race-conditions while firing TargetEvents from
- * TargetManager.
- *
- * TODO: Once the old module loader is removed from ArgoUML the
- * {@link org.argouml.application.events.ArgoModuleEventListener}
- * interface can be removed.
+ * panel. On change of target, the property panel in TabProps is changed.
+ * <p>
+ * With the introduction of the TargetManager, this class holds its original
+ * power of controlling its target. The property panels (subclasses of
+ * PropPanel) for which this class is the container are being registered as
+ * TargetListeners in the setTarget method of this class. They are not
+ * registered with TargetManager but with this class to prevent race-conditions
+ * while firing TargetEvents from TargetManager.
  */
 public class TabProps
     extends AbstractArgoJPanel
@@ -327,45 +321,9 @@ public class TabProps
             }
             return p;
         }
-
-        // TODO: If the factory didn't know how to create the panel then
-        // we fall through to the old reflection method. The code below
-        // should be removed one the createPropPanel method is complete.
-
-        /* 3rd attempt: use the reflection method: */
-        Class panelClass = panelClassFor(trgt.getClass());
-        if (panelClass == null) {
-            LOG.error("No panel class found for: " + trgt.getClass());
-            return null;
-        }
-        LOG.debug("panelClass found for: " + panelClass);
-        try {
-            // if a class is abstract we do not need to try
-            // to instantiate it.
-            if (Modifier.isAbstract(panelClass.getModifiers())) {
-                return null;
-            }
-            p = (TabModelTarget) panelClass.newInstance();
-            if (p instanceof PropPanel) {
-        	((PropPanel) p).buildToolbar();
-            }
-            // moved next line inside try block to avoid filling
-            // the hashmap with bogus values.
-            panels.put(trgt.getClass(), p);
-        } catch (IllegalAccessException ignore) {
-            // doubtfull if this must be ignored.
-            LOG.error("Failed to create a prop panel", ignore);
-            return null;
-        } catch (InstantiationException ignore) {
-            // doubtfull if this must be ignored.
-            LOG.error("Failed to create a prop panel", ignore);
-            return null;
-        }
-
-        LOG.warn(p.getClass().getName()
-                + " has been created by reflection. "
-                + "This should be added to the createPropPanel method.");
-        return p;
+        
+        LOG.error("Failed to create a prop panel for : " + trgt);
+        return null;
     }
 
     /**
@@ -454,6 +412,8 @@ public class TabProps
             propPanel = new PropPanelEnumerationLiteral();
         } else if (Model.getFacade().isAExtend(modelElement)) {
             propPanel = new PropPanelExtend();
+        } else if (Model.getFacade().isAException(modelElement)) {
+            propPanel = new PropPanelException();
         } else if (Model.getFacade().isAExtensionPoint(modelElement)) {
             propPanel = new PropPanelExtensionPoint();
         } else if (Model.getFacade().isAFinalState(modelElement)) {
@@ -509,7 +469,7 @@ public class TabProps
         } else if (Model.getFacade().isASignal(modelElement)) {
             propPanel = new PropPanelSignal();
         } else if (Model.getFacade().isASimpleState(modelElement)) {
-            propPanel = new PropPanelSimpleState(); //TODO: Check!
+            propPanel = new PropPanelSimpleState();
         } else if (Model.getFacade().isAStateMachine(modelElement)) {
             propPanel = new PropPanelStateMachine();
         } else if (Model.getFacade().isAStereotype(modelElement)) {
@@ -555,49 +515,6 @@ public class TabProps
         }
 
         return propPanel;
-    }
-
-    /**
-     * Locate the panel for the given class.
-     * TODO: Remove when createPropPanel complete
-     *
-     * @param targetClass the given class
-     * @return the properties panel for the given class, or null if not found
-     */
-    private Class panelClassFor(Class targetClass) {
-
-        String panelClassName = "";
-        String pack = "org.argouml.uml";
-        String base = "";
-
-        String targetClassName = targetClass.getName();
-        LOG.info("Trying to locate panel for: " + targetClassName);
-        int lastDot = targetClassName.lastIndexOf(".");
-
-        //remove "org.omg.uml."
-        if (lastDot > 0) {
-            base = targetClassName.substring(12, lastDot + 1);
-        } else {
-            base = targetClassName.substring(12);
-        }
-
-        targetClassName = Model.getMetaTypes().getName(targetClass);
-
-        // This doesn't work for panel property tabs - they are being put in the
-        // wrong place. Really we should have defined these are preloaded them
-        // along with ArgoDiagram in initPanels above.
-
-        try {
-            panelClassName =
-                pack + ".ui." + base + "PropPanel" + targetClassName;
-            LOG.info("Looking for: " + panelClassName);
-            return Class.forName(panelClassName);
-        } catch (ClassNotFoundException ignore) {
-            LOG.error(
-		      "Class " + panelClassName + " for Panel not found!",
-		      ignore);
-        }
-        return null;
     }
 
     /**

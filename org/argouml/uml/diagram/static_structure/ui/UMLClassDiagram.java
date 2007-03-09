@@ -80,13 +80,15 @@ public class UMLClassDiagram extends UMLDiagram {
     private Action actionDataType;
     private Action actionEnumeration;
     private Action actionStereotype;
+    private Action actionSignal;
+    private Action actionException;
 
     /**
      * Constructor used by reflection in persistence
      */
     public UMLClassDiagram() {
         super();
-        // TODO: All super constrcutors should take a GraphModel
+        // TODO: All super constructors should take a GraphModel
         setGraphModel(createGraphModel());
     }
 
@@ -110,7 +112,8 @@ public class UMLClassDiagram extends UMLDiagram {
         try {
             setName(name);
         } catch (PropertyVetoException pve) {
-            LOG.warn("Generated diagram name '" + name + "' was vetoed by setName");
+            LOG.warn("Generated diagram name '" + name 
+                    + "' was vetoed by setName");
         }
     }
 
@@ -179,11 +182,16 @@ public class UMLClassDiagram extends UMLDiagram {
         return actions;
     }
 
+    /**
+     * Return the actions for the miscellaneous pulldown menu.
+     */
     private Object[] getDataTypeActions() {
         Object[] actions = {
             getActionDataType(),
             getActionEnumeration(),
             getActionStereotype(),
+            getActionSignal(),
+            getActionException(),
         };
         ToolBarUtility.manageDefault(actions, "diagram.class.datatype");
         return actions;
@@ -572,6 +580,29 @@ public class UMLClassDiagram extends UMLDiagram {
         return actionStereotype;
     }
 
+    /**
+     * @return Returns the actionStereotype.
+     */
+    private Action getActionSignal() {
+        if (actionSignal == null) {
+            actionSignal =
+                makeCreateNodeAction(Model.getMetaTypes().getSignal(),
+                    "button.new-signal");
+        }
+        return actionSignal;
+    }
+    
+    /**
+     * @return Returns the actionStereotype.
+     */
+    private Action getActionException() {
+        if (actionException == null) {
+            actionException =
+                makeCreateNodeAction(Model.getMetaTypes().getException(),
+                    "button.new-exception");
+        }
+        return actionException;
+    }
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
