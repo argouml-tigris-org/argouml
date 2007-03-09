@@ -374,8 +374,6 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @see org.argouml.model.UmlFactory#buildNode(java.lang.Object)
      */
     public Object buildNode(Object elementType) {
-
-        Object modelElement = null;
         if (elementType == metaTypes.getActor()) {
             return getUseCases().createActor();
         } else if (elementType == metaTypes.getUseCase()) {
@@ -449,8 +447,14 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             return getExtensionMechanisms().createStereotype();
         } else if (elementType == metaTypes.getAttribute()) {
             return getCore().buildAttribute();
-        }
-        return modelElement;
+        } else if (elementType == metaTypes.getSignal()) {
+            return getCommonBehavior().createSignal();
+        } else if (elementType == metaTypes.getException()) {
+            return getCommonBehavior().createException();
+        } 
+            
+        throw new IllegalArgumentException(
+                "Attempted to create unsupported model element type");
     }
 
     /*
