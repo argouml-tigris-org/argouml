@@ -75,6 +75,7 @@ import org.omg.uml.behavioralelements.commonbehavior.SendAction;
 import org.omg.uml.behavioralelements.commonbehavior.Signal;
 import org.omg.uml.behavioralelements.commonbehavior.Stimulus;
 import org.omg.uml.behavioralelements.commonbehavior.TerminateAction;
+import org.omg.uml.behavioralelements.commonbehavior.UmlException;
 import org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction;
 import org.omg.uml.behavioralelements.statemachines.CallEvent;
 import org.omg.uml.behavioralelements.statemachines.ChangeEvent;
@@ -526,7 +527,7 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#isAException(java.lang.Object)
      */
     public boolean isAException(Object handle) {
-        return handle instanceof Exception;
+        return handle instanceof UmlException;
     }
 
     /**
