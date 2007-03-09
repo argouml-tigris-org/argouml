@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,11 +44,10 @@ public class PropPanelSendAction extends PropPanelAction {
 
     /**
      * The constructor.
-     *
      */
     public PropPanelSendAction() {
         super("SendAction", lookupIcon("SendAction"));
-        addAction(new ActionNewSignal());
+
         AbstractActionAddModelElement action =
             new ActionAddSendActionSignal();
         UMLMutableLinkedList list =
@@ -56,10 +55,17 @@ public class PropPanelSendAction extends PropPanelAction {
                 new UMLSendActionSignalListModel(), action, 
                 new ActionNewSignal(), null, true);
         list.setVisibleRowCount(1);
-        JScrollPane instantiationScroll = new JScrollPane(list);
+        JScrollPane signalScroll = new JScrollPane(list);
         addFieldBefore(Translator.localize("label.signal"),
-                instantiationScroll,
+                signalScroll,
                 argumentsScroll);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.behavior.common_behavior.PropPanelAction#addExtraActions()
+     */
+    protected void addExtraActions() {
+        addAction(new ActionNewSignal());
     }
 
     /**
