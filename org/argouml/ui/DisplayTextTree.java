@@ -44,7 +44,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.notation.NotationProvider;
 import org.argouml.uml.notation.uml.NotationUtilityUml;
@@ -148,8 +147,6 @@ public class DisplayTextTree extends JTree {
 
         if (Model.getFacade().isAModelElement(value)) {
             String name = null;
-            NotationName nn = ProjectManager.getManager()
-                .getCurrentProject().getProjectSettings().getNotationName();
             try {
                 // Jeremy Bennett patch
                 if (Model.getFacade().isATransition(value)) {
@@ -158,7 +155,7 @@ public class DisplayTextTree extends JTree {
                         NotationProviderFactory2.getInstance()
                             .getNotationProvider(
                                     NotationProviderFactory2.TYPE_TRANSITION,
-                                    value, nn);
+                                    value);
                     String signature = notationProvider.toString(value, null);
                     if (name != null && name.length() > 0) {
                         name += ": " + signature;
@@ -170,7 +167,7 @@ public class DisplayTextTree extends JTree {
                         NotationProviderFactory2.getInstance()
                             .getNotationProvider(
                                 NotationProviderFactory2.TYPE_EXTENSION_POINT,
-                                value, nn);
+                                value);
                     name = notationProvider.toString(value, null);
                 } else if (Model.getFacade().isAComment(value)) {
                     /*

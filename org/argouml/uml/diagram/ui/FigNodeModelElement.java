@@ -93,7 +93,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
@@ -1316,8 +1315,7 @@ public abstract class FigNodeModelElement
         if (Model.getFacade().isAModelElement(own)) {
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        getNotationProviderType(), own, this,
-                        getProject().getProjectSettings().getNotationName());
+                        getNotationProviderType(), own, this);
             npArguments.put("pathVisible", Boolean.valueOf(isPathVisible()));
         }
     }

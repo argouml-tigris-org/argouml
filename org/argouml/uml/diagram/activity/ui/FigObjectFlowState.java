@@ -36,7 +36,6 @@ import java.util.Iterator;
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
@@ -140,15 +139,14 @@ public class FigObjectFlowState extends FigNodeModelElement {
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAModelElement(own)) {
-            NotationName nn = getProject().getProjectSettings().getNotationName();
             notationProviderType =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE,
-                        own, nn);
+                        own);
             notationProviderState =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_STATE,
-                        own, nn);
+                        own);
         }
     }
 

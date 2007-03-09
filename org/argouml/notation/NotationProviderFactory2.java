@@ -32,8 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.notation.NotationProvider;
 
 /**
@@ -48,6 +46,8 @@ public final class NotationProviderFactory2 {
 
     private static final Logger LOG = 
         Logger.getLogger(NotationProviderFactory2.class);
+    
+    private static String currentLanguage;
     
     /**
      * TYPE_NAME the name of the modelelement, e.g. class, package, state
@@ -188,14 +188,10 @@ public final class NotationProviderFactory2 {
      * @param type the provider type
      * @return the provider
      * @param object the constructor parameter
-     * 
-     * @deprecated by MVW due to issue 4640. 
-     * Use the 3 parameter variant instead.
      */
     public NotationProvider getNotationProvider(int type,
             Object object) {
-        Project proj = ProjectManager.getManager().getCurrentProject();
-        NotationName name = proj.getProjectSettings().getNotationName();
+        NotationName name = Notation.findNotation(currentLanguage);
         return getNotationProvider(type, object, name);
     }
 
@@ -207,7 +203,7 @@ public final class NotationProviderFactory2 {
      * @param name the name of the notation language to use
      * @return the provider
      */
-    public NotationProvider getNotationProvider(int type,
+    private NotationProvider getNotationProvider(int type,
             Object object, NotationName name) {
 
         Class clazz = getNotationProviderClass(type, name);
@@ -262,14 +258,10 @@ public final class NotationProviderFactory2 {
      * @param object the constructor parameter
      * @param listener the fig
      * that refreshes after the NotationProvider has changed
-     * 
-     * @deprecated by MVW due to issue 4640. 
-     * Use the 4 parameter variant instead.
      */
     public NotationProvider getNotationProvider(int type,
             Object object, PropertyChangeListener listener) {
-        Project proj = ProjectManager.getManager().getCurrentProject();
-        NotationName name = proj.getProjectSettings().getNotationName();
+    	NotationName name = Notation.findNotation(currentLanguage);
         return getNotationProvider(type, object, listener, name);
     }
 
@@ -283,7 +275,7 @@ public final class NotationProviderFactory2 {
      * @param name the name of the notation language to use
      * @return the provider
      */
-    public NotationProvider getNotationProvider(int type,
+    private NotationProvider getNotationProvider(int type,
             Object object, PropertyChangeListener listener, 
             NotationName name) {
 
@@ -361,4 +353,14 @@ public final class NotationProviderFactory2 {
         }
         return false;
     }
+
+	/**
+	 * Set the notation language currently used in the Project.
+	 * 
+	 * @param currentLanguage the currentLanguage to set
+	 */
+	public static void setCurrentLanguage(String currentLanguage) {
+		NotationProviderFactory2.currentLanguage = currentLanguage;
+	}
+
 }

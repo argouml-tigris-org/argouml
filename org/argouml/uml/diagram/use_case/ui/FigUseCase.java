@@ -1242,9 +1242,7 @@ public class FigUseCase extends FigNodeModelElement
                         NotationProviderFactory2.getInstance()
                             .getNotationProvider(
                                 NotationProviderFactory2.TYPE_EXTENSION_POINT, 
-                                ep, 
-                                getProject().getProjectSettings()
-                                    .getNotationName());
+                                ep);
 
                     epFig = new CompartmentFigText(
                             xpos,

@@ -122,8 +122,7 @@ public abstract class FigState extends FigStateVertex {
         if (Model.getFacade().isAState(own)) {
             notationProviderBody =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_STATEBODY, own, this,
-                        getProject().getProjectSettings().getNotationName());
+                        NotationProviderFactory2.TYPE_STATEBODY, own, this);
         }
     }
 

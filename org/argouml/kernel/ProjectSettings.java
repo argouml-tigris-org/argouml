@@ -33,6 +33,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationProviderFactory2;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
@@ -73,6 +74,7 @@ public class ProjectSettings {
         
         notationLanguage = 
             Notation.getConfiguredNotation().getConfigurationValue();
+        NotationProviderFactory2.setCurrentLanguage(notationLanguage);
         showBoldNames = Configuration.getBoolean(
                 Notation.KEY_SHOW_BOLD_NAMES);
         useGuillemots = Configuration.getBoolean(
@@ -134,11 +136,13 @@ public class ProjectSettings {
 
             public void redo() {
                 notationLanguage = newLanguage;
+                NotationProviderFactory2.setCurrentLanguage(newLanguage);
                 fireEvent(key, oldLanguage, newLanguage);
             }
 
             public void undo() {
                 notationLanguage = oldLanguage;
+                NotationProviderFactory2.setCurrentLanguage(oldLanguage);
                 fireEvent(key, newLanguage, oldLanguage);
             }
         };
