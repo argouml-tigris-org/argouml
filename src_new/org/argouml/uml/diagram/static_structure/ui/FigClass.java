@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,6 +32,7 @@ import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.argouml.model.AddAssociationEvent;
@@ -432,9 +433,8 @@ public class FigClass extends FigClassifierBox
             return null;
         }
         FigText ft2 = null;
-        // TODO: come GEF V 0.12 use getFigs returning an array
-        Vector v = new Vector(fgVec.getFigs());
-        if (i >= v.size() || !((FigText) v.elementAt(i)).isVisible()) {
+        List v = fgVec.getFigs();
+        if (i >= v.size() || !((FigText) v.get(i)).isVisible()) {
             return null;
         }
         do {
@@ -448,7 +448,7 @@ public class FigClass extends FigClassifierBox
                 v = new Vector(fgVec.getFigs());
                 i = 1;
             }
-            ft2 = (FigText) v.elementAt(i);
+            ft2 = (FigText) v.get(i);
             if (!ft2.isVisible()) {
                 ft2 = null;
             }
