@@ -86,8 +86,19 @@ public class SourcePathControllerImpl implements SourcePathController {
      * java.lang.Object, java.io.File)
      */
     public void setSourcePath(Object modelElement, File sourcePath) {
-        Model.getCoreHelper().setTaggedValue(modelElement,
-                ImportInterface.SOURCE_PATH_TAG, sourcePath.toString());
+        Object tv =
+                Model.getFacade().getTaggedValue(
+                        modelElement, ImportInterface.SOURCE_PATH_TAG);
+        if (tv == null) {
+            Model.getExtensionMechanismsHelper().addTaggedValue(
+                    modelElement,
+                    Model.getExtensionMechanismsFactory().buildTaggedValue(
+                            ImportInterface.SOURCE_PATH_TAG,
+                            sourcePath.toString()));
+        } else {
+            Model.getExtensionMechanismsHelper().setValueOfTag(
+                    tv, sourcePath.toString());
+        }
     }
 
     /*

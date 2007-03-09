@@ -1607,17 +1607,13 @@ public class Modeller {
      * @param element that they are removed from
      */
     private void cleanModelElement(Object element) {
-        for (Iterator i = Model.getFacade().getTaggedValues(element);
-        	i.hasNext();) {
-            Object tv = i.next();
-            // TODO: This doesn't look right unless I don't understand it.
-            // The TaggedValues are generated with a type/TagDefinition
-            // of GENERATED_TAG and a value of "yes" but this is checking
-            // for a value of GENERATED_TAG - tfm 20061106
-            if (Model.getFacade().getValueOfTag(tv).equals(
-			Facade.GENERATED_TAG)) {
-                Model.getUmlFactory().delete(tv);
-            }
+        Object tv =
+                Model.getFacade().getTaggedValue(element, Facade.GENERATED_TAG);
+        while (tv != null) {
+            Model.getUmlFactory().delete(tv);
+            tv =
+                    Model.getFacade().getTaggedValue(
+                            element, Facade.GENERATED_TAG);
         }
     }
 

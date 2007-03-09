@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -82,9 +82,7 @@ class PackageContext extends Context {
 		    mInterface =
 			Model.getCoreFactory()
 			    .buildInterface(name, mPackage);
-		    Model.getCoreHelper().setTaggedValue(mInterface,
-					       Facade.GENERATED_TAG,
-					       "yes");
+		    setGeneratedTag(mInterface);
 		}
 	    }
 	    catch (ClassNotFoundException e) {
@@ -106,9 +104,7 @@ class PackageContext extends Context {
 			mInterface =
 			    Model.getCoreFactory()
 			        .buildInterface(name, mPackage);
-			Model.getCoreHelper().setTaggedValue(mInterface,
-						   Facade.GENERATED_TAG,
-						   "yes");
+			setGeneratedTag(mInterface);
 		    }
                 } catch (MalformedURLException e1) {
                     LOG.warn("Classpath configuration error ", e1);
@@ -168,9 +164,7 @@ class PackageContext extends Context {
 			Model.getCoreFactory()
 			    .buildClass(name, mPackage);
 		}
-		Model.getCoreHelper().setTaggedValue(mClassifier,
-					   Facade.GENERATED_TAG,
-					   "yes");
+		setGeneratedTag(mClassifier);
 	    }
 	    catch (ClassNotFoundException e) {
 		// No class or interface found
@@ -197,9 +191,7 @@ class PackageContext extends Context {
 			    Model.getCoreFactory()
 			        .buildClass(name, mPackage);
 		    }
-		    Model.getCoreHelper().setTaggedValue(mClassifier,
-					       Facade.GENERATED_TAG,
-					       "yes");
+		    setGeneratedTag(mClassifier);
                 }
                 catch (ClassNotFoundException e1) {
                     // Ignore - we'll deal with this later by checking to see
@@ -238,6 +230,30 @@ class PackageContext extends Context {
 	}
 
 	return mClassifier;
+    }
+
+    // Historically this used the value "yes", but all existing
+    // code only checks for the presence of the tag, not its value
+    private static final String GENERATED_TAG_VALUE = "true";
+    
+    /**
+     * Set the tagged value which indicates this element was 
+     * generated as a result of reverse engineering.
+     * 
+     * @param element the ModelElement to set the tag on
+     */
+    private void setGeneratedTag(Object element) {
+        Object tv =
+                Model.getFacade().getTaggedValue(element, Facade.GENERATED_TAG);
+        if (tv == null) {
+            Model.getExtensionMechanismsHelper().addTaggedValue(
+                    element,
+                    Model.getExtensionMechanismsFactory().buildTaggedValue(
+                            Facade.GENERATED_TAG, GENERATED_TAG_VALUE));
+        } else {
+            Model.getExtensionMechanismsHelper().setValueOfTag(
+                    tv, GENERATED_TAG_VALUE);
+        }
     }
 }
 

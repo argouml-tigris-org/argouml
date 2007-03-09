@@ -31,6 +31,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -351,23 +352,7 @@ public class ClassGenerationDialog
                                 nodesPerPath.put(path, np);
                             }
                             np.add(node);
-                            // save the selected language in the model
-                            // TODO: no support of multiple checked
-                            // languages
-                            Object taggedValue =
-                                Model.getFacade().getTaggedValue(
-                                        node, SOURCE_LANGUAGE_TAG);
-                            String savedLang = null;
-                            if (taggedValue != null) {
-                                savedLang =
-                                    Model.getFacade().getValueOfTag(
-                                        taggedValue);
-                            }
-                            if (taggedValue == null || !language.getName()
-                                    .equals(savedLang)) {
-                                Model.getCoreHelper().setTaggedValue(node,
-                                        SOURCE_LANGUAGE_TAG, language.getName());
-                            }
+                            saveLanguage(node, language);
                         }
                     } // end for (all nodes)
 
@@ -390,6 +375,33 @@ public class ClassGenerationDialog
             } // end for (all languages)
             // TODO: do something with the generated list fileNames,
             // for example, show it to the user in a dialog box.
+        }
+    }
+
+    /**
+     * Save the source language in the model.
+     * 
+     * TODO: Support multiple languages now that we have UML 1.4
+     * tagged values.
+     * @param node
+     * @param language
+     */
+    private void saveLanguage(Object node, Language language) {
+        Object taggedValue =
+                Model.getFacade().getTaggedValue(node, SOURCE_LANGUAGE_TAG);
+        if (taggedValue != null) {
+            String savedLang = Model.getFacade().getValueOfTag(taggedValue);
+            if (!language.getName().equals(savedLang)) {
+                Model.getExtensionMechanismsHelper().setValueOfTag(
+                        taggedValue, language.getName());
+            }
+        } else {
+            taggedValue =
+                    Model.getExtensionMechanismsFactory().buildTaggedValue(
+                            SOURCE_LANGUAGE_TAG, language.getName());
+            Model.getExtensionMechanismsHelper().addTaggedValue(
+                    node, taggedValue);
+
         }
     }
 
@@ -502,7 +514,7 @@ public class ClassGenerationDialog
         public Set getChecked(Language lang) {
             int index = languages.indexOf(lang);
             if (index == -1) {
-                return new HashSet();
+                return Collections.EMPTY_SET;
             }
             return checked[index];
         }
