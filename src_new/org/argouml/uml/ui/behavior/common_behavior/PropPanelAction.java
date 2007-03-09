@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,6 +53,9 @@ import org.argouml.util.ConfigLoader;
  */
 public abstract class PropPanelAction extends PropPanelModelElement {
 
+    /**
+     * The scroll pane for arguments.
+     */
     protected JScrollPane argumentsScroll;
 
     /**
@@ -123,10 +126,17 @@ public abstract class PropPanelAction extends PropPanelModelElement {
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionCreateArgument());
         addAction(new ActionNewStereotype());
+        addExtraActions();
         addAction(getDeleteAction());
 
     }
 
+    /**
+     * Overrule this to add extra action buttons.
+     */
+    protected void addExtraActions() {
+        // do nothing by default
+    }
 }
 
 class ActionCreateArgument extends AbstractActionNewModelElement {
