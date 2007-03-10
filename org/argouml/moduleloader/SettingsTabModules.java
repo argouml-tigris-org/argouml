@@ -25,16 +25,7 @@
 package org.argouml.moduleloader;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.Map;
 
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -58,11 +49,6 @@ class SettingsTabModules extends JPanel
      * The table of modules.
      */
     private JTable table;
-
-    /**
-     * The panel below the table that shows not yet loaded modules.
-     */
-    private JPanel notYetLoadedPanel;
 
     /**
      * The names of the columns in the table.
@@ -172,65 +158,11 @@ class SettingsTabModules extends JPanel
         private static final long serialVersionUID = -5970280716477119863L;
     }
 
-    /**
-     * Create the pane with not yet loaded modules.
-     */
-    private void createNotYetLoaded() {
-	if (notYetLoadedPanel != null) {
-	    remove(notYetLoadedPanel);
-	    notYetLoadedPanel = null;
-	}
-
-        Container allNotYetLoaded = Box.createVerticalBox();
-
-	Iterator iter =
-	    ModuleLoader2.notYetLoadedModules().entrySet().iterator();
-        boolean seen = false;
-	while (iter.hasNext()) {
-	    Map.Entry entry = (Map.Entry) iter.next();
-	    final String name = (String) entry.getKey();
-	    final String classname = (String) entry.getValue();
-
-	    JButton button = new JButton(name);
-	    button.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent event) {
-		    try {
-		        getClass().getClassLoader().loadClass(classname);
-		        ModuleLoader2.addClass(classname);
-		        handleSettingsTabRefresh();
-		    } catch (ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(
-				notYetLoadedPanel,
-			        "Cannot find class " + classname
-				+ " needed to load module " + name,
-				"Cannot find class",
-				JOptionPane.ERROR_MESSAGE);
-			return;
-		    }
-		}
-	    });
-
-	    allNotYetLoaded.add(button);
-            seen = true;
-	}
-
-        if (seen) {
-            notYetLoadedPanel = new JPanel();
-            notYetLoadedPanel.setLayout(new BorderLayout());
-            notYetLoadedPanel.add(new JLabel("Attempt to load:"),
-                                  BorderLayout.NORTH);
-            notYetLoadedPanel.add(allNotYetLoaded, BorderLayout.CENTER);
-            add(notYetLoadedPanel, BorderLayout.SOUTH);
-        }
-        validate();
-    }
-
     /*
      * @see GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
         table.setModel(new ModuleTableModel());
-	createNotYetLoaded();
     }
 
     /*
@@ -245,7 +177,6 @@ class SettingsTabModules extends JPanel
             }
             ModuleLoader2.doLoad(false);
         }
-	createNotYetLoaded();
     }
 
     /*
@@ -272,8 +203,6 @@ class SettingsTabModules extends JPanel
             table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
             table.setShowVerticalLines(true);
             add(new JScrollPane(table), BorderLayout.CENTER);
-
-            createNotYetLoaded();
         }
 
         return this;

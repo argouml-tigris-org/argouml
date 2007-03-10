@@ -41,9 +41,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.StringTokenizer;
-import java.util.TreeMap;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
@@ -69,11 +67,6 @@ public final class ModuleLoader2 {
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(ModuleLoader2.class);
-
-    /**
-     * The list of not yet loaded modules.
-     */
-    private static String[][] notYetLoadeds;
 
     /**
      * This map contains the module loader information about the module.<p>
@@ -287,38 +280,6 @@ public final class ModuleLoader2 {
             sb.append("\n");
         }
         return sb.toString();
-    }
-
-    
-    /**
-     * Set the list of candidates to not yet loaded modules. These are
-     * not loaded until their button is pressed in the settings tab.<p>
-     *
-     * @param modules Array of Tuples: name, classname.
-     *        The name must match the name declared in the class.
-     */
-    public static void setNotYetLoadedModules(String[][] modules) {
-	notYetLoadeds = modules;
-    }
-
-    /**
-     * Get a list of not yet loaded modules.<p>
-     *
-     * @return a {@link SortedMap}
-     *         from name ({@link String})
-     *         to classname {@link String}.
-     */
-    public static SortedMap notYetLoadedModules() {
-	Collection alreadyFound = allModules();
-
-	SortedMap result = new TreeMap();
-
-	for (int i = 0; i < notYetLoadeds.length; i++) {
-	    if (!alreadyFound.contains(notYetLoadeds[i][0])) {
-		result.put(notYetLoadeds[i][0], notYetLoadeds[i][1]);
-	    }
-	}
-	return result;
     }
 
 
