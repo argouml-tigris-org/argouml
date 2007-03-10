@@ -800,20 +800,6 @@ class PreloadClasses implements Runnable {
 	new JavaImport().init();
 	huntForInternalModules();
 
-	// The hardcoded list of modules to enable buttons for in the
-	// module tabs.
-	final String[][] modules = {
-	    // name, classname
-	    // The name must match the name if the class.
-	    {
-		"ActionTestLoadableModule",
-		"org.argouml.ui.test.ActionTestLoadableModule",
-	    },
-	};
-	// End of the hardcoded list.
-
-	ModuleLoader2.setNotYetLoadedModules(modules);
-
 	Class c = null;
 	LOG.info("preloading...");
 
@@ -841,12 +827,10 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.diagram.ui.FigRealization.class;
         c = org.tigris.gef.base.ModeCreateEdgeAndNode.class;
         c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;
-        c = org.argouml.uml.diagram.ui.SelectionNodeClarifiers.class;
         c = org.argouml.uml.ui.foundation.core.PropPanelAssociation.class;
         c = org.argouml.uml.ui.foundation.core.PropPanelClass.class;
         c = org.argouml.uml.ui.foundation.core.PropPanelInterface.class;
 
-        c = org.tigris.gef.base.CmdSetMode.class;
         c = org.tigris.gef.base.Geometry.class;
         c = org.tigris.gef.base.ModeModify.class;
         c = org.tigris.gef.base.ModePlace.class;
@@ -864,9 +848,9 @@ class PreloadClasses implements Runnable {
         c = org.tigris.gef.util.EnumerationSingle.class;
 
         if (c == null) {
-            LOG.error(" preloading error");
+            LOG.error("preloading error");
         }
-        LOG.info(" done preloading");
+        LOG.info("preloading done");
     }
 
 } /* end class PreloadClasses */
