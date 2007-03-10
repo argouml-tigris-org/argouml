@@ -36,6 +36,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.argouml.application.api.Argo;
@@ -56,23 +57,23 @@ import org.tigris.gef.base.Globals;
 
 /**
  * Source language import class - GUI independent superclass.
- * 
+ *
  * Specific Swing and SWT/Eclipse importers will extend this class.
- * 
+ *
  * @author Tom Morris
  */
 public abstract class ImportCommon implements ImportSettingsInternal {
 
     /**
-     * The % maximum progress required to preparing for import. 
+     * The % maximum progress required to preparing for import.
      */
     protected static final int MAX_PROGRESS_PREPARE = 1;
-    
+
     /**
      * The % maximum progress required to import.
      */
     protected static final int MAX_PROGRESS_IMPORT = 99;
-    
+
     /**
      * keys are module name, values are PluggableImport instance.
      */
@@ -95,11 +96,11 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     private DiagramInterface diagramInterface;
 
     private File selectedFile;
-    
+
     protected ImportCommon() {
         super();
         modules = new Hashtable();
-        
+
         Set newPlugins = ImporterManager.getInstance().getImporters();
         for (Iterator it = newPlugins.iterator(); it.hasNext();) {
             ModuleInterface mod = (ModuleInterface) it.next();
@@ -122,7 +123,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * @see org.argouml.uml.reveng.ImportSettings#getImportLevel()
      */
     public abstract int getImportLevel();
-    
+
     /**
      * If we have modified any diagrams, the project was modified and
      * should be saved. I don't consider a import, that only modifies
@@ -153,7 +154,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     protected void initCurrentDiagram() {
         diagramInterface = getCurrentDiagram();
     }
-    
+
     /**
      * Set target diagram.<p>
      *
@@ -168,7 +169,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         }
         return result;
     }
-    
+
     /*
      * @see org.argouml.uml.reveng.ImportSettings#getInputSourceEncoding()
      */
@@ -178,7 +179,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * @see org.argouml.uml.reveng.ImportSettings#isAttributeSelected()
      */
     public abstract boolean isAttributeSelected();
-    
+
     /*
      * @see org.argouml.uml.reveng.ImportSettings#isDatatypeSelected()
      */
@@ -195,7 +196,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * Get the files. For old style modules, this asks the module for the list.
      * For new style modules we generate it ourselves based on their specified
      * file suffixes.
-     * 
+     *
      * @return the list of files to be imported
      */
     protected List getFileList() {
@@ -252,7 +253,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     /*
      * Create a TaggedValue with a tag/type matching our source module
      * filename and a value of the file's last modified timestamp.
-     * 
+     *
      * TODO: This functionality needs to be moved someplace useful if
      * it's needed, otherwise it can be deleted. - tfm - 20070217
      */
@@ -275,7 +276,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * @see org.argouml.uml.reveng.ImportSettings#isMinimiseFigsSelected()
      */
     public abstract boolean isMinimizeFigsSelected();
-    
+
     /*
      * @see org.argouml.uml.reveng.ImportSettingsInternal#isDiagramLayoutSelected()
      */
@@ -312,7 +313,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     }
 
     /**
-     * Returns the possible languages in which the user can import the sources. 
+     * Returns the possible languages in which the user can import the sources.
      * @return a list of Strings with the names of the languages available
      */
     public List getLanguages() {
@@ -325,17 +326,112 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     }
 
     /**
+     * The flag for: descend directories recursively.
+     * This should be asked by the GUI for initialization.
+     * @return the flag stored in KEY_IMPORT_GENERAL_SETTINGS_FLAGS key or
+     * true if this is null.
+     */
+    public boolean isDescend() {
+        String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+        if (flags != null && flags.length() > 0) {
+            StringTokenizer st = new StringTokenizer(flags, ",");
+            if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * The flag for: changed/new files only.
+     * This should be asked by the GUI for initialization.
+     * @return the flag stored in KEY_IMPORT_GENERAL_SETTINGS_FLAGS key or
+     * true if this is null.
+     */
+    public boolean isChangedOnly() {
+        String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+        if (flags != null && flags.length() > 0) {
+            StringTokenizer st = new StringTokenizer(flags, ",");
+            if (st.hasMoreTokens()) st.nextToken();
+            if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * The flag for: create diagrams from imported code.
+     * This should be asked by the GUI for initialization.
+     * @return the flag stored in KEY_IMPORT_GENERAL_SETTINGS_FLAGS key or
+     * true if this is null.
+     */
+    public boolean isCreateDiagrams() {
+        String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+        if (flags != null && flags.length() > 0) {
+            StringTokenizer st = new StringTokenizer(flags, ",");
+            if (st.hasMoreTokens()) st.nextToken();
+            if (st.hasMoreTokens()) st.nextToken();
+            if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * The flag for: minimise class icons in diagrams.
+     * This should be asked by the GUI for initialization.
+     * @return the flag stored in KEY_IMPORT_GENERAL_SETTINGS_FLAGS key or
+     * true if this is null.
+     */
+    public boolean isMinimizeFigs() {
+        String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+        if (flags != null && flags.length() > 0) {
+            StringTokenizer st = new StringTokenizer(flags, ",");
+            if (st.hasMoreTokens()) st.nextToken();
+            if (st.hasMoreTokens()) st.nextToken();
+            if (st.hasMoreTokens()) st.nextToken();
+            if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * The flag for: perform automatic diagram layout.
+     * This should be asked by the GUI for initialization.
+     * @return the flag stored in KEY_IMPORT_GENERAL_SETTINGS_FLAGS key or
+     * true if this is null.
+     */
+    public boolean isDiagramLayout() {
+        String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+        if (flags != null && flags.length() > 0) {
+            StringTokenizer st = new StringTokenizer(flags, ",");
+            if (st.hasMoreTokens()) st.nextToken();
+            if (st.hasMoreTokens()) st.nextToken();
+            if (st.hasMoreTokens()) st.nextToken();
+            if (st.hasMoreTokens()) st.nextToken();
+            if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * The default encoding. This should be asked by the GUI for
      * initialization.
      * @return the encoding stored in Argo.KEY_INPUT_SOURCE_ENCODING key or if
      * this is null the default system encoding
      */
     public String getEncoding() {
-        String enc = Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING); 
+        String enc = Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
         if (enc == null || enc.trim().equals("")) { //$NON-NLS-1$
             enc = System.getProperty("file.encoding"); //$NON-NLS-1$
         }
-        
+
         return enc;
     }
 
@@ -354,17 +450,17 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         return list;
     }
 
-    
+
     /**
      * Layouts the diagrams.
-     * 
+     *
      * @param monitor
      *            the progress meter.  Null if not progress updates desired.
      * @param startingProgress
      *            the actual progress until now
      */
     public void layoutDiagrams(ProgressMonitor monitor, int startingProgress) {
-        
+
         // ArgoEclipse implementation
         DiagramInterface di = getDiagramInterface();
         if (di == null) {
@@ -381,7 +477,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
             ClassdiagramLayouter layouter = new ClassdiagramLayouter(diagram);
             layouter.layout();
             int act = startingProgress + (i + 1) / 10;
-            int progress = MAX_PROGRESS_PREPARE 
+            int progress = MAX_PROGRESS_PREPARE
                     + MAX_PROGRESS_IMPORT * act / total;
             if (monitor != null) {
                 monitor.updateProgress(progress);
@@ -394,7 +490,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
 
     /**
      * Import the selected source modules.
-     * 
+     *
      * @param monitor
      *            a ProgressMonitor to both receive progress updates and to be
      *            polled for user requests to cancel.
@@ -456,8 +552,8 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         } else {
             throw new RuntimeException("Unrecognized module type");
         }
-        
-        // TODO: Skip layout if problems during import? 
+
+        // TODO: Skip layout if problems during import?
         if (isDiagramLayoutSelected()) {
             monitor.updateMainTask(
                     Translator.localize("dialog.import.postImport"));
@@ -484,7 +580,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
 
     /**
      * Create diagram figures for a collection of model elements.
-     * 
+     *
      * @param newElements
      *            the collection of elements for which figures should be
      *            created.
@@ -501,7 +597,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                 } else {
                     String packageName = getQualifiedName(ns);
                     // Select the correct diagram (implicitly creates it)
-                    if (packageName != null 
+                    if (packageName != null
                             && !packageName.equals("")) {
                         diagramInterface.selectClassDiagram(ns,
                                 packageName);
@@ -534,7 +630,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         StringBuffer sb = new StringBuffer();
 
         Object root = Model.getModelManagementFactory().getRootModel();
-        
+
         Object ns = element;
         while (ns != null && !root.equals(ns)) {
             String name = Model.getFacade().getName(ns);
@@ -549,7 +645,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         }
         return sb.toString();
     }
-        
+
     /*
      * Print an exception trace to a string buffer
      */
@@ -559,5 +655,5 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         e.printStackTrace(pw);
         return sw.getBuffer();
     }
-    
+
 }

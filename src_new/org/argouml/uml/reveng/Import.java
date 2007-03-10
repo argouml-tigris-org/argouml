@@ -35,6 +35,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
@@ -199,8 +200,21 @@ public class Import extends ImportCommon implements ImportSettings {
      *             importers use FileImportSupport.
      */
     void disposeDialog() {
+        StringBuffer flags = new StringBuffer(30);
+        flags.append(isDescendSelected()).append(",");
+        flags.append(isChangedOnlySelected()).append(",");
+        flags.append(isCreateDiagramsSelected()).append(",");
+        flags.append(isMinimizeFigsSelected()).append(",");
+        flags.append(isDiagramLayoutSelected());
+        Configuration.setString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS,
+                flags.toString());
+        Configuration.setString(Argo.KEY_IMPORT_GENERAL_DETAIL_LEVEL,
+                String.valueOf(getImportLevel()));
         Configuration.setString(Argo.KEY_INPUT_SOURCE_ENCODING,
             getInputSourceEncoding());
+        if (importConfigPanel != null) {
+            importConfigPanel.disposeDialog();
+        }
         dialog.setVisible(false);
         dialog.dispose();
     }
@@ -239,31 +253,55 @@ public class Import extends ImportCommon implements ImportSettings {
                     new SelectedLanguageListener(importInstance, tab));
             general.add(selectedLanguage);
 
+            boolean desc = true;
+            boolean chan = true;
+            boolean crea = true;
+            boolean mini = true;
+            boolean layo = true;
+            String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+            if (flags != null && flags.length() > 0) {
+                StringTokenizer st = new StringTokenizer(flags, ",");
+                if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                    desc = false;
+                }
+                if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                    chan = false;
+                }
+                if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                    crea = false;
+                }
+                if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                    mini = false;
+                }
+                if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                    layo = false;
+                }
+            }
+            
             descend =
                 new JCheckBox(Translator.localize(
-                        "action.import-option-descend-dir-recur"));
-            descend.setSelected(true);
+                        "action.import-option-descend-dir-recur"), desc);
             general.add(descend);
 
             changedOnly =
                 new JCheckBox(Translator.localize(
-                        "action.import-option-changed_new"), true);
+                        "action.import-option-changed_new"), chan);
             general.add(changedOnly);
 
             createDiagrams =
                 new JCheckBox(Translator.localize(
-                        "action.import-option-create-diagram"), true);
+                        "action.import-option-create-diagram"), crea);
             general.add(createDiagrams);
 
             minimiseFigs =
                 new JCheckBox(Translator.localize(
-                        "action.import-option-min-class-icon"), true);
+                        "action.import-option-min-class-icon"), mini);
             general.add(minimiseFigs);
 
             layoutDiagrams =
                 new JCheckBox(Translator.localize(
                         "action.import-option-perform-auto-diagram-layout"),
-                        true);
+                        layo);
             general.add(layoutDiagrams);
 
             // de-selects the fig minimising & layout
@@ -300,7 +338,15 @@ public class Import extends ImportCommon implements ImportSettings {
             fullImport =
                 new JRadioButton(Translator.localize(
                         "action.import-option-full-import"));
-            fullImport.setSelected(true);
+            String detaillevel =
+                Configuration.getString(Argo.KEY_IMPORT_GENERAL_DETAIL_LEVEL);
+            if ("0".equals(detaillevel)) {
+                classOnly.setSelected(true);
+            } else if ("1".equals(detaillevel)) {
+                classAndFeatures.setSelected(true);
+            } else {
+                fullImport.setSelected(true);
+            }
             detailButtonGroup.add(fullImport);
 
             general.add(importDetailLabel);

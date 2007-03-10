@@ -220,6 +220,27 @@ public final class Argo {
 	Configuration.makeKey("import", "clazzpath");
 
     /**
+     * Key for RE general settings checkbox values.
+     * CSV format (values are true/false):
+     * 1. descend directories recursively
+     * 2. changed/new files only
+     * 3. create diagrams from imported code
+     * 4. minimise class icons in diagrams
+     * 5. perform automatic diagram layout
+     */
+    public static final ConfigurationKey KEY_IMPORT_GENERAL_SETTINGS_FLAGS =
+        Configuration.makeKey("import", "general", "flags");
+
+    /**
+     * Key for RE general settings: level of import detail. Values:
+     * 0: classifiers only
+     * 1: classifiers plus feature specifications
+     * 2: full import
+     */
+    public static final ConfigurationKey KEY_IMPORT_GENERAL_DETAIL_LEVEL =
+        Configuration.makeKey("import", "general", "detail", "level");
+
+    /**
      * Key for input source file encoding used in RE.
      *  Will be used for generated file also.
      */
