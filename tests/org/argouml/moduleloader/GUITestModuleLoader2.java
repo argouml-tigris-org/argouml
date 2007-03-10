@@ -27,7 +27,6 @@ package org.argouml.moduleloader;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -74,20 +73,6 @@ public class GUITestModuleLoader2 extends TestCase {
 	    fail("No exception was thrown.");
 	} catch (IllegalArgumentException e) {
 	    // Fine!
-	}
-    }
-
-    public void testNotYetLoadedModules() {
-	String[][] testModules = {
-	    {"hej", "hopp", },
-	    {"hopp", "hejja", },
-	};
-	ModuleLoader2.setNotYetLoadedModules(testModules);
-
-	Map m = ModuleLoader2.notYetLoadedModules();
-	for (int i = 0; i < testModules.length; i++) {
-	    assertTrue(m.containsKey(testModules[i][0]));
-	    assertTrue(m.containsValue(testModules[i][1]));
 	}
     }
 
