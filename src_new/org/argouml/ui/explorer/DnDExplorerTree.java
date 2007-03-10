@@ -336,13 +336,9 @@ public class DnDExplorerTree
                         return true;
                     }
                 }
-                if (!(Model.getFacade().isAInterface(dest) 
-                        && (Model.getFacade().isAMethod(me) 
-                                || Model.getFacade().isAAttribute(me)))) {
-                    if (Model.getFacade().isAFeature(me) 
-                            && Model.getFacade().isAClassifier(dest)) {
-                        return true;
-                    }
+                if (Model.getFacade().isAFeature(me) 
+                        && Model.getFacade().isAClassifier(dest)) {
+                    return true;
                 }
             }
         } catch (UnsupportedFlavorException e) {
@@ -795,22 +791,18 @@ public class DnDExplorerTree
                                 }
                             }
                         }
-                        if (!(Model.getFacade().isAInterface(dest) 
-                                && (Model.getFacade().isAMethod(me) 
-                                    || Model.getFacade().isAAttribute(me)))) {
-                            if (Model.getFacade().isAFeature(me) 
-                                    && Model.getFacade().isAClassifier(dest)) {
-                                if (moveAction) {
-                                    Model.getCoreHelper().removeFeature(
-                                            Model.getFacade().getOwner(me), me);
-                                    Model.getCoreHelper().addFeature(dest, me);
-                                    newTargets.add(me);
-                                }
-                                if (copyAction) {
-                                    newTargets.add(
+                        if (Model.getFacade().isAFeature(me) 
+                                && Model.getFacade().isAClassifier(dest)) {
+                            if (moveAction) {
+                                Model.getCoreHelper().removeFeature(
+                                        Model.getFacade().getOwner(me), me);
+                                Model.getCoreHelper().addFeature(dest, me);
+                                newTargets.add(me);
+                            }
+                            if (copyAction) {
+                                newTargets.add(
                                         Model.getCopyHelper().copy(me, dest));
                                 }
-                            }
                         }
                     }
                     dropTargetDropEvent.getDropTargetContext()
