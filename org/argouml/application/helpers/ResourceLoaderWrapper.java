@@ -66,6 +66,7 @@ public final class ResourceLoaderWrapper {
     private static ImageIcon junctionIcon;
     private static ImageIcon realizeIcon;
     private static ImageIcon signalIcon;
+    private static ImageIcon exceptionIcon;
     private static ImageIcon commentIcon;
 
     private Hashtable iconCache = new Hashtable();
@@ -172,6 +173,7 @@ public final class ResourceLoaderWrapper {
         junctionIcon = ResourceLoader.lookupIconResource("Junction");
         realizeIcon = ResourceLoader.lookupIconResource("Realization");
         signalIcon = ResourceLoader.lookupIconResource("SignalSending");
+        exceptionIcon = ResourceLoader.lookupIconResource("Exception");
         commentIcon = ResourceLoader.lookupIconResource("Note");
     }
 
@@ -262,9 +264,13 @@ public final class ResourceLoaderWrapper {
             if (Model.getFacade().isAAbstraction(value)) {
                 icon = realizeIcon;
             }
-            // needs more work: sending and receiving icons
-            if (Model.getFacade().isASignal(value)) {
-                icon = signalIcon;
+            if (Model.getFacade().isAException(value)) {
+                icon = exceptionIcon;
+            } else {
+                // needs more work: sending and receiving icons
+                if (Model.getFacade().isASignal(value)) {
+                    icon = signalIcon;
+                }
             }
             
             if (Model.getFacade().isAComment(value)) {
