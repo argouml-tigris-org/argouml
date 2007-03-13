@@ -802,7 +802,7 @@ public class DnDExplorerTree
                             if (copyAction) {
                                 newTargets.add(
                                         Model.getCopyHelper().copy(me, dest));
-                                }
+                            }
                         }
                     }
                     dropTargetDropEvent.getDropTargetContext()
