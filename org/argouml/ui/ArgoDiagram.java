@@ -56,8 +56,7 @@ public class ArgoDiagram extends Diagram {
     /**
      * Logger.
      */
-    private static final Logger LOG =
-        Logger.getLogger(ArgoDiagram.class);
+    private static final Logger LOG = Logger.getLogger(ArgoDiagram.class);
 
     static {
         /**
@@ -481,6 +480,18 @@ public class ArgoDiagram extends Diagram {
     
     protected Project getProject() {
 	return project;
+    }
+    
+    /**
+     * Called when the user releases a dragged a FigNode.
+     * @param encloser the FigNode that encloses the dragged FigNode
+     * @param enclosed the enclosed FigNode that was dragged into the encloser
+     */
+    public void figEnclosed(
+	    FigNode encloser, FigNode oldEncloser, FigNode enclosed) {
+	// Do nothing, override in subclass.
+	// TODO: This should really be abstract, can we get rid of the static
+	// hack at the start of this class?
     }
     
 } /* end class ArgoDiagram */

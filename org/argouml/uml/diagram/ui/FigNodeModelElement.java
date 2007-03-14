@@ -80,6 +80,7 @@ import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ActionGoToCritique;
+import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
@@ -616,28 +617,27 @@ public abstract class FigNodeModelElement
      * @see org.tigris.gef.presentation.FigNode#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig newEncloser) {
+	
+	LayerPerspective layer = (LayerPerspective) getLayer();
+	ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
 	Fig oldEncloser = encloser;
+	diagram.figEnclosed((FigNode) newEncloser, (FigNode) oldEncloser, this);
+	
 	super.setEnclosingFig(newEncloser);
 	if (newEncloser != oldEncloser) {
-            Project project = getProject();
-            if (project == null) {
-        	// If the project is null then the diagram is still loading
-        	// and we don't effect the model.
-        	// Reminder - make sure that this is still the case when moving
-        	// knowedge of Project out of the diagram subsystem - Bob
-            } else {
+            if (diagram instanceof UMLDiagram) {
+        	UMLDiagram umlDiagram = (UMLDiagram) diagram;
         	// Set the namespace of the enclosed model element to the
         	// namespace of the encloser.
                 Object namespace = null;
-                UMLDiagram diagram = (UMLDiagram) project.getActiveDiagram();
                 if (newEncloser == null) {
                     // The node's been placed on the diagram
-                    diagram.setModelElementNamespace(getOwner(), null);
+                    umlDiagram.setModelElementNamespace(getOwner(), null);
                 } else { 
                     // The node's been placed within some Fig
                     namespace = newEncloser.getOwner();
                     if (Model.getFacade().isANamespace(namespace)) {
-                        diagram.setModelElementNamespace(getOwner(), namespace);
+                        umlDiagram.setModelElementNamespace(getOwner(), namespace);
                     }
                 }
             }
