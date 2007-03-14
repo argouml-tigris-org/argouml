@@ -65,6 +65,7 @@ import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * The Activity diagram.<p>
@@ -691,5 +692,20 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    }
 	}
     }
+
+    /**
+     * Extends basic functionality to handle logic for enclosement of states
+     * within a swimlane.
+     * @param encloser The encloser (null if none)
+     * @param oldEncloser The previous encloser (null if none)
+     * @param enclosed The FigNode enclosed.
+     */
+    public void figEnclosed(
+	    FigNode encloser, FigNode oldEncloser, FigNode enclosed) {
+	// TODO: Implement enclosement within pool here and determine
+	// which pools are overlapped.
+	super.figEnclosed(encloser, oldEncloser, enclosed);
+    }
+    
 
 } /* end class UMLActivityDiagram */
