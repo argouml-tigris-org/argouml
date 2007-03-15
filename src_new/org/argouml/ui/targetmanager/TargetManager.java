@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2006 The Regents of the University of California. All
+// Copyright (c) 2002-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -396,7 +396,7 @@ public final class TargetManager {
      */
     private boolean inTransaction = false;
 
-    private Action addAttributeAction = new ActionAddAttribute();
+    private ActionAddAttribute addAttributeAction = new ActionAddAttribute();
 
     private Action addOperationAction = new ActionAddOperation();
     
@@ -832,26 +832,6 @@ public final class TargetManager {
 
     private void endTargetTransaction() {
 
-        boolean addAttributeEnabled;
-        if (targets.size() == 1) {
-            Object target = determineModelTarget(targets.get(0));
-            if ((Model.getFacade().isAClass(target)
-                    || Model.getFacade().isAUseCase(target)
-                    || (Model.getFacade().isAFeature(target)
-                        && Model.getFacade().isAClass(
-                            Model.getFacade().getOwner(target)))
-                    || (Model.getFacade().isAFeature(target)
-                        && Model.getFacade().isAUseCase(
-                            Model.getFacade().getOwner(target)))
-                    || Model.getFacade().isAAssociationEnd(target))) {
-                addAttributeEnabled = true;
-            } else {
-                addAttributeEnabled = false;
-            }
-        } else {
-            addAttributeEnabled = false;
-        }
-
         boolean addOperationEnabled;
         if (targets.size() == 1) {
             Object target = determineModelTarget(targets.get(0));
@@ -866,7 +846,7 @@ public final class TargetManager {
             addOperationEnabled = false;
         }
         
-        addAttributeAction.setEnabled(addAttributeEnabled);
+        addAttributeAction.setEnabled(addAttributeAction.shouldBeEnabled());
         addOperationAction.setEnabled(addOperationEnabled);
         deleteAction.setEnabled(isDeleteAllowed());
 
