@@ -36,9 +36,10 @@ import org.argouml.model.Model;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
- * Action to add an attribute to a classifier.<p>
- *
- * @stereotype singleton
+ * Action to add an attribute to a Classifier or AssociationEnd.<p>
+ * 
+ * This class shall be the only one that knows 
+ * when this tool should be downlighted or not.
  */
 class ActionAddAttribute extends UndoableAction {
     /**
@@ -59,13 +60,13 @@ class ActionAddAttribute extends UndoableAction {
 
         super.actionPerformed(ae);
 
-        Object target = TargetManager.getInstance().getModelTarget();
+        Object target = TargetManager.getInstance().getSingleModelTarget();
         Object classifier = null;
 
         if (Model.getFacade().isAClassifier(target)
                 || Model.getFacade().isAAssociationEnd(target)) {
             classifier = target;
-        } else if (Model.getFacade().isAAttribute(target)) {
+        } else if (Model.getFacade().isAFeature(target)) {
             classifier = Model.getFacade().getOwner(target);
         } else {
             return;
@@ -78,6 +79,17 @@ class ActionAddAttribute extends UndoableAction {
                 classifier,
                 attrType);
         TargetManager.getInstance().setTarget(attr);
+    }
+
+    /**
+     * @return true if this tool should be enabled
+     */
+    public boolean shouldBeEnabled() {
+        Object target = TargetManager.getInstance().getSingleModelTarget();
+        if (target == null) return false;
+        return Model.getFacade().isAClassifier(target)
+            || Model.getFacade().isAFeature(target)
+            || Model.getFacade().isAAssociationEnd(target);
     }
 
     /**
