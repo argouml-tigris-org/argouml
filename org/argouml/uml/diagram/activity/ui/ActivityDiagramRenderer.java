@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -71,18 +71,23 @@ public class ActivityDiagramRenderer extends StateDiagramRenderer {
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
             Map styleAttributes) {
+
+        FigNode figNode = null;
+
         if (Model.getFacade().isAPartition(node)) {
-            return new FigPartition(gm, node);
+            figNode = new FigPartition(gm, node);
+        } else if (Model.getFacade().isACallState(node)) {
+            figNode = new FigCallState(gm, node);
+        } else if (Model.getFacade().isAObjectFlowState(node)) {
+            figNode = new FigObjectFlowState(gm, node);
+        } else if (Model.getFacade().isASubactivityState(node)) {
+            figNode = new FigSubactivityState(gm, node);
+        } else {
+            figNode =  super.getFigNodeFor(gm, lay, node, styleAttributes);
+            if (figNode == null) return null;
         }
-        if (Model.getFacade().isACallState(node)) {
-            return new FigCallState(gm, node);
-        }
-        if (Model.getFacade().isAObjectFlowState(node)) {
-            return new FigObjectFlowState(gm, node);
-        }
-        if (Model.getFacade().isASubactivityState(node)) {
-            return new FigSubactivityState(gm, node);
-        }
-        return super.getFigNodeFor(gm, lay, node, styleAttributes);
+
+        lay.add(figNode);
+        return figNode;
     }
 }

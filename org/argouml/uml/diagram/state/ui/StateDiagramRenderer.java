@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -78,54 +78,63 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
                                  Map styleAttributes) {
+
+        FigNode figNode = null;
+
         if (Model.getFacade().isAActionState(node)) {
-            return new FigActionState(gm, node);
+            figNode = new FigActionState(gm, node);
         } else if (Model.getFacade().isAFinalState(node)) {
-            return new FigFinalState(gm, node);
+            figNode = new FigFinalState(gm, node);
         } else if (Model.getFacade().isAStubState(node)) {
-            return new FigStubState(gm, node);
+            figNode = new FigStubState(gm, node);
         } else if (Model.getFacade().isASubmachineState(node)) {
-            return new FigSubmachineState(gm, node);
+            figNode = new FigSubmachineState(gm, node);
         } else if (Model.getFacade().isACompositeState(node)) {
-            return new FigCompositeState(gm, node);
+            figNode = new FigCompositeState(gm, node);
         } else if (Model.getFacade().isASynchState(node)) {
-            return new FigSynchState(gm, node);
+            figNode = new FigSynchState(gm, node);
         } else if (Model.getFacade().isAState(node)) {
-            return new FigSimpleState(gm, node);
+            figNode = new FigSimpleState(gm, node);
         } else if (Model.getFacade().isAComment(node)) {
-            return new FigComment(gm, node);
+            figNode = new FigComment(gm, node);
         } else if (Model.getFacade().isAPseudostate(node)) {
             Object pState = node;
             Object kind = Model.getFacade().getKind(pState);
             if (kind == null) {
+                LOG.warn("found a null type pseudostate");
                 return null;
             }
             if (kind.equals(Model.getPseudostateKind().getInitial())) {
-                return new FigInitialState(gm, node);
+                figNode = new FigInitialState(gm, node);
             } else if (kind.equals(
                     Model.getPseudostateKind().getChoice())) {
-                return new FigBranchState(gm, node);
+                figNode = new FigBranchState(gm, node);
             } else if (kind.equals(
                     Model.getPseudostateKind().getJunction())) {
-                return new FigJunctionState(gm, node);
+                figNode = new FigJunctionState(gm, node);
             } else if (kind.equals(
                     Model.getPseudostateKind().getFork())) {
-                return new FigForkState(gm, node);
+                figNode = new FigForkState(gm, node);
             } else if (kind.equals(
                     Model.getPseudostateKind().getJoin())) {
-                return new FigJoinState(gm, node);
+                figNode = new FigJoinState(gm, node);
             } else if (kind.equals(
                     Model.getPseudostateKind().getShallowHistory())) {
-                return new FigShallowHistoryState(gm, node);
+                figNode = new FigShallowHistoryState(gm, node);
             } else if (kind.equals(
                     Model.getPseudostateKind().getDeepHistory())) {
-                return new FigDeepHistoryState(gm, node);
+                figNode = new FigDeepHistoryState(gm, node);
             } else {
                 LOG.warn("found a type not known");
             }
         }
+        if (figNode == null) {
         LOG.debug("TODO: StateDiagramRenderer getFigNodeFor");
         return null;
+        }
+        
+        lay.add(figNode);
+        return figNode;
     }
 
     /*
@@ -135,16 +144,19 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
             Map styleAttributes) {
-        LOG.debug("making figedge for " + edge);
-        if (Model.getFacade().isATransition(edge)) {
-            FigTransition trFig = new FigTransition(edge, lay);
-            return trFig;
-        } else if (edge instanceof CommentEdge) {
-            return new FigEdgeNote(edge, lay);
-        }
+        FigEdge figEdge = null;
 
-        LOG.debug("TODO: StateDiagramRenderer getFigEdgeFor");
-        return null;
+        if (Model.getFacade().isATransition(edge)) {
+            figEdge = new FigTransition(edge, lay);
+        } else if (edge instanceof CommentEdge) {
+            figEdge = new FigEdgeNote(edge, lay);
+        } else {
+            LOG.debug("TODO: StateDiagramRenderer getFigEdgeFor");
+            return null;
+        }
+        
+        lay.add(figEdge);
+        return figEdge;
     }
 
 

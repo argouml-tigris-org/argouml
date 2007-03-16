@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -71,27 +71,34 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             Layer lay,
             Object node,
             Map styleAttributes) {
+
+        FigNode figNode = null;
+
         if (Model.getFacade().isANode(node)) {
-            return new FigMNode(gm, node);
+            figNode = new FigMNode(gm, node);
         } else if (Model.getFacade().isAAssociation(node)) {
-            return new FigNodeAssociation(gm, node);
+            figNode = new FigNodeAssociation(gm, node);
         } else if (Model.getFacade().isANodeInstance(node)) {
-            return new FigMNodeInstance(gm, node);
+            figNode = new FigMNodeInstance(gm, node);
         } else if (Model.getFacade().isAComponent(node)) {
-            return new FigComponent(gm, node);
+            figNode = new FigComponent(gm, node);
         } else if (Model.getFacade().isAComponentInstance(node)) {
-            return new FigComponentInstance(gm, node);
+            figNode = new FigComponentInstance(gm, node);
         } else if (Model.getFacade().isAClass(node)) {
-            return new FigClass(gm, node);
+            figNode = new FigClass(gm, node);
         } else if (Model.getFacade().isAInterface(node)) {
-            return new FigInterface(gm, node);
+            figNode = new FigInterface(gm, node);
         } else if (Model.getFacade().isAObject(node)) {
-            return new FigObject(gm, node);
+            figNode = new FigObject(gm, node);
         } else if (Model.getFacade().isAComment(node)) {
-            return new FigComment(gm, node);
+            figNode = new FigComment(gm, node);
+        } else {
+            LOG.debug("TODO: DeploymentDiagramRenderer getFigNodeFor");
+            return null;
         }
-        LOG.debug("TODO: DeploymentDiagramRenderer getFigNodeFor");
-        return null;
+
+        lay.add(figNode);
+        return figNode;
     }
 
     /*
@@ -209,6 +216,7 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
         assert (newEdge.getSourcePortFig() != null) 
             : "The FigEdge has no source port";
         
+        lay.add(newEdge);
         return newEdge;
     }
     
