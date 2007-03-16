@@ -93,14 +93,14 @@ The sequence diagrams in ArgoUML are in need of some work.
 </p>
 
 <p>
-What we would like is sequence diagrams that:
+What we would like is sequence diagrams that:</p>
   <ul>
     <li>Work well for common shores</li>
     <li>Allow conversion to/from collaboration diagrams</li>
     <li>Are connected to reverse engineering/code generation</li>
     <li>...?</li>
   </ul>
-</p>
+
 
 <p>
 Developer that knows more about this: Bob Tarling
@@ -118,12 +118,12 @@ a formal definition.
 </p>
 
 <p>
-What we would like is code that allows ArgoUML to:
+What we would like is code that allows ArgoUML to:</p>
   <ul>
     <li>load UML profiles and apply them to the work.</li>
     <li>include the most important existing UML profiles (SysML, BPM, ...).</li>
   </ul>
-This may be one or two projects.
+<p>This may be one or two projects.
 </p>
 
 <p>
@@ -132,6 +132,27 @@ Volunteering mentors for this: Linus Tolke.
 
 </div>
 
+<div class="h2">
+<h2>Create "Critics" for all UML well-formedness rules</h2>
+<p>
+Critics are ArgoUML's system of warnings, 
+i.e. when you break a rule of UML, then a warning will be generated,
+much like warnings and errors used for source code correctness and style.
+</p>
+<p>
+The UML contains the so-called "Well-formedness rules" (WFR),
+written in OCL,
+which specify constraints to the creation of model-elements.
+</p>
+<p>
+ArgoUML currently contains an outdated set of critics, 
+from the days we supported UML 1.3. 
+These need to be updated to the UML 1.4 standard, and completed. 
+</p>
+<p>
+Volunteering mentors for this: Michiel van der Wulp.
+</p>
+</div>
 
 </div> <!-- h1 -->
 
