@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -80,17 +80,22 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay,
 				 Object node, Map styleAttributes) {
-	if (Model.getFacade().isAClassifierRole(node)) {
-	    return new FigClassifierRole(gm, lay, node);
-	}
-	if (Model.getFacade().isAMessage(node)) {
-	    return new FigMessage(gm, lay, node);
-	}
-	if (Model.getFacade().isAComment(node)) {
-            return new FigComment(gm, node);
+
+        FigNode figNode = null;
+
+        if (Model.getFacade().isAClassifierRole(node)) {
+            figNode = new FigClassifierRole(gm, lay, node);
+        } else if (Model.getFacade().isAMessage(node)) {
+            figNode = new FigMessage(gm, lay, node);
+        } else if (Model.getFacade().isAComment(node)) {
+            figNode = new FigComment(gm, node);
+        } else {
+            LOG.debug("TODO: CollabDiagramRenderer getFigNodeFor");
+            return null;
         }
-	LOG.debug("TODO: CollabDiagramRenderer getFigNodeFor");
-	return null;
+        
+        lay.add(figNode);
+        return figNode;
     }
 
     /**
@@ -159,6 +164,7 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
         assert (newEdge.getSourcePortFig() != null) 
             : "The FigEdge has no source port";
         
+        lay.add(newEdge);
         return newEdge;
     }
     

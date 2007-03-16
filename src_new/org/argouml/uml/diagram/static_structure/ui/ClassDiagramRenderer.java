@@ -139,6 +139,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
                     + node.getClass().getName());
         }
 
+        lay.add(figNode);
         figNode.setDiElement(
                 GraphChangeAdapter.getInstance().createElement(gm, node));
 
@@ -291,7 +292,8 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             : "The FigEdge has no source node";
         assert (newEdge.getSourcePortFig() != null) 
             : "The FigEdge has no source port";
-        
+
+        lay.add(newEdge);
         return newEdge;
     }
 

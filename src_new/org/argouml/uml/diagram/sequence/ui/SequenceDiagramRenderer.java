@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,6 +32,7 @@ import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -67,6 +68,8 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
             result = new FigComment(gm, node);
         }
         LOG.debug("SequenceDiagramRenderer getFigNodeFor " + result);
+        
+        lay.add(result);
         return result;
     }
 
@@ -77,10 +80,16 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
 				 Map styleAttributes) {
+        FigEdge figEdge = null;
+
         if (edge instanceof CommentEdge) {
-            return new FigEdgeNote(edge, lay);
+            figEdge = new FigEdgeNote(edge, lay);
+        } else {
+            figEdge = getFigEdgeFor(edge, styleAttributes);
         }
-        return getFigEdgeFor(edge, styleAttributes);
+
+        lay.add(figEdge);
+        return figEdge;
     }
 
     /*
