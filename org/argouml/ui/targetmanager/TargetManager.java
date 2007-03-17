@@ -398,7 +398,7 @@ public final class TargetManager {
 
     private ActionAddAttribute addAttributeAction = new ActionAddAttribute();
 
-    private Action addOperationAction = new ActionAddOperation();
+    private ActionAddOperation addOperationAction = new ActionAddOperation();
     
     private AbstractAction deleteAction = new ActionDeleteModelElements();
 
@@ -831,23 +831,8 @@ public final class TargetManager {
     }
 
     private void endTargetTransaction() {
-
-        boolean addOperationEnabled;
-        if (targets.size() == 1) {
-            Object target = determineModelTarget(targets.get(0));
-            if ((Model.getFacade().isAClassifier(target)
-                    || Model.getFacade().isAFeature(target))
-                    && !Model.getFacade().isASignal(target)) {
-                addOperationEnabled = true;
-            } else {
-                addOperationEnabled = false;
-            }
-        } else {
-            addOperationEnabled = false;
-        }
-        
         addAttributeAction.setEnabled(addAttributeAction.shouldBeEnabled());
-        addOperationAction.setEnabled(addOperationEnabled);
+        addOperationAction.setEnabled(addOperationAction.shouldBeEnabled());
         deleteAction.setEnabled(isDeleteAllowed());
 
         inTransaction = false;
