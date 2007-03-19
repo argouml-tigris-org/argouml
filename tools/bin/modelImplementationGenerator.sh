@@ -38,7 +38,7 @@ miname=`echo $MINAME | tr 'A-Z' 'a-z'`
 fileHeader() {
     cat <<EOF
 // \$Id\$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006, 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -116,19 +116,6 @@ done
 cat >>$FILENAME <<EOF
     public XmiReader getXmiReader() throws UmlException {
         return new XmiReader${MINAME}Impl(this);
-    }
-
-    /**
-     * @param model the project member model
-     * @param writer the writer
-     * @return the object implementing the XmiWriter interface
-     * @throws UmlException if something goes wrong.
-     * @deprecated by Linus Tolke already at implementation.
-     *             Use {@link #getXmiWriter(Object, Writer, String)}.
-     */
-    public XmiWriter getXmiWriter(Object model, Writer writer)
-        throws UmlException {
-        throw new UmlException("Never implemented since it is deprecated.");
     }
 
     public XmiWriter getXmiWriter(Object model, Writer writer, String version)
