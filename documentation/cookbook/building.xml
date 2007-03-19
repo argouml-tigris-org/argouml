@@ -1669,6 +1669,45 @@ If any of these instructions don't work or could be improved in some way,
 please help in making them better by contacting the editor of the Cookbook.
 </para>
 
+    <sect2 id="eclipse-setup-summary">
+      <title>Basic ideas of the set up</title>
+      <para>
+This is a terse list of some ideas on the Eclipse set up.
+</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Argouml in its own workspace</para>
+        </listitem>
+
+        <listitem>
+          <para>
+No project-specific settings (compiler, JRE, style),
+instead workspace-specific settings.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Compile time dependencies are set up on the Java Build Path.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Run time dependencies are set up in the Configurations.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Configurations saved in the project where they "belong".
+</para>
+        </listitem>
+
+      </itemizedlist>
+    </sect2>
+
     <sect2 id="eclipse-checkout">
       <title>Checking out through Eclipse</title>
       <para>
