@@ -8,6 +8,20 @@
 # you will have to create a whole lot of methods to fulfil the interfaces.
 # Eclipse can help you create those. Eclipse will also help you create
 # the needed import statements if you need those.
+#
+# How to run:
+# $ mkdir -p org/argouml/model/yourmodelname
+# $ cd org/argouml/model/yourmodelname
+# $ /where/ever/argouml/tools/bin/modelImplementationGenerator.sh YourModelName
+# Open this package in your Eclipse, preferably in a separate project.
+# Configure the project to include the project argouml-core-model in
+# Project tab in the Java Build Path.
+# Open each file with Eclipse and run "Organize Imports" (Ctrl-Shift-O) and
+# Add unimplemented methods.
+#
+# Now you have an empty model implementation with the name you have chosen.
+# You can then start to fill in the specifics for your implementation.
+
 
 MINAME=$1
 
