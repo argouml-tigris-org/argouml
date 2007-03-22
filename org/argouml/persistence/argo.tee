@@ -31,6 +31,7 @@
   </documentation>
   <settings>
     <notationlanguage><ocl>self.projectSettings.notationLanguage</ocl></notationlanguage>
+    <showboldnames><ocl>self.projectSettings.showBoldNames</ocl></showboldnames>
     <useguillemots><ocl>self.projectSettings.useGuillemots</ocl></useguillemots>
     <showvisibility><ocl>self.projectSettings.showVisibility</ocl></showvisibility>
     <showmultiplicity><ocl>self.projectSettings.showMultiplicity</ocl></showmultiplicity>
