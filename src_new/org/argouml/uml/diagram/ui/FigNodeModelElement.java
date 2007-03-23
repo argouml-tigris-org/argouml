@@ -1344,7 +1344,7 @@ public abstract class FigNodeModelElement
 
         Object modelElement = getOwner();
         stereotypeFig.setOwner(modelElement);
-        }
+    }
 
     /**
      * Updates the text of the name FigText.
