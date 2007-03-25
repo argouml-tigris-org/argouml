@@ -27,6 +27,7 @@ package org.argouml.uml.reveng;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.StringTokenizer;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
@@ -46,22 +47,48 @@ import org.argouml.i18n.Translator;
 public class ConfigPanelExtension extends JPanel {
 
     /**
-     * Key for RE general settings: level of import detail. Values:
-     * 0: classifiers only
-     * 1: classifiers plus feature specifications
-     * 2: full import
+     * Key for RE extended settings: model attributes as:
+     * 0: attibutes
+     * 1: associations
      */
     public static final ConfigurationKey KEY_IMPORT_EXTENDED_MODEL_ATTR =
         Configuration.makeKey("import", "extended", "java", "model", "attributes");
 
     /**
-     * Key for RE general settings: level of import detail. Values:
-     * 0: classifiers only
-     * 1: classifiers plus feature specifications
-     * 2: full import
+     * Key for RE extended settings: model arrays as:
+     * 0: datatype
+     * 1: associations
      */
     public static final ConfigurationKey KEY_IMPORT_EXTENDED_MODEL_ARRAYS =
         Configuration.makeKey("import", "extended", "java", "model", "arrays");
+
+    /**
+     * Key for RE extended settings: flag for modelling of listed collections,
+     * if to model them as associations with multiplicity *.
+     */
+    public static final ConfigurationKey KEY_IMPORT_EXTENDED_COLLECTIONS_FLAG =
+        Configuration.makeKey("import", "extended", "java", "collections", "flag");
+
+    /**
+     * Key for RE extended settings: list of collections, that will be modelled
+     * as associations with multiplicity *.
+     */
+    public static final ConfigurationKey KEY_IMPORT_EXTENDED_COLLECTIONS_LIST =
+        Configuration.makeKey("import", "extended", "java", "collections", "list");
+
+    /**
+     * Key for RE extended settings: flag for modelling of listed collections,
+     * if to model them as ordered associations with multiplicity *.
+     */
+    public static final ConfigurationKey KEY_IMPORT_EXTENDED_ORDEREDCOLLS_FLAG =
+        Configuration.makeKey("import", "extended", "java", "orderedcolls", "flag");
+
+    /**
+     * Key for RE extended settings: list of collections, that will be modelled
+     * as ordered associations with multiplicity *.
+     */
+    public static final ConfigurationKey KEY_IMPORT_EXTENDED_ORDEREDCOLLS_LIST =
+        Configuration.makeKey("import", "extended", "java", "orderedcolls", "list");
 
     private JPanel configPanel;
 
@@ -135,13 +162,16 @@ public class ConfigPanelExtension extends JPanel {
             datatype.setSelected(true);
         }
 
+        String s = Configuration.getString(KEY_IMPORT_EXTENDED_COLLECTIONS_FLAG);
+        boolean flag = ("true".equals(s));
         modelcollections =
             new JCheckBox(Translator.localize(
-                    "action.import-option-model-collections"), false);
+                    "action.import-option-model-collections"), flag);
         configPanel.add(modelcollections,
                 createGridBagConstraints(true, false, false));
 
-        collectionlist = new JTextField();
+        s = Configuration.getString(KEY_IMPORT_EXTENDED_COLLECTIONS_LIST);
+        collectionlist = new JTextField(s);
         configPanel.add(collectionlist,
                 createGridBagConstraints(false, false, true));
         JLabel listLabel =
@@ -150,13 +180,16 @@ public class ConfigPanelExtension extends JPanel {
         configPanel.add(listLabel,
                 createGridBagConstraints(false, true, false));
 
+        s = Configuration.getString(KEY_IMPORT_EXTENDED_ORDEREDCOLLS_FLAG);
+        flag = ("true".equals(s));
         modelorderedcollections =
             new JCheckBox(Translator.localize(
-                    "action.import-option-model-ordered-collections"), false);
+                    "action.import-option-model-ordered-collections"), flag);
         configPanel.add(modelorderedcollections,
                 createGridBagConstraints(true, false, false));
 
-        orderedcollectionlist = new JTextField();
+        s = Configuration.getString(KEY_IMPORT_EXTENDED_ORDEREDCOLLS_LIST);
+        orderedcollectionlist = new JTextField(s);
         configPanel.add(orderedcollectionlist,
                 createGridBagConstraints(false, false, true));
         listLabel =
@@ -175,7 +208,8 @@ public class ConfigPanelExtension extends JPanel {
      * 
      * @param topInset true to use a top inset 
      * @param bottomInset true to use a bottom inset
-     * @return
+     * @param fill true to fill (horizontally)
+     * @return the grid bag constraints
      */
     private GridBagConstraints createGridBagConstraints(boolean topInset,
             boolean bottomInset, boolean fill) {
@@ -229,5 +263,13 @@ public class ConfigPanelExtension extends JPanel {
                 String.valueOf(getAttribute().isSelected() ? "0" : "1"));
         Configuration.setString(KEY_IMPORT_EXTENDED_MODEL_ARRAYS,
                 String.valueOf(getDatatype().isSelected() ? "0" : "1"));
+        Configuration.setString(KEY_IMPORT_EXTENDED_COLLECTIONS_FLAG,
+                String.valueOf(modelcollections.isSelected()));
+        Configuration.setString(KEY_IMPORT_EXTENDED_COLLECTIONS_LIST,
+                String.valueOf(collectionlist.getText()));
+        Configuration.setString(KEY_IMPORT_EXTENDED_ORDEREDCOLLS_FLAG,
+                String.valueOf(modelorderedcollections.isSelected()));
+        Configuration.setString(KEY_IMPORT_EXTENDED_ORDEREDCOLLS_LIST,
+                String.valueOf(orderedcollectionlist.getText()));
     }
 }
