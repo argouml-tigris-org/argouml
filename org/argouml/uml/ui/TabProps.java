@@ -113,6 +113,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelComment;
 import org.argouml.uml.ui.foundation.core.PropPanelComponent;
 import org.argouml.uml.ui.foundation.core.PropPanelDataType;
 import org.argouml.uml.ui.foundation.core.PropPanelDependency;
+import org.argouml.uml.ui.foundation.core.PropPanelElementResidence;
 import org.argouml.uml.ui.foundation.core.PropPanelEnumeration;
 import org.argouml.uml.ui.foundation.core.PropPanelEnumerationLiteral;
 import org.argouml.uml.ui.foundation.core.PropPanelFlow;
@@ -410,6 +411,8 @@ public class TabProps
             propPanel = new PropPanelDestroyAction();
         } else if (Model.getFacade().isAEnumerationLiteral(modelElement)) {
             propPanel = new PropPanelEnumerationLiteral();
+        } else if (Model.getFacade().isAElementResidence(modelElement)) {
+            propPanel = new PropPanelElementResidence();
         } else if (Model.getFacade().isAExtend(modelElement)) {
             propPanel = new PropPanelExtend();
         } else if (Model.getFacade().isAException(modelElement)) {
