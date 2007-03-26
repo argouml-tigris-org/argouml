@@ -10,7 +10,8 @@
 <H1>ArgoUML in Google's Summer Of Code 2007</H1>
 
 <p>
-The ArgoUML project is approved for participation in the
+The ArgoUML project has been approved for participation in its
+second
 <a href="http://code.google.com/soc/">Google Summer of Code</a>
 during 2007.
 </p>
@@ -28,14 +29,85 @@ and
 </p>
 
 <div class="h2">
-<h2>The suggested list of projects</h2>
+<h2>Project Suggestions</h2>
 <p>
 Don't let this list limit your choices.
 We are happy to consider other projects!
 See the 
 <a href="#looked_for_projects">general notes on what projects we are
-looking for</a>.
+looking for</a>.  For a list of the top vote getting requests in the 
+Issue database, use 
+<a href="http://argouml.tigris.org/issues/buglist.cgi?resort=1&issue_status=NEW;issue_status=STARTED;issue_status=REOPENED;votes=1;Submit%20query=Submit%20query&order=issues.votes%20desc%2C%20issues.votes">
+this query</a>.
+
 </p>
+
+<!-- *Suggestion template*
+<div class="h3">
+<h3>Suggestion Title</h3>
+<p>
+Summary description of suggestion.
+</p>
+
+<p>
+More details on suggestion:
+</p>
+  <ul>
+    <li>List of things...</li>
+  </ul>
+
+
+<p>
+Developer Contact: 
+</p>
+</div>
+* End Suggestion Template* -->
+
+<div class="h3">
+<h3><a name="linked_models">Support Linked Sub-Models</a></h3>
+
+<p>Enhance ArgoUML to support creating, reading, and maintaining
+links between sub-models stored in separate XMI files and/or
+ArgoUML project files.</p>
+
+<p>This is the second most requested enhancement in ArgoUML.  See
+<a href="http://argouml.tigris.org/issues/show_bug.cgi?id=3497">
+this issue</a> for more discusion.  Functionality is required
+to create links between pieces of a model, split a single model
+into pieces, merge the pieces back together, etc.</p>
+
+<p>
+Developer Contact: Tom Morris
+</p>
+</div>
+
+<div class="h3">
+<h3>Improve Profile Support</h3>
+
+<p>Improve support of modeling profiles in ArgoUML to allow more
+flexibility, better reuse, and an improved user experience.</p>
+
+<p>ArgoUML currently has only very limited support for user selectable
+profiles.  Modeling profiles are useful to provide a standard set
+of Stereotypes, Tag Definitions, etc which are tailored to a particular
+modeling environment.  An example is the AndroMDA profile which is
+used when creating models targeted for that MDA framework.</p>
+
+<p>Currently the standard ArgoUML profile is a mix of UML 1.4 standard
+elements and Java elements.  These should really be separated so that
+the user can select either or both.  Additionally the current implementation
+uses a copy-on-reference strategy whereby model elements are copied from
+the profile into the user model, losing all reference back to the providing
+profile.  Ideally the external link capability described in the 
+<a href="#linked_models">project suggestion above</a> should be used
+to both maintain a reference to the profile and allow profiles to be
+created which are composed of other sub-profiles (e.g. UML 1.4 + Java +
+project specific profile or UML 1.4 + C#).</p>
+
+<p>
+Developer Contact: Tom Morris
+</p>
+</div>
 
 <div class="h3">
 <h3>Improve the Sequence Diagrams</h3>
@@ -46,15 +118,16 @@ The sequence diagrams in ArgoUML are in need of some work.
 <p>
 What we would like is sequence diagrams that:</p>
   <ul>
-    <li>Work well for common shores</li>
+    <li>Work well for common tasks</li>
     <li>Allow conversion to/from collaboration diagrams</li>
-    <li>Are connected to reverse engineering/code generation</li>
+    <li>Are supported for reverse engineering and/or code generation
+    (this may be a big enough task to be project in its own right)</li>
     <li>...?</li>
   </ul>
 
 
 <p>
-Developer that knows more about this: Bob Tarling
+Developer who knows more about this: Bob Tarling
 </p>
 
 </div>
