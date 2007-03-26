@@ -293,8 +293,7 @@ class PGMLStackParser
      * @param d the Diagram
      */
     private void attachEdges(Diagram d) {
-        for (Iterator it = figEdges.iterator();
-                it.hasNext(); ) {
+        for (Iterator it = figEdges.iterator(); it.hasNext(); ) {
             EdgeData edgeData = (EdgeData) it.next();
             FigEdge edge = edgeData.getFigEdge();
             
@@ -302,6 +301,11 @@ class PGMLStackParser
             if (modelElement != null) {
                 edge.setOwner(modelElement);
             }
+        }
+        
+        for (Iterator it = figEdges.iterator(); it.hasNext(); ) {
+            EdgeData edgeData = (EdgeData) it.next();
+            FigEdge edge = edgeData.getFigEdge();
             
             Fig sourcePortFig = null;
             Fig destPortFig = null;
