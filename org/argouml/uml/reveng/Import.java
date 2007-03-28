@@ -345,7 +345,7 @@ public class Import extends ImportCommon implements ImportSettings {
             } else if ("1".equals(detaillevel)) {
                 classAndFeatures.setSelected(true);
             } else {
-                fullImport.setSelected(true);
+            fullImport.setSelected(true);
             }
             detailButtonGroup.add(fullImport);
 
@@ -633,6 +633,9 @@ public class Import extends ImportCommon implements ImportSettings {
                 Globals.setLastDirectory(path);
                 if (filename != null) {
                     theImport.disposeDialog();
+                    // TODO: This is only relevant for Java import
+                    // move out of normal control flow.  The OK button of this
+                    // dialog transfers to Import.doFile
                     new ImportClasspathDialog(theImport);
                     return;
                 }
