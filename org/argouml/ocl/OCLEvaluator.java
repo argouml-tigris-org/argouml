@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -69,19 +69,22 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
             }
         }
         if (GET_OWNER_EXPR.equals(expr) && Model.getFacade().isAFeature(self)) {
-            res = Model.getFacade().getName(self);
-            if (res == null || "".equals(res)) {
-                res = Translator.localize("misc.name.anon");
+            Object owner = Model.getFacade().getOwner(self);
+            if (owner != null) {
+                res = Model.getFacade().getName(owner);
+                if (res == null || "".equals(res)) {
+                    res = Translator.localize("misc.name.anon");
+                }
             }
         }
         if (GET_NAME_EXPR_1.equals(expr) && self instanceof Diagram) {
-            res = Model.getFacade().getName(self);
+            res = ((Diagram) self).getName();
             if (res == null || "".equals(res)) {
                 res = Translator.localize("misc.name.anon");
             }
         }
         if (GET_NAME_EXPR_2.equals(expr) && self instanceof Diagram) {
-            res = Model.getFacade().getName(self);
+            res = ((Diagram) self).getName();
             if (res == null || "".equals(res)) {
                 res = Translator.localize("misc.name.anon");
             }
