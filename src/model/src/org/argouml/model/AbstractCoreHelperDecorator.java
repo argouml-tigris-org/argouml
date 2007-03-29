@@ -300,6 +300,14 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.removeTargetFlow(handle, flow);
     }
 
+    public void removeTemplateArgument(Object handle, Object argument) {
+        impl.removeTemplateArgument(handle, argument);
+    }
+    
+    public void removeTemplateParameter(Object handle, Object parameter) {
+        impl.removeTemplateParameter(handle, parameter);
+    }
+
     public void addAnnotatedElement(Object comment, Object annotatedElement) {
         impl.addAnnotatedElement(comment, annotatedElement);
     }
@@ -400,6 +408,23 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.addTargetFlow(handle, flow);
     }
 
+    public void addTemplateArgument(Object handle, int index, Object argument) {
+        impl.addTemplateArgument(handle, index, argument);
+    }
+
+    public void addTemplateArgument(Object handle, Object argument) {
+        impl.addTemplateArgument(handle, argument);
+    }
+
+    public void addTemplateParameter(Object handle, int index, 
+            Object parameter) {
+        impl.addTemplateParameter(handle, index, parameter);
+    }
+
+    public void addTemplateParameter(Object handle, Object parameter) {
+        impl.addTemplateParameter(handle, parameter);
+    }
+
     public void setAnnotatedElements(Object handle, Collection elems) {
         impl.setAnnotatedElements(handle, elems);
     }
@@ -424,6 +449,10 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.setConnections(handle, elems);
     }
 
+    public void setDefaultElement(Object handle, Object element) {
+        impl.setDefaultElement(handle, element);
+    }
+    
     public void setDefaultValue(Object handle, Object expr) {
         impl.setDefaultValue(handle, expr);
     }
@@ -462,6 +491,10 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
 
     public void setOwnerScope(Object handle, Object os) {
         impl.setOwnerScope(handle, os);
+    }
+
+    public void setParameter(Object handle, Object parameter) {
+        impl.setParameter(handle, parameter);
     }
 
     public void setParameters(Object handle, Collection parameters) {

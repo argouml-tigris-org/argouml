@@ -24,6 +24,8 @@
 
 package org.argouml.model;
 
+import java.util.List;
+
 
 /**
  * The interface to the factory for the Core.
@@ -653,6 +655,20 @@ public interface CoreFactory extends Factory {
     Object buildRealization(Object clnt, Object spplr, Object model);
 
     /**
+     * Build a TemplateArgument which has the given element as its modelElement.
+     * <p>
+     * <em>NOTE:</em> Although it's not shown in the UML 1.4 spec, a
+     * TemplateArgument is a value (like MultiplicityRange), not a ModelElement
+     * and can not be reused in multiple instances. The UML diagrams don't show
+     * it as a composition, but it effectively is.
+     * 
+     * @param element
+     *            ModelElement to be used as argument
+     * @return newly created TemplateArgument
+     */
+    Object buildTemplateArgument(Object element);
+    
+    /**
      * Builds a usage between some client and a supplier. If client
      * and supplier do not have the same model, an
      * {@link IllegalArgumentException} is thrown.
@@ -694,6 +710,23 @@ public interface CoreFactory extends Factory {
      * @return constraint
      */
     Object buildConstraint(String name, Object bexpr);
+    
+    /**
+     * Build binding between a supplier templated element and its parameterized client
+     * using the given list or arguments to fill the template.
+     * 
+     * @param client
+     *            ModelElement to become client. A given ModelElement may only
+     *            participate as a client in a single Binding.
+     * @param supplier
+     *            template ModelElement to be parameterized
+     * @param arguments
+     *            list of argument used to fill the parameters. Number, order,
+     *            and type must match those of the TemplateParameters for the
+     *            supplier.  A null may be passed to not create arguments at build time.
+     * @return the newly created Binding
+     */
+    Object buildBinding(Object client, Object supplier, List arguments);
 
     /**
      * Copies a class, and it's features. This may also require other

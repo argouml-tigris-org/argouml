@@ -298,7 +298,7 @@ public interface CoreHelper {
      * classifier (have an association relationship with the
      * classifier).<p>
      *
-     * @param aclassifier an MClassifier
+     * @param aclassifier an Classifier
      * @return Collection
      */
     Collection getAssociatedClassifiers(Object aclassifier);
@@ -572,6 +572,22 @@ public interface CoreHelper {
     void removeTargetFlow(Object handle, Object flow);
 
     /**
+     * This method removes a TemplateArgument from a Binding.
+     *
+     * @param handle The Binding.
+     * @param argument The argument.
+     */
+    void removeTemplateArgument(Object handle, Object argument);
+    
+    /**
+     * This method removes a Template{arameter from a ModelElement.
+     *
+     * @param handle The element.
+     * @param parameter The parameter.
+     */
+    void removeTemplateParameter(Object handle, Object parameter);
+    
+    /**
      * Adds an annotated element to a comment.
      *
      * @param comment The comment to which the element is annotated
@@ -692,7 +708,7 @@ public interface CoreHelper {
      * Add a Parameter to the given object at given location.
      *
      * @param handle The object that will get the Parameter:
-     *               MEvent, MBehavioralFeature.
+     *               Event, BehavioralFeature.
      * @param index the location
      * @param parameter Object that will be added
      */
@@ -702,7 +718,7 @@ public interface CoreHelper {
      * Add a Parameter to the given object.
      *
      * @param handle The object that will get the Parameter:
-     *               MObjectFlowState, MEvent, MBehavioralFeature, MClassifier.
+     *               ObjectFlowState, Event, BehavioralFeature, Classifier.
      * @param parameter Object that will be added
      */
     void addParameter(Object handle, Object parameter);
@@ -765,6 +781,40 @@ public interface CoreHelper {
      */
     void addTargetFlow(Object handle, Object flow);
 
+    /**
+     * Add a TemplateArgument to the given object at given location.
+     *
+     * @param handle The object that will get the TemplateParameter
+     * @param index the location
+     * @param argument Object that will be added
+     */
+    void addTemplateArgument(Object handle, int index, Object argument);
+
+    /**
+     * Add a TemplateArgument to the given object.
+     *
+     * @param handle The object that will get the TemplateArgumnet
+     * @param argument Object that will be added
+     */
+    void addTemplateArgument(Object handle, Object argument);
+    
+    /**
+     * Add a TemplateParameter to the given object at given location.
+     *
+     * @param handle The object that will get the TemplateParameter
+     * @param index the location
+     * @param parameter Object that will be added
+     */
+    void addTemplateParameter(Object handle, int index, Object parameter);
+
+    /**
+     * Add a TemplateTParameter to the given object.
+     *
+     * @param handle The object that will get the TemplateParameter
+     * @param parameter Object that will be added
+     */
+    void addTemplateParameter(Object handle, Object parameter);
+    
     /**
      * Sets if of some model element is abstract.
      *
@@ -871,6 +921,14 @@ public interface CoreHelper {
      */
     void setConnections(Object handle, Collection elems);
 
+    /**
+     * Sets the default ModelEelement of a TemplateParameter.
+     *
+     * @param handle is the TemplateParameter
+     * @param element is the default ModelElement or null
+     */
+    void setDefaultElement(Object handle, Object element);
+    
     /**
      * Sets a default value of some parameter.
      *
@@ -1015,6 +1073,15 @@ public interface CoreHelper {
      * @param os ScopeKind
      */
     void setOwnerScope(Object handle, Object os);
+
+
+    /**
+     * Sets the parameter of a TemplateParameter
+     * 
+     * @param handle the TemplateParameter
+     * @param parameter the dummy ModelElement to be used as the parameter
+     */
+    void setParameter(Object handle, Object parameter);
 
     /**
      * Sets the parameters of a classifier, event, objectflowstate or

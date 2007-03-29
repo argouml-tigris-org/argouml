@@ -1691,10 +1691,15 @@ public interface Facade {
     Object getModel(Object handle);
 
     /**
-     * Get the ModelElement which is the importElement of
-     * an ElementImport or the modelElement of a TaggedValue.
+     * Get the ModelElement which one of:
+     * <ul>
+     * <li>the importElement of an ElementImport </li>
+     * <li>the modelElement of a TaggedValue</li>
+     * <li>the modelElement of a TemplateParameter</li>
+     * <ul>
      * 
-     * @param handle an Element Import or TaggedValue.
+     * @param handle
+     *            an Element Import or TaggedValue.
      * @return the model element
      */
     Object getModelElement(Object handle);
@@ -2152,6 +2157,16 @@ public interface Facade {
     Object getPackage(Object handle);
 
     /**
+     * Get the parameter of a TemplateParameter.
+     * 
+     * @param handle
+     *            the TemplateParameter
+     * @return parameter the ModelElement which provides the type and other info
+     *         for the given parameter.
+     */
+    Object getParameter(Object handle);
+    
+    /**
      * Get a specific parameter of a Behavioral Feature or Event.
      *
      * @param handle behavioral feature to retrieve from
@@ -2475,6 +2490,43 @@ public interface Facade {
      * @return a collection of targetflows
      */
     Collection getTargetFlows(Object handle);
+    
+    /**
+     * Get the list of TemplateParameter for a ModelElement that is parameterized.
+     * 
+     * @param handle the ModelElement
+     * @return a list of TemplateParameters
+     */
+    List getTemplateParameters(Object handle);
+    
+    /**
+     * Return the defaultElement for a TemplateParameter.
+     * @param handle the TemplateParameter
+     * @return the default ModelElement or null
+     */
+    Object getDefaultElement(Object handle);
+    
+    /**
+     * Return the ModelElement that owns a TemplateParameter
+     * @param handle the TemplateParameter
+     * @return the containing ModelElement or null if none
+     */
+    Object getTemplate(Object handle);
+    
+    /**
+     * Return the Binding associated with a TemplateArgument
+     * @param handle the TemplateArgument
+     * @return the Binding
+     */
+    Object getBinding(Object handle);
+
+    /**
+     * Get the list of TemplateArguments associated with a Binding.
+     * 
+     * @param handle the binding
+     * @return the list of TemplateArguments
+     */
+    List getArguments(Object handle);
 
     /**
      * Returns the upper bound of the multiplicity of the given element
