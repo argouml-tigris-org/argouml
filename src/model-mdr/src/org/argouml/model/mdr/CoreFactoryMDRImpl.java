@@ -181,7 +181,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return assoc;
     }
 
-    /**
+    /*
      * @return an initialized UML AssociationClass instance.
      */
     public Object createAssociationClass() {
@@ -1218,9 +1218,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return buildParameter(o, type);
     }
     
-    /*
-     * @see org.argouml.model.CoreFactory#buildParameter(java.lang.Object, java.lang.Object)
-     */
+
     public Object buildParameter(Object o, Object type) {
         if (o instanceof Event) {
             Event event = (Event) o;
@@ -1239,10 +1237,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildRealization(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
+
     public Object buildRealization(Object clnt, Object spplr, Object model) {
         ModelElement client = (ModelElement) clnt;
         ModelElement supplier = (ModelElement) spplr;
@@ -1268,10 +1263,14 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return realization;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildUsage(java.lang.Object,
-     *      java.lang.Object)
-     */
+
+    public Object buildTemplateArgument(Object element) {
+        TemplateArgument ta = (TemplateArgument) createTemplateArgument();
+        ta.setModelElement((ModelElement) element);
+        return ta;
+    }
+    
+
     public Object buildUsage(Object client, Object supplier) {
         if (client == null || supplier == null) {
             throw new IllegalArgumentException("In buildUsage null arguments.");
@@ -1350,6 +1349,54 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         con.setBody((BooleanExpression) bexpr);
         return con;
     }
+    
+
+    public Object buildBinding(Object client, Object supplier, List arguments) {
+        Collection clientDeps = ((ModelElement) client).getClientDependency();
+        for (Iterator it = clientDeps.iterator(); it.hasNext();) {
+            Object dep = it.next();
+            if (dep instanceof Binding) {
+                throw new IllegalArgumentException(
+                        "client is already client of another Binding");
+            }
+        }
+        
+        // Check arguments against parameters for type and number
+        // TODO: Perhaps move this to a critic instead? - tfm - 20070326
+        if (arguments != null) {
+            Collection params = 
+                ((ModelElement) supplier).getTemplateParameter();
+            if (params.size() != arguments.size()) {
+                throw new IllegalArgumentException(
+                        "number of arguments doesn't match number of params");
+            }
+            Iterator ita = arguments.iterator();
+            for (Iterator itp = params.iterator(); itp.hasNext();) {
+                TemplateParameter param = (TemplateParameter) itp.next();
+                TemplateArgument ta = (TemplateArgument) ita.next();
+                // TODO: Before allowing this, we should really check that 
+                // TemplateParameter.defaultElement is defined
+                if (ta == null || ta.getModelElement() == null) {
+                    continue;
+                }
+                if (!(param.getParameter().getClass().equals(
+                        ta.getModelElement().getClass()))) {
+                    throw new IllegalArgumentException(
+                            "type of argument doesn't match type of parameter");
+                }
+            }
+        }
+        
+        Binding binding = (Binding) createBinding();
+        binding.getClient().add(client);
+        binding.getSupplier().add(supplier);
+        if (arguments != null) {
+            binding.getArgument().addAll(arguments);
+        }
+
+        return binding;
+    }
+
 
     /**
      * @param elem
