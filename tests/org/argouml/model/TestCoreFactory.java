@@ -24,7 +24,10 @@
 
 package org.argouml.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 import junit.framework.TestCase;
@@ -71,6 +74,7 @@ public class TestCoreFactory extends TestCase {
 	"PresentationElement",
 	"Relationship",
 	"StructuralFeature",
+        "TemplateArgument",
 	"TemplateParameter",
 	"Usage",
     };
@@ -107,7 +111,6 @@ public class TestCoreFactory extends TestCase {
     	// Event.
         // UML 1.4 changes Instance and State to be abstract also.
 
-        // TODO: createAbstraction is not part of Model interface
 	objs.add("Abstraction");
 	//Association are abstract metaclass but we return an UmlAssociation
 	//from the createAssociation method of the CoreFactory interface
@@ -131,6 +134,7 @@ public class TestCoreFactory extends TestCase {
 	objs.add("Operation");
 	objs.add("Parameter");
 	objs.add("Permission");
+        objs.add("TemplateArgument");
 	objs.add("TemplateParameter");
 	objs.add("Usage");
 
@@ -393,6 +397,163 @@ public class TestCoreFactory extends TestCase {
         Model.getPump().flushModelEvents();
 	assertNotNull("Namespace is not set", Model.getFacade().getNamespace(
                 con));
+    }
+
+    /**
+     * Test building a template ModelElement.
+     */
+    public void testBuildTemplate() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object templatedClass = Model.getCoreFactory().buildClass("Template", model);
+
+        Object parameterizedClass = Model.getCoreFactory().buildClass(
+                "ParameterizedClass", model);
+        assertNotNull("Failed to create Class", parameterizedClass);
+        Object binding = Model.getCoreFactory().buildBinding(
+                parameterizedClass, templatedClass, null);
+        assertNotNull("Failed to create build Binding with null arg list",
+                binding);        
+        
+        Object paramType1 = Model.getCoreFactory().buildClass("ParamType1");
+        Object paramType2 = Model.getCoreFactory().buildInterface("ParamType2");
+        Object paramType3 = Model.getCoreFactory().buildClass("ParamType3");
+        
+        Object param1 = Model.getCoreFactory().createTemplateParameter();
+        assertNotNull("Failed to create Template Parameter", param1);
+        Object param2 = Model.getCoreFactory().createTemplateParameter();
+        Object param3 = Model.getCoreFactory().createTemplateParameter();
+        
+        Model.getCoreHelper().setParameter(param1, paramType1);
+        assertEquals("Parameters don't match", paramType1, 
+                Model.getFacade().getParameter(param1));
+        Model.getCoreHelper().setParameter(param2, paramType2);
+        Model.getCoreHelper().setParameter(param3, paramType3);
+        
+        Object default1 = Model.getCoreFactory().buildClass("Default1");
+        Object default2 = Model.getCoreFactory().buildInterface("Default2");
+        Object default3 = Model.getCoreFactory().buildClass("Default3");
+        
+        Model.getCoreHelper().setDefaultElement(param1, default1);
+        assertEquals("Default element doesn't match", default1, 
+                Model.getFacade().getDefaultElement(param1));
+        Model.getCoreHelper().setDefaultElement(param2, default2);
+        Model.getCoreHelper().setDefaultElement(param3, default3);
+        
+        Model.getCoreHelper().addTemplateParameter(templatedClass, param2);
+        Model.getCoreHelper().addTemplateParameter(templatedClass, param3);
+        Model.getCoreHelper().addTemplateParameter(templatedClass, 0, param1);
+        
+        List params = new ArrayList();
+        params.add(param1);
+        params.add(param2);
+        params.add(param3);
+
+        assertEquals("TemplateParameter list is wrong", params,
+                Model.getFacade().getTemplateParameters(templatedClass));
+        
+        Model.getCoreHelper().removeTemplateParameter(templatedClass, param2);
+        params.remove(1);
+        assertEquals("removeTemplateParameter gave wrong result", params,
+                Model.getFacade().getTemplateParameters(templatedClass));
+
+        Model.getCoreHelper().addTemplateParameter(templatedClass, 1, param2);
+        params.add(1, param2);
+        assertEquals("addTemplateParameter in middle gave wrong result",
+                params, Model.getFacade().getTemplateParameters(templatedClass));
+
+        Object arg1 = Model.getCoreFactory().buildClass("Arg1");
+        Object arg2 = Model.getCoreFactory().buildInterface("Arg2");
+        Object arg3 = Model.getCoreFactory().buildClass("Arg3");
+        
+        Object ta1 =  Model.getCoreFactory().buildTemplateArgument(arg1);
+        assertNotNull("buildTemplateArgument produced null result", ta1);
+        assertEquals("model element of template argument doesn't match", 
+                arg1, Model.getFacade().getModelElement(ta1));
+        Object ta2 =  Model.getCoreFactory().buildTemplateArgument(arg2);
+        Object ta3 =  Model.getCoreFactory().buildTemplateArgument(arg3);
+
+        Model.getCoreHelper().addTemplateArgument(binding, ta2);
+        Model.getCoreHelper().addTemplateArgument(binding, ta3);
+        Model.getCoreHelper().addTemplateArgument(binding, 0, ta1);
+        
+        List args = new ArrayList();
+        args.add(ta1);
+        args.add(ta2);
+        args.add(ta3);
+        assertEquals("Binding arguments don't match", args, 
+                Model.getFacade().getArguments(binding));
+        
+        Model.getCoreHelper().removeTemplateArgument(binding, ta2);
+        args.remove(ta2);
+        assertEquals("Binding arguments don't match", args, 
+                Model.getFacade().getArguments(binding));
+        
+        Model.getCoreHelper().addTemplateArgument(binding, 1, ta2);
+        args.add(1, ta2);
+        assertEquals("Binding arguments don't match", args, 
+                Model.getFacade().getArguments(binding));
+        
+        // A parameterized class can only be the client of a single binding
+        try {
+            Object binding2 = Model.getCoreFactory().buildBinding(parameterizedClass,
+                    Model.getCoreFactory().buildClass("Template2", model), null);
+            fail("Attempt to create 2nd binding for a client didn't fail as expected.");
+        } catch (IllegalArgumentException e) {
+            // exception expected - test success
+        }
+
+        // Create a different client to bind to the same supplier
+        Object parameterizedClass2 = Model.getCoreFactory().buildClass(
+                "ParameterizedClass2", model);
+        
+        args.remove(0);
+        try {
+            Object binding2 = Model.getCoreFactory().buildBinding(
+                    parameterizedClass2, templatedClass, args);
+            fail("Expected exception for mismatched number of args & params");
+        } catch (IllegalArgumentException e) {
+            // expected - test success
+        }
+
+        args.add(arg1);
+        try {
+            Object binding2 = Model.getCoreFactory().buildBinding(
+                    parameterizedClass2, templatedClass, args);
+            fail("Expected exception for mismatched type/order of args & params");
+        } catch (IllegalArgumentException e) {
+            // expected - test success
+        }
+
+        // Create a new arg list with a different set of args (but same types)
+        args.clear();
+        // NOTE: Although it's not shown in the UML 1.4 spec, a TemplateArgument
+        // appears to be a datavalue (like MultiplicityRange) and can not be
+        // reused in multiple instances.  The UML diagrams don't show it as a
+        // composition, but it effectively is.
+        ta1 = Model.getCoreFactory().buildTemplateArgument(
+                Model.getCoreFactory().buildClass("ta1a"));
+        ta2 = Model.getCoreFactory().buildTemplateArgument(
+                Model.getCoreFactory().buildInterface("ta2a"));
+        ta3 = Model.getCoreFactory().buildTemplateArgument(
+                Model.getCoreFactory().buildClass("ta3a"));
+        args.add(ta1);
+        args.add(ta2);
+        args.add(ta3);
+        Object binding2 = Model.getCoreFactory().buildBinding(
+                parameterizedClass2, templatedClass, args);
+        assertNotNull("Failed to create 2nd binding to same template", binding2);
+        assertEquals("Binding arguments don't match", args, 
+                Model.getFacade().getArguments(binding2));
+        
+        Collection deps = Model.getFacade().getClientDependencies(parameterizedClass2);
+        assertEquals(1, deps.size());
+        Object dep = deps.iterator().next();
+        assertEquals(binding2, dep);
+        Collection suppliers =  Model.getFacade().getSuppliers(dep);
+        assertEquals(1, suppliers.size());
+        Collection clients =  Model.getFacade().getClients(dep);
+        assertEquals(1, clients.size());
+        assertEquals(templatedClass, suppliers.iterator().next());
     }
 
     /**
