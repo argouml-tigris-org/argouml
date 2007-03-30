@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,14 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.OneRowLinkedList;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -35,29 +41,82 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelElementResidence extends PropPanelModelElement {
 
-	/**
-	 * Construct a property panel for a ElementResidence.
-	 */
-	public PropPanelElementResidence() {
-	       super("ElementResidence", ConfigLoader.getTabPropsOrientation());
+    /**
+     * Construct a property panel for a ElementResidence.
+     */
+    public PropPanelElementResidence() {
+        super("ElementResidence", ConfigLoader.getTabPropsOrientation());
 
-	        addField(Translator.localize("label.name"),
-	                getNameTextField());
+         // This is not a ModelElement, hence none of the following:
+//      addField(Translator.localize("label.name"),
+//      getNameTextField());
+//      add(getNamespaceVisibilityPanel());
+//      addSeparator();
 
-	        add(getNamespaceVisibilityPanel());
-	        
-	        addSeparator();
-	        
-//	        JList lst1 = new OneRowLinkedList(new ElementResidenceContainerListModel());
-//	        addField(Translator.localize("label.container"),
-//	                new JScrollPane(lst1));
-//
-//	        JList lst2 = new OneRowLinkedList(new ElementResidenceResidentListModel());
-//	        addField(Translator.localize("label.resident"),
-//	                new JScrollPane(lst2));
+        JList lst1 = new OneRowLinkedList(
+                new ElementResidenceContainerListModel());
+        addField(Translator.localize("label.container"),
+                new JScrollPane(lst1));
 
-	        addAction(new ActionNavigateContainerElement());
-	        addAction(getDeleteAction());
-	}
+        JList lst2 = new OneRowLinkedList(
+                new ElementResidenceResidentListModel());
+        addField(Translator.localize("label.resident"),
+                new JScrollPane(lst2));
 
+        addAction(new ActionNavigateContainerElement());
+        addAction(getDeleteAction());
+    }
+
+}
+
+/**
+ * The list model for the container of a ElementResidence.
+ *
+ * @author mvw
+ */
+class ElementResidenceContainerListModel extends UMLModelElementListModel2 {
+
+    /**
+     * Constructor for ElementResidenceContainerListModel.
+     */
+    public ElementResidenceContainerListModel() {
+        super("container");
+    }
+
+    protected void buildModelList() {
+        if (getTarget() != null) {
+            removeAllElements();
+            addElement(Model.getFacade().getContainer(getTarget()));
+        }
+    }
+
+    protected boolean isValidElement(Object element) {
+        return Model.getFacade().isAElementResidence(getTarget());
+    }
+}
+
+/**
+ * The list model for the resident of a ElementResidence of a diagram.
+ *
+ * @author mvw
+ */
+class ElementResidenceResidentListModel extends UMLModelElementListModel2 {
+
+    /**
+     * Constructor for ElementResidenceResidentListModel.
+     */
+    public ElementResidenceResidentListModel() {
+        super("resident");
+    }
+
+    protected void buildModelList() {
+        if (getTarget() != null) {
+            removeAllElements();
+            addElement(Model.getFacade().getResident(getTarget()));
+        }
+    }
+
+    protected boolean isValidElement(Object element) {
+        return Model.getFacade().isAElementResidence(getTarget());
+    }
 }
