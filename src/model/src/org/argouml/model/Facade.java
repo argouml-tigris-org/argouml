@@ -913,6 +913,19 @@ public interface Facade {
     boolean isATimeEvent(Object handle);
 
     /**
+     * Recognizer for any UML object known. <p>
+     * 
+     * About the name for this operation: 
+     * In UML 2, the Element is 
+     * the common superclass for all metaclasses 
+     * in the infrastructure library.
+     *  
+     * @param handle the UML object
+     * @return true if the given object is a UML object
+     */
+    public boolean isAUMLElement(Object handle);
+
+    /**
      * Recognizer for UninterpretedAction.
      *
      * @param handle candidate
