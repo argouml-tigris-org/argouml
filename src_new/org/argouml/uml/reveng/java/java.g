@@ -204,8 +204,12 @@ import java.util.*;
  *    o Removed all AST stuff
  *    o Added a lot of stuff for the UML Modeller
  *    o Not passing typeArguments and typeParameters to the Modeller (don't how they map to UML)
- *    o Not passing enumDefinition and annotationDefinition to the Modeller (TODO)
- *    o Not passing variableLengthParameterDeclaration to the Modeller (don't how they map to UML)
+ *
+ * Modified by Tom Morris (March 29, 2007)
+ *    o Added support for enums
+ *    o Added support to pass variableLengthParameterDeclaration to Modeller
+ *    o Added stubs for typeParameters, typeArguments, annotations and
+ *      annotationDefinitions and so we can warn when they're skipped.
  *
  * This grammar is in the PUBLIC DOMAIN
  * </pre>
@@ -541,46 +545,50 @@ classTypeSpec returns [String type=null]
 classOrInterfaceType returns [String type=null]
     {StringBuffer sb = new StringBuffer();
      String name = null;
-     String gtype = null;}
-    :    t1:IDENT {name = t1.getText();} (gtype=typeArguments)?
+     Vector ta = null;}
+    :    t1:IDENT {name = t1.getText();} (ta=typeArguments)?
         {sb.append(name);}
         (options{greedy=true;}: // match as many as possible
             DOT
-            t3:IDENT {sb.append('.').append(t3.getText());} (gtype=typeArguments)?
+            t3:IDENT {sb.append('.').append(t3.getText());} 
+            (ta=typeArguments)?
         )*
-        {type = gtype == null ? sb.toString() : gtype;}
+        {type = sb.toString();}
     ;
 
 // A specialised form of typeSpec where built in types must be arrays
 typeArgumentSpec returns [String type=null]
     :    type=classTypeSpec
-    |    builtInTypeArraySpec
+    |    type=builtInTypeArraySpec
     ;
 
 // A generic type argument is a class type, a possibly bounded wildcard type or a built-in type array
 typeArgument returns [String type=null]
-    :    (    type=typeArgumentSpec
-        |    wildcardType
+    :    (   type=typeArgumentSpec
+        |    type=wildcardType
         )
     ;
 
 // Wildcard type indicating all types (with possible constraint)
-wildcardType
-    :    QUESTION
-        (("extends" | "super")=> typeArgumentBounds)?
+wildcardType returns [String type=null]
+{StringBuffer sb = new StringBuffer();}
+    :    QUESTION {sb.append("? ");}
+        (("extends" {sb.append("extends ");}
+          | "super" {sb.append("super ");})
+         => typeArgumentBounds)?
     ;
 
 // Type arguments to a class or interface type
-typeArguments returns [String gtype=null]
+typeArguments returns [Vector names = new Vector()]
 {int currentLtLevel = 0;
- String t = null;}
+ String n = null;}
     :
         {currentLtLevel = ltCounter;}
         LT {ltCounter++;}
-        t=typeArgument {if (t != null) gtype = t + "[]";}
+        n=typeArgument {names.addElement(n);}
         (options{greedy=true;}: // match as many as possible
             {inputState.guessing !=0 || ltCounter == currentLtLevel + 1}?
-            COMMA! t=typeArgument {if (t != null) gtype = t + "[]";}
+            COMMA! n=typeArgument {names.addElement(n);}
         )*
 
         (    // turn warning off since Antlr generates the right code,
@@ -603,16 +611,19 @@ protected typeArgumentsOrParametersEnd
     ;
 
 // Restriction on wildcard types based on super class or derrived class
-typeArgumentBounds
+typeArgumentBounds returns [String tab=null]
+{String t=null;}
     :
-        ( "extends" | "super" ) classOrInterfaceType
+        ( "extends" {tab += "extends ";} 
+        | "super"   {tab += "super ";})
+         t=classOrInterfaceType {tab += t;}
     ;
 
 // A builtin type array specification is a builtin type with brackets afterwards
-builtInTypeArraySpec
-    :    builtInType
+builtInTypeArraySpec returns [String type=null]
+    :    type=builtInType
         (options{greedy=true;}: // match as many as possible
-            LBRACK RBRACK
+            LBRACK RBRACK {type += "[]";}
         )+
     ;
 
@@ -696,7 +707,10 @@ modifier returns [short mod_flag = 0]
     ;
 
 annotation
-    :    AT identifier ( LPAREN ( annotationArguments )? RPAREN )?
+    {String n = null;}
+    :    AT n=identifier {getModeller().addAnnotation(n);}
+        ( LPAREN ( annotationArguments )? RPAREN )?
+        {getModeller().endAnnotation();}
     ;
 
 annotations
@@ -704,15 +718,14 @@ annotations
     ;
 
 annotationArguments
-    :    annotationMemberValueInitializer | anntotationMemberValuePairs
+    :    annotationMemberValueInitializer | annotationMemberValuePairs
     ;
 
-anntotationMemberValuePairs
+annotationMemberValuePairs
     :    annotationMemberValuePair ( COMMA annotationMemberValuePair )*
     ;
 
-// TODO: unused ident
-annotationMemberValuePair
+annotationMemberValuePair returns [Vector amps = new Vector();]
     :    IDENT ASSIGN annotationMemberValueInitializer
     ;
 
@@ -754,18 +767,18 @@ superClassClause returns [String superClassName = null]
 
 // Definition of a Java class
 classDefinition[String javadoc, short modifiers]
-{String superClassName = null; Vector ic = null;}
+{String superClassName = null; Vector ic = null; Vector tparam=null;}
     :    "class" className:IDENT
         // it _might_ have type paramaters
-        (typeParameters)?
+        (tparam=typeParameters)?
         // it _might_ have a superclass...
         superClassName=superClassClause
         // it might implement some interfaces...
         ic=implementsClause
         {
         if (!isInCompoundStatement()) {
-            getModeller().addClass(className.getText(), modifiers, superClassName, ic, javadoc,
-                (parserMode == MODE_IMPORT_PASS2));
+            getModeller().addClass(className.getText(), modifiers, tparam,  
+                superClassName, ic, javadoc, (parserMode == MODE_IMPORT_PASS2));
         }
         }
         // now parse the body of the class
@@ -779,14 +792,14 @@ classDefinition[String javadoc, short modifiers]
 
 // Definition of a Java Interface
 interfaceDefinition[String javadoc, short modifiers]
-{Vector ie=null;}
+{Vector ie=null;Vector tparam=null;}
     :    "interface" interfaceName:IDENT
         // it _might_ have type paramaters
-        (tp:typeParameters)?
+        (tparam=typeParameters)?
         // it might extend some other interfaces
         ie=interfaceExtends
                 {getModeller().addInterface(interfaceName.getText(), modifiers,
-ie, javadoc, (parserMode == MODE_IMPORT_PASS2));}
+                     tparam, ie, javadoc, (parserMode == MODE_IMPORT_PASS2));}
         // now parse the body of the interface (looks like a class...)
         interfaceBlock
                 {getModeller().popClassifier();}
@@ -796,32 +809,36 @@ enumDefinition[String javadoc, short modifiers]
 {Vector ic=null;}
     :    "enum" enumName:IDENT
         // it might implement some interfaces...
-        implementsClause
-                ic=implementsClause
+        ic=implementsClause
         {
         if (!isInCompoundStatement()) {
             getModeller().addEnumeration(enumName.getText(), modifiers, ic, javadoc,
                 (parserMode == MODE_IMPORT_PASS2));
-        }
+            }
         }
         // now parse the body of the enum
         enumBlock
-               {getModeller().popClassifier();}
+        {getModeller().popClassifier();}
     ;
 
-// TODO: Unimplemented annotation definition
 annotationDefinition[String javadoc, short modifiers]
-    :    AT "interface" annotationName:IDENT
+    :    AT "interface" name:IDENT
+        {    getModeller().addAnnotationDefinition(name.getText(), 
+                    modifiers, javadoc, (parserMode == MODE_IMPORT_PASS2));
+        }
         // now parse the body of the annotation
         annotationBlock
+        // TODO: need a popClassifier or perhaps endAnnotationDefinintion here
     ;
 
-typeParameters
-{int currentLtLevel = 0;}
+typeParameters returns [Vector names = new Vector()]
+{int currentLtLevel = 0; String n=null;}
     :
-        {currentLtLevel = ltCounter;}
+        {currentLtLevel = ltCounter;
+        getModeller().addTypeParameters();}
         LT {ltCounter++;}
-        typeParameter (COMMA typeParameter)*
+        n=typeParameter {names.addElement(n);}
+        (COMMA n=typeParameter)* {names.addElement(n);}
         (typeArgumentsOrParametersEnd)?
 
         // make sure we have gobbled up enough '>' characters
@@ -829,17 +846,24 @@ typeParameters
         {(currentLtLevel != 0) || ltCounter == currentLtLevel}?
     ;
 
-// TODO: unused ident - generic type 
-typeParameter
+typeParameter returns [String type=null]
+    {StringBuffer sb = new StringBuffer();
+    String name=null;}
     :
         // I'm pretty sure Antlr generates the right thing here:
-        (IDENT) ( options{generateAmbigWarnings=false;}: typeParameterBounds )?
+        (t:IDENT) {sb.append(t.getText());}
+        ( options{generateAmbigWarnings=false;}: name=typeParameterBounds
+        {sb.append(name);}
+        )?
     ;
 
-typeParameterBounds
+typeParameterBounds returns [String type=null]
+    {StringBuffer sb = new StringBuffer();
+    String name=null;}
     :
-        "extends" classOrInterfaceType
-        (BAND classOrInterfaceType)*
+        "extends" name=classOrInterfaceType 
+        {sb.append(" extends ").append(name);}
+        (BAND name=classOrInterfaceType {sb.append("&").append(name);})*
     ;
 
 // This is the body of a class. You can have classFields and extra semicolons.
@@ -900,12 +924,11 @@ enumConstant
     :    annotations
         enumConstantName:IDENT
         {
-            if (parserMode == MODE_IMPORT_PASS2) {
-                getModeller().addEnumerationLiteral(enumConstantName.getText());
-            }
+            getModeller().addEnumerationLiteral(enumConstantName.getText());
         }
         (    LPAREN
         // TODO: How do we model an enum constants argument?
+        // EnterpriseArchitect appears to put it in a tagged value
             argList
             RPAREN
         )?
@@ -922,7 +945,7 @@ enumConstantBlock
 //An enum constant field is just like a class field but without
 //the posibility of a constructor definition or a static initializer
 enumConstantField
-{short mods=0; String t=null; Vector param=null; String a=null;
+{short mods=0; String t=null; Vector param=null; String a=null; Vector tparam=null;
  boolean isOutestCompStat = !isInCompoundStatement();}
     :    mods=modifiers
         (    typeDefinitionInternal[mods]
@@ -930,9 +953,8 @@ enumConstantField
         |    // A generic method has the typeParameters before the return type.
             // This is not allowed for variable definitions, but this production
             // allows it, a semantic check could be used if you wanted.
-            (typeParameters)? t=typeSpec        // method or variable declaration(s)
-            // TODO: unused ident - enumeration method
-            (    IDENT                                    // the name of the method
+            (tparam=typeParameters)? t=typeSpec  // method or variable declaration(s)
+            (    name:IDENT                                    // the name of the method
 
                 // parse the formal parameter declarations.
                 LPAREN param=parameterDeclarationList RPAREN
@@ -944,6 +966,13 @@ enumConstantField
                 (throwsClause)?
 
                 ( compoundStatement | SEMI )
+                {if (isOutestCompStat && level > 0) {
+                     setMethod(getModeller().addOperation(mods, tparam, t, name.getText(), param, getJavadocComment(),
+                         (parserMode == MODE_IMPORT_PASS2)));
+                     getModeller().addBodyToOperation(getMethod(), level>1?getBody():"");
+                     setMethod(null);
+                     setBody(null);
+                }}
             |    variableDefinitions[getJavadocComment(), mods, t] SEMI
             )
         )
@@ -973,13 +1002,13 @@ implementsClause returns [Vector names=new Vector()]
 
 // Now the various things that can be defined inside a class
 classField
-{short mods=0; String t=null; Vector param=null; String a=null;
+{short mods=0; String t=null; Vector param=null; String a=null; Vector tparam=null;
  boolean isOutestCompStat = !isInCompoundStatement();}
     :    // method, constructor, or variable declaration
         mods=modifiers
         (    typeDefinitionInternal[mods]
 
-        |    (typeParameters)?
+        |    (tparam=typeParameters)?
             (
                 ctorHead[mods] constructorBody // constructor
                 {if (isOutestCompStat && level > 0) {
@@ -1005,7 +1034,8 @@ classField
 
                         ( compoundStatement | SEMI )
                         {if (isOutestCompStat && level > 0) {
-                             setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment(),
+                             setMethod(getModeller().addOperation(mods, tparam, t,
+                                  name.getText(), param, getJavadocComment(),
                                  (parserMode == MODE_IMPORT_PASS2)));
                              getModeller().addBodyToOperation(getMethod(), level>1?getBody():"");
                              setMethod(null);
@@ -1025,13 +1055,13 @@ classField
 
 // Now the various things that can be defined inside a interface
 interfaceField
-{short mods=0; String t=null; Vector param=null; String a=null;
+{short mods=0; String t=null; Vector param=null; String a=null; Vector tparam=null;
  boolean isOutestCompStat = !isInCompoundStatement();}
     :    // method, constructor, or variable declaration
         mods=modifiers
         (    typeDefinitionInternal[mods]
 
-        |    (typeParameters)?
+        |    (tparam=typeParameters)?
             // A generic method has the typeParameters before the return type.
             // This is not allowed for variable definitions, but this production
             // allows it, a semantic check could be used if you want a more strict
@@ -1050,7 +1080,8 @@ interfaceField
 
                 SEMI
                 {if (isOutestCompStat && level > 0) {
-                     setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment(),
+                     setMethod(getModeller().addOperation(mods, tparam, t, 
+                         name.getText(), param, getJavadocComment(),
                          (parserMode == MODE_IMPORT_PASS2)));
                      setMethod(null);
                 }}
@@ -1176,8 +1207,8 @@ ctorHead[ short mods]
         LPAREN param=parameterDeclarationList RPAREN
 
         {if (isOutestCompStat && level > 0) {
-           setMethod(getModeller().addOperation(mods, null, 
-            name.getText(), param, getJavadocComment(), (parserMode == MODE_IMPORT_PASS2)));
+           setMethod(getModeller().addOperation(mods, new Vector(), null, 
+            name.getText(), param,  getJavadocComment(), (parserMode == MODE_IMPORT_PASS2)));
          }}
         // get the list of exceptions that this method is declared to throw
         (throwsClause)?
@@ -1213,10 +1244,13 @@ parameterDeclaration returns [Vector pd=new Vector()]
           pd.add(id.getText());}
     ;
 
-// TODO: unused ident
-variableLengthParameterDeclaration
-    :    parameterModifier typeSpec TRIPLE_DOT IDENT
-        declaratorBrackets
+variableLengthParameterDeclaration returns [Vector pd=new Vector()]
+{short pm=0; String ts=null; String pdb=null;}
+    :    pm=parameterModifier ts=typeSpec TRIPLE_DOT id:IDENT
+        pdb=declaratorBrackets
+        { pd.add(new Short(pm));
+          pd.add(ts + "..." + pdb); // interpretation handled by Modeller
+          pd.add(id.getText());}
     ;
 
 parameterModifier returns [short mods=0;]
@@ -1265,7 +1299,7 @@ statement
     // side-effects.
     |    expression SEMI
 
-    //TODO: what abour interfaces, enums and annotations
+    //TODO: what about interfaces, enums and annotations
     // class definition
     |    m=modifiers classDefinition["", m]
 
@@ -1587,7 +1621,8 @@ unaryExpressionNotPlusMinus
 // qualified names, array expressions, method invocation, post inc/dec
 postfixExpression
 { String thisOrSuper = null;
-  boolean parenths = LA(1) == LPAREN; }
+  boolean parenths = LA(1) == LPAREN;
+  Vector ta=null; }
     :
         primaryExpression
         (
@@ -1610,7 +1645,7 @@ postfixExpression
                 }
               }
             }
-            DOT (typeArguments)?
+            DOT (ta=typeArguments)?
                 (    id:IDENT
                     (    LPAREN
                         argList
@@ -1623,7 +1658,7 @@ postfixExpression
                 |    "super"
                     (    // (new Outer()).super() (create enclosing instance)
                         LPAREN argList RPAREN
-                    |    DOT (typeArguments)? IDENT
+                    |    DOT (ta=typeArguments)? IDENT
                         (    LPAREN
                             argList
                             RPAREN
@@ -1668,8 +1703,8 @@ primaryExpression
  *  this or super.
  */
 identPrimary
-{ StringBuffer sb = null; }
-    :    (typeArguments)?
+{ StringBuffer sb = null; Vector ta=null;}
+    :    (ta=typeArguments)?
         id:IDENT
         { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
             sb = new StringBuffer(id.getText());
@@ -1691,8 +1726,8 @@ identPrimary
             // The problem is that this loop here conflicts with
             // DOT typeArguments "super" in postfixExpression (k=2)
             // A proper solution would require a lot of refactoring...
-        :    (DOT (typeArguments)? IDENT) =>
-                DOT (typeArguments)? id2:IDENT
+        :    (DOT (ta=typeArguments)? IDENT) =>
+                DOT (ta=typeArguments)? id2:IDENT
                 { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
                     sb.append('.').append(id2.getText());
                   }
@@ -1775,8 +1810,8 @@ identPrimary
  *
  */
 newExpression
-    {String t = null;}
-    :    "new" (typeArguments)? t=type
+    {String t = null; Vector ta=null;}
+    :    "new" (ta=typeArguments)? t=type
         (    LPAREN argList RPAREN
             { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
                 StringBuffer sb = new StringBuffer();
