@@ -348,11 +348,8 @@ public class Modeller {
      */
     void addImport(String name, boolean forceIt) {
         // only do imports on the 2nd pass.
-        Object level = this.getAttribute("level");
-        if (level != null) {
-            if (level.equals(new Integer(0))) {
-                return;
-            }
+        if (getLevel() == 0) {
+            return;
         }
 
 	String packageName = getPackageName(name);
@@ -443,8 +440,6 @@ public class Modeller {
                     Model.getCoreHelper().setName(perm, newName);
                 }
 	    }
-
-
 	}
     }
 
@@ -466,8 +461,8 @@ public class Modeller {
                          String superclassName,
                          Vector interfaces,
                          String javadoc) {
-        // TODO: Won't this cause an infinite recursion? - tfm - 20070305
-        addClass(name, modifiers, superclassName, interfaces, javadoc);
+        addClass(name, modifiers, new Vector(), superclassName, interfaces,
+                javadoc, false);
     }
 
     /**
@@ -486,13 +481,18 @@ public class Modeller {
      */
     void addClass(String name,
                          short modifiers,
+                         Vector typeParameters,
                          String superclassName,
                          Vector interfaces,
                          String javadoc,
                          boolean forceIt) {
+        if (typeParameters != null && typeParameters.size() > 0) {
+            logError("type parameters not supported on Class", 
+                    name);
+        }
         Object mClass =
 	    addClassifier(Model.getCoreFactory().createClass(),
-			  name, modifiers, javadoc);
+			  name, modifiers, javadoc, typeParameters);
 
         Model.getCoreHelper().setAbstract(
                 mClass,
@@ -503,11 +503,8 @@ public class Modeller {
         Model.getCoreHelper().setRoot(mClass, false);
 
         // only do generalizations and realizations on the 2nd pass.
-        Object level = this.getAttribute("level");
-        if (level != null) {
-            if (level.equals(new Integer(0))) {
-                return;
-            }
+        if (getLevel() == 0) {
+            return;
         }
 
 	if (superclassName != null) {
@@ -537,52 +534,7 @@ public class Modeller {
 	}
 
 	if (interfaces != null) {
-	    for (Iterator i = interfaces.iterator(); i.hasNext();) {
-		String interfaceName = (String) i.next();
-                Object mInterface = null;
-		try {
-                    mInterface =
-			getContext(interfaceName)
-			    .getInterface(getClassifierName(interfaceName));
-                } catch (ClassifierNotFoundException e) {
-                    if (forceIt && interfaceName != null && model != null) {
-                        LOG.info("Modeller.java: " 
-                                + "forced creation of unknown interface "
-                                + interfaceName);
-                        String packageName = getPackageName(interfaceName);
-                        String classifierName =
-                                getClassifierName(interfaceName);
-                        Object mPackage = 
-                            (packageName.length() > 0) 
-                                        ? getPackage(packageName)
-                                        : model;
-                        mInterface =
-                                Model.getCoreFactory().buildInterface(
-                                        classifierName, mPackage);
-                    } else {
-                        warnClassifierNotFound(interfaceName, e,
-                                "an abstraction");
-                    }
-                }
-                // TODO: This should use the Model API's buildAbstraction - tfm
-                if (mInterface != null) {
-		    Object mAbstraction =
-			getAbstraction(mInterface, mClass);
-		    if (Model.getFacade().getSuppliers(mAbstraction).size()
-		            == 0) {
-			Model.getCoreHelper().addSupplier(
-			        mAbstraction,
-			        mInterface);
-			Model.getCoreHelper().addClient(mAbstraction, mClass);
-		    }
-		    Model.getCoreHelper().setNamespace(
-		            mAbstraction,
-		            currentPackage);
-		    Model.getCoreHelper().addStereotype(
-		            mAbstraction,
-		            getStereotype(CoreFactory.REALIZE_STEREOTYPE));
-		}
-	    }
+	    addInterfaces(mClass, interfaces, forceIt);
 	}
     }
 
@@ -611,32 +563,42 @@ public class Modeller {
             }
             addClass(name,
 		     (short) 0,
+                     new Vector(),
 		     Model.getFacade().isAClass(mClassifier) ? type : null,
 		     interfaces,
 		     "",
                      forceIt);
         } catch (ClassifierNotFoundException e) {
             // Must add it anyway, or the class popping will mismatch.
-            addClass(name, (short) 0, null, new Vector(), "", forceIt);
+            addClass(name, (short) 0, new Vector(), null, new Vector(), "",
+                    forceIt);
             LOG.info("Modeller.java: an anonymous class was created "
 		     + "although it could not be found in the classpath.");
         }
     }
 
     /**
-     * Called from the parser when an interface declaration is found.
-     *
-     * @param name The name of the interface.
-     * @param modifiers A sequence of interface modifiers.
-     * @param interfaces Zero or more strings with the names of extended
-     * interfaces. Can be fully qualified or just a simple interface name.
-     * @param javadoc The javadoc comment. "" if no comment available.
-    */
+     * Add an Interface to the model.
+     * 
+     * TODO: This method preserves the historical public API which is used by
+     * other reverse engineering modules such as the Classfile module. This
+     * really needs to be decoupled.
+     * 
+     * @param name
+     *            The name of the interface.
+     * @param modifiers
+     *            A sequence of interface modifiers.
+     * @param interfaces
+     *            Zero or more strings with the names of extended interfaces.
+     *            Can be fully qualified or just a simple interface name.
+     * @param javadoc
+     *            The javadoc comment. "" if no comment available.
+     */
     public void addInterface(String name,
                              short modifiers,
                              Vector interfaces,
                              String javadoc) {
-        addInterface(name, modifiers, interfaces, javadoc);
+        addInterface(name, modifiers, new Vector(), interfaces, javadoc, false);
     }
     
     /**
@@ -651,21 +613,24 @@ public class Modeller {
      */
     void addInterface(String name,
                              short modifiers,
+                             Vector typeParameters,
                              Vector interfaces,
                              String javadoc,
                              boolean forceIt) {
+        if (typeParameters != null && typeParameters.size() > 0) {
+            logError("type parameters not supported on Interface", 
+                    name);
+        }
         Object mInterface =
 	    addClassifier(Model.getCoreFactory().createInterface(),
 			  name,
 			  modifiers,
-			  javadoc);
+			  javadoc,
+                          typeParameters);
 
         // only do generalizations and realizations on the 2nd pass.
-        Object level = this.getAttribute("level");
-        if (level != null) {
-            if (level.equals(new Integer(0))) {
-                return;
-            }
+        if (getLevel() == 0) {
+            return;
         }
 
         for (Iterator i = interfaces.iterator(); i.hasNext();) {
@@ -715,94 +680,167 @@ public class Modeller {
                          String javadoc,
                          boolean forceIt) {
         Object mClass =
-            addClassifier(Model.getCoreFactory().createEnumeration(),
-                          name, modifiers, javadoc);
+            addClassifier(Model.getCoreFactory().createClass(),
+                          name, modifiers, javadoc, 
+                          new Vector()); // no type params for now
+        
+        Model.getCoreHelper().addStereotype(
+                mClass,
+                getStereotype("enumeration"));
 
-        Model.getCoreHelper().setAbstract(
-                mClass,
-                (modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
-        Model.getCoreHelper().setLeaf(
-                mClass,
-                (modifiers & JavaRecognizer.ACC_FINAL) > 0);
+        if ((modifiers & JavaRecognizer.ACC_ABSTRACT) > 0) {
+            // abstract enums are illegal in Java
+            logError("Illegal \"abstract\" modifier on enum ", name);
+        } else {
+            Model.getCoreHelper().setAbstract(mClass, false);
+        }
+        if ((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
+            // it's an error to explicitly use the 'final' keyword for an enum
+            // declaration
+            logError("Illegal \"final\" modifier on enum ", name);
+        } else {
+            // enums are implicitly final unless they contain a class body
+            // (which we won't know until we process the constants
+            Model.getCoreHelper().setLeaf(mClass, true);
+        }
         Model.getCoreHelper().setRoot(mClass, false);
 
         // only do realizations on the 2nd pass.
-        Object level = this.getAttribute("level");
-        if (level != null) {
-            if (level.equals(new Integer(0))) {
-                return;
-            }
+        if (getLevel() == 0) {
+            return;
         }
 
-
         if (interfaces != null) {
-            for (Iterator i = interfaces.iterator(); i.hasNext();) {
-                String interfaceName = (String) i.next();
-                Object mInterface = null;
-                try {
+            addInterfaces(mClass, interfaces, forceIt);
+        }
+    }
+
+    /**
+     * @param mClass
+     * @param interfaces
+     * @param forceIt
+     */
+    private void addInterfaces(Object mClass, Vector interfaces, 
+            boolean forceIt) {
+        for (Iterator i = interfaces.iterator(); i.hasNext();) {
+            String interfaceName = (String) i.next();
+            Object mInterface = null;
+            try {
+                mInterface =
+                    getContext(interfaceName)
+                        .getInterface(getClassifierName(interfaceName));
+            } catch (ClassifierNotFoundException e) {
+                if (forceIt && interfaceName != null && model != null) {
+                    LOG.info("Modeller.java: " 
+                            + "forced creation of unknown interface "
+                            + interfaceName);
+                    String packageName = getPackageName(interfaceName);
+                    String classifierName =
+                            getClassifierName(interfaceName);
+                    Object mPackage = 
+                        (packageName.length() > 0) 
+                                    ? getPackage(packageName)
+                                    : model;
                     mInterface =
-                        getContext(interfaceName)
-                            .getInterface(getClassifierName(interfaceName));
-                } catch (ClassifierNotFoundException e) {
-                    if (forceIt && interfaceName != null && model != null) {
-                        LOG.info("Modeller.java: " 
-                                + "forced creation of unknown interface "
-                                + interfaceName);
-                        String packageName = getPackageName(interfaceName);
-                        String classifierName =
-                                getClassifierName(interfaceName);
-                        Object mPackage = 
-                            (packageName.length() > 0) 
-                                        ? getPackage(packageName)
-                                        : model;
-                        mInterface =
-                                Model.getCoreFactory().buildInterface(
-                                        classifierName, mPackage);
-                    } else {
-                        warnClassifierNotFound(interfaceName, e,
-                                "an abstraction");
-                    }
+                            Model.getCoreFactory().buildInterface(
+                                    classifierName, mPackage);
+                } else {
+                    warnClassifierNotFound(interfaceName, e,
+                            "an abstraction");
                 }
-                // TODO: This should use the Model API's buildAbstraction - tfm
-                if (mInterface != null) {
-                    Object mAbstraction =
-                        getAbstraction(mInterface, mClass);
-                    if (Model.getFacade().getSuppliers(mAbstraction).size()
-                            == 0) {
-                        Model.getCoreHelper().addSupplier(
-                                mAbstraction,
-                                mInterface);
-                        Model.getCoreHelper().addClient(mAbstraction, mClass);
-                    }
-                    Model.getCoreHelper().setNamespace(
+            }
+            // TODO: This should use the Model API's buildAbstraction - tfm
+            if (mInterface != null) {
+                Object mAbstraction =
+                    getAbstraction(mInterface, mClass);
+                if (Model.getFacade().getSuppliers(mAbstraction).size()
+                        == 0) {
+                    Model.getCoreHelper().addSupplier(
                             mAbstraction,
-                            currentPackage);
-                    Model.getCoreHelper().addStereotype(
-                            mAbstraction,
-                            getStereotype(CoreFactory.REALIZE_STEREOTYPE));
+                            mInterface);
+                    Model.getCoreHelper().addClient(mAbstraction, mClass);
                 }
+                Model.getCoreHelper().setNamespace(
+                        mAbstraction,
+                        currentPackage);
+                Model.getCoreHelper().addStereotype(
+                        mAbstraction,
+                        getStereotype(CoreFactory.REALIZE_STEREOTYPE));
             }
         }
     }
-    
+
     /**
      * Called from the parser when an enumeration literal is found.
      *
      * @param name The name of the enumerationLiteral.
      */
     void addEnumerationLiteral(String name) {
-        Object enumerationLiteral = Model.getCoreFactory()
-                .createEnumerationLiteral();
-        Model.getCoreHelper().setName(enumerationLiteral, name);
         Object enumeration = parseState.getClassifier();
-        if (!Model.getFacade().isAEnumeration(enumeration)) {
-            throw new RuntimeException(
-                    "Unexpected parser state - not an Enumeration");
+        if (!isAEnumeration(enumeration)) {
+            throw new ParseStateException("not an Enumeration");
         }
-        int index = 
-            Model.getFacade().getEnumerationLiterals(enumeration).size();
-        Model.getCoreHelper()
-                .addLiteral(enumeration, index, enumerationLiteral);
+
+        short mod = JavaRecognizer.ACC_PUBLIC | JavaRecognizer.ACC_FINAL
+                | JavaRecognizer.ACC_STATIC;
+        
+        addAttribute(mod, null, name, null, null, true);
+        
+        // add an <<enum>> stereotype to distinguish it from fields
+        // in the class  body?    
+    }
+    
+    /*
+     * Recognizer for enumeration.  In our world an enumeration
+     * is a Class with the <<enumeration>> stereotype applied. 
+     */
+    private boolean isAEnumeration(Object element) {
+        if (!Model.getFacade().isAClass(element)) {
+            return false;
+        }
+        Collection stereotypes = Model.getFacade().getStereotypes(element);
+        for (Iterator it = stereotypes.iterator(); it.hasNext();) {
+            if ("enumeration".equals(Model.getFacade().getName(it.next()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Add an annotation declaration
+     *
+     * @param name identifier for annotation definition.
+     * @param modifiers A sequence of modifiers.
+     * @param javadoc The javadoc comment. null or "" if no comment available.
+     * @param forceIt Force addition by creating all that's missing.
+     */
+    void addAnnotationDefinition(String name,
+                         short modifiers,
+                         String javadoc,
+                         boolean forceIt) {
+        logError( "Java 5 annotation definitions not supported", "@" + name);
+    }
+    
+    /**
+     * Called from the parser when an annotation declaration is found.
+     *
+     * @param name identifier for annotation.
+     */
+    void addAnnotation(String name) {
+        logError( "Java 5 annotations not supported", "@" + name);
+    }
+
+    /**
+     * Done adding an annotation.
+     */
+    void endAnnotation() {
+        // TODO: Placeholder.  Can we use popClassifier here?
+    }
+    
+    void addTypeParameters() {
+        // TODO: Not implemented
+        logError("Unsupported Java 5 type parameters", "");
     }
     
     /**
@@ -817,7 +855,8 @@ public class Modeller {
     private Object addClassifier(Object newClassifier,
                                  String name,
                                  short modifiers,
-                                 String javadoc) {
+                                 String javadoc, 
+                                 Vector typeParameters) {
         Object mClassifier;
         Object mNamespace;
 
@@ -877,14 +916,25 @@ public class Modeller {
         setVisibility(mClassifier, modifiers);
         
         // Add classifier documentation tags during first (or only) pass only
-        Object level = this.getAttribute("level");
-        if (level != null) {
-            if (((Integer) level).intValue() <= 1) {
-                addDocumentationTag(mClassifier, javadoc);
-            }
+        if (getLevel() <= 0) {
+            addDocumentationTag(mClassifier, javadoc);
         }
 
         return mClassifier;
+    }
+    
+    /**
+     * Return the current import pass/level.
+     * 
+     * @return 0, 1, or 2 depending on current import level and pass of
+     *         processing. Returns -1 if level isn't defined.
+     */
+    private int getLevel() {
+        Object level = this.getAttribute("level");
+        if (level != null) {
+            return ((Integer) level).intValue();
+        } 
+        return -1;
     }
 
     /**
@@ -927,16 +977,18 @@ public class Modeller {
     }
 
     /**
-     * Called from the parser when an operation is
-     * found.
-     *
-     * @param modifiers A sequence of operation modifiers.
-     * @param returnType The return type of the operation.
-     * @param name The name of the operation as a string
-     * @param parameters A number of vectors, each representing a
-     *
-     * parameter.
-     * @param javadoc The javadoc comment. null or "" if no comment available.
+     * Add an Operation to the current model
+     * 
+     * @param modifiers
+     *            A sequence of operation modifiers.
+     * @param returnType
+     *            The return type of the operation.
+     * @param name
+     *            The name of the operation as a string
+     * @param parameters
+     *            A number of vectors, each representing a parameter.
+     * @param javadoc
+     *            The javadoc comment. null or "" if no comment available.
      * @return The operation.
      */
     public Object addOperation (short modifiers,
@@ -944,29 +996,38 @@ public class Modeller {
                                 String name,
                                 Vector parameters,
                                 String javadoc) {
-        return addOperation(modifiers, returnType, name, parameters, javadoc);
+        return addOperation(modifiers, new Vector(), returnType, name,
+                parameters, javadoc, false);
     }
     
     /**
-     * Called from the parser when an operation is
-     * found.
-     *
-     * @param modifiers A sequence of operation modifiers.
-     * @param returnType The return type of the operation.
-     * @param name The name of the operation as a string
-     * @param parameters A number of vectors, each representing a
-     *
-     * parameter.
-     * @param javadoc The javadoc comment. null or "" if no comment available.
-     * @param forceIt Force addition by creating all that's missing.
+     * Called from the parser when an operation is found.
+     * 
+     * @param modifiers
+     *            A sequence of operation modifiers.
+     * @param returnType
+     *            The return type of the operation.
+     * @param name
+     *            The name of the operation as a string
+     * @param parameters
+     *            A number of vectors, each representing a parameter.
+     * @param javadoc
+     *            The javadoc comment. null or "" if no comment available.
+     * @param forceIt
+     *            Force addition by creating all that's missing.
      * @return The operation.
      */
     Object addOperation (short modifiers,
+                                Vector typeParameters,
                                 String returnType,
                                 String name,
                                 Vector parameters,
                                 String javadoc,
                                 boolean forceIt) {
+        if (typeParameters != null && typeParameters.size() > 0) {
+            logError("type parameters not supported on operation return type", 
+                    name);
+        }
 	Object mOperation = getOperation(name);
 	parseState.feature(mOperation);
 
@@ -1037,6 +1098,11 @@ public class Modeller {
 	for (Iterator i = parameters.iterator(); i.hasNext();) {
 	    Vector parameter = (Vector) i.next();
 	    typeName = (String) parameter.elementAt(1);
+            // TODO: A type name with a trailing "..." represents
+            // a variable length parameter list.  It can only be
+            // the last parameter and it gets converted to an array
+            // on method invocation, so perhaps we should model it that
+            // way (ie convert "Foo..." to "Foo[]"). - tfm - 20070329
             mClassifier = null;
 	    try {
                 mClassifier =
@@ -1067,12 +1133,12 @@ public class Modeller {
                         Model.getDirectionKind().getInParameter());
                 if (!Model.getFacade().isAClassifier(mClassifier)) {
                     // the type resolution failed to find a valid classifier.
-                    LOG.warn("Modeller.java: a valid type for a parameter "
+                    logError("Modeller.java: a valid type for a parameter "
 			     + "could not be resolved:\n "
 			     + "In file: " + fileName + ", for operation: "
 			     + Model.getFacade().getName(mOperation)
-			     + ", for parameter: "
-			     + Model.getFacade().getName(mParameter));
+			     + ", for parameter: ",
+			     Model.getFacade().getName(mParameter));
                 }
 	    }
 	}
@@ -1096,17 +1162,30 @@ public class Modeller {
      */
     private void warnClassifierNotFound(String name, Throwable e,
             String operation) {
-        // TODO: The user will likely never see this error.  It
-        // needs to be more visible. - tfm
-        LOG.info("Modeller.java: a classifier (" + name
+        logError("Modeller.java: a classifier (" + name
                 + ") that was in the source "
-                + "file could not be generated in the model " 
-                + "(while generating " + operation + ").");
+                + "file could not be generated in the model ", operation);
     }
 
     /**
-     * Called from the parser to add a method body to an operation. (An
-     * operation will have exactly one Java body.)
+     * Add an error message to the log to be shown to the user.
+     * <p>
+     * TODO: This currently just writes to the error log. It needs to return
+     * errors some place that the user can see them and deal with them.  We
+     * also need a way to get the line and column numbers to help the user
+     * track the problem down.
+     */
+    private void logError(String message, String identifier) {
+        LOG.warn(message + " : " + identifier);
+    }
+    
+    /**
+     * Called from the parser when a class field is parsed. This can occur in a
+     * class block where it indicates a method body to to be added to an
+     * operation (An operation will have exactly one Java body) OR it can occur
+     * in the enum declaration (not currently supported).
+     * 
+     * TODO: Support use in an enum declaration
      * 
      * @param op
      *            An operation.
@@ -1115,8 +1194,9 @@ public class Modeller {
      */
     public void addBodyToOperation(Object op, String body) {
         if (op == null || !Model.getFacade().isAOperation(op)) {
-//            LOG.warn("adding body failed: no operation!");
-            return;
+            // This can occur if there's a class field in an enum definition
+            throw new ParseStateException(
+                    "Found class body in context other than a class");
         }
         if (body == null || body.length() == 0) {
             return;
@@ -1151,7 +1231,7 @@ public class Modeller {
                               String name,
                               String initializer,
                               String javadoc) {
-        addAttribute(modifiers, typeSpec, name, initializer, javadoc);
+        addAttribute(modifiers, typeSpec, name, initializer, javadoc, false);
     }
     
     /**
@@ -1170,45 +1250,47 @@ public class Modeller {
                               String initializer,
                               String javadoc,
                               boolean forceIt) {
-	String multiplicity = null;
+	String multiplicity = "1_1";
+        Object mClassifier = null;
+        
+        if (typeSpec != null) {
+            if (!arraysAsDatatype && typeSpec.indexOf('[') != -1) {
+                typeSpec = typeSpec.substring(0, typeSpec.indexOf('['));
+                multiplicity = "1_N";
+            }
 
-	if (!arraysAsDatatype && typeSpec.indexOf('[') != -1) {
-	    typeSpec = typeSpec.substring(0, typeSpec.indexOf('['));
-	    multiplicity = "1_N";
-	} else {
-	    multiplicity = "1_1";
-	}
-
-	// the attribute type
-	Object mClassifier = null;
-	try {
-	    // get the attribute type
-	    mClassifier = getContext(typeSpec).get(getClassifierName(typeSpec));
-	} catch (ClassifierNotFoundException e) {
-            if (forceIt && typeSpec != null && model != null) {
-                LOG.info("Modeller.java: forced creation of unknown classifier "
-                    + typeSpec);
-                String packageName = getPackageName(typeSpec);
-                String classifierName = getClassifierName(typeSpec);
-                Object mPackage = (packageName.length() > 0) 
-                        ? getPackage(packageName)
-                        : model;
-                mClassifier =
-                    Model.getCoreFactory().buildClass(classifierName, mPackage);
-            } else {
-                warnClassifierNotFound(typeSpec, e,
+            // the attribute type
+            try {
+                // get the attribute type
+                mClassifier = getContext(typeSpec).get(getClassifierName(typeSpec));
+            } catch (ClassifierNotFoundException e) {
+                if (forceIt && typeSpec != null && model != null) {
+                    LOG.info("Modeller.java: forced creation of unknown classifier "
+                            + typeSpec);
+                    String packageName = getPackageName(typeSpec);
+                    String classifierName = getClassifierName(typeSpec);
+                    Object mPackage = (packageName.length() > 0) 
+                    ? getPackage(packageName)
+                            : model;
+                    mClassifier =
+                        Model.getCoreFactory().buildClass(classifierName, mPackage);
+                } else {
+                    warnClassifierNotFound(typeSpec, e,
                     "an attribute");
+                }
+            }
+            if (mClassifier == null) {
+                logError("failed to find or create type", typeSpec);
+                return;
             }
         }
-        if (mClassifier == null) {
-	    return;
-	}
 
 	// if we want to create a UML attribute:
-	if (noAssociations
-	    || Model.getFacade().isADataType(mClassifier)
-	    || (Model.getFacade().getNamespace(mClassifier)
-		== getPackage("java.lang"))) {
+	if (mClassifier == null
+                || noAssociations
+                || Model.getFacade().isADataType(mClassifier)
+                || (Model.getFacade().getNamespace(mClassifier) 
+                        == getPackage("java.lang"))) {
 
             Object mAttribute = parseState.getAttribute(name);
             if (mAttribute == null) {
@@ -1222,13 +1304,14 @@ public class Modeller {
             Model.getCoreHelper().setMultiplicity(mAttribute, multiplicity);
 
             if (Model.getFacade().isAClassifier(mClassifier)) {
+                // TODO: This should already have been done in buildAttribute
                 Model.getCoreHelper().setType(mAttribute, mClassifier);
             } else {
                 // the type resolution failed to find a valid classifier.
-                LOG.warn("Modeller.java: a valid type for a parameter "
+                logError("Modeller.java: a valid type for a parameter "
 			 + "could not be resolved:\n "
-			 + "In file: " + fileName + ", for attribute: "
-			 + Model.getFacade().getName(mAttribute));
+			 + "In file: " + fileName + ", for attribute: ",
+			 Model.getFacade().getName(mAttribute));
             }
 
             // Set the initial value for the attribute.
@@ -1485,8 +1568,8 @@ public class Modeller {
 
             Object mAssociation = buildDirectedAssociation(
                         newName, parseState.getClassifier(), mClassifier);
-            // this causes a problem when mClassifier is not only at one assoc end:
-            //(which one is the right one?)
+            // this causes a problem when mClassifier is not only 
+            // at one assoc end: (which one is the right one?)
             mAssociationEnd =
                 Model.getFacade().getAssociationEnd(
                         mClassifier,
@@ -1511,13 +1594,13 @@ public class Modeller {
        @return The stereotype.
     */
     private Object getStereotype(String name) {
-        LOG.info("Trying to find a stereotype of name <<" + name + ">>");
+        LOG.debug("Trying to find a stereotype of name <<" + name + ">>");
         // Is this line really safe wouldn't it just return the first
         // model element of the same name whether or not it is a stereotype
         Object stereotype = Model.getFacade().lookupIn(model, name);
 
         if (stereotype == null) {
-            LOG.info("Couldn't find so creating it");
+            LOG.debug("Couldn't find so creating it");
             return
                 Model.getExtensionMechanismsFactory()
                     .buildStereotype(name, model);
@@ -1526,13 +1609,13 @@ public class Modeller {
         if (!Model.getFacade().isAStereotype(stereotype)) {
             // and so this piece of code may create an existing stereotype
             // in error.
-            LOG.info("Found something that isn't a stereotype so creating it");
+            LOG.debug("Found something that isn't a stereotype so creating it");
             return
                 Model.getExtensionMechanismsFactory()
                     .buildStereotype(name, model);
         }
 
-        LOG.info("Found it");
+        LOG.debug("Found it");
         return stereotype;
     }
 
