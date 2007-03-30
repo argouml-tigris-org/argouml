@@ -554,8 +554,7 @@ public class TabProps
      */
     public boolean shouldBeEnabled(Object t) {
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-//        if (t instanceof Diagram || Model.getFacade().isAModelElement(t)) {
-        if (t != null) {
+        if (t instanceof Diagram || Model.getFacade().isAUMLElement(t)) {
             shouldBeEnabled = true;
         } else {
             shouldBeEnabled = false;
