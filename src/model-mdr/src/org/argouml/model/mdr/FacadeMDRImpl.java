@@ -985,6 +985,20 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
+     * @see org.argouml.model.Facade#isAUMLElement(java.lang.Object)
+     */
+    public boolean isAUMLElement(Object handle) {
+        return handle instanceof Element 
+                || handle instanceof ElementImport
+                || handle instanceof ElementResidence
+                || handle instanceof Expression
+                || handle instanceof Multiplicity
+                || handle instanceof MultiplicityRange
+                || handle instanceof TemplateArgument
+                || handle instanceof TemplateParameter;
+    }
+
+    /**
      * @see org.argouml.model.Facade#isAUninterpretedAction(java.lang.Object)
      */
     public boolean isAUninterpretedAction(Object handle) {

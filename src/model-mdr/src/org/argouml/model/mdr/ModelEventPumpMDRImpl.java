@@ -52,7 +52,6 @@ import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
-import org.argouml.model.ModelEventPump;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
 import org.netbeans.api.mdr.MDRManager;
@@ -79,7 +78,7 @@ import org.netbeans.api.mdr.events.TransactionEvent;
  * @author Tom Morris
  */
 class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
-        ModelEventPump, MDRPreChangeListener {
+        MDRPreChangeListener {
 
     /**
      * Logger.
