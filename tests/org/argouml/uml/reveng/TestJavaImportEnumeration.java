@@ -273,7 +273,6 @@ public class TestJavaImportEnumeration extends TestCase {
         
         // TODO: check return types
 
-        List<Integer> li = new ArrayList<Integer>();
     }
 
     /**
