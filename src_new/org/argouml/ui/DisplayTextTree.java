@@ -273,6 +273,15 @@ public class DisplayTextTree extends JTree {
                 return Translator.localize("misc.name.deleted");
             }
         }
+        
+        if (Model.getFacade().isAElementResidence(value)) {
+            try {
+                // TODO: Add the container and resident names
+                return "ElementResidence";
+            } catch (InvalidElementException e) {
+                return Translator.localize("misc.name.deleted");
+            }            
+        }
 
         if (value instanceof Diagram) {
             return ((Diagram) value).getName();

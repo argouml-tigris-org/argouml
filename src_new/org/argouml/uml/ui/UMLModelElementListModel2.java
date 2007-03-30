@@ -349,16 +349,16 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
     public void setTarget(Object theNewTarget) {
         theNewTarget = theNewTarget instanceof Fig
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
-        if (Model.getFacade().isAModelElement(theNewTarget)
+        if (Model.getFacade().isAUMLElement(theNewTarget)
                 || theNewTarget instanceof Diagram) {
-            if (Model.getFacade().isAModelElement(listTarget)) {
+            if (Model.getFacade().isAUMLElement(listTarget)) {
                 Model.getPump().removeModelEventListener(this, listTarget,
                         eventName);
                 // Allow listening to other elements:
                 removeOtherModelEventListeners(listTarget);
             }
 
-            if (Model.getFacade().isAModelElement(theNewTarget)) {
+            if (Model.getFacade().isAUMLElement(theNewTarget)) {
                 listTarget = theNewTarget;
                 Model.getPump().addModelEventListener(this, listTarget,
                         eventName);

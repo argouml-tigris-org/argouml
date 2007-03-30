@@ -249,9 +249,9 @@ public class TabProps
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
-        // targets ought to be modelelements or diagrams
+        // targets ought to be UML objects or diagrams
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (!(t == null || Model.getFacade().isAModelElement(t)
+        if (!(t == null || Model.getFacade().isAUMLElement(t)
                 || t instanceof ArgoDiagram)) {
             return;
         }
@@ -554,7 +554,8 @@ public class TabProps
      */
     public boolean shouldBeEnabled(Object t) {
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (t instanceof Diagram || Model.getFacade().isAModelElement(t)) {
+//        if (t instanceof Diagram || Model.getFacade().isAModelElement(t)) {
+        if (t != null) {
             shouldBeEnabled = true;
         } else {
             shouldBeEnabled = false;
