@@ -335,7 +335,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
                 listenerList = collectTargetListeners(this);
             }
 
-            if (Model.getFacade().isAModelElement(target)) {
+            if (Model.getFacade().isAUMLElement(target)) {
                 modelElement = target;
             }
 
@@ -419,7 +419,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public boolean shouldBeEnabled(Object t) {
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        return Model.getFacade().isAModelElement(t);
+        return Model.getFacade().isAUMLElement(t);
     }
 
     /**

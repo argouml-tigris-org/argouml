@@ -468,7 +468,7 @@ public class DetailsPane
         }
 
         if (target != null
-            && Model.getFacade().isAModelElement(target)
+            && Model.getFacade().isAUMLElement(target)
             && topLevelTabbedPane.getSelectedIndex() > 0) {
             lastNonNullTab = topLevelTabbedPane.getSelectedIndex();
         }
