@@ -128,6 +128,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelUsage;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelStereotype;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelTagDefinition;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelTaggedValue;
+import org.argouml.uml.ui.model_management.PropPanelElementImport;
 import org.argouml.uml.ui.model_management.PropPanelModel;
 import org.argouml.uml.ui.model_management.PropPanelPackage;
 import org.argouml.uml.ui.model_management.PropPanelSubsystem;
@@ -411,6 +412,8 @@ public class TabProps
             propPanel = new PropPanelDestroyAction();
         } else if (Model.getFacade().isAEnumerationLiteral(modelElement)) {
             propPanel = new PropPanelEnumerationLiteral();
+        } else if (Model.getFacade().isAElementImport(modelElement)) {
+            propPanel = new PropPanelElementImport();
         } else if (Model.getFacade().isAElementResidence(modelElement)) {
             propPanel = new PropPanelElementResidence();
         } else if (Model.getFacade().isAExtend(modelElement)) {
