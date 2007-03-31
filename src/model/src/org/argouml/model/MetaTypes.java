@@ -35,12 +35,12 @@ package org.argouml.model;
  */
 public interface MetaTypes {
     /**
-     * Given a model element instance returns the name of its meta type.
+     * Given a Element instance returns the name of its meta type.
      *
      * @return The name of the meta type.
-     * @param modelElement The model element.
+     * @param element The model element.
      */
-    String getName(Object modelElement);
+    String getName(Object element);
 
     /**
      * @return Returns the Abstraction.
@@ -128,9 +128,9 @@ public interface MetaTypes {
     Object getCallState();
 
     /**
-     * This method has a special name because Java already uses the
-     * getClass() method.
-     *
+     * Return the UML Class class. This method has a special name because Java
+     * already uses the getClass() method.
+     * 
      * @return Returns the Class.
      */
     Object getUMLClass();
@@ -416,8 +416,11 @@ public interface MetaTypes {
     Object getSynchState();
 
     /**
+     * Return the TagDefinition class.
+     * 
      * @since UML 1.4
-     * @return Returns the TagDefinition, or null in UML 1.3
+     * @return Returns the TagDefinition, or null in UML 1.3 Model subsystem
+     *         implementations.
      */
     Object getTagDefinition();
 

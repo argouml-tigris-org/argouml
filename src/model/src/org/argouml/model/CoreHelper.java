@@ -27,12 +27,8 @@ package org.argouml.model;
 import java.util.Collection;
 import java.util.List;
 
-
-
 /**
  * The interface for the helper for Core.<p>
- *
- * Created from the old CoreHelper.
  */
 public interface CoreHelper {
     /**
@@ -44,47 +40,50 @@ public interface CoreHelper {
     boolean isSubType(Object type, Object subType);
 
     /**
-     * This method returns all Classifiers of which this class is a
-     * direct or indirect subtype.
-     *
-     * @param cls1  the class you want to have the parents for
+     * Return all Classifiers of which this Classifier is a direct or indirect
+     * subtype.
+     * 
+     * @param classifier
+     *            the Classifier you want to have the parents for
      * @return a collection of the parents, each of which is a
      *         GeneralizableElement.
      */
-    Collection getAllSupertypes(Object cls1);
+    Collection getAllSupertypes(Object classifier);
 
     /**
-     * This method returns all Classifiers of which this class is a
-     * direct subtype.<p>
-     *
-     * @param ogeneralizableelement the class you want to have the parents for
+     * Return direct supertypes of a GeneralizableElement.
+     * 
+     * @param generalizableElement
+     *            the element you want to have the parents for
      * @return a collection of the parents, each of which is a
      *         GeneralizableElement.
      */
-    Collection getSupertypes(Object ogeneralizableelement);
+    Collection getSupertypes(Object generalizableElement);
 
     /**
-     * This method returns all opposite AssociationEnds of a given
-     * Classifier.
-     *
-     * @param classifier the classifier you want to have the opposite
-     * association ends for
+     * Return all opposite AssociationEnds of a given Classifier. Same as
+     * {@link Facade#getAssociationEnds(Object)}.
+     * 
+     * @param classifier
+     *            the classifier for which to get the opposite association ends
+     * 
      * @return a collection of the opposite associationends
+     * @see Facade#getAssociationEnds(Object)
      */
     Collection getAssociateEnds(Object classifier);
 
     /**
-     * This method returns all opposite AssociationEnds of a given
-     * Classifier, including inherited.
-     *
-     * @param classifier1 the classifier you want to have the opposite
-     * association ends for
+     * Return all opposite AssociationEnds of a given Classifier and its
+     * supertypes.
+     * 
+     * @param classifier
+     *            the classifier for which to get the opposite association ends
      * @return a collection of the opposite associationends
      */
-    Collection getAssociateEndsInh(Object classifier1);
+    Collection getAssociateEndsInh(Object classifier);
 
     /**
-     * This method removes a feature from a classifier.
+     * Remove a Feature from a Flassifier.
      *
      * @param cls the classifier
      * @param feature the feature to be removed
@@ -100,7 +99,7 @@ public interface CoreHelper {
     void removeLiteral(Object enumeration, Object literal);
 
     /**
-     * This method replaces all operations of the given classifier
+     * Replace all operations of the given classifier
      * by the given list of operations.
      *
      * @param classifier the given classifier
@@ -109,7 +108,7 @@ public interface CoreHelper {
     void setOperations(Object classifier, List operations);
 
     /**
-     * This method replaces all attributes of the given classifier
+     * Replace all attributes of the given classifier
      * by the given collection of attributes.
      * @param classifier the classifier
      * @param attributes an ordered list of new attributes
@@ -117,7 +116,7 @@ public interface CoreHelper {
     void setAttributes(Object classifier, List attributes);
     
     /**
-     * This method returns all attributes of a given Classifier,
+     * Return all attributes of a given Classifier,
      * including inherited.
      *
      * @param classifier the classifier you want to have the attributes for
@@ -126,7 +125,7 @@ public interface CoreHelper {
     Collection getAttributesInh(Object classifier);
 
     /**
-     * This method returns all operations of a given Classifier,
+     * Return all operations of a given Classifier,
      * including inherited.
      *
      * @param classifier the classifier you want to have the operations for
@@ -135,30 +134,30 @@ public interface CoreHelper {
     Collection getOperationsInh(Object classifier);
 
     /**
-     * Returns all return parameters for an operation.
+     * Return all return parameters for an Operation.
      *
      * @param operation is the operation.
-     * @return List of parameters of with direction kind of Return
+     * @return List of parameters of with direction kind of Return.
      */
     List getReturnParameters(Object operation);
 
     /**
-     * Returns the operation that some method realized. Returns null if
-     * object isn't a method or, possibly, if the method isn't properly
-     * defined.<p>
+     * Return the Operation which is the specification for a Method.<p>
      * 
-     * There is also a method in the Facade interface with the same name
-     * which may be what you want if you are looking for the specification
-     * of something other than a Method.
+     * There is also a method in the Facade interface with the same name which
+     * may be what you want if you are looking for the specification of
+     * something other than a Method.
+     * 
      * @see Facade#getSpecification(Object)
-     *
-     * @param object  the method you want the realized operation of.
+     * 
+     * @param object
+     *            the method you want the realized operation of.
      * @return an operation, or null.
      */
     Object getSpecification(Object object);
 
     /**
-     * Returns all Interfaces of which this class is a realization.<p>
+     * Return all Interfaces of which this class is a realization.<p>
      * Duplicate of method by same name in Facade.
      * @see Facade#getSpecifications(Object)
      *
@@ -168,7 +167,7 @@ public interface CoreHelper {
     Collection getSpecifications(Object classifier);
 
     /**
-     * This method returns all Classifiers of which this class is a
+     * Return all Classifiers of which this class is a
      * direct supertype.
      *
      * @param cls  the class you want to have the children for
@@ -178,7 +177,7 @@ public interface CoreHelper {
     Collection getSubtypes(Object cls);
 
     /**
-     * Returns all behavioralfeatures found in this element and its
+     * Return all behavioralfeatures found in this element and its
      * children.<p>
      *
      * @param element is the element
@@ -187,14 +186,14 @@ public interface CoreHelper {
     Collection getAllBehavioralFeatures(Object element);
 
     /**
-     * Returns all behavioral features of some classifier.
-     * @param clazz The classifier
-     * @return the list with all behavioral features of some classifier
+     * Return all behavioral features of a Classifier.
+     * @param classifier The classifier
+     * @return the list with all behavioral features of the classifier
      */
-    List getBehavioralFeatures(Object clazz);
+    List getBehavioralFeatures(Object classifier);
 
     /**
-     * Returns all interfaces found in this namespace and in its children.
+     * Return all interfaces found in this namespace and in its children.
      *
      * @param ns the given namespace
      * @return Collection with all interfaces found
@@ -202,7 +201,7 @@ public interface CoreHelper {
     Collection getAllInterfaces(Object ns);
 
     /**
-     * Returns all classes found in this namespace and in its children.<p>
+     * Return all classes found in this namespace and in its children.<p>
      *
      * @param ns is the namespace.
      * @return Collection
@@ -218,19 +217,19 @@ public interface CoreHelper {
     Collection getRealizedInterfaces(Object cls);
 
     /**
-     * Returns all classes some generalizable element extends.
+     * Return all classes that the given GeneralizableElement extends.
      *
-     * @param clazz is the generalizable element
+     * @param element is the GeneralizableElement
      * @return Collection
      */
-    Collection getExtendedClassifiers(Object clazz);
+    Collection getExtendedClassifiers(Object element);
 
     /**
-     * Gets the generalization between two generalizable elements.
+     * Gets the generalization between two GeneralizableElements.
      * Returns null if there is none.<p>
      *
-     * @param achild is the child generalizable element.
-     * @param aparent is the parent generalizable element.
+     * @param achild is the child GeneralizableElement.
+     * @param aparent is the parent GeneralizableElement.
      * @return MGeneralization
      */
     Object getGeneralization(Object achild, Object aparent);
@@ -244,8 +243,8 @@ public interface CoreHelper {
     String getBody(Object comment);
 
     /**
-     * Returns all flows from some source modelelement to a target
-     * modelelement.<p>
+     * Return all flows connecting from a source ModelElement to a target
+     * ModelElement.<p>
      *
      * @param source is the source model element.
      * @param target is the target model element.
@@ -254,23 +253,23 @@ public interface CoreHelper {
     Collection getFlows(Object source, Object target);
 
     /**
-     * Returns all elements that extend some class.
+     * Return all elements that extend a Class.
      *
-     * @param clazz is the class (a generalizable element)
+     * @param element is the class (a GeneralizableElement)
      * @return Collection
      */
-    Collection getExtendingElements(Object clazz);
+    Collection getExtendingElements(Object element);
 
     /**
-     * Returns all classifiers that extend some classifier.
+     * Return all classifiers that extend a Classifier.
      *
-     * @param clazz is the classifier.
+     * @param classifier is the classifier.
      * @return Collection
      */
-    Collection getExtendingClassifiers(Object clazz);
+    Collection getExtendingClassifiers(Object classifier);
 
     /**
-     * Returns all components found in this namespace and in its children.
+     * Return all components found in this namespace and in its children.
      *
      * @param ns is the namespace.
      * @return Collection
@@ -278,7 +277,7 @@ public interface CoreHelper {
     Collection getAllComponents(Object ns);
 
     /**
-     * Returns all components found in this namespace and in its children.
+     * Return all components found in this namespace and in its children.
      *
      * @param ns is the namespace
      * @return Collection
@@ -286,7 +285,7 @@ public interface CoreHelper {
     Collection getAllDataTypes(Object ns);
 
     /**
-     * Returns all components found in this namespace and in its children.<p>
+     * Return all components found in this namespace and in its children.<p>
      *
      * @param ns is the namespace
      * @return Collection
@@ -314,7 +313,7 @@ public interface CoreHelper {
     Collection getAssociations(Object from, Object to);
 
     /**
-     * Returns all classifiers found in this namespace and in its children.
+     * Return all classifiers found in this namespace and in its children.
      *
      * @param namespace the given namespace
      * @return Collection the collection of all classifiers
@@ -323,7 +322,7 @@ public interface CoreHelper {
     Collection getAllClassifiers(Object namespace);
 
     /**
-     * Returns all associations for some classifier.<p>
+     * Return all associations for a Classifier.<p>
      *
      * @param oclassifier the given classifier
      * @return Collection all associations for the given classifier
@@ -341,47 +340,45 @@ public interface CoreHelper {
     Object getAssociationEnd(Object type, Object assoc);
 
     /**
-     * Returns the contents (owned elements) of this classifier and
+     * Returns the contents (owned elements) of this Namespace and
      * all its parents as specified in section 2.5.3.8 of the UML 1.3
      * spec.<p>
      *
-     * @param clazz is the classifier
+     * @param namespace is the classifier
      * @return Collection
      * @deprecated for 0.25.1 by tfmorris - 
      * use {@link ModelManagementHelper#getAllContents(Object)}
      */
-    Collection getAllContents(Object clazz);
+    Collection getAllContents(Object namespace);
 
     /**
-     * Returns all attributes of some classifier and of its parents.
+     * Return all Attributes of a Classifier and of its parents.
      *
-     * @param clazz is the classifier
+     * @param classifier is the classifier
      * @return Collection
      */
-    Collection getAllAttributes(Object clazz);
+    Collection getAllAttributes(Object classifier);
     
     /**
-     * Returns a Set containing all ModelElements visible 
+     * Return a Set containing all ModelElements visible 
      * outside of the Namespace. 
      * This is an "Additional Operation" from the UML spec.
      * 
      * @param ns the given namespace
-     * @return the collection with modelelements
+     * @return the collection with ModelElements
      */
     Collection getAllVisibleElements(Object ns);
 
     /**
-     * Returns the source of a relation. The source of a relation is
-     * defined as the modelelement that propagates this relation. If
+     * Return the source of a relation or Link. The source of a relation is
+     * defined as the ModelElement that propagates this relation. If
      * there are more then 1 sources, only the first is returned. If
      * there is no source, null is returned. Examples of sources
      * include classifiers that are types to associationends, usecases
      * that are bases to extend and include relations and so on. A
      * source is allways the start from the arrow in the fig, the
      * destination the end.<p>
-     *
-     * This method also works to get the source of a Link.<p>
-     *
+     * 
      * TODO: move this method to a generic ModelHelper
      *
      * @param relationship is the relation
@@ -390,8 +387,8 @@ public interface CoreHelper {
     Object getSource(Object relationship);
 
     /**
-     * Returns the destination of a relation. The destination of a
-     * relation is defined as the modelelement that receives this
+     * Returns the destination of a relation or link. The destination of a
+     * relation is defined as the ModelElement that receives this
      * relation.  If there are more then 1 destinations, only the
      * first is returned.  If there is no destination, null is
      * returned.  Examples of sources include classifiers that are
@@ -399,9 +396,7 @@ public interface CoreHelper {
      * include relations and so on.  In the case of an association,
      * the destination is defined as the type of the second element in
      * the connections list.<p>
-     *
-     * This method also works for links.<p>
-     *
+     * 
      * TODO: move this method to a generic ModelHelper
      *
      * @param relationship is the relation
@@ -410,8 +405,8 @@ public interface CoreHelper {
     Object getDestination(Object relationship);
 
     /**
-     * Returns the dependencies between some supplier modelelement and
-     * some client modelelement.  Does not return the vica versa
+     * Return the dependencies between a supplier ModelElement and
+     * a client ModelElement.  Does not return the inverse
      * relationship (dependency 'from client to supplier').<p>
      *
      * @param supplierObj a MModelElement
@@ -421,8 +416,8 @@ public interface CoreHelper {
     Collection getDependencies(Object supplierObj, Object clientObj);
 
     /**
-     * Returns all relationships between the source and dest
-     * modelelement and vica versa.<p>
+     * Return all relationships between the source and destination
+     * ModelElement and vice versa.<p>
      *
      * @param source is the source model element
      * @param dest is the destination model element
@@ -431,19 +426,19 @@ public interface CoreHelper {
     Collection getRelationships(Object source, Object dest);
 
     /**
-     * Returns true if some modelelement may be owned by the given
+     * Return true if the given ModelElement may be owned by the given
      * namespace.<p>
      *
-     * @param mObj a MModelElement
-     * @param nsObj a MNamespace
+     * @param element a ModelElement
+     * @param namespace a MNamespace
      * @return boolean
      */
-    boolean isValidNamespace(Object mObj, Object nsObj);
+    boolean isValidNamespace(Object element, Object namespace);
 
     /**
-     * Gets the first namespace two namespaces share. That is: it
+     * Return the first namespace which two namespaces share. That is: it
      * returns the first namespace that owns the given namespaces
-     * itself or some owner of the given namespaces.<p>
+     * themselves or an owner of the given namespaces.<p>
      *
      * @param ns1 is the first name space
      * @param ns2 is the second name space
@@ -452,39 +447,43 @@ public interface CoreHelper {
     Object getFirstSharedNamespace(Object ns1, Object ns2);
 
     /**
-     * Returns all possible namespaces that may be selected by some given
-     * modelelement. Which namespaces are allowed, is decided in the method
-     * isValidNamespace.<p>
-     *
-     * @param modelElement is the model element
-     * @param model the model to search
+     * Return all possible namespaces that are valid owners of the given
+     * ModelElement as determined by the method isValidNamespace.
+     * 
+     * @param modelElement
+     *            is the model element
+     * @param model
+     *            the model to search
      * @return Collection
      */
     Collection getAllPossibleNamespaces(Object modelElement, Object model);
 
     /**
-     * Returns all children from some given generalizableelement on
-     * all levels (the complete tree excluding the generalizable
-     * element itself).<p>
-     *
-     * @param o is the generalizable element
+     * Return all children of a given GeneralizableElement on all levels (the
+     * complete subtree excluding the GeneralizableElement itself).
+     * 
+     * @param element
+     *            is the GeneralizableElement
      * @return Collection
-     * @throws IllegalStateException if there is a circular reference.
+     * @throws IllegalStateException
+     *             if there is a circular reference.
      */
-    Collection getChildren(Object o);
+    Collection getChildren(Object element);
 
     /**
-     * Returns all interfaces that are realized by the given class or
+     * Return all interfaces that are realized by the given class or
      * by its superclasses. It's possible that interfaces occur twice
      * in the collection returned. In that case there is a double
      * reference to that interface.
      *
-     * @param o is the given class
+     * @param element is the given class
      * @return Collection
      */
-    Collection getAllRealizedInterfaces(Object o);
+    Collection getAllRealizedInterfaces(Object element);
 
     /**
+     * Determine whether an Association has at least one AssociationEnd
+     * of AggregationKind Composite.
      * @param  association the association to be investigated
      * @return true if one of the association ends of the given association
      *         is of the composite kind
@@ -493,22 +492,22 @@ public interface CoreHelper {
 
     /**
      * @param associationEnd is the association end
-     * @param kindType the MAggregationKind as a string in lower case letter,
+     * @param kindType the AggregationKind as a string in lower case,
      *                 eg: composite.
      * @return true if the aggregation kinds are the same.
      */
     boolean equalsAggregationKind(Object associationEnd, String kindType);
 
     /**
-     * Remove the given modelelement from a given comment.
+     * Remove the given ModelElement from a given comment.
      *
-     * @param handle MComment
-     * @param me MModelElement
+     * @param handle Comment
+     * @param me ModelElement
      */
     void removeAnnotatedElement(Object handle, Object me);
 
     /**
-     * This method removes a dependency from a model element.
+     * Remove a dependency from a ModelElement.
      *
      * @param handle is the model element
      * @param dep is the dependency
@@ -524,7 +523,7 @@ public interface CoreHelper {
     void removeConstraint(Object handle, Object cons);
 
     /**
-     * Removes a owned model element from a namespace.
+     * Remove an owned model element from a namespace.
      *
      * @param handle is the name space
      * @param value is the model element
@@ -532,7 +531,7 @@ public interface CoreHelper {
     void removeOwnedElement(Object handle, Object value);
 
     /**
-     * This method removes a parameter from an operation.
+     * Remove a Parameter from an Operation.
      *
      * @param handle The operation.
      * @param parameter The parameter.
@@ -548,7 +547,7 @@ public interface CoreHelper {
     void removeQualifier(Object handle, Object qualifier);
 
     /**
-     * Remove a source flow from a model element.
+     * Remove a source flow from a ModelElement.
      *
      * @param handle The model element.
      * @param flow The flow.
@@ -556,7 +555,7 @@ public interface CoreHelper {
     void removeSourceFlow(Object handle, Object flow);
 
     /**
-     * Adds a supplier dependency to some modelelement.
+     * Add a supplier dependency to a ModelElement.
      *
      * @param supplier the supplier
      * @param dependency the dependency
@@ -564,7 +563,7 @@ public interface CoreHelper {
     void removeSupplierDependency(Object supplier, Object dependency);
 
     /**
-     * Add a target flow to a model element.
+     * Add a target flow to a ModelElement.
      *
      * @param handle The model element.
      * @param flow The flow to add.
@@ -572,15 +571,15 @@ public interface CoreHelper {
     void removeTargetFlow(Object handle, Object flow);
 
     /**
-     * This method removes a TemplateArgument from a Binding.
+     * Remove a TemplateArgument from a Binding.
      *
-     * @param handle The Binding.
+     * @param binding The Binding.
      * @param argument The argument.
      */
-    void removeTemplateArgument(Object handle, Object argument);
+    void removeTemplateArgument(Object binding, Object argument);
     
     /**
-     * This method removes a Template{arameter from a ModelElement.
+     * Remove a TemplateParameter from a ModelElement.
      *
      * @param handle The element.
      * @param parameter The parameter.
@@ -588,7 +587,7 @@ public interface CoreHelper {
     void removeTemplateParameter(Object handle, Object parameter);
     
     /**
-     * Adds an annotated element to a comment.
+     * Add an annotated element to a comment.
      *
      * @param comment The comment to which the element is annotated
      * @param annotatedElement The element to annotate
@@ -596,25 +595,23 @@ public interface CoreHelper {
     void addAnnotatedElement(Object comment, Object annotatedElement);
 
     /**
-     * Adds a client model element to some dependency.
+     * Add a client model element to a Dependency.
      *
-     * @param handle dependency.
+     * @param dependency the Dependency.
      * @param element The model element.
-     * @throws IllegalArgumentException if the handle is not a dependency
-     * or the element is not a model element.
      */
-    void addClient(Object handle, Object element);
+    void addClient(Object dependency, Object element);
 
     /**
-     * Adds a client dependency to some modelelement.
+     * Add a client Dependency to a ModelElement.
      *
-     * @param handle the modelelement
+     * @param handle the ModelElement
      * @param dependency the dependency
      */
     void addClientDependency(Object handle, Object dependency);
 
     /**
-     * Add a new comment to a model element.
+     * Add a new comment to a ModelElement.
      *
      * @param element the element to which the comment is to be added
      * @param comment the comment for the model element
@@ -640,7 +637,7 @@ public interface CoreHelper {
     void addConnection(Object handle, int position, Object connection);
 
     /**
-     * Adds a constraint to some model element.
+     * Add a constraint to a ModelElement.
      *
      * @param handle model element
      * @param mc constraint
@@ -654,7 +651,7 @@ public interface CoreHelper {
     void addDeploymentLocation(Object handle, Object node);
 
     /**
-     * Adds a feature to some classifier.
+     * Add a feature to a Classifier.
      *
      * @param handle classifier
      * @param index position
@@ -672,7 +669,7 @@ public interface CoreHelper {
     void addLiteral(Object handle, int index, Object literal);
 
     /**
-     * Adds a feature to some classifier.
+     * Add a feature to a Classifier.
      *
      * @param handle classifier
      * @param f feature
@@ -688,16 +685,16 @@ public interface CoreHelper {
     void addLink(Object handle, Object link);
 
     /**
-     * Adds a method to some operation and copies the op's attributes
-     * to the method.
+     * Add a method to an Operation and copy the values of the Operation's
+     * visibility and scope attributes to the Method.
      *
      * @param handle is the operation
-     * @param m is the method
+     * @param method is the method
      */
-    void addMethod(Object handle, Object m);
+    void addMethod(Object handle, Object method);
 
     /**
-     * Adds a model element to some namespace.
+     * Add a ModelElement to a Namespace.
      *
      * @param handle namespace
      * @param me model element
@@ -740,7 +737,7 @@ public interface CoreHelper {
     void addRaisedSignal(Object handle, Object sig);
 
     /**
-     * Add a source flow to a model element.
+     * Add a source flow to a ModelElement.
      *
      * @param handle The model element.
      * @param flow The flow.
@@ -748,15 +745,15 @@ public interface CoreHelper {
     void addSourceFlow(Object handle, Object flow);
 
     /**
-     * Adds a supplier classifier to some abstraction.
+     * Add a supplier to a Dependency.
      *
-     * @param handle abstraction
+     * @param handle the Dependency to which to add the supplier
      * @param element supplier model element
      */
     void addSupplier(Object handle, Object element);
 
     /**
-     * Adds a supplier dependency to some modelelement.
+     * Add a supplier dependency to a ModelElement.
      *
      * @param supplier the supplier
      * @param dependency the dependency
@@ -764,7 +761,7 @@ public interface CoreHelper {
     void addSupplierDependency(Object supplier, Object dependency);
 
     /**
-     * Adds a TaggedValue to a ModelElement.
+     * Add a TaggedValue to a ModelElement.
      *
      * @param handle ModelElement
      * @param taggedValue TaggedValue
@@ -774,7 +771,7 @@ public interface CoreHelper {
     void addTaggedValue(Object handle, Object taggedValue);
 
     /**
-     * Add a target flow to a model element.
+     * Add a target flow to a ModelElement.
      *
      * @param handle The model element.
      * @param flow The flow to add.
@@ -816,39 +813,42 @@ public interface CoreHelper {
     void addTemplateParameter(Object handle, Object parameter);
     
     /**
-     * Sets if of some model element is abstract.
+     * Set the isAbstract attribute of a GeneralizableElement.
      *
-     * @param handle is the classifier
-     * @param flag is true if it should be abstract
+     * @param handle the GeneralizableElement
+     * @param isAbstract is true if it should be abstract
      */
-    void setAbstract(Object handle, boolean flag);
+    void setAbstract(Object handle, boolean isAbstract);
 
     /**
-     * Makes a Class active.
+     * Set the isActive attribute of a UML Class.
      *
      * @param handle Class
-     * @param active boolean
+     * @param isActive boolean
      */
-    void setActive(Object handle, boolean active);
+    void setActive(Object handle, boolean isActive);
 
     /**
-     * Sets the aggregation of some model element.
-     *
-     * @param handle the model element to set aggregation
-     * @param aggregationKind the aggregation kind
+     * Set the aggregation attribute of an AssociationEnd.
+     * 
+     * @param handle
+     *            the AssociationEnd
+     * @param aggregationKind
+     *            an {@link AggregationKind} of Aggregate, Composite, or None
+     *            returned from {@link Model#getAggregationKind()}.
      */
     void setAggregation(Object handle, Object aggregationKind);
 
     /**
-     * Sets the list of annotated elements of the given comment.
+     * Set the list of annotated elements for the given comment.
      *
      * @param handle the given comment
-     * @param elems the list of annotated modelelements
+     * @param elems the collection of annotated ModelElements
      */
     void setAnnotatedElements(Object handle, Collection elems);
 
     /**
-     * Sets the association of some model element.
+     * Set the association of a ModelElement.
      *
      * @param handle the model element to set association
      * @param association is the association
@@ -856,15 +856,15 @@ public interface CoreHelper {
     void setAssociation(Object handle, Object association);
 
     /**
-     * Sets if some model element is a leaf.
+     * Set the isLeaf attribute of a GeneralizableElement.
      *
-     * @param handle model element
-     * @param flag is true if it is a leaf.
+     * @param handle the GeneralizableElement
+     * @param isLeaf is true if it is a leaf, ie it has no subtypes.
      */
-    void setLeaf(Object handle, boolean flag);
+    void setLeaf(Object handle, boolean isLeaf);
 
     /**
-     * Sets the raised signals of some behavioural feature.
+     * Set the raised signals of a BehavioralFeature.
      *
      * @param handle the behavioural feature
      * @param raisedSignals the raised signals
@@ -883,19 +883,28 @@ public interface CoreHelper {
 
     /**
      * Set the Changeability of a StructuralFeature or AssociationEnd.
-     *
-     * @param handle StructuralFeature or AssociationEnd
-     * @param ck ChangeableKind
+     * 
+     * @param handle
+     *            StructuralFeature or AssociationEnd
+     * @param ck
+     *            a {@link ChangeableKind} of Changeable, Frozen or AddOnly
+     *            returned from {@link Model#getChangeableKind()}.
      */
     void setChangeability(Object handle, Object ck);
 
     /**
-     * Set the changeability of some feature.
-     *
-     * @param handle is the feature
-     * @param flag is the changeability flag
+     * Set the changeability of a StructuralFeature or AssociationEnd. A
+     * convenience method which is equivalent to invoking 
+     * {{@link #setChangeability(Object, Object)} with values of Changeable
+     * or Frozen.
+     * 
+     * @param handle
+     *            is the feature
+     * @param changeable true for Changeable and false for Frozen.
+     * @see #setChangeability(Object, Object)
+     * 
      */
-    void setChangeable(Object handle, boolean flag);
+    void setChangeable(Object handle, boolean changeable);
 
     /**
      * Set the child for a generalization.
@@ -906,10 +915,13 @@ public interface CoreHelper {
     void setChild(Object handle, Object child);
 
     /**
-     * Set the concurrency of some operation.
-     *
-     * @param handle is the operation
-     * @param concurrencyKind is the concurrency
+     * Set the concurrency of an Operation.
+     * 
+     * @param handle
+     *            the Operation
+     * @param concurrencyKind
+     *            a {@link ConcurrencyKind} of Concurrent, Guarded, or
+     *            Sequential returned from {@link Model#getConcurrencyKind()}.
      */
     void setConcurrency(Object handle, Object concurrencyKind);
 
@@ -917,9 +929,9 @@ public interface CoreHelper {
      * Sets the list of connections of the given association or link.
      *
      * @param handle the given association or link
-     * @param elems the list of association-ends or link-ends
+     * @param ends the list of association-ends or link-ends
      */
-    void setConnections(Object handle, Collection elems);
+    void setConnections(Object handle, Collection ends);
 
     /**
      * Sets the default ModelEelement of a TemplateParameter.
@@ -930,35 +942,43 @@ public interface CoreHelper {
     void setDefaultElement(Object handle, Object element);
     
     /**
-     * Sets a default value of some parameter.
+     * Set the defaultValue of a Parameter.
      *
-     * @param handle is the parameter
-     * @param expr is the expression
+     * @param handle is the Parameter
+     * @param expression the Expression to be used as the default value
      */
-    void setDefaultValue(Object handle, Object expr);
+    void setDefaultValue(Object handle, Object expression);
 
     /**
-     * @param handle a generalization
-     * @param discriminator the discriminator to set
+     * Set the discriminator of a Generalization.
+     * 
+     * @param handle a Generalization
+     * @param discriminator the String representing the discriminator
      */
     void setDiscriminator(Object handle, String discriminator);
 
     /**
-     * Set the feature at the given position.
+     * Set the Feature of a Classifier at the given position.
      *
-     * @param elem The classifier to set.
-     * @param i The position. Start with 0.
-     * @param impl The feature to set.
+     * @param classifier The classifier to set.
+     * @param index The position. Start with 0.
+     * @param feature The feature to set.
      */
-    void setFeature(Object elem, int i, Object impl);
+    void setFeature(Object classifier, int index, Object feature);
 
     /**
-     * Sets the features of some model element.
-     *
-     * @param handle the model element to set features to
-     * @param features the list of features
+     * Sets the features of a Classifier.
+     * 
+     * @param classifier
+     *            the Classifier to set features to
+     * @param features
+     *            the list of features. <em>NOTE:</em> although the API allows
+     *            any type of Collection, the list of features is ordered, so
+     *            only a List should be passed here. Other types of collections
+     *            will be converted to a List in their natural order (which may
+     *            not be the desired order.
      */
-    void setFeatures(Object handle, Collection features);
+    void setFeatures(Object classifier, Collection features);
 
     /**
      * Set the Container of the given ElementResidence
@@ -970,24 +990,27 @@ public interface CoreHelper {
     void setContainer(Object handle, Object component);
 
     /**
-     * Sets an initial value.
+     * Set the initialValue of an Attribute.
      *
-     * @param at attribute that we set the initial value of
-     * @param expr that is the value to set. Can be <code>null</code>.
+     * @param attribute attribute that we set the initial value of
+     * @param expression that is the value to set. Can be <code>null</code>.
      */
-    void setInitialValue(Object at, Object expr);
+    void setInitialValue(Object attribute, Object expression);
 
     /**
-     * Set some parameters kind.
-     *
-     * @param handle is the parameter
-     * @param kind is the directionkind
-     * @see org.argouml.model.Model#getDirectionKind
+     * Set the kind of a Parameter or the Pseudostate.
+     * 
+     * @param handle
+     *            is the Parameter or Pseudostate
+     * @param kind
+     *            a direction kind returned from
+     *            {@link Model#getDirectionKind()} or a pseudostate kind
+     *            returned from {@link Model#getPseudostateKind()}.
      */
     void setKind(Object handle, Object kind);
 
     /**
-     * Sets the container that owns the handle.<p>
+     * Set the container that owns the handle.<p>
      * 
      * <em>Warning: the implementation does not support setting the owner
      * of actions.</em>
@@ -996,9 +1019,9 @@ public interface CoreHelper {
      * at all possible, rather than this method.
      *
      * @param handle
-     *            The modelelement that must be added to the container
+     *            The ModelElement that must be added to the container
      * @param container
-     *            The owning modelelement
+     *            The owning ModelElement
      * @exception IllegalArgumentException
      *                when the handle or container is null or if the handle
      *                cannot be added to the container.
@@ -1006,7 +1029,7 @@ public interface CoreHelper {
     void setModelElementContainer(Object handle, Object container);
 
     /**
-     * Sets a multiplicity of some model element.
+     * Set the multiplicity of a ModelElement.
      *
      * @param handle model element
      * @param arg multiplicity as string OR multiplicity object,
@@ -1015,7 +1038,7 @@ public interface CoreHelper {
     void setMultiplicity(Object handle, Object arg);
 
     /**
-     * Sets a name of some modelelement.
+     * Set the name of a ModelElement.
      *
      * @param handle is the model element
      * @param name to set
@@ -1023,7 +1046,7 @@ public interface CoreHelper {
     void setName(Object handle, String name);
 
     /**
-     * Sets the body of a comment.<p>
+     * Set the body of a comment.<p>
      *
      * <em>NOTE:</em> For UML 1.3, this actually set Comment.name, but for UML
      * 1.4 it sets Comment.body.
@@ -1037,7 +1060,7 @@ public interface CoreHelper {
     void setBody(Object handle, String body);
 
     /**
-     * Sets a namespace of some modelelement.
+     * Set the namespace of a ModelElement.
      *
      * @param handle is the model element
      * @param ns is the namespace. Can be <code>null</code>.
@@ -1045,7 +1068,7 @@ public interface CoreHelper {
     void setNamespace(Object handle, Object ns);
 
     /**
-     * Sets the navigability of some association end.
+     * Set the navigability of an AssociationEnd.
      *
      * @param handle is the association end
      * @param flag is the navigability flag
@@ -1054,11 +1077,14 @@ public interface CoreHelper {
 
     /**
      * Set the OrderingKind of a given AssociationEnd.
-     *
-     * @param handle AssociationEnd
-     * @param ok OrderingKind
+     * 
+     * @param handle
+     *            AssociationEnd
+     * @param ordering
+     *            an {@link OrderingKind} returned from
+     *            {@link Model#getOrderingKind()}.
      */
-    void setOrdering(Object handle, Object ok);
+    void setOrdering(Object handle, Object ordering);
 
     /**
      * Set the owner of a Feature.
@@ -1069,14 +1095,19 @@ public interface CoreHelper {
     void setOwner(Object handle, Object owner);
 
     /**
-     * @param handle Feature
-     * @param os ScopeKind
+     * Set the ownerScope of a Feature.
+     * 
+     * @param feature
+     *            Feature
+     * @param scopeKind
+     *            a {@link ScopeKind} of Instance or Classifier
+     *            {@link Model#getScopeKind()}.
      */
-    void setOwnerScope(Object handle, Object os);
+    void setOwnerScope(Object feature, Object scopeKind);
 
 
     /**
-     * Sets the parameter of a TemplateParameter
+     * Set the parameter of a TemplateParameter.
      * 
      * @param handle the TemplateParameter
      * @param parameter the dummy ModelElement to be used as the parameter
@@ -1084,45 +1115,50 @@ public interface CoreHelper {
     void setParameter(Object handle, Object parameter);
 
     /**
-     * Sets the parameters of a classifier, event, objectflowstate or
+     * Set the parameters of a classifier, event, objectflowstate or
      * behavioralfeature.
-     *
-     * @param handle the classifier, event, objectflowstate or
-     * behavioralfeature
-     * @param parameters is a Collection of parameters
+     * 
+     * @param handle
+     *            the classifier, event, objectflowstate or behavioralfeature
+     * @param parameters
+     *            is a Collection of parameters
      */
     void setParameters(Object handle, Collection parameters);
 
     /**
-     * Sets the parent of a generalization.
+     * Set the parent of a generalization.
      *
      * @param handle generalization
-     * @param parent generalizable element (parent)
+     * @param parent GeneralizableElement (parent)
      */
     void setParent(Object handle, Object parent);
 
     /**
-     * Set the PowerType of a Generalization.
-     * @param handle Generalization
-     * @param pt Classifier
+     * Set the powerType of a Generalization.
+     * 
+     * @param handle
+     *            Generalization
+     * @param powerType
+     *            the Classifier to set as the powerType or null to clear the
+     *            powerType.
      */
-    void setPowertype(Object handle, Object pt);
+    void setPowertype(Object handle, Object powerType);
 
     /**
-     * Sets the qualified attributes of an association end.
+     * Set the qualifier attributes of an AssociationEnd.
      *
      * @param handle the association end
-     * @param elems List of qualifiers
+     * @param qualifiers List of Attributes to be set as qualifiers
      */
-    void setQualifiers(Object handle, List elems);
+    void setQualifiers(Object handle, List qualifiers);
 
     /**
-     * Sets the query flag of a behavioral feature.
+     * Sets the isQuery attribute of a BehavioralFeature.
      *
      * @param handle is the behavioral feature
-     * @param flag is the query flag
+     * @param isQuery new value for the isQuery attribute
      */
-    void setQuery(Object handle, boolean flag);
+    void setQuery(Object handle, boolean isQuery);
 
     /**
      * @param handle ElementResidence
@@ -1131,7 +1167,7 @@ public interface CoreHelper {
     void setResident(Object handle, Object resident);
 
     /**
-     * Sets the residents of some model element.
+     * Sets the residents of a ModelElement.
      *
      * @param handle the model element
      * @param residents collection
@@ -1139,12 +1175,12 @@ public interface CoreHelper {
     void setResidents(Object handle, Collection residents);
 
     /**
-     * Sets if some model element is a root.
+     * Set the isRoot attribute of a GeneralizableElement.
      *
      * @param handle model element
-     * @param flag is true if it is a root
+     * @param isRoot is true if it is a root ie it has no supertypes
      */
-    void setRoot(Object handle, boolean flag);
+    void setRoot(Object handle, boolean isRoot);
 
     /**
      * @param handle Flow
@@ -1153,15 +1189,18 @@ public interface CoreHelper {
     void setSources(Object handle, Collection specifications);
 
     /**
-     * Set the Specification flag for a ModelElement.
-     *
-     * @param handle ModelElement
-     * @param specification boolean
+     * Set the isSpecification attribute for the ElementOwnership of a
+     * ModelElement.
+     * 
+     * @param handle
+     *            ModelElement
+     * @param isSpecification
+     *            true of the element is specification
      */
-    void setSpecification(Object handle, boolean specification);
+    void setSpecification(Object handle, boolean isSpecification);
 
     /**
-     * Set the specification (i.e. the operation) of a Method.
+     * Set the specification (i.e. the Operation) of a Method.
      * 
      * @param method the method
      * @param specification the operation
@@ -1177,7 +1216,7 @@ public interface CoreHelper {
     void setSpecification(Object operation, String specification);
     
     /**
-     * Sets the specifications of some association end.
+     * Set the specifications of an AssociationEnd.
      *
      * @param handle the association end
      * @param specifications collection
@@ -1185,7 +1224,7 @@ public interface CoreHelper {
     void setSpecifications(Object handle, Collection specifications);
 
     /**
-     * Adds a stereotype to some modelelement.
+     * Add a stereotype to a ModelElement.
      *
      * @param modelElement model element
      * @param stereo stereotype
@@ -1193,7 +1232,7 @@ public interface CoreHelper {
     void addStereotype(Object modelElement, Object stereo);
 
     /**
-     * Adds a collection of stereotype to some modelelement.
+     * Add a collection of stereotype to a ModelElement.
      *
      * @param modelElement model element
      * @param stereos stereotype
@@ -1201,7 +1240,7 @@ public interface CoreHelper {
     void addAllStereotypes(Object modelElement, Collection stereos);
 
     /**
-     * Removes a stereotype from some modelelement.
+     * Remove a stereotype from a ModelElement.
      *
      * @param handle model element
      * @param stereo stereotype
@@ -1209,14 +1248,14 @@ public interface CoreHelper {
     void removeStereotype(Object handle, Object stereo);
 
     /**
-     * Removes all stereotypes from a given modelelement.
+     * Remove all stereotypes from a given ModelElement.
      *
      * @param handle model element
      */
     void clearStereotypes(Object handle);
 
     /**
-     * Sets a tagged value of some modelelement.
+     * Set a tagged value of a ModelElement.
      *
      * @param handle is the model element
      * @param tag is the tag name (a string)
@@ -1238,23 +1277,29 @@ public interface CoreHelper {
     void setTaggedValues(Object handle, Collection taggedValues);
 
     /**
-     * Set the target scope of some association end or structural feature.
-     *
-     * @param handle the model element
-     * @param scopeKind the target scope
+     * Set the targetScope of an AssociationEnd or StructuralFeature.
+     * 
+     * @param handle
+     *            the model element
+     * @param targetScope
+     *            a {@link ScopeKind} of Instance or Classifier returned from
+     *            {@link Model#getScopeKind()}.
      */
-    void setTargetScope(Object handle, Object scopeKind);
+    void setTargetScope(Object handle, Object targetScope);
 
     /**
-     * Sets the type of some parameter.
-     *
-     * @param handle is the model element
-     * @param type is the type (a classifier)
+     * Set the type of a ModelElement.
+     * 
+     * @param handle
+     *            a ModelElement which is one of: Parameter, AssociationEnd,
+     *            StructuralFeature, ClassifierInState, or ObjectFlowState.
+     * @param type
+     *            a Classifier representing the type
      */
     void setType(Object handle, Object type);
 
     /**
-     * Set the visibility of some modelelement.
+     * Set the visibility of a ModelElement.
      *
      * @param handle element
      * @param visibility is the visibility
