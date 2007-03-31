@@ -39,10 +39,13 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * The properties panel for an Attribute.
- *
- * @author jrobbins
- * @author jaap.branderhorst
+ * The properties panel for an EnumerationLiteral.
+ * 
+ * TODO: Everytime you select the EnumerationliteralProppanel, 
+ * a new instance of the EnumerationListModel is created,
+ * and it registers as targetlistener. 
+ * All these models keep getting target change events... 
+ * Make this conform with all others!
  */
 public class PropPanelEnumerationLiteral extends PropPanelModelElement {
 
