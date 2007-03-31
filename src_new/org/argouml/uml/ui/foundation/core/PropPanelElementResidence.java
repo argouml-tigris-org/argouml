@@ -29,8 +29,8 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.OneRowLinkedList;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.util.ConfigLoader;
 
@@ -53,13 +53,15 @@ public class PropPanelElementResidence extends PropPanelModelElement {
 //      add(getNamespaceVisibilityPanel());
 //      addSeparator();
 
-        JList lst1 = new OneRowLinkedList(
+        JList lst1 = new UMLLinkedList(
                 new ElementResidenceContainerListModel());
+        lst1.setVisibleRowCount(1);
         addField(Translator.localize("label.container"),
                 new JScrollPane(lst1));
 
-        JList lst2 = new OneRowLinkedList(
+        JList lst2 = new UMLLinkedList(
                 new ElementResidenceResidentListModel());
+        lst2.setVisibleRowCount(1);
         addField(Translator.localize("label.resident"),
                 new JScrollPane(lst2));
 
