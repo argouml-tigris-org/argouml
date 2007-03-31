@@ -58,14 +58,13 @@ public class CrMultipleRealization extends CrUML {
 	if (!(Model.getFacade().isAInterface(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object inter = /*(MInterface)*/ dm;
+	Object inter = dm;
 
-	Collection realize =
-	    Model.getCoreHelper().getSpecifications(inter);
+	Collection realize = Model.getFacade().getSpecifications(inter);
 
 	if (realize != null && realize.size() > 0) {
 	    return PROBLEM_FOUND;
 	}
 	return NO_PROBLEM;
     }
-} /* end class CrMultipleRealization.java */
+}
