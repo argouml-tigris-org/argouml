@@ -157,12 +157,11 @@ public interface CoreHelper {
     Object getSpecification(Object object);
 
     /**
-     * Return all Interfaces of which this class is a realization.<p>
-     * Duplicate of method by same name in Facade.
-     * @see Facade#getSpecifications(Object)
+     * Return all Interfaces of which this class is a realization.
      *
      * @param classifier  the class you want to have the interfaces for
      * @return a collection of the Interfaces
+     * @deprecated for 0.25.2 by tfmorris - use {@link Facade#getSpecifications(Object)}
      */
     Collection getSpecifications(Object classifier);
 
