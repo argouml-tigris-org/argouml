@@ -29,8 +29,8 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.OneRowLinkedList;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
@@ -54,13 +54,15 @@ public class PropPanelElementImport extends PropPanelModelElement {
 //     add(getNamespaceVisibilityPanel());
 //     addSeparator();
 
-        JList lst1 = new OneRowLinkedList(
+        JList lst1 = new UMLLinkedList(
                 new ElementImportImportedElementListModel());
+        lst1.setVisibleRowCount(1);
         addField(Translator.localize("label.imported-element"),
                 new JScrollPane(lst1));
 
-        JList lst2 = new OneRowLinkedList(
+        JList lst2 = new UMLLinkedList(
                 new ElementImportPackageListModel());
+        lst2.setVisibleRowCount(1);
         addField(Translator.localize("label.package"),
                 new JScrollPane(lst2));
 
