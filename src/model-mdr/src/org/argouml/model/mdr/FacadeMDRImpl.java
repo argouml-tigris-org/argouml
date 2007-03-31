@@ -4806,16 +4806,10 @@ class FacadeMDRImpl implements Facade {
     }
 
     public String getUMLClassName(Object handle) {
+        if (!isAUMLElement(handle)) {
+            return illegalArgumentString(handle);            
+        }
         try {
-            if (!(handle instanceof ModelElement)
-                    && !(handle instanceof Expression)
-                    && !(handle instanceof Multiplicity)
-                    && !(handle instanceof ElementImport)
-                    && !(handle instanceof ElementResidence)
-                    && !(handle instanceof TemplateParameter)
-                    && !(handle instanceof TemplateArgument)) {
-                return illegalArgumentString(handle);
-            }
             return implementation.getMetaTypes().getName(handle);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
