@@ -139,6 +139,9 @@ public class ActionDeleteModelElements extends UndoableAction {
         boolean sure = false;
         if (Model.getFacade().isAModelElement(target)) {
             sure = sureRemoveModelElement(target);
+        } else if (Model.getFacade().isAUMLElement(target)) {
+            // It is a UML element that is not a ModelElement
+            sure = true;
         } else if (target instanceof UMLDiagram) {
             // lets see if this diagram has some figs on it
             UMLDiagram diagram = (UMLDiagram) target;

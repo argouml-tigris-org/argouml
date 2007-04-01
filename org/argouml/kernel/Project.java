@@ -1063,7 +1063,7 @@ public class Project implements java.io.Serializable, TargetListener {
         if (obj != null) {
             trashcan.add(obj);
         }
-        if (Model.getFacade().isAModelElement(obj)) {
+        if (Model.getFacade().isAUMLElement(obj)) {
 
             Model.getUmlFactory().delete(obj);
 

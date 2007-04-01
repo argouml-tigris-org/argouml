@@ -263,6 +263,9 @@ public abstract class PropPanelModelElement extends PropPanel {
     }
 
     /**
+     * TODO: This should better be named "getVisibilityPanel", 
+     * since it is not restricted to a namespace.
+     * 
      * @return a panel for the visibility
      */
     protected JComponent getNamespaceVisibilityPanel() {
