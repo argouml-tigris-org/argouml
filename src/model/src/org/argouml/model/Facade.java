@@ -103,10 +103,10 @@ public interface Facade {
     boolean isAActionSequence(Object handle);
 
     /**
-     * Recognizer for Action state.
+     * Recognizer for ActionState.
      *
      * @param handle candidate
-     * @return true if handle is an Action state
+     * @return true if handle is an ActionState
      */
     boolean isAActionState(Object handle);
 
@@ -219,7 +219,7 @@ public interface Facade {
     boolean isAActivityGraph(Object handle);
 
     /**
-     * Recognizer for behavioral features.
+     * Recognizer for BehavioralFeature.
      *
      * @param handle candidate
      * @return true if handle is a behavioral feature
@@ -251,10 +251,10 @@ public interface Facade {
     boolean isAChangeEvent(Object handle);
 
     /**
-     * Recognizer for Class.
+     * Recognizer for UML Class.
      *
      * @param handle candidate
-     * @return true if handle is a Class
+     * @return true if handle is a UML Class
      */
     boolean isAClass(Object handle);
 
@@ -380,9 +380,19 @@ public interface Facade {
 
     /**
      * Recognizer for Element.
-     *
-     * @param handle candidate
+     * <p>
+     * <em>NOTE:</em> In the UML 1.4 specification there are a number of types
+     * that one might expect to be subtypes of Element, but which are not. The
+     * spec isn't clear on whether this is intentional or not but if you want
+     * all types in the spec, including things which are not subtypes of Element
+     * such as Expression, Multiplicity, MultiplicityRange TemplateArgument,
+     * TemplateParameter, ElementResidence, ElementImport use the method
+     * {@link #isAUMLElement(Object)}.
+     * 
+     * @param handle
+     *            candidate
      * @return true if handle is an Element
+     * @see #isAUMLElement(Object)
      */
     boolean isAElement(Object handle);
 
@@ -427,10 +437,10 @@ public interface Facade {
     boolean isAEvent(Object handle);
 
     /**
-     * Recognizer for Exception.
+     * Recognizer for UML Exception.
      *
      * @param handle candidate
-     * @return true if handle is an Exception
+     * @return true if handle is a UML Exception
      */
     boolean isAException(Object handle);
 
@@ -499,10 +509,10 @@ public interface Facade {
     boolean isAGeneralizableElement(Object handle);
 
     /**
-     * Recognizer for GeneralizableElement.
+     * Recognizer for Generalization.
      *
      * @param handle candidate
-     * @return true if handle is a GeneralizableElement
+     * @return true if handle is a Generalization
      */
     boolean isAGeneralization(Object handle);
 
@@ -702,7 +712,7 @@ public interface Facade {
     boolean isAPseudostateKind(Object handle);
 
     /**
-     * Returns the Kind of a Pseudostate.
+     * Return the Kind of a Pseudostate.
      *
      * TODO: - Do we need this as well as getKind - I think not
      *
@@ -712,7 +722,7 @@ public interface Facade {
     Object getPseudostateKind(Object handle);
 
     /**
-     * Returns the Kind of a Pseudostate or Parameter.
+     * Return the Kind of a Pseudostate or Parameter.
      *
      * @param handle the Pseudostate or Parameter
      * @return the Kind
@@ -720,15 +730,17 @@ public interface Facade {
     Object getKind(Object handle);
 
     /**
-     * Returns the receiver object of a message or stimulus.
-     *
-     * @param handle candidate
-     * @return receiver
+     * Return the receiver Instance for a Stimulus or the receiver
+     * ClassifierRole for a Message.
+     * 
+     * @param handle
+     *            candidate
+     * @return Instance or ClassifierRole
      */
     Object getReceiver(Object handle);
 
     /**
-     * Returns the Link belonging to the given LinkEnd.
+     * Return the Link belonging to the given LinkEnd.
      *
      * @param handle the LinkEnd
      * @return the Link
@@ -753,10 +765,10 @@ public interface Facade {
     boolean isAReception(Object handle);
 
     /**
-     * Recognizer for Returnaction.
+     * Recognizer for ReturnAction.
      *
      * @param handle candidate
-     * @return true if handle is a returnaction
+     * @return true if handle is a ReturnAction
      */
     boolean isAReturnAction(Object handle);
 
@@ -809,10 +821,10 @@ public interface Facade {
     boolean isAStateMachine(Object handle);
 
     /**
-     * Recognizer for stimulus.
+     * Recognizer for Stimulus.
      *
      * @param handle candidate
-     * @return true if handle is a stimulus
+     * @return true if handle is a Stimulus
      */
     boolean isAStimulus(Object handle);
 
@@ -913,15 +925,15 @@ public interface Facade {
     boolean isATimeEvent(Object handle);
 
     /**
-     * Recognizer for any UML object known. <p>
+     * Recognizer for any UML type defined in the UML specification,
+     * including those which are not subtypes of Element. <p>
      * 
-     * About the name for this operation: 
-     * In UML 2, the Element is 
-     * the common superclass for all metaclasses 
-     * in the infrastructure library.
+     * In the UML 1.4 specification, not all defined types are subtypes
+     * of Element, although this has been fixed/changed in UML 2.
      *  
      * @param handle the UML object
      * @return true if the given object is a UML object
+     * @see #isAElement(Object)
      */
     public boolean isAUMLElement(Object handle);
 
@@ -942,7 +954,7 @@ public interface Facade {
     boolean isAUsage(Object handle);
 
     /**
-     * Recognizer for a Use Case.
+     * Recognizer for a UseCase.
      *
      * @param handle candidate
      * @return true if handle is a Transition
@@ -958,7 +970,7 @@ public interface Facade {
     boolean isAVisibilityKind(Object handle);
 
     /**
-     * Recognizer for Classes that are Active.
+     * Recognizer for UML Classes that are Active.
      *
      * @param handle candidate
      * @return true if Class is Active
@@ -966,7 +978,8 @@ public interface Facade {
     boolean isActive(Object handle);
 
     /**
-     * Recognizer for attributes that are changeable.
+     * Recognizer for StructuralFeatures and AssociationEnds that are 
+     * changeable.
      *
      * @param handle candidate
      * @return true if handle is changeable
@@ -974,7 +987,7 @@ public interface Facade {
     boolean isChangeable(Object handle);
 
     /**
-     * Recognizer for attributes with classifier scope.
+     * Recognizer for Attributes and Features with classifier scope.
      *
      * @param handle candidate
      * @return true if handle has classifier scope.
@@ -982,7 +995,7 @@ public interface Facade {
     boolean isClassifierScope(Object handle);
 
     /**
-     * Recognizer for concurrent composite state.
+     * Recognizer for concurrent CompositeState.
      *
      * @param handle composite state
      * @return true if concurent.
@@ -990,7 +1003,9 @@ public interface Facade {
     boolean isConcurrent(Object handle);
 
     /**
-     * Recognizer for ConcurrentRegion.
+     * Recognizer for ConcurrentRegion.  
+     * A concurrent region is a CompositeState which has
+     * an owner that is concurrent.
      *
      * @param handle candidate
      * @return true if handle is a ConcurrentRegion
@@ -1017,21 +1032,27 @@ public interface Facade {
     boolean isFrozen(Object handle);
 
     /**
-     * Returns true if a given associationend is a composite.
+     * Returns true if a given AssociationEnd has an aggretation kind of
+     * Composite.
+     * 
      * @param handle candidate
      * @return boolean
      */
     boolean isComposite(Object handle);
 
     /**
-     * Returns true if a given associationend is a composite.
+     * Returns true if a given AssociationEnd has an aggretation kind of
+     * Aggregate.
+     * 
      * @param handle candidate
      * @return boolean
      */
     boolean isAggregate(Object handle);
 
     /**
-     * Recognizer for attributes that are initialized.
+     * Recognizer for Attributes that are initialized. An Attribute is 
+     * considered initalized if it has an initialValue expression
+     * with a non-empty body.
      *
      * @param handle candidate
      * @return true if the attribute is initialized.
@@ -1047,7 +1068,8 @@ public interface Facade {
     boolean isInstanceScope(Object handle);
 
     /**
-     * Recognizer for internal transitions.
+     * Recognizer for internal transitions.  An internal Transition has
+     * its owning State as both the source State and target State.
      *
      * @author mvw
      * @param handle candidate
@@ -1062,7 +1084,7 @@ public interface Facade {
      * metamodel), it will return false without throwing an error.
      * 
      * @param handle
-     *            candidate GeneralizableElement
+     *            candidate GeneralizableElement, Operation, or Reception
      * @return true if handle is a leaf
      */
     boolean isLeaf(Object handle);
@@ -1073,45 +1095,43 @@ public interface Facade {
      * attribute (ie it isn't a type which has that attribute in the UML
      * metamodel), it will return false without throwing an error.
      *
-     * @param handle candidate GeneralizableElement
+     * @param handle candidate GeneralizableElement, Operation, or Reception
      * @return true if handle is a root
      */
     boolean isRoot(Object handle);
 
     /**
-     * Recognizer for specifications.
+     * Return value of isSpecification attribute for a ModelElement.
      *
      * @param handle candidate ModelElement
-     * @return true if handle is a specification
+     * @return boolean value contained by the isSpecification attribute
      */
     boolean isSpecification(Object handle);
 
     /**
-     * Recognizer for Navigable elements.
+     * Return navigability of an AssociationEnd.
      *
-     * @param handle candidate
+     * @param handle candidate AssociationEnd
      * @return true if handle is navigable
      */
     boolean isNavigable(Object handle);
 
     /**
-     * Recognizer for primary objects.<p>
-     *
-     * A primary object is an object that is created by the parser or
-     * by a user.
-     * Object that are created when importing some other object are not.<p>
+     * Recognizer for primary objects. A primary object is an object that is
+     * created by the parser or by a user. Object that are created as a side
+     * effect of importing some other object are not.
+     * <p>
+     * TODO: This doesn't belong in the Facade. It's a higher level function
+     * used specifically for certain reverse engineering operations. - tfmorris
      * 
-     * TODO: This doesn't belong in the Facade.  It's a higher level
-     * function used specifically for certain reverse engineering 
-     * operations. - tfmorris
-     *
-     * @param handle candidate
+     * @param handle
+     *            candidate
      * @return true if primary object.
      */
     boolean isPrimaryObject(Object handle);
 
     /**
-     * Recognizer for attributes with package visibility.
+     * Recognizer for ModelElements with package visibility.
      *
      * TODO: This method name was chosen for compatibility with
      * the existing naming scheme, but has the potential of 
@@ -1123,7 +1143,7 @@ public interface Facade {
     boolean isPackage(Object handle);
     
     /**
-     * Recognizer for attributes with private.
+     * Recognizer for ModelElements with private visibility.
      *
      * @param handle candidate
      * @return true if handle has private
@@ -1131,7 +1151,7 @@ public interface Facade {
     boolean isPrivate(Object handle);
 
     /**
-     * Recognizer for attributes with public.
+     * Recognizer for ModelElements with public visibility.
      *
      * @param handle candidate
      * @return true if handle has public
@@ -1139,7 +1159,7 @@ public interface Facade {
     boolean isPublic(Object handle);
 
     /**
-     * Recognizer for MBehaviouralFeature's that are queries.
+     * Recognizer for BehaviouralFeature's that are queries.
      *
      * @param handle candidate
      * @return true if it is a query
@@ -1147,7 +1167,7 @@ public interface Facade {
     boolean isQuery(Object handle);
 
     /**
-     * Recognizer for attributes with protected.
+     * Recognizer for ModelElements with protected visibility.
      *
      * @param handle candidate
      * @return true if handle has protected
@@ -1155,7 +1175,8 @@ public interface Facade {
     boolean isProtected(Object handle);
 
     /**
-     * Recognizer for realize.
+     * Recognizer for ModelElements which have the <<realize>> Stereotype 
+     * applied.
      *
      * @param handle candidate
      * @return true if handle has a realize stereotype
@@ -1163,7 +1184,7 @@ public interface Facade {
     boolean isRealize(Object handle);
 
     /**
-     * Recognizer for return.
+     * Recognizer for Parameter's with a DirectionKind of Return.
      *
      * @param handle candidate parameter
      * @return true if handle is a return parameter.
@@ -1171,7 +1192,8 @@ public interface Facade {
     boolean isReturn(Object handle);
 
     /**
-     * Recognizer for singleton.
+     * Recognizer for ModelElements which have the <<singleton>> Stereotype
+     * applied.
      *
      * @param handle candidate
      * @return true if handle is a singleton.
@@ -1179,7 +1201,7 @@ public interface Facade {
     boolean isSingleton(Object handle);
 
     /**
-     * Recognizer for model elements with a given stereotype.
+     * Recognizer for ModelElements with a given stereotype.
      *
      * @param handle candidate model element
      * @param stereotypename a string that is the stereotype name.
@@ -1188,7 +1210,8 @@ public interface Facade {
     boolean isStereotype(Object handle, String stereotypename);
 
     /**
-     * Returns true if the given CompositeState is the top state.
+     * Returns true if the given CompositeState is the top state.  The top
+     * state has no containing StateMachine.
      *
      * @param handle CompositeState
      * @return boolean true if top state
@@ -1196,7 +1219,7 @@ public interface Facade {
     boolean isTop(Object handle);
 
     /**
-     * Recognizer for type.
+     * Recognizer for ModelElements with the <<type>> Stereotype applied.
      *
      * @param handle candidate
      * @return true if handle is a type.
@@ -1204,59 +1227,60 @@ public interface Facade {
     boolean isType(Object handle);
 
     /**
-     * Recognizer for utility.
+     * Recognizer for ModelElements which have the <<utility>> Stereotype 
+     * applied.
      *
      * @param handle candidate
      * @return true if handle is a utility.
      */
     boolean isUtility(Object handle);
 
-    ////////////////////////////////////////////////////////////////
-
     /**
-     * Returns the association connected to an association end or
-     * the association belonging to the given link.
+     * Returns the Association connected to an AssociationEnd or
+     * belonging to the given Link.
      *
-     * @param handle is the link
+     * @param handle the AssociationEnd or Link
      * @return association end
      */
     Object getAssociation(Object handle);
 
     /**
-     * Returns the association end between some classifier and some association.
+     * Return the AssociationEnd connecting the given Classifier 
+     * and Association.
      *
-     * @param handle is the classifier
-     * @param assoc is the association
+     * @param classifier the classifier
+     * @param association is the association
      * @return association end
      */
-    Object getAssociationEnd(Object handle, Object assoc);
+    Object getAssociationEnd(Object classifier, Object association);
 
     /**
-     * The collection of Association Ends.
+     * Return the collection of AssociationEnds for a Classifier
      *
-     * @param handle the object that we get the association ends from.
+     * @param handle the Classifier for which to get the AssociationEnds.
      * @return Collection with association ends.
      */
     Collection getAssociationEnds(Object handle);
 
     /**
-     * The collection of association roles.
+     * Return the collection of AssociationRoles for an Association.
      *
-     * @param handle the object that we get the association roles from.
+     * @param handle the Association that we get the association roles from.
      * @return Collection of association roles.
      */
     Collection getAssociationRoles(Object handle);
 
     /**
-     * The list of Attributes.
-     *
+     * Return the List of Attributes for a Classifier.
+     * 
      * @param handle classifier to examine.
      * @return Collection with attributes.
      */
     List getAttributes(Object handle);
 
     /**
-     * Collection of baseclasses of some stereotype.
+     * Return the Collection of the names of baseClasses for a Stereotype.
+     * Note that the returned values are Names, not Elements.
      *
      * @param handle the stereotype
      * @return collection containing all applicable baseclasses
@@ -1264,17 +1288,23 @@ public interface Facade {
     Collection getBaseClasses(Object handle);
 
     /**
-     * The base of some model element.<p>
-     *
-     * @param handle the model element
+     * Return the base of a ModelElement. The element may be one of the
+     * following types: AssociationEndRole, AssociationRole, Extend, Include, or
+     * ClassifierRoles. <em>NOTE:</em> in the case of a ClassifierRole, the
+     * return value is a Collection of elements, not a single element.  If you
+     * know you are dealing with a ClassifierRole, it is prefeable to use
+     * {@link #getBases(Object)}.
+     * 
+     * @param handle
+     *            the model element
      * @return the base
      */
     Object getBase(Object handle);
 
     /**
-     * Get the bases of a classifier role.
+     * Get the bases of a ClassifierRole.
      *
-     * @param handle classifier role.
+     * @param handle ClassifierRole.
      * @return the bases.
      */
     Collection getBases(Object handle);
@@ -1289,17 +1319,17 @@ public interface Facade {
     Collection getBehaviors(Object handle);
 
     /**
-     * Get the behavioral feature of an parameter.
+     * Get the BehavioralFeature of a Parameter.
      *
-     * @param handle expression.
+     * @param handle the Parameter
      * @return the behavioral feature.
      */
     Object getBehavioralFeature(Object handle);
 
     /**
-     * Get the body of an method/constraint/expression/comment.<p>
+     * Get the body of a Method, Constraint, Expression, or Comment.<p>
      *
-     * If the argument is an expression, the body returned is a
+     * If the argument is an Expression, the body returned is a
      * {@link String} (or <code>null</code>). If you want a type-safe
      * version of this version of the call,
      * use {@link DataTypesHelper#getBody(Object)}.
@@ -1310,7 +1340,8 @@ public interface Facade {
     Object getBody(Object handle);
 
     /**
-     *  Return the Synch State's bound.
+     *  Return the SynchState's bound.
+     *  
      *  @param handle the synch State
      *  @return bound
      */
@@ -1333,39 +1364,40 @@ public interface Facade {
     Object getChild(Object handle);
 
     /**
-     * Get the children of some generalizable element.
+     * Get the children of a GeneralizableElement.
      *
-     * @param handle to the generalizable element.
+     * @param handle the GeneralizableElement.
      * @return a collection with all children.
      */
     Collection getChildren(Object handle);
 
     /**
-     * Gets the classifiers roles of some model element.
+     * Get the ClassifierRoles of a Classifier or Feature.
      *
-     * @param handle the model element
+     * @param handle the Classifer or Feature.
      * @return the classifiers roles of the instance
      */
     Collection getClassifierRoles(Object handle);
 
     /**
-     * Get the classifier of an Association End.
+     * Get the classifier (participant) of an AssociationEnd.
      *
-     * @param handle The Association End to get from.
-     * @return The classifier of the Association End.
+     * TODO: Rename this getParticipant to align with UML spec - tfm - 20070331
+     * @param handle The AssociationEnd to get from.
+     * @return The classifier of the AssociationEnd.
      */
     Object getClassifier(Object handle);
 
     /**
-     * Gets the classifierss of some instance.
+     * Get the classifierss of an Instance.
      *
-     * @param handle the instance
-     * @return the classifierss of the instance
+     * @param handle the Instance
+     * @return the classifierss of the Instance
      */
     Collection getClassifiers(Object handle);
 
     /**
-     * Gets the classifiers in state of some model element.
+     * Get the classifiers in state of a Classifier or State.
      *
      * @param handle the model element
      * @return the classifierss in state
@@ -1373,7 +1405,7 @@ public interface Facade {
     Collection getClassifiersInState(Object handle);
 
     /**
-     * Gets the clients of some dependency.
+     * Get the clients of a Dependency.
      *
      * @param handle the dependency
      * @return the clients of the dependency
@@ -1381,47 +1413,47 @@ public interface Facade {
     Collection getClients(Object handle);
 
     /**
-     * Get the client dependencies of some classifier.
+     * Get the client dependencies of a ModelElement.
      *
-     * @param handle to the classifier.
+     * @param handle the ModelElement.
      * @return an iterator with all client dependencies.
      */
     Collection getClientDependencies(Object handle);
 
     /**
-     * Get the condition of an extend.
+     * Get the condition of an Extend.
      *
-     * @param handle The extend.
+     * @param handle The Extend.
      * @return the condition
      */
     Object getCondition(Object handle);
 
     /**
-     * Get the concurrency of an operation.
+     * Get the concurrency of an Operation.
      *
-     * @param handle The operation.
+     * @param handle The Operation.
      * @return the concurrency.
      */
     Object getConcurrency(Object handle);
 
     /**
-     * The collection of connections to an association or link.
+     * Return the connections to an Association or a Link.
      *
-     * @param handle to the association or link
+     * @param handle the Association or Link
      * @return a Collection with all connections.
      */
     Collection getConnections(Object handle);
 
     /**
-     * Returns the effect of some transition.
+     * Return the effect of a Transition.
      *
-     * @param handle is the transition
+     * @param handle the Transition
      * @return the effect
      */
     Object getEffect(Object handle);
 
     /**
-     * Get the residences of an element.
+     * Get the residences of a ModelElement.
      *
      * @param handle the model element that we are getting the residences of
      * @return the residence collection
@@ -1429,7 +1461,7 @@ public interface Facade {
     Collection getElementResidences(Object handle);
 
     /**
-     * Returns the ElementImports of this ModelElement.
+     * Return the ElementImports of this ModelElement.
      * 
      * TODO: Not sure if we ever had a getElementImports, but,
      * if not, this method name, which is left over from UML 1.3,
@@ -1441,48 +1473,50 @@ public interface Facade {
     Collection getElementImports2(Object handle);
 
     /**
-     * Returns the entry action to a state.
+     * Return the entry Action for a State.
      *
-     * @param handle is the state
+     * @param handle the State
      * @return the entry
      */
     Object getEntry(Object handle);
 
     /**
-     * Returns the Enumeration of an EnumerationLiteral.
+     * Return the Enumeration which owns a given EnumerationLiteral.
      * 
-     * @param handle the enumerationliteral
-     * @return the enumeration
+     * @param handle the EnumerationLiteral
+     * @return the owning Enumeration
      */
     Object getEnumeration(Object handle);
     
     /**
-     * Returns the enumeration literals of a UML Enumeration.
+     * Return the List of enumeration literals for a UML Enumeration.
      *
-     * @param handle is the Enumeration
+     * @param handle the Enumeration
      * @return List of the Enumeration literals.
      */
     List getEnumerationLiterals(Object handle);
 
     /**
-     * Returns the exit action to a state.
+     * Return the exit action to a State.
      *
-     * @param handle is the state
+     * @param handle the state
      * @return the exit action
      */
     Object getExit(Object handle);
 
     /**
-     * Get the Expression belonging to a Guard, ChangeEvent or timeEvent.
-     *
-     * @param handle the Object to get the Expression from
+     * Get the Expression belonging to a Argument, Guard, ChangeEvent or
+     * TimeEvent.
+     * 
+     * @param handle
+     *            the Object to get the Expression from
      * @return Object the Expression
      */
     Object getExpression(Object handle);
 
     /**
-     * Return all extended elements in the current repository for
-     * the given stereotype.
+     * Return ModelElements which have a given Stereotype applied. 
+     * (ie. the Stereotype's extendedElements collection)
      * 
      * @param handle stereotype for which to return extended elements
      * @return collection of model elements extended by given stereotype
@@ -1490,31 +1524,31 @@ public interface Facade {
     public Collection getExtendedElements(Object handle);
     
     /**
-     * Returns all extends of a use case or extension point.
+     * Return all Extends of a UseCase or ExtensionPoint.
      *
-     * @param handle is the use case or the extension point
+     * @param handle the UseCase or the ExtensionPoint
      * @return the extends
      */
     Collection getExtends(Object handle);
 
     /**
-     * Returns all extenders of a use case.
+     * Return all extenders of a UseCase.
      *
-     * @param handle is the use case
+     * @param handle  the UseCase
      * @return the extends
      */
     Collection getExtenders(Object handle);
 
     /**
-     * Gets the use case extension of an extend.
+     * Get the UseCase which is the extension of an Extend.
      *
-     * @param handle is the extend
+     * @param handle the extend
      * @return The extension
      */
     Object getExtension(Object handle);
 
     /**
-     * Returns the Extensionpoint at given index-number.
+     * Return the ExtensionPoint at given index-number.
      *
      * @param handle Extend
      * @param index int
@@ -1523,15 +1557,17 @@ public interface Facade {
     Object getExtensionPoint(Object handle, int index);
 
     /**
-     * Returns all extends of a UseCase or Extend.
-     *
-     * @param handle is the use case or the extend
-     * @return the extends
+     * Return all Extends of a UseCase or Extend.
+     * 
+     * @param handle
+     *            the UseCase or the Extend
+     * @return the Collection of Extends. If the argument was an Extend, the
+     *         Collection is ordered, ie a List.
      */
     Collection getExtensionPoints(Object handle);
 
     /**
-     * The list of Features from a Classifier.
+     * Get the List of Features owned by a Classifier.
      *
      * @param handle Classifier to retrieve from.
      * @return List of Features
@@ -1539,17 +1575,19 @@ public interface Facade {
     List getFeatures(Object handle);
 
     /**
-     * Gets the generalization between two generalizable elements.
+     * Get the Generalization connecting two GeneralizableElements.
      * Returns null if there is none.
      *
-     * @param handle is the child
+     * @param handle the child
      * @param parent is the parent
-     * @return The generalization
+     * @return The generalization or null if none found
      */
     Object getGeneralization(Object handle, Object parent);
 
     /**
-     * The collection of Generalizations from a GeneralizableElement.
+     * Return collection of Generalizations that the given GeneralizableElement
+     * participates in as a child.  Use {@link #getSpecializations(Object)} to
+     * find the Generalizations that it particpates in as a parent.
      *
      * @param handle GeneralizableElement to retrieve from.
      * @return Generalizations
@@ -1557,15 +1595,15 @@ public interface Facade {
     Collection getGeneralizations(Object handle);
 
     /**
-     * Gets the guard for some given transition.
+     * Get the guard for a Transition.
      *
-     * @param handle is the transition
+     * @param handle the Transition
      * @return Object
      */
     Object getGuard(Object handle);
 
     /**
-     * Returns the Icon of a Stereotype.
+     * Return the Icon of a Stereotype.
      *
      * @param handle the Stereotype to get the Icon from
      * @return the Icon
@@ -1573,103 +1611,113 @@ public interface Facade {
     Object getIcon(Object handle);
 
     /**
-     * Returns the includes for some use case.<p>
+     * Return the includes for a UseCase.<p>
      *
-     * @param handle is the use case
-     * @return the includes as a Collection
+     * @param handle the UseCase
+     * @return a Collection containing the Includes
      */
     Collection getIncludes(Object handle);
 
     /**
-     * Returns the includers for some use case.<p>
+     * Return Includes which have the given UseCase as an addition.
+     * <em>NOTE:</em> The association is not navigable in this direction,
+     * so this isn't guaranteed to work in the general case, but it will
+     * return all appropriate elements which can be found in the current
+     * model repository.
      *
-     * @param handle is the use case
+     * @param handle the UseCase
      * @return the includes as a Collection
      */
     Collection getIncluders(Object handle);
 
     /**
-     * Returns the incoming transitions for some statevertex.
-     *
-     * @param handle is the state vertex
-     * @return Collection
+     * Return the incoming Transitions for some StateVertex, Transition, Action,
+     * or Guard.  For a Transition, the incomings of its source StateVertex are
+     * used.  For an Action or Guard, the owning Transition is found and then
+     * the algorithm for Transitions is applied.
+     * 
+     * @param handle
+     *            a StateVertex, Transition, Action, or Guard
+     * @return Collection of Transitions
      */
     Collection getIncomings(Object handle);
 
     /**
-     * Returns the initial value for some attribute.
+     * Return the initial value of an Attribute.
      *
-     * @param handle is the attribute
-     * @return initial value
+     * @param handle the Attribute
+     * @return an Expression representing the initial value
      */
     Object getInitialValue(Object handle);
 
     /**
-     * Returns the instance of an AttributeLink or LinkEnd.
+     * Return the instance of an AttributeLink or LinkEnd.
      *
-     * @param handle is the attribute link or link end
+     * @param handle the attribute link or link end
      * @return initial value
      */
     Object getInstance(Object handle);
 
     /**
-     * Returns the Instances for some Clasifier.
+     * Return the Instances associated with a Classifier.  
      *
-     * @param handle is the classifier
+     * @param handle the classifier
      * @return Collection
      */
     Collection getInstances(Object handle);
 
     /**
-     * Returns the collection of States for some ClasifierInState.
+     * Return the collection of States for a ClassifierInState.
      *
-     * @param handle is the classifierInState
+     * @param handle the classifierInState
      * @return Collection
      */
     Collection getInStates(Object handle);
 
     /**
-     * Returns the interaction for some message.
+     * Return the Interaction for a Message.
      *
-     * @param handle is the message
+     * @param handle the Message
      * @return the interaction
      */
     Object getInteraction(Object handle);
 
     /**
-     * Returns the interactions belonging to a collaboration.
+     * Return the Interactions belonging to a Collaboration.
      *
-     * @param handle is the collaboration
+     * @param handle the Collaboration
      * @return Collection
      */
     Collection getInteractions(Object handle);
 
     /**
-     * Returns the internal transitions belonging to a state.
+     * Return the internalTransitions belonging to a State.
      *
-     * @param handle is the state
+     * @param handle the State
      * @return Collection
      */
     Collection getInternalTransitions(Object handle);
 
     /**
-     * Returns the messages belonging to some interaction.
-     *
-     * @param handle candidate
-     * @return Collection
+     * Return the messages belonging to an Interaction, AssociationRole, or
+     * Action.
+     * 
+     * @param handle
+     *            the candidate element
+     * @return Collection of Messages
      */
     Collection getMessages(Object handle);
 
     /**
-     * Returns the messages belonging to some other message.
+     * Return the Messages which are successors to the given Message.
      *
-     * @param handle is the message
+     * @param handle the message
      * @return Collection
      */
     Collection getSuccessors(Object handle);
 
     /**
-     * Get the messages that are activated by the given message.
+     * Return the Messages that are activated by the given Message.
      *
      * @param handle Message
      * @return the Collection of Messages
@@ -1677,23 +1725,23 @@ public interface Facade {
     Collection getActivatedMessages(Object handle);
 
     /**
-     * Returns the messages received by the given classifier role.
+     * Return the Messages received by the given ClassifierRole.
      *
-     * @param handle is the classifier role
+     * @param handle the ClassifierRole
      * @return Collection
      */
     Collection getReceivedMessages(Object handle);
 
     /**
-     * Returns the messages sent by the given classifier role.
+     * Return the Messages sent by the given ClassifierRole.
      *
-     * @param handle is the classifier role
+     * @param handle the ClassifierRole
      * @return Collection
      */
     Collection getSentMessages(Object handle);
 
     /**
-     * Get the Model of some model element.
+     * Get the Model of a ModelElement.
      * If no containing Model can be found, the outermost
      * containing ModelElement is returned (which could be
      * the original element itself if it has no owner).
@@ -1704,7 +1752,7 @@ public interface Facade {
     Object getModel(Object handle);
 
     /**
-     * Get the ModelElement which one of:
+     * Get the ModelElement which is one of:
      * <ul>
      * <li>the importElement of an ElementImport </li>
      * <li>the modelElement of a TaggedValue</li>
@@ -1718,7 +1766,7 @@ public interface Facade {
     Object getModelElement(Object handle);
 
     /**
-     * Get the Multiplicity from a model element.
+     * Get the Multiplicity of an AssociationEnd, ClassifierRole, StructuralFeature, or TagDefinition.
      *
      * @param handle model element to retrieve from.
      * @return multiplicity
@@ -1734,81 +1782,84 @@ public interface Facade {
     Iterator getRanges(Object handle);
 
     /**
-     * Get the comments of an element.
+     * Get the Comments which annotate a ModelElement.
      *
-     * @param handle the model element that we are getting the comments of
-     * @return the comment (or null)
+     * @param handle the ModelElement that we are getting the comments of
+     * @return the Collection of Comments
      */
     Collection getComments(Object handle);
 
     /**
-     * Get the modelelement that were commented.
+     * Get the ModelElements (annotatedElements) which are annotated by a Comment.
      *
-     * @param handle the comment that we are getting the model elements of
-     * @return the modelelements (or null)
+     * @param handle the Comment that we are getting the model elements of
+     * @return a Collection of ModelElements
      */
     Collection getAnnotatedElements(Object handle);
 
     /**
-     * Get the communication connection of an message.
-     *
-     * @param handle the message that we are getting the communication
-     * connection
-     * @return the communication connection
+     * Get the communicationConnection of a Message.
+     * 
+     * @param handle
+     *            the Message for which to find the communicationConnection
+     * @return Message which is the communicationConnection or null
      */
     Object getCommunicationConnection(Object handle);
 
     /**
-     * Get the communication link of a stimulus.
-     *
-     * @param handle the message that we are getting the communication link
-     * @return the communication link
+     * Get the communicationLink of a Stimulus.
+     * 
+     * @param handle
+     *            the Stimulus for which to find the communicationLink
+     * @return Link which is the communicationLink or null if none.
      */
     Object getCommunicationLink(Object handle);
 
     /**
-     * Get the collaborations of an element.
-     *
-     * @param handle the model element that we are getting the
-     * collaborations of.
-     * @return the collaborations
+     * Get the collaborations for a Classifier or Operation. This returns the
+     * Collaborations which have the given Classifier or Operation as their
+     * representedClassifier or representedOperation.
+     * 
+     * @param handle
+     *            the model element that we are getting the collaborations of.
+     * @return Collection of Collaborations
      */
     Collection getCollaborations(Object handle);
 
     /**
-     * Get the component instance of an instance.
+     * Get the componentInstance of an Instance.
      *
-     * @param handle is the instance
-     * @return the component instance
+     * @param handle the Instance
+     * @return the ComponentInstance
      */
     Object getComponentInstance(Object handle);
 
     /**
-     * Returns the collection of ConstrainingElements of a Collaboration.
+     * Return the constrainingElements of a Collaboration.
      *
      * @param handle the Collaboration
-     * @return the collection of ConstrainingElements
+     * @return Collection of ModelElements
      */
     Collection getConstrainingElements(Object handle);
 
     /**
-     * Returns the list of ConstrainedElements of a constraint.
+     * Return the constrainedElements of a Constraint.
      *
      * @param handle the Constraint
-     * @return the list of ConstrainedElements
+     * @return List of ModelElements
      */
     List getConstrainedElements(Object handle);
 
     /**
-     * Get the collection of all constraints of the given ModelElement.
+     * Return the Constraints for the given ModelElement.
      *
      * @param handle the ModelElement
-     * @return the collection of all constraints
+     * @return the collection of all Constraints
      */
     Collection getConstraints(Object handle);
 
     /**
-     * Returns the container for the given modelelement. If you know the type of
+     * Return the container for the given modelelement. If you know the type of
      * ModelElement you are working with, you should use the appropriate more
      * specific function (e.g. getAssociation for an AssociationEnd).<p>
      * 
@@ -1830,7 +1881,7 @@ public interface Facade {
     Object getModelElementContainer(Object handle);
     
     /**
-     * Returns all composite components of given ModelElement.
+     * Return all composite components of given ModelElement.
      * This is the inverse of getModelElementContainer and
      * that method will return handle for all elements in the
      * Collection.<p>
@@ -1841,7 +1892,7 @@ public interface Facade {
     List getModelElementContents(Object handle);
 
     /**
-     * Returns all ModelElements associated with the given ModelElement
+     * Return all ModelElements associated with the given ModelElement
      * by a MOF level association (not an just an association in the user 
      * model, although it includes those too).<p>
      * 
@@ -1854,7 +1905,7 @@ public interface Facade {
     List getModelElementAssociated(Object handle);
 
     /**
-     * Returns the CompositeState or Component that is the container of the
+     * Return the CompositeState or Component that is the container of the
      * given StateVertex or ElementResidence, respectively.<p>
      * 
      * ElementResidence support is new in UML 1.4 (was
@@ -1867,77 +1918,76 @@ public interface Facade {
     Object getContainer(Object handle);
 
     /**
-     * Returns the collection of ModelElements contained in a Partition.
+     * Return all ModelElements contained in a Partition.
      *
      * @param handle the Partition
-     * @return the contents of the Partition
+     * @return Collection of ModelElements
      */
     Collection getContents(Object handle);
 
     /**
-     * Returns the context of some given statemachine or the context
-     * of some given interaction.
-     *
-     * @param handle the statemachine or the interaction
-     * @return the context of the statemachine or interaction or null
-     * if the statemachine or interaction doesn't have a context.
+     * Return the context of a StateMachine or Interaction.
+     * 
+     * @param handle
+     *            the StateMachine or the Interaction
+     * @return the ModelElement representing the context, or null if no context
+     *         set.
      */
     Object getContext(Object handle);
 
     /**
-     * Return the collection of the Contexts of a given Signal.
-     *
-     * @param handle the Signal
-     * @return a collection of the Contexts
+     * Return the BehavioralFeatures which are contexts for a given Signal (ie
+     * have this Signal as a raisedSignal).
+     * 
+     * @param handle
+     *            the Signal
+     * @return Collection of BehavioralFeatures
      */
     Collection getContexts(Object handle);
 
     /**
-     * Return the collection of Actions that create/instantiate
-     * the given Classifier.
-     *
-     * @param handle the Classifier
-     * @return a collection containing all the creating actions
+     * Return the CreateActions that create/instantiate the given Classifier.
+     * 
+     * @param handle
+     *            the Classifier
+     * @return a collection of CreateActions
      */
     Collection getCreateActions(Object handle);
 
     /**
-     * Get the default value of a parameter.
+     * Get the defaultValue of a Parameter.
      *
-     * @param handle the parameter that we are getting the defaultvalue from
-     * @return the default value
+     * @param handle the Parameter that we are getting the defaultvalue from
+     * @return an Expression representing the default value
      */
     Object getDefaultValue(Object handle);
 
     /**
-     * Get deferrable events of a state.
+     * Get deferrable events of a State.
      *
      * @param handle the state that we are getting the deferrable event from
-     * @return the deferrable events collection
+     * @return Collection of Events
      */
     Collection getDeferrableEvents(Object handle);
 
     /**
-     * Returns the collection of components that are
-     * deployed inside the given node.
+     * Return all Components that are deployed inside the given Node.
      * 
-     * @param handle the given node
-     * @return collection of components
+     * @param handle the given Node
+     * @return Collection of Components
      */
     Collection getDeployedComponents(Object handle);
 
     /**
-     * Returns the context of some given statemachine or the context
-     * of some given interaction.
-     *
-     * @param handle the statemachine or the interaction
-     * @return the context of the statemachine or interaction or null
-     * if the statemachine or interaction doesn't have a context.
+     * Return all Nodes in which the given Component is deployed.
+     * 
+     * @param handle the Componet
+     * @return Collection of Nodes
      */
     Collection getDeploymentLocations(Object handle);
 
     /**
-     * Get the discriminator.
+     * Get the discriminator for a Generalization.
      *
      * @param handle the Generalization
      * @return the discriminator a String
@@ -1945,7 +1995,7 @@ public interface Facade {
     Object getDiscriminator(Object handle);
 
     /**
-     * Get the dispatchaction of a stimulus.
+     * Get the dispatchAction of a Stimulus.
      *
      * @param handle the stimulus that we are getting the dispatchaction of
      * @return the dispatchaction (or null)
@@ -1953,9 +2003,9 @@ public interface Facade {
     Object getDispatchAction(Object handle);
 
     /**
-     * Returns the do activity action of a state.
+     * Return the Action which is the doActivity for the given State.
      *
-     * @param handle is the state
+     * @param handle the state
      * @return the do activity
      */
     Object getDoActivity(Object handle);
@@ -1969,7 +2019,7 @@ public interface Facade {
     Collection getImportedElements(Object pack);
 
     /**
-     * Returns the imported element from a ElementImport.
+     * Return the imported element from a ElementImport.
      * 
      * @param elementImport the given ElementImport
      * @return the ModelElement that was imported
@@ -1993,23 +2043,25 @@ public interface Facade {
     Collection getLinkEnds(Object handle);
 
     /**
-     * Gets a location of some extension point.
+     * Return the location of an ExtensionPoint.
      *
-     * @param handle extension point
+     * @param handle ExtensionPoint
      * @return the location
      */
     String getLocation(Object handle);
 
     /**
-     * Get the methods of an operation.
+     * Return the Methods of an Operation.
      *
      * @param handle the operation that we are getting the methods of
-     * @return methods collection (or null)
+     * @return Collection of Methods
      */
     Collection getMethods(Object handle);
 
     /**
-     * Get the namespace of an element.
+     * Get the namespace of a ModelElement.  Note: the namespace/ownedElement
+     * association is a composition, so ModelElements which are owned by other
+     * elements will have a null namespace attribute.
      *
      * @param handle the model element that we are getting the namespace of
      * @return the namespace (or null)
@@ -2017,7 +2069,7 @@ public interface Facade {
     Object getNamespace(Object handle);
 
     /**
-     * Get the node instance of a component instance.
+     * Get the node instance of a ComponentInstance.
      *
      * @param handle the model element that we are getting the node instance of
      * @return the node instance
@@ -2025,15 +2077,15 @@ public interface Facade {
     Object getNodeInstance(Object handle);
 
     /**
-     * The collection of object flow states.
+     * Get ObjectFlowStates which have this Classifier as their type.
      *
      * @param handle the classifier
-     * @return collection of object flow states
+     * @return collection of ObjectFlowStates
      */
     Collection getObjectFlowStates(Object handle);
 
     /**
-     * Get the operation of a Call Action or Call Event.
+     * Get the Operation of a CallAction or CallEvent.
      *
      * @param handle the model element that we are getting the operation of
      * @return the Operation
@@ -2041,14 +2093,15 @@ public interface Facade {
     Object getOperation(Object handle);
 
     /**
-     * Get the occurrences of an operation.
+     * Get the CallEvents which are occurrences of an Operation.
+     * 
      * @param handle the Opration
-     * @return the collection of occurrences
+     * @return Collection of CallEvents
      */
     Collection getOccurrences(Object handle);
 
     /**
-     * Get the list of operations.
+     * Get the list of Operations owned by a Classifier.
      *
      * @param handle classifier to examine.
      * @return list of operations.
@@ -2056,17 +2109,21 @@ public interface Facade {
     List getOperations(Object handle);
 
     /**
-     * Get the list of operations and receptions.
+     * Get the list of operations and receptions owned by a Classifier.
      *
      * @param handle classifier to examine.
      * @return list of operations.
      */
     List getOperationsAndReceptions(Object handle);
+
+    
+    //////// Javadoc reviewed above this point - tfm /////////////
+
     
     /**
-     * Returns the opposite end of an association end.
+     * Return the opposite end of an AssociationEnd.
      *
-     * @param handle is the association end
+     * @param handle the association end
      * @return Object the opposite end.
      */
     Object getOppositeEnd(Object handle);
@@ -2080,7 +2137,7 @@ public interface Facade {
     Object getOrdering(Object handle);
 
     /**
-     * Returns the collection of Transitions outgoing from the given 
+     * Return the collection of Transitions outgoing from the given 
      * stateVertex.
      *
      * @param handle statevertex
@@ -2157,12 +2214,12 @@ public interface Facade {
      * Determine if the passed parameter has a RETURN direction kind.
      *
      * @return true if it is a return direction kind
-     * @param handle is the parameter
+     * @param handle the parameter
      */
     boolean hasReturnParameterDirectionKind(Object handle);
 
     /**
-     * Returns the Package that is connected by the given ElementImport.
+     * Return the Package that is connected by the given ElementImport.
      *
      * @param handle the ElementImport
      * @return the Package
@@ -2220,65 +2277,65 @@ public interface Facade {
     Object getParent(Object handle);
 
     /**
-     * Returns the raised signals of an operation.
+     * Return the raised signals of an operation.
      *
-     * @param handle is the operation
+     * @param handle the operation
      * @return raised signals
      */
     Collection getRaisedSignals(Object handle);
 
     /**
-     * Returns the receptions of a signal.
+     * Return the receptions of a signal.
      *
-     * @param handle is the signal
+     * @param handle the signal
      * @return receptions
      */
     Collection getReceptions(Object handle);
 
     /**
-     * Returns the recurrence iteration expression of an action.
+     * Return the recurrence iteration expression of an action.
      *
-     * @param handle is the action.
+     * @param handle the action.
      * @return the recurrence
      */
     Object getRecurrence(Object handle);
 
     /**
-     * Returns the represented classifier of a collaboration.
+     * Return the represented classifier of a collaboration.
      *
-     * @param handle is the collaboration
+     * @param handle the collaboration
      * @return represented classifier
      */
     Object getRepresentedClassifier(Object handle);
 
     /**
-     * Returns the represented operation of a collaboration.
+     * Return the represented operation of a collaboration.
      *
-     * @param handle is the collaboration
+     * @param handle the collaboration
      * @return represented operation
      */
     Object getRepresentedOperation(Object handle);
 
     /**
-     * Returns the script belonging to a given action.
+     * Return the script belonging to a given action.
      *
-     * @param handle is the action
+     * @param handle the action
      * @return the script
      */
     Object getScript(Object handle);
 
     /**
-     * Returns the sender object of a stimulus or a message.
+     * Return the sender object of a stimulus or a message.
      *
-     * @param handle is the stimulus or message
+     * @param handle the stimulus or message
      * @return the sender
      */
     Object getSender(Object handle);
 
     /**
-     * Returns the Signal of a SendAction, SignalEvent or Reception.
+     * Return the Signal of a SendAction, SignalEvent or Reception.
      *
-     * @param handle is the object
+     * @param handle the object
      * @return the signal
      */
     Object getSignal(Object handle);
@@ -2286,13 +2343,13 @@ public interface Facade {
     /**
      * Get the resident element.
      *
-     * @param handle is the element residence
+     * @param handle the element residence
      * @return resident element
      */
     Object getResident(Object handle);
 
     /**
-     * Returns the collection of elements in a given component.
+     * Return the collection of elements in a given component.
      *
      * @param handle the component
      * @return the Collection of ResidentElements
@@ -2300,34 +2357,34 @@ public interface Facade {
     Collection getResidentElements(Object handle);
 
     /**
-     * Returns a collection with all residents belonging to the given
-     * node.
+     * Return a collection with all residents belonging to the given
+     * Node.
      *
-     * @param handle is the node, nodeinstance, componentinstance
+     * @param handle the Node, Nodeinstance, componentinstance
      * @return Collection
      */
     Collection getResidents(Object handle);
 
     /**
-     * Gets the source for a given transition.
+     * Return the source for a given transition.
      *
-     * @param handle is the transition
+     * @param handle the transition
      * @return Object (MStateVertex)
      */
     Object getSource(Object handle);
 
     /**
-     * Gets the source for some given flow.
+     * Return the source for some given flow.
      *
-     * @param handle is the flow
+     * @param handle the flow
      * @return Collection
      */
     Collection getSources(Object handle);
 
     /**
-     * Returns the sourceflows of a model element.
+     * Return the sourceflows of a model element.
      *
-     * @param handle is the model element
+     * @param handle the model element
      * @return a collection of sourceflows
      */
     Collection getSourceFlows(Object handle);
@@ -2341,34 +2398,34 @@ public interface Facade {
     Collection getSpecializations(Object handle);
 
     /**
-     * Returns the state machine belonging to some given state or transition
+     * Return the state machine belonging to some given state or transition
      * If you need to find the StateMachine for an internal transition,
      * or for ANY state,
      * use StateMachinesHelper.getStateMachine() instead.
      *
-     * @param handle is the state or transition
+     * @param handle the state or transition
      * @return Object
      */
     Object getStateMachine(Object handle);
 
     /**
-     * Returns the state belonging to some given transition.
+     * Return the state belonging to some given transition.
      *
-     * @param handle is the transition
+     * @param handle the transition
      * @return Object
      */
     Object getState(Object handle);
 
     /**
-     * Returns the states from a deferable event.
+     * Return the states from a deferable event.
      *
-     * @param handle is the event
+     * @param handle the event
      * @return Object
      */
     Collection getStates(Object handle);
 
     /**
-     * Returns the stereotypes belonging to some given model element.<p>
+     * Return the stereotypes belonging to some given model element.<p>
      *
      * Note! For UML version 1.3 there can only be one stereotype
      * per model element. This means that the returned Collection will
@@ -2382,15 +2439,15 @@ public interface Facade {
     Collection getStereotypes(Object handle);
 
     /**
-     * Returns the stimuli belonging to some given link.
+     * Return the stimuli belonging to some given link.
      *
-     * @param handle is the link
+     * @param handle the link
      * @return Object
      */
     Collection getStimuli(Object handle);
 
     /**
-     * Returns the Stimuli that are received by the given Instance.
+     * Return the Stimuli that are received by the given Instance.
      *
      * @param handle the Instance
      * @return the collection of stimuli
@@ -2398,7 +2455,7 @@ public interface Facade {
     Collection getReceivedStimuli(Object handle);
 
     /**
-     * Returns the Stimuli that are send by the given Instance.
+     * Return the Stimuli that are send by the given Instance.
      *
      * @param handle the Instance
      * @return the collection of stimuli
@@ -2406,26 +2463,26 @@ public interface Facade {
     Collection getSentStimuli(Object handle);
 
     /**
-     * Returns a collection with all subvertices belonging to the given
-     * composite state.
+     * Return all subvertices belonging to the given
+     * CompositeState.
      *
-     * @param handle is the composite state
+     * @param handle the composite state
      * @return Collection
      */
     Collection getSubvertices(Object handle);
 
     /**
-     * Returns the submachine of a submachine state.
+     * Return the submachine of a submachine state.
      *
-     * @param handle is the submachine state
+     * @param handle the submachine state
      * @return submachine
      */
     Object getSubmachine(Object handle);
 
     /**
-     * Returns the submachine of a submachine state.
+     * Return the submachine of a submachine state.
      *
-     * @param handle is the submachine state
+     * @param handle the submachine state
      * @return submachine
      */
     Collection getSubmachineStates(Object handle);
@@ -2473,7 +2530,7 @@ public interface Facade {
     Object getType(Object handle);
 
     /**
-     * Returns collection of TaggedValues typed by a TagDefinition
+     * Return all TaggedValues typed by a TagDefinition
      *
      * @param handle the TagDefinition
      * @return collection of TaggedValues
@@ -2481,33 +2538,35 @@ public interface Facade {
     Collection getTypedValues(Object handle);
 
     /**
-     * Returns the target of some transition.
+     * Return the target of a Transition.
      *
-     * @param handle is the transition
+     * @param handle the transition
      * @return Object
      */
     Object getTarget(Object handle);
 
     /**
-     * Returns the target scope of some model element.
+     * Return the target scope of a ModelElement.
      *
-     * @param handle is the model element
+     * @param handle the model element
      * @return Object
      */
     Object getTargetScope(Object handle);
 
     /**
-     * Returns the targetflows of a model element.
+     * Return the targetflows of a model element.
      *
-     * @param handle is the model element
+     * @param handle the model element
      * @return a collection of targetflows
      */
     Collection getTargetFlows(Object handle);
     
     /**
-     * Get the list of TemplateParameter for a ModelElement that is parameterized.
+     * Get the list of TemplateParameters for a ModelElement that is
+     * parameterized.
      * 
-     * @param handle the ModelElement
+     * @param handle
+     *            the ModelElement
      * @return a list of TemplateParameters
      */
     List getTemplateParameters(Object handle);
@@ -2520,14 +2579,14 @@ public interface Facade {
     Object getDefaultElement(Object handle);
     
     /**
-     * Return the ModelElement that owns a TemplateParameter
+     * Return the ModelElement that owns a TemplateParameter.
      * @param handle the TemplateParameter
      * @return the containing ModelElement or null if none
      */
     Object getTemplate(Object handle);
     
     /**
-     * Return the Binding associated with a TemplateArgument
+     * Return the Binding associated with a TemplateArgument.
      * @param handle the TemplateArgument
      * @return the Binding
      */
@@ -2542,7 +2601,7 @@ public interface Facade {
     List getArguments(Object handle);
 
     /**
-     * Returns the upper bound of the multiplicity of the given element
+     * Return the upper bound of the multiplicity of the given element
      * (AssociationEnd, Multiplicity or MultiplicityRange). A value of -1
      * corresponds to the special UML value 'unlimited' represented graphically
      * by '*'.
@@ -2554,47 +2613,45 @@ public interface Facade {
     int getUpper(Object handle);
 
     /**
-     * Returns the use case of an extension point.
+     * Return the UseCase of an ExtensionPoint.
      *
-     * @param handle is the extension point
-     * @return a use case
+     * @param handle the ExtensionPoint
+     * @return a UseCase
      */
     Object getUseCase(Object handle);
 
     /**
-     * Returns the lower bound of the multiplicity of the given element
+     * Return the lower bound of the multiplicity of the given element
      * (AssociationEnd, Multiplicity or MultiplicityRange).
      *
-     * @param handle is the model element
+     * @param handle the model element
      * @return int
      */
     int getLower(Object handle);
 
     /**
-     * Returns the transitions belonging to the given handle. The handle can be
-     * a statemachine or a composite state or an event.
-     * If it's a statemachine the
-     * transitions will be given back belonging to that statemachine. If it's a
-     * compositestate the internal transitions of that compositestate will be
-     * given back.
-     * If it's an event, all transitions triggered by this event
-     * will be given back.
-     *
-     * @param handle is the model element
-     * @return Collection
+     * Return the transitions belonging to the given handle. The handle can be
+     * a StateMachine, CompositeState, or Event. For a StateMachine, the
+     * Transitions transitions belonging to StateMachine are returned. For a
+     * CompositeState, its internalTransitions are returned. For an Event, all
+     * transitions triggered by this event will be given back.
+     * 
+     * @param handle
+     *            a StateMachine, CompositeState, or Event
+     * @return Collection of Transitions
      */
     Collection getTransitions(Object handle);
 
     /**
-     * This method returns all attributes of a given Classifier.
+     * Return all StructuralFeatures of a given Classifier.
      *
-     * @param handle is the classifier you want to have the attributes for.
-     * @return a collection of the attributes
+     * @param handle the classifier to query.
+     * @return Collection of StructuralFeatures
      */
     List getStructuralFeatures(Object handle);
 
     /**
-     * Returns the Specification of a given Reception or Operation.
+     * Return the Specification of a given Reception or Operation.
      * If you need the Specification of a Method, use the method
      * in CoreHelper which returns an object instead of a string.
      * @see CoreHelper#getSpecification(Object)
@@ -2605,7 +2662,7 @@ public interface Facade {
     String getSpecification(Object handle);
 
     /**
-     * Returns specifications for an AssociationEnd or for a Classifier it
+     * Return specifications for an AssociationEnd or for a Classifier it
      * returns all Interfaces of which this class is a realization.<p>
      * 
      * When returning Interfaces it follows all Abstraction depencies
@@ -2619,9 +2676,9 @@ public interface Facade {
     Collection getSpecifications(Object handle);
 
     /**
-     * Returns the suppliers of a dependency.
+     * Return the suppliers of a Dependency.
      *
-     * @param handle is the dependency
+     * @param handle the dependency
      * @return a collection of the suppliers
      */
     Collection getSuppliers(Object handle);
@@ -2629,7 +2686,7 @@ public interface Facade {
     /**
      * Returns the action belonging to some message or argument.
      *
-     * @param handle is the message or argument.
+     * @param handle the message or argument.
      * @return the action
      */
     Object getAction(Object handle);
@@ -2653,39 +2710,39 @@ public interface Facade {
     Object getActionSequence(Object handle);
 
     /**
-     * Returns the activator belonging to some message.
+     * Return the activator belonging to some message.
      *
-     * @param handle is the message
+     * @param handle the message
      * @return the activator
      */
     Object getActivator(Object handle);
     
     /**
-     * Returns the activityGraph of the given partition.
+     * Return the activityGraph of the given partition.
      * 
-     * @param handle is the partition
+     * @param handle the partition
      * @return the activityGraph
      */
     Object getActivityGraph(Object handle);
 
     /**
-     * Returns the actual arguments for a given action.
+     * Return the actual arguments for a given action.
      *
-     * @param handle is the action
+     * @param handle the action
      * @return the actual arguments
      */
     List getActualArguments(Object handle);
 
     /**
-     * Returns an addition for a given include.
+     * Return an addition for a given include.
      *
-     * @param handle is the include
+     * @param handle the include
      * @return the addition
      */
     Object getAddition(Object handle);
 
     /**
-     * Returns the AggregationKind of a given AssociationEnd.
+     * Return the AggregationKind of a given AssociationEnd.
      *
      * @param handle the AssociationEnd
      * @return the AggregationKind
@@ -2693,13 +2750,13 @@ public interface Facade {
     Object getAggregation(Object handle);
 
     /**
-     * Returns all associated classes (classes connected by an
+     * Return all associated classes (classes connected by an
      * Association) for some given classifier.
      * Returns an empty collection if the given argument handle is not
      * a classifier.  The given parameter is included in the returned
      * collection if it has a self-referencing association.
      *
-     * @param handle is the classifier
+     * @param handle the classifier
      * @return Collection
      */
     Collection getAssociatedClasses(Object handle);
@@ -2715,14 +2772,12 @@ public interface Facade {
     String getName(Object handle);
 
     /**
-     * Return the owner of a feature or its
-     * association end if it is a
-     * qualified attribute.
-     * Returns the stereotype that owns a TagDefinition.
+     * Return the owner of a Feature, TagDefinition, Attribute, or TemplateParameter.  For
+     * a qualifier Attribute of an AssociationEnd, it returns the owning AssociationEnd.
+     * For a TemplateParameter ot returns the owning template ModelElement.
      *
-     * @param handle is the feature
-     * @return classifier
-     * from the repository.
+     * @param handle the Feature, TagDefinition, Attribute, or TemplateParameter
+     * @return the owner
      */
     Object getOwner(Object handle);
 
@@ -2744,7 +2799,7 @@ public interface Facade {
     Iterator getTaggedValues(Object handle);
 
     /**
-     * Returns the TaggedValues of a ModelElement.
+     * Return the TaggedValues of a ModelElement.
      *
      * @param handle the ModelElement
      * @return the Collection of TaggedValues
@@ -2780,7 +2835,7 @@ public interface Facade {
     String getTagOfTag(Object handle);
 
     /**
-     * Returns the Value of some UML Object.
+     * Return the value of some UML Object.
      *
      * @param handle Object
      * @return Object the exact type depends on the handle type
@@ -2843,16 +2898,14 @@ public interface Facade {
     Collection getPartitions(Object container);
 
     /**
-     *  Return the Stub State's referenced state.
+     *  Return the StubState's referenceState.
      *  @param o Stub State
      *  @return referenced state
      */
     String getReferenceState(Object o);
 
-    ////////////////////////////////////////////////////////////////
-
     /**
-     * Returns a named object in the given object by calling it's lookup method.
+     * Return a named object in the given object by calling it's lookup method.
      *
      * @param handle the object that we search through
      * @param name of the model element
@@ -2860,10 +2913,8 @@ public interface Facade {
      */
     Object lookupIn(Object handle, String name);
 
-    ////////////////////////////////////////////////////////////////
-
     /**
-     * Returns the name of the UML Model class.<p>
+     * Return the name of the UML Model class.<p>
      *
      * @param handle The object to check.
      * @return classname of modelelement
@@ -2879,7 +2930,7 @@ public interface Facade {
     boolean isAArgument(Object modelElement);
 
     /**
-     * Returns a tooltip that should be shown for the given model element.<p>
+     * Return a tooltip that should be shown for the given model element.<p>
      *
      * @param modelElement The model element for which to gerneate a tip
      * @return the tip
@@ -2887,7 +2938,7 @@ public interface Facade {
     String getTipString(Object modelElement);
 
     /**
-     * Returns a textual representation of the given model element.<p>
+     * Return a textual representation of the given model element.<p>
      * All implementations should return the same value as would be expected
      * from the toString() method of the NSUML class MModelElement.
      *
