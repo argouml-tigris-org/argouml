@@ -617,14 +617,21 @@ public abstract class FigNodeModelElement
      * @see org.tigris.gef.presentation.FigNode#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig newEncloser) {
-	
+        Fig oldEncloser = encloser;
+        
 	LayerPerspective layer = (LayerPerspective) getLayer();
-	ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
-	Fig oldEncloser = encloser;
-	diagram.figEnclosed((FigNode) newEncloser, (FigNode) oldEncloser, this);
+	if (layer != null) {
+            ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
+            diagram.figEnclosed(
+        	    (FigNode) newEncloser,
+        	    (FigNode) oldEncloser,
+        	    this);
+	}
 	
 	super.setEnclosingFig(newEncloser);
-	if (newEncloser != oldEncloser) {
+	
+	if (layer != null && newEncloser != oldEncloser) {
+            ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
             if (diagram instanceof UMLDiagram) {
         	UMLDiagram umlDiagram = (UMLDiagram) diagram;
         	// Set the namespace of the enclosed model element to the
@@ -1725,13 +1732,6 @@ public abstract class FigNodeModelElement
             throw new IllegalArgumentException(
                     "Visibility of a FigNode should never be false");
         }
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
-     */
-    public void setLayer(Layer lay) {
-        super.setLayer(lay);
     }
 
     /**
