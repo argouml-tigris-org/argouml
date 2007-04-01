@@ -35,7 +35,10 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.util.ConfigLoader;
 
 /**
- * The properties panel for a ElementResidence.
+ * The properties panel for a ElementResidence. <p>
+ * 
+ * The ElementResidence is not a ModelElement according MDR, 
+ * hence this properties panel does not show a name field.
  * 
  * @author michiel
  */
@@ -47,11 +50,8 @@ public class PropPanelElementResidence extends PropPanelModelElement {
     public PropPanelElementResidence() {
         super("ElementResidence", ConfigLoader.getTabPropsOrientation());
 
-         // This is not a ModelElement, hence none of the following:
-//      addField(Translator.localize("label.name"),
-//      getNameTextField());
-//      add(getNamespaceVisibilityPanel());
-//      addSeparator();
+        add(getNamespaceVisibilityPanel());
+        addSeparator();
 
         JList lst1 = new UMLLinkedList(
                 new ElementResidenceContainerListModel());

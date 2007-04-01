@@ -35,6 +35,9 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
+ * This action sets the Visibility of a ModelElement. 
+ * Next to a ModelElement, this also works for an 
+ * ElementResidence and ElementImport.
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
@@ -86,7 +89,9 @@ public class ActionSetModelElementVisibility extends UndoableAction {
             String actionCommand = source.getActionCommand();
             Object target =
                 ((UMLRadioButtonPanel) source.getParent()).getTarget();
-            if (Model.getFacade().isAModelElement(target)) {
+            if (Model.getFacade().isAModelElement(target)
+                    || Model.getFacade().isAElementResidence(target)
+                    || Model.getFacade().isAElementImport(target)) {
                 Object kind = null;
                 if (actionCommand.equals(PUBLIC_COMMAND)) {
                     kind = Model.getVisibilityKind().getPublic();

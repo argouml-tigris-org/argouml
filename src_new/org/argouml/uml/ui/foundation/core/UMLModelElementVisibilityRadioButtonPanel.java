@@ -31,6 +31,8 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
+ * A radio button panel for the visibility of a ModelElement 
+ * or ElementResidence, or ElementImport.
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003

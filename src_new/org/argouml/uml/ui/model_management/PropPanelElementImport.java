@@ -24,35 +24,47 @@
 
 package org.argouml.uml.ui.model_management;
 
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLPlainTextDocument;
+import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
- * The properties panel for an ElementImport.
+ * The properties panel for an ElementImport. <p>
+ * 
+ * The ElementResidence is not a ModelElement according MDR, 
+ * hence this properties panel does not show a name field.
+ * TODO: Alias, isSpecification.
  *
  * @author Michiel
  */
 public class PropPanelElementImport extends PropPanelModelElement {
 
+    private JTextField aliasTextField;
+    private static UMLElementImportAliasDocument aliasDocument =
+        new UMLElementImportAliasDocument();
+    
     /**
      * Constructor.
      */
     public PropPanelElementImport() {
         super("ElementImport", ConfigLoader.getTabPropsOrientation());
 
-        // This is not a ModelElement, hence none of the following:
-//     addField(Translator.localize("label.name"),
-//     getNameTextField());
-//     add(getNamespaceVisibilityPanel());
-//     addSeparator();
+        addField(Translator.localize("label.alias"),
+                getAliasTextField());
+
+        add(getNamespaceVisibilityPanel());
+        addSeparator();
 
         JList lst1 = new UMLLinkedList(
                 new ElementImportImportedElementListModel());
@@ -68,6 +80,49 @@ public class PropPanelElementImport extends PropPanelModelElement {
 
         addAction(new ActionNavigateContainerElement());
         addAction(getDeleteAction());
+    }
+    
+    /**
+     * @return a textfield for the alias
+     */
+    protected JComponent getAliasTextField() {
+        if (aliasTextField == null) {
+            aliasTextField = new UMLTextField2(aliasDocument);
+        }
+        return aliasTextField;
+    }
+
+}
+
+/**
+ * The Document for the Alias of the ElementImport.
+ * 
+ * @author mvw
+ */
+class UMLElementImportAliasDocument extends UMLPlainTextDocument {
+
+    /**
+     * Constructor for UMLModelElementNameDocument.
+     */
+    public UMLElementImportAliasDocument() {
+        super("alias");
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
+     */
+    protected void setProperty(String text) {
+        Object t = getTarget();
+        if (t != null) {
+            Model.getModelManagementHelper().setAlias(getTarget(), text);
+        }
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
+     */
+    protected String getProperty() {
+        return Model.getFacade().getAlias(getTarget());
     }
 
 }
