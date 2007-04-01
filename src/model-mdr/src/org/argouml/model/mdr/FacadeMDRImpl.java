@@ -957,6 +957,9 @@ class FacadeMDRImpl implements Facade {
             if (handle instanceof ModelElement) {
                 return ((ModelElement) handle).isSpecification();
             }
+            if (handle instanceof ElementImport) {
+                return ((ElementImport) handle).isSpecification();
+            }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
@@ -2006,6 +2009,7 @@ class FacadeMDRImpl implements Facade {
     public Object getModelElement(Object handle) {
         try {
             if (handle instanceof ElementImport) {
+                // TODO: This does not belong here - use getImportedElement.
                 return ((ElementImport) handle).getImportedElement();
             }
             if (handle instanceof TaggedValue) {
@@ -3756,6 +3760,22 @@ class FacadeMDRImpl implements Facade {
     }
 
     /**
+     * @see org.argouml.model.Facade#getAlias(java.lang.Object)
+     */
+    public String getAlias(Object handle) {
+        try {
+            if (handle instanceof ElementImport) {
+                return ((ElementImport) handle).getAlias();
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        throw new IllegalArgumentException(
+                "Must have an MDR element supplied. Received a "
+                        + handle.getClass().getName());
+    }
+
+    /**
      * @see org.argouml.model.Facade#getAssociatedClasses(java.lang.Object)
      */
     public Collection getAssociatedClasses(Object handle) {
@@ -4101,6 +4121,9 @@ class FacadeMDRImpl implements Facade {
             }
             if (handle instanceof ElementResidence) {
                 return ((ElementResidence) handle).getVisibility();
+            }
+            if (handle instanceof ElementImport) {
+                return ((ElementImport) handle).getVisibility();
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);

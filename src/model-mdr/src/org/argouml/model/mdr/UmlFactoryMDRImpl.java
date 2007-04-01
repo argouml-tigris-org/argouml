@@ -110,6 +110,7 @@ import org.omg.uml.foundation.core.Constraint;
 import org.omg.uml.foundation.core.DataType;
 import org.omg.uml.foundation.core.Dependency;
 import org.omg.uml.foundation.core.Element;
+import org.omg.uml.foundation.core.ElementResidence;
 import org.omg.uml.foundation.core.Enumeration;
 import org.omg.uml.foundation.core.Feature;
 import org.omg.uml.foundation.core.Flow;
@@ -772,12 +773,14 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 getCore().deleteTemplateParameter(elem);
             } else if (elem instanceof TemplateArgument) {
                 getCore().deleteTemplateArgument(elem);
-            }
+            } else if (elem instanceof ElementImport) {
+                getModelManagement().deleteElementImport(elem);
+            } else if (elem instanceof ElementResidence) {
+                getCore().deleteElementResidence(elem);
+            } 
 
             if (elem instanceof Partition) {
                 getActivityGraphs().deletePartition(elem);
-            } else if (elem instanceof ElementImport) {
-                getModelManagement().deleteElementImport(elem);
             }
 
             if (elem instanceof Feature) {

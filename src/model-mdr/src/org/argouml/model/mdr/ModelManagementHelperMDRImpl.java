@@ -569,6 +569,18 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     }
 
     /*
+     * @see org.argouml.model.ModelManagementHelper#setAlias(java.lang.Object, java.lang.String)
+     */
+    public void setAlias(Object handle, String alias) {
+        if ((handle instanceof ElementImport) && (alias != null)) {
+            ((ElementImport) handle).setAlias(alias);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle + " or alias: "
+                + alias);
+    }
+
+    /*
      * @see org.argouml.model.ModelManagementHelper#getContents(java.lang.Object)
      */
     public Collection getContents(Object namespace) {
