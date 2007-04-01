@@ -29,6 +29,8 @@ import java.awt.Rectangle;
 
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigGroup;
 
 /**
  * This node cannot be dragged and manipulated in the same way as other
@@ -70,6 +72,21 @@ public class FigEdgePort extends FigNodeModelElement {
     public void setOwner(Object own) {
         bigPort.setOwner(own);
         super.setOwner(own);
+    }
+    
+    public Object getOwner() {
+	if (super.getOwner() != null) {
+	    return super.getOwner();
+	}
+        Fig group = this;
+        while (group != null && !(group instanceof FigEdge)) {
+            group = group.getGroup();
+        }
+        if (group == null) {
+            return null;
+        } else {
+            return group.getOwner();
+        }
     }
 
     /*
