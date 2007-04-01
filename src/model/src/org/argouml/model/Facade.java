@@ -1101,9 +1101,10 @@ public interface Facade {
     boolean isRoot(Object handle);
 
     /**
-     * Return value of isSpecification attribute for a ModelElement.
+     * Return value of isSpecification attribute for a ModelElement
+     * or ElemetImport.
      *
-     * @param handle candidate ModelElement
+     * @param handle candidate ModelElement or ElemetImport
      * @return boolean value contained by the isSpecification attribute
      */
     boolean isSpecification(Object handle);
@@ -2748,6 +2749,12 @@ public interface Facade {
      * @return the AggregationKind
      */
     Object getAggregation(Object handle);
+    
+    /**
+     * @param handle the ElementImport
+     * @return the alias Name
+     */
+    String getAlias(Object handle);
 
     /**
      * Return all associated classes (classes connected by an

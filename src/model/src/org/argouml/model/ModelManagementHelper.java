@@ -219,6 +219,14 @@ public interface ModelManagementHelper {
      * @param imports the collection of modelelements to import
      */
     void setImportedElements(Object pack, Collection imports);
+    
+    /**
+     * Set the alias of the ElementImport.
+     * 
+     * @param handle is the ElementImport
+     * @param alias the alias name
+     */
+    void setAlias(Object handle, String alias);
 
     /**
      * This method calculates the "contents" additional operation 

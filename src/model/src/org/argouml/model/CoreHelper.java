@@ -1298,7 +1298,8 @@ public interface CoreHelper {
     void setType(Object handle, Object type);
 
     /**
-     * Set the visibility of a ModelElement.
+     * Set the visibility of a ModelElement, 
+     * ElementResidence, ElementImport.
      *
      * @param handle element
      * @param visibility is the visibility
