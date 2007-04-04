@@ -109,7 +109,7 @@ public abstract class UMLPlainTextDocument
      */
     public final void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (Model.getFacade().isAModelElement(target)) {
+        if (Model.getFacade().isAUMLElement(target)) {
             if (target != panelTarget) {
                 ModelEventPump eventPump = Model.getPump();
                 if (panelTarget != null) {
