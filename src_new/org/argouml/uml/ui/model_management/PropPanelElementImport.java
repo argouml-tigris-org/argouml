@@ -44,7 +44,7 @@ import org.argouml.util.ConfigLoader;
  * 
  * The ElementResidence is not a ModelElement according MDR, 
  * hence this properties panel does not show a name field.
- * TODO: Alias, isSpecification.
+ * TODO: isSpecification.
  *
  * @author Michiel
  */
