@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,11 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.tigris.gef.undo.UndoableAction;
+
 /**
+ * This class sets the "isSpecification" for a ElementOwnership 
+ * (incorporated in ModelElement for MDR) or a ElementImport.
+ * 
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
@@ -60,9 +64,10 @@ public class ActionSetElementOwnershipSpecification extends UndoableAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (Model.getFacade().isAModelElement(target)) {
+            if (Model.getFacade().isAModelElement(target)
+                    || Model.getFacade().isAElementImport(target)) {
                 Object m = target;
-                Model.getCoreHelper().setSpecification(m,
+                Model.getModelManagementHelper().setSpecification(m,
                         !Model.getFacade().isSpecification(m));
             }
         }
