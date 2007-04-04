@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -578,6 +578,14 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         }
         throw new IllegalArgumentException("handle: " + handle + " or alias: "
                 + alias);
+    }
+
+    public void setSpecification(Object handle, boolean specification) {
+        if (handle instanceof ElementImport) {
+            ((ElementImport) handle).setSpecification(specification);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
     }
 
     /*
