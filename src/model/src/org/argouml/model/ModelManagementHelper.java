@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -227,6 +227,16 @@ public interface ModelManagementHelper {
      * @param alias the alias name
      */
     void setAlias(Object handle, String alias);
+    
+    /**
+     * Set the isSpecification attribute for the ElementImport.
+     * 
+     * @param handle
+     *            ElementImport
+     * @param isSpecification
+     *            true of the element is specification
+     */
+    void setSpecification(Object handle, boolean isSpecification);
 
     /**
      * This method calculates the "contents" additional operation 
