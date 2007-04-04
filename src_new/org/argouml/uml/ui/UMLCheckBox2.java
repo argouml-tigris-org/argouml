@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2006 The Regents of the University of California. All
+// Copyright (c) 2002-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -94,12 +94,12 @@ public abstract class UMLCheckBox2 extends JCheckBox
      */
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (Model.getFacade().isAModelElement(checkBoxTarget)) {
+        if (Model.getFacade().isAUMLElement(checkBoxTarget)) {
             Model.getPump().removeModelEventListener(
                     this, checkBoxTarget, propertySetName);
         }
 
-        if (Model.getFacade().isAModelElement(target)) {
+        if (Model.getFacade().isAUMLElement(target)) {
             checkBoxTarget = target;
             Model.getPump().addModelEventListener(
                     this, checkBoxTarget, propertySetName);

@@ -32,10 +32,12 @@ import javax.swing.JTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.foundation.core.ActionSetElementOwnershipSpecification;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
@@ -64,6 +66,7 @@ public class PropPanelElementImport extends PropPanelModelElement {
                 getAliasTextField());
 
         add(getNamespaceVisibilityPanel());
+        add(new UMLElementImportIsSpecificationCheckbox());
         addSeparator();
 
         JList lst1 = new UMLLinkedList(
@@ -90,6 +93,33 @@ public class PropPanelElementImport extends PropPanelModelElement {
             aliasTextField = new UMLTextField2(aliasDocument);
         }
         return aliasTextField;
+    }
+
+}
+
+/**
+ * A checkbox for the "isSpecification" of the ElementImport.
+ * 
+ * @author Michiel
+ */
+class UMLElementImportIsSpecificationCheckbox extends UMLCheckBox2 {
+
+    /**
+     * Constructor for UMLGeneralizableElementRootCheckBox.
+     */
+    public UMLElementImportIsSpecificationCheckbox() {
+        super(Translator.localize("checkbox.is-specification"),
+                ActionSetElementOwnershipSpecification.getInstance(), 
+                "isSpecification");
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
+     */
+    public void buildModel() {
+        if (getTarget() != null) {
+            setSelected(Model.getFacade().isSpecification(getTarget()));
+        }
     }
 
 }
