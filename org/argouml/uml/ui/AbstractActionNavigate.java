@@ -98,8 +98,8 @@ public abstract class AbstractActionNavigate extends UndoableAction
     public void actionPerformed(ActionEvent e) {
     	super.actionPerformed(e);
         Object target = TargetManager.getInstance().getModelTarget();
-        if (Model.getFacade().isAModelElement(target)) {
-            Object elem = /* (MModelElement) */target;
+        if (Model.getFacade().isAUMLElement(target)) {
+            Object elem = target;
             Object nav = navigateTo(elem);
             if (nav != null) {
                 TargetManager.getInstance().setTarget(nav);

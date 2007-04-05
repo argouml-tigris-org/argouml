@@ -949,10 +949,11 @@ public final class TargetManager {
 
     /**
      * Returns the target in it's 'modelform'. If the target retrieved
-     * by getTarget is an UMLDiagram or a modelelement the target will
+     * by getTarget is an UMLDiagram or a UML element the target will
      * be returned. If the target is a fig but owned by a modelelement
      * that modelelement will be returned.  Otherwise null will be
      * returned.
+     * 
      * @return the target in it's 'modelform'.
      */
     public Object getModelTarget() {
@@ -968,12 +969,12 @@ public final class TargetManager {
     private Object determineModelTarget(Object target) {
         if (target instanceof Fig) {
             Object owner = ((Fig) target).getOwner();
-            if (Model.getFacade().isAModelElement(owner)) {
+            if (Model.getFacade().isAUMLElement(owner)) {
                 target = owner;
             }
         }
         return target instanceof UMLDiagram
-            || Model.getFacade().isAModelElement(target) ? target : null;
+            || Model.getFacade().isAUMLElement(target) ? target : null;
 
     }
 
