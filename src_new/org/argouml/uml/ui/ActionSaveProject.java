@@ -96,7 +96,7 @@ public class ActionSaveProject extends AbstractAction {
         if (isEnabled == this.enabled) {
             return;
         }
-        if (isEnabled && ++count ==2) {
+        if (isEnabled && ++count == 2) {
 //            throw new IllegalArgumentException();
         }
         Memento memento = new Memento() {
