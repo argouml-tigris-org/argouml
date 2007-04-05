@@ -26,6 +26,7 @@ package org.argouml.uml.ui.model_management;
 
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
@@ -46,12 +47,12 @@ import org.argouml.util.ConfigLoader;
  * 
  * The ElementResidence is not a ModelElement according MDR, 
  * hence this properties panel does not show a name field.
- * TODO: isSpecification.
  *
  * @author Michiel
  */
 public class PropPanelElementImport extends PropPanelModelElement {
 
+    private JPanel modifiersPanel;
     private JTextField aliasTextField;
     private static UMLElementImportAliasDocument aliasDocument =
         new UMLElementImportAliasDocument();
@@ -66,7 +67,9 @@ public class PropPanelElementImport extends PropPanelModelElement {
                 getAliasTextField());
 
         add(getNamespaceVisibilityPanel());
-        add(new UMLElementImportIsSpecificationCheckbox());
+
+        add(getModifiersPanel());
+
         addSeparator();
 
         JList lst1 = new UMLLinkedList(
@@ -95,6 +98,15 @@ public class PropPanelElementImport extends PropPanelModelElement {
         return aliasTextField;
     }
 
+    public JPanel getModifiersPanel() {
+        if (modifiersPanel == null) {
+            modifiersPanel = createBorderPanel(Translator.localize(
+                "label.modifiers"));
+            modifiersPanel.add(
+                    new UMLElementImportIsSpecificationCheckbox());
+        }
+        return modifiersPanel;
+    }
 }
 
 /**
