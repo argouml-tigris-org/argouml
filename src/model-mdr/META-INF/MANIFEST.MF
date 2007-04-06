@@ -14,3 +14,4 @@ Bundle-ClassPath: lib/jmi.jar,
  lib/mof.jar,
  lib/nbmdr.jar,
  lib/openide-util.jar
+Eclipse-RegisterBuddy: org.argouml.core.lib, org.argouml.core.model
