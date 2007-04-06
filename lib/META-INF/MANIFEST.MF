@@ -85,3 +85,4 @@ Export-Package: .,
  tudresden.ocl.parser.node,
  tudresden.ocl.parser.parser
 Bundle-Vendor: %pluginProvider
+Eclipse-BuddyPolicy: registered
