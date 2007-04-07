@@ -39,6 +39,11 @@ import org.argouml.uml.cognitive.UMLDecision;
 /**
  * Well-formedness rule [1] for Namespace. See page 33 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
+ * 
+ * TODO: Investigate the purpose of this Critic.
+ * MVW: I fixed an exception, but do not understand the purpose. 
+ * If an Alias is the same as another class' name, then this critic fires,
+ * but the explanation and wizard are wrong!
  */
 public class CrDisambigClassName extends CrUML {
 
@@ -61,41 +66,45 @@ public class CrDisambigClassName extends CrUML {
 	if (!(Model.getFacade().isAClassifier(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object cls = dm;
-	String myName = Model.getFacade().getName(cls);
-	//@ if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
-	String myNameString = myName;
+	Object classifier = dm;
+	String designMaterialName = Model.getFacade().getName(classifier);
+	//@ if (myNameString.equals(Name.UNSPEC)) return NO_PROBLEM;
 
-	if (myNameString != null && myNameString.length() == 0) {
+	if (designMaterialName != null && designMaterialName.length() == 0) {
 	    return NO_PROBLEM;
 	}
 
-	Collection pkgs = Model.getFacade().getElementImports2(cls);
-	if (pkgs == null) {
+	Collection elementImports = 
+            Model.getFacade().getElementImports2(classifier);
+	if (elementImports == null) {
 	    return NO_PROBLEM;
 	}
-	for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
+	for (Iterator iter = elementImports.iterator(); iter.hasNext();) {
 	    Object imp = iter.next();
-	    Object ns = Model.getFacade().getPackage(imp);
-	    Collection siblings = Model.getFacade().getOwnedElements(ns);
+	    Object pack = Model.getFacade().getPackage(imp);
+            String alias = Model.getFacade().getAlias(imp);
+            if (alias == null || alias.length() == 0) {
+                alias = designMaterialName;
+            }
+	    Collection siblings = Model.getFacade().getOwnedElements(pack);
 	    if (siblings == null) {
 	        return NO_PROBLEM;
 	    }
 	    Iterator elems = siblings.iterator();
 	    while (elems.hasNext()) {
 		Object eo = elems.next();
-		Object me = Model.getFacade().getModelElement(eo);
+		Object me = /*Model.getFacade().getModelElement(*/eo/*)*/;
 		if (!(Model.getFacade().isAClassifier(me))) {
 		    continue;
 		}
-		if (me == cls) {
+		if (me == classifier) {
 		    continue;
 		}
 		String meName = Model.getFacade().getName(me);
 		if (meName == null || meName.equals("")) {
 		    continue;
 		}
-		if (meName.equals(myNameString)) {
+		if (meName.equals(alias)) {
 		    return PROBLEM_FOUND;
 		}
 	    }
