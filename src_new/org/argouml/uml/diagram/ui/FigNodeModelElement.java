@@ -170,23 +170,6 @@ public abstract class FigNodeModelElement
      */
     private static int popupAddOffset;
 
-    // Fields used in paint() for painting shadows
-    private BufferedImage           shadowImage;
-    private int                     cachedWidth = -1;
-    private int                     cachedHeight = -1;
-    private static final LookupOp   SHADOW_LOOKUP_OP;
-    private static final ConvolveOp SHADOW_CONVOLVE_OP;
-
-    /**
-     * The intensity value of the shadow color (0-255).
-     */
-    protected static final int SHADOW_COLOR_VALUE = 32;
-
-    /**
-     * The transparency value of the shadow color (0-255).
-     */
-    protected static final int SHADOW_COLOR_ALPHA = 128;
-
     static {
         LABEL_FONT =
         /* TODO: Why is this different from the FigEdgeModelElement?
@@ -203,20 +186,6 @@ public abstract class FigNodeModelElement
             new Font(LABEL_FONT.getFamily(), Font.BOLD | Font.ITALIC, 
                     LABEL_FONT.getSize() + 2);
 
-        // Setup image ops used in rendering shadows
-        byte[][] data = new byte[4][256];
-        for (int i = 1; i < 256; ++i) {
-            data[0][i] = (byte) SHADOW_COLOR_VALUE;
-            data[1][i] = (byte) SHADOW_COLOR_VALUE;
-            data[2][i] = (byte) SHADOW_COLOR_VALUE;
-            data[3][i] = (byte) SHADOW_COLOR_ALPHA;
-        }
-        float[] blur = new float[9];
-        for (int i = 0; i < blur.length; ++i) {
-            blur[i] = 1 / 12f;
-        }
-        SHADOW_LOOKUP_OP = new LookupOp(new ByteLookupTable(0, data), null);
-        SHADOW_CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, blur));
     }
 
     /**
@@ -275,7 +244,6 @@ public abstract class FigNodeModelElement
     private boolean readyToEdit = true;
     private boolean suppressCalcBounds;
     private static boolean showBoldName;
-    private int shadowSize;
 
     private ItemUID itemUid;
 
@@ -284,16 +252,6 @@ public abstract class FigNodeModelElement
      * be removed from the diagram.
      */
     private boolean removeFromDiagram = true;
-
-    /**
-     * Set this to force a repaint of the shadow.
-     * Normally repainting only happens
-     * when the outside boundaries change
-     * (for performance reasons (?)).
-     * In some cases this does not
-     * suffice, and you can set this attribute to force the update.
-     */
-    private boolean forceRepaint;
 
     /**
      * Flag that indicates if the full namespace path should be shown
@@ -339,7 +297,7 @@ public abstract class FigNodeModelElement
         } else {
             nameFig.setFont(showBoldName ? BOLD_LABEL_FONT : LABEL_FONT);
         }
-        shadowSize = ps.getDefaultShadowWidthValue();
+        setShadowSize(ps.getDefaultShadowWidthValue());
         /* TODO: how to handle changes in shadowsize 
          * from the project properties? */
     }
@@ -707,72 +665,6 @@ public abstract class FigNodeModelElement
      */
     public Selection makeSelection() {
         return new SelectionNodeClarifiers(this);
-    }
-
-    /*
-     * Overridden to paint shadows. This method supports painting shadows
-     * for any FigNodeModelElement. Any Figs that are nested within the
-     * FigNodeModelElement will be shadowed.<p>
-     *
-     * TODO: If g is not a Graphics2D shadows cannot be painted. This is
-     * a problem when saving the diagram as SVG.
-     *
-     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
-     */
-    public void paint(Graphics g) {
-        if (shadowSize > 0
-	        && g instanceof Graphics2D) {
-            int width = getWidth();
-            int height = getHeight();
-            int x = getX();
-            int y = getY();
-
-            /* Only create a new shadow image if figure size has changed.
-             * Which does not catch all cases:
-             * consider show/hide toggle of a stereotype on a package:
-             * in this case the total size remains, but the notch
-             * at the corner increases/decreases.
-             * Hence also check the "forceRepaint" attribute.
-             */
-            if (width != cachedWidth
-                    || height != cachedHeight
-                    || forceRepaint) {
-                forceRepaint = false;
-
-                cachedWidth = width;
-                cachedHeight = height;
-
-                BufferedImage img =
-		    new BufferedImage(width + 100,
-				      height + 100,
-				      BufferedImage.TYPE_INT_ARGB);
-
-                // Paint figure onto offscreen image
-                Graphics ig = img.getGraphics();
-                ig.translate(50 - x, 50 - y);
-                super.paint(ig);
-
-                // Apply two filters to the image:
-                // 1. Apply LookupOp which converts all pixel data in the
-                //    figure to the same shadow color.
-                // 2. Apply ConvolveOp which creates blurred effect around
-                //    the edges of the shadow.
-                shadowImage =
-		    SHADOW_CONVOLVE_OP.filter(
-			    SHADOW_LOOKUP_OP.filter(img, null), null);
-            }
-
-            // Paint shadow image onto canvas
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.drawImage(
-                shadowImage,
-                null,
-                x + shadowSize - 50,
-                y + shadowSize - 50);
-        }
-
-        // Paint figure on top of shadow
-        super.paint(g);
     }
 
     /**
@@ -1533,38 +1425,6 @@ public abstract class FigNodeModelElement
         checkSize = flag;
     }
 
-    /**
-     * @param size the new shadow size
-     * TODO: Move the shadow stuff into GEF
-     */
-    public void setShadowSize(int size) {
-        if (size == shadowSize) {
-            return;
-        }
-        MutableGraphSupport.enableSaveAction();
-        shadowSize = size;
-    }
-
-    /**
-     * @deprecated do not use. This was deprecated by bobtarling at the 
-     * same time that it was introduced (July 2006), so may be deleted without
-     * warning as soon as its single reference is gone.
-     * @param size
-     */
-    protected void setShadowSizeFriend(int size) {
-        if (size == shadowSize) {
-            return;
-        }
-        shadowSize = size;
-    }
-
-    /**
-     * @return the current shadow size
-     */
-    public int getShadowSize() {
-        return shadowSize;
-    }
-
     /*
      * Necessary since GEF contains some errors regarding the hit subject.
      * 
@@ -1607,7 +1467,7 @@ public abstract class FigNodeModelElement
         notationProviderName.cleanListener(this, getOwner());
         ArgoEventPump.removeListener(this);
         removeAllElementListeners();
-        shadowSize = 0;
+        setShadowSize(0);
         super.removeFromDiagram();
     }
 
@@ -1760,13 +1620,6 @@ public abstract class FigNodeModelElement
      */
     protected void allowRemoveFromDiagram(boolean allowed) {
         this.removeFromDiagram = allowed;
-    }
-
-    /**
-     * Force painting the shadow.
-     */
-    public void forceRepaintShadow() {
-        forceRepaint = true;
     }
 
     public void setDiElement(DiElement element) {
