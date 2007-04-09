@@ -26,7 +26,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -152,6 +151,9 @@ public class FigComment
         addFig(urCorner);
         addFig(getStereotypeFig());
         addFig(bodyTextFig);
+        
+        col = outlineFig.getFillColor();
+        urCorner.setFillColor(col.darker());
 
         setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
@@ -692,15 +694,6 @@ public class FigComment
                 6,
                 anotherPt);
         return p;
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
-     */
-    public void paint(Graphics g) {
-        Color col = outlineFig.getFillColor();
-        urCorner.setFillColor(col.darker());
-        super.paint(g);
     }
 
     /**
