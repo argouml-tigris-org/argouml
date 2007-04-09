@@ -343,6 +343,8 @@ public class FigMessage extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#paint(Graphics)
      */
     public void paint(Graphics g) {
+	// TODO: Bob says. We shouldn't be doing this processing in paint()
+	// is it needed?
 	updateArrow();
 	super.paint(g);
     }
