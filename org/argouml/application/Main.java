@@ -341,18 +341,22 @@ public class Main {
         }
 
         st.mark("set project");
+
         Designer.enableCritiquing();
 
         st.mark("perspectives");
+
         if (splash != null) {
             splash.getStatusBar().showProgress(75);
         }
 
         // Initialize the module loader.
         st.mark("modules");
+
         ModuleLoader2.doLoad(false);
 
         st.mark("open window");
+
         updateProgress(splash, 95, "statusmsg.bar.open-project-browser");
 
         ArgoFrame.getInstance().setVisible(true);
@@ -601,13 +605,18 @@ public class Main {
      */
     static {
 
-        /*  Install the trap to "eat" SecurityExceptions.
+        /*  
+         * Install the trap to "eat" SecurityExceptions.
+         * 
+         * NOTE: This is temporary and will go away in a "future" release
+         * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4714232
          */
         System.setProperty(
             "sun.awt.exception.handler",
             ArgoAwtExceptionHandler.class.getName());
 
-        /*  The string <code>log4j.configuration</code> is the
+        /*
+         *  The string <code>log4j.configuration</code> is the
          *  same string found in
          *  {@link org.apache.log4j.Configuration.DEFAULT_CONFIGURATION_FILE}
          *  but if we use the reference, then log4j configures itself
@@ -618,13 +627,17 @@ public class Main {
          * {@link Argo} perform the initialization.
          */
 
+        // TODO: is it ok to do this in the static initializer if we
+        // are running in a Java Web Start environment? - tfm
+        // JWS property for logs is : deployment.user.logdir & deployment.user.tmp
         if (System.getProperty("log4j.configuration") == null) {
             Properties props = new Properties();
 	    InputStream stream = null;
             try {
 		stream =
-		    ClassLoader.getSystemResourceAsStream(
-		        DEFAULT_LOGGING_CONFIGURATION);
+                        Thread.currentThread().getContextClassLoader()
+                                .getResourceAsStream(
+                                        DEFAULT_LOGGING_CONFIGURATION);
 
 		if (stream != null) {
 		    props.load(stream);
@@ -638,8 +651,12 @@ public class Main {
 
 	    if (stream == null) {
 		BasicConfigurator.configure();
-		Logger.getRootLogger().getLoggerRepository()
-		    .setThreshold(Level.OFF);
+		Logger.getRootLogger().getLoggerRepository().setThreshold(
+                        Level.ERROR); // default level is DEBUG
+                Logger.getRootLogger().error(
+                        "Failed to find valid log4j properties"
+                                + "in log4j.configuration"
+                                + "using default logging configuration");
 	    }
         }
 
@@ -849,7 +866,7 @@ class PreloadClasses implements Runnable {
         c = org.tigris.gef.util.EnumerationSingle.class;
 
         if (c == null) {
-            LOG.error("preloading error");
+            LOG.error(" preloading error");
         }
         LOG.info("preloading done");
     }
