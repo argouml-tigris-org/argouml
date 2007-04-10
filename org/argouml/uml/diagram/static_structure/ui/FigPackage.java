@@ -30,6 +30,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -43,6 +44,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
@@ -56,6 +58,7 @@ import org.argouml.uml.diagram.ui.VisibilityContainer;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
@@ -801,6 +804,27 @@ public class FigPackage extends FigNodeModelElement
                 anotherPt);
         return p;
     }
+    
+    protected void modelChanged(PropertyChangeEvent mee) {
+	if (mee instanceof RemoveAssociationEvent
+		&& "ownedElement".equals(mee.getPropertyName())) {
+	    // A model element has been removed from this packages namespace
+	    // If the Fig representing that model element is on the same
+	    // diagram as this package then make sure it is not enclosed by
+	    // this package.
+	    // TODO: In my view the Fig representing the model elemtn should be
+	    // removed from the diagram. Yet to be agredd. Bob.
+	    RemoveAssociationEvent rae = (RemoveAssociationEvent) mee;
+	    LayerPerspective layer = (LayerPerspective) getLayer();
+	    Fig f = layer.presentationFor(rae.getOldValue());
+	    if (f.getEnclosingFig() == this) {
+		removeEnclosedFig(f);
+	    }
+	}
+	super.modelChanged(mee);
+    }
+
+
 
     /**
      * The UID.
