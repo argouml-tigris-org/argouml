@@ -825,15 +825,6 @@ public class FigPackage extends FigNodeModelElement
     }
 
     /**
-     * @param fig
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#addEnclosedFig(org.tigris.gef.presentation.Fig)
-     */
-    public void addEnclosedFig(Fig fig) {
-	LOG.info("Adding an enclosed fig");
-	super.addEnclosedFig(fig);
-    }
-
-    /**
      * The UID.
      */
     private static final long serialVersionUID = 3617092272529451041L;
