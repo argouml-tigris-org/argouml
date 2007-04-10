@@ -2631,30 +2631,29 @@ class FacadeMDRImpl implements Facade {
     
 
     public Object getOppositeEnd(Object handle) {
+        return getNextEnd(handle);
+    }
+
+    public Object getNextEnd(Object handle) {
         try {
             if (handle instanceof AssociationEnd) {
                 List assocEnds = (((AssociationEnd) handle).getAssociation())
                         .getConnection();
-                if (assocEnds.size() > 2) {
-                    LOG.warn("There are more than 2 associations ends, "
-                            + "returning the first non-self end");
+                int index = assocEnds.indexOf(handle);
+                if (index == -1 || assocEnds.size() < 2) {
+                    return null; // shouldn't happen
                 }
-                Object opposite = null;
-                Iterator it = assocEnds.iterator();
-                while (it.hasNext()) {
-                    opposite = it.next();
-                    if (opposite != handle) {
-                        break;
-                    }
+                if (index == assocEnds.size() - 1) {
+                    return assocEnds.get(0);
+                } else {
+                    return assocEnds.get(index + 1);
                 }
-                return opposite;
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
         return illegalArgumentObject(handle);
     }
-
     /**
      * @see org.argouml.model.Facade#getOrdering(java.lang.Object)
      */
