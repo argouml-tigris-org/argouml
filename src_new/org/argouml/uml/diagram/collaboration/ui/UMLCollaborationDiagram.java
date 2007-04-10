@@ -36,6 +36,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.CmdSetMode;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
@@ -390,7 +391,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     private Action getActionMessage() {
         if (actionMessage == null) {
-            actionMessage = ActionAddMessage.getSingleton();
+            actionMessage =
+                TargetManager.getInstance().getAddMessageAction();
         }
         return actionMessage;
     }

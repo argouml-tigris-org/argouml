@@ -44,6 +44,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Diagram;
@@ -399,6 +400,8 @@ public final class TargetManager {
     private ActionAddAttribute addAttributeAction = new ActionAddAttribute();
 
     private ActionAddOperation addOperationAction = new ActionAddOperation();
+    
+    private ActionAddMessage addMessageAction = new ActionAddMessage();
     
     private AbstractAction deleteAction = new ActionDeleteModelElements();
 
@@ -833,6 +836,7 @@ public final class TargetManager {
     private void endTargetTransaction() {
         addAttributeAction.setEnabled(addAttributeAction.shouldBeEnabled());
         addOperationAction.setEnabled(addOperationAction.shouldBeEnabled());
+        addMessageAction.setEnabled(addMessageAction.shouldBeEnabled());
         deleteAction.setEnabled(isDeleteAllowed());
 
         inTransaction = false;
@@ -894,6 +898,15 @@ public final class TargetManager {
      */
     public Action getAddOperationAction() {
         return addOperationAction;
+    }
+
+    /**
+     * Get the Action for creating and adding a new operation
+     * to the single selected target (or its owner).
+     * @return the action
+     */
+    public Action getAddMessageAction() {
+        return addMessageAction;
     }
 
     /**

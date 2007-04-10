@@ -46,19 +46,10 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionAddMessage extends UndoableAction {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    private static ActionAddMessage singleton = new ActionAddMessage();
-
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * The constructor.
      */
-    private ActionAddMessage() {
+    public ActionAddMessage() {
         super(Translator.localize("action.add-message"),
                 ResourceLoaderWrapper.lookupIcon("action.add-message"));
         // Set the tooltip string:
@@ -116,20 +107,13 @@ public class ActionAddMessage extends UndoableAction {
 
         TargetManager.getInstance().setTarget(message);
     }
-
+    
     /*
      * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
-    public boolean isEnabled() {
+    public boolean shouldBeEnabled() {
 	Object target =  TargetManager.getInstance().getModelTarget();
-	return super.isEnabled()
-	    && Model.getFacade().isAAssociationRole(target);
+	return Model.getFacade().isAAssociationRole(target);
     }
-
-    /**
-     * @return Returns the singleton.
-     */
-    public static ActionAddMessage getSingleton() {
-        return singleton;
-    }
+    
 }  /* end class ActionAddMessage */
