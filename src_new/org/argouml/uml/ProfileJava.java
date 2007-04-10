@@ -385,14 +385,18 @@ public class ProfileJava extends Profile {
                 is = new FileInputStream(modelFile);
             }
         } catch (FileNotFoundException ex) {
-            //
             // No file found, try looking in the resources
-            //
+            
+            // Not really an error, but we want to maximize our logging
+            // for debugging in a WebStart environment - tfm
+            LOG.error("Failed to load profile from file '" + modelFilename
+                    + "', attempting to load as resource");
+
             // Note that the class that we run getClass() in needs to be
             // in the same ClassLoader as the profile XMI file.
             // If we run using Java Web Start then we have every ArgoUML
             // file in the same jar (i.e. the same ClassLoader).
-            is = new Object().getClass().getResourceAsStream(modelFilename);
+            is = this.getClass().getResourceAsStream(modelFilename);
         }
         if (is != null) {
 
@@ -414,7 +418,7 @@ public class ProfileJava extends Profile {
                 return null;
             }
         }
-        LOG.warn("Profile '" + modelFilename + "' not found");
+        LOG.error("Profile '" + modelFilename + "' not found");
         return null;
     }
 

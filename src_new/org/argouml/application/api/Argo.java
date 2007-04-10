@@ -288,7 +288,7 @@ public final class Argo {
         Configuration.makeKey("snap");
 
     /**
-     * Standard definition of the logging category for the console.
+     * Standard definition of the logging category for the console. (unused)
      */
     public static final String CONSOLE_LOG = "argo.console.log";
 
@@ -299,7 +299,7 @@ public final class Argo {
 
     /**
      * Standard definition of system variable to add text prefix to
-     * console log.
+     * console log. (unused)
      */
     public static final String ARGO_CONSOLE_PREFIX = "argo.console.prefix";
     
