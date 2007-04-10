@@ -26,7 +26,6 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.Iterator;
@@ -337,16 +336,6 @@ public class FigMessage extends FigNodeModelElement {
 		lay.bringToFront(this);
 	    }
 	}
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#paint(Graphics)
-     */
-    public void paint(Graphics g) {
-	// TODO: Bob says. We shouldn't be doing this processing in paint()
-	// is it needed?
-	updateArrow();
-	super.paint(g);
     }
 
     /*
