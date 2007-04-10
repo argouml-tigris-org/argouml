@@ -24,13 +24,23 @@
 
 package org.argouml.uml.ui.model_management;
 
+import java.awt.event.ActionEvent;
+import java.util.Vector;
+
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.ArgoFrame;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.ActionAddDataType;
@@ -44,6 +54,7 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationL
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.argouml.util.ConfigLoader;
+import org.tigris.gef.undo.UndoableAction;
 import org.tigris.swidgets.Orientation;
 
 
@@ -62,10 +73,10 @@ public class PropPanelPackage extends PropPanelNamespace  {
     private JScrollPane specializationScroll;
 
     private static UMLGeneralizableElementGeneralizationListModel
-        generalizationListModel =
+    generalizationListModel =
             new UMLGeneralizableElementGeneralizationListModel();
     private static UMLGeneralizableElementSpecializationListModel
-        specializationListModel =
+    specializationListModel =
             new UMLGeneralizableElementSpecializationListModel();
 
     /**
@@ -128,6 +139,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
         addAction(new ActionAddPackage());
         addAction(new ActionAddDataType());
         addAction(new ActionAddEnumeration());
+        addAction(new ActionDialogElementImport());
         addAction(new ActionNewStereotype());
         addAction(new ActionNewTagDefinition());
         addAction(getDeleteAction());
@@ -177,3 +189,67 @@ public class PropPanelPackage extends PropPanelNamespace  {
     }
 
 } /* end class PropPanelPackage */
+
+class ActionDialogElementImport extends UndoableAction {
+
+    public ActionDialogElementImport() {
+        super();
+        putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon("ElementImport"));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("button.add-element-import"));
+    }
+
+    /**
+     * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        Object target = TargetManager.getInstance().getSingleModelTarget();
+        if (target != null) {
+            UMLAddDialog dialog =
+                new UMLAddDialog(getChoices(target), 
+                        getSelected(target), 
+                        getDialogTitle(),
+                        isMultiSelect(),
+                        isExclusive());
+            int result = dialog.showDialog(ArgoFrame.getInstance());
+            if (result == JOptionPane.OK_OPTION) {
+                doIt(target, dialog.getSelected());
+            }
+        }
+    }
+    
+    protected Vector getChoices(Object target) {
+        Vector vec = new Vector();
+        /* TODO: correctly implement next function 
+         * in the model subsystem for 
+         * issue 1942: */
+        vec.addAll(Model.getModelManagementHelper()
+                .getAllPossibleImports(target));
+        return vec;
+    }
+    
+    protected Vector getSelected(Object target) {
+        Vector vec = new Vector();
+        vec.addAll(Model.getFacade().getImportedElements(target));
+        return vec;
+    }
+    
+    protected String getDialogTitle() {
+        return Translator.localize("dialog.title.add-imported-elements");
+    }
+    
+    public boolean isMultiSelect() {
+        return true;
+    }
+    
+    public boolean isExclusive() {
+        return true;
+    }
+    
+    protected void doIt(Object target, Vector selected) {
+        Model.getModelManagementHelper().setImportedElements(target, selected);
+    }
+}
