@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
@@ -167,12 +168,10 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
             resolver = new XmiReferenceResolverImpl(new RefPackage[] {extent},
                     config, parent.getObjectToId());
-
             config.setReferenceResolver(resolver);
-
+            
             XMIReader xmiReader =
-                XMIReaderFactory.getDefault()
-                    .createXMIReader(config);
+                    XMIReaderFactory.getDefault().createXMIReader(config);
 
             // Copy stream to a file to be sure it can be repositioned.
             // TODO: find a way to remove this, since this *always* alterate the
@@ -195,7 +194,6 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             // Disable event delivery during model load
             parent.getModelEventPump().stopPumpingEvents();
 
-
             Collection startTopElements = getTopLevelElements();
             int numElements = startTopElements.size();
             LOG.debug("Number of top level elements before import: "
@@ -211,7 +209,13 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                     Collection toDelete = new ArrayList();
                     toDelete.addAll(newElements);
                     for (Iterator it = toDelete.iterator(); it.hasNext();) {
-                        ((RefObject) it.next()).refDelete();
+                        try {
+                            ((RefObject) it.next()).refDelete();
+                        } catch (InvalidObjectException e) {
+                            // Just continue.  We tried to delete something 
+                            // twice, probably because it was contained in 
+                            // another element that we already deleted.
+                        }
                     }
 
                     // Clear the associated ID maps & reset starting collection
@@ -507,11 +511,74 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         return tmpOutFile;
     }
 
+    private static final String UML_13_ELEMENTS[] = 
+    {
+        "TaggedValue.value",
+        "TaggedValue.tag",
+        "ModelElement.templateParameter2",
+        "ModelElement.templateParameter3",
+        "Classifier.structuralFeature",
+        "Classifier.parameter",
+        "AssociationEnd.type",
+        "Node.resident",
+        "ElementResidence.implementationLocation",
+        "TemplateParameter.modelElement",
+        "TemplateParameter.modelElement2",
+        "Constraint.constrainedElement2",
+        "UseCase.include2",
+        "StateMachine.subMachineState",
+        "ClassifierRole.message1",
+        "ClassifierRole.message2",
+        "Message.message3",
+        "Message.message4",
+        "ElementImport.modelElement",
+
+        "ModelElement.elementResidence",
+        "ModelElement.presentation",
+        "ModelElement.supplierDependency",
+        "ModelElement.templateParameter2",
+        "ModelElement.templateParameter3",
+        "ModelElement.binding",
+        "GeneralizableElement.specialization",
+        "Classifier.associationEnd",
+        "Classifier.participant",
+        "Operation.method",
+        "Stereotype.extendedElement",
+        "Stereotype.requiredTag",
+        "TaggedValue.stereotype",
+        "Signal.context",
+        "Signal.reception",
+        "Signal.sendAction",
+
+        "UseCase.include2",
+        "UseCase.extend2",
+        "ExtensionPoint.extend",
+        "Link.stimulus",
+        "Instance.attributeLink",
+        "Action.stimulus",
+        "Event.state",
+        "Event.transition",
+        "Transition.state",
+
+        "ClassifierRole.message1",
+        "ClassifierRole.message2",
+        "Message.message3",
+        "Message.message4",
+
+        "Action.state1",
+        "Action.state2",
+        "Action.state3",
+        "Instance.stimulus1",
+        "Instance.stimulus2",
+        "Instance.stimulus3",
+
+    };
+    
     /*
      * @see org.netbeans.lib.jmi.xmi.UnknownElementsListener#elementFound(java.lang.String)
      */
     public void elementFound(String name) {
-        // Silently ignore anything specificed by caller attempt to continue
+        // Silently ignore anything specified by caller attempt to continue
         if (ignoredElements != null) {
             for (int i = 0; i < ignoredElements.length; i++) {
                 if (name.equals(ignoredElements[i])) {
@@ -520,16 +587,25 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                 }
             }
         }
+        
+        if (name.startsWith("Foundation.")) {
+            uml13 = true;
+            return;
+        }
+
+        for (int i = 0; i < UML_13_ELEMENTS.length; i++) {
+            if (name.endsWith(UML_13_ELEMENTS[i])) {
+                uml13 = true;
+                return;
+            }
+        }
 
         unknownElement = true;
-        if (name.startsWith("Foundation.Core.")) {
-            uml13 = true;
-        } else {
-            if (unknownElementName == null) {
-                unknownElementName = name;
-            }
-            LOG.error("Unknown XMI element named : " + name);
+        if (unknownElementName == null) {
+            unknownElementName = name;
         }
+        LOG.error("Unknown XMI element named : " + name);
+        
     }
 
 
