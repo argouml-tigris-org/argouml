@@ -812,19 +812,26 @@ public class FigPackage extends FigNodeModelElement
 	    // If the Fig representing that model element is on the same
 	    // diagram as this package then make sure it is not enclosed by
 	    // this package.
-	    // TODO: In my view the Fig representing the model elemtn should be
-	    // removed from the diagram. Yet to be agredd. Bob.
-	    RemoveAssociationEvent rae = (RemoveAssociationEvent) mee;
+	    // TODO: In my view the Fig representing the model element should be
+	    // removed from the diagram. Yet to be agreed. Bob.
 	    LayerPerspective layer = (LayerPerspective) getLayer();
-	    Fig f = layer.presentationFor(rae.getOldValue());
+	    Fig f = layer.presentationFor(mee.getOldValue());
 	    if (f.getEnclosingFig() == this) {
 		removeEnclosedFig(f);
+		f.setEnclosingFig(null);
 	    }
 	}
 	super.modelChanged(mee);
     }
 
-
+    /**
+     * @param fig
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#addEnclosedFig(org.tigris.gef.presentation.Fig)
+     */
+    public void addEnclosedFig(Fig fig) {
+	LOG.info("Adding an enclosed fig");
+	super.addEnclosedFig(fig);
+    }
 
     /**
      * The UID.
