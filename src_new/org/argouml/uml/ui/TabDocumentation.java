@@ -24,7 +24,10 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.Color;
+
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
@@ -120,6 +123,10 @@ public class TabDocumentation extends PropPanel {
         comment.setWrapStyleWord(true);
         comment.setEnabled(false);
         comment.setDisabledTextColor(comment.getForeground());
+        // See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4919687
+        Color c = new Color(
+                UIManager.getColor("TextField.inactiveBackground").getRGB());
+        comment.setBackground(c);
         JScrollPane spComment = new JScrollPane();
         spComment.getViewport().add(comment);
         addField(Translator.localize("label.comment.name"), spComment);
@@ -132,6 +139,7 @@ public class TabDocumentation extends PropPanel {
         commentBody.setWrapStyleWord(true);
         commentBody.setEnabled(false);
         commentBody.setDisabledTextColor(comment.getForeground());
+        commentBody.setBackground(c);
         JScrollPane spCommentBody = new JScrollPane();
         spCommentBody.getViewport().add(commentBody);
         addField(Translator.localize("label.comment.body"), spCommentBody);
