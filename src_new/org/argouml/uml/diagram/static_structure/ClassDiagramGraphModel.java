@@ -160,12 +160,19 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (Model.getFacade().isAClassifier(port)) {
 	    Iterator it = Model.getFacade().getAssociationEnds(port).iterator();
 	    while (it.hasNext()) {
-		Object nextAssocEnd =
-		    Model.getFacade().getOppositeEnd(it.next());
-		// navigable.... only want outgoing
-		if (Model.getFacade().isNavigable(nextAssocEnd)) {
-		    edges.add(nextAssocEnd);
-		}
+	        Object thisEnd = it.next();
+	        Object assoc = Model.getFacade().getAssociation(thisEnd);
+	        if (assoc != null) {
+	            Iterator it2 =  
+	                Model.getFacade().getAssociationEnds(assoc).iterator();
+	            while (it2.hasNext()) {
+                        Object nextAssocEnd = it2.next();
+                        if (!thisEnd.equals(nextAssocEnd)
+                                && Model.getFacade().isNavigable(nextAssocEnd)) {
+                            edges.add(nextAssocEnd);
+                        }
+                    }
+	        }
 	    }
 	}
 
