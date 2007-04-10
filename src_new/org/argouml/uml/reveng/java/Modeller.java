@@ -54,6 +54,9 @@ import org.argouml.uml.reveng.ImportSettings;
  * @author Marcus Andersson
  */
 public class Modeller {
+
+    private final static String JAVA_PACKAGE = "java.lang";
+    
     /**
      * Logger.<p>
      */
@@ -166,7 +169,7 @@ public class Modeller {
 	arraysAsDatatype = arraysAsDT;
 	importSession = imp;
 	currentPackage = this.model;
-	parseState = new ParseState(this.model, getPackage("java.lang"));
+	parseState = new ParseState(this.model, getPackage(JAVA_PACKAGE));
 	parseStateStack = new Stack();
 	diagram = diag;
         fileName = fName;
@@ -382,9 +385,9 @@ public class Modeller {
 		    Model.getCoreFactory()
 		        .buildPermission(parseState.getComponent(), mPackage);
 		String newName =
-		    Model.getFacade().getName(parseState.getComponent())
-		    + " -> "
-		    + packageName;
+                    makePermissionName(
+                            Model.getFacade().getName(parseState.getComponent()),
+                            packageName);
 		Model.getCoreHelper().setName(perm, newName);
             }
 	}
@@ -434,15 +437,45 @@ public class Modeller {
 			    .buildPermission(parseState.getComponent(),
 					     mClassifier);
 		    String newName =
-			Model.getFacade().getName(parseState.getComponent())
-			+ " -> "
-			+ Model.getFacade().getName(mClassifier);
+                            makePermissionName(
+                                    parseState.getComponent(), mClassifier);
                     Model.getCoreHelper().setName(perm, newName);
                 }
 	    }
 	}
     }
 
+    private String makeAbstractionName(Object child, Object parent) {
+        return makeFromToName(child, parent);
+    }   
+    
+    private String makeAssociationName(Object from, Object to) {
+        return makeFromToName(from, to);
+    }
+    
+    private String makeGeneralizationName(Object child, Object parent) {
+        return makeFromToName(child, parent);
+    }    
+    
+    private String makePermissionName(String from, String to) {
+        return makeFromToName(from, to);
+    }
+    
+    private String makePermissionName(Object from, Object to) {
+        return makeFromToName(from, to);
+    }
+    private String makeFromToName(Object from, Object to) {
+        return makeFromToName(
+                Model.getFacade().getName(from), 
+                Model.getFacade().getName(to));
+    }
+    
+    private String makeFromToName(String from, String to) {
+        // NOTE: This isn't localized, but I'm not sure it can be
+        // without other side effects - tfm - 20070410
+        return from + " -> " + to;
+    }
+    
     /**
      * Called from the parser when a class declaration is found.
      *
@@ -1086,12 +1119,7 @@ public class Modeller {
                 }
             }
             if (mClassifier != null) {
-		mParameter = Model.getCoreFactory().buildParameter(
-		        mOperation, mClassifier);
-                Model.getCoreHelper().setName(mParameter, "return");
-                Model.getCoreHelper().setKind(
-                        mParameter,
-                        Model.getDirectionKind().getReturnParameter());
+		mParameter = buildReturnParameter(mOperation, mClassifier);
 	    }
 	}
 
@@ -1125,12 +1153,10 @@ public class Modeller {
                 }
             }
             if (mClassifier != null) {
-                mParameter = Model.getCoreFactory().buildParameter(
-                        mOperation, mClassifier);
-		Model.getCoreHelper().setName(mParameter,
-				    (String) parameter.elementAt(2));
-		Model.getCoreHelper().setKind(mParameter,
-                        Model.getDirectionKind().getInParameter());
+                mParameter =
+                        buildInParameter(
+                                mOperation, mClassifier, (String) parameter
+                                        .elementAt(2));
                 if (!Model.getFacade().isAClassifier(mClassifier)) {
                     // the type resolution failed to find a valid classifier.
                     logError("Modeller.java: a valid type for a parameter "
@@ -1146,6 +1172,29 @@ public class Modeller {
 	addDocumentationTag (mOperation, javadoc);
 
 	return mOperation;
+    }
+
+    private Object buildInParameter(Object operation, Object classifier,
+            String name) {
+        Object parameter = buildParameter(operation, classifier, name);
+        Model.getCoreHelper().setKind(
+                parameter, Model.getDirectionKind().getInParameter());
+        return parameter;
+    }
+
+    private Object buildReturnParameter(Object operation, Object classifier) {
+        Object parameter = buildParameter(operation, classifier, "return");
+        Model.getCoreHelper().setKind(
+                parameter, Model.getDirectionKind().getReturnParameter());
+        return parameter;
+    }
+
+    private Object buildParameter(Object operation, Object classifier,
+            String name) {
+        Object parameter =
+                Model.getCoreFactory().buildParameter(operation, classifier);
+        Model.getCoreHelper().setName(parameter, name);
+        return parameter;
     }
 
 
@@ -1262,21 +1311,22 @@ public class Modeller {
             // the attribute type
             try {
                 // get the attribute type
-                mClassifier = getContext(typeSpec).get(getClassifierName(typeSpec));
+                mClassifier =
+                        getContext(typeSpec).get(getClassifierName(typeSpec));
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && typeSpec != null && model != null) {
-                    LOG.info("Modeller.java: forced creation of unknown classifier "
-                            + typeSpec);
+                    LOG.info("Modeller.java: forced creation of"
+                            + " unknown classifier " + typeSpec);
                     String packageName = getPackageName(typeSpec);
                     String classifierName = getClassifierName(typeSpec);
-                    Object mPackage = (packageName.length() > 0) 
-                    ? getPackage(packageName)
-                            : model;
+                    Object mPackage =
+                            (packageName.length() > 0) ? getPackage(packageName)
+                                    : model;
                     mClassifier =
-                        Model.getCoreFactory().buildClass(classifierName, mPackage);
+                            Model.getCoreFactory().buildClass(
+                                    classifierName, mPackage);
                 } else {
-                    warnClassifierNotFound(typeSpec, e,
-                    "an attribute");
+                    warnClassifierNotFound(typeSpec, e, "an attribute");
                 }
             }
             if (mClassifier == null) {
@@ -1290,7 +1340,7 @@ public class Modeller {
                 || noAssociations
                 || Model.getFacade().isADataType(mClassifier)
                 || (Model.getFacade().getNamespace(mClassifier) 
-                        == getPackage("java.lang"))) {
+                        == getPackage(JAVA_PACKAGE))) {
 
             Object mAttribute = parseState.getAttribute(name);
             if (mAttribute == null) {
@@ -1376,14 +1426,12 @@ public class Modeller {
     private Object getGeneralization(Object mPackage,
                                      Object parent,
                                      Object child) {
-        String name = Model.getFacade().getName(child) + " -> "
-            + Model.getFacade().getName(parent);
-        Object mGeneralization = null;
-        mGeneralization = Model.getFacade().getGeneralization(child, parent);
+        Object mGeneralization = 
+            Model.getFacade().getGeneralization(child, parent);
         if (mGeneralization == null) {
             mGeneralization =
 		Model.getCoreFactory().buildGeneralization(child, parent,
-							     name);
+							  makeGeneralizationName(child, parent));
         }
         if (mGeneralization != null) {
             Model.getCoreHelper().setNamespace(mGeneralization, mPackage);
@@ -1401,8 +1449,6 @@ public class Modeller {
      */
     private Object getAbstraction(Object parent,
                                   Object child) {
-        String name = Model.getFacade().getName(child) + " -> "
-            + Model.getFacade().getName(parent);
         Object mAbstraction = null;
         for (Iterator i =
                 Model.getFacade().getClientDependencies(child).iterator();
@@ -1423,7 +1469,7 @@ public class Modeller {
 
         if (mAbstraction == null) {
             mAbstraction = Model.getCoreFactory().buildAbstraction(
-                   name,
+                   makeAbstractionName(child, parent),
                    parent,
                    child);
         }
@@ -1540,7 +1586,8 @@ public class Modeller {
     }
 
     /**
-     * Find an associationEnd from the currentClassifier to the type specified.
+     * Find an associationEnd for a binary Association from the 
+     * currentClassifier to the type specified.
      * If not found, a new is created.
      * 
      * @param name
@@ -1554,17 +1601,18 @@ public class Modeller {
         for (Iterator i = Model.getFacade().getAssociationEnds(mClassifier)
                 .iterator(); i.hasNext();) {
             Object ae = i.next();
+            Object assoc = Model.getFacade().getAssociation(ae);
             if (name.equals(Model.getFacade().getName(ae))
-                && Model.getFacade().getType(
-                        Model.getFacade().getOppositeEnd(ae))
-                    == parseState.getClassifier()) {
+                    && Model.getFacade().getConnections(assoc).size() == 2
+                    && Model.getFacade().getType(
+                            Model.getFacade().getNextEnd(ae))
+                            == parseState.getClassifier()) {
                 mAssociationEnd = ae;
             }
         }
         if (mAssociationEnd == null && !noAssociations) {
             String newName =
-                Model.getFacade().getName(parseState.getClassifier())
-                    + " -> " + Model.getFacade().getName(mClassifier);
+                    makeAssociationName(parseState.getClassifier(), mClassifier);
 
             Object mAssociation = buildDirectedAssociation(
                         newName, parseState.getClassifier(), mClassifier);
