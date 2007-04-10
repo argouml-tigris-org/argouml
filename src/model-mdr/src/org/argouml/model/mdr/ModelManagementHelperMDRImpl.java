@@ -424,9 +424,11 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             return model;
         }
 
-        // The cast is actually safe
-        Namespace ns = (Namespace) getCorrespondingElement(
-                ((ModelElement) elem).getNamespace(), model, canCreate);
+        Namespace ns = ((ModelElement) elem).getNamespace();
+        if (ns == null) {
+            return null;
+        }
+        ns = (Namespace) getCorrespondingElement(ns, model, canCreate);
         if (ns == null) {
             return null;
         }
