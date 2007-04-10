@@ -2122,13 +2122,27 @@ public interface Facade {
 
     
     /**
-     * Return the opposite end of an AssociationEnd.
+     * Return the "opposite" end of an AssociationEnd.  This just 
+     * calls {@link #getNextEnd(Object)}, so for an Association
+     * with more than two AssociationEnds, this returns the nextEnd in 
+     * sequence.
      *
      * @param handle the association end
      * @return Object the opposite end.
+     * @deprecated for 0.25.2 by tfmorris - use {@link #getNextEnd(Object)}
      */
     Object getOppositeEnd(Object handle);
 
+    /**
+     * Return the next AssociationEnd in the owning Association.  If this is
+     * the last AssociationEnd, the search will wrap and return the first end
+     * so that all AssociationEnds may be visited by repeatedly calling this method.
+     *
+     * @param handle the AssociationEnd
+     * @return the next AssociationEnd in sequence
+     */
+    Object getNextEnd(Object handle);
+    
     /**
      * Get ordering of an association end.
      *
@@ -2749,7 +2763,7 @@ public interface Facade {
      * @return the AggregationKind
      */
     Object getAggregation(Object handle);
-    
+
     /**
      * @param handle the ElementImport
      * @return the alias Name
