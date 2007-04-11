@@ -1524,6 +1524,18 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
+    public Collection getElementImports(Object handle) {
+        try {
+            if (handle instanceof UmlPackage) {
+                return implementation.getUmlPackage().getModelManagement()
+                    .getAPackageElementImport().getElementImport(
+                        (UmlPackage) handle);
+            }
+            return illegalArgumentCollection(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+    }
 
     public Object getEntry(Object handle) {
         try {
