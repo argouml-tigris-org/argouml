@@ -250,15 +250,21 @@ public class DisplayTextTree extends JTree {
         
         if (Model.getFacade().isAElementImport(value)) {
             try {
-                // TODO: Localize
-                StringBuffer s = new StringBuffer("Imported ");
                 Object me = Model.getFacade().getImportedElement(value);
-                s.append(Model.getFacade().getUMLClassName(me));
-                s.append(": ");
-                // TODO: Handle the Alias from the ElementImport.
-                s.append(convertValueToText(me, selected, expanded, leaf, row,
-                        hasFocus));
-                return s.toString();
+                String typeName = Model.getFacade().getUMLClassName(me);
+                String elemName = convertValueToText(me, selected, 
+                        expanded, leaf, row,
+                        hasFocus);
+                String alias = Model.getFacade().getAlias(value);
+                if (alias != null && alias.length() > 0) {
+                    Object[] args = {typeName, elemName, alias};
+                    return Translator.localize(
+                            "misc.name.element-import.alias", args);
+                } else {
+                    Object[] args = {typeName, elemName};
+                    return Translator.localize(
+                            "misc.name.element-import", args);
+                }
             } catch (InvalidElementException e) {
                 return Translator.localize("misc.name.deleted");
             }

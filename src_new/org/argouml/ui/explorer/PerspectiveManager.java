@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -75,6 +75,7 @@ import org.argouml.ui.explorer.rules.GoNodeToResidentComponent;
 import org.argouml.ui.explorer.rules.GoOperationToCollaboration;
 import org.argouml.ui.explorer.rules.GoOperationToCollaborationDiagram;
 import org.argouml.ui.explorer.rules.GoOperationToSequenceDiagram;
+import org.argouml.ui.explorer.rules.GoPackageToElementImport;
 import org.argouml.ui.explorer.rules.GoPackageToClass;
 import org.argouml.ui.explorer.rules.GoProjectToCollaboration;
 import org.argouml.ui.explorer.rules.GoProjectToDiagram;
@@ -353,6 +354,7 @@ public final class PerspectiveManager {
                 "combobox.item.package-centric");
         packagePerspective.addRule(new GoProjectToModel());
         packagePerspective.addRule(new GoNamespaceToOwnedElements());
+        packagePerspective.addRule(new GoPackageToElementImport());
         packagePerspective.addRule(new GoNamespaceToDiagram());
         packagePerspective.addRule(new GoUseCaseToExtensionPoint());
         packagePerspective.addRule(new GoClassifierToStructuralFeature());
@@ -510,6 +512,7 @@ public final class PerspectiveManager {
             new GoOperationToCollaborationDiagram(),
             new GoOperationToCollaboration(),
             new GoOperationToSequenceDiagram(), new GoPackageToClass(),
+            new GoPackageToElementImport(),
             new GoProjectToCollaboration(), new GoProjectToDiagram(),
             new GoProjectToModel(), new GoProjectToStateMachine(),
             new GoSignalToReception(), new GoStateMachineToTop(),
