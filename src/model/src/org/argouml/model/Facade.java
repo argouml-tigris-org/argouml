@@ -1464,14 +1464,31 @@ public interface Facade {
     /**
      * Return the ElementImports of this ModelElement.
      * 
-     * TODO: Not sure if we ever had a getElementImports, but,
-     * if not, this method name, which is left over from UML 1.3,
-     * should be changed to getElementImports. - tfm 20061108
+     * The name of this method is non-standard, since
+     * there are 2 meta-associations with the same name.
+     * This is the one for a ModelElement, which returns
+     * the collection of elementImports for where the given
+     * modelElement is imported.
      *
      * @param handle the ModelElement
      * @return the collection of ElementImports
      */
     Collection getElementImports2(Object handle);
+
+    /**
+     * Return the ElementImports of this Package.
+     * 
+     * The name of this method is easy to confuse 
+     * with getElementImports2, since
+     * there are 2 meta-associations with the same name.
+     * This is the one for a Package, which returns
+     * the collection of elementImports of all
+     * modelElements imported in the Package.
+     * 
+     * @param handle the package
+     * @return the collection of ElementImports
+     */
+    Collection getElementImports(Object handle);
 
     /**
      * Return the entry Action for a State.
