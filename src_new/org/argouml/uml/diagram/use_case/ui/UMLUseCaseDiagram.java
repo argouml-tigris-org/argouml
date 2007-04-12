@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -441,17 +441,16 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base)  {
-    	return false;
-		/* TODO: We may return the following when the
-		 * relocate() has been implemented. */
-//    	Model.getFacade().isAPackage(base)
-//        	|| Model.getFacade().isAClassifier(base);
+    	return Model.getFacade().isAPackage(base)
+        	|| Model.getFacade().isAClassifier(base);
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
     public boolean relocate(Object base) {
-        return false;
+        setNamespace(base);
+        damage();
+        return true;
     }
 } /* end class UMLUseCaseDiagram */
