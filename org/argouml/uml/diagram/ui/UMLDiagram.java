@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -122,6 +122,10 @@ public abstract class UMLDiagram
      */
     private int diagramSerial = 1;
 
+    /** The bean property name denoting the diagram's namespace. 
+     * Value is a String. */
+    public static final String NAMESPACE_KEY = "namespace";
+    
     ////////////////////////////////////////////////////////////////
     // actions for toolbar
 
@@ -258,7 +262,10 @@ public abstract class UMLDiagram
         if ((namespace != null) && (namespace != ns)) {
             Model.getPump().removeModelEventListener(this, namespace);
         }
+        Object oldNs = namespace;
         namespace = ns;
+        firePropertyChange(NAMESPACE_KEY, oldNs, ns);
+
         // Add the diagram as a listener to the namespace so
         // that when the namespace is removed the diagram is deleted also.
         /* Listening only to "remove" events does not work... 
