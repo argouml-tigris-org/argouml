@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,6 +44,7 @@ import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 
@@ -122,6 +123,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
 //        addMenu.add(TargetManager.getInstance().getAddAttributeAction());
 //        addMenu.add(TargetManager.getInstance().getAddOperationAction());
         addMenu.add(new ActionAddNote());
+        addMenu.add(new ActionNewTagDefinition());
         addMenu.add(ActionEdgesDisplay.getShowEdges());
         addMenu.add(ActionEdgesDisplay.getHideEdges());
         popUpActions.insertElementAt(addMenu,
