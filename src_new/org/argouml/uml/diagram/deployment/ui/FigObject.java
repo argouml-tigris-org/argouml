@@ -195,51 +195,45 @@ public class FigObject extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
-        // super.setEnclosingFig(encloser);
+	assert Model.getFacade().isAObject(getOwner());
 
-        if (Model.getFacade().isAObject(getOwner())) {
-            Object me = getOwner();
-            Object mcompInst = null;
-            Object mcomp = null;
+        Object me = getOwner();
+        Object mcompInst = null;
 
-            if (encloser != null
-                    && (Model.getFacade()
-                            .isAComponentInstance(encloser.getOwner()))) {
+        if (encloser != null
+                && (Model.getFacade()
+                        .isAComponentInstance(encloser.getOwner()))) {
 
-                mcompInst = encloser.getOwner();
-                Model.getCommonBehaviorHelper()
-                        .setComponentInstance(me, mcompInst);
-                super.setEnclosingFig(encloser);
+            mcompInst = encloser.getOwner();
+            Model.getCommonBehaviorHelper()
+                    .setComponentInstance(me, mcompInst);
+            super.setEnclosingFig(encloser);
 
-            } else if (isVisible() 
-                    // If we are not visible most likely we're being deleted.
-                    // TODO: This indicates a more fundamental problem that should
-                    // be investigated - tfm - 20061230
-                    && Model.getFacade().getComponentInstance(me) != null) {
-                Model.getCommonBehaviorHelper().setComponentInstance(me, null);
+        } else if (Model.getFacade().getComponentInstance(me) != null) {
+            Model.getCommonBehaviorHelper().setComponentInstance(me, null);
+            super.setEnclosingFig(null);
+        }
+        
+        
+        if (encloser != null
+                && (Model.getFacade()
+                        .isAComponent(encloser.getOwner()))) {
+
+            Object component = encloser.getOwner();
+            Object obj = getOwner();
+            Model.getCoreHelper().setContainer(resident, component);
+            Model.getCoreHelper().setResident(resident, obj);
+            super.setEnclosingFig(encloser);
+        } else if (encloser != null
+                && Model.getFacade().isANode(encloser.getOwner())) {
+            super.setEnclosingFig(encloser);
+        } else {
+            if (Model.getFacade().getContainer(resident) != null) {
+                Model.getCoreHelper().setContainer(resident, null);
+                Model.getCoreHelper().setResident(resident, null);
                 super.setEnclosingFig(null);
             }
-            if (encloser != null
-                    && (Model.getFacade()
-                            .isAComponent(encloser.getOwner()))) {
-
-                mcomp = encloser.getOwner();
-                Object obj = getOwner();
-                Model.getCoreHelper().setContainer(resident, mcomp);
-                Model.getCoreHelper().setResident(resident, obj);
-                super.setEnclosingFig(encloser);
-            } else if (encloser != null
-                    && Model.getFacade().isANode(encloser.getOwner())) {
-                super.setEnclosingFig(encloser);
-            } else {
-                if (Model.getFacade().getContainer(resident) != null) {
-                    Model.getCoreHelper().setContainer(resident, null);
-                    Model.getCoreHelper().setResident(resident, null);
-                    super.setEnclosingFig(null);
-                }
-            }
         }
-
     }
 
 } /* end class FigObject */
