@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -175,11 +175,18 @@ public class TabStereotype extends PropPanel {
      * @return true if this tab should be enabled, otherwise false.
      */
     public boolean shouldBeEnabled() {
-        Object tgt = getTarget();
-        if (tgt instanceof Fig) {
-            tgt = ((Fig) tgt).getOwner();
+        Object target = getTarget();
+        return shouldBeEnabled(target);
+    }
+    
+    /*
+     * @see org.argouml.uml.ui.PropPanel#shouldBeEnabled(java.lang.Object)
+     */
+    public boolean shouldBeEnabled(Object target) {
+        if (target instanceof Fig) {
+            target = ((Fig) target).getOwner();
         }
-        return Model.getFacade().isAModelElement(tgt);
+        return Model.getFacade().isAModelElement(target);
     }
 
     /*
@@ -250,7 +257,7 @@ public class TabStereotype extends PropPanel {
          */
         protected void buildModelList() {
             removeAllElements();
-            if (getTarget() != null) {
+            if (Model.getFacade().isAModelElement(getTarget())) {
                 Collection s;
                 s = StereotypeUtility.getAvailableStereotypes(getTarget());
                 // now remove the ones already applied.

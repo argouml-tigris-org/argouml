@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.uml.ui;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
@@ -65,11 +66,11 @@ public class UMLModelElementCommentDocument extends UMLPlainTextDocument {
      * @param text the property
      */
     protected void setProperty(String text) {
-        if (getTarget() != null) {
+//        if (Model.getFacade().isAModelElement(getTarget())) {
 //            Model.getCoreHelper().addComment(
 //                    getTarget(),
 //                    text);
-        }
+//        }
     }
 
     /**
@@ -79,7 +80,10 @@ public class UMLModelElementCommentDocument extends UMLPlainTextDocument {
      */
     protected String getProperty() {
         StringBuffer sb = new StringBuffer();
-        Collection comments = Model.getFacade().getComments(getTarget());
+        Collection comments = Collections.EMPTY_LIST;
+        if (Model.getFacade().isAModelElement(getTarget())) {
+            comments = Model.getFacade().getComments(getTarget());
+        }
         for (Iterator i = comments.iterator(); i.hasNext();) {
             Object c = i.next();
             String s;

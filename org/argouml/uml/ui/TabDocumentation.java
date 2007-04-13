@@ -159,6 +159,13 @@ public class TabDocumentation extends PropPanel {
      */
     public boolean shouldBeEnabled() {
         Object target = getTarget();
+        return shouldBeEnabled(target);
+    }
+
+    /*
+     * @see org.argouml.uml.ui.PropPanel#shouldBeEnabled(java.lang.Object)
+     */
+    public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
         return Model.getFacade().isAModelElement(target);
     }
