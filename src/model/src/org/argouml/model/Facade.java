@@ -2375,25 +2375,28 @@ public interface Facade {
     /**
      * Get the resident element.
      *
-     * @param handle the element residence
-     * @return resident element
+     * @param handle the ElementResidence
+     * @return the resident ModelElement
      */
     Object getResident(Object handle);
 
     /**
-     * Return the collection of elements in a given component.
+     * Return the collection of ElementResidences for a given Component.
      *
-     * @param handle the component
-     * @return the Collection of ResidentElements
+     * @param handle the Component
+     * @return the Collection of ElementResidence
      */
     Collection getResidentElements(Object handle);
 
     /**
      * Return a collection with all residents belonging to the given
-     * Node.
+     * Component, ComponentInstance or NodeInstance.
      *
-     * @param handle the Node, Nodeinstance, componentinstance
-     * @return Collection
+     * @param handle the Component, NodeInstance, ComponentInstance
+     * @return the Collection of resident: <ul><li> 
+     *          ComponentInstances (in case of a NodeInstance)<li>
+     *          Instances (in case of a ComponentInstance)<li>
+     *          ModelElements (in case of a Component)</ul>
      */
     Collection getResidents(Object handle);
 
