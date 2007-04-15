@@ -816,7 +816,7 @@ public class FigPackage extends FigNodeModelElement
 	    // removed from the diagram. Yet to be agreed. Bob.
 	    LayerPerspective layer = (LayerPerspective) getLayer();
 	    Fig f = layer.presentationFor(mee.getOldValue());
-	    if (f.getEnclosingFig() == this) {
+	    if (f != null && f.getEnclosingFig() == this) {
 		removeEnclosedFig(f);
 		f.setEnclosingFig(null);
 	    }
