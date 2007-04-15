@@ -387,9 +387,8 @@ public class FigClass extends FigClassifierBox
             return null;
         }
         FigText ft2 = null;
-        // TODO: come GEF V 0.12 use getFigs returning an array
-        Vector v = new Vector(fgVec.getFigs());
-        if (i >= v.size() || !((FigText) v.elementAt(i)).isVisible()) {
+        List figs = fgVec.getFigs();
+        if (i >= figs.size() || !((FigText) figs.get(i)).isVisible()) {
             return null;
         }
         do {
@@ -400,10 +399,10 @@ public class FigClass extends FigClassifierBox
                 } else {
                     fgVec = getAttributesFig();
                 }
-                v = new Vector(fgVec.getFigs());
-                i = v.size() - 1;
+                figs = fgVec.getFigs();
+                i = figs.size() - 1;
             }
-            ft2 = (FigText) v.elementAt(i);
+            ft2 = (FigText) figs.get(i);
             if (!ft2.isVisible()) {
                 ft2 = null;
             }
