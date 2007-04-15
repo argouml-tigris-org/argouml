@@ -67,17 +67,6 @@ public class FigClass extends FigClassifierBox
     private FigAttributesCompartment attributesFigCompartment;
 
     /**
-     * Manages residency of a class within a component on a deployment
-     * diagram.
-     * TODO: This belongs in ModelElement, not Class - tfm
-     */
-    private Object resident =
-            Model.getCoreFactory().createElementResidence();
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    /**
      * Constructor for a {@link FigClass} during file load.<p>
      *
      * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
@@ -561,13 +550,8 @@ public class FigClass extends FigClassifierBox
         }
         if (encloser != null
                 && (Model.getFacade().isAComponent(encloser.getOwner()))) {
-            Object component = encloser.getOwner();
-            Object anInterface = getOwner();
-            Model.getCoreHelper().setContainer(resident, component);
-            Model.getCoreHelper().setResident(resident, anInterface);
-        } else {
-            Model.getCoreHelper().setContainer(resident, null);
-            Model.getCoreHelper().setResident(resident, null);
+            moveIntoComponent(encloser);
+            super.setEnclosingFig(encloser);
         }
 
     }

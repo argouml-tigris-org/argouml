@@ -696,15 +696,15 @@ public class UMLActivityDiagram extends UMLDiagram {
     /**
      * Extends basic functionality to handle logic for enclosement of states
      * within a swimlane.
-     * @param encloser The encloser (null if none)
-     * @param oldEncloser The previous encloser (null if none)
      * @param enclosed The FigNode enclosed.
+     * @param oldEncloser The previous encloser (null if none)
+     * @param newEncloser The encloser (null if none)
      */
-    public void figEnclosed(
-	    FigNode encloser, FigNode oldEncloser, FigNode enclosed) {
+    public void changeFigEncloser(
+            FigNode enclosed, FigNode oldEncloser, FigNode newEncloser) {
 	// TODO: Implement enclosement within pool here and determine
 	// which pools are overlapped.
-	super.figEnclosed(encloser, oldEncloser, enclosed);
+	super.changeFigEncloser(enclosed, oldEncloser, newEncloser);
     }
     
 

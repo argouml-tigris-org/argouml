@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -197,20 +197,17 @@ public class FigObject extends FigNodeModelElement {
     public void setEnclosingFig(Fig encloser) {
 	assert Model.getFacade().isAObject(getOwner());
 
-        Object me = getOwner();
-        Object mcompInst = null;
+        Object owner = getOwner();
 
         if (encloser != null
                 && (Model.getFacade()
                         .isAComponentInstance(encloser.getOwner()))) {
-
-            mcompInst = encloser.getOwner();
             Model.getCommonBehaviorHelper()
-                    .setComponentInstance(me, mcompInst);
+                    .setComponentInstance(owner, encloser.getOwner());
             super.setEnclosingFig(encloser);
 
-        } else if (Model.getFacade().getComponentInstance(me) != null) {
-            Model.getCommonBehaviorHelper().setComponentInstance(me, null);
+        } else if (Model.getFacade().getComponentInstance(owner) != null) {
+            Model.getCommonBehaviorHelper().setComponentInstance(owner, null);
             super.setEnclosingFig(null);
         }
         
@@ -219,20 +216,13 @@ public class FigObject extends FigNodeModelElement {
                 && (Model.getFacade()
                         .isAComponent(encloser.getOwner()))) {
 
-            Object component = encloser.getOwner();
-            Object obj = getOwner();
-            Model.getCoreHelper().setContainer(resident, component);
-            Model.getCoreHelper().setResident(resident, obj);
+            moveIntoComponent(encloser);
             super.setEnclosingFig(encloser);
         } else if (encloser != null
                 && Model.getFacade().isANode(encloser.getOwner())) {
             super.setEnclosingFig(encloser);
-        } else {
-            if (Model.getFacade().getContainer(resident) != null) {
-                Model.getCoreHelper().setContainer(resident, null);
-                Model.getCoreHelper().setResident(resident, null);
-                super.setEnclosingFig(null);
-            }
+        } else if (encloser == null) {
+            super.setEnclosingFig(null);
         }
     }
 
