@@ -414,7 +414,7 @@ public interface CoreFactory extends Factory {
     Object buildAttribute(Object handle, Object model, Object type);
 
     /**
-     * Builds an attribute owned by some classifier cls. <p>
+     * Builds an attribute of the given type. <p>
      *
      * @param handle the given classifier
      * @param type the type
