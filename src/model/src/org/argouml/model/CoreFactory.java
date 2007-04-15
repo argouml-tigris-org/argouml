@@ -165,6 +165,13 @@ public interface CoreFactory extends Factory {
     Object createElementResidence();
     
     /**
+     * @param me the modelelement
+     * @param component the component
+     * @return an initialized UML ElementResidence instance.
+     */
+    public Object buildElementResidence(Object me, Object component);
+    
+    /**
      * Create an Enumeration.
      * @return Object new Enumeration
      * @since UML 1.4
