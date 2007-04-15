@@ -1454,10 +1454,10 @@ public interface Facade {
     Object getEffect(Object handle);
 
     /**
-     * Get the residences of a ModelElement.
+     * Get the ElementResidences of a ModelElement.
      *
-     * @param handle the model element that we are getting the residences of
-     * @return the residence collection
+     * @param handle the ModelElement that we are getting the residences of
+     * @return the collection with ElementResidences
      */
     Collection getElementResidences(Object handle);
 

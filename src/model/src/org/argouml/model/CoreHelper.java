@@ -1160,16 +1160,20 @@ public interface CoreHelper {
     void setQuery(Object handle, boolean isQuery);
 
     /**
+     * Sets the ModelElement of a ElementResidence.
+     * 
      * @param handle ElementResidence
      * @param resident ModelElement or null
      */
     void setResident(Object handle, Object resident);
 
     /**
-     * Sets the residents of a ModelElement.
+     * Sets the residents of a NodeInstance or ComponentInstance.
      *
-     * @param handle the model element
-     * @param residents collection
+     * @param handle the NodeInstance or ComponentInstance
+     * @param residents collection of 
+     *          ComponentInstances (in case the handle is a NodeInstance)
+     *          or Instances (in case the handle is a ComponentInstance)
      */
     void setResidents(Object handle, Collection residents);
 
