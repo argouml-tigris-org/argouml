@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -484,11 +484,13 @@ public class ArgoDiagram extends Diagram {
     
     /**
      * Called when the user releases a dragged a FigNode.
-     * @param encloser the FigNode that encloses the dragged FigNode
+     * 
      * @param enclosed the enclosed FigNode that was dragged into the encloser
+     * @param oldEncloser the previous encloser
+     * @param newEncloser the FigNode that encloses the dragged FigNode
      */
-    public void figEnclosed(
-	    FigNode encloser, FigNode oldEncloser, FigNode enclosed) {
+    public void changeFigEncloser(
+            FigNode enclosed, FigNode oldEncloser, FigNode newEncloser) {
 	// Do nothing, override in subclass.
 	// TODO: This should really be abstract, can we get rid of the static
 	// hack at the start of this class?

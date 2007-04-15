@@ -28,18 +28,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.ByteLookupTable;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
-import java.awt.image.LookupOp;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
@@ -580,10 +574,10 @@ public abstract class FigNodeModelElement
 	LayerPerspective layer = (LayerPerspective) getLayer();
 	if (layer != null) {
             ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
-            diagram.figEnclosed(
-        	    (FigNode) newEncloser,
+            diagram.changeFigEncloser(
+                    this,
         	    (FigNode) oldEncloser,
-        	    this);
+        	    (FigNode) newEncloser);
 	}
 	
 	super.setEnclosingFig(newEncloser);
@@ -615,6 +609,40 @@ public abstract class FigNodeModelElement
             }
 	}
         encloser = newEncloser;
+    }
+
+    /**
+     * Handle the case where this fig is moved into a Component.
+     * 
+     * @param newEncloser the new encloser for this Fig
+     */
+    protected void moveIntoComponent(Fig newEncloser) {
+        Object component = newEncloser.getOwner();
+        Object owner = getOwner();
+
+        assert Model.getFacade().isAComponent(component);
+        assert Model.getFacade().isAModelElement(owner);
+
+        Collection er1 = Model.getFacade().getElementResidences(owner);
+        Collection er2 = Model.getFacade().getResidentElements(component);
+        boolean found = false;
+        // Find all ElementResidences between the class and the component:
+        Collection common = new ArrayList(er1);
+        common.retainAll(er2);
+        for (Object elementResidence : common) {
+            if (!found) {
+                found = true;
+                // There is already a correct ElementResidence
+            } else {
+                // There were 2 ElementResidences .. strange case.
+                Model.getUmlFactory().delete(elementResidence);
+            }
+        }
+        if (!found) {
+            // There was no ElementResidence yet, so let's create one:
+            Model.getCoreFactory().buildElementResidence(
+                    owner, component);
+        }
     }
 
     /**

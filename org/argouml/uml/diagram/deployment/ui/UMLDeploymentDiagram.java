@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,27 +25,27 @@
 package org.argouml.uml.diagram.deployment.ui;
 
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.CoreHelper;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
-import org.argouml.model.ModelManagementHelper;
 import org.argouml.swingext.ToolBarUtility;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * The base class of the deployment diagram.<p>
@@ -505,6 +505,31 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 	    LOG.info("Setting namespace of " + modelElement);
 	    super.setModelElementNamespace(modelElement, namespace);
 	}
+    }
+
+    /*
+     * If the new encloser is null, and the old one is a Component, 
+     * then the "enclosed" Fig has been moved on the diagram.
+     * This causes the model to be adapted as follows:
+     * remove the elementResidence 
+     * between the "enclosed" and the oldEncloser.
+     * 
+     * @see org.argouml.ui.ArgoDiagram#changeFigEncloser(org.tigris.gef.presentation.FigNode, org.tigris.gef.presentation.FigNode, org.tigris.gef.presentation.FigNode)
+     */
+    public void changeFigEncloser(FigNode enclosed, FigNode oldEncloser, 
+            FigNode newEncloser) {
+        if (oldEncloser != null && newEncloser == null
+                && Model.getFacade().isAComponent(oldEncloser.getOwner())) {
+            Collection er1 = Model.getFacade().getElementResidences(
+                    enclosed.getOwner());
+            Collection er2 = Model.getFacade().getResidentElements(
+                    oldEncloser.getOwner());
+            Collection common = new ArrayList(er1);
+            common.retainAll(er2);
+            for (Object elementResidence : common) {
+                Model.getUmlFactory().delete(elementResidence);
+            }
+        }
     }
 
 } /* end class UMLDeploymentDiagram */

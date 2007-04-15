@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,21 +58,6 @@ public class FigInterface extends FigClassifierBox {
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
-
-    /**
-     * Manages residency of an interface within a component on a deployment
-     * diagram. Not clear why it is an instance
-     * variable (rather than local to the method).<p>
-     * 
-     * TODO: This is creating a new residence element each time there is
-     * a new instantiation.  This is going to pollute the model with unused
-     * elements. - tfm - 20060310
-     */
-    private Object resident =
-            Model.getCoreFactory().createElementResidence();
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Main constructor for a {@link FigInterface}.
@@ -302,13 +287,8 @@ public class FigInterface extends FigClassifierBox {
         // the container will be set for the owning Interface
         if (encloser != null
                 && (Model.getFacade().isAComponent(encloser.getOwner()))) {
-            Object component = encloser.getOwner();
-            Object in = getOwner();
-            Model.getCoreHelper().setContainer(resident, component);
-            Model.getCoreHelper().setResident(resident, in);
-        } else {
-            Model.getCoreHelper().setContainer(resident, null);
-            Model.getCoreHelper().setResident(resident, null);
+            moveIntoComponent(encloser);
+            super.setEnclosingFig(encloser);
         }
     }
 
