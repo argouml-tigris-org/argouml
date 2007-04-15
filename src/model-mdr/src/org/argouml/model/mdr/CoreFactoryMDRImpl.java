@@ -286,6 +286,18 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
     /*
+     * @see org.argouml.model.CoreFactory#buildElementResidence(java.lang.Object, java.lang.Object)
+     */
+    public Object buildElementResidence(Object me, Object component) {
+        ElementResidence myElementResidence = corePackage.
+        getElementResidence().createElementResidence();
+        super.initialize(myElementResidence);
+        myElementResidence.setContainer((Component) component);
+        myElementResidence.setResident((ModelElement) me);
+        return myElementResidence;
+    }
+
+    /*
      * @see org.argouml.model.CoreFactory#createEnumeration()
      */
     public Object createEnumeration() {
