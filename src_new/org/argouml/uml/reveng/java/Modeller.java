@@ -1131,6 +1131,10 @@ public class Modeller {
             // the last parameter and it gets converted to an array
             // on method invocation, so perhaps we should model it that
             // way (ie convert "Foo..." to "Foo[]"). - tfm - 20070329
+            if (typeName.endsWith("...")) {
+                logError("Unsupported variable length parameter list notation",
+                        (String) parameter.elementAt(2));
+            }
             mClassifier = null;
 	    try {
                 mClassifier =
@@ -1321,7 +1325,7 @@ public class Modeller {
                     String classifierName = getClassifierName(typeSpec);
                     Object mPackage =
                             (packageName.length() > 0) ? getPackage(packageName)
-                                    : model;
+                            : model;
                     mClassifier =
                             Model.getCoreFactory().buildClass(
                                     classifierName, mPackage);
@@ -1604,9 +1608,9 @@ public class Modeller {
             Object assoc = Model.getFacade().getAssociation(ae);
             if (name.equals(Model.getFacade().getName(ae))
                     && Model.getFacade().getConnections(assoc).size() == 2
-                    && Model.getFacade().getType(
+                && Model.getFacade().getType(
                             Model.getFacade().getNextEnd(ae))
-                            == parseState.getClassifier()) {
+                    == parseState.getClassifier()) {
                 mAssociationEnd = ae;
             }
         }
