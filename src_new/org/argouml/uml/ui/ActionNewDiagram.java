@@ -63,10 +63,13 @@ public abstract class ActionNewDiagram extends UndoableAction {
      *      java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        Project p = ProjectManager.getManager().getCurrentProject();
-
         super.actionPerformed(e);
+        
         UMLDiagram diagram = createDiagram();
+        assert (diagram != null)
+        	: "No diagram was returned by the concrete class";
+        
+        Project p = ProjectManager.getManager().getCurrentProject();
         p.addMember(diagram);
         //TODO: make the explorer listen to project member property
         //changes...  to eliminate coupling on gui.
