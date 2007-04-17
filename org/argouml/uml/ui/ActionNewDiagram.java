@@ -40,15 +40,17 @@ import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Abstract action to trigger creation of a new diagram.
+ * TODO: Bobs says, can we merge ActionAddDiagram with this class?
  * 
  * @author michiel
  */
-abstract class ActionNewDiagram extends UndoableAction {
+public abstract class ActionNewDiagram extends UndoableAction {
 
     /**
      * The constructor.
+     * @param name the i18n key for this action name.
      */
-    public ActionNewDiagram(String name) {
+    protected ActionNewDiagram(String name) {
         super(Translator.localize(name),
                 ResourceLoaderWrapper.lookupIcon(name));
         // Set the tooltip string:
