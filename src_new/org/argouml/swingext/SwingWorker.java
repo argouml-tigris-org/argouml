@@ -32,7 +32,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.ProgressMonitor;
+import org.argouml.persistence.ProgressMonitor;
 import org.argouml.ui.ArgoFrame;
 
 /**

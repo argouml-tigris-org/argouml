@@ -22,16 +22,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application.api;
+package org.argouml.application.configuration;
 
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URL;
 
-import org.argouml.application.configuration.ConfigurationFactory;
-import org.argouml.application.configuration.ConfigurationHandler;
-import org.argouml.application.configuration.ConfigurationKeyImpl;
-import org.argouml.application.configuration.IConfigurationFactory;
 
 /**
  * This class provides the core user configuration implementation

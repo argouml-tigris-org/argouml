@@ -45,7 +45,7 @@ import org.argouml.ui.ExceptionDialog;
  * @author andrea_nironi@tigris.org
  */
 public class ProgressMonitorWindow implements
-        org.argouml.application.api.ProgressMonitor {
+        org.argouml.persistence.ProgressMonitor {
     
     private ProgressMonitor pbar;
     

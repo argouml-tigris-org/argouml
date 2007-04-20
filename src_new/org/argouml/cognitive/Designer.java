@@ -36,8 +36,8 @@ import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.Configuration;
-import org.argouml.application.api.ConfigurationKey;
+import org.argouml.application.configuration.Configuration;
+import org.argouml.application.configuration.ConfigurationKey;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.ui.ActionGoToCritique;

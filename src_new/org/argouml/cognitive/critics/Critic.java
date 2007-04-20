@@ -33,8 +33,8 @@ import java.util.Vector;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Configuration;
-import org.argouml.application.api.ConfigurationKey;
+import org.argouml.application.configuration.Configuration;
+import org.argouml.application.configuration.ConfigurationKey;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
@@ -284,7 +284,7 @@ public class Critic extends Observable implements Poster, Serializable {
     }
 
     /**
-     * Returns the {@link org.argouml.application.api.ConfigurationKey}
+     * Returns the {@link org.argouml.application.configuration.ConfigurationKey}
      * that the critic uses to determine if it is enabled or disabled.<p>
      *
      * The string resulting from the ConfigurationKey
@@ -304,7 +304,7 @@ public class Critic extends Observable implements Poster, Serializable {
      * <li>argo.critic.idl.ReservedWord
      * </ul>
      *
-     * @see org.argouml.application.api.Configuration#makeKey(String,
+     * @see org.argouml.application.configuration.Configuration#makeKey(String,
      *         String, String)
      * @see #getCriticCategory
      * @see #getCriticName

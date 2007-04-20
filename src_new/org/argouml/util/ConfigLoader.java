@@ -36,8 +36,8 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Configuration;
-import org.argouml.application.api.ConfigurationKey;
+import org.argouml.application.configuration.Configuration;
+import org.argouml.application.configuration.ConfigurationKey;
 import org.argouml.persistence.PersistenceManager;
 import org.tigris.swidgets.Orientation;
 

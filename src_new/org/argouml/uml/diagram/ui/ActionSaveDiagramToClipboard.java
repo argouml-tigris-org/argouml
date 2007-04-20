@@ -39,7 +39,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.argouml.application.api.Configuration;
+import org.argouml.application.configuration.Configuration;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.SaveGraphicsManager;

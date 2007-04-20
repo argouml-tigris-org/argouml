@@ -22,9 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application.api;
+package org.argouml.persistence;
 
-import org.argouml.persistence.ProgressListener;
 
 /**
  * This is a generic progress notifier. Can be used with any GUI progress bar

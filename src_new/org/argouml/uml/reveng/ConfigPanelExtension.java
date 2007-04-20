@@ -37,8 +37,8 @@ import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.Configuration;
-import org.argouml.application.api.ConfigurationKey;
+import org.argouml.application.configuration.Configuration;
+import org.argouml.application.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
 
 /**

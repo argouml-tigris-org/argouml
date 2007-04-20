@@ -28,8 +28,8 @@ import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
-import org.argouml.application.api.ProgressMonitor;
 import org.argouml.kernel.Project;
+import org.argouml.persistence.ProgressMonitor;
 import org.argouml.util.SuffixFilter;
 
 /**

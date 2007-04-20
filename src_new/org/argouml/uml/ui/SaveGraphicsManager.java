@@ -40,8 +40,8 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 
-import org.argouml.application.api.Configuration;
-import org.argouml.application.api.ConfigurationKey;
+import org.argouml.application.configuration.Configuration;
+import org.argouml.application.configuration.ConfigurationKey;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 import org.tigris.gef.base.CmdSaveEPS;

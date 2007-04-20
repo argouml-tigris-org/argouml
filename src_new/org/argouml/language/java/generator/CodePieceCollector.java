@@ -37,7 +37,7 @@ import java.util.Stack;
 import java.util.Vector;
 
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.Configuration;
+import org.argouml.application.configuration.Configuration;
 
 /**
  * This class collects pieces of code when a source file is parsed,
