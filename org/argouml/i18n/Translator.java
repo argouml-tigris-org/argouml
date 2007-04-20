@@ -36,7 +36,7 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.Configuration;
+import org.argouml.application.configuration.Configuration;
 import org.tigris.gef.util.Localizer;
 
 /**

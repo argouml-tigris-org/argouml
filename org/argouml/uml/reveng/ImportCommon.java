@@ -40,14 +40,14 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.Configuration;
-import org.argouml.application.api.ProgressMonitor;
+import org.argouml.application.configuration.Configuration;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.persistence.ProgressMonitor;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;

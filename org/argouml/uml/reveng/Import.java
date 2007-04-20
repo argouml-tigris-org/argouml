@@ -62,11 +62,11 @@ import javax.swing.filechooser.FileSystemView;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.Configuration;
-import org.argouml.application.api.ProgressMonitor;
+import org.argouml.application.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.persistence.ProgressEvent;
+import org.argouml.persistence.ProgressMonitor;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.util.SuffixFilter;
 import org.argouml.util.UIUtils;

@@ -36,10 +36,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.ProgressMonitor;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.persistence.ProgressMonitor;
 import org.argouml.uml.reveng.FileImportUtils;
 import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImportSettings;

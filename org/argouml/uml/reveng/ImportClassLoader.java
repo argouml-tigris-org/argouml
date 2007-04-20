@@ -34,7 +34,7 @@ import java.io.File;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.Configuration;
+import org.argouml.application.configuration.Configuration;
 
 /**
  * Class to help users reverse engineer class information from arbitrary

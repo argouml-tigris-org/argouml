@@ -25,7 +25,6 @@
 package org.argouml.application.configuration;
 import java.beans.PropertyChangeEvent;
 
-import org.argouml.application.api.ConfigurationKey;
 
 /**
  *   This class provides definition and manipulation of configuration keys.

@@ -30,8 +30,6 @@ import java.io.File;
 import java.net.URL;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Configuration;
-import org.argouml.application.api.ConfigurationKey;
 
 /**
  *   This class provides a user configuration based upon properties.
@@ -45,7 +43,7 @@ import org.argouml.application.api.ConfigurationKey;
  *   These methods are abstract.
  *
  *   This class is intimately related to
- *   {@link org.argouml.application.api.Configuration}.
+ *   {@link org.argouml.application.configuration.Configuration}.
  *
  *   @author Thierry Lach
  *

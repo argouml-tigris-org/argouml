@@ -25,7 +25,7 @@
 package org.argouml.uml.generator;
 
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.Configuration;
+import org.argouml.application.configuration.Configuration;
 
 /**
  * Stores generation preference information entered by the user
