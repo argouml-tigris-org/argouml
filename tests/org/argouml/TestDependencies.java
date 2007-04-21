@@ -45,13 +45,26 @@ public class TestDependencies extends TestCase {
 
     /**
      * @see junit.framework.TestCase#setUp()
-     * @throws IOException when the added dir is not found
      */
-    protected void setUp() throws IOException {
+    protected void setUp() {
         jdepend = new JDepend();
 
-        jdepend.addDirectory("../argouml");
-    }    
+        try {
+	    jdepend.addDirectory("../argouml");
+	} catch (IOException e) {
+	    // Ignore if the directory does not exist.
+	    // This error will throw when running from the ant setup.
+	    System.out.println("Assuming running from ant!");
+	}
+
+	try {
+	    jdepend.addDirectory("../build/classes");
+	} catch (IOException e) {
+	    // Ignore if the directory does not exist.
+	    // This error will throw when running from the Eclipse setup.
+	    System.out.println("Assuming running from Eclipse!");
+	}
+    }
 
     /**  
      * Tests that a list of packages does not contain
