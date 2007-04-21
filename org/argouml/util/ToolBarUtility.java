@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.swingext;
+package org.argouml.util;
 
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;

@@ -38,11 +38,8 @@ import javax.swing.event.MenuListener;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
-import org.tigris.gef.undo.Memento;
-import org.tigris.gef.undo.UndoManager;
 import org.tigris.gef.undo.UndoableAction;
 
 
