@@ -36,7 +36,7 @@ import junit.framework.TestCase;
  * This test will guarantee that once 
  * a package is made free of dependency-cycles, 
  * (and it has been added here,)
- * it will stay dependecy-cycle free.
+ * it will stay dependency-cycle free.
  * 
  * @author Michiel
  */
@@ -61,9 +61,24 @@ public class TestDependencies extends TestCase {
         JavaPackage p;
         String msg = "JDepend indicates a dependency cycle in ";
 
-        String[] clean = {"org.argouml.util.osdep.win32",
+        String[] clean = {
+            "org.argouml.application.configuration",
+            "org.argouml.application.events",
+            "org.argouml.application.helpers",
+            "org.argouml.application.security",
+            "org.argouml.cognitive.checklist",
+            "org.argouml.application.api",
+            "org.argouml.i18n",
+            "org.argouml.swingext",
+            "org.argouml.uml.diagram.layout",
+            //"org.argouml.uml.generator",
+            //"org.argouml.uml.notation",
+            "org.argouml.uml.util.namespace",
+            "org.argouml.util.logging",
+            "org.argouml.util.osdep.win32",
             "org.argouml.util.osdep",
-            "org.argouml.application.configuration"};
+            "org.argouml.swingext",
+        };
         
         jdepend.analyze();
 
