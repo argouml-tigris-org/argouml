@@ -125,7 +125,10 @@ This is designed to work in two different environments:
       description="Generate the JMI interfaces for a UML metamodel."
       unless="generate.notRequired">
 
-    <javac srcdir="${build.javas}" source="1.4" target="1.4">
+    <javac srcdir="${build.javas}"
+           source="1.5"
+           target="1.5">
+      <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
       <classpath>
         <pathelement location="${jmi.jar}" /> 
       </classpath>
@@ -229,9 +232,10 @@ This is designed to work in two different environments:
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}"
-           source="1.4"
-           target="1.4"
+           source="1.5"
+           target="1.5"
        >
+       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
        <classpath>
          <path refid="compile.classpath"/>
        </classpath>
@@ -281,9 +285,10 @@ This is designed to work in two different environments:
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}"
-           source="1.4"
-           target="1.4"
+           source="1.5"
+           target="1.5"
        >
+       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
        <classpath>
          <path refid="junit.classpath"/>
          <path>

@@ -63,7 +63,15 @@
 
 <echo message="Compiling with debug=${debug}"/>
 
-    <javac debug="${debug}" deprecation="${deprecation}" destdir="${build.classes}" includes="org/argouml/**/*.java" optimize="${optimize}" srcdir="src">
+    <javac debug="${debug}"
+           deprecation="${deprecation}"
+           destdir="${build.classes}"
+           includes="org/argouml/**/*.java"
+           optimize="${optimize}"
+           srcdir="src"
+           source="1.5"
+           target="1.5">
+       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
        <classpath>
 	  <path refid="compile.classpath"/>
        </classpath>
