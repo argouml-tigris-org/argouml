@@ -22,16 +22,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.swingext;
+package org.argouml.ui;
 
 import java.io.File;
 
 import javax.swing.UIManager;
 
 import org.argouml.i18n.Translator;
-import org.argouml.persistence.ProgressMonitor;
-import org.argouml.ui.ArgoFrame;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.swingext.ProgressMonitor;
 import org.tigris.gef.undo.UndoManager;
 
 /**

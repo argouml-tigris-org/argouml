@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.swingext;
+package org.argouml.ui;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -31,21 +31,19 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.argouml.i18n.Translator;
-import org.argouml.persistence.ProgressEvent;
-import org.argouml.ui.ArgoFrame;
-import org.argouml.ui.ExceptionDialog;
+import org.argouml.swingext.ProgressEvent;
 
 /**
  * Manages a ProgressMonitor dialog.
  * 
  * NOTE: Users of this class should use the type of the interface
- * org.argouml.application.api.ProgressMonitor wherever possible to
+ * org.argouml.swingext.ProgressMonitor wherever possible to
  * maintain GUI independance.
  * 
  * @author andrea_nironi@tigris.org
  */
 public class ProgressMonitorWindow implements
-        org.argouml.persistence.ProgressMonitor {
+        org.argouml.swingext.ProgressMonitor {
     
     private ProgressMonitor pbar;
     

@@ -22,19 +22,55 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.persistence;
+package org.argouml.swingext;
 
-import java.util.EventListener;
+import java.util.EventObject;
 
 /**
- * A listener to be implemented by those interested in ProgressEvents.
+ * An event to be fired in order to tell some other listener of progress
+ * through some activity.
+ *
  * @author Bob Tarling
  */
-public interface ProgressListener extends EventListener {
+public class ProgressEvent extends EventObject {
+
+    private long length;
+
+    private long position;
+
     /**
-     * Called when a ProgressEvent is fired.
-     * @param event the ProgressEvent
-     * @throws InterruptedException     if thread is interrupted
+     * Constructor for a new ProgressEvent.
+     *
+     * @param source the source that generated this event
+     * @param thePosition the position to which progress has reach as a
+     *        proportion of length
+     * @param theLength the total length the progress is measuring
      */
-    void progress(ProgressEvent event) throws InterruptedException;
+    public ProgressEvent(Object source, long thePosition, long theLength) {
+        super(source);
+        this.length = theLength;
+        this.position = thePosition;
+    }
+
+    /**
+     * Return the position of progress as a proportion of length.
+     * @return progress position.
+     */
+    public long getPosition() {
+        return position;
+    }
+
+    /**
+     * Return the length that progress is measuring. Typically this is the
+     * length of a file or 100 if percentage progress is being measured.
+     * @return progress length.
+     */
+    public long getLength() {
+        return length;
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -440923505939663713L;
 }

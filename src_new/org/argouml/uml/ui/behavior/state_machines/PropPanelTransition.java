@@ -28,7 +28,6 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.ToolBarUtility;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewCallEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewChangeEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewSignalEvent;
@@ -47,6 +46,7 @@ import org.argouml.uml.ui.behavior.common_behavior.ActionNewUninterpretedAction;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
+import org.argouml.util.ToolBarUtility;
 
 /**
  * The properties panel for a Transition.

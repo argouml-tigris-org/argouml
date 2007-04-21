@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.swingext;
+package org.argouml.ui;
 
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -32,8 +32,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
-import org.argouml.persistence.ProgressMonitor;
-import org.argouml.ui.ArgoFrame;
+import org.argouml.swingext.GlassPane;
+import org.argouml.swingext.ProgressMonitor;
 
 /**
  * This is the 3rd version of SwingWorker (also known as

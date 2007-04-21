@@ -49,10 +49,10 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.ShortcutField;
 import org.argouml.ui.cmd.Action;
 import org.argouml.ui.cmd.ShortcutChangedEvent;
 import org.argouml.ui.cmd.ShortcutChangedListener;
+import org.argouml.ui.cmd.ShortcutField;
 import org.argouml.ui.cmd.ShortcutMgr;
 import org.argouml.util.KeyEventUtils;
 

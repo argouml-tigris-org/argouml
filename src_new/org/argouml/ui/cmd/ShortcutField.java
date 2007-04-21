@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.swingext;
+package org.argouml.ui.cmd;
 
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
@@ -33,9 +33,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.event.EventListenerList;
 
-import org.argouml.ui.cmd.ShortcutChangedEvent;
-import org.argouml.ui.cmd.ShortcutChangedListener;
-import org.argouml.ui.cmd.ShortcutMgr;
 import org.argouml.util.KeyEventUtils;
 
 /**
