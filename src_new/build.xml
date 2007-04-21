@@ -463,9 +463,9 @@ Property files to be searched:
            excludes="org/argouml/model/uml/**"
     	   optimize="${optimize}"
     	   srcdir="${argo.src.dir}"
-    	   source="1.4"
-    	   target="1.4">
-    	 <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+    	   source="1.5"
+    	   target="1.5">
+        <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
     	<classpath>
 	  <path refid="argo.compile.classpath"/>
        </classpath>
@@ -527,7 +527,7 @@ Property files to be searched:
              maxmemory="128M"
              overview="org/argouml/overview-argo.html"
              packagenames="org.argouml.*"
-             source="1.4"
+             source="1.5"
              splitindex="${javadoc.splitindex}"
              use="${javadoc.use}"
              windowtitle="ArgoUML Javadoc for internal use">
@@ -577,7 +577,7 @@ Property files to be searched:
              maxmemory="128M"
              overview="org/argouml/overview-api.html"
              packagenames="org.argouml.model,org.argouml.cognitive,org.argouml.uml.reveng,org.argouml.application,org.argouml.i18n,org.argouml.ui,org.argouml.ui.explorer,org.argouml.ocl,org.argouml.moduleloader"
-             source="1.4"
+             source="1.5"
              private="false"
              splitindex="${javadoc.splitindex}"
              use="${javadoc.use}"
@@ -733,12 +733,14 @@ Property files to be searched:
            includes="**/GUITestProjectBrowser.java,**/MockUMLUserInterfaceContainer,**/*Deprecated.java"
            excludes="org/argouml/model/uml/**"
            srcdir="${argo.tests.src}"
-    	   source="1.4"
-           target="1.4">
+    	   source="1.5"
+           target="1.5">
+      <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
       <classpath>
         <pathelement location="${argo.build.classes}"/>
         <pathelement location="${junit.jar.path}"/>
         <pathelement location="${easymock.jar.path}"/>
+        <pathelement location="${jdepend.jar.path}"/>
 	<path refid="argo.compile.classpath"/>
       </classpath>
      </javac>
@@ -749,11 +751,15 @@ Property files to be searched:
            optimize="false" 
            destdir="${argo.tests.classes}"
            srcdir="${argo.tests.src}"
-           excludes="org/argouml/model/uml/**">
+           excludes="org/argouml/model/uml/**"
+    	   source="1.5"
+           target="1.5">
+      <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
       <classpath>
         <pathelement location="${argo.build.classes}"/>
         <pathelement location="${junit.jar.path}"/>
         <pathelement location="${easymock.jar.path}"/>
+        <pathelement location="${jdepend.jar.path}"/>
 	<path refid="argo.compile.classpath"/>
       </classpath>
     </javac>
@@ -837,6 +843,7 @@ Property files to be searched:
             <pathelement location="${argo.tests.classes}"/>
             <path refid="argo.runtime.classpath"/>
             <pathelement location="${easymock.jar.path}"/>
+            <pathelement location="${jdepend.jar.path}"/>
         </classpath>
         <formatter type="xml"/>
       <batchtest todir="${argo.tests.reports}/junit/output">
