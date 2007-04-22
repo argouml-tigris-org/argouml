@@ -85,7 +85,7 @@ public class ObjectNotationUml extends ObjectNotation {
             while (baseTokens.hasMoreElements()) {
                 String typeString = baseTokens.nextToken();
                 Object type =
-                ProjectManager.getManager()
+                    ProjectManager.getManager()
                         .getCurrentProject().findType(typeString);
                 Model.getCommonBehaviorHelper().addClassifier(modelElement, 
                         type);
