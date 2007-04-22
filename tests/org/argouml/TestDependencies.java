@@ -28,7 +28,9 @@ import java.io.IOException;
 
 import jdepend.framework.JDepend;
 import jdepend.framework.JavaPackage;
+import junit.framework.Test;
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * Test for Dependency cycles with JDepend. <p>
@@ -41,13 +43,14 @@ import junit.framework.TestCase;
  * @author Michiel
  */
 public class TestDependencies extends TestCase {
-    private JDepend jdepend;
-
-    /**
-     * @see junit.framework.TestCase#setUp()
+    /**  
+     * Tests that a list of packages does not contain
+     * any package dependency cycles.
+     *
+     * @return a list of tests.
      */
-    protected void setUp() {
-        jdepend = new JDepend();
+    public static Test suite() {
+        JDepend jdepend = new JDepend();
 
         try {
 	    jdepend.addDirectory("../argouml");
@@ -64,15 +67,11 @@ public class TestDependencies extends TestCase {
 	    // This error will throw when running from the Eclipse setup.
 	    System.out.println("Assuming running from Eclipse!");
 	}
-    }
+        
+        jdepend.analyze();
 
-    /**  
-     * Tests that a list of packages does not contain
-     * any package dependency cycles.
-     */
-    public void testOnePackageCycle() {
-        JavaPackage p;
-        String msg = "JDepend indicates a dependency cycle in ";
+        TestSuite suite =
+            new TestSuite("Tests for dependencies using Jdepend");
 
         String[] clean = {
             "org.argouml.application.configuration",
@@ -92,13 +91,29 @@ public class TestDependencies extends TestCase {
             "org.argouml.util.osdep",
             "org.argouml.swingext",
         };
-        
-        jdepend.analyze();
 
         for (int i = 0; i < clean.length; i++) {
-            p = jdepend.getPackage(clean[i]);
+            suite.addTest(new CheckOnePackage(jdepend, clean[i]));
+        }
+        return suite;
+    }
+
+    static class CheckOnePackage extends TestCase {
+        private String packageName;
+        private JDepend jdepend;
+
+        CheckOnePackage(JDepend jd, String name) {
+            super(name);
+            jdepend = jd;
+            packageName = name;
+        }
+
+        public void runTest() {
+            JavaPackage p = jdepend.getPackage(packageName);
             assertNotNull(p);
-            assertFalse(msg + p.getName(), p.containsCycle());
+            assertFalse("JDepend indicates a dependency cycle in "
+                    + p.getName(),
+                    p.containsCycle());
         }
     }
 }
