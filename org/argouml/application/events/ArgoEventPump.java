@@ -181,6 +181,30 @@ public final class ArgoEventPump {
     }
 
     /**
+     * Handle firing a help text event.
+     *
+     * @param event The event to be fired.
+     * @param listener The listener.
+     */
+    private void handleFireHelpEvent(
+        ArgoHelpEvent event,
+        ArgoHelpEventListener listener) {
+        switch (event.getEventType()) {
+        case ArgoEventTypes.HELP_CHANGED :
+            listener.helpChanged(event);
+            break;
+
+        case ArgoEventTypes.HELP_REMOVED :
+            listener.helpRemoved(event);
+            break;
+
+        default :
+            LOG.error("Invalid event:" + event.getEventType());
+            break;
+        }
+    }
+
+    /**
      * Handle firing a generator event.
      *
      * @param event The event to be fired.
@@ -214,6 +238,10 @@ public final class ArgoEventPump {
                 handleFireNotationEvent((ArgoNotationEvent) event,
 					(ArgoNotationEventListener) listener);
             }
+            if (listener instanceof ArgoHelpEventListener) {
+                handleFireHelpEvent((ArgoHelpEvent) event,
+                                        (ArgoHelpEventListener) listener);
+            }
         } else {
             if (event.getEventType() >= ArgoEventTypes.ANY_NOTATION_EVENT
                 && event.getEventType() < ArgoEventTypes.LAST_NOTATION_EVENT) {
@@ -222,6 +250,13 @@ public final class ArgoEventPump {
 					(ArgoNotationEventListener) listener);
                 }
             }
+            if (event.getEventType() >= ArgoEventTypes.ANY_HELP_EVENT
+                    && event.getEventType() < ArgoEventTypes.LAST_HELP_EVENT) {
+                    if (listener instanceof ArgoHelpEventListener) {
+                        handleFireHelpEvent((ArgoHelpEvent) event,
+                                        (ArgoHelpEventListener) listener);
+                    }
+                }
             if (event.getEventType() >= ArgoEventTypes.ANY_GENERATOR_EVENT
                 && event.getEventType() < ArgoEventTypes.LAST_GENERATOR_EVENT) {
                 if (listener instanceof ArgoGeneratorEventListener) {

@@ -103,6 +103,7 @@ public interface ArgoEventTypes {
      */
     int LAST_NOTATION_EVENT       =  1299;
 
+
     /**
      * Id indicating any GENERATION event.
      */
@@ -127,6 +128,28 @@ public interface ArgoEventTypes {
      * Last generation event.
      */
     int LAST_GENERATOR_EVENT       =  1399;
+
+
+    /**
+     * Id indicating any GENERATION event.
+     */
+    int ANY_HELP_EVENT        =  1400;
+
+    /**
+     * Id indicating the default GENERATION was changed.
+     */
+    int HELP_CHANGED          =  1401;
+
+    /**
+     * Id indicating a GENERATION was removed.
+     */
+    int HELP_REMOVED          =  1403;
+
+    /**
+     * Last generation event.
+     */
+    int LAST_HELP_EVENT       =  1499;
+    
 
     /**
      * Id marker for the last Argo event.

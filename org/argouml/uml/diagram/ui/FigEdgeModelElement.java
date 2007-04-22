@@ -51,6 +51,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.cognitive.Designer;
@@ -651,8 +652,9 @@ public abstract class FigEdgeModelElement
      * @param s the given string to be localized and shown
      */
     protected void showHelp(String s) {
-        ProjectBrowser.getInstance().getStatusBar().showStatus(
-                Translator.localize(s));
+        ArgoEventPump.fireEvent(new ArgoHelpEvent(
+                ArgoEventTypes.HELP_CHANGED, this,
+                Translator.localize(s)));
     }
 
     /**

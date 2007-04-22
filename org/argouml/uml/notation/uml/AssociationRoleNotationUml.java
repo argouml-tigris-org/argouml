@@ -29,9 +29,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.AssociationRoleNotation;
 import org.argouml.util.MyTokenizer;
 
@@ -70,8 +72,9 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
                 pe.getLocalizedMessage(),
                 new Integer(pe.getErrorOffset()),
             };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                Translator.messageFormat(msg, args));
+            ArgoEventPump.fireEvent(new ArgoHelpEvent(
+                    ArgoEventTypes.HELP_CHANGED, this,
+                Translator.messageFormat(msg, args)));
         }
     }
 

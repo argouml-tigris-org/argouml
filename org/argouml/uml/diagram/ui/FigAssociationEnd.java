@@ -29,6 +29,9 @@ import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
@@ -184,8 +187,9 @@ public class FigAssociationEnd extends FigEdgeModelElement {
                 Model.getCoreHelper().setMultiplicity(getOwner(), multi);
             } catch (IllegalArgumentException e) {
                 Object[] args = {e.getLocalizedMessage()};
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
+                ArgoEventPump.fireEvent(new ArgoHelpEvent(
+                        ArgoEventTypes.HELP_CHANGED, this,
+                    Translator.messageFormat(msg, args)));
                 srcMult.setText(NotationUtilityUml.generateMultiplicity(
                         Model.getFacade().getMultiplicity(getOwner())));
             }            

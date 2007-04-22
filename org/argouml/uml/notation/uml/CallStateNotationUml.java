@@ -30,10 +30,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.CallStateNotation;
 
 
@@ -71,8 +73,9 @@ public class CallStateNotationUml extends CallStateNotation {
             String msg = "statusmsg.bar.error.parsing.callstate";
             Object[] args = {pe.getLocalizedMessage(),
                              new Integer(pe.getErrorOffset()), };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
+            ArgoEventPump.fireEvent(new ArgoHelpEvent(
+                    ArgoEventTypes.HELP_CHANGED, this,
+                    Translator.messageFormat(msg, args)));
         }
     }
 
