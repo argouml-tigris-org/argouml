@@ -26,7 +26,7 @@ package org.argouml.application.events;
 
 /**
  * The Help Event is used to notify interested parties
- * (like e.g. the StatusBar of the man window) 
+ * (like e.g. the StatusBar of the main window) 
  * that a help-text should be shown.
  *
  * @author Michiel

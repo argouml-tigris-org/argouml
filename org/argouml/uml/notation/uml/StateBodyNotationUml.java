@@ -24,7 +24,6 @@
 
 package org.argouml.uml.notation.uml;
 
-import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +37,6 @@ import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.notation.StateBodyNotation;
 
 /**
