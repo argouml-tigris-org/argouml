@@ -25,8 +25,10 @@
 package org.argouml;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import jdepend.framework.JDepend;
+import jdepend.framework.JavaClass;
 import jdepend.framework.JavaPackage;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -83,8 +85,11 @@ public class TestDependencies extends TestCase {
             "org.argouml.i18n",
             "org.argouml.swingext",
             "org.argouml.uml.diagram.layout",
-            //"org.argouml.uml.generator",
-            //"org.argouml.uml.notation",
+            "org.argouml.uml.notation",
+            //"org.argouml.uml.notation.java",
+            //"org.argouml.uml.notation.uml",
+            //"org.argouml.notation",
+            //"org.argouml.notation.ui",
             "org.argouml.uml.util.namespace",
             "org.argouml.util.logging",
             "org.argouml.util.osdep.win32",
@@ -111,9 +116,19 @@ public class TestDependencies extends TestCase {
         public void runTest() {
             JavaPackage p = jdepend.getPackage(packageName);
             assertNotNull(p);
-            assertFalse("JDepend indicates a dependency cycle in "
-                    + p.getName(),
-                    p.containsCycle());
+            if (p.containsCycle()) {
+                StringBuffer msg = new StringBuffer(
+                        "JDepend indicates a dependency cycle in ");
+                msg.append(p.getName());
+                msg.append("(" + p.getClassCount() + " classes: ");
+                Collection<JavaClass> c = p.getClasses();
+                for (JavaClass jc : c) {
+                    msg.append(jc.getName());
+                    msg.append(" ");
+                }
+                msg.append(")");
+                assertTrue(msg.toString(), false);
+            }
         }
     }
 }
