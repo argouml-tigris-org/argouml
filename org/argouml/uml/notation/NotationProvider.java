@@ -33,7 +33,6 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 /**
  * A class that implements this abstract class manages a text
