@@ -354,13 +354,13 @@ public final class NotationProviderFactory2 {
         return false;
     }
 
-	/**
-	 * Set the notation language currently used in the Project.
-	 * 
-	 * @param currentLanguage the currentLanguage to set
-	 */
-	public static void setCurrentLanguage(String currentLanguage) {
-		NotationProviderFactory2.currentLanguage = currentLanguage;
-	}
+    /**
+     * Set the notation language currently used in the Project.
+     * 
+     * @param theCurrentLanguage the currentLanguage to set
+     */
+    public static void setCurrentLanguage(String theCurrentLanguage) {
+        NotationProviderFactory2.currentLanguage = theCurrentLanguage;
+    }
 
 }
