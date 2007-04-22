@@ -6,6 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-lib"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-tools"/>
-	<classpathentry kind="lib" path="/argouml-core-tools/jdepend-2.2/lib/jdepend.jar"/>
+	<classpathentry kind="lib" path="/argouml-core-tools/jdepend-2.9/lib/jdepend-2.9.jar" sourcepath="/argouml-core-tools/jdepend-2.9/src/"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
