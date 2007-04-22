@@ -38,7 +38,7 @@ public abstract class ObjectFlowStateStateNotation extends NotationProvider {
     /**
      * The constructor.
      * 
-     * @param objectflowstate
+     * @param objectflowstate the UML object
      */
     public ObjectFlowStateStateNotation(Object objectflowstate) {
         if (!Model.getFacade().isAObjectFlowState(objectflowstate)) {
