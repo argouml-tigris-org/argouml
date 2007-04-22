@@ -37,6 +37,7 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.i18n.Translator;
@@ -214,8 +215,9 @@ public class FigAssociation extends FigEdgeModelElement {
 	        Model.getCoreHelper().setMultiplicity(srcAE, multi);
 	    } catch (IllegalArgumentException e) {
 	        Object[] args = {e.getLocalizedMessage()};
-	        ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
+                ArgoEventPump.fireEvent(new ArgoHelpEvent(
+                            ArgoEventTypes.HELP_CHANGED, this,
+                    Translator.messageFormat(msg, args)));
 	        srcMult.setText(NotationUtilityUml.generateMultiplicity(
                         Model.getFacade().getMultiplicity(srcAE)));
 	    }
@@ -227,8 +229,9 @@ public class FigAssociation extends FigEdgeModelElement {
 	        Model.getCoreHelper().setMultiplicity(destAE, multi);
 	    } catch (IllegalArgumentException e) {
 	        Object[] args = {e.getLocalizedMessage()};
-	        ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
+                ArgoEventPump.fireEvent(new ArgoHelpEvent(
+                            ArgoEventTypes.HELP_CHANGED, this,
+                    Translator.messageFormat(msg, args)));
                 destMult.setText(NotationUtilityUml.generateMultiplicity(
                         Model.getFacade().getMultiplicity(destAE)));
 	    }

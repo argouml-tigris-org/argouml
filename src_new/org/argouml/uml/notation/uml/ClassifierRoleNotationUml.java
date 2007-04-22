@@ -32,6 +32,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
@@ -84,8 +87,9 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
             String msg = "statusmsg.bar.error.parsing.classifierrole";
             Object[] args = {pe.getLocalizedMessage(),
                              new Integer(pe.getErrorOffset()), };
-            ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    Translator.messageFormat(msg, args));
+            ArgoEventPump.fireEvent(new ArgoHelpEvent(
+                    ArgoEventTypes.HELP_CHANGED, this,
+                    Translator.messageFormat(msg, args)));
         }
     }
     

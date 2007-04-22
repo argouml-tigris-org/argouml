@@ -62,6 +62,8 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.configuration.Configuration;
 import org.argouml.application.configuration.ConfigurationKey;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ui.TabToDo;
@@ -309,6 +311,8 @@ public final class ProjectBrowser
                 }
             });
         }
+        ArgoEventPump.addListener(ArgoEventTypes.ANY_HELP_EVENT, 
+                new HelpListener(getStatusBar()));
     }
 
     /**
