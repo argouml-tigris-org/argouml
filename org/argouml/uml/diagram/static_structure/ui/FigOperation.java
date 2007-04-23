@@ -27,8 +27,8 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.model.Model;
+import org.argouml.notation.providers.NotationProvider;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 
 /**

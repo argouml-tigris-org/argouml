@@ -28,9 +28,9 @@ import java.util.Collection;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.providers.NotationProvider;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigEnumerationLiteral;
-import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -86,7 +86,7 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigEditableCompartment#createFigText(int, int, int, int, org.tigris.gef.presentation.Fig, org.argouml.uml.notation.NotationProvider)
+     * @see org.argouml.uml.diagram.ui.FigEditableCompartment#createFigText(int, int, int, int, org.tigris.gef.presentation.Fig, org.argouml.notation.providers.NotationProvider)
      */
     protected FigSingleLineText createFigText(int x, int y, int w, int h, 
             Fig aFig, NotationProvider np) {

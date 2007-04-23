@@ -25,11 +25,11 @@
 package org.argouml.notation;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.uml.notation.java.AssociationEndNameNotationJava;
-import org.argouml.uml.notation.java.AssociationNameNotationJava;
-import org.argouml.uml.notation.java.AttributeNotationJava;
-import org.argouml.uml.notation.java.ModelElementNameNotationJava;
-import org.argouml.uml.notation.java.OperationNotationJava;
+import org.argouml.notation.providers.java.AssociationEndNameNotationJava;
+import org.argouml.notation.providers.java.AssociationNameNotationJava;
+import org.argouml.notation.providers.java.AttributeNotationJava;
+import org.argouml.notation.providers.java.ModelElementNameNotationJava;
+import org.argouml.notation.providers.java.OperationNotationJava;
 
 /**
  * This class is the only one that has the knowledge of the complete list of

@@ -25,25 +25,25 @@
 package org.argouml.notation;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.uml.notation.uml.ActionStateNotationUml;
-import org.argouml.uml.notation.uml.AssociationEndNameNotationUml;
-import org.argouml.uml.notation.uml.AssociationNameNotationUml;
-import org.argouml.uml.notation.uml.AssociationRoleNotationUml;
-import org.argouml.uml.notation.uml.AttributeNotationUml;
-import org.argouml.uml.notation.uml.CallStateNotationUml;
-import org.argouml.uml.notation.uml.ClassifierRoleNotationUml;
-import org.argouml.uml.notation.uml.ComponentInstanceNotationUml;
-import org.argouml.uml.notation.uml.ExtensionPointNotationUml;
-import org.argouml.uml.notation.uml.MessageNotationUml;
-import org.argouml.uml.notation.uml.ModelElementNameNotationUml;
-import org.argouml.uml.notation.uml.NodeInstanceNotationUml;
-import org.argouml.uml.notation.uml.NotationUtilityUml;
-import org.argouml.uml.notation.uml.ObjectFlowStateStateNotationUml;
-import org.argouml.uml.notation.uml.ObjectFlowStateTypeNotationUml;
-import org.argouml.uml.notation.uml.ObjectNotationUml;
-import org.argouml.uml.notation.uml.OperationNotationUml;
-import org.argouml.uml.notation.uml.StateBodyNotationUml;
-import org.argouml.uml.notation.uml.TransitionNotationUml;
+import org.argouml.notation.providers.uml.ActionStateNotationUml;
+import org.argouml.notation.providers.uml.AssociationEndNameNotationUml;
+import org.argouml.notation.providers.uml.AssociationNameNotationUml;
+import org.argouml.notation.providers.uml.AssociationRoleNotationUml;
+import org.argouml.notation.providers.uml.AttributeNotationUml;
+import org.argouml.notation.providers.uml.CallStateNotationUml;
+import org.argouml.notation.providers.uml.ClassifierRoleNotationUml;
+import org.argouml.notation.providers.uml.ComponentInstanceNotationUml;
+import org.argouml.notation.providers.uml.ExtensionPointNotationUml;
+import org.argouml.notation.providers.uml.MessageNotationUml;
+import org.argouml.notation.providers.uml.ModelElementNameNotationUml;
+import org.argouml.notation.providers.uml.NodeInstanceNotationUml;
+import org.argouml.notation.providers.uml.NotationUtilityUml;
+import org.argouml.notation.providers.uml.ObjectFlowStateStateNotationUml;
+import org.argouml.notation.providers.uml.ObjectFlowStateTypeNotationUml;
+import org.argouml.notation.providers.uml.ObjectNotationUml;
+import org.argouml.notation.providers.uml.OperationNotationUml;
+import org.argouml.notation.providers.uml.StateBodyNotationUml;
+import org.argouml.notation.providers.uml.TransitionNotationUml;
 
 /**
  * This class initialises the Notation subsystem.

@@ -34,7 +34,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.model.InvalidElementException;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.uml.notation.NotationProvider;
+import org.argouml.notation.providers.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 
