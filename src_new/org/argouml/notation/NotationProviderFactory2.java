@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.argouml.uml.notation.NotationProvider;
+import org.argouml.notation.providers.NotationProvider;
 
 /**
  *  The NotationProviderFactory2 is a singleton, 

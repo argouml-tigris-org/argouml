@@ -31,9 +31,9 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.providers.NotationProvider;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigOperation;
-import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 
 /**

@@ -45,8 +45,8 @@ import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.uml.notation.NotationProvider;
-import org.argouml.uml.notation.uml.NotationUtilityUml;
+import org.argouml.notation.providers.NotationProvider;
+import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
 import org.tigris.gef.base.Diagram;
 

@@ -27,7 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 
 import org.apache.log4j.Logger;
-import org.argouml.uml.notation.NotationProvider;
+import org.argouml.notation.providers.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 

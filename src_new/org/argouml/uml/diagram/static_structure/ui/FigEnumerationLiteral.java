@@ -24,8 +24,8 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import org.argouml.notation.providers.NotationProvider;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
-import org.argouml.uml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 
 /**
