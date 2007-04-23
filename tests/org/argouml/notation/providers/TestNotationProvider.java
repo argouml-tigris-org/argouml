@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.notation;
+package org.argouml.notation.providers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -81,21 +81,21 @@ public class TestNotationProvider extends TestCase
     private class NPImpl extends NotationProvider {
 
         /*
-         * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
+         * @see org.argouml.notation.providers.NotationProvider#getParsingHelp()
          */
         public String getParsingHelp() {
             return null;
         }
 
         /*
-         * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+         * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
          */
         public String toString(Object modelElement, HashMap args) {
             return modelElement.toString() + args.size();
         }
 
         /*
-         * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
+         * @see org.argouml.notation.providers.NotationProvider#parse(java.lang.Object, java.lang.String)
          */
         public void parse(Object modelElement, String text) {
 

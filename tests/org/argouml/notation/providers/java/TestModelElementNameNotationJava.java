@@ -22,13 +22,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.notation.java;
+package org.argouml.notation.providers.java;
 
 import java.util.HashMap;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.notation.ModelElementNameNotation;
+import org.argouml.notation.providers.ModelElementNameNotation;
+import org.argouml.notation.providers.java.ModelElementNameNotationJava;
 
 import junit.framework.TestCase;
 

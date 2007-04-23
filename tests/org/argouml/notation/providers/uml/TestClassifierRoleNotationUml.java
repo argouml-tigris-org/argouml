@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.notation.uml;
+package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
 import java.util.Collection;
@@ -31,6 +31,7 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
+import org.argouml.notation.providers.uml.ClassifierRoleNotationUml;
 
 /**
  * Test ClassifierRoleNotationUml (formerly ParserDisplay):
