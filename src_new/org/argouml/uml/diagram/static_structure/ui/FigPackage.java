@@ -43,6 +43,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoDiagram;
@@ -806,14 +807,22 @@ public class FigPackage extends FigNodeModelElement
     }
     
     protected void modelChanged(PropertyChangeEvent mee) {
+	
 	if (mee instanceof RemoveAssociationEvent
-		&& "ownedElement".equals(mee.getPropertyName())) {
+		&& "ownedElement".equals(mee.getPropertyName())
+		&& mee.getSource() == getOwner()) {
 	    // A model element has been removed from this packages namespace
 	    // If the Fig representing that model element is on the same
 	    // diagram as this package then make sure it is not enclosed by
 	    // this package.
 	    // TODO: In my view the Fig representing the model element should be
 	    // removed from the diagram. Yet to be agreed. Bob.
+	    if (LOG.isInfoEnabled() && mee.getNewValue() == null) {
+		LOG.info(Model.getFacade().getName(mee.getOldValue()) +
+			" has been removed from the namespace of " + 
+			Model.getFacade().getName(getOwner()) +
+			" by notice of " + mee.toString());
+	    }
 	    LayerPerspective layer = (LayerPerspective) getLayer();
 	    Fig f = layer.presentationFor(mee.getOldValue());
 	    if (f != null && f.getEnclosingFig() == this) {
