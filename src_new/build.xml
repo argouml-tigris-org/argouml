@@ -827,7 +827,8 @@ Property files to be searched:
     <!--        That is part of issue 579.                         -->
 
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
-           fork="yes" haltonfailure="false"
+           fork="yes" dir="${basedir}" forkmode="perTest"
+           haltonfailure="false"
            maxmemory="48M" printsummary="true">
         <sysproperty key="test.model.uml" 
             value="${argo.mdr.dir}/src/org/argouml/model/mdr/mof/01-02-15.xml"/>
@@ -880,7 +881,9 @@ Property files to be searched:
     <!--        That is part of issue 579.                         -->
 
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
-        fork="yes" haltonfailure="false" maxmemory="128M" printsummary="true">
+           fork="yes" dir="${basedir}" forkmode="perTest"
+           haltonfailure="false"
+           maxmemory="128M" printsummary="true">
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
         <assertions>
