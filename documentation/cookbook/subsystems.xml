@@ -205,9 +205,14 @@ This is in subsections.
   <sect1 id="infrastructure_subsystems">
     <title>Low-level subsystems</title>
     <para> These subsystems are infrastructure subsystems that just are there
-      for every other subsystem to use. </para>
-    <para> They are all insignificant enough not to be mentioned when listing
-      dependencies. </para>
+      for every other subsystem to use
+      - but they are not using any other part of ArgoUML.
+    </para>
+    <para> They all have a simple dependency structure: 
+      All other ArgoUML packages may depend on them, 
+      but there are no dependencies "upwards", 
+      nor between them.
+    </para>
     <para>
 All these subsystems are all started and initiated (if needed) from the
 Application subsystem.
