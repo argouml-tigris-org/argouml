@@ -130,6 +130,9 @@ public class Main {
         String directory = Argo.getDirectory();
         org.tigris.gef.base.Globals.setLastDirectory(directory);
 
+        // Set the i18n locale
+        Translator.init(Configuration.getString(Argo.KEY_LOCALE));
+
         // create an anonymous class as a kind of adaptor for the cognitive
         // System to provide proper translation/i18n.
         org.argouml.cognitive.Translator.setTranslator(

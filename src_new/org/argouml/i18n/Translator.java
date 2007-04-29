@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,8 @@
 
 package org.argouml.i18n;
 
-import java.util.ArrayList;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -35,8 +35,6 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
-import org.argouml.application.configuration.Configuration;
 import org.tigris.gef.util.Localizer;
 
 /**
@@ -72,7 +70,7 @@ public final class Translator {
     private static boolean initialized;
 
     /**
-     * Used to keep track of the system default locale
+     * Used to keep track of the original system default locale
      */
     private static Locale systemDefaultLocale;
     
@@ -90,31 +88,80 @@ public final class Translator {
 
      * NOTE: This must be called *before* any other methods are called to
      * work properly.
+     * 
+     * @deprecated by MVW in V0.25, replaced by initForEclipse(String).
      */
-    public static void initForEclipse () {
-        initInternal();
+    public static void initForEclipse() {
+        initInternal(""/*Configuration.getString(Argo.KEY_LOCALE)*/);
+    }
+
+    /**
+     * Alternate initialization entry point for use by ArgoEclipse.
+     * It leaves out telling GEF about bundles that it won't be able
+     * to access. <p>
+     * 
+     * NOTE: This must be called *before* any other methods are called to
+     * work properly.
+     *
+     * @param locale the configured locale or "" or null
+     */
+    public static void initForEclipse (String locale) {
+        initInternal(locale);
     }
 
     /**
      * Default Locale is set and resources Bundles are loaded.
+     * @deprecated by MVW in V0.25.3, replaced by init(String locale).
      */
     public static void init () {
-        initInternal();
-        // TODO: This is an uplevel reference from GEF to ArgoUML - tfm
-        // What is this bundle used for?  Is it used?
+        initInternal(""/*Configuration.getString(Argo.KEY_LOCALE)*/);
+        /* TODO: This is an uplevel reference from GEF to ArgoUML - tfm
+         * What is this bundle used for?  Is it used? 
+         * MVW: Move into Main? */
         Localizer.addResource("UMLMenu",
 			      "org.argouml.i18n.UMLResourceBundle");
     }
-        
+
+    /**
+     * Initialise the locale.
+     * 
+     * @param locale a string with the locale
+     */
+    public static void init(String locale) {
+//        assert !initialized; // GUITestActionOpenProject fails over this...
+        initialized = true;
+
+        // Retain the original one:
+        systemDefaultLocale = Locale.getDefault();
+
+        if ((!"".equals(locale)) && (locale != null)) {
+            setLocale(locale);
+        } else {
+            setLocale(new Locale(
+                    System.getProperty("user.language", "en"),
+                    System.getProperty("user.country", "")));
+        }
+
+        /* TODO: This is using internal knowledge of GEF.  It should
+         * handle this itself. - tfm
+         * MVW: Move into something like Main.initGEF() */
+        Localizer.addResource("GefBase",
+                              "org.tigris.gef.base.BaseResourceBundle");
+        Localizer.addResource(
+                "GefPres",
+                "org.tigris.gef.presentation.PresentationResourceBundle");
+    }
+
     /*
      * Internal initialization method.  Handles initialization which
      * is common to both public methods.
      */
-    private static void initInternal () {
+    private static void initInternal (String s) {
+        assert !initialized;
         initialized = true;
-        loadDefaultLocale();
-        
-        String s = Configuration.getString(Argo.KEY_LOCALE);
+        // Retain the original one:
+        systemDefaultLocale = Locale.getDefault();
+
         if ((!"".equals(s)) && (s != null)) {
             setLocale(s);
         } else {
@@ -158,12 +205,16 @@ public final class Translator {
      * Change the current Locale. The string with the name follows
      * this BNF format: <p>
      *     language [ "_" country ]
+     * <p>
+     * Only use this before the GUI is initialized.
      *
      * @param name the name of the new locale
      */
     public static void setLocale(String name) {
+        /* This is needed for the JUnit tests. 
+         * Otherwise a "assert initialized" would suffice. */
         if (!initialized) {
-            init();
+            init("en");
         }
         String language = name;
         String country = "";
@@ -177,6 +228,8 @@ public final class Translator {
 
     /**
      * Change the current Locale.
+     * <p>
+     * Only use this before the GUI is initialized.
      *
      * @param locale the new Locale
      */
@@ -186,40 +239,16 @@ public final class Translator {
     }
 
     /**
-     * Returns the system default locale (indipendent from the selected
-     * configuration)
+     * Returns the original value of the default locale for this instance
+     * of the Java Virtual Machine (which is independent from the selected
+     * configuration).
      * 
-     * @return the system default locale
+     * @return the original system default locale
      */
     public static Locale getSystemDefaultLocale() {
         return systemDefaultLocale;
     }
-    
-    private static void loadDefaultLocale() {
-        // let's try to load the locale with language and country parameters
-        systemDefaultLocale = new Locale(Locale.getDefault().getLanguage(), 
-                Locale.getDefault().getCountry());
-        if (!isLocaleAvailable(systemDefaultLocale)) {
-            // the country parameter wasn't found. retrying to load the locale 
-            // without it
-            systemDefaultLocale = new Locale(Locale.getDefault().getLanguage());
-            if (!isLocaleAvailable(systemDefaultLocale)) {
-                // the default locale is not present. so the default is english
-                systemDefaultLocale = Locale.ENGLISH;
-            }
-        }
-    }
-    
-    private static boolean isLocaleAvailable(Locale locale) {
-        Locale[] availableLocales = getLocales();
-        for (int i = 0; i < availableLocales.length; i++) {
-            if (systemDefaultLocale.equals(availableLocales[i])) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
+
     /**
      * Add another class loader that the resource bundle could be located
      * through.
@@ -244,7 +273,8 @@ public final class Translator {
         ResourceBundle bundle = null;
         try {
             LOG.debug("Loading " + resource);
-            bundle = ResourceBundle.getBundle(resource, Locale.getDefault());
+            Locale locale = Locale.getDefault();
+            bundle = ResourceBundle.getBundle(resource, locale);
         } catch (MissingResourceException e1) {
             LOG.debug("Resource " + resource
 		      + " not found in the default class loader.");
@@ -308,8 +338,10 @@ public final class Translator {
      * @return The localized String.
      */
     public static String localize(String key) {
+        /* This is needed for the JUnit tests. 
+         * Otherwise a "assert initialized" would suffice. */
         if (!initialized) {
-            init();
+            init("en");
         }
 
         if (key == null) {
