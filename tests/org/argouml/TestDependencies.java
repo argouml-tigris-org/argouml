@@ -40,7 +40,10 @@ import junit.framework.TestSuite;
  * This test will guarantee that once 
  * a package is made free of dependency-cycles, 
  * (and it has been added here,)
- * it will stay dependency-cycle free.
+ * it will stay dependency-cycle free. <p>
+ * 
+ * It also checks that the top level package(s) are 
+ * (and remain) unused by other packages.
  * 
  * @author Michiel
  */
@@ -77,6 +80,7 @@ public class TestDependencies extends TestCase {
 
         String[] clean = {
             "org.argouml.configuration",
+            "org.argouml.application.api",
             "org.argouml.application.events",
             "org.argouml.application.helpers",
             "org.argouml.application.security",
@@ -99,16 +103,28 @@ public class TestDependencies extends TestCase {
         };
 
         for (int i = 0; i < clean.length; i++) {
-            suite.addTest(new CheckOnePackage(jdepend, clean[i]));
+            suite.addTest(new CheckDependencyCycle(jdepend, clean[i]));
         }
+
+        String[] top = {
+            "org.argouml.application",
+            // The following 2 are not supposed to pass, but they do.
+            // Hence these packages are not used anywhere:
+            "org.argouml.cognitive.checklist.ui",
+            "org.argouml.util.osdep.win32",
+        };
+        for (int i = 0; i < top.length; i++) {
+            suite.addTest(new CheckTopLevel(jdepend, top[i]));
+        }
+
         return suite;
     }
 
-    static class CheckOnePackage extends TestCase {
+    static class CheckDependencyCycle extends TestCase {
         private String packageName;
         private JDepend jdepend;
 
-        CheckOnePackage(JDepend jd, String name) {
+        CheckDependencyCycle(JDepend jd, String name) {
             super(name);
             jdepend = jd;
             packageName = name;
@@ -128,6 +144,37 @@ public class TestDependencies extends TestCase {
                     msg.append(" ");
                 }
                 msg.append(")");
+                assertTrue(msg.toString(), false);
+            }
+        }
+    }
+
+    static class CheckTopLevel extends TestCase {
+        private String packageName;
+        private JDepend jdepend;
+
+        CheckTopLevel(JDepend jd, String name) {
+            super(name);
+            jdepend = jd;
+            packageName = name;
+        }
+
+        public void runTest() {
+            JavaPackage p = jdepend.getPackage(packageName);
+            assertNotNull(p);
+            Collection<JavaPackage> afferents = p.getAfferents();
+            if (afferents.size() > 0) {
+                StringBuffer msg = new StringBuffer("JDepend "
+                    + "indicates an afferent dependency "
+                    + "in a top level package: ");
+                msg.append(p.getName());
+                msg.append(" is used by ");
+                msg.append(afferents.size());
+                msg.append(" packages: ");
+                for (JavaPackage jp : afferents) {
+                    msg.append(jp.getName());
+                    msg.append(" ");
+                }
                 assertTrue(msg.toString(), false);
             }
         }
