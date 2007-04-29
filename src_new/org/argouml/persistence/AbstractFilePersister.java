@@ -34,8 +34,8 @@ import javax.swing.event.EventListenerList;
 import javax.swing.filechooser.FileFilter;
 
 import org.argouml.kernel.Project;
-import org.argouml.swingext.ProgressEvent;
-import org.argouml.swingext.ProgressListener;
+import org.argouml.taskmgmt.ProgressEvent;
+import org.argouml.taskmgmt.ProgressListener;
 import org.argouml.util.ThreadUtils;
 
 /**
@@ -346,7 +346,7 @@ public abstract class AbstractFilePersister extends FileFilter
         /**
          * Called when a ProgressEvent is fired.
          *  
-         * @see org.argouml.swingext.ProgressListener#progress(org.argouml.swingext.ProgressEvent)
+         * @see org.argouml.taskmgmt.ProgressListener#progress(org.argouml.taskmgmt.ProgressEvent)
          * @throws InterruptedException     if thread is interrupted
          */
         public void progress(ProgressEvent event) throws InterruptedException {

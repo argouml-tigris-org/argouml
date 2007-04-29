@@ -79,7 +79,7 @@ import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.persistence.UmlVersionException;
 import org.argouml.persistence.VersionException;
 import org.argouml.persistence.XmiFormatException;
-import org.argouml.swingext.ProgressMonitor;
+import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;

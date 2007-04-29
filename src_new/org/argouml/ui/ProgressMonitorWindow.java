@@ -31,7 +31,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.ProgressEvent;
+import org.argouml.taskmgmt.ProgressEvent;
 
 /**
  * Manages a ProgressMonitor dialog.
@@ -43,7 +43,7 @@ import org.argouml.swingext.ProgressEvent;
  * @author andrea_nironi@tigris.org
  */
 public class ProgressMonitorWindow implements
-        org.argouml.swingext.ProgressMonitor {
+        org.argouml.taskmgmt.ProgressMonitor {
     
     private ProgressMonitor pbar;
     
