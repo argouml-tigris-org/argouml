@@ -36,10 +36,10 @@ import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-import org.argouml.application.configuration.Configuration;
-import org.argouml.application.configuration.ConfigurationKey;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
 import org.argouml.ui.ActionGoToCritique;
 import org.tigris.gef.util.ChildGenerator;
 import org.tigris.gef.util.EnumerationEmpty;

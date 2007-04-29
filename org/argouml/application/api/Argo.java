@@ -26,8 +26,8 @@ package org.argouml.application.api;
 
 import org.apache.log4j.Category;
 import org.apache.log4j.Level;
-import org.argouml.application.configuration.Configuration;
-import org.argouml.application.configuration.ConfigurationKey;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
 
 /**
  * The <code>Argo</code> class provides static methods and definitions

@@ -39,7 +39,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.KeyStroke;
 
 import org.argouml.application.api.Argo;
-import org.argouml.application.configuration.Configuration;
+import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;

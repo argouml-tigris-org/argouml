@@ -31,12 +31,12 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.configuration.Configuration;
-import org.argouml.application.configuration.ConfigurationKey;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
 
 /**
  * Provides centralized methods dealing with notation.

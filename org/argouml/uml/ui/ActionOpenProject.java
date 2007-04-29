@@ -33,8 +33,8 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import org.argouml.application.api.CommandLineInterface;
-import org.argouml.application.configuration.Configuration;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;

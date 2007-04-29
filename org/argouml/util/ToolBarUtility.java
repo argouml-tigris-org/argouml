@@ -34,8 +34,8 @@ import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.configuration.Configuration;
-import org.argouml.application.configuration.ConfigurationKey;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
 import org.tigris.toolbar.ToolBarManager;
 import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
 
