@@ -53,7 +53,7 @@ public class TestAgainstUmlModel extends TestCase {
      * that are <strong>expected</strong> to be found
      * in the model.
      */
-    private static Hashtable refs;
+    private static Hashtable<String, Object> refs;
 
     /**
      * The constructor.
@@ -81,7 +81,7 @@ public class TestAgainstUmlModel extends TestCase {
 	assertEquals(refs.size(), list.getLength());
 
 	for (int i = 0; i < list.getLength(); i++) {
-	    processClassNode ("", list.item(i));
+	    processClassNode (list.item(i));
 	}
     }
 
@@ -143,7 +143,7 @@ public class TestAgainstUmlModel extends TestCase {
      * either the input data is incorrect or the test needs
      * to be improved.
      */
-    private void processClassNode(String indent, Node node) {
+    private void processClassNode(Node node) {
         String umlclass =
             node.getAttributes().getNamedItem("name").getNodeValue();
         Object factory = refs.get(umlclass);
@@ -178,7 +178,7 @@ public class TestAgainstUmlModel extends TestCase {
      */
 
     static {
-        refs = new Hashtable(127);
+        refs = new Hashtable<String, Object>(127);
     }
 
     static {
@@ -334,7 +334,7 @@ public class TestAgainstUmlModel extends TestCase {
      *
      * @return Hashtable
      */
-    public static Hashtable getRefs() {
+    public static Hashtable<String, Object> getRefs() {
         return refs;
     }
 
@@ -386,11 +386,6 @@ public class TestAgainstUmlModel extends TestCase {
         return suite;
     }
 
-    /**
-     * Test a specific element.
-     *
-     * @see junit.framework.TestCase#runTest()
-     */
     protected void runTest() throws Throwable {
         String umlclass = getName();
         Object factory = refs.get(umlclass);
