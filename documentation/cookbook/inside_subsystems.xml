@@ -449,6 +449,25 @@ south: 	TabXXX
     </para>
   </sect1>
 
+  <sect1 id="configuration">
+    <title>Configuration</title>
+    <para> Purpose - Store and retrieve 
+      all configurable aspects 
+      of the ArgoUML application. </para>
+    <para> The Configuration subsystem is an infrastructure 
+      or low-level subsystem. See <xref
+      linkend="infrastructure_subsystems"></xref>. 
+      It handles all configuration that is stored 
+      in the user's home directory 
+      in the file named "argo.user.properties".
+    </para>
+    <para>Not inside the scope of this package 
+      are all the configuration settings 
+      that are stored in the project, 
+      i.e. in the .zargo file.
+    </para>
+  </sect1>
+
   <sect1 id="jre">
     <title>JRE with utils</title>
     <para> Purpose - to provide the infrastructure to run everything. </para>
