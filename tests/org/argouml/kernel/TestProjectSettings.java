@@ -28,10 +28,10 @@ import java.beans.PropertyChangeEvent;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.configuration.Configuration;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
+import org.argouml.configuration.Configuration;
 import org.argouml.notation.Notation;
 
 /**

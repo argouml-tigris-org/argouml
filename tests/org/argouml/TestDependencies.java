@@ -76,7 +76,7 @@ public class TestDependencies extends TestCase {
             new TestSuite("Tests for dependencies using Jdepend");
 
         String[] clean = {
-            "org.argouml.application.configuration",
+            "org.argouml.configuration",
             "org.argouml.application.events",
             "org.argouml.application.helpers",
             "org.argouml.application.security",
