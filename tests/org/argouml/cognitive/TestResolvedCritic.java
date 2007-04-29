@@ -54,7 +54,7 @@ public class TestResolvedCritic extends TestCase {
         Critic c = new Critic();
         String crString = "class org.argouml.cognitive.critics.Critic";
         ResolvedCritic rc;
-        Vector vec = new Vector();
+        Vector<String> vec = new Vector<String>();
         ListSet set = new ListSet();
 
         /* ResolvedCritic(String, Vector) */
@@ -133,7 +133,7 @@ public class TestResolvedCritic extends TestCase {
     public void testEquals() {
 	Critic c = new Critic();
 	ResolvedCritic rc1, rc2;
-	Vector vec = new Vector();
+	Vector<String> vec = new Vector<String>();
 	ListSet set = new ListSet();
 
 	rc1 = new ResolvedCritic("RC", null);

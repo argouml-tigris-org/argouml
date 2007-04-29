@@ -30,8 +30,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import javax.swing.JPanel;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -72,7 +70,7 @@ public class TestPropertyPanels extends TestCase {
      * @see #setUp
      */
     private static DetailsPane theDetailsPane = null;
-    private JPanel propertyPane;
+    // private JPanel propertyPane;
 
     /**
      * @param me is the type of object to test
@@ -122,7 +120,7 @@ public class TestPropertyPanels extends TestCase {
         // constains instances of each modelelement
         // used for testing so that we only use each modelelement
         // once
-        HashMap meMap = new HashMap();
+        HashMap<Class, Object> meMap = new HashMap<Class, Object>();
 
         TestSuite suite =
 	    new TestSuite("Tests to access proppanels "
@@ -200,8 +198,8 @@ public class TestPropertyPanels extends TestCase {
 			    });
         theDetailsPane.targetSet(e);
 
-        propertyPane = /*TabProps */
-            theDetailsPane.getTab(TabProps.class);
+        // propertyPane = /*TabProps */
+        theDetailsPane.getTab(TabProps.class);
 //            theDetailsPane.getNamedTab(Translator.localize("tab.properties"));
 
         // currently this is in this try block as it does not work

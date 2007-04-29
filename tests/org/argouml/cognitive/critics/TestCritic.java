@@ -28,6 +28,9 @@ import java.util.Hashtable;
 
 import junit.framework.TestCase;
 
+/**
+ * Testing the creation of a Critic.
+ */
 public class TestCritic extends TestCase {
 
     private Critic cr;
@@ -42,7 +45,7 @@ public class TestCritic extends TestCase {
     }
 
     public void testArgs() {
-        Hashtable t = new Hashtable();
+        Hashtable<String, Object> t = new Hashtable<String, Object>();
         t.put("threshold", new Integer(5));
         t.put("param1", "XYZ");
         cr.setArgs(t);

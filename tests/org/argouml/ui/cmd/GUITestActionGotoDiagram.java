@@ -50,7 +50,8 @@ public class GUITestActionGotoDiagram extends TestCase {
      */
     public void testProjectWithContents() {
         File file =
-	    CheckMain.getTestModel("testmodels/uml14/GUITestPropertyPanels.zargo");
+	    CheckMain.getTestModel(
+                    "testmodels/uml14/GUITestPropertyPanels.zargo");
 
         CheckMain.callMain(new String[] {
             "-nosplash",
