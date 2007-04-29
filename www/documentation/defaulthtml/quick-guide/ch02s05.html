@@ -1,37 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>2.5.&nbsp;Making .zargo-file clickable (on Windows)</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML Quick Guide"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Installing ArgoUML"><link rel="prev" href="ch02s04.html" title="2.4.&nbsp;Command Line Options"><link rel="next" href="ch03.html" title="Chapter&nbsp;3.&nbsp;ArgoUML Principles"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.5.&nbsp;Making .zargo-file clickable (on Windows)</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Installing ArgoUML</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e237"></a>2.5.&nbsp;Making .zargo-file clickable (on Windows)</h2></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Ewan</span> <span class="othername">R.</span> <span class="surname">Grantham</span></h3></div></div></div></div></div><p>
-This works only if you have installed using the binary distribution.
-</p><p>
-First, find a Zargo file, and right-click on it.
-You should get the normal Windows menu, including an Open or Open With option.
-At this point, give a description for the file like "ArgoUML Model", 
-and tell Windows to use Notepad to open the file.
-That's not what you want to do ultimately, but it does get Windows to
-accept the .zargo extension as representing a valid file type.
-</p><p>
-Now, open Windows Explorer and from the menu select View-&gt;Options 
-(or on Windows XP: Tools-&gt;Folder Options...). 
-You
-should get a two (or more) tabbed dialog. Click the "File Types" dialog, and
-then scroll through the list for the Description you gave - in the example
-"ArgoUML Model". Click to select that file type, and then click the "Edit"
-button.
-</p><p>
-Now, click on the "Open" action and then the "Edit" button there. You will
-then get a dialog that has a line for entering in the application action
-which will have a line for using Notepad to open the file. Replace that line
-with:
-<span><b class="command">
-"C:\Program Files\Java\j2re1.4.0_01\bin\javaw.exe" -jar "c:\ArgoUML\argouml.jar" "%L"
-</b></span>
-</p><p>
-Substitute your path to your <tt class="filename">javaw.exe</tt> and 
-<tt class="filename">argouml.jar</tt> files if they are 
-in a different location.
-Click OK, then click OK, then click OK (three buttons on
-three different levels of the dialog).
-</p><p>The %L in the above commandline is needed instead of %1 
-because that is the way to
-support filename extensions of more than 3 characters.
-</p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">2.4.&nbsp;Command Line Options&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;3.&nbsp;ArgoUML Principles</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML Quick Guide</title>
+  </head>
+  <body>
+<h2>This version of the quick guide is removed</h2>
+<p>
+Please refer to the quick guide at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/quick-guide-0.24/">Quick Guide (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/quick-guide-0.24-single/quickguide.html">Quick Guide (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>
