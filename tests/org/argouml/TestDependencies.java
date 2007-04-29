@@ -84,6 +84,7 @@ public class TestDependencies extends TestCase {
             "org.argouml.application.api",
             "org.argouml.i18n",
             "org.argouml.swingext",
+            "org.argouml.taskmgmt",
             "org.argouml.uml.diagram.layout",
             "org.argouml.notation.providers",
             //"org.argouml.notation.providers.java",
