@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,10 @@ package org.argouml.application;
  *
  * It should <strong>not</strong> be edited manually because it is
  * build from the file ArgoVersion.template when necessary.<p>
+ * 
+ * Since this class resides in the top-level package, 
+ * none of its functionality should be used
+ * outside this package.
  *
  * @author Thierry Lach
  * @since  Argo0.11.1
