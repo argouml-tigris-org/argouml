@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,9 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
+/**
+ * Test the Translator class.
+ */
 public class TestTranslator extends TestCase {
 
     public TestTranslator(String arg0) {
@@ -39,7 +42,8 @@ public class TestTranslator extends TestCase {
     }
 
     public void testGetLocales() {
-        Translator.getLocales();
+        assertTrue("The list of supported locales is too small", 
+                Translator.getLocales().length > 9);
     }
 
     public void testSetLocaleString() {

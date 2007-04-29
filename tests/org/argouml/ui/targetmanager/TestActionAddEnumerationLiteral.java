@@ -37,21 +37,13 @@ import org.argouml.i18n.Translator;
  * @author Michiel
  */
 public class TestActionAddEnumerationLiteral extends TestCase {
-//    /**
-//     * The constructor.
-//     *
-//     * @param arg0 the test name
-//     */
-//    public TestActionAddEnumerationLiteral(String arg0) {
-//        super(arg0);
-//    }
 
     /*
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
-        Translator.init();
+        Translator.init("en");
     }
 
     /**

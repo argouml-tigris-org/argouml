@@ -24,15 +24,6 @@
 
 package org.argouml.ui;
 
-// import com.sun.image.codec.jpeg.JPEGCodec;
-// import com.sun.image.codec.jpeg.JPEGEncodeParam;
-// import com.sun.image.codec.jpeg.JPEGImageEncoder;
-
-// import java.awt.image.BufferedImage;
-// import java.awt.Component;
-// import java.awt.Dimension;
-// import java.awt.Image;
-// import java.awt.Graphics2D;
 import java.io.File;
 import java.net.URL;
 import java.util.Collection;
@@ -45,7 +36,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -84,14 +74,6 @@ public class TestPropertyPanels extends TestCase {
     private static DetailsPane theDetailsPane = null;
     private JPanel propertyPane;
 
-    // we need the translator to work in order to access
-    // the property panels. It is also a common source for
-    // problems.
-    static {
-        Translator.init();
-    }
-
-
     /**
      * @param me is the type of object to test
      * @param arg0 is the name of the test case
@@ -101,7 +83,7 @@ public class TestPropertyPanels extends TestCase {
         modelElement = me;
     }
 
-    /**
+    /*
      * Here we are actually violating the test independance since we keep
      * the DetailsPane from test to test. The reason to do this is to make
      * it possible to run the tests with less memory requirements.
