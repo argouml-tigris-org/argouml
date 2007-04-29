@@ -1,65 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>12.5.&nbsp;Presentation Tab</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch12.html" title="Chapter&nbsp;12.&nbsp;The Details Pane"><link rel="prev" href="ch12s04.html" title="12.4.&nbsp;Documentation Tab"><link rel="next" href="ch12s06.html" title="12.6.&nbsp;Source Tab"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">12.5.&nbsp;Presentation Tab</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch12s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;12.&nbsp;The Details Pane</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch12s06.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e9824"></a>12.5.&nbsp;Presentation Tab</h2></div></div></div><p>This tab provides some limited control over the graphical 
-        representation of artifacts in the diagram in the editing 
-        pane.</p><p>Artifacts that do not have any specific direct graphical 
-        representation on the screen (beyond their textual description) 
-        do not have style tabs of their own. For example the style 
-        sheet of an operation on a class will be downlighted.</p><p>Style sheets vary a little from artifact to artifact, but 
-        <a href="ch12s05.html#fig.ref.details_style" title="Figure&nbsp;12.8.&nbsp;A typical Presentation tab on the &#xA;          details pane">Figure&nbsp;12.8, &#8220;A typical <tt class="literal">Presentation</tt> tab on the 
-          details pane&#8221;</a> shows a typical style 
-        tab for an artifact in ArgoUML (in this case a class).</p><div class="figure-float"><div class="figure"><a name="fig.ref.details_style"></a><p class="title"><b>Figure&nbsp;12.8.&nbsp;A typical <tt class="literal">Presentation</tt> tab on the 
-          details pane</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_style.png" align="middle" alt="A typical Presentation tab on the details pane"></div></div><p></p></div></div><p>There may be further fields in some cases, e.g. for a 
-        package, but most fields are common to many artifacts.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Path</tt>
-              This checkbox allow to display or hide the path  
-              in front of the name of the modelelement. 
-              It is shown in UML notation with <tt class="literal">::</tt>
-              seperators. E.g. the ArgoUML Main class would be shown as: 
-              <tt class="literal">org::argouml::application::Main</tt>.
-            </p></li><li><p><tt class="literal">Attributes</tt>
-            This checkbox allows to hide or show the attributes compartment of 
-            a class.
-            </p></li><li><p><tt class="literal">Operation</tt>
-            This checkbox allows to hide or show the operations compartment of 
-            a class or interface.
-            </p></li><li><p><tt class="literal">Stereotype</tt>
-            This checkbox allows to reveal or hide the stereotypes of 
-            a package, shown above the name.
-            </p></li><li><p><tt class="literal">Visibility</tt>
-            This checkbox allows to hide the visibility of 
-            a package. 
-            The visibility is shown in UML notation as +, -, # or ~.
-            </p></li><li><p><tt class="literal">Extension Points</tt>
-            This checkbox allows to reveal or hide 
-            the extensions points compartment of 
-            a usecase.
-            </p></li><li><p><tt class="literal">Bounds:</tt> This defines the corners 
-            of the bounding box for a 2D artifact. It comprises four 
-            numbers separated by commas. These four numbers are 
-            respectively: i) the X coordinate of the upper left corner 
-            of the box; ii) the Y coordinate of the upper left corner 
-            of the box; iii) the width of the box; and iv) the height 
-            of the box. All units are pixels on the editing pane.</p><p>This field has no effect on 1D artifacts that link 
-            other artifacts (associations, generalizations etc), since 
-            their position is constrained by their connectedness. In 
-            this case the field is downlighted.</p></li><li><p><tt class="literal">Fill:</tt> This drop-down selector 
-            specifies the fill color for 2D artifacts. It is not 
-            present for line artifacts. Selecting <tt class="literal">No 
-            Fill</tt> makes the artifact transparant. Selecting 
-            <tt class="literal">Custom</tt> allows to create other colors 
-            then the ones listed. It causes the color selector dialog 
-            box to appear, see 
-            <a href="ch12s05.html#fig.ref.details_style_colorpicker1" title="Figure&nbsp;12.9.&nbsp;The Custom Fill/Line Color dialog &#xA;          box">Figure&nbsp;12.9, &#8220;The <tt class="literal">Custom Fill/Line Color</tt> dialog 
-          box&#8221;</a>.</p></li><li><p><tt class="literal">Line:</tt> This drop-down selector 
-            specifies the line color for artifacts. Selecting <tt class="literal">
-            No Fill</tt> makes the artifact transparant. Selecting 
-            <tt class="literal">Custom</tt> allows to create other colors 
-            then the ones listed. It causes the color selector dialog 
-            box to appear, see 
-            <a href="ch12s05.html#fig.ref.details_style_colorpicker1" title="Figure&nbsp;12.9.&nbsp;The Custom Fill/Line Color dialog &#xA;          box">Figure&nbsp;12.9, &#8220;The <tt class="literal">Custom Fill/Line Color</tt> dialog 
-          box&#8221;</a>.</p></li><li><p><tt class="literal">Shadow:</tt> This drop-down selector 
-            specifies the width of the shadow (if any) for 2D 
-            artifacts. It is not present for line artifacts.</p></li></ul></div><div class="figure-float"><div class="figure"><a name="fig.ref.details_style_colorpicker1"></a><p class="title"><b>Figure&nbsp;12.9.&nbsp;The <tt class="literal">Custom Fill/Line Color</tt> dialog 
-          box</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_style_colorpicker1.png" align="middle" alt="The Custom Fill/Line Color dialog box"></div></div><p></p></div></div><div class="figure-float"><div class="figure"><a name="fig.ref.details_style_colorpicker2"></a><p class="title"><b>Figure&nbsp;12.10.&nbsp;The <tt class="literal">Custom Fill/Line Color</tt> dialog 
-          box</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_style_colorpicker2.png" align="middle" alt="The Custom Fill/Line Color dialog box"></div></div><p></p></div></div><div class="figure-float"><div class="figure"><a name="fig.ref.details_style_colorpicker3"></a><p class="title"><b>Figure&nbsp;12.11.&nbsp;The <tt class="literal">Custom Fill/Line Color</tt> dialog 
-          box</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_style_colorpicker3.png" align="middle" alt="The Custom Fill/Line Color dialog box"></div></div><p></p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch12s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch12.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch12s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">12.4.&nbsp;Documentation Tab&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;12.6.&nbsp;Source Tab</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

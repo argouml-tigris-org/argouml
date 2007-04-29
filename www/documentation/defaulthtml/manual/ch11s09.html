@@ -1,128 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>11.9.&nbsp;Pop-Up Menus</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch11.html" title="Chapter&nbsp;11.&nbsp;The Editing Pane"><link rel="prev" href="ch11s08.html" title="11.8.&nbsp;The Diagram Tab"><link rel="next" href="ch12.html" title="Chapter&nbsp;12.&nbsp;The Details Pane"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">11.9.&nbsp;Pop-Up Menus</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch11s08.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;11.&nbsp;The Editing Pane</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch12.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.edit_pane_pop_up"></a>11.9.&nbsp;Pop-Up Menus</h2></div></div></div><p>Within the editing pane, button&nbsp;2 click over an artifact 
-        will bring up a pop-up menu with a variable number of main 
-        entries, many with a sub-menu.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9125"></a>11.9.1.&nbsp;Critiques</h3></div></div></div><p>This sub-menu gives list of all the critics that have 
-          triggered for this artifact. Selection of a menu entry causes 
-          that entry to be highlighted in the to-do pane and its 
-          detailed explanation to be placed in the <tt class="literal">
-          ToDoItem</tt> tab of the details pane. A solid colored 
-          line indicates the offending element.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9133"></a>11.9.2.&nbsp;Ordering</h3></div></div></div><p>This menu controls the ordering of overlapping 
-          artifacts on the diagram. It is equivalent to the <tt class="literal">
-          Reorder</tt> sub-menu of the <tt class="literal">Arrange</tt> 
-          menu (see <a href="ch09s07.html#s2.ref.menu_reorder" title="9.7.3.&nbsp;Reorder">Section&nbsp;9.7.3, &#8220;Reorder&#8221;</a>). There are 
-          four entries.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/forward.gif" align="middle"></span></span> 
-              <tt class="literal">Forward</tt>. The selected artifacts are 
-              moved one step forward in the ordering hierarchy with 
-              respect to other artifacts they overlap.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/backward.gif" align="middle"></span></span> 
-              <tt class="literal">Backward</tt>. The selected artifacts are 
-              moved one step back in the ordering hierarchy with 
-              respect to other artifacts they overlap.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/to_front.gif" align="middle"></span></span> 
-              <tt class="literal">To Front</tt>. The selected artifacts are 
-              moved to the front of any other artifacts they 
-              overlap.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/to_back.gif" align="middle"></span></span> 
-              <tt class="literal">To Back</tt>. The selected artifacts are 
-              moved to the back of any other artifacts they 
-              overlap.</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9187"></a>11.9.3.&nbsp;Add</h3></div></div></div><p>This sub-menu only appears for artifacts that can have 
-          notes attached (class, interface, object, state, pseudostate) 
-          or have operations or attributes added (class, interface). 
-          There are at most three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/attribute.gif" align="middle"></span></span> 
-              <tt class="literal">New Attribute</tt>. Only appears where the 
-              selected artifact is a class. Creates a new attribute on 
-              the artifact</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/operation.gif" align="middle"></span></span> 
-              <tt class="literal">New Operation</tt>. Only appears where the 
-              selected artifact is a class or interface. Creates a new 
-              operation on the artifact</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/note.gif" align="middle"></span></span> 
-              <tt class="literal">New Comment</tt>. Attaches a new comment to 
-              the selected artifact.</p></li><li><p><tt class="literal">Add All Relations</tt>. 
-              Only appears where the 
-              selected artifact is a class or interface. 
-              Makes all relations visible that exist in the model and
-              that are connected to the selected artifact.
-              </p></li><li><p><tt class="literal">Remove all Relations</tt>. 
-              Only appears where the 
-              selected artifact is a class or interface.
-              Removes all connected relations from the diagram 
-              (without removing them from the model).
-              </p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9233"></a>11.9.4.&nbsp;Show</h3></div></div></div><p>This sub-menu only appears with certain artifacts. It 
-          is completely context dependent. There are many possible 
-          entries, depending on the selected artifact and its 
-          state.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Hide Extension Point 
-              Compartment</tt>. Only appears when the extension 
-              point compartment of a use case is displayed. Hides the 
-              compartment.</p></li><li><p><tt class="literal">Show Extension Point 
-              Compartment</tt>. Only appears when the extension 
-              point compartment of a use case is hidden. Displays the 
-              compartment.</p></li><li><p><tt class="literal">Hide All Compartments</tt>. Only 
-              appears when both attribute and operation compartments 
-              are displayed on a class or object. Hides both 
-              compartments.</p></li><li><p><tt class="literal">Show All Compartments</tt>. Only 
-              appears when both attribute and operation compartments 
-              are hidden on a class or object. Displays both 
-              compartments.</p></li><li><p><tt class="literal">Hide Attribute Compartment</tt>. Only 
-              appears when the attribute compartment of a class or 
-              object is displayed. Hides the compartment.</p></li><li><p><tt class="literal">Show Attribute Compartment</tt>. Only 
-              appears when the attribute compartment of a class or 
-              object is hidden. Displays the compartment.</p></li><li><p><tt class="literal">Hide Operation Compartment</tt>. Only 
-              appears when the operation compartment of a class or 
-              object is displayed. Hides the compartment.</p></li><li><p><tt class="literal">Show Operation Compartment</tt>. Only 
-              appears when the operation compartment of a class or 
-              object is hidden. Displays the compartment.</p></li><li><p><tt class="literal">Show All Edges</tt>. Only appears on 
-              a class. Displays all associations (to shown artifacts) 
-              that are not shown yet. This is the same function as the 
-              "add to Diagram" on the asociation in the 
-              explorer context menu. currently.</p></li><li><p><tt class="literal">Hide All Edges</tt>. Only appears on 
-              a class. Hides all associations. This is the same 
-              function as &#8220;<span class="quote">Remove from Diagram</span>&#8221; on all the 
-              associations of this class.</p></li><li><p><tt class="literal">Hide Stereotype</tt>. Only appears 
-              when the Stereotype of a package is displayed. Hides the 
-              stereotype.</p></li><li><p><tt class="literal">Show Stereotype</tt>. Only appears 
-              when the Stereotype of a package is hidden. Displays the 
-              stereotype.</p></li><li><p><tt class="literal">Hide Visibility</tt>. Only appears 
-              when the visibility of a package is displayed. Hides the 
-              visibility.</p></li><li><p><tt class="literal">Show Visibility</tt>. Only appears 
-              when the visibility of a package is hidden. Displays the 
-              visibility.</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9312"></a>11.9.5.&nbsp;Modifiers</h3></div></div></div><p>This sub-menu only appears with class, interface, 
-          package and use case artifacts. It is used to set or clear 
-          the values of the various modifiers available.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Abstract</tt>. Set for an abstract 
-              artifact.</p></li><li><p><tt class="literal">Leaf</tt>. Set for a final artifact, 
-              i.e. one with no subartifacts.</p></li><li><p><tt class="literal">Root</tt>. Set for a root artifact, 
-              i.e. one with no superartifacts.</p></li><li><p><tt class="literal">Active</tt>. Set for a artifact with 
-              dynamic behavior.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This really ought to be set automatically for 
-                artifacts with state machines or activity 
-                diagrams.</p></td></tr></table></div></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9341"></a>11.9.6.&nbsp;Multiplicity</h3></div></div></div><p>This sub-menu only appears with association artifacts, 
-          when clicking at one end of the association. It is used to 
-          control the multiplicity at the end of the association 
-          nearest the mouse click point. There are only four entries, a 
-          sub-set of the range of multiplicities that are available 
-          through the property sheet of a association end (see 
-          <a href="ch16s06.html" title="16.6.&nbsp;Association End">Section&nbsp;16.6, &#8220;Association End&#8221;</a>).</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">1</tt></p></li><li><p><tt class="literal">0..1</tt></p></li><li><p><tt class="literal">1..*</tt></p></li><li><p><tt class="literal">0..*</tt></p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9365"></a>11.9.7.&nbsp;Aggregation</h3></div></div></div><p>This sub-menu only appears with association artifacts, 
-          when clicking at one end of the association. It is used to 
-          control the aggregation at the end of the association nearest 
-          the mouse click point. There are three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">none</tt>. Remove any 
-              aggregation.</p></li><li><p><tt class="literal">aggregate</tt>. Make this end a 
-              shared aggregation (loosely known as an 
-              &#8220;<span class="quote">aggregation</span>&#8221;).</p></li><li><p><tt class="literal">composite</tt>. Make this end a 
-              composite aggregation (loosely known as a 
-              &#8220;<span class="quote">composition</span>&#8221;).</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>UML requires that an end with a composition 
-            relationship must have a multiplicity of 1 (the 
-            default).</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e9395"></a>11.9.8.&nbsp;Navigability</h3></div></div></div><p>This sub-menu only appears with association artifacts, 
-          when clicking at one end of the association. It is used to 
-          control the navigability of the association. There are three 
-          entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">bidirectional</tt>. Make the 
-              association navigable in both directions.</p></li><li><p><tt class="literal">&lt;class1&gt; to 
-              &lt;class2&gt;</tt>. Make the association navigable 
-              only from &lt;class1&gt; to &lt;class2&gt;. In other 
-              words &lt;class1&gt; can reference &lt;class2&gt; but not 
-              the other way round.</p></li><li><p><tt class="literal">&lt;class2&gt; to 
-              &lt;class1&gt;</tt>. Make the association navigable 
-              only from &lt;class2&gt; to &lt;class1&gt;. In other 
-              words &lt;class2&gt; can reference &lt;class1&gt; but not 
-              the other way round.</p></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>UML does permit an association to be non-navigable in 
-            both directions. ArgoUML will allow this, but you will have 
-            to set each of the association ends navigation property, 
-            reached from the property tab of the association - and the 
-            diagram does not show any arrows in this case.</p><p>This is considered bad design practice (it will 
-            trigger a critic in ArgoUML), so is only of theoretical 
-            interest.</p></td></tr></table></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>UML does not permit navigability from an interface to 
-            a class. ArgoUML does not prevent this.</p></td></tr></table></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch11s08.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch11.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch12.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">11.8.&nbsp;The Diagram Tab&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;12.&nbsp;The Details Pane</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

@@ -1,124 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>9.5.&nbsp;The View Menu</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch09.html" title="Chapter&nbsp;9.&nbsp;The Menu bar"><link rel="prev" href="ch09s04.html" title="9.4.&nbsp;The Edit Menu"><link rel="next" href="ch09s06.html" title="9.6.&nbsp;The Create Menu"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">9.5.&nbsp;The View Menu</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch09s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;9.&nbsp;The Menu bar</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09s06.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e6243"></a>9.5.&nbsp;The View Menu</h2></div></div></div><p>This menu is used for actions that affect how the various 
-        panes are viewed.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6248"></a>9.5.1.&nbsp;Goto Diagram...</h3></div></div></div><p>This menu entry brings up a dialog box, describing all 
-          the diagrams in the current project under ArgoUML.</p><div class="figure-float"><div class="figure"><a name="fig.ref.menu_goto_diagram"></a><p class="title"><b>Figure&nbsp;9.16.&nbsp;The dialog for <tt class="literal">Goto 
-            Diagram...</tt>.</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/menu_goto_diagram.png" align="middle" alt="The dialog for Goto Diagram...."></div></div><p></p></div></div><p>The dialog box contains a table with three columns and 
-          one row for each diagram in the current project. A scroll bar 
-          gives access if the table is too long for the box. Double 
-          button&nbsp;1 click on any row will select that diagram in the 
-          editing pane. The three columns are as follows.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Type</tt>. Lists the type of 
-              diagram.</p></li><li><p><tt class="literal">Name</tt>. Lists the name given to 
-              the diagram.</p></li><li><p><tt class="literal">Description</tt>. Shows how many 
-              nodes and edges there are on the diagrams. A node is a 
-              &#8220;<span class="quote">2-D</span>&#8221; artifact and an edge is a connector 
-              artifact.</p></li></ul></div><p>This dialog box is not modal, which allows it to remain 
-          open while editing the model for easy navigation.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>The V0.20 implementation of ArgoUML does not 
-            inmediately update the dialog box with changes made to 
-            diagrams: change of name, addition of diagrams, deletion of 
-            diagrams.
-            </p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_find"></a>9.5.2.&nbsp;<span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/find.gif" align="middle"></span></span> 
-          Find...</h3></div></div></div><p>This menu entry brings up a non-modal dialog box for 
-          the ArgoUML search engine.</p><div class="figure-float"><div class="figure"><a name="fig.ref.menu_find"></a><p class="title"><b>Figure&nbsp;9.17.&nbsp;The dialog for <tt class="literal">Find...</tt>.</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/menu_find.png" align="middle" alt="The dialog for Find...."></div></div><p></p></div></div><p>At the top, the dialog box has four tabs labeled 
-          <tt class="literal">Name&nbsp;and&nbsp;Location</tt>, <tt class="literal">
-          Last&nbsp;Modified</tt>, <tt class="literal">Tagged&nbsp;Values</tt> and 
-          <tt class="literal">Constraints</tt>. Of these all but the first 
-          are grayed out in the V0.20 version of ArgoUML (because they 
-          are not imlemented yet), so the first tab is always 
-          selected.</p><p>The <tt class="literal">Name&nbsp;and&nbsp;Location</tt> specifies the 
-          search to be made. It contains the following:</p><div class="itemizedlist"><ul type="disc"><li><p>A text box labeled <tt class="literal">Element&nbsp;Name:</tt> 
-              specifies the name of the element (or artifact) to search 
-              for. Wild cards (<tt class="literal">*</tt>, <tt class="literal">
-              ?</tt>) may be used here. A drop down gives access 
-              to find expressions previously used.</p></li><li><p>A text box labeled <tt class="literal">In&nbsp;Diagram:</tt> 
-              specifies which diagrams are to be searched. Again wild 
-              cards may be used. Both these two text boxes have a 
-              default entry of <tt class="literal">*</tt>, i.e. match 
-              anything.</p></li><li><p>To the right of these two text boxes, a selector 
-              labeled <tt class="literal">Element&nbsp;Type:</tt> allows you to 
-              specify the UML metaclass for which you are 
-              searching.</p></li><li><p>A selector labeled <tt class="literal">Find in:</tt> 
-              allows the search to be made over the entire project (the 
-              default) or as a sub-search over the results of a 
-              previous search. When opened, a list of all the search 
-              result tabs appears.</p></li><li><p>Beneath these boxes is the button <tt class="literal">Clear 
-              Tabs</tt>. This clears the display of tabs with the 
-              results from previous searches (see below). This button 
-              is downlighted if there are no tabs but the <tt class="literal">
-              Help</tt> tab.</p></li><li><p>And finally, there is the button <tt class="literal">
-              Find</tt>. This causes the search specified in the 
-              text boxes and selectors above to be executed. The 
-              results are displayed in a tab taking up the lower two 
-              thirds of the page.</p></li></ul></div><p>The lower two thirds of the dialog comprises an initial 
-          tab (labeled <tt class="literal">Help</tt>) giving summary help, 
-          and further tabs displaying the results of searches. These 
-          search tabs are labeled with a summary of the search 
-          <span class="emphasis"><em>element</em></span>&nbsp;
-          <tt class="literal">in</tt>&nbsp;<span class="emphasis"><em>diagram</em></span> and are 
-          divided horizontally in two halves.</p><p>Button&nbsp;1 double clicking on these tabs removes the tab, 
-          and spawns a new window that contains the tab contents, i.e. 
-          the search results. This window can be moved and sized at 
-          will. This does not work for the help tab.</p><p>The top half is labeled <tt class="literal">Search 
-          Results:</tt> followed by a count of the number of items 
-          found. It comprises a table with one row for each element 
-          (artifact) and four columns. The width of the columns can be 
-          adjusted.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Type</tt>. Lists the type of element 
-              (artifact).</p></li><li><p><tt class="literal">Name</tt>. Lists the name given to 
-              the element (artifact).</p></li><li><p><tt class="literal">In Diagram</tt>. Where the artifact 
-              is visible on a diagram, this lists the name of the 
-              diagram, otherwise it shows <tt class="literal">N/A</tt>.</p></li><li><p><tt class="literal">Description</tt>. Contains a 
-              description of the element (artifact). In ArgoUML V0.18 
-              this seems to be restricted to the single entry <tt class="literal">
-              docs</tt>.</p></li></ul></div><p>Button&nbsp;1 click on any row will give more information on 
-          that artifact by showing related artifacts in the bottom half 
-          (see below). Double click on any row describing an artifact 
-          on a diagram and that item and diagram will be 
-          selected.</p><p>The bottom half of the tab is a table labeled <tt class="literal">
-          Related&nbsp;Elements:</tt> and is a table with the same 
-          columns as the top half. When an element (artifact) has been 
-          selected in the top half, this table shows the details of any 
-          related elements.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Enlarging the dialog vertically shows that the 
-            "Related Items" part changes in size, but not the 
-            Search results part. However, between them is a divider 
-            line and when hovering over this line, the mouse pointer 
-            changes into a sizing icon, and the border between these 2 
-            areas can be moved up or down to redistribute the space in 
-            the window.</p></td></tr></table></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This dialog box is not modal, which allows it to 
-            remain open while editing the model for easy navigation. 
-            But the V0.20 implementation of ArgoUML does not inmediately 
-            update the dialog box with changes made to the found 
-            artifacts: change of artifact name, change of diagram name. 
-            Deletion of a diagram does not stop the possibility to 
-            navigate to it.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_zoom"></a>9.5.3.&nbsp;Zoom</h3></div></div></div><p>This entry brings up a sub-entry, which allows scaling 
-          the view of all diagrams to a factor of its normal size. This 
-          setting is not saved persistently.</p><p>The sub-menu items that can be selected are:</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Zoom Out</tt>. Shortcut (Ctrl-Minus). 
-              Gives more overview over the drawing.</p></li><li><p><tt class="literal">Zoom Reset</tt>. Returns to the 
-              default zoom ratio (i.e. 100%).</p></li><li><p><tt class="literal">Zoom In</tt>. Shortcut (Ctrl-=). 
-              Makes the items on the drawings bigger.</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_adjust_grid"></a>9.5.4.&nbsp;Adjust Grid</h3></div></div></div><p>This cycles the grid representation on the screen 
-          through the following sequence:</p><div class="itemizedlist"><ul type="disc"><li><p>dots at 16 pixel spacing (the default);</p></li><li><p>dots at 32 pixel spacing;</p></li><li><p>no grid of any form;</p></li><li><p>full grid at 16 pixel spacing; and</p></li><li><p>full grid at 8 pixel spacing.</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_grid_snap"></a>9.5.5.&nbsp;Adjust Grid Snap</h3></div></div></div><p>This cycles the spacing of grid snapping through the 
-          following sequence:</p><div class="itemizedlist"><ul type="disc"><li><p>snap at 8 pixel spacing (the default);</p></li><li><p>snap at 16 pixel spacing;</p></li><li><p>snap at 32 pixel spacing; and</p></li><li><p>snap at 4 pixel spacing.</p></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>There is no option to turn off snap to grid 
-            altogether</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the V0.20 version of ArgoUML this is not actually 
-            a true snap to grid. It just defines the increments by 
-            which artifacts are moved around. Thus if an item has an X 
-            coordinate of 4 and Grid Snap is set to 8, moving will take 
-            it to X coordinates of 12, 20, 28 etc, 
-            <span class="emphasis"><em>not</em></span> 8, 16, 24 etc</p><p>If you wish to align on true grid snap boundaries, 
-            you can use the <tt class="literal">
-            Arrange&nbsp;&gt;&nbsp;Align&nbsp;To&nbsp;Grid</tt> menu (see 
-            <a href="ch09s07.html#s2.ref.menu_align" title="9.7.1.&nbsp;Align">Section&nbsp;9.7.1, &#8220;Align&#8221;</a>).</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6517"></a>9.5.6.&nbsp;Page Breaks</h3></div></div></div><p>This toggles whether page breaks are shown on the 
-          diagram (as white dotted lines).</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This menu-item is incorrectly implemented in the 
-            V0.20 version of ArgoUML, since it should be a tick box 
-            toggle.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_notation"></a>9.5.7.&nbsp;Notation</h3></div></div></div><p>This sub-menu presents a radio button selection for 
-          notation, i.e. the language in which all textual adornments 
-          are shown on the diagrams. See also 
-          <a href="ch09s04.html#s3.ref.menu_settings_notations" title="9.4.4.4.&nbsp;Notation Tab">Section&nbsp;9.4.4.4, &#8220;Notation Tab&#8221;</a>).</p><p>This feature defines the user's default notation. 
-          </p><p>There are 2 ways to set the notation for the 
-          diagrams:</p><div class="itemizedlist"><ul type="disc"><li><p>In the settings dialog, by choosing "Use only 
-              UML notation" which overrides the other method.</p></li><li><p>In the View menu, item Notation. This determines  
-              how all textual adornments of figures on all diagrams are shown.
-              </p></li></ul></div><p>The following 2 notations are build in ArgoUML:</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/uml_notation.gif" align="middle"></span></span> 
-              <tt class="literal">UML 1.4</tt>. Uses UML notation as the 
-              default notation for every modelelement on any diagram.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/java_notation.gif" align="middle"></span></span> 
-              <tt class="literal">Java</tt>. Uses Java notation as the 
-              default notation for every modelelement on any diagram.</p></li></ul></div><p>The following choices are only available if the 
-          corresponding plugin languages are installed.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Cpp</tt>.</p></li><li><p><tt class="literal">CSharp</tt>.</p></li><li><p><tt class="literal">PHP</tt>.</p></li></ul></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch09s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch09s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">9.4.&nbsp;The Edit Menu&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;9.6.&nbsp;The Create Menu</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

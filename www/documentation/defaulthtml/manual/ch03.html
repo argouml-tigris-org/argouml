@@ -1,23 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Chapter&nbsp;3.&nbsp;Requirements Capture</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="pt01.html" title="Part&nbsp;I.&nbsp;Tutorial"><link rel="prev" href="ch02s06.html" title="2.6.&nbsp;The Case Study (To be written)"><link rel="next" href="ch03s02.html" title="3.2.&nbsp;The Requirements Capture Process"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;3.&nbsp;Requirements Capture</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s06.html">Prev</a>&nbsp;</td><th width="60%" align="center">Part&nbsp;I.&nbsp;Tutorial</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch03s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="ch.tut.reqs"></a>Chapter&nbsp;3.&nbsp;Requirements Capture</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="ch03.html#d0e1944">3.1. Introduction</a></span></dt><dt><span class="sect1"><a href="ch03s02.html">3.2. The Requirements Capture Process</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s02.html#d0e2050">3.2.1. Process Steps</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch03s03.html">3.3. Output of the Requirements Capture Process</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s03.html#s2.tut.vision_document">3.3.1. Vision Document</a></span></dt><dt><span class="sect2"><a href="ch03s03.html#d0e2192">3.3.2. Use Case Diagram</a></span></dt><dt><span class="sect2"><a href="ch03s03.html#d0e2480">3.3.3. The Use Case Specification</a></span></dt><dt><span class="sect2"><a href="ch03s03.html#d0e2759">3.3.4. Supplementary Requirement Specification</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch03s04.html">3.4. Using Use Cases in ArgoUML</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s04.html#d0e2829">3.4.1. Actors</a></span></dt><dt><span class="sect2"><a href="ch03s04.html#d0e2869">3.4.2. Use Cases</a></span></dt><dt><span class="sect2"><a href="ch03s04.html#d0e2980">3.4.3. Associations</a></span></dt><dt><span class="sect2"><a href="ch03s04.html#d0e3103">3.4.4. Hierarchical Use Cases</a></span></dt><dt><span class="sect2"><a href="ch03s04.html#d0e3234">3.4.5. Stereotypes</a></span></dt><dt><span class="sect2"><a href="ch03s04.html#d0e3266">3.4.6. Documentation</a></span></dt><dt><span class="sect2"><a href="ch03s04.html#d0e3295">3.4.7. System Boundary Box</a></span></dt></dl></dd><dt><span class="sect1"><a href="ch03s05.html">3.5. Case Study</a></span></dt><dd><dl><dt><span class="sect2"><a href="ch03s05.html#d0e3327">3.5.1. Vision Document</a></span></dt><dt><span class="sect2"><a href="ch03s05.html#d0e3433">3.5.2. Identifying Actors and Use Cases</a></span></dt><dt><span class="sect2"><a href="ch03s05.html#d0e3454">3.5.3. Associations (To be written)</a></span></dt><dt><span class="sect2"><a href="ch03s05.html#d0e3459">3.5.4. Advanced Diagram Features (To be written)</a></span></dt><dt><span class="sect2"><a href="ch03s05.html#d0e3464">3.5.5. Use Case Specifications (To be written)</a></span></dt><dt><span class="sect2"><a href="ch03s05.html#d0e3469">3.5.6. Supplementary Requirements Specification (To be 
-          written)</a></span></dt></dl></dd></dl></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e1944"></a>3.1.&nbsp;Introduction</h2></div></div></div><a class="indexterm" name="d0e1947"></a><p>Requirements capture is the process of identifying what 
-        the &#8220;<span class="quote">customer</span>&#8221; wants from the proposed 
-        system.</p><p>The key at this stage is that we are in the problem 
-        domain. At this stage we must describe everything from the 
-        &#8220;<span class="quote">customer</span>&#8221; perspective and in the language of the 
-        &#8220;<span class="quote">customer</span>&#8221;.</p><p>The biggest risk we have in requirements capture is to 
-        start thinking in terms of possible solutions. That must wait 
-        until the <span class="emphasis"><em>Analysis Phase</em></span> (see 
-        <a href="ch04.html" title="Chapter&nbsp;4.&nbsp;Analysis">Chapter&nbsp;4, <i>Analysis</i></a>). One of the steps of the 
-        Analysis Phase will be to take the output of the Requirements 
-        Phase and recast it in the language of a deemed solution.</p><p>Remember we are using both a 
-        <span class="emphasis"><em>incremental</em></span>, and an 
-        <span class="emphasis"><em>iterative</em></span> process.</p><p>We may well come back to the requirements process again 
-        as we break down the problem into smaller chunks, each of which 
-        must have its requirements captured.</p><p>We will certainly come back through the requirements 
-        phase on each iteration as we seek to define the requirements 
-        of more and more of the system</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The only part of the requirements notation specified by 
-          the UML standard is the use case diagram. The remainder is 
-          process specific. The process described in this chapter draws 
-          heavily on the Rational Unified Process.</p></td></tr></table></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s06.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch03s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">2.6.&nbsp;The Case Study (To be written)&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;3.2.&nbsp;The Requirements Capture Process</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

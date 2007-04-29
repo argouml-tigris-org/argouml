@@ -1,84 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Preface</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="index.html" title="ArgoUML User Manual"><link rel="prev" href="index.html" title="ArgoUML User Manual"><link rel="next" href="ch01.html" title="Chapter&nbsp;1.&nbsp;Introduction"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Preface</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="index.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch01.html">Next</a></td></tr></table><hr></div><div class="preface" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="d0e101"></a>Preface</h2></div></div></div><p>Software design is a cognitively challenging task. Designers 
-    must manually enter designs, but the primary difficulty is 
-    decision-making rather than data-entry. If designers improved their 
-    decision-making capabilities, it would result in better 
-    designs.</p><p>Current CASE tools provide automation and graphical user 
-    interfaces that reduce the manual work of entering a design and 
-    transforming a design into code. They aid designers in 
-    decision-making mainly by providing visualization of design 
-    diagrams and simple syntactic checks. Also many CASE tools provide 
-    substantial benefits in the area of version control and concurrent 
-    design mechanisms. One area of design support that has been not 
-    been well supported is analysis of design decisions.</p><p>Current CASE tools are usable in that they provide a GUI that 
-    allows designers to access all the features provided by the tool. 
-    And they support the design process in that they allow the designer 
-    to enter diagrams in the style of popular design methodologies. But 
-    they typically do not provide process support to guide the designer 
-    through the design task. Instead, designers typically start with a 
-    blank page and must remember to cover every aspect of the 
-    design.</p><p>
-
-      ArgoUML is a domain-oriented design environment that provides 
-      cognitive support of object-oriented design. ArgoUML provides 
-      some of the same automation features of a commercial CASE tool, 
-      but it focuses on features that support the cognitive needs of 
-      designers. These cognitive needs are described by three cognitive 
-      theories:
-      </p><div class="orderedlist"><ol type="1"><li><p>reflection-in-action;</p></li><li><p>opportunistic design; and</p></li><li><p>comprehension and problem solving.</p></li></ol></div><p>
-
-    </p><p>ArgoUML is based directly on the UML 1.4 specification. The
-    core model repository is an implementation of the Java Metadata
-    Interface (JMI) which directly supports MOF and uses the
-    machine readable version of the UML 1.4 specification provided
-    by the OMG.</p><p>Furthermore, it is our goal to provide comprehensive support 
-    for OCL (the Object Constraint Language) and XMI (the XML Model 
-    Interchange format), which many other tools do not support.</p><p>ArgoUML was originally developed by a small group of people 
-    as a research project. ArgoUML has many features that make it 
-    special, but it does not implement all the features that commercial 
-    CASE tools provide.</p><p>The current V0.20 release of ArgoUML implements all the 
-    diagram types of the 
-    
-    <a href="http://www.omg.org/cgi-bin/doc?formal/01-09-67" target="_top">UML&nbsp;1.4 
-    standard</a> (versions of ArgoUML prior to 0.20 implemented the
-    <a href="http://www.omg.org/cgi-bin/doc?formal/00-03-01" target="_top">UML&nbsp;1.3 
-    standard</a>). It is written in Java and runs on every computer 
-    which provides a Java 2 platform of Java 1.4 or newer. It uses the 
-    open file formats 
-    <a href="http://www.omg.org/cgi-bin/doc?formal/02-01-01" target="_top">
-    XMI</a> (XML Metadata Interchange format) (for model 
-    information) and <a href="http://www.w3.org/TR/1998/NOTE-PGML" target="_top">
-    PGML</a> (Portable Graphics Markup Language) (for graph 
-    information) for storage. When ArgoUML implements UML 2.0, PGML
-    will be replaced by the UML Diagram Interchange specification.</p><p>This manual is the cumulative work of several people and has 
-    been evolving over several years. Connected to the release 0.10 of 
-    ArgoUML, Jeremy Bennett, wrote a lot of the new material that was 
-    added to the earlier versions by Alejandro Ramirez, Philippe 
-    Vanpeperstraete and Andreas Rueckert. He also added things from 
-    some of the other documents namely the developers cookbook by 
-    Markus Klink and Linus Tolke, the Quick Guide by Kunle Odutola, and 
-    the FAQ by Dennis Daniels. Connected to the release 0.14 changes 
-    were made by Linus Tolke, and by Michiel van der Wulp. These 
-    changes were mostly to adopt the manual to the new functions and 
-    appearance of ArgoUML version 0.14, and introduction of the index. 
-    The users and developers that have contributed by providing 
-    valuable input, such as review comments or observations while 
-    reading and using this manual are too many to name.</p><p>ArgoUML is available for free and can be used in commercial 
-    settings. For terms of use, see the license agreement presented 
-    when you download ArgoUML. We are providing the source code for 
-    ArgoUML for you to review, customize to your needs, and improve. 
-    Over time, we hope that ArgoUML will evolve into a powerful and 
-    useful tool for everyone to use.</p><p>This User Manual is aimed at the working designer, who wishes 
-    to make use of ArgoUML. The manual is presently written assuming 
-    familiarity with UML, but eventually it will support those new to 
-    UML.</p><p>The manual is written in DocBook/XML and available as both 
-    HTML and PDF.</p><p>The ArgoUML project welcomes those who want to get more 
-    involved. Look at the <a href="http://argouml.tigris.org/" target="_top">
-    project website</a> to find out more.</p><p>Tell us what you think about this User Manual! Your comments 
-    will help us improve things. Email your thoughts to the 
-    <a href="mailto:users@argouml.tigris.org" target="_top">ArgoUML Users Mailing 
-    List</a> or if you have found errors or omissions, enter a 
-    defect in <a href="http://argouml.tigris.org/project_bugs.html" target="_top">
-    Issuezilla</a> the bug tracking tool for the ArgoUML 
-    project.</p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="index.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch01.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">ArgoUML User Manual&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;1.&nbsp;Introduction</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

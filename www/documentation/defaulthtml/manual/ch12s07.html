@@ -1,189 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>12.7.&nbsp;Constraints Tab</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch12.html" title="Chapter&nbsp;12.&nbsp;The Details Pane"><link rel="prev" href="ch12s06.html" title="12.6.&nbsp;Source Tab"><link rel="next" href="ch12s08.html" title="12.8.&nbsp;Stereotype Tab"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">12.7.&nbsp;Constraints Tab</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch12s06.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;12.&nbsp;The Details Pane</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch12s08.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.details_constraints"></a>12.7.&nbsp;Constraints Tab</h2></div></div></div><p>Constraints are one of the extension mechanisms provided 
-        for UML. ArgoUML is equipped with a powerful constraint editor 
-        based on the <span class="emphasis"><em>Object Constraint Language 
-        (OCL)</em></span> defined in the UML&nbsp;1.4 standard.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The OCL editor implementation for ArgoUML V0.20 
-          doesn't support OCL constraints for elements other than 
-          Classes and Features.</p><p>This is something of a general restriction of OCL. 
-          Although the UML specification claims that there may be a 
-          constraint for every model element, the OCL specification 
-          only defines classes/interfaces and operations as allowable 
-          contexts.</p><p>It is not before OCL 2.0 that a more general definition 
-          of allowable contexts is introduced. The key issue is that 
-          for each context definition you need to define what is the 
-          contextualClassifier, i.e., the classifier that will be 
-          associated with the self keyword. The creators of the OCL 
-          specification claim that this is not an issue for the OCL 
-          specification, but rather for UML or some integration task 
-          force. Conversely, it seems that the UML specification people 
-          seem to expect this to be defined in the OCL specification 
-          (which is why we did a first step in that direction in OCL 
-          2.0).</p><p>So, to cut a long story short, it appeared that the 
-          simplest solution for ArgoUML at the moment would be to 
-          enable the OCL property panel only for those model elements 
-          for which there actually exists a definition of the 
-          contextualClassifier in OCL 1.4. These are (s. above) 
-          Class/Interface and Feature.</p></td></tr></table></div><p>The standard pre-defines a small number of constraints 
-        (for example the <tt class="literal">xor</tt> constraint over a set 
-        of associations indicating that only one may be manifest for 
-        any particular instance).</p><p>The standard also envisages a number of circumstances 
-        where general purpose constraints may be useful:</p><div class="itemizedlist"><ul type="disc"><li><p>To specify invariants on classes and types in the 
-            class model;</p></li><li><p>To specify type invariants for stereotypes;</p></li><li><p>To describe pre-conditions and post-conditions on operations 
-            and methods;</p></li><li><p>To describe guards;</p></li><li><p>As a navigation language; and</p></li><li><p>To specify constraints on operations.</p></li></ul></div><p><a href="ch12s07.html#fig.ref.details_constraints" title="Figure&nbsp;12.14.&nbsp;A typical Constraints tab on the &#xA;          details pane">Figure&nbsp;12.14, &#8220;A typical <tt class="literal">Constraints</tt> tab on the 
-          details pane&#8221;</a> shows a 
-        typical constraint tab for a artifact in ArgoUML (in this case 
-        a class).</p><div class="figure-float"><div class="figure"><a name="fig.ref.details_constraints"></a><p class="title"><b>Figure&nbsp;12.14.&nbsp;A typical <tt class="literal">Constraints</tt> tab on the 
-          details pane</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_constraints.png" align="middle" alt="A typical Constraints tab on the details pane"></div></div><p></p></div></div><p>Along the top of the tab are a series of icons.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/new_constraint.gif" align="middle"></span></span> 
-            <tt class="literal">New Constraint</tt>. This creates a new 
-            constraint and launches the constraint editor in the 
-            <tt class="literal">Constraints tab</tt> for that new constraint 
-            (see <a href="ch12s07.html#s2.ref.details_constraint_editor" title="12.7.1.&nbsp;The Constraint Editor">Section&nbsp;12.7.1, &#8220;The Constraint Editor&#8221;</a>). 
-            The new constraint is created with a context declaration 
-            for the currently selected artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>It seems logical, that when a new constraint is 
-              created, it needs to be edited. But ArgoUML V0.20 fails 
-              to start the OCL editor upon creation; you have to do 
-              this by primo selecting the new constraint first, secundo 
-              rename it, and tertio press the <tt class="literal">Edit 
-              Constraint</tt> button. It is essental for 
-              successfully creating a constraint to follow these 4 
-              steps accurately: create, select, rename, edit. The step 
-              to rename is necessary, because the validity check will 
-              refuse the constraint if its name differs from the name 
-              mentioned in the constraint text. For the same reason, 
-              renaming a constraint afterwards is impossible.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/delete_constraint.gif" align="middle"></span></span> 
-            <tt class="literal">Delete Constraint</tt>. The constraint 
-            currently selected in the <tt class="literal">
-            Constraint&nbsp;Name</tt> box (see below) is deleted.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In V0.20 of ArgoUML this button is not downlighted 
-              when it is not functional, i.e. when no constraint is 
-              selected.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/edit_constraint.gif" align="middle"></span></span> 
-            <tt class="literal">Edit Constraint</tt>. This launches the 
-            constraint editor in the <tt class="literal">Constraints</tt> tab 
-            (see <a href="ch12s07.html#s2.ref.details_constraint_editor" title="12.7.1.&nbsp;The Constraint Editor">Section&nbsp;12.7.1, &#8220;The Constraint Editor&#8221;</a>). 
-            The editor is invoked on the constraint currently selected 
-            in the <tt class="literal">Constraint&nbsp;Name</tt> box.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In V0.18 of ArgoUML this button is not downlighted 
-              when it is not functional, i.e. when no constraint is 
-              selected.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/configure_constraints.gif" align="middle"></span></span> 
-            <tt class="literal">Configure Constraint Editor</tt>. This a 
-            dialog to configure options in the constraint editor (see 
-            <a href="ch12s07.html#fig.ref.details_constraints_dialog" title="Figure&nbsp;12.15.&nbsp;Dialog box for configuring constraints">Figure&nbsp;12.15, &#8220;Dialog box for configuring constraints&#8221;</a>
-            ).</p><div class="figure-float"><div class="figure"><a name="fig.ref.details_constraints_dialog"></a><p class="title"><b>Figure&nbsp;12.15.&nbsp;Dialog box for configuring constraints</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_constraints_dialog.png" align="middle" alt="Dialog box for configuring constraints"></div></div><p></p></div></div><p>The dialog box has a check box for the following 
-            option.</p><div class="itemizedlist"><ul type="circle"><li><p><tt class="literal">Check type conformance of OCL 
-                constraints</tt>. OCL is strictly typed. At the 
-                early stages of design it may be helpful to disable 
-                type checking, rather than follow through all the 
-                detailed specification needed to get type 
-                consistency.</p></li></ul></div><p>At the bottom are two buttons, labeled <tt class="literal">
-            OK</tt> (to accept the option changes) and <tt class="literal">
-            Cancel</tt> (to discard the changes).</p></li></ul></div><p>The main body of the constraints tab comprises two boxes, 
-        a smaller to the left and a larger one to the right. The two 
-        are separated by two small arrow buttons which control the size 
-        of the boxes.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/constraints_left.gif" align="middle"></span></span> 
-            <tt class="literal">Shrink Left</tt>. Button&nbsp;1 click on this icon 
-            shrinks the box on the left. Its effect may be reversed by 
-            use of the <tt class="literal">Shrink&nbsp;Right</tt> button (see 
-            below).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/constraints_right.gif" align="middle"></span></span> 
-            <tt class="literal">Shrink Right</tt>. Button&nbsp;1 click on this 
-            icon shrinks the box on the right. Its effect may be 
-            reversed by use of the <tt class="literal">Shrink&nbsp;Left</tt> 
-            button (see above).</p></li></ul></div><p>Finer control can be achieved by using button&nbsp;1 motion to 
-        drag the dividing bar to left and right.</p><p>The box on the left is titled <tt class="literal">Constraint 
-        Name</tt> and lists all the constraints (if any) so far 
-        defined for the selected artifact. A constraint may be selected 
-        by button&nbsp;1 click.</p><p>The box on the right is labeled <tt class="literal">
-        Preview</tt> and contains the text of the constraint. This 
-        box only shows some contents if a constraint is selected. Where 
-        a constraint is too large for the box, a scroll bar is provided 
-        to the right.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.details_constraint_editor"></a>12.7.1.&nbsp;The Constraint Editor</h3></div></div></div><p>This is invoked through the use of the <tt class="literal">
-          Edit&nbsp;Constraint</tt> button on the main <tt class="literal">
-          Constraints</tt> tab. The constraint editor takes up the 
-          whole tab (see 
-          <a href="ch12s07.html#fig.ref.details_constraint_editor" title="Figure&nbsp;12.16.&nbsp;Dialog box for configuring constraints">Figure&nbsp;12.16, &#8220;Dialog box for configuring constraints&#8221;</a>).</p><div class="figure-float"><div class="figure"><a name="fig.ref.details_constraint_editor"></a><p class="title"><b>Figure&nbsp;12.16.&nbsp;Dialog box for configuring constraints</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_constraint_editor.png" align="middle" alt="Dialog box for configuring constraints"></div></div><p></p></div></div><p>Along the top of the tab are a series of icons.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/cancel_edit_constraint.gif" align="middle"></span></span> 
-              <tt class="literal">Cancel Edit Constraint</tt>. This exits the 
-              constraint editor without saving any changes and returns 
-              to the main <tt class="literal">Constraints</tt> tab.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/check_constraint.gif" align="middle"></span></span> 
-              <tt class="literal">Check OCL Syntax</tt>. This button invokes 
-              a full syntax check of the OCL written in the editor. If 
-              the syntax is valid, the constraint is saved, and control 
-              returns to the main <tt class="literal">Constraints</tt> tab. 
-              If the syntax is not valid, a dialog box explains the 
-              problem.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>Whether type checking is included should be 
-                configurable with the <tt class="literal">
-                Configure&nbsp;Constraint&nbsp;Editor</tt> button (see 
-                below). But ArgoUML V0.20 does always check, and 
-                refuses to accept any constraint with the slightest 
-                error.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/configure_constraints.gif" align="middle"></span></span> 
-              <tt class="literal">Configure Constraint Editor</tt>. This a 
-              dialog to configure options in the constraint editor. It 
-              is also available in the main <tt class="literal">
-              Constraints</tt> tab and is discussed in detail 
-              there (see <a href="ch12s07.html" title="12.7.&nbsp;Constraints Tab">Section&nbsp;12.7, &#8220;Constraints Tab&#8221;</a>
-              ).</p></li></ul></div><p>To the right of the toolbar is a check box labeled 
-          <tt class="literal">Syntax Assistant</tt> (unchecked by default), 
-          which will enable the syntax assistant in the constraint 
-          editor.</p><p>If the syntax assistant is enabled, six drop down menus 
-          are provided in a row immediately below the toolbar. These 
-          provide standard templates for OCL that, when selected, will 
-          be inserted into the constraint being edited.</p><p>The syntax assistant can be made floating in a seperate 
-          window by button&nbsp;1 motion on the small divider area to the 
-          left of the row of drop-down menus.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">General</tt>. General OCL 
-              constructors. Entries: <tt class="literal">inv</tt> (inserts an 
-              invariant); <tt class="literal">pre</tt> (inserts a 
-              pre-condition); <tt class="literal">post</tt> (inserts a 
-              post-condition); <tt class="literal">self</tt> (inserts a 
-              self-reference); <tt class="literal">@pre</tt> (inserts a 
-              reference to a value at the start of an operation); and 
-              <tt class="literal">result</tt> (inserts a reference to a 
-              previous result).</p></li><li><p><tt class="literal">Basic Operators</tt>. Relational 
-              operators and parentheses. Entries: <tt class="literal">=</tt>; 
-              <tt class="literal">&lt;&gt;</tt>; <tt class="literal">&lt;</tt>; 
-              <tt class="literal">&gt;</tt>; <tt class="literal">&lt;=</tt>; 
-              <tt class="literal">&gt;=</tt>; and <tt class="literal">
-              ()</tt>.</p></li><li><p><tt class="literal">Numbers</tt>. Arithmetic operators 
-              and functions. Entries: <tt class="literal">+</tt>; <tt class="literal">
-              -</tt>; <tt class="literal">*</tt>; <tt class="literal">/</tt>; 
-              <tt class="literal">mod</tt>; <tt class="literal">div</tt>; <tt class="literal">
-              abs</tt>; <tt class="literal">max</tt>; <tt class="literal">
-              min</tt>; <tt class="literal">round</tt>; and <tt class="literal">
-              floor</tt>.</p></li><li><p><tt class="literal">Strings</tt>. String functions. 
-              Entries: <tt class="literal">concat</tt>; <tt class="literal">
-              size</tt>; <tt class="literal">toLower</tt>; <tt class="literal">
-              toUpper</tt>; and <tt class="literal">
-              substring</tt>.</p></li><li><p><tt class="literal">Booleans</tt>. Logical functions. 
-              Entries: <tt class="literal">or</tt>; <tt class="literal">and</tt>; 
-              <tt class="literal">xor</tt>; <tt class="literal">not</tt>; <tt class="literal">
-              implies</tt>; and <tt class="literal">
-              if&nbsp;then&nbsp;else</tt>.</p></li><li><p><tt class="literal">Collections</tt>. Operators and 
-              functions on collections&#8212;bags, sets and sequences. The 
-              large number of functions are organized into 
-              sub-groups.</p><div class="itemizedlist"><ul type="circle"><li><p><tt class="literal">General</tt>. Functions that 
-                  apply to all types of collection. Entries: <tt class="literal">
-                  Collection&nbsp;{}</tt> (insert a new collection); 
-                  <tt class="literal">Set&nbsp;{}</tt> (insert a a new set); 
-                  <tt class="literal">Bag&nbsp;{}</tt> (insert a new bag); 
-                  <tt class="literal">Sequence&nbsp;{}</tt> (insert a new 
-                  sequence); <tt class="literal">size</tt>; <tt class="literal">
-                  count</tt>; <tt class="literal">isEmpty</tt>; <tt class="literal">
-                  notEmpty</tt>; <tt class="literal">includes</tt>; 
-                  <tt class="literal">includesAll</tt>; <tt class="literal">
-                  iterate</tt>; <tt class="literal">exists</tt>; 
-                  <tt class="literal">forAll</tt>; <tt class="literal">
-                  collect</tt>; <tt class="literal">select</tt>; 
-                  <tt class="literal">reject</tt>; <tt class="literal">union</tt>; 
-                  <tt class="literal">intersection</tt>; <tt class="literal">
-                  including</tt>; <tt class="literal">excluding</tt>; 
-                  and <tt class="literal">sum</tt>.</p></li><li><p><tt class="literal">Sets</tt>. Operators and 
-                  functions that apply only to sets. Entries: <tt class="literal">
-                  -</tt> (set difference); and <tt class="literal">
-                  symmetricDifference</tt>.</p></li><li><p><tt class="literal">Sequences</tt>. Functions that 
-                  apply to sequences. Entries: <tt class="literal">
-                  first</tt>; <tt class="literal">last</tt>; <tt class="literal">
-                  at</tt>; <tt class="literal">append</tt>; <tt class="literal">
-                  prepend</tt>; and <tt class="literal">
-                  subSequence</tt>.</p></li></ul></div></li></ul></div><p>The remainder of the tab comprises a writable text area 
-          containing the text to be edited. The mouse buttons have 
-          their standard behavior within an editable text area (see 
-          <a href="ch07s02.html" title="7.2.&nbsp;General Mouse Behavior in ArgoUML">Section&nbsp;7.2, &#8220;General Mouse Behavior in ArgoUML&#8221;</a>).</p><p>In addition, cut, copy and paste operations may be 
-          invoked through the keyboard shortcuts <tt class="literal">
-          Ctrl-X</tt>, <tt class="literal">Ctrl-C</tt> and <tt class="literal">
-          Ctrl-V</tt> respectively.</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch12s06.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch12.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch12s08.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">12.6.&nbsp;Source Tab&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;12.8.&nbsp;Stereotype Tab</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

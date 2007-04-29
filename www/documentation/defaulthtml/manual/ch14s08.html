@@ -1,86 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>14.8.&nbsp;Design Patterns</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch14.html" title="Chapter&nbsp;14.&nbsp;The Critics"><link rel="prev" href="ch14s07.html" title="14.7.&nbsp;State Machines"><link rel="next" href="ch14s09.html" title="14.9.&nbsp;Relationships"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">14.8.&nbsp;Design Patterns</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;14.&nbsp;The Critics</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch14s09.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.design_issues_design_patterns"></a>14.8.&nbsp;Design Patterns</h2></div></div></div><p>Critics concerning design pattern usage in ArgoUML.</p><p>These relate to the use of patterns as described by the 
-        so called &#8220;<span class="quote">Gang of Four</span>&#8221;. ArgoUML also uses this 
-        category for critics associated with deployment and sequence 
-        diagrams. The current version of ArgoUML has the following 
-        critics in this category.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrConsiderSingleton"></a>14.8.1.&nbsp;Consider using Singleton Pattern for 
-          &lt;class&gt;</h3></div></div></div><p>The <span class="emphasis"><em>class</em></span> has no non-static 
-          attributes nor any associations that are navigable away from 
-          instances of this class. This means that every instance of 
-          this class will be identical to every other instance, since 
-          there will be nothing about the instances that can 
-          differentiate them.</p><p>Under these circumstances you should consider making 
-          explicit that you have exactly one instance of this class, by 
-          using the singleton Pattern. Using the singleton pattern can 
-          save time and memory space. Within ArgoUML this can be done 
-          by using the &laquo;singleton&raquo; stereotype on this class.</p><p>If it is not your intent to have a single instance, you 
-          should define instance variables (i.e. non-static attributes) 
-          and/or outgoing associations that will represent differences 
-          bewteen instances.</p><p>Having specified <span class="emphasis"><em>class</em></span> as a 
-          singleton, you need to define the class so there can only be 
-          a single instance. This will complete the information 
-          representation part of your design. To achieve this you need 
-          to do the following.</p><div class="orderedlist"><ol type="1"><li><p>You must define a static attribute (a class 
-              variable) holding the instance. This must therefore have 
-              <span class="emphasis"><em>class</em></span> as its type.</p></li><li><p>You must have only private constructors so that new 
-              instances cannot be made by other code. The creation of 
-              the single instance could be through a suitable helper 
-              operation, which invokes this private constructor just 
-              once.</p></li><li><p>You must have at least one constructor to override 
-              the default constructor, so that the default constructor 
-              is not used to create multiple instances.</p></li></ol></div><p>For the definition of a constructor under the UML 1.4 
-          standard, and extensions to that definition accepted by 
-          ArgoUML see <a href="ch14s05.html#critics.CrConstructorNeeded" title="14.5.3.&nbsp;Add a Constructor to a Class">Section&nbsp;14.5.3, &#8220;Add a Constructor to a Class&#8221;</a>
-          .</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrSingletonViolated"></a>14.8.2.&nbsp;Singleton Stereotype Violated in &lt;class&gt;</h3></div></div></div><p>This class is marked with the &laquo;singleton&raquo; stereotype, 
-          but it does not satisfy the constraints imposed on singletons 
-          (ArgoUML will also accept &laquo;Singleton&raquo; stereotype as defining 
-          a singleton). A singleton class can have at most one 
-          instance. This means that the class must meet the design 
-          criteria for a singleton (see 
-          <a href="ch14s08.html#critics.CrConsiderSingleton" title="14.8.1.&nbsp;Consider using Singleton Pattern for &#xA;          <class&gt;">Section&nbsp;14.8.1, &#8220;Consider using Singleton Pattern for 
-          &lt;class&gt;&#8221;</a>).</p><p>Whenever you mark a class with a stereotype, the class 
-          should satisfy all constraints of the stereotype. This is an 
-          important part of making a self-consistent and understangle 
-          design. Using the singleton pattern can save time and memory 
-          space.</p><p>If you no longer want this class to be a singleton, 
-          remove the &laquo;singleton&raquo; stereotype by clicking on the class 
-          and selecting the blank selection on the stereotype drop-down 
-          within the properties tab.</p><p>To apply the singleton pattern you should follow the 
-          directions in <a href="ch14s08.html#critics.CrConsiderSingleton" title="14.8.1.&nbsp;Consider using Singleton Pattern for &#xA;          <class&gt;">Section&nbsp;14.8.1, &#8220;Consider using Singleton Pattern for 
-          &lt;class&gt;&#8221;</a>
-          .</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrNodeInsideElement"></a>14.8.3.&nbsp;Nodes normally have no enclosers</h3></div></div></div><p>A suggestion that nodes should not be drawn inside 
-          other artifacts on the deployment diagram, since they 
-          represent an autonomous physical object.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrNodeInstanceInsideElement"></a>14.8.4.&nbsp;NodeInstances normally have no enclosers</h3></div></div></div><p>A suggestion that node instances should not be drawn 
-          inside other artifacts on the deployment diagram, since they 
-          represent an autonomous physical object.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrComponentWithoutNode"></a>14.8.5.&nbsp;Components normally are inside nodes</h3></div></div></div><p>A suggestion that components represent the logical 
-          entities within physical nodes, and so should be drawn within 
-          a node, where nodes are shown on the deployment 
-          diagram.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrCompInstanceWithoutNode"></a>14.8.6.&nbsp;ComponentInstances normally are inside nodes</h3></div></div></div><p>A suggestion that component instances represent the 
-          logical entities within physical nodes, and so should be 
-          drawn within a node instance, where node instances are shown 
-          on the deployment diagram.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrClassWithoutComponent"></a>14.8.7.&nbsp;Classes normally are inside components</h3></div></div></div><p>A suggestion that classes, as artifacts making up 
-          components, should be drawn within components on the 
-          deployment diagram.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrInterfaceWithoutComponent"></a>14.8.8.&nbsp;Interfaces normally are inside components</h3></div></div></div><p>A suggestion that interfaces, as artifacts making up 
-          components, should be drawn within components on the 
-          deployment diagram.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrObjectWithoutComponent"></a>14.8.9.&nbsp;Objects normally are inside components</h3></div></div></div><p>A suggestion that objects, as instances of artifacts 
-          making up components, should be drawn within components or 
-          component instances on the deployment diagram.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrWrongLinkEnds"></a>14.8.10.&nbsp;LinkEnds have not the same locations</h3></div></div></div><p>A suggestion that a link (e.g. association) connecting 
-          objects on a deployment diagram has one end in a component 
-          and the other in a component instance (since objects can be 
-          in either). This makes no sense.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrInstanceWithoutClassifier"></a>14.8.11.&nbsp;Set classifier (Deployment Diagram)</h3></div></div></div><p>Suggestion that there is an instance (object) without 
-          an associated classifier (class, datatype) on a deployment 
-          diagram.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrCallWithoutReturn"></a>14.8.12.&nbsp;Missing return-actions</h3></div></div></div><p>Suggestion that a sequence diagram has a send or call 
-          action without a corresponding return action.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrReturnWithoutCall"></a>14.8.13.&nbsp;Missing call(send)-action</h3></div></div></div><p>Suggestion that a sequence diagram has a return action, 
-          but no preceding call or send action.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrLinkWithoutStimulus"></a>14.8.14.&nbsp;No Stimuli on these links</h3></div></div></div><p>Suggestion that a sequence diagram has a link 
-          connecting objects without an associated stimulus (without 
-          which the link is meaningless).</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>Triggering this critic indicates a serious problem, 
-            since ArgoUML provides no mechanism for creating a link 
-            without a stimulus. It probably indicates that the diagram 
-            was created by loading a corrupt project, with an XMI file 
-            describing a link without a stimulus, possibly created by a 
-            tool other than ArgoUML.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrSeqInstanceWithoutClassifier"></a>14.8.15.&nbsp;Set Classifier (Sequence Diagram)</h3></div></div></div><p>Suggestion that there is an object without an 
-          associated classifier (class, datatype) on a sequence 
-          diagram.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrStimulusWithWrongPosition"></a>14.8.16.&nbsp;Wrong position of these stimuli</h3></div></div></div><p>Suggestion that the initiation of send/call-return 
-          message exchanges in a sequence diagram does not properly 
-          initiate from left to right.</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s07.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch14.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch14s09.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">14.7.&nbsp;State Machines&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;14.9.&nbsp;Relationships</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

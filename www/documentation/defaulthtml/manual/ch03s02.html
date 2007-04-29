@@ -1,58 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>3.2.&nbsp;The Requirements Capture Process</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch03.html" title="Chapter&nbsp;3.&nbsp;Requirements Capture"><link rel="prev" href="ch03.html" title="Chapter&nbsp;3.&nbsp;Requirements Capture"><link rel="next" href="ch03s03.html" title="3.3.&nbsp;Output of the Requirements Capture Process"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.2.&nbsp;The Requirements Capture Process</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;3.&nbsp;Requirements Capture</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch03s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e1987"></a>3.2.&nbsp;The Requirements Capture Process</h2></div></div></div><a class="indexterm" name="d0e1990"></a><p>We start with a top-level view of the problem we are 
-        solving and the key areas of functionality that we must address 
-        in any solution. This is our <span class="emphasis"><em>vision 
-        document</em></span>, and should be just a few pages long.</p><p>For example the top-level view of an automated teller 
-        machine (ATM) might be that it should support the 
-        following.</p><div class="orderedlist"><ol type="1"><li><p>Cash deposit, cash withdrawal and account inquiries 
-            by customers.</p></li><li><p>Maintenance of the equipment by the bank's 
-            engineers, and unloading of deposits and loading of cash by 
-            the local bank branch.</p></li><li><p>Audit trail for all activities sent to the 
-            bank's central computer.</p></li></ol></div><a class="indexterm" name="d0e2010"></a><p>From this top-level view we can extract the principal 
-        activities of the system, and the external agents (people, 
-        equipment) that are involved in those activities. These 
-        activities are known as <span class="emphasis"><em>use cases</em></span> and the 
-        external agents are known as <span class="emphasis"><em>actors</em></span>.</p><p>Actors may be people or machines. From a practical 
-        standpoint it is worth knowing the stakeholder behind any 
-        machine, since only they will be able to engage with the 
-        requirements capture process.</p><a class="indexterm" name="d0e2023"></a><p>Use cases should be significant activities for the 
-        system. For example customer use of the ATM machine is a use 
-        case. Entering a PIN number is not.</p><p>There is a gray area between these two extremes. As we 
-        shall see it is often useful to break very large use cases into 
-        smaller sub-use cases. For example we may have sub-use cases 
-        covering cash deposit, cash withdrawal and account 
-        inquiry.</p><p>There is no hard and fast rule. Some architects will 
-        prefer a small number of relatively large use cases, others 
-        will prefer a larger number of smaller use cases. A useful rule 
-        of thumb is that any practical project ought to require no more 
-        than about 30 use cases (if it needs more, it should be broken 
-        into separate projects).</p><p>We then show the relationship between use cases and 
-        actors on one or more use case diagrams. For a large project 
-        more than one diagram will be needed. Usually groups of related 
-        use cases are shown on one diagram.</p><p>We must then give a more detailed specification of each 
-        use case. This covers its normal behavior, alternative 
-        behaviors and any pre- and post-conditions. This is captured in 
-        a document variously known as a <span class="emphasis"><em>use case 
-        specification</em></span> or <span class="emphasis"><em>use case 
-        scenario</em></span>.</p><a class="indexterm" name="d0e2042"></a><p>Finally, since use cases are functional in nature, we 
-        need a document to capture the non-functional requirements 
-        (capacity, performance, environmental needs etc). These 
-        requirements are captured in a document known as a 
-        <span class="emphasis"><em>supplementary requirements 
-        specification</em></span>.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e2050"></a>3.2.1.&nbsp;Process Steps</h3></div></div></div><p>The steps in the requirements capture process can be 
-          summarized as follows.</p><div class="orderedlist"><ol type="1"><li><a class="indexterm" name="d0e2057"></a><p>Capture an overall view of the problem, and the 
-              desired characteristics of its solution in the 
-              <span class="emphasis"><em>vision document</em></span>.</p></li><li><a class="indexterm" name="d0e2066"></a><p>Identify the <span class="emphasis"><em>use case</em></span> and 
-              <span class="emphasis"><em>actors</em></span> from the vision document and 
-              show their relationships on one or more <span class="emphasis"><em>use 
-              case diagrams</em></span>.</p></li><li><a class="indexterm" name="d0e2081"></a><a class="indexterm" name="d0e2084"></a><p>Give detailed <span class="emphasis"><em>use case 
-              specifications</em></span> for each use case, covering 
-              normal and alternate behavior, pre- and 
-              post-conditions.</p></li><li><a class="indexterm" name="d0e2095"></a><a class="indexterm" name="d0e2098"></a><p>Capture all non-functional requirements in a 
-              <span class="emphasis"><em>supplementary requirements 
-              specification</em></span>.</p></li></ol></div><p>In any iterative development process, we will 
-          prioritize, and early iterations will focus on capturing the 
-          key behavior of the most important use cases.</p><p>Most modern requirements capture processes agree that 
-          it is essential that the authoritative representative of the 
-          customer is fully involved throughout the process.</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch03s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;3.&nbsp;Requirements Capture&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;3.3.&nbsp;Output of the Requirements Capture Process</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

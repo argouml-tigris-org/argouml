@@ -1,112 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>16.3.&nbsp;Use Case</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch16.html" title="Chapter&nbsp;16.&nbsp;Use Case Diagram Artifact Reference"><link rel="prev" href="ch16s02.html" title="16.2.&nbsp;Actor"><link rel="next" href="ch16s04.html" title="16.4.&nbsp;Extension Point"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">16.3.&nbsp;Use Case</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch16s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;16.&nbsp;Use Case Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch16s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.use_case"></a>16.3.&nbsp;Use Case</h2></div></div></div><a class="indexterm" name="d0e14218"></a><p>A use case represents a complete meaningful 
-        &#8220;<span class="quote">chunk</span>&#8221; of activity by the system in relation to 
-        its external users (actors), human or machine. It represents 
-        the primary route through which requirements are captured for 
-        the system under construction</p><p>Within the UML metamodel, use case is a sub-class of 
-        <tt class="literal">classifier</tt>.</p><p>The use case icon is an oval (see 
-        <a href="ch16.html#fig.ref.use_case_diagram" title="Figure&nbsp;16.1.&nbsp;Possible artifacts on a use case diagram.">Figure&nbsp;16.1, &#8220;Possible artifacts on a use case diagram.&#8221;</a>). It may be split in 
-        two, with the lower compartment showing extension points</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>By default ArgoUML does not show the extension point 
-          compartment. It may be revealed by the context sensitive 
-          <tt class="literal">Show</tt> menu (using button&nbsp;2 click), or from 
-          the Presentation tab.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e14241"></a>16.3.1.&nbsp;Use Case Details Tabs</h3></div></div></div><a class="indexterm" name="d0e14244"></a><a class="indexterm" name="d0e14247"></a><p>The details tabs that are active for use cases are as 
-          follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See 
-                <a href="ch16s03.html#s2.ref.use_case_property_toolbar" title="16.3.2.&nbsp;Use Case Property Toolbar">Section&nbsp;16.3.2, &#8220;Use Case Property Toolbar&#8221;</a> and 
-                <a href="ch16s03.html#s2.ref.use_case_property_fields" title="16.3.3.&nbsp;Property Fields For Use Case">Section&nbsp;16.3.3, &#8220;Property Fields For Use Case&#8221;</a> 
-                below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab. See 
-                <a href="ch12s04.html" title="12.4.&nbsp;Documentation Tab">Section&nbsp;12.4, &#8220;Documentation Tab&#8221;</a>.</p></dd><dt><span class="term"><tt class="literal">Presentation</tt></span></dt><dd><p>Standard tab. The Fill color is used for the use 
-                case oval.</p><p>The <tt class="literal">Display: Extension Points</tt> 
-                check box is used to control whether an extension point 
-                compartment is displayed.</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab. It would not be usual to provide 
-                any code for a use case, since it is primarily a 
-                vehicle for capturing requirements about the system 
-                under construction, not creating the solution.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel, <tt class="literal">
-                UseCase</tt> has the following standard tagged 
-                values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">persistence</tt> (from the 
-                    superclass, <tt class="literal">Classifier</tt>). Values 
-                    <tt class="literal">transitory</tt>, indicating state is 
-                    destroyed when an instance is destroyed or <tt class="literal">
-                    persistent</tt>, marking state is preserved 
-                    when an instance is destroyed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>In general the instantiation of use cases 
-                      is not a major aspect of any design method (they 
-                      are mostly concerned with requirements capture. 
-                      For most OOA&amp;D methodologies, this tag can 
-                      safely be ignored.</p></td></tr></table></div></li><li><p><tt class="literal">semantics</tt> (from the 
-                    superclass, <tt class="literal">Classifier</tt>). The 
-                    value is a specification of the semantics of the 
-                    use case.</p></li><li><p><tt class="literal">derived</tt> (from the 
-                    superclass, <tt class="literal">ModelElement</tt>). 
-                    Values <tt class="literal">true</tt>, meaning the use 
-                    case is redundant&#8212;it can be formally derived from 
-                    other elements, or <tt class="literal">false</tt> meaning 
-                    it cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived use cases still have their value in 
-                      analysis to introduce useful names or 
-                      concepts.</p></td></tr></table></div></li></ul></div></dd><dt><span class="term"><tt class="literal">Checklist</tt></span></dt><dd><p>Standard tab for a Classifier.</p></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.use_case_property_toolbar"></a>16.3.2.&nbsp;Use Case Property Toolbar</h3></div></div></div><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> 
-              <tt class="literal">Go up</tt></span></dt><dd><p>Navigate up through the package structure of the 
-                model.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/use_case.gif" align="middle"></span></span> 
-              <tt class="literal">New use case</tt></span></dt><dd><a class="indexterm" name="d0e14387"></a><a class="indexterm" name="d0e14390"></a><a class="indexterm" name="d0e14393"></a><p>This creates a new use case within the model, 
-                (but not within the diagram), and shows immediately the 
-                properties tab for that use case.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This method of creating a new use case can be 
-                  confusing. It is much better to create a new use case 
-                  on the diagram of your choice.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/extension_point.gif" align="middle"></span></span> 
-              <tt class="literal">New extension point</tt></span></dt><dd><a class="indexterm" name="d0e14413"></a><a class="indexterm" name="d0e14416"></a><a class="indexterm" name="d0e14419"></a><p>This creates a new use extension point within the 
-                namespace of the current use case, with the current use 
-                case as its associated use case, navigating immediately 
-                to the properties tab for that extension point.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span> 
-              <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the selected use case from the 
-                model.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model 
-                  <span class="emphasis"><em>not</em></span> just the diagram. To delete 
-                  a use case from the diagram, but keep it within the 
-                  model, use the main menu <tt class="literal">Remove From 
-                  Diagram</tt> (or press the Delete key).</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.use_case_property_fields"></a>16.3.3.&nbsp;Property Fields For Use Case</h3></div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><a class="indexterm" name="d0e14456"></a><a class="indexterm" name="d0e14459"></a><p>Text box. The name of the use case. Since a use 
-                case is a classifier, it would be conventional to 
-                Capitalize the first letter (and initial letters of any 
-                component words), e.g. <tt class="literal">RemoteSensor</tt>. 
-                The name is shown inside the oval representation of the 
-                use case on the diagram.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce any naming convention 
-                  for use cases</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e14477"></a><a class="indexterm" name="d0e14480"></a><p>Drop down selector. Use case is provided by 
-                default with the UML standard stereotypes (
-                <tt class="literal">metaclass</tt>, <tt class="literal">
-                powertype</tt>, <tt class="literal">process</tt>, 
-                <tt class="literal">thread</tt>, <tt class="literal">utility</tt>) 
-                for classifiers. Stereotyping can be useful when 
-                creating use cases in the problem domain (requirements 
-                capture) and solution domain (analysis), but none of 
-                the predefined stereotypes are well suited to 
-                this.</p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><a class="indexterm" name="d0e14520"></a><a class="indexterm" name="d0e14523"></a><p>Text box. Records the namespace for the use case. 
-                This is the package hierarchy.</p></dd><dt><span class="term"><tt class="literal">Modifiers</tt></span></dt><dd><a class="indexterm" name="d0e14535"></a><a class="indexterm" name="d0e14538"></a><p>Check box, with entries <tt class="literal">
-                Abstract</tt> <tt class="literal">Leaf</tt> and <tt class="literal">
-                Root</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Abstract</tt> is used to 
-                    declare that this actor cannot be instantiated, but 
-                    must always be specialized. .</p></li><li><p><tt class="literal">Leaf</tt> indicates that this 
-                    use case can have no further children, while 
-                    <tt class="literal">Root</tt> indicates it is a top level 
-                    use case with no parent.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Extension Points</tt></span></dt><dd><a class="indexterm" name="d0e14573"></a><a class="indexterm" name="d0e14576"></a><p>Text box. If this use case is, or can be 
-                extended, this field lists the extension points for the 
-                use case.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Extension points are listed by their location 
-                  point rather than their name.</p></td></tr></table></div><p>Where an extension point has been created (see 
-                below), button&nbsp;1 Double Click will navigate to that 
-                relationship. Button&nbsp;2 gives a pop up menu with one 
-                entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">New</tt>. Add a new extension 
-                    point and navigate to it, making this use case the 
-                    owning use case of the extension point.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">
-              <a name="ref.use_case_generalization"></a>Generalizations</tt></span></dt><dd><a class="indexterm" name="d0e14601"></a><a class="indexterm" name="d0e14604"></a><p>Text area. Lists use cases which are 
-                generalizations of this one. Will be set whenever a 
-                generalization is created on the from this Use Case. 
-                Button&nbsp;1 Double Click on a generalization will navigate 
-                to that generalization.</p></dd><dt><span class="term"><tt class="literal">Specializations</tt></span></dt><dd><a class="indexterm" name="d0e14616"></a><a class="indexterm" name="d0e14619"></a><p>Text box. Lists any specialized use case (i.e. 
-                for which this use case is a generalization.</p><p>Button&nbsp;1 double click navigates to the 
-                generalization and opens its property tab.</p></dd><dt><span class="term"><tt class="literal">Extends</tt></span></dt><dd><a class="indexterm" name="d0e14633"></a><a class="indexterm" name="d0e14636"></a><p>Text box. Lists any class that is extended by 
-                this use case.</p><p>Where an extends relationship has been created, 
-                button&nbsp;1 double click will navigate to that 
-                relationship.</p></dd><dt><span class="term"><tt class="literal">Includes</tt></span></dt><dd><a class="indexterm" name="d0e14650"></a><a class="indexterm" name="d0e14653"></a><p>Text box. Lists any use case that this use case 
-                includes.</p><p>Where an include relationship has been created, 
-                button&nbsp;1 Double Click will navigate to that 
-                relationship.</p></dd><dt><span class="term"><tt class="literal">Association Ends</tt></span></dt><dd><p>Text box. Lists any association ends (see 
-                <a href="ch17s11.html" title="17.11.&nbsp;Association">Section&nbsp;17.11, &#8220;Association&#8221;</a>) of 
-                associations connected to this use case.</p><p>Button&nbsp;1 double click navigates to the selected 
-                entry.</p></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch16s02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch16.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch16s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">16.2.&nbsp;Actor&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;16.4.&nbsp;Extension Point</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

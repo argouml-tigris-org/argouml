@@ -1,152 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>15.3.&nbsp;Datatype</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch15.html" title="Chapter&nbsp;15.&nbsp;Top Level Artifact Reference"><link rel="prev" href="ch15s02.html" title="15.2.&nbsp;The Model"><link rel="next" href="ch15s04.html" title="15.4.&nbsp;Enumeration"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">15.3.&nbsp;Datatype</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch15s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;15.&nbsp;Top Level Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch15s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.datatype"></a>15.3.&nbsp;Datatype</h2></div></div></div><a class="indexterm" name="d0e12134"></a><p>Datatypes can be thought of as simple classes. They have 
-        no attributes, and any operations on them must have no 
-        side-effects. A useful analogy is primitive datatypes in a 
-        language like Java. The integer &#8220;<span class="quote">3</span>&#8221; stands on its 
-        own&#8212;it has no inner structure. There are operations (for 
-        example addition) on the integers, but when I perform <tt class="literal">
-        3&nbsp;+&nbsp;4</tt> the result is a new number, &#8220;<span class="quote">3</span>&#8221; 
-        and &#8220;<span class="quote">4</span>&#8221; are unchanged by the exercise.</p><p>Within UML&nbsp;1.3, <tt class="literal">DataType</tt> is a 
-        sub-class of the <tt class="literal">Classifier</tt> metaclass. It 
-        embraces the predefined primitive types (
-        <tt class="literal">byte</tt>, <tt class="literal">char</tt>, <tt class="literal">
-        double</tt>, <tt class="literal">float</tt>, <tt class="literal">
-        int</tt>, <tt class="literal">long</tt> and <tt class="literal">
-        short</tt>), the predefined enumeration, <tt class="literal">
-        boolean</tt> and user defined <span class="emphasis"><em>enumeration 
-        types</em></span>.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Also <tt class="literal">void</tt> is implemented as a 
-          datatype within ArgoUML</p></td></tr></table></div><p>Within ArgoUML new datatypes may be created using the 
-        <tt class="literal">New datatype</tt> button on the property tabs of 
-        the model and packages (in which case the new datatype is 
-        restricted in scope to the package), as well as the properties 
-        tab for datatype.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>UML&nbsp;1.3 allows user defined datatypes to be placed on 
-          class diagrams. This is not permitted in ArgoUML.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e12200"></a>15.3.1.&nbsp;Datatype Details Tabs</h3></div></div></div><a class="indexterm" name="d0e12203"></a><a class="indexterm" name="d0e12206"></a><p>The details tabs that are active for datatypes are as 
-          follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><a class="indexterm" name="d0e12226"></a><a class="indexterm" name="d0e12229"></a><p>See 
-                <a href="ch15s03.html#s2.ref.datatype_property_toolbar" title="15.3.2.&nbsp;Datatype Property Toolbar">Section&nbsp;15.3.2, &#8220;Datatype Property Toolbar&#8221;</a> and 
-                <a href="ch15s03.html#s2.ref.datatype_property_fields" title="15.3.3.&nbsp;Property Fields For Datatype">Section&nbsp;15.3.3, &#8220;Property Fields For Datatype&#8221;</a> 
-                below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab. See 
-                <a href="ch12s04.html" title="12.4.&nbsp;Documentation Tab">Section&nbsp;12.4, &#8220;Documentation Tab&#8221;</a>.</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab. Unused. One would expect a class 
-                declaration for the new datatype to support code 
-                generation.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><a class="indexterm" name="d0e12261"></a><a class="indexterm" name="d0e12264"></a><p>Standard tab. In the UML metamodel, <tt class="literal">
-                Datatype</tt> has the following standard tagged 
-                values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">persistence</tt> (from the 
-                    superclass, <tt class="literal">Classifier</tt>). Values 
-                    <tt class="literal">transitory</tt>, indicating state is 
-                    destroyed when an instance is destroyed or <tt class="literal">
-                    persistent</tt>, marking state is preserved 
-                    when an instance is destroyed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Since user defined datatypes are 
-                      enumerations, they have no state to preserve, and 
-                      the value of this tagged value is 
-                      irrelevant.</p></td></tr></table></div></li><li><p><tt class="literal">semantics</tt> (from the 
-                    superclass, <tt class="literal">Classifier</tt>). The 
-                    value is a specification of the semantics of the 
-                    datatype.</p></li><li><p><tt class="literal">derived</tt> (from the 
-                    superclass, <tt class="literal">ModelElement</tt>). 
-                    Values <tt class="literal">true</tt>, meaning the class 
-                    is redundant&#8212;it can be formally derived from other 
-                    elements, or <tt class="literal">false</tt> meaning it 
-                    cannot.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While formally available, a derived 
-                      datatype does not have an obvious value, and so 
-                      datatypes should always be marked with <tt class="literal">
-                      derived=false</tt>.</p></td></tr></table></div></li></ul></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.datatype_property_toolbar"></a>15.3.2.&nbsp;Datatype Property Toolbar</h3></div></div></div><a class="indexterm" name="d0e12323"></a><a class="indexterm" name="d0e12326"></a><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> 
-              <tt class="literal">Go up</tt></span></dt><dd><p>Navigate up through the package structure.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/datatype.gif" align="middle"></span></span> 
-              <tt class="literal">New datatype</tt></span></dt><dd><p>This creates a new datatype (see 
-                <a href="ch17s05.html" title="17.5.&nbsp;Class">Section&nbsp;17.5, &#8220;Class&#8221;</a>) within the same 
-                package as the current datatype.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While it can make sense to create datatypes 
-                  this way, it can be clearer to create them within the 
-                  package or model where you want them.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/enumeration_literal.gif" align="middle"></span></span> 
-              <tt class="literal">New enumeration literal</tt></span></dt><dd><p>This creates a new enumeration literal within the 
-                datatype, navigating immediately to the properties tab 
-                for that literal.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not actually have a separate 
-                  concept of a literal. The navigation will navigate to 
-                  the property sheet for an attribute of a class (see 
-                  <a href="ch17s06.html" title="17.6.&nbsp;Attribute">Section&nbsp;17.6, &#8220;Attribute&#8221;</a>). When defining a 
-                  literal, all that matters is its name. Other parts of 
-                  the attribute property sheet should be ignored. Also 
-                  the name of the literal must obey the rules for an 
-                  Attribute or a critic will fire.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/operation.gif" align="middle"></span></span> 
-              <tt class="literal">New Operation</tt></span></dt><dd><p>This creates a new operation within the datatype, 
-                navigating immediately to the properties tab for that 
-                operation.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stereotype.gif" align="middle"></span></span> 
-              <tt class="literal">New Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e12400"></a><a class="indexterm" name="d0e12403"></a><a class="indexterm" name="d0e12406"></a><p>This creates a new Stereotype (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>) within the same 
-                package as the datatype, navigating immediately to the 
-                properties tab for that stereotype.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span> 
-              <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the datatype from the model.</p></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.datatype_property_fields"></a>15.3.3.&nbsp;Property Fields For Datatype</h3></div></div></div><a class="indexterm" name="d0e12430"></a><a class="indexterm" name="d0e12433"></a><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><a class="indexterm" name="d0e12444"></a><a class="indexterm" name="d0e12447"></a><p>Text box. The name of the datatype. The primitive 
-                datatypes all have lower case names, but there is no 
-                formal convention.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The default name supplied for a newly created 
-                  datatype is the empty string &#8220;<span class="quote"></span>&#8221;. Datatypes 
-                  with empty string names will appear with the name 
-                  <tt class="literal">(anon Datatype)</tt> in the 
-                  explorer.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e12467"></a><a class="indexterm" name="d0e12470"></a><p>Drop down selector. Stereotype is provided by 
-                default with the UML standard stereotypes for 
-                classifier (<tt class="literal">metaclass</tt>, <tt class="literal">
-                powertype</tt>, <tt class="literal">process</tt>, 
-                <tt class="literal">thread</tt> and <tt class="literal">
-                utility</tt>).</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>The stereotype <tt class="literal">enumeration</tt> 
-                  should always be used for any created enumeration 
-                  datatypes.</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In ArgoUML version 0.18 the stereotype <tt class="literal">
-                  enumeration</tt> must be created before it can 
-                  be used. However, by creating an Enumeration Literal, 
-                  the stereotype <tt class="literal">enumeration</tt> is 
-                  created automatically.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>Drop down selector. Allows changeing the 
-                namespace for the datatype. This is the package 
-                hierarchy.</p></dd><dt><span class="term"><tt class="literal">Modifiers</tt></span></dt><dd><a class="indexterm" name="d0e12532"></a><a class="indexterm" name="d0e12535"></a><p>Check box, with entries <tt class="literal">
-                Abstract</tt>, <tt class="literal">Leaf</tt> and 
-                <tt class="literal">Root</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Abstract</tt> is used to 
-                    declare that this datatype cannot be instantiated, 
-                    but must always be specialized.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML provides no mechanism for 
-                      specializing datatypes, so this check box is of 
-                      little use.</p></td></tr></table></div></li><li><p><tt class="literal">Leaf</tt> indicates that this 
-                    datatype can have no further sub-types, while 
-                    <tt class="literal">Root</tt> indicates it is a top level 
-                    datatype.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the absence of specialization of 
-                      datatypes within ArgoUML these have little value. 
-                      In effect all datatypes are both <tt class="literal">
-                      Root</tt> and <tt class="literal">Final</tt></p></td></tr></table></div></li></ul></div></dd><dt><span class="term"><tt class="literal">Visibility</tt></span></dt><dd><a class="indexterm" name="d0e12581"></a><a class="indexterm" name="d0e12584"></a><p>Radio box, with entries <tt class="literal">
-                public</tt>, <tt class="literal">private</tt>, 
-                <tt class="literal">protected</tt>, and
-                <tt class="literal">package</tt>.</p><p>Records the visibility for the Datatype.</p></dd><dt><span class="term"><tt class="literal">Client Dependencies</tt></span></dt><dd><p>Text area. Lists any elements that depend on this 
-                datatype.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is not clear that dependencies between 
-                  datatypes makes much sense.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Supplier Dependencies</tt></span></dt><dd><p>Text area. Lists any elements that this datatype 
-                depends on.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is not clear that dependencies between 
-                  datatypes makes much sense.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Generalizations</tt></span></dt><dd><p>Text area. Lists any datatype that 
-                <span class="emphasis"><em>generalizes</em></span> this datatype.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is not clear that generalizing datatypes 
-                  makes much sense.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Specializations</tt></span></dt><dd><p>Text box. Lists any specialized datatype (i.e. 
-                for which this datatype is a generalization.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is not clear that specializing datatypes 
-                  makes much sense.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Operations</tt></span></dt><dd><p>Text area. Lists all the operations defined on 
-                this datatype. Button&nbsp;1 double click navigates to the 
-                selected operation. button&nbsp;2 click brings up a pop up 
-                menu with two entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Move Up</tt>. Only available 
-                    where there are two or more operations, and the 
-                    operation selected is not at the top. It is moved 
-                    up one.</p></li><li><p><tt class="literal">Move Down</tt>. Only available 
-                    where there are two or more operations listed, and 
-                    the operation selected is not at the bottom. It is 
-                    moved down one.</p></li></ul></div><p>See <a href="ch17s07.html" title="17.7.&nbsp;Operation">Section&nbsp;17.7, &#8220;Operation&#8221;</a> for 
-                details of operations.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML treats all operations as equivalent. 
-                  Any operations created here will use the same 
-                  mechanism as operations for classes. Remember that 
-                  operations on datatypes must have no side effects 
-                  (they are read-only). This means the <tt class="literal">
-                  query</tt> modifier <span class="emphasis"><em>must</em></span> be 
-                  checked for all operations.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Literals</tt></span></dt><dd><a class="indexterm" name="d0e12684"></a><a class="indexterm" name="d0e12687"></a><p>Text area. Lists all the enumeration literals 
-                defined for this datatype. Button&nbsp;1 double click 
-                navigates to the selected literal, button&nbsp;2 click 
-                brings up a pop up menu with two entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Move Up</tt>. Only available 
-                    where there are two or more literals, and the 
-                    literal selected is not at the top. It is moved up 
-                    one.</p></li><li><p><tt class="literal">Move Down</tt>. Only available 
-                    where there are two or more literals listed, and 
-                    the literal selected is not at the bottom. It is 
-                    moved down one.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not actually have a separate 
-                  concept of a literal. The navigations listed above 
-                  will all navigate to a property sheet equal to an 
-                  attribute of a class (see 
-                  <a href="ch17s06.html" title="17.6.&nbsp;Attribute">Section&nbsp;17.6, &#8220;Attribute&#8221;</a>). When defining a 
-                  literal, all that matters is its name. Other parts of 
-                  the attribute property sheet should be ignored.</p></td></tr></table></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch15s02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch15.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch15s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">15.2.&nbsp;The Model&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;15.4.&nbsp;Enumeration</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

@@ -1,100 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>7.2.&nbsp;General Mouse Behavior in ArgoUML</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch07.html" title="Chapter&nbsp;7.&nbsp;Introduction"><link rel="prev" href="ch07.html" title="Chapter&nbsp;7.&nbsp;Introduction"><link rel="next" href="ch07s03.html" title="7.3.&nbsp;General Information About Panes"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">7.2.&nbsp;General Mouse Behavior in ArgoUML</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;7.&nbsp;Introduction</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch07s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.mouse"></a>7.2.&nbsp;General Mouse Behavior in ArgoUML</h2></div></div></div><p>Mouse behavior that is specific to the various panes of 
-        ArgoUML (see <a href="ch07s03.html" title="7.3.&nbsp;General Information About Panes">Section&nbsp;7.3, &#8220;General Information About Panes&#8221;</a>) or the menu bar, 
-        is discussed in the chapters covering those panes and the menu 
-        bar. In this section we cover behavior that is general across 
-        all of ArgoUML.</p><p>In a number of places in ArgoUML text may be directly 
-        edited (for example the constraint editor&#8212;see 
-        <a href="ch12s07.html#s2.ref.details_constraint_editor" title="12.7.1.&nbsp;The Constraint Editor">Section&nbsp;12.7.1, &#8220;The Constraint Editor&#8221;</a>). The 
-        behavior of the mouse when handling text is discussed in the 
-        sections that follow.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4699"></a>7.2.1.&nbsp;Mouse Button Terminology</h3></div></div></div><p>ArgoUML assumes a two button mouse. We will refer to 
-          the buttons as &#8220;<span class="quote">button&nbsp;1</span>&#8221; and 
-          &#8220;<span class="quote">button&nbsp;2</span>&#8221;. Button&nbsp;1 is the leftmost button on a 
-          right-handed mouse, and sometimes referred to as the 
-          <span class="emphasis"><em>select</em></span> button. Button&nbsp;2 is the rightmost 
-          button on a right-handed mouse, and is sometimes referred to 
-          as the <span class="emphasis"><em>adjust</em></span> button.</p><p>A single depress and release of a mouse button with the 
-          mouse is referred to as a <span class="emphasis"><em>click</em></span>. Two 
-          clicks in quick succession is referred to as a 
-          <span class="emphasis"><em>double click</em></span>. Moving the mouse while 
-          holding a button down is referred to as <span class="emphasis"><em>button 
-          motion</em></span> with the starting point being at 
-          <span class="emphasis"><em>button down</em></span> and the end point at 
-          <span class="emphasis"><em>button up</em></span>.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4733"></a>7.2.2.&nbsp;Button&nbsp;1 Click</h3></div></div></div><p>Clicking on an user-interface object or on a diagram 
-          artifact may establish many different things. Most of the 
-          behaviour is experienced quite intuitive by the user, mainly 
-          because the high degree of standardisation, even spanning 
-          different computer platforms (Macintosh, PC, UNIX,...). 
-          ArgoUML follows the <span class="emphasis"><em>Java Look and Feel Design 
-          Guidelines</em></span> by Sun. See 
-          <a href="http://java.sun.com/products/jlf/" target="_top">http://java.sun.com/products/jlf/</a>. Hence, 
-          behaviour of common user-interface components is generally 
-          not discussed in this document.</p><p>On the other hand, mouse actions in a diagram may not 
-          seem so intuitive to the user, since it is specific for 
-          ArgoUML. Hence they are explained here. In short, clicking 
-          selects or activates the object beneath the mouse-pointer, 
-          and moves the focus (i.e. navigation).</p><p>More in detail, the button&nbsp;1 click may cause the 
-          following result:</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4747"></a>7.2.2.1.&nbsp;Selection</h4></div></div></div><p>Here button&nbsp;1 is used to choose (select) an artifact 
-            (in a list or tree or on a diagram) on which subsequent 
-            operations will take place. Multiple artifacts may be 
-            selected by using Shift and/or Control in combination with 
-            button&nbsp;1, see <a href="ch07s02.html#s2.ref.mouse.shift_control" title="7.2.5.&nbsp;Shift and Control with Button&nbsp;1">Section&nbsp;7.2.5, &#8220;Shift and Control with Button&nbsp;1&#8221;</a>. 
-            Selection is always clearly indicated by a colored 
-            background.</p><p>On a diagram, the selected artifact is indicated with 
-            colored "blocks" at the corners/ends of the 
-            object. Artifacts can be selected or deselected in 
-            different ways:</p><div class="itemizedlist"><ul type="disc"><li><p>Button&nbsp;1 click. Deselects all artifacts, and 
-                selects the one clicked on.</p></li><li><p>Button&nbsp;1 motion. Button motion (moving the mouse 
-                with the button down) in the diagram, not on any 
-                artifact, allows to draw a rectangle around artifacts 
-                which will be selected when the button&nbsp;1 is 
-                released.</p></li><li><p>Menu functions and shortcuts. Many menu 
-                operations change selection as side-effect, e.g. 
-                creating a new diagram. Many keyboard shortcuts for 
-                menu operations change the selection, e.g. Ctrl-A, 
-                which stands for the <tt class="literal">Select All</tt> 
-                function.</p></li></ul></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4769"></a>7.2.2.2.&nbsp;Activation</h4></div></div></div><p>Here button&nbsp;1 is used to activate the user interface 
-            component, e.g. a button. The object is usually highlighted 
-            when the mouse button is pressed and then activated when 
-            the mouse button is released. Activating an user-interface 
-            object means that its function is executed.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4774"></a>7.2.2.3.&nbsp;Navigation</h4></div></div></div><p>Here button&nbsp;1 is used to move the focus from one user 
-            interface component or diagram artifact to another. It is 
-            better known under the term keyboard focus. This because 
-            keyboard commands usually work on the artifact that has the 
-            focus. The focus is indicated by a (hardly visible) box 
-            around the artifact, or for a text entry box, by a flashing 
-            cursor.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4779"></a>7.2.2.4.&nbsp;General Behavior When Editing Text</h4></div></div></div><p>Here button&nbsp;1 is used to select the point within the 
-            text at which operations (text entry and deletion) will 
-            take place.</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4784"></a>7.2.3.&nbsp;Button&nbsp;1 Double Click</h3></div></div></div><p>The behavior of button&nbsp;1 double click varies betweens 
-          panes and is discussed in their chapters.</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4789"></a>7.2.3.1.&nbsp;General Behavior When Editing Text</h4></div></div></div><p>Here button&nbsp;1 double click is used to select a 
-            complete word, or other syntactic unit within the text. 
-            Subsequent operations (text entry and deletion) will 
-            replace the selected text.</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4794"></a>7.2.4.&nbsp;Button&nbsp;1 Motion</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4797"></a>7.2.4.1.&nbsp;General Behavior When Editing Text</h4></div></div></div><p>Here button&nbsp;1 motion is used to select a range of 
-            text. Subsequent operations (text entry and deletion) will 
-            replace the selected text.</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.mouse.shift_control"></a>7.2.5.&nbsp;Shift and Control with Button&nbsp;1</h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4805"></a>7.2.5.1.&nbsp;Within Lists</h4></div></div></div><p>This behavior applies where there is a list of things 
-            that may be selected. This includes various dialog boxes, 
-            and the to-do pane, where there is a list of to-do items to 
-            be selected.</p><p>Where selections are to be made, the SHIFT key is 
-            used to with button&nbsp;1 to <span class="emphasis"><em>extend</em></span> from 
-            the original button&nbsp;1 selection to the current 
-            position.</p><p>Similarly the CONTROL key with button&nbsp;1 is used to 
-            add individual items to the current selection. Where 
-            Ctrl-button&nbsp;1 is used on an item already selected, that 
-            item is removed from the selection.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Users of Microsoft Windows might be familiar with 
-              the use of SHIFT-CONTROL-Click (i.e. holding both the 
-              Shift and Control key down when clicking), to add 
-              sub-lists to an existing selection. ArgoUML does not 
-              support this. SHIFT-CONTROL-Click will behave as 
-              CONTROL-Click.</p></td></tr></table></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4820"></a>7.2.5.2.&nbsp;General Behavior When Editing Text</h4></div></div></div><p>In a number of places in ArgoUML text may be directly 
-            edited (for example when naming a model&#8212;element in the 
-            properties pane, or when typing a UML note / comment). Here 
-            SHIFT button&nbsp;1 is used to select a range of text from the 
-            previously selected point. Subsequent operations (text 
-            entry and deletion) will replace the selected text.</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.mouse.alt"></a>7.2.6.&nbsp;Alt with Button&nbsp;1: Panning</h3></div></div></div><p>When holding down the Alt key during button&nbsp;1 down on a 
-          diagram, movement of the mouse pans the drawing area. The 
-          function is indicated by the mousepointer which turns into a 
-          crosshair with arrows.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4830"></a>7.2.7.&nbsp;Button&nbsp;2 Actions</h3></div></div></div><p>Button&nbsp;2 actions are all dependent on the pane or menu 
-          bar, and discussed in their various chapters.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4835"></a>7.2.8.&nbsp;Button&nbsp;2 Double Click</h3></div></div></div><p>Button&nbsp;2 actions are all dependent on the pane or menu 
-          bar, and discussed in their various chapters.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4840"></a>7.2.9.&nbsp;Button&nbsp;2 Motion</h3></div></div></div><p>Button&nbsp;2 actions are all dependent on the pane or menu 
-          bar, and discussed in their various chapters.</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch07.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch07s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;7.&nbsp;Introduction&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;7.3.&nbsp;General Information About Panes</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

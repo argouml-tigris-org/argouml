@@ -1,76 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>14.4.&nbsp;Naming</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch14.html" title="Chapter&nbsp;14.&nbsp;The Critics"><link rel="prev" href="ch14s03.html" title="14.3.&nbsp;Class Selection"><link rel="next" href="ch14s05.html" title="14.5.&nbsp;Storage"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">14.4.&nbsp;Naming</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;14.&nbsp;The Critics</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch14s05.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.design_issues_naming"></a>14.4.&nbsp;Naming</h2></div></div></div><p>These are critics concerning the naming of artifacts. The 
-        current version of ArgoUML has 18 critics in this 
-        category.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrAssocNameConflict"></a>14.4.1.&nbsp;Resolve Association Name Conflict</h3></div></div></div><p>Suggestion that two association names in the same 
-          namespace have the same name. This is not permitted in 
-          UML.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrAttrNameConflict"></a>14.4.2.&nbsp;Revise Attribute Names to Avoid Conflict</h3></div></div></div><p>Suggestion that two attribute names of a class have the 
-          same name. This is not permitted in UML.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The problem may be caused by inheritance of an 
-            attribute through a generalization relationship.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrOperNameConflict"></a>14.4.3.&nbsp;Change Names or Signatures in an Artifact</h3></div></div></div><p>Two operations in &lt;artifact&gt; have the same 
-          signature. This means their name is the same, and the list of 
-          parameters has the same type.</p><p>Where there are conflicting signatures, correct code 
-          cannot be generated for mainstream OO languages. It also 
-          leads to very unclear semantics of the design.</p><p>In comparing signatures, this critic considers:</p><div class="orderedlist"><ol type="1"><li><p>the name;</p></li><li><p>the list of in, out and in-out parameter types 
-              <span class="emphasis"><em>in order</em></span>; and</p></li></ol></div><p>Only if these all match in both type and order, will 
-          the signatures be considered as the same.</p><p>This follows the line of Java/C++ in ignoring the 
-          return parameters for the signature. This 
-          <span class="emphasis"><em>may</em></span> be unsatisfactory for some 
-          functional OO languages.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Some purists would argue that the comparison should 
-            really differentiate between in, out and in-out parameters. 
-            However no practical programming language can do this when 
-            resolving an overloaded method invocation, so this critics 
-            lumps them all together.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrDupRoleNames"></a>14.4.4.&nbsp;Duplicate End (Role) Names for an Association</h3></div></div></div><p>The specified association has two (or more) ends 
-          (roles) with the same name. One of the well-formedness rules 
-          in UML 1.4 for associations, is that all end (role) names 
-          must be unique.</p><p>This ensures that there can be unambiguous reference to 
-          the ends of the association.</p><p>To fix this, manually select the association and change 
-          the names of one or more of the offending ends (roles) using 
-          the button&nbsp;2 pop-up menu or the property sheet.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrNameConflictAC"></a>14.4.5.&nbsp;Role name conflicts with member</h3></div></div></div><p>A suggestions that good design avoids role names for 
-          associations that clash with attributes or operations of the 
-          source class. Roles may be realized in the code as attributes 
-          or operations, causing code generation problems.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrMissingClassName"></a>14.4.6.&nbsp;Choose a Name (Classes and Interfaces)</h3></div></div></div><p>The class or interface concerned has been given no name 
-          (it will appear in the model as <tt class="literal">anon</tt>). 
-          Suggestion that good design requires that all interfaces and 
-          classes are named.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrDisambigClassName"></a>14.4.7.&nbsp;Choose a Unique Name for an Artifact (Classes and 
-          Interfaces)</h3></div></div></div><p>Suggestion that the class or interface specified has 
-          the same name as another (in the namespace), which is bad 
-          design and will prevent valid code generation.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrMissingAttrName"></a>14.4.8.&nbsp;Choose a Name (Attributes)</h3></div></div></div><p>The attribute concerned has been given no name (it will 
-          appear in the model as <tt class="literal">(anon Attribute)</tt>). 
-          Suggestion that good design requires that all attributes are 
-          named.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrMissingOperName"></a>14.4.9.&nbsp;Choose a Name (Operations)</h3></div></div></div><p>The operation concerned has been given no name (it will 
-          appear in the model as <tt class="literal">(anon Operation)</tt>). 
-          Suggestion that good design requires that all operations are 
-          named.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrMissingStateName"></a>14.4.10.&nbsp;Choose a Name (States)</h3></div></div></div><p>The state concerned has been given no name (it will 
-          appear in the model as <tt class="literal">(anon State)</tt>). 
-          Suggestion that good design requires that all states are 
-          named.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrDisambigStateName"></a>14.4.11.&nbsp;Choose a Unique Name for a (State related) 
-          Artifact</h3></div></div></div><p>Suggestion that the state specified has the same name 
-          as another (in the current statechart diagram), which is bad 
-          design and will prevent valid code generation.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrNameConfusion"></a>14.4.12.&nbsp;Revise Name to Avoid Confusion</h3></div></div></div><p>Two names in the same namespace have very similar names 
-          (differing only by one character). Suggestion this could 
-          potentially lead to confusion.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>This critic can be particularly annoying, since at 
-            times it is useful and good design to have a series of 
-            artifacts <tt class="literal">var1</tt>, <tt class="literal">var2</tt> 
-            etc.</p><p>It is important to remember that critics offer 
-            guidance, and are not always correct. ArgoUML lets you 
-            dismiss the resulting to-do items through the to-do pane 
-            (see <a href="ch13.html" title="Chapter&nbsp;13.&nbsp;The To-Do Pane">Chapter&nbsp;13, <i>The To-Do Pane</i></a>).</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrIllegalName"></a>14.4.13.&nbsp;Choose a Legal Name</h3></div></div></div><p>All artifact names in ArgoUML must use only letters, 
-          digits and underscore characters. This critic suggests an 
-          entity has not met this requirement.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrReservedName"></a>14.4.14.&nbsp;Change an Artifact to a Non-Reserved Word</h3></div></div></div><p>Suggestion that this artifact's name is the same 
-          as a reserved word in UML (or within one character of one), 
-          which is not permitted.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrUnconventionalOperName"></a>14.4.15.&nbsp;Choose a Better Operation Name</h3></div></div></div><p>Suggestion that an operation has not followed the 
-          naming convention that operation names begin with lower case 
-          letters.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Following the Java and C++ convention most designers 
-            give their constructors the same name as the class, which 
-            begins with an upper case character. In ArgoUML, this will 
-            trigger this critic, unless the constructor is stereotyped 
-            <tt class="literal">&laquo;create&raquo;</tt>.</p><p>It is important to remember that critics offer 
-            guidance, and are not always correct. ArgoUML lets you 
-            dismiss the resulting to-do items through the to-do pane 
-            (see <a href="ch13.html" title="Chapter&nbsp;13.&nbsp;The To-Do Pane">Chapter&nbsp;13, <i>The To-Do Pane</i></a>).</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrUnconventionalAttrName"></a>14.4.16.&nbsp;Choose a Better Attribute Name</h3></div></div></div><p>Suggestion that an attribute has not followed the 
-          naming convention that attribute names begin with lower case 
-          letters.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrUnconventionalClassName"></a>14.4.17.&nbsp;Capitalize Class Name</h3></div></div></div><p>Suggestion that a class has not followed the naming 
-          convention that classes begin with upper case letters.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Although not triggering this critic, the same 
-            convention should apply to interfaces.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrUnconventionalPackName"></a>14.4.18.&nbsp;Revise Package Name</h3></div></div></div><p>Suggestion that a package has not followed the naming 
-          convention of using lower case letters with periods used to 
-          indicated sub-packages.</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s03.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch14.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch14s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">14.3.&nbsp;Class Selection&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;14.5.&nbsp;Storage</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

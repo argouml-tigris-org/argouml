@@ -1,54 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>10.5.&nbsp;Configuring Perspectives</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch10.html" title="Chapter&nbsp;10.&nbsp;The Explorer"><link rel="prev" href="ch10s04.html" title="10.4.&nbsp;Perspective Selection"><link rel="next" href="ch10s06.html" title="10.6.&nbsp;Context Sensitive Menu"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">10.5.&nbsp;Configuring Perspectives</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch10s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;10.&nbsp;The Explorer</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch10s06.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e7598"></a>10.5.&nbsp;Configuring Perspectives</h2></div></div></div><p>The explorer is designed to be user configurable, to 
-        allow the designer to view in his or her preferred way.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7603"></a>10.5.1.&nbsp;The Configure Perspectives dialog</h3></div></div></div><p>button&nbsp;1 click on the "Configure 
-          Perspectives" icon (
-          <span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/nav_config.gif" align="middle"></span></span>) 
-          at the top left of the explorer brings up the explorer 
-          perspectives dialog (see 
-          <a href="ch10s05.html#fig.ref.navigator_pane_perspectives" title="Figure&nbsp;10.2.&nbsp;The Configure Perspectives dialog box">Figure&nbsp;10.2, &#8220;The Configure Perspectives dialog box&#8221;</a>).</p><div class="figure-float"><div class="figure"><a name="fig.ref.navigator_pane_perspectives"></a><p class="title"><b>Figure&nbsp;10.2.&nbsp;The Configure Perspectives dialog box</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/navigator_pane_perspectives.png" align="middle" alt="The Configure Perspectives dialog box"></div></div><p></p></div></div><p>The top half of the dialog contains a list of all the 
-          currently defined perspectives and to the right a series of 
-          buttons stacked vertically. Button&nbsp;1 click can be used to 
-          select a perspective. You can select only one perspective at 
-          a time.</p><p>Selecting a perspective reveals a text field above the 
-          list, where the name of the perspective can be edited.</p><p>The lower half of the dialog contains two list areas. 
-          The one on the left, labeled <tt class="literal">
-          Rules&nbsp;Library</tt>, contains the list of available rules 
-          that may be used to create the perspective. The one on the 
-          right, labeled <tt class="literal">Selected&nbsp;Rules</tt> contains the 
-          actual rules chosen for the perspective that has been 
-          selected in the list of perspectives at the top. In both 
-          lists, you can select only one rule at a time.</p><p>Separating the two areas in the lower half of the 
-          dialog are buttons labeled <tt class="literal">&gt;&gt;</tt> and 
-          <tt class="literal">&lt;&lt;</tt>. The first of these transfers the 
-          rule selected in the library on the left to the list of rules 
-          on the right&#8212;i.e. it adds a rule to the perspective. The 
-          second one transfers the rule selected on the right to the 
-          library list on the left&#8212;i.e. it removes a rule from the 
-          perspective.</p><p>If you hover the mouse over the horizontal line that 
-          seperates the two halves of the dialog, then you see it 
-          change shape, to indicate that you can grab this line and 
-          drag it up or down.</p><p>All three titles of the lists show the number of 
-          items in the list. ArgoUML V0.20 has 8 default perspectives, 
-          and 68 rules in the library to build perspectives from.</p><p>The buttons at the top right are explained as 
-          follows:</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">New</tt>. This creates a new 
-              perspective from scratch with no rules selected, with an 
-              automatically generated name.</p></li><li><p><tt class="literal">Remove</tt>. This removes the 
-              selected perspective.</p></li><li><p><tt class="literal">Duplicate</tt>. This creates a copy 
-              the selected perspective so it can be used as the basis 
-              of a new perspective. The new one is named "Copy 
-              of" followed by the original name.</p></li><li><p><tt class="literal">Move Up</tt>. This moves the selected 
-              perspective one place up in the list. This button is 
-              downlighted for the topmost perspective.</p></li><li><p><tt class="literal">Move Down</tt>. This moves the 
-              selected perspective one place down in the list. This 
-              button is downlighted for the last perspective.</p></li><li><p><tt class="literal">Restore Defaults</tt>. This restores 
-              all perspectives and their selected rules to the build-in 
-              defaults of ArgoUML.</p></li></ul></div><p>At the very bottom right is a button labeled <tt class="literal">
-          OK</tt> to be used when all changes are complete. 
-          button&nbsp;1 click on this button will close the dialog window. 
-          The changes are saved when you exit ArgoUML (or inmediately 
-          by activating the menuitem File-&gt;Save Configuration) in 
-          the <tt class="literal">argo.user.properties</tt> file.</p><p>Then there is the <tt class="literal">Cancel</tt> button, 
-          which cancels all changes made in the dialog. Pressing the 
-          dialog close icon (usually at the top right corner) has the 
-          same effect as pressing the cancel button.</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch10s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch10.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch10s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">10.4.&nbsp;Perspective Selection&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;10.6.&nbsp;Context Sensitive Menu</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

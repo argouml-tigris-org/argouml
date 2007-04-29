@@ -1,78 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>19.8.&nbsp;Transition</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch19.html" title="Chapter&nbsp;19.&nbsp;Statechart Diagram Artifact Reference"><link rel="prev" href="ch19s07.html" title="19.7.&nbsp;Stub State"><link rel="next" href="ch19s09.html" title="19.9.&nbsp;Event"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">19.8.&nbsp;Transition</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch19s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;19.&nbsp;Statechart Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch19s09.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.transition_state"></a>19.8.&nbsp;Transition</h2></div></div></div><p>A transition is a directed relation between a source 
-        state (any kind, e.g. composite state) and a destination state 
-        (any kind, e.g. composite state). Within the UML metamodel, 
-        <tt class="literal">Transition</tt> is a sub-class of <tt class="literal">
-        ModelElement</tt>.</p><p>A transition is represented on a statechart diagram in 
-        ArgoUML as a line with arrow connecting the source to the 
-        destination state. Next to this line is a string containing the 
-        following three parts: The trigger event (e.g. a Call Event), 
-        which may have parameters between brackets <tt class="literal">
-        ()</tt>. Next follows (if any) the guard in square 
-        brackets (<tt class="literal">[]</tt>). Finally, if there is an 
-        effect (e.g. Call Action) defined, a slash (
-        <tt class="literal">/</tt>) followed by the expression of the 
-        action.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e22555"></a>19.8.1.&nbsp;Transition Details Tabs</h3></div></div></div><p>The details tabs that are active for transitions are as 
-          follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See 
-                <a href="ch19s08.html#s2.ref.transition_property_toolbar" title="19.8.2.&nbsp;Transition Property Toolbar">Section&nbsp;19.8.2, &#8220;Transition Property Toolbar&#8221;</a> 
-                and <a href="ch19s08.html#s2.ref.transition_property_fields" title="19.8.3.&nbsp;Property Fields For Transition">Section&nbsp;19.8.3, &#8220;Property Fields For Transition&#8221;</a> 
-                below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Presentation</tt></span></dt><dd><p>Standard tab. The values for the bounds of the 
-                transition are downlighted, since the position of the 
-                transition is defined by its end points.</p></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><p>Standard tab.  In the UML metamodel, <tt class="literal">
-                Transition</tt> has no stereotypes defined by default.
-                </p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel, <tt class="literal">
-                Transition</tt> has no standard tagged 
-                values defined.</p></dd><dt><span class="term"><tt class="literal">Checklist</tt></span></dt><dd><p>Standard tab for a transition.</p></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.transition_property_toolbar"></a>19.8.2.&nbsp;Transition Property Toolbar</h3></div></div></div><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> 
-              <tt class="literal">Go up</tt></span></dt><dd><p>Navigate up in the hierarchy to the parent state 
-                machine.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stereotype.gif" align="middle"></span></span> 
-              <tt class="literal">New Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e22646"></a><a class="indexterm" name="d0e22649"></a><a class="indexterm" name="d0e22652"></a><p>This creates a new Stereotype (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>) for the selected 
-                transition, navigating immediately to the properties 
-                tab for that stereotype.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span> 
-              <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the transition from the model.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model 
-                  <span class="emphasis"><em>not</em></span> just the diagram. To delete 
-                  a transition from the diagram, but keep it within the 
-                  model, use the main menu <tt class="literal">Remove From 
-                  Diagram</tt> (or press the Delete key).</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.transition_property_fields"></a>19.8.3.&nbsp;Property Fields For Transition</h3></div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><p>Text box. The name of the transition. By 
-                convention transition names start with a lower case 
-                letter and use bumpy caps to divide words within the 
-                name.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce this naming 
-                  convention.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">StateMachine</tt></span></dt><dd><p>Text box. Shows the name of the parent 
-                StateMachine for the transition.</p><p>Button&nbsp;1 double-click navigates to the 
-                StateMachine shown.</p></dd><dt><span class="term"><tt class="literal">State</tt></span></dt><dd><p>Text box. Shows the name of the parent State in 
-                case of an internal transition.</p><p>Button&nbsp;1 double-click navigates to the State 
-                shown.</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Text box. Shows the source state for the 
-                transition.</p><p>Button&nbsp;1 double-click navigates to the selected 
-                entry.</p></dd><dt><span class="term"><tt class="literal">Target</tt></span></dt><dd><p>Text box. Shows the target state for the 
-                transition.</p><p>Button&nbsp;1 double-click navigates to the selected 
-                entry.</p></dd><dt><span class="term"><tt class="literal">Trigger</tt></span></dt><dd><p>Text box. Shows the trigger event (if any) which 
-                invokes this transition.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>UML does not require there to be a trigger, 
-                  e.g. when a guard is defined. In this case, 
-                  the transition is taken 
-                  immediately if the guard is true.</p></td></tr></table></div><p>Button&nbsp;1 double-click navigates to the selected 
-                entry, button&nbsp;2 gives a pop up menu with three 
-                entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Select - Add...</tt>. 
-                    This Add an existing trigger 
-                    event. A sub-menu opens with 4 choices: Call Event, 
-                    Change Event, Signal Event, Time Event.</p></li><li><p><tt class="literal">New</tt>. Add a new trigger 
-                    event. A sub-menu opens with 4 choices: Call Event, 
-                    Change Event, Signal Event, Time Event.</p></li><li><p><tt class="literal">Delete From Model</tt>. Delete 
-                    the trigger event from the model. This feature is 
-                    always downlighted in the current version of 
-                    ArgoUML.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Guard</tt></span></dt><dd><p>Text box. Shows the name of a guard (if any). The 
-                expression of a guard must be true before this 
-                transition can be taken.</p><p>Button&nbsp;1 double-click navigates to the selected 
-                entry, button&nbsp;2 gives a pop up menu with one 
-                entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">New</tt>. Add a new 
-                    guard.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Effect</tt></span></dt><dd><p>Text box. Shows the action (if any) to be invoked 
-                as this transition is taken.</p><p>Button&nbsp;1 double-click navigates to the selected 
-                action, button&nbsp;2 gives a pop up menu with two 
-                entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">New</tt>. Add a new Effect 
-                    (action) of a certain kind. This menu has the 
-                    following submenus to select the kind of action: 
-                    Call Action, Create Action, Destroy Action, Return 
-                    Action, Send Action, Terminate Action, 
-                    Uninterpreted Action.</p></li><li><p><tt class="literal">Delete From Model</tt>. Delete 
-                    the selected action from the model. 
-                    </p></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch19s07.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch19.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch19s09.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">19.7.&nbsp;Stub State&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;19.9.&nbsp;Event</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

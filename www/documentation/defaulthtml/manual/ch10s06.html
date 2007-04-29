@@ -1,37 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>10.6.&nbsp;Context Sensitive Menu</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch10.html" title="Chapter&nbsp;10.&nbsp;The Explorer"><link rel="prev" href="ch10s05.html" title="10.5.&nbsp;Configuring Perspectives"><link rel="next" href="ch11.html" title="Chapter&nbsp;11.&nbsp;The Editing Pane"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">10.6.&nbsp;Context Sensitive Menu</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch10s05.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;10.&nbsp;The Explorer</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch11.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e7693"></a>10.6.&nbsp;Context Sensitive Menu</h2></div></div></div><p>Button&nbsp;2 Click over any selected artifact in the main 
-        area of the explorer will cause a pop-up menu to appear.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7698"></a>10.6.1.&nbsp;Add to Diagram</h3></div></div></div><p>This entry on the pop-up menu appears for any artifact 
-          that could be added to the diagram in the editing pane.</p><p>The item can be placed in a diagram by moving the 
-          cursor to the editing pane or a spawned editing pane window 
-          (where it will appear as a cross) and clicking 
-          button&nbsp;1.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>This menu entry only appears as not grayed out, if 
-            the diagram in the editor pane allows to contain the 
-            artifact, and the artifact is not present yet in the 
-            diagram. ArgoUML will not let you place more than one copy 
-            of any particular artifact on a diagram.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7708"></a>10.6.2.&nbsp;<span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/delete_from_model.gif" align="middle"></span></span> 
-          Delete From Model</h3></div></div></div><p>This entry on the pop-up menu appears for any artifact 
-          that could be deleted from the model.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This deletes the artifact from the model completely, 
-            not just from the diagram. To remove the artifact just from 
-            the diagram, use the edit menu (see 
-            <a href="ch09s04.html#s2.menu_edit_remove_from_diagram" title="9.4.2.&nbsp; &#xA;          Remove From Diagram">Section&nbsp;9.4.2, &#8220;<span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/remove_from_diagram.gif" align="middle"></span></span> 
-          Remove From Diagram&#8221;</a>).</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>You can delete a diagram from the model. Depending on 
-            the type of diagram, that might delete all artifacts shown 
-            on the diagram. To illustrate the differences, consider the 
-            following examples:</p><div class="itemizedlist"><ul type="disc"><li><p>Deleting a class diagram does not delete any 
-                artifact drawn on it. All artifacts that were shown on 
-                the diagram remain present in the model. This because a 
-                class diagram does not "map" on any artifact 
-                according the UML standard V1.4.</p></li><li><p>Deleting a statechart diagram also deletes the 
-                statemachine it represents, and hence also all the 
-                artifacts owned by the statemachine. This because a 
-                statechart diagram does "map" into a 
-                StateMachine according the UML standard V1.4.</p></li></ul></div></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7732"></a>10.6.3.&nbsp;Set Source Path... (To be written)</h3></div></div></div><p>This entry on the pop-up menu ...</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7737"></a>10.6.4.&nbsp;Add Package</h3></div></div></div><p>This entry on the pop-up menu is available whenever an 
-          artifact is selected that may contain a package, e.g. a 
-          package. After activating this menu the artifact will own a 
-          new package.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e7742"></a>10.6.5.&nbsp;Add All Classes in Namespace</h3></div></div></div><p>This entry on the pop-up menu is available for Class 
-          Diagrams only. Activating this menu-item will add all classes 
-          in the current namespace to the diagram. They will be located 
-          at the top left corner&#8212;obviously a perfect occasion to use 
-          the &#8220;<span class="quote">Arrange-&gt;Layout</span>&#8221; function in the 
-          menu.</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch10s05.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch10.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch11.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">10.5.&nbsp;Configuring Perspectives&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;11.&nbsp;The Editing Pane</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

@@ -1,121 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Appendix&nbsp;D.&nbsp;The C++ Module</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="index.html" title="ArgoUML User Manual"><link rel="prev" href="apcs02.html" title="C.2.&nbsp;Commercial Tools (To be written)"><link rel="next" href="ape.html" title="Appendix&nbsp;E.&nbsp;Limits and Shortcomings"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Appendix&nbsp;D.&nbsp;The C++ Module</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apcs02.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ape.html">Next</a></td></tr></table><hr></div><div class="appendix" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="app.cppmod"></a>Appendix&nbsp;D.&nbsp;The C++ Module</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="apd.html#d0e28495">D.1. Modeling for C++</a></span></dt><dd><dl><dt><span class="sect2"><a href="apd.html#d0e28552">D.1.1. <tt class="literal">Class</tt> tagged values</a></span></dt><dt><span class="sect2"><a href="apd.html#d0e28696">D.1.2. <tt class="literal">Attribute</tt> tagged values</a></span></dt><dt><span class="sect2"><a href="apd.html#d0e28791">D.1.3. <tt class="literal">Parameters</tt></a></span></dt><dt><span class="sect2"><a href="apd.html#d0e28856">D.1.4. Preserved sections</a></span></dt></dl></dd></dl></div><p>The ArgoUML C++ Module (C++ Mod.) provides C++ code 
-    generation functionalities and C++ notation within ArgoUML. It 
-    works the same way as the other languages' modules.</p><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e28495"></a>D.1.&nbsp;Modeling for C++</h2></div></div></div><p>The C++ programming language has constructs that 
-      aren't contained by default in UML. Examples are pointers, 
-      global functions and variables, references and operator 
-      overloading. To enable us to apply these constructs in our models 
-      and be capable of taking advantage of it for code generation and 
-      C++ notation in UML diagrams, the C++ module uses conventions in 
-      the use of the extension features of UML, tagged values and 
-      stereotypes.</p><p>Since UML and C++ are object oriented, there is an obvious 
-      correspondence between the UML model elements and C++ structural 
-      constructs, e.g, the UML <tt class="literal">Class</tt> is related to 
-      the C++ <tt class="literal">class</tt>. These obvious relations will 
-      not be described here, since it is assumed that an ArgoUML user 
-      that wants to model for C++ has basic knowledge of both C++ and 
-      UML.</p><p>Tagged values are one of the main means by which we can 
-      define code generation behavior. They have a name &#8211; the tag &#8211; and 
-      a value, and are applied to model elements.</p><p>The tagged values in use for the C++ module have two 
-      categories:</p><div class="itemizedlist"><ul type="disc"><li><p>free format values &#8211; any <tt class="literal">String</tt> is 
-          valid, except the empty <tt class="literal">String</tt></p></li><li><p>formated values &#8211; the value must obey some 
-          restrictions, e.g., be one of <tt class="literal">true</tt> or 
-          <tt class="literal">false</tt> (abbreviated to <tt class="literal">true || 
-          false</tt>)</p></li></ul></div><p>For <tt class="literal">Boolean</tt> tagged values, only the 
-      values "<tt class="literal">true</tt>" or "
-      <tt class="literal">false</tt>" are applicable. If a <tt class="literal">
-      Boolean</tt> tagged value does not exist or is invalid for 
-      one model element, a default value is assumed by the code 
-      generator. In the bellow documentation the default value is 
-      marked.</p><p>Free format tagged values are only significant if present 
-      and if the value isn't an empty <tt class="literal">String</tt>. 
-      When the value must follow some sort of format, that is 
-      explicitly stated. In this case, there is the chance that the 
-      value is invalid. If the value is invalid, no assumptions are 
-      made; the generator will trace the problem and ignore the tagged 
-      value.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e28552"></a>D.1.1.&nbsp;<tt class="literal">Class</tt> tagged values</h3></div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">constructor</tt></span></dt><dd><p><tt class="literal">true</tt> &#8211; generates a default 
-              constructor for the <tt class="literal">class</tt>.</p><p><tt class="literal">false</tt> (default) &#8211; no default 
-              constructor is generated, unless it is explicitly modeled 
-              with the <tt class="literal">&laquo;create&raquo;</tt> stereotype.</p></dd><dt><span class="term"><tt class="literal">header_incl</tt></span></dt><dd><p>Name of the file to include in the header.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>If we desire to have multiple headers included 
-                this way, just use multiple tagged values with <tt class="literal">
-                header_incl</tt> as the tag.</p><p>Other tagged values used for C++ modeling may 
-                also be used this way. This note won't be repeated 
-                in those cases.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">source_incl</tt></span></dt><dd><p>Name of the file to include in the source (
-              <tt class="literal">.cpp</tt> file).</p></dd><dt><span class="term"><tt class="literal">typedef_public</tt></span></dt><dd><p><tt class="literal">&lt;source type&gt; 
-              &lt;type_name&gt;</tt> &#8211; creates <tt class="literal">
-              typedef</tt> line in the public area of the <tt class="literal">
-              class</tt> with <tt class="literal">typedef &lt;source type&gt; 
-              &lt;type name&gt;</tt>.</p></dd><dt><span class="term"><tt class="literal">typedef_protected</tt></span></dt><dd><p>Same as <tt class="literal">typedef_public</tt>, but, in 
-              <tt class="literal">protected</tt> area.</p></dd><dt><span class="term"><tt class="literal">typedef_private</tt></span></dt><dd><p>Same as <tt class="literal">typedef_public</tt>, but, in 
-              the <tt class="literal">private</tt> area.</p></dd><dt><span class="term"><tt class="literal">typedef_global_header</tt></span></dt><dd><p>Same as <tt class="literal">typedef_public</tt>, but, in 
-              the global area of the header.</p></dd><dt><span class="term"><tt class="literal">typedef_global_source</tt></span></dt><dd><p>Same as <tt class="literal">typedef_global_source</tt>, 
-              but, in the source file.</p></dd><dt><span class="term"><tt class="literal">TemplatePath</tt></span></dt><dd><p><tt class="literal">Directory</tt> &#8211; will search in the 
-              specified directory for the template files 
-              "header_template" and "cpp_template" 
-              which are placed in top of the corresponding file. The 
-              following tags in the template file are replaced by model 
-              values: |FILENAME|, |DATE|, |YEAR|, |AUTHOR|, |EMAIL|. If 
-              no such tag is specified, the templates are searched in 
-              the subdirectory of the root directory for the code 
-              generation.</p></dd><dt><span class="term"><tt class="literal">email</tt></span></dt><dd><p><tt class="literal">name@domain.country</tt> &#8211; replaces 
-              the tag |EMAIL| of the template file.</p></dd><dt><span class="term"><tt class="literal">author</tt></span></dt><dd><p><tt class="literal">name</tt> &#8211; replaces the tag |AUTHOR| 
-              of the template file.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>You may simply use the Author property in the 
-                documentation property panel.</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e28696"></a>D.1.2.&nbsp;<tt class="literal">Attribute</tt> tagged values</h3></div></div></div><p>UML <tt class="literal">Attributes</tt> are mapped to <tt class="literal">
-        class member variables</tt>.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">pointer</tt></span></dt><dd><p><tt class="literal">true</tt> &#8211; the type of the member 
-              variable will be a pointer to the attribute type.</p><p>For example, if you have the UML <tt class="literal">
-              Attribute</tt>: <tt class="literal">name: 
-              std::string</tt>, with the <tt class="literal">
-              pointer</tt> tagged value set to true, the generated 
-              member variable would be: <tt class="literal">std::string* 
-              name;</tt></p><p><tt class="literal">false</tt> (default) &#8211; no pointer 
-              modifier is applied.</p></dd><dt><span class="term"><tt class="literal">reference</tt></span></dt><dd><p><tt class="literal">true</tt> &#8211; the type of the member 
-              variable will be a reference to the attribute type.</p><p><tt class="literal">false</tt> (default) &#8211; no reference 
-              modifier is applied.</p></dd><dt><span class="term"><tt class="literal">usage</tt></span></dt><dd><p><tt class="literal">header</tt> &#8211; will lead for class 
-              types to a pre-declaration in the header, and the include 
-              of the remote class header in the header of the generated 
-              class.</p></dd><dt><span class="term"><tt class="literal">MultiplicityType</tt></span></dt><dd><p><tt class="literal">list || slist || vector || map || stack || 
-              stringmap</tt> &#8211; will define a multiplicity as the 
-              corresponding STL container, if the <tt class="literal">
-              Multiplicity</tt> range of the attribute is variable 
-              (for fixed size ranges this setting is ignored).</p></dd><dt><span class="term"><tt class="literal">set</tt></span></dt><dd><p><tt class="literal">private || protected || public</tt> &#8211; 
-              creates a simple function to set the attribute by a 
-              function (call by reference is used for class-types, else 
-              call by value); place the function in the given 
-              visibility area.</p></dd><dt><span class="term"><tt class="literal">get</tt></span></dt><dd><p><tt class="literal">private || protected || public</tt> &#8211; 
-              as for <tt class="literal">set</tt>.</p></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e28791"></a>D.1.3.&nbsp;<tt class="literal">Parameters</tt></h3></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e28795"></a>D.1.3.1.&nbsp;Variable passing semantics</h4></div></div></div><p>If a <tt class="literal">Parameter</tt> for an <tt class="literal">
-          Operation</tt> is marked as <tt class="literal">out</tt> or 
-          <tt class="literal">inout</tt> the variable will be passed by 
-          reference (default) or pointer (needs tagged value <tt class="literal">
-          pointer</tt> &#8211; see above), otherwise by value.</p><p>Return values in UML are simply <tt class="literal">
-          Parameters</tt> marked as <tt class="literal">return</tt>, 
-          therefore everything here applies to them, except where 
-          explicitly noted.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>Note that UML allows multiple return values. This is 
-            possible to support in C++ as out parameters, but, 
-            currently the generator doesn't supports it.</p><p>This problem is being handled in 
-            <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=3553" target="_top">
-            issue #3553 &#8211; handle multiple return 
-            parameters</a>.</p></td></tr></table></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e28831"></a>D.1.3.2.&nbsp;<tt class="literal">Parameter</tt> tagged values</h4></div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">pointer</tt></span></dt><dd><p><tt class="literal">true || false</tt> (default) &#8211; same 
-                as for <tt class="literal">Attributes</tt>.</p></dd><dt><span class="term"><tt class="literal">reference</tt></span></dt><dd><p>ditto</p></dd></dl></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e28856"></a>D.1.4.&nbsp;Preserved sections</h3></div></div></div><p>With each code generation, special comments around the 
-        member function definitions will be generated like this:</p><pre class="programlisting">
-  function Testclass::Testclass()
-  // section -64--88-0-40-76f2e8:ec37965ae0:-7fff begin
- {
- }
-  // section -64--88-0-40-76f2e8:ec37965ae0:-7fff end
-      </pre><p>All code you put within the "begin" and 
-        "end" lines will be preserved when you generate the 
-        code again. Please do not change anything within these lines 
-        because the sections are recognized by this comment syntax. As 
-        the curly braces are placed within the preserved area, 
-        attribute initializers are preserved on constructors.</p><p>This also works if you change Method Names after the 
-        generation.</p><pre class="programlisting">
-  void newOperation(std::string test = "fddsaffa")
-  // section 603522:ec4c7ff768:-7ffc begin
- {
- }
-  // section 603522:ec4c7ff768:-7ffc end
-      </pre><p>If you delete an Operation in the model. The next time 
-        the class is generated, the lost code &#8211; i.e., the whole member 
-        function definition &#8211; will be added as comment to the end of 
-        the file.</p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apcs02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ape.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">C.2.&nbsp;Commercial Tools (To be written)&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Appendix&nbsp;E.&nbsp;Limits and Shortcomings</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

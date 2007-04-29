@@ -1,98 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>16.9.&nbsp;Extend</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch16.html" title="Chapter&nbsp;16.&nbsp;Use Case Diagram Artifact Reference"><link rel="prev" href="ch16s08.html" title="16.8.&nbsp;Generalization"><link rel="next" href="ch16s10.html" title="16.10.&nbsp;Include"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">16.9.&nbsp;Extend</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch16s08.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;16.&nbsp;Use Case Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch16s10.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.extend"></a>16.9.&nbsp;Extend</h2></div></div></div><a class="indexterm" name="d0e15341"></a><p>Extend is a relationship between two use cases. Where A 
-        extends B, it means A describes more specific behavior and B 
-        the general version of that behavior.</p><p>In many respects extend is like generalization. However 
-        the key difference is that the extended use case defines 
-        <span class="emphasis"><em>extension points</em></span> (see 
-        <a href="ch16s04.html" title="16.4.&nbsp;Extension Point">Section&nbsp;16.4, &#8220;Extension Point&#8221;</a>), which are the only 
-        places where its behavior may be extended. The extending use 
-        case must define at which of these extension points it adds 
-        behavior.</p><p>This makes the use of extend more tightly controlled than 
-        general extension, and it is thus preferred wherever 
-        possible.</p><p>Examples for a travel agent sales system might be the use 
-        case for paying for a ticket, which has an extension point in 
-        the specification of the payment. Extending use cases may then 
-        extend at this point to pay by cash, credit card etc.</p><p>Within the UML metamodel, <tt class="literal">Extend</tt> is a 
-        sub-class of <tt class="literal">Relationship</tt>.</p><p>An extend relationship is represented as a dotted link 
-        with an open arrow head and a label <tt class="literal">
-        &laquo;extend&raquo;</tt>. If a condition is defined, it is shown 
-        under the <tt class="literal">&laquo;extend&raquo;</tt> label (see 
-        <a href="ch16.html#fig.ref.use_case_diagram" title="Figure&nbsp;16.1.&nbsp;Possible artifacts on a use case diagram.">Figure&nbsp;16.1, &#8220;Possible artifacts on a use case diagram.&#8221;</a>).</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e15375"></a>16.9.1.&nbsp;Extend Details Tabs</h3></div></div></div><a class="indexterm" name="d0e15378"></a><a class="indexterm" name="d0e15381"></a><p>The details tabs that are active for extend 
-          relationships are as follows.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>There is no source tab, since there is no source code 
-            that could be generated for an extend relationship.</p></td></tr></table></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See 
-                <a href="ch16s09.html#s2.ref.extend_property_toolbar" title="16.9.2.&nbsp;Extend Property Toolbar">Section&nbsp;16.9.2, &#8220;Extend Property Toolbar&#8221;</a> and 
-                <a href="ch16s09.html#s2.ref.extend_property_fields" title="16.9.3.&nbsp;Property Fields For Extend">Section&nbsp;16.9.3, &#8220;Property Fields For Extend&#8221;</a> 
-                below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab. See 
-                <a href="ch12s04.html" title="12.4.&nbsp;Documentation Tab">Section&nbsp;12.4, &#8220;Documentation Tab&#8221;</a>.</p></dd><dt><span class="term"><tt class="literal">Presentation</tt></span></dt><dd><p>Standard tab</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The values for the bounds are downlighted, 
-                  since the extend is tied to a particular pair of use 
-                  cases.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab. You would not expect to generate 
-                any code for an extend relationship so this is 
-                empty.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel, <tt class="literal">
-                Extend</tt> has the following standard tagged 
-                values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the 
-                    superclass, <tt class="literal">ModelElement</tt>). 
-                    Values <tt class="literal">true</tt>, meaning the extend 
-                    relationship is redundant&#8212;it can be formally 
-                    derived from other elements, or <tt class="literal">
-                    false</tt> meaning it cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived extend relationships could have 
-                      their value in analysis to introduce useful names 
-                      or concepts.</p></td></tr></table></div></li></ul></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.extend_property_toolbar"></a>16.9.2.&nbsp;Extend Property Toolbar</h3></div></div></div><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> 
-              <tt class="literal">Go up</tt></span></dt><dd><p>Navigate up through the package structure of the 
-                model. For a extend this will be the package containing 
-                the extend.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/extension_point.gif" align="middle"></span></span> 
-              <tt class="literal">New extension point</tt></span></dt><dd><a class="indexterm" name="d0e15490"></a><a class="indexterm" name="d0e15493"></a><a class="indexterm" name="d0e15496"></a><p>This creates a new use case extension point 
-                within the namespace of the current extend 
-                relationship, with the current extend relationship as 
-                its first extending relationship.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While it is perfectly valid to create extension 
-                  points from an extend relationship, the created 
-                  extension point will have no associated use case (it 
-                  can subsequently be set up).</p><p>It would be more usual to instead create the 
-                  extension point within a use case and subsequently 
-                  link to it from an extend relationship (see 
-                  <a href="ch16s09.html#s2.ref.extend_property_fields" title="16.9.3.&nbsp;Property Fields For Extend">Section&nbsp;16.9.3, &#8220;Property Fields For Extend&#8221;</a> 
-                  below).</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stereotype.gif" align="middle"></span></span> 
-              <tt class="literal">New Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e15520"></a><a class="indexterm" name="d0e15523"></a><a class="indexterm" name="d0e15526"></a><p>This creates a new Stereotype (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>) for the selected 
-                extent relationship, navigating immediately to the 
-                properties tab for that stereotype.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span> 
-              <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the selected extend relationship 
-                from the model.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model 
-                  <span class="emphasis"><em>not</em></span> just the diagram. To delete 
-                  a extend from the diagram, but keep it within the 
-                  model, use the main menu <tt class="literal">Remove From 
-                  Diagram</tt> (or press the Delete key).</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.extend_property_fields"></a>16.9.3.&nbsp;Property Fields For Extend</h3></div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><a class="indexterm" name="d0e15565"></a><a class="indexterm" name="d0e15568"></a><p>Text box. The name of the extend 
-                relationship.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is quite common to leave extends unnamed in 
-                  use case analysis.</p></td></tr></table></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce any naming convention 
-                  for extend relationships.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e15586"></a><a class="indexterm" name="d0e15589"></a><p>Drop down selector. ArgoUML does not provide any 
-                stereotypes by default.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Stereotyping does not have great value on an 
-                  extend relationship.</p></td></tr></table></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>There is no representation of the stereotype of 
-                  an extend relationship on the diagram.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><a class="indexterm" name="d0e15620"></a><a class="indexterm" name="d0e15623"></a><p>Text box. Records the namespace for the extend 
-                relationship. This is the package hierarchy.</p><p>Button&nbsp;1 Double Click on the entry will navigate 
-                to the package defining this namespace (or the model 
-                for the top level namespace).</p></dd><dt><span class="term"><tt class="literal">Base Use Case</tt></span></dt><dd><a class="indexterm" name="d0e15637"></a><a class="indexterm" name="d0e15640"></a><p>Drop down selector. Shows the use case that is 
-                being extended by this extend relationship. Button&nbsp;1 
-                click on this entry will give a drop down menu of all 
-                available use cases (and an empty entry) which may be 
-                selected by button&nbsp;1 click.</p></dd><dt><span class="term"><tt class="literal">Extension</tt></span></dt><dd><a class="indexterm" name="d0e15652"></a><a class="indexterm" name="d0e15655"></a><p>Drop down selector. Show the use case that is 
-                doing the extending through this extend relationship. 
-                Button&nbsp;1 click on this entry will give a drop down menu 
-                of all available use cases (and an empty entry) which 
-                may be selected by button&nbsp;1 click.</p></dd><dt><span class="term"><tt class="literal">Extension Points</tt></span></dt><dd><a class="indexterm" name="d0e15667"></a><a class="indexterm" name="d0e15670"></a><p>Text box. If this use case is, or can be 
-                extended, this field lists the extension points for the 
-                use case.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Extension points are listed by their location 
-                  point rather than their name.</p></td></tr></table></div><p>Where an extension point has been created, 
-                button&nbsp;1 double click will navigate to that 
-                relationship. Button&nbsp;2 gives a pop up menu with two 
-                entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Add</tt>. The &#8220;<span class="quote">Ad/Remove 
-                    ExtensionPoints</span>&#8221; window opens. In this 
-                    window it is possible to build a list of extension 
-                    points.</p></li><li><p><tt class="literal">New</tt>. Add a new extension 
-                    point in the list and navigate to it. The current 
-                    extend relationship is added as the first in list 
-                    of extending relationships of the new extension 
-                    point.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Condition</tt></span></dt><dd><p>Text area. Multi-line textual description of any 
-                condition attached to the extend relationship.</p></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch16s08.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch16.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch16s10.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">16.8.&nbsp;Generalization&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;16.10.&nbsp;Include</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

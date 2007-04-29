@@ -1,56 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>22.3.&nbsp;Node Instance</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch22.html" title="Chapter&nbsp;22.&nbsp;Deployment Diagram Artifact Reference"><link rel="prev" href="ch22s02.html" title="22.2.&nbsp;Node"><link rel="next" href="ch22s04.html" title="22.4.&nbsp;Component"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">22.3.&nbsp;Node Instance</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch22s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;22.&nbsp;Deployment Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch22s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.node_instance"></a>22.3.&nbsp;Node Instance</h2></div></div></div><p>A node instance is an instance of a node where component 
-        instances (see <a href="ch22s05.html" title="22.5.&nbsp;Component Instance">Section&nbsp;22.5, &#8220;Component Instance&#8221;</a>) may 
-        reside. In the UML metamodel <tt class="literal">NodeInstance</tt> is 
-        a sub-class of <tt class="literal">Instance</tt> and is specifically 
-        an instance that is derived from a node.</p><p>A node instance is represented on a deployment diagram in 
-        ArgoUML as a three dimensional box labeled with the node 
-        instance name (if any) and node type, separated by a colon (
-        <tt class="literal">:</tt>).</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is the presence of the colon (<tt class="literal">:</tt>) 
-          and the underlining of the name and type that distinguishes a 
-          node instance from a node.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e25879"></a>22.3.1.&nbsp;Node Instance Details Tabs</h3></div></div></div><p>The details tabs that are active for node instances are 
-          as follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See 
-                <a href="ch22s03.html#s2.ref.node_instance_property_toolbar" title="22.3.2.&nbsp;Node Instance Property Toolbar">Section&nbsp;22.3.2, &#8220;Node Instance Property Toolbar&#8221;</a> 
-                and 
-                <a href="ch22s03.html#s2.ref.node_instance_property_fields" title="22.3.3.&nbsp;Property Fields For Node Instance">Section&nbsp;22.3.3, &#8220;Property Fields For Node Instance&#8221;</a> 
-                below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Presentation</tt></span></dt><dd><p>Standard tab. The <tt class="literal">Bounds:</tt> 
-                field defines the bounding box for the node instance on 
-                the diagram.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>Beware that in the current release of ArgoUML, 
-                  the bounding box just refers to the front face of the 
-                  cube. This means that the three dimensional top and 
-                  side may be ignored, for example when determining the 
-                  limits of a diagram for saving graphics.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab, containing just the name of the 
-                node instance.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A node instance should not generate any code, 
-                  so having this tab active is probably a 
-                  mistake.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt class="literal">Element</tt> metaclass 
-                  from which all other artifacts are derived includes 
-                  the tagged element <tt class="literal">documentation</tt> 
-                  which is handled by the <span class="emphasis"><em>documentation 
-                  tab</em></span> under ArgoUML</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Checklist</tt></span></dt><dd><p>Standard tab for an Instance.</p></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.node_instance_property_toolbar"></a>22.3.2.&nbsp;Node Instance Property Toolbar</h3></div></div></div><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> 
-              <tt class="literal">Go up</tt></span></dt><dd><p>Navigate up through the package structure.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stereotype.gif" align="middle"></span></span> 
-              <tt class="literal">New Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e25985"></a><a class="indexterm" name="d0e25988"></a><a class="indexterm" name="d0e25991"></a><p>This creates a new Stereotype (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>) for the selected 
-                node instance, navigating immediately to the properties 
-                tab for that stereotype.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span> 
-              <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the node instance from the 
-                model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model 
-                  <span class="emphasis"><em>not</em></span> just the diagram. To delete 
-                  an node instance from the diagram, but keep it within 
-                  the model, use the main menu <tt class="literal">Remove From 
-                  Diagram</tt> (or press the Delete key).</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.node_instance_property_fields"></a>22.3.3.&nbsp;Property Fields For Node Instance</h3></div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><p>Text box. The name of the node instance. By 
-                convention node instance names start with a lower case 
-                letter and use bumpy caps to divide words within the 
-                name.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce this naming 
-                  convention.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><p>Drop down selector. Node instance has no 
-                stereotypes by default in the UML standard.</p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>Drop down selector. Records the namespace for the 
-                node instance. This is the package hierarchy.</p></dd><dt><span class="term"><tt class="literal">Stimuli sent</tt></span></dt><dd><p>(To Be Written).</p></dd><dt><span class="term"><tt class="literal">Stimuli Received</tt></span></dt><dd><p>(To Be Written).</p></dd><dt><span class="term"><tt class="literal">Residents</tt></span></dt><dd><p>Text box. Lists any residents (see 
-                <a href="ch22s04.html" title="22.4.&nbsp;Component">Section&nbsp;22.4, &#8220;Component&#8221;</a>) designed to be 
-                deployed on this type of node.</p><p>Button&nbsp;1 double click navigates to the selected 
-                entry.</p></dd><dt><span class="term"><tt class="literal">Classifiers</tt></span></dt><dd><p>Text field. A Node instance type can be selected 
-                here.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML V0.18 lists many more items in the 
-                  dropdown list then solely Nodes. Beware to select 
-                  Nodes only.</p></td></tr></table></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch22s02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch22.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch22s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">22.2.&nbsp;Node&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;22.4.&nbsp;Component</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

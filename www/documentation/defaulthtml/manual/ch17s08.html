@@ -1,93 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>17.8.&nbsp;Parameter</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch17.html" title="Chapter&nbsp;17.&nbsp;Class Diagram Artifact Reference"><link rel="prev" href="ch17s07.html" title="17.7.&nbsp;Operation"><link rel="next" href="ch17s09.html" title="17.9.&nbsp;Signal"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">17.8.&nbsp;Parameter</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;17.&nbsp;Class Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch17s09.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.parameter"></a>17.8.&nbsp;Parameter</h2></div></div></div><a class="indexterm" name="d0e18320"></a><p>A parameter is a variable that can be passed. In the UML 
-        metamodel it is a sub-class of <tt class="literal">
-        ModelElement</tt>.</p><p>A parameter is represented within the operation 
-        declaration in the operation compartment of a class as 
-        follows.</p><div class="blockquote"><blockquote class="blockquote"><p><span class="emphasis"><em>name</em></span> <tt class="literal">:</tt> 
-          <span class="emphasis"><em>type</em></span></p></blockquote></div><p><span class="emphasis"><em>name</em></span> is the name of the 
-        parameter.</p><p><span class="emphasis"><em>type</em></span> is the type (UML datatype, 
-        class or interface) of the parameter.</p><p>The exception is any parameter representing a return 
-        value, whose type only is shown at the end of the operation 
-        declaration.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e18350"></a>17.8.1.&nbsp;Parameter Details Tabs</h3></div></div></div><a class="indexterm" name="d0e18353"></a><a class="indexterm" name="d0e18356"></a><p>The details tabs that are active for parameters are as 
-          follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See 
-                <a href="ch17s08.html#s2.ref.parameter_property_toolbar" title="17.8.2.&nbsp;Parameter Property Toolbar">Section&nbsp;17.8.2, &#8220;Parameter Property Toolbar&#8221;</a> and 
-                <a href="ch17s08.html#s2.ref.parameter_property_fields" title="17.8.3.&nbsp;Property Fields For Parameter">Section&nbsp;17.8.3, &#8220;Property Fields For Parameter&#8221;</a> 
-                below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab. See 
-                <a href="ch12s04.html" title="12.4.&nbsp;Documentation Tab">Section&nbsp;12.4, &#8220;Documentation Tab&#8221;</a>.</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab. This contains a declaration for the 
-                parameter.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><a class="indexterm" name="d0e18403"></a><a class="indexterm" name="d0e18406"></a><p>Standard tab. In the UML metamodel, <tt class="literal">
-                Parameter</tt> has the following standard tagged 
-                values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the 
-                    superclass, <tt class="literal">ModelElement</tt>). 
-                    Values <tt class="literal">true</tt>, meaning the 
-                    parameter is redundant&#8212;it can be formally derived 
-                    from other elements, or <tt class="literal">false</tt> 
-                    meaning it cannot.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A derived parameter is a meaningless 
-                      concept.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt class="literal">Element</tt> metaclass 
-                  from which all other artifacts are derived includes 
-                  the tagged element <tt class="literal">documentation</tt> 
-                  which is handled by the <span class="emphasis"><em>documentation 
-                  tab</em></span> under ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.parameter_property_toolbar"></a>17.8.2.&nbsp;Parameter Property Toolbar</h3></div></div></div><a class="indexterm" name="d0e18449"></a><a class="indexterm" name="d0e18452"></a><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> 
-              <tt class="literal">Go up</tt></span></dt><dd><p>Navigate up through the package structure.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/parameter.gif" align="middle"></span></span> 
-              <tt class="literal">New parameter</tt></span></dt><dd><p>This creates a new parameter for the for the same 
-                operation as the current parameter, navigating 
-                immediately to the properties tab for that 
-                parameter.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a convenient way to add a series of 
-                  parameters for the same operation.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/datatype.gif" align="middle"></span></span> 
-              <tt class="literal">New Datatype</tt></span></dt><dd><a class="indexterm" name="d0e18495"></a><a class="indexterm" name="d0e18498"></a><a class="indexterm" name="d0e18501"></a><p>This creates a new Datatype (see 
-                <a href="ch15s03.html" title="15.3.&nbsp;Datatype">Section&nbsp;15.3, &#8220;Datatype&#8221;</a>) in the namespace of 
-                the owner of the operation of the parameter, navigating 
-                immediately to the properties tab for that 
-                datatype.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stereotype.gif" align="middle"></span></span> 
-              <tt class="literal">New Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e18520"></a><a class="indexterm" name="d0e18523"></a><a class="indexterm" name="d0e18526"></a><p>This creates a new Stereotype (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>) for the selected 
-                parameter, navigating immediately to the properties tab 
-                for that stereotype.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span> 
-              <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the parameter from the model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model 
-                  <span class="emphasis"><em>not</em></span> just the diagram. If desired 
-                  the whole operation compartment can be hidden on the 
-                  diagram using the <span class="emphasis"><em>presentation</em></span> 
-                  tab or the button&nbsp;2 pop up menu for the class on the 
-                  diagram.</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.parameter_property_fields"></a>17.8.3.&nbsp;Property Fields For Parameter</h3></div></div></div><a class="indexterm" name="d0e18559"></a><a class="indexterm" name="d0e18562"></a><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><a class="indexterm" name="d0e18573"></a><a class="indexterm" name="d0e18576"></a><p>Text box. The name of the parameter. By 
-                convention, the name of a parameter has a leading lower 
-                case letter, with words separated by &#8220;<span class="quote">bumpy 
-                caps</span>&#8221;.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The ArgoUML critics do not complain about 
-                  parameter names that do not have an initial lower 
-                  case letter.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e18594"></a><a class="indexterm" name="d0e18597"></a><p>Drop down selector. There are no UML standard 
-                stereotypes for <tt class="literal">Parameter</tt>.</p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Owner</tt></span></dt><dd><p>Text box. Records the operation which contains 
-                this parameter.</p><p>Button&nbsp;1 double click on the entry will navigate 
-                to the operation.</p></dd><dt><span class="term"><tt class="literal">Type</tt></span></dt><dd><a class="indexterm" name="d0e18634"></a><a class="indexterm" name="d0e18637"></a><p>Drop down selector. The type of this parameter. 
-                This can be any UML <tt class="literal">Classifier</tt>, 
-                although in practice only <tt class="literal">Class</tt>, 
-                <tt class="literal">DataType</tt>, or <tt class="literal">
-                Interface</tt> make any sense.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>A type must be declared (it can be <tt class="literal">
-                  void</tt>, but this only makes sense for a 
-                  return parameter). By default ArgoUML supplies 
-                  <tt class="literal">int</tt> as the type the first time a 
-                  parameter is created, and thereafter the type of the 
-                  most recently created parameter.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Default Value</tt></span></dt><dd><a class="indexterm" name="d0e18670"></a><a class="indexterm" name="d0e18673"></a><a class="indexterm" name="d0e18678"></a><a class="indexterm" name="d0e18681"></a><p>Text box with drop down. This allows you to set 
-                an initial value for the parameter if desired (this is 
-                optional). The drop down menu provides access to the 
-                common values <tt class="literal">0</tt>, <tt class="literal">
-                1</tt>, <tt class="literal">2</tt>, and <tt class="literal">
-                null</tt>.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>This only makes sense for <tt class="literal">
-                  out</tt> or <tt class="literal">return</tt> 
-                  parameters.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Kind</tt></span></dt><dd><a class="indexterm" name="d0e18714"></a><a class="indexterm" name="d0e18717"></a><p>Radio box, with entries <tt class="literal">out</tt>, 
-                <tt class="literal">in/out</tt>, <tt class="literal">return</tt>, 
-                and <tt class="literal">in</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">out</tt>. The parameter is used 
-                    only to pass values back from the operation.</p></li><li><p><tt class="literal">in/out</tt>. The parameter is 
-                    used both to pass values in and to pass results 
-                    back out of the operation.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is the default for any new 
-                      parameter.</p></td></tr></table></div></li><li><p><tt class="literal">return</tt>. The parameter is a 
-                    return result from the call.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>There is nothing to stop you declaring more 
-                      than one return parameter (some programming 
-                      languages support this concept).</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>The name of the return parameter does not 
-                      appear on the diagram, but it is convenient to 
-                      give it an appropriate name (such as the default 
-                      <tt class="literal">return</tt> to identify it in the 
-                      list of parameters on the operation property 
-                      tab.</p></td></tr></table></div></li><li><p><tt class="literal">in</tt>. The parameter is used 
-                    only to pass values in to the operation.</p></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17s07.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch17.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch17s09.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">17.7.&nbsp;Operation&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;17.9.&nbsp;Signal</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

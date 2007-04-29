@@ -1,105 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>17.11.&nbsp;Association</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch17.html" title="Chapter&nbsp;17.&nbsp;Class Diagram Artifact Reference"><link rel="prev" href="ch17s10.html" title="17.10.&nbsp;Reception (to be written)"><link rel="next" href="ch17s12.html" title="17.12.&nbsp;Association End"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">17.11.&nbsp;Association</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s10.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;17.&nbsp;Class Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch17s12.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.association_class"></a>17.11.&nbsp;Association</h2></div></div></div><a class="indexterm" name="d0e19119"></a><p>An association on a class diagram represents a 
-        relationship between classes, or between a class and an 
-        interface. On a usecase diagram, an association binds an actor 
-        to a usecase.</p><p>Within the UML metamodel, <tt class="literal">Association</tt> 
-        is a sub-class of both <tt class="literal">Relationship</tt> and 
-        <tt class="literal">GeneralizableElement</tt>.</p><p>The association is represented as a solid line connecting 
-        actor and usecase or class or interface (see 
-        <a href="ch17.html#fig.ref.class_diagram" title="Figure&nbsp;17.1.&nbsp;Possible artifacts on a class diagram.">Figure&nbsp;17.1, &#8220;Possible artifacts on a class diagram.&#8221;</a>). The name of the 
-        association and any stereotype appear above the line.</p><p>ArgoUML is not restricted to binary associations. See 
-        <a href="ch17s11.html#s2.ref.association_multiway" title="17.11.1.&nbsp;Three-way and Greater Associations and Association &#xA;          Classes">Section&nbsp;17.11.1, &#8220;Three-way and Greater Associations and Association 
-          Classes&#8221;</a> for more on 
-        this.</p><p>Associations are permitted between interfaces and 
-        classes, but UML&nbsp;1.3 specifies they must only be navigable 
-        toward the interface&#8212;in other words the interface cannot see 
-        the class. ArgoUML will draw such associations with the 
-        appropriate navigation.</p><p>Associations are often not named, when their meaning is 
-        obvious from the context.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML provides no specific way of showing the 
-          direction of the association as described in the UML 1.4 
-          standard. The naming should attempt to make this clear.</p></td></tr></table></div><p>The association contains at least two ends, which may be 
-        navigated to via the association property sheet. See 
-        <a href="ch17s12.html" title="17.12.&nbsp;Association End">Section&nbsp;17.12, &#8220;Association End&#8221;</a> for more 
-        information.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.association_multiway"></a>17.11.1.&nbsp;Three-way and Greater Associations and Association 
-          Classes</h3></div></div></div><p>UML&nbsp;1.3 provides for N-ary associations and 
-          associations that are governed by a third 
-          <span class="emphasis"><em>associative class</em></span>. Both are supported by 
-          ArgoUML.</p><p><span class="emphasis"><em>N-ary associations</em></span> are created by 
-          drawing with the association tool from an existing 
-          association to a third class. The current implementation of 
-          ArgoUML does not allow the inverse: drawing from a 3rd class 
-          towards an existing association is not possible.</p><p>Association Classes are drawn exactly like a normal 
-          association, i.e. between two classes, but with a different 
-          dedicated tool from the diagram toolbar.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e19168"></a>17.11.2.&nbsp;Association Details Tabs</h3></div></div></div><p>The details tabs that are active for associations are 
-          as follows.</p><a class="indexterm" name="d0e19173"></a><a class="indexterm" name="d0e19176"></a><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See 
-                <a href="ch17s11.html#s2.ref.association_property_toolbar" title="17.11.3.&nbsp;Association Property Toolbar">Section&nbsp;17.11.3, &#8220;Association Property Toolbar&#8221;</a> 
-                and <a href="ch17s11.html#s2.ref.association_property_fields" title="17.11.4.&nbsp;Property Fields For Association">Section&nbsp;17.11.4, &#8220;Property Fields For Association&#8221;</a>
-                 below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab. See 
-                <a href="ch12s04.html" title="12.4.&nbsp;Documentation Tab">Section&nbsp;12.4, &#8220;Documentation Tab&#8221;</a>.</p></dd><dt><span class="term"><tt class="literal">Presentation</tt></span></dt><dd><p>Standard tab.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The values for the bounds of the Association 
-                  have no meaning, since they are determined by the 
-                  location of the connected items. Changing them has no 
-                  effect on the diagram.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab. You would not expect to generate 
-                any code for an association, and any code entered here 
-                is ignored (it will have disappeared when you come back 
-                to the association.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><a class="indexterm" name="d0e19231"></a><a class="indexterm" name="d0e19234"></a><p>Standard tab. In the UML metamodel, <tt class="literal">
-                Association</tt> has the following standard tagged 
-                values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">persistence</tt>. Values 
-                    <tt class="literal">transitory</tt>, indicating state is 
-                    destroyed when an instance is destroyed or <tt class="literal">
-                    persistent</tt>, marking state is preserved 
-                    when an instance is destroyed.</p></li><li><p><tt class="literal">derived</tt> (from the 
-                    superclass, <tt class="literal">ModelElement</tt>). 
-                    Values <tt class="literal">true</tt>, meaning the 
-                    association is redundant&#8212;it can be formally derived 
-                    from other elements, or <tt class="literal">false</tt> 
-                    meaning it cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived associations still have their value 
-                      in analysis to introduce useful names or 
-                      concepts, and in design to avoid 
-                      re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt class="literal">Element</tt> metaclass 
-                  from which all other artifacts are derived includes 
-                  the tagged element <tt class="literal">documentation</tt> 
-                  which is handled by the <span class="emphasis"><em>documentation 
-                  tab</em></span> under ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.association_property_toolbar"></a>17.11.3.&nbsp;Association Property Toolbar</h3></div></div></div><a class="indexterm" name="d0e19288"></a><a class="indexterm" name="d0e19291"></a><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> 
-              <tt class="literal">Go up</tt></span></dt><dd><p>Navigate up through the package structure of the 
-                model. For an association this will be the package 
-                containing the association.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stereotype.gif" align="middle"></span></span> 
-              <tt class="literal">New Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e19319"></a><a class="indexterm" name="d0e19322"></a><a class="indexterm" name="d0e19325"></a><p>This creates a new Stereotype (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>) for the selected 
-                association, navigating immediately to the properties 
-                tab for that stereotype.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span> 
-              <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the selected association from the 
-                model.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model 
-                  <span class="emphasis"><em>not</em></span> just the diagram. To delete 
-                  an association from the diagram, but keep it within 
-                  the model, use the main menu <tt class="literal">Remove From 
-                  Diagram</tt> (or press the Delete key).</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.association_property_fields"></a>17.11.4.&nbsp;Property Fields For Association</h3></div></div></div><a class="indexterm" name="d0e19358"></a><a class="indexterm" name="d0e19361"></a><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><a class="indexterm" name="d0e19372"></a><a class="indexterm" name="d0e19375"></a><p>Text box. The name of the association. By 
-                convention association names start with a lower case 
-                letter, with &#8220;<span class="quote">bumpy caps</span>&#8221; used to indicate 
-                words within the name, thus: <tt class="literal">
-                salesHandling</tt>.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce any naming convention 
-                  for associations.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Although the design critics will advise 
-                  otherwise, it is perfectly normal not to name 
-                  associations on a class diagram, since the 
-                  relationship is often obvious from the classes (or 
-                  class and interface) name.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e19399"></a><a class="indexterm" name="d0e19402"></a><p>Drop down selector. Association is provided by 
-                default with the UML standard stereotype for 
-                Association (<tt class="literal">implicit</tt>) .</p><p>Stereotyping can be useful when creating 
-                associations in the problem domain (requirements 
-                capture) and solution domain (analysis), as well as for 
-                processes based on patterns.</p><p>The stereotype is shown between &laquo; and &raquo; below the 
-                name of the association on the diagram.</p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>Drop down selector. Records and allows changing 
-                the namespace for the association. This is the package 
-                hierarchy.</p></dd><dt><span class="term"><tt class="literal">Connections</tt></span></dt><dd><a class="indexterm" name="d0e19441"></a><a class="indexterm" name="d0e19446"></a><p>Text area. Lists the ends of this association. An 
-                association can have two or more ends. For more on 
-                association ends see 
-                <a href="ch17s12.html" title="17.12.&nbsp;Association End">Section&nbsp;17.12, &#8220;Association End&#8221;</a>.</p><p>The names of the association ends are listed, 
-                unless the association end has no name (the case when 
-                it is first created), in which case <tt class="literal">(anon 
-                AssociationEnd)</tt> is shown.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The only representation of association ends on 
-                  a diagram is that their name appears at the relevant 
-                  end of the corresponding association.</p></td></tr></table></div><p>Button&nbsp;1 double click on an association end will 
-                navigate to that end.</p></dd><dt><span class="term"><tt class="literal">Association Roles</tt></span></dt><dd><p>Text area. (To be written)</p></dd><dt><span class="term"><tt class="literal">Links</tt></span></dt><dd><p>Text area. (To be written)</p></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17s10.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch17.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch17s12.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">17.10.&nbsp;Reception (to be written)&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;17.12.&nbsp;Association End</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

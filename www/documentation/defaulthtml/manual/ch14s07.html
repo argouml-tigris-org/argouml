@@ -1,38 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>14.7.&nbsp;State Machines</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch14.html" title="Chapter&nbsp;14.&nbsp;The Critics"><link rel="prev" href="ch14s06.html" title="14.6.&nbsp;Planned Extensions"><link rel="next" href="ch14s08.html" title="14.8.&nbsp;Design Patterns"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">14.7.&nbsp;State Machines</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s06.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;14.&nbsp;The Critics</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch14s08.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.design_issues_state_machines"></a>14.7.&nbsp;State Machines</h2></div></div></div><p>Critics concerning state machines.</p><p>ArgoUML has the following critics in this category.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrTooManyTransitions"></a>14.7.1.&nbsp;Reduce Transitions on &lt;state&gt;</h3></div></div></div><p>Suggestion given state is involved in so many 
-          transitions it may be a maintenance bottleneck.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrTooManyStates"></a>14.7.2.&nbsp;Reduce States in machine &lt;machine&gt;</h3></div></div></div><p>Suggestion that the given state machine has so many 
-          states as to be confusing and should be simplified (perhaps 
-          by breaking into several machines, or using a 
-          hierarchy).</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrNoTransitions"></a>14.7.3.&nbsp;Add Transitions to &lt;state&gt;</h3></div></div></div><p>Suggestion that the given state requires both incoming 
-          and outgoing transitions.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrNoIncomingTransitions"></a>14.7.4.&nbsp;Add Incoming Transitions to &lt;artifact&gt;</h3></div></div></div><p>Suggestion that the given state requires incoming 
-          transitions.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrNoOutgoingTransitions"></a>14.7.5.&nbsp;Add Outgoing Transitions from &lt;artifact&gt;</h3></div></div></div><p>Suggestion that the given state requires outgoing 
-          transitions.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrMultipleInitialStates"></a>14.7.6.&nbsp;Remove Extra Initial States</h3></div></div></div><p>Suggestion that there is more than one initial state in 
-          the state machine or composite state, which is not permitted 
-          in UML.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrNoInitialState"></a>14.7.7.&nbsp;Place an Initial State</h3></div></div></div><p>Suggestion that there is no initial state in the state 
-          machine or composite state.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrNoTriggerOrGuard"></a>14.7.8.&nbsp;Add Trigger or Guard to Transition</h3></div></div></div><p>Suggestion that a transition is missing either a 
-          trigger or guard, one at least of which is required for it to 
-          be taken.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrInvalidJoin"></a>14.7.9.&nbsp;Change Join Transitions</h3></div></div></div><p>Suggestion that the join pseudostate has an invalid 
-          number of transitions. Normally there should be one outgoing 
-          and two or more incoming.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrInvalidFork"></a>14.7.10.&nbsp;Change Fork Transitions</h3></div></div></div><p>Suggestion that the fork pseudostate has an invalid 
-          number of transitions. Normally there should be one incoming 
-          and two or more outgoing.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrInvalidBranch"></a>14.7.11.&nbsp;Add Choice/Junction Transitions</h3></div></div></div><p>Suggestion that the branch (choice or junction) 
-          pseudostate has an invalid number of transitions. Normally 
-          there should be at least one incoming transition and at least 
-          one outgoing transition.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrNoGuard"></a>14.7.12.&nbsp;Add Guard to Transition</h3></div></div></div><p>Suggestion that the transition requires a guard.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is not clear that this is a valid critic. It is 
-            perfectly acceptable to have a transition without a 
-            guard&#8212;the transition is always taken when the trigger is 
-            invoked.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e11228"></a>14.7.13.&nbsp;Clean Up Diagram</h3></div></div></div><p>This critic is discussed under an earlier design issues 
-          category (see <a href="ch14s03.html#critics.CrNodesOverlap" title="14.3.3.&nbsp;Clean Up Diagram">Section&nbsp;14.3.3, &#8220;Clean Up Diagram&#8221;</a>
-          ).</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrZeroLengthEdge"></a>14.7.14.&nbsp;Make Edge More Visible</h3></div></div></div><p>Suggestion that an edge artifact such as an association 
-          or abstraction is so short it may be missed. Move the 
-          connected artifacts apart to make the edge more 
-          visible.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="critics.CrMultiComposite"></a>14.7.15.&nbsp;Composite Association End with Multiplicity &gt; 
-          1</h3></div></div></div><p>An instance may not belong by composition to more than 
-          one composite instance. You must change the multiplicity at 
-          the composite end of the association to either 0..1 or 1..1 
-          (1) for your model to make sense.</p><p>Remember that composition is the stronger aggregation 
-          kind and aggregation is the weaker. The problem can be 
-          compared to a model where a finger can be an integral part of 
-          several hands at the same time.</p><p>This is the second well-formedness rule on 
-          AssociationEnd in UML 1.4.</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s06.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch14.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch14s08.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">14.6.&nbsp;Planned Extensions&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;14.8.&nbsp;Design Patterns</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

@@ -1,68 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>6.2.&nbsp;Code Generation</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch06.html" title="Chapter&nbsp;6.&nbsp;Code Generation, Reverse Engineering, and Round Trip &#xA;      Engineering"><link rel="prev" href="ch06.html" title="Chapter&nbsp;6.&nbsp;Code Generation, Reverse Engineering, and Round Trip &#xA;      Engineering"><link rel="next" href="ch06s03.html" title="6.3.&nbsp;Code Generation in ArgoUML"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">6.2.&nbsp;Code Generation</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;6.&nbsp;Code Generation, Reverse Engineering, and Round Trip 
-      Engineering</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch06s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e4424"></a>6.2.&nbsp;Code Generation</h2></div></div></div><a class="indexterm" name="d0e4427"></a><p>The output of the Code Generation is the completed 
-        program. Depending on the contents of the design, we could also 
-        generate Unit test cases.</p><p>To do the work we need the design model, containing both 
-        static and dynamic descriptions of the program.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4434"></a>6.2.1.&nbsp;Generating Code from the Static Structure</h3></div></div></div><a class="indexterm" name="d0e4437"></a><p>
-
-            It is rather straightforward to do this generation, at 
-            least as long as we do it for an object-oriented language. 
-            This is some of the basic rules:
-            </p><div class="itemizedlist"><ul type="disc"><li><p>A class will become a class.</p><p>In some target languages (like java, c++) they 
-                also become files and compilation units.</p></li><li><p>A generalization will become an 
-                inheritance.</p><p>If the target language does not support 
-                inheritance and we didn't address this during the 
-                design, some special conversions are required to solve 
-                this.</p></li><li><p>An attribute will become a member variable.</p></li><li><p>A navigable association will become a member 
-                variable.</p><p>Depending on the target language, target 
-                platform, and the association multiplicities this will 
-                be a pointer, a reference, a collection class, an entry 
-                in some table or map.</p></li><li><p>A non-abstract operation in a class will become a 
-                method.</p></li><li><p>An abstract operation in a class will become an 
-                abstract method.</p></li><li><p>An in parameter in an operation will become a 
-                parameter in the method.</p><p>For simple types (int, boolean), this is the 
-                normal case. For C++, these will probably const 
-                classes. For Java, this cannot be enforced for 
-                classes.</p></li><li><p>An out or in/out parameter in an operation will 
-                become a referenced parameter in the method.</p><p>For C++, these will be referenced non-const 
-                parameters. For Java classes, this is the default. 
-                Simple types (int, boolean) must, in java, be converted 
-                to an object of a corresponding class (Integer, 
-                Boolean).</p></li><li><p>The visibilities of the attributes, associations, 
-                and operations will become visibilities on the member 
-                variables or methods.</p></li><li><p>Packages will become directories, namespaces, or 
-                both.</p></li></ul></div><p>
-
-          </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4486"></a>6.2.2.&nbsp;Generating code from interactions and state 
-          machines</h3></div></div></div><a class="indexterm" name="d0e4489"></a><a class="indexterm" name="d0e4494"></a><a class="indexterm" name="d0e4499"></a><a class="indexterm" name="d0e4504"></a><p>This conversion is not as straight-forward as the 
-          conversion of the static structure. It is much more depending 
-          on the target language and target platform.</p><p>
-
-            In general it is only possible to say the following for 
-            interactions:
-            </p><div class="itemizedlist"><ul type="disc"><li><p>A message is converted into a function 
-                call.</p><p>The class of the recipient will have to have a 
-                function with the correct name and signature.</p><p>The sender function in the class of the sender 
-                will have a call to the function in the 
-                recipient.</p></li><li><p>An asynchronous message is converted to either 
-                posting a message to be handled by some other thread or 
-                a function call to a function that starts a new 
-                thread.</p></li></ul></div><p>
-
-          </p><p>
-
-            The following describes one possible way to generate state 
-            machines:
-            </p><div class="itemizedlist"><ul type="disc"><li><p>A State Machine is generated to a set of member 
-                variables that each method in this class refer to when 
-                deciding behavior.</p></li><li><p>A State is generated to a closed set of 
-                combination of values on these member variables.</p></li><li><p>An Event is generated as a call to a member 
-                method that can change the state.</p><p>These methods would then typically have one big 
-                switch statement splitting on the current state.</p></li><li><p>A Guard is generated to an <span class="symbol">if</span> 
-                statement in the event member method in the branch for 
-                the correct state.</p></li><li><p>A Transition is generated as an assignment of 
-                some state variable.</p></li><li><p>An Action is generated as a function call.</p></li></ul></div><p>
-
-          </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch06s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;6.&nbsp;Code Generation, Reverse Engineering, and Round Trip 
-      Engineering&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;6.3.&nbsp;Code Generation in ArgoUML</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>

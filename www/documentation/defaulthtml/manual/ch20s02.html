@@ -1,115 +1,20 @@
-<html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>20.2.&nbsp;Classifier Role</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch20.html" title="Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference"><link rel="prev" href="ch20.html" title="Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference"><link rel="next" href="ch20s03.html" title="20.3.&nbsp;Association Role"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">20.2.&nbsp;Classifier Role</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch20s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e23938"></a>20.2.&nbsp;Classifier Role</h2></div></div></div><p>A classifier role is a specialization of a classifier, 
-        used to show its behavior in a particular context. In the UML 
-        metamodel <tt class="literal">Classifier Role</tt> is a sub-class of 
-        <tt class="literal">Classifier</tt>. Within a collaboration diagram 
-        classifier roles may be used in one of two ways:</p><div class="itemizedlist"><ul type="disc"><li><p>To represent the classifier in a particular 
-            behavioral context (the <span class="emphasis"><em>specification 
-            level</em></span>); or</p></li><li><p>to specify a particular instance of the classifier 
-            (the <span class="emphasis"><em>instance level</em></span>).</p></li></ul></div><p>In this latter form, classifier roles are identical to 
-        the instances used in sequence diagrams (see 
-        <a href="ch18.html" title="Chapter&nbsp;18.&nbsp;Sequence Diagram Artifact Reference">Chapter&nbsp;18, <i>Sequence Diagram Artifact Reference</i></a>) and a collaboration diagram 
-        shows the same information as the sequence diagram, but in a 
-        different presentation.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A collaboration diagram should not mix classifier roles 
-          used as the specifier level and the instance level.</p></td></tr></table></div><p>A classifier role is represented on a sequence diagram in 
-        ArgoUML as a plain box labeled with the classifier role name 
-        (if any) and classifier, separated by a colon (:).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A classifier role should properly also show object name 
-          (if any) preceding the classifier role name and separated 
-          from it by a slash (<tt class="literal">/</tt>). This allows 
-          classifier roles in a specification level diagram to be 
-          distinguished from instances in an instance level 
-          diagram.</p><p>ArgoUML does show the slash, but there is no way to 
-          define the instances.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e23979"></a>20.2.1.&nbsp;Classifier Role Details Tabs</h3></div></div></div><p>The details tabs that are active for classifier roles 
-          are as follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See 
-                <a href="ch20s02.html#s2.ref.classifier_role_property_toolbar" title="20.2.2.&nbsp;Classifier Role Property Toolbar">Section&nbsp;20.2.2, &#8220;Classifier Role Property Toolbar&#8221;</a>
-                 and 
-                <a href="ch20s02.html#s2.ref.classifier_role_property_fields" title="20.2.3.&nbsp;Property Fields For Classifier Role">Section&nbsp;20.2.3, &#8220;Property Fields For Classifier Role&#8221;</a>
-                 below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Presentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab, but with no contents.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A classifier role should not generate any code, 
-                  so having this tab active is probably a 
-                  mistake.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel, <tt class="literal">
-                Classifier Role</tt> has the following standard 
-                tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">persistence</tt> (from the 
-                    superclass, <tt class="literal">Classifier</tt>. Showing 
-                    the permanence of the state information associated 
-                    with the classifier role. Values <tt class="literal">
-                    transitory</tt> (state is destroyed when the 
-                    classifier role is destroyed) and <tt class="literal">
-                    persistent</tt> (state is preserved when the 
-                    classifier role is destroyed).</p></li><li><p><tt class="literal">semantics</tt> (from the 
-                    superclass, <tt class="literal">Classifier</tt>). The 
-                    value is a specification of the semantics of the 
-                    classifier role.</p></li><li><p><tt class="literal">derived</tt> (from the 
-                    superclass, <tt class="literal">ModelElement</tt>). 
-                    Values <tt class="literal">true</tt>, meaning the 
-                    classifier role is redundant&#8212;it can be formally 
-                    derived from other elements, or <tt class="literal">
-                    false</tt> meaning it cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived classifier roles still have their 
-                      value in analysis and design to introduce useful 
-                      names or concepts, and in design to avoid 
-                      re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt class="literal">Element</tt> metaclass 
-                  from which all other artifacts are derived includes 
-                  the tagged element <tt class="literal">documentation</tt> 
-                  which is handled by the <span class="emphasis"><em>documentation 
-                  tab</em></span> under ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.classifier_role_property_toolbar"></a>20.2.2.&nbsp;Classifier Role Property Toolbar</h3></div></div></div><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> 
-              <tt class="literal">Go up</tt></span></dt><dd><p>Navigate up through the package structure.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/reception.gif" align="middle"></span></span> 
-              <tt class="literal">New reception</tt></span></dt><dd><p>This creates a new reception, navigating 
-                immediately to the properties tab for that 
-                reception.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stereotype.gif" align="middle"></span></span> 
-              <tt class="literal">New Stereotype</tt></span></dt><dd><a class="indexterm" name="d0e24127"></a><a class="indexterm" name="d0e24130"></a><a class="indexterm" name="d0e24133"></a><p>This creates a new Stereotype (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>) for the selected 
-                classifier role, navigating immediately to the 
-                properties tab for that stereotype.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span> 
-              <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the classifier role from the 
-                model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model 
-                  <span class="emphasis"><em>not</em></span> just the diagram. To delete 
-                  an classifier role from the diagram, but keep it 
-                  within the model, use the main menu <tt class="literal">Remove 
-                  From Diagram</tt> (or press the Delete 
-                  key).</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.classifier_role_property_fields"></a>20.2.3.&nbsp;Property Fields For Classifier Role</h3></div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><p>Text box. The name of the classifier role. By 
-                convention classifier role names start with a lower 
-                case letter and use bumpy caps to divide words within 
-                the name.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce this naming 
-                  convention.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><p>Drop down selector. Classifier Role is provided 
-                by default with the UML standard stereotypes for a 
-                classifier (<tt class="literal">metaclass</tt>, <tt class="literal">
-                powertype</tt>, <tt class="literal">process</tt>, 
-                <tt class="literal">thread</tt> and <tt class="literal">
-                utility</tt>).</p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> 
-                icon. If a stereotype has been selected, this will 
-                navigate to the stereotype property panel (see 
-                <a href="ch15s05.html" title="15.5.&nbsp;Stereotype">Section&nbsp;15.5, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the 
-                classifier role, which is always the containing 
-                Collaboration.</p><p>Button&nbsp;1 double click on the entry will navigate 
-                to the collaboration.</p></dd><dt><span class="term"><tt class="literal">Multiplicity</tt></span></dt><dd><p>Editable drop down selector. The default value is 
-                <tt class="literal">*</tt>, which means that there are any 
-                number of instances of this classifierrole that play a 
-                role in the collaboration. The drop down provides some 
-                different multiplicities. E.g. <tt class="literal">1..1</tt> 
-                would mean that only one instance plays a role in this 
-                collaboration.</p><p>ArgoUML does not restrict you to the predefined 
-                ranges for multiplicity. You can edit this field 
-                freely.</p></dd><dt><span class="term"><tt class="literal">Base</tt></span></dt><dd><p>List. The names of the classifiers of which this 
-                is a classifierrole. Button&nbsp;1 double click navigates to 
-                the classifier. Button&nbsp;2 click gives a pop up menu with 
-                the following entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Add</tt>. Allows adding or 
-                    removeing classifiers to the list. To this end, a 
-                    dialog box pops up, as shown in the figure 
-                    below.</p><div class="figure-float"><div class="figure"><a name="fig.ref.signal_add_classifierrole_base"></a><p class="title"><b>Figure&nbsp;20.2.&nbsp;The &#8220;<span class="quote">add context</span>&#8221; dialog 
-                      box</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/signal_add_classifierrole_base.png" align="middle" alt="The add context dialog box"></div></div><p></p></div></div></li><li><p><tt class="literal">Remove</tt>. Allows removeing 
-                    classifiers to the list, without making use of the 
-                    dialog box.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Generalizations</tt></span></dt><dd><p>Text area. Lists any classifierrole that 
-                <span class="emphasis"><em>generalizes</em></span> this 
-                classifierrole.</p><p>Button&nbsp;1 double click navigates to the 
-                generalization and opens its property tab.</p></dd><dt><span class="term"><tt class="literal">Specializations</tt></span></dt><dd><p>Text box. Lists any specialized classifierrole 
-                (i.e. for which this classifierrole is a 
-                generalization).</p><p>button&nbsp;1 double click navigates to the 
-                generalization and opens its property tab.</p></dd><dt><span class="term"><tt class="literal">Association End Role</tt></span></dt><dd><p>Text area. Lists the association-end roles that 
-                are linked to this classifier role.</p><p>Button&nbsp;1 double click navigates to the selected 
-                entry.</p></dd><dt><span class="term"><tt class="literal">Available Contents</tt></span></dt><dd><p>Text area. Lists the subset of modelelements 
-                contained in the base classifier which is used in the 
-                collaboration.</p><p>Button&nbsp;1 double click navigates to the 
-                modelelement and opens its property tab.</p></dd><dt><span class="term"><tt class="literal">Available Features</tt></span></dt><dd><p>Text box. Lists the subset of features of the 
-                base classifier which is used in the 
-                collaboration.</p><p>button&nbsp;1 double click navigates to the feature 
-                and opens its property tab.</p></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch20.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch20.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch20s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;20.3.&nbsp;Association Role</td></tr></table></div></body></html>
+<html>
+  <head>
+    <title>ArgoUML User Manual</title>
+  </head>
+  <body>
+<h2>This version of the user manual is removed</h2>
+<p>
+Please refer to the user manual at one of
+  <ul>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24/">User Manual (0.24)</a></li>
+    <li><a href="http://argouml-stats.tigris.org/documentation/manual-0.24-single/argomanual.html">User Manual (0.24) - Single File</a>
+    </li>
+  </ul>
+</p>
+<p>
+Please update your link that pointed here
+or notify the person responsible for the link!
+</p>
+  </body>
+</html>
