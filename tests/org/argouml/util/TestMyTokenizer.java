@@ -48,7 +48,7 @@ public class TestMyTokenizer extends TestCase {
      * Test the constructor.
      */
     public void testConstructor1() {
-	Vector seps = new Vector();
+	Vector<CustomSeparator> seps = new Vector<CustomSeparator>();
 	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 
@@ -74,7 +74,7 @@ public class TestMyTokenizer extends TestCase {
      * Test the constructor.
      */
     public void testConstructor2() {
-	Vector seps = new Vector();
+        Vector<CustomSeparator> seps = new Vector<CustomSeparator>();
 	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 
@@ -118,7 +118,7 @@ public class TestMyTokenizer extends TestCase {
      * Test the constructor.
      */
     public void testConstructor3() {
-	Vector seps = new Vector();
+        Vector<CustomSeparator> seps = new Vector<CustomSeparator>();
 	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 
@@ -144,7 +144,7 @@ public class TestMyTokenizer extends TestCase {
      * Test the constructor.
      */
     public void testConstructor4() {
-	Vector seps = new Vector();
+        Vector<CustomSeparator> seps = new Vector<CustomSeparator>();
 	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 
@@ -175,7 +175,7 @@ public class TestMyTokenizer extends TestCase {
      * Test the constructor.
      */
     public void testConstructor5() {
-	Vector seps = new Vector();
+        Vector<CustomSeparator> seps = new Vector<CustomSeparator>();
 	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 
@@ -206,7 +206,7 @@ public class TestMyTokenizer extends TestCase {
      * Test the constructor.
      */
     public void testConstructor6() {
-	Vector seps = new Vector();
+        Vector<CustomSeparator> seps = new Vector<CustomSeparator>();
 	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 
@@ -237,7 +237,7 @@ public class TestMyTokenizer extends TestCase {
      * Test the constructor.
      */
     public void testConstructor7() {
-	Vector seps = new Vector();
+        Vector<CustomSeparator> seps = new Vector<CustomSeparator>();
 	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 

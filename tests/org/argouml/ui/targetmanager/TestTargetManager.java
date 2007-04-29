@@ -198,17 +198,20 @@ public class TestTargetManager extends TestCase {
      * Test getTargets().
      */
     public void testGetTargets() {
-	Collection coll, coll2;
+	Collection<Object> coll, coll2;
 	Object test =  new Object();
 	Object test2 = new Object();
-	HashSet set1 = new HashSet();     set1.add(test);
-	HashSet set2 = new HashSet(set1); set2.add(test2);
+	HashSet<Object> set1 = new HashSet<Object>();
+        set1.add(test);
+	HashSet<Object> set2 = new HashSet<Object>(set1);
+        set2.add(test2);
 
 	TargetManager.getInstance().setTarget(null);
 	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
 	TargetManager.getInstance().setTarget(test);
-	assertEquals(new HashSet(TargetManager.getInstance().getTargets()),
-		     set1);
+	assertEquals(
+                new HashSet<Object>(TargetManager.getInstance().getTargets()),
+		set1);
 	TargetManager.getInstance().setTarget(null);
 	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
 
@@ -216,16 +219,16 @@ public class TestTargetManager extends TestCase {
         TargetManager.getInstance().setTargets(set2); //So, 2nd time right
 	coll = TargetManager.getInstance().getTargets();
 	assertTrue(coll.size() == set2.size());
-        coll2 = new HashSet(coll);
+        coll2 = new HashSet<Object>(coll);
 	assertEquals(coll2, set2);
 
 	TargetManager.getInstance().setTargets(set1);
 	coll = TargetManager.getInstance().getTargets();
-	coll2 = new HashSet(coll);
+	coll2 = new HashSet<Object>(coll);
 	assertTrue(coll.size() == set1.size());
 	assertEquals(coll2, set1);
 
-	TargetManager.getInstance().setTargets(new HashSet());
+	TargetManager.getInstance().setTargets(new HashSet<Object>());
 	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
 
 	TargetManager.getInstance().addTarget(null);
@@ -233,25 +236,25 @@ public class TestTargetManager extends TestCase {
 
 	TargetManager.getInstance().addTarget(test);
 	coll = TargetManager.getInstance().getTargets();
-	coll2 = new HashSet(coll);
+	coll2 = new HashSet<Object>(coll);
 	assertTrue(coll.size() == set1.size());
 	assertEquals(coll2, set1);
 
 	TargetManager.getInstance().addTarget(test2);
 	coll = TargetManager.getInstance().getTargets();
-	coll2 = new HashSet(coll);
+	coll2 = new HashSet<Object>(coll);
 	assertTrue(coll.size() == set2.size());
 	assertEquals(coll2, set2);
 
 	TargetManager.getInstance().removeTarget(null);
 	coll = TargetManager.getInstance().getTargets();
-	coll2 = new HashSet(coll);
+	coll2 = new HashSet<Object>(coll);
 	assertTrue(coll.size() == set2.size());
 	assertEquals(coll2, set2);
 
 	TargetManager.getInstance().removeTarget(test2);
 	coll = TargetManager.getInstance().getTargets();
-	coll2 = new HashSet(coll);
+	coll2 = new HashSet<Object>(coll);
 	assertTrue(coll.size() == set1.size());
 	assertEquals(coll2, set1);
 
@@ -263,7 +266,7 @@ public class TestTargetManager extends TestCase {
      * Test setTargets().
      */
     public void testSetTargets() {
-	List test2 = new ArrayList();
+	List<Object> test2 = new ArrayList<Object>();
 	test2.add(new Object());
 	test2.add(null);
 	test2.add(new Object());
@@ -274,7 +277,7 @@ public class TestTargetManager extends TestCase {
 	assertTrue(TargetManager.getInstance()
 		   .getTargets().contains(test2.get(2)));
 
-	List test3 = new ArrayList();
+	List<Object> test3 = new ArrayList<Object>();
 	test3.add(new Object());
 	test3.add(test3.get(0));
 	TargetManager.getInstance().setTargets(test3);
@@ -282,15 +285,15 @@ public class TestTargetManager extends TestCase {
 		   .getTargets().contains(test3.get(0)));
 	assertTrue(TargetManager.getInstance().getTargets().size() == 1);
 
-	List test4 = new ArrayList();
+	List<Object> test4 = new ArrayList<Object>();
 	test4.add(test2.get(0));
 	test4.add(test2.get(2));
 
-	List test5 = new ArrayList();
+	List<Object> test5 = new ArrayList<Object>();
 	test5.add(test2.get(2));
 	test5.add(test2.get(0));
 
-	List test = new ArrayList();
+	List<Object> test = new ArrayList<Object>();
 	for (int i = 0; i < 10; i++) {
 	    test.add(new Object());
 	}
@@ -335,7 +338,7 @@ public class TestTargetManager extends TestCase {
      * Test addTarget().
      */
     public void testAddTarget() {
-	List testList = new ArrayList();
+	List<Object> testList = new ArrayList<Object>();
 	for (int i = 0; i < 10; i++) {
 	    testList.add(new Object());
 	}
@@ -358,7 +361,7 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().setTargets(testList);
 	Object oldTarget = TargetManager.getInstance().getTarget();
-	List newList = new ArrayList(testList);
+	List<Object> newList = new ArrayList<Object>(testList);
 	newList.add(testObject);
 	targetAddedCalled = false;
 	targetAddedTarget = null;
@@ -379,7 +382,7 @@ public class TestTargetManager extends TestCase {
      * Test removeTarget().
      */
     public void testRemoveTarget() {
-	List testList = new ArrayList();
+	List<Object> testList = new ArrayList<Object>();
 	for (int i = 0; i < 10; i++) {
 	    testList.add(new Object());
 	}
@@ -422,7 +425,7 @@ public class TestTargetManager extends TestCase {
 	assertEquals(null, targetRemovedTarget);
 	assertTrue(Arrays.equals(new Object[] {}, targetRemovedObjects));
 
-	List testList2 = new ArrayList();
+	List<Object> testList2 = new ArrayList<Object>();
 	testList2.add(new Object());
 	testList2.add(testObject);
 	TargetManager.getInstance().setTargets(testList2);
@@ -456,9 +459,12 @@ public class TestTargetManager extends TestCase {
 	Project p = ProjectManager.getManager().getCurrentProject();
 	p.addDiagram(diag);
 	TargetManager.getInstance().setTarget(diag);
-	List list1 = new ArrayList();
-	List list2 = new ArrayList(); list2.add(test);
-	List list3 = new ArrayList(); list3.add(owner); list3.add(test);
+	List<Object> list1 = new ArrayList<Object>();
+	List<Object> list2 = new ArrayList<Object>();
+        list2.add(test);
+	List<Object> list3 = new ArrayList<Object>();
+        list3.add(owner);
+        list3.add(test);
 
 	TargetListener listener = new TestTargetListener();
 	TargetManager.getInstance().addTargetListener(listener);
@@ -546,9 +552,9 @@ public class TestTargetManager extends TestCase {
 	Fig fig = new FigRect(0, 0, 12, 12); fig.setOwner(owner);
 	Object test = new Object();
 
-	List list1 = new ArrayList();
-	List list2 = new ArrayList(); list2.add(test);
-	List list3 = new ArrayList(); list3.add(fig); list3.add(test);
+	List<Object> list1 = new ArrayList<Object>();
+	List<Object> list2 = new ArrayList<Object>(); list2.add(test);
+	List<Object> list3 = new ArrayList<Object>(); list3.add(fig); list3.add(test);
 
 	TargetListener listener = new TestTargetListener();
 	TargetManager.getInstance().addTargetListener(listener);
@@ -646,7 +652,7 @@ public class TestTargetManager extends TestCase {
     public void testTransaction() {
 	class Listener implements TargetListener {
 	    private int counter = 0;
-	    private List list = new ArrayList();
+	    private List<Object> list = new ArrayList<Object>();
 
 	    /*
 	     * @see TargetListener#targetAdded(TargetEvent)
@@ -697,7 +703,7 @@ public class TestTargetManager extends TestCase {
 	assertEquals(1, listener.counter);
 
 	listener = new Listener();
-	List list = new ArrayList();
+	List<Object> list = new ArrayList<Object>();
 	list.add(new Object());
 	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().setTargets(list);

@@ -55,12 +55,10 @@ public class CheckResourceBundle {
     /**
      * check that no key is entered twice
      *
-     * @param tc the testcase
      * @param b the resourcebundle
      */
-    public static void checkNoDuplicates(TestCase tc,
-					 ResourceBundle b) {
-        Set set = new HashSet();
+    public static void checkNoDuplicates(ResourceBundle b) {
+        Set<Object> set = new HashSet<Object>();
         for (Enumeration e = b.getKeys();
 	     e.hasMoreElements();
 	     ) {
@@ -75,12 +73,10 @@ public class CheckResourceBundle {
     }
 
     /**
-     * @param tc the testcase
      * @param b the resourcebundle
      * @param tags the tags
      */
-    public static void checkContainsAllFrom(TestCase tc,
-					    ResourceBundle b,
+    public static void checkContainsAllFrom(ResourceBundle b,
 					    String[] tags) {
 	for (int i = 0; i < tags.length; i++)
 	    Assert.assertTrue("Can't find tag \"" + tags[i]
@@ -92,8 +88,7 @@ public class CheckResourceBundle {
     /**
      * check that all keys in ARG1 are present in ARG2.
      */
-    private static void checkAllKeysFromAreIn(TestCase tc,
-					      ResourceBundle b,
+    private static void checkAllKeysFromAreIn(ResourceBundle b,
 					      ResourceBundle locb) {
 	for (Enumeration e = b.getKeys();
 	     e.hasMoreElements();
@@ -113,8 +108,7 @@ public class CheckResourceBundle {
     /**
      * check that all keys in ARG2 are present in ARG1.
      */
-    private static void checkAllKeysAreInFrom(TestCase tc,
-					      ResourceBundle b,
+    private static void checkAllKeysAreInFrom(ResourceBundle b,
 					      ResourceBundle locb) {
 	for (Enumeration e = locb.getKeys();
 	     e.hasMoreElements();
@@ -159,7 +153,7 @@ public class CheckResourceBundle {
      * error.
      */
     private static final Vector getModifiedSupportedLanguages() {
-	Vector el = new Vector();
+	Vector<Locale> el = new Vector<Locale>();
 
 	if (System.getProperty("user.language") != null
 	    && System.getProperty("user.country") != null
@@ -189,7 +183,7 @@ public class CheckResourceBundle {
 	    el.add(new Locale(System.getProperty("user.language"),
 			      "", ""));
 
-	Vector v = new Vector();
+	Vector<Locale> v = new Vector<Locale>();
 	for (Enumeration ele = el.elements(); ele.hasMoreElements(); ) {
 	    Locale elel = (Locale) ele.nextElement();
 	    for (int j = 0; j < SUPPORTEDLANGUAGES.length; j++) {
@@ -222,20 +216,18 @@ public class CheckResourceBundle {
      * The resource bundle exists for all supported languages and that each
      * of these languages contains all tags.
      *
-     * @param tc	The test case.
      * @param bname     The name of the resource bundle we are looking at.
      * @param tags	The list of tags that shall exist. If the author of the
      *			test case doesn't have the patience to add it just
      *			leave it empty.
      */
-    public static void checkResourceBundle(TestCase tc,
-					   String bname,
+    public static void checkResourceBundle(String bname,
 					   String[] tags) {
 	ResourceBundle b = ResourceBundle.getBundle(bname,
 						    new Locale("", "", ""));
 
-	checkContainsAllFrom(tc, b, tags);
-	checkNoDuplicates(tc, b);
+	checkContainsAllFrom(b, tags);
+	checkNoDuplicates(b);
 
 	// Check the localized parts.
 
@@ -252,21 +244,19 @@ public class CheckResourceBundle {
 				+ l.toString(),
 				locb != null && locb != b);
 
-	    checkContainsAllFrom(tc, locb, tags);
-	    checkNoDuplicates(tc, locb);
-	    checkAllKeysFromAreIn(tc, b, locb);
-	    checkAllKeysAreInFrom(tc, b, locb);
+	    checkContainsAllFrom(locb, tags);
+	    checkNoDuplicates(locb);
+	    checkAllKeysFromAreIn(b, locb);
+	    checkAllKeysAreInFrom(b, locb);
 	}
     }
 
     /**
-     * @param tc the testcase
      * @param bname the name of the resourcebundle
      */
-    public static void checkResourceBundle(TestCase tc,
-					   String bname) {
+    public static void checkResourceBundle(String bname) {
 	String[] n = {
 	};
-	checkResourceBundle(tc, bname, n);
+	checkResourceBundle(bname, n);
     }
 }

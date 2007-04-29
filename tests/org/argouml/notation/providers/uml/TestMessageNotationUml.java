@@ -30,7 +30,6 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.notation.providers.uml.MessageNotationUml;
 
 /**
  * Test class to test the parsing of a message.<p>

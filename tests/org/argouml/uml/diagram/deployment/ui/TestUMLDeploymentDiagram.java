@@ -24,10 +24,9 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
-import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
-
 import junit.framework.TestCase;
+
+import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 
 
 /**

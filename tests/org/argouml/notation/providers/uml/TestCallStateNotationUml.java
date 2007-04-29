@@ -31,7 +31,6 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.notation.providers.uml.CallStateNotationUml;
 
 /**
  * Test the notation for a CallState.

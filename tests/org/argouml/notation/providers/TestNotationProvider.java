@@ -50,7 +50,7 @@ public class TestNotationProvider extends TestCase
      */
     public void testToString() {
         NotationProvider np = new NPImpl();
-        HashMap args = new HashMap();
+        HashMap<String, String> args = new HashMap<String, String>();
         args.put("b", "c");
         assertTrue("Test toString()", "a1".equals(np.toString("a", args)));
         args.put("d", "e");
@@ -61,7 +61,7 @@ public class TestNotationProvider extends TestCase
      * Test the isValue utility function.
      */
     public void testIsValue() {
-        HashMap args = new HashMap();
+        HashMap<String, Object> args = new HashMap<String, Object>();
         args.put("not a boolean", "c");
         args.put("true", Boolean.TRUE);
         args.put("false", Boolean.FALSE);

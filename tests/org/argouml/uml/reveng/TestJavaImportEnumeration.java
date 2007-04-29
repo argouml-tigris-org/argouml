@@ -25,10 +25,8 @@
 package org.argouml.uml.reveng;
 
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -333,7 +331,8 @@ public class TestJavaImportEnumeration extends TestCase {
             + "       NORMAL ((short) 5),\n"
             + "       HIGH ((short) 9);\n"
             + "\n"
-            + "       public static MessagePriority createPersist (final short val) throws Exception {"
+            + "       public static MessagePriority createPersist "
+            + "(final short val) throws Exception {"
             + BODY1
             + "       }\n"
             + "\n"

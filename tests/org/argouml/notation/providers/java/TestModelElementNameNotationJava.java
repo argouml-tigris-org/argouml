@@ -26,12 +26,11 @@ package org.argouml.notation.providers.java;
 
 import java.util.HashMap;
 
+import junit.framework.TestCase;
+
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.ModelElementNameNotation;
-import org.argouml.notation.providers.java.ModelElementNameNotationJava;
-
-import junit.framework.TestCase;
 
 /**
  * Tests the ModelElementNameNotationJava class.

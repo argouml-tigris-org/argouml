@@ -31,7 +31,6 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.notation.providers.uml.ClassifierRoleNotationUml;
 
 /**
  * Test ClassifierRoleNotationUml (formerly ParserDisplay):

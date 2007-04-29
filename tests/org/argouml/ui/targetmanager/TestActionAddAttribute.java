@@ -28,8 +28,6 @@ import javax.swing.Action;
 
 import junit.framework.TestCase;
 
-import org.argouml.i18n.Translator;
-
 
 /**
  * Test the ActionAddAttribute.

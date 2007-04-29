@@ -28,6 +28,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -36,8 +37,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.providers.NotationProvider;
-import org.argouml.notation.providers.uml.AttributeNotationUml;
-import org.argouml.notation.providers.uml.OperationNotationUml;
 
 /**
  * @author michiel
@@ -977,7 +976,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         }
 
         Collection stereos = Model.getFacade().getStereotypes(feature);
-        ArrayList stereoNames = new ArrayList();
+        List<Object> stereoNames = new ArrayList<Object>();
         for (Iterator i = stereos.iterator(); i.hasNext();) {
             stereoNames.add(Model.getFacade().getName(i.next()));
         }
