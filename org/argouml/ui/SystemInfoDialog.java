@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,7 +43,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.argouml.application.ArgoVersion;
+import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.i18n.Translator;
 
 /**
@@ -150,7 +150,7 @@ public class SystemInfoDialog extends ArgoDialog {
     public static String getInfo() {
         StringBuffer s = new StringBuffer();
         s.append("ArgoUML version       : ");
-        s.append(ArgoVersion.getVersion() + "\n");
+        s.append(ApplicationVersion.getVersion() + "\n");
         s.append("Java Version          : ");
         s.append(System.getProperty("java.version", "") + "\n");
         s.append("Java Vendor           : ");

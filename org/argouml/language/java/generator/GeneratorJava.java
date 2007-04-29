@@ -43,8 +43,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.configuration.Configuration;
 import org.argouml.kernel.Project;
@@ -1949,7 +1949,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         case AUTHOR:
             return "ArgoUML team";
         case VERSION:
-            return ArgoVersion.getVersion();
+            return ApplicationVersion.getVersion();
         default:
             return null;
         }

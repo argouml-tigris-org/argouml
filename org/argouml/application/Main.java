@@ -52,6 +52,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
+import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
@@ -129,6 +130,9 @@ public class Main {
         // Synchronize the startup directory
         String directory = Argo.getDirectory();
         org.tigris.gef.base.Globals.setLastDirectory(directory);
+        
+        // Initialise the version of this application
+        ApplicationVersion.init(ArgoVersion.getVersion());
 
         // Set the i18n locale
         Translator.init(Configuration.getString(Argo.KEY_LOCALE));

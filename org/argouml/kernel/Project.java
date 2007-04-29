@@ -42,8 +42,8 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.configuration.Configuration;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
@@ -178,7 +178,7 @@ public class Project implements java.io.Serializable, TargetListener {
         authoremail = Configuration.getString(Argo.KEY_USER_EMAIL);
         description = "";
         // this should be moved to a ui action.
-        version = ArgoVersion.getVersion();
+        version = ApplicationVersion.getVersion();
 
         searchpath = new Vector();
         historyFile = "";

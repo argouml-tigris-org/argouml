@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,8 @@
 package org.argouml.persistence;
 
 import java.io.Writer;
-import org.argouml.application.ArgoVersion;
+
+import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
@@ -58,7 +59,7 @@ class OldModelMemberFilePersister extends ModelMemberFilePersister
             Object model = pmm.getModel();
             XmiWriter xmiWriter = 
                 Model.getXmiWriter(model, w, 
-                        ArgoVersion.getVersion() + "(" 
+                        ApplicationVersion.getVersion() + "(" 
                         + UmlFilePersister.PERSISTENCE_VERSION + ")");
             xmiWriter.write();
         } catch (UmlException e) {
