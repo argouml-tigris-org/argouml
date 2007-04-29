@@ -26,7 +26,7 @@ package org.argouml.persistence;
 import java.io.File;
 
 import org.argouml.kernel.Project;
-import org.argouml.swingext.ProgressListener;
+import org.argouml.taskmgmt.ProgressListener;
 
 /**
  * To persist a project to and from file storage.

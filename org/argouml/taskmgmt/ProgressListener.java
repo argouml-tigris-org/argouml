@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,55 +22,19 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.swingext;
+package org.argouml.taskmgmt;
 
-import java.util.EventObject;
+import java.util.EventListener;
 
 /**
- * An event to be fired in order to tell some other listener of progress
- * through some activity.
- *
+ * A listener to be implemented by those interested in ProgressEvents.
  * @author Bob Tarling
  */
-public class ProgressEvent extends EventObject {
-
-    private long length;
-
-    private long position;
-
+public interface ProgressListener extends EventListener {
     /**
-     * Constructor for a new ProgressEvent.
-     *
-     * @param source the source that generated this event
-     * @param thePosition the position to which progress has reach as a
-     *        proportion of length
-     * @param theLength the total length the progress is measuring
+     * Called when a ProgressEvent is fired.
+     * @param event the ProgressEvent
+     * @throws InterruptedException     if thread is interrupted
      */
-    public ProgressEvent(Object source, long thePosition, long theLength) {
-        super(source);
-        this.length = theLength;
-        this.position = thePosition;
-    }
-
-    /**
-     * Return the position of progress as a proportion of length.
-     * @return progress position.
-     */
-    public long getPosition() {
-        return position;
-    }
-
-    /**
-     * Return the length that progress is measuring. Typically this is the
-     * length of a file or 100 if percentage progress is being measured.
-     * @return progress length.
-     */
-    public long getLength() {
-        return length;
-    }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -440923505939663713L;
+    void progress(ProgressEvent event) throws InterruptedException;
 }

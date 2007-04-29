@@ -30,7 +30,7 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.ProgressMonitor;
+import org.argouml.taskmgmt.ProgressMonitor;
 
 /**
  * The specialized SwingWorker used for loading projects 

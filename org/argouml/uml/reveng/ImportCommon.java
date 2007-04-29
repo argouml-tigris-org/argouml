@@ -47,7 +47,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleInterface;
-import org.argouml.swingext.ProgressMonitor;
+import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
