@@ -41,7 +41,7 @@ import javax.swing.plaf.metal.MetalTheme;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-import org.argouml.application.configuration.Configuration;
+import org.argouml.configuration.Configuration;
 
 /**
  * Controls the look and feel and theme of ArgoUML. LookAndFeelMgr has a

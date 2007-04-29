@@ -38,8 +38,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import org.argouml.application.configuration.Configuration;
-import org.argouml.application.configuration.ConfigurationKey;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.ui.ArgoFrame;

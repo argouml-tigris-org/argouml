@@ -33,7 +33,7 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-import org.argouml.application.configuration.Configuration;
+import org.argouml.configuration.Configuration;
 import org.argouml.ui.explorer.rules.GoAssocRoleToMessages;
 import org.argouml.ui.explorer.rules.GoBehavioralFeatureToStateDiagram;
 import org.argouml.ui.explorer.rules.GoBehavioralFeatureToStateMachine;

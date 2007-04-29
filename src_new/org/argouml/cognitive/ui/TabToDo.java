@@ -32,8 +32,8 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import org.argouml.application.configuration.Configuration;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.configuration.Configuration;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.cmd.ActionNewToDoItem;
 import org.argouml.ui.cmd.ActionResolve;

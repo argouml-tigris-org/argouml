@@ -30,7 +30,7 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
-import org.argouml.application.configuration.Configuration;
+import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.uml.ui.ProjectFileView;

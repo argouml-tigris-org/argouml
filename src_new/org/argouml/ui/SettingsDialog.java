@@ -35,7 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
-import org.argouml.application.configuration.Configuration;
+import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 
 /**

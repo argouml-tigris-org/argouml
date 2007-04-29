@@ -27,8 +27,8 @@ package org.argouml.ui.cmd;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import org.argouml.application.api.Argo;
-import org.argouml.application.configuration.Configuration;
-import org.argouml.application.configuration.ConfigurationKey;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
 import org.argouml.uml.ui.ActionReopenProject;
 import java.io.File;
 
