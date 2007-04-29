@@ -424,7 +424,31 @@ south: 	TabXXX
   
   &subsysteminternationalization;
   &subsystemlogging;
-  
+
+  <sect1 id="taskmgmt">
+    <title>TaskManagement</title>
+    <para> Purpose - Everything related to the concept of Task, Job 
+      or Request. </para>
+    <para> The TaskManagement is an infrastructure 
+      or low-level subsystem. See <xref
+      linkend="infrastructure_subsystems"></xref>. 
+      Currently, this subsystem contains the ProgressMonitor.
+    </para>
+    <para>The ProgressMonitor is explained by the following:
+      SomethingA needs a long running service from SomethingB. 
+      So, SomethingA decides to ask
+      for it in a different Thread of execution 
+      and to monitor the progress of 
+      the task in its main thread.
+      The reason why it monitors the progress 
+      could be because it wants to show feedback 
+      to the user via the GUI, 
+      but, it could also be in order 
+      to decide that if there is no progress, 
+      it should give up by interrupting its other Thread.
+    </para>
+  </sect1>
+
   <sect1 id="jre">
     <title>JRE with utils</title>
     <para> Purpose - to provide the infrastructure to run everything. </para>

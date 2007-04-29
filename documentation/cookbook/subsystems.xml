@@ -231,9 +231,9 @@ see <xref linkend="internationalization"></xref>.
       </listitem>
       
       <listitem>
-        <para>GUI -
-see <xref linkend="guiframework"></xref>.
-</para>
+        <para>TaskManagement -
+          see <xref linkend="taskmgmt"></xref>.
+        </para>
       </listitem>
 
       <listitem>
@@ -324,7 +324,13 @@ see <xref linkend="application"></xref>.
 see <xref linkend="diagrams"></xref>.
 </para>
         </listitem>
-        
+
+      <listitem>
+        <para>GUI -
+          see <xref linkend="guiframework"></xref>.
+        </para>
+      </listitem>
+
         <listitem>
           <para>Property panels -
 see <xref linkend="propertypanels"></xref>.
