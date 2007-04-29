@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import org.argouml.application.ArgoVersion;
+import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 
 /**
@@ -65,7 +65,7 @@ class SplashPanel extends JPanel {
 	     */
 	    public void paint(Graphics g) {
 	        super.paint(g);
-	        g.drawString("v" + ArgoVersion.getVersion(), 
+	        g.drawString("v" + ApplicationVersion.getVersion(), 
 	                getInsets().left + 10, getInsets().top + 18);
 	    }
 	    
