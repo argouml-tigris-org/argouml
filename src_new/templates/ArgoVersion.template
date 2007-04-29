@@ -37,7 +37,7 @@ package org.argouml.application;
  * @author Thierry Lach
  * @since  Argo0.11.1
  */
-public final class ArgoVersion {
+final class ArgoVersion {
     /**
      * Version number.
      */
@@ -48,7 +48,7 @@ public final class ArgoVersion {
      *
      * @return the version number.
      */
-    public static String getVersion() {
+    static String getVersion() {
         return VERSION;
     }
 
