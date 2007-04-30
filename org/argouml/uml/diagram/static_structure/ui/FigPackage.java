@@ -602,7 +602,7 @@ public class FigPackage extends FigNodeModelElement
             f.damage();
         }
     }
-
+    
     class FigPackageFigText extends FigText {
         /**
 	 * The constructor.
@@ -806,32 +806,32 @@ public class FigPackage extends FigNodeModelElement
         return p;
     }
     
-    protected void modelChanged(PropertyChangeEvent mee) {
-	
-	if (mee instanceof RemoveAssociationEvent
-		&& "ownedElement".equals(mee.getPropertyName())
-		&& mee.getSource() == getOwner()) {
-	    // A model element has been removed from this packages namespace
-	    // If the Fig representing that model element is on the same
-	    // diagram as this package then make sure it is not enclosed by
-	    // this package.
-	    // TODO: In my view the Fig representing the model element should be
-	    // removed from the diagram. Yet to be agreed. Bob.
-	    if (LOG.isInfoEnabled() && mee.getNewValue() == null) {
-		LOG.info(Model.getFacade().getName(mee.getOldValue()) +
-			" has been removed from the namespace of " + 
-			Model.getFacade().getName(getOwner()) +
-			" by notice of " + mee.toString());
-	    }
-	    LayerPerspective layer = (LayerPerspective) getLayer();
-	    Fig f = layer.presentationFor(mee.getOldValue());
-	    if (f != null && f.getEnclosingFig() == this) {
-		removeEnclosedFig(f);
-		f.setEnclosingFig(null);
-	    }
-	}
-	super.modelChanged(mee);
-    }
+//    protected void modelChanged(PropertyChangeEvent mee) {
+//	
+//	if (mee instanceof RemoveAssociationEvent
+//		&& "ownedElement".equals(mee.getPropertyName())
+//		&& mee.getSource() == getOwner()) {
+//	    // A model element has been removed from this packages namespace
+//	    // If the Fig representing that model element is on the same
+//	    // diagram as this package then make sure it is not enclosed by
+//	    // this package.
+//	    // TODO: In my view the Fig representing the model element should be
+//	    // removed from the diagram. Yet to be agreed. Bob.
+//	    if (LOG.isInfoEnabled() && mee.getNewValue() == null) {
+//		LOG.info(Model.getFacade().getName(mee.getOldValue()) +
+//			" has been removed from the namespace of " + 
+//			Model.getFacade().getName(getOwner()) +
+//			" by notice of " + mee.toString());
+//	    }
+//	    LayerPerspective layer = (LayerPerspective) getLayer();
+//	    Fig f = layer.presentationFor(mee.getOldValue());
+//	    if (f != null && f.getEnclosingFig() == this) {
+//		removeEnclosedFig(f);
+//		f.setEnclosingFig(null);
+//	    }
+//	}
+//	super.modelChanged(mee);
+//    }
 
     /**
      * The UID.
