@@ -25,6 +25,7 @@
 package org.argouml;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import jdepend.framework.JDepend;
@@ -43,7 +44,10 @@ import junit.framework.TestSuite;
  * it will stay dependency-cycle free. <p>
  * 
  * It also checks that the top level package(s) are 
- * (and remain) unused by other packages.
+ * (and remain) unused by other packages. <p>
+ * 
+ * It also checks that low level packages do not
+ * use other argouml packages.
  * 
  * @author Michiel
  */
@@ -101,7 +105,6 @@ public class TestDependencies extends TestCase {
             "org.argouml.util.osdep",
             "org.argouml.swingext",
         };
-
         for (int i = 0; i < clean.length; i++) {
             suite.addTest(new CheckDependencyCycle(jdepend, clean[i]));
         }
@@ -115,6 +118,20 @@ public class TestDependencies extends TestCase {
         };
         for (int i = 0; i < top.length; i++) {
             suite.addTest(new CheckTopLevel(jdepend, top[i]));
+        }
+
+        String[] low = {
+            "org.argouml.application.security",
+            "org.argouml.configuration",
+            "org.argouml.i18n",
+            "org.argouml.swingext",
+            "org.argouml.taskmgmt",
+            "org.argouml.util.logging",
+            "org.argouml.util.osdep",
+            "org.argouml.util.osdep.win32",
+        };
+        for (int i = 0; i < low.length; i++) {
+            suite.addTest(new CheckLowLevel(jdepend, low[i]));
         }
 
         return suite;
@@ -176,6 +193,41 @@ public class TestDependencies extends TestCase {
                     msg.append(" ");
                 }
                 assertTrue(msg.toString(), false);
+            }
+        }
+    }
+    
+    static class CheckLowLevel extends TestCase {
+        private String packageName;
+        private JDepend jdepend;
+
+        CheckLowLevel(JDepend jd, String name) {
+            super(name);
+            jdepend = jd;
+            packageName = name;
+        }
+
+        public void runTest() {
+            JavaPackage p = jdepend.getPackage(packageName);
+            assertNotNull(p);
+            Collection<JavaPackage> efferents = p.getEfferents();
+            Collection<JavaPackage> wrong = new ArrayList<JavaPackage>();
+            for (JavaPackage jp : efferents) {
+                if (jp.getName().startsWith("org.argouml")) {
+                    wrong.add(jp);
+                }
+                if (!wrong.isEmpty()) {
+                    StringBuffer msg = new StringBuffer("JDepend "
+                            + "indicates a dependency from "
+                            + "the low level package ");
+                    msg.append(p.getName());
+                    msg.append(" to the argouml package(s)");
+                    for (JavaPackage jpWrong : wrong) {
+                        msg.append(" ");
+                        msg.append(jpWrong.getName());
+                    }
+                    assertTrue(msg.toString(), false);
+                }
             }
         }
     }
