@@ -29,7 +29,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.ui.FigEdgeAssociationClass;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Layer;
@@ -131,14 +133,25 @@ public final class PgmlUtility {
     }
 
     /**
-     * Generate an identifier for this Fig which is unique within the 
-     * diagram.
+     * Return the identifier for this Fig which is the encloser 
+     * of the given Fig
      * @param f the Fig to generate the id for
      * @return a unique string
      */
     public static String getEnclosingId(Fig f) {
         
         Fig encloser = f.getEnclosingFig();
+        
+        if (encloser instanceof FigPackage) {
+            // I hack that works around issue 4729 and 4674
+            // If we can determine why FigPackage.modelChanged
+            // receive rogue events we can remove this block.
+            Object namespace = Model.getFacade().getNamespace(f.getOwner());
+            if (namespace != encloser.getOwner()) {
+                return null;
+            }
+        }
+        
         if (encloser == null) {
             return null;
         }
