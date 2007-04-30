@@ -544,16 +544,19 @@ Property files to be searched:
       <!-- Links allow reference to external classes from within
            Argo javadocs
         -->
+
       <link href="${gef.javadoc.link}" offline="true"
             packagelistLoc="${gef.javadoc.packagelist}"/>
+
       <link href="${jdk.javadoc.link}" offline="true"
             packagelistLoc="${jdk.javadoc.packagelist}"/>
+
       <link href="${log4j.javadoc.link}" offline="true"
             packagelistLoc="${log4j.javadoc.packagelist}"/>
-      <link href="${commons-logging.javadoc.link}" offline="true"
-            packagelistLoc="${commons-logging.javadoc.packagelist}"/>
+
       <link href="${jmi.javadoc.link}" offline="true"
             packagelistLoc="${jmi.javadoc.packagelist}"/>
+
       <!-- Rest of the packages -->
 
     </javadoc>
@@ -594,14 +597,19 @@ Property files to be searched:
       <!-- Links allow reference to external classes from within
            Argo javadocs
         -->
+
       <link href="${gef.javadoc.link}" offline="true"
             packagelistLoc="${gef.javadoc.packagelist}"/>
+
       <link href="${jdk.javadoc.link}" offline="true"
             packagelistLoc="${jdk.javadoc.packagelist}"/>
+
       <link href="${log4j.javadoc.link}" offline="true"
             packagelistLoc="${log4j.javadoc.packagelist}"/>
+
       <link href="${jmi.javadoc.link}" offline="true"
             packagelistLoc="${jmi.javadoc.packagelist}"/>
+
       <!-- Rest of the packages -->
 
     </javadoc>
