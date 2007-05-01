@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.util;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 import junit.framework.Assert;
 
@@ -43,14 +44,12 @@ public final class CheckMain {
      */
     private CheckMain() {
     }
-
+    
     /**
-     * Call main in the application.
-     *
-     * @param args The arguments to use.
+     * @param commands a list of string commands, syntax as given on the cli
      */
-    public static void callMain(String[] args) {
-        Main.main(args);
+    public static void doCommand(List commands) {
+        Main.performCommands(commands);
     }
 
 

@@ -25,6 +25,8 @@
 package org.argouml.uml.ui;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -56,13 +58,11 @@ public class GUITestActionSaveGraphics extends TestCase {
 
         new File(OUTPUT_FILE).delete();
 
-        CheckMain.callMain(new String[] {
-            "-nosplash",
-            "-command",
-            "org.argouml.uml.ui.ActionOpenProject=" + file.getAbsolutePath(),
-            "-command",
-            "org.argouml.uml.ui.ActionSaveGraphics=" + OUTPUT_FILE,
-        });
+        List<String> c = new ArrayList<String>();
+        c.add("org.argouml.uml.ui.ActionOpenProject=" + file.getAbsolutePath());
+        c.add("org.argouml.uml.ui.ActionSaveGraphics=" + OUTPUT_FILE);
+        CheckMain.doCommand(c);
+
         assertTrue(new File(OUTPUT_FILE).exists());
 
         new File(OUTPUT_FILE).delete();

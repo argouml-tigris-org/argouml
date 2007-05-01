@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,9 @@
 
 package org.argouml.application.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 import org.argouml.util.CheckMain;
 
@@ -37,7 +40,7 @@ import org.argouml.util.CheckMain;
  *     since that would invoke ActionExit().
  * <li>After calling main we must reset the ArgoSecurityManager or else
  *     the test case will not be able to exit. For this reason use
- *     {@link CheckMain#callMain(String[])} instead of a direct call.
+ *     {@link CheckMain#doCommand(List)} instead of a direct call.
  * @author Linus Tolke
  */
 public class GUITestCommandLineInterface extends TestCase {
@@ -54,11 +57,9 @@ public class GUITestCommandLineInterface extends TestCase {
      * Test the simplest possible action.
      */
     public void testActionExit() {
-        CheckMain.callMain(new String[] {
-            "-nosplash",
-            "-command",
-            "org.argouml.application.api.FalseActionExit",
-        });
+        List<String> c = new ArrayList<String>();
+        c.add("org.argouml.application.api.FalseActionExit");
+        CheckMain.doCommand(c);
 
 	assertTrue(FalseActionExit.getLast().isExited());
     }

@@ -25,6 +25,8 @@
 package org.argouml.uml.ui;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -83,11 +85,9 @@ public class GUITestActionOpenProject extends TestCase {
         File file
             = CheckMain.getTestModel(fileName);
 
-        CheckMain.callMain(new String[] {
-            "-nosplash",
-            "-command",
-            "org.argouml.uml.ui.ActionOpenProject=" + file.getAbsolutePath(),
-        });
+        List<String> c = new ArrayList<String>();
+        c.add("org.argouml.uml.ui.ActionOpenProject=" + file.getAbsolutePath());
+        CheckMain.doCommand(c);
 
         assertEquals(projectName,
 		ProjectManager.getManager().getCurrentProject().getBaseName());

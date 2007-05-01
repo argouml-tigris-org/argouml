@@ -25,6 +25,8 @@
 package org.argouml.ui.cmd;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -53,17 +55,13 @@ public class GUITestActionGotoDiagram extends TestCase {
 	    CheckMain.getTestModel(
                     "testmodels/uml14/GUITestPropertyPanels.zargo");
 
-        CheckMain.callMain(new String[] {
-            "-nosplash",
-            "-command",
-            "org.argouml.uml.ui.ActionOpenProject=" + file.toString(),
-            "-command",
-            "org.argouml.uml.ui.ActionSaveGraphics=" + OUTPUT_FILE1,
-            "-command",
-            "org.argouml.ui.cmd.ActionGotoDiagram=Deployment Diagram 1",
-            "-command",
-            "org.argouml.uml.ui.ActionSaveGraphics=" + OUTPUT_FILE2,
-        });
+        List<String> c = new ArrayList<String>();
+        c.add("org.argouml.uml.ui.ActionOpenProject=" + file.toString());
+        c.add("org.argouml.uml.ui.ActionSaveGraphics=" + OUTPUT_FILE1);
+        c.add("org.argouml.ui.cmd.ActionGotoDiagram=Deployment Diagram 1");
+        c.add("org.argouml.uml.ui.ActionSaveGraphics=" + OUTPUT_FILE2);
+        CheckMain.doCommand(c);
+
         assertTrue(new File(OUTPUT_FILE1).exists());
         assertTrue(new File(OUTPUT_FILE2).exists());
 
