@@ -45,6 +45,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoDiagram;
@@ -85,7 +86,8 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Default name for a project.
      */
-    private static final String UNTITLED_FILE = "Untitled";
+    private static final String UNTITLED_FILE =
+	Translator.localize("label.projectbrowser-title");
 
     ////////////////////////////////////////////////////////////////
     // static variables
