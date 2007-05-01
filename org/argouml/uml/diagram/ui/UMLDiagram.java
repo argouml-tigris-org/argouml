@@ -689,6 +689,12 @@ public abstract class UMLDiagram
             return;
         }
         
+        // If we're trying to set the namespace to the existing value
+        // then don't do any more work.
+	if (Model.getFacade().getNamespace(modelElement) == ns) {
+	    return;
+	}
+        
         CoreHelper coreHelper = Model.getCoreHelper();
         ModelManagementHelper modelHelper = Model.getModelManagementHelper();
         
