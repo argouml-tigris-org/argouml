@@ -42,6 +42,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.Map.Entry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
@@ -71,19 +72,16 @@ public final class ModuleLoader2 {
     /**
      * This map contains the module loader information about the module.<p>
      *
-     * The keys is the list of available modules.<p>
-     *
-     * The keys are {@link org.argouml.moduleloader.ModuleInterface}.
-     * The values are {@link org.argouml.moduleloader.ModuleStatus}.
+     * The keys is the list of available modules.
      */
-    private Map moduleStatus;
+    private Map<ModuleInterface, ModuleStatus> moduleStatus;
     
     /**
      * List of locations that we've searched and/or loaded modules
      * from.  This is for information purposes only to allow it to 
      * be displayed in the settings Environment tab.
      */
-    private List extensionLocations = new ArrayList();
+    private List<String> extensionLocations = new ArrayList<String>();
 
     /**
      * The module loader object.
@@ -109,7 +107,7 @@ public final class ModuleLoader2 {
      * Constructor for this object.
      */
     private ModuleLoader2() {
-	moduleStatus = new HashMap();
+	moduleStatus = new HashMap<ModuleInterface, ModuleStatus>();
         GUI.getInstance().addSettingsTab(new SettingsTabModules());
     }
 
@@ -127,7 +125,7 @@ public final class ModuleLoader2 {
      *
      * @return A Collection of all available modules.
      */
-    private Collection availableModules() {
+    private Collection<ModuleInterface> availableModules() {
 	return Collections.unmodifiableCollection(moduleStatus.keySet());
     }
 
@@ -164,12 +162,13 @@ public final class ModuleLoader2 {
      *
      * @return all the names.
      */
-    public static Collection allModules() {
-	Collection coll = new HashSet();
+    public static Collection<String> allModules() {
+	Collection<String> coll = new HashSet<String>();
 
-	Iterator iter = getInstance().availableModules().iterator();
+	Iterator<ModuleInterface> iter =
+            getInstance().availableModules().iterator();
 	while (iter.hasNext()) {
-	    ModuleInterface mf = (ModuleInterface) iter.next();
+	    ModuleInterface mf = iter.next();
 
 	    coll.add(mf.getName());
 	}
@@ -195,10 +194,10 @@ public final class ModuleLoader2 {
      * @return <code>true</code> if the module is selected.
      */
     private boolean isSelectedInternal(String name) {
-	Map.Entry entry = findModule(name);
+	Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
 
 	if (entry != null) {
-	    ModuleStatus status = (ModuleStatus) entry.getValue();
+	    ModuleStatus status = entry.getValue();
 
 	    if (status == null) {
 		return false;
@@ -227,10 +226,10 @@ public final class ModuleLoader2 {
      * @param value Selected or not.
      */
     private void setSelectedInternal(String name, boolean value) {
-	Map.Entry entry = findModule(name);
+	Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
 
 	if (entry != null) {
-	    ModuleStatus status = (ModuleStatus) entry.getValue();
+	    ModuleStatus status = entry.getValue();
 
 	    status.setSelected(value);
 	}
@@ -256,13 +255,13 @@ public final class ModuleLoader2 {
      * @return The description.
      */
     private String getDescriptionInternal(String name) {
-	Map.Entry entry = findModule(name);
+	Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
 
 	if (entry == null) {
 	    throw new IllegalArgumentException("Module does not exist.");
 	}
 
-	ModuleInterface module = (ModuleInterface) entry.getKey();
+	ModuleInterface module = entry.getKey();
         StringBuffer sb = new StringBuffer();
         String desc = module.getInfo(ModuleInterface.DESCRIPTION);
         if (desc != null) {
@@ -297,11 +296,11 @@ public final class ModuleLoader2 {
 	do {
 	    someModuleSucceeded = false;
 
-	    Iterator iter = availableModules().iterator();
+	    Iterator<ModuleInterface> iter = availableModules().iterator();
 	    while (iter.hasNext()) {
-		ModuleInterface module = (ModuleInterface) iter.next();
+		ModuleInterface module = iter.next();
 
-		ModuleStatus status = (ModuleStatus) moduleStatus.get(module);
+		ModuleStatus status = moduleStatus.get(module);
 
 		if (status == null) {
 		    continue;
@@ -330,11 +329,11 @@ public final class ModuleLoader2 {
 	    //
 	    // TODO: We could eventually pop up some warning window.
 	    //
-	    Iterator iter = availableModules().iterator();
+	    Iterator<ModuleInterface> iter = availableModules().iterator();
 	    while (iter.hasNext()) {
-		ModuleInterface module = (ModuleInterface) iter.next();
+		ModuleInterface module = iter.next();
 
-		ModuleStatus status = (ModuleStatus) moduleStatus.get(module);
+		ModuleStatus status = moduleStatus.get(module);
 
 		if (status == null) {
 		    continue;
@@ -366,10 +365,10 @@ public final class ModuleLoader2 {
      * @param name is the module name of the queried module
      */
     private boolean isEnabledInternal(String name) {
-	Map.Entry entry = findModule(name);
+	Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
 
 	if (entry != null) {
-	    ModuleStatus status = (ModuleStatus) entry.getValue();
+	    ModuleStatus status = entry.getValue();
 
 	    if (status == null) {
 		return false;
@@ -388,11 +387,12 @@ public final class ModuleLoader2 {
      * @param name The given name.
      * @return A pair (Map.Entry).
      */
-    private Map.Entry findModule(String name) {
-	Iterator iter = moduleStatus.entrySet().iterator();
+    private Map.Entry<ModuleInterface, ModuleStatus> findModule(String name) {
+	Iterator<Entry<ModuleInterface, ModuleStatus>> iter =
+            moduleStatus.entrySet().iterator();
 	while (iter.hasNext()) {
-	    Map.Entry entry = (Map.Entry) iter.next();
-	    ModuleInterface module = (ModuleInterface) entry.getKey();
+	    Map.Entry<ModuleInterface, ModuleStatus> entry = iter.next();
+	    ModuleInterface module = entry.getKey();
 
 	    if (name.equalsIgnoreCase(module.getName())) {
 		return entry;
@@ -498,7 +498,7 @@ public final class ModuleLoader2 {
      * Get the list of locations that we've loaded extension modules from.
      * @return A list of the paths we've loaded from.
      */
-    public List getExtensionLocations() {
+    public List<String> getExtensionLocations() {
         return Collections.unmodifiableList(extensionLocations);
     }
 
@@ -680,9 +680,9 @@ public final class ModuleLoader2 {
     private void addModule(ModuleInterface mf) {
 	// Since there is no way to compare the objects as equal,
 	// we have to search through the list at this point.
-	Iterator iter = moduleStatus.keySet().iterator();
+	Iterator<ModuleInterface> iter = moduleStatus.keySet().iterator();
 	while (iter.hasNext()) {
-	    ModuleInterface foundMf = (ModuleInterface) iter.next();
+	    ModuleInterface foundMf = iter.next();
 
 	    if (foundMf.getName().equals(mf.getName())) {
 		return;
