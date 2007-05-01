@@ -142,16 +142,6 @@ public final class PgmlUtility {
         
         Fig encloser = f.getEnclosingFig();
         
-        if (encloser instanceof FigPackage) {
-            // I hack that works around issue 4729 and 4674
-            // If we can determine why FigPackage.modelChanged
-            // receive rogue events we can remove this block.
-            Object namespace = Model.getFacade().getNamespace(f.getOwner());
-            if (namespace != encloser.getOwner()) {
-                return null;
-            }
-        }
-        
         if (encloser == null) {
             return null;
         }
