@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,6 +27,7 @@ package org.argouml.model;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 /**
  * @author Thierry Lach
@@ -43,18 +44,19 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      * Constructor for GenericObjectFixture.
      *
      * @param arg0 is the name of the test case.
-     * @param ent the model entity
      */
-    public GenericUmlObjectTestFixture(String arg0, Object ent) {
+    public GenericUmlObjectTestFixture(String arg0) {
 	super(arg0);
-	entity = ent;
+        InitializeModel.initializeDefault();
     }
 
-    /*
-     * @see TestCase#setUp()
+    /**
+     * Set the entity.
+     *
+     * @param ent the model entity
      */
-    protected void setUp() throws Exception {
-	super.setUp();
+    public void setEntity(Object ent) {
+	entity = ent;
     }
 
     /*

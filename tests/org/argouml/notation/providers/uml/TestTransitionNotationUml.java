@@ -27,6 +27,7 @@ package org.argouml.notation.providers.uml;
 import java.text.ParseException;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -57,6 +58,7 @@ public class TestTransitionNotationUml extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
+        InitializeModel.initializeDefault();
         assertTrue("Model subsystem init failed.", Model.isInitiated());
         Project p = ProjectManager.getManager().getCurrentProject();
         Object model =

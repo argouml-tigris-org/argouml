@@ -27,6 +27,7 @@ package org.argouml.kernel;
 import java.util.Collection;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -469,6 +470,7 @@ public class TestProject extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        InitializeModel.initializeDefault();
         ProjectManager.getManager().setCurrentProject(null);
     }
 }

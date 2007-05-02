@@ -33,6 +33,7 @@ import java.util.Iterator;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -93,6 +94,8 @@ public class TestPropertyPanels extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        InitializeModel.initializeDefault();
+
         if (theDetailsPane == null) {
             theDetailsPane =
         	new DetailsPane("detail", Horizontal.getInstance());

@@ -27,6 +27,7 @@ package org.argouml.notation.providers;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.Project;
@@ -50,6 +51,7 @@ public class TestNotationProviderFactory2 extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
+        InitializeModel.initializeDefault();
         name = Notation.makeNotation(
                     "Test",
                     null,

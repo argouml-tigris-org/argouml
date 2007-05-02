@@ -28,6 +28,7 @@ import java.text.ParseException;
 import java.util.Collection;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -56,6 +57,7 @@ public class TestStateBodyNotationUml extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
+        InitializeModel.initializeDefault();
         Object model =
             Model.getModelManagementFactory().createModel();
         Project p = ProjectManager.getManager().getCurrentProject();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.uml.ui;
 
 import org.argouml.kernel.Project;
@@ -30,6 +31,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.foundation.extension_mechanisms.UMLTagDefinitionComboBoxModel;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 /**
  * Test cases for the UMLTagDefinitionComboBoxModel class.
@@ -66,6 +68,7 @@ public class TestUMLTagDefinitionComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        InitializeModel.initializeDefault();
         proj = ProjectManager.getManager().getCurrentProject();
         model = proj.getModel();
 

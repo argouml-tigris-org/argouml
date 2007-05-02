@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import javax.swing.Action;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.i18n.Translator;
 
@@ -52,6 +53,7 @@ public class TestActionNewReception extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         Translator.init("en");
+        InitializeModel.initializeDefault();
     }
 
     /**

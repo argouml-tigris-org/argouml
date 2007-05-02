@@ -27,6 +27,7 @@ package org.argouml.notation.providers.uml;
 import java.text.ParseException;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -58,6 +59,7 @@ public class TestCallStateNotationUml extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
+        InitializeModel.initializeDefault();
         Object model =
             Model.getModelManagementFactory().createModel();
         Project p = ProjectManager.getManager().getCurrentProject();

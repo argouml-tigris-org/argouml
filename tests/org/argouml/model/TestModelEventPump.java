@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -72,6 +72,7 @@ public class TestModelEventPump extends TestCase {
      */
     public TestModelEventPump(String arg0) {
         super(arg0);
+        InitializeModel.initializeDefault();
     }
 
     /*
@@ -79,8 +80,6 @@ public class TestModelEventPump extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-
-        InitializeModel.initializeDefault();
 
         elem = Model.getCoreFactory().createClass();
         Project project = ProjectManager.getManager().getCurrentProject();

@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
 import org.argouml.uml.reveng.java.JavaLexer;
@@ -54,6 +55,7 @@ public class TestJavaImportEnumeration extends TestCase {
      */
     public TestJavaImportEnumeration(String str) {
         super(str);
+        InitializeModel.initializeDefault();
     }
 
     /*

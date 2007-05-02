@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.io.StringReader;
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -50,6 +51,7 @@ public class TestJavaImportUnicode extends TestCase {
      */
     public TestJavaImportUnicode(String str) {
         super(str);
+        InitializeModel.initializeDefault();
     }
 
     /*

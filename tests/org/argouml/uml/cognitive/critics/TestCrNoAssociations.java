@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
 
@@ -49,6 +50,7 @@ public class TestCrNoAssociations extends TestCase {
     // simply create 3 usecases and an actor in a package with individual names
     protected void setUp() throws Exception {
         super.setUp();
+        InitializeModel.initializeDefault();
         critic = new CrNoAssociations();
        
         ns = Model.getModelManagementFactory().buildPackage("Test", null);

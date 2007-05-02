@@ -30,6 +30,7 @@ import java.net.URL;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 
@@ -44,6 +45,7 @@ public class TestZargoFilePersister extends TestCase {
      */
     public TestZargoFilePersister(String name) {
         super(name);
+        InitializeModel.initializeDefault();
     }
 
     /**

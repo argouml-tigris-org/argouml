@@ -27,6 +27,7 @@ package org.argouml.persistence;
 import java.io.File;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -47,6 +48,14 @@ public class TestXmiFilePersister extends TestCase {
      */
     public TestXmiFilePersister(String arg0) {
         super(arg0);
+    }
+
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() throws Exception {
+	super.setUp();
+        InitializeModel.initializeDefault();
     }
 
     /**

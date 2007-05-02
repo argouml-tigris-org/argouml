@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.use_case.ui;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 /**
  * Test if a Fig is cloneable.
@@ -38,6 +39,14 @@ public class TestFigClonable extends TestCase {
      */
     public TestFigClonable(String name) {
 	super(name);
+    }
+
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() throws Exception {
+	super.setUp();
+        InitializeModel.initializeDefault();
     }
 
     /**

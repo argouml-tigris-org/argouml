@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,11 +30,11 @@ public class TestCrTooManyStates extends AbstractTestCrTooMany {
 
     public TestCrTooManyStates(String arg0) {
         super(arg0);
-        dm = Model.getStateMachinesFactory().createCompositeState();
     }
 
     protected void setUp() throws Exception {
         super.setUp();
+        dm = Model.getStateMachinesFactory().createCompositeState();
         cr = new CrTooManyStates();
     }
 

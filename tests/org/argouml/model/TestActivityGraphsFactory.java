@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2006 The Regents of the University of California. All
+// Copyright (c) 2002-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.model;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 
 /**
@@ -51,7 +52,17 @@ public class TestActivityGraphsFactory extends TestCase {
      *
      * @param n the name
      */
-    public TestActivityGraphsFactory(String n) { super(n); }
+    public TestActivityGraphsFactory(String n) {
+	super(n);
+        InitializeModel.initializeDefault();
+    }
+
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() throws Exception {
+	super.setUp();
+    }
 
     /**
      * Test the singleton pattern for the ActivityGraphsFactoryImpl class.

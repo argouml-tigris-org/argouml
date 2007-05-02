@@ -1,5 +1,5 @@
 // $Id: TestNotationProvider.java $
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -39,6 +40,14 @@ import org.argouml.model.Model;
  */
 public class TestNotationProvider extends TestCase 
     implements PropertyChangeListener {
+
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() throws Exception {
+	super.setUp();
+        InitializeModel.initializeDefault();
+    }
 
     private Object aClass;
     private boolean propChanged = false;

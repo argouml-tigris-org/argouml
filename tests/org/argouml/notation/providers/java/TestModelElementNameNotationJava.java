@@ -27,6 +27,7 @@ package org.argouml.notation.providers.java;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -42,6 +43,7 @@ public class TestModelElementNameNotationJava extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
+        InitializeModel.initializeDefault();
         theClass = Model.getCoreFactory().buildClass("TheClass", getModel());
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
 
@@ -44,6 +45,7 @@ public class TestCrAssocNameConflict extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
+        InitializeModel.initializeDefault();
         ns1 = Model.getModelManagementFactory().buildPackage("P1", null);
         ns2 = Model.getModelManagementFactory().buildPackage("P2", null);
         c1 = Model.getCoreFactory().buildClass("A", ns1);

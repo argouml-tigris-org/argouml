@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -113,6 +114,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
+        InitializeModel.initializeDefault();
         NotationProviderFactory2.getInstance();
     }
 

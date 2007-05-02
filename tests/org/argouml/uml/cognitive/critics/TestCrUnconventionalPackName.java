@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ package org.argouml.uml.cognitive.critics;
 import org.argouml.model.Model;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 /**
  * Testing the class {@link CrUnconventionalPackName}.
@@ -47,6 +48,14 @@ public class TestCrUnconventionalPackName extends TestCase {
      */
     public TestCrUnconventionalPackName(String arg0) {
         super(arg0);
+    }
+
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() throws Exception {
+	super.setUp();
+        InitializeModel.initializeDefault();
     }
 
     /**

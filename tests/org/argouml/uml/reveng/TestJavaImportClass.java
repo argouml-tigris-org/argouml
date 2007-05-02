@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.io.StringReader;
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.uml.reveng.java.JavaLexer;
 import org.argouml.uml.reveng.java.JavaRecognizer;
@@ -51,6 +52,7 @@ public class TestJavaImportClass extends TestCase {
      */
     public TestJavaImportClass(String str) {
         super(str);
+        InitializeModel.initializeDefault();
     }
 
     /*

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,8 @@ public class TestUmlActor extends GenericUmlObjectTestFixture {
      * @param arg0 test name
      */
     public TestUmlActor(String arg0) {
-	super(arg0, Model.getMetaTypes().getActor());
+	super(arg0);
+	setEntity(Model.getMetaTypes().getActor());
 	validateTestClassIsGeneric(this);
     }
 
@@ -56,7 +57,6 @@ public class TestUmlActor extends GenericUmlObjectTestFixture {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        InitializeModel.initializeMDR();
         setTruth(Model.getMetaTypes().getModelElement(), true);
         setTruth(Model.getMetaTypes().getGeneralizableElement(), true);
         setTruth(Model.getMetaTypes().getClassifier(), true);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,8 +26,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 
-
-
 /**
  * Test to check various aspects of generalization relationships
  * 
@@ -39,10 +37,6 @@ public class TestUmlGeneralization extends GenericUmlObjectTestFixture {
     private Object gen1, gen2;
     private Object namespace;
 
-    static {
-        InitializeModel.initializeDefault();
-    }
-
     /**
      * Constructor.
      * 
@@ -50,7 +44,8 @@ public class TestUmlGeneralization extends GenericUmlObjectTestFixture {
      *            test name
      */
     public TestUmlGeneralization(String arg0) {
-	super(arg0, Model.getMetaTypes().getClass());
+	super(arg0);
+	setEntity(Model.getMetaTypes().getClass());
 	validateTestClassIsGeneric(this);
     }
 
