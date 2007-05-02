@@ -201,28 +201,96 @@ This is in subsections.
       the Cookbook's description of subsystem X in the list of used subsystems.
     </para>
   </sect1>
-  
+
+  <sect1 id="external_subsystems">
+    <title>External subsystems</title>
+    <para> These subsystems are in fact imported libraries 
+      and are not developed as part of ArgoUML.
+    </para>
+    <para>There is a very simple dependency structure: 
+      All ArgoUML packages may depend on them.
+    </para>
+    <para>
+      All these subsystems are all started and initiated (if needed)
+      from the Application subsystem.
+    </para>
+
+    <itemizedlist>
+      
+      <listitem>
+        <para>Logging - see <xref linkend="logging"></xref>. 
+          Location: <classname>org.apache.log4j</classname>
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>Antlr. ANother Tool for Language Recognition, 
+        is a framework 
+        for constructing recognizers, compilers, 
+        and translators from grammatical descriptions.
+        ArgoUML uses ANTLR to process Java source code.
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>JRE with utils - see
+          <xref linkend="jre"></xref>. 
+          This includes all libraries that are part of the standard JRE.
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>OCL - see
+          <xref linkend="ocl"></xref>. 
+          Location: <classname>tudresden.ocl</classname>
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>swidgets. 
+          Location: <classname>org.tigris.swidgets</classname>
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>gef. 
+          Location: <classname>org.tigris.gef</classname>
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>toolbar. 
+          Location: <classname>org.tigris.toolbar</classname>
+        </para>
+      </listitem>
+
+    </itemizedlist>
+
+    <para>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/cookbook/external.png" format="PNG"/>
+        </imageobject>
+      </mediaobject> </para>
+    
+  </sect1>
+
   <sect1 id="infrastructure_subsystems">
     <title>Low-level subsystems</title>
     <para> These subsystems are infrastructure subsystems that just are there
       for every other subsystem to use
       - but they are not using any other part of ArgoUML.
     </para>
-    <para> They all have a simple dependency structure: 
+    <para> Low-level subsystems have a simple dependency structure: 
       All other ArgoUML packages may depend on them, 
       but there are no dependencies "upwards", 
       nor between them.
     </para>
     <para>
-All these subsystems are all started and initiated (if needed) from the
-Application subsystem.
-</para>
+      All these subsystems are started and initiated (if needed) from the
+      Application subsystem.
+    </para>
     <itemizedlist>
-      
-      <listitem>
-        <para>Logging - see <xref linkend="logging"></xref>
-</para>
-      </listitem>
       
       <listitem>
         <para>Internationalization -
@@ -243,17 +311,11 @@ see <xref linkend="internationalization"></xref>.
       </listitem>
 
       <listitem>
-        <para>Help system -
-see <xref linkend="help"></xref>.
-</para>
+        <para>Swing extensions<!-- 
+          - see <xref linkend="swingext"></xref> -->.
+        </para>
       </listitem>
-        
-      <listitem>
-        <para>JRE with utils -
-see <xref linkend="jre"></xref>
-</para>
-      </listitem>
-      
+
     </itemizedlist>
     <para>
       <mediaobject>
@@ -295,6 +357,13 @@ See <xref linkend="model"/>.
 see <xref linkend="todoitems"></xref>.
 </para>
         </listitem>
+
+      <listitem>
+        <para>
+          Help system - see
+          <xref linkend="help"></xref>.
+        </para>
+      </listitem>
         
       </itemizedlist>
 </para>
