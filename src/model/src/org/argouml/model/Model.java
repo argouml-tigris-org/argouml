@@ -26,8 +26,6 @@ package org.argouml.model;
 
 import java.io.Writer;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * This is the root class of the Model subsystem. All other subsystems
@@ -36,22 +34,15 @@ import org.apache.log4j.Logger;
  * Notice that all API's returned from this class are to be independant
  * of and specific UML model implementation.<p>
  *
+ * For this to work the Model subsystem needs to be initialized with a
+ * {@link ModelImplementation}. This is done by calling the static member
+ * {@link #setImplementation(ModelImplementation)}.
+ *
  * @stereotype utility
  * @since 0.15.5
  * @author Linus Tolke
  */
 public final class Model {
-    /**
-     * The default implementation to start.
-     */
-    private static final String DEFAULT_MODEL_IMPLEMENTATION =
-        "org.argouml.model.mdr.MDRModelImplementation";
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(Model.class);
-
     /**
      * The decorated helper.
      */
@@ -113,27 +104,7 @@ public final class Model {
      */
     private static ModelImplementation impl;
 
-    static {
-        String className =
-            System.getProperty(
-                    "argouml.model.implementation",
-            	    DEFAULT_MODEL_IMPLEMENTATION);
-
-        try {
-            Class implType = Class.forName(className);
-            impl = (ModelImplementation) implType.newInstance();
-            installDecorators();
-        } catch (ClassNotFoundException e) {
-            reportError(e);
-        } catch (InstantiationException e) {
-            reportError(e);
-        } catch (IllegalAccessException e) {
-            reportError(e);
-        }
-        
-    }
-
-    /*
+    /**
      * Install undo decorators 
      */
     private static void installDecorators() {
@@ -160,17 +131,10 @@ public final class Model {
     }
 
     /**
-     * @param e The exception to be logged.
-     */
-    private static void reportError(Exception e) {
-        LOG.fatal("Model component not correctly initialized.", e);
-    }
-
-    /**
      * Selects the implementation.<p>
      *
-     * Normally this is set when loading the Model subsystem, but this
-     * allows the implementation to be set externally.
+     * This must be called with a working {@link ModelImplementation}
+     * to make the Model subsystem operational.
      *
      * @param newImpl The ModelImplementation object of the selected
      * 		      implementation.
