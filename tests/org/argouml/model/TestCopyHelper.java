@@ -49,6 +49,8 @@ public class TestCopyHelper extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
+        InitializeModel.initializeDefault();
+
         // Make sure we have a root model for TagDefinitions to get put in.
         ModelManagementFactory mmf = Model.getModelManagementFactory();
         mmf.setRootModel(mmf.createModel());

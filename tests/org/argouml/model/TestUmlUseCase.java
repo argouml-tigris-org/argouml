@@ -30,6 +30,10 @@ package org.argouml.model;
  * @author Thierry Lach
  */
 public class TestUmlUseCase extends GenericUmlObjectTestFixture {
+    static {
+        InitializeModel.initializeDefault();
+    }
+
     /**
      * Constructor.
      *

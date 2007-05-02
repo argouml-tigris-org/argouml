@@ -54,6 +54,13 @@ public class TestUseCasesFactory extends TestCase {
         super(n);
     }
 
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() {
+        InitializeModel.initializeDefault();
+    }
+
     /**
      * Test if the UseCasesFactory is really a singleton.
      */

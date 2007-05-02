@@ -39,6 +39,10 @@ public class TestUmlGeneralization extends GenericUmlObjectTestFixture {
     private Object gen1, gen2;
     private Object namespace;
 
+    static {
+        InitializeModel.initializeDefault();
+    }
+
     /**
      * Constructor.
      * 

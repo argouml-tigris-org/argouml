@@ -52,6 +52,13 @@ public class TestModelManagementHelper extends TestCase {
 	super(arg0);
     }
 
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() {
+        InitializeModel.initializeDefault();
+    }
+
     /**
      * Test getting the metamodel name.
      */

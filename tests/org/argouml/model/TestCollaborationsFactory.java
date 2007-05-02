@@ -60,8 +60,7 @@ public class TestCollaborationsFactory extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
-	//this should instantiate a new implementation
-	Model.getFacade();
+        InitializeModel.initializeDefault();
     }
 
     /**

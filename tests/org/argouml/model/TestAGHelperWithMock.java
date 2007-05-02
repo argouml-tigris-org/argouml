@@ -51,13 +51,10 @@ public class TestAGHelperWithMock extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
-        System.setProperty("argouml.model.implementation",
-                "org.argouml.model.MockModelImplementation");
-        Model.getFacade(); // Load the model.
+        mockModelImplementation = InitializeModel.initializeMock();
 
-        mockModelImplementation = MockModelImplementation.getLatest();
-
-        assertNotNull("MockModelImplementation not created", mockModelImplementation);
+        assertNotNull("MockModelImplementation not created",
+                mockModelImplementation);
 
         // Must be called after setImplementation.
         mockModelImplementation.reset();

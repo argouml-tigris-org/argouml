@@ -37,6 +37,13 @@ public class TestModel2 extends TestCase {
         super(arg0);
     }
 
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() {
+        InitializeModel.initializeDefault();
+    }
+
     /**
      * Test if the CollaborationsFactory is really a singleton.
      */

@@ -174,6 +174,8 @@ public class TestModelFacade3 extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        InitializeModel.initializeDefault();
+
         facade = Model.getFacade();
         assertNotNull("Cound not get Facade", facade);
     }

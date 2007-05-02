@@ -51,6 +51,13 @@ public class TestExtensionMechanismsFactory extends TestCase {
 	super(n);
     }
 
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() {
+        InitializeModel.initializeDefault();
+    }
+
     /**
      * Test if the ExtensionMechanismsFactory is really a singleton.
      */

@@ -178,6 +178,8 @@ public class TestAgainstUmlModel extends TestCase {
      */
 
     static {
+        InitializeModel.initializeDefault();
+
         refs = new Hashtable<String, Object>(127);
     }
 

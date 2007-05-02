@@ -51,6 +51,13 @@ public class TestModelFacade2 extends TestCase {
 	super(arg0);
     }
 
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() {
+        InitializeModel.initializeDefault();
+    }
+
     /**
      * Test that the correct error is thrown for isAsynchronous.
      */

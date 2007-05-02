@@ -92,7 +92,7 @@ public class TestCoreFactory extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
-	Model.getFacade();
+        InitializeModel.initializeDefault();
     }
 
     /**

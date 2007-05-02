@@ -100,6 +100,7 @@ public class TestUmlExtend extends GenericUmlObjectTestFixture {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        InitializeModel.initializeDefault();
         uc1 =
             Model.getUmlFactory().buildNode(Model.getMetaTypes().getUseCase());
         uc2 =

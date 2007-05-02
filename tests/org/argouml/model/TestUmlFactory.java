@@ -51,6 +51,8 @@ public class TestUmlFactory extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
+        InitializeModel.initializeDefault();
+
 	fy = Model.getUmlFactory();
     }
 

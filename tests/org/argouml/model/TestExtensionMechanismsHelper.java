@@ -63,6 +63,9 @@ public class TestExtensionMechanismsHelper extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+
+        InitializeModel.initializeDefault();
+
         model = Model.getModelManagementFactory().createModel();
         pack =
             Model.getModelManagementFactory().buildPackage("pack",

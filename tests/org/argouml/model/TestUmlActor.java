@@ -56,6 +56,7 @@ public class TestUmlActor extends GenericUmlObjectTestFixture {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        InitializeModel.initializeMDR();
         setTruth(Model.getMetaTypes().getModelElement(), true);
         setTruth(Model.getMetaTypes().getGeneralizableElement(), true);
         setTruth(Model.getMetaTypes().getClassifier(), true);

@@ -41,6 +41,11 @@ public class TestCollaborationsHelper extends TestCase {
     public TestCollaborationsHelper(String arg0) {
 	super(arg0);
     }
+    
+    protected void setUp() throws Exception {
+        super.setUp();
+        InitializeModel.initializeDefault();
+    }
 
     /**
      * Test for the metamodel name.

@@ -41,6 +41,13 @@ public class TestStateMachinesHelper extends TestCase {
 	super(arg0);
     }
 
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() {
+        InitializeModel.initializeDefault();
+    }
+
     /**
      * Check if the metamodel name is correct.
      */

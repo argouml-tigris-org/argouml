@@ -43,6 +43,13 @@ public class TestDataTypesFactory extends TestCase {
 	super(n);
     }
 
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() {
+        InitializeModel.initializeDefault();
+    }
+
     /**
      * Test if this class is really a singleton.
      */

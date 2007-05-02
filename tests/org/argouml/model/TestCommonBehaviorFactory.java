@@ -78,8 +78,7 @@ public class TestCommonBehaviorFactory extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
-    		//This should instantiate a new model implementation
-        Model.getFacade();
+        InitializeModel.initializeDefault();
     }
 
     /**

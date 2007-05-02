@@ -79,6 +79,9 @@ public class TestModelEventPump extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+
+        InitializeModel.initializeDefault();
+
         elem = Model.getCoreFactory().createClass();
         Project project = ProjectManager.getManager().getCurrentProject();
         Object model = project.getRoot();

@@ -55,11 +55,7 @@ public class TestCoreHelperWithMock extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() {
-        System.setProperty("argouml.model.implementation",
-                "org.argouml.model.MockModelImplementation");
-        Model.getFacade(); // Load the model.
-
-        mockMI = MockModelImplementation.getLatest();
+        mockMI = InitializeModel.initializeMock();
 
         // Must be called after setImplementation.
         mockMI.reset();
