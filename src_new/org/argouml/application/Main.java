@@ -61,6 +61,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.language.java.generator.GeneratorJava;
 import org.argouml.model.Model;
+import org.argouml.model.ModelImplementation;
 import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoFrame;
@@ -101,6 +102,13 @@ public class Main {
      */
     public static final String DEFAULT_LOGGING_CONFIGURATION =
         "org/argouml/resource/default.lcf";
+
+    /**
+     * The default implementation to start.
+     */
+    private static final String DEFAULT_MODEL_IMPLEMENTATION =
+        "org.argouml.model.mdr.MDRModelImplementation";
+
 
 
     ////////////////////////////////////////////////////////////////
@@ -253,12 +261,36 @@ public class Main {
 
         // Initialize the Model subsystem
         st.mark("initialize model subsystem");
-        updateProgress(splash, 5, "statusmsg.bar.model-subsystem");
-        if (!Model.isInitiated()) {
-            System.err.println("Model subsystem init failed. See log.");
-            System.exit(1);
-            return;
+
+        {
+            String className =
+                System.getProperty(
+                        "argouml.model.implementation",
+                        DEFAULT_MODEL_IMPLEMENTATION);
+
+            ModelImplementation impl = null;
+            try {
+                Class implType = Class.forName(className);
+                impl = (ModelImplementation) implType.newInstance();
+            } catch (ClassNotFoundException e) {
+                reportError(e);
+            } catch (InstantiationException e) {
+                reportError(e);
+            } catch (IllegalAccessException e) {
+                reportError(e);
+            }
+
+            if (impl == null) {
+                System.err.println(className
+                        + " is not a working Model implementation.");
+                System.exit(1);
+                return;
+            }
+            
+            Model.setImplementation(impl);
         }
+        
+        updateProgress(splash, 5, "statusmsg.bar.model-subsystem");
 
         // Initialize the Java code generator.
         GeneratorJava.getInstance();
@@ -411,6 +443,13 @@ public class Main {
         ToolTipManager.sharedInstance().setDismissDelay(50000000);
     }
     
+    /**
+     * @param e The exception to be logged.
+     */
+    private static void reportError(Exception e) {
+        LOG.fatal("Model component not correctly initialized.", e);
+    }
+
     /**
      * Helper to update progress if we have a splash screen displayed.
      *
