@@ -32,10 +32,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.Action;
+
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
@@ -120,7 +123,10 @@ public class FigEnumeration extends FigDataType
      */
     protected ArgoJMenu buildAddMenu() {
         ArgoJMenu addMenu = super.buildAddMenu();
-        addMenu.add(new ActionAddEnumerationLiteral());
+        
+        Action addEnumerationLiteral = new ActionAddEnumerationLiteral();
+        addEnumerationLiteral.setEnabled(isSingleTarget());
+        addMenu.add(addEnumerationLiteral);
         return addMenu;
     }
 
