@@ -1252,15 +1252,19 @@ developers.
     <para>
 By running the command
 <command>build tests guitests</command>
+or
+<command>build alltests</command>
 in <filename>src_new</filename>
-these test cases are started, each in their own JVM.
+these test cases are run, each in its own JVM.
 </para>
     <para>
 Each test case writes its result on the Ant log.
 </para>
     <para>
-The result is also generated into a set of files that can be found at
+The result is also generated into a browsable report that can be found at
 <filename>build/test/reports/junit/output/html/index.html</filename>.
+This is the same report that is presented as a result from
+the nightly build.
 </para>
 
     <para>
@@ -1268,33 +1272,32 @@ The test cases' Java source code is located under
 <filename>argouml/tests/org/argouml</filename>.
 </para>
 
-    <sect2>
-      <title>How to write a test case</title>
-      <indexterm>
-        <primary>Unit testing of ArgoUML</primary>
-      </indexterm>
-      <indexterm>
-        <primary>Testing ArgoUML</primary>
-      </indexterm>
-      <indexterm>
-        <primary>Test cases</primary>
-        <secondary>writing</secondary>
-      </indexterm>
-      <indexterm>
-        <primary>Writing test cases</primary>
-      </indexterm>
-      <para>
+      <sect2>
+        <title>About the Test case Class</title>
+        <indexterm>
+          <primary>Unit testing of ArgoUML</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Testing ArgoUML</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Test cases</primary>
+          <secondary>writing</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Writing test cases</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Ant target</primary>
+          <secondary>run-with-test-panel</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>run-with-test-panel ant target</primary>
+        </indexterm>
+        <para>
 Now this will make all you Java enthusiasts go nuts!
 We have both class names and method names with a special syntax.
 </para>
-      <indexterm>
-        <primary>Ant target</primary>
-        <secondary>run-with-test-panel</secondary>
-      </indexterm>
-      <indexterm>
-        <primary>run-with-test-panel ant target</primary>
-      </indexterm>
-      <sect3><title>About the Test case Class</title>
         <para>
 The name of the test case class starts with "Test" (i.e. Capital T, then
 small e, s and t) or 
@@ -1304,10 +1307,9 @@ The reason for this is that the special targets in
 search for test case classes with these names.
 If you write a test case class that does not comply to this rule, you still
 can run the test cases in this class manually 
-by starting with
-<command>build run-with-test-panel</command>,
-but it wont be known and run by other developers and automatic build
-mechanisms so don't do it.
+but they wont be run by other developers and nightly build.
+If you write support classes for the tests on the other hand, don't name
+them as a test case to avoid confusion.
 </para>
 
 	<para>
@@ -1316,25 +1318,46 @@ have filenames like
 <filename>Test<replaceable>*</replaceable>.java</filename>.
 They must be able to run on a headless system.
 To make sure that this works, always run your newly developed
-test cases with <command>build tests</command> using 
-JDK 1.4 or later.
+test cases with <command>build tests</command>.
+<footnote>
+              <para>
+When running the tests using 
+<command>build tests</command>
+the 
+<constant>java.awt.headless</constant> is set to true.
+This means that awk is started in a mode that disallows actual presentation
+so no windows will be opened.
+On any attempt to realize a window a JavaHeadlessException is thrown making
+the test case fail.
+</para>
+            </footnote>
 </para>
         <para>
 Test case classes that do require GUI components in place
 have filenames like
 <filename>GUITest<replaceable>*</replaceable>.java</filename>.
 </para>
+
         <para>
-We should try to get as many tests from a GUITest* class to 
-the corresponding Test* class because the latter are run by automatic 
-builds regularly.
+Every test case class imports the JUnit framework: 
+<blockquote>
+            <para>
+import junit.framework.TestCase;
 </para>
-        <para>
-Every class
+          </blockquote>
+and it inherits <classname>TestCase</classname>
+(i.e. <classname>junit.framework.TestCase</classname>).
+</para>
+      </sect2>
+
+    <sect2>
+      <title>Naming JUnit tests classes</title>
+      <para>
+An ArgoUML class
 <classname>org.argouml.<replaceable>x.y</replaceable>.<replaceable>z</replaceable></classname>
 stored in the file
 <filename class="directory">src_new/org/argouml/<replaceable>x/y</replaceable>/<replaceable>z</replaceable>.java</filename>
-should have a JUnit test case class called
+have its JUnit test case class called
 <classname>org.argouml.<replaceable>x.y</replaceable>.Test<replaceable>z</replaceable></classname>
 stored in the file
 <filename class="directory">tests/org/argouml/<replaceable>x/y</replaceable>/Test<replaceable>z</replaceable>.java</filename>
@@ -1345,6 +1368,11 @@ do need GUI components to run should be part of a class named
 <classname>org.argouml.<replaceable>x.y</replaceable>.GUITest<replaceable>z</replaceable></classname>
 stored in the file
 <filename class="directory">tests/org/argouml/<replaceable>x/y</replaceable>/GUITest<replaceable>z</replaceable>.java</filename>
+</para>
+        <para>
+If, for convenience reason, you would like to split the tests of a single
+class in several test classes, just name them with some extra suffix.
+Either 1, 2, 3, or something describing what part that test case tests.
 </para>
         <para>
 If you only want to run your newly written test cases and not
@@ -1359,19 +1387,11 @@ You could run all tests in this way by specifying the special test suite
 <classname>org.argouml.util.DoAllTests</classname>
 in the same way.
 </para>
+    </sect2>
 
-        <para>
-Every test case class imports the JUnit framework: 
-<blockquote>
-            <para>
-import junit.framework.*;
-</para>
-          </blockquote>
-and it inherits <classname>TestCase</classname>
-(i.e. <classname>junit.framework.TestCase</classname>).
-</para>
-      </sect3>
-      <sect3><title>About the Test case Method</title>
+
+      <sect2>
+        <title>About the Test case Methods</title>
         <para>
 Methods that are tests must have names that start with "test"
 (i.e. all small t, e, s, t). This is a requirement of the JUnit
@@ -1435,6 +1455,11 @@ public class GUITestUMLAction extends TestCase {
 	super(name);
     }
 
+    public void setUp() throws Exception {
+	super.setUp();
+        InitializeModel.initializeDefault();
+    }
+
     // Testing all three constructors.
     public void testCreate1() {
 	UMLAction to = new UMLAction(new String("hexagon"));
@@ -1482,12 +1507,136 @@ public class TestUMLAction extends TestCase {
 	to.updateEnabled();
 	to.shouldBeEnabled();
     }
+
+    public void testDummy() { }
 }
 </programlisting>
 </para>
         </example>
-      </sect3>
-    </sect2>
+      </sect2>
+      
+      <sect2>
+        <title>Improving a test case</title>
+        <para>
+Testcases are better if they are simpler.
+Strive to involve as little part of the ArgoUML code as possible.
+Ideally you are just testing a single class at the time.
+</para>
+        <para>
+The involvement of the Model subsystem is in most cases inevitable
+since a majority of the classes within ArgoUML use the Model subsystem.
+Nevertheless, we should, to allow for better and quicker tests,
+strive to not involve the Model subsystem if possible.
+</para>
+        <para>
+If the Model subsystem is to be involved, it must be initialized.
+Either with the default implementation (the MDR) or with some other
+implementation.
+For testing purposes there exists a Mock implementation that can 
+be used if no functionality is required from the Model subsystem or
+when testing the Model subsystem itself.
+</para>
+        <para>
+If the Mock model subsystem implementation cannot be used,
+then the tests have to have the MDR subproject on the class path
+when running.
+This is not a problem when running the tests from the ant setup
+since MDR is always included when running the tests.
+When running tests from within Eclipse this is a small problem.
+<footnote>
+            <para>
+This is because the run-time dependency defaults used in Eclipse
+when creating a JUnit test configuration are based on the 
+compile-time dependency settings and we don't have MDR in the
+compile-time dependencies because we want to enforce that there
+is no such dependency.
+Hopefully an upcoming code reorganisation will address this problem.
+</para>
+            <para>
+The simplest way is to create/run the JUnit test configuration
+and if it fails with a ExceptionInInitializer error open it with
+the Configuration editor, add the argouml-core-model-mdr project
+to the classpath and then run again.
+</para>
+          </footnote>
+</para>
+        <para>
+This means that you should have the following priorities:
+
+          <orderedlist>
+            <listitem>
+              <para>
+Don't use the Model subsystem.
+</para>
+              <para>
+Only possible in a few simple cases.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Use the Mock model subsystem implementation.
+</para>
+              <para>
+Call the function
+<function>org.argouml.model.InitializeModel#initializeMock()</function>
+from setUp() in your test case.
+</para>
+              <para>
+Only possible in a few simple cases.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Use the real Model subsystem implementation from the
+<function>setUp()</function> function.
+</para>
+              <para>
+Call the function
+<function>org.argouml.model.InitializeModel#initializeDefault()</function>
+from setUp() in your test case.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Use the real Model subsystem implementation from the constructor.
+</para>
+              <para>
+Call the function
+<function>org.argouml.model.InitializeModel#initializeDefault()</function>
+in the constructor of your test case.
+</para>
+              <para>
+This is needed if your tests rely on the value in some member variables
+referencing some object retrieved from the model.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Use the real Model subsystem implementation from the static initialization
+section of your test class.
+</para>
+              <para>
+Call the function
+<function>org.argouml.model.InitializeModel#initializeDefault()</function>
+in the static initialization.
+</para>
+              <para>
+This is needed if your tests rely on the value
+of some static member variables referencing
+some object retrieved from the model.
+</para>
+            </listitem>
+          </orderedlist>
+</para>
+
+        <para>
+We should try to get as many tests from a GUITest* class to 
+the corresponding Test* class because
+The Test*-classes don't involve the GUI components and
+are run by automatic builds regularly.
+</para>
+      </sect2>
+
   </sect1>
 
   <sect1 id="generating_documentation">
