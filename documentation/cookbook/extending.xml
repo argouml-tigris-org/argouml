@@ -30,21 +30,15 @@
   
   <para> This section explains some general concepts which come in handy, when
     developing additions to ArgoUML. </para>
-  <warning>
-    <para> There are two module loading mechanisms, "the old one", and "the new one".
-    This is so because we have made a change of the design used for this in order to
-    simplify the writing of modules. </para>
-    <para> Eventually "the old module loader" will be removed so for all new
-    additions, the new module loader shall be used. </para> </warning>
   
   <sect1 id="howdoi_general">
     <title>How do I ...?</title>
     <para>
       <itemizedlist>
         <listitem>
-          <para> ...get the according NS-UML element for a given
+          <para> ...get the corresponding UML element for a given
             <classname>Fig<replaceable>XXX</replaceable></classname>
-            class? </para>
+            object? </para>
           <para> Each <classname>Fig<replaceable>XXX</replaceable>
             </classname> implements the method
             <methodname>getOwner()</methodname> which returns the
@@ -52,13 +46,14 @@
             element. </para>
         </listitem>
         <listitem>
-          <para> ...get the according Fig element for a given
-            <classname>MModelElement</classname>? </para>
-          <para> for this one needs to iterate through all fig elements and invoke
+          <para> ...get the corresponding Fig element for a given
+            <classname>ModelElement</classname>? </para>
+          <para> for this one needs to iterate through all Fig objects and invoke
             <methodname>getOwner</methodname>. Compare the result with the
-            given <classname>MModelElement</classname>. Beware that there
-            might be more than one Fig Element per
-            <classname>MModelElement</classname>. </para>
+            given <classname>ModelElement</classname>. Be aware that there
+            might be more than one Fig object for a given
+            <classname>ModelElement</classname> if it appears in multiple
+            diagrams or there may be none if it has no diagrams. </para>
         </listitem>
       </itemizedlist> </para>
   </sect1>
@@ -66,14 +61,15 @@
   &cookbookmodules;
   
   <sect1>
-    <title>How are modules organized in the java code</title>
-    <para> The previous section describes how modules and plug-ins are connected
-      on the java level totally independent of how they are actually linked into
-      ArgoUML. </para>
-    <para> Within the ArgoUML project some parts of the code are for different
-      reasons developed and kept separate from the main ArgoUML source code.
-      These parts can be modules or plug-ins on the java level but on the source code
-      level they are called modules. This section describes how they are
+    <title>How are modules organized in the Java code</title>
+    <para>
+      The previous section describes how modules and plug-ins are
+      organized at the Java level independent of how they are actually
+      packaged.
+    </para>
+    <para> Within the ArgoUML project some parts of the code are developed
+      and packaged separately from the main ArgoUML source code.
+      This section describes how they are
       organized and how you create such source-code modules. </para>
     
     <sect2>

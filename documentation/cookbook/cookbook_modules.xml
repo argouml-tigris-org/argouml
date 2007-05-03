@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,7 +68,7 @@
     </authorgroup>
   </sect1info>
   -->
-  <title>Modules and PlugIns</title>
+  <title>Modules </title>
   <para>
 The ArgoUML tool provides a basis
 for UML design and potentially an executable architecture 
@@ -79,18 +79,8 @@ Extensions are called modules.
 </para>
 
   <sect2 id="modules_vs_plugins">
-    <title>Differences between modules and plugins</title>
-    <note>
-      <para>
-This description is only relevant for the old moduleloader
-since the plugins concept is not used in the new one.
-</para>
-    </note>
-    <para>
-In the old moduleloader implementation the classes within the modules
-that attach to ArgoUML core are called plugins.
-In the new moduleloader implementation they don't have any special name.
-</para>
+    <title>Modules</title>
+
     <para>
 <itemizedlist>
         <listitem>
@@ -98,24 +88,24 @@ In the new moduleloader implementation they don't have any special name.
           <para>
 A module is a collection of classes and resource files that can
 be enabled and disabled in ArgoUML.
-Currently this is decided by the modules' availability when ArgoUML starts 
+Currently this is decided by the module's availability when ArgoUML starts 
 but in the future it could be made possible to enable modules from within 
 a running ArgoUML.
 </para>
           <para>
 This module system is the extension capability to the ArgoUML tool. 
-It will give developers of ArgoUML and 
+It gives developers of ArgoUML and 
 developers of applications running within the ArgoUML architecture
 the ability to add
-additional functionality to the ArgoUML environment
+functionality to the ArgoUML environment
 without modifying the basic ArgoUML tool.
-This flexibility should encourage
+This flexibility is designed to encourage
 additional open source and/or commercial involvement
 with the open source UML tool.  
 </para>
 
           <para>
-The module extensions will load when ArgoUML starts.
+The module extensions load when ArgoUML starts.
 When the modules are loaded
 they have the capability of attaching
 to internal ArgoUML architectural elements.
@@ -132,32 +122,6 @@ delivered as separate jar-files.
 </para>
         </listitem>
 
-        <listitem>
-          <para>Plugins</para>
-          <note>
-            <para>
-This description is for the old moduleloader.
-</para>
-          </note>
-          <para>
-A plug-in in ArgoUML is a module
-that implements the
-<classname>org.argouml.application.api.Pluggable</classname> interface.
-</para>
-          <para>
-The <classname>Pluggable</classname> interface
-acts as a passive dynamic component,
-i.e. it provides methods to simplify the attaching
-of calls at the correct places.
-There are several <classname>Pluggable</classname> interfaces
-that each simplify the addition of one kind of object.
-Examples <classname>PluggableMenu</classname>, 
-<classname>PluggableNotation</classname>.
-</para>
-          <para>
-One Module can implement several <classname>Pluggable</classname> interfaces.
-</para>
-        </listitem>
       </itemizedlist>
 </para>
     <para>
@@ -175,238 +139,10 @@ AbstractLoadableClass.
   <sect2 id="modules">
     <title>Modules</title>
 
-    <sect3 id="architecture_modules">
-      <title>Module Architecture for the old implementation</title>
-      <para>
-The controlling class of the module/plugin extension
-is <classname>org.argouml.application.modules.ModuleLoader</classname>.
-<classname>ModuleLoader</classname> is a singleton
-created in the ArgoUML main initialization routine.
-<!--
-When the <classname>ModuleLoader</classname> is initialized
-it will read a module file passed as an ArgoUML command parameter.
-This module file will contain the fully qualified class names
-designating the module to load into ArgoUML.
--->
-</para>
-      <para>
-<classname>ModuleLoader</classname> will:
-
-<itemizedlist>
-          <listitem>
-            <para>read in the property file</para>
-          </listitem>
-          <listitem>
-            <para>for each of the classes found</para>
-            <orderedlist>
-              <listitem>
-                <para>create the specified classes</para>
-              </listitem>
-              <listitem>
-                <para>call <methodname>initializeModule</methodname> on this class</para>
-              </listitem>
-              <listitem>
-                <para>
-place the class object into the
-internal list of modules
-</para>
-              </listitem>
-            </orderedlist>
-          </listitem>
-        </itemizedlist>
-</para>
-    </sect3>
-
-    <sect3 id="argomodule_interface">
-      <title>The ArgoModule interface - used in the old implementation</title>
-      <para>
-Each class must derive from the <classname>ArgoModule</classname> interface.
-This interface provides the following methods:
-<itemizedlist>
-          <listitem>
-            <funcsynopsis>
-              <funcprototype>
-                <funcdef>
-String <function>getModuleName</function>
-</funcdef>
-                <void/>
-              </funcprototype>
-            </funcsynopsis>
-            <funcsynopsis>
-              <funcprototype>
-                <funcdef>
-String <function>getModuleDescription</function>
-</funcdef>
-                <void/>
-              </funcprototype>
-            </funcsynopsis>
-            <funcsynopsis>
-              <funcprototype>
-                <funcdef>
-String <function>getModuleVersion</function>
-</funcdef>
-                <void/>
-              </funcprototype>
-            </funcsynopsis>
-            <funcsynopsis>
-              <funcprototype>
-                <funcdef>
-String <function>getModuleAuthor</function>
-</funcdef>
-                <void/>
-              </funcprototype>
-            </funcsynopsis>
-            <para>provides information about the ArgoUML module.  
-</para>
-          </listitem>
-
-          <listitem>
-            <funcsynopsis>
-              <funcprototype>
-                <funcdef>
-boolean <function>initializeModule</function>
-</funcdef>
-                <void/>
-              </funcprototype>
-            </funcsynopsis>
-            <para><function>initializeModule</function> is called
-when the class loader has created the module,
-and before it is added into the modules list.
-<function>initializeModule</function> should
-initialize any required data
-and/or attach itself as a listener to ArgoUML actions.
-<classname>initializeModule</classname> for all modules is invoked
-after the rest of ArgoUML has been initialized and loaded.
-Any menu modifications or system level resources
-should already be available
-when the module initialization process is called.  
-</para>
-            <para>
-<function>initializeModule</function>
-should return <returnvalue>true</returnvalue>
-if the initialization is successful
-(or if no initialization is necessary).
-</para>
-            <para>
-The only available mechanism for handling dependencies between
-modules is the order in which they are read from the file.
-</para>
-          </listitem>
-
-          <listitem>
-            <funcsynopsis>
-              <funcprototype>
-                <funcdef>
-void <function>shutdownModule</function>
-</funcdef>
-                <void/>
-              </funcprototype>
-            </funcsynopsis>
-            <para>
-The <function>shutdownModule</function> method is called
-when the module is removed.
-It provides each module the capability
-to clean up or save any required information
-before being cleared from memory.  
-</para>
-          </listitem>
-
-          <!--
-          <listitem>
-            <para>getPopUpActions</para>
-            <para>The getPopUpActions method is called
-when a user right clicks on a context item.
-The parameters passed into the pop-up actions method
-are the current list of menu items for the context
-and the context object that has received the pop-up event.
-All popup actions within ArgoUML
-will call the <classname>ModuleLoader</classname> doPopupActions event.
-When this event is called
-with the list of current popup items and the context,
-the <classname>ModuleLoader</classname> will iterate
-through all loaded modules
-and calle their corresponding popup action methods.
-The module will test the class type of the context.
-If the class type of the context equals a context
-where the module will add menu items,
-then the module will add its menu items to the pop-up actions vector.
-Within ArgoUML all actions are implemented
-through a <classname>UMLAction</classname> abstract class.
-A module will create its own derived class
-for the actions and add this menuaction to the pop-up vector.
-If that menu item is selected in the pop-up menu
-then the actionPerformed method within the action will be called.
-When the actionPerformed is called the module will do its work.
-</para>
-          </listitem>
-          -->
-
-          <listitem>
-            <funcsynopsis>
-              <funcprototype>
-                <funcdef>
-void <function>setModuleEnabled</function>
-</funcdef>
-                <paramdef>boolean <parameter>tf</parameter></paramdef>
-                <!--
-                <funcparams>boolean tf</funcparams>
-                -->
-              </funcprototype>
-            </funcsynopsis>
-            <funcsynopsis>
-              <funcprototype>
-                <funcdef>
-boolean <function>isModuleEnabled</function>
-</funcdef>
-                <void/>
-              </funcprototype>
-            </funcsynopsis>
-            <para>
-        Reserved for future implementation.
-</para>
-          </listitem>
-
-          <listitem>
-            <funcsynopsis>
-              <funcprototype>
-                <funcdef>
-Vector <function>getModulePopUpActions</function>
-</funcdef>
-                <void/>
-              </funcprototype>
-            </funcsynopsis>
-            <para>
-        Reserved for future implementation.
-</para>
-            <para>
-The plan is to have this called for each module when
-the module should add its entries in PopUpActions.
-</para>
-
-          </listitem>
-
-          <listitem>
-            <funcsynopsis>
-              <funcprototype>
-                <funcdef>
-String <function>getModuleKey</function>
-</funcdef>
-                <void/>
-              </funcprototype>
-            </funcsynopsis>
-            <para>Returns a string that identifies the module.
-</para>
-          </listitem>
-
-        </itemizedlist>
-</para>
-
-    </sect3>
-
     <sect3>
-      <title>Module Architecture for the new implementation</title>
+      <title>Module Architecture</title>
       <para>
-The controlling class for the new implementation is
+The controlling class for the implementation is
 <classname>org.argouml.moduleloader.ModuleLoader2</classname>.
 It is a singleton created when first used.
 It is first used in the main initialization routine.
@@ -436,7 +172,7 @@ I (Linus) hopes this can be eventually fixed.)
     </sect3>
 
     <sect3>
-      <title>The ModuleInterface interface - in the new implementation</title>
+      <title>The ModuleInterface interface</title>
       <para>
 Each class used by the <classname>ModuleLoader2</classname>
 must implement the <classname>ModuleInterface</classname> interface.
@@ -471,8 +207,6 @@ part of the core ArgoUML.
 </para>
     </sect3>
 
-
-
     <sect3 id="using_modules">
       <title>Using Modules</title>
       <para>
@@ -493,13 +227,7 @@ The method <methodname>isEnabled</methodname>
 in <classname>ModuleLoader2</classname>
 returns true if the module with that name is enabled and false otherwise.
 </para>
-            <note>
-              <para>
-This only works for modules enabled in the new module loader.
-For modules loaded using the old module loader, it is not possible
-to determine if they are enabled.
-</para>
-            </note>
+
           </listitem>
 
         </itemizedlist>
@@ -508,6 +236,8 @@ to determine if they are enabled.
     </sect3>
   </sect2>
 
+<!-- This example is obsolete.  It needs to be updated to the new architecture
+or replaced 
   <sect2 id="plugins">
     <title>Plugins</title>
     <note>
@@ -533,9 +263,6 @@ the interface provides the following method:
 boolean <function>inContext</function>
 </funcdef>
                 <paramdef>Object[] <parameter>context</parameter></paramdef>
-                <!--
-                <funcparams>boolean tf</funcparams>
-                -->
               </funcprototype>
             </funcsynopsis>
             <para>
@@ -562,11 +289,7 @@ so that the plugin can further decide.
       <para>
 
         <itemizedlist>
-          <!--
-          <listitem><para>...create a plugin project?</para>
-            <para>...</para>
-          </listitem>
-          -->
+
           <listitem><para>...create a pluggable settings tab?</para>
             <para>...</para>
           </listitem>
@@ -608,7 +331,7 @@ the generic Pluggable interface that PluggableThings extend.
 
           <listitem><para>...create a pluggable diagram?</para>
             <para>
-Let's say we want to enable a new diagram type as a plug-in.
+Let's say we want to enable a Java diagram type as a plug-in.
 We use the interface PluggableDiagram that uses a
 method that returns an JMenuItem object:
 
@@ -803,6 +526,8 @@ which is used as follows:
     </sect3>
 
   </sect2>
+  
+********** end of obsolete example ************************* -->
 
   <sect2>
     <title>Tip for creating new modules (from Florent de Lamotte)</title>

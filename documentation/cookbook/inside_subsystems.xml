@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,131 +51,49 @@
   <sect1 id="reverseengineering">
     <title>Reverse Engineering Subsystem</title> <indexterm>
       <primary>Reverse Engineering</primary> </indexterm>
-    <para> Purpose: Point where the different languages register that they know
-      how to do reverse engineering and common reverse engineering functions for
+    <para> Purpose: Provide a central registration point for language reverse
+      engineering modules as well as common reverse engineering methods for
       all languages. </para>
-    <para> The Reverse Engineering is located in
+    <para> The Reverse Engineering subsystem is located in
       <classname>org.argouml.uml.reveng</classname>. </para>
     <para> The Reverse Engineering Subsystem is a Control subsystem. See <xref
         linkend="view_control_subsystems"></xref>. </para>
-  </sect1>
-  
-  <sect1 id="codegeneration">
-    <title>Code Generation Subsystem</title>
-    <indexterm>
-      <primary>Code Generation</primary>
-    </indexterm>
-    <para> Purpose: Point where the different languages register that they know
-      how to do code generation and common functions for all languages. </para>
-    <para> The Code Generation is located in
-      <classname>org.argouml.language</classname>. </para>
-    <para> The Code Generation subsystem is a Control subsystem. See <xref
-        linkend="view_control_subsystems"></xref>. </para>
     
-
-    <para> The following describes the plan, as of April 2004, as outlined by
-    by Linus Tolke as to how to isolate the NSUML references (it may need to
-    be updated to reflect what was actually done): </para>
-    
-    <para> The different languages or notations supplied with ArgoUML are found
-      in sub-packages of {@link org.argouml.language}. </para>
-    
-    <para> Any definition or foundation interfaces are found in the directory
-      <classname>org.argouml.language</classname>. Any helper classes such
-      as abstract implementation classes are also found in
-      <classname>org.argouml.language</classname>. </para>
-    <para> At boot time, each language registers their interfaces in the
-      <classname>org.argouml.language.Language</classname> register.
-    </para>
     <itemizedlist>
-      <listitem>
-        <para> Languages that generates a Notation implement the
-          <classname>NotationGenerator</classname> interface. </para>
-      </listitem>
-      
-      <listitem>
-        <para> Languages that edits or parses the Notation implement the
-          <classname>NotationEditor</classname> interface. </para>
-      </listitem>
-      
-      <listitem>
-        <para> Languages that generates Code templates implement the
-          <classname>CodeGenerator</classname> interface. </para>
-      </listitem>
-      
-      <listitem>
-        <para> Languages that reverse engineer Code implement the
-          <classname>CodeReverseEngineer</classname> interface. </para>
-      </listitem>
-    </itemizedlist>
-    <para> Full MDA implementations of languages is not currently discussed. I
-      (Linus April 2004) does not understand how it is supposed to work. </para>
-  </sect1>
-  
-  <sect1 id="java">
-    <title>Java - Code generations and Reverse Engineering</title>
-    <indexterm>
-      <primary>Reverse Engineering</primary>
-      <secondary>Java</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Code generation</primary>
-      <secondary>Java</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Round-trip Engineering</primary>
-      <secondary>Java</secondary> </indexterm>
-    <indexterm>
-      <primary>Java</primary>
-    </indexterm>
 
-    <para> Purpose - two purposes: to allow the model to be converted into java code
-      and updated either in java or in the model; to allow some java code to be
-      converted into a model. </para>
-    <para> The java things are located in
-      <classname>org.argouml.language.java</classname>. </para>
-    <para> The Java subsystem is a Loadable subsystem. See <xref
-        linkend="loadable_subsystems"></xref>. </para>
+      <listitem>
+        <para> All language reverse engineering modules must implement the
+          <classname>org.argouml.uml.reveng.ImportInterface</classname> 
+          interface. </para>
+      </listitem>
+      <listitem>
+        <para> All modules must implement the
+          <classname>org.argouml.moduleloader.ModuleInterface</classname> 
+          interface. </para>
+      </listitem>
+      <listitem>
+          <para> At initialization time, each language registers themselves using
+          <classname>org.argouml.uml.reveng.ImportManager</classname>.
+          </para>
+      </listitem>
+      
+
+    </itemizedlist>
     
-    <sect2 id="howdoi_reverse">
-      <title>How do I ...?</title>
-      <para>...</para></sect2>
+    <sect2>
+      <title>Common import code</title>
+      <para>In late 2006, the source importers were restructured to make them
+      GUI independent and move as much functionality as possible to common
+      code.  Things such as source file selection and class diagram creation
+      which previously had been provided by the specific language importers
+      are now provided as common services, simplifying creation of new
+      language importers.  These services also include a GUI independent method
+      for requesting, saving, and restoring any language-specific settings
+      (not fully implemented).</para>
+    </sect2>
     
     <sect2>
-      <title>Which sources are involved?</title>
-      <para> The package org.argouml.uml.reveng is supposed to hold those
-        classes that are common to all reverse engineering (RE) packages. 
-        At the moment this is the Import
-        class which is mainly responsible to recognize directories, get their
-        content and parse every known source file in them. These are only Java
-        files at the moment, but there might be other languages like C++ in the
-        future. With this concept you could mix several languages within a
-        project. The DiagramInterface is then used to visualize generated 
-        Model subsystem objects. </para>
-      <para> The package org.argouml.uml.reveng.java holds the Java specific
-        parts of the current RE code. C++ RE might go to
-        org.argouml.uml.reveng.cc, or so... </para>
-    </sect2>
-    <sect2>
-      <title>How is the grammar of the target language implemented?</title>
-      <para> It's an Antlr (<ulink url="http://www.antlr.org">
-        http://www.antlr.org</ulink>) grammar, based on the Antlr Java parser
-        example. The main difference is the missing AST (Abstract Syntax Tree)
-        generation and tree-parser. So the original example generates an AST (a
-        treelike data structure) and then traverses this tree, while the ArgoUML
-        code parses the source file and generates Model subsystem objects directly from the
-        sources. This was done to avoid the memory usage of an AST and the frequent
-        GC while parsing many source files. </para>
-    </sect2>
-    <sect2>
-      <title>Which model/diagram elements are generated?</title>
-      <para> The *context classes hold the current context for a package, class
-        etc. When the required information for an object is available, the
-        corresponding Model subsystem object is created and passed to the
-        DiagramInterface to visualize it. </para>
-    </sect2>
-    <sect2>
-      <title>Which layout algorithm is used?</title>
+      <title>Diagram layout algorithms</title>
       <para> The classes in
         org.argouml.uml.diagram.static_structure.layout.* hold the Class
         diagram layout code. No layout for other diagram types yet. It's based on a
@@ -245,17 +163,140 @@
         <para> F E D </para>
       </blockquote>
     </sect2>
-    
+
   </sect1>
   
+  <sect1 id="codegeneration">
+    <title>Code Generation Subsystem</title>
+    <indexterm>
+      <primary>Code Generation</primary>
+    </indexterm>
+    <para> Purpose: Point where the different languages register that they know
+      how to do code generation and common functions for all languages. </para>
+    <para> The Code Generation is located in
+      <classname>org.argouml.language</classname>. </para>
+    <para> The Code Generation subsystem is a Control subsystem. See <xref
+        linkend="view_control_subsystems"></xref>. </para>
+
+    <para> The various languages or notations supplied with ArgoUML are found
+      in sub-packages of <classname>org.argouml.language</classname>. In the 
+      case of languages
+      other than Java, these classes will come from independent projects and
+      be package separately even though they share this package namespace.
+      <warning>NOTE: There is a potential conflict here if two separately 
+      language implementations use this namespace in an uncoordinated fashion
+      (e.g. two Ruby implementations using org.argouml.language.ruby).
+      </warning>
+      </para>
+    
+
+    <itemizedlist>
+
+      <listitem>
+        <para> All source language code generators must implement the
+          <classname>org.argouml.uml.generator.CodeGenerator</classname> 
+          interface. </para>
+      </listitem>
+      <listitem>
+        <para> All modules must implement the
+          <classname>org.argouml.moduleloader.ModuleInterface</classname> 
+          interface. </para>
+      </listitem>
+      <listitem>
+          <para>At initialization time, each language registers themselves using
+          <classname>org.argouml.uml.generator.GeneratorManager</classname>.
+          </para>
+      </listitem>
+      
+
+    </itemizedlist>
+
+  </sect1>
+  
+  <sect1 id="java">
+    <title>Java - Code Generation and Reverse Engineering</title>
+    <indexterm>
+      <primary>Reverse Engineering</primary>
+      <secondary>Java</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Code generation</primary>
+      <secondary>Java</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Round-trip Engineering</primary>
+      <secondary>Java</secondary> </indexterm>
+    <indexterm>
+      <primary>Java</primary>
+    </indexterm>
+
+    <para> Purpose - two purposes: to allow the model to be converted into java code
+      and updated either in java or in the model; to allow some java code to be
+      converted into a model. </para>
+    <para> The java things are located in
+      <classname>org.argouml.language.java</classname>. </para>
+    <para> The Java subsystem is a Loadable subsystem. See <xref
+        linkend="loadable_subsystems"></xref>. </para>
+    
+    <sect2 id="howdoi_reverse">
+      <title>How do I ...?</title>
+      <para>...</para></sect2>
+    
+    <sect2>
+      <title>Which sources are involved?</title>
+      <para> The package org.argouml.uml.reveng is supposed to hold those
+        classes that are common to all reverse engineering (RE) packages. 
+        At the moment this is the Import
+        class which is mainly responsible to recognize directories, get their
+        content and parse every known source file in them. These are only Java
+        files at the moment, but there might be other languages like C++ in the
+        future. With this concept you could mix several languages within a
+        project. </para>
+      <para> The package org.argouml.uml.reveng.java holds the Java specific
+        parts of the current RE code. C++ RE might go to
+        org.argouml.uml.reveng.cc, or so... </para>
+    </sect2>
+    <sect2>
+      <title>How is the grammar of the target language implemented?</title>
+      <para> It is an Antlr (<ulink url="http://www.antlr.org">
+        http://www.antlr.org</ulink>) grammar, based on the Antlr Java parser
+        example. The main difference is that the AST (Abstract Syntax Tree)
+        generation and tree-parser have been removed. The ArgoUML
+        code parses the source file and generates Model subsystem objects directly from the
+        sources. This was done to avoid the memory usage of an AST and the frequent
+        GC while parsing many source files. The disadvantage of this approach is
+        that it requires multiple parser passes rather than being able to work
+        from the pre-parsed AST.</para>
+    </sect2>
+    <sect2>
+      <title>Which model/diagram elements are generated?</title>
+      <para> The *context classes hold the current context for a package, class
+        etc. When the required information for an object is available, the
+        corresponding Model subsystem object is created.  The collection of
+        newly created model elements is returned to the common Import code
+        where it can be used to add the elements to a diagram or diagrams
+        if the user has so requested.
+        </para>
+    </sect2>
+  </sect1>
+
   <sect1 id="otherlanguages">
-    <title>Other languages</title>
-    <para> Each other language supported by ArgoUML has its own subsystem. They
-      are each different in level of support and implementation language.
+    <title>Other source languages (C++, Python, etc)</title>
+    <para> Each source language supported by ArgoUML has its own subsystem. They
+      are each different in level of support and implementation language.  All
+      languages except for Java are in their own dedicated Tigris project with
+      separate web site, mailing lists, source repository, etc.  For example,
+      the C++ plugin is located <ulink url="http://argouml-cpp.tigris.org/">
+      here</ulink>.
     </para>
-    <para> Currently C++ has no reverse engineering but only code generation (and
-      a very simple one at that). Java class files has only reverse engineering.
+    <para>Currently C++ has no reverse engineering but only code generation (and
+      a very simple one at that). The Java classfile module has only reverse 
+      engineering.
     </para>
+    <para>There are stubs/shells for many different languages, but the following
+    are mature enough to be distributed with ArgoUML: C++ (Cpp), C# (Csharp), 
+    classfile, IDL, and PHP.  Others at various stages of development include:
+    Python, Ruby, and SQL.</para>
     <para>
       <mediaobject>
         <imageobject>
@@ -283,7 +324,7 @@
     <para> The GUI Framework is located in
       <classname>org.argouml.ui</classname>.
     </para>
-    <para> This is implemented directly on top of Swing and Java2. </para>
+    <para> This is implemented directly on top of Swing and Java. </para>
     <para> The GUI framework provides the following options
       <itemizedlist>
         <listitem>
@@ -354,21 +395,17 @@
         editor pane (org.argouml.ui.MultiEditorPane), to do pane
         (org.argouml.cognitive.ui.ToDoPane), and details pane
         (org.argouml.ui.DetailsPane). Then, the actual project is set to
-        either a read from file project (see
-        ArgoParser.SINGLETON.readProject(URL) and
-        ArgoParser.SINGLETON.getProject() in
-        org.argouml.xml.argo.ArgoParser) or a newly generated project (see
-        Project.makeEmptyProject()).
+        either a read from project file or a create newly generated project.
       </para>
     </sect2>
     
     <sect2>
       <title>Details pane</title>
-      <para> Currently (May 2003) the Details pane contains several tabs:
+      <para> The Details pane contains several tabs:
         Property Panels (See <xref linkend="propertypanels"></xref>,
         Critics explanations and wizards (belonging to the Critics subsystem)
         (See <xref linkend="critics"></xref>), Documentation, Style,
-        Source, Constraints (an OCL constraints of the current object) (See
+        Source, Constraints (OCL constraints on the current object. See
           <xref linkend="ocl"></xref>), and Tagged values. <warning>
           <para> It is not clear in what subsystem Documentation, Style, Source,
           and Tagged values belong. </para> </warning> </para>
@@ -467,20 +504,9 @@ south: 	TabXXX
       i.e. in the .zargo file.
     </para>
   </sect1>
-
-  <sect1 id="jre">
-    <title>JRE with utils</title>
-    <para> Purpose - to provide the infrastructure to run everything. </para>
-    <para> The JRE is an infrastructure subsystem. See <xref
-        linkend="model_subsystems"></xref>. It is not distributed with
-      ArgoUML but considered to be a precondition in the same respect as the user's
-      host. </para>
-    <para> This is a Java3 JRE so swing and awt can be used together with reflection.
-    </para>
-  </sect1>
   
   <sect1 id="todoitems">
-    <title>To do items</title>
+    <title>To Do items</title>
     <indexterm>
       <primary>To Do Items</primary>
     </indexterm>
@@ -488,8 +514,11 @@ south: 	TabXXX
     <para> Purpose - To keep track of the To do items. Items are generated and
       removed automatically by the critics. They could also be created by other
       means. </para>
-    <para> The To do items are located in <classname>org.argouml.?</classname>
+    <para> The To Do items are located in 
+    <classname>org.argouml.cognitive.ToDoItem</classname>
     </para>
+    <warning>This is a set of classes in the Cognitive subsystem, not a 
+    subsystem of its own.</warning>
     <para> The To do items is a Model subsystem. See <xref
         linkend="model_subsystems"></xref>. </para>
   </sect1>
@@ -825,19 +854,20 @@ to.
       modules. </para>
     <para> The Module loader is located in
       <classname>org.argouml.moduleloader</classname>. </para>
-    <para> An old module loader is located in
-      <classname>org.argouml.application.modules.ModuleLoader</classname>
-      with interfaces (Pluggable) in
-      <classname>org.argouml.application.api</classname>. Eventually
-      this will be removed. </para>
+
     <para> It is the modules' responsibility to connect and register to the
       subsystem or subsystems it is going to work with using that subsystem's API,
       Facade, or Plug-in interface. </para>
+    <para> A previous implemention of the module loader was located in
+      <classname>org.argouml.application.modules.ModuleLoader</classname>
+      with interfaces (Pluggable) in 
+      <classname>org.argouml.application.api</classname>, but it has been
+      replaced by the interface described here. </para>
     <para> For details on how to build a module see <xref
         linkend="modules_and_plugins"></xref>. </para>
     <sect2>
       <title>What the ModuleLoader does</title>
-      <para> The ModuleLoader is looking for module jars. It actually scans
+      <para> The ModuleLoader looks for module jars. It scans
         through all jars available in the ext directory. See Edit Settings
         Environment tab. If you turn on logging on the debug level while running
         ArgoUML you should be able to see what jar files it finds and what it does
@@ -845,14 +875,11 @@ to.
       <para> A module jar contains the classes, resources and a manifest file. The
         manifest file points out the class to be loaded. Also notice that the
         Specification-Title and Vendor must be specified correctly for this to
-        work. </para>
+        work. [What does "correctly" mean in this context?]</para>
     </sect2>
     
     <sect2 id="design-module-loader">
-      <title>Design of the new Module Loader</title>
-      <para> The plan is to implement this new Module Loader, then have them both
-        working side by side for several releases (two stable releases), and if we
-        all are happy with it, then remove the old module loader. </para>
+      <title>Design of the Module Loader</title>
       <para> Design:
         <itemizedlist>
           <listitem>
@@ -861,7 +888,7 @@ to.
           
           <listitem>
             <para> Each module can be enabled and disabled individually.
-              Dependencies between modules is allowed although not yet handled
+              Dependencies between modules are allowed although not yet handled
               gracefully. </para>
           </listitem>
           
@@ -918,7 +945,7 @@ to.
               implementation is such that we have no register of dependencies.
             </para>
             <para> The solution suggested is that the module loader persists in
-              it's attempts to enable a module so that the order among the modules
+              its attempts to enable a module so that the order among the modules
               is not important. For this to work the modules needs to signal when
               they fail. This is done by returning false or throwing a Exception
               from the module enabling method. </para>
