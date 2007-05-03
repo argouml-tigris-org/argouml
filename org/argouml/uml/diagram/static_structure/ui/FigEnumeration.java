@@ -36,11 +36,11 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
+import org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -120,8 +120,7 @@ public class FigEnumeration extends FigDataType
      */
     protected ArgoJMenu buildAddMenu() {
         ArgoJMenu addMenu = super.buildAddMenu();
-        addMenu.add(TargetManager.getInstance()
-                .getAddEnumerationLiteralAction());
+        addMenu.add(new ActionAddEnumerationLiteral());
         return addMenu;
     }
 

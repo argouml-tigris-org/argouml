@@ -405,9 +405,6 @@ public final class TargetManager {
     
     private AbstractAction deleteAction = new ActionDeleteModelElements();
 
-    private Action addEnumerationLiteralAction = 
-        new ActionAddEnumerationLiteral();
-
     /**
      * Singleton retrieval method.
      * @return the targetmanager
@@ -921,10 +918,13 @@ public final class TargetManager {
      * Get the Action class for creating and adding a new EnumerationLiteral for
      * the single selected target (or its owner).
      * 
-     * @return the action
+     * @deprecated by tfmorris for 0.25.3 - use 
+     * new {@link org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral}()
+     * - This was only introduced in 0.24, so it can be removed quickly.
+     * @return null
      */
     public Action getAddEnumerationLiteralAction() {
-        return addEnumerationLiteralAction;
+        return null;
     }
 
     /**
