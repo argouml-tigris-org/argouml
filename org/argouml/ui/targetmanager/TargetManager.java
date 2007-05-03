@@ -47,6 +47,8 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
+import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
