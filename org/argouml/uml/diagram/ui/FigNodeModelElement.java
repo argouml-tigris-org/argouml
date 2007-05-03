@@ -1786,4 +1786,15 @@ public abstract class FigNodeModelElement
 	    (UMLMutableGraphSupport) layer.getGraphModel();
 	return gm.getProject();
     }
+    
+    /**
+     * Determine if this Fig is the sole selected target in
+     * the TargetManager
+     * @return true if this si the sole target.
+     */
+    protected boolean isSingleTarget() {
+	return TargetManager.getInstance().getSingleModelTarget()
+		== getOwner();
+    }
+    
 } /* end class FigNodeModelElement */
