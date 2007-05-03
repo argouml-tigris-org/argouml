@@ -64,11 +64,22 @@ public final class ImporterManager {
     }
 
     /**
-     * Registers a new importer. 
+     * Register a new source language importer. 
+     *
+     * @param importer The ImportInterface object to register.
+     * @deprecated Use {@link #addImporter(ImportInterface)} instead. 
+     * (0.25.3 tfm)
+     */
+    public void addimporter(ImportInterface importer) {
+        addImporter(importer);
+    }
+
+    /**
+     * Register a new source language importer. 
      *
      * @param importer The ImportInterface object to register.
      */
-    public void addimporter(ImportInterface importer) {
+    public void addImporter(ImportInterface importer) {
         importers.add(importer);
 //        ArgoEventPump.fireEvent(
 //                new ArgoImporterEvent(ArgoEventTypes.IMPORTER_ADDED, gen));
