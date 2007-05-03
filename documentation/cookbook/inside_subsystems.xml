@@ -178,9 +178,11 @@
     <para> The Code Generation subsystem is a Control subsystem. See <xref
         linkend="view_control_subsystems"></xref>. </para>
 
-    <para> The various languages or notations supplied with ArgoUML are found
-      in sub-packages of <classname>org.argouml.language</classname>. In the 
-      case of languages
+    <para> The code to generate various languages 
+      that is supplied with ArgoUML 
+      is found in sub-packages of 
+      <classname>org.argouml.language</classname>. 
+      In the case of languages
       other than Java, these classes will come from independent projects and
       be package separately even though they share this package namespace.
       <warning>NOTE: There is a potential conflict here if two separately 
