@@ -1462,31 +1462,26 @@ public interface Facade {
     Collection getElementResidences(Object handle);
 
     /**
-     * Return the ElementImports of this ModelElement.
+     * Return the ElementImports which have this ModelElement as their
+     * importedElement. For the inverse relationship (ElementImports which
+     * import into a Package) see {@link #getElementImports(Object)}.
      * 
-     * The name of this method is non-standard, since
-     * there are 2 meta-associations with the same name.
-     * This is the one for a ModelElement, which returns
-     * the collection of elementImports for where the given
-     * modelElement is imported.
-     *
-     * @param handle the ModelElement
+     * @param handle
+     *            the ModelElement
      * @return the collection of ElementImports
+     * @see #getElementImports(Object)
      */
     Collection getElementImports2(Object handle);
 
     /**
-     * Return the ElementImports of this Package.
+     * Return the ElementImports which import into this Package. For the inverse
+     * relationship (ElementImports which have a particular ModelElement as
+     * their importedElement), see {@link #getElementImports2(Object)}.
      * 
-     * The name of this method is easy to confuse 
-     * with getElementImports2, since
-     * there are 2 meta-associations with the same name.
-     * This is the one for a Package, which returns
-     * the collection of elementImports of all
-     * modelElements imported in the Package.
-     * 
-     * @param handle the package
+     * @param handle
+     *            the package
      * @return the collection of ElementImports
+     * @see #getElementImports2(Object)
      */
     Collection getElementImports(Object handle);
 
@@ -1784,9 +1779,11 @@ public interface Facade {
     Object getModelElement(Object handle);
 
     /**
-     * Get the Multiplicity of an AssociationEnd, ClassifierRole, StructuralFeature, or TagDefinition.
-     *
-     * @param handle model element to retrieve from.
+     * Get the Multiplicity of an AssociationEnd, ClassifierRole,
+     * StructuralFeature, or TagDefinition.
+     * 
+     * @param handle
+     *            model element to retrieve from.
      * @return multiplicity
      */
     Object getMultiplicity(Object handle);
@@ -1808,9 +1805,11 @@ public interface Facade {
     Collection getComments(Object handle);
 
     /**
-     * Get the ModelElements (annotatedElements) which are annotated by a Comment.
-     *
-     * @param handle the Comment that we are getting the model elements of
+     * Get the ModelElements (annotatedElements) which are annotated by a
+     * Comment.
+     * 
+     * @param handle
+     *            the Comment that we are getting the model elements of
      * @return a Collection of ModelElements
      */
     Collection getAnnotatedElements(Object handle);
@@ -2151,11 +2150,13 @@ public interface Facade {
     Object getOppositeEnd(Object handle);
 
     /**
-     * Return the next AssociationEnd in the owning Association.  If this is
-     * the last AssociationEnd, the search will wrap and return the first end
-     * so that all AssociationEnds may be visited by repeatedly calling this method.
-     *
-     * @param handle the AssociationEnd
+     * Return the next AssociationEnd in the owning Association. If this is the
+     * last AssociationEnd, the search will wrap and return the first end so
+     * that all AssociationEnds may be visited by repeatedly calling this
+     * method.
+     * 
+     * @param handle
+     *            the AssociationEnd
      * @return the next AssociationEnd in sequence
      */
     Object getNextEnd(Object handle);
@@ -2813,18 +2814,20 @@ public interface Facade {
     String getName(Object handle);
 
     /**
-     * Return the owner of a Feature, TagDefinition, Attribute, or TemplateParameter.  For
-     * a qualifier Attribute of an AssociationEnd, it returns the owning AssociationEnd.
-     * For a TemplateParameter ot returns the owning template ModelElement.
-     *
-     * @param handle the Feature, TagDefinition, Attribute, or TemplateParameter
+     * Return the owner of a Feature, TagDefinition, Attribute, or
+     * TemplateParameter. For a qualifier Attribute of an AssociationEnd, it
+     * returns the owning AssociationEnd. For a TemplateParameter ot returns the
+     * owning template ModelElement.
+     * 
+     * @param handle
+     *            the Feature, TagDefinition, Attribute, or TemplateParameter
      * @return the owner
      */
     Object getOwner(Object handle);
 
     /**
      * Return the tag of a tagged value, i.e. the name 
-     * of the TagDefinition of the given tagged value.
+     * of the TagDefinition which is the type of the given TaggedValue.
      *
      * @param handle the given tagged value
      * @return The found tag as a String.
