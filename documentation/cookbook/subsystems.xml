@@ -211,7 +211,7 @@ This is in subsections.
       All ArgoUML packages may depend on them.
     </para>
     <para>
-      All these subsystems are all started and initiated (if needed)
+      All these subsystems are started and initiated (if needed)
       from the Application subsystem.
     </para>
 
@@ -233,8 +233,7 @@ This is in subsections.
       </listitem>
 
       <listitem>
-        <para>JRE with utils - see
-          <xref linkend="jre"></xref>. 
+        <para>JRE with utils. 
           This includes all libraries that are part of the standard JRE.
         </para>
       </listitem>
@@ -311,8 +310,14 @@ see <xref linkend="internationalization"></xref>.
       </listitem>
 
       <listitem>
-        <para>Swing extensions<!-- 
-          - see <xref linkend="swingext"></xref> -->.
+        <para>Swing extensions
+          <!-- - see <xref linkend="swingext"></xref> -->.
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>
+          The Model - See <xref linkend="model" />.
         </para>
       </listitem>
 
@@ -325,56 +330,7 @@ see <xref linkend="internationalization"></xref>.
       </mediaobject> </para>
     
   </sect1>
-  
-  <sect1 id="model_subsystems">
-    <title>Model subsystems</title>
-    <para>
-These subsystems do not rely on any other part of ArgoUML to do their work
-(except the infrastructure).
-They can all be tested in full individually
-i.e. independent of any other subsystem.
-</para>
-    <para>
-They contain all the information used by all other subsystems so for that
-reason they represent the model in the MVC pattern.
-</para>
-    <para>
-All these subsystems are all started and initiated from the Application
-subsystem.
-</para>
 
-    <para>
-      <itemizedlist>
-        
-        <listitem>
-          <para>The Model -
-See <xref linkend="model"/>.
-</para>
-        </listitem>
-        
-        <listitem>
-          <para>To do items -
-see <xref linkend="todoitems"></xref>.
-</para>
-        </listitem>
-
-      <listitem>
-        <para>
-          Help system - see
-          <xref linkend="help"></xref>.
-        </para>
-      </listitem>
-        
-      </itemizedlist>
-</para>
-    <para>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/cookbook/Layer1.gif" format="GIF"/>
-        </imageobject>
-      </mediaobject> </para>
-  </sect1>
-  
   <sect1 id="view_control_subsystems">
     <title>View and Control subsystems</title>
     <para>
@@ -388,11 +344,6 @@ subsystem.
 </para>
     <para>
       <itemizedlist>
-        <listitem>
-          <para>Application -
-see <xref linkend="application"></xref>.
-</para>
-        </listitem>
 
         <listitem>
           <para>Diagrams -
@@ -450,13 +401,36 @@ see <xref linkend="moduleloader"></xref>.
         </imageobject>
       </mediaobject> </para>
 
+  </sect1>
+  
+    <sect1 id="top_level_subsystem">
+    <title>Top Level subsystem</title>
+    <para>
+      A top level subsystem is the subsystem that contains the Main.main(), 
+      i.e. the starting point of the ArgoUML application.
+      It initialises other subsystems, 
+      and hence depends on other ArgoUML subsystems, 
+      but no other ArgoUML subsystem depends on the top level.
+    </para>
+
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            Application - see <xref linkend="application"></xref>.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </para>
+    
     <para>
       <mediaobject>
         <imageobject>
           <imagedata fileref="images/cookbook/Application.gif"
             format="GIF"/>
         </imageobject>
-      </mediaobject> </para>
+      </mediaobject>
+    </para>
   </sect1>
   
   <sect1 id="loadable_subsystems">
