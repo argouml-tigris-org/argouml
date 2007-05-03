@@ -342,6 +342,18 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      */
     public synchronized void plannedChange(MDRChangeEvent e) {
         pendingEvents++;
+
+        // Prototypical logging code that can be enabled and modified to
+        // discover who's creating certain types of events
+//        if (/* LOG.isDebugEnabled() && */ e instanceof AssociationEvent) {
+//            AssociationEvent ae = (AssociationEvent) e;
+//            if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_REMOVE)
+//                    && "namespace".equals(ae.getEndName())
+//                    /* && ae.getFixedElement() instanceof UmlPackage */) {
+//                LOG.debug("Removing element " + ae.getOldElement()
+//                        + " from package " + ae.getFixedElement());
+//            }
+//        }
     }
 
     /**
