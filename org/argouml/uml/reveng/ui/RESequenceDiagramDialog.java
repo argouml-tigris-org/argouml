@@ -71,6 +71,7 @@ import org.argouml.uml.diagram.sequence.ui.FigMessage;
 import org.argouml.uml.diagram.sequence.ui.SequenceDiagramLayer;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.reveng.ImportSettings;
 import org.argouml.uml.reveng.java.JavaLexer;
 import org.argouml.uml.reveng.java.JavaRecognizer;
 import org.argouml.uml.reveng.java.Modeller;
@@ -153,7 +154,7 @@ public class RESequenceDiagramDialog
         operation = oper;
         model = ProjectManager.getManager().getCurrentProject().getModel();
         try {
-            modeller = new Modeller(model, null, null, true, true, null);
+            modeller = new Modeller(model, new DummySettings(), null);
         } catch (Exception ex) { 
             // TODO: Why are these being ignored? - tfm
             LOG.warn("Exception ignored", ex);
@@ -783,10 +784,12 @@ public class RESequenceDiagramDialog
                 Model.getFacade().getAssociationEnds(toCls).iterator();
              i.hasNext();) {
             Object ae = i.next();
-            if (Model.getFacade().getType(Model.getFacade().getOppositeEnd(ae))
-                    == fromCls
-                 && Model.getFacade().getName(ae) == null
-                 && Model.getFacade().isNavigable(ae)) {
+            Object assoc = Model.getFacade().getAssociation(ae);
+            if (Model.getFacade().getConnections(assoc).size() == 2
+                    && Model.getFacade().getType(
+                            Model.getFacade().getNextEnd(ae)) == fromCls
+                    && Model.getFacade().getName(ae) == null
+                    && Model.getFacade().isNavigable(ae)) {
                 assocEnd = ae;
             }
         }
@@ -824,6 +827,37 @@ public class RESequenceDiagramDialog
         return theClassifier;
     }
 
+    /**
+     * Fixed import settings class for our use.
+     */
+    private class DummySettings implements ImportSettings {
+
+        public int getImportLevel() {
+            return 0;
+        }
+
+        public String getInputSourceEncoding() {
+            return null;
+        }
+
+        public boolean isAttributeSelected() {
+            return true;
+        }
+
+        public boolean isCreateDiagramsSelected() {
+            return false;
+        }
+
+        public boolean isDatatypeSelected() {
+            return true;
+        }
+
+        public boolean isMinimizeFigsSelected() {
+            return false;
+        }
+        
+    }
+    
     /**
      * The UID.
      */
