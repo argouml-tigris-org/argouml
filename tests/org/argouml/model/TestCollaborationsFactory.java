@@ -152,20 +152,21 @@ public class TestCollaborationsFactory extends TestCase {
     }
 
     /**
-     * Test that IllegalArgumentException is thrown when a null is sent.
+     * Test that an Exception is thrown when a null is sent.  We don't
+     * really care which exception is thrown.
      */
-    public void testExpectedIllegalArgumentException() {
+    public void testExpectedArgumentException() {
         try {
             Model.getCollaborationsFactory().buildActivator(null, null);
             fail("Exception missing");
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             // Correct Exception was thrown.
         }
 
         try {
             Model.getCollaborationsFactory().buildMessage(null, null);
             fail("Exception missing");
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             // Correct Exception was thrown.
         }
 
@@ -173,7 +174,7 @@ public class TestCollaborationsFactory extends TestCase {
         try {
             Model.getCollaborationsFactory().buildMessage(collab, null);
             fail("Exception missing");
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             // Correct Exception was thrown.
         }
 
@@ -181,7 +182,7 @@ public class TestCollaborationsFactory extends TestCase {
         try {
             Model.getCollaborationsFactory().buildMessage(inter, null);
             fail("Exception missing");
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             // Correct Exception was thrown.
         }
 
