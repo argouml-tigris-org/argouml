@@ -1272,28 +1272,28 @@ The test cases' Java source code is located under
 <filename>argouml/tests/org/argouml</filename>.
 </para>
 
-      <sect2>
+    <sect2>
         <title>About the Test case Class</title>
-        <indexterm>
-          <primary>Unit testing of ArgoUML</primary>
-        </indexterm>
-        <indexterm>
-          <primary>Testing ArgoUML</primary>
-        </indexterm>
-        <indexterm>
-          <primary>Test cases</primary>
-          <secondary>writing</secondary>
-        </indexterm>
-        <indexterm>
-          <primary>Writing test cases</primary>
-        </indexterm>
-        <indexterm>
-          <primary>Ant target</primary>
-          <secondary>run-with-test-panel</secondary>
-        </indexterm>
-        <indexterm>
-          <primary>run-with-test-panel ant target</primary>
-        </indexterm>
+      <indexterm>
+        <primary>Unit testing of ArgoUML</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Testing ArgoUML</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Test cases</primary>
+        <secondary>writing</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Writing test cases</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Ant target</primary>
+        <secondary>run-with-test-panel</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>run-with-test-panel ant target</primary>
+      </indexterm>
         <para>
 Now this will make all you Java enthusiasts go nuts!
 We have both class names and method names with a special syntax.
@@ -1337,7 +1337,6 @@ Test case classes that do require GUI components in place
 have filenames like
 <filename>GUITest<replaceable>*</replaceable>.java</filename>.
 </para>
-
         <para>
 Every test case class imports the JUnit framework: 
 <blockquote>
@@ -1352,7 +1351,7 @@ and it inherits <classname>TestCase</classname>
 
     <sect2>
       <title>Naming JUnit tests classes</title>
-      <para>
+        <para>
 An ArgoUML class
 <classname>org.argouml.<replaceable>x.y</replaceable>.<replaceable>z</replaceable></classname>
 stored in the file
@@ -1513,7 +1512,7 @@ public class TestUMLAction extends TestCase {
 </programlisting>
 </para>
         </example>
-      </sect2>
+    </sect2>
       
       <sect2>
         <title>Improving a test case</title>
@@ -1800,7 +1799,7 @@ If you are running Eclipse 3.1 or 3.2
 we have a prepared and recommended setup
 committed into our repository.
 This setup is slightly different than the ant setup 
-w.r.t. file tree structure of the checked out copy
+with regard to the directory tree structure of the checked out copy
 and some special magic is used in the ant scripts
 that is controlled from the special Eclipse configurations.
 </para>
@@ -1865,7 +1864,7 @@ and it takes you up to where you can start ArgoUML from the source.
 </para>
 
       <para>
-We have Team Project Set files prepared to make the set up automatic.
+We have Eclipse Team Project Set files prepared to make the set up automatic.
 </para>
 
       <para>

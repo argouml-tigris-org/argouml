@@ -43,6 +43,8 @@ to follow what is going on inside ArgoUML.
 </para>
   <para>
 The Logging is located in <classname>org.argouml.???</classname>
+<warning>This describes an imaginary subsystem.  All ArgoUML code uses 
+log4j directly.</warning>
 </para>
   <para>
 The Logging is a Layer 0 subsystem.
