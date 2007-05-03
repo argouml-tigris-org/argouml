@@ -261,7 +261,7 @@ public class JavaImport implements ModuleInterface, ImportInterface {
      * Enable the importer.
      */
     public void init() {
-	ImporterManager.getInstance().addimporter(this);
+	ImporterManager.getInstance().addImporter(this);
     }
     
     /*
