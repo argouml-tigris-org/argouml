@@ -332,7 +332,9 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * true if this is null.
      */
     public boolean isDescend() {
-        String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+        String flags =
+                Configuration.getString(
+                        Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
             if (st.hasMoreTokens() && st.nextToken().equals("false")) {
@@ -349,7 +351,8 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * true if this is null.
      */
     public boolean isChangedOnly() {
-        String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+        String flags =
+                Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
             if (st.hasMoreTokens()) st.nextToken();
@@ -367,7 +370,9 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * true if this is null.
      */
     public boolean isCreateDiagrams() {
-        String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+        String flags =
+                Configuration.getString(
+                        Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
             if (st.hasMoreTokens()) st.nextToken();
@@ -386,7 +391,9 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * true if this is null.
      */
     public boolean isMinimizeFigs() {
-        String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+        String flags =
+                Configuration.getString(
+                        Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
             if (st.hasMoreTokens()) st.nextToken();
@@ -406,7 +413,9 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * true if this is null.
      */
     public boolean isDiagramLayout() {
-        String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+        String flags =
+                Configuration.getString(
+                        Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
             if (st.hasMoreTokens()) st.nextToken();
