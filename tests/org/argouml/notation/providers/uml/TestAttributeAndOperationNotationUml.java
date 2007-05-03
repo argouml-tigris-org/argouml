@@ -108,13 +108,13 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
      */
     public TestAttributeAndOperationNotationUml(String str) {
         super(str);
+        InitializeModel.initializeDefault();
     }
 
     /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
-        InitializeModel.initializeDefault();
         NotationProviderFactory2.getInstance();
     }
 
@@ -1030,11 +1030,4 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         assertTrue("Parsing help not conform for translation", 
                 help.startsWith("parsing."));
     }
-
-    /**
-     * Dummy test.
-     */
-    public void testDummy() { }
-
-
 }

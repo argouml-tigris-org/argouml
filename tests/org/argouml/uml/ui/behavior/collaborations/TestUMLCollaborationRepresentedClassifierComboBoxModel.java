@@ -52,6 +52,7 @@ public class TestUMLCollaborationRepresentedClassifierComboBoxModel
      */
     public TestUMLCollaborationRepresentedClassifierComboBoxModel(String arg0) {
         super(arg0);
+        InitializeModel.initializeDefault();
     }
 
     /*
@@ -59,7 +60,6 @@ public class TestUMLCollaborationRepresentedClassifierComboBoxModel
      */
     protected void setUp() throws Exception {
         super.setUp();
-        InitializeModel.initializeDefault();
 
         elem = Model.getCollaborationsFactory().createCollaboration();
         model = new UMLCollaborationRepresentedClassifierComboBoxModel();

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.util.CheckMain;
@@ -44,6 +45,14 @@ public class GUITestActionOpenProject extends TestCase {
      */
     public GUITestActionOpenProject(String name) {
         super(name);
+    }
+
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() throws Exception {
+	super.setUp();
+        InitializeModel.initializeDefault();
     }
 
     /**

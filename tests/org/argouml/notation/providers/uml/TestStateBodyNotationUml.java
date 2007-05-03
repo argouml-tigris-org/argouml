@@ -51,13 +51,13 @@ public class TestStateBodyNotationUml extends TestCase {
      */
     public TestStateBodyNotationUml(String str) {
         super(str);
+        InitializeModel.initializeDefault();
     }
 
     /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
-        InitializeModel.initializeDefault();
         Object model =
             Model.getModelManagementFactory().createModel();
         Project p = ProjectManager.getManager().getCurrentProject();

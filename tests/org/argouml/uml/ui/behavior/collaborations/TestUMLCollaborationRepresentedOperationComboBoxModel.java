@@ -51,6 +51,7 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
      */
     public TestUMLCollaborationRepresentedOperationComboBoxModel(String arg0) {
         super(arg0);
+        InitializeModel.initializeDefault();
     }
 
     /*
@@ -58,7 +59,6 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
      */
     protected void setUp() throws Exception {
         super.setUp();
-        InitializeModel.initializeDefault();
 
         elem = Model.getCollaborationsFactory().createCollaboration();
         model = new UMLCollaborationRepresentedOperationComboBoxModel();

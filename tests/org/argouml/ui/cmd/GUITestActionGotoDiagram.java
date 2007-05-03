@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 
 import org.argouml.util.CheckMain;
 
@@ -45,6 +46,14 @@ public class GUITestActionGotoDiagram extends TestCase {
      */
     public GUITestActionGotoDiagram(String name) {
         super(name);
+    }
+
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() throws Exception {
+	super.setUp();
+        InitializeModel.initializeDefault();
     }
 
     /**
@@ -71,4 +80,3 @@ public class GUITestActionGotoDiagram extends TestCase {
         new File(OUTPUT_FILE2).delete();
     }
 }
-

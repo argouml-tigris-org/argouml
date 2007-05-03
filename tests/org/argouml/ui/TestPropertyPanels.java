@@ -94,7 +94,6 @@ public class TestPropertyPanels extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        InitializeModel.initializeDefault();
 
         if (theDetailsPane == null) {
             theDetailsPane =
@@ -119,6 +118,7 @@ public class TestPropertyPanels extends TestCase {
      * @throws Exception any exception
      */
     public static Test suite() throws Exception {
+        InitializeModel.initializeDefault();
 
         // constains instances of each modelelement
         // used for testing so that we only use each modelelement

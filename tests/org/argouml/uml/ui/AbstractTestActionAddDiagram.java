@@ -62,13 +62,13 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      */
     public AbstractTestActionAddDiagram(String arg0) {
         super(arg0);
+        InitializeModel.initializeDefault();
     }
 
     /**
      * Preparations for all test cases.
      */
     protected void setUp() {
-        InitializeModel.initializeDefault();
 	action = getAction();
 
 	ns = getNamespace();

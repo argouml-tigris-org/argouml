@@ -25,6 +25,7 @@
 package org.argouml.uml.ui;
 
 import junit.framework.TestCase;
+import org.argouml.model.InitializeModel;
 import java.io.File;
 
 import org.argouml.kernel.ProjectManager;
@@ -65,6 +66,7 @@ public class TestSourcePathController extends TestCase {
      */
     public TestSourcePathController(String arg0) {
         super(arg0);
+        InitializeModel.initializeDefault();
     }
     
     /*
