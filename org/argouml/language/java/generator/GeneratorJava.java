@@ -52,8 +52,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleInterface;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationName;
 import org.argouml.ocl.ArgoFacade;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.CodeGenerator;
@@ -138,21 +136,10 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
      * Constructor.
      */
     protected GeneratorJava() {
-        NotationName nn =
-            Notation.makeNotation(
-                "Java",
-                null,
+        Language java = GeneratorHelper.makeLanguage(
+                "Java", "Java", 
                 ResourceLoaderWrapper.lookupIconResource("JavaNotation"));
-        String cv = nn.getConfigurationValue();
-        Language lang =
-            GeneratorHelper.makeLanguage(cv, nn.getTitle(), nn.getIcon());
-        GeneratorManager.getInstance().addGenerator(lang, this);
-        
-      //TODO: Replace this function by:  
-//        Language java = GeneratorHelper.makeLanguage(
-//                "Java", "Java", 
-//                ResourceLoaderWrapper.lookupIconResource("JavaNotation"));
-//        GeneratorManager.getInstance().addGenerator(java, this);
+        GeneratorManager.getInstance().addGenerator(java, this);
     }
 
     /**
