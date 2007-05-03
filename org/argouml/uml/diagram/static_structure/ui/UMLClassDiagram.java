@@ -32,6 +32,10 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.ActionAddAttribute;
+import org.argouml.ui.targetmanager.ActionAddOperation;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ModeCreateDependency;
@@ -47,7 +51,12 @@ import org.tigris.gef.base.LayerPerspectiveMutable;
  * 
  * @author jrobbins@ics.uci.edy
  */
-public class UMLClassDiagram extends UMLDiagram {
+public class UMLClassDiagram extends UMLDiagram implements TargetListener {
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -9192325790126361563L;
 
     /**
      * Logger.
@@ -88,6 +97,7 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     public UMLClassDiagram() {
         super();
+	TargetManager.getInstance().addTargetListener(this);
         // TODO: All super constructors should take a GraphModel
         setGraphModel(createGraphModel());
     }
@@ -100,6 +110,7 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     public UMLClassDiagram(String name, Object namespace) {
         super(name, namespace);
+	TargetManager.getInstance().addTargetListener(this);
     }
 
     /**
@@ -108,6 +119,7 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     public UMLClassDiagram(Object m) {
         super(m);
+	TargetManager.getInstance().addTargetListener(this);
         String name = getNewDiagramName();
         try {
             setName(name);
@@ -527,8 +539,8 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     private Action getActionAttribute() {
         if (actionAttribute == null) {
-            actionAttribute =
-                TargetManager.getInstance().getAddAttributeAction();
+            actionAttribute = new ActionAddAttribute();
+            actionAttribute.setEnabled(false);
         }
         return actionAttribute;
     }
@@ -538,8 +550,8 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     private Action getActionOperation() {
         if (actionOperation == null) {
-            actionOperation =
-                TargetManager.getInstance().getAddOperationAction();
+            actionOperation = new ActionAddOperation();
+            actionOperation.setEnabled(false);
         }
         return actionOperation;
     }
@@ -619,8 +631,40 @@ public class UMLClassDiagram extends UMLDiagram {
         return true;
     }
 
+    public void targetAdded(TargetEvent e) {
+	enableActionByTargets();
+    }
+
+    public void targetRemoved(TargetEvent e) {
+	enableActionByTargets();
+    }
+
+    public void targetSet(TargetEvent e) {
+	enableActionByTargets();
+    }
+    
+    private void enableActionByTargets() {
+        boolean enable = false;
+        Object target = TargetManager.getInstance().getSingleModelTarget();
+        if (Model.getFacade().isAClassifier(target)
+            || Model.getFacade().isAFeature(target)
+            || Model.getFacade().isAAssociationEnd(target)) {
+            enable = true;
+        }
+        actionAttribute.setEnabled(enable);
+        actionOperation.setEnabled(enable);
+    }
+
     /**
-     * The UID.
+     * 
+     * @see org.argouml.ui.ArgoDiagram#remove()
      */
-    private static final long serialVersionUID = -9192325790126361563L;
+    @Override
+    public void remove() {
+	super.remove();
+	TargetManager.getInstance().removeTargetListener(this);
+    }
+    
+    
+    
 } /* end class UMLClassDiagram */

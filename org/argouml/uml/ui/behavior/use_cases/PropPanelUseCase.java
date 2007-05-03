@@ -29,6 +29,8 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.ui.targetmanager.ActionAddAttribute;
+import org.argouml.ui.targetmanager.ActionAddOperation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -107,8 +109,8 @@ public class PropPanelUseCase extends PropPanelClassifier {
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewUseCase());
         addAction(new ActionNewExtensionPoint());
-        addAction(TargetManager.getInstance().getAddAttributeAction());
-        addAction(TargetManager.getInstance().getAddOperationAction());
+        addAction(new ActionAddAttribute());
+        addAction(new ActionAddOperation());
         addAction(getActionNewReception());
         addAction(new ActionNewStereotype());
         addAction(getDeleteAction());
