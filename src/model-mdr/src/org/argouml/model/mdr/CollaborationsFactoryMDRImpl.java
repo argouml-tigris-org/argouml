@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -170,13 +170,9 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.CollaborationsFactory#buildClassifierRole(java.lang.Object)
      */
     public Object buildClassifierRole(Object collaboration) {
-        if (!(collaboration instanceof Collaboration)) {
-            throw new IllegalArgumentException(
-                    "Argument is not a collaboration");
-        }
-
+        Collaboration myCollaboration = (Collaboration) collaboration;
         ClassifierRole classifierRole = (ClassifierRole) createClassifierRole();
-        ((Collaboration) collaboration).getOwnedElement().add(classifierRole);
+        classifierRole.setNamespace(myCollaboration);
         classifierRole.setMultiplicity((Multiplicity) Model
                 .getDataTypesFactory().createMultiplicity("1..1"));
         return classifierRole;
@@ -186,10 +182,6 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.CollaborationsFactory#buildCollaboration(java.lang.Object)
      */
     public Object buildCollaboration(Object handle) {
-        if (!(handle instanceof Namespace)) {
-            throw new IllegalArgumentException("Argument is not a namespace");
-        }
-
         Namespace namespace = (Namespace) handle;
         Collaboration modelelement = (Collaboration) createCollaboration();
         modelelement.setNamespace(namespace);
@@ -206,8 +198,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             Object representedElement) {
         if (!(namespace instanceof Namespace)) {
             throw new IllegalArgumentException("Argument is not "
-                    + "a namespace or element " + "that can be represented "
-                    + "by a collaboration");
+                    + "a namespace");
         }
 
         if (representedElement instanceof Classifier
@@ -236,11 +227,6 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.CollaborationsFactory#buildInteraction(java.lang.Object)
      */
     public Object buildInteraction(Object handle) {
-        if (!(handle instanceof Collaboration)) {
-            throw new IllegalArgumentException(
-                    "Argument is not a collaboration");
-        }
-
         Collaboration collab = (Collaboration) handle;
         Interaction inter = (Interaction) createInteraction();
         inter.setContext(collab);
@@ -252,45 +238,40 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.CollaborationsFactory#buildAssociationEndRole(java.lang.Object)
      */
     public Object buildAssociationEndRole(Object atype) {
-        if (!(atype instanceof ClassifierRole)) {
-            throw new IllegalArgumentException();
-        }
-
+        ClassifierRole type = (ClassifierRole) atype;
         AssociationEndRole end =
             (AssociationEndRole) createAssociationEndRole();
-        end.setParticipant((ClassifierRole) atype);
-
+        end.setParticipant(type);
         return end;
     }
 
+    
     /*
      * @see org.argouml.model.CollaborationsFactory#buildAssociationRole(java.lang.Object,
      *      java.lang.Object)
      */
     public Object buildAssociationRole(Object from, Object to) {
-        if (!(from instanceof ClassifierRole)) {
-            throw new IllegalArgumentException("from");
+        return buildAssociationRole((ClassifierRole) from, (ClassifierRole) to);
+    }
+    
+    /**
+     * Internal type-checked version of buildAssociationRole.
+     */
+    private AssociationRole buildAssociationRole(ClassifierRole from,
+            ClassifierRole to) {
+        Collaboration collaboration = (Collaboration) from.getNamespace();
+        if (collaboration == null 
+                || !collaboration.equals(to.getNamespace())) {
+            throw new IllegalArgumentException("ClassifierRoles must be in"
+                    + " same non-null namespace");
         }
-        if (!(to instanceof ClassifierRole)) {
-            throw new IllegalArgumentException("to");
-        }
-
-        Collaboration colFrom =
-            (Collaboration) ((ClassifierRole) from).getNamespace();
-        Collaboration colTo =
-            (Collaboration) ((ClassifierRole) to).getNamespace();
-        if (colFrom != null && colFrom.equals(colTo)) {
-            AssociationRole role = (AssociationRole) createAssociationRole();
-            // we do not create on basis of associations between the
-            // bases of the classifierroles
-            role.getConnection().add(buildAssociationEndRole(from));
-            role.getConnection().add(buildAssociationEndRole(to));
-            colFrom.getOwnedElement().add(role);
-
-            return role;
-        }
-        throw new IllegalArgumentException("Collaborations must be in"
-                + " same non-null namespace");
+        AssociationRole role = (AssociationRole) createAssociationRole();
+        role.setNamespace(collaboration);
+        // The 4-arg version of this method depends on this ordering.
+        // Don't change it!
+        role.getConnection().add(buildAssociationEndRole(from));
+        role.getConnection().add(buildAssociationEndRole(to));
+        return role;
     }
 
     /*
@@ -300,56 +281,37 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     public Object buildAssociationRole(Object from, Object agg1, Object to,
             Object agg2, Boolean unidirectional) {
-        if (!(from instanceof ClassifierRole)) {
-            throw new IllegalArgumentException();
-        }
-        if (!(to instanceof ClassifierRole)) {
-            throw new IllegalArgumentException();
-        }
 
-        Collaboration colFrom =
-            (Collaboration) ((ClassifierRole) from).getNamespace();
-        Collaboration colTo =
-            (Collaboration) ((ClassifierRole) to).getNamespace();
+        AggregationKind ak1 = checkAggregationKind(agg1);
+        AggregationKind ak2 = checkAggregationKind(agg2);
+        
+        AssociationRole role = buildAssociationRole((ClassifierRole) from, 
+                (ClassifierRole) to);
 
-        if (agg1 == null) {
-            agg1 = AggregationKindEnum.AK_NONE;
-        }
-        if (!(agg1 instanceof AggregationKind)) {
-            throw new IllegalArgumentException();
-        }
+        AssociationEndRole end =
+                (AssociationEndRole) role.getConnection().get(0);
+        end.setAggregation(ak1);
+        end.setNavigable(Boolean.FALSE.equals(unidirectional));
 
-        if (agg2 == null) {
-            agg2 = AggregationKindEnum.AK_NONE;
-        }
-        if (!(agg2 instanceof AggregationKind)) {
-            throw new IllegalArgumentException();
-        }
+        end = (AssociationEndRole) role.getConnection().get(1);
+        end.setAggregation(ak2);
+        end.setNavigable(true); // probably redundant - just in case
 
-        if (colFrom != null && colFrom.equals(colTo)) {
-            boolean nav1 = Boolean.FALSE.equals(unidirectional);
-            boolean nav2 = true;
-            AssociationRole role = (AssociationRole) createAssociationRole();
-            // we do not create on basis of associations between the
-            // bases of the classifierroles
-            AssociationEndRole fromEnd =
-                (AssociationEndRole) buildAssociationEndRole(from);
-            fromEnd.setNavigable(nav1);
-            fromEnd.setAggregation((AggregationKind) agg1);
-            role.getConnection().add(fromEnd);
+        return role;
+    }
 
-            AssociationEndRole toEnd =
-                (AssociationEndRole) buildAssociationEndRole(to);
-            toEnd.setNavigable(nav2);
-            toEnd.setAggregation((AggregationKind) agg2);
-            role.getConnection().add(toEnd);
 
-            colFrom.getOwnedElement().add(role);
-            return role;
+    /**
+     * Checks that aggregationKind is valid and promotes null
+     * to AK_NONE.
+     * @param aggregationKind Candidate AggregationKind or null
+     * @return valid checked AggregationKind
+     */
+    private AggregationKind checkAggregationKind(Object aggregationKind) {
+        if (aggregationKind == null) {
+            aggregationKind = AggregationKindEnum.AK_NONE;
         }
-        throw new IllegalArgumentException(
-                "Collaborations must be in"
-                + " same non-null namespace");
+        return (AggregationKind) aggregationKind;
     }
 
     /*
@@ -440,9 +402,9 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * to m.
      *
      * @param c
-     *            A collection containing exclusively MMessages.
+     *            A collection containing exclusively Messages.
      * @param m
-     *            A MMessage.
+     *            A Message.
      * @return The last message in the collection, or null.
      */
     private Message lastMessage(Collection c, Message m) {
@@ -461,7 +423,7 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * Walks the tree of successors to m rooted until a leaf is found. The leaf
      * is the returned. If m is itself a leaf, then m is returned.
      *
-     * @param m A MMessage.
+     * @param m A Message.
      * @return The last message in one branch of the tree rooted at m.
      */
     private Message findEnd(Message m) {
@@ -515,24 +477,20 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *      java.lang.Object)
      */
     public Object buildActivator(Object owner, Object interaction) {
-        if (!(owner instanceof Message)) {
-            throw new IllegalArgumentException(
-                    "A message must be supplied as the owner");
-        }
-
+        Message theOwner = (Message) owner;
+        Interaction theInteraction;
         if (interaction == null) {
-            interaction = ((Message) owner).getInteraction();
+            theInteraction = theOwner.getInteraction();
+        } else {
+            theInteraction = (Interaction) interaction;
         }
         if (interaction == null) {
-            throw new IllegalArgumentException();
-        }
-        if (!(interaction instanceof Interaction)) {
             throw new IllegalArgumentException();
         }
 
         Message activator = (Message) createMessage();
-        activator.setInteraction((Interaction) interaction);
-        ((Message) owner).setActivator(activator);
+        activator.setInteraction(theInteraction);
+        theOwner.setActivator(activator);
         return activator;
     }
 
@@ -552,15 +510,11 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *            the associationrole
      */
     void deleteAssociationRole(Object elem) {
-        if (!(elem instanceof AssociationRole)) {
-            throw new IllegalArgumentException();
-        }
-
-        Iterator it = ((AssociationRole) elem).getMessage().iterator();
+        AssociationRole role = (AssociationRole) elem;
+        Iterator it = role.getMessage().iterator();
         while (it.hasNext()) {
             nsmodel.getUmlFactory().delete(it.next());
         }
-
     }
 
     /**
@@ -568,9 +522,6 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *            the UML element to be deleted
      */
     void deleteClassifierRole(Object elem) {
-        if (!(elem instanceof ClassifierRole)) {
-            throw new IllegalArgumentException();
-        }
         ClassifierRole cr = (ClassifierRole) elem;
         // delete Messages which have this as sender or receiver
         nsmodel.getUmlHelper().deleteCollection(
@@ -634,12 +585,10 @@ public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *            the UML element to be delete
      */
     void deleteMessage(Object elem) {
-        if (!(elem instanceof Message)) {
-            throw new IllegalArgumentException();
-        }
+        Message message = (Message) elem;
         // If this is the only message contained in the Interaction
         // we delete the Interaction
-        Interaction i = ((Message) elem).getInteraction();
+        Interaction i = message.getInteraction();
         if (i != null && i.getMessage().size() == 1) {
             nsmodel.getUmlFactory().delete(i);
         }
