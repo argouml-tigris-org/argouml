@@ -199,9 +199,9 @@ attributes.
 Whenever you have a public or protected method or attribute in a class or
 a public class 
 that you want to 
-remove,
+remove, rename, move to a different pacakge,
 change the signature in an incompatible way, or 
-make change visibility for
+reduce the visibility for
 you shall always deprecate it first.
 After the next stable release you (or someone else) can remove it.
 </para>
@@ -242,6 +242,8 @@ deprecated methods to the next stable release.
 It makes it possible for the module developers to do work during the 
 unstable releases and release at the same time as ArgoUML releases its
 stable release.
+Failing to maintain API stability will discourage developers from 
+creating new modules for ArgoUML.
 </para>
       </listitem>
 
@@ -268,6 +270,7 @@ the deprecation or in the development team.
 </para>
         <para>
 Comment:
+<!-- What does this mean?  It makes no sense to me. - tfm -->
 There is an ongoing work (probably perpetually) to change
 the calls to deprecated methods and classes that
 has been deprecated after used in ArgoUML.
@@ -385,7 +388,7 @@ Java Language Specification, Section 8.1.1, 8.3.1, 8.4.3.
       <secondary>SVN</secondary>
     </indexterm>
     <para>
-The repository is a shared resource in the project.
+The source code repository is a shared resource in the project.
 This means that once you commit your stuff it has the potential
 of getting in the way of everybody else's work in the project.
 For this reason special considerations are needed.
