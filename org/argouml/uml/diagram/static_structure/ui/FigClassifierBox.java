@@ -40,7 +40,6 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.targetmanager.ActionAddOperation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -50,6 +49,7 @@ import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
+import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -311,8 +311,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     protected ArgoJMenu buildAddMenu() {
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
         Action addOperation = new ActionAddOperation();
-        addOperation.setEnabled(
-        	TargetManager.getInstance().getTargets().size() == 1);
+        addOperation.setEnabled(isSingleTarget());
         addMenu.insert(addOperation, 0);
         addMenu.add(new ActionAddNote());
         addMenu.add(ActionEdgesDisplay.getShowEdges());

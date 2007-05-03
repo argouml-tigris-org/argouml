@@ -43,11 +43,11 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.targetmanager.ActionAddAttribute;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
+import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -177,8 +177,7 @@ public class FigClass extends FigClassifierBox
     protected ArgoJMenu buildAddMenu() {
         ArgoJMenu addMenu = super.buildAddMenu();
         Action addAttribute = new ActionAddAttribute();
-        addAttribute.setEnabled(
-        	TargetManager.getInstance().getTargets().size() == 1);
+        addAttribute.setEnabled(isSingleTarget());
         addMenu.insert(addAttribute, 0);
         return addMenu;
     }
