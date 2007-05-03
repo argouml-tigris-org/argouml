@@ -31,6 +31,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.ActionAddAttribute;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionNavigateUpNextDown;
@@ -124,7 +125,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
                 return Model.getFacade().getModelElementContainer(child);
             }
         });
-        addAction(TargetManager.getInstance().getAddAttributeAction());
+        addAction(new ActionAddAttribute());
         addAction(new ActionAddDataType());
         addAction(new ActionAddEnumeration());
         addAction(new ActionNewStereotype());

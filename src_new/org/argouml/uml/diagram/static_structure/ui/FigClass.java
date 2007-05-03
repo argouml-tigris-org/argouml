@@ -35,12 +35,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Action;
+
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.targetmanager.ActionAddAttribute;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
@@ -173,7 +176,10 @@ public class FigClass extends FigClassifierBox
      */
     protected ArgoJMenu buildAddMenu() {
         ArgoJMenu addMenu = super.buildAddMenu();
-        addMenu.insert(TargetManager.getInstance().getAddAttributeAction(), 0);
+        Action addAttribute = new ActionAddAttribute();
+        addAttribute.setEnabled(
+        	TargetManager.getInstance().getTargets().size() == 1);
+        addMenu.insert(addAttribute, 0);
         return addMenu;
     }
 

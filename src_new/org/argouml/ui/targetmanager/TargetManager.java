@@ -882,6 +882,8 @@ public final class TargetManager {
     /**
      * Get the Action for creating and adding a new attribute
      * to the single selected target (or its owner).
+     * @deprecated in 0.25.3 by Bob Tarling
+     * Use the ActionAddAttribute constructor instead.
      * @return the action
      */
     public Action getAddAttributeAction() {
@@ -891,6 +893,8 @@ public final class TargetManager {
     /**
      * Get the Action for creating and adding a new operation
      * to the single selected target (or its owner).
+     * @deprecated in 0.25.3 by Bob Tarling
+     * Use the ActionAddAttribute constructor instead.
      * @return the action
      */
     public Action getAddOperationAction() {

@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
-import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.ui.targetmanager.ActionAddOperation;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -69,7 +69,7 @@ public class PropPanelInterface extends PropPanelClassifier {
                 getFeatureScroll());
         
         addAction(new ActionNavigateNamespace());
-        addAction(TargetManager.getInstance().getAddOperationAction());
+        addAction(new ActionAddOperation());
         addAction(getActionNewReception());
         addAction(new ActionNewInterface());
         addAction(new ActionNewStereotype());

@@ -38,14 +38,14 @@ import org.tigris.gef.undo.UndoableAction;
 /**
  * Action to add an operation to a classifier.
  */
-class ActionAddOperation extends UndoableAction {
+public class ActionAddOperation extends UndoableAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
     /**
      * The constructor.
      */
-    ActionAddOperation() {
+    public ActionAddOperation() {
         super(Translator.localize("button.new-operation"),
                 ResourceLoaderWrapper.lookupIcon("button.new-operation"));
         // Set the tooltip string:
@@ -83,6 +83,8 @@ class ActionAddOperation extends UndoableAction {
     }
 
     /**
+     * @deprecated in 0.25.3 by Bob Tarling.
+     * It is up to the user of the action to enable it when required
      * @return true if this tool should be enabled
      */
     public boolean shouldBeEnabled() {

@@ -40,6 +40,7 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.targetmanager.ActionAddOperation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -309,7 +310,10 @@ public abstract class FigClassifierBox extends FigCompartmentBox
 
     protected ArgoJMenu buildAddMenu() {
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
-        addMenu.add(TargetManager.getInstance().getAddOperationAction());
+        Action addOperation = new ActionAddOperation();
+        addOperation.setEnabled(
+        	TargetManager.getInstance().getTargets().size() == 1);
+        addMenu.insert(addOperation, 0);
         addMenu.add(new ActionAddNote());
         addMenu.add(ActionEdgesDisplay.getShowEdges());
         addMenu.add(ActionEdgesDisplay.getHideEdges());

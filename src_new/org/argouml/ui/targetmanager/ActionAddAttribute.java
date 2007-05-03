@@ -41,11 +41,11 @@ import org.tigris.gef.undo.UndoableAction;
  * This class shall be the only one that knows 
  * when this tool should be downlighted or not.
  */
-class ActionAddAttribute extends UndoableAction {
+public class ActionAddAttribute extends UndoableAction {
     /**
      * The constructor for this class.
      */
-    ActionAddAttribute() {
+    public ActionAddAttribute() {
         super(Translator.localize("button.new-attribute"),
                 ResourceLoaderWrapper.lookupIcon("button.new-attribute"));
         // Set the tooltip string:
@@ -82,6 +82,8 @@ class ActionAddAttribute extends UndoableAction {
     }
 
     /**
+     * @deprecated in 0.25.3 by Bob Tarling.
+     * It is up to the user of the action to enable it when required
      * @return true if this tool should be enabled
      */
     public boolean shouldBeEnabled() {
