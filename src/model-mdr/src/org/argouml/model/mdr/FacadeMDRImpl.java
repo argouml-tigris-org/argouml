@@ -1527,9 +1527,7 @@ class FacadeMDRImpl implements Facade {
     public Collection getElementImports(Object handle) {
         try {
             if (handle instanceof UmlPackage) {
-                return implementation.getUmlPackage().getModelManagement()
-                    .getAPackageElementImport().getElementImport(
-                        (UmlPackage) handle);
+                return ((UmlPackage) handle).getElementImport();
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
@@ -1757,8 +1755,8 @@ class FacadeMDRImpl implements Facade {
         Collection results = new ArrayList();
         try {
             /*
-             * This code manually processes the ElementImports of a Package,
-             * but we need to check whether MDR already does something
+             * TODO: This code manually processes the ElementImports of a
+             * Package, but we need to check whether MDR already does something
              * similar automatically as part of its namespace processing.
              * - tfm - 20060408
              */
