@@ -37,13 +37,15 @@ import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * Well-formedness rule [1] for Namespace. See page 33 of UML 1.1
- * Semantics. OMG document ad/97-08-04.
- * 
- * TODO: Investigate the purpose of this Critic.
- * MVW: I fixed an exception, but do not understand the purpose. 
- * If an Alias is the same as another class' name, then this critic fires,
- * but the explanation and wizard are wrong!
+ * Well-formedness rule for Package. Check that the alias for an imported
+ * element doesn't conflict with any existing name. Section 2.14.3.3 of UML 1.4
+ * spec.
+ * <p>
+ * Other types of name conflicts in a Namespace are checked by
+ * {@link CrNameConflict}.
+ * <p>
+ * TODO: MVW: If an Alias is the same as another class' name, then this critic
+ * fires, but the explanation and wizard are wrong!
  */
 public class CrDisambigClassName extends CrUML {
 
@@ -63,6 +65,7 @@ public class CrDisambigClassName extends CrUML {
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
+        // TODO: The WFR doesn't restrict this to Classifiers - tfm
 	if (!(Model.getFacade().isAClassifier(dm))) {
 	    return NO_PROBLEM;
 	}
@@ -79,6 +82,9 @@ public class CrDisambigClassName extends CrUML {
 	if (elementImports == null) {
 	    return NO_PROBLEM;
 	}
+        // TODO: This is only checking immediate siblings when it needs
+        // to be checking all imported elements both here and by our
+        // parents and also taking into account visibility
 	for (Iterator iter = elementImports.iterator(); iter.hasNext();) {
 	    Object imp = iter.next();
 	    Object pack = Model.getFacade().getPackage(imp);
@@ -94,6 +100,7 @@ public class CrDisambigClassName extends CrUML {
 	    while (elems.hasNext()) {
 		Object eo = elems.next();
 		Object me = /*Model.getFacade().getModelElement(*/eo/*)*/;
+                // TODO: The WFR doesn't restrict this to Classifiers - tfm
 		if (!(Model.getFacade().isAClassifier(me))) {
 		    continue;
 		}
