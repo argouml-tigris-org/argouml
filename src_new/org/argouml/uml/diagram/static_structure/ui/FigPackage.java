@@ -43,7 +43,6 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoDiagram;
@@ -602,7 +601,7 @@ public class FigPackage extends FigNodeModelElement
             f.damage();
         }
     }
-    
+
     class FigPackageFigText extends FigText {
         /**
 	 * The constructor.
