@@ -33,7 +33,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
-import org.argouml.ui.CmdSetMode;
+import org.argouml.ui.SetModeAction;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.RadioAction;
@@ -327,7 +327,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionDependency() {
         if (actionDependency == null) {
             actionDependency = new RadioAction(
-                    new CmdSetMode(
+                    new SetModeAction(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getDependency(),
@@ -341,7 +341,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionExtend() {
         if (actionExtend == null) {
             actionExtend = new RadioAction(
-                    new CmdSetMode(
+                    new SetModeAction(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getExtend(),
@@ -355,7 +355,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionGeneralize() {
         if (actionGeneralize == null) {
             actionGeneralize = new RadioAction(
-                    new CmdSetMode(
+                    new SetModeAction(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getGeneralization(),
@@ -369,7 +369,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionInclude() {
         if (actionInclude == null) {
             actionInclude = new RadioAction(
-                    new CmdSetMode(
+                    new SetModeAction(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getInclude(),

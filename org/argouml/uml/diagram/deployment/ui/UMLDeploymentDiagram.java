@@ -36,7 +36,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
-import org.argouml.ui.CmdSetMode;
+import org.argouml.ui.SetModeAction;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.RadioAction;
@@ -265,7 +265,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     protected Action getActionMAssociation() {
         if (actionMAssociation == null) {
             actionMAssociation =
-                new RadioAction(new CmdSetMode(
+                new RadioAction(new SetModeAction(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getAssociation(),
@@ -320,7 +320,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     protected Action getActionMDependency() {
         if (actionMDependency == null) {
             actionMDependency =
-                new RadioAction(new CmdSetMode(
+                new RadioAction(new SetModeAction(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getDependency(),
@@ -335,7 +335,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     protected Action getActionMGeneralization() {
         if (actionMGeneralization == null) {
             actionMGeneralization =
-                new RadioAction(new CmdSetMode(
+                new RadioAction(new SetModeAction(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getGeneralization(),
@@ -350,7 +350,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     protected Action getActionMAbstraction() {
         if (actionMAbstraction == null) {
             actionMAbstraction =
-                new RadioAction(new CmdSetMode(
+                new RadioAction(new SetModeAction(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getAbstraction(),
@@ -379,7 +379,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     protected Action getActionMLink() {
         if (actionMLink == null) {
             actionMLink =
-                new RadioAction(new CmdSetMode(
+                new RadioAction(new SetModeAction(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getLink(),

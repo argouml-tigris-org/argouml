@@ -31,7 +31,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.CmdSetMode;
+import org.argouml.ui.SetModeAction;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.RadioAction;
@@ -161,20 +161,20 @@ public class UMLSequenceDiagram extends UMLDiagram {
 			 ResourceLoaderWrapper
 			 .getImageBinding((String) actionList[i][1]));
 		actions[i + offset] =
-                    new RadioAction(new CmdSetMode(
+                    new RadioAction(new SetModeAction(
                         ModeCreateMessage.class, args,
                         (String) actionList[i][1]));
 	    }
             Hashtable args = new Hashtable();
             args.put("name", SEQUENCE_EXPAND_BUTTON);
             actions[5] =
-		new RadioAction(new CmdSetMode(ModeChangeHeight.class,
+		new RadioAction(new SetModeAction(ModeChangeHeight.class,
 					       args,
 					       SEQUENCE_EXPAND_BUTTON));
             args = new Hashtable();
             args.put("name", SEQUENCE_CONTRACT_BUTTON);
             actions[6] =
-		new RadioAction(new CmdSetMode(ModeChangeHeight.class,
+		new RadioAction(new SetModeAction(ModeChangeHeight.class,
 					       args,
 					       SEQUENCE_CONTRACT_BUTTON));
         }
