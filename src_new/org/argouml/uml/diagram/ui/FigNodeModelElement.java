@@ -597,7 +597,8 @@ public abstract class FigNodeModelElement
                     // The node's been placed within some Fig
                     namespace = newEncloser.getOwner();
                     if (Model.getFacade().isANamespace(namespace)) {
-                        umlDiagram.setModelElementNamespace(getOwner(), namespace);
+                        umlDiagram.setModelElementNamespace(
+                                getOwner(), namespace);
                     }
                 }
             }
@@ -1087,11 +1088,11 @@ public abstract class FigNodeModelElement
         if (owner == null) {
             return;
         }
-            if (mee instanceof AssociationChangeEvent 
-                    || mee instanceof AttributeChangeEvent) {
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
             if (notationProviderName != null) {
                 notationProviderName.updateListener(this, getOwner(), mee);
-            updateNameText();
+                updateNameText();
             }
             updateListeners(getOwner(), getOwner());
             damage();
