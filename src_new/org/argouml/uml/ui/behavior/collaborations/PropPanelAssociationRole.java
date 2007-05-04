@@ -58,7 +58,7 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.namespace"),
-		 getNamespaceScroll());
+                getNamespaceSelector());
 
         JComboBox baseComboBox =
 	    new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(),

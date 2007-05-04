@@ -55,7 +55,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
     	addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.namespace"),
-		 getNamespaceScroll());
+                getNamespaceSelector());
 
         JList contextList =
 	    new UMLLinkedList(new UMLInteractionContextListModel());
