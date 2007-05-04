@@ -29,7 +29,7 @@ import javax.swing.Icon;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.ui.CmdSetMode;
+import org.argouml.ui.SetModeAction;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 
@@ -42,7 +42,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  *
  * @author Bob Tarling
  */
-public class ActionAddAssociationRole extends CmdSetMode {
+public class ActionAddAssociationRole extends SetModeAction {
 
     /**
      * Serial versoin generated for rev 1.14
@@ -64,8 +64,8 @@ public class ActionAddAssociationRole extends CmdSetMode {
               "edgeClass",
               Model.getMetaTypes().getAssociationRole(),
               name);
-        _modeArgs.put("aggregation", aggregationKind);
-        _modeArgs.put("unidirectional", Boolean.valueOf(unidirectional));
+        modeArgs.put("aggregation", aggregationKind);
+        modeArgs.put("unidirectional", Boolean.valueOf(unidirectional));
     }
 
     /**
@@ -85,8 +85,8 @@ public class ActionAddAssociationRole extends CmdSetMode {
                 "edgeClass",
                 Model.getMetaTypes().getAssociationRole(),
                 name);
-        _modeArgs.put("aggregation", aggregationKind);
-        _modeArgs.put("unidirectional", Boolean.valueOf(unidirectional));
+        modeArgs.put("aggregation", aggregationKind);
+        modeArgs.put("unidirectional", Boolean.valueOf(unidirectional));
         Icon icon = ResourceLoaderWrapper.lookupIconResource(iconName, 
                 iconName);
         if (icon != null) {

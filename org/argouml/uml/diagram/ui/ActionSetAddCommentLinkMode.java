@@ -30,16 +30,16 @@
 package org.argouml.uml.diagram.ui;
 
 
-import org.argouml.ui.CmdSetMode;
+import org.argouml.ui.SetModeAction;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 /**
- * An extension of CmdSetMode to set the parameters for a comment link.
+ * An extension of SetModeAction to set the parameters for a comment link.
  *
  * @author Bob Tarling
  */
 
-public class ActionSetAddCommentLinkMode extends CmdSetMode {
+public class ActionSetAddCommentLinkMode extends SetModeAction {
 
     /**
      * Construct a new ActionSetAddCommentLinkMode.<p>

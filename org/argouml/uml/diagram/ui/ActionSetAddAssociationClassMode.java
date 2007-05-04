@@ -31,15 +31,15 @@ package org.argouml.uml.diagram.ui;
 
 
 import org.argouml.model.Model;
-import org.argouml.ui.CmdSetMode;
+import org.argouml.ui.SetModeAction;
 
 /**
- * An extension of CmdSetMode to set the parameters for an association.
+ * An extension of SetModeAction to set the parameters for an association.
  *
  * @author Bob Tarling
  */
 
-public class ActionSetAddAssociationClassMode extends CmdSetMode {
+public class ActionSetAddAssociationClassMode extends SetModeAction {
 
     private static final long serialVersionUID = -884044085661992872L;
 
