@@ -485,10 +485,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + icon);
     }
 
-
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#setTag(java.lang.Object, java.lang.Object)
-     */
+    
+    @SuppressWarnings("deprecation")
     public void setTag(Object handle, Object tag) {
         if (handle instanceof TaggedValue) {
             TaggedValue tv = (TaggedValue) handle;

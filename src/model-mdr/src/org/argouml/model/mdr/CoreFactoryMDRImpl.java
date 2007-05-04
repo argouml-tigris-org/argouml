@@ -856,10 +856,7 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object, 
-     *      java.lang.Object, java.lang.Object)
-     */
+    @SuppressWarnings("deprecation")
     public Object buildAttribute(Object handle, Object model, Object type) {
         Attribute attr = (Attribute) buildAttribute(model, type);
         if (handle instanceof Classifier) {
@@ -875,9 +872,6 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildAttribute2(java.lang.Object, java.lang.Object)
-     */
     public Object buildAttribute2(Object handle, Object type) {
         Attribute attr = (Attribute) buildAttribute2(type);
         if (handle instanceof Classifier) {
@@ -1156,18 +1150,14 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return method;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildOperation(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
+
+    @SuppressWarnings("deprecation")
     public Object buildOperation(Object classifier, Object model,
             Object returnType) {
         return buildOperation(classifier, returnType);
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildOperation(java.lang.Object, java.lang.Object)
-     */
+
     public Object buildOperation(Object classifier, Object returnType) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException("Handle is not a classifier");
@@ -1191,18 +1181,14 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return oper;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildOperation(java.lang.Object,
-     *      java.lang.Object, java.lang.Object, java.lang.String)
-     */
+
+    @SuppressWarnings("deprecation")
     public Object buildOperation(Object cls, Object model, Object returnType,
             String name) {
         return buildOperation2(cls, returnType, name);
     }
     
-    /*
-     * @see org.argouml.model.CoreFactory#buildOperation2(java.lang.Object, java.lang.Object, java.lang.String)
-     */
+
     public Object buildOperation2(Object cls, Object returnType, String name) {
         Object oper = buildOperation(cls, returnType);
         if (oper != null) {
@@ -1222,10 +1208,8 @@ public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return param;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildParameter(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
+
+    @SuppressWarnings("deprecation")
     public Object buildParameter(Object o, Object model, Object type) {
         return buildParameter(o, type);
     }

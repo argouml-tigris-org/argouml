@@ -431,6 +431,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public Collection getSpecifications(Object classifier) {
         try {
             return getRealizedInterfaces(classifier);
@@ -942,6 +943,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
+    @SuppressWarnings("deprecation")
     public Collection getAllContents(Object clazz) {
         if (clazz == null) {
             return new ArrayList();
@@ -2270,6 +2272,7 @@ public class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
+    @SuppressWarnings("deprecation")
     public void addTaggedValue(Object handle, Object taggedValue) {
         modelImpl.getExtensionMechanismsHelper().addTaggedValue(handle,
                 taggedValue);

@@ -2640,9 +2640,11 @@ class FacadeMDRImpl implements Facade {
     }
     
 
+    @SuppressWarnings("deprecation")
     public Object getOppositeEnd(Object handle) {
         return getNextEnd(handle);
     }
+    
 
     public Object getNextEnd(Object handle) {
         try {

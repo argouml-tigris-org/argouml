@@ -305,7 +305,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Object unidirectional, Object namespace)
         throws IllegalModelElementConnectionException {
 
-        if (!isConnectionValid(elementType, fromElement, toElement)) {
+        if (!isConnectionValid(elementType, fromElement, toElement, true)) {
             throw new IllegalModelElementConnectionException("Cannot make a "
                     + elementType.getClass().getName() + " between a "
                     + fromElement.getClass().getName() + " and a "
@@ -461,25 +461,20 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 + elementType);
     }
 
-    /*
-     * @see org.argouml.model.UmlFactory#isConnectionType(java.lang.Object)
-     */
+
     public boolean isConnectionType(Object connectionType) {
         // If our map has any entries for this type, it's a connection type
         return (validConnectionMap.get(connectionType) != null);
     }
 
-    /*
-     * @see org.argouml.model.UmlFactory#isConnectionValid(java.lang.Object, java.lang.Object, java.lang.Object)
-     */
+
+    @SuppressWarnings("deprecation")
     public boolean isConnectionValid(Object connectionType, Object fromElement,
             Object toElement) {
         return isConnectionValid(connectionType, fromElement, toElement, true);
     }
     
-    /*
-     * @see org.argouml.model.UmlFactory#isConnectionValid(java.lang.Object, java.lang.Object, java.lang.Object, boolean)
-     */
+
     public boolean isConnectionValid(Object connectionType, Object fromElement,
             Object toElement, boolean checkWFR) {
         // Get the list of valid model item pairs for the given connection type

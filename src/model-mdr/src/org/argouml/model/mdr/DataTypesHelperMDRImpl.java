@@ -30,8 +30,6 @@ import javax.jmi.reflect.InvalidObjectException;
 
 import org.argouml.model.DataTypesHelper;
 import org.argouml.model.InvalidElementException;
-import org.omg.uml.foundation.core.ModelElement;
-import org.omg.uml.foundation.core.TaggedValue;
 import org.omg.uml.foundation.datatypes.Expression;
 import org.omg.uml.foundation.datatypes.Multiplicity;
 import org.omg.uml.foundation.datatypes.MultiplicityRange;
@@ -57,17 +55,13 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         modelImpl = implementation;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#copyTaggedValues(
-     *      java.lang.Object, java.lang.Object)
-     */
+    
+    @SuppressWarnings("deprecation")
     public void copyTaggedValues(Object from, Object to) {
         modelImpl.getExtensionMechanismsFactory().copyTaggedValues(from, to);
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#equalsINITIALKind(java.lang.Object)
-     */
+    
     public boolean equalsINITIALKind(Object kind) {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
@@ -79,9 +73,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#equalsDeepHistoryKind(java.lang.Object)
-     */
+
     public boolean equalsDeepHistoryKind(Object kind) {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
@@ -93,9 +85,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#equalsShallowHistoryKind(java.lang.Object)
-     */
+
     public boolean equalsShallowHistoryKind(Object kind) {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
@@ -107,9 +97,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#equalsFORKKind(java.lang.Object)
-     */
+
     public boolean equalsFORKKind(Object kind) {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
@@ -121,9 +109,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#equalsJOINKind(java.lang.Object)
-     */
+
     public boolean equalsJOINKind(Object kind) {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
@@ -135,9 +121,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#equalsCHOICEKind(java.lang.Object)
-     */
+
     public boolean equalsCHOICEKind(Object kind) {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
@@ -149,9 +133,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#equalsJUNCTIONKind(java.lang.Object)
-     */
+
     public boolean equalsJUNCTIONKind(Object kind) {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();
@@ -163,9 +145,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#multiplicityToString(java.lang.Object)
-     */
+
     public String multiplicityToString(Object multiplicity) {
         if (!(multiplicity instanceof Multiplicity)) {
             throw new IllegalArgumentException("Unrecognized object: "
@@ -204,10 +184,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#setBody(java.lang.Object,
-     *      java.lang.String)
-     */
+
     public Object setBody(Object handle, String body) {
         if (handle instanceof Expression) {
             ((Expression) handle).setBody(body);
@@ -217,9 +194,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
                 + body);
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#getBody(java.lang.Object)
-     */
+
     public String getBody(Object handle) {
         try {
             if (handle instanceof Expression) {
@@ -231,10 +206,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#setLanguage(java.lang.Object,
-     *      java.lang.String)
-     */
+
     public Object setLanguage(Object handle, String language) {
         if (handle instanceof Expression) {
             ((Expression) handle).setLanguage(language);
@@ -244,9 +216,7 @@ public class DataTypesHelperMDRImpl implements DataTypesHelper {
                 + language);
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#getLanguage(java.lang.Object)
-     */
+
     public String getLanguage(Object handle) {
         try {
             if (handle instanceof Expression) {
