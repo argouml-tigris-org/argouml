@@ -41,6 +41,7 @@ import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLAddDialog;
+import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.ActionAddDataType;
@@ -160,6 +161,8 @@ public class PropPanelPackage extends PropPanelNamespace  {
                     new UMLGeneralizableElementLeafCheckBox());
             modifiersPanel.add(
                     new UMLGeneralizableElementRootCheckBox());
+            modifiersPanel.add(
+                    new UMLDerivedCheckBox());
         }
         return modifiersPanel;
     }

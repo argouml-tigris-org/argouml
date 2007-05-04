@@ -38,6 +38,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
@@ -95,10 +96,6 @@ public abstract class PropPanelModelElement extends PropPanel {
     private static UMLModelElementSourceFlowListModel sourceFlowListModel =
 	new UMLModelElementSourceFlowListModel();
 
-    // private static UMLModelElementSupplierDependencyListModel
-    //    supplierDependencyListModel =
-    //        new UMLModelElementSupplierDependencyListModel();
-
     private static UMLModelElementTargetFlowListModel targetFlowListModel =
 	new UMLModelElementTargetFlowListModel();
 
@@ -151,6 +148,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         addField(Translator.localize("label.constraints"),
                 getConstraintScroll());
         add(getNamespaceVisibilityPanel());
+        
+        addField(Translator.localize("label.derived"),
+                new UMLDerivedCheckBox());
 
     }
 
@@ -180,7 +180,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     }
 
     /**
-     * Returns the namespace selecter. This is a component which allows the
+     * Returns the namespace selector. This is a component which allows the
      * user to select a single item as the namespace.
      *
      * @return a component for selecting the namespace
