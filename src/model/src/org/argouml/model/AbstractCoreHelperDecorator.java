@@ -118,6 +118,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         return impl.getSpecification(object);
     }
 
+    @SuppressWarnings("deprecation")
     public Collection getSpecifications(Object classifier) {
         return impl.getSpecifications(classifier);
     }
@@ -202,6 +203,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         return impl.getAssociationEnd(type, assoc);
     }
 
+    @SuppressWarnings("deprecation")
     public Collection getAllContents(Object clazz) {
         return impl.getAllContents(clazz);
     }
@@ -400,6 +402,8 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.addSupplierDependency(supplier, dependency);
     }
 
+    
+    @SuppressWarnings("deprecation")
     public void addTaggedValue(Object handle, Object taggedValue) {
         impl.addTaggedValue(handle, taggedValue);
     }
@@ -525,10 +529,12 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.setSpecifications(handle, specifications);
     }
 
+    @SuppressWarnings("deprecation")
     public void setTaggedValue(Object handle, String tag, String value) {
         impl.setTaggedValue(handle, tag, value);
     }
 
+    @SuppressWarnings("deprecation")
     public void setTaggedValues(Object handle, Collection taggedValues) {
         impl.setTaggedValues(handle, taggedValues);
     }

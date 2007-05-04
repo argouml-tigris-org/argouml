@@ -117,6 +117,7 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         impl.setIcon(handle, icon);
     }
 
+    @SuppressWarnings("deprecation")
     public void setTag(Object handle, Object tag) {
         impl.setTag(handle, tag);
     }
