@@ -39,6 +39,8 @@ import org.argouml.i18n.Translator;
  * @author Jeremy Jones
  * @deprecated for 0.25.3 by tfmorris - use {@link ActionSetMode}
  */
+
+@SuppressWarnings("deprecation")
 public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     /**
