@@ -68,6 +68,12 @@ public interface Facade {
      * be updated to use a UML 1.4 TagDefinition instead of a simple String.
      */
     String GENERATED_TAG = "GeneratedFromImport"; //$NON-NLS-1$
+    
+    /**
+     * Tag which indicates a ModelElement is derived. From UML Standard Elements
+     * profile.
+     */
+    String DERIVED_TAG = "derived"; //$NON-NLS-1$
 
     ////////////////////////////////////////////////////////////////
     /**
