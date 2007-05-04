@@ -31,16 +31,16 @@ package org.argouml.uml.diagram.ui;
 
 
 import org.argouml.model.Model;
-import org.argouml.ui.CmdSetMode;
+import org.argouml.ui.SetModeAction;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /**
- * An extension of CmdSetMode to set the parameters for an association.
+ * An extension of SetModeAction to set the parameters for an association.
  *
  * @author Bob Tarling
  */
 
-public class ActionSetAddAssociationMode extends CmdSetMode {
+public class ActionSetAddAssociationMode extends SetModeAction {
 
     /**
      * Serial version generated for rev. 1.2
@@ -60,8 +60,8 @@ public class ActionSetAddAssociationMode extends CmdSetMode {
             String name) {
         super(ModeCreatePolyEdge.class, "edgeClass",
 	      Model.getMetaTypes().getAssociation(), name);
-        _modeArgs.put("aggregation", aggregationKind);
-        _modeArgs.put("unidirectional", Boolean.valueOf(unidirectional));
+        modeArgs.put("aggregation", aggregationKind);
+        modeArgs.put("unidirectional", Boolean.valueOf(unidirectional));
     }
 }
 

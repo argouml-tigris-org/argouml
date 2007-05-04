@@ -31,16 +31,16 @@ package org.argouml.uml.diagram.ui;
 
 
 import org.argouml.model.Model;
-import org.argouml.ui.CmdSetMode;
+import org.argouml.ui.SetModeAction;
 
 /**
- * An extension of CmdSetMode to create all the parts of an association
+ * An extension of SetModeAction to create all the parts of an association
  * class.
  *
  * @author Bob Tarling
  */
 
-public class ActionSetAddAssociationEndMode extends CmdSetMode {
+public class ActionSetAddAssociationEndMode extends SetModeAction {
 
     private static final long serialVersionUID = 2908695768709766241L;
 
