@@ -210,7 +210,7 @@ class InitMenusLater implements Runnable {
                 ShortcutMgr.ACTION_REORDER_TO_FRONT);
 
         JMenuItem reorderSendToBack = reorder.add(new ReorderAction(
-                Translator.localize("action.send-to.back"),
+                Translator.localize("action.send-to-back"),
                 ReorderAction.SEND_TO_BACK));
         GenericArgoMenuBar.setMnemonic(reorderSendToBack,
                 "reorder send to back");
