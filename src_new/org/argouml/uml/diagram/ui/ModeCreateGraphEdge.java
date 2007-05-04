@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -238,7 +238,7 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
     protected abstract Object getMetaType();
     
     /**
-     * Called after the adge has been drawn from a source and dropped to a
+     * Called after the edge has been drawn from a source and dropped to a
      * destination. Return true if this drop is valid.
      * The default is true, subclasses should override this with their own
      * logic.
@@ -250,6 +250,7 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
 	return Model.getUmlFactory().isConnectionValid(
 		getMetaType(), 
 		source.getOwner(), 
-		dest.getOwner());
+		dest.getOwner(),
+                true);
     }
 }
