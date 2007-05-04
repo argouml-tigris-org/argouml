@@ -347,8 +347,15 @@ public class ShortcutMgr {
                 new Action[shortcutHash.size()]);
         Arrays.sort(actions, new Comparator() {
             public int compare(Object o1, Object o2) {
-                return ((Action) o1).getActionName().compareTo(((Action) o2)
-                                                            .getActionName());
+                String name1 = ((Action) o1).getActionName();
+                if (name1 == null) {
+                    name1 = "";
+                }
+                String name2 = ((Action) o2).getActionName();
+                if (name2 == null) {
+                    name2 = "";
+                }
+                return name1.compareTo(name2);
             }
         });
         return actions;
