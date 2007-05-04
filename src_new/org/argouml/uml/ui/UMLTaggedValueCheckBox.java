@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
 /**
@@ -38,7 +39,9 @@ public class UMLTaggedValueCheckBox extends UMLCheckBox2 {
     private String tagName;
     
     public UMLTaggedValueCheckBox(String name) {
-        super(null, new ActionBooleanTaggedValue(name), name);
+        super(Translator.localize("checkbox." + name + "-lc"), 
+                new ActionBooleanTaggedValue(name), 
+                name);
         tagName = name;
     }
 
