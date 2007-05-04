@@ -61,8 +61,8 @@ public class CrInvalidJoinTriggerOrGuard extends CrUML {
             return NO_PROBLEM;
         }
 
-		// WFR Transitions, OMG UML 1.3
-        Object k = Model.getFacade().getPseudostateKind(dv);
+        // WFR Transitions, OMG UML 1.3
+        Object k = Model.getFacade().getKind(dv);
         if (!Model.getFacade().
                 equalsPseudostateKind(k,
                         Model.getPseudostateKind().getJoin())) {
@@ -92,4 +92,4 @@ public class CrInvalidJoinTriggerOrGuard extends CrUML {
      * The UID.
      */
     private static final long serialVersionUID = 1052354516940735748L;
-} /* end class CrInvalidJoinTriggerOrGuard */
+}

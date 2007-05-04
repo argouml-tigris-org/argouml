@@ -54,14 +54,12 @@ public class CrJoinIncomingTransition extends CrUML {
         Object target = Model.getFacade().getTarget(tr);
         Object source = Model.getFacade().getSource(tr);
         if (!(Model.getFacade().isAPseudostate(target))) return NO_PROBLEM;
-        if (!Model
-                .getFacade()
-                .equalsPseudostateKind(Model.getFacade()
-                .getPseudostateKind(target),
-                        Model.getPseudostateKind().getJoin()))
+        if (!Model.getFacade().equalsPseudostateKind(
+                Model.getFacade().getKind(target),
+                Model.getPseudostateKind().getJoin()))
             return NO_PROBLEM;
         if (Model.getFacade().isAState(source)) return NO_PROBLEM;
         return PROBLEM_FOUND;
     }
 
-} /* end class CrJoinIncomingTransition */
+}

@@ -59,19 +59,15 @@ public class CrInvalidBranch extends CrUML {
 	addTrigger("incoming");
     }
 
-    /**
-     * This is the decision routine for the critic.
-     *
-     * @param dm is the UML entity that is being checked.
-     * @param dsgr is for future development and can be ignored.
-     *
-     * @return boolean problem found
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAPseudostate(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object k = Model.getFacade().getPseudostateKind(dm);
+	Object k = Model.getFacade().getKind(dm);
 	if ((!Model.getFacade().equalsPseudostateKind(k,
 	        Model.getPseudostateKind().getChoice()))
             && (!Model.getFacade().equalsPseudostateKind(k,
@@ -91,5 +87,5 @@ public class CrInvalidBranch extends CrUML {
 	return NO_PROBLEM;
     }
 
-} /* end class CrInvalidBranch */
+}
 

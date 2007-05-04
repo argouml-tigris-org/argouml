@@ -63,7 +63,7 @@ public class CrNoGuard extends CrUML {
 	}
         /* the source of the transition is a pseudostate */
 	if (!Model.getFacade().equalsPseudostateKind(
-	        Model.getFacade().getPseudostateKind(sourceVertex),
+	        Model.getFacade().getKind(sourceVertex),
 	        Model.getPseudostateKind().getChoice())) {
 	    return NO_PROBLEM;
 	}
@@ -83,4 +83,4 @@ public class CrNoGuard extends CrUML {
 	return NO_PROBLEM;
     }
 
-} /* end class CrNoGuard */
+}

@@ -52,7 +52,7 @@ public class CrInvalidHistory extends CrUML {
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isAPseudostate(dm))) return NO_PROBLEM;
-        Object k = Model.getFacade().getPseudostateKind(dm);
+        Object k = Model.getFacade().getKind(dm);
         if (!Model.getFacade().equalsPseudostateKind(k,
                         Model.getPseudostateKind().getDeepHistory())
                 && !Model.getFacade().equalsPseudostateKind(k,
@@ -64,5 +64,5 @@ public class CrInvalidHistory extends CrUML {
         return NO_PROBLEM;
     }
 
-} /* end class CrInvalidHistory */
+}
 

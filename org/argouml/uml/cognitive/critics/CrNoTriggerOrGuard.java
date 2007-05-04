@@ -70,7 +70,7 @@ public class CrNoTriggerOrGuard extends CrUML {
 	
 	
 	//	 WFR Transitions, OMG UML 1.3
-	Object k = Model.getFacade().getPseudostateKind(target);
+	Object k = Model.getFacade().getKind(target);
 	if (Model.getFacade().
             equalsPseudostateKind(k,
                     Model.getPseudostateKind().getJoin())) {
@@ -107,4 +107,4 @@ public class CrNoTriggerOrGuard extends CrUML {
      * The UID.
      */
     private static final long serialVersionUID = -301548543890007262L;
-} /* end class CrNoTriggerOrGuard */
+}

@@ -66,7 +66,7 @@ public class CrNoIncomingTransitions extends CrUML {
 	    }
 	}
 	if (Model.getFacade().isAPseudostate(sv)) {
-            Object k = Model.getFacade().getPseudostateKind(sv);
+            Object k = Model.getFacade().getKind(sv);
             if (k.equals(Model.getPseudostateKind().getChoice())) {
                 return NO_PROBLEM;
             }
@@ -90,4 +90,4 @@ public class CrNoIncomingTransitions extends CrUML {
 	return NO_PROBLEM;
     }
 
-} /* end class CrNoIncomingTransitions */
+}

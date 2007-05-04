@@ -57,7 +57,7 @@ public class CrInvalidInitial extends CrUML {
 	if (!(Model.getFacade().isAPseudostate(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object k = Model.getFacade().getPseudostateKind(dm);
+	Object k = Model.getFacade().getKind(dm);
 	if (!Model.getFacade().equalsPseudostateKind(
 	        k,
 	        Model.getPseudostateKind().getInitial())) {
@@ -71,5 +71,5 @@ public class CrInvalidInitial extends CrUML {
 	return NO_PROBLEM;
     }
 
-} /* end class CrInvalidInitial */
+}
 
