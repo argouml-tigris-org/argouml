@@ -24,20 +24,20 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.application.api.Argo;
+import org.argouml.model.Facade;
 
 /**
- * Class to represent a checkbox for the deprecated checkbox in the
- * documentation tab.
- * @author mkl
+ * Class to represent a checkbox for the derived tagged value.
+ *
+ * @author tfmorris
  */
-public class UMLDeprecatedCheckBox extends UMLTaggedValueCheckBox {
-
+public class UMLDerivedCheckBox extends UMLTaggedValueCheckBox {
+    
     /**
      * The constructor.
      *
      */
-    public UMLDeprecatedCheckBox() {
-        super(Argo.DEPRECATED_TAG);
+    public UMLDerivedCheckBox() {
+        super(Facade.DERIVED_TAG);
     }
 }

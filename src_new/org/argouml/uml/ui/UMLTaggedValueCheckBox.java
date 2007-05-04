@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,20 +24,39 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.application.api.Argo;
+import org.argouml.model.Model;
 
 /**
- * Class to represent a checkbox for the deprecated checkbox in the
- * documentation tab.
- * @author mkl
+ * Checkbox who's state is tied to a boolean tagged value of a specific
+ * name on the current target ModelElement.  Currently the value is constrained
+ * to be a string with the value "true" or "false".
+ * 
+ * @author tfmorris
  */
-public class UMLDeprecatedCheckBox extends UMLTaggedValueCheckBox {
+public class UMLTaggedValueCheckBox extends UMLCheckBox2 {
+
+    private String tagName;
+    
+    public UMLTaggedValueCheckBox(String name) {
+        super(null, new ActionBooleanTaggedValue(name), name);
+        tagName = name;
+    }
 
     /**
-     * The constructor.
-     *
+     * Set the checkbox according to the tagged values of the target.
+     * 
+     * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
-    public UMLDeprecatedCheckBox() {
-        super(Argo.DEPRECATED_TAG);
+    public void buildModel() {
+        Object tv = Model.getFacade().getTaggedValue(getTarget(), tagName);
+        if (tv != null) {
+            String tag = Model.getFacade().getValueOfTag(tv);
+            if ("true".equals(tag)) {
+                setSelected(true);
+                return;
+            }
+        }
+        setSelected(false);
     }
+
 }

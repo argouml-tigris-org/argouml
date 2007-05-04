@@ -33,7 +33,7 @@ import org.argouml.model.Model;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
- * An action which can be used to create arbritary tagged values which hold
+ * An action which can be used to create arbitrary tagged values which hold
  * boolean data. It is designed (and implicitly) relies on a UMLCheckBox2.
  *
  * @see UMLCheckBox2
@@ -82,7 +82,8 @@ public class ActionBooleanTaggedValue extends UndoableAction {
         Object taggedValue = Model.getFacade().getTaggedValue(obj, tagName);
         if (taggedValue == null) {
             taggedValue =
-                Model.getExtensionMechanismsFactory().buildTaggedValue(tagName, "");
+                    Model.getExtensionMechanismsFactory().buildTaggedValue(
+                            tagName, "");
             // TODO: Rework to use UML 1.4 TagDefinitions - tfm
             Model.getExtensionMechanismsHelper().addTaggedValue(
                     obj, taggedValue);
