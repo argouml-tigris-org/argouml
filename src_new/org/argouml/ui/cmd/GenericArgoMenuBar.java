@@ -71,10 +71,10 @@ import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
-import org.tigris.gef.base.CmdAdjustPageBreaks;
-import org.tigris.gef.base.CmdSelectAll;
-import org.tigris.gef.base.CmdSelectInvert;
-import org.tigris.gef.base.CmdZoom;
+import org.tigris.gef.base.AdjustPageBreaksAction;
+import org.tigris.gef.base.SelectAllAction;
+import org.tigris.gef.base.SelectInvertAction;
+import org.tigris.gef.base.ZoomAction;
 import org.tigris.toolbar.ToolBar;
 
 /**
@@ -401,7 +401,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(select, "Select");
         edit.add(select);
 
-        JMenuItem selectAllItem = select.add(new CmdSelectAll());
+        JMenuItem selectAllItem = select.add(new SelectAllAction());
         setMnemonic(selectAllItem, "Select All");
         ShortcutMgr.assignAccelerator(selectAllItem,
                 ShortcutMgr.ACTION_SELECT_ALL);
@@ -416,7 +416,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
                 ShortcutMgr.ACTION_NAVIGATE_FORWARD);
         select.addSeparator();
 
-        JMenuItem selectInvert = select.add(new CmdSelectInvert());
+        JMenuItem selectInvert = select.add(new SelectInvertAction());
         setMnemonic(selectInvert, "Invert Selection");
         ShortcutMgr.assignAccelerator(selectInvert,
                 ShortcutMgr.ACTION_SELECT_INVERT);
@@ -484,17 +484,17 @@ public class GenericArgoMenuBar extends JMenuBar implements
         JMenu zoom = (JMenu) view.add(new JMenu(menuLocalize("Zoom")));
         setMnemonic(zoom, "Zoom");
 
-        CmdZoom cmdZoomOut = new CmdZoom(ZOOM_FACTOR);
-        JMenuItem zoomOut = zoom.add(cmdZoomOut);
+        ZoomAction zoomOutAction = new ZoomAction(ZOOM_FACTOR);
+        JMenuItem zoomOut = zoom.add(zoomOutAction);
         setMnemonic(zoomOut, "Zoom Out");
         ShortcutMgr.assignAccelerator(zoomOut, ShortcutMgr.ACTION_ZOOM_OUT);
 
-        JMenuItem zoomReset = zoom.add(new CmdZoom(0.0));
+        JMenuItem zoomReset = zoom.add(new ZoomAction(0.0));
         setMnemonic(zoomReset, "Zoom Reset");
         ShortcutMgr.assignAccelerator(zoomReset, ShortcutMgr.ACTION_ZOOM_RESET);
 
-        CmdZoom cmdZoomIn = new CmdZoom((1.0) / (ZOOM_FACTOR));
-        JMenuItem zoomIn = zoom.add(cmdZoomIn);
+        ZoomAction zoomInAction = new ZoomAction((1.0) / (ZOOM_FACTOR));
+        JMenuItem zoomIn = zoom.add(zoomInAction);
         setMnemonic(zoomIn, "Zoom In");
         ShortcutMgr.assignAccelerator(zoomIn, ShortcutMgr.ACTION_ZOOM_IN);
 
@@ -532,7 +532,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
                     ShortcutMgr.ACTION_ADJUST_GUIDE + cmdAS.getValue("ID"));
         }
 
-        JMenuItem adjustPageBreaks = view.add(new CmdAdjustPageBreaks());
+        JMenuItem adjustPageBreaks = view.add(new AdjustPageBreaksAction());
         setMnemonic(adjustPageBreaks, "Adjust Pagebreaks");
         ShortcutMgr.assignAccelerator(adjustPageBreaks,
                 ShortcutMgr.ACTION_ADJUST_PAGE_BREAKS);

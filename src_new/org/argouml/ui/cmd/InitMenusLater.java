@@ -27,8 +27,9 @@ package org.argouml.ui.cmd;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import org.argouml.i18n.Translator;
 import org.tigris.gef.base.AlignAction;
-import org.tigris.gef.base.CmdReorder;
+import org.tigris.gef.base.ReorderAction;
 import org.tigris.gef.base.DistributeAction;
 
 /**
@@ -184,29 +185,33 @@ class InitMenusLater implements Runnable {
      *            the main Reorder menu
      */
     private static void initReorderMenu(JMenu reorder) {
-        JMenuItem reorderBringForward = reorder.add(new CmdReorder(
-                CmdReorder.BRING_FORWARD));
+        JMenuItem reorderBringForward = reorder.add(new ReorderAction(
+                Translator.localize("action.bring-forward"),
+                ReorderAction.BRING_FORWARD));
         GenericArgoMenuBar.setMnemonic(reorderBringForward,
                 "reorder bring forward");
         ShortcutMgr.assignAccelerator(reorderBringForward,
                 ShortcutMgr.ACTION_REORDER_FORWARD);
 
-        JMenuItem reorderSendBackward = reorder.add(new CmdReorder(
-                CmdReorder.SEND_BACKWARD));
+        JMenuItem reorderSendBackward = reorder.add(new ReorderAction(
+                Translator.localize("action.send-backward"),
+                ReorderAction.SEND_BACKWARD));
         GenericArgoMenuBar.setMnemonic(reorderSendBackward,
                 "reorder send backward");
         ShortcutMgr.assignAccelerator(reorderSendBackward,
                 ShortcutMgr.ACTION_REORDER_BACKWARD);
 
-        JMenuItem reorderBringToFront = reorder.add(new CmdReorder(
-                CmdReorder.BRING_TO_FRONT));
+        JMenuItem reorderBringToFront = reorder.add(new ReorderAction(
+                Translator.localize("action.bring-to-front"),
+                ReorderAction.BRING_TO_FRONT));
         GenericArgoMenuBar.setMnemonic(reorderBringToFront,
                 "reorder bring to front");
         ShortcutMgr.assignAccelerator(reorderBringToFront,
                 ShortcutMgr.ACTION_REORDER_TO_FRONT);
 
-        JMenuItem reorderSendToBack = reorder.add(new CmdReorder(
-                CmdReorder.SEND_TO_BACK));
+        JMenuItem reorderSendToBack = reorder.add(new ReorderAction(
+                Translator.localize("action.send-to.back"),
+                ReorderAction.SEND_TO_BACK));
         GenericArgoMenuBar.setMnemonic(reorderSendToBack,
                 "reorder send to back");
         ShortcutMgr.assignAccelerator(reorderSendToBack,

@@ -25,17 +25,15 @@
 package org.argouml.ui.cmd;
 
 import org.argouml.kernel.ProjectManager;
-import org.tigris.gef.base.CmdPrint;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.PrintAction;
 
-////////////////////////////////////////////////////////////////
-//file menu actions
 /**
  * print the current active diagram.
  */
 public class PrintManager {
 
-    private final CmdPrint printCmd = new CmdPrint();
+    private final PrintAction printCmd = new PrintAction();
 
     private static final PrintManager INSTANCE = new PrintManager();
 
@@ -50,6 +48,7 @@ public class PrintManager {
      * The constructor.
      */
     private PrintManager() {
+        // instantiation not allowed
     }
 
     /**
@@ -59,14 +58,12 @@ public class PrintManager {
         Object target = ProjectManager.getManager().getCurrentProject()
                 .getActiveDiagram();
         if (target instanceof Diagram) {
-            String n = ((Diagram) target).getName();
-            printCmd.setDiagramName(n);
-            printCmd.doIt();
+            printCmd.actionPerformed(null);
         }
     }
 
-    /*
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    /**
+     * Show the page setup dialog.
      */
     public void showPageSetupDialog() {
         printCmd.doPageSetup();

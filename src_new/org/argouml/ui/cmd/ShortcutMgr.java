@@ -69,13 +69,13 @@ import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.argouml.util.KeyEventUtils;
+import org.tigris.gef.base.AdjustPageBreaksAction;
 import org.tigris.gef.base.AlignAction;
-import org.tigris.gef.base.CmdAdjustPageBreaks;
-import org.tigris.gef.base.CmdReorder;
-import org.tigris.gef.base.CmdSelectAll;
-import org.tigris.gef.base.CmdSelectInvert;
-import org.tigris.gef.base.CmdZoom;
 import org.tigris.gef.base.DistributeAction;
+import org.tigris.gef.base.ReorderAction;
+import org.tigris.gef.base.SelectAllAction;
+import org.tigris.gef.base.SelectInvertAction;
+import org.tigris.gef.base.ZoomAction;
 
 /**
  * This class manages all Argo's shortcuts
@@ -597,7 +597,7 @@ public class ShortcutMgr {
 
         // edit menu
         putDefaultShortcut(ACTION_SELECT_ALL, KeyStroke.getKeyStroke(
-                KeyEvent.VK_A, DEFAULT_MASK), new CmdSelectAll());
+                KeyEvent.VK_A, DEFAULT_MASK), new SelectAllAction());
         putDefaultShortcut(ACTION_REDO, KeyStroke.getKeyStroke(KeyEvent.VK_Y,
                 DEFAULT_MASK), ProjectBrowser.getInstance().getRedoAction());
         putDefaultShortcut(ACTION_UNDO, KeyStroke.getKeyStroke(KeyEvent.VK_Z,
@@ -606,7 +606,8 @@ public class ShortcutMgr {
                 new NavigateTargetForwardAction());
         putDefaultShortcut(ACTION_NAVIGATE_BACK, null,
                 new NavigateTargetBackAction());
-        putDefaultShortcut(ACTION_SELECT_INVERT, null, new CmdSelectInvert());
+        putDefaultShortcut(ACTION_SELECT_INVERT, null, 
+                new SelectInvertAction());
         putDefaultShortcut(ACTION_PERSPECTIVE_CONFIG, null,
                 new ActionPerspectiveConfig());
         putDefaultShortcut(ACTION_SETTINGS, null, new ActionSettings());
@@ -619,7 +620,7 @@ public class ShortcutMgr {
 
         // view menu
         putDefaultShortcut(ACTION_GO_TO_DIAGRAM, null, new ActionGotoDiagram());
-        putDefaultShortcut(ACTION_ZOOM_RESET, null, new CmdZoom(0.0));
+        putDefaultShortcut(ACTION_ZOOM_RESET, null, new ZoomAction(0.0));
         
         List gridActions = ActionAdjustGrid.createAdjustGridActions(true);
         Iterator i = gridActions.iterator();
@@ -638,13 +639,13 @@ public class ShortcutMgr {
         }
 
         putDefaultShortcut(ACTION_ADJUST_PAGE_BREAKS, null,
-                new CmdAdjustPageBreaks());
+                new AdjustPageBreaksAction());
         putDefaultShortcut(ACTION_SHOW_XML_DUMP, null, new ActionShowXMLDump());
         putDefaultShortcut(ACTION_ZOOM_IN, KeyStroke.getKeyStroke(
-                KeyEvent.VK_PLUS, DEFAULT_MASK), new CmdZoom(
+                KeyEvent.VK_PLUS, DEFAULT_MASK), new ZoomAction(
                         (1.0) / (GenericArgoMenuBar.ZOOM_FACTOR)));
         putDefaultShortcut(ACTION_ZOOM_OUT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_MINUS, DEFAULT_MASK), new CmdZoom(
+                KeyEvent.VK_MINUS, DEFAULT_MASK), new ZoomAction(
                         GenericArgoMenuBar.ZOOM_FACTOR));
         putDefaultShortcut(ACTION_FIND, KeyStroke.getKeyStroke(KeyEvent.VK_F3,
                 0), new ActionFind());
@@ -721,17 +722,21 @@ public class ShortcutMgr {
                 new DistributeAction(DistributeAction.V_CENTERS));
 
         // reorder submenu
+        // TODO: I think this requires I18N, but not sure - tfm
         putDefaultShortcut(ACTION_REORDER_FORWARD, KeyStroke.getKeyStroke(
-                KeyEvent.VK_F, DEFAULT_MASK), new CmdReorder(
-                        CmdReorder.BRING_FORWARD));
+                KeyEvent.VK_F, DEFAULT_MASK), new ReorderAction("Forward",
+                        ReorderAction.BRING_FORWARD));
         putDefaultShortcut(ACTION_REORDER_BACKWARD, KeyStroke.getKeyStroke(
-                KeyEvent.VK_B, DEFAULT_MASK), new CmdReorder(
-                        CmdReorder.SEND_BACKWARD));
+                KeyEvent.VK_B, DEFAULT_MASK), new ReorderAction(
+                        "Backward",
+                        ReorderAction.SEND_BACKWARD));
         putDefaultShortcut(ACTION_REORDER_TO_FRONT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_F, SHIFTED_DEFAULT_MASK), new CmdReorder(
-                        CmdReorder.BRING_TO_FRONT));
+                KeyEvent.VK_F, SHIFTED_DEFAULT_MASK), new ReorderAction(
+                        "ToFront",
+                        ReorderAction.BRING_TO_FRONT));
         putDefaultShortcut(ACTION_REORDER_TO_BACK, KeyStroke.getKeyStroke(
-                KeyEvent.VK_B, SHIFTED_DEFAULT_MASK), new CmdReorder(
-                        CmdReorder.SEND_TO_BACK));
+                KeyEvent.VK_B, SHIFTED_DEFAULT_MASK), new ReorderAction(
+                        "ToBack",
+                        ReorderAction.SEND_TO_BACK));
     }
 }
