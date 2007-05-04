@@ -37,7 +37,7 @@ import org.argouml.i18n.Translator;
  * Extends GEF CmdSetMode to add additional metadata such as tooltips.
  *
  * @author Jeremy Jones
- * @deprecated for 0.25.3 by tfmorris - use {@link SetModeAction}
+ * @deprecated for 0.25.3 by tfmorris - use {@link ActionSetMode}
  */
 public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 

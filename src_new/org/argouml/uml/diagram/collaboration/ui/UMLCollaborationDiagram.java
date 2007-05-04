@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.SetModeAction;
+import org.argouml.ui.ActionSetMode;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
@@ -304,7 +304,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         if (actionDepend == null) {
             actionDepend =
                 new RadioAction(
-                    new SetModeAction(
+                    new ActionSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getDependency(),
@@ -319,7 +319,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         if (actionGeneralize == null) {
             actionGeneralize =
                 new RadioAction(
-                    new SetModeAction(
+                    new ActionSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getGeneralization(),

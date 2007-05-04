@@ -29,20 +29,20 @@ import javax.swing.Icon;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.ui.SetModeAction;
+import org.argouml.ui.ActionSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 
 /**
  * The ActionAddAssociation class is for creating a dummy link with a
  * stimulus and a given action type. This is done in one step when a
- * new edge between two nodes is instanciated
+ * new edge between two nodes is instantiated.
  *
  * Created on 15 February 2003, 01:01
  *
  * @author Bob Tarling
  */
-public class ActionAddAssociationRole extends SetModeAction {
+public class ActionAddAssociationRole extends ActionSetMode {
 
     /**
      * Serial versoin generated for rev 1.14

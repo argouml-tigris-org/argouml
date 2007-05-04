@@ -31,16 +31,16 @@ package org.argouml.uml.diagram.ui;
 
 
 import org.argouml.model.Model;
-import org.argouml.ui.SetModeAction;
+import org.argouml.ui.ActionSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /**
- * An extension of SetModeAction to set the parameters for an association.
+ * An extension of ActionSetMode to set the parameters for an association.
  *
  * @author Bob Tarling
  */
 
-public class ActionSetAddAssociationMode extends SetModeAction {
+public class ActionSetAddAssociationMode extends ActionSetMode {
 
     /**
      * Serial version generated for rev. 1.2
