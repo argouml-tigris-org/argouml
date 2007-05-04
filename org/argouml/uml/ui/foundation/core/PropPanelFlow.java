@@ -52,7 +52,7 @@ public class PropPanelFlow extends PropPanelRelationship {
         addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.namespace"),
-                getNamespaceScroll());
+                getNamespaceSelector());
         addField(Translator.localize("label.constraints"),
                 getConstraintScroll());
 
