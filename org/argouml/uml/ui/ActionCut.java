@@ -41,7 +41,7 @@ import javax.swing.text.JTextComponent;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.tigris.gef.base.CmdCut;
+import org.tigris.gef.base.CutAction;
 import org.tigris.gef.base.Globals;
 
 /**
@@ -85,8 +85,9 @@ public class ActionCut extends AbstractAction implements CaretListener {
     public void actionPerformed(ActionEvent ae) {
         if (textSource == null) {
             if (removeFromDiagramAllowed()) {
-                CmdCut cmd = new CmdCut();
-                cmd.doIt();
+                CutAction cmd =
+                        new CutAction(Translator.localize("action.cut"));
+                cmd.actionPerformed(ae);
             }
         } else {
             textSource.cut();
