@@ -28,10 +28,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
 import org.tigris.gef.base.Layer;
@@ -292,10 +295,171 @@ public class FigMessage extends FigNodeModelElement {
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
         updateEdges();
     }
+    
+    
+    /*
+     * TODO: The code implementing this method is from 2003 (see issue 2171) -
+     * mechanically integrated by tfmorris in May 2007. Needs to be
+     * reviewed/updated.
+     * 
+     * @author Decki,Endi,Yayan, Politechnic of Bandung. Computer Departement
+     * method for changing text of Message
+     */	
+    protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        
+        // Do nothing until code is reviewed
+        if (true) {
+            return;
+        }
+        
+        if (Model.getFacade().isAMessage(getOwner())) {
+            if (Model.getFacade().isAParameter(mee.getSource())) {
+                Object par = mee.getSource();
+                updateArgumentsFromParameter(getOwner(), par);
+
+            }
+            
+            if (mee == null || mee.getSource() == getOwner()
+                    || Model.getFacade().isAAction(mee.getSource())
+                    || Model.getFacade().isAOperation(mee.getSource())
+                    || Model.getFacade().isAArgument(mee.getSource())
+                    || Model.getFacade().isASignal(mee.getSource())) {
+                updateListeners(getOwner());
+            }
+
+            // needs to be updated for changes in Notation subsystem - tfm
+//            String nameStr = Notation.generate(this, getOwner()).trim();
+//            getNameFig().setText(nameStr);
+            updateArrow();
+            damage();
+        }
+    }
+
 
     /**
-     * Determines the direction of the message arrow. Deetermination of the
-     * type of arrow happens in modelchanged.
+     * TODO: The code implementing this method is from 2003 (see issue 2171) -
+     * mechanically integrated by tfmorris in May 2007. Needs to be
+     * reviewed/updated.
+     * 
+     * @author Decki,Endi,Yayan, Politechnic of Bandung. Computer Departement
+     * method for changing text of Message
+     * @param newOwner
+     * @param parameter
+     */
+    protected void updateArgumentsFromParameter(Object newOwner,
+            Object parameter) {
+
+        // Do nothing until code is reviewed
+        if (true) {
+            return;
+        }
+        
+        if (newOwner != null) {
+            Object act = Model.getFacade().getAction(newOwner);
+            if (Model.getFacade().isACallAction(act)) {
+                if (Model.getFacade().getOperation(act) != null) {
+                    Object operation = Model.getFacade().getOperation(act);
+                    if (Model.getDirectionKind().getInParameter().equals(
+                            Model.getFacade().getKind(parameter))) {
+                        
+                        // Update for changes in Model subsystem - tfm
+//                        Collection colpar = Model.getFacade().getInParameters(
+//                                operation);
+//                        Collection colarg = Model.getFacade()
+//                                .getActualArguments(act);
+//                        if (colpar.size() == colarg.size()) {
+//                            Iterator iter = colarg.iterator();
+//                            while (iter.hasNext()) {
+//                                Object arg = iter.next();
+//                                if (!iter.hasNext()) {
+//                                    Model.getCommonBehaviorHelper()
+//                                            .removeActualArgument(act, arg);
+//                                }
+//                            }
+//                        }
+                        Object newArgument = Model.getCommonBehaviorFactory()
+                                .createArgument();
+                        Model.getCommonBehaviorHelper().setValue(
+                                newArgument,
+                                Model.getDataTypesFactory().createExpression(
+                                        "",
+                                        Model.getFacade().getName(parameter)));
+                        Model.getCoreHelper().setName(newArgument,
+                                Model.getFacade().getName(parameter));
+                        Model.getCommonBehaviorHelper().addActualArgument(act,
+                                newArgument);
+
+                        Model.getPump().removeModelEventListener(this,
+                                parameter);
+                        Model.getPump().addModelEventListener(this, parameter);
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * TODO: The code implementing this method is from 2003 (see issue 2171) -
+     * mechanically integrated by tfmorris in May 2007. Needs to be
+     * reviewed/updated.
+     * 
+     * @author Decki,Endi,Yayan, Politechnic of Bandung. Computer Departement
+     * method for changing text of Message
+     * @param newOwner
+     */
+    protected void updateListeners(Object newOwner) {
+        // Our superclass no longer has this method, so perhaps this whole
+        // thing should be removed? - tfm 
+//        super.updateListeners(newOwner);
+        
+        // Do nothing until code is reviewed
+        if (true) {
+            return;
+        }
+        
+        if (newOwner != null) {
+            Object act = Model.getFacade().getAction(newOwner);
+            if (act != null) {
+                Model.getPump().removeModelEventListener(this, act);
+                Model.getPump().addModelEventListener(this, act);
+                Iterator iter = Model.getFacade().getActualArguments(act)
+                        .iterator();
+                while (iter.hasNext()) {
+                    Object arg = iter.next();
+                    Model.getPump().removeModelEventListener(this, arg);
+                    Model.getPump().addModelEventListener(this, arg);
+                }
+                if (Model.getFacade().isACallAction(act)) {
+                    Object oper = Model.getFacade().getOperation(act);
+                    if (oper != null) {
+                        Model.getPump().removeModelEventListener(this, oper);
+                        Model.getPump().addModelEventListener(this, oper);
+                        Iterator it2 = Model.getFacade().getParameters(oper)
+                                .iterator();
+                        while (it2.hasNext()) {
+                            Object param = it2.next();
+                            Model.getPump().removeModelEventListener(this,
+                                    param);
+                            Model.getPump().addModelEventListener(this, param);
+                        }
+                    }
+                }
+                if (Model.getFacade().isASendAction(act)) {
+                    Object sig = Model.getFacade().getSignal(act);
+                    if (sig != null)
+                        Model.getPump().removeModelEventListener(this, sig);
+                    Model.getPump().addModelEventListener(this, sig);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Determines the direction of the message arrow. Deetermination of the type
+     * of arrow happens in modelchanged.
      */
     protected void updateArrow() {
   	Object mes = getOwner(); // Message
