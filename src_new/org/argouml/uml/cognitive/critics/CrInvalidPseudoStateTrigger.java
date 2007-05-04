@@ -54,7 +54,7 @@ public class CrInvalidPseudoStateTrigger extends CrUML {
         Object t = Model.getFacade().getTrigger(tr);
         Object sv = Model.getFacade().getSource(tr);
         if (!(Model.getFacade().isAPseudostate(sv))) return NO_PROBLEM;
-        Object k = Model.getFacade().getPseudostateKind(sv);
+        Object k = Model.getFacade().getKind(sv);
         //Forks have their own outgoing transitions critic
         if (Model.getFacade().
                 equalsPseudostateKind(k,
@@ -67,4 +67,4 @@ public class CrInvalidPseudoStateTrigger extends CrUML {
         return NO_PROBLEM;
     }
 
-} /* end class CrInvalidPseudoStateTrigger */
+}

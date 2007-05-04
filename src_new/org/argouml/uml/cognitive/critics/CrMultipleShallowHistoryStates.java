@@ -65,7 +65,7 @@ public class CrMultipleShallowHistoryStates extends CrUML {
         if (!(Model.getFacade().isAPseudostate(dm))) {
             return NO_PROBLEM;
         }
-        Object k = Model.getFacade().getPseudostateKind(dm);
+        Object k = Model.getFacade().getKind(dm);
         if (!Model.getFacade()
                 .equalsPseudostateKind(k,
                         Model.getPseudostateKind().getShallowHistory())) {
@@ -84,7 +84,7 @@ public class CrMultipleShallowHistoryStates extends CrUML {
             Object sv = iter.next();
             if (Model.getFacade().isAPseudostate(sv)
                     && Model.getFacade().equalsPseudostateKind(
-                            Model.getFacade().getPseudostateKind(sv),
+                            Model.getFacade().getKind(sv),
                             Model.getPseudostateKind().getShallowHistory())) {
                 initialStateCount++;
             }
@@ -120,7 +120,7 @@ public class CrMultipleShallowHistoryStates extends CrUML {
             Object sv = iter.next();
             if (Model.getFacade().isAPseudostate(sv)
                     && Model.getFacade().equalsPseudostateKind(
-                            Model.getFacade().getPseudostateKind(sv),
+                            Model.getFacade().getKind(sv),
                             Model.getPseudostateKind().getShallowHistory())) {
                 offs.addElement(sv);
             }
@@ -147,5 +147,5 @@ public class CrMultipleShallowHistoryStates extends CrUML {
      * The UID.
      */
     private static final long serialVersionUID = -8324054401013865193L;
-} /* end class CrMultipleShallowHistoryStates */
+}
 

@@ -56,7 +56,7 @@ public class CrInvalidFork extends CrUML {
 	if (!(Model.getFacade().isAPseudostate(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object k = Model.getFacade().getPseudostateKind(dm);
+	Object k = Model.getFacade().getKind(dm);
 	if (!Model.getFacade().equalsPseudostateKind(
 	        k,
 	        Model.getPseudostateKind().getFork())) {
@@ -75,5 +75,5 @@ public class CrInvalidFork extends CrUML {
 	return NO_PROBLEM;
     }
 
-} /* end class CrInvalidFork */
+}
 

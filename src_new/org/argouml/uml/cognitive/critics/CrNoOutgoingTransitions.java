@@ -46,13 +46,8 @@ public class CrNoOutgoingTransitions extends CrUML {
 	addTrigger("outgoing");
     }
 
-    /**
-     * This is the decision routine for the critic.
-     *
-     * @param dm is the UML entity that is being checked.
-     * @param dsgr is for future development and can be ignored.
-     *
-     * @return boolean problem found
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAStateVertex(dm))) {
@@ -66,7 +61,7 @@ public class CrNoOutgoingTransitions extends CrUML {
 	    }
 	}
 	if (Model.getFacade().isAPseudostate(sv)) {
-	    Object k = Model.getFacade().getPseudostateKind(sv);
+	    Object k = Model.getFacade().getKind(sv);
 	    if (k.equals(Model.getPseudostateKind().getChoice())) {
 	        return NO_PROBLEM;
 	    }
@@ -85,4 +80,4 @@ public class CrNoOutgoingTransitions extends CrUML {
 	return NO_PROBLEM;
     }
 
-} /* end class CrNoOutgoingTransitions */
+}

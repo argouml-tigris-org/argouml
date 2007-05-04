@@ -65,7 +65,7 @@ public class CrMultipleInitialStates extends CrUML {
         if (!(Model.getFacade().isAPseudostate(dm))) {
             return NO_PROBLEM;
         }
-        Object k = Model.getFacade().getPseudostateKind(dm);
+        Object k = Model.getFacade().getKind(dm);
         if (!Model.getFacade().equalsPseudostateKind(
                 k,
                 Model.getPseudostateKind().getInitial())) {
@@ -85,7 +85,7 @@ public class CrMultipleInitialStates extends CrUML {
             if (Model.getFacade().isAPseudostate(sv)
                 && Model.getFacade().
                 	equalsPseudostateKind(
-                	        Model.getFacade().getPseudostateKind(sv),
+                	        Model.getFacade().getKind(sv),
                 	        Model.getPseudostateKind().getInitial())) {
                 initialStateCount++;
             }
@@ -122,7 +122,7 @@ public class CrMultipleInitialStates extends CrUML {
             Object sv = iter.next();
             if (Model.getFacade().isAPseudostate(sv)
                 && Model.getFacade().equalsPseudostateKind(
-                        Model.getFacade().getPseudostateKind(sv),
+                        Model.getFacade().getKind(sv),
                         Model.getPseudostateKind().getInitial())) {
                 offs.addElement(sv);
 	    }
@@ -150,5 +150,5 @@ public class CrMultipleInitialStates extends CrUML {
      * The UID.
      */
     private static final long serialVersionUID = 4151051235876065649L;
-} /* end class CrMultipleInitialStates */
+}
 

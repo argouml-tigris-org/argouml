@@ -61,7 +61,7 @@ public class CrInvalidForkTriggerOrGuard extends CrUML {
         if (!(Model.getFacade().isAPseudostate(sv))) {
             return NO_PROBLEM;
         }
-        Object k = Model.getFacade().getPseudostateKind(sv);
+        Object k = Model.getFacade().getKind(sv);
         if (!Model.getFacade().
                 equalsPseudostateKind(k,
                         Model.getPseudostateKind().getFork())) {
@@ -89,4 +89,4 @@ public class CrInvalidForkTriggerOrGuard extends CrUML {
      * The UID.
      */
     private static final long serialVersionUID = -713044875133409390L;
-} /* end class CrInvalidForkTriggerOrGuard */
+}

@@ -74,7 +74,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
     public void refreshTarget() {
         Object target = TargetManager.getInstance().getModelTarget();
         if (Model.getFacade().isAPseudostate(target)) {
-            Object kind = Model.getFacade().getPseudostateKind(target);
+            Object kind = Model.getFacade().getKind(target);
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getFork())) {
                 getTitleLabel().setText(
@@ -149,4 +149,4 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
         }
     }
 
-} /* end class PropPanelPseudostate */
+}

@@ -57,10 +57,9 @@ public class CrInvalidJoin extends CrUML {
 	if (!(Model.getFacade().isAPseudostate(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object k = Model.getFacade().getPseudostateKind(dm);
-	if (!Model.getFacade().
-	    equalsPseudostateKind(k,
-				  Model.getPseudostateKind().getJoin())) {
+	Object k = Model.getFacade().getKind(dm);
+	if (!Model.getFacade().equalsPseudostateKind(k,
+                Model.getPseudostateKind().getJoin())) {
 	    return NO_PROBLEM;
 	}
 	Collection outgoing = Model.getFacade().getOutgoings(dm);
@@ -76,5 +75,5 @@ public class CrInvalidJoin extends CrUML {
 	return NO_PROBLEM;
     }
 
-} /* end class CrInvalidJoin */
+}
 

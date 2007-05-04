@@ -54,14 +54,12 @@ public class CrForkOutgoingTransition extends CrUML {
         Object target = Model.getFacade().getTarget(tr);
         Object source = Model.getFacade().getSource(tr);
         if (!(Model.getFacade().isAPseudostate(source))) return NO_PROBLEM;
-        if (!Model
-                .getFacade()
-                .equalsPseudostateKind(Model
-                .getFacade().getPseudostateKind(source),
-                        Model.getPseudostateKind().getFork()))
+        if (!Model.getFacade().equalsPseudostateKind(
+                Model.getFacade().getKind(source),
+                Model.getPseudostateKind().getFork()))
             return NO_PROBLEM;
         if (Model.getFacade().isAState(target)) return NO_PROBLEM;
         return PROBLEM_FOUND;
     }
 
-} /* end class CrForkOutgoingTransition */
+}
