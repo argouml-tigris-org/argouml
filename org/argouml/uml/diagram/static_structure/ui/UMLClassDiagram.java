@@ -97,7 +97,7 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
      */
     public UMLClassDiagram() {
         super();
-	TargetManager.getInstance().addTargetListener(this);
+        addTargetListener();
         // TODO: All super constructors should take a GraphModel
         setGraphModel(createGraphModel());
     }
@@ -110,7 +110,7 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
      */
     public UMLClassDiagram(String name, Object namespace) {
         super(name, namespace);
-	TargetManager.getInstance().addTargetListener(this);
+        addTargetListener();
     }
 
     /**
@@ -119,7 +119,7 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
      */
     public UMLClassDiagram(Object m) {
         super(m);
-	TargetManager.getInstance().addTargetListener(this);
+        addTargetListener();
         String name = getNewDiagramName();
         try {
             setName(name);
@@ -127,6 +127,18 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
             LOG.warn("Generated diagram name '" + name 
                     + "' was vetoed by setName");
         }
+    }
+
+    /**
+     * Add ourselves as a TargetListener after initializing any actions
+     * that the listener callback requires.
+     */
+    private void addTargetListener() {
+        actionAttribute = new ActionAddAttribute();
+        actionAttribute.setEnabled(false);
+        actionOperation = new ActionAddOperation();
+        actionOperation.setEnabled(false);
+        TargetManager.getInstance().addTargetListener(this);
     }
 
     /*
@@ -538,10 +550,6 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
      * @return Returns the actionAttribute.
      */
     private Action getActionAttribute() {
-        if (actionAttribute == null) {
-            actionAttribute = new ActionAddAttribute();
-            actionAttribute.setEnabled(false);
-        }
         return actionAttribute;
     }
 
@@ -549,10 +557,6 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
      * @return Returns the actionOperation.
      */
     private Action getActionOperation() {
-        if (actionOperation == null) {
-            actionOperation = new ActionAddOperation();
-            actionOperation.setEnabled(false);
-        }
         return actionOperation;
     }
 
