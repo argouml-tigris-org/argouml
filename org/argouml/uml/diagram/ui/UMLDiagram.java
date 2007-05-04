@@ -42,7 +42,7 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.CmdCreateNode;
-import org.argouml.ui.SetModeAction;
+import org.argouml.ui.ActionSetMode;
 import org.argouml.ui.explorer.Relocatable;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
@@ -144,41 +144,41 @@ public abstract class UMLDiagram
 
 
     private static Action actionSelect =
-        new SetModeAction(ModeSelect.class, "button.select");
+        new ActionSetMode(ModeSelect.class, "button.select");
 
     private static Action actionBroom =
-        new SetModeAction(ModeBroom.class, "button.broom");
+        new ActionSetMode(ModeBroom.class, "button.broom");
 
     private static Action actionRectangle =
-        new RadioAction(new SetModeAction(ModeCreateFigRect.class, "Rectangle",
+        new RadioAction(new ActionSetMode(ModeCreateFigRect.class, "Rectangle",
         			       "misc.primitive.rectangle"));
 
     private static Action actionRRectangle =
-        new RadioAction(new SetModeAction(ModeCreateFigRRect.class, "RRect",
+        new RadioAction(new ActionSetMode(ModeCreateFigRRect.class, "RRect",
         			       "misc.primitive.rounded-rectangle"));
 
     private static Action actionCircle =
-        new RadioAction(new SetModeAction(ModeCreateFigCircle.class, "Circle",
+        new RadioAction(new ActionSetMode(ModeCreateFigCircle.class, "Circle",
         			       "misc.primitive.circle"));
 
     private static Action actionLine =
-        new RadioAction(new SetModeAction(ModeCreateFigLine.class, "Line",
+        new RadioAction(new ActionSetMode(ModeCreateFigLine.class, "Line",
         			       "misc.primitive.line"));
 
     private static Action actionText =
-        new RadioAction(new SetModeAction(ModeCreateFigText.class, "Text",
+        new RadioAction(new ActionSetMode(ModeCreateFigText.class, "Text",
         			       "misc.primitive.text"));
 
     private static Action actionPoly =
-        new RadioAction(new SetModeAction(ModeCreateFigPoly.class, "Polygon",
+        new RadioAction(new ActionSetMode(ModeCreateFigPoly.class, "Polygon",
         			       "misc.primitive.polygon"));
 
     private static Action actionSpline =
-        new RadioAction(new SetModeAction(ModeCreateFigSpline.class, "Spline",
+        new RadioAction(new ActionSetMode(ModeCreateFigSpline.class, "Spline",
         			       "misc.primitive.spline"));
 
     private static Action actionInk =
-        new RadioAction(new SetModeAction(ModeCreateFigInk.class, "Ink",
+        new RadioAction(new ActionSetMode(ModeCreateFigInk.class, "Ink",
         			       "misc.primitive.ink"));
 
     ////////////////////////////////////////////////////////////////
@@ -531,7 +531,7 @@ public abstract class UMLDiagram
      */
     protected Action makeCreateEdgeAction(Object modelElement, String descr) {
         return new RadioAction(
-            new SetModeAction(ModeCreatePolyEdge.class, "edgeClass",
+            new ActionSetMode(ModeCreatePolyEdge.class, "edgeClass",
                     modelElement, descr));
     }
 
@@ -549,7 +549,7 @@ public abstract class UMLDiagram
 	    Object metaType, 
 	    String descr) {
         return new RadioAction(
-            new SetModeAction(modeClass, "edgeClass", metaType, descr));
+            new ActionSetMode(modeClass, "edgeClass", metaType, descr));
     }
 
     /**
@@ -559,7 +559,7 @@ public abstract class UMLDiagram
      */
     protected Action makeCreateGeneralizationAction() {
         return new RadioAction(
-            new SetModeAction(
+            new ActionSetMode(
         	    ModeCreateGeneralization.class, 
         	    "edgeClass", 
         	    Model.getMetaTypes().getGeneralization(), 

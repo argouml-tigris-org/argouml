@@ -35,7 +35,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
-import org.argouml.ui.SetModeAction;
+import org.argouml.ui.ActionSetMode;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
@@ -583,7 +583,7 @@ public class UMLStateDiagram extends UMLDiagram {
     protected Action getActionTransition() {
         if (actionTransition == null) {
             actionTransition = new RadioAction(
-                    new SetModeAction(
+                    new ActionSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
                         Model.getMetaTypes().getTransition(),
