@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,6 +30,7 @@ import java.util.Properties;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 
@@ -39,6 +40,8 @@ import org.argouml.i18n.Translator;
  * @author Jeremy Jones
  */
 public class ActionSetMode extends org.tigris.gef.base.SetModeAction {
+    
+    private static final Logger LOG = Logger.getLogger(ActionSetMode.class);
 
     /**
      * The constructor.
@@ -65,8 +68,9 @@ public class ActionSetMode extends org.tigris.gef.base.SetModeAction {
      * @param name the name of the command that is the tooltip text.
      */
     public ActionSetMode(Class modeClass, String name) {
-        super(modeClass, ResourceLoaderWrapper.getImageBinding(name));
+        super(modeClass);
         putToolTip(name);
+        putIcon(name);
     }
 
     /**
@@ -79,6 +83,7 @@ public class ActionSetMode extends org.tigris.gef.base.SetModeAction {
     public ActionSetMode(Class modeClass, String name, String tooltipkey) {
         super(modeClass, name);
         putToolTip(tooltipkey);
+        putIcon(name);
     }
 
     /**
@@ -110,9 +115,10 @@ public class ActionSetMode extends org.tigris.gef.base.SetModeAction {
      * @param name the name of the command that is the tooltip text.
      */
     public ActionSetMode(Class modeClass, Hashtable modeArgs, String name) {
-    	super(modeClass, ResourceLoaderWrapper.getImageBinding(name));
+    	super(modeClass);
         this.modeArgs = modeArgs;
         putToolTip(name);
+        putIcon(name);
     }
 
     /**
@@ -136,9 +142,9 @@ public class ActionSetMode extends org.tigris.gef.base.SetModeAction {
      */
     public ActionSetMode(Class modeClass, String arg, Object value, 
             String name) {
-        super(modeClass, arg, value, ResourceLoaderWrapper
-                .getImageBinding(name));
+        super(modeClass, arg, value);
         putToolTip(name);
+        putIcon(name);
     }
 
     /**
@@ -167,5 +173,14 @@ public class ActionSetMode extends org.tigris.gef.base.SetModeAction {
      */
     private void putToolTip(String key) {
         putValue(Action.SHORT_DESCRIPTION, Translator.localize(key));
+    }
+    
+    private void putIcon(String key) {
+        ImageIcon icon = ResourceLoaderWrapper.lookupIcon(key);
+        if (icon != null) {
+            putValue(Action.SMALL_ICON, icon);
+        } else {
+            LOG.debug("Failed to find icon for key " + key);
+        }
     }
 }
