@@ -720,10 +720,9 @@ public interface Facade {
     /**
      * Return the Kind of a Pseudostate.
      *
-     * TODO: - Do we need this as well as getKind - I think not
-     *
      * @param handle the Pseudostate
      * @return the Kind
+     * @deprecated by tfmorris for 0.25.3 - use {@link #getKind(Object)}
      */
     Object getPseudostateKind(Object handle);
 
