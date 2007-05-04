@@ -106,10 +106,12 @@ public interface UmlFactory {
      *            the UML object type of the "from"
      * @param toElement
      *            the UML object type of the "to"
+     * @param checkWFR true to check UML Well Formedness Rules
      * @return true if valid
      */
     boolean isConnectionValid(Object connectionType, Object fromElement,
             Object toElement, boolean checkWFR);
+    
     /**
      * Delete a model element. This will do a a 'cascading deletes' 
      * which recursively deletes any model elements which would no
