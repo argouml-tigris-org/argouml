@@ -142,11 +142,12 @@ public class TestDependencies extends TestCase {
         private JDepend jdepend;
 
         CheckDependencyCycle(JDepend jd, String name) {
-            super(name);
+            super("Check dependency cycle in " + name);
             jdepend = jd;
             packageName = name;
         }
 
+        @SuppressWarnings("unchecked")
         public void runTest() {
             JavaPackage p = jdepend.getPackage(packageName);
             assertNotNull(p);
@@ -171,11 +172,12 @@ public class TestDependencies extends TestCase {
         private JDepend jdepend;
 
         CheckTopLevel(JDepend jd, String name) {
-            super(name);
+            super("Check top level dependencies for " + name);
             jdepend = jd;
             packageName = name;
         }
 
+        @SuppressWarnings("unchecked")
         public void runTest() {
             JavaPackage p = jdepend.getPackage(packageName);
             assertNotNull(p);
@@ -202,11 +204,12 @@ public class TestDependencies extends TestCase {
         private JDepend jdepend;
 
         CheckLowLevel(JDepend jd, String name) {
-            super(name);
+            super("Check low level dependencies for " + name);
             jdepend = jd;
             packageName = name;
         }
 
+        @SuppressWarnings("unchecked")
         public void runTest() {
             JavaPackage p = jdepend.getPackage(packageName);
             assertNotNull(p);
