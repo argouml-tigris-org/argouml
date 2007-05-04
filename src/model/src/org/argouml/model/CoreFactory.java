@@ -32,13 +32,12 @@ import java.util.List;
  */
 public interface CoreFactory extends Factory {
     
-    public String REALIZE_STEREOTYPE = "realize";
+    public String REALIZE_STEREOTYPE = "realize"; //$NON-NLS-1$
     
     /**
      * Create an empty but initialized instance of a UML Abstraction.
      * 
      * @return an initialized UML Abstraction instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createAbstraction();
     
@@ -58,7 +57,6 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 1.4
      * @return an initialized Artifact instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createArtifact();
     
@@ -66,7 +64,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Association.
      * 
      * @return an initialized UML Association instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createAssociation();
 
@@ -74,7 +71,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML AssociationClass.
      * 
      * @return an initialized UML AssociationClass instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createAssociationClass();
     
@@ -82,7 +78,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML AssociationEnd.
      *
      * @return an initialized UML AssociationEnd instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createAssociationEnd();
 
@@ -90,7 +85,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Attribute.
      *
      * @return an initialized UML Attribute instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createAttribute();
 
@@ -98,7 +92,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Binding.
      *
      * @return an initialized UML Binding instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createBinding();
 
@@ -106,8 +99,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Class.
      *
      * @return an initialized UML Class instance.
-     * @deprecated in 0.25.1 use
-     * Model.getUmlFactory().buildNode(Model.getMetatData().getClass())
      */
     Object createClass();
 
@@ -115,8 +106,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Comment.
      *
      * @return an initialized UML Comment instance.
-     * @deprecated in 0.25.1 use
-     * Model.getUmlFactory().buildNode(Model.getMetatData().getComment())
      */
     Object createComment();
 
@@ -124,8 +113,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Component.
      *
      * @return an initialized UML Component instance.
-     * @deprecated in 0.25.1 use
-     * Model.getUmlFactory().buildNode(Model.getMetatData().getComponent())
      */
     Object createComponent();
 
@@ -133,8 +120,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Constraint.
      *
      * @return an initialized UML Constraint instance.
-     * @deprecated in 0.25.1 use
-     * Model.getUmlFactory().buildNode(Model.getMetatData().getConstraint())
      */
     Object createConstraint();
 
@@ -142,8 +127,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML DataType.
      *
      * @return an initialized UML DataType instance.
-     * @deprecated in 0.25.1 use
-     * Model.getUmlFactory().buildNode(Model.getMetatData().getDataType())
      */
     Object createDataType();
     
@@ -151,7 +134,6 @@ public interface CoreFactory extends Factory {
     * Create an empty but initialized instance of a UML Dependency.
     *
     * @return an initialized UML Dependency instance.
-    * @deprecated in 0.25.1 This is not used outside the model subsystem
     */
     public Object createDependency();
 
@@ -159,8 +141,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML ElementResidence.
      *
      * @return an initialized UML ElementResidence instance.
-     * @deprecated in 0.25.1 use
-     * Model.getUmlFactory().buildNode(Model.getMetatData().getElementResidence())
      */
     Object createElementResidence();
     
@@ -175,7 +155,7 @@ public interface CoreFactory extends Factory {
      * Create an Enumeration.
      * @return Object new Enumeration
      * @since UML 1.4
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
+
      */
     Object createEnumeration();
 
@@ -183,7 +163,6 @@ public interface CoreFactory extends Factory {
      * Create an EnumerationLiteral.
      * @return Object new Enumeration
      * @since UML 1.4
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createEnumerationLiteral();
 
@@ -191,7 +170,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Flow.
      *
      * @return an initialized UML Flow instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createFlow();
 
@@ -199,8 +177,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Interface.
      *
      * @return an initialized UML Interface instance.
-     * @deprecated in 0.25.1 use
-     * Model.getUmlFactory().buildNode(Model.getMetatData().getInterface())
      */
     Object createInterface();
 
@@ -208,7 +184,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Method.
      *
      * @return an initialized UML Method instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createMethod();
 
@@ -216,8 +191,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Node.
      *
      * @return an initialized UML Node instance.
-     * @deprecated in 0.25.1 use
-     * Model.getUmlFactory().buildNode(Model.getMetatData().getNode())
      */
     Object createNode();
 
@@ -225,7 +198,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Operation.
      *
      * @return an initialized UML Operation instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createOperation();
 
@@ -233,7 +205,7 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Parameter.
      *
      * @return an initialized UML Parameter instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
+
      */
     Object createParameter();
 
@@ -241,7 +213,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Permission.
      *
      * @return an initialized UML Permission instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createPermission();
     
@@ -250,7 +221,6 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 1.4
      * @return an initialized UML Primitive instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createPrimitive();
 
@@ -259,7 +229,6 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 1.4
      * @return an initialized ProgrammingLanguageDataType
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createProgrammingLanguageDataType();
 
@@ -268,7 +237,6 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 1.4
      * @return an initialized TemplateArgument instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     public Object createTemplateArgument();
 
@@ -276,7 +244,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML TemplateParameter.
      *
      * @return an initialized UML TemplateParameter instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createTemplateParameter();
 
@@ -284,7 +251,6 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Usage.
      *
      * @return an initialized UML Usage instance.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createUsage();
 
@@ -298,7 +264,6 @@ public interface CoreFactory extends Factory {
      * @param aggregationKind2 the second aggregationkind
      * @param unidirectional true if unidirectional
      * @return the newly build binary associationrole
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildAssociation(Object fromClassifier, Object aggregationKind1,
             Object toClassifier, Object aggregationKind2,
@@ -311,8 +276,7 @@ public interface CoreFactory extends Factory {
      *
      * @param classifier1 The first classifier to connect
      * @param classifier2 The second classifier to connect
-     * @return MAssociation
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
+     * @return Association
      */
     Object buildAssociation(Object classifier1, Object classifier2);
 
@@ -336,8 +300,7 @@ public interface CoreFactory extends Factory {
      *
      * @param end1 the first given classifier
      * @param end2 the second given classifier
-     * @return MAssociationClass
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
+     * @return AssociationClass
      */
     Object buildAssociationClass(Object end1, Object end2);
 
@@ -357,8 +320,7 @@ public interface CoreFactory extends Factory {
      * @param scope the scope kind
      * @param changeable the changeablekind
      * @param visibility the visibilitykind
-     * @return MAssociationEnd
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
+     * @return AssociationEnd
      */
     Object buildAssociationEnd(
         Object assoc,
@@ -379,7 +341,6 @@ public interface CoreFactory extends Factory {
      * @param type the given classifier
      * @param assoc the given association
      * @return the newly build associationend
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildAssociationEnd(Object type, Object assoc);
 
@@ -389,7 +350,6 @@ public interface CoreFactory extends Factory {
      * @param model The model the attribute belongs to.
      * @param type The type of the attribute.
      * @return The newly built attribute.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildAttribute(Object model, Object type);
 
@@ -471,9 +431,7 @@ public interface CoreFactory extends Factory {
      * Builds an interface with a given namespace.
      *
      * @param owner is the owner
-     * @return MInterface
-     * @see #buildInterface()
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
+     * @return Interface
      */
     Object buildInterface(Object owner);
 
@@ -481,9 +439,7 @@ public interface CoreFactory extends Factory {
      * Builds an interface with a given name.
      *
      * @param name is the given name.
-     * @return MInterface
-     * @see #buildInterface()
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
+     * @return Interface
      */
     Object buildInterface(String name);
 
@@ -492,8 +448,7 @@ public interface CoreFactory extends Factory {
      *
      * @param name is the given name
      * @param owner is the namespace
-     * @return MInterface
-     * @see #buildInterface()
+     * @return Interface
      */
     Object buildInterface(String name, Object owner);
 
@@ -527,7 +482,7 @@ public interface CoreFactory extends Factory {
      *
      * @param clientObj is the client
      * @param supplierObj is the supplier
-     * @return MDependency
+     * @return Dependency
      */
     Object buildDependency(Object clientObj, Object supplierObj);
 
@@ -536,7 +491,7 @@ public interface CoreFactory extends Factory {
      *
      * @param clientObj is the client
      * @param supplierObj is the supplier
-     * @return MPermission
+     * @return Permission
      */
     Object buildPermission(Object clientObj, Object supplierObj);
 
@@ -556,8 +511,7 @@ public interface CoreFactory extends Factory {
      *
      * @param child is the child
      * @param parent is the parent
-     * @return MGeneralization
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
+     * @return Generalization
      */
     Object buildGeneralization(Object child, Object parent);
 
@@ -577,7 +531,8 @@ public interface CoreFactory extends Factory {
      * @param model is the model to which the class belongs
      * @param returnType the type of the return parameter
      * @return the operation
-     * @deprecated for 0.25.2 by tfmorris use {@link #buildOperation(Object, Object)}
+     * @deprecated for 0.25.2 by tfmorris 
+     * use {@link #buildOperation(Object, Object)}
      */
     Object buildOperation(Object classifier, Object model, Object returnType);
 
@@ -657,7 +612,6 @@ public interface CoreFactory extends Factory {
      * @param model the namespace to use if client and
      * supplier are of different namespace
      * @return Object the created abstraction
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object buildRealization(Object clnt, Object spplr, Object model);
 
@@ -682,8 +636,7 @@ public interface CoreFactory extends Factory {
      *
      * @param client is the client
      * @param supplier is the supplier
-     * @return MUsage
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
+     * @return Usage
      */
     Object buildUsage(Object client, Object supplier);
 
@@ -705,7 +658,7 @@ public interface CoreFactory extends Factory {
      * namespace of the given modelelement.<p>
      *
      * @param constrElement The constrained element.
-     * @return MConstraint
+     * @return Constraint
      */
     Object buildConstraint(Object constrElement);
 
@@ -719,8 +672,8 @@ public interface CoreFactory extends Factory {
     Object buildConstraint(String name, Object bexpr);
     
     /**
-     * Build binding between a supplier templated element and its parameterized client
-     * using the given list or arguments to fill the template.
+     * Build binding between a supplier templated element and its parameterized
+     * client using the given list or arguments to fill the template.
      * 
      * @param client
      *            ModelElement to become client. A given ModelElement may only
@@ -730,7 +683,8 @@ public interface CoreFactory extends Factory {
      * @param arguments
      *            list of argument used to fill the parameters. Number, order,
      *            and type must match those of the TemplateParameters for the
-     *            supplier.  A null may be passed to not create arguments at build time.
+     *            supplier. A null may be passed to not create arguments at
+     *            build time.
      * @return the newly created Binding
      */
     Object buildBinding(Object client, Object supplier, List arguments);
@@ -778,7 +732,6 @@ public interface CoreFactory extends Factory {
      * Additional support for generalization.
      *
      * @return A generalization.
-     * @deprecated in 0.25.1 This is not used outside the model subsystem
      */
     Object createGeneralization();
 
