@@ -40,7 +40,9 @@ manipulating data within those repositories.
 The Model is located in <classname>org.argouml.model</classname>.
 </para>
   <para>
-The Model is a Model subsystem. See <xref linkend="model_subsystems"></xref>.
+    The Model is a Model subsystem
+    according the MVC pattern
+    (Model-View-Control).
 </para>
   <para>
 The Model class provides the rest of ArgoUML with various interfaces through
