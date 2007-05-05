@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,9 +45,7 @@
   <para>
     The notation subsystem is located in
     <classname>org.argouml.notation</classname>
-    and
-    <classname>org.argouml.uml.notation</classname>
-    and their sub-folders.
+    and its sub-folders.
   </para>
 
   <figure id="fig.notation.1" float="1">
@@ -105,7 +103,7 @@
     has the advantage that 
     the knowledge to which uml objects to listen 
     is centralised where it is needed, 
-    and not any more in the Fig.
+    and not in the Fig.
     The Fig then receives a PropertyChangeEvent when the model changes.
     This causes the Notationprovider to update the set of listeners, and 
     the Fig refreshes the rendering of its string.
@@ -136,6 +134,9 @@
     since it is the accesspoint for all Figs to create 
     the textual representation of modelobjects, 
     and since plugin modules can add extra languages.
+    Once/if ArgoUML would support multiple projects, 
+    then we would need one NotationProviderFactory2
+    per project, since its language may differ per project.
 </para>
 
   <para>
