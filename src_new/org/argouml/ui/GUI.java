@@ -51,7 +51,7 @@ public final class GUI {
 
     /**
      * The scope of the setting: this setting is stored with the project, 
-     * i.,e. in e.g. a zargo file. This setting will also apply 
+     * i.e. in e.g. a zargo file. This setting will also apply 
      * when the zargo file is opened by another user, 
      * on another computer. 
      */
