@@ -103,4 +103,14 @@ public interface ActivityGraphsHelper {
      * @param newContents the new contents of the partition (modelelements)
      */
     void setContents(Object partition, Collection newContents);
+
+    /**
+     * Set the isSynch attribute of an ObjectFlowState.
+     * 
+     * @param objectFlowState
+     *            the element for which to set the attribute
+     * @param isSynch
+     *            true if this ObjectFlowState is a synch state.
+     */
+    void setSynch(Object objectFlowState, boolean isSynch);
 }

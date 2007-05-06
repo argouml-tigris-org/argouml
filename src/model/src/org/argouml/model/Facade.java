@@ -3031,4 +3031,11 @@ public interface Facade {
      * @return TagDefinition for given element
      */
     Object getTagDefinition(Object handle);
+    
+    /**
+     * Return the value of the isSynch attribute on an ObjectFlowState
+     * @param handle the ObjectFlowState
+     * @return true if this ObjectFlowState is a synch state.
+     */
+    boolean isSynch(Object handle);
 }

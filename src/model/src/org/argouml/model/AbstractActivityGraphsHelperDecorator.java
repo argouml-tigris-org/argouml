@@ -83,4 +83,8 @@ public abstract class AbstractActivityGraphsHelperDecorator
     public void setContents(Object partition, Collection newContents) {
         impl.setContents(partition, newContents);
     }
+    
+    public void setSynch(Object objectFlowState, boolean isSynch) {
+        impl.setSynch(objectFlowState, isSynch);
+    }
 }
