@@ -966,7 +966,6 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentBoolean(handle);
     }
 
-
     public boolean isNavigable(Object handle) {
         try {
             if (handle instanceof AssociationEnd) {
@@ -4451,6 +4450,10 @@ class FacadeMDRImpl implements Facade {
             throw new InvalidElementException(e);
         }
         return illegalArgumentList(handle);
+    }
+
+    public boolean isSynch(Object handle) {
+        return ((ObjectFlowState) handle).isSynch();
     }
 
 }

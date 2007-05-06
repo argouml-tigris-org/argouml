@@ -35,6 +35,7 @@ import org.omg.uml.behavioralelements.activitygraphs.Partition;
 import org.omg.uml.behavioralelements.statemachines.CompositeState;
 import org.omg.uml.behavioralelements.statemachines.State;
 import org.omg.uml.behavioralelements.statemachines.StateMachine;
+import org.omg.uml.behavioralelements.statemachines.StateVertex;
 import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.ModelElement;
@@ -82,7 +83,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
             while (i.hasNext()) {
                 ModelElement classifier = (ModelElement) i.next();
                 String cn = classifier.getName();
-                if (cn.equals(s)) {
+                if (cn != null && cn.equals(s)) {
                     return classifier;
                 }
             }
@@ -92,10 +93,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         return null;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsHelper#findStateByName(
-     *         java.lang.Object, java.lang.String)
-     */
+
     public Object findStateByName(Object c, String s) {
         if (!(c instanceof Classifier)) {
             throw new IllegalArgumentException();
@@ -114,7 +112,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
                 Model.getStateMachinesHelper().getAllSubStates(top);
             Iterator ii = allStates.iterator();
             while (ii.hasNext()) {
-                State state = (State) ii.next();
+                StateVertex state = (StateVertex) ii.next();
 
                 String statename = state.getName();
                 if (statename != null) {
@@ -127,19 +125,14 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         return null;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsHelper#isAddingActivityGraphAllowed(java.lang.Object)
-     */
+
     public boolean isAddingActivityGraphAllowed(Object context) {
         return context instanceof BehavioralFeature
             || context instanceof Classifier
             || context instanceof UmlPackage;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsHelper#addInState(
-     *         java.lang.Object, java.lang.Object)
-     */
+
     public void addInState(Object classifierInState, Object state) {
         if (classifierInState instanceof ClassifierInState
                 && state instanceof State) {
@@ -151,9 +144,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsHelper#setInStates(java.lang.Object, java.util.Collection)
-     */
+
     public void setInStates(Object classifierInState, Collection newStates) {
         if (classifierInState instanceof ClassifierInState) {
             ClassifierInState cis = (ClassifierInState) classifierInState;
@@ -163,10 +154,8 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
                     "classifierInState: " + classifierInState);
         }
     }
+    
 
-    /*
-     * @see org.argouml.model.ActivityGraphsHelper#setContents(java.lang.Object, java.util.Collection)
-     */
     public void setContents(Object partition, Collection contents) {
         if (partition instanceof Partition) {
             Partition p = (Partition) partition;
@@ -175,6 +164,17 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
             throw new IllegalArgumentException(
                     "Partition: " + partition);
         }
+    }
+
+    /**
+     * @deprecated Use {@link #setSynch(Object,boolean)} instead
+     */
+    public void setIsSynch(Object objectFlowState, boolean isSynch) {
+        setSynch(objectFlowState, isSynch);
+    }
+
+    public void setSynch(Object objectFlowState, boolean isSynch) {
+        ((ObjectFlowState) objectFlowState).setSynch(isSynch);
     }
 
 
