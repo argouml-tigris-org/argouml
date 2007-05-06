@@ -166,15 +166,22 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
         }
     }
 
-    /**
-     * @deprecated Use {@link #setSynch(Object,boolean)} instead
-     */
-    public void setIsSynch(Object objectFlowState, boolean isSynch) {
-        setSynch(objectFlowState, isSynch);
-    }
-
     public void setSynch(Object objectFlowState, boolean isSynch) {
         ((ObjectFlowState) objectFlowState).setSynch(isSynch);
+    }
+
+    public void addParameter(Object objectFlowState, Object parameter) {
+        ((ObjectFlowState) objectFlowState).getParameter().add(parameter);
+    }
+
+    public void removeParameter(Object objectFlowState, Object parameter) {
+        ((ObjectFlowState) objectFlowState).getParameter().remove(parameter);
+    }
+
+    public void setParameters(Object objectFlowState, Collection parameters) {
+        Collection params = ((ObjectFlowState) objectFlowState).getParameter();
+        params.clear();
+        params.addAll(parameters);
     }
 
 
