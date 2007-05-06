@@ -41,6 +41,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLModelElementListModel2;
@@ -88,16 +89,12 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
                 getClassifierComboBox()));
 
         // field for States
-        AbstractActionAddModelElement actionAdd =
-            new ActionAddOFSState();
-        AbstractActionRemoveElement actionRemove =
-            new ActionRemoveOFSState();
         UMLMutableLinkedList list =
             new UMLMutableLinkedList(
                 new UMLOFSStateListModel(),
-                actionAdd,
+                new ActionAddOFSState(),
                 null,
-                actionRemove,
+                new ActionRemoveOFSState(),
                 true);
         statesScroll = new JScrollPane(list);
         addField(Translator.localize("label.instate"),
@@ -109,6 +106,16 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
                 getIncomingScroll());
         addField(Translator.localize("label.outgoing"),
                 getOutgoingScroll());
+        
+        // field for Parameters
+        addField(Translator.localize("label.parameters"),
+                new JScrollPane(
+                        new UMLMutableLinkedList(
+                                new UMLObjectFlowStateParameterListModel(),
+                                new ActionAddOFSParameter(),
+                                new ActionNewOFSParameter(),
+                                new ActionRemoveOFSParameter(),
+                                true)));
     }
 
 
@@ -182,7 +189,14 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         ret.removeAll(tops);
     }
 
-
+    private static Object getType(Object target) {
+        Object type = Model.getFacade().getType(target);
+        if (Model.getFacade().isAClassifierInState(type)) {
+            type = Model.getFacade().getType(type);
+        }
+        return type;
+    }
+    
     static class UMLOFSStateListModel extends UMLModelElementListModel2 {
 
         /**
@@ -278,10 +292,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             Vector ret = new Vector();
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
-                Object classifier = Model.getFacade().getType(t);
-                if (Model.getFacade().isAClassifierInState(classifier)) {
-                    classifier = Model.getFacade().getType(classifier);
-                }
+                Object classifier = getType(t);
                 if (Model.getFacade().isAClassifier(classifier)) {
                     ret.addAll(Model.getModelManagementHelper()
                             .getAllModelElementsOfKindWithModel(classifier,
@@ -357,7 +368,153 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
     }
 
     /**
-     * The UID.
+     * This is the model for the list of parameters for an ObjectFlowState.<p>
+     *
+     * @author Tom Morris
+     * @since 6 May 2007
      */
-    private static final long serialVersionUID = -3484756765780298846L;
+    static class UMLObjectFlowStateParameterListModel
+        extends UMLModelElementListModel2 {
+
+        /**
+         * Constructor for UMLObjectFlowStateParameterListModel.
+         */
+        public UMLObjectFlowStateParameterListModel() {
+            super("parameter");
+        }
+
+        /*
+         * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+         */
+        protected void buildModelList() {
+            if (getTarget() != null) {
+                setAllElements(Model.getFacade().getParameters(getTarget()));
+            }
+        }
+
+        /*
+         * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
+         */
+        protected boolean isValidElement(Object element) {
+            return Model.getFacade().getParameters(getTarget()).contains(
+                    element);
+        }
+        
+    }
+    
+    
+    static class ActionAddOFSParameter extends AbstractActionAddModelElement {
+        private Object choiceClass = Model.getMetaTypes().getParameter();
+
+        /**
+         * The constructor.
+         */
+        public ActionAddOFSParameter() {
+            super();
+            setMultiSelect(true);
+        }
+
+        /*
+         * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
+         *         java.util.Vector)
+         */
+        protected void doIt(Vector selected) {
+            Object t = getTarget();
+            if (Model.getFacade().isAObjectFlowState(t)) {
+                Model.getActivityGraphsHelper().setParameters(t, selected);
+            }
+        }
+
+        /*
+         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
+         */
+        protected Vector getChoices() {
+            Vector ret = new Vector();
+            Object t = getTarget();
+            if (Model.getFacade().isAObjectFlowState(t)) {
+                Object classifier = getType(t);
+                if (Model.getFacade().isAClassifier(classifier)) {
+                    ret.addAll(Model.getModelManagementHelper()
+                            .getAllModelElementsOfKindWithModel(classifier,
+                                    choiceClass));
+                }
+
+                // TODO: We may want to restrict the list to parameters which 
+                // conform to the following WFR:
+//              parameter.type = ofstype
+//              or (parameter.kind = #in
+//              and ofstype.allSupertypes->includes(type))
+//              or ((parameter.kind = #out or parameter.kind = #return)
+//              and type.allSupertypes->includes(ofstype))
+//              or (parameter.kind = #inout
+//              and ( ofstype.allSupertypes->includes(type)
+//              or type.allSupertypes->includes(ofstype))))
+
+            }
+            return ret;
+        }
+
+        /*
+         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
+         */
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-state");
+        }
+
+        /*
+         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
+         */
+        protected Vector getSelected() {
+            Object t = getTarget();
+            if (Model.getFacade().isAObjectFlowState(t)) {
+                    return new Vector(Model.getFacade().getParameters(t));
+            }
+            return new Vector();
+        }
+        
+    }
+    
+    
+    static class ActionNewOFSParameter extends AbstractActionNewModelElement {
+        ActionNewOFSParameter() {
+            super();
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            Object target = getTarget();
+            if (Model.getFacade().isAObjectFlowState(target)) {
+                Object type = getType(target);
+                Object parameter = Model.getCoreFactory().createParameter();
+                Model.getCoreHelper().setType(parameter, type);
+                Model.getActivityGraphsHelper().addParameter(target, parameter);
+            }
+        }
+    }
+
+    
+    static class ActionRemoveOFSParameter extends AbstractActionRemoveElement {
+
+        /**
+         * Constructor.
+         */
+        public ActionRemoveOFSParameter() {
+            super(Translator.localize("menu.popup.remove"));
+        }
+
+        /*
+         * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object param = getObjectToRemove();
+            if (param != null) {
+                Object t = getTarget();
+                if (Model.getFacade().isAObjectFlowState(t)) {
+                    Model.getActivityGraphsHelper().removeParameter(t, param);
+                }
+            }
+        }
+    }
+
+    
 }
