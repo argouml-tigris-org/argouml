@@ -33,6 +33,9 @@ import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
 import org.argouml.ui.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
+import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
+import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigAssociationEnd;
@@ -44,6 +47,8 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigPermission;
 import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.FigUsage;
+import org.argouml.uml.diagram.use_case.ui.FigActor;
+import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -132,6 +137,16 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             figNode = new FigException(gm, node);
         } else if (Model.getFacade().isASignal(node)) {
             figNode = new FigSignal(gm, node);
+        } else if (Model.getFacade().isAActor(node)) {
+            figNode = new FigActor(gm, node);
+        } else if (Model.getFacade().isAUseCase(node)) {
+            figNode = new FigUseCase(gm, node);
+        } else if (Model.getFacade().isAObject(node)) {
+            figNode = new FigObject(gm, node);
+        } else if (Model.getFacade().isANodeInstance(node)) {
+            figNode = new FigMNodeInstance(gm, node);
+        } else if (Model.getFacade().isAComponentInstance(node)) {
+            figNode = new FigComponentInstance(gm, node);
         } else {
             LOG.error("TODO: ClassDiagramRenderer getFigNodeFor " + node);
             throw new IllegalArgumentException(
