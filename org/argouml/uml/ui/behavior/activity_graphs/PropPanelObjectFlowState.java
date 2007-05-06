@@ -77,6 +77,9 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         addField(Translator.localize("label.container"),
                 getContainerScroll());
 
+        addField(Translator.localize("label.synch-state"),
+                new UMLActionSynchCheckBox());
+        
         // field for Type (Classifier)
         addField(Translator.localize("label.type"),
             new UMLComboBoxNavigator(
