@@ -37,7 +37,7 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public abstract class AbstractActionNewModelElement extends UndoableAction {
 
-    private Object/*MModelElement*/ target;
+    private Object target;
 
     /**
      * The constructor.
@@ -65,9 +65,9 @@ public abstract class AbstractActionNewModelElement extends UndoableAction {
 
      /**
      * Returns the target.
-     * @return MModelElement
+     * @return ModelElement
      */
-    public Object/*MModelElement*/ getTarget() {
+    public Object getTarget() {
         return target;
     }
 
