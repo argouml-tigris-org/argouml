@@ -263,9 +263,11 @@ public class ModeCreateMessage extends ModeCreate {
             editor.damaged(_newItem);
             creationDrag(me.getX(), startPortFig.getY());
             editor.damaged(_newItem);
+            editor.scrollToShow(me.getX(), startPortFig.getY());
+            me.consume();
+        } else {
+            super.mouseDragged(me);
         }
-        editor.scrollToShow(me.getX(), startPortFig.getY());
-        me.consume();
     }
 
     /**
