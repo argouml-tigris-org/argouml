@@ -78,7 +78,8 @@ import org.tigris.gef.graph.MutableGraphModel;
  */
 public class ExplorerPopup extends JPopupMenu {
 
-    private JMenu createDiagrams = new JMenu(menuLocalize("Create Diagram"));
+    private JMenu createDiagrams = 
+        new JMenu(menuLocalize("menu.popup.create-diagram"));
 
     /**
      * Creates a new instance of ExplorerPopup.
