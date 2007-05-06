@@ -26,6 +26,7 @@ package org.argouml.model;
 
 import java.util.Collection;
 
+
 /**
  * The abstract Decorator for the {@link ActivityGraphsHelper}.
  *
@@ -86,5 +87,17 @@ public abstract class AbstractActivityGraphsHelperDecorator
     
     public void setSynch(Object objectFlowState, boolean isSynch) {
         impl.setSynch(objectFlowState, isSynch);
+    }
+
+    public void addParameter(Object objectFlowState, Object parameter) {
+        impl.addParameter(objectFlowState, parameter);
+    }
+
+    public void removeParameter(Object objectFlowState, Object parameter) {
+        impl.removeParameter(objectFlowState, parameter);
+    }
+
+    public void setParameters(Object objectFlowState, Collection parameters) {
+        impl.setParameters(objectFlowState, parameters);
     }
 }

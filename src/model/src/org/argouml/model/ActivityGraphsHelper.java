@@ -113,4 +113,34 @@ public interface ActivityGraphsHelper {
      *            true if this ObjectFlowState is a synch state.
      */
     void setSynch(Object objectFlowState, boolean isSynch);
+
+    /**
+     * Add a Parameter to an ObjectFlowState.
+     * 
+     * @param objectFlowState
+     *            the ObjectFlowState
+     * @param parameter
+     *            the Parameter
+     */
+    void addParameter(Object objectFlowState, Object parameter);
+
+    /**
+     * Remove Parameter from an ObjectFlowState.
+     * 
+     * @param objectFlowState
+     *            the ObjectFlowState
+     * @param parameter
+     *            the Parameter to remove
+     */
+    void removeParameter(Object objectFlowState, Object parameter);
+
+    /**
+     * @param objectFlowState
+     *            the ObjectFlowState.
+     * @param parameters
+     *            the collection of Parameters. Pass
+     *            {@link java.util.Collections#EMPTY_SET} if there are no
+     *            Parameters.
+     */
+    void setParameters(Object objectFlowState, Collection parameters);
 }
