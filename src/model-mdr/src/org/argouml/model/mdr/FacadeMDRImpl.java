@@ -539,6 +539,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
+    @SuppressWarnings("deprecation")
     public Object getPseudostateKind(Object handle) {
         if (handle instanceof Pseudostate) {
             try {
