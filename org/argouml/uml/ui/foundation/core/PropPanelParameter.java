@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -93,9 +93,8 @@ public class PropPanelParameter extends PropPanelModelElement {
                 Translator.localize("label.parameter.kind"), true));
 
         addAction(new ActionNavigateContainerElement());
-        // The following two actions are only significant if the Parameter is
-        // contained in the list of parameters for a Behavioral Feature or an
-        // Event.  I'm not sure if they need to be conditionally disabled.-tfm
+
+        // Up & Down are only enabled if the Parameter list is ordered
         addAction(new ActionNavigateUpPreviousDown() {
             public List getFamily(Object parent) {
                 return Model.getFacade().getParametersList(parent);
@@ -103,6 +102,12 @@ public class PropPanelParameter extends PropPanelModelElement {
 
             public Object getParent(Object child) {
                 return Model.getFacade().getModelElementContainer(child);
+            }
+            
+            public boolean isEnabled() {
+                return (Model.getFacade().isABehavioralFeature(getTarget()) 
+                        || Model.getFacade().isAEvent(getTarget())
+                        ) && super.isEnabled();
             }
         });
         addAction(new ActionNavigateUpNextDown() {
@@ -112,6 +117,12 @@ public class PropPanelParameter extends PropPanelModelElement {
 
             public Object getParent(Object child) {
                 return Model.getFacade().getModelElementContainer(child);
+            }
+            
+            public boolean isEnabled() {
+                return (Model.getFacade().isABehavioralFeature(getTarget()) 
+                        || Model.getFacade().isAEvent(getTarget())
+                        ) && super.isEnabled();
             }
         });
         addAction(new ActionNewParameter());
