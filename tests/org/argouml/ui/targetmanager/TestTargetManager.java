@@ -31,12 +31,12 @@ import java.util.HashSet;
 import java.util.List;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
-import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 
