@@ -134,8 +134,6 @@ public abstract class UmlDiagramRenderer
             figNode = new FigStereotypeDeclaration();
         } else if (Model.getFacade().isADataType(node)) {
             figNode = new FigDataType();
-        } else if (Model.getFacade().isAInstance(node)) {
-            figNode = new FigInstance();
         } else if (Model.getFacade().isAModel(node)) {
             figNode = new FigModel(node, x, y);
         } else if (Model.getFacade().isASubsystem(node)) {
@@ -168,6 +166,8 @@ public abstract class UmlDiagramRenderer
             figNode = new FigComponent();
         } else if (Model.getFacade().isAComponentInstance(node)) {
             figNode = new FigComponentInstance();
+        } else if (Model.getFacade().isAInstance(node)) {
+            figNode = new FigInstance();
         } else if (Model.getFacade().isAObject(node)) {
             figNode = new FigObject();
         } else if (Model.getFacade().isAComment(node)) {
