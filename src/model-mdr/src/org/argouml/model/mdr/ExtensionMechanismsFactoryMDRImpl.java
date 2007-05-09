@@ -39,10 +39,8 @@ import org.omg.uml.foundation.datatypes.Multiplicity;
 
 /**
  * Factory to create UML classes for the UML ExtensionMechanisms
- * package.
+ * package.<p>
  * 
- * TODO: Change visibility to package after reflection problem solved.
- * <p>
  * @since ARGO0.19.5
  * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
@@ -50,7 +48,7 @@ import org.omg.uml.foundation.datatypes.Multiplicity;
  * derived from NSUML implementation by:
  * @author Thierry Lach
  */
-public class ExtensionMechanismsFactoryMDRImpl extends
+class ExtensionMechanismsFactoryMDRImpl extends
         AbstractUmlModelFactoryMDR implements ExtensionMechanismsFactory {
 
     /**

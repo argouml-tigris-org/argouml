@@ -43,7 +43,7 @@ import org.omg.uml.foundation.datatypes.PseudostateKindEnum;
  * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  */
-public class DataTypesHelperMDRImpl implements DataTypesHelper {
+class DataTypesHelperMDRImpl implements DataTypesHelper {
 
     private MDRModelImplementation modelImpl;
 	

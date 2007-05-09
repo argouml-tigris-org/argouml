@@ -54,14 +54,12 @@ import org.omg.uml.foundation.datatypes.Multiplicity;
  * Factory to create UML classes for the UML BehaviorialElements::Collaborations
  * package.<p>
  *
- * TODO: Change visibility to package after reflection problem solved.
- *
  * @since ARGO0.19.5
  * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  * @author Thierry Lach (did derivation from NSUML implementation)
  */
-public class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
+class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         implements CollaborationsFactory {
 
     /**

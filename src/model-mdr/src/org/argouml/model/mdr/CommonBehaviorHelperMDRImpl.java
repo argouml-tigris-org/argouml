@@ -73,7 +73,7 @@ import org.omg.uml.foundation.datatypes.ObjectSetExpression;
  * @author Tom Morris
  * 
  */
-public class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
+class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
 
     private MDRModelImplementation modelImpl;
 

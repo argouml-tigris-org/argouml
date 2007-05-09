@@ -143,7 +143,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * derived from NSUML implementation by:
  * @author Linus Tolke
  */
-public class CoreHelperMDRImpl implements CoreHelper {
+class CoreHelperMDRImpl implements CoreHelper {
 
     /**
      * Logger.

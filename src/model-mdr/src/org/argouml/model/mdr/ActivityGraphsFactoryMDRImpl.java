@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,15 +44,13 @@ import org.omg.uml.foundation.core.Namespace;
 /**
  * Factory to create UML classes for the UML BehaviorialElements::ActivityGraphs
  * package.
- * 
- * TODO: Change visibility to package after reflection problem solved.
  * <p>
  * @since ARGO0.19.5
  * @author Ludovic Ma&icirc;tre
  * Derived from NSUML implementation by:
  * @author Thierry Lach
  */
-public class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
+class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         implements ActivityGraphsFactory {
 
     /**

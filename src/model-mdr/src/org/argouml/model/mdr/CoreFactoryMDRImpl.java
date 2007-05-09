@@ -108,7 +108,7 @@ import org.omg.uml.modelmanagement.Model;
  * @author Thierry Lach
  * @author Jaap Branderhorst
  */
-public class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
+class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         CoreFactory {
 
     /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,15 +62,13 @@ import org.omg.uml.foundation.datatypes.TimeExpression;
  * package.<p>
  *
  * Abstract metatypes from the UML metamodel do not have create methods.<p>
- * 
- * TODO: Change visibility to package after reflection problem solved.
  *
  * @since ARGO0.19.3
  * @author Bob Tarling
  * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  */
-public class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
+class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         implements StateMachinesFactory {
 
     /**

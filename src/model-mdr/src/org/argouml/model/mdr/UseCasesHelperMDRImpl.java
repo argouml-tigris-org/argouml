@@ -55,7 +55,7 @@ import org.omg.uml.modelmanagement.Subsystem;
  * @author Tom Morris
 
  */
-public class UseCasesHelperMDRImpl implements UseCasesHelper {
+class UseCasesHelperMDRImpl implements UseCasesHelper {
 
     /**
      * The model implementation.
