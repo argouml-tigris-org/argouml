@@ -34,6 +34,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -89,6 +91,10 @@ class PGMLStackParser
             "org.argouml.uml.diagram.state.ui.FigSimpleState");
         addTranslation("org.argouml.uml.diagram.ui.FigCommentPort",
             "org.argouml.uml.diagram.ui.FigEdgePort");
+        // Convert class reference to a string name when the class is removed
+        addTranslation(
+                FigMNodeInstance.class.getName(),
+                FigNodeInstance.class.getName());
     }
 
     /*
