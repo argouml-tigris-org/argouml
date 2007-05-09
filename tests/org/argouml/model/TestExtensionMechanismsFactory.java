@@ -24,7 +24,10 @@
 
 package org.argouml.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -51,6 +54,24 @@ public class TestExtensionMechanismsFactory extends TestCase {
 	super(n);
     }
 
+    /**
+     * @return Returns the allModelElements.
+     */
+    static String[] getAllModelElements() {
+        return allModelElements;
+    }
+    
+    /**
+     * @return the concrete ModelElements which are testable
+     */
+    static List<String> getTestableModelElements() {
+        List<String> c = new ArrayList<String>(Arrays.asList(allModelElements));
+        // TODO: Stereotype was untested before, but I'm not sure if it was
+        // intentional.  Seems more like an oversight. - tfm
+//        c.remove("Stereotype");
+        return c;
+    }
+    
     /*
      * @see junit.framework.TestCase#setUp()
      */
@@ -71,17 +92,9 @@ public class TestExtensionMechanismsFactory extends TestCase {
      * Test creation.
      */
     public void testCreates() {
-
-	String[] objs = {
-            "TagDefinition",
-	    "TaggedValue",
-	    null,
-	};
-
 	CheckUMLModelHelper.createAndRelease(
 		     Model.getExtensionMechanismsFactory(),
-		     objs);
-
+		     getTestableModelElements());
 
         ExtensionMechanismsFactory emFactory =
             Model.getExtensionMechanismsFactory();
@@ -136,10 +149,4 @@ public class TestExtensionMechanismsFactory extends TestCase {
         assertEquals("TagDefinition not deleted", 0, tds.size());
     }
 
-    /**
-     * @return Returns the allModelElements.
-     */
-    static String[] getAllModelElements() {
-        return allModelElements;
-    }
 }

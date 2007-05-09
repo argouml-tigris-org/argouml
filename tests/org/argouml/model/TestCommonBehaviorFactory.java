@@ -24,8 +24,9 @@
 
 package org.argouml.model;
 
-import java.util.Collection;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -40,7 +41,7 @@ public class TestCommonBehaviorFactory extends TestCase {
      */
     private static String[] allModelElements =
     {
-	"Action",
+	"Action", // abstract
 	"ActionSequence",
 	"Argument",
 	"AttributeLink",
@@ -50,7 +51,7 @@ public class TestCommonBehaviorFactory extends TestCase {
 	"DataValue",
 	"DestroyAction",
 	"Exception",
-	"Instance",
+	"Instance", // abstract
 	"Link",
 	"LinkEnd",
 	"LinkObject",
@@ -80,42 +81,15 @@ public class TestCommonBehaviorFactory extends TestCase {
     public void setUp() {
         InitializeModel.initializeDefault();
     }
-
+    
     /**
-     * Test for creation.
+     * @return concrete ModelElement types
      */
-    public void testCreates() {
-
-	Collection objs = new Vector();
-
-        // Action is abstract
-	objs.add("ActionSequence");
-	objs.add("Argument");
-	objs.add("AttributeLink");
-	objs.add("CallAction");
-	objs.add("ComponentInstance");
-	objs.add("CreateAction");
-	objs.add("DataValue");
-	objs.add("DestroyAction");
-	objs.add("Exception");
-        // Instance is abstract
-	objs.add("Link");
-	objs.add("LinkEnd");
-	objs.add("NodeInstance");
-	objs.add("Object");
-	objs.add("Reception");
-	objs.add("ReturnAction");
-	objs.add("SendAction");
-	objs.add("Signal");
-	objs.add("Stimulus");
-	objs.add("TerminateAction");
-	objs.add("UninterpretedAction");
-
-	CheckUMLModelHelper.createAndRelease(
-	        Model.getCommonBehaviorFactory(),
-	        // +1 in array size because we also test the null value
-	        (String[]) objs.toArray(new String[objs.size() + 1]));
-
+    static List<String> getTestableModelElements() {
+        ArrayList c = new ArrayList(Arrays.asList(allModelElements));
+        c.remove("Action");
+        c.remove("Instance");
+        return c;
     }
 
     /**
@@ -124,4 +98,13 @@ public class TestCommonBehaviorFactory extends TestCase {
     static String[] getAllModelElements() {
         return allModelElements;
     }
+
+    /**
+     * Test for creation.
+     */
+    public void testCreates() {
+        CheckUMLModelHelper.createAndRelease(
+                Model.getCommonBehaviorFactory(), getTestableModelElements());
+    }
+
 }

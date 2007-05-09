@@ -24,6 +24,10 @@
 
 package org.argouml.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import junit.framework.TestCase;
 
 /**
@@ -39,15 +43,15 @@ public class TestStateMachinesFactory extends TestCase {
 	"CallEvent",
 	"ChangeEvent",
 	"CompositeState",
-	"Event",
+	"Event", // abstract
 	"FinalState",
 	"Guard",
 	"Pseudostate",
 	"SignalEvent",
 	"SimpleState",
-	"State",
+	"State", // abstract
 	"StateMachine",
-	"StateVertex",
+	"StateVertex", // abstract
 	"StubState",
 	"SubmachineState",
 	"SynchState",
@@ -64,6 +68,24 @@ public class TestStateMachinesFactory extends TestCase {
 	super(n);
     }
 
+    /**
+     * @return the concrete ModelElements which are testable
+     */
+    static List<String> getTestableModelElements() {
+        List<String> c = new ArrayList<String>(Arrays.asList(allModelElements));
+        c.remove("Event");
+        c.remove("State");
+        c.remove("StateVertex");
+        return c;
+    }
+    
+    /**
+     * @return Returns the allModelElements.
+     */
+    static String[] getAllModelElements() {
+        return allModelElements;
+    }
+    
     /*
      * @see junit.framework.TestCase#setUp()
      */
@@ -75,50 +97,18 @@ public class TestStateMachinesFactory extends TestCase {
      * Test if this class is really a singleton.
      */
     public void testSingleton() {
-
 	Object o1 = Model.getStateMachinesFactory();
-
 	Object o2 = Model.getStateMachinesFactory();
-
 	assertTrue("Different singletons", o1 == o2);
-
     }
 
     /**
      * Test creation.
      */
     public void testCreates() {
-	// Do not test State, Event or StateVertex. They are abstract.
-	String[] objs = {
-	    "CallEvent", 
-            "ChangeEvent", 
-            "CompositeState",
-	    // "Event",
-	    "FinalState",
-	    "Guard",
-	    "Pseudostate",
-	    "SignalEvent",
-	    "SimpleState",
-	    // "State",
-	    "StateMachine",
-	    // "StateVertex",
-	    "StubState",
-	    "SubmachineState",
-	    "SynchState",
-	    "TimeEvent",
-	    "Transition",
-	    null,
-	};
-
-	CheckUMLModelHelper.createAndRelease(
-					     Model.getStateMachinesFactory(),
-					     objs);
+        CheckUMLModelHelper.createAndRelease(
+                Model.getStateMachinesFactory(), getTestableModelElements());
     }
 
-    /**
-     * @return Returns the allModelElements.
-     */
-    static String[] getAllModelElements() {
-        return allModelElements;
-    }
+
 }

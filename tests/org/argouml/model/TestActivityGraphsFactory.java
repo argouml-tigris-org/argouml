@@ -24,8 +24,10 @@
 
 package org.argouml.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 
 /**
@@ -77,19 +79,8 @@ public class TestActivityGraphsFactory extends TestCase {
      * The test for creation.
      */
     public void testCreates() {
-	String [] objs = {
-	    "ActionState",
-	    "ActivityGraph",
-	    "CallState",
-	    "ClassifierInState",
-	    "ObjectFlowState",
-	    "Partition",
-	    "SubactivityState",
-	    null,
-	};
-
 	CheckUMLModelHelper.createAndRelease(Model.getActivityGraphsFactory(),
-					     objs);
+					     getTestableModelElements());
     }
 
     /**
@@ -98,4 +89,11 @@ public class TestActivityGraphsFactory extends TestCase {
     static String[] getAllModelElements() {
         return allModelElements;
     }
+    
+    /**
+     * @return all testable model elements
+     */
+    static List<String> getTestableModelElements() {
+        return Arrays.asList(allModelElements);
+    } 
 }

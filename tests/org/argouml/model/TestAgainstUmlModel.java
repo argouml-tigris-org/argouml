@@ -184,18 +184,18 @@ public class TestAgainstUmlModel extends TestCase {
     }
 
     static {
-        refs.put("Multiplicity",          new CannotTestFactoryMethod());
-        refs.put("MultiplicityRange",     new CannotTestFactoryMethod());
-        refs.put("Expression",            new CannotTestFactoryMethod());
-        refs.put("ObjectSetExpression",   new CannotTestFactoryMethod());
-        refs.put("TimeExpression",        new CannotTestFactoryMethod());
-        refs.put("BooleanExpression",     new CannotTestFactoryMethod());
-        refs.put("ActionExpression",      new CannotTestFactoryMethod());
-        refs.put("IterationExpression",   new CannotTestFactoryMethod());
-        refs.put("TypeExpression",        new CannotTestFactoryMethod());
-        refs.put("ArgListsExpression",    new CannotTestFactoryMethod());
-        refs.put("MappingExpression",     new CannotTestFactoryMethod());
-        refs.put("ProcedureExpression",   new CannotTestFactoryMethod());
+        refs.put("Multiplicity",          Model.getDataTypesFactory());
+        refs.put("MultiplicityRange",     Model.getDataTypesFactory());
+        refs.put("Expression",            Model.getDataTypesFactory());
+        refs.put("ObjectSetExpression",   Model.getDataTypesFactory());
+        refs.put("TimeExpression",        Model.getDataTypesFactory());
+        refs.put("BooleanExpression",     Model.getDataTypesFactory());
+        refs.put("ActionExpression",      Model.getDataTypesFactory());
+        refs.put("IterationExpression",   Model.getDataTypesFactory());
+        refs.put("TypeExpression",        Model.getDataTypesFactory());
+        refs.put("ArgListsExpression",    Model.getDataTypesFactory());
+        refs.put("MappingExpression",     Model.getDataTypesFactory());
+        refs.put("ProcedureExpression",   Model.getDataTypesFactory());
     }
 
     static {

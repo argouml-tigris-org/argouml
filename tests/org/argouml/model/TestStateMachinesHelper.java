@@ -54,7 +54,7 @@ public class TestStateMachinesHelper extends TestCase {
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
 			 Model.getStateMachinesFactory(),
-			 TestStateMachinesFactory.getAllModelElements());
+			 TestStateMachinesFactory.getTestableModelElements());
     }
 
     /**
@@ -63,6 +63,6 @@ public class TestStateMachinesHelper extends TestCase {
     public void testIsValidStereoType() {
 	CheckUMLModelHelper.isValidStereoType(
 		      Model.getStateMachinesFactory(),
-		      TestStateMachinesFactory.getAllModelElements());
+		      TestStateMachinesFactory.getTestableModelElements());
     }
 }

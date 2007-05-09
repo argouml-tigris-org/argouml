@@ -24,6 +24,9 @@
 
 package org.argouml.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 import junit.framework.TestCase;
 
 /**
@@ -35,18 +38,33 @@ public class TestModelManagementFactory extends TestCase {
      * The model elements to test.
      */
     private static String[] allModelElements = {
-	"ElementImport", "Model", "Package", "Subsystem",
+        "ElementImport", "Model", "Package", "Subsystem",
     };
 
     /**
      * The constructor.
-     *
-     * @param n the name
+     * 
+     * @param n
+     *            the name
      */
     public TestModelManagementFactory(String n) {
 	super(n);
     }
 
+    /**
+     * @return Returns the allModelElements.
+     */
+    protected static String[] getAllModelElements() {
+        return allModelElements;
+    }
+
+    /**
+     * @return all testable model elements
+     */
+    static List<String> getTestableModelElements() {
+        return Arrays.asList(allModelElements);
+    } 
+    
     /*
      * @see junit.framework.TestCase#setUp()
      */
@@ -58,35 +76,18 @@ public class TestModelManagementFactory extends TestCase {
      * Test if this class is really a singleton.
      */
     public void testSingleton() {
-
 	Object o1 = Model.getModelManagementFactory();
-
 	Object o2 = Model.getModelManagementFactory();
-
 	assertTrue("Different singletons", o1 == o2);
-
     }
 
     /**
      * Test creation.
      */
     public void testCreates() {
-
-	String[] objs = {
-	    "ElementImport", "Model", "Package", "Subsystem",
-	    null,
-	};
-
 	CheckUMLModelHelper.createAndRelease(
 		     Model.getModelManagementFactory(),
-		     objs);
-
+		     getTestableModelElements());
     }
 
-    /**
-     * @return Returns the allModelElements.
-     */
-    protected static String[] getAllModelElements() {
-        return allModelElements;
-    }
 }

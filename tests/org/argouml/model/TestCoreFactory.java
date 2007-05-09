@@ -25,10 +25,9 @@
 package org.argouml.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 
 import junit.framework.TestCase;
 
@@ -97,52 +96,40 @@ public class TestCoreFactory extends TestCase {
     }
 
     /**
+     * @return Returns the allModelElements.
+     */
+    static String[] getAllModelElements() {
+        return allModelElements;
+    }
+    
+    /**
+     * @return the concrete ModelElements which are testable
+     */
+    static List<String> getTestableModelElements() {
+        List<String> c = new ArrayList<String>(Arrays.asList(allModelElements));
+        c.remove("BehavioralFeature");
+        c.remove("Element");
+        c.remove("ModelElement");
+        c.remove("Namespace");
+        c.remove("GeneralizableElement");
+        c.remove("Classifier");
+        c.remove("Feature");
+        c.remove("StructuralFeature");
+        c.remove("BehavioralFeature");
+        c.remove("Relationship");
+        c.remove("PresentationElement");
+        return c;
+    }
+    
+    /**
      * Test creation of metatypes.
      *
      * TODO: we could add tests here to make sure that
      * we can NOT create abstract types
      */
     public void testCreates() {
-	Collection objs = new Vector();
-
-	// The abstract metaclasses in UML 1.3 include Element, ModelElement,
-        // Feature, Namespace, GeneralizableElement, Classifier,
-        // StructuralFeature, BehavioralFeature, Relationship,
-        // PresentationElement, Action, StateVertex, and
-    	// Event.
-        // UML 1.4 changes Instance and State to be abstract also.
-
-	objs.add("Abstraction");
-	//Association are abstract metaclass but we return an UmlAssociation
-	//from the createAssociation method of the CoreFactory interface
-	objs.add("Association");
-	objs.add("AssociationClass");
-	objs.add("AssociationEnd");
-	objs.add("Attribute");
-	objs.add("Binding");
-	objs.add("Class");
-	objs.add("Comment");
-	objs.add("Component");
-	objs.add("Constraint");
-	objs.add("DataType");
-	objs.add("Dependency");
-	objs.add("ElementResidence");
-	objs.add("Flow");
-	objs.add("Generalization");
-	objs.add("Interface");
-	objs.add("Method");
-	objs.add("Node");
-	objs.add("Operation");
-	objs.add("Parameter");
-	objs.add("Permission");
-        objs.add("TemplateArgument");
-	objs.add("TemplateParameter");
-	objs.add("Usage");
-
-	CheckUMLModelHelper.createAndRelease(
-	    Model.getCoreFactory(),
-	    // +1 in the size of the array because we also test the null value
-	    (String[]) objs.toArray(new String[objs.size() + 1]));
+        CheckUMLModelHelper.createAndRelease(
+                Model.getCoreFactory(), getTestableModelElements());
     }
 
     /**
@@ -405,7 +392,8 @@ public class TestCoreFactory extends TestCase {
      */
     public void testBuildTemplate() {
         Object model = Model.getModelManagementFactory().createModel();
-        Object templatedClass = Model.getCoreFactory().buildClass("Template", model);
+        Object templatedClass =
+                Model.getCoreFactory().buildClass("Template", model);
 
         Object parameterizedClass = Model.getCoreFactory().buildClass(
                 "ParameterizedClass", model);
@@ -542,11 +530,13 @@ public class TestCoreFactory extends TestCase {
         args.add(ta3);
         Object binding2 = Model.getCoreFactory().buildBinding(
                 parameterizedClass2, templatedClass, args);
-        assertNotNull("Failed to create 2nd binding to same template", binding2);
+        assertNotNull("Failed to create 2nd binding to same template", 
+                binding2);
         assertEquals("Binding arguments don't match", args, 
                 Model.getFacade().getArguments(binding2));
         
-        Collection deps = Model.getFacade().getClientDependencies(parameterizedClass2);
+        Collection deps =
+                Model.getFacade().getClientDependencies(parameterizedClass2);
         assertEquals(1, deps.size());
         Object dep = deps.iterator().next();
         assertEquals(binding2, dep);
@@ -557,10 +547,5 @@ public class TestCoreFactory extends TestCase {
         assertEquals(templatedClass, suppliers.iterator().next());
     }
 
-    /**
-     * @return Returns the allModelElements.
-     */
-    static String[] getAllModelElements() {
-        return allModelElements;
-    }
+
 }

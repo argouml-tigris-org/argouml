@@ -67,7 +67,7 @@ public class TestCoreHelper extends TestCase {
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
 			 Model.getCoreFactory(),
-			 TestCoreFactory.getAllModelElements());
+			 TestCoreFactory.getTestableModelElements());
     }
 
     /**
@@ -76,8 +76,9 @@ public class TestCoreHelper extends TestCase {
     public void testIsValidStereoType() {
         CheckUMLModelHelper.isValidStereoType(
                           Model.getCoreFactory(),
-                          TestCoreFactory.getAllModelElements());
+                          TestCoreFactory.getTestableModelElements());
     }
+
 
     /**
      * Test subtype check.

@@ -24,6 +24,9 @@
 
 package org.argouml.model;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import junit.framework.TestCase;
 
 /**
@@ -54,7 +57,7 @@ public class TestCommonBehaviorHelper extends TestCase {
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
 			 Model.getCommonBehaviorFactory(),
-			 TestCommonBehaviorFactory.getAllModelElements());
+			 TestCommonBehaviorFactory.getTestableModelElements());
     }
 
     /**
@@ -63,6 +66,8 @@ public class TestCommonBehaviorHelper extends TestCase {
     public void testIsValidStereoType() {
 	CheckUMLModelHelper.isValidStereoType(
 		      Model.getCommonBehaviorFactory(),
-		      TestCommonBehaviorFactory.getAllModelElements());
+                      TestCommonBehaviorFactory.getTestableModelElements());
     }
+    
+
 }

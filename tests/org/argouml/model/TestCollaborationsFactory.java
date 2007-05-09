@@ -24,6 +24,9 @@
 
 package org.argouml.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 import junit.framework.TestCase;
 
 
@@ -64,24 +67,25 @@ public class TestCollaborationsFactory extends TestCase {
     }
 
     /**
+     * @return Returns the allModelElements.
+     */
+    static String[] getAllModelElements() {
+        return allModelElements;
+    }
+
+    /**
+     * @return all testable model elements
+     */
+    static List<String> getTestableModelElements() {
+        return Arrays.asList(allModelElements);
+    } 
+    
+    /**
      * Test the creation of the elements.
      */
     public void testCreates() {
-
-        String[] objs = {
-	    "AssociationEndRole",
-	    "AssociationRole",
-	    "ClassifierRole",
-	    "Collaboration",
-	    "Interaction",
-	    "Message",
-	    null,
-	};
-
         CheckUMLModelHelper.createAndRelease(
-            Model.getCollaborationsFactory(),
-            objs);
-
+                Model.getCollaborationsFactory(), getTestableModelElements());
     }
 
     /**
@@ -144,13 +148,7 @@ public class TestCollaborationsFactory extends TestCase {
                 Model.getUmlFactory().isRemoved(inter));
     }
 
-    /**
-     * @return Returns the allModelElements.
-     */
-    static String[] getAllModelElements() {
-        return allModelElements;
-    }
-
+    
     /**
      * Test that an Exception is thrown when a null is sent.  We don't
      * really care which exception is thrown.

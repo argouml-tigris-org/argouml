@@ -24,6 +24,9 @@
 
 package org.argouml.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 import junit.framework.TestCase;
 
 
@@ -54,6 +57,20 @@ public class TestUseCasesFactory extends TestCase {
         super(n);
     }
 
+    /**
+     * @return Returns the allModelElements.
+     */
+    static String[] getAllModelElements() {
+        return allModelElements;
+    }
+
+    /**
+     * @return all testable model elements
+     */
+    static List<String> getTestableModelElements() {
+        return Arrays.asList(allModelElements);
+    } 
+    
     /*
      * @see junit.framework.TestCase#setUp()
      */
@@ -74,18 +91,8 @@ public class TestUseCasesFactory extends TestCase {
      * Test creation.
      */
     public void testCreates() {
-	String [] objs = {
-	    "Actor",
-	    "Extend",
-	    "ExtensionPoint",
-	    "Include",
-	    "UseCase",
-	    "UseCaseInstance",
-	    null,
-	};
-
-	CheckUMLModelHelper.createAndRelease(Model.getUseCasesFactory(),
-					     objs);
+        CheckUMLModelHelper.createAndRelease(
+                Model.getUseCasesFactory(), getTestableModelElements());
     }
 
     /**
@@ -110,13 +117,5 @@ public class TestUseCasesFactory extends TestCase {
 		 && Model.getFacade().getExtensionPoints(extend).size() == 1));
     }
 
-
-
-    /**
-     * @return Returns the allModelElements.
-     */
-    static String[] getAllModelElements() {
-        return allModelElements;
-    }
 }
 
