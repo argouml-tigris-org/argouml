@@ -514,20 +514,26 @@ public class Main {
     }
 
     /**
-     * Checks tha JVM Version.<p>
-     *
-     * If it is a non supported JVM version we exit immediatly.
+     * Check tha JVM Version.
+     * <p>
+     * If it is a unsupported JVM version we exit immediately.
+     * <p>
+     * NOTE: In most cases the JVM classloader will complain about an
+     * UnsupportedClassVersionError long before we get anywhere near this point
+     * in the initialization.
      */
     private static void checkJVMVersion() {
         // check if we are using a supported java version
         String javaVersion = System.getProperty("java.version", "");
         // exit if unsupported java version.
-        if (javaVersion.startsWith("1.3")
-            || javaVersion.startsWith("1.2")
-            || javaVersion.startsWith("1.1")) {
+        if (javaVersion.startsWith("1.4") 
+                || javaVersion.startsWith("1.3")
+                || javaVersion.startsWith("1.2")
+                || javaVersion.startsWith("1.1")) {
 
 	    System.err.println("You are using Java " + javaVersion + ", "
-			       + "Please use Java 1.4 or later with ArgoUml");
+			       + "Please use Java 5 (aka 1.5) or later" 
+                               + " with ArgoUML");
 	    System.exit(0);
         }
     }
