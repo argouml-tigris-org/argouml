@@ -79,6 +79,7 @@ import org.omg.uml.foundation.core.Component;
 import org.omg.uml.foundation.core.DataType;
 import org.omg.uml.foundation.core.Dependency;
 import org.omg.uml.foundation.core.Enumeration;
+import org.omg.uml.foundation.core.EnumerationLiteral;
 import org.omg.uml.foundation.core.GeneralizableElement;
 import org.omg.uml.foundation.core.Generalization;
 import org.omg.uml.foundation.core.Interface;
@@ -115,7 +116,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
  *      Object, Object, Object, Object)
  * @see org.argouml.model.UmlFactory#buildNode(Object)
  */
-public final class MetaTypesMDRImpl implements MetaTypes {
+final class MetaTypesMDRImpl implements MetaTypes {
 
     /**
      * Given a model element instance returns the name of its meta type.
@@ -276,6 +277,10 @@ public final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getEnumeration() {
         return Enumeration.class;
+    }
+    
+    public Object getEnumerationLiteral() {
+        return EnumerationLiteral.class;
     }
 
     public Object getEvent() {
@@ -481,4 +486,5 @@ public final class MetaTypesMDRImpl implements MetaTypes {
     public Object getInteraction() {
         return Interaction.class;
     }
+
 }
