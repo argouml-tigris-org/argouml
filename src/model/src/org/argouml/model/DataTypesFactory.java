@@ -32,7 +32,7 @@ import java.util.List;
  */
 public interface DataTypesFactory extends Factory {
     /**
-     * Create an empty but initialized instance of a UML ActionExpression.
+     * Create an initialized instance of a UML ActionExpression.
      *
      * @param language the language for the expression
      * @param body the body for the expression
@@ -42,7 +42,7 @@ public interface DataTypesFactory extends Factory {
             String body);
 
     /**
-     * Create an empty but initialized instance of a UML ArgListsExpression.
+     * Create an initialized instance of a UML ArgListsExpression.
      *
      * @param language the language for the expression
      * @param body the body for the expression
@@ -51,7 +51,7 @@ public interface DataTypesFactory extends Factory {
     Object createArgListsExpression(String language, String body);
 
     /**
-     * Create an empty but initialized instance of a UML BooleanExpression.
+     * Create an initialized instance of a UML BooleanExpression.
      *
      * @param language the language for the expression
      * @param body the body for the expression
@@ -60,7 +60,7 @@ public interface DataTypesFactory extends Factory {
     Object createBooleanExpression(String language, String body);
 
     /**
-     * Create an empty but initialized instance of a UML Expression.
+     * Create an initialized instance of a UML Expression.
      *
      * @param language the language for the expression
      * @param body the body for the expression
@@ -69,7 +69,7 @@ public interface DataTypesFactory extends Factory {
     Object createExpression(String language, String body);
 
     /**
-     * Create an empty but initialized instance of a UML IterationExpression.
+     * Create an initialized instance of a UML IterationExpression.
      *
      * @param language the language for the expression
      * @param body the body for the expression
@@ -78,7 +78,7 @@ public interface DataTypesFactory extends Factory {
     Object createIterationExpression(String language, String body);
 
     /**
-     * Create an empty but initialized instance of a UML MappingExpression.
+     * Create an initialized instance of a UML MappingExpression.
      *
      * @param language the language for the expression
      * @param body the body for the expression
@@ -87,7 +87,7 @@ public interface DataTypesFactory extends Factory {
     Object createMappingExpression(String language, String body);
 
     /**
-     * Create an empty but initialized instance of a UML ObjectSetExpression.
+     * Create an initialized instance of a UML ObjectSetExpression.
      *
      * @param language the language for the expression
      * @param body the body for the expression
@@ -96,7 +96,7 @@ public interface DataTypesFactory extends Factory {
     Object createObjectSetExpression(String language, String body);
 
     /**
-     * Create an empty but initialized instance of a UML ProcedureExpression.
+     * Create an initialized instance of a UML ProcedureExpression.
      *
      * @param language the language for the expression
      * @param body the body for the expression
@@ -105,7 +105,7 @@ public interface DataTypesFactory extends Factory {
     Object createProcedureExpression(String language, String body);
 
     /**
-     * Create an empty but initialized instance of a UML TimeExpression.
+     * Create an initialized instance of a UML TimeExpression.
      *
      * @param language the language for the expression
      * @param body the body for the expression
@@ -114,7 +114,7 @@ public interface DataTypesFactory extends Factory {
     Object createTimeExpression(String language, String body);
 
     /**
-     * Create an empty but initialized instance of a UML TypeExpression.
+     * Create an initialized instance of a UML TypeExpression.
      *
      * @param language the language for the expression
      * @param body the body for the expression
@@ -123,7 +123,7 @@ public interface DataTypesFactory extends Factory {
     Object createTypeExpression(String language, String body);
 
     /**
-     * Create an empty but initialized instance of a UML Multiplicity. Quote
+     * Create an initialized instance of a UML Multiplicity. Quote
      * from the standard: "In the metamodel a MultiplicityRange defines a range
      * of integers. The upper bound of the range cannot be below the lower
      * bound. The lower bound must be a nonnegative integer. The upper bound
@@ -143,7 +143,7 @@ public interface DataTypesFactory extends Factory {
     Object createMultiplicity(int lower, int upper);
 
     /**
-     * Create an empty but initialized instance of a UML Multiplicity.
+     * Create an initialized instance of a UML Multiplicity.
      *
      * @param range a List containing the range
      * @return an initialized UML Multiplicity instance.
@@ -151,7 +151,7 @@ public interface DataTypesFactory extends Factory {
     Object createMultiplicity(List range);
 
     /**
-     * Create an empty but initialized instance of a UML Multiplicity.
+     * Create an initialized instance of a UML Multiplicity.
      *
      * @param str a String representing the multiplicity
      * @return an initialized UML Multiplicity instance.
