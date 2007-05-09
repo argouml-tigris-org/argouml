@@ -31,7 +31,7 @@ import java.util.Iterator;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.reveng.DiagramInterface;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.MutableGraphModel;

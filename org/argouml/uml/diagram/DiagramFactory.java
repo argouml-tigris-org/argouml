@@ -39,7 +39,6 @@ import org.argouml.model.Model;
 import org.argouml.model.SequenceDiagram;
 import org.argouml.model.StateDiagram;
 import org.argouml.model.UseCaseDiagram;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.GraphChangeAdapter;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;

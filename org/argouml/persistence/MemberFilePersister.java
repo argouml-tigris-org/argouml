@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 
@@ -116,7 +117,7 @@ abstract class MemberFilePersister {
                 new BufferedReader(
                         new InputStreamReader(
                                 new FileInputStream(file), 
-                                PersistenceManager.getEncoding()));
+                                Argo.getEncoding()));
 
             // Skip the <?xml... first line
             String line = reader.readLine();

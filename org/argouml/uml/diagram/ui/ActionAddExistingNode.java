@@ -28,8 +28,8 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.undo.UndoableAction;
 

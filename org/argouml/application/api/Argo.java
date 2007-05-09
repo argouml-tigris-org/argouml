@@ -386,4 +386,13 @@ public final class Argo {
             Category.getRoot().getLoggerRepository().setThreshold(Level.OFF);
 	}
     }
+
+    /**
+     * Supply the encoding to be used throughout the persistence
+     * mechanism.
+     * @return the encoding.
+     */
+    public static String getEncoding() {
+        return "UTF-8";
+    }
 }

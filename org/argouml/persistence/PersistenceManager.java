@@ -24,6 +24,7 @@
 
 package org.argouml.persistence;
 
+import java.awt.Component;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
@@ -42,7 +43,6 @@ import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.ui.ArgoFrame;
 import org.tigris.gef.util.UnexpectedException;
 
 
@@ -331,8 +331,10 @@ public final class PersistenceManager {
      * @param overwrite if true, then the user is not asked
      * @param file the given file
      * @return true if we are allowed to overwrite the given file
+     * @param frame the Component to display the confirmation dialog on
      */
-    public boolean confirmOverwrite(boolean overwrite, File file) {
+    public boolean confirmOverwrite(Component frame, 
+            boolean overwrite, File file) {
         if (file.exists() && !overwrite) {
             String sConfirm =
                 Translator.messageFormat(
@@ -340,7 +342,7 @@ public final class PersistenceManager {
                     new Object[] {file});
             int nResult =
                 JOptionPane.showConfirmDialog(
-                        ArgoFrame.getInstance(),
+                        frame,
                         sConfirm,
                         Translator.localize(
                             "optionpane.confirm-overwrite-title"),
@@ -353,15 +355,6 @@ public final class PersistenceManager {
         return true;
     }
 
-    /**
-     * Supply the encoding to be used throughout the persistence
-     * mechanism.
-     * @return the encoding.
-     */
-    public static String getEncoding() {
-        return "UTF-8";
-    }
-    
     /**
      * Get the last message which caused loading to fail. Used for junit tests.
      *

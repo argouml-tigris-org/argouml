@@ -34,6 +34,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
@@ -64,7 +65,7 @@ class TodoListMemberFilePersister extends MemberFilePersister {
         try {
             TodoParser parser = new TodoParser();
             Reader reader = new InputStreamReader(inputStream,
-                    PersistenceManager.getEncoding());
+                    Argo.getEncoding());
             parser.readTodoList(reader);
             ProjectMemberTodoList pm = new ProjectMemberTodoList("", project);
             project.addMember(pm);

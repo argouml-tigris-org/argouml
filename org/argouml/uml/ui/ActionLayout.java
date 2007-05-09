@@ -32,7 +32,7 @@ import javax.swing.Action;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.activity.layout.ActivityDiagramLayouter;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.layout.Layouter;

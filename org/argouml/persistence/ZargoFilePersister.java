@@ -42,6 +42,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -209,7 +210,7 @@ class ZargoFilePersister extends UmlFilePersister {
                     + combinedFile.getAbsolutePath());
             combinedFile.deleteOnExit();
 
-            String encoding = PersistenceManager.getEncoding();
+            String encoding = Argo.getEncoding();
             FileOutputStream stream = new FileOutputStream(combinedFile);
             PrintWriter writer =
                 new PrintWriter(new BufferedWriter(
@@ -277,7 +278,7 @@ class ZargoFilePersister extends UmlFilePersister {
             // then the xmi
             zis = openZipStreamAt(file.toURL(), ".xmi");
             reader = new BufferedReader(new InputStreamReader(zis, 
-                    PersistenceManager.getEncoding()));
+                    Argo.getEncoding()));
             // Skip 1 lines
             reader.readLine();
 
@@ -345,7 +346,7 @@ class ZargoFilePersister extends UmlFilePersister {
 
                 BufferedReader reader = new BufferedReader(
                     new InputStreamReader(sub, 
-                            PersistenceManager.getEncoding()));
+                            Argo.getEncoding()));
                 String firstLine = reader.readLine();
                 if (firstLine.startsWith("<?xml")) {
                     // Skip the 2 lines

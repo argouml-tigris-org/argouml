@@ -28,7 +28,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.beans.PropertyVetoException;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
 /**

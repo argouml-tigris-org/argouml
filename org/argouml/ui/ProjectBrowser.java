@@ -84,6 +84,7 @@ import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
@@ -1215,7 +1216,7 @@ public final class ProjectBrowser
 
         try {
             if (!PersistenceManager.getInstance()
-                    .confirmOverwrite(overwrite, file)) {
+                    .confirmOverwrite(ArgoFrame.getInstance(), overwrite, file)) {
                 return false;
             }
 
