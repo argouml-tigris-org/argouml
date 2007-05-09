@@ -36,9 +36,9 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
-import org.argouml.persistence.PersistenceManager;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -128,7 +128,7 @@ public class ConfigLoader {
         if (is != null) {
             try {
                 lnr = new LineNumberReader(new InputStreamReader(is, 
-                        PersistenceManager.getEncoding()));
+                        Argo.getEncoding()));
             } catch (UnsupportedEncodingException ueExc) {
                 lnr = new LineNumberReader(new InputStreamReader(is));
             }

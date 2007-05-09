@@ -38,6 +38,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -131,7 +132,7 @@ class ZipFilePersister extends XmiFilePersister {
             stream.putNextEntry(xmiEntry);
             OutputStream bout = new BufferedOutputStream(stream);
             writer = new OutputStreamWriter(bout, 
-                    PersistenceManager.getEncoding());
+                    Argo.getEncoding());
 
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {

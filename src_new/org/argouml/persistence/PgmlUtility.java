@@ -29,9 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.ui.FigEdgeAssociationClass;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Layer;

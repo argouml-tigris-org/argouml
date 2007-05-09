@@ -69,7 +69,7 @@ public class ActionGenerationSettings extends UndoableAction {
      * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
     public boolean isEnabled() {
-	org.argouml.ui.ArgoDiagram activeDiagram =
+	org.argouml.uml.diagram.ArgoDiagram activeDiagram =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	return super.isEnabled()
 	    && (activeDiagram instanceof UMLDiagram);

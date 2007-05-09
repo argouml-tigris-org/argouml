@@ -661,7 +661,7 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
 
     /**
      * 
-     * @see org.argouml.ui.ArgoDiagram#remove()
+     * @see org.argouml.uml.diagram.ArgoDiagram#remove()
      */
     @Override
     public void remove() {

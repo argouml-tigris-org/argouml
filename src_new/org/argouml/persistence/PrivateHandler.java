@@ -26,19 +26,14 @@ package org.argouml.persistence;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.cognitive.ItemUID;
-
-import org.argouml.ui.ArgoDiagram;
-
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-
 import org.tigris.gef.persistence.pgml.Container;
 import org.tigris.gef.persistence.pgml.FigEdgeHandler;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
 import org.tigris.gef.persistence.pgml.PGMLHandler;
-
 import org.xml.sax.SAXException;
 
 /**

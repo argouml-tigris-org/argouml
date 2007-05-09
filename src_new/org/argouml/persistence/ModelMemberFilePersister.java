@@ -50,9 +50,9 @@ import org.argouml.model.UmlException;
 import org.argouml.model.XmiException;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
@@ -96,7 +96,7 @@ class ModelMemberFilePersister extends MemberFilePersister
         // of argouml if a project is corrupted. Issue 913
         // Created xmireader with method getErrors to check if parsing went well
         try {
-            source.setEncoding(PersistenceManager.getEncoding());
+            source.setEncoding(Argo.getEncoding());
             readModels(project, source);
             mmodel = getCurModel();
         } catch (OpenException e) {

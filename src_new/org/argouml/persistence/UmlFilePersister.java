@@ -49,6 +49,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -229,7 +230,7 @@ class UmlFilePersister extends AbstractFilePersister {
         try {
             writer.println("<?xml version = \"1.0\" "
                     + "encoding = \"" 
-                    + PersistenceManager.getEncoding() + "\" ?>");
+                    + Argo.getEncoding() + "\" ?>");
             writer.println("<uml version=\"" + PERSISTENCE_VERSION + "\">");
             // Write out header section
             try {
@@ -355,7 +356,7 @@ class UmlFilePersister extends AbstractFilePersister {
             ArgoParser parser = new ArgoParser();
             Reader reader =
                     new InputStreamReader(inputStream, 
-                            PersistenceManager.getEncoding());
+                            Argo.getEncoding());
             parser.readProject(p, reader);
             
             List memberList = parser.getMemberList();
@@ -428,7 +429,7 @@ class UmlFilePersister extends AbstractFilePersister {
                 new FileOutputStream(transformedFile);
             Writer writer =
                 new BufferedWriter(new OutputStreamWriter(stream, 
-                        PersistenceManager.getEncoding()));
+                        Argo.getEncoding()));
             Result result = new StreamResult(writer);
 
             StreamSource inputStreamSource = new StreamSource(file);
@@ -458,7 +459,7 @@ class UmlFilePersister extends AbstractFilePersister {
         try {
             inputStream = new BufferedInputStream(file.toURL().openStream());
             reader = new BufferedReader(new InputStreamReader(inputStream, 
-                    PersistenceManager.getEncoding()));
+                    Argo.getEncoding()));
             String rootLine = reader.readLine();
             while (!rootLine.startsWith("<uml ")) {
                 rootLine = reader.readLine();
@@ -501,7 +502,7 @@ class UmlFilePersister extends AbstractFilePersister {
         try {
             inputStream = new BufferedInputStream(file.toURL().openStream());
             reader = new BufferedReader(new InputStreamReader(inputStream, 
-                    PersistenceManager.getEncoding()));
+                    Argo.getEncoding()));
             String versionLine = reader.readLine();
             while (!versionLine.trim().startsWith("<version>")) {
                 versionLine = reader.readLine();
