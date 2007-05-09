@@ -140,7 +140,7 @@ public class Main {
         org.tigris.gef.base.Globals.setLastDirectory(directory);
         
         // Initialise the version of this application
-        ApplicationVersion.init(ArgoVersion.getVersion());
+        initVersion();
 
         // Set the i18n locale
         Translator.init(Configuration.getString(Argo.KEY_LOCALE));
@@ -784,6 +784,18 @@ public class Main {
         );         
     }
 
+    /**
+     * Publish the version of the ArgoUML application. <p>
+     * 
+     * This function is intentionally public, 
+     * since applications built on ArgoUML, 
+     * that do not make use of Main.main(), 
+     * can call this function and then access ArgoUML's version 
+     * from the ApplicationVersion class. 
+     */
+    public static void initVersion() {
+        ArgoVersion.init();
+    }
 
 
 } /* end Class Main */

@@ -47,13 +47,13 @@ import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
 /**
- * This class manages the projects loaded in argouml.
+ * This class manages the projects loaded in argouml. <p>
  *
- * Classes in Argouml can ask this class for the current
+ * Classes in ArgoUML can ask this class for the current
  * project and set the current project.  Since we only have one
  * project in ArgoUML at the moment, this class does not manage a list
  * of projects like one would expect. This could be a nice extension
- * for the future of argouml.  As soon as the current project is
+ * for the future of ArgoUML.  As soon as the current project is
  * changed, a property changed event is fired.
  *
  * @since Nov 17, 2002

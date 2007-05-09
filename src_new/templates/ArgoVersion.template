@@ -24,6 +24,8 @@
 
 package org.argouml.application;
 
+import org.argouml.application.helpers.ApplicationVersion;
+
 /**
  * This class <strong>only</strong> encapsulates the ArgoUML version string.<p>
  *
@@ -44,12 +46,10 @@ final class ArgoVersion {
     private static final String VERSION = "@ARGO_RELEASE_VERSION@";
 
     /**
-     * Retrieve the version number.
-     *
-     * @return the version number.
+     * Make the version of ArgoUML public. 
      */
-    static String getVersion() {
-        return VERSION;
+    static void init() {
+        ApplicationVersion.init(VERSION);
     }
 
     /**
