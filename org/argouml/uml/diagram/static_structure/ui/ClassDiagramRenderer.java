@@ -34,7 +34,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
-import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
@@ -144,7 +144,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         } else if (Model.getFacade().isAObject(node)) {
             figNode = new FigObject(gm, node);
         } else if (Model.getFacade().isANodeInstance(node)) {
-            figNode = new FigMNodeInstance(gm, node);
+            figNode = new FigNodeInstance(gm, node);
         } else if (Model.getFacade().isAComponentInstance(node)) {
             figNode = new FigComponentInstance(gm, node);
         } else {

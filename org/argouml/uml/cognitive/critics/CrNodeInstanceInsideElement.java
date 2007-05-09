@@ -32,7 +32,7 @@ import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 
 /**
@@ -103,10 +103,10 @@ public class CrNodeInstanceInsideElement extends CrUML {
 	ListSet offs = null;
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
-	    if (!(obj instanceof FigMNodeInstance)) {
+	    if (!(obj instanceof FigNodeInstance)) {
                 continue;
             }
-	    FigMNodeInstance fn = (FigMNodeInstance) obj;
+	    FigNodeInstance fn = (FigNodeInstance) obj;
 	    if (fn.getEnclosingFig() != null) {
 		if (offs == null) {
 		    offs = new ListSet();

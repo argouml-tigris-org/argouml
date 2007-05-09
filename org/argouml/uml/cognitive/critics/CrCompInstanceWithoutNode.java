@@ -34,7 +34,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
-import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 
 /**
@@ -107,7 +107,7 @@ public class CrCompInstanceWithoutNode extends CrUML {
         Object obj = null;
 	while (it.hasNext()) {
 	    obj = it.next();
-	    if (obj instanceof FigMNodeInstance) {
+	    if (obj instanceof FigNodeInstance) {
                 isNode = true;
             }
 	}

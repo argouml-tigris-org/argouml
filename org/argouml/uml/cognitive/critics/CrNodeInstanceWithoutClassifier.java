@@ -33,7 +33,7 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 
 /**
@@ -108,10 +108,10 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
 	ListSet offs = null;
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
-	    if (!(obj instanceof FigMNodeInstance)) {
+	    if (!(obj instanceof FigNodeInstance)) {
 	        continue;
 	    }
-	    FigMNodeInstance fn = (FigMNodeInstance) obj;
+	    FigNodeInstance fn = (FigNodeInstance) obj;
 	    if (fn != null) {
 		Object noi = /*(MNodeInstance)*/ fn.getOwner();
 		if (noi != null) {

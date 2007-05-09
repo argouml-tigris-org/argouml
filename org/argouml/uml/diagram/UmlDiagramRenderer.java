@@ -40,7 +40,7 @@ import org.argouml.uml.diagram.collaboration.ui.FigClassifierRole;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
 import org.argouml.uml.diagram.deployment.ui.FigMNode;
-import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.state.ui.FigBranchState;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
@@ -161,7 +161,7 @@ public abstract class UmlDiagramRenderer
         } else if (Model.getFacade().isANode(node)) {
             figNode = new FigMNode();
         } else if (Model.getFacade().isANodeInstance(node)) {
-            figNode = new FigMNodeInstance();
+            figNode = new FigNodeInstance();
         } else if (Model.getFacade().isAComponent(node)) {
             figNode = new FigComponent();
         } else if (Model.getFacade().isAComponentInstance(node)) {
