@@ -24,24 +24,31 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import java.util.Collections;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
+import org.argouml.model.InitializeModel;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
 
 /**
  * General test methods for UMLClassDiagrams
  */
 public class TestUMLClassDiagram extends TestCase {
 
+    private static Object[] nodeTypes;
+
     /**
      * The constructor.
-     *
-     * @param name the test name
+     * 
+     * @param name
+     *            the test name
      */
     public TestUMLClassDiagram(String name) {
-	super(name);
+        super(name);
     }
 
     /*
@@ -50,15 +57,54 @@ public class TestUMLClassDiagram extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        nodeTypes =
+                new Object[] {
+                        Model.getCoreFactory().createClass(),
+                        Model.getCoreFactory().createComment(),
+                        Model.getCoreFactory().createDataType(),
+                        Model.getCoreFactory().createEnumeration(),
+                        Model.getCommonBehaviorFactory().createException(),
+                        Model.getCoreFactory().createInterface(),
+                        Model.getModelManagementFactory().createModel(),
+                        Model.getModelManagementFactory().createPackage(),
+                        Model.getCommonBehaviorFactory().createSignal(),
+                        Model.getExtensionMechanismsFactory()
+                                .createStereotype(),
+                        Model.getModelManagementFactory().createSubsystem(),
+                        Model.getUseCasesFactory().createActor(),
+                        Model.getUseCasesFactory().createUseCase(),
+                        Model.getCommonBehaviorFactory().createObject(),
+                        Model.getCommonBehaviorFactory()
+                                .createComponentInstance(),
+                        Model.getCommonBehaviorFactory().createNodeInstance(),
+                };
     }
 
     /**
-     * Test the UMLClassDiagram emtpy constructor.
-     * The graph model should always be a ClassDiagramGraphModel
+     * Test the UMLClassDiagram empty constructor. The graph model should always
+     * be a ClassDiagramGraphModel
      */
     public void testUMLClassDiagram() {
-	UMLClassDiagram diagram = new UMLClassDiagram();
-	assertTrue(diagram.getGraphModel()
-		instanceof ClassDiagramGraphModel);
+        UMLClassDiagram diagram = new UMLClassDiagram();
+        assertTrue(diagram.getGraphModel() instanceof ClassDiagramGraphModel);
+    }
+
+    /**
+     * Test ClassDiagramRenderer lookup mechanism for resolving model element
+     * types to a Fig which can be added to the diagram.
+     */
+    public void testClassDiagramRenderer() {
+        UMLClassDiagram diagram = new UMLClassDiagram();
+        ClassDiagramRenderer renderer = new ClassDiagramRenderer();
+        GraphModel gm = new ClassDiagramGraphModel();
+        for (int i = 0; i < nodeTypes.length; i++) {
+            Fig fig =
+                    renderer.getFigNodeFor(
+                            gm, diagram.getLayer(), nodeTypes[i],
+                            Collections.EMPTY_MAP);
+            assertNotNull("failed to get Fig for " + nodeTypes[i], fig);
+            diagram.add(fig);
+        }
+
     }
 }
