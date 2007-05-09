@@ -79,7 +79,7 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
         } else if (Model.getFacade().isAAssociation(node)) {
             figNode = new FigNodeAssociation(gm, node);
         } else if (Model.getFacade().isANodeInstance(node)) {
-            figNode = new FigMNodeInstance(gm, node);
+            figNode = new FigNodeInstance(gm, node);
         } else if (Model.getFacade().isAComponent(node)) {
             figNode = new FigComponent(gm, node);
         } else if (Model.getFacade().isAComponentInstance(node)) {
