@@ -36,6 +36,7 @@ import java.util.Vector;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -47,9 +48,11 @@ import org.tigris.gef.presentation.Fig;
  * @author Tom Morris
  */
 public class FigSignal extends FigClassifierBox {
+    
+    private FigAttributesCompartment attributesFigCompartment;
 
     /**
-     * Main constructor for a {@link FigSignal}.
+     * Default constructor for a {@link FigSignal}.
      */
     public FigSignal() {
         super();
@@ -63,6 +66,9 @@ public class FigSignal extends FigClassifierBox {
         addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(borderFig);
+        attributesFigCompartment =
+            new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
+        addFig(attributesFigCompartment);
         
         setOperationsVisible(false);
         enableSizeChecking(true);
@@ -85,6 +91,21 @@ public class FigSignal extends FigClassifierBox {
         setBounds(getBounds());
     }
 
+    /**
+     * Construct a FigSignal owned by the given Signal and with
+     * bounds specified.
+     *
+     * @param node The UML object being placed.
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param w width
+     * @param h height
+     */
+    public FigSignal(Object node, int x, int y, int w, int h) {
+        this(null, node);
+        setBounds(x, y, w, h);
+    }
+    
     /*
      * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#makeSelection()
      */
