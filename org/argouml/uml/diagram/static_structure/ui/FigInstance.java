@@ -36,6 +36,10 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML MInstance in a diagram.
+ * 
+ * TODO: The UML element 'Instance' is abstract.  Shouldn't this
+ * figure be too?  If not, it should only be used as a last resort
+ * fallback if no more specialized type can be found. - tfm - 20070508
  *
  * @author agauthie
  */
