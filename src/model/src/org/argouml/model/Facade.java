@@ -157,6 +157,14 @@ public interface Facade {
     boolean isAAggregationKind(Object handle);
 
     /**
+     * Recognizer for Artifact.
+     *
+     * @param handle candidate
+     * @return true if handle is an Artifact
+     */
+    boolean isAArtifact(Object handle);
+    
+    /**
      * Recognizer for Association.
      *
      * @param handle candidate
@@ -197,6 +205,14 @@ public interface Facade {
     boolean isAAttribute(Object handle);
 
     /**
+     * Recognizer for AttributeLink.
+     *
+     * @param handle candidate
+     * @return true if handle is an AttributeLink
+     */
+    boolean isAAttributeLink(Object handle);
+    
+    /**
      * Recognizer for asynchronisity of an action.
      *
      * @param handle candidate
@@ -232,6 +248,14 @@ public interface Facade {
      */
     boolean isABehavioralFeature(Object handle);
 
+    /**
+     * Recognizer for Binding.
+     *
+     * @param handle candidate
+     * @return true if handle is a Binding
+     */
+    boolean isABinding(Object handle);
+    
     /**
      * Recognizer for CallAction.
      *
@@ -312,6 +336,14 @@ public interface Facade {
      */
     boolean isACollaboration(Object handle);
 
+    /**
+     * Recognizer for CollaborationInstanceSet.
+     *
+     * @param handle candidate
+     * @return true if handle is a CollaborationInstanceSet
+     */
+    boolean isACollaborationInstanceSet(Object handle);
+    
     /**
      * Recognizer for Component.
      *
@@ -459,6 +491,69 @@ public interface Facade {
     boolean isAExpression(Object handle);
 
     /**
+     * Recognizer for ArgListsExpression.
+     *
+     * @param handle candidate
+     * @return true if handle is an ArgListsExpression
+     */
+    boolean isAArgListsExpression(Object handle);
+    
+    /**
+     * Recognizer for BooleanExpression.
+     *
+     * @param handle candidate
+     * @return true if handle is an BooleanExpression
+     */
+    boolean isABooleanExpression(Object handle);
+    
+    /**
+     * Recognizer for IterationExpression.
+     *
+     * @param handle candidate
+     * @return true if handle is an IterationExpression
+     */
+    boolean isAIterationExpression(Object handle);
+    
+    /**
+     * Recognizer for MappingExpression.
+     *
+     * @param handle candidate
+     * @return true if handle is an MappingExpression
+     */
+    boolean isAMappingExpression(Object handle);
+    
+    /**
+     * Recognizer for ObjectSetExpression.
+     *
+     * @param handle candidate
+     * @return true if handle is an ObjectSetExpression
+     */
+    boolean isAObjectSetExpression(Object handle);
+    /**
+     * Recognizer for ProcedureExpression.
+     *
+     * @param handle candidate
+     * @return true if handle is an ProcedureExpression
+     */
+    boolean isAProcedureExpression(Object handle);
+    
+    /**
+     * Recognizer for TimeExpression.
+     *
+     * @param handle candidate
+     * @return true if handle is an TimeExpression
+     */
+    boolean isATimeExpression(Object handle);
+    
+    /**
+     * Recognizer for TypeExpression.
+     *
+     * @param handle candidate
+     * @return true if handle is an TypeExpression
+     */
+    boolean isATypeExpression(Object handle);
+
+    /**
      * Recognizer for Extend.
      *
      * @param handle candidate
@@ -546,6 +641,15 @@ public interface Facade {
      */
     boolean isAInteraction(Object handle);
 
+
+    /**
+     * Recognizer for InteractionInstanceSet.
+     *
+     * @param handle candidate
+     * @return true if handle is a InteractionInstanceSet
+     */
+    boolean isAInteractionInstanceSet(Object handle);
+    
     /**
      * Recognizer for Interface.
      *
@@ -570,6 +674,14 @@ public interface Facade {
      */
     boolean isALinkEnd(Object handle);
 
+    /**
+     * Recognizer for LinkObject.
+     *
+     * @param handle candidate
+     * @return true if handle is a LinkObject
+     */
+    boolean isALinkObject(Object handle);
+    
     /**
      * Recognizer for Message.
      *
@@ -701,6 +813,23 @@ public interface Facade {
      */
     boolean isAPackage(Object handle);
 
+    /**
+     * Recognizer for Primitive.
+     *
+     * @param handle candidate
+     * @return true if handle is a Primitive
+     */
+    boolean isAPrimitive(Object handle);
+
+    /**
+     * Recognizer for ProgrammingLanguageDataType.
+     *
+     * @param handle candidate
+     * @return true if handle is a ProgrammingLanguageDataType
+     */
+    boolean isAProgrammingLanguageDataType(Object handle);
+    
+    
     /**
      * Recognizer for Pseudostate.
      *
@@ -890,6 +1019,14 @@ public interface Facade {
     boolean isASubsystem(Object handle);
 
     /**
+     * Recognizer for SubsystemInstance.
+     *
+     * @param handle candidate
+     * @return true if handle is a SubsystemInstance
+     */
+    boolean isASubsystemInstance(Object handle);
+    
+    /**
      * Recognizer for SynchState.
      *
      * @param handle candidate
@@ -905,6 +1042,23 @@ public interface Facade {
      */
     boolean isATaggedValue(Object handle);
 
+    /**
+     * Recognizer for TemplateArgument.
+     *
+     * @param handle candidate
+     * @return true if handle is a TemplateArgument
+     */
+    boolean isATemplateArgument(Object handle);
+
+
+    /**
+     * Recognizer for TemplateParameter.
+     *
+     * @param handle candidate
+     * @return true if handle is a TemplateParameter
+     */
+    boolean isATemplateParameter(Object handle);
+    
     /**
      * Recognizer for TerminateAction.
      *
@@ -962,10 +1116,19 @@ public interface Facade {
      * Recognizer for a UseCase.
      *
      * @param handle candidate
-     * @return true if handle is a Transition
+     * @return true if handle is a UseCase
      */
     boolean isAUseCase(Object handle);
 
+
+    /**
+     * Recognizer for a UseCaseInstance.
+     *
+     * @param handle candidate
+     * @return true if handle is a UseCaseInstance
+     */
+    boolean isAUseCaseInstance(Object handle);
+    
     /**
      * Recognizer for VisibilityKind.
      *

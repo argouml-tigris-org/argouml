@@ -194,6 +194,11 @@ public interface MetaTypes {
      * @return Returns the Enumeration.
      */
     Object getEnumeration();
+
+    /**
+     * @return Returns the Enumeration.
+     */
+    Object getEnumerationLiteral();
     
     /**
      * @return Returns the Event.
