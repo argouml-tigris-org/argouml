@@ -134,6 +134,17 @@ public class TestDependencies extends TestCase {
             suite.addTest(new CheckLowLevel(jdepend, low[i]));
         }
 
+        String[][] dep = {
+            // There shall not be a dependency from ... to ...
+            {"org.argouml.persistence", "org.argouml.ui"},
+            {"org.argouml.moduleloader", "org.argouml.persistence"},
+            {"org.argouml.language.java.generator", "org.argouml.notation"},
+            {"org.argouml.notation", "org.argouml.notation.ui"},
+        };
+        for (int i = 0; i < dep.length; i++) {
+            suite.addTest(new CheckNoDependency(jdepend, dep[i]));
+        }
+
         return suite;
     }
 
@@ -229,6 +240,37 @@ public class TestDependencies extends TestCase {
                         msg.append(" ");
                         msg.append(jpWrong.getName());
                     }
+                    assertTrue(msg.toString(), false);
+                }
+            }
+        }
+    }
+    
+    static class CheckNoDependency extends TestCase {
+        private String nameFrom;
+        private String nameTo;
+        private JDepend jdepend;
+
+        CheckNoDependency(JDepend jd, String[] name) {
+            super("Check for dependency from " + name[0] + " to " + name[1]);
+            jdepend = jd;
+            nameFrom = name[0];
+            nameTo = name[1];
+        }
+
+        @SuppressWarnings("unchecked")
+        public void runTest() {
+            JavaPackage packageFrom = jdepend.getPackage(nameFrom);
+            JavaPackage packageTo = jdepend.getPackage(nameTo);
+            assertNotNull("Missing package", packageFrom);
+            Collection<JavaPackage> efferents = packageFrom.getEfferents();
+            for (JavaPackage jp : efferents) {
+                if (jp.equals(packageTo)) {
+                    StringBuffer msg = new StringBuffer(
+                        "JDepend indicates a dependency from ");
+                    msg.append(nameFrom);
+                    msg.append(" to ");
+                    msg.append(nameTo);
                     assertTrue(msg.toString(), false);
                 }
             }
