@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -44,29 +45,25 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.tigris.gef.base.SaveGraphicsAction;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.tigris.gef.base.CmdSaveGraphics;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.undo.UndoableAction;
 import org.tigris.gef.util.Util;
-
 
 /**
  * Wraps a CmdSaveGIF or CmdSave(E)PS to allow selection of an output file.
  * Introduced thanks to issue 2126. Saves diagrams only as GIFs. <p>
  *
  * TODO: Add a user choice for other formats (PNG, SVG,...)
- *
+ * TODO: Why is this an UndoableAction?  (and how?) - tfm
+ * 
  * @author Leonardo Souza Mario Bueno (lsbueno@tigris.org)
  */
 
 public class ActionSaveAllGraphics extends UndoableAction {
     private static final Logger LOG =
         Logger.getLogger(ActionSaveAllGraphics.class);
-
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
@@ -80,13 +77,7 @@ public class ActionSaveAllGraphics extends UndoableAction {
                 Translator.localize("action.save-all-graphics"));
     }
 
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    /*
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
+    @Override
     public void actionPerformed( ActionEvent ae ) {
         super.actionPerformed(ae);
         trySave( false );
@@ -141,7 +132,7 @@ public class ActionSaveAllGraphics extends UndoableAction {
         if ( target instanceof Diagram ) {
             String defaultName = ((Diagram) target).getName();
             defaultName = Util.stripJunk(defaultName);
-            // FIX - It's probably worthwhile to abstract and factor
+            // TODO: It's probably worthwhile to abstract and factor
             // this chooser and directory stuff. More file handling is
             // coming, I'm sure.
             try {
@@ -149,8 +140,8 @@ public class ActionSaveAllGraphics extends UndoableAction {
                     + SaveGraphicsManager.getInstance().getDefaultSuffix());
                 String name = theFile.getName();
                 String path = theFile.getParent();
-                CmdSaveGraphics cmd = SaveGraphicsManager.getInstance()
-                    .getSaveCommandBySuffix(
+                SaveGraphicsAction cmd = SaveGraphicsManager.getInstance()
+                    .getSaveActionBySuffix(
                         SaveGraphicsManager.getInstance().getDefaultSuffix());
                 if (cmd == null) {
                     pb.showStatus("Unknown graphics file type with extension "
@@ -199,7 +190,7 @@ public class ActionSaveAllGraphics extends UndoableAction {
         return null;
     }
 
-    private boolean saveGraphicsToFile(File theFile, CmdSaveGraphics cmd,
+    private boolean saveGraphicsToFile(File theFile, SaveGraphicsAction cmd,
             boolean overwrite) throws IOException {
         if ( theFile.exists() && !overwrite ) {
             int response =
@@ -216,7 +207,7 @@ public class ActionSaveAllGraphics extends UndoableAction {
             cmd.setStream(fo);
             cmd.setScale(Configuration.getInteger(
                     SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1));
-            cmd.doIt();
+            cmd.actionPerformed(null);
         } finally {
             if (fo != null) {
                 fo.close();
@@ -234,7 +225,7 @@ public class ActionSaveAllGraphics extends UndoableAction {
 	        chooser = new JFileChooser(p.getURI().toURL().getFile());
             }
         }
-        catch ( Exception ex ) {
+        catch ( MalformedURLException ex ) {
             LOG.error("exception in opening JFileChooser", ex);
         }
 
@@ -247,4 +238,4 @@ public class ActionSaveAllGraphics extends UndoableAction {
         return chooser;
     }
 
-} /* end class ActionSaveAllGraphics */
+}
