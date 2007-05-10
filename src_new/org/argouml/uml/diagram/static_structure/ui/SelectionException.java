@@ -41,10 +41,12 @@ class SelectionException extends SelectionGeneralizableElement {
         super(f);
     }
 
+    @Override
     protected Object getNewNode(int buttonCode) {
         return Model.getCommonBehaviorFactory().createException();
     }
 
+    @Override
     protected Object getNewNodeType(int buttonCode) {
         return Model.getMetaTypes().getException();
     }

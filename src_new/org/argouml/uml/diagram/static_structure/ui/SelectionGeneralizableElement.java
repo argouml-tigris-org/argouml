@@ -28,7 +28,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
@@ -36,7 +35,6 @@ import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -47,36 +45,29 @@ import org.tigris.gef.presentation.Fig;
 public abstract class SelectionGeneralizableElement extends
         SelectionNodeClarifiers2 {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-            Logger.getLogger(SelectionGeneralizableElement.class);
-
     private static Icon inherit =
             ResourceLoaderWrapper.lookupIconResource("Generalization");
 
-    private static Icon icons[] = {null,
-                                   null,
-                                   null,
-                                   null,
-                                   null,
-                                   null,
-                                   null,                                   
-                                   null,
-                                   null,
-                                   null, // 9
-                                   inherit,
-                                   inherit,
-                                   null,
-                                   null,
-                                   null,
+    private static Icon[] icons = 
+    {inherit,
+     inherit,
+     null,
+     null,
+     null,
     };
-    
 
+    private static String[] instructions = 
+    {"Add a supertype",
+     "Add a subtype",
+     null,
+     null,
+     null,
+     "Move object(s)",
+    };
+
+    
     private boolean useComposite;
 
-    
     /**
      * Construct a SelectionGeneralizableElement
      * 
@@ -87,10 +78,7 @@ public abstract class SelectionGeneralizableElement extends
         super(f);
     }
 
- 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#getIcons()
-     */
+    @Override
     protected Icon[] getIcons() {
         Editor ce = Globals.curEditor();
         GraphModel gm = ce.getGraphModel();
@@ -102,70 +90,37 @@ public abstract class SelectionGeneralizableElement extends
             return icons;
         }
     }
-    
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#getInstructions(int)
-     */
+
+    @Override
     protected String getInstructions(int i) {
-        if (i == 10) {
-            return "Add a supertype";
-        } else if (i == 10) {
-            return "Add a subtype";
-        } else if (i == -1) {
-            return "Move object(s)";
-        }
-        return null;
+        return instructions[ i - 10];
     }
     
-
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewEdgeType(int)
-     */
+    @Override
     protected Object getNewEdgeType(int i) {
         if (i == 10 || i == 11) {
             return Model.getMetaTypes().getGeneralization();
         }
         return null;
     }
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#isDragEdgeReverse(int)
-     */
+    
+    @Override
     protected boolean isDragEdgeReverse(int i) {
         if (i == 11) {
             return true;
         }
         return false;
     }
- 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#isEdgePostProcessRequested()
-     */
+
+    @Override
     protected boolean isEdgePostProcessRequested() {
         return useComposite;
     }
-    
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#mouseEntered(java.awt.event.MouseEvent)
-     */
+
+    @Override
     public void mouseEntered(MouseEvent me) {
         super.mouseEntered(me);
         useComposite = me.isShiftDown();
-    }
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
-        return mgm.connect(getContent().getOwner(), newNode,
-                           (Class) Model.getMetaTypes().getGeneralization());
-    }
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeUnder(MutableGraphModel mgm, Object newNode) {
-        return mgm.connect(newNode, getContent().getOwner(),
-                           (Class) Model.getMetaTypes().getGeneralization());
     }
 
 }

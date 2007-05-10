@@ -34,6 +34,16 @@ import org.tigris.gef.presentation.Fig;
  */
 class SelectionEnumeration extends SelectionDataType {
 
+    // TODO: I18N
+    private static String[] instructions =
+    {"Add a super-enumeration",
+     "Add a sub-enumeration",
+     null,
+     null,
+     null,
+     "Move object(s)",
+    };
+    
     /**
      * @param f the given fi
      */
@@ -41,35 +51,21 @@ class SelectionEnumeration extends SelectionDataType {
         super(f);
     }
 
-
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#getInstructions(int)
-     */
+    @Override
     protected String getInstructions(int i) {
-        if (i == 10) {
-            return "Add a super-enumeration";
-        } else if (i == 10) {
-            return "Add a sub-enumeration";
-        } else if (i == -1) {
-            return "Move object(s)";
-        }
-        return null;
+        return instructions[ i - 10];
+
     }
 
-    /*
-     * @see org.argouml.uml.diagram.static_structure.ui.SelectionDataType#getNewNode(int)
-     */
-    protected Object getNewNode(int buttonCode) {
+    @Override
+    protected Object getNewNode(int index) {
         Object ns = Model.getFacade().getNamespace(getContent().getOwner());
         return Model.getCoreFactory().buildEnumeration("", ns);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.static_structure.ui.SelectionDataType#getNewNodeType(int)
-     */
-    protected Object getNewNodeType(int buttonCode) {
+    @Override
+    protected Object getNewNodeType(int index) {
         return Model.getMetaTypes().getEnumeration();
     }
-
 
 }

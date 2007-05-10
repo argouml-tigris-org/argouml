@@ -37,6 +37,7 @@ import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.base.ModeModify;
 import org.tigris.gef.base.SelectionButtons;
 import org.tigris.gef.base.SelectionManager;
+import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
@@ -46,10 +47,12 @@ import org.tigris.gef.presentation.Handle;
  * necessary for the enhanced support marked as abstract so that implementors
  * are forced to implement them.  SelectionNodeClarifiers is simple
  * extension of this which implements null versions of the required 
- * methods for backward compatibility with.
+ * methods for backward compatibility with the previous implementation.
  * <p>
  * To upgrade subtypes of SelectionNodeClarifiers, change them to 
  * extend this class instead and implement the required abstract methods.
+ * The methods paintButtons, dragHandle, hitHandle, and createEdge* can
+ * all usually be removed.
  *
  * @author jrobbins
  * @author Tom Morris
@@ -60,6 +63,8 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
             Logger.getLogger(SelectionNodeClarifiers2.class);
 
 
+    private int button;
+    
     /**
      * Construct a new SelectionNodeClarifiers for the given Fig
      * 
@@ -91,20 +96,20 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
         int cw = getContent().getWidth();
         int ch = getContent().getHeight();
         
-        if (icons[10] != null) {
-            paintButtonAbove(icons[10], g, cx + cw / 2, cy, 10);
+        if (icons[0] != null) {
+            paintButtonAbove(icons[0], g, cx + cw / 2, cy, 10);
         }
-        if (icons[11] != null) {
-            paintButtonBelow(icons[11], g, cx + cw / 2, cy + ch + 2, 11);
+        if (icons[1] != null) {
+            paintButtonBelow(icons[1], g, cx + cw / 2, cy + ch + 2, 11);
         }
-        if (icons[12] != null) {
-            paintButtonLeft(icons[12], g, cx + cw + 2, cy + ch / 2, 12);
+        if (icons[2] != null) {
+            paintButtonLeft(icons[2], g, cx + cw + 2, cy + ch / 2, 12);
         }
-        if (icons[13] != null) {
-            paintButtonRight(icons[13], g, cx, cy + ch / 2, 13);
+        if (icons[3] != null) {
+            paintButtonRight(icons[3], g, cx, cy + ch / 2, 13);
         }
-        if (icons[14] != null) {
-            paintButtonRight(icons[14], g, cx, cy + ch, 14);
+        if (icons[4] != null) {
+            paintButtonRight(icons[4], g, cx, cy + ch, 14);
         }
     }
 
@@ -163,28 +168,28 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
          *            11
          * </pre>
          */
-        if (icons[10] != null && hitAbove(cx + cw / 2, cy, 
-                icons[10].getIconWidth(), icons[10].getIconHeight(), 
+        if (icons[0] != null && hitAbove(cx + cw / 2, cy, 
+                icons[0].getIconWidth(), icons[0].getIconHeight(), 
                 r)) {
             h.index = 10;
             h.instructions = getInstructions(h.index);
-        } else if (icons[11] != null && hitBelow(cx + cw / 2, cy + ch, 
-                icons[11].getIconWidth(), icons[11].getIconHeight(), 
+        } else if (icons[1] != null && hitBelow(cx + cw / 2, cy + ch, 
+                icons[1].getIconWidth(), icons[1].getIconHeight(), 
                 r)) {
             h.index = 11;
             h.instructions = getInstructions(h.index);
-        } else if (icons[12] != null && hitLeft(cx + cw, cy + ch / 2, 
-                icons[12].getIconWidth(), icons[12].getIconHeight(), 
+        } else if (icons[2] != null && hitLeft(cx + cw, cy + ch / 2, 
+                icons[2].getIconWidth(), icons[2].getIconHeight(), 
                 r)) {
             h.index = 12;
             h.instructions = getInstructions(h.index);
-        } else if (icons[13] != null && hitRight(cx, cy + ch / 2, 
-                icons[13].getIconWidth(), icons[13].getIconHeight(), 
+        } else if (icons[3] != null && hitRight(cx, cy + ch / 2, 
+                icons[3].getIconWidth(), icons[3].getIconHeight(), 
                 r)) {
             h.index = 13;
             h.instructions = getInstructions(h.index);
-        } else if (icons[14] != null && hitRight(cx, cy + ch - 10, 
-                icons[14].getIconWidth(), icons[14].getIconHeight(), 
+        } else if (icons[4] != null && hitRight(cx, cy + ch - 10, 
+                icons[4].getIconWidth(), icons[4].getIconHeight(), 
                 r)) {
             h.index = 14;
             h.instructions = getInstructions(h.index);
@@ -208,7 +213,11 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
         int cw = getContent().getWidth(), ch = getContent().getHeight();
 
         int bx = mX, by = mY;
-
+        
+        // Remember what handle was clicked for the case where the drag
+        // is released over empty space
+        button = hand.index;
+        
         switch (hand.index) {
         case 10:
             by = cy;
@@ -247,21 +256,45 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
             ce.pushMode(m);
         }
     }
+    
+
+    protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
+        return gm.connect(getContent().getOwner(), newNode, getNewEdgeType(10));
+    }
+
+    protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
+        return gm.connect(getContent().getOwner(), newNode, getNewEdgeType(11));
+    }
+
+    protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
+        return gm.connect(getContent().getOwner(), newNode, getNewEdgeType(12));
+    }
+
+
+    protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
+        return gm.connect(getContent().getOwner(), newNode, getNewEdgeType(13));
+    }
+
+    protected Object createEdgeToSelf(MutableGraphModel gm) {
+        return gm.connect(
+                getContent().getOwner(), getContent().getOwner(),
+                getNewEdgeType(14));
+    }
 
     /**
      * Get array of icons to use when drawing handles.
      * @return icon or null
      */
-    abstract protected Icon[] getIcons();
+    protected abstract Icon[] getIcons();
 
     /**
-     * Get the "instructoins" string to pass to GEF for the given handle number.
+     * Get the "instructions" string to pass to GEF for the given handle number.
      * 
      * @param index
      *            handle number that is being dragged from
      * @return string or null
      */
-    abstract protected String getInstructions(int index);
+    protected abstract String getInstructions(int index);
     
     /**
      * Get the node type to create when dragging from the given handle number.
@@ -270,7 +303,7 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
      *            handle number that is being dragged from
      * @return metatype for model element. Null to disallow drag.
      */
-    abstract protected Object getNewNodeType(int index);
+    protected abstract Object getNewNodeType(int index);
 
     /**
      * Get the edge type to create when dragging from the given handle number.
@@ -279,7 +312,7 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
      *            handle number that is being dragged from
      * @return metatype for model element. Null to disallow drag.
      */
-    abstract protected Object getNewEdgeType(int index);
+    protected abstract Object getNewEdgeType(int index);
     
     /**
      * Get the node type to create when dragging from the given handle number.
@@ -287,9 +320,12 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
      * @param index
      *            handle number that is being dragged from
      * @return true to reverse direction of assocation from direction of drag.
-     *         eg. specialization instead of generalization
+     *         eg. specialization instead of generalization.  Default
+     *         implementation always returns false.
      */
-    abstract protected boolean isDragEdgeReverse(int index);
+    protected boolean isDragEdgeReverse(int index) {
+        return false;
+    }
     
     /**
      * Request post processing of edge by GEF after it is created using
@@ -297,7 +333,16 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
      * 
      * @return true if postprocessing requested
      */
-    abstract protected boolean isEdgePostProcessRequested();
+    protected boolean isEdgePostProcessRequested() {
+        return false;
+    }
+    
+    /**
+     * @return index of last button/handle that was clicked
+     */
+    protected int getButton() {
+        return button;
+    }
     
 } 
 

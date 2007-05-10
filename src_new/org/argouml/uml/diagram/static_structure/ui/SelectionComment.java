@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,199 +24,72 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
-
 import javax.swing.Icon;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.ModeCreateEdgeAndNode;
-import org.tigris.gef.base.ModeManager;
-import org.tigris.gef.base.ModeModify;
-import org.tigris.gef.base.SelectionManager;
-import org.tigris.gef.graph.MutableGraphModel;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.Handle;
 
 /**
  * The buttons on Selection for a Comment.
  *
  * @author mvw@tigris.org
  */
-public class SelectionComment extends SelectionNodeClarifiers {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(SelectionComment.class);
+public class SelectionComment extends SelectionNodeClarifiers2 {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-    private static Icon dep =
+    private static Icon linkIcon =
         ResourceLoaderWrapper.lookupIconResource("CommentLink");
 
+    private static Icon icons[] =
+    {linkIcon,
+     linkIcon,
+     linkIcon,
+     linkIcon,
+     null,
+    };
 
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
+    // TODO: I18N required
+    private static String instructions[] =
+    {"Link this comment",
+     "Link this comment",
+     "Link this comment",
+     "Link this comment",
+     null,
+     "Move object(s)",
+    };
 
     /**
      * Construct a new SelectionComment for the given Fig.
      *
      * @param f the given Fig
      */
-    public SelectionComment(Fig f) { super(f); }
-
-    /*
-     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
-     *      org.tigris.gef.presentation.Handle)
-     */
-    public void hitHandle(Rectangle r, Handle h) {
-        super.hitHandle(r, h);
-        if (h.index != -1) {
-            return;
-        }
-        if (!isPaintButtons()) {
-            return;
-        }
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        if (sm.size() != 1) {
-            return;
-        }
-        ModeManager mm = ce.getModeManager();
-        if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
-            return;
-        }
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
-        int aw = dep.getIconWidth();
-        int ah = dep.getIconHeight();
-        if (hitAbove(cx + cw / 2, cy, aw, ah, r)) {
-            h.index = 10;
-            h.instructions = "Link this comment";
-        } else if (hitBelow(cx + cw / 2, cy + ch, aw, ah, r)) {
-            h.index = 11;
-            h.instructions = "Link this comment";
-        } else if (hitLeft(cx + cw, cy + ch / 2, aw, ah, r)) {
-            h.index = 12;
-            h.instructions = "Link this comment";
-        } else if (hitRight(cx, cy + ch / 2, aw, ah, r)) {
-            h.index = 13;
-            h.instructions = "Link this comment";
-        } else {
-            h.index = -1;
-            h.instructions = "Move object(s)";
-        }
+    public SelectionComment(Fig f) {
+        super(f);
     }
 
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
-     */
-    public void paintButtons(Graphics g) {
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
-        paintButtonAbove(dep, g, cx + cw / 2, cy, 10);
-        paintButtonBelow(dep, g, cx + cw / 2, cy + ch, 11);
-        paintButtonLeft(dep, g, cx + cw, cy + ch / 2, 12);
-        paintButtonRight(dep, g, cx, cy + ch / 2, 13);
+    @Override
+    protected Icon[] getIcons() {
+        return icons;
     }
 
-
-    /*
-     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
-     *      org.tigris.gef.presentation.Handle)
-     */
-    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-        if (hand.index < 10) {
-            setPaintButtons(false);
-            super.dragHandle(mX, mY, anX, anY, hand);
-            return;
-        }
-        int cx = getContent().getX(), cy = getContent().getY();
-        int cw = getContent().getWidth(), ch = getContent().getHeight();
-        Object edgeType = CommentEdge.class;
-        Object nodeType = Model.getMetaTypes().getComment();
-        int bx = mX, by = mY;
-        boolean reverse = false;
-        switch (hand.index) {
-        case 10: //add commentlink
-            by = cy;
-            bx = cx + cw / 2;
-            break;
-        case 11: //add commentlink
-            by = cy + ch;
-            bx = cx + cw / 2;
-            break;
-        case 12: //add commentlink
-            by = cy + ch / 2;
-            bx = cx + cw;
-            break;
-        case 13: // add commentlink
-            by = cy + ch / 2;
-            bx = cx;
-            break;
-        default:
-            LOG.warn("invalid handle number");
-            break;
-        }
-        if (edgeType != null && nodeType != null) {
-            Editor ce = Globals.curEditor();
-            ModeCreateEdgeAndNode m =
-                new ModeCreateEdgeAndNode(ce, edgeType, false, this);
-            m.setup((FigNode) getContent(), getContent().getOwner(),
-                    bx, by, reverse);
-            ce.pushMode(m);
-        }
+    @Override
+    protected String getInstructions(int index) {
+        return instructions[index - 10];
     }
 
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
-     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
-        return gm.connect(getContent().getOwner(), newNode, CommentEdge.class);
+    @Override
+    protected Object getNewEdgeType(int index) {
+        return CommentEdge.class;
     }
 
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeLeft(
-     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, getContent().getOwner(), CommentEdge.class);
+    @Override
+    protected Object getNewNodeType(int index) {
+        return Model.getMetaTypes().getComment();
     }
 
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeRight(
-     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-        return gm.connect(getContent().getOwner(), newNode, CommentEdge.class);
-    }
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
-     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, getContent().getOwner(), CommentEdge.class);
-    }
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
-     */
-    protected Object getNewNode(int buttonCode) {
+    @Override
+    protected Object getNewNode(int index) {
         /* Alternatively, we could just return null here, 
          * so that you can not create a comment just 
          * linked to a comment this way - which is a bit uncommon,
@@ -225,5 +98,6 @@ public class SelectionComment extends SelectionNodeClarifiers {
 //        return null;
         return Model.getCoreFactory().createComment();
     }
-} /* end class SelectionComment */
+
+}
 
