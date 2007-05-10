@@ -28,6 +28,7 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
+import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -46,6 +47,9 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigTextEditor;
 import org.tigris.gef.undo.UndoableAction;
@@ -53,7 +57,7 @@ import org.tigris.gef.undo.UndoableAction;
 /**
  * Action for removing objects from the model. 
  * Objects can be Modelelements, Diagrams (argodiagram and it's children),
- * Figs without owner,... <p>
+ * Figs without owner,... 
  */
 public class ActionDeleteModelElements extends UndoableAction {
 
@@ -232,5 +236,43 @@ public class ActionDeleteModelElements extends UndoableAction {
                     JOptionPane.YES_NO_OPTION);
 
         return (response == JOptionPane.YES_OPTION);
+    }
+    
+    /**
+     * @return true if the tool should be enabled
+     */
+    public boolean shouldBeEnabled() {
+        int size = 0;
+        try {
+            Editor ce = Globals.curEditor();
+            Vector figs = ce.getSelectionManager().getFigs();
+            size = figs.size();
+        } catch (Exception e) {
+        // Ignore
+        }
+        if (size > 0) {
+            return true;
+        }
+        Object target = TargetManager.getInstance().getTarget();
+        if (target instanceof Diagram) { // we cannot delete the last diagram
+            return (ProjectManager.getManager().getCurrentProject()
+                .getDiagrams().size() > 1);
+        }
+        if (Model.getFacade().isAModel(target)
+        // we cannot delete the model itself
+            && target.equals(ProjectManager.getManager().getCurrentProject()
+                 .getModel())) {
+            return false;
+        }
+        if (Model.getFacade().isAAssociationEnd(target)) {
+            return Model.getFacade().getOtherAssociationEnds(target).size() > 1;
+        }
+        if (Model.getStateMachinesHelper().isTopState(target)) {
+            /* we can not delete a "top" state,
+             * it comes and goes with the statemachine. Issue 2655.
+             */
+            return false;
+        }
+        return target != null;
     }
 } /* end class ActionRemoveFromModel */
