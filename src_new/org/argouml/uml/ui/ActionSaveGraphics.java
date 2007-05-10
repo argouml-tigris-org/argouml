@@ -45,7 +45,7 @@ import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ExceptionDialog;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.SuffixFilter;
-import org.tigris.gef.base.CmdSaveGraphics;
+import org.tigris.gef.base.SaveGraphicsAction;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.Util;
 
@@ -164,9 +164,9 @@ public class ActionSaveGraphics extends AbstractAction
 	throws FileNotFoundException, IOException {
 
         SaveGraphicsManager sgm = SaveGraphicsManager.getInstance();
-        CmdSaveGraphics cmd = null;
+        SaveGraphicsAction cmd = null;
 
-        cmd = sgm.getSaveCommandBySuffix(suffix);
+        cmd = sgm.getSaveActionBySuffix(suffix);
         if (cmd == null) {
             return false;
         }
@@ -190,7 +190,7 @@ public class ActionSaveGraphics extends AbstractAction
 	cmd.setStream(fo);
         cmd.setScale(Configuration.getInteger(
                 SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1));
-	cmd.doIt();
+	cmd.actionPerformed(null);
 	fo.close();
         if (useUI) {
             ProjectBrowser.getInstance().showStatus("Wrote " + theFile);
@@ -229,4 +229,4 @@ public class ActionSaveGraphics extends AbstractAction
 	}
 	return false;
     }
-} /* end class ActionSaveGraphics */
+}

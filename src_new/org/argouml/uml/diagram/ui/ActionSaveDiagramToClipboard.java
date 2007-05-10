@@ -43,7 +43,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.SaveGraphicsManager;
-import org.tigris.gef.base.CmdSaveGIF;
+import org.tigris.gef.base.SaveGIFAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -118,7 +118,7 @@ public class ActionSaveDiagramToClipboard extends AbstractAction implements
         }
 
         // background color.
-        g.setColor(new Color(CmdSaveGIF.TRANSPARENT_BG_COLOR));
+        g.setColor(new Color(SaveGIFAction.TRANSPARENT_BG_COLOR));
         g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
         g.translate(-drawingArea.x, -drawingArea.y);
         ce.print(g);
@@ -191,7 +191,6 @@ class ImageSelection implements Transferable {
      * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
      */
     public synchronized DataFlavor[] getTransferDataFlavors() {
-
         return (supportedFlavors);
     }
 
@@ -206,7 +205,6 @@ class ImageSelection implements Transferable {
                 DataFlavor.imageFlavor.getMimeType()) && parFlavor
                 .getHumanPresentableName().equals(
                         DataFlavor.imageFlavor.getHumanPresentableName()));
-
     }
     
     /*
