@@ -36,7 +36,7 @@ import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
 import org.argouml.uml.diagram.deployment.ui.FigMNode;
-import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -141,7 +141,7 @@ public class TestItemUID extends TestCase {
         FigComponent figcomponent = new FigComponent();
         FigComponentInstance figcomponentinstance = new FigComponentInstance();
         FigMNode figmnode = new FigMNode();
-        FigMNodeInstance figmnodeinstance = new FigMNodeInstance();
+        FigNodeInstance figmnodeinstance = new FigNodeInstance();
         FigObject figobject = new FigObject();
 
         FigBranchState figbranchstate = new FigBranchState();
