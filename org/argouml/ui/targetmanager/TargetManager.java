@@ -33,7 +33,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -50,8 +49,6 @@ import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -405,7 +402,7 @@ public final class TargetManager {
     
     private ActionAddMessage addMessageAction = new ActionAddMessage();
     
-    private AbstractAction deleteAction = new ActionDeleteModelElements();
+    private ActionDeleteModelElements deleteAction = new ActionDeleteModelElements();
 
     /**
      * Singleton retrieval method.
@@ -836,51 +833,11 @@ public final class TargetManager {
         addAttributeAction.setEnabled(addAttributeAction.shouldBeEnabled());
         addOperationAction.setEnabled(addOperationAction.shouldBeEnabled());
         addMessageAction.setEnabled(addMessageAction.shouldBeEnabled());
-        deleteAction.setEnabled(isDeleteAllowed());
+        deleteAction.setEnabled(deleteAction.shouldBeEnabled());
 
         inTransaction = false;
     }
     
-    /**
-     * Determine if the current selected targets should allow enablement of
-     * the delete action.
-     * @return true to enable delete
-     */
-    private boolean isDeleteAllowed() {
-        int size = 0;
-        try {
-            Editor ce = Globals.curEditor();
-            Vector figs = ce.getSelectionManager().getFigs();
-            size = figs.size();
-        } catch (Exception e) {
-        // Ignore
-        }
-        if (size > 0) {
-            return true;
-        }
-        Object target = TargetManager.getInstance().getTarget();
-        if (target instanceof Diagram) { // we cannot delete the last diagram
-            return (ProjectManager.getManager().getCurrentProject()
-                .getDiagrams().size() > 1);
-        }
-        if (Model.getFacade().isAModel(target)
-        // we cannot delete the model itself
-            && target.equals(ProjectManager.getManager().getCurrentProject()
-                 .getModel())) {
-            return false;
-        }
-        if (Model.getFacade().isAAssociationEnd(target)) {
-            return Model.getFacade().getOtherAssociationEnds(target).size() > 1;
-        }
-        if (Model.getStateMachinesHelper().isTopState(target)) {
-            /* we can not delete a "top" state,
-             * it comes and goes with the statemachine. Issue 2655.
-             */
-            return false;
-        }
-        return target != null;
-    }
-
     /**
      * Get the Action for creating and adding a new attribute
      * to the single selected target (or its owner).

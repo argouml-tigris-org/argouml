@@ -268,7 +268,9 @@ public class ExplorerPopup extends JPopupMenu {
 
         if (selectedItem instanceof Diagram) {
             this.add(new ActionSaveDiagramToClipboard());
-            this.add(new ActionDeleteModelElements());
+            ActionDeleteModelElements ad = new ActionDeleteModelElements();
+            ad.setEnabled(ad.shouldBeEnabled());
+            this.add(ad);
         }
 
     }
