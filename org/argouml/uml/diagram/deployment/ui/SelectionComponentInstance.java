@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,43 +24,41 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
-
 import javax.swing.Icon;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.ModeCreateEdgeAndNode;
-import org.tigris.gef.base.ModeManager;
-import org.tigris.gef.base.ModeModify;
-import org.tigris.gef.base.SelectionManager;
-import org.tigris.gef.graph.MutableGraphModel;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.Handle;
 
 /**
  * @author 5eichler@informatik.uni-hamburg.de
  */
-public class SelectionComponentInstance extends SelectionNodeClarifiers {
+public class SelectionComponentInstance extends SelectionNodeClarifiers2 {
 
-    private static final Logger LOG =
-        Logger.getLogger(SelectionComponentInstance.class);
-    ////////////////////////////////////////////////////////////////
-    // constants
     private static Icon dep =
-	ResourceLoaderWrapper.lookupIconResource("Dependency");
+            ResourceLoaderWrapper.lookupIconResource("Dependency");
+
     private static Icon depRight =
-	ResourceLoaderWrapper.lookupIconResource("DependencyRight");
+            ResourceLoaderWrapper.lookupIconResource("DependencyRight");
 
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
+    private static Icon icons[] = 
+    {dep,
+     dep,
+     depRight,
+     depRight,
+     null,
+    };
+    
+    // TODO: I18N required
+    private static String instructions[] = 
+    {"Add a component-instance",
+     "Add a component-instance",
+     "Add a component-instance",
+     "Add a component-instance",
+     null,
+     "Move object(s)",
+    };
 
     /**
      * Construct a new SelectionComponentInstanceInstance for the given Fig.
@@ -69,168 +67,39 @@ public class SelectionComponentInstance extends SelectionNodeClarifiers {
      */
     public SelectionComponentInstance(Fig f) { super(f); }
 
-    /*
-     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
-     * org.tigris.gef.presentation.Handle)
-     */
-    public void hitHandle(Rectangle r, Handle h) {
-	super.hitHandle(r, h);
-	if (h.index != -1) {
-	    return;
-	}
-	if (!isPaintButtons()) {
-	    return;
-	}
-	Editor ce = Globals.curEditor();
-	SelectionManager sm = ce.getSelectionManager();
-	if (sm.size() != 1) {
-	    return;
-	}
-	ModeManager mm = ce.getModeManager();
-	if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
-	    return;
-	}
-	int cx = getContent().getX();
-	int cy = getContent().getY();
-	int cw = getContent().getWidth();
-	int ch = getContent().getHeight();
-	int aw = dep.getIconWidth();
-	int ah = dep.getIconHeight();
-	if (hitAbove(cx + cw / 2, cy, aw, ah, r)) {
-	    h.index = 10;
-	    h.instructions = "Add a component-instance";
-	} else if (hitBelow(cx + cw / 2, cy + ch, aw, ah, r)) {
-	    h.index = 11;
-	    h.instructions = "Add a component-instance";
-	} else if (hitLeft(cx + cw, cy + ch / 2, aw, ah, r)) {
-	    h.index = 12;
-	    h.instructions = "Add a component-instance";
-	} else if (hitRight(cx, cy + ch / 2, aw, ah, r)) {
-	    h.index = 13;
-	    h.instructions = "Add a component-instance";
-	} else {
-	    h.index = -1;
-	    h.instructions = "Move object(s)";
-	}
+
+    @Override
+    protected Icon[] getIcons() {
+        return icons;
     }
 
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
-     */
-    public void paintButtons(Graphics g) {
-	int cx = getContent().getX();
-	int cy = getContent().getY();
-	int cw = getContent().getWidth();
-	int ch = getContent().getHeight();
-	paintButtonAbove(dep, g, cx + cw / 2, cy, 10);
-	paintButtonBelow(dep, g, cx + cw / 2, cy + ch, 11);
-	paintButtonLeft(depRight, g, cx + cw, cy + ch / 2, 12);
-	paintButtonRight(depRight, g, cx, cy + ch / 2, 13);
+    @Override
+    protected String getInstructions(int index) {
+        return instructions[index - 10];
     }
 
-
-    /*
-     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
-     * org.tigris.gef.presentation.Handle)
-     */
-    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-	if (hand.index < 10) {
-	    setPaintButtons(false);
-	    super.dragHandle(mX, mY, anX, anY, hand);
-	    return;
-	}
-	int cx = getContent().getX(), cy = getContent().getY();
-	int cw = getContent().getWidth(), ch = getContent().getHeight();
-	Object edgeType = null;
-	Object nodeType = Model.getMetaTypes().getComponentInstance();
-	int bx = mX, by = mY;
-	boolean reverse = false;
-	switch (hand.index) {
-	case 10: //add dep
-	    edgeType = Model.getMetaTypes().getDependency();
-	    // reverse = true;
-	    by = cy;
-	    bx = cx + cw / 2;
-	    break;
-	case 11: //add dep
-	    edgeType = Model.getMetaTypes().getDependency();
-	    reverse = true;
-	    by = cy + ch;
-	    bx = cx + cw / 2;
-	    break;
-	case 12: //add dep
-	    edgeType = Model.getMetaTypes().getDependency();
-	    // reverse = true;
-	    by = cy + ch / 2;
-	    bx = cx + cw;
-	    break;
-	case 13: // add dep
-	    edgeType = Model.getMetaTypes().getDependency();
-	    reverse = true;
-	    by = cy + ch / 2;
-	    bx = cx;
-	    break;
-	default:
-	    LOG.warn("invalid handle number");
-	    break;
-	}
-	if (edgeType != null && nodeType != null) {
-	    Editor ce = Globals.curEditor();
-	    ModeCreateEdgeAndNode m =
-	        new ModeCreateEdgeAndNode(ce, edgeType, false, this);
-	    m.setup((FigNode) getContent(), getContent().getOwner(),
-	            bx, by, reverse);
-	    ce.pushMode(m);
-	}
-
+    @Override
+    protected Object getNewEdgeType(int index) {
+        return Model.getMetaTypes().getDependency();
     }
 
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
-     */
-    protected Object getNewNode(int buttonCode) {
-        return Model.getCommonBehaviorFactory()
-	    .createComponentInstance();
+    @Override
+    protected Object getNewNode(int index) {
+        return Model.getCommonBehaviorFactory().createComponentInstance();
+    }
+    
+    @Override
+    protected Object getNewNodeType(int index) {
+        return Model.getMetaTypes().getComponentInstance();
     }
 
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
-     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
-        return gm.connect(getContent().getOwner(), newNode,
-			  (Class) Model.getMetaTypes().getDependency());
+    @Override
+    protected boolean isDragEdgeReverse(int index) {
+        if (index == 11 || index == 13) {
+            return true;
+        }
+        return false;
     }
 
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeLeft(
-     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, getContent().getOwner(),
-			  (Class) Model.getMetaTypes().getDependency());
-    }
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeRight(
-     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-        return gm.connect(getContent().getOwner(), newNode,
-			  (Class) Model.getMetaTypes().getDependency());
-    }
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
-     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, getContent().getOwner(),
-			  (Class) Model.getMetaTypes().getDependency());
-    }
-
-
-} /* end class SelectionComponentInstanceInstance */
+}
 

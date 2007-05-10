@@ -24,29 +24,18 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
-import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
-import org.tigris.gef.base.Editor;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.ModeCreateEdgeAndNode;
-import org.tigris.gef.base.ModeManager;
-import org.tigris.gef.base.ModeModify;
-import org.tigris.gef.base.SelectionManager;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.Handle;
 
 /**
  * The buttons on selection for a Stereotype. <p>
@@ -56,27 +45,33 @@ import org.tigris.gef.presentation.Handle;
  * 
  * @author michiel
  */
-public class SelectionStereotype extends SelectionNodeClarifiers {
+public class SelectionStereotype extends SelectionNodeClarifiers2 {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(SelectionStereotype.class);
-
-    /**
-     * Remember the pressed button, 
-     * for the case where the mouse is released not above a fig.
-     */
-    private int code;
-
-    private static Icon inherit =
+    private static Icon inheritIcon =
         ResourceLoaderWrapper.lookupIconResource("Generalization");
-    private static Icon depend =
+    private static Icon dependIcon =
         ResourceLoaderWrapper.lookupIconResource("Dependency");
 
     private boolean useComposite;
     
+    private static Icon icons[] = 
+    {inheritIcon,
+     dependIcon,
+     null,
+     null,
+     null,
+    };
+
+    // TODO: I18N required
+    private static String instructions[] = 
+    {"Add a baseClass",
+     "Add a subStereotype",
+     null,
+     null,
+     null,
+     "Move object(s)",
+    };
+
     /**
      * Construct a new  SelectionStereotype for the given Fig.
      *
@@ -86,131 +81,19 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
         super(f);
     }
 
-    /*
-     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
-     *      org.tigris.gef.presentation.Handle)
-     */
-    public void hitHandle(Rectangle r, Handle h) {
-        super.hitHandle(r, h);
-        if (h.index != -1) {
-            return;
-        }
-        if (!isPaintButtons()) {
-            return;
-        }
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        if (sm.size() != 1) {
-            return;
-        }
-        ModeManager mm = ce.getModeManager();
-        if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
-            return;
-        }
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
-        int iw = inherit.getIconWidth();
-        int ih = inherit.getIconHeight();
-        int dw = depend.getIconWidth();
-        int dh = depend.getIconHeight();
-
-        if (hitAbove(cx + cw / 2, cy, dw, dh, r)) {
-            h.index = 10;
-            h.instructions = "Add a baseClass";
-        } else if (hitBelow(cx + cw / 2, cy + ch, iw, ih, r)) {
-            h.index = 11;
-            h.instructions = "Add a subStereotype";
-        } else {
-            h.index = -1;
-            h.instructions = "Move object(s)";
-        }
-    }
-    
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
-     */
-    public void paintButtons(Graphics g) {
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
-
-        // The next two lines are necessary to get the GraphModel,
-        // in the DeploymentDiagram there are no Generalizations
-        Editor ce = Globals.curEditor();
-        GraphModel gm = ce.getGraphModel();
-
-        if (!(gm instanceof DeploymentDiagramGraphModel)) {
-            paintButtonAbove(depend, g, cx + cw / 2, cy, 10);
-            paintButtonBelow(inherit, g, cx + cw / 2, cy + ch + 2, 11);
-        }
-    }
-
-
-    /*
-     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
-     *      org.tigris.gef.presentation.Handle)
-     */
-    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-        if (hand.index < 10) {
-            setPaintButtons(false);
-            super.dragHandle(mX, mY, anX, anY, hand);
-            return;
-        }
-        int cx = getContent().getX(), cy = getContent().getY();
-        int cw = getContent().getWidth(), ch = getContent().getHeight();
-        Object edgeType = null;
-        Object nodeType = getNewNodeType(hand.index);
-        int bx = mX, by = mY;
-        boolean reverse = false;
-        switch (hand.index) {
-        case 10: //add baseclass (dependency)
-            edgeType = Model.getMetaTypes().getDependency();
-            by = cy;
-            bx = cx + cw / 2;
-            break;
-        case 11: //add subdatatype
-            edgeType = Model.getMetaTypes().getGeneralization();
-            reverse = true;
-            by = cy + ch;
-            bx = cx + cw / 2;
-            break;
-        default:
-            LOG.warn("invalid handle number");
-            break;
-        }
-        code = hand.index;
-        if (edgeType != null && nodeType != null) {
-            Editor ce = Globals.curEditor();
-            ModeCreateEdgeAndNode m =
-                new ModeCreateEdgeAndNode(ce,
-                        edgeType, useComposite, this);
-            m.setup((FigNode) getContent(), getContent().getOwner(),
-                    bx, by, reverse);
-            ce.pushMode(m);
-        }
-
-    }
-
-    /*
-     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-     */
+    @Override
     public void mouseEntered(MouseEvent me) {
         super.mouseEntered(me);
         useComposite = me.isShiftDown();
     }
 
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
-     */
-    protected Object getNewNode(int buttonCode) {
-        if (buttonCode < 10) {
-            buttonCode = code;
+    @Override
+    protected Object getNewNode(int index) {
+        if (index == 0) {
+            index = getButton();
         }
         Object ns = Model.getFacade().getNamespace(getContent().getOwner());
-        switch (buttonCode) {
+        switch (index) {
         case 10:
             Object clazz = Model.getCoreFactory().buildClass(ns);
             NotationUtilityUml.dealWithStereotypes(clazz, "metaclass", false);
@@ -224,12 +107,9 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
         return null;
     }
 
-    /**
-     * @param buttonCode the code for the pressed button
-     * @return the new object type
-     */
-    protected Object getNewNodeType(int buttonCode) {
-        switch (buttonCode) {
+    @Override
+    protected Object getNewNodeType(int index) {
+        switch (index) {
         case 10:
             return Model.getMetaTypes().getClass();
         case 11:
@@ -238,24 +118,49 @@ public class SelectionStereotype extends SelectionNodeClarifiers {
         return null;
     }
 
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
-     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
+    @Override
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
-        Object dep = mgm.connect(getContent().getOwner(), newNode,
-                           (Class) Model.getMetaTypes().getDependency());
+        Object dep = super.createEdgeAbove(mgm, newNode);
         NotationUtilityUml.dealWithStereotypes(dep, "stereotype", false);
         return dep;
     }
 
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
-     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeUnder(MutableGraphModel mgm, Object newNode) {
-        return mgm.connect(newNode, getContent().getOwner(),
-                           (Class) Model.getMetaTypes().getGeneralization());
+    @Override
+    protected Icon[] getIcons() {
+        // In the DeploymentDiagram there are no Generalizations
+        if (!(Globals.curEditor().getGraphModel() 
+                instanceof DeploymentDiagramGraphModel)) {
+            return null;
+        }
+        return icons;
+    }
+
+    @Override
+    protected String getInstructions(int index) {
+        return instructions[index - 10];
+    }
+
+    @Override
+    protected Object getNewEdgeType(int index) {
+        if (index == 10) {
+            return Model.getMetaTypes().getDependency();
+        } else if (index == 11) {
+            return Model.getMetaTypes().getGeneralization();
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean isDragEdgeReverse(int index) {
+        if (index == 11) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected boolean isEdgePostProcessRequested() {
+        return useComposite;
     }
 
 }

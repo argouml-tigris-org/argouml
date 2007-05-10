@@ -45,46 +45,30 @@ public class SelectionNodeClarifiers extends SelectionNodeClarifiers2 {
         super(f);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getIcons()
-     */
+    @Override
     protected Icon[] getIcons() {
         return null;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getInstructions(int)
-     */
+    @Override
     protected String getInstructions(int index) {
         return null;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewNodeType(int)
-     */
+    @Override
     protected Object getNewNodeType(int index) {
         return null;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewEdgeType(int)
-     */
+    @Override
     protected Object getNewEdgeType(int index) {
         return null;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#isDragEdgeReverse(int)
-     */
+    @Override
     protected boolean isDragEdgeReverse(int index) {
         return false;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#isEdgePostProcessRequested()
-     */
-    protected boolean isEdgePostProcessRequested() {
-        return false;
-    }
 } 
 

@@ -41,11 +41,11 @@ class SelectionSignal extends SelectionGeneralizableElement {
         super(f);
     }
 
-    protected Object getNewNode(int buttonCode) {
+    protected Object getNewNode(int index) {
         return Model.getCommonBehaviorFactory().createSignal();
     }
 
-    protected Object getNewNodeType(int buttonCode) {
+    protected Object getNewNodeType(int index) {
         return Model.getMetaTypes().getSignal();
     }
 }

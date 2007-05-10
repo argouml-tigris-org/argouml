@@ -24,7 +24,9 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import org.argouml.uml.diagram.ui.SelectionNodeClarifiers;
+import javax.swing.Icon;
+
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.Handle;
 
@@ -34,7 +36,7 @@ import org.tigris.gef.presentation.Handle;
  *
  * @author Bob Tarling
  */
-public class SelectionClassifierRole extends SelectionNodeClarifiers {
+public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
 
     /**
      * The constructor.
@@ -67,15 +69,28 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers {
         super.dragHandle(mX, mY, anX, anY, hand);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers#getNewNode(int)
-     */
-    protected Object getNewNode(int buttonCode) {
+    @Override
+    protected Object getNewNode(int index) {
         return null;
     }
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 3570571152608122095L;
+    @Override
+    protected Icon[] getIcons() {
+        return null;
+    }
+
+    @Override
+    protected String getInstructions(int index) {
+        return null;
+    }
+
+    @Override
+    protected Object getNewEdgeType(int index) {
+        return null;
+    }
+
+    @Override
+    protected Object getNewNodeType(int index) {
+        return null;
+    }
 }

@@ -29,18 +29,12 @@ import javax.swing.Icon;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
-import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
 /**
  * @author jrobbins@ics.uci.edu
  */
 public class SelectionInterface extends SelectionNodeClarifiers2 {
-    /**
-     * Remember the pressed button, 
-     * for the case where the mouse is released not above a fig.
-     */
-    private int code;
 
     private static Icon realiz =
         ResourceLoaderWrapper.lookupIconResource("Realization");
@@ -48,21 +42,21 @@ public class SelectionInterface extends SelectionNodeClarifiers2 {
     private static Icon inherit =
         ResourceLoaderWrapper.lookupIconResource("Generalization");
 
-    private static Icon icons[] = {null,
-                                   null,
-                                   null,
-                                   null,
-                                   null,
-                                   null,
-                                   null,                                   
-                                   null,
-                                   null,
-                                   null, // 9
-                                   inherit,
-                                   realiz,
-                                   null,
-                                   null,
-                                   null,
+    private static Icon icons[] = 
+    {inherit,
+     realiz,
+     null,
+     null,
+     null,
+    };
+    
+    private static String instructions[] = 
+    {"Add an interface",
+     "Add a realization",
+     null,
+     null,
+     null,
+     "Move object(s)",
     };
     
     /**
@@ -75,47 +69,19 @@ public class SelectionInterface extends SelectionNodeClarifiers2 {
         super(f);
     }
 
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeAbove(
-     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
-        return gm.connect(getContent().getOwner(), newNode,
-               (Class) Model.getMetaTypes().getGeneralization());
-    }
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#createEdgeUnder(
-     *      org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-     */
-    protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, getContent().getOwner(), (Class) Model
-                .getMetaTypes().getAbstraction());
-    }
-
-    /*
-     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
-     */
-    protected Object getNewNode(int buttonCode) {
-        if (buttonCode < 10) {
-            buttonCode = code;
+    @Override
+    protected Object getNewNode(int index) {
+        if (index == 0) {
+            index = getButton();
         }
-        if (buttonCode == 10) {
+        if (index == 10) {
             return Model.getCoreFactory().buildInterface();
         } else {
             return Model.getCoreFactory().buildClass();
         }
     }
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 7209387830978444644L;
-
-
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewEdgeType(int)
-     */
+    @Override
     protected Object getNewEdgeType(int index) {
         if (index == 10) {
             return Model.getMetaTypes().getGeneralization();
@@ -125,9 +91,8 @@ public class SelectionInterface extends SelectionNodeClarifiers2 {
         return null;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getNewNodeType(int)
-     */
+
+    @Override
     protected Object getNewNodeType(int index) {
         if (index == 10) {
             return Model.getMetaTypes().getInterface();
@@ -137,30 +102,17 @@ public class SelectionInterface extends SelectionNodeClarifiers2 {
         return null;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getIcons()
-     */
+    @Override
     protected Icon[] getIcons() {
         return icons;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#getInstructions(int)
-     */
+    @Override
     protected String getInstructions(int index) {
-        if (index == 10) {
-            return "Add an interface";
-        } else if (index == 11) {
-            return "Add a realization";
-        } else if (index == -1) {
-            return "Move object(s)";
-        }
-        return null;
+        return instructions[index - 10];
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#isDragEdgeReverse(int)
-     */
+    @Override
     protected boolean isDragEdgeReverse(int index) {
         if (index == 11) {
             return true;
@@ -168,10 +120,4 @@ public class SelectionInterface extends SelectionNodeClarifiers2 {
         return false;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.SelectionNodeClarifiers2#isEdgePostProcessRequested()
-     */
-    protected boolean isEdgePostProcessRequested() {
-        return false;
-    }
 }
