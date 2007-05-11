@@ -31,6 +31,8 @@ import javax.swing.Action;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -46,6 +48,8 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionAddMessage extends UndoableAction {
 
+    private static ActionAddMessage targetFollower;
+    
     /**
      * The constructor.
      */
@@ -57,9 +61,28 @@ public class ActionAddMessage extends UndoableAction {
                 Translator.localize("action.add-message"));
     }
 
+    public static ActionAddMessage getTargetFollower() {
+        if (targetFollower == null) {
+            targetFollower  = new ActionAddMessage();
+            TargetManager.getInstance().addTargetListener(new TargetListener() {
+                public void targetAdded(TargetEvent e) {
+                    setTarget();
+                }
+                public void targetRemoved(TargetEvent e) {
+                    setTarget();
+                }
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
+                public void targetSet(TargetEvent e) {
+                    setTarget();
+                }
+                private void setTarget() {
+                    targetFollower.setEnabled(targetFollower.shouldBeEnabled());
+                }
+            });
+            targetFollower.setEnabled(targetFollower.shouldBeEnabled());
+        }
+        return targetFollower;
+    }
 
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

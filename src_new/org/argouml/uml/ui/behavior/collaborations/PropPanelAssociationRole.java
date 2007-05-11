@@ -84,7 +84,7 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
 		 new JScrollPane(messageList));
 
         addAction(new ActionNavigateContainerElement());
-        addAction(TargetManager.getInstance().getAddMessageAction());
+        addAction(ActionAddMessage.getTargetFollower());
         addAction(getDeleteAction());
     }
 

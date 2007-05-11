@@ -42,10 +42,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
-import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
@@ -393,12 +390,6 @@ public final class TargetManager {
      * Flag to indicate that there is a setTarget method running.
      */
     private boolean inTransaction = false;
-
-    private ActionAddAttribute addAttributeAction = new ActionAddAttribute();
-
-    private ActionAddOperation addOperationAction = new ActionAddOperation();
-    
-    private ActionAddMessage addMessageAction = new ActionAddMessage();
 
     /**
      * Singleton retrieval method.
@@ -826,50 +817,15 @@ public final class TargetManager {
     }
 
     private void endTargetTransaction() {
-        addAttributeAction.setEnabled(addAttributeAction.shouldBeEnabled());
-        addOperationAction.setEnabled(addOperationAction.shouldBeEnabled());
-        addMessageAction.setEnabled(addMessageAction.shouldBeEnabled());
-
         inTransaction = false;
-    }
-    
-    /**
-     * Get the Action for creating and adding a new attribute
-     * to the single selected target (or its owner).
-     * @deprecated in 0.25.3 by Bob Tarling
-     * Use the ActionAddAttribute constructor instead.
-     * @return the action
-     */
-    public Action getAddAttributeAction() {
-        return addAttributeAction;
-    }
-
-    /**
-     * Get the Action for creating and adding a new operation
-     * to the single selected target (or its owner).
-     * @deprecated in 0.25.3 by Bob Tarling
-     * Use the ActionAddAttribute constructor instead.
-     * @return the action
-     */
-    public Action getAddOperationAction() {
-        return addOperationAction;
-    }
-
-    /**
-     * Get the Action for creating and adding a new operation
-     * to the single selected target (or its owner).
-     * @return the action
-     */
-    public Action getAddMessageAction() {
-        return addMessageAction;
     }
 
     /**
      * Get the Action class for creating and adding a new EnumerationLiteral for
      * the single selected target (or its owner).
      * 
-     * @deprecated by tfmorris for 0.25.3 - use 
-     * new {@link org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral}()
+     * @deprecated by tfmorris for 0.25.3 - use new 
+     * {@link org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral}()
      * - This was only introduced in 0.24, so it can be removed quickly.
      * @return null
      */

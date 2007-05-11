@@ -391,8 +391,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     private Action getActionMessage() {
         if (actionMessage == null) {
-            actionMessage =
-                TargetManager.getInstance().getAddMessageAction();
+            actionMessage = ActionAddMessage.getTargetFollower();
         }
         return actionMessage;
     }

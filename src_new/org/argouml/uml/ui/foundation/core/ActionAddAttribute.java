@@ -33,6 +33,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -43,6 +45,9 @@ import org.tigris.gef.undo.UndoableAction;
  * when this tool should be downlighted or not.
  */
 public class ActionAddAttribute extends UndoableAction {
+
+    private static ActionAddAttribute targetFollower;
+
     /**
      * The constructor for this class.
      */
@@ -52,6 +57,29 @@ public class ActionAddAttribute extends UndoableAction {
         // Set the tooltip string:
         putValue(Action.SHORT_DESCRIPTION, 
                 Translator.localize("button.new-attribute"));
+    }
+
+    public static ActionAddAttribute getTargetFollower() {
+        if (targetFollower == null) {
+            targetFollower  = new ActionAddAttribute();
+            TargetManager.getInstance().addTargetListener(new TargetListener() {
+                public void targetAdded(TargetEvent e) {
+                    setTarget();
+                }
+                public void targetRemoved(TargetEvent e) {
+                    setTarget();
+                }
+
+                public void targetSet(TargetEvent e) {
+                    setTarget();
+                }
+                private void setTarget() {
+                    targetFollower.setEnabled(targetFollower.shouldBeEnabled());
+                }
+            });
+            targetFollower.setEnabled(targetFollower.shouldBeEnabled());
+        }
+        return targetFollower;
     }
 
     /*
@@ -83,8 +111,6 @@ public class ActionAddAttribute extends UndoableAction {
     }
 
     /**
-     * @deprecated in 0.25.3 by Bob Tarling.
-     * It is up to the user of the action to enable it when required
      * @return true if this tool should be enabled
      */
     public boolean shouldBeEnabled() {
