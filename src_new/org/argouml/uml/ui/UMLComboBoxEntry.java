@@ -141,7 +141,7 @@ public class UMLComboBoxEntry implements Comparable {
                 longName = profile.formatElement(element, null);
             }
             else {
-                longName = "(unspecified)";
+                longName = "(unspecified)"; // TODO: I18N
             }
         }
         return longName;
