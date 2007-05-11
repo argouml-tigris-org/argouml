@@ -33,7 +33,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ActionSetMode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -55,11 +54,11 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
     /**
      * Constructs a new sequence diagram with a default name and NO namespace.
-     * namespaces are used to determine the 'owner' of the diagram for diagrams
+     * Namespaces are used to determine the 'owner' of the diagram for diagrams
      * but that's plain misuse.
      */
     public UMLSequenceDiagram() {
-        // TODO: All super constrcutors should take a GraphModel
+        // TODO: All super constructors should take a GraphModel
         super();
         // Dirty hack to remove the trash the Diagram constructor leaves
         SequenceDiagramGraphModel gm =
@@ -89,9 +88,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
         setNamespace(collaboration); //See issue 3373.
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
-     */
+
+    @Override
     public Object getOwner() {
         return getNamespace();
     }
@@ -110,9 +108,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
         return name;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
-     */
+
+    @Override
     public String getLabelName() {
         return Translator.localize("label.sequence-diagram");
     }
@@ -153,8 +150,9 @@ public class UMLSequenceDiagram extends UMLDiagram {
                     "button.new-destroyaction", },
             };
 
+            Hashtable<String, Object> args = new Hashtable<String, Object>();
 	    for (int i = 0; i < actionList.length; i++) {
-		Hashtable args = new Hashtable();
+                args.clear();
                 args.put("edgeClass", Model.getMetaTypes().getMessage());
 		args.put("action", actionList[i][0]);
                 args.put("actionName",
@@ -165,13 +163,14 @@ public class UMLSequenceDiagram extends UMLDiagram {
                         ModeCreateMessage.class, args,
                         (String) actionList[i][1]));
 	    }
-            Hashtable args = new Hashtable();
+
+            args.clear();
             args.put("name", SEQUENCE_EXPAND_BUTTON);
             actions[5] =
 		new RadioAction(new ActionSetMode(ModeChangeHeight.class,
 					       args,
 					       SEQUENCE_EXPAND_BUTTON));
-            args = new Hashtable();
+            args.clear();
             args.put("name", SEQUENCE_CONTRACT_BUTTON);
             actions[6] =
 		new RadioAction(new ActionSetMode(ModeChangeHeight.class,
@@ -181,16 +180,14 @@ public class UMLSequenceDiagram extends UMLDiagram {
         return actions;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#getNamespace()
-     */
+
+    @Override
     public Object getNamespace() {
         return ((SequenceDiagramGraphModel) getGraphModel()).getCollaboration();
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#setNamespace(java.lang.Object)
-     */
+
+    @Override
     public void setNamespace(Object ns) {
         ((SequenceDiagramGraphModel) getGraphModel()).setCollaboration(ns);
         super.setNamespace(ns);
@@ -206,10 +203,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
 */
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(
-     *         java.lang.Object)
-     */
+    
+    @Override
     public boolean isRelocationAllowed(Object base)  {
     	return false;
 	/* TODO: We may return the following when the
@@ -219,11 +214,10 @@ public class UMLSequenceDiagram extends UMLDiagram {
 //        	|| Model.getFacade().isAOperation(base);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
-     */
+
+    @Override
     public boolean relocate(Object base) {
         return false;
     }
 
-} /* end class UMLSequenceDiagram */
+}
