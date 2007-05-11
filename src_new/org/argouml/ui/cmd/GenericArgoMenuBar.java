@@ -55,6 +55,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
+import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionDeploymentDiagram;
 import org.argouml.uml.ui.ActionGenerateAll;
 import org.argouml.uml.ui.ActionGenerateOne;
@@ -445,8 +446,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
         ShortcutMgr.assignAccelerator(removeItem,
                 ShortcutMgr.ACTION_REMOVE_FROM_DIAGRAM);
 
-        JMenuItem deleteItem = edit.add(TargetManager.getInstance()
-                .getDeleteAction());
+        JMenuItem deleteItem = edit.add(ActionDeleteModelElements
+                .getTargetFollower());
         setMnemonic(deleteItem, "Delete from Model");
         ShortcutMgr.assignAccelerator(deleteItem,
                 ShortcutMgr.ACTION_DELETE_MODEL_ELEMENTS);

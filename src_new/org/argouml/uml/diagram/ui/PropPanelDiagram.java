@@ -39,6 +39,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNavigate;
+import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.util.ConfigLoader;
 
@@ -65,7 +66,7 @@ public class PropPanelDiagram extends PropPanel {
         addField(Translator.localize("label.home-model"), new JScrollPane(lst));
 
         addAction(new ActionNavigateUpFromDiagram());
-        addAction(TargetManager.getInstance().getDeleteAction());
+        addAction(ActionDeleteModelElements.getTargetFollower());
     }
 
     /**

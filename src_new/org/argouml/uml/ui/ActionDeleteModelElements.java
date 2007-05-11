@@ -43,6 +43,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoFrame;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
@@ -65,6 +67,30 @@ public class ActionDeleteModelElements extends UndoableAction {
      * Generated serial version for rev 1.4
      */
     private static final long serialVersionUID = -5728400220151823726L;
+
+    private static ActionDeleteModelElements targetFollower;
+
+    public static ActionDeleteModelElements getTargetFollower() {
+        if (targetFollower == null) {
+            targetFollower  = new ActionDeleteModelElements();
+            TargetManager.getInstance().addTargetListener(new TargetListener() {
+                public void targetAdded(TargetEvent e) {
+                    setTarget();
+                }
+                public void targetRemoved(TargetEvent e) {
+                    setTarget();
+                }
+
+                public void targetSet(TargetEvent e) {
+                    setTarget();
+                }
+                private void setTarget() {
+                    targetFollower.setEnabled(targetFollower.shouldBeEnabled());
+                }
+            });
+        }
+        return targetFollower;
+    }
     
     private static final Logger LOG =
         Logger.getLogger(ActionDeleteModelElements.class);

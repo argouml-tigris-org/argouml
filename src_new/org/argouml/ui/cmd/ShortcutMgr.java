@@ -50,10 +50,10 @@ import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ActionSettings;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ActionPerspectiveConfig;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
+import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionDeploymentDiagram;
 import org.argouml.uml.ui.ActionGenerateAll;
 import org.argouml.uml.ui.ActionGenerateOne;
@@ -622,8 +622,8 @@ public class ShortcutMgr {
                 KeyEvent.VK_DELETE, 0), ProjectBrowser.getInstance()
                 .getRemoveFromDiagramAction());
         putDefaultShortcut(ACTION_DELETE_MODEL_ELEMENTS, KeyStroke
-                .getKeyStroke(KeyEvent.VK_DELETE, DEFAULT_MASK), TargetManager
-                .getInstance().getDeleteAction());
+                .getKeyStroke(KeyEvent.VK_DELETE, DEFAULT_MASK), 
+                ActionDeleteModelElements.getTargetFollower());
 
         // view menu
         putDefaultShortcut(ACTION_GO_TO_DIAGRAM, null, new ActionGotoDiagram());
