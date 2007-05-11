@@ -872,7 +872,9 @@ class PreloadClasses implements Runnable {
                 /* We don't care if optional modules aren't found. */
             }            
         }
-        ModuleLoader2.doLoad(false);
+        // TODO: This already was done in Main.main().  If it can be deferred,
+        // remove it from there and reenable this. - tfm - 20070511
+//        ModuleLoader2.doLoad(false);
     }
 
     /*
