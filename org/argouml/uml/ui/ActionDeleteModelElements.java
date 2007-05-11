@@ -88,6 +88,7 @@ public class ActionDeleteModelElements extends UndoableAction {
                     targetFollower.setEnabled(targetFollower.shouldBeEnabled());
                 }
             });
+            targetFollower.setEnabled(targetFollower.shouldBeEnabled());
         }
         return targetFollower;
     }
