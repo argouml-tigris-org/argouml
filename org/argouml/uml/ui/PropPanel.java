@@ -57,7 +57,6 @@ import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.ui.targetmanager.TargettableModelView;
 import org.argouml.uml.Profile;
 import org.tigris.gef.presentation.Fig;
@@ -480,7 +479,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @return the delete action
      */
     protected final Action getDeleteAction() {
-        return TargetManager.getInstance().getDeleteAction();
+        return ActionDeleteModelElements.getTargetFollower();
     }
 
     /**

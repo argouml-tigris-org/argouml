@@ -34,7 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.event.EventListenerList;
 
@@ -45,7 +44,6 @@ import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.tigris.gef.base.Diagram;
@@ -401,8 +399,6 @@ public final class TargetManager {
     private ActionAddOperation addOperationAction = new ActionAddOperation();
     
     private ActionAddMessage addMessageAction = new ActionAddMessage();
-    
-    private ActionDeleteModelElements deleteAction = new ActionDeleteModelElements();
 
     /**
      * Singleton retrieval method.
@@ -833,7 +829,6 @@ public final class TargetManager {
         addAttributeAction.setEnabled(addAttributeAction.shouldBeEnabled());
         addOperationAction.setEnabled(addOperationAction.shouldBeEnabled());
         addMessageAction.setEnabled(addMessageAction.shouldBeEnabled());
-        deleteAction.setEnabled(deleteAction.shouldBeEnabled());
 
         inTransaction = false;
     }
@@ -867,14 +862,6 @@ public final class TargetManager {
      */
     public Action getAddMessageAction() {
         return addMessageAction;
-    }
-
-    /**
-     * Get the Action for deleting the target list.
-     * @return the action
-     */
-    public AbstractAction getDeleteAction() {
-        return deleteAction;
     }
 
     /**
