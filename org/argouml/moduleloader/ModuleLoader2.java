@@ -36,6 +36,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Map.Entry;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
@@ -523,7 +525,6 @@ public final class ModuleLoader2 {
 				file[i].toURL(),
 			    });
 	                try {
-	                    Translator.addClassLoader(classloader);
 	                    processJarFile(classloader, file[i]);
 	                } catch (ClassNotFoundException e) {
 	                    LOG.error("The class is not found.", e);
@@ -531,14 +532,14 @@ public final class ModuleLoader2 {
 	                }
 		    }
 		} catch (IOException ioe) {
-		    LOG.debug("Cannot open the directory " + dirname, ioe);
+		    LOG.debug("Cannot open Jar file " + file[i], ioe);
 		}
 	    }
 	}
     }
 
     /**
-     * Check the manifest of a jar file for an extension.<p>
+     * Check a jar file for an ArgoUML extension/module.<p>
      *
      * If there isn't a manifest or it isn't readable, we fail silently.
      *
@@ -550,44 +551,76 @@ public final class ModuleLoader2 {
     private void processJarFile(ClassLoader classloader, File file)
         throws ClassNotFoundException {
 
-	JarFile jarfile = null;
-        Manifest manifest = null;
 	LOG.info("Opening jar file " + file);
+        JarFile jarfile;
 	try {
 	    jarfile = new JarFile(file);
 	} catch (IOException e) {
-	    LOG.debug("Unable to open " + file, e);
+	    LOG.error("Unable to open " + file, e);
+            return;
 	}
 
-        // TODO: use JarFile.entries() so manifest isn't mandatory
+        Manifest manifest;
+        try {
+            manifest = jarfile.getManifest();
+            if (manifest == null) {
+                LOG.debug(file + " does not have a manifest");
+            }
+        } catch (IOException e) {
+            LOG.error("Unable to read manifest of " + file, e);
+            return;
+        }
+	
+        boolean loadedClass = false;
+        if (manifest == null) {
+            Enumeration<JarEntry> jarEntries = jarfile.entries();
+            while (jarEntries.hasMoreElements()) {
+                JarEntry entry = jarEntries.nextElement();
+                loadedClass =
+                        loadedClass
+                                | processEntry(classloader, entry.getName());
+            }
+        } else {
+            Map entries = manifest.getEntries();
+            Iterator iMap = entries.keySet().iterator();
 
-	if (jarfile != null) {
-	    try {
-	        manifest = jarfile.getManifest();
-	        if (manifest == null) {
-	            LOG.debug(file + " does not have a manifest");
-		    return;
-	        }
-	    } catch (IOException e) {
-	        LOG.debug("Unable to read manifest of " + file, e);
-		return;
-	    }
-	}
+            while (iMap.hasNext()) {
+                // Look for our specification
+                loadedClass =
+                    loadedClass
+                            | processEntry(classloader, (String) iMap.next());
+            }
+        }
+        
+        if (loadedClass) {
+            // Add this to search list for I18N properties
+            Translator.addClassLoader(classloader);
+        } else {
+            LOG.error("Failed to find any loadable ArgoUML modules in jar "
+                    + file);
+        }
+    }
 
-	Map entries = manifest.getEntries();
-
-	Iterator iMap = entries.keySet().iterator();
-
-	while (iMap.hasNext()) {
-	    // Look for our specification
-	    String cname = (String) iMap.next();
-	    if (cname.endsWith(CLASS_SUFFIX)) {
-		int classNamelen = cname.length() - CLASS_SUFFIX.length();
-		String className = cname.substring(0, classNamelen);
-		className = className.replace('/', '.');
-		addClass(classloader, className);
-	    }
-	}
+    /**
+     * Process a JAR file entry, attempting to load anything that looks like a
+     * Java class.
+     * 
+     * @param classloader
+     *            the classloader to use when loading the class
+     * @param cname
+     *            the class name
+     * @throws ClassNotFoundException
+     * @return true if class was a module class and loaded successfully
+     */
+    private boolean processEntry(ClassLoader classloader, String cname)
+        throws ClassNotFoundException {
+        if (cname.endsWith(CLASS_SUFFIX)) {
+            int classNamelen = cname.length() - CLASS_SUFFIX.length();
+            String className = cname.substring(0, classNamelen);
+            className = className.replace('/', '.');
+            return addClass(classloader, className);
+        }
+        return false;
     }
 
     /**
@@ -613,61 +646,83 @@ public final class ModuleLoader2 {
      * @param classname The name.
      * @throws ClassNotFoundException if the class classname is not found.
      */
-    private void addClass(ClassLoader classLoader, String classname)
+    private boolean addClass(ClassLoader classLoader, String classname)
         throws ClassNotFoundException {
 
-        Class moduleClass;
         LOG.info("Loading module " + classname);
-        moduleClass = classLoader.loadClass(classname);
-
-        Constructor c;
+        Class moduleClass;
         try {
-            c = moduleClass.getDeclaredConstructor(new Class[]{});
+            moduleClass = classLoader.loadClass(classname);
+        } catch (UnsupportedClassVersionError e) {
+            LOG.error("Unsupported Java class version for " + classname);
+            return false;
+        }
+        
+        if (!ModuleInterface.class.isAssignableFrom(moduleClass)) {
+            LOG.debug("The class " + classname + " is not a module.");
+            return false;
+        }
+
+        Constructor defaultConstructor;
+        try {
+            defaultConstructor =
+                    moduleClass.getDeclaredConstructor(new Class[] {});
         } catch (SecurityException e) {
-            LOG.debug("The constructor for class " + classname
+            LOG.error("The default constructor for class " + classname
                       + " is not accessable.",
                       e);
-            return;
+            return false;
         } catch (NoSuchMethodException e) {
-            LOG.debug("The constructor for class " + classname
+            LOG.error("The default constructor for class " + classname
                       + " is not found.", e);
-            return;
+            return false;
         }
 
-        if (!Modifier.isPublic(c.getModifiers())) {
-            LOG.debug("The constructor for class " + classname
+        if (!Modifier.isPublic(defaultConstructor.getModifiers())) {
+            LOG.error("The default constructor for class " + classname
                     + " is not public.  Not loaded.");
-            return;
+            return false;
         }
-        Object obj;
+        Object moduleInstance;
         try {
-            obj = c.newInstance(new Object[]{});
+            moduleInstance = defaultConstructor.newInstance(new Object[]{});
         } catch (IllegalArgumentException e) {
-            LOG.debug("The constructor for class " + classname
+            LOG.error("The constructor for class " + classname
                     + " is called with incorrect argument.", e);
-            return;
+            return false;
         } catch (InstantiationException e) {
-            LOG.debug("The constructor for class " + classname
-                    + " throws an exception.", e);
-            return;
+            LOG.error("The constructor for class " + classname
+                    + " threw an exception.", e);
+            return false;
         } catch (IllegalAccessException e) {
-            LOG.debug("The constructor for class " + classname
+            LOG.error("The constructor for class " + classname
                     + " is not accessible.", e);
-            return;
+            return false;
         } catch (InvocationTargetException e) {
-            LOG.debug("The constructor for class " + classname
+            LOG.error("The constructor for class " + classname
                     + " cannot be called.", e);
-            return;
+            return false;
+        } catch (NoClassDefFoundError e) {
+            LOG.error("Unable to find required class while loading "
+                    + classname + " - may indicate an obsolete"
+                    + " extension module", e);
+            return false;
+        } catch (Exception e) {
+            LOG.error("Unexpected error while loading " + classname, e);
+            return false;
         }
 
-        if (!(obj instanceof ModuleInterface)) {
-            LOG.debug("The class " + classname + " is not a module.");
-            return;
+        // The following check should have been satisfied before we
+        // instantiated the module, but double check again
+        if (!(moduleInstance instanceof ModuleInterface)) {
+            LOG.error("The class " + classname + " is not a module.");
+            return false;
         }
-        ModuleInterface mf = (ModuleInterface) obj;
+        ModuleInterface mf = (ModuleInterface) moduleInstance;
 
         addModule(mf);
         LOG.info("Succesfully loaded module " + classname);
+        return true;
     }
 
     /**
