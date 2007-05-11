@@ -42,6 +42,7 @@ import javax.swing.SwingUtilities;
 
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
+import org.argouml.i18n.Translator;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 import org.tigris.gef.base.CmdSaveEPS;
@@ -51,6 +52,12 @@ import org.tigris.gef.base.CmdSavePNG;
 import org.tigris.gef.base.CmdSavePS;
 import org.tigris.gef.base.CmdSaveSVG;
 import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.SaveEPSAction;
+import org.tigris.gef.base.SaveGIFAction;
+import org.tigris.gef.base.SaveGraphicsAction;
+import org.tigris.gef.base.SavePNGAction;
+import org.tigris.gef.base.SavePSAction;
+import org.tigris.gef.base.SaveSVGAction;
 import org.tigris.gef.persistence.PostscriptWriter;
 
 
@@ -311,6 +318,28 @@ public final class SaveGraphicsManager {
         }
         return cmd;
     }
+    
+    /**
+     * @param suffix the suffix (extension) of the filename,
+     *               which corresponds to the graphics format to be used
+     * @return the command that will do the save
+     */
+    public SaveGraphicsAction getSaveActionBySuffix(String suffix) {
+        SaveGraphicsAction cmd = null;
+        if (FileFilters.PS_FILTER.getSuffix().equals(suffix)) {
+            cmd = new SavePSAction(Translator.localize("action.save-ps"));
+        } else if (FileFilters.EPS_FILTER.getSuffix().equals(suffix)) {
+            cmd = new SaveEPSAction(Translator.localize("action.save-eps"));
+        } else if (FileFilters.PNG_FILTER.getSuffix().equals(suffix)) {
+            cmd = new SavePNGAction(Translator.localize("action.save-png"));
+        } else if (FileFilters.GIF_FILTER.getSuffix().equals(suffix)) {
+            cmd = new SaveGIFAction(Translator.localize("action.save-gif"));
+        } else if (FileFilters.SVG_FILTER.getSuffix().equals(suffix)) {
+            cmd = new SaveSVGAction(Translator.localize("action.save-svg"));
+        }
+        return cmd;
+    }
+    
 
     /**
      * @return the complete collection of SuffixFilters,
