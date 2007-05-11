@@ -33,6 +33,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -40,8 +42,8 @@ import org.tigris.gef.undo.UndoableAction;
  * Action to add an operation to a classifier.
  */
 public class ActionAddOperation extends UndoableAction {
-    ////////////////////////////////////////////////////////////////
-    // constructors
+
+    private static ActionAddOperation targetFollower;
 
     /**
      * The constructor.
@@ -54,8 +56,29 @@ public class ActionAddOperation extends UndoableAction {
                 Translator.localize("button.new-operation"));
     }
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
+    public static ActionAddOperation getTargetFollower() {
+        if (targetFollower == null) {
+            targetFollower  = new ActionAddOperation();
+            TargetManager.getInstance().addTargetListener(new TargetListener() {
+                public void targetAdded(TargetEvent e) {
+                    setTarget();
+                }
+                public void targetRemoved(TargetEvent e) {
+                    setTarget();
+                }
+
+                public void targetSet(TargetEvent e) {
+                    setTarget();
+                }
+                private void setTarget() {
+                    targetFollower.setEnabled(targetFollower.shouldBeEnabled());
+                }
+            });
+            targetFollower.setEnabled(targetFollower.shouldBeEnabled());
+        }
+        return targetFollower;
+    }
+
 
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -84,8 +107,6 @@ public class ActionAddOperation extends UndoableAction {
     }
 
     /**
-     * @deprecated in 0.25.3 by Bob Tarling.
-     * It is up to the user of the action to enable it when required
      * @return true if this tool should be enabled
      */
     public boolean shouldBeEnabled() {

@@ -32,9 +32,6 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetListener;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ModeCreateDependency;
 import org.argouml.uml.diagram.ui.ModeCreatePermission;
@@ -51,7 +48,7 @@ import org.tigris.gef.base.LayerPerspectiveMutable;
  * 
  * @author jrobbins@ics.uci.edy
  */
-public class UMLClassDiagram extends UMLDiagram implements TargetListener {
+public class UMLClassDiagram extends UMLDiagram {
 
     /**
      * The UID.
@@ -84,8 +81,6 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
     private Action actionUniAssociation;
     private Action actionUniAggregation;
     private Action actionUniComposition;
-    private Action actionAttribute;
-    private Action actionOperation;
     private Action actionDataType;
     private Action actionEnumeration;
     private Action actionStereotype;
@@ -97,7 +92,6 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
      */
     public UMLClassDiagram() {
         super();
-        addTargetListener();
         // TODO: All super constructors should take a GraphModel
         setGraphModel(createGraphModel());
     }
@@ -110,7 +104,6 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
      */
     public UMLClassDiagram(String name, Object namespace) {
         super(name, namespace);
-        addTargetListener();
     }
 
     /**
@@ -119,7 +112,6 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
      */
     public UMLClassDiagram(Object m) {
         super(m);
-        addTargetListener();
         String name = getNewDiagramName();
         try {
             setName(name);
@@ -127,18 +119,6 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
             LOG.warn("Generated diagram name '" + name 
                     + "' was vetoed by setName");
         }
-    }
-
-    /**
-     * Add ourselves as a TargetListener after initializing any actions
-     * that the listener callback requires.
-     */
-    private void addTargetListener() {
-        actionAttribute = new ActionAddAttribute();
-        actionAttribute.setEnabled(false);
-        actionOperation = new ActionAddOperation();
-        actionOperation.setEnabled(false);
-        TargetManager.getInstance().addTargetListener(this);
     }
 
     /*
@@ -196,8 +176,8 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
             null,
             getDependencyActions(),
             null,
-            getActionAttribute(),
-            getActionOperation(),
+            ActionAddAttribute.getTargetFollower(),
+            ActionAddOperation.getTargetFollower(),
             getActionAssociationClass(),
             null,
             getDataTypeActions(),
@@ -547,20 +527,6 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
     }
 
     /**
-     * @return Returns the actionAttribute.
-     */
-    private Action getActionAttribute() {
-        return actionAttribute;
-    }
-
-    /**
-     * @return Returns the actionOperation.
-     */
-    private Action getActionOperation() {
-        return actionOperation;
-    }
-
-    /**
      * @return Returns the actionDataType.
      */
     private Action getActionDataType() {
@@ -634,41 +600,5 @@ public class UMLClassDiagram extends UMLDiagram implements TargetListener {
         damage();
         return true;
     }
-
-    public void targetAdded(TargetEvent e) {
-	enableActionByTargets();
-    }
-
-    public void targetRemoved(TargetEvent e) {
-	enableActionByTargets();
-    }
-
-    public void targetSet(TargetEvent e) {
-	enableActionByTargets();
-    }
-    
-    private void enableActionByTargets() {
-        boolean enable = false;
-        Object target = TargetManager.getInstance().getSingleModelTarget();
-        if (Model.getFacade().isAClassifier(target)
-            || Model.getFacade().isAFeature(target)
-            || Model.getFacade().isAAssociationEnd(target)) {
-            enable = true;
-        }
-        actionAttribute.setEnabled(enable);
-        actionOperation.setEnabled(enable);
-    }
-
-    /**
-     * 
-     * @see org.argouml.uml.diagram.ArgoDiagram#remove()
-     */
-    @Override
-    public void remove() {
-	super.remove();
-	TargetManager.getInstance().removeTargetListener(this);
-    }
-    
-    
     
 } /* end class UMLClassDiagram */
