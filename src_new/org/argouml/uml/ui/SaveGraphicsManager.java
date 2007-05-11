@@ -299,10 +299,14 @@ public final class SaveGraphicsManager {
     }
 
     /**
-     * @param suffix the suffix (extension) of the filename,
-     *               which corresponds to the graphics format to be used
+     * @param suffix
+     *            the suffix (extension) of the filename, which corresponds to
+     *            the graphics format to be used
      * @return the command that will do the save
+     * @deprecated for 0.25.3 by tfmorris - use
+     *             {@link #getSaveActionBySuffix(String)}
      */
+    @SuppressWarnings("deprecation")
     public CmdSaveGraphics getSaveCommandBySuffix(String suffix) {
         CmdSaveGraphics cmd = null;
         if (FileFilters.PS_FILTER.getSuffix().equals(suffix)) {
@@ -322,7 +326,7 @@ public final class SaveGraphicsManager {
     /**
      * @param suffix the suffix (extension) of the filename,
      *               which corresponds to the graphics format to be used
-     * @return the command that will do the save
+     * @return the action that will do the save
      */
     public SaveGraphicsAction getSaveActionBySuffix(String suffix) {
         SaveGraphicsAction cmd = null;
@@ -359,10 +363,13 @@ public final class SaveGraphicsManager {
 /**
  * Class to adjust {@link org.tigris.gef.base.CmdSaveEPS} for our purpuses.<p>
  *
- * While doing this refactoring (February 2004) it is unclear to me (Linus
+ * TODO: While doing this refactoring (February 2004) it is unclear to me (Linus
  * Tolke) why this modification in the {@link org.tigris.gef.base.CmdSaveEPS}
  * behavior is needed. Is it a bug in GEF? Is it an added feature?
  * The old comment was: override gef default to cope with scaling.
+ * 
+ * TODO: Does this behavior need to be replicated for {@link SaveEPSAction} 
+ * as well? - tfm - 20070511
  */
 class ActionSaveGraphicsCmdSaveEPS extends CmdSaveEPS {
     /*
