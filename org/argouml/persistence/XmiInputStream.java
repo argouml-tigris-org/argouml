@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,7 @@ import org.argouml.persistence.AbstractFilePersister.ProgressMgr;
 
 /**
  * A BufferInputStream that is aware of XML structure.
- * It can searches for the first occurence of a named tag
+ * It can search for the first occurence of a named tag
  * and reads only the data (inclusively) from that tag
  * to the matching end tag or it can search for the first
  * occurence of a named tag and read on the child tags.
@@ -69,59 +69,57 @@ class XmiInputStream extends BufferedInputStream {
     /**
      * The expected stream length.
      */
-    private long length;
-    
-    /**
-     * The expected stream length.
-     */
     private ProgressMgr progressMgr;
 
     /**
      * Construct a new XmlInputStream.
      *
      * @param inputStream the input stream to wrap.
-     * @param xmiExtensionParser the parser to call to read any
+     * @param extParser the parser to call to read any
      *                           XMI.extension elements
-     * @param length the expected length of the input stream
-     * @param eventSpacing the number of characers to read before
+     * @param len the expected length of the input stream
+     * @param spacing the number of characers to read before
      *        firing a progress event.
-     * @param progressMgr the progress manager
+     * @param prgrssMgr the progress manager
      */
     public XmiInputStream(
             InputStream inputStream,
-            XmiExtensionParser xmiExtensionParser,
-            long length,
-            long eventSpacing,
-            ProgressMgr progressMgr) {
+            XmiExtensionParser extParser,
+            long spacing,
+            ProgressMgr prgrssMgr) {
         super(inputStream);
-        this.length = length;
-        this.eventSpacing = eventSpacing;
-        this.xmiExtensionParser  = xmiExtensionParser;
-        this.progressMgr  = progressMgr;
+        eventSpacing = spacing;
+        xmiExtensionParser  = extParser;
+        progressMgr  = prgrssMgr;
     }
     
     /**
      * Construct a new XmlInputStream.
      *
      * @param inputStream the input stream to wrap.
-     * @param xmiExtensionParser the parser to call to read any
+     * @param extParser the parser to call to read any
      *                           XMI.extension elements
-     * @param length the expected length of the input stream
-     * @param eventSpacing the number of characers to read before
+     * @param len the expected length of the input stream
+     * @param spacing the number of characers to read before
      *        firing a progress event.
-     * @deprecated use version that supplies a ProgressMgr
+     * @param prgrssMgr the progress manager
+     * @deprecated by Linus Tolke for 0.25.3.
+     *        Use the constructor 
+     *        {@link #XmiInputStream(InputStream, XmiExtensionParser,
+     *        long, ProgressMgr)} that doesn't specify length
      */
     public XmiInputStream(
             InputStream inputStream,
-            XmiExtensionParser xmiExtensionParser,
-            long length,
-            long eventSpacing) {
+            XmiExtensionParser extParser,
+            long len,
+            long spacing,
+            ProgressMgr prgrssMgr) {
         super(inputStream);
-        this.length = length;
-        this.eventSpacing = eventSpacing;
-        this.xmiExtensionParser  = xmiExtensionParser;
+        eventSpacing = spacing;
+        xmiExtensionParser  = extParser;
+        progressMgr  = prgrssMgr;
     }
-    
+
     /*
      * @see java.io.InputStream#read()
      */
@@ -140,18 +138,19 @@ class XmiInputStream extends BufferedInputStream {
         
         if (parsingExtension) {
             stringBuffer.append((char) ch);
-        }// else {
+        }
+        // else {
         // TODO: Only progress when reading standard XMI
         // extension parsers will continue progression.
-            ++readCount;
-            if (progressMgr != null && readCount == eventSpacing) {
-                try {
-                    readCount = 0;
-                    progressMgr.nextPhase();
-                } catch (InterruptedException e) {
-                    throw new InterruptedIOException(e);
-                }
+        ++readCount;
+        if (progressMgr != null && readCount == eventSpacing) {
+            try {
+                readCount = 0;
+                progressMgr.nextPhase();
+            } catch (InterruptedException e) {
+                throw new InterruptedIOException(e);
             }
+        }
 //        }
         
         if (xmiExtensionParser != null) {
@@ -263,8 +262,8 @@ class InterruptedIOException extends IOException {
     
     private InterruptedException cause;
     
-    public InterruptedIOException(InterruptedException cause) {
-        this.cause = cause;
+    public InterruptedIOException(InterruptedException theCause) {
+        cause = theCause;
     }
     
     public InterruptedException getInterruptedException() {

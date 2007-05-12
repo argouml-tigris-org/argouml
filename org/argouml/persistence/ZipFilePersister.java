@@ -146,7 +146,7 @@ class ZipFilePersister extends XmiFilePersister {
                     }
                     MemberFilePersister persister
                         = new ModelMemberFilePersister();
-                    persister.save(projectMember, writer, null);
+                    persister.save(projectMember, writer, false);
                 }
             }
             stream.close();
@@ -220,8 +220,12 @@ class ZipFilePersister extends XmiFilePersister {
                         fileName.indexOf('.'),
                         fileName.lastIndexOf('.'));
             InputStream stream = openZipStreamAt(file.toURL(), extension);
-            InputSource is = new InputSource(
-                    new XmiInputStream(stream, this, 10000000, 100000));
+
+            // TODO: What progressMgr is to be used here? Where does
+            //       it come from?
+            InputSource is =
+                new InputSource(
+                    new XmiInputStream(stream, this, 100000, null));
             is.setSystemId(file.toURL().toExternalForm());
 
             // Add the path of the current model to the search path, so we can

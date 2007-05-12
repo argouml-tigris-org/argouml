@@ -135,7 +135,7 @@ class OldZargoFilePersister extends ZargoFilePersister {
             // Save the .argo entry
             ZipEntry zipEntry =
                 new ZipEntry(project.getBaseName()
-                 + FileConstants.UNCOMPRESSED_FILE_EXT);
+                        + FileConstants.UNCOMPRESSED_FILE_EXT);
             stream.putNextEntry(zipEntry);
 
             Hashtable templates =
@@ -149,7 +149,7 @@ class OldZargoFilePersister extends ZargoFilePersister {
             
             int counter = 0;
             int size = project.getMembers().size();
-            Collection names = new ArrayList();
+            Collection<String> names = new ArrayList<String>();
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember =
                     (ProjectMember) project.getMembers().get(i);
@@ -168,7 +168,7 @@ class OldZargoFilePersister extends ZargoFilePersister {
                     stream.putNextEntry(new ZipEntry(name));
                     MemberFilePersister persister =
                         getMemberFilePersister(projectMember);
-                    persister.save(projectMember, writer, null);
+                    persister.save(projectMember, writer, false);
                     writer.flush();
                     stream.closeEntry();
                 }
@@ -187,7 +187,7 @@ class OldZargoFilePersister extends ZargoFilePersister {
                             new ZipEntry(projectMember.getZipName()));
                     OldModelMemberFilePersister persister =
                         new OldModelMemberFilePersister();
-                    persister.save(projectMember, writer, null);
+                    persister.save(projectMember, writer, false);
                 }
             }
             
