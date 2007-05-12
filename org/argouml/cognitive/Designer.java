@@ -40,6 +40,7 @@ import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
+import org.argouml.model.InvalidElementException;
 import org.argouml.ui.ActionGoToCritique;
 import org.tigris.gef.util.ChildGenerator;
 import org.tigris.gef.util.EnumerationEmpty;
@@ -268,99 +269,113 @@ public final class Designer
      * Thread that runs this.
      */
     public void run() {
+        try {
+            while (true) {
 
-        while (true) {
+                // local variables - what do they do?
+                long critiqueStartTime;
+                long cutoffTime;
+                int minWarmElements = 5;
+                int size;
 
-            // local variables - what do they do?
-            long critiqueStartTime;
-            long cutoffTime;
-            int minWarmElements = 5;
-            int size;
-
-            // the critiquing thread should wait if disabled.
-            synchronized (this) {
-                while (!Configuration.getBoolean(
-                        Designer.AUTO_CRITIQUE, true)) {
-                    try {
-                        this.wait();
-                    } catch (InterruptedException ignore) {
-                        LOG.error("InterruptedException!!!", ignore);
+                // the critiquing thread should wait if disabled.
+                synchronized (this) {
+                    while (!Configuration.getBoolean(
+                            Designer.AUTO_CRITIQUE, true)) {
+                        try {
+                            this.wait();
+                        } catch (InterruptedException ignore) {
+                            LOG.error("InterruptedException!!!", ignore);
+                        }
                     }
                 }
-            }
-
-            // why?
-            if (critiquingRoot != null
-//		&& getAutoCritique()
-		&& critiqueLock <= 0) {
 
                 // why?
-                synchronized (this) {
-                    critiqueStartTime = System.currentTimeMillis();
-                    cutoffTime = critiqueStartTime + 3000;
+                if (critiquingRoot != null
+//                      && getAutoCritique()
+                        && critiqueLock <= 0) {
 
-                    size = addQueue.size();
-                    for (int i = 0; i < size; i++) {
-                        hotQueue.addElement(addQueue.elementAt(i));
-                        hotReasonQueue.addElement(addReasonQueue.elementAt(i));
-                    }
-                    addQueue.removeAllElements();
-                    addReasonQueue.removeAllElements();
+                    // why?
+                    synchronized (this) {
+                        critiqueStartTime = System.currentTimeMillis();
+                        cutoffTime = critiqueStartTime + 3000;
 
-                    longestHot = Math.max(longestHot, hotQueue.size());
-                    agency.determineActiveCritics(this);
-
-                    while (hotQueue.size() > 0) {
-                        Object dm = hotQueue.elementAt(0);
-                        Long reasonCode = (Long) hotReasonQueue.elementAt(0);
-                        hotQueue.removeElementAt(0);
-                        hotReasonQueue.removeElementAt(0);
-                        Agency.applyAllCritics(dm, theDesigner(),
-					       reasonCode.longValue());
-                    }
-
-                    size = removeQueue.size();
-                    for (int i = 0; i < size; i++) {
-                        warmQueue.removeElement(removeQueue.elementAt(i));
-                    }
-                    removeQueue.removeAllElements();
-
-                    if (warmQueue.size() == 0) {
-                        warmQueue.addElement(critiquingRoot);
-                    }
-                    while (warmQueue.size() > 0
-			   && (System.currentTimeMillis() < cutoffTime
-			       || minWarmElements > 0)) {
-                        if (minWarmElements > 0) {
-                            minWarmElements--;
+                        size = addQueue.size();
+                        for (int i = 0; i < size; i++) {
+                            hotQueue.addElement(addQueue.elementAt(i));
+                            hotReasonQueue.addElement(addReasonQueue
+                                    .elementAt(i));
                         }
-                        Object dm = warmQueue.elementAt(0);
-                        warmQueue.removeElementAt(0);
-                        Agency.applyAllCritics(dm, theDesigner());
-                        java.util.Enumeration subDMs = childGenerator.gen(dm);
-                        while (subDMs.hasMoreElements()) {
-                            Object nextDM = subDMs.nextElement();
-                            if (!(warmQueue.contains(nextDM))) {
-                                warmQueue.addElement(nextDM);
+                        addQueue.removeAllElements();
+                        addReasonQueue.removeAllElements();
+
+                        longestHot = Math.max(longestHot, hotQueue.size());
+                        agency.determineActiveCritics(this);
+
+                        while (hotQueue.size() > 0) {
+                            Object dm = hotQueue.elementAt(0);
+                            Long reasonCode =
+                                    (Long) hotReasonQueue.elementAt(0);
+                            hotQueue.removeElementAt(0);
+                            hotReasonQueue.removeElementAt(0);
+                            Agency.applyAllCritics(dm, theDesigner(),
+                                    reasonCode.longValue());
+                        }
+
+                        size = removeQueue.size();
+                        for (int i = 0; i < size; i++) {
+                            warmQueue.removeElement(removeQueue.elementAt(i));
+                        }
+                        removeQueue.removeAllElements();
+
+                        if (warmQueue.size() == 0) {
+                            warmQueue.addElement(critiquingRoot);
+                        }
+                        while (warmQueue.size() > 0
+                                && (System.currentTimeMillis() < cutoffTime
+                                        || minWarmElements > 0)) {
+                            if (minWarmElements > 0) {
+                                minWarmElements--;
+                            }
+                            Object dm = warmQueue.elementAt(0);
+                            warmQueue.removeElementAt(0);
+                            try {
+                                Agency.applyAllCritics(dm, theDesigner());
+                                java.util.Enumeration subDMs =
+                                        childGenerator.gen(dm);
+                                while (subDMs.hasMoreElements()) {
+                                    Object nextDM = subDMs.nextElement();
+                                    if (!(warmQueue.contains(nextDM))) {
+                                        warmQueue.addElement(nextDM);
+                                    }
+                                }
+                            } catch (InvalidElementException e) {
+                                // Don't let a transient error kill the thread
+                                LOG.warn("Element " + dm
+                                        + "caused an InvalidElementException.  "
+                                        + "Ignoring for this pass.");
                             }
                         }
                     }
+                } else {
+                    critiqueStartTime = System.currentTimeMillis();
                 }
-            } else {
-                critiqueStartTime = System.currentTimeMillis();
+                critiqueDuration =
+                        System.currentTimeMillis() - critiqueStartTime;
+                long cycleDuration =
+                    (critiqueDuration * 100) / critiqueCPUPercent;
+                long sleepDuration =
+                    Math.min(cycleDuration - critiqueDuration, 3000);
+                sleepDuration = Math.max(sleepDuration, 1000);
+                LOG.debug("sleepDuration= " + sleepDuration);
+                try {
+                    Thread.sleep(sleepDuration);
+                } catch (InterruptedException ignore) {
+                    LOG.error("InterruptedException!!!", ignore);
+                }
             }
-            critiqueDuration = System.currentTimeMillis() - critiqueStartTime;
-            long cycleDuration =
-		(critiqueDuration * 100) / critiqueCPUPercent;
-            long sleepDuration =
-		Math.min(cycleDuration - critiqueDuration, 3000);
-            sleepDuration = Math.max(sleepDuration, 1000);
-            LOG.debug("sleepDuration= " + sleepDuration);
-            try {
-                Thread.sleep(sleepDuration);
-            } catch (InterruptedException ignore) {
-                LOG.error("InterruptedException!!!", ignore);
-            }
+        } catch (Exception e) {
+            LOG.error("Critic thread killed by exception", e);
         }
     }
 
