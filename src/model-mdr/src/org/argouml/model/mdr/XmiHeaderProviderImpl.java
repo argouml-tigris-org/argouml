@@ -44,10 +44,10 @@ class XmiHeaderProviderImpl implements XMIHeaderProvider {
     
     /**
      * Constructor.
-     * @param version the version of ArgoUML that saved the XMI
+     * @param ver the version of ArgoUML that saved the XMI
      */
-    public XmiHeaderProviderImpl(String version) {
-        this.version = version;
+    public XmiHeaderProviderImpl(String ver) {
+        version = ver;
     }
 
     /*
@@ -62,7 +62,8 @@ class XmiHeaderProviderImpl implements XMIHeaderProvider {
                     + " version " + WriterBase.EXPORTER_VERSION 
                     + ")</XMI.exporter>\n"
             + "      <XMI.exporterVersion>" + version
-                    + " revised on $Date$ "
+                    + " revised on "
+                    + "$Date$ "
                     + "</XMI.exporterVersion>\n"
             + "    </XMI.documentation>\n"
             + "    <XMI.metamodel xmi.name=\"UML\" xmi.version=\""
