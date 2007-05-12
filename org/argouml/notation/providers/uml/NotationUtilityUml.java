@@ -145,108 +145,110 @@ public final class NotationUtilityUml {
         operationSpecialStrings[ossPos++] =
             new PropertySpecialString("sequential",
                 new PropertyOperation() {
-                public void found(Object element, String value) {
-                    if (Model.getFacade().isAOperation(element)) {
-                        Model.getCoreHelper().setConcurrency(element,
+                    public void found(Object element, String value) {
+                        if (Model.getFacade().isAOperation(element)) {
+                            Model.getCoreHelper().setConcurrency(element,
                                 Model.getConcurrencyKind().getSequential());
+                        }
                     }
-                }
-            });
+                });
         operationSpecialStrings[ossPos++] =
             new PropertySpecialString("guarded",
                 new PropertyOperation() {
-                public void found(Object element, String value) {
-                    Object kind = Model.getConcurrencyKind().getGuarded();
-                    if (value != null && value.equalsIgnoreCase("false")) {
-                        kind = Model.getConcurrencyKind().getSequential();
+                    public void found(Object element, String value) {
+                        Object kind = Model.getConcurrencyKind().getGuarded();
+                        if (value != null && value.equalsIgnoreCase("false")) {
+                            kind = Model.getConcurrencyKind().getSequential();
+                        }
+                        if (Model.getFacade().isAOperation(element)) {
+                            Model.getCoreHelper().setConcurrency(element, kind);
+                        }
                     }
-                    if (Model.getFacade().isAOperation(element)) {
-                        Model.getCoreHelper().setConcurrency(element, kind);
-                    }
-                }
-            });
+                });
         operationSpecialStrings[ossPos++] =
             new PropertySpecialString("concurrent",
                 new PropertyOperation() {
-                public void found(Object element, String value) {
-                    Object kind =
-                        Model.getConcurrencyKind().getConcurrent();
-                    if (value != null && value.equalsIgnoreCase("false")) {
-                        kind = Model.getConcurrencyKind().getSequential();
+                    public void found(Object element, String value) {
+                        Object kind =
+                            Model.getConcurrencyKind().getConcurrent();
+                        if (value != null && value.equalsIgnoreCase("false")) {
+                            kind = Model.getConcurrencyKind().getSequential();
+                        }
+                        if (Model.getFacade().isAOperation(element)) {
+                            Model.getCoreHelper().setConcurrency(element, kind);
+                        }
                     }
-                    if (Model.getFacade().isAOperation(element)) {
-                        Model.getCoreHelper().setConcurrency(element, kind);
-                    }
-                }
-            });
+                });
         operationSpecialStrings[ossPos++] =
             new PropertySpecialString("concurrency",
                 new PropertyOperation() {
-                public void found(Object element, String value) {
-                    Object kind =
-                        Model.getConcurrencyKind().getSequential();
-                    if ("guarded".equalsIgnoreCase(value)) {
-                        kind = Model.getConcurrencyKind().getGuarded();
-                    } else if ("concurrent".equalsIgnoreCase(value)) {
-                        kind = Model.getConcurrencyKind().getConcurrent();
+                    public void found(Object element, String value) {
+                        Object kind =
+                            Model.getConcurrencyKind().getSequential();
+                        if ("guarded".equalsIgnoreCase(value)) {
+                            kind = Model.getConcurrencyKind().getGuarded();
+                        } else if ("concurrent".equalsIgnoreCase(value)) {
+                            kind = Model.getConcurrencyKind().getConcurrent();
+                        }
+                        if (Model.getFacade().isAOperation(element)) {
+                            Model.getCoreHelper().setConcurrency(element, kind);
+                        }
                     }
-                    if (Model.getFacade().isAOperation(element)) {
-                        Model.getCoreHelper().setConcurrency(element, kind);
-                    }
-                }
-            });
+                });
         operationSpecialStrings[ossPos++] =
             new PropertySpecialString("abstract",
                 new PropertyOperation() {
-                public void found(Object element, String value) {
-                    boolean isAbstract = true;
-                    if (value != null && value.equalsIgnoreCase("false")) {
-                        isAbstract = false;
+                    public void found(Object element, String value) {
+                        boolean isAbstract = true;
+                        if (value != null && value.equalsIgnoreCase("false")) {
+                            isAbstract = false;
+                        }
+                        if (Model.getFacade().isAOperation(element)) {
+                            Model.getCoreHelper().setAbstract(
+                                    element,
+                                    isAbstract);
+                        }
                     }
-                    if (Model.getFacade().isAOperation(element)) {
-                        Model.getCoreHelper().setAbstract(element, isAbstract);
-                    }
-                }
-            });
+                });
         operationSpecialStrings[ossPos++] =
             new PropertySpecialString("leaf",
                 new PropertyOperation() {
-                public void found(Object element, String value) {
-                    boolean isLeaf = true;
-                    if (value != null && value.equalsIgnoreCase("false")) {
-                        isLeaf = false;
+                    public void found(Object element, String value) {
+                        boolean isLeaf = true;
+                        if (value != null && value.equalsIgnoreCase("false")) {
+                            isLeaf = false;
+                        }
+                        if (Model.getFacade().isAOperation(element)) {
+                            Model.getCoreHelper().setLeaf(element, isLeaf);
+                        }
                     }
-                    if (Model.getFacade().isAOperation(element)) {
-                        Model.getCoreHelper().setLeaf(element, isLeaf);
-                    }
-                }
-            });
+                });
         operationSpecialStrings[ossPos++] =
             new PropertySpecialString("query",
                 new PropertyOperation() {
-                public void found(Object element, String value) {
-                    boolean isQuery = true;
-                    if (value != null && value.equalsIgnoreCase("false")) {
-                        isQuery = false;
+                    public void found(Object element, String value) {
+                        boolean isQuery = true;
+                        if (value != null && value.equalsIgnoreCase("false")) {
+                            isQuery = false;
+                        }
+                        if (Model.getFacade().isABehavioralFeature(element)) {
+                            Model.getCoreHelper().setQuery(element, isQuery);
+                        }
                     }
-                    if (Model.getFacade().isABehavioralFeature(element)) {
-                        Model.getCoreHelper().setQuery(element, isQuery);
-                    }
-                }
-            });
+                });
         operationSpecialStrings[ossPos++] =
             new PropertySpecialString("root",
                 new PropertyOperation() {
-                public void found(Object element, String value) {
-                    boolean isRoot = true;
-                    if (value != null && value.equalsIgnoreCase("false")) {
-                        isRoot = false;
+                    public void found(Object element, String value) {
+                        boolean isRoot = true;
+                        if (value != null && value.equalsIgnoreCase("false")) {
+                            isRoot = false;
+                        }
+                        if (Model.getFacade().isAOperation(element)) {
+                            Model.getCoreHelper().setRoot(element, isRoot);
+                        }
                     }
-                    if (Model.getFacade().isAOperation(element)) {
-                        Model.getCoreHelper().setRoot(element, isRoot);
-                    }
-                }
-            });
+                });
 
         assert ossPos == operationSpecialStrings.length;
     }
@@ -936,7 +938,8 @@ public final class NotationUtilityUml {
      * <em>Example:</em>
      *
      * <pre>
-     * attributeSpecialStrings[0] = new PropertySpecialString(&quot;frozen&quot;,
+     * attributeSpecialStrings[0] =
+     *     new PropertySpecialString(&quot;frozen&quot;,
      *         new PropertyOperation() {
      *             public void found(Object element, String value) {
      *                 if (Model.getFacade().isAStructuralFeature(element))
@@ -1010,9 +1013,9 @@ public final class NotationUtilityUml {
      * return an index to the next attribute or operation substring, -1
      * otherwise (a ';' inside a String or char delimiters is ignored).
      *
-     * @param s
-     * @param start
-     * @return
+     * @param s The string to search.
+     * @param start The position to start at.
+     * @return the index to the next attribute
      */
     static int indexOfNextCheckedSemicolon(String s, int start) {
         if (s == null || start < 0 || start >= s.length()) {

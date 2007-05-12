@@ -222,7 +222,7 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
 //            return "";
 //        }
 
-        if(modelElement == null) {
+        if (modelElement == null) {
             return "";
         }
 
