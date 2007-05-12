@@ -37,7 +37,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
@@ -62,7 +62,7 @@ class XmiFilePersister extends AbstractFilePersister
     private static final Logger LOG =
         Logger.getLogger(XmiFilePersister.class);
 
-    private ArrayList pgmlStrings = new ArrayList();
+    private List<String> pgmlStrings = new ArrayList<String>();
     
     private String todoString;
     
@@ -254,7 +254,7 @@ class XmiFilePersister extends AbstractFilePersister
             ThreadUtils.checkIfInterrupted();
             
             InputSource source = new InputSource(new XmiInputStream(file
-                    .toURL().openStream(), this, length, phaseSpace,
+                    .toURL().openStream(), this, phaseSpace,
                     progressMgr));
             source.setSystemId(file.toURL().toString());
             
@@ -335,8 +335,7 @@ class XmiFilePersister extends AbstractFilePersister
         } else {
             project.addMember(new ProjectMemberTodoList("", project));
         }
-        for (Iterator it = pgmlStrings.iterator(); it.hasNext(); ) {
-            String pgml = (String) it.next();
+        for (String pgml : pgmlStrings) {
             LOG.info("Parsing pgml " + pgml.length());
             InputStream inputStream = new ByteArrayInputStream(pgml.getBytes());
             MemberFilePersister persister =

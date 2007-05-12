@@ -248,8 +248,11 @@ class ModelMemberFilePersister extends MemberFilePersister
         LOG.info("=======================================");
         LOG.info("== READING MODEL " + url);
         try {
-            InputSource source = new InputSource(new XmiInputStream(
-                    url.openStream(), xmiExtensionParser, 10000000, 100000));
+            // TODO: What progressMgr is to be used here? Where does
+            //       it come from?
+            InputSource source =
+                new InputSource(new XmiInputStream(
+                    url.openStream(), xmiExtensionParser, 100000, null));
             
             source.setSystemId(url.toString());
             readModels(p, source);
