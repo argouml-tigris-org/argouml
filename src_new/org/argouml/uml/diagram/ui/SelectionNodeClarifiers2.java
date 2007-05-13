@@ -62,7 +62,21 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     private static final Logger LOG =
             Logger.getLogger(SelectionNodeClarifiers2.class);
 
-
+    /** Base index of array */
+    protected static final int BASE = 10;
+    /** Top Handle */
+    protected static final int TOP = 10;
+    /** Bottom Handle */
+    protected static final int BOTTOM = 11;
+    /** Left Handle */
+    protected static final int LEFT = 12;
+    /** Right Handle */
+    protected static final int RIGHT = 13;
+    /** Lower left corner Handle */
+    protected static final int LOWER_LEFT = 14;
+    
+    private static final int OFFSET = 2; 
+    
     private int button;
     
     /**
@@ -97,19 +111,20 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
         int ch = getContent().getHeight();
         
         if (icons[0] != null) {
-            paintButtonAbove(icons[0], g, cx + cw / 2, cy, 10);
+            paintButtonAbove(icons[0], g, cx + cw / 2, cy, TOP);
         }
         if (icons[1] != null) {
-            paintButtonBelow(icons[1], g, cx + cw / 2, cy + ch + 2, 11);
+            paintButtonBelow(icons[1], g, cx + cw / 2, cy + ch + OFFSET, 
+                    BOTTOM);
         }
         if (icons[2] != null) {
-            paintButtonLeft(icons[2], g, cx + cw + 2, cy + ch / 2, 12);
+            paintButtonLeft(icons[2], g, cx + cw + OFFSET, cy + ch / 2, LEFT);
         }
         if (icons[3] != null) {
-            paintButtonRight(icons[3], g, cx, cy + ch / 2, 13);
+            paintButtonRight(icons[3], g, cx, cy + ch / 2, RIGHT);
         }
         if (icons[4] != null) {
-            paintButtonRight(icons[4], g, cx, cy + ch, 14);
+            paintButtonRight(icons[4], g, cx, cy + ch, LOWER_LEFT);
         }
     }
 
@@ -125,7 +140,6 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
      * org.tigris.gef.presentation.Handle)
      */
     public void hitHandle(Rectangle r, Handle h) {
-        super.hitHandle(r, h);
         if (h.index != -1) {
             // super implementation found a hit
             return;
@@ -171,27 +185,27 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
         if (icons[0] != null && hitAbove(cx + cw / 2, cy, 
                 icons[0].getIconWidth(), icons[0].getIconHeight(), 
                 r)) {
-            h.index = 10;
+            h.index = TOP;
             h.instructions = getInstructions(h.index);
         } else if (icons[1] != null && hitBelow(cx + cw / 2, cy + ch, 
                 icons[1].getIconWidth(), icons[1].getIconHeight(), 
                 r)) {
-            h.index = 11;
+            h.index = BOTTOM;
             h.instructions = getInstructions(h.index);
         } else if (icons[2] != null && hitLeft(cx + cw, cy + ch / 2, 
                 icons[2].getIconWidth(), icons[2].getIconHeight(), 
                 r)) {
-            h.index = 12;
+            h.index = LEFT;
             h.instructions = getInstructions(h.index);
         } else if (icons[3] != null && hitRight(cx, cy + ch / 2, 
                 icons[3].getIconWidth(), icons[3].getIconHeight(), 
                 r)) {
-            h.index = 13;
+            h.index = RIGHT;
             h.instructions = getInstructions(h.index);
-        } else if (icons[4] != null && hitRight(cx, cy + ch - 10, 
+        } else if (icons[4] != null && hitRight(cx, cy + ch, 
                 icons[4].getIconWidth(), icons[4].getIconHeight(), 
                 r)) {
-            h.index = 14;
+            h.index = LOWER_LEFT;
             h.instructions = getInstructions(h.index);
         } else {
             h.index = -1;
@@ -209,6 +223,9 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
             super.dragHandle(mX, mY, anX, anY, hand);
             return;
         }
+        if (!isDraggableHandle(hand.index)) {
+            return;
+        }
         int cx = getContent().getX(), cy = getContent().getY();
         int cw = getContent().getWidth(), ch = getContent().getHeight();
 
@@ -219,23 +236,25 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
         button = hand.index;
         
         switch (hand.index) {
-        case 10:
+        case TOP:
             by = cy;
             bx = cx + cw / 2;
             break;
-        case 11:
+        case BOTTOM:
             by = cy + ch;
             bx = cx + cw / 2;
             break;
-        case 12:
+        case LEFT:
             by = cy + ch / 2;
             bx = cx + cw;
             break;
-        case 13:
+        case RIGHT:
             by = cy + ch / 2;
             bx = cx;
             break;
-        case 14:
+        case LOWER_LEFT:
+            by = cy + ch;
+            bx = cx + cw;
             break;
         default:
             LOG.warn("invalid handle number");
@@ -244,7 +263,7 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
         
         Object nodeType = getNewNodeType(hand.index);
         Object edgeType = getNewEdgeType(hand.index);
-        boolean reverse = isDragEdgeReverse(hand.index);
+        boolean reverse = isReverseEdge(hand.index);
         
         if (edgeType != null && nodeType != null) {
             Editor ce = Globals.curEditor();
@@ -257,28 +276,44 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
         }
     }
     
+    @Override
+    public void buttonClicked(int buttonCode) {
+        super.buttonClicked(buttonCode);
+    }
 
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
-        return gm.connect(getContent().getOwner(), newNode, getNewEdgeType(10));
+        return createEdge(gm, newNode, TOP);
     }
 
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(getContent().getOwner(), newNode, getNewEdgeType(11));
+        return createEdge(gm, newNode, BOTTOM);
     }
 
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-        return gm.connect(getContent().getOwner(), newNode, getNewEdgeType(12));
+        return createEdge(gm, newNode, LEFT);
     }
-
 
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-        return gm.connect(getContent().getOwner(), newNode, getNewEdgeType(13));
+        return createEdge(gm, newNode, RIGHT);
     }
 
+    private Object createEdge(MutableGraphModel gm, Object newNode, int index) {
+        Object edge;
+        if (isReverseEdge(index)) {
+            edge = gm.connect(
+                    newNode, getContent().getOwner(), getNewEdgeType(index));
+        } else {
+            edge = gm.connect(
+                    getContent().getOwner(), newNode, getNewEdgeType(index));
+        }
+        return edge;
+    }
+    
     protected Object createEdgeToSelf(MutableGraphModel gm) {
-        return gm.connect(
+        Object edge = gm.connect(
                 getContent().getOwner(), getContent().getOwner(),
-                getNewEdgeType(14));
+                getNewEdgeType(LOWER_LEFT));
+        return edge;
     }
 
     /**
@@ -323,8 +358,21 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
      *         eg. specialization instead of generalization.  Default
      *         implementation always returns false.
      */
-    protected boolean isDragEdgeReverse(int index) {
+    protected boolean isReverseEdge(int index) {
         return false;
+    }
+    
+    /**
+     * Get the draggability of a particular handle. Default implementation
+     * always returns true. Override to return false for handles which shouldn't
+     * be draggable (i.e. they only support clicks, not drags).
+     * 
+     * @param index
+     *            handle index to check draggability for
+     * @return true if this handle is draggable, false otherwise
+     */
+    protected boolean isDraggableHandle(int index) {
+        return true;
     }
     
     /**

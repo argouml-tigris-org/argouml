@@ -74,7 +74,7 @@ public class SelectionInterface extends SelectionNodeClarifiers2 {
         if (index == 0) {
             index = getButton();
         }
-        if (index == 10) {
+        if (index == TOP) {
             return Model.getCoreFactory().buildInterface();
         } else {
             return Model.getCoreFactory().buildClass();
@@ -83,9 +83,9 @@ public class SelectionInterface extends SelectionNodeClarifiers2 {
 
     @Override
     protected Object getNewEdgeType(int index) {
-        if (index == 10) {
+        if (index == TOP) {
             return Model.getMetaTypes().getGeneralization();
-        } else if (index == 11) {
+        } else if (index == BOTTOM) {
             return Model.getMetaTypes().getAbstraction();
         }
         return null;
@@ -94,9 +94,9 @@ public class SelectionInterface extends SelectionNodeClarifiers2 {
 
     @Override
     protected Object getNewNodeType(int index) {
-        if (index == 10) {
+        if (index == TOP) {
             return Model.getMetaTypes().getInterface();
-        } else if (index == 11) {
+        } else if (index == BOTTOM) {
             return Model.getMetaTypes().getUMLClass();
         }
         return null;
@@ -109,11 +109,11 @@ public class SelectionInterface extends SelectionNodeClarifiers2 {
 
     @Override
     protected String getInstructions(int index) {
-        return instructions[index - 10];
+        return instructions[index - BASE];
     }
 
     @Override
-    protected boolean isDragEdgeReverse(int index) {
+    protected boolean isReverseEdge(int index) {
         if (index == 11) {
             return true;
         }

@@ -137,22 +137,22 @@ public class SelectionStereotype extends SelectionNodeClarifiers2 {
 
     @Override
     protected String getInstructions(int index) {
-        return instructions[index - 10];
+        return instructions[index - BASE];
     }
 
     @Override
     protected Object getNewEdgeType(int index) {
-        if (index == 10) {
+        if (index == TOP) {
             return Model.getMetaTypes().getDependency();
-        } else if (index == 11) {
+        } else if (index == BOTTOM) {
             return Model.getMetaTypes().getGeneralization();
         }
         return null;
     }
 
     @Override
-    protected boolean isDragEdgeReverse(int index) {
-        if (index == 11) {
+    protected boolean isReverseEdge(int index) {
+        if (index == BOTTOM) {
             return true;
         }
         return false;
