@@ -97,7 +97,7 @@ public class SelectionUseCase extends SelectionNodeClarifiers2 {
         if (index == 0) {
             index = getButton();
         }
-        if (index == 10 || index == 11) {
+        if (index == TOP || index == BOTTOM) {
             return Model.getUseCasesFactory().createUseCase();
         } 
         return Model.getUseCasesFactory().createActor();
@@ -105,15 +105,15 @@ public class SelectionUseCase extends SelectionNodeClarifiers2 {
     
     @Override
     protected Object getNewNodeType(int index) {
-        if (index == 10 || index == 11) {
+        if (index == TOP || index == BOTTOM) {
             return Model.getMetaTypes().getUseCase();
         } 
         return Model.getMetaTypes().getActor();
     }
 
     @Override
-    protected boolean isDragEdgeReverse(int index) {
-        if (index == 11) {
+    protected boolean isReverseEdge(int index) {
+        if (index == BOTTOM) {
             return true;
         } 
         return false;

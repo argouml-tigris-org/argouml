@@ -93,20 +93,20 @@ public abstract class SelectionGeneralizableElement extends
 
     @Override
     protected String getInstructions(int i) {
-        return instructions[ i - 10];
+        return instructions[ i - BASE];
     }
     
     @Override
     protected Object getNewEdgeType(int i) {
-        if (i == 10 || i == 11) {
+        if (i == TOP || i == BOTTOM) {
             return Model.getMetaTypes().getGeneralization();
         }
         return null;
     }
     
     @Override
-    protected boolean isDragEdgeReverse(int i) {
-        if (i == 11) {
+    protected boolean isReverseEdge(int i) {
+        if (i == BOTTOM) {
             return true;
         }
         return false;

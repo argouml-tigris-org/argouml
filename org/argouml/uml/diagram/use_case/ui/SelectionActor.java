@@ -87,17 +87,17 @@ public class SelectionActor extends SelectionNodeClarifiers2 {
 
     @Override
     protected String getInstructions(int index) {
-        return instructions[index - 10];
+        return instructions[index - BASE];
     }
 
     @Override
     protected Object getNewEdgeType(int index) {
-        return edgeType[index - 10];
+        return edgeType[index - BASE];
     }
 
     @Override
     protected Object getNewNodeType(int index) {
-        if (index == 10 || index == 11) {
+        if (index == TOP || index == BOTTOM) {
             return Model.getMetaTypes().getActor();
         } else {
             return Model.getMetaTypes().getUseCase();
@@ -109,7 +109,7 @@ public class SelectionActor extends SelectionNodeClarifiers2 {
         if (index == 0) {
             index = getButton();
         }
-        if (index == 10 || index == 11) {
+        if (index == TOP || index == BOTTOM) {
             return Model.getUseCasesFactory().createActor();
         } else {
             return Model.getUseCasesFactory().createUseCase();
@@ -117,8 +117,8 @@ public class SelectionActor extends SelectionNodeClarifiers2 {
     }
 
     @Override
-    protected boolean isDragEdgeReverse(int index) {
-        if (index == 11 || index == 13) {
+    protected boolean isReverseEdge(int index) {
+        if (index == BOTTOM || index == RIGHT) {
             return true;
         }
         return false;

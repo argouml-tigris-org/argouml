@@ -89,10 +89,10 @@ public class SelectionState extends SelectionNodeClarifiers2 {
         System.arraycopy(icons, 0, workingIcons, 0, icons.length);
 
         if (!showOutgoing) {
-            workingIcons[12] = null;
+            workingIcons[LEFT] = null;
         }
         if (!showIncoming) {
-            workingIcons[13] = null;
+            workingIcons[RIGHT] = null;
         }
         
         return workingIcons;
@@ -100,7 +100,7 @@ public class SelectionState extends SelectionNodeClarifiers2 {
 
     @Override
     protected String getInstructions(int index) {
-        return instructions[index - 10];
+        return instructions[index - BASE];
     }
 
     @Override
@@ -119,7 +119,7 @@ public class SelectionState extends SelectionNodeClarifiers2 {
     }
 
     @Override
-    protected boolean isDragEdgeReverse(int index) {
+    protected boolean isReverseEdge(int index) {
         if (index == 13) {
             return true;
         }

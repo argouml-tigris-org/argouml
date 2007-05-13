@@ -66,7 +66,7 @@ public class SelectionNodeClarifiers extends SelectionNodeClarifiers2 {
     }
 
     @Override
-    protected boolean isDragEdgeReverse(int index) {
+    protected boolean isReverseEdge(int index) {
         return false;
     }
 

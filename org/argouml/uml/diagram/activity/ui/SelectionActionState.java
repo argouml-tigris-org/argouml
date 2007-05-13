@@ -152,7 +152,7 @@ public class SelectionActionState extends SelectionNodeClarifiers2 {
 
     @Override
     protected String getInstructions(int index) {
-        return instructions[index - 10];
+        return instructions[index - BASE];
     }
 
     @Override
@@ -161,8 +161,8 @@ public class SelectionActionState extends SelectionNodeClarifiers2 {
     }
 
     @Override
-    protected boolean isDragEdgeReverse(int index) {
-        if (index == 10 || index == 13 ) {
+    protected boolean isReverseEdge(int index) {
+        if (index == TOP || index == RIGHT ) {
             return true;
         }
         return false;

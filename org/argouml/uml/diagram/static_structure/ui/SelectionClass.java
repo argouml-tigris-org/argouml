@@ -77,7 +77,7 @@ public class SelectionClass extends SelectionNodeClarifiers2 {
      Model.getMetaTypes().getGeneralization(),
      Model.getMetaTypes().getAssociation(),
      Model.getMetaTypes().getAssociation(),
-     null, // no drag for self-association
+     Model.getMetaTypes().getAssociation(),
     };
 
     /**
@@ -97,19 +97,19 @@ public class SelectionClass extends SelectionNodeClarifiers2 {
         // No Generalizations on Deployment Diagram
         if (Globals.curEditor().getGraphModel() 
                 instanceof DeploymentDiagramGraphModel) {
-            workingIcons[10] = null;
-            workingIcons[11] = null;
+            workingIcons[TOP] = null;
+            workingIcons[BOTTOM] = null;
         }
         if (useComposite) {
-            workingIcons[12] = compos;
-            workingIcons[12] = compos;
+            workingIcons[LEFT] = compos;
+            workingIcons[LEFT] = compos;
         } 
         return workingIcons;
     }
     
     @Override
     protected String getInstructions(int index) {
-        return instructions[index - 10];
+        return instructions[index - BASE];
     }
 
     @Override
@@ -119,15 +119,27 @@ public class SelectionClass extends SelectionNodeClarifiers2 {
 
     @Override
     protected Object getNewEdgeType(int i) {
+        if (i == 0) {
+            i = getButton();
+        }
         return edgeType[i - 10];
     }
 
     @Override
-    protected boolean isDragEdgeReverse(int i) {
-        if (i == 11 || i == 13) {
+    protected boolean isReverseEdge(int i) {
+        if (i == BOTTOM || i == LEFT) {
             return true;
         } 
         return false;
+    }
+    
+    @Override
+    protected boolean isDraggableHandle(int index) {
+        // Self-association isn't draggable
+        if (index == LOWER_LEFT) {
+            return false;
+        }
+        return true;
     }
 
     @Override
