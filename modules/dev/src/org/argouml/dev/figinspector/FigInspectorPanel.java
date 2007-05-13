@@ -80,15 +80,30 @@ public final class FigInspectorPanel
     public void selectionChanged(GraphSelectionEvent selectionEvent) {
         removeAll();
         if (selectionEvent.getSelections().size() == 1) {
-            Fig selectedFig = (Fig) selectionEvent.getSelections().get(0);
-            DefaultMutableTreeNode tn =
-                new DefaultMutableTreeNode(getDescr(selectedFig));
-            buildTree(selectedFig, tn);
-            if (selectedFig instanceof FigClassifierRole) {
-                MessageNodeBuilder.addNodeTree(tn,
-                        (FigClassifierRole) selectedFig);
+            // The tree is only built if one item is selected.
+            
+            DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
+
+            // Build the selected Fig first and then iterate up through
+            // its enclosers building those also.
+            for (Fig fig = (Fig) selectionEvent.getSelections().get(0);
+                    fig != null; 
+                    fig = fig.getEnclosingFig()) {
+                DefaultMutableTreeNode figNode =
+                    new DefaultMutableTreeNode(getDescr(fig));
+                rootNode.add(figNode);
+                buildTree(fig, figNode);
+                
+                // For a classifier role on a sequence diagram
+                // show its message nodes
+                if (fig instanceof FigClassifierRole) {
+                    MessageNodeBuilder.addNodeTree(rootNode,
+                            (FigClassifierRole) fig);
+                }
             }
-            FigTree tree = new FigTree(tn);
+            
+            FigTree tree = new FigTree(rootNode);
+            tree.setRootVisible(false);
             tree.expandAll();
 
             JScrollPane scroller = new JScrollPane(tree);
