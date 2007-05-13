@@ -34,6 +34,7 @@ import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.activity.ui.FigPool;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -357,7 +358,7 @@ public class ArgoDiagram extends Diagram {
                 f.removeFromDiagram();
             }
         } else if ((f instanceof FigNode || f instanceof FigEdge)
-                && f.getOwner() == null) {
+                && f.getOwner() == null && !(f instanceof FigPool)) {
             if (figDescription == null) {
                 figDescription = figDescription(f);
                 report.append(figDescription);
