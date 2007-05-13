@@ -236,7 +236,7 @@ public class FigPartition extends FigNodeModelElement {
      * On post placement look to see if there are any other
      * FigPartitions. If so place to the right and resize height.
      */
-    public void postPlacement() {
+    public void appendToPool() {
 	List partitions = getPartitions(getLayer());
 	
         UMLActivityDiagram diagram = 

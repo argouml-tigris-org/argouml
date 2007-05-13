@@ -44,6 +44,6 @@ public class ModePlacePackage extends ModePlace {
         
         super.mouseReleased(me);
         
-        fig.postPlacement();
+        fig.appendToPool();
     }
 }
