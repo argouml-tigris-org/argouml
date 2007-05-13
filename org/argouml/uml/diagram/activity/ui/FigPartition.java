@@ -233,19 +233,6 @@ public class FigPartition extends FigNodeModelElement {
     }
     
     /**
-     * TODO: Create an abstract postPlacement method in Fig and have ModePlace
-     * call. This method can then be removed.
-     * @param layer The Layer containing this Fig
-     */
-    public void setLayer(Layer layer) {
-	super.setLayer(layer);
-	if (!placed && layer != null) {
-	    placed = true;
-	    postPlacement();
-	}
-    }
-    
-    /**
      * On post placement look to see if there are any other
      * FigPartitions. If so place to the right and resize height.
      */
