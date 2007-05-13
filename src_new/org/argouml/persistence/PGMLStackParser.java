@@ -24,6 +24,7 @@
 
 package org.argouml.persistence;
 
+import java.awt.Rectangle;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+import org.argouml.uml.diagram.activity.ui.FigPool;
 import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
@@ -448,6 +450,24 @@ class PGMLStackParser
         public String getSourcePortFig() {
             return sourcePortFig;
         }
-        
     }
+
+    @Override
+    protected Fig constructFig(String className, String href, Rectangle bounds) throws SAXException {
+	
+	Fig f = null;
+	
+        if (className.equals(FigPool.class.getName())) {
+            f = new FigPool();
+        } else {
+            f = super.constructFig(className, href, bounds);
+        }
+        f.setBounds(bounds);
+        
+        
+	return f;
+    }
+    
+    
+    
 }
