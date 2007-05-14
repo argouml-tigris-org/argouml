@@ -377,7 +377,7 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     
     /**
      * Request post processing of edge by GEF after it is created using
-     * {@link ModeCreateEdgeAndNode#ModeCreateEdgeAndNode(Editor, Object, Object, boolean)
+     * {@link ModeCreateEdgeAndNode#ModeCreateEdgeAndNode(Editor, Object, Object, boolean)}
      * 
      * @return true if postprocessing requested
      */
