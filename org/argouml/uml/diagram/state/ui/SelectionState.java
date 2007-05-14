@@ -89,10 +89,10 @@ public class SelectionState extends SelectionNodeClarifiers2 {
         System.arraycopy(icons, 0, workingIcons, 0, icons.length);
 
         if (!showOutgoing) {
-            workingIcons[LEFT] = null;
+            workingIcons[LEFT - BASE] = null;
         }
         if (!showIncoming) {
-            workingIcons[RIGHT] = null;
+            workingIcons[RIGHT - BASE] = null;
         }
         
         return workingIcons;

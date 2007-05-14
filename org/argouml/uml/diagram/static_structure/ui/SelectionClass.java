@@ -97,12 +97,12 @@ public class SelectionClass extends SelectionNodeClarifiers2 {
         // No Generalizations on Deployment Diagram
         if (Globals.curEditor().getGraphModel() 
                 instanceof DeploymentDiagramGraphModel) {
-            workingIcons[TOP] = null;
-            workingIcons[BOTTOM] = null;
+            workingIcons[TOP - BASE] = null;
+            workingIcons[BOTTOM - BASE] = null;
         }
         if (useComposite) {
-            workingIcons[LEFT] = compos;
-            workingIcons[LEFT] = compos;
+            workingIcons[LEFT - BASE] = compos;
+            workingIcons[LEFT - BASE] = compos;
         } 
         return workingIcons;
     }
