@@ -86,6 +86,8 @@ public class FigPartition extends FigNodeModelElement {
         addFig(bottomLine);
         addFig(getNameFig());
         addFig(seperator);
+        
+        setFilled(false);
 
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
@@ -156,6 +158,8 @@ public class FigPartition extends FigNodeModelElement {
      */
     public void setFilled(boolean f) {
         getBigPort().setFilled(f);
+        getNameFig().setFilled(f);
+        super.setFilled(f);
     }
 
     /*
