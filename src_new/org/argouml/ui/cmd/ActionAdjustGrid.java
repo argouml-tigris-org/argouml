@@ -133,7 +133,7 @@ public class ActionAdjustGrid extends AbstractAction {
      * @constraint one of the actions should have the ID 'defaultID', 
      *          since this is used in init().
      * @param longStrings
-     * @return
+     * @return List of Actions which adjust the grid
      */
     static List createAdjustGridActions(boolean longStrings) {
         List result = new ArrayList();

@@ -35,27 +35,27 @@ import org.argouml.ui.targetmanager.TargetListener;
 public interface TabTarget extends TargetListener {
 
     /**
-     * set the target
+     * Set the target.
      *
      * @param target
-     *            the target to set
+     *            the new target to set
      */
     public void setTarget(Object target);
 
     /**
-     * get the current target
+     * Get the current target.
      *
      * @return the target
      */
     public Object getTarget();
 
     /**
-     * Refreshes the tab IN TOTAL
+     * Refresh the tab IN TOTAL.
      */
     public void refresh();
 
     /**
-     * Returns true if the tab should be enabled with the given target
+     * Return true whether the tab should be enabled with the given target.
      *
      * @param target the given target
      * @return true if the tab should be enabled

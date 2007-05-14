@@ -78,11 +78,10 @@ public class StylePanel
     }
 
     /**
-     * {@inheritDoc}
-     * <p>
      * This method must be overriden by implementors if they don't want to
      * refresh the whole stylepanel every time a property change events is
-     * fired.
+     * fired.  The default behavior is to always call {@link #refresh()}.
+     * @see #refresh()
      */
     public void refresh(PropertyChangeEvent e) {
 	refresh();

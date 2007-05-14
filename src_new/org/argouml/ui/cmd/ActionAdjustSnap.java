@@ -116,9 +116,10 @@ public class ActionAdjustSnap extends AbstractAction {
     }
 
     /**
-     * 4, 8, 16, 32
+     * Return a list of actions to adjust the size of the snap grid.
+     * Current values are 4, 8, 16, and 32.
      * 
-     * @return
+     * @return List of Actions which adjust the size of the snap grid
      */
     static List createAdjustSnapActions() {
         List result = new ArrayList();
