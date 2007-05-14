@@ -75,7 +75,7 @@ public class SelectionComment extends SelectionNodeClarifiers2 {
 
     @Override
     protected String getInstructions(int index) {
-        return instructions[index - 10];
+        return instructions[index - BASE];
     }
 
     @Override

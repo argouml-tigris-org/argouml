@@ -134,18 +134,19 @@ public class SelectionActionState extends SelectionNodeClarifiers2 {
 
     @Override
     protected Icon[] getIcons() {
-        Icon[] workingIcons = icons;
+        Icon[] workingIcons = new Icon[icons.length];
+        System.arraycopy(icons, 0, workingIcons, 0, icons.length);
         if (!showOutgoingBelow) {
-            workingIcons[11] = null;
+            workingIcons[BOTTOM - BASE] = null;
         }
         if (!showIncomingAbove) {
-            workingIcons[12] = null;
+            workingIcons[TOP - BASE] = null;
         }
         if (!showIncomingLeft) {
-            workingIcons[12] = null;
+            workingIcons[LEFT - BASE] = null;
         }
         if (!showOutgoingRight) {
-            workingIcons[13] = null;
+            workingIcons[RIGHT - BASE] = null;
         }
         return icons;
     }

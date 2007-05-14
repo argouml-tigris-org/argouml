@@ -84,12 +84,12 @@ public class SelectionUseCase extends SelectionNodeClarifiers2 {
 
     @Override
     protected String getInstructions(int index) {
-        return instructions[index - 10];
+        return instructions[index - BASE];
     }
 
     @Override
     protected Object getNewEdgeType(int index) {
-        return edgeType[index - 10];
+        return edgeType[index - BASE];
     }
 
     @Override
