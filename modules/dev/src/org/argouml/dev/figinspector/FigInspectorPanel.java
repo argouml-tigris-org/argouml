@@ -34,6 +34,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
 import org.argouml.uml.diagram.sequence.ui.MessageNodeBuilder;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.event.GraphSelectionEvent;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.presentation.Fig;
@@ -79,35 +80,46 @@ public final class FigInspectorPanel
 
     public void selectionChanged(GraphSelectionEvent selectionEvent) {
         removeAll();
-        if (selectionEvent.getSelections().size() == 1) {
-            // The tree is only built if one item is selected.
-            
-            DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-
-            // Build the selected Fig first and then iterate up through
-            // its enclosers building those also.
-            for (Fig fig = (Fig) selectionEvent.getSelections().get(0);
-                    fig != null; 
-                    fig = fig.getEnclosingFig()) {
-                DefaultMutableTreeNode figNode =
-                    new DefaultMutableTreeNode(getDescr(fig));
-                rootNode.add(figNode);
-                buildTree(fig, figNode);
-                
-                // For a classifier role on a sequence diagram
-                // show its message nodes
-                if (fig instanceof FigClassifierRole) {
-                    MessageNodeBuilder.addNodeTree(rootNode,
-                            (FigClassifierRole) fig);
-                }
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
+        if (selectionEvent.getSelections().size() == 0) {
+            Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
+            for (Object o :  lay.getContents()) {
+                addFig ((Fig) o, rootNode, false);
             }
-            
-            FigTree tree = new FigTree(rootNode);
-            tree.setRootVisible(false);
-            tree.expandAll();
+        } else if (selectionEvent.getSelections().size() == 1) {
+            addFig ((Fig) selectionEvent.getSelections().get(0),
+        	    rootNode,
+        	    true);
+        }
+        
+        FigTree tree = new FigTree(rootNode);
+        tree.setRootVisible(false);
+        tree.expandAll();
 
-            JScrollPane scroller = new JScrollPane(tree);
-            add(scroller);
+        JScrollPane scroller = new JScrollPane(tree);
+        add(scroller);
+    }
+    
+    private void addFig(
+	    final Fig f, 
+	    final DefaultMutableTreeNode rootNode, 
+	    final boolean includeEncloser) {
+        // Build the selected Fig first and then iterate up through
+        // its enclosers building those also.
+        for (Fig fig = f;
+                fig != null;
+                fig = includeEncloser ? fig.getEnclosingFig() : null) {
+            DefaultMutableTreeNode figNode =
+                new DefaultMutableTreeNode(getDescr(fig));
+            rootNode.add(figNode);
+            buildTree(fig, figNode);
+            
+            // For a classifier role on a sequence diagram
+            // show its message nodes
+            if (fig instanceof FigClassifierRole) {
+                MessageNodeBuilder.addNodeTree(rootNode,
+                        (FigClassifierRole) fig);
+            }
         }
     }
 
@@ -142,12 +154,16 @@ public final class FigInspectorPanel
     private String getDescr(Fig f) {
         String className = f.getClass().getName();
         String descr = className.substring(className.lastIndexOf(".") + 1);
-        descr += " " + f.getBounds().toString();
+        descr += " bounds=[" + f.getX() + "," + f.getY() + "," + f.getWidth() + "," + f.getHeight() + "]";
+        descr += " fill=[" + f.getFillColor().getRed() + "," + f.getFillColor().getGreen() + "," + f.getFillColor().getBlue() + "]";
         if (f instanceof FigText) {
             descr += " \"" + ((FigText) f).getText() + "\"";
         }
         if (!f.isVisible()) {
             descr += " - INVISIBLE";
+        }
+        if (f.getFilled()) {
+            descr += " - FILLED";
         }
         descr += " - lay=" + f.getLayer() + " - grp=" + f.getGroup();
         return descr;
