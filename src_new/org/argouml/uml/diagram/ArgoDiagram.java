@@ -490,7 +490,7 @@ public class ArgoDiagram extends Diagram {
      * @param oldEncloser the previous encloser
      * @param newEncloser the FigNode that encloses the dragged FigNode
      */
-    public void changeFigEncloser(
+    public void encloserChanged(
             FigNode enclosed, FigNode oldEncloser, FigNode newEncloser) {
 	// Do nothing, override in subclass.
 	// TODO: This should really be abstract, can we get rid of the static

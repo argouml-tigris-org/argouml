@@ -699,11 +699,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @param oldEncloser The previous encloser (null if none)
      * @param newEncloser The encloser (null if none)
      */
-    public void changeFigEncloser(
+    public void encloserChanged(
             FigNode enclosed, FigNode oldEncloser, FigNode newEncloser) {
 	// TODO: Implement enclosement within pool here and determine
 	// which pools are overlapped.
-	super.changeFigEncloser(enclosed, oldEncloser, newEncloser);
+	super.encloserChanged(enclosed, oldEncloser, newEncloser);
     }
     
 

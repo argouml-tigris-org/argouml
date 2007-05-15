@@ -516,7 +516,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * 
      * @see org.argouml.ui.ArgoDiagram#changeFigEncloser(org.tigris.gef.presentation.FigNode, org.tigris.gef.presentation.FigNode, org.tigris.gef.presentation.FigNode)
      */
-    public void changeFigEncloser(FigNode enclosed, FigNode oldEncloser, 
+    public void encloserChanged(FigNode enclosed, FigNode oldEncloser, 
             FigNode newEncloser) {
         if (oldEncloser != null && newEncloser == null
                 && Model.getFacade().isAComponent(oldEncloser.getOwner())) {
