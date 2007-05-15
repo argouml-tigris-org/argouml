@@ -575,7 +575,7 @@ public abstract class FigNodeModelElement
 	LayerPerspective layer = (LayerPerspective) getLayer();
 	if (layer != null) {
             ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
-            diagram.changeFigEncloser(
+            diagram.encloserChanged(
                     this,
         	    (FigNode) oldEncloser,
         	    (FigNode) newEncloser);
