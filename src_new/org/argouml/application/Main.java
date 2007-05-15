@@ -52,7 +52,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
-import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
@@ -681,7 +680,8 @@ public class Main {
 
         // TODO: is it ok to do this in the static initializer if we
         // are running in a Java Web Start environment? - tfm
-        // JWS property for logs is : deployment.user.logdir & deployment.user.tmp
+        // JWS property for logs is : 
+        // deployment.user.logdir & deployment.user.tmp
         if (System.getProperty("log4j.configuration") == null) {
             Properties props = new Properties();
 	    InputStream stream = null;
