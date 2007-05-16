@@ -56,7 +56,6 @@ public class FigPartition extends FigNodeModelElement {
     private FigLine topLine;
     private FigLine bottomLine;
     private FigLine seperator;
-    private boolean placed;
     
     private FigPartition previousPartition;
     private FigPartition nextPartition;
