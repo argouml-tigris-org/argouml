@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.state.ui;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.activity.ui.PartitionUtility;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Editor;
@@ -78,7 +77,6 @@ public abstract class FigStateVertex extends FigNodeModelElement {
         // If the layer is null, then most likely we are being deleted.
         if (layer == null) return;
 
-        PartitionUtility.handleEnclosing(getEncloser(), encloser, getOwner());
         super.setEnclosingFig(encloser);
         
         if (!(Model.getFacade().isAStateVertex(getOwner()))) return;

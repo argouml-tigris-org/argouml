@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.activity.ui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,6 +38,7 @@ import javax.swing.Action;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.ActionSetMode;
@@ -48,6 +50,7 @@ import org.argouml.uml.diagram.state.ui.ButtonActionNewCallEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewChangeEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewSignalEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewTimeEvent;
+import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
@@ -700,11 +703,53 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @param newEncloser The encloser (null if none)
      */
     public void encloserChanged(
+	    
             FigNode enclosed, FigNode oldEncloser, FigNode newEncloser) {
-	// TODO: Implement enclosement within pool here and determine
-	// which pools are overlapped.
-	super.encloserChanged(enclosed, oldEncloser, newEncloser);
+	if (enclosed instanceof FigStateVertex
+		|| enclosed instanceof FigObjectFlowState) {
+	    
+	    changePartition(enclosed.getOwner(), oldEncloser, newEncloser);
+	}
     }
+    
+    /**
+     * Extends basic functionality to handle logic for enclosement of states
+     * within a swimlane.
+     * @param enclosed The FigNode enclosed.
+     * @param oldEncloser The previous encloser (null if none)
+     * @param newEncloser The encloser (null if none)
+     */
+    private void changePartition(
+            Object owner, FigNode oldEncloser, FigNode newEncloser) {
+	
+        if (newEncloser == null || newEncloser != oldEncloser) {
+            if (oldEncloser != null) {
+                Object partition = oldEncloser.getOwner();
+                if (partition != null 
+                        && Model.getFacade().isAPartition(partition)) {
+                    try {
+                        Collection c = Model.getFacade().getContents(partition);
+                        c.remove(owner);
+                        Model.getActivityGraphsHelper().setContents(
+                                partition, c);
+                    } catch (InvalidElementException e) {
+                        // This just happens sometimes when deleting elements...
+                    }
+                }
+            }
+        }
+        
+        // add to new partition
+        if (newEncloser != null) {
+            Object partition = newEncloser.getOwner();
+            if (Model.getFacade().isAPartition(partition)) {
+                Collection c = Model.getFacade().getContents(partition);
+                c.add(owner);
+                Model.getActivityGraphsHelper().setContents(partition, c);
+            }
+        }
+    }
+
     
 
 } /* end class UMLActivityDiagram */

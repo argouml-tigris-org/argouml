@@ -218,7 +218,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
         // If the layer is null, then most likely we are being deleted.
         if (layer == null) return;
 
-        PartitionUtility.handleEnclosing(getEncloser(), encloser, getOwner());
         super.setEnclosingFig(encloser);
     }
 
