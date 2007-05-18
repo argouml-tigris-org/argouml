@@ -17013,7 +17013,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>Some purists would argue that the comparison should 
             really differentiate between in, out and in-out parameters. 
             However no practical programming language can do this when 
-            resolving an overloaded method invocation, so this critics 
+            resolving an overloaded method invocation, so this critic 
             lumps them all together.</para>
 
           </note>
