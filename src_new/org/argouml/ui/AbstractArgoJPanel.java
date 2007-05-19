@@ -99,6 +99,8 @@ public abstract class AbstractArgoJPanel extends JPanel
      *
      * @param tag the name
      */
+    // TODO: Investigate in what cases is the tag a localized string
+    // and in what cases is it a key to be localized?
     public AbstractArgoJPanel(String tag) {
         this(tag, false);
     }
@@ -109,6 +111,8 @@ public abstract class AbstractArgoJPanel extends JPanel
      * @param tag The name (to be localized).
      * @param t if true, remove tab from parent JTabbedPane
      */
+    // TODO: Investigate in what cases is the tag a localized string
+    // and in what cases is it a key to be localized?
     public AbstractArgoJPanel(String tag, boolean t) {
         setTitle(tag);
         tear = t;
