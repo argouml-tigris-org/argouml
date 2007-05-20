@@ -28,7 +28,6 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -40,7 +39,6 @@ import javax.swing.JTextField;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
-import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.uml.ui.SaveGraphicsManager;
 import org.argouml.util.SuffixFilter;
 import org.tigris.swidgets.LabelledLayout;
@@ -55,14 +53,13 @@ class SettingsTabEnvironment extends JPanel
     implements GUISettingsTabInterface {
 
     private JTextField fieldArgoExtDir;
-    private JTextField fieldAllExtDirs;
     private JTextField fieldJavaHome;
     private JTextField fieldUserHome;
     private JTextField fieldUserDir;
     private JTextField fieldStartupDir;
     private JComboBox fieldGraphicsFormat;
     private JComboBox fieldGraphicsResolution;
-    private Collection theResolutions;
+    private Collection<GResolution> theResolutions;
 
     /**
      * The constructor.
@@ -84,7 +81,7 @@ class SettingsTabEnvironment extends JPanel
         label =
             new JLabel(
                     Translator.localize("label.default.graphics-resolution"));
-        theResolutions = new ArrayList();
+        theResolutions = new ArrayList<GResolution>();
         theResolutions.add(new GResolution(1, "combobox.item.resolution-1"));
         theResolutions.add(new GResolution(2, "combobox.item.resolution-2"));
         theResolutions.add(new GResolution(4, "combobox.item.resolution-4"));
@@ -101,14 +98,6 @@ class SettingsTabEnvironment extends JPanel
         label.setLabelFor(fieldArgoExtDir);
         top.add(label);
         top.add(fieldArgoExtDir);
-
-        label = new JLabel(Translator.localize("label.extension-directories"));
-        JTextField j = new JTextField();
-        fieldAllExtDirs = j;
-        fieldAllExtDirs.setEnabled(false);
-        label.setLabelFor(fieldAllExtDirs);
-        top.add(label);
-        top.add(fieldAllExtDirs);
 
   	// This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${java.home}");
@@ -154,13 +143,6 @@ class SettingsTabEnvironment extends JPanel
      */
     public void handleSettingsTabRefresh() {
         fieldArgoExtDir.setText(System.getProperty("argo.ext.dir"));
-        StringBuffer sb = new StringBuffer();
-        List locations = ModuleLoader2.getInstance().getExtensionLocations();
-        for (Iterator it = locations.iterator(); it.hasNext();) {
-            sb.append((String) it.next());
-            sb.append("\n");
-        }
-        fieldAllExtDirs.setText(sb.substring(0, sb.length() - 1).toString());
         fieldJavaHome.setText(System.getProperty("java.home"));
         fieldUserHome.setText(System.getProperty("user.home"));
         fieldUserDir.setText(Configuration.getString(Argo.KEY_STARTUP_DIR,

@@ -25,14 +25,19 @@
 package org.argouml.moduleloader;
 
 import java.awt.BorderLayout;
+import java.util.Iterator;
+import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.GUISettingsTabInterface;
+import org.tigris.swidgets.LabelledLayout;
 
 /**
  * Tab for the settings dialog that makes it possible to
@@ -49,6 +54,8 @@ class SettingsTabModules extends JPanel
      * The table of modules.
      */
     private JTable table;
+    
+    private JTextField fieldAllExtDirs;
 
     /**
      * The names of the columns in the table.
@@ -163,6 +170,14 @@ class SettingsTabModules extends JPanel
      */
     public void handleSettingsTabRefresh() {
         table.setModel(new ModuleTableModel());
+        
+        StringBuffer sb = new StringBuffer();
+        List locations = ModuleLoader2.getInstance().getExtensionLocations();
+        for (Iterator it = locations.iterator(); it.hasNext();) {
+            sb.append((String) it.next());
+            sb.append("\n");
+        }
+        fieldAllExtDirs.setText(sb.substring(0, sb.length() - 1).toString());
     }
 
     /*
@@ -203,6 +218,18 @@ class SettingsTabModules extends JPanel
             table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
             table.setShowVerticalLines(true);
             add(new JScrollPane(table), BorderLayout.CENTER);
+            int labelGap = 10;
+            int componentGap = 5;
+            JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));
+            JLabel label = new JLabel(
+                    Translator.localize("label.extension-directories"));
+            JTextField j = new JTextField();
+            fieldAllExtDirs = j;
+            fieldAllExtDirs.setEnabled(false);
+            label.setLabelFor(fieldAllExtDirs);
+            top.add(label);
+            top.add(fieldAllExtDirs);
+            add(top, BorderLayout.NORTH);
         }
 
         return this;
