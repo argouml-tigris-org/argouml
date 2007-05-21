@@ -280,6 +280,8 @@ public class FigPartition extends FigNodeModelElement {
     
     public void removeFromDiagramImpl() {
 	int width = getWidth();
+	FigPool figPool = getFigPool();
+	int newFigPoolWidth = figPool.getWidth() - width;
 	
 	super.removeFromDiagramImpl();
 	
@@ -300,7 +302,7 @@ public class FigPartition extends FigNodeModelElement {
 	setPreviousPartition(null);
 	setNextPartition(null);
 	
-	getFigPool().setWidth(getFigPool().getWidth() - width);
+	figPool.setWidth(newFigPoolWidth);
     }
     
     // TODO: Needs work. Must determine which Figs enclosed
