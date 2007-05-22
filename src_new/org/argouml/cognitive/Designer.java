@@ -41,7 +41,6 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.model.InvalidElementException;
-import org.argouml.ui.ActionGoToCritique;
 import org.tigris.gef.util.ChildGenerator;
 import org.tigris.gef.util.EnumerationEmpty;
 
@@ -819,46 +818,7 @@ public final class Designer
      * @param item the todo item
      */
     public void inform(ToDoItem item) {
-        if (item.getPriority() >= disruptiveThreshold()) {
-            disruptivelyWarn(item);
-        } else {
-            nondisruptivelyWarn(item);
-        }
-    }
-
-    /**
-     * Inform the human designer that there is an urgent ToDoItem that
-     * (s)he must consider before doing any more work.  Currently not
-     * implemented.
-     *
-     * @param item the todoitem
-     */
-    public synchronized void disruptivelyWarn(ToDoItem item) {
         toDoList.addElement(item);
-        // and keep nagging until the user solves the problem:
-        // This seems a nice way to nag:
-        (new ActionGoToCritique(item)).actionPerformed(null);
-    }
-
-    /**
-     * Inform the human designer that there is a ToDoItem that is
-     * relevant to his design work, and allow him to consider it on his
-     * own initiative.
-     *
-     * @param item the todo item
-     */
-    public synchronized void nondisruptivelyWarn(ToDoItem item) {
-        toDoList.addElement(item);
-    }
-
-    /**
-     * Used to determine which ToDoItems are urgent. Just returns the value 9.
-     *
-     * @return from this priority, we warn disruptively
-     */
-    public int disruptiveThreshold() {
-        // TODO: check prefs
-        return ToDoItem.INTERRUPTIVE_PRIORITY;
     }
 
     /**

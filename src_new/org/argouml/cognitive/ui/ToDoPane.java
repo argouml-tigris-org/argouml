@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -367,6 +367,15 @@ public class ToDoPane extends JPanel
         if (curPerspective instanceof ToDoListListener) {
             ((ToDoListListener) curPerspective).toDoItemsAdded(tde);
 	}
+        Vector<ToDoItem> v = tde.getToDoItems();
+        for (ToDoItem todo : v) {
+            if (todo.getPriority() >= ToDoItem.INTERRUPTIVE_PRIORITY) {
+                // keep nagging until the user solves the problem:
+                // This seems a nice way to nag:
+                selectItem(todo);
+                break; // Only interrupt for one todoitem
+            }
+        }
         updateCountLabel();
     }
     
