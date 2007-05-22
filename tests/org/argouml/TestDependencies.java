@@ -142,6 +142,7 @@ public class TestDependencies extends TestCase {
             {"org.argouml.notation", "org.argouml.notation.ui"},
             {"org.argouml.ui.targetmanager", "org.argouml.ui"},
             {"org.argouml.ui", "org.argouml.moduleloader"},
+            {"org.argouml.cognitive", "org.argouml.ui"},
         };
         for (int i = 0; i < dep.length; i++) {
             suite.addTest(new CheckNoDependency(jdepend, dep[i]));
