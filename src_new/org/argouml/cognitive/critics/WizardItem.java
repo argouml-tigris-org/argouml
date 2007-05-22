@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,7 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
-package org.argouml.cognitive.ui;
+package org.argouml.cognitive.critics;
 
 
 /**
@@ -31,7 +31,7 @@ package org.argouml.cognitive.ui;
  * It only requires that it
  * is notified to have been changed.
  * @author mkl
- * @see org.argouml.cognitive.ui.Wizard
+ * @see org.argouml.cognitive.critics.Wizard
  */
 public interface WizardItem {
 

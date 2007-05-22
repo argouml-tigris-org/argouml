@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,6 +40,7 @@ import javax.swing.event.DocumentListener;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
+import org.argouml.cognitive.critics.Wizard;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -52,7 +53,7 @@ import org.argouml.util.osdep.StartBrowser;
  * "sticky note" icon in ToDo tree pane.
  *
  * @see org.argouml.cognitive.critics.Critic
- * @see org.argouml.cognitive.ui.Wizard
+ * @see org.argouml.cognitive.critics.Wizard
  */
 
 public class WizStep extends JPanel

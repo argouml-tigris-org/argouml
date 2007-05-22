@@ -29,7 +29,7 @@ import javax.swing.Icon;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.cognitive.ui.Wizard;
+import org.argouml.cognitive.critics.Wizard;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 

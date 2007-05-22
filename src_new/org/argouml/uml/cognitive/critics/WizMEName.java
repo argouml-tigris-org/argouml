@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,7 +68,7 @@ public class WizMEName extends UMLWizard {
     /**
      * Create a new panel for the given step.
      *
-     * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
+     * @see org.argouml.cognitive.critics.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
 	switch (newStep) {
@@ -95,7 +95,7 @@ public class WizMEName extends UMLWizard {
      * Return false if the user has not edited the text and they were required
      * to.
      *
-     * @see org.argouml.cognitive.ui.Wizard#canGoNext()
+     * @see org.argouml.cognitive.critics.Wizard#canGoNext()
      */
     public boolean canGoNext() {
 	if (!super.canGoNext()) return false;

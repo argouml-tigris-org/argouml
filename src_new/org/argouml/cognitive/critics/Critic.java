@@ -42,7 +42,6 @@ import org.argouml.cognitive.Offender;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
-import org.argouml.cognitive.ui.Wizard;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 
