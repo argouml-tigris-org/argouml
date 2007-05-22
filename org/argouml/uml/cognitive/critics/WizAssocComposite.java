@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -220,7 +220,7 @@ public class WizAssocComposite extends UMLWizard {
      * @return          The created {@link JPanel} or <code>null</code> if no
      *                  options were available.
      *
-     * @see org.argouml.cognitive.ui.Wizard
+     * @see org.argouml.cognitive.critics.Wizard
      */
     public JPanel makePanel(int newStep) {
 
@@ -271,7 +271,7 @@ public class WizAssocComposite extends UMLWizard {
      * @param  oldStep  The index of the step just completed (0 for the first
      *                  information panel)
      *
-     * @see org.argouml.cognitive.ui.Wizard
+     * @see org.argouml.cognitive.critics.Wizard
      */
     public void doAction(int oldStep) {
 
@@ -387,7 +387,7 @@ public class WizAssocComposite extends UMLWizard {
     /**
      * Determine if we have sufficient information to finish.<p>
      *
-     * We can't finish if our parent {@link org.argouml.cognitive.ui.Wizard}
+     * We can't finish if our parent {@link org.argouml.cognitive.critics.Wizard}
      * can't finish.<p>
      *
      * We can finish if we're on step 0.<p>
@@ -397,7 +397,7 @@ public class WizAssocComposite extends UMLWizard {
      * @return  <code>true</code> if we can finish, otherwise
      *          <code>false</code>.
      *
-     * @see org.argouml.cognitive.ui.Wizard
+     * @see org.argouml.cognitive.critics.Wizard
      */
 
     public boolean canFinish() {

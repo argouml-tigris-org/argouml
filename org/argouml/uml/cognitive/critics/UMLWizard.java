@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,7 @@ package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ListSet;
-import org.argouml.cognitive.ui.Wizard;
+import org.argouml.cognitive.critics.Wizard;
 import org.argouml.model.Model;
 
 
@@ -35,7 +35,7 @@ import org.argouml.model.Model;
  * UMLWizard is an abstract convenience implementation for UML Wizards,
  * which provides common methods to all its subclasses.
  * @author mkl
- * @see org.argouml.cognitive.ui.Wizard
+ * @see org.argouml.cognitive.critics.Wizard
  */
 public abstract class UMLWizard extends Wizard {
 
@@ -57,7 +57,7 @@ public abstract class UMLWizard extends Wizard {
      * method, in case your Wizard requires a different number of steps.
      * This method is a convenience implementation.
      *
-     * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
+     * @see org.argouml.cognitive.critics.Wizard#getNumSteps()
      */
     public int getNumSteps() { return 1; }
 
