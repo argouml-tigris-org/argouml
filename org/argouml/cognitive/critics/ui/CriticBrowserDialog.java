@@ -27,6 +27,7 @@ package org.argouml.cognitive.critics.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -69,7 +70,7 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.ui.ArgoDialog;
+import org.argouml.util.ArgoDialog;
 import org.argouml.util.osdep.StartBrowser;
 import org.tigris.swidgets.BorderSplitPane;
 

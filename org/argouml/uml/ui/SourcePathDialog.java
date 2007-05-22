@@ -37,7 +37,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 
 import org.argouml.i18n.Translator;
-import org.argouml.ui.ArgoDialog;
+import org.argouml.util.ArgoDialog;
 
 /**
  * This dialog appears when selecting

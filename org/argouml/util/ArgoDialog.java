@@ -22,25 +22,38 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui;
+package org.argouml.util;
+
+import java.awt.Frame;
 
 import javax.swing.AbstractButton;
 
 import org.argouml.i18n.Translator;
-import org.argouml.util.UIUtils;
 import org.tigris.swidgets.Dialog;
 
 /**
- * A dialog with localized buttons.
+ * A dialog with localized buttons. <p>
+ * 
+ * This class needs to initialized with 
+ * a pointer to the Frame 
+ * that shall be used for showing the Dialog.
  *
  * @author Bob Tarling
  */
 public class ArgoDialog extends Dialog {
+    private static Frame frame;
 
     /**
      * Suffix to calculate the mnemonic key from the key.
      */
     private static final String MNEMONIC_KEY_SUFFIX = ".mnemonic";
+
+    /**
+     * @param f The frame to set.
+     */
+    public static void setFrame(Frame f) {
+        ArgoDialog.frame = f;
+    }
 
     /**
      * Creates a new ArgoDialog with the default optionType.
@@ -50,7 +63,7 @@ public class ArgoDialog extends Dialog {
      * @see Dialog#Dialog(Frame, String, boolean)
      */
     public ArgoDialog(String title, boolean modal) {
-        super(ArgoFrame.getInstance(), title, modal);
+        super(frame, title, modal);
         init();
     }
 
@@ -63,7 +76,7 @@ public class ArgoDialog extends Dialog {
      * @see Dialog#Dialog(Frame, String, int, boolean)
      */
     public ArgoDialog(String title, int optionType, boolean modal) {
-        super(ArgoFrame.getInstance(), title, optionType, modal);
+        super(frame, title, optionType, modal);
         init();
     }
 

@@ -44,7 +44,7 @@ import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.DecisionModel;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Translator;
-import org.argouml.ui.ArgoDialog;
+import org.argouml.util.ArgoDialog;
 
 
 /** A dialog to set the priorities for decisions. These will be evaluated

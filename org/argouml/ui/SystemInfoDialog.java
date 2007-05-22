@@ -45,6 +45,7 @@ import javax.swing.JTextArea;
 
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.i18n.Translator;
+import org.argouml.util.ArgoDialog;
 
 /**
  * Display System Information (JDK Version, JDK Vendor, etc).

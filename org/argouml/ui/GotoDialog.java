@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.util.ArgoDialog;
 
 /**
  * The dialog that allows the user to go to any diagram in the project

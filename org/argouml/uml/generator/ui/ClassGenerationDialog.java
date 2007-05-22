@@ -60,10 +60,10 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
-import org.argouml.ui.ArgoDialog;
 import org.argouml.uml.generator.CodeGenerator;
 import org.argouml.uml.generator.GeneratorManager;
 import org.argouml.uml.generator.Language;
+import org.argouml.util.ArgoDialog;
 import org.tigris.gef.util.Converter;
 import org.tigris.swidgets.Dialog;
 

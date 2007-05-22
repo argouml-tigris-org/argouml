@@ -30,6 +30,7 @@ import javax.swing.AbstractAction;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.util.ArgoDialog;
 
 /**
  * Action for starting the Argo settings window.

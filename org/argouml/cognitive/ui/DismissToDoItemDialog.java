@@ -44,7 +44,7 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.UnresolvableException;
-import org.argouml.ui.ArgoDialog;
+import org.argouml.util.ArgoDialog;
 import org.tigris.swidgets.Dialog;
 
 /**

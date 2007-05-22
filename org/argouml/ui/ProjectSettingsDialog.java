@@ -36,6 +36,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
 import org.argouml.i18n.Translator;
+import org.argouml.util.ArgoDialog;
 
 /**
  * A dialog panel that allows the user to set 
