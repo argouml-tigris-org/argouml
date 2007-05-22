@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,7 @@ import java.util.Vector;
  */
 public class ToDoListEvent {
 
-    private Vector items;
+    private Vector<ToDoItem> items;
 
     /**
      * The constructor.
@@ -43,13 +43,13 @@ public class ToDoListEvent {
     /**
      * The constructor.
      *
-     * @param i the todo list events
+     * @param i the Vector of ToDoItems that were changed/added/removed 
      */
-    public ToDoListEvent(Vector i) { items = i; }
+    public ToDoListEvent(Vector<ToDoItem> i) { items = i; }
 
     /**
      * @return the todo list events
      */
-    public Vector getToDoItems() { return items; }
+    public Vector<ToDoItem> getToDoItems() { return items; }
 
 } /* end class ToDoListEvent */

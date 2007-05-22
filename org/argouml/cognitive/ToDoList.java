@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -78,7 +78,7 @@ public class ToDoList extends Observable implements Runnable {
     private static final Logger LOG = Logger.getLogger(ToDoList.class);
 
     private static Object recentOffender;
-    private static Vector recentOffenderItems;
+    private static Vector<ToDoItem> recentOffenderItems;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -86,7 +86,7 @@ public class ToDoList extends Observable implements Runnable {
     /**
      * Pending ToDoItems for the designer to consider.
      */
-    private Vector items;
+    private Vector<ToDoItem> items;
 
     /**
      * These are computed when needed.
@@ -104,7 +104,7 @@ public class ToDoList extends Observable implements Runnable {
      *
      * TODO: generalize into a design rationale logging facility.
      */
-    private LinkedHashSet resolvedItems;
+    private LinkedHashSet<ResolvedCritic> resolvedItems;
 
     /**
      * A Thread that keeps checking if the items on the list are
@@ -143,12 +143,12 @@ public class ToDoList extends Observable implements Runnable {
      */
     public ToDoList() {
 
-	items = new Vector(100);
-	resolvedItems = new LinkedHashSet(100);
+	items = new Vector<ToDoItem>(100);
+	resolvedItems = new LinkedHashSet<ResolvedCritic>(100);
 	listenerList = new EventListenerList();
 	longestToDoList = 0;
 	numNotValid = 0;
-	recentOffenderItems = new Vector();
+	recentOffenderItems = new Vector<ToDoItem>();
     }
 
     /**
@@ -181,7 +181,7 @@ public class ToDoList extends Observable implements Runnable {
      * Periodically check to see if items on the list are still valid.
      */
     public void run() {
-        Vector removes = new Vector();
+        Vector<ToDoItem> removes = new Vector<ToDoItem>();
         while (true) {
 
             // the validity checking thread should wait if disabled.
@@ -212,7 +212,7 @@ public class ToDoList extends Observable implements Runnable {
      * pressing a button via forceValidityCheck().
      */
     public void forceValidityCheck() {
-        Vector removes = new Vector();
+        Vector<ToDoItem> removes = new Vector<ToDoItem>();
         forceValidityCheck(removes);
     }
 
@@ -227,11 +227,11 @@ public class ToDoList extends Observable implements Runnable {
      *
      * @param removes the items removed
      */
-    protected synchronized void forceValidityCheck(Vector removes) {
+    protected synchronized void forceValidityCheck(Vector<ToDoItem> removes) {
         //Enumeration cur = _items.elements();
         int size = items.size();
         for (int i = 0; i < size; ++i) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+            ToDoItem item = items.elementAt(i);
             boolean valid;
             try {
 		valid = item.stillValid(designer);
@@ -251,7 +251,7 @@ public class ToDoList extends Observable implements Runnable {
         //cur = removes.elements();
         size = removes.size();
         for (int i = 0; i < size; ++i) {
-            ToDoItem item = (ToDoItem) removes.elementAt(i);
+            ToDoItem item = removes.elementAt(i);
             removeE(item);
 //            History.TheHistory.addItemResolution(item, "no longer valid");
             //((ToDoItem)item).resolve("no longer valid");
@@ -305,7 +305,7 @@ public class ToDoList extends Observable implements Runnable {
      */
     public void notifyObservers(String action, Object arg) {
         setChanged();
-        Vector v = new Vector(2);
+        Vector<Object> v = new Vector<Object>(2);
         v.addElement(action);
         v.addElement(arg);
         super.notifyObservers(v);
@@ -333,12 +333,12 @@ public class ToDoList extends Observable implements Runnable {
     /**
      * @return the todo items
      */
-    public Vector getToDoItems() { return items; }
+    public Vector<ToDoItem> getToDoItems() { return items; }
 
     /**
      * @return the resolved items
      */
-    public Set getResolvedItems() { return resolvedItems; }
+    public Set<ResolvedCritic> getResolvedItems() { return resolvedItems; }
 
     /**
      * @return the set of offenders
@@ -351,7 +351,7 @@ public class ToDoList extends Observable implements Runnable {
             int size = items.size();
             all = new ListSet(size * 2);
             for (int i = 0; i < size; i++) {
-                ToDoItem item = (ToDoItem) items.elementAt(i);
+                ToDoItem item = items.elementAt(i);
                 all.addAllElements(item.getOffenders());
             }
             allOffenders = all;
@@ -376,7 +376,7 @@ public class ToDoList extends Observable implements Runnable {
             int size = items.size();
             all = new ListSet();
             for (int i = 0; i < size; i++) {
-                ToDoItem item = (ToDoItem) items.elementAt(i);
+                ToDoItem item = items.elementAt(i);
                 all.addElement(item.getPoster());
             }
             allPosters = all;
@@ -416,7 +416,7 @@ public class ToDoList extends Observable implements Runnable {
 		    new ResolvedCritic((Critic) item.getPoster(),
 				       item.getOffenders(),
 				       false);
-                Iterator elems = resolvedItems.iterator();
+                Iterator<ResolvedCritic> elems = resolvedItems.iterator();
                 //cat.debug("Checking for inhibitors " + rc);
                 while (elems.hasNext()) {
                     if (elems.next().equals(rc)) {
@@ -452,9 +452,9 @@ public class ToDoList extends Observable implements Runnable {
      * @param list the todo items to be removed
      */
     public void removeAll(ToDoList list) {
-        Enumeration cur = list.elements();
+        Enumeration<ToDoItem> cur = list.elements();
         while (cur.hasMoreElements()) {
-            ToDoItem item = (ToDoItem) cur.nextElement();
+            ToDoItem item = cur.nextElement();
             removeE(item);
         }
         recomputeAllOffenders();
@@ -561,7 +561,7 @@ public class ToDoList extends Observable implements Runnable {
      * @param off the offender
      * @return the todo tems for this offender
      */
-    public Vector elementsForOffender(Object off) {
+    public Vector<ToDoItem> elementsForOffender(Object off) {
         if (off == recentOffender) {
 	    return recentOffenderItems;
 	}
@@ -569,7 +569,7 @@ public class ToDoList extends Observable implements Runnable {
         recentOffenderItems.removeAllElements();
         synchronized (items) {
             for (int i = 0; i < items.size(); i++) {
-                ToDoItem item = (ToDoItem) items.elementAt(i);
+                ToDoItem item = items.elementAt(i);
                 if (item.getOffenders().contains(off)) {
                     recentOffenderItems.addElement(item);
 		}
@@ -586,7 +586,7 @@ public class ToDoList extends Observable implements Runnable {
     /**
      * @return the todo items
      */
-    public Enumeration elements() {
+    public Enumeration<ToDoItem> elements() {
         return items.elements();
     }
 
@@ -595,7 +595,7 @@ public class ToDoList extends Observable implements Runnable {
      * @return the item at the index
      */
     public ToDoItem elementAt(int index) {
-        return (ToDoItem) items.elementAt(index);
+        return items.elementAt(index);
     }
 
     /**
@@ -667,7 +667,7 @@ public class ToDoList extends Observable implements Runnable {
             if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) {
-                    Vector its = new Vector();
+                    Vector<ToDoItem> its = new Vector<ToDoItem>();
                     its.addElement(item);
                     e = new ToDoListEvent(its);
                 }
@@ -680,7 +680,7 @@ public class ToDoList extends Observable implements Runnable {
      * @param item the todo item
      */
     protected void fireToDoItemAdded(ToDoItem item) {
-        Vector v = new Vector();
+        Vector<ToDoItem> v = new Vector<ToDoItem>();
         v.addElement(item);
         fireToDoItemsAdded(v);
     }
@@ -688,7 +688,7 @@ public class ToDoList extends Observable implements Runnable {
     /**
      * @param theItems the todo items
      */
-    protected void fireToDoItemsAdded(Vector theItems) {
+    protected void fireToDoItemsAdded(Vector<ToDoItem> theItems) {
         recentOffender = null;
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
@@ -710,7 +710,7 @@ public class ToDoList extends Observable implements Runnable {
      * @param item the todo item
      */
     protected void fireToDoItemRemoved(ToDoItem item) {
-        Vector v = new Vector();
+        Vector<ToDoItem> v = new Vector<ToDoItem>();
         v.addElement(item);
         fireToDoItemsRemoved(v);
     }
@@ -718,7 +718,7 @@ public class ToDoList extends Observable implements Runnable {
     /**
      * @param theItems the todo items
      */
-    protected void fireToDoItemsRemoved(Vector theItems) {
+    protected void fireToDoItemsRemoved(Vector<ToDoItem> theItems) {
         recentOffender = null;
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
@@ -745,9 +745,9 @@ public class ToDoList extends Observable implements Runnable {
     public String toString() {
         StringBuffer res = new StringBuffer(100);
         res.append(getClass().getName()).append(" {\n");
-        Enumeration cur = elements();
+        Enumeration<ToDoItem> cur = elements();
         while (cur.hasMoreElements()) {
-            ToDoItem item = (ToDoItem) cur.nextElement();
+            ToDoItem item = cur.nextElement();
             res.append("    ").append(item.toString()).append("\n");
         }
         res.append("  }");
