@@ -37,6 +37,7 @@ import javax.swing.SwingConstants;
 
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
+import org.argouml.util.ArgoDialog;
 
 /**
  * Action for starting the Argo settings window.

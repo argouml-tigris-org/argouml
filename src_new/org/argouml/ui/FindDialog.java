@@ -54,6 +54,7 @@ import org.argouml.model.Model;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.uml.PredicateFind;
 import org.argouml.uml.cognitive.ChildGenFind;
+import org.argouml.util.ArgoDialog;
 import org.tigris.gef.util.Predicate;
 import org.tigris.gef.util.PredicateStringMatch;
 import org.tigris.gef.util.PredicateType;

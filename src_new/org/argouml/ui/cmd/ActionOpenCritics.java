@@ -53,7 +53,8 @@ class ActionOpenCritics extends UndoableAction {
      */
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
-	CriticBrowserDialog dialog = new CriticBrowserDialog();
+	CriticBrowserDialog dialog = 
+            new CriticBrowserDialog();
 	dialog.setVisible(true);
     }
 

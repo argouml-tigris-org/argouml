@@ -41,9 +41,9 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
-import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.cognitive.UMLToDoItem;
+import org.argouml.util.ArgoDialog;
 import org.tigris.swidgets.Dialog;
 import org.tigris.swidgets.LabelledLayout;
 

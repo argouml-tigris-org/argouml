@@ -30,6 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+import org.argouml.util.ArgoDialog;
 
 /**
  * Helper class to store/find a top level application frame.
@@ -80,6 +81,7 @@ public class ArgoFrame {
                     LOG.warn("Failed to find application JFrame");
                 }
             }
+            ArgoDialog.setFrame(topFrame);
         }
 
         return topFrame;

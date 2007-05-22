@@ -37,6 +37,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import org.argouml.i18n.Translator;
+import org.argouml.util.ArgoDialog;
 import org.argouml.util.Tools;
 
 /**
