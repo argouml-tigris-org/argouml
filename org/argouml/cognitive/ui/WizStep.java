@@ -43,6 +43,7 @@ import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.critics.Wizard;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.TabToDoTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.util.osdep.StartBrowser;
 
