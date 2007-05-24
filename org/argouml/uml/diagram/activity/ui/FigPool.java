@@ -45,16 +45,16 @@ public class FigPool extends FigNodeModelElement {
 
     /**
      * Constructor.
+     * @param r the bounds for the pool
      */
-    public FigPool() {
-        setBigPort(new FigEmptyRect(10, 10, 160, 200));
+    public FigPool(Rectangle r) {
+        setBigPort(new FigEmptyRect(r.x, r.y, r.width, r.height));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
         
         addFig(getBigPort());
 
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
+        setBounds(r);
     }
 
     /**
@@ -63,10 +63,10 @@ public class FigPool extends FigNodeModelElement {
      * @param gm ignored
      * @param node the UML element
      */
-    public FigPool(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
-    }
+//    public FigPool(GraphModel gm, Object node) {
+//        this(new Rectangle(10, 10, 160, 200));
+//        setOwner(node);
+//    }
     
     /*
      * @see java.lang.Object#clone()
