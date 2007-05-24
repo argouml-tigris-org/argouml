@@ -453,7 +453,8 @@ class PGMLStackParser
     }
 
     @Override
-    protected Fig constructFig(String className, String href, Rectangle bounds) throws SAXException {
+    protected Fig constructFig(String className, String href, Rectangle bounds)
+        throws SAXException {
 	
 	Fig f = null;
 	
@@ -462,9 +463,10 @@ class PGMLStackParser
         } else {
             f = super.constructFig(className, href, bounds);
         }
-        f.setBounds(bounds);
-        
-        
+        if (bounds != null) {
+            f.setBounds(bounds);
+        }
+
 	return f;
     }
     
