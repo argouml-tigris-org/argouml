@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,16 +22,33 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// TODO: remove all methods before release 0.16. They are all deprecated
+package org.argouml.swingext;
 
-package org.argouml.cognitive.ui;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Polygon;
 
-import org.argouml.ui.targetmanager.TargetListener;
+import javax.swing.Icon;
 
 /**
- * Empty interface used to tag Tabbed panels that accept a ToDo Element Target.
- *
+ * Class defining a graphic that goes on the tab label.
  */
-public interface TabToDoTarget extends TargetListener {
+public class LeftArrowIcon implements Icon {
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        int w = getIconWidth(), h = getIconHeight();
+        g.setColor(Color.black);
+        Polygon p = new Polygon();
+        p.addPoint(x + 1, y + h / 2 + 1);
+        p.addPoint(x + w, y);
+        p.addPoint(x + w, y + h);
+        g.fillPolygon(p);
+    }
+    public int getIconWidth() {
+        return 9;
+    }
+    public int getIconHeight() {
+        return 9;
+    }
 
 }

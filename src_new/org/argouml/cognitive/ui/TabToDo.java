@@ -36,6 +36,7 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Wizard;
 import org.argouml.configuration.Configuration;
 import org.argouml.ui.AbstractArgoJPanel;
+import org.argouml.ui.TabToDoTarget;
 import org.argouml.ui.cmd.ActionNewToDoItem;
 import org.argouml.ui.cmd.ActionResolve;
 import org.argouml.ui.cmd.ActionSnooze;

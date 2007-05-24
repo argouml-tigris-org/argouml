@@ -25,12 +25,9 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -46,10 +43,10 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.ui.TabToDo;
-import org.argouml.cognitive.ui.TabToDoTarget;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.swingext.LeftArrowIcon;
+import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -138,13 +135,13 @@ public class DetailsPane
      *
      * Registers listeners.<p>
      *
-     * @param pane is probably the name of the pane TODO: verify this!
+     * @param compassPoint the position for which to build the pane
      * @param orientation is the orientation.
      */
-    public DetailsPane(String pane, Orientation orientation) {
-        LOG.info("making DetailsPane(" + pane + ")");
+    public DetailsPane(String compassPoint, Orientation orientation) {
+        LOG.info("making DetailsPane(" + compassPoint + ")");
 
-        ConfigLoader.loadTabs(tabPanelList, pane, orientation);
+        ConfigLoader.loadTabs(tabPanelList, compassPoint, orientation);
         setLayout(new BorderLayout());
         setFont(new Font("Dialog", Font.PLAIN, 10));
         add(topLevelTabbedPane, BorderLayout.CENTER);
@@ -178,7 +175,7 @@ public class DetailsPane
             }
             // default if there is no tabprops if there is no tabtodo
             // either, this will result in lastNonNullTab = -1;
-            if (tabs[i] instanceof TabToDo) {
+            if (tabs[i] instanceof TabToDoTarget) {
                 lastNonNullTab = i;
             }
         }
@@ -208,8 +205,8 @@ public class DetailsPane
         enableTabs(item);
         for (int i = 0; i < tabPanelList.size(); i++) {
             JPanel t = (JPanel) tabPanelList.get(i);
-            if (t instanceof TabToDo) {
-                ((TabToDo) t).setTarget(item);
+            if (t instanceof TabToDoTarget) {
+                ((TabToDoTarget) t).setTarget(item);
                 topLevelTabbedPane.setSelectedComponent(t);
                 return true;
             }
@@ -260,19 +257,19 @@ public class DetailsPane
             // default tab todo
             if (!tabSelected) {
                 JPanel tab = (JPanel) tabPanelList.get(0);
-                if (!(tab instanceof TabToDo)) {
+                if (!(tab instanceof TabToDoTarget)) {
                     Iterator it = tabPanelList.iterator();
                     while (it.hasNext()) {
                         Object o = it.next();
-                        if (o instanceof TabToDo) {
-                            tab = (TabToDo) o;
+                        if (o instanceof TabToDoTarget) {
+                            tab = (JPanel) o;
                             break;
                         }
                     }
                 }
-                if (tab instanceof TabToDo) {
+                if (tab instanceof TabToDoTarget) {
                     topLevelTabbedPane.setSelectedComponent(tab);
-                    ((TabToDo) tab).setTarget(target);
+                    ((TabToDoTarget) tab).setTarget(target);
                     lastNonNullTab = topLevelTabbedPane.getSelectedIndex();
                 }
             }
@@ -281,19 +278,19 @@ public class DetailsPane
             // default tab todo
             JPanel tab =
                 tabPanelList.isEmpty() ? null : (JPanel) tabPanelList.get(0);
-            if (!(tab instanceof TabToDo)) {
+            if (!(tab instanceof TabToDoTarget)) {
                 Iterator it = tabPanelList.iterator();
                 while (it.hasNext()) {
                     Object o = it.next();
-                    if (o instanceof TabToDo) {
-                        tab = (TabToDo) o;
+                    if (o instanceof TabToDoTarget) {
+                        tab = (JPanel) o;
                         break;
                     }
                 }
             }
-            if (tab instanceof TabToDo) {
+            if (tab instanceof TabToDoTarget) {
                 topLevelTabbedPane.setSelectedComponent(tab);
-                ((TabToDo) tab).setTarget(target);
+                ((TabToDoTarget) tab).setTarget(target);
 
             } else {
                 topLevelTabbedPane.setSelectedIndex(-1);
@@ -457,8 +454,8 @@ public class DetailsPane
         Object target = TargetManager.getInstance().getTarget();
 
         if (!(sel instanceof TargetListener)) {
-            if (sel instanceof TabToDo) {
-                ((TabToDo) sel).refresh();
+            if (sel instanceof TabToDoTarget) {
+                ((TabToDoTarget) sel).setTarget(target);
             } else if (sel instanceof TabTarget) {
                 ((TabTarget) sel).setTarget(target);
             }
@@ -618,7 +615,7 @@ public class DetailsPane
                 if (tab instanceof TabTarget) {
                     shouldEnable = ((TabTarget) tab).shouldBeEnabled(target);
                 } else {
-                    if (tab instanceof TabToDo) {
+                    if (tab instanceof TabToDoTarget) {
                         shouldEnable = true;
                     }
                 }
@@ -668,49 +665,3 @@ public class DetailsPane
     }
 
 } /* end class DetailsPane */
-
-////////////////////////////////////////////////////////////////
-// related classes
-
-/**
- * Class defining a graphic that goes on the tab label.
- */
-class UpArrowIcon implements Icon {
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-        int w = getIconWidth(), h = getIconHeight();
-        g.setColor(Color.black);
-        Polygon p = new Polygon();
-        p.addPoint(x, y + h);
-        p.addPoint(x + w / 2 + 1, y);
-        p.addPoint(x + w, y + h);
-        g.fillPolygon(p);
-    }
-    public int getIconWidth() {
-        return 9;
-    }
-    public int getIconHeight() {
-        return 9;
-    }
-}
-
-/**
- * Class defining a graphic that goes on the tab label.
- */
-class LeftArrowIcon implements Icon {
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-        int w = getIconWidth(), h = getIconHeight();
-        g.setColor(Color.black);
-        Polygon p = new Polygon();
-        p.addPoint(x + 1, y + h / 2 + 1);
-        p.addPoint(x + w, y);
-        p.addPoint(x + w, y + h);
-        g.fillPolygon(p);
-    }
-    public int getIconWidth() {
-        return 9;
-    }
-    public int getIconHeight() {
-        return 9;
-    }
-
-}
