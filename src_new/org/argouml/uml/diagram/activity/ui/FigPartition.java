@@ -249,9 +249,8 @@ public class FigPartition extends FigNodeModelElement {
                 getOwner(), machine);
 	
 	if (partitions.size() == 1) {
-	    FigPool fp = new FigPool();
+	    FigPool fp = new FigPool(getBounds());
 	    getLayer().add(fp);
-	    fp.setBounds(getBounds());
 	    getLayer().bringToFront(this);
 	} else if (partitions.size() > 1) {
 	    FigPool fp = getFigPool();

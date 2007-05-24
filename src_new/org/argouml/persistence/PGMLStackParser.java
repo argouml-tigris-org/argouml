@@ -459,17 +459,11 @@ class PGMLStackParser
 	Fig f = null;
 	
         if (className.equals(FigPool.class.getName())) {
-            f = new FigPool();
+            f = new FigPool(bounds);
         } else {
             f = super.constructFig(className, href, bounds);
-        }
-        if (bounds != null) {
-            f.setBounds(bounds);
         }
 
 	return f;
     }
-    
-    
-    
 }
