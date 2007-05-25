@@ -452,6 +452,10 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             } catch (IllegalArgumentException iae) {
                 // idem, e.g. for a generalization with leaf/root object
                 // TODO: but showing the message in the statusbar would help
+        	// TODO: IllegalArgumentException should not be used for
+        	// events we expect to happen. We need a different way of
+        	// catching well-formedness rules.
+        	LOG.warn("IllegalArgumentException caught", iae);
             }
         }
         return connection;
