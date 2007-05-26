@@ -82,6 +82,7 @@ public class FigMessage extends FigNodeModelElement {
 	figPoly.setPolygon(polygon);
 	figPoly.setBounds(100, 10, 5, 18);
 
+        arrowDirections.setSize(4);
         arrowDirections.setElementAt("North", NORTH);
         arrowDirections.setElementAt("South", SOUTH);
         arrowDirections.setElementAt("East", EAST);
@@ -113,7 +114,6 @@ public class FigMessage extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#getNotationProviderType()
      */
-    @Override
     protected int getNotationProviderType() {
         return NotationProviderFactory2.TYPE_MESSAGE;
     }
@@ -122,7 +122,6 @@ public class FigMessage extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(
      * java.lang.Object, java.lang.Object)
      */
-    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeElementListener(oldOwner);
@@ -135,14 +134,11 @@ public class FigMessage extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
-    @Override
-    public String placeString() {
-        // TODO: I18N
-        return "new Message";
-    }
+    public String placeString() { return "new Message"; }
 
-
-    @Override
+    /*
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
 	FigMessage figClone = (FigMessage) super.clone();
 	Iterator it = figClone.getFigs().iterator();
@@ -155,7 +151,6 @@ public class FigMessage extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
-    @Override
     public void setLineColor(Color col) {
 	figPoly.setLineColor(col);
 	getNameFig().setLineColor(col);
@@ -164,7 +159,6 @@ public class FigMessage extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
-    @Override
     public Color getLineColor() {
         return figPoly.getLineColor();
     }
@@ -172,7 +166,6 @@ public class FigMessage extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
-    @Override
     public void setFillColor(Color col) {
 	//figPoly.setFillColor(col);
 	getNameFig().setFillColor(col);
@@ -181,7 +174,6 @@ public class FigMessage extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
-    @Override
     public Color getFillColor() {
         return getNameFig().getFillColor();
     }
@@ -189,14 +181,12 @@ public class FigMessage extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
-    @Override
     public void setFilled(boolean f) {
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
-    @Override
     public boolean getFilled() {
         return true;
     }
@@ -204,18 +194,12 @@ public class FigMessage extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
-    @Override
-    public void setLineWidth(int w) {
-        figPoly.setLineWidth(w);
-    }
+    public void setLineWidth(int w) { figPoly.setLineWidth(w); }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
-    @Override
-    public int getLineWidth() {
-        return figPoly.getLineWidth();
-    }
+    public int getLineWidth() { return figPoly.getLineWidth(); }
 
     /**
      * @param direction for the arrow
@@ -273,7 +257,6 @@ public class FigMessage extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
-    @Override
     public Dimension getMinimumSize() {
 	Dimension nameMin = getNameFig().getMinimumSize();
 	Dimension figPolyMin = figPoly.getSize();
@@ -287,7 +270,6 @@ public class FigMessage extends FigNodeModelElement {
      * Override setBounds to keep shapes looking right.
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    @Override
     protected void setBoundsImpl(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
@@ -320,8 +302,7 @@ public class FigMessage extends FigNodeModelElement {
      * 
      * @author Decki,Endi,Yayan, Politechnic of Bandung. Computer Departement
      * method for changing text of Message
-     */
-    @Override
+     */	
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         
@@ -424,7 +405,7 @@ public class FigMessage extends FigNodeModelElement {
      * 
      * @author Decki,Endi,Yayan, Politechnic of Bandung. Computer Departement
      * method for changing text of Message
-     * @param newOwner model element which should now be listened to
+     * @param newOwner
      */
     protected void updateListeners(Object newOwner) {
         // Our superclass no longer has this method, so perhaps this whole
@@ -522,7 +503,6 @@ public class FigMessage extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
-    @Override
     public void renderingChanged() {
         super.renderingChanged();
         updateArrow();
@@ -534,4 +514,4 @@ public class FigMessage extends FigNodeModelElement {
     public static Vector getArrowDirections() {
         return arrowDirections;
     }
-}
+} /* end class FigMessage */
