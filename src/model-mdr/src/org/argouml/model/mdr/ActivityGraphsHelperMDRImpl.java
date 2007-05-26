@@ -165,6 +165,16 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
                     "Partition: " + partition);
         }
     }
+    
+    public void addContent(Object partition, Object modelElement) {
+        Partition p = (Partition) partition;
+        p.getContents().add(modelElement);
+    }
+
+    public void removeContent(Object partition, Object modelElement) {
+        Partition p = (Partition) partition;
+        p.getContents().remove(modelElement);
+    }
 
     public void setSynch(Object objectFlowState, boolean isSynch) {
         ((ObjectFlowState) objectFlowState).setSynch(isSynch);
