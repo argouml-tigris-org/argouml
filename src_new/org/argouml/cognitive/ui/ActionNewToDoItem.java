@@ -22,14 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.cmd;
+package org.argouml.cognitive.ui;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.cognitive.ui.AddToDoItemDialog;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLListCellRenderer2;
 import org.tigris.gef.undo.UndoableAction;
