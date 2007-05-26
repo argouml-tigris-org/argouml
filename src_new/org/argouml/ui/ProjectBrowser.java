@@ -64,7 +64,6 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
@@ -403,10 +402,6 @@ public final class ProjectBrowser
         todoPane = new ToDoPane(splash);
         createDetailsPanes();
         restorePanelSizes();
-
-        getTab(TabToDo.class); // TODO: If this doesn't have side effects,
-                               //       it can be removed alltogether.
-
     }
 
     private Component assemblePanels() {
