@@ -26,8 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.Action;
 
-import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
-
 import junit.framework.TestCase;
 
 
