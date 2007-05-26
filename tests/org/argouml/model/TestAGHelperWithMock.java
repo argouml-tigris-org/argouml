@@ -35,8 +35,8 @@ import junit.framework.TestCase;
  * @author Linus Tolke
  */
 public class TestAGHelperWithMock extends TestCase {
-    MockModelImplementation mockModelImplementation;
-    MockControl controlAGH;
+    private MockModelImplementation mockModelImplementation;
+    private MockControl controlAGH;
 
     /**
      * Constructor.

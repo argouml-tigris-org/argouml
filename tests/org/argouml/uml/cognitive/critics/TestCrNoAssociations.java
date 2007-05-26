@@ -33,15 +33,15 @@ public class TestCrNoAssociations extends TestCase {
 
     private CrNoAssociations critic = null;
 
-    Object useCase1;
+    private Object useCase1;
 
-    Object useCase2;
+    private Object useCase2;
 
-    Object useCase3;
+    private Object useCase3;
 
-    Object ns;
+    private Object ns;
 
-    Object actor;
+    private Object actor;
 
     public TestCrNoAssociations(String arg0) {
         super(arg0);
