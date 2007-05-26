@@ -46,7 +46,7 @@ public abstract class AbstractMDRModelImplementationTestCase extends TestCase {
     /**
      * Initialization state.
      */
-    protected boolean initialized = false;
+    private boolean initialized = false;
     
     protected void init() {
         try {            
