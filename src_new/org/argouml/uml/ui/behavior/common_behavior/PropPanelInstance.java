@@ -43,11 +43,11 @@ public abstract class PropPanelInstance extends PropPanelModelElement {
 
     private JScrollPane stimuliReceiverScroll;
 
-    private static UMLInstanceSenderStimulusListModel
-        stimuliSenderListModel = new UMLInstanceSenderStimulusListModel();
+    private static UMLInstanceSenderStimulusListModel stimuliSenderListModel 
+        = new UMLInstanceSenderStimulusListModel();
 
     private static UMLInstanceReceiverStimulusListModel
-        stimuliReceiverListModel = new UMLInstanceReceiverStimulusListModel();
+    stimuliReceiverListModel = new UMLInstanceReceiverStimulusListModel();
 
     /**
      * The constructor.

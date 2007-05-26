@@ -817,10 +817,10 @@ public class FigPackage extends FigNodeModelElement
 	    // TODO: In my view the Fig representing the model element should be
 	    // removed from the diagram. Yet to be agreed. Bob.
 	    if (LOG.isInfoEnabled() && mee.getNewValue() == null) {
-		LOG.info(Model.getFacade().getName(mee.getOldValue()) +
-			" has been removed from the namespace of " + 
-			Model.getFacade().getName(getOwner()) +
-			" by notice of " + mee.toString());
+		LOG.info(Model.getFacade().getName(mee.getOldValue())
+                        + " has been removed from the namespace of "
+                        + Model.getFacade().getName(getOwner())
+                        + " by notice of " + mee.toString());
 	    }
 	    LayerPerspective layer = (LayerPerspective) getLayer();
 	    Fig f = layer.presentationFor(mee.getOldValue());

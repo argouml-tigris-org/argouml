@@ -467,7 +467,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         protected Vector getSelected() {
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
-                    return new Vector(Model.getFacade().getParameters(t));
+                return new Vector(Model.getFacade().getParameters(t));
             }
             return new Vector();
         }

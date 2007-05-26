@@ -55,8 +55,8 @@ public class PropPanelMethod extends PropPanelFeature {
 
     private JTextField languageTextField;
     private UMLComboBox2 specificationComboBox;
-    private static UMLMethodSpecificationComboBoxModel
-        specificationComboBoxModel;
+    private static UMLMethodSpecificationComboBoxModel 
+    specificationComboBoxModel;
     private UMLModelElementLanguageDocument languageDocument =
         new UMLModelElementLanguageDocument();
 

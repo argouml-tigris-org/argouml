@@ -146,11 +146,11 @@ class ActionSetClassifierInStateType extends UndoableAction {
             Object obj = box.getTarget();
             if (Model.getFacade().isAClassifierInState(obj)) {
                 try {
-					oldClassifier = Model.getFacade().getType(obj);
-				} catch (InvalidElementException e1) {
-					/* No problem - this ClassifierInState was just erased. */
-					return;
-				}
+                    oldClassifier = Model.getFacade().getType(obj);
+                } catch (InvalidElementException e1) {
+                    /* No problem - this ClassifierInState was just erased. */
+                    return;
+                }
                 cis = obj;
             }
             Object cl = box.getSelectedItem();
