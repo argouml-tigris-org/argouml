@@ -112,7 +112,15 @@ public abstract class AbstractArgoJPanel extends JPanel
      * @param t if true, remove tab from parent JTabbedPane
      */
     // TODO: Investigate in what cases is the tag a localized string
-    // and in what cases is it a key to be localized?
+    // and in what cases is it a key to be localized? - Harold Braun via Linus 20070521
+    // Answer: There are three cases: 1) unlocalized string, 2) localized
+    // string, and 3) property/tag name.  Of the 100+ subclasses, the
+    // overwhelming majority fall into category #1.  Category #3 includes
+    // most of the Tab* panels.  Category #2 includes the PropPanels for 
+    // Generalization and all the diagrams, as well as TabDocumentation
+    // and TabStereotype.  The breakdown is approximately 80+/10/6.  The
+    // analysis is easy.  Fixing the 90+ property panels will be more work.
+    // - tfm - 20070517
     public AbstractArgoJPanel(String tag, boolean t) {
         setTitle(tag);
         tear = t;
