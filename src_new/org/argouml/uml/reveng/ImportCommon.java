@@ -124,22 +124,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      */
     public abstract int getImportLevel();
 
-    /**
-     * If we have modified any diagrams, the project was modified and
-     * should be saved. I don't consider a import, that only modifies
-     * the metamodel, at this point (Andreas Rueckert).
-     * Calling Project.setNeedsSave(true) doesn't work here, because
-     * Project.postLoad() is called after the import and it sets the
-     * needsSave flag to false.<p>
-     *
-     * @return true, if any diagrams where modified and the project
-     * should be saved before exit.
-     * @deprecated by tfmorris for 0.23.2 - use standard project
-     * "save needed" mechanisms
-     */
-    public boolean needsSave() {
-        return (diagramInterface.getModifiedDiagrams().size() > 0);
-    }
 
     /*
      * @see org.argouml.uml.reveng.ImportSettings#getDiagramInterface()

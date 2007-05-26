@@ -194,12 +194,8 @@ public class Import extends ImportCommon implements ImportSettings {
 
     /**
      * Close dialog window.
-     *
-     * @deprecated by tfmorris for 0.23.2 - UI management is solely an internal
-     *             matter. Visibility of this will be further reduced when no
-     *             importers use FileImportSupport.
      */
-    void disposeDialog() {
+    private void disposeDialog() {
         StringBuffer flags = new StringBuffer(30);
         flags.append(isDescendSelected()).append(",");
         flags.append(isChangedOnlySelected()).append(",");
@@ -225,11 +221,10 @@ public class Import extends ImportCommon implements ImportSettings {
      *
      * @param importInstance the instance of the import
      * @return the panel
-     * @deprecated by tfmorris for 0.23.3 - this is an internal method
-     * and the visibility will be reduced.  Use the accessors in
+     * This is an internal method.  Use the accessors in
      * {@link ImportSettings} to determine the current settings.
      */
-    public JComponent getConfigPanel(final Import importInstance) {
+    private JComponent getConfigPanel(final Import importInstance) {
 
         final JTabbedPane tab = new JTabbedPane();
 
@@ -513,17 +508,6 @@ public class Import extends ImportCommon implements ImportSettings {
         return false;
     }
 
-    /**
-     * Check, if "Discend directories recursively" is selected.<p>
-     *
-     * @deprecated by tfmorris for 0.23.3, use
-     * {@link ImportSettings#isDescendSelected()}
-     * @return true, if "Discend directories recursively" is selected
-     */
-    public boolean isDiscendDirectoriesRecursively() {
-        return isDescendSelected();
-    }
-
 
     /*
      * @see org.argouml.uml.reveng.ImportCommon#isDescendSelected()
@@ -736,13 +720,6 @@ public class Import extends ImportCommon implements ImportSettings {
                     progress.setValue(i);
                 }
             });
-        }
-
-        /**
-         * @deprecated by tfmorris for 0.23.4 - use {@link #close}
-         */
-        public void done() {
-            close();
         }
 
         /**

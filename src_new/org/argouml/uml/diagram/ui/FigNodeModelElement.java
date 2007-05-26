@@ -298,22 +298,6 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Partially construct a new FigNode.  This method creates the
-     * name element that holds the name of the model element and adds
-     * itself as a listener.
-     *
-     * @param gm ignored
-     * @param node the owning UML element
-     * @deprecated in 0.23.5 not used in ArgoUML will be removed in future
-     */
-    protected FigNodeModelElement(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
-        nameFig.setText(placeString());
-        readyToEdit = false;
-    }
-
-    /**
      * Construct a figure at a specific position for a given model element.
      * 
      * @param element ModelElement associated with figure
@@ -1113,19 +1097,6 @@ public abstract class FigNodeModelElement
         }
     }
 
-
-    /**
-     * Create a new feature in the owner fig.
-     *
-     * @param fg The fig group to which this applies
-     * @param me The input event that triggered us. In the current
-     *            implementation a mouse double click.
-     *            @deprecated in 0.12.5 use
-     *            {@link #createContainedModelElement(FigGroup, InputEvent)}
-     */
-    protected final void createFeatureIn(FigGroup fg, InputEvent me) {
-	createContainedModelElement(fg, me);
-    }
 
     /**
      * Create a new model element contained in the fig owner.
