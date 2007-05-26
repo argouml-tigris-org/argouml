@@ -769,30 +769,6 @@ public final class ProjectBrowser
         throw new IllegalArgumentException("No such tab named " + tabName);
     }
 
-    /**
-     * Find the tabpage with the given label.
-     *
-     * @param tabName The tabpage label
-     * @return the tabpage
-     * @deprecated by Andrea Nironi (0.22 August 2006). Replaced by
-     *             {@link org.argouml.ui.ProjectBrowser#getTab(Class tabClass)}.
-     *             See issue 3278.
-     */
-    public JPanel getNamedTab(String tabName) {
-        JPanel panel;
-        Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane) it.next();
-            panel = detailsPane.getNamedTab(tabName);
-            if (panel != null) {
-                return panel;
-            }
-        }
-        //TODO: I'd prefer to throw this exception here but doing Argo currently
-        //falls over - needs more investigation Bob Tarling 8 Dec 2002
-        //throw new IllegalArgumentException("No such tab named " + tabName);
-        return null;
-    }
 
     /**
      * Given a list of targets, displays the according diagram.

@@ -48,14 +48,6 @@ public abstract class UMLModelElementOrderedListModel2
 
     /**
      * The constructor.
-     * @deprecated by Bob in 0.23.4. Use constructor specifying a name.
-     */
-    public UMLModelElementOrderedListModel2() {
-        super();
-    }
-
-    /**
-     * The constructor.
      *
      * @param name the name
      */
@@ -89,6 +81,7 @@ public abstract class UMLModelElementOrderedListModel2
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildPopup(
      * javax.swing.JPopupMenu, int)
      */
+    @Override
     public boolean buildPopup(JPopupMenu popup, int index) {
         JMenuItem moveUp =
 	    new JMenuItem(
@@ -126,6 +119,7 @@ class MoveUpAction extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         model.moveDown(index - 1);
@@ -134,6 +128,7 @@ class MoveUpAction extends UndoableAction {
     /*
      * @see javax.swing.Action#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
         return index > 0;
     }
@@ -161,6 +156,7 @@ class MoveDownAction extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         model.moveDown(index);
@@ -169,6 +165,7 @@ class MoveDownAction extends UndoableAction {
     /*
      * @see javax.swing.Action#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
         return model.getSize() > index + 1;
     }

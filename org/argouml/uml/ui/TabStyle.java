@@ -138,13 +138,6 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
     }
 
     /**
-     * Initialize the hashtable of pre lookup panels.
-     * @deprecated for 0.24 by tfmorris - noop - remove any references
-     */
-    protected void initPanels() {
-    }
-
-    /**
      * Adds a style panel to the internal list. This allows a plugin to add and
      * register a new style panel at run-time. This property style will then be
      * displayed in the details pane whenever an element of the given metaclass

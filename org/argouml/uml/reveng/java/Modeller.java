@@ -55,7 +55,7 @@ import org.argouml.uml.reveng.ImportSettings;
  */
 public class Modeller {
 
-    private final static String JAVA_PACKAGE = "java.lang";
+    private static final String JAVA_PACKAGE = "java.lang";
     
     /**
      * Logger.<p>
@@ -136,45 +136,6 @@ public class Modeller {
      */
     private Collection newElements;
     
-    /**
-     * Create a new modeller which will do diagram creation.
-     * 
-     * @param m
-     *            The model to work with.
-     * @param diag
-     *            the interface to the diagram to add nodes and edges to
-     * @param imp
-     *            The current Import session.
-     * @param noAss
-     *            whether associations are modelled as attributes
-     * @param arraysAsDT
-     *            whether arrays are modelled as dataypes
-     * @param fName
-     *            the current file name
-     * @deprecated for 0.23.4 by tfmorris - use variant without diagram
-     *             interface
-     *      {@link #Modeller(Object, ImportCommon, boolean, boolean, String)}.
-     *             NOTE: This really is private to the Java RE module, but it
-     *             has also been used by other bundled importers, so it's
-     *             possible it was used by others outside the project as well.
-     */
-    public Modeller(Object m,
-		    DiagramInterface diag,
-		    ImportCommon imp,
-		    boolean noAss,
-		    boolean arraysAsDT,
-		    String fName) {
-	model = m;
-	noAssociations = noAss;
-	arraysAsDatatype = arraysAsDT;
-	importSession = imp;
-	currentPackage = this.model;
-	parseState = new ParseState(this.model, getPackage(JAVA_PACKAGE));
-	parseStateStack = new Stack();
-	diagram = diag;
-        fileName = fName;
-        newElements = new ArrayList();
-    }
 
     /**
      * Create a new modeller.
@@ -185,8 +146,14 @@ public class Modeller {
      */
     public Modeller(Object theModel, ImportSettings settings, 
             String theFileName) {
-        this(theModel, null, null, settings.isAttributeSelected(), settings
-                .isDatatypeSelected(), theFileName);
+        model = theModel;
+        noAssociations = settings.isAttributeSelected();
+        arraysAsDatatype = settings.isDatatypeSelected();
+        currentPackage = this.model;
+        parseState = new ParseState(this.model, getPackage(JAVA_PACKAGE));
+        parseStateStack = new Stack();
+        fileName = theFileName;
+        newElements = new ArrayList();
     }
     
     /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -346,21 +346,6 @@ public class DiagramInterface {
         addClassifier(newInterface, minimise);
     }
 
-
-    /**
-     * Creates new class diagram for package or selects existing one.
-     * 
-     * @param currentPackage
-     *            The package to attach the diagram to.
-     * @param currentPackageName
-     *            The fully qualified name of the package, which is used to
-     *            generate the diagram name from.
-     * @deprecated by tfmorris for 0.23.4 - use selectClassDiagram
-     */
-    public void createOrSelectClassDiagram(Object currentPackage,
-					   String currentPackageName) {
-        selectClassDiagram(currentPackage, currentPackageName);
-    }
 
     /**
      * Creates class diagram under the root.

@@ -325,28 +325,6 @@ class ModelMemberFilePersister extends MemberFilePersister
         registerDiagramsInternal(project, elementsRead, true);
     }
     
-    /**
-     * Create and register diagrams for activity and statemachines in the
-     * model(s) of the project. If no other diagrams are created and atLeastOne
-     * is true, than a default Class Diagram will be created.  ArgoUML currently
-     * requires at least one diagram for proper operation.
-     *
-     * @param project
-     *            The project
-     * @param elements
-     *            Collection of top level model elements to process
-     * @param atLeastOne
-     *            If true, forces at least one diagram to be created.
-     * @deprecated in 0.23.3 by bobtarling, use registerDiagrams(Project)
-     */
-    public void registerDiagrams(Project project, Collection elements,
-            boolean atLeastOne) {
-        // TODO: This is bug compatible with the previous implementation
-        // which was ignoring the project parameter.  I'm not sure if
-        // anything depends on that behavior, plus it's going away, so 
-        // no sense changing the behavior now. - tfm
-        registerDiagramsInternal(proj, elements, atLeastOne);
-    }
 
     /**
      * Internal method create diagrams for activity graphs and state machines.

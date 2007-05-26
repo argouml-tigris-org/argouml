@@ -335,25 +335,6 @@ public class DetailsPane
     }
 
     /**
-     * Get the JPanel of the tab with the given name.
-     *
-     * @param tabName the name of the required tab
-     * @return the tab of the given name
-     * @deprecated by Andrea Nironi (0.22 August 2006). Replaced by
-     *             {@link org.argouml.ui.DetailsPane#getTab(Class tabClass)}.
-     *             See issue 3278.
-     */
-    public JPanel getNamedTab(String tabName) {
-        for (int i = 0; i < tabPanelList.size(); i++) {
-            String title = topLevelTabbedPane.getTitleAt(i);
-            if (title != null && title.equals(tabName)) {
-                return (JPanel) topLevelTabbedPane.getComponentAt(i);
-            }
-        }
-        return null;
-    }
-
-    /**
      * Get the number of tabs.
      *
      * @return the number of tab pages

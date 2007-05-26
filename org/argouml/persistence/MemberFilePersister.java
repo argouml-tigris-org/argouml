@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,21 +60,6 @@ abstract class MemberFilePersister {
      */
     public abstract String getMainTag();
 
-    /**
-     * Save the projectmember as XML to the given writer.
-     *
-     * @param member The project member to save.
-     * @param writer The Writer to which to save the XML.
-     * @param indent The offset to which to indent the XML
-     * @throws SaveException if the save fails
-     * @deprecated in 0.23.4 by Bob Tarling use
-     *     {@link #save(ProjectMember, Writer, boolean)}
-     */
-    public void save(ProjectMember member, Writer writer, Integer indent)
-	throws SaveException {
-	
-	save(member, writer, indent != null);
-    }
 
     /**
      * Save the projectmember as XML to the given writer.

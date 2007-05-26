@@ -65,20 +65,6 @@ public class ConfigLoader {
 
     /**
      * Load the tab panels as defined in the configuration file.
-     *
-     * @param tabs the list of tabs in the panel
-     * @param panelName the panel name
-     * @param orientation the orientation
-     * @deprecated for 0.24 by tfmorris, 
-     *          use {@link #loadTabs(List, String, Orientation)}
-     */
-    public static void loadTabs(Vector tabs, String panelName,
-            Orientation orientation) {
-        loadTabs((List) tabs, panelName, orientation);
-    }
-    
-    /**
-     * Load the tab panels as defined in the configuration file.
      * 
      * @param tabs
      *            the list of tabs in the panel
