@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,12 +25,10 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
@@ -45,24 +43,15 @@ import org.tigris.gef.presentation.FigCircle;
  */
 public class FigInitialState extends FigStateVertex {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
     private static final int X = 10;
     private static final int Y = 10;
     private static final int WIDTH = 16;
     private static final int HEIGHT = 16;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private FigCircle head;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
-     * Main constructor.
+     * Default constructor.
      */
     public FigInitialState() {
         setEditable(false);
@@ -90,9 +79,8 @@ public class FigInitialState extends FigStateVertex {
         setOwner(node);
     }
 
-    /*
-     * @see java.lang.Object#clone()
-     */
+
+    @Override
     public Object clone() {
         FigInitialState figClone = (FigInitialState) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -101,20 +89,14 @@ public class FigInitialState extends FigStateVertex {
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
-
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
-        Object pstate = null;
+        Object pstate = getOwner();
         Selection sel = null;
-        if (getOwner() != null) {
-            pstate = getOwner();
-            if (pstate == null) {
-                return sel;
-            }
+        if ( pstate != null) {
             if (Model.getFacade().isAActivityGraph(
                     Model.getFacade().getStateMachine(
                             Model.getFacade().getContainer(pstate)))) {
@@ -122,14 +104,13 @@ public class FigInitialState extends FigStateVertex {
                 ((SelectionActionState) sel).setIncomingButtonEnabled(false);
                 Collection outs = Model.getFacade().getOutgoings(getOwner());
                 ((SelectionActionState) sel)
-                        .setOutgoingButtonEnabled(outs == null
-                                || outs.size() == 0);
+                        .setOutgoingButtonEnabled(outs.isEmpty());
             } else {
                 sel = new SelectionState(this);
                 ((SelectionState) sel).setIncomingButtonEnabled(false);
                 Collection outs = Model.getFacade().getOutgoings(getOwner());
-                ((SelectionState) sel).setOutgoingButtonEnabled(outs == null
-                        || outs.size() == 0);
+                ((SelectionState) sel)
+                        .setOutgoingButtonEnabled(outs.isEmpty());
             }
         }
         return sel;
@@ -140,6 +121,7 @@ public class FigInitialState extends FigStateVertex {
      *
      * @return false
      */
+    @Override
     public boolean isResizable() {
         return false;
     }
@@ -147,6 +129,7 @@ public class FigInitialState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         head.setLineColor(col);
     }
@@ -154,6 +137,7 @@ public class FigInitialState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return head.getLineColor();
     }
@@ -161,6 +145,7 @@ public class FigInitialState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         head.setFillColor(col);
     }
@@ -168,6 +153,7 @@ public class FigInitialState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return head.getFillColor();
     }
@@ -176,13 +162,15 @@ public class FigInitialState extends FigStateVertex {
      * Ignored - figure has fixed rendering
      * @param f ignored
      */
+    @Override
     public void setFilled(boolean f) {
-        // ignored
+        // ignored - rendering is fixed
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
+    @Override
     public boolean getFilled() {
         return true;
     }
@@ -190,6 +178,7 @@ public class FigInitialState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         head.setLineWidth(w);
     }
@@ -197,18 +186,17 @@ public class FigInitialState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return head.getLineWidth();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Event handlers
-
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseClicked(MouseEvent me) {
-        // ignored
+        // ignore mouse clicks
     }
 
     /**
@@ -216,26 +204,15 @@ public class FigInitialState extends FigStateVertex {
      */
     static final long serialVersionUID = 6572261327347541373L;
 
-    /*
-     * Makes sure that edges stick to the outer circle and not to the box.
-     *
-     * @see org.tigris.gef.presentation.Fig#getGravityPoints()
+    /**
+     * Return a list of gravity points around the outer circle. Used in place of
+     * the default bounding box.
+     * 
+     * {@inheritDoc}
      */
+    @Override
     public List getGravityPoints() {
-        Vector ret = new Vector();
-        int cx = getBigPort().getCenter().x;
-        int cy = getBigPort().getCenter().y;
-        double radius = getBigPort().getWidth() / 2 + 1;
-        final int maxPoints = 32;
-        Point point = null;
-        final double pi2 = Math.PI * 2;
-        for (int i = 0; i < maxPoints; i++) {
-            int px = (int) (cx + Math.cos(pi2 * i / maxPoints) * radius);
-            int py = (int) (cy + Math.sin(pi2 * i / maxPoints) * radius);
-            point = new Point(px, py);
-            ret.add(point);
-        }
-        return ret;
-
+        return getCircleGravityPoints();
     }
-} /* end class FigInitialState */
+    
+}
