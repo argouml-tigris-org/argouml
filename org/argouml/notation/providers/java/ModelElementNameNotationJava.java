@@ -97,7 +97,7 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
                 token = st.nextToken();
 
                 if (" ".equals(token)) {
-                    ; /* skip spaces */
+                    /* skip spaces */
                 } else if ("abstract".equals(token)) {
                     abstrac = true;
                 } else if ("final".equals(token)) {

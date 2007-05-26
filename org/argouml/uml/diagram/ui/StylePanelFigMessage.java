@@ -39,7 +39,7 @@ import org.tigris.gef.util.Converter;
  */
 public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
 
-
+    // TODO: I18N
     private JLabel arrowLabel = new JLabel("Arrow: ");
 
     private JComboBox arrowField = new JComboBox(Converter
@@ -65,12 +65,11 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
         remove(getFillLabel());
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
+    @Override
     public void refresh() {
         super.refresh();
         int direction = ((FigMessage) getPanelTarget()).getArrow();
@@ -89,12 +88,10 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
         getPanelTarget().endTrans();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // event handling
-
     /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
+    @Override
     public void itemStateChanged(ItemEvent e) {
         Object src = e.getSource();
         if (src == arrowField)
@@ -103,5 +100,5 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
             super.itemStateChanged(e);
     }
 
-} /* end class StylePanelFigMessage */
+}
 

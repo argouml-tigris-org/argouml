@@ -35,7 +35,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ActionSetMode;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
@@ -172,8 +171,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     /**
      * Get the actions from which to create a toolbar or equivalent
      * graphic triggers.
-     *
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
+     * {@inheritDoc}
      */
     protected Object[] getUmlActions() {
         Object[] actions = {
@@ -399,6 +397,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getDependentElement()
      */
+    @Override
     public Object getDependentElement() {
         return getNamespace(); /* The collaboration. */
     }
@@ -429,4 +428,4 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * The UID.
      */
     private static final long serialVersionUID = 8081715986963837750L;
-} /* end class UMLCollaborationDiagram */
+}

@@ -24,17 +24,14 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.model.Model;
 import org.argouml.notation.providers.NotationProvider;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.Handle;
 
 /**
@@ -52,6 +49,8 @@ import org.tigris.gef.presentation.Handle;
  */
 public abstract class FigFeature extends CompartmentFigText {
 
+    private static final String EVENT_NAME = "ownerScope";
+    
     private static class SelectionFeature extends Selection {
         /**
          * Constructor for SelectionFeature.
@@ -101,31 +100,34 @@ public abstract class FigFeature extends CompartmentFigText {
     /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#setOwner(java.lang.Object)
      */
+    @Override
     public void setOwner(Object owner) {
         super.setOwner(owner);
         
         if (owner != null) {
             updateOwnerScope(Model.getScopeKind().getClassifier().equals(
                     Model.getFacade().getOwnerScope(owner)));
-            Model.getPump().addModelEventListener(this, owner, "ownerScope");
+            Model.getPump().addModelEventListener(this, owner, EVENT_NAME);
         }
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
      */
+    @Override
     public void removeFromDiagram() {
         Model.getPump().removeModelEventListener(this, getOwner(), 
-                "ownerScope");
+                EVENT_NAME);
         super.removeFromDiagram();
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#propertyChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent pce) {
         super.propertyChange(pce);
-        if ("ownerScope".equals(pce.getPropertyName())) {
+        if (EVENT_NAME.equals(pce.getPropertyName())) {
             updateOwnerScope(Model.getScopeKind().getClassifier().equals(
                     pce.getNewValue()));    
         }
@@ -134,6 +136,7 @@ public abstract class FigFeature extends CompartmentFigText {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionFeature(this);
     }
@@ -141,6 +144,7 @@ public abstract class FigFeature extends CompartmentFigText {
     /*
      * @see org.tigris.gef.presentation.FigText#setTextFilled(boolean)
      */
+    @Override
     public void setTextFilled(boolean filled) {
         super.setTextFilled(false);
     }
@@ -148,6 +152,7 @@ public abstract class FigFeature extends CompartmentFigText {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean filled) {
         super.setFilled(false);
     }

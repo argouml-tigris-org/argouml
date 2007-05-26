@@ -27,16 +27,14 @@ package org.argouml.uml.reveng;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.StringTokenizer;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
-import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
@@ -52,7 +50,8 @@ public class ConfigPanelExtension extends JPanel {
      * 1: associations
      */
     public static final ConfigurationKey KEY_IMPORT_EXTENDED_MODEL_ATTR =
-        Configuration.makeKey("import", "extended", "java", "model", "attributes");
+        Configuration
+            .makeKey("import", "extended", "java", "model", "attributes");
 
     /**
      * Key for RE extended settings: model arrays as:
@@ -67,28 +66,32 @@ public class ConfigPanelExtension extends JPanel {
      * if to model them as associations with multiplicity *.
      */
     public static final ConfigurationKey KEY_IMPORT_EXTENDED_COLLECTIONS_FLAG =
-        Configuration.makeKey("import", "extended", "java", "collections", "flag");
+        Configuration
+            .makeKey("import", "extended", "java", "collections", "flag");
 
     /**
      * Key for RE extended settings: list of collections, that will be modelled
      * as associations with multiplicity *.
      */
     public static final ConfigurationKey KEY_IMPORT_EXTENDED_COLLECTIONS_LIST =
-        Configuration.makeKey("import", "extended", "java", "collections", "list");
+        Configuration
+            .makeKey("import", "extended", "java", "collections", "list");
 
     /**
      * Key for RE extended settings: flag for modelling of listed collections,
      * if to model them as ordered associations with multiplicity *.
      */
     public static final ConfigurationKey KEY_IMPORT_EXTENDED_ORDEREDCOLLS_FLAG =
-        Configuration.makeKey("import", "extended", "java", "orderedcolls", "flag");
+        Configuration
+            .makeKey("import", "extended", "java", "orderedcolls", "flag");
 
     /**
      * Key for RE extended settings: list of collections, that will be modelled
      * as ordered associations with multiplicity *.
      */
     public static final ConfigurationKey KEY_IMPORT_EXTENDED_ORDEREDCOLLS_LIST =
-        Configuration.makeKey("import", "extended", "java", "orderedcolls", "list");
+        Configuration
+            .makeKey("import", "extended", "java", "orderedcolls", "list");
 
     private JPanel configPanel;
 
@@ -162,7 +165,8 @@ public class ConfigPanelExtension extends JPanel {
             datatype.setSelected(true);
         }
 
-        String s = Configuration.getString(KEY_IMPORT_EXTENDED_COLLECTIONS_FLAG);
+        String s = Configuration
+                .getString(KEY_IMPORT_EXTENDED_COLLECTIONS_FLAG);
         boolean flag = ("true".equals(s));
         modelcollections =
             new JCheckBox(Translator.localize(
@@ -221,7 +225,8 @@ public class ConfigPanelExtension extends JPanel {
         gbc.weightx = 1.0;
         gbc.weighty = 0.0;
         gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.fill = fill ? GridBagConstraints.HORIZONTAL : GridBagConstraints.NONE;
+        gbc.fill = fill ? GridBagConstraints.HORIZONTAL
+                : GridBagConstraints.NONE;
         gbc.insets = 
             new Insets(
                     topInset ? 5 : 0, 

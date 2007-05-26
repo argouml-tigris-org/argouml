@@ -1178,7 +1178,7 @@ public final class NotationUtilityUml {
         } else if (kind == Model.getDirectionKind().getInOutParameter()) {
             s.append("inout");
         } else if (kind == Model.getDirectionKind().getReturnParameter()) {
-            ;// return nothing
+            // return nothing
         } else if (kind == Model.getDirectionKind().getOutParameter()) {
             s.append("out");
         }

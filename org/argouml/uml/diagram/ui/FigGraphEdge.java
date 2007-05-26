@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.apache.log4j.Logger;
 import org.tigris.gef.presentation.FigEdgePoly;
 
 /**
@@ -32,9 +31,6 @@ import org.tigris.gef.presentation.FigEdgePoly;
  */
 public abstract class FigGraphEdge
     extends FigEdgePoly {
-
-    private static final Logger LOG =
-        Logger.getLogger(FigGraphEdge.class);
 
     /**
      * Returns a {@link SelectionRerouteEdge} object that manages selection
@@ -46,4 +42,4 @@ public abstract class FigGraphEdge
 //        return new SelectionRerouteEdge(this);
 //    }
 
-} /* end class FigEdgeModelElement */
+}

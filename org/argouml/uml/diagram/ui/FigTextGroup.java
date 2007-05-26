@@ -41,14 +41,14 @@ import org.tigris.gef.presentation.FigGroup;
  */
 public class FigTextGroup extends FigGroup implements MouseListener {
 
-    private static final int ROWHEIGHT = 17;
     private boolean supressCalcBounds = false;
 
     /**
      * Adds a FigText to the list with figs. Makes sure that the
      * figtexts do not overlap.
-     * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
+     * {@inheritDoc}
      */
+    @Override
     public void addFig(Fig f) {
 	super.addFig(f);
         updateFigTexts();

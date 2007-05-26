@@ -29,7 +29,6 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -40,7 +39,6 @@ import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for an AssociationRole.
- *
  */
 public class PropPanelAssociationRole extends PropPanelAssociation {
 
@@ -53,6 +51,7 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
      * Construct a property panel for an AssociationRole.
      */
     public PropPanelAssociationRole() {
+        // TODO: I18N
         super("Association Role", ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
@@ -88,4 +87,4 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
         addAction(getDeleteAction());
     }
 
-} /* end class PropPanelAssociationRole */
+}

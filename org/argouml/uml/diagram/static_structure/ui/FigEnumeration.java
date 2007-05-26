@@ -38,7 +38,6 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
@@ -103,14 +102,12 @@ public class FigEnumeration extends FigDataType
     /*
      * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionEnumeration(this);
     }
 
-    /*
-     * @see java.lang.Object#clone()
-     * TODO: Is this actually needed? - tfm
-     */
+    @Override
     public Object clone() {
         FigEnumeration clone = (FigEnumeration) super.clone();
         clone.literalsCompartment = 
@@ -121,6 +118,7 @@ public class FigEnumeration extends FigDataType
     /*
      * @see org.argouml.uml.diagram.static_structure.ui.FigClassifierBox#buildAddMenu()
      */
+    @Override
     protected ArgoJMenu buildAddMenu() {
         ArgoJMenu addMenu = super.buildAddMenu();
         
@@ -145,6 +143,7 @@ public class FigEnumeration extends FigDataType
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
+    @Override
     public void renderingChanged() {
         if (getOwner() != null) {
             updateEnumLiterals();
@@ -155,6 +154,7 @@ public class FigEnumeration extends FigDataType
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeAllElementListeners();
@@ -199,6 +199,7 @@ public class FigEnumeration extends FigDataType
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
         Object cls = /*(Classifier)*/ getOwner();
@@ -218,6 +219,7 @@ public class FigEnumeration extends FigDataType
     /*
      * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         // Start with the minimum for our parent
         Dimension aSize = super.getMinimumSize();
@@ -234,6 +236,7 @@ public class FigEnumeration extends FigDataType
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setBoundsImpl(final int x, final int y, final int w,
             final int h) {
 
@@ -299,8 +302,6 @@ public class FigEnumeration extends FigDataType
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-
-
     /**
      * @return the Fig for the EnumerationLiterals compartment
      */
@@ -360,5 +361,4 @@ public class FigEnumeration extends FigDataType
         return literalsCompartment.getBounds();
     }
     
-
 } 

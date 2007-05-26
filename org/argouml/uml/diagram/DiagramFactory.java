@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.argouml.kernel.Project;
 import org.argouml.model.ActivityDiagram;
 import org.argouml.model.ClassDiagram;
 import org.argouml.model.CollaborationDiagram;

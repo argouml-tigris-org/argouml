@@ -31,9 +31,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -60,6 +58,7 @@ public class ActionAddExistingEdge extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent arg0) {
         super.actionPerformed(arg0);
         // we have an edge (the UML modelelement!)
@@ -86,6 +85,7 @@ public class ActionAddExistingEdge extends UndoableAction {
     /*
      * @see javax.swing.Action#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();
         ArgoDiagram dia = ProjectManager.getManager().getCurrentProject().

@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.activity.ui;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.tigris.gef.base.Mode;
-import org.tigris.gef.base.ModePlace;
 
 public class ActionCreatePartition extends CmdCreateNode {
 
@@ -39,6 +38,7 @@ public class ActionCreatePartition extends CmdCreateNode {
       	  "button.new-partition");
     }
 
+    @Override
     protected Mode createMode(String instructions) {
         return new ModePlacePackage(this, instructions);
     }

@@ -336,14 +336,17 @@ public abstract class FigNodeModelElement
         super.finalize();
     }
 
-    /*
-     * After the base clone method has been called determine which child
-     * figs of the clone represent the name, stereotype and port. <p>
-     *
+    /**
+     * Clone this figure. After the base clone method has been called determine
+     * which child figs of the clone represent the name, stereotype and port.
+     * <p>
+     * 
      * The clone function is used by Copy/Paste operations.
-     *
+     * 
      * @see java.lang.Object#clone()
+     * @return the cloned figure
      */
+    @Override
     public Object clone() {
         FigNodeModelElement clone = (FigNodeModelElement) super.clone();
         Iterator thisIter = this.getFigs().iterator();

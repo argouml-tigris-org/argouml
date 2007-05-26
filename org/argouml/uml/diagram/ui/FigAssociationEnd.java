@@ -39,7 +39,6 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.providers.uml.NotationUtilityUml;
-import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.presentation.FigText;
@@ -122,6 +121,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getNotationProviderType()
      */
+    @Override
     protected int getNotationProviderType() {
         return NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME;
     }
@@ -129,6 +129,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
+    @Override
     public void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner == newOwner) {
             LOG.warn("Listeners being added and removed from the same owner");
@@ -169,6 +170,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEdited(FigText ft) {
         if (getOwner() == null) {
             return;
@@ -200,6 +202,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEditStarted(FigText ft) {
         if (ft == srcMult) {
             showHelp("parsing.help.fig-association-source-multiplicity");
@@ -226,6 +229,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent e) {
         super.modelChanged(e);
         if (e instanceof AttributeChangeEvent
@@ -237,6 +241,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
+    @Override
     protected void renderingChanged() {
         updateEnd(srcMult, srcOrdering);
         srcMult.calcBounds();
@@ -247,6 +252,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateStereotypeText()
      */
+    @Override
     protected void updateStereotypeText() {
         /* There is none... */
     }
@@ -254,9 +260,10 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#paintClarifiers(java.awt.Graphics)
      */
+    @Override
     public void paintClarifiers(Graphics g) {
         indicateBounds(getNameFig(), g);
         indicateBounds(srcMult, g);
         super.paintClarifiers(g);
     }    
-}  /* end class FigAssociationEnd */
+}

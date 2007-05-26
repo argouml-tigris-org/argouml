@@ -1091,7 +1091,7 @@ class ImportClasspathDialog extends JDialog {
                         }
                     } else if (e1.getActionCommand().equals(
                             JFileChooser.CANCEL_SELECTION)) {
-                        ; // TODO: What shall we do here?
+                        // TODO: What shall we do here?
                     }
                     // bring the import classpath dialog to the front
                     importClasspathDialog.setVisible(true);
