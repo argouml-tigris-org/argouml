@@ -103,6 +103,20 @@ public interface ActivityGraphsHelper {
      * @param newContents the new contents of the partition (modelelements)
      */
     void setContents(Object partition, Collection newContents);
+    
+    /**
+     * Add a model element to a partition
+     * @param partition the partition to contain the model element
+     * @param modeElement the model element to place in the partition
+     */
+    void addContent(Object partition, Object modeElement);
+    
+    /**
+     * Remove a model element from a partition
+     * @param partition the partition currently containing the model element
+     * @param modeElement the model element to be removed from the partition
+     */
+    void removeContent(Object partition, Object modeElement);
 
     /**
      * Set the isSynch attribute of an ObjectFlowState.
