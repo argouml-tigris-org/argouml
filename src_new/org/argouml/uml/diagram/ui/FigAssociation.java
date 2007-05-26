@@ -49,7 +49,6 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.providers.NotationProvider;
 import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
@@ -150,6 +149,7 @@ public class FigAssociation extends FigEdgeModelElement {
         setLayer(lay);
     }
 
+    @Override
     public void setOwner(Object owner) {
         super.setOwner(owner);
         
@@ -169,6 +169,7 @@ public class FigAssociation extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
+    @Override
     public void updateListeners(Object oldOwner, Object newOwner) {
         removeAllElementListeners();
         if (newOwner != null) {
@@ -181,6 +182,7 @@ public class FigAssociation extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getNotationProviderType()
      */
+    @Override
     protected int getNotationProviderType() {
         return NotationProviderFactory2.TYPE_ASSOCIATION_NAME;
     }
@@ -188,6 +190,7 @@ public class FigAssociation extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEdited(FigText ft) {
 
         if (getOwner() == null) {
@@ -203,9 +206,9 @@ public class FigAssociation extends FigEdgeModelElement {
 	String msg =
 	    Translator.localize("statusmsg.bar.error.parsing.multiplicity");
 
-	if (ft == srcGroup.role) {
+	if (ft == srcGroup.getRole()) {
             ((FigRole) ft).parse();
-	} else if (ft == destGroup.role) {
+	} else if (ft == destGroup.getRole()) {
             ((FigRole) ft).parse();
 	} else if (ft == srcMult) {
 	    Object srcAE = (conn.toArray())[0];
@@ -241,11 +244,12 @@ public class FigAssociation extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEditStarted(FigText ft) {
-        if (ft == srcGroup.role) {
-            showHelp(srcGroup.role.getParsingHelp());
-        } else if (ft == destGroup.role) {
-            showHelp(destGroup.role.getParsingHelp());
+        if (ft == srcGroup.getRole()) {
+            showHelp(srcGroup.getRole().getParsingHelp());
+        } else if (ft == destGroup.getRole()) {
+            showHelp(destGroup.getRole().getParsingHelp());
         } else if (ft == srcMult) {
             showHelp("parsing.help.fig-association-source-multiplicity");
         } else if (ft == destMult) {
@@ -258,6 +262,7 @@ public class FigAssociation extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent e) {
         if (getOwner() == null || getLayer() == null) {
             return;
@@ -274,6 +279,7 @@ public class FigAssociation extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
+    @Override
     protected void renderingChanged() {
         // We don't want to redraw everything everytime 
         // one things changes - Bob.
@@ -311,6 +317,7 @@ public class FigAssociation extends FigEdgeModelElement {
     /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
 	Vector popUpActions = super.getPopUpActions(me);
         /* Check if multiple items are selected: */
@@ -456,6 +463,7 @@ public class FigAssociation extends FigEdgeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
+    @Override
     public void paint(Graphics g) {
         if (getOwner() == null ) {
             LOG.error("Trying to paint a FigAssociation without an owner. ");
@@ -472,12 +480,13 @@ public class FigAssociation extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#paintClarifiers(java.awt.Graphics)
      */
+    @Override
     public void paintClarifiers(Graphics g) {
         indicateBounds(getNameFig(), g);
         indicateBounds(srcMult, g);
-        indicateBounds(srcGroup.role, g);
+        indicateBounds(srcGroup.getRole(), g);
         indicateBounds(destMult, g);
-        indicateBounds(destGroup.role, g);
+        indicateBounds(destGroup.getRole(), g);
         super.paintClarifiers(g);
     }
 
@@ -495,6 +504,7 @@ public class FigAssociation extends FigEdgeModelElement {
      * if it resized to the point of not being visible.
      * @see org.tigris.gef.presentation.FigEdgePoly#layoutEdge()
      */
+    @Override
     protected void layoutEdge() {
         FigNode sourceFigNode = getSourceFigNode();
         Point[] points = getPoints();
@@ -537,6 +547,7 @@ class FigMultiplicity extends FigSingleLineText
         setJustification(FigText.JUSTIFY_CENTER);
     }
 
+    @Override
     protected void setText() {
         assert getOwner() != null;
         Object multi = Model.getFacade().getMultiplicity(getOwner());
@@ -561,6 +572,7 @@ class FigOrdering extends FigSingleLineText {
         setJustification(FigText.JUSTIFY_CENTER);
     }
 
+    @Override
     protected void setText() {
         assert getOwner() != null;
         setText(getOrderingName(Model.getFacade().getOrdering(getOwner())));
@@ -614,6 +626,7 @@ class FigRole extends FigSingleLineText
                 ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
+    @Override
     public void setOwner(Object owner) {
         super.setOwner(owner);
         getNewNotation();
@@ -632,6 +645,7 @@ class FigRole extends FigSingleLineText
         }
     }
     
+    @Override
     protected void setText() {
         assert getOwner() != null;
         assert notationProviderRole != null;
@@ -656,6 +670,7 @@ class FigRole extends FigSingleLineText
     /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#propertyChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent pce) {
         notationProviderRole.updateListener(this, getOwner(), pce);
         setText();
@@ -666,6 +681,7 @@ class FigRole extends FigSingleLineText
     /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
      */
+    @Override
     public void removeFromDiagram() {
         notationProviderRole.cleanListener(this, getOwner());
         ArgoEventPump.removeListener(
@@ -746,13 +762,13 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         ARROW_HEADS[NAV_COMPOSITE] = NAV_COMP;
     }
     
-    FigRole role;
-    FigOrdering ordering;
-    int arrowType = 0;
+    private FigRole role;
+    private FigOrdering ordering;
+    private int arrowType = 0;
     private FigEdgeModelElement figEdge;
     
-    public FigAssociationEndAnnotation(FigEdgeModelElement figEdge) {
-        this.figEdge = figEdge;
+    public FigAssociationEndAnnotation(FigEdgeModelElement edge) {
+        figEdge = edge;
         
         role = new FigRole();
         addFig(role);
@@ -764,6 +780,7 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    @Override
     public void setOwner(Object owner) {
         if (owner != null) {
             if (!Model.getFacade().isAAssociationEnd(owner)) {
@@ -783,6 +800,7 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
+    @Override
     public void removeFromDiagram() {
         Model.getPump().removeModelEventListener(this, 
                 getOwner(), 
@@ -793,6 +811,7 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     /*
      * @see org.tigris.gef.presentation.Fig#propertyChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent pce) {
         if (pce instanceof AttributeChangeEvent
             && (pce.getPropertyName().equals("isNavigable")
@@ -860,5 +879,9 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     
     public int getArrowType() {
         return arrowType;
+    }
+
+    FigRole getRole() {
+        return role;
     }
 }
