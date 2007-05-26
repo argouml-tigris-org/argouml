@@ -24,7 +24,10 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
@@ -45,9 +48,6 @@ import org.tigris.gef.presentation.FigNode;
  */
 public abstract class FigStateVertex extends FigNodeModelElement {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * The main constructor
      */
@@ -55,31 +55,38 @@ public abstract class FigStateVertex extends FigNodeModelElement {
         this.allowRemoveFromDiagram(false);
     }
 
-    /** The constructor which hooks the Fig into the UML element
-     * @param gm ignored
-     * @param node the UML elm
+    /**
+     * The constructor which hooks the Fig into the UML element
+     * 
+     * @param gm
+     *            ignored
+     * @param node
+     *            the UML elm
      */
     public FigStateVertex(GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // nestable nodes
-
     /*
      * Overriden to make it possible to include a statevertex in a composite
      * state.
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setEnclosingFig(Fig encloser) {
         LayerPerspective layer = (LayerPerspective) getLayer();
+        
         // If the layer is null, then most likely we are being deleted.
-        if (layer == null) return;
+        if (layer == null) {
+            return;
+        }
 
         super.setEnclosingFig(encloser);
         
-        if (!(Model.getFacade().isAStateVertex(getOwner()))) return;
+        if (!(Model.getFacade().isAStateVertex(getOwner()))) {
+            return;
+        }
         Object stateVertex = getOwner();
         Object compositeState = null;
         if (encloser != null
@@ -130,6 +137,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
      *
      * {@inheritDoc}
      */
+    @Override
     public Selection makeSelection() {
         Object pstate = getOwner();
 
@@ -144,5 +152,30 @@ public abstract class FigStateVertex extends FigNodeModelElement {
         }
         return null;
     }
+    
+    /**
+     * Number of points to compute for gravity point circle.
+     */
+    private final static int CIRCLE_POINTS = 32;
+    
+    /**
+     * Return a list of gravity points around circle which is enclosed
+     * in the bounding box.  Convenience method for use by FigInitialState
+     * and FigFinalState.
+     * @return a List of Points
+     */
+    List<Point> getCircleGravityPoints() {
+        List<Point> ret = new ArrayList<Point>();
+        int cx = getBigPort().getCenter().x;
+        int cy = getBigPort().getCenter().y;
+        double radius = getBigPort().getWidth() / 2 + 1;
+        final double pi2 = Math.PI * 2;
+        for (int i = 0; i < CIRCLE_POINTS; i++) {
+            int x = (int) (cx + Math.cos(pi2 * i / CIRCLE_POINTS) * radius);
+            int y = (int) (cy + Math.sin(pi2 * i / CIRCLE_POINTS) * radius);
+            ret.add(new Point(x, y));
+        }
+        return ret;
+    }
 
-} /* end class FigStateVertex */
+}
