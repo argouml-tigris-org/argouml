@@ -83,15 +83,15 @@ public class SelectionActionState extends SelectionNodeClarifiers2 {
      */
     public void setOutgoingButtonEnabled(boolean b) {
         setOutgoingRightButtonEnabled(b);
-        setIncomingAboveButtonEnabled(b);
+        setOutgoingBelowButtonEnabled(b);
     }
 
     /**
      * @param b true if the button is enabled
      */
     public void setIncomingButtonEnabled(boolean b) {
+        setIncomingAboveButtonEnabled(b);
         setIncomingLeftButtonEnabled(b);
-        setOutgoingBelowButtonEnabled(b);
     }
 
     /**
@@ -148,7 +148,7 @@ public class SelectionActionState extends SelectionNodeClarifiers2 {
         if (!showOutgoingRight) {
             workingIcons[RIGHT - BASE] = null;
         }
-        return icons;
+        return workingIcons;
     }
 
     @Override
@@ -163,7 +163,7 @@ public class SelectionActionState extends SelectionNodeClarifiers2 {
 
     @Override
     protected boolean isReverseEdge(int index) {
-        if (index == TOP || index == RIGHT ) {
+        if (index == TOP || index == LEFT ) {
             return true;
         }
         return false;

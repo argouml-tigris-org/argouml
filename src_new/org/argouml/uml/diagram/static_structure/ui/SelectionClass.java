@@ -101,8 +101,8 @@ public class SelectionClass extends SelectionNodeClarifiers2 {
             workingIcons[BOTTOM - BASE] = null;
         }
         if (useComposite) {
-            workingIcons[LEFT - BASE] = compos;
-            workingIcons[LEFT - BASE] = compos;
+            workingIcons[RIGHT - BASE] = compos;
+            workingIcons[RIGHT - BASE] = compos;
         } 
         return workingIcons;
     }

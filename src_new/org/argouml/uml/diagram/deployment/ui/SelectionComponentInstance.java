@@ -95,7 +95,7 @@ public class SelectionComponentInstance extends SelectionNodeClarifiers2 {
 
     @Override
     protected boolean isReverseEdge(int index) {
-        if (index == BOTTOM || index == RIGHT) {
+        if (index == BOTTOM || index == LEFT) {
             return true;
         }
         return false;
