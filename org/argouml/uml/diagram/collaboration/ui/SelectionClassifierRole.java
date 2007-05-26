@@ -95,14 +95,14 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
         Icon workingIcons[] = new Icon[icons.length];
         System.arraycopy(icons, 0, workingIcons, 0, icons.length);
 
-        if (!showOutgoing) {
-            workingIcons[12] = null;
-        }
         if (!showIncoming) {
-            workingIcons[13] = null;
+            workingIcons[BASE - LEFT] = null;
+        }
+        if (!showOutgoing) {
+            workingIcons[BASE - RIGHT] = null;
         }
         if (!showOutgoing && !showIncoming) {
-            workingIcons[14] = null;
+            workingIcons[BASE - LOWER_LEFT] = null;
         }
         return workingIcons;
     }
@@ -129,7 +129,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
 
     @Override
     protected boolean isReverseEdge(int index) {
-        if (index == RIGHT) {
+        if (index == LEFT) {
             return true;
         }
         return false;
