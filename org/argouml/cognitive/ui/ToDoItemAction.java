@@ -22,33 +22,63 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.cmd;
+package org.argouml.cognitive.ui;
 
-import java.awt.event.ActionEvent;
+import javax.swing.Action;
 
-import org.argouml.cognitive.ui.DismissToDoItemDialog;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.i18n.Translator;
+import org.tigris.gef.undo.UndoableAction;
+
+
 
 /**
- * The action to resolve a todo item.
+ * A base class for Actions related to ToDoItems.
  *
  */
-public class ActionResolve extends ToDoItemAction {
+public abstract class ToDoItemAction extends UndoableAction {
+
+    private Object rememberedTarget = null;
 
     /**
-     * The constructor.
+     * @param name to be localized
+     * @param hasIcon true if an icon is to be shown
      */
-    public ActionResolve() {
-        super("action.resolve-item", true);
+    public ToDoItemAction(String name, boolean hasIcon) {
+        super(Translator.localize(name),
+                hasIcon ? ResourceLoaderWrapper.lookupIcon(name) : null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize(name));
     }
 
-    /*
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    /**
+     * @return returns the rememberedTarget
      */
-    public void actionPerformed(ActionEvent ae) {
-    	super.actionPerformed(ae);
-	DismissToDoItemDialog dialog = new DismissToDoItemDialog();
-	dialog.setTarget(getRememberedTarget());
-	dialog.setVisible(true);
+    protected Object getRememberedTarget() {
+        return rememberedTarget;
     }
-} /* end class ActionResolve */
+
+    /**
+     * @param target the target
+     */
+    public void updateEnabled(Object target) {
+	if (target == null) {
+	    setEnabled(false);
+	    return;
+	}
+
+	rememberedTarget = target;
+	setEnabled(isEnabled(target));
+    }
+
+    /**
+     * @param target the current target
+     * @return true if the action icon should be enabled (i.e. not downlighted)
+     */
+    public boolean isEnabled(Object target) {
+	return target instanceof ToDoItem;
+    }
+}
 

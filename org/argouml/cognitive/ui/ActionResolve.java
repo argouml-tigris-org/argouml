@@ -22,25 +22,22 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.cmd;
+package org.argouml.cognitive.ui;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.cognitive.Poster;
-import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.ui.TabToDo;
 
 /**
- * The action to snooze the critics, i.e. temporarily disable them.
+ * The action to resolve a todo item.
  *
  */
-public class ActionSnooze extends ToDoItemAction {
+public class ActionResolve extends ToDoItemAction {
 
     /**
      * The constructor.
      */
-    public ActionSnooze() {
-        super("action.snooze-critic", true);
+    public ActionResolve() {
+        super("action.resolve-item", true);
     }
 
     /*
@@ -48,12 +45,9 @@ public class ActionSnooze extends ToDoItemAction {
      */
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
-	if (!(getRememberedTarget() instanceof ToDoItem)) return;
-
-	ToDoItem item = (ToDoItem) getRememberedTarget();
-	Poster p = item.getPoster();
-	p.snooze();
-	TabToDo.incrementNumHushes();
+	DismissToDoItemDialog dialog = new DismissToDoItemDialog();
+	dialog.setTarget(getRememberedTarget());
+	dialog.setVisible(true);
     }
-} /* end class ActionSnooze */
+} /* end class ActionResolve */
 
