@@ -34,11 +34,10 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
-import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.ActionSetMode;
+import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
@@ -203,11 +202,11 @@ public class UMLStateDiagram extends UMLDiagram {
     }
 
     /**
-     * The owner of a statechart diagram is the statemachine
-     * it's showing.
+     * Get the owner of a statechart diagram.
      * @return the statemachine which owns the diagram
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
+    @Override
     public Object getOwner() {
         if (!(getGraphModel() instanceof StateDiagramGraphModel)) {
             throw new IllegalStateException(
@@ -226,6 +225,7 @@ public class UMLStateDiagram extends UMLDiagram {
      * @param o the statemachine
      * @see org.tigris.gef.base.Diagram#initialize(Object)
      */
+    @Override
     public void initialize(Object o) {
         if (Model.getFacade().isAStateMachine(o)) {
             Object machine = o;
@@ -296,6 +296,7 @@ public class UMLStateDiagram extends UMLDiagram {
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#propertyChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ((evt.getSource() == theStateMachine)
                 && (evt instanceof DeleteInstanceEvent)
@@ -702,6 +703,7 @@ public class UMLStateDiagram extends UMLDiagram {
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getDependentElement()
      */
+    @Override
     public Object getDependentElement() {
         return getStateMachine(); /* The StateMachine. */
     }

@@ -42,20 +42,8 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigSimpleState extends FigState {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
-    private static final int MARGIN = 2;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private FigRect cover;
     private FigLine divider;
-
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The main constructor
@@ -97,9 +85,8 @@ public class FigSimpleState extends FigState {
 	setOwner(node);
     }
 
-    /*
-     * @see java.lang.Object#clone()
-     */
+
+    @Override
     public Object clone() {
 	FigSimpleState figClone = (FigSimpleState) super.clone();
 	Iterator it = figClone.getFigs().iterator();
@@ -111,12 +98,10 @@ public class FigSimpleState extends FigState {
 	return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
 	Dimension nameDim = getNameFig().getMinimumSize();
 	Dimension internalDim = getInternal().getMinimumSize();
@@ -131,9 +116,9 @@ public class FigSimpleState extends FigState {
 
     /**
      * Override setBounds to keep shapes looking right.
-     *
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     * {@inheritDoc}
      */
+    @Override
     protected void setBoundsImpl(int x, int y, int w, int h) {
 	if (getNameFig() == null) {
 	    return;
@@ -164,35 +149,43 @@ public class FigSimpleState extends FigState {
 	firePropChange("bounds", oldBounds, getBounds());
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
-
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
-	cover.setLineColor(col);
-	divider.setLineColor(col);
+        cover.setLineColor(col);
+        divider.setLineColor(col);
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
-    public Color getLineColor() { return cover.getLineColor(); }
+    @Override
+    public Color getLineColor() {
+        return cover.getLineColor();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
-    public void setFillColor(Color col) { cover.setFillColor(col); }
+    @Override
+    public void setFillColor(Color col) {
+        cover.setFillColor(col);
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
-    public Color getFillColor() { return cover.getFillColor(); }
+    @Override
+    public Color getFillColor() {
+        return cover.getFillColor();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         cover.setFilled(f);
         getBigPort().setFilled(f);
@@ -201,28 +194,32 @@ public class FigSimpleState extends FigState {
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
-    public boolean getFilled() { return cover.getFilled(); }
+    @Override
+    public boolean getFilled() {
+        return cover.getFilled();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
-	cover.setLineWidth(w);
-	divider.setLineWidth(w);
+        cover.setLineWidth(w);
+        divider.setLineWidth(w);
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
-    public int getLineWidth() { return cover.getLineWidth(); }
-
-
-    ////////////////////////////////////////////////////////////////
-    // event processing
+    @Override
+    public int getLineWidth() {
+        return cover.getLineWidth();
+    }
 
     /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()
      */
+    @Override
     protected int getInitialHeight() {
         return 40;
     }
@@ -230,6 +227,7 @@ public class FigSimpleState extends FigState {
     /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialWidth()
      */
+    @Override
     protected int getInitialWidth() {
         return 70;
     }
@@ -237,6 +235,7 @@ public class FigSimpleState extends FigState {
     /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialX()
      */
+    @Override
     protected int getInitialX() {
         return 0;
     }
@@ -244,8 +243,9 @@ public class FigSimpleState extends FigState {
     /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialY()
      */
+    @Override
     protected int getInitialY() {
         return 0;
     }
 
-} /* end class FigSimpleState */
+} 

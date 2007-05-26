@@ -30,7 +30,6 @@ import java.awt.Rectangle;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigEdge;
-import org.tigris.gef.presentation.FigGroup;
 
 /**
  * This node cannot be dragged and manipulated in the same way as other
@@ -62,6 +61,7 @@ public class FigEdgePort extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
      */
+    @Override
     public boolean hit(Rectangle r) {
         return false;
     }
@@ -69,11 +69,13 @@ public class FigEdgePort extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    @Override
     public void setOwner(Object own) {
         bigPort.setOwner(own);
         super.setOwner(own);
     }
     
+    @Override
     public Object getOwner() {
 	if (super.getOwner() != null) {
 	    return super.getOwner();
@@ -93,6 +95,7 @@ public class FigEdgePort extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#classNameAndBounds()
      */
     // USED BY PGML.tee
+    @Override
     public String classNameAndBounds() {
         return getClass().getName()
             + "[" + getX() + ", " + getY() + ", "
@@ -102,6 +105,7 @@ public class FigEdgePort extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.FigNode#hitPort(int, int)
      */
+    @Override
     public Object hitPort(int x, int y) {
         return null;
     }
@@ -109,6 +113,7 @@ public class FigEdgePort extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.FigGroup#hitFig(java.awt.Rectangle)
      */
+    @Override
     public Fig hitFig(Rectangle r) {
         return null;
     }
@@ -116,6 +121,7 @@ public class FigEdgePort extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#isSelectable()
      */
+    @Override
     public boolean isSelectable() {
         return false;
     }

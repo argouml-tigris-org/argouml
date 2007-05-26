@@ -1001,7 +1001,7 @@ public class MessageNotationUml extends MessageNotation {
             }
 
             if (compareMsgNumbers(mname, gname)) {
-                ;// Do nothing
+                // Do nothing
             } else if (isMsgNumberStartOf(gname, mname)) {
             	String msg = "parsing.error.message.subtree-rooted-self";
                 throw new ParseException(Translator.localize(msg), 0);

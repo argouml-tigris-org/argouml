@@ -32,7 +32,6 @@ import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -97,6 +96,7 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
      *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      *         java.lang.Object, java.util.Map)
      */
+    @Override
     public FigEdge getFigEdgeFor(Object edge, Map styleAttributes) {
         if (edge == null) {
             throw new IllegalArgumentException("A model edge must be supplied");
@@ -120,5 +120,5 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
     }
 
 
-} /* end class SequenceDiagramRenderer */
+}
 

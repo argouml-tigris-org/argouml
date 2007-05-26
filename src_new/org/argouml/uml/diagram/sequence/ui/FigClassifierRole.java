@@ -467,7 +467,7 @@ public class FigClassifierRole extends FigNodeModelElement
                                             .matchingCallerList(caller,
                                                     callerIndex);
                                   --backNodeIndex) {
-                                ;
+                                // skip
                             }
                             if (callerIndex == 0) {
                                 callers = null;

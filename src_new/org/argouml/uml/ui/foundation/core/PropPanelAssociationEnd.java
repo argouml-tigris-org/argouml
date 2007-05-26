@@ -30,7 +30,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateAssociation;
 import org.argouml.uml.ui.ActionNavigateOppositeAssocEnd;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -119,7 +118,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     /**
      * Constructs the proppanel including initializing all scrollpanes, panels
      * etc. but excluding placing them on the proppanel itself.
-     *
+     * @param name name/title of the property panel
+     * @param orientation orientation of the panel
      * @see org.argouml.uml.ui.PropPanel#PropPanel(String, Orientation)
      */
     protected PropPanelAssociationEnd(String name, Orientation orientation) {
@@ -235,4 +235,4 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         }
         return multiplicityComboBox;
     }
-} /* end class PropPanelAssociationEnd */
+} 

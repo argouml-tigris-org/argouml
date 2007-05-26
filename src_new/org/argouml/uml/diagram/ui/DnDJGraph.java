@@ -43,7 +43,6 @@ import org.argouml.ui.TransferableModelElements;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;

@@ -31,7 +31,6 @@ import java.awt.event.MouseListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.ModeCreatePolyEdge;
@@ -59,6 +58,7 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
     /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
+    @Override
     public void mousePressed(MouseEvent me) {
         int x = me.getX(), y = me.getY();
         Fig underMouse = editor.hit(x, y);
@@ -118,6 +118,7 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
     /*
      * @see org.tigris.gef.base.ModeCreatePolyEdge#mouseReleased(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseReleased(MouseEvent me) {
         if (me.isConsumed()) {
             return;

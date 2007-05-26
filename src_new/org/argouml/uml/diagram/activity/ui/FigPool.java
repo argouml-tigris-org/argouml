@@ -32,7 +32,6 @@ import java.util.Iterator;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 
@@ -68,9 +67,11 @@ public class FigPool extends FigNodeModelElement {
 //        setOwner(node);
 //    }
     
+
     /*
-     * @see java.lang.Object#clone()
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#clone()
      */
+    @Override
     public Object clone() {
         FigPool figClone = (FigPool) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -81,6 +82,7 @@ public class FigPool extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#addEnclosedFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void addEnclosedFig(Fig figState) {
         super.addEnclosedFig(figState);
         Iterator it = getLayer().getContentsNoEdges().iterator();
@@ -97,6 +99,7 @@ public class FigPool extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         getBigPort().setFillColor(col);
         getNameFig().setFillColor(col);
@@ -105,6 +108,7 @@ public class FigPool extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return getBigPort().getFillColor();
     }
@@ -112,6 +116,7 @@ public class FigPool extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         getBigPort().setFilled(f);
     }
@@ -119,6 +124,7 @@ public class FigPool extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
+    @Override
     public boolean getFilled() {
         return getBigPort().getFilled();
     }
@@ -126,6 +132,7 @@ public class FigPool extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
         int w = nameDim.width;
@@ -145,6 +152,7 @@ public class FigPool extends FigNodeModelElement {
      *
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
+    @Override
     public boolean getUseTrapRect() {
         return true;
     }
@@ -152,6 +160,7 @@ public class FigPool extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setBoundsImpl(int x, int y, int w, int h) {
 	
         Rectangle oldBounds = getBounds();
@@ -166,6 +175,7 @@ public class FigPool extends FigNodeModelElement {
      * one of its swimlanes is dragged or resized.
      * @return false at all times
      */
+    @Override
     public boolean isSelectable() {
 	return false;
     }

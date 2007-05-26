@@ -91,7 +91,7 @@ public  class FileImportUtils {
 	            if (recurse) {
 	                if (doneDirectories.indexOf(curFile) >= 0
 	                        || toDoDirectories.indexOf(curFile) >= 0) {
-	                    ; // This one is already seen or to be seen.
+	                    // This one is already seen or to be seen.
 	                } else {
 	                    toDoDirectories.add(curFile);
 	                }

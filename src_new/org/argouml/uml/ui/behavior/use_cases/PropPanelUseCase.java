@@ -29,7 +29,6 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -54,6 +53,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
      * Construct a property panel for a UseCase.
      */
     public PropPanelUseCase() {
+        // TODO: I18N
         super("UseCase",
             lookupIcon("UseCase"),
             ConfigLoader.getTabPropsOrientation());
@@ -120,4 +120,4 @@ public class PropPanelUseCase extends PropPanelClassifier {
      * The UID.
      */
     private static final long serialVersionUID = 8352300400553000518L;
-} /* end class PropPanelUseCase */
+}

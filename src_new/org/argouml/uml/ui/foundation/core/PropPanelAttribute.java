@@ -31,7 +31,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionNavigateUpNextDown;
 import org.argouml.uml.ui.ActionNavigateUpPreviousDown;
@@ -139,7 +138,8 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
          * @param container the container of UML user interface components
          * @param propertyName the name of the property
          */
-        public UMLInitialValueExpressionModel(UMLUserInterfaceContainer container,
+        public UMLInitialValueExpressionModel(
+                UMLUserInterfaceContainer container,
                 String propertyName) {
             super(container, propertyName);
         }
@@ -177,5 +177,5 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 
     }
 
-} /* end class PropPanelAttribute */
+}
 

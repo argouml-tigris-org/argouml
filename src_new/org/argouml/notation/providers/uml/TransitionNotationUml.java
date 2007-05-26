@@ -286,7 +286,7 @@ public class TransitionNotationUml extends TransitionNotation {
         } else {
             // case 3 and 4
             if (evt == null) {
-                /* case 3 */;
+                /* case 3 */
             } else {
                 // case 4
                 delete(evt); // erase it
@@ -357,7 +357,7 @@ public class TransitionNotationUml extends TransitionNotation {
             }
         } else {
             if (g == null) {
-                /* case 3 */;
+                /* case 3 */
             } else {
                 // case 4
                 delete(g); // erase it
@@ -411,7 +411,7 @@ public class TransitionNotationUml extends TransitionNotation {
             }
         } else { // case 3 & 4
             if (effect == null) {
-                ;// case 3
+                // case 3
             } else {
                 // case 4
                 delete(effect); // erase it
@@ -577,7 +577,7 @@ public class TransitionNotationUml extends TransitionNotation {
         } else if (kind == Model.getDirectionKind().getInOutParameter()) {
             s.append("inout");
         } else if (kind == Model.getDirectionKind().getReturnParameter()) {
-            ;// return nothing
+            // return nothing
         } else if (kind == Model.getDirectionKind().getOutParameter()) {
             s.append("out");
         }

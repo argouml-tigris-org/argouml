@@ -31,7 +31,6 @@ import javax.swing.Action;
 import javax.swing.JFileChooser;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -44,9 +43,6 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionSetSourcePath extends UndoableAction {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * The constructor.
      */
@@ -57,12 +53,11 @@ public class ActionSetSourcePath extends UndoableAction {
                 Translator.localize("action.set-source-path"));
     }
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
 
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
     	super.actionPerformed(e);
 	File f = getNewDirectory();
@@ -154,4 +149,4 @@ public class ActionSetSourcePath extends UndoableAction {
      * The UID.
      */
     private static final long serialVersionUID = -6455209886706784094L;
-} /* end class ActionSetSourcePath */
+}

@@ -102,7 +102,7 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
         while (st.hasMoreTokens()) {
             token = st.nextToken();
             if (" ".equals(token) || "\t".equals(token)) {
-                /* Do nothing. */;
+                /* Do nothing. */
             } else if ("/".equals(token)) {
                 hasSlash = true;
                 hasColon = false;

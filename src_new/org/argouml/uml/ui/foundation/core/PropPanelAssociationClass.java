@@ -28,7 +28,6 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
@@ -124,6 +123,7 @@ public class PropPanelAssociationClass extends PropPanelClassifier {
      *
      * @return JScrollPane
      */
+    @Override
     public JScrollPane getOperationScroll() {
         if (operationScroll == null) {
             JList list = new UMLLinkedList(operationListModel);
@@ -137,6 +137,7 @@ public class PropPanelAssociationClass extends PropPanelClassifier {
      *
      * @return JScrollPane
      */
+    @Override
     public JScrollPane getAttributeScroll() {
         if (attributeScroll == null) {
             JList list = new UMLLinkedList(attributeListModel);
@@ -145,4 +146,4 @@ public class PropPanelAssociationClass extends PropPanelClassifier {
         return attributeScroll;
     }
 
-} /* end class PropPanelAssociationClass */
+}
