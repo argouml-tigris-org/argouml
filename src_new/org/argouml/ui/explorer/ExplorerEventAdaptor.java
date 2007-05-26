@@ -101,37 +101,37 @@ public final class ExplorerEventAdaptor
     /**
      * forwards this event to the tree model.
      *
-     * @param source the modelelement to be removed
+     * @param element the modelelement to be removed
      */
-    public void modelElementRemoved(Object source) {
+    public void modelElementRemoved(Object element) {
         if (treeModel == null) {
             return;
         }
-        treeModel.modelElementRemoved(source);
+        treeModel.modelElementRemoved(element);
     }
 
     /**
      * forwards this event to the tree model.
      *
-     * @param source the modelelement to be added
+     * @param element the modelelement to be added
      */
-    public void modelElementAdded(Object source) {
+    public void modelElementAdded(Object element) {
         if (treeModel == null) {
             return;
         }
-        treeModel.modelElementAdded(source);
+        treeModel.modelElementAdded(element);
     }
 
     /**
      * forwards this event to the tree model.
      *
-     * @param source the modelelement to be changed
+     * @param element the modelelement to be changed
      */
-    public void modelElementChanged(Object source) {
+    public void modelElementChanged(Object element) {
         if (treeModel == null) {
             return;
         }
-        treeModel.modelElementChanged(source);
+        treeModel.modelElementChanged(element);
     }
 
     /**
