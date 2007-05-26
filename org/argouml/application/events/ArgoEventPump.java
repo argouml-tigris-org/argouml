@@ -252,11 +252,11 @@ public final class ArgoEventPump {
             }
             if (event.getEventType() >= ArgoEventTypes.ANY_HELP_EVENT
                     && event.getEventType() < ArgoEventTypes.LAST_HELP_EVENT) {
-                    if (listener instanceof ArgoHelpEventListener) {
-                        handleFireHelpEvent((ArgoHelpEvent) event,
-                                        (ArgoHelpEventListener) listener);
-                    }
+                if (listener instanceof ArgoHelpEventListener) {
+                    handleFireHelpEvent((ArgoHelpEvent) event,
+                            (ArgoHelpEventListener) listener);
                 }
+            }
             if (event.getEventType() >= ArgoEventTypes.ANY_GENERATOR_EVENT
                 && event.getEventType() < ArgoEventTypes.LAST_GENERATOR_EVENT) {
                 if (listener instanceof ArgoGeneratorEventListener) {

@@ -340,7 +340,7 @@ public class Import extends ImportCommon implements ImportSettings {
             } else if ("1".equals(detaillevel)) {
                 classAndFeatures.setSelected(true);
             } else {
-            fullImport.setSelected(true);
+                fullImport.setSelected(true);
             }
             detailButtonGroup.add(fullImport);
 

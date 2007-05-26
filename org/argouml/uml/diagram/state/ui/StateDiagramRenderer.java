@@ -129,8 +129,8 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
             }
         }
         if (figNode == null) {
-        LOG.debug("TODO: StateDiagramRenderer getFigNodeFor");
-        return null;
+            LOG.debug("TODO: StateDiagramRenderer getFigNodeFor");
+            return null;
         }
         
         lay.add(figNode);

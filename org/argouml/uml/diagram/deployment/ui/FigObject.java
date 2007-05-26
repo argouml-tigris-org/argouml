@@ -86,7 +86,7 @@ public class FigObject extends FigNodeModelElement {
      */
     protected int getNotationProviderType() {
         return NotationProviderFactory2.TYPE_OBJECT;
-        }
+    }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()

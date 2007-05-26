@@ -80,14 +80,14 @@ public abstract class PropPanelModelElement extends PropPanel {
 	new UMLModelElementNamespaceListModel();
 
     private static UMLModelElementClientDependencyListModel
-        clientDependencyListModel =
+    clientDependencyListModel =
 	new UMLModelElementClientDependencyListModel();
 
     private static UMLModelElementConstraintListModel constraintListModel =
 	new UMLModelElementConstraintListModel();
 
     private static UMLModelElementElementResidenceListModel
-        elementResidenceListModel =
+    elementResidenceListModel =
 	new UMLModelElementElementResidenceListModel();
 
     private static UMLModelElementNameDocument nameDocument =
