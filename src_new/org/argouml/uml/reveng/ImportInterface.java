@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.argouml.kernel.Project;
+import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.util.SuffixFilter;
 
@@ -40,7 +41,7 @@ import org.argouml.util.SuffixFilter;
  * @since 0.23.2
  */
 
-public interface ImportInterface {
+public interface ImportInterface extends ModuleInterface {
 
     /**
      * The name of the TagDefinition which types the TaggedValues used store the
