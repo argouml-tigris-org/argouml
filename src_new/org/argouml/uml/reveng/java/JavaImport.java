@@ -38,7 +38,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.uml.reveng.FileImportUtils;
 import org.argouml.uml.reveng.ImportInterface;
@@ -53,7 +52,7 @@ import org.argouml.util.SuffixFilter;
  *
  * @author Andreas Rueckert <a_rueckert@gmx.net>
  */
-public class JavaImport implements ModuleInterface, ImportInterface {
+public class JavaImport implements ImportInterface {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(JavaImport.class);
