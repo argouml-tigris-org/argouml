@@ -32,6 +32,9 @@ import java.util.List;
  */
 public interface CoreFactory extends Factory {
     
+    /**
+     * The name of the stereotype for a Realization.
+     */
     public String REALIZE_STEREOTYPE = "realize"; //$NON-NLS-1$
     
     /**
