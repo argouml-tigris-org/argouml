@@ -833,7 +833,7 @@ public class RESequenceDiagramDialog
     private class DummySettings implements ImportSettings {
 
         public int getImportLevel() {
-            return 0;
+            return ImportSettings.DETAIL_CLASSIFIER;
         }
 
         public String getInputSourceEncoding() {
@@ -862,4 +862,4 @@ public class RESequenceDiagramDialog
      * The UID.
      */
     private static final long serialVersionUID = -8595714827064181907L;
-} /* end class RESequenceDiagramDialog */
+}
