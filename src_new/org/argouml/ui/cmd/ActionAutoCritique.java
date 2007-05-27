@@ -29,7 +29,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoList;
 import org.argouml.i18n.Translator;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -65,7 +64,8 @@ public class ActionAutoCritique extends UndoableAction {
 	d.setAutoCritique(!b);
 
         // stop/start cleaning up invalid TodoItems.
-        ToDoList.getInstance().setPaused(!ToDoList.getInstance().isPaused());
+        Designer.theDesigner().getToDoList().setPaused(
+                !Designer.theDesigner().getToDoList().isPaused());
     }
 
 

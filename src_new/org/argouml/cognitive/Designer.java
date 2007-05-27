@@ -80,15 +80,15 @@ public final class Designer
 
     private static boolean userWorking;
 
-    private static Vector unspecDecisionVector;
-    private static Vector unspecGoalVector;
+    private static Vector<Decision> unspecDecisionVector;
+    private static Vector<Goal> unspecGoalVector;
 
     private static Action saveAction;
 
     static {
-        unspecDecisionVector = new Vector();
+        unspecDecisionVector = new Vector<Decision>();
         unspecDecisionVector.addElement(Decision.UNSPEC);
-        unspecGoalVector = new Vector();
+        unspecGoalVector = new Vector<Goal>();
         unspecGoalVector.addElement(Goal.getUnspecifiedGoal());
     }
 
@@ -162,15 +162,15 @@ public final class Designer
    /**
      * dm's that should be critiqued ASAP.
      */
-    private Vector hotQueue;
+    private Vector<Object> hotQueue;
 
-    private Vector hotReasonQueue;
+    private Vector<Long> hotReasonQueue;
 
-    private Vector addQueue;
+    private Vector<Object> addQueue;
 
-    private Vector addReasonQueue;
+    private Vector<Long> addReasonQueue;
 
-    private Vector removeQueue;
+    private Vector<Object> removeQueue;
 
     private static int longestAdd;
 
@@ -179,7 +179,7 @@ public final class Designer
     /**
      * dm's that should be critiqued relatively soon.
      */
-    private Vector warmQueue;
+    private Vector<Object> warmQueue;
 
     private ChildGenerator childGenerator;
 
@@ -215,23 +215,23 @@ public final class Designer
         agency = new Agency();
         prefs = new Properties();
 
-        toDoList = ToDoList.getInstance();
-
+        toDoList = new ToDoList();
         toDoList.spawnValidityChecker(this);
+
         userWorking = false;
         
         critiquingInterval = 8000;
         critiqueCPUPercent = 10;
 
-        hotQueue = new Vector();
-        hotReasonQueue = new Vector();
-        addQueue = new Vector();
-        addReasonQueue = new Vector();
-        removeQueue = new Vector();
+        hotQueue = new Vector<Object>();
+        hotReasonQueue = new Vector<Long>();
+        addQueue = new Vector<Object>();
+        addReasonQueue = new Vector<Long>();
+        removeQueue = new Vector<Object>();
         longestAdd = 0;
         longestHot = 0;
 
-        warmQueue = new Vector();
+        warmQueue = new Vector<Object>();
 
         childGenerator = new EmptyChildGenerator();
 
@@ -314,7 +314,7 @@ public final class Designer
                         while (hotQueue.size() > 0) {
                             Object dm = hotQueue.elementAt(0);
                             Long reasonCode =
-                                    (Long) hotReasonQueue.elementAt(0);
+                                    hotReasonQueue.elementAt(0);
                             hotQueue.removeElementAt(0);
                             hotReasonQueue.removeElementAt(0);
                             Agency.applyAllCritics(dm, theDesigner(),
@@ -406,7 +406,7 @@ public final class Designer
             addReasonQueue.addElement(reasonCodeObj);
         } else {
             Long reasonCodeObj =
-		(Long) addReasonQueue.elementAt(addQueueIndex);
+		addReasonQueue.elementAt(addQueueIndex);
             long rc = reasonCodeObj.longValue() | rCode;
             Long newReasonCodeObj = new Long(rc);
             addReasonQueue.setElementAt(newReasonCodeObj, addQueueIndex);
@@ -659,7 +659,9 @@ public final class Designer
     /*
      * @see org.argouml.cognitive.Poster#getSupportedDecisions()
      */
-    public Vector getSupportedDecisions() { return unspecDecisionVector; }
+    public Vector<Decision> getSupportedDecisions() { 
+        return unspecDecisionVector; 
+    }
 
     /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
@@ -669,7 +671,9 @@ public final class Designer
     /*
      * @see org.argouml.cognitive.Poster#getSupportedGoals()
      */
-    public Vector getSupportedGoals() { return unspecGoalVector; }
+    public Vector<Goal> getSupportedGoals() { 
+        return unspecGoalVector; 
+    }
 
     /*
      * @see org.argouml.cognitive.Poster#containsKnowledgeType(java.lang.String)
