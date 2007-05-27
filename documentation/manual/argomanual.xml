@@ -22743,11 +22743,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <note>
 
-                  <para>The values for the bounds of the generalization 
-                  are downlighted, since they have no meaning, given 
-                  that the generalization is tied to a particular 
-                  couple of actors 
-                  or use cases.</para>
+                  <para>The values in the "bounds" field 
+                    of the generalization are not editable, 
+                    since they are determined by 
+                    the properties of the endpoints of the line.</para>
 
                 </note>
 
@@ -23181,9 +23180,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <note>
 
-                  <para>The values for the bounds are downlighted, 
-                  since the extend is tied to a particular pair of use 
-                  cases.</para>
+                  <para>
+                    The values in the "bounds" field of the extend
+                    are not editable, since they are determined 
+                    by the properties of the endpoints of the line.
+                  </para>
 
                 </note>
 
@@ -23662,10 +23663,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <note>
 
-                  <para>The values for the bounds of the include 
-                  relationships are downlighted, since the include 
-                  relationship is represented by a line between a 
-                  particular pair of use cases.</para>
+                  <para>
+                    The values in the "bounds" field of the 
+                    include relationships
+                    are not editable, since they are determined 
+                    by the properties of the endpoints of the line.
+                  </para>
 
                 </note>
 
@@ -28942,9 +28945,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <note>
 
-                  <para>The values for the bounds of the dependency are 
-                  downlighted, given the dependency is tied to a 
-                  particular modelelement.</para>
+                  <para>
+                    The values in the "bounds" field of the 
+                    dependency
+                    are not editable, since they are determined 
+                    by the properties of the endpoints of the line.
+                  </para>
 
                 </note>
 
@@ -29876,9 +29882,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <note>
 
-                  <para>The values for the bounds of the abstraction 
-                  are downlighted, since the association is tied to 
-                  particular model elements.</para>
+                  <para>
+                    The values in the "bounds" field of the 
+                    abstraction
+                    are not editable, since they are determined 
+                    by the properties of the endpoints of the line.
+                  </para>
 
                 </note>
 
@@ -31300,9 +31309,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Standard tab. The values for the bounds of the 
-                link are downlighted, since they are determined by the 
-                objects connected.</para>
+                <para>Standard tab.</para>
+                <note>
+                  <para>
+                    The values in the "bounds" field of the 
+                    link
+                    are not editable, since they are determined 
+                    by the properties of the endpoints of the line.
+                  </para>
+                </note>
 
               </listitem>
 
@@ -32802,9 +32817,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Standard tab. The values for the bounds of the 
-                transition are downlighted, since the position of the 
-                transition is defined by its end points.</para>
+                <para>Standard tab. </para>
+                <note>
+                  <para>
+                    The values in the "bounds" field of the 
+                    transition
+                    are not editable, since they are determined 
+                    by the properties of the endpoints of the line.
+                  </para>
+                </note>
 
               </listitem>
 
@@ -35615,9 +35636,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Standard tab. The values for the bounds of the 
-                association role are downlighted, since they are 
-                determined by what they connect.</para>
+                <para>Standard tab. </para>
+                <note>
+                  <para>
+                    The values in the "bounds" field of the 
+                    association role
+                    are not editable, since they are determined 
+                    by the properties of the endpoints of the line.
+                  </para>
+                </note>
 
               </listitem>
 
