@@ -48,7 +48,7 @@ import org.argouml.i18n.Translator;
  * the myrid details of their task. It is all to
  * easy to skip a step in the design process,
  * leave part of the design unspecified, of make
- * a mistake that requires revision. Argo provides
+ * a mistake that requires revision. ArgoUML provides
  * the designer with a "to do" list user interface
  * that presents action items in an organized form.
  * These items can be suggestions from critics,
@@ -59,10 +59,6 @@ import org.argouml.i18n.Translator;
  * items in different ways: by priority,
  * by decision supported, by offending design
  * element, etc.<p>
- *
- * The to do lists right now are a bit
- * unstable. Please test and let us know
- * what you find through Issuezilla.<p>
  *
  * Items are shown under all applicable headings.<p>
  *
@@ -123,12 +119,6 @@ public class ToDoList extends Observable implements Runnable {
     private static int numNotValid;
 
     /**
-     * The ToDoList instance that is also the validity checking thread.
-     * this thread should probably be factored out...
-     */
-    private static ToDoList theInstance;
-
-    /**
      * state variable for whether the validity checking thread is paused
      * (waiting).
      */
@@ -138,10 +128,9 @@ public class ToDoList extends Observable implements Runnable {
     // constructor
 
     /**
-     * Creates a new todolist. Use getInstance() if you want to create the
-     * validity checking thread.
+     * Creates a new todolist. The only ToDoList is owned by the Designer.
      */
-    public ToDoList() {
+    ToDoList() {
 
 	items = new Vector<ToDoItem>(100);
 	resolvedItems = new LinkedHashSet<ResolvedCritic>(100);
@@ -149,19 +138,6 @@ public class ToDoList extends Observable implements Runnable {
 	longestToDoList = 0;
 	numNotValid = 0;
 	recentOffenderItems = new Vector<ToDoItem>();
-    }
-
-    /**
-     * Returns the validity checking thread instance.
-     *
-     * @return the validity checking thread instance
-     */
-    public static ToDoList getInstance() {
-
-        if (theInstance == null) {
-            theInstance = new ToDoList();
-        }
-        return theInstance;
     }
 
     /**
@@ -499,7 +475,7 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * @param item the todo item
-     * @param reason the reason
+     * @param reason the reason TODO: Use it!
      * @return <code>true</code> if the argument was a component of this
      *          vector; <code>false</code> otherwise
      * @throws UnresolvableException unable to resolve
@@ -545,10 +521,9 @@ public class ToDoList extends Observable implements Runnable {
      */
     public synchronized void removeAllElements() {
         LOG.debug("removing all todo items");
-        Vector oldItems = (Vector) items.clone();
-        int size = oldItems.size();
-        for (int i = 0; i < size; i++) {
-            removeE((ToDoItem) oldItems.elementAt(i));
+        Vector<ToDoItem> oldItems = new Vector<ToDoItem>(items);
+        for (ToDoItem tdi : oldItems) {
+            removeE(tdi);
 	}
 
         recomputeAllOffenders();

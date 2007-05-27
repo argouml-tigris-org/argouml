@@ -111,7 +111,7 @@ public class ToDoPane extends JPanel
     /**
      * Vector of TreeModels.
      */
-    private Vector perspectives;
+    private Vector<ToDoPerspective> perspectives;
     private ToDoPerspective curPerspective;
 
     private ToDoList root;
@@ -133,7 +133,7 @@ public class ToDoPane extends JPanel
         combo = new JComboBox();
         tree = new DisplayTextTree();
 
-        perspectives = new Vector();
+        perspectives = new Vector<ToDoPerspective>();
 
         countLabel = new JLabel(formatCountLabel(999));
         countLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
@@ -189,22 +189,21 @@ public class ToDoPane extends JPanel
     /**
      * @return the perspectives treemodels
      */
-    public Vector getPerspectives() { return perspectives; }
+    public Vector<ToDoPerspective> getPerspectives() { return perspectives; }
 
     /**
      * @param pers the perspectives
      */
-    public void setPerspectives(Vector pers) {
+    public void setPerspectives(Vector<ToDoPerspective> pers) {
         perspectives = pers;
         if (pers.isEmpty()) {
 	    curPerspective = null;
 	} else {
-	    curPerspective = (ToDoPerspective) pers.elementAt(0);
+	    curPerspective = pers.elementAt(0);
 	}
 
-        java.util.Enumeration persEnum = perspectives.elements();
-        while (persEnum.hasMoreElements()) {
-            combo.addItem(persEnum.nextElement());
+        for (ToDoPerspective tdp : perspectives) {
+            combo.addItem(tdp);
 	}
 
         if (pers.isEmpty()) {
@@ -212,7 +211,7 @@ public class ToDoPane extends JPanel
 	} else if (pers.contains(curPerspective)) {
             setCurPerspective(curPerspective);
 	} else {
-            setCurPerspective((ToDoPerspective) perspectives.elementAt(0));
+            setCurPerspective(perspectives.elementAt(0));
 	}
         updateTree();
     }
@@ -467,7 +466,9 @@ public class ToDoPane extends JPanel
      * @param row the selected row in the tree
      * @param path the path in the tree of the selected item
      */
-    public static void mySingleClick(int row, TreePath path) {
+    public static void mySingleClick(
+            @SuppressWarnings("unused") int row, 
+            @SuppressWarnings("unused") TreePath path) {
         clicksInToDoPane++;
     }
 
@@ -478,7 +479,9 @@ public class ToDoPane extends JPanel
      * @param row the selected row in the tree
      * @param path the path in the tree of the selected item
      */
-    public void myDoubleClick(int row, TreePath path) {
+    public void myDoubleClick(
+            @SuppressWarnings("unused") int row, 
+            @SuppressWarnings("unused") TreePath path) {
         dblClicksInToDoPane++;
         if (getSelectedObject() == null) {
 	    return;
@@ -496,7 +499,7 @@ public class ToDoPane extends JPanel
     /**
      * The perspectives to be chosen in the combobox are built here.
      */
-    private static Vector buildPerspectives() {
+    private static Vector<ToDoPerspective> buildPerspectives() {
 
         ToDoPerspective priority = new ToDoByPriority();
         ToDoPerspective decision = new ToDoByDecision();
@@ -506,7 +509,7 @@ public class ToDoPane extends JPanel
         ToDoPerspective type = new ToDoByType();
 
         // add the perspetives to a vector for the combobox
-        Vector perspectives = new Vector();
+        Vector<ToDoPerspective> perspectives = new Vector<ToDoPerspective>();
 
         perspectives.add(priority);
         perspectives.add(decision);
