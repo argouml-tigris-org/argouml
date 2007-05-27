@@ -217,7 +217,9 @@ class OuterClassifierContext extends Context {
                     // TODO: This too broad an exception catch to just continue
                     // with - narrow to specific expected errors that can be
                     // ignored - tfm
-                    LOG.warn(e1);
+                    if (!(e1 instanceof ClassNotFoundException)) {
+                        LOG.warn(e1);
+                    }
                     
                     // Continue the search through the rest of the model
                     if (getContext() != null) {
