@@ -153,12 +153,12 @@ public class TabDiagram
         if (target != null) {
             newPanel.setTarget(target);
         }
-        newPanel.setToolBar(ToolBarFactory.createToolBar(true/*rollover*/,
-                                                         target.getActions(),
-                                                         false/*floating*/));
-        setToolBar(ToolBarFactory.createToolBar(true/*rollover*/,
-                                                target.getActions(),
-                                                false/*floating*/));
+        ToolBarFactory factory = new ToolBarFactory(target.getActions());
+        factory.setRollover(true);
+        factory.setFloatable(false);
+
+        newPanel.setToolBar(factory.createToolBar());
+        setToolBar(factory.createToolBar());
         return newPanel;
     }
 
