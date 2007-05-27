@@ -91,8 +91,11 @@ public class TabToDo extends AbstractArgoJPanel
         setLayout(new BorderLayout());
 
         Object[] actions = {actionNewToDoItem, actionResolve, actionSnooze };
-        JToolBar toolBar = ToolBarFactory.createToolBar(true, actions, false);
-        toolBar.setOrientation(SwingConstants.VERTICAL);
+        ToolBarFactory factory = new ToolBarFactory(actions);
+        factory.setRollover(true);
+        factory.setFloatable(false);
+        factory.setOrientation(SwingConstants.VERTICAL);
+        JToolBar toolBar = factory.createToolBar();
 
         add(toolBar, BorderLayout.WEST);
 

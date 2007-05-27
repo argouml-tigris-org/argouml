@@ -197,10 +197,13 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     }
     
     public void buildToolbar() {
-	JToolBar toolbar =
-	    ToolBarFactory.createToolBar(true, actions, false);
+        ToolBarFactory factory = new ToolBarFactory(actions);
+        factory.setRollover(true);
+        factory.setFloatable(false);
+        JToolBar toolBar = factory.createToolBar();
+
 	buttonPanel.removeAll();
-        buttonPanel.add(BorderLayout.WEST, toolbar);
+        buttonPanel.add(BorderLayout.WEST, toolBar);
         // Set the tooltip of the arrow to open combined tools:
         buttonPanel.putClientProperty("ToolBar.toolTipSelectTool",
                 Translator.localize("action.select"));

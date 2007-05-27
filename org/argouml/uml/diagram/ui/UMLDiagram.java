@@ -313,10 +313,11 @@ public abstract class UMLDiagram
      * @see org.tigris.gef.base.Diagram#initToolBar()
      */
     public void initToolBar() {
-        toolBar =
-	    ToolBarFactory.createToolBar(true /*rollover*/,
-					 getActions(),
-					 false /*floating*/);
+        ToolBarFactory factory = new ToolBarFactory(getActions());
+        factory.setRollover(true);
+        factory.setFloatable(false);
+        
+        toolBar = factory.createToolBar();
         toolBar.putClientProperty("ToolBar.toolTipSelectTool", 
                 Translator.localize("action.select"));
     }
