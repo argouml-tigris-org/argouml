@@ -253,7 +253,9 @@ public class Import extends ImportCommon implements ImportSettings {
             boolean crea = true;
             boolean mini = true;
             boolean layo = true;
-            String flags = Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+            String flags =
+                    Configuration
+                            .getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
             if (flags != null && flags.length() > 0) {
                 StringTokenizer st = new StringTokenizer(flags, ",");
                 if (st.hasMoreTokens() && st.nextToken().equals("false")) {
@@ -388,20 +390,12 @@ public class Import extends ImportCommon implements ImportSettings {
      * Get the extension panel for the configuration settings.
      */
     private JComponent getConfigPanelExtension() {
-        JComponent result;
-        if (getCurrentModule() instanceof ImportInterface) {
-            // New style importers don't provide a config panel
-            if (importConfigPanel == null) {
-                importConfigPanel = new ConfigPanelExtension();
-            }
-            result = importConfigPanel;
-        } else {
-            throw new RuntimeException("Unrecognized module type");
+        // New style importers don't provide a config panel
+        // TODO: This needs review for the new style importers - tfm - 20070527
+        if (importConfigPanel == null) {
+            importConfigPanel = new ConfigPanelExtension();
         }
-        if (result == null) {
-            result = new JPanel();
-        }
-        return result;
+        return importConfigPanel;
     }
 
     private class SelectedLanguageListener implements ActionListener {
@@ -432,7 +426,7 @@ public class Import extends ImportCommon implements ImportSettings {
         public void actionPerformed(ActionEvent e) {
             JComboBox cb = (JComboBox) e.getSource();
             String selected = (String) cb.getSelectedItem();
-            Object oldModule = getCurrentModule();
+            ImportInterface oldModule = getCurrentModule();
             setCurrentModule(getModules().get(selected));
             if (getCurrentModule() instanceof ImportInterface) {
                 updateFilters(
@@ -542,8 +536,7 @@ public class Import extends ImportCommon implements ImportSettings {
         final JFileChooser chooser = new ImportFileChooser(this, directory);
 
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        updateFilters(chooser, null, ((ImportInterface) getCurrentModule())
-                .getSuffixFilters());
+        updateFilters(chooser, null, getCurrentModule().getSuffixFilters());
 
         return chooser;
     }
@@ -612,8 +605,7 @@ public class Import extends ImportCommon implements ImportSettings {
             if (getSelectedFile() != null) {
                 String path = getSelectedFile().getParent();
                 String filename =
-                    getSelectedFile().getName();
-                filename = path + SEPARATOR + filename;
+                        path + SEPARATOR + getSelectedFile().getName();
                 Globals.setLastDirectory(path);
                 if (filename != null) {
                     theImport.disposeDialog();
@@ -928,6 +920,7 @@ class ImportClasspathDialog extends JDialog {
                         .localize("dialog.import.classpath.text"));
         ta.setLineWrap(true);
         ta.setWrapStyleWord(true);
+        ta.setFocusable(false);
         getContentPane().add(ta, BorderLayout.NORTH);
 
         // paths list
@@ -935,7 +928,7 @@ class ImportClasspathDialog extends JDialog {
         paths = new JList(pathsModel);
         paths.setVisibleRowCount(5);
         JScrollPane listScroller = new JScrollPane(paths);
-        listScroller.setPreferredSize(new Dimension(250, 80));
+        listScroller.setPreferredSize(new Dimension(300, 100));
         getContentPane().add(listScroller, BorderLayout.CENTER);
 
         initList();
@@ -943,9 +936,9 @@ class ImportClasspathDialog extends JDialog {
         // controls
         JPanel controlsPanel = new JPanel();
         controlsPanel.setLayout(new GridLayout(0, 3));
-        addFile = new JButton("Add");
-        removeFile = new JButton("Remove");
-        ok = new JButton("Ok");
+        addFile = new JButton(Translator.localize("button.add"));
+        removeFile = new JButton(Translator.localize("button.remove"));
+        ok = new JButton(Translator.localize("button.ok"));
         controlsPanel.add(addFile);
         controlsPanel.add(removeFile);
         controlsPanel.add(ok);
@@ -960,6 +953,7 @@ class ImportClasspathDialog extends JDialog {
         setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
             scrSize.height / 2 - contentPaneSize.height / 2);
         pack();
+        ok.requestFocusInWindow();
         setVisible(true);
         this.setModal(true);        //MVW   Issue 2539.
     }

@@ -1,5 +1,5 @@
 // $Id: ImporterManager.java 10735 2006-06-11 17:14:04Z mvw $
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,7 +54,7 @@ public final class ImporterManager {
         return INSTANCE;
     }
 
-    private Set importers = new HashSet();
+    private Set<ImportInterface> importers = new HashSet<ImportInterface>();
 
     /**
      * The constructor.
@@ -108,7 +108,7 @@ public final class ImporterManager {
     /**
      * @return A copy of the set of importers.
      */
-    public Set getImporters() {
+    public Set<ImportInterface> getImporters() {
         return Collections.unmodifiableSet(importers);
     }
 
