@@ -26,7 +26,9 @@ package org.argouml.uml.diagram.static_structure.layout;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.layout.LayoutedNode;
@@ -79,7 +81,8 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      * Attribute downlinks represents the nodes that contain the figures, which
      * are sources of edges with the figure of this node as destination.
      */
-    private Vector downlinks = new Vector();
+    private List<ClassdiagramNode> downlinks = 
+        new ArrayList<ClassdiagramNode>();
 
     /**
      * Offset used for edges, which have this node as the "upper" node.
@@ -106,7 +109,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      * Attribute uplinks represents the nodes that contain the figures, which
      * are destinations of edges with the figure of this node as source.
      */
-    private Vector uplinks = new Vector();
+    private List<ClassdiagramNode> uplinks = new ArrayList<ClassdiagramNode>();
 
     /**
      * This attribute stores the 'weight' of this node. This is a computed
@@ -174,14 +177,11 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     public float calculateWeight() {
         weight = 0;
         float w = getSubtreeWeight();
-        if (!uplinks.isEmpty()) {
-            for (Iterator iter = uplinks.iterator(); iter.hasNext();) {
-                ClassdiagramNode node = (ClassdiagramNode) iter.next();
-                weight = Math.max(weight, node.getWeight()
-                        * UPLINK_FACTOR
-                        * (1 + 1 / Math
-                                .max(1, node.getColumn() + UPLINK_FACTOR)));
-            }
+        for (ClassdiagramNode node : uplinks) {
+            weight = Math.max(weight, node.getWeight()
+                    * UPLINK_FACTOR
+                    * (1 + 1 / Math
+                            .max(1, node.getColumn() + UPLINK_FACTOR)));
         }
         weight += w + 1 / Math.max(1, getColumn() + UPLINK_FACTOR);
         return weight;
@@ -204,14 +204,9 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     public int compareTo(Object arg0) {
         ClassdiagramNode node = (ClassdiagramNode) arg0;
         int result = 0;
-        if (this.isStandalone() && !node.isStandalone()) {
-            result = -1;
-        } else if (!this.isStandalone() && node.isStandalone()) {
-            result = 1;
-        } // else result = 0;
-        // Java 1.5:
-        // result = Boolean.valueOf(node.isStandalone()).compareTo(
-        // Boolean.valueOf(isStandalone()));
+        result =
+                Boolean.valueOf(node.isStandalone()).compareTo(
+                        Boolean.valueOf(isStandalone()));
         if (result == 0) {
             result = this.getTypeOrderNumer() - node.getTypeOrderNumer();
         }
@@ -219,14 +214,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
             result = this.getRank() - node.getRank();
         }
         if (result == 0) {
-            float diff = node.getWeight() - this.getWeight();
-            if (diff < 0) {
-                result = -1;
-            } else if (diff > 0) {
-                result = 1;
-            } // else: result = 0
-            // Java 1.5:
-            // result = (int) Math.signum(node.getWeight() - this.getWeight());
+            result = (int) Math.signum(node.getWeight() - this.getWeight());
         }
         if (result == 0) {
             result = String.valueOf(this.getFigure().getOwner()).compareTo(
@@ -252,11 +240,21 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      * Get the downlinks of this node.
      * 
      * @return The downlinks of this node.
+     * @deprecated for 0.25.4 by tfmorris - use {@link #getDownNodes()}
      */
-    public Vector getDownlinks() {
-        return downlinks;
+    public Vector<ClassdiagramNode> getDownlinks() {
+        return new Vector<ClassdiagramNode>(downlinks);
     }
 
+    /**
+     * Get the downlinks of this node.
+     * 
+     * @return The downlinks of this node.
+     */
+    public List<ClassdiagramNode> getDownNodes() {
+        return downlinks;
+    }
+    
     /**
      * Get the offset which shall be used for edges with this node as parent.
      * 
@@ -282,10 +280,10 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      */
     public int getLevel() {
         int result = 0;
-        for (Iterator iter = uplinks.iterator(); iter.hasNext();) {
-            ClassdiagramNode node = (ClassdiagramNode) iter.next();
-            result = (node == this) ? result : Math.max(node.getLevel() + 1,
-                    result);
+        for (ClassdiagramNode node : uplinks) {
+            result =
+                    (node == this) ? result : Math.max(
+                            node.getLevel() + 1, result);
         }
         return result;
     }
@@ -336,9 +334,8 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     private float getSubtreeWeight() {
 
         float w = 1;
-        for (Iterator iter = downlinks.iterator(); iter.hasNext();) {
-            w += ((ClassdiagramNode) iter.next()).getSubtreeWeight()
-                    / UPLINK_FACTOR;
+        for (ClassdiagramNode node : downlinks) {
+            w += node.getSubtreeWeight() / UPLINK_FACTOR;
         }
         return w;
     }
@@ -363,11 +360,21 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      * Get the uplinks of this node.
      * 
      * @return The uplinks of this node.
+     * @deprecated for 0.25.4 by tfmorris - use {@link #getUpNodes()}
      */
-    public Vector getUplinks() {
-        return uplinks;
+    public Vector<ClassdiagramNode> getUplinks() {
+        return new Vector<ClassdiagramNode>(uplinks);
     }
 
+    /**
+     * Get the uplinks of this node.
+     * 
+     * @return The uplinks of this node.
+     */
+    public List<ClassdiagramNode> getUpNodes() {
+        return uplinks;
+    }
+    
     /**
      * Return the weight of this node, which is used for positioning in a row.
      * 
@@ -451,9 +458,9 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
         getFigure().setLocation(newLocation);
         int xTrans = newLocation.x - oldLocation.x;
         int yTrans = newLocation.y - oldLocation.y;
-        for (Iterator iter = getFigure().getEnclosedFigs().iterator(); iter
-                .hasNext();) {
-            ((Fig) iter.next()).translate(xTrans, yTrans);
+        for (Iterator<Fig> iter = getFigure().getEnclosedFigs().iterator(); 
+                iter.hasNext();) {
+            iter.next().translate(xTrans, yTrans);
         }
     }
 
