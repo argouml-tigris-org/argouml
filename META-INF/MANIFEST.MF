@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.argouml
-Bundle-Version: 0.23.1
+Bundle-Version: 0.25.3
 Bundle-Localization: plugin
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
