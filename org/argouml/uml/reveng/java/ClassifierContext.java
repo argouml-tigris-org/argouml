@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,21 +54,7 @@ class ClassifierContext extends Context
     public Object getInterface(String name)
 	throws ClassifierNotFoundException
     {
-	// Check if it is this interface
-	if (name.equals(Model.getFacade().getName(mClassifier))
-	    && Model.getFacade().isAInterface(mClassifier))
-	{
-	    return mClassifier;
-	}
-	else {
-	    // Continue the search through the rest of the model
-	    if (getContext() != null) {
-		return getContext().getInterface(name);
-	    }
-	    else {
-		return null;
-	    }
-	}
+        return get(name, true);
     }
 
     /**
@@ -77,17 +63,31 @@ class ClassifierContext extends Context
      * @param classifierName The name of the classifier to retrieve.
      * @return A classifier for the name.
      */
-    public Object get(String classifierName)
+    public Object get(String classifierName) 
+    throws ClassifierNotFoundException {
+        return get(classifierName, false);
+    }
+    
+    /**
+     * Get the classifier for a given name
+     * 
+     * @param classifierName
+     *            The name of the classifier to retrieve.
+     * @return A classifier for the name.
+     */
+    public Object get(String classifierName, boolean interfacesOnly)
 	throws ClassifierNotFoundException
     {
 	// Check if it is this classifier
-	if (classifierName.equals(Model.getFacade().getName(mClassifier))) {
+	if (classifierName.equals(Model.getFacade().getName(mClassifier))
+                && (!interfacesOnly || Model.getFacade().isAInterface(
+                        mClassifier))) {
 	    return mClassifier;
 	}
 	else {
 	    // Continue the search through the rest of the model
 	    if (getContext() != null) {
-		return getContext().get(classifierName);
+		return getContext().get(classifierName, interfacesOnly);
 	    }
 	    else {
 		return null;
