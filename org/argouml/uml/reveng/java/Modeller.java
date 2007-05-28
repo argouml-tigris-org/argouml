@@ -150,10 +150,10 @@ public class Modeller {
         noAssociations = settings.isAttributeSelected();
         arraysAsDatatype = settings.isDatatypeSelected();
         currentPackage = this.model;
+        newElements = new HashSet();
         parseState = new ParseState(this.model, getPackage(JAVA_PACKAGE));
         parseStateStack = new Stack();
         fileName = theFileName;
-        newElements = new ArrayList();
     }
     
     /**
@@ -353,9 +353,11 @@ public class Modeller {
 		        .buildPermission(parseState.getComponent(), mPackage);
 		String newName =
                     makePermissionName(
-                            Model.getFacade().getName(parseState.getComponent()),
-                            packageName);
+                            Model.getFacade().getName(
+                                    parseState.getComponent()),
+                                    packageName);
 		Model.getCoreHelper().setName(perm, newName);
+                newElements.add(perm);
             }
 	}
         // single type import
@@ -372,6 +374,7 @@ public class Modeller {
                             + classifierName);
                     mClassifier = Model.getCoreFactory().buildClass(
                             classifierName, mPackage);
+                    newElements.add(mClassifier);
                 } else {
                     warnClassifierNotFound(classifierName, e,
                             "an imported classifier");
@@ -407,6 +410,7 @@ public class Modeller {
                             makePermissionName(
                                     parseState.getComponent(), mClassifier);
                     Model.getCoreHelper().setName(perm, newName);
+                    newElements.add(perm);
                 }
 	    }
 	}
@@ -501,6 +505,7 @@ public class Modeller {
                 mClass,
                 (modifiers & JavaRecognizer.ACC_FINAL) > 0);
         Model.getCoreHelper().setRoot(mClass, false);
+        newElements.add(mClass);
 
         // only do generalizations and realizations on the 2nd pass.
         if (getLevel() == 0) {
@@ -525,6 +530,7 @@ public class Modeller {
 	                    : model;
 	            parentClass = Model.getCoreFactory().buildClass(
 	                    classifierName, mPackage);
+                    newElements.add(parentClass);
 	            getGeneralization(currentPackage, parentClass, mClass);
 	        } else {
 	            warnClassifierNotFound(superclassName, e,
@@ -653,6 +659,7 @@ public class Modeller {
                             : model;
                     parentInterface = Model.getCoreFactory().buildInterface(
                             classifierName, mPackage);
+                    newElements.add(parentInterface);
                     getGeneralization(currentPackage, parentInterface,
                             mInterface);
                 } else {
@@ -744,6 +751,7 @@ public class Modeller {
                     mInterface =
                             Model.getCoreFactory().buildInterface(
                                     classifierName, mPackage);
+                    newElements.add(mInterface);
                 } else {
                     warnClassifierNotFound(interfaceName, e,
                             "an abstraction");
@@ -766,6 +774,7 @@ public class Modeller {
                 Model.getCoreHelper().addStereotype(
                         mAbstraction,
                         getStereotype(CoreFactory.REALIZE_STEREOTYPE));
+                newElements.add(mAbstraction);
             }
         }
     }
@@ -1080,6 +1089,7 @@ public class Modeller {
                                     : model;
                     mClassifier = Model.getCoreFactory().buildClass(
                             classifierName, mPackage);
+                    newElements.add(mClassifier);
                 } else {
                     warnClassifierNotFound(returnType, e,
                             "operation return type");
@@ -1118,6 +1128,7 @@ public class Modeller {
                                     : model;
                     mClassifier = Model.getCoreFactory().buildClass(
                             classifierName, mPackage);
+                    newElements.add(mClassifier);
                 } else {
                     warnClassifierNotFound(typeName, e,
                             "operation params");
@@ -1296,6 +1307,7 @@ public class Modeller {
                     mClassifier =
                             Model.getCoreFactory().buildClass(
                                     classifierName, mPackage);
+                    newElements.add(mClassifier);
                 } else {
                     warnClassifierNotFound(typeSpec, e, "an attribute");
                 }
@@ -1401,8 +1413,10 @@ public class Modeller {
             Model.getFacade().getGeneralization(child, parent);
         if (mGeneralization == null) {
             mGeneralization =
-		Model.getCoreFactory().buildGeneralization(child, parent,
-							  makeGeneralizationName(child, parent));
+                    Model.getCoreFactory().buildGeneralization(
+                            child, parent,
+                            makeGeneralizationName(child, parent));
+            newElements.add(mGeneralization);
         }
         if (mGeneralization != null) {
             Model.getCoreHelper().setNamespace(mGeneralization, mPackage);
@@ -1443,6 +1457,7 @@ public class Modeller {
                    makeAbstractionName(child, parent),
                    parent,
                    child);
+            newElements.add(mAbstraction);
         }
         return mAbstraction;
     }
@@ -1460,6 +1475,7 @@ public class Modeller {
 	    mPackage =
 		Model.getModelManagementFactory()
 		    .buildPackage(getRelativePackageName(name), name);
+            newElements.add(mPackage);
             // TODO: This is redundant - tfm
 	    Model.getCoreHelper().setNamespace(mPackage, model);
 
@@ -1513,6 +1529,7 @@ public class Modeller {
                 .getCurrentProject().getDefaultReturnType();
             mOperation = Model.getCoreFactory().buildOperation2(cls, returnType,
                     name);
+            newElements.add(mOperation);
         }
         return mOperation;
     }
@@ -1531,6 +1548,7 @@ public class Modeller {
         } else {
             LOG.info("Creating a new method " + name);
             method = Model.getCoreFactory().buildMethod(name);
+            newElements.add(method);
             Model.getCoreHelper().addFeature(
                     parseState.getClassifier(),
                     method);
@@ -1552,6 +1570,7 @@ public class Modeller {
     private Object buildAttribute(Object classifier, Object type, String name) {
         Object mAttribute = 
             Model.getCoreFactory().buildAttribute2(classifier, type);
+        newElements.add(mAttribute);
         Model.getCoreHelper().setName(mAttribute, name);
         return mAttribute;
     }
@@ -1583,7 +1602,8 @@ public class Modeller {
         }
         if (mAssociationEnd == null && !noAssociations) {
             String newName =
-                    makeAssociationName(parseState.getClassifier(), mClassifier);
+                    makeAssociationName(parseState.getClassifier(), 
+                            mClassifier);
 
             Object mAssociation = buildDirectedAssociation(
                         newName, parseState.getClassifier(), mClassifier);
