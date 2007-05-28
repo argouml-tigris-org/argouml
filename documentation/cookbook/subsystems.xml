@@ -50,7 +50,7 @@
     dependencies. This will also allow us to know which other subsystems that are
     involved when testing a subsystem. </para>
   
-  <sect1>
+  <sect1 id="subsystems_definition">
     <title>Definition of subsystem</title>
     <para> All ArgoUML code is organized in subsystems. </para>
     <para> Each subsystem has:
@@ -212,7 +212,8 @@ This is in subsections.
     </para>
     <para>
       All these subsystems are started and initiated (if needed)
-      from the Application subsystem.
+      from the Application subsystem,
+      see <xref linkend="application"></xref>.
     </para>
 
     <itemizedlist>
@@ -255,6 +256,9 @@ This is in subsections.
         <para>gef. 
           Location: <classname>org.tigris.gef</classname>
         </para>
+        <para>GEF stands for <emphasis>Graph Editing Framework</emphasis>. 
+          It is the package which controls 
+          most of the graphical aspects of ArgoUML.</para>
       </listitem>
 
       <listitem>
@@ -276,7 +280,8 @@ This is in subsections.
 
   <sect1 id="infrastructure_subsystems">
     <title>Low-level subsystems</title>
-    <para> These subsystems are infrastructure subsystems that just are there
+    <para> These subsystems of ArgoUML 
+      are infrastructure subsystems that just are there
       for every other subsystem to use
       - but they are not using any other part of ArgoUML.
     </para>
@@ -285,9 +290,14 @@ This is in subsections.
       but there are no dependencies "upwards", 
       nor between them.
     </para>
+    <para>This latter statement is the way to recognize 
+      a low level subsystem: 
+      it does not depend on any other argouml package.
+    </para>
     <para>
       All these subsystems are started and initiated (if needed) from the
-      Application subsystem.
+      Application subsystem, 
+      see <xref linkend="application"></xref>.
     </para>
     <itemizedlist>
       
@@ -339,9 +349,10 @@ in order to do their work.
 </para>
     
     <para>
-All these subsystems are all started and initiated from the Application
-subsystem.
-</para>
+      All these subsystems are all started and initiated 
+      from the Application subsystem,
+      see <xref linkend="application"></xref>.
+    </para>
     <para>
       <itemizedlist>
 
@@ -440,8 +451,6 @@ These subsystems should be connected only through the interfaces
 provided by other subsystems.
 This means that they can be individually enabled and disabled using
 the module loader.
-Note: The old module loader does not have the possibility to disable modules.
-The new one has but is not widely used. (July 2005).
 </para>
     
     <para>
@@ -480,109 +489,8 @@ see <xref linkend="ocl"></xref>.
         </imageobject>
       </mediaobject> </para>
   </sect1>
-  
-  <!-- Has to be rewritten to fit the new concepts.
-  (If it at all will fit, I am not sure. Linus December 2002.)
-  <sect1>
-  <title>ArgoUML Initialization</title>
-  <sect2>
-    <title>Which sources are involved?</title>
-    <para>
-Relative to the directory org/argouml, they are mainly:
-</para>
-    <itemizedlist>
-      <listitem>
-        <para>
-application/Main.java,
-</para>
-      </listitem>
-      <listitem>
-        <para>
-kernel/Project.java + xml/argo/ArgoParser.java,
-</para>
-      </listitem>
-      <listitem>
-        <para>
-ui/{ProjectBrowser.java,*Pane.java},
-</para>
-      </listitem>
-      <listitem>
-        <para>
-cognitive/{Designer.java,ui/ToDoPane.java}.
-</para>
-      </listitem>
-    </itemizedlist>
-  </sect2>
-  </sect1>
-  -->
-  <!--
-  Has to be rewritten.
-  <sect1>
-    <title>Which Objects live during a typical session?</title>
-    <para>
-  (Project, Designer, Globals, NavPane, ToDoPane, ...)
-</para>
-  </sect1>
-  <sect1>
-    <title>What is their task?</title>
-    <para>
-  (visual subsystem, model, controller, ...)
-</para>
-  </sect1>
-  -->
-  
-  <!--
-  <sect1 id="bigger_components">
-    <title>The bigger picture, ArgoUML and supporting libraries</title>
-    <indexterm><primary>Libraries</primary></indexterm>
-    <indexterm><primary>Components</primary></indexterm>
-    <para>
-      <mediaobject>
-        <imageobject>
-          <imagedata format="GIF" fileref="images/cookbook/big.gif"/>
-        </imageobject>
-      </mediaobject>
-      <itemizedlist>
-        <listitem><para>Well, ArgoUML is obviously the main thing.</para></listitem>
-        <listitem><para>GEF stands for <emphasis>Graph Editing Framework</emphasis>. It is the package which controls most of the graphical aspects of ArgoUML.</para></listitem>
-        <listitem><para>MDR stands for ...</para>
-        </listitem>
-      </itemizedlist>
-</para>
-  </sect1>
-  -->
-  
-  
-  <!-- This is taken care of.
-  <sect1 id="small">
-    <title>The smaller components, inside ArgoUML</title>
-    <para>
-  ArgoUML itself breaks down into several components. The graphic does not reflect the true package names, neither the true dependencies of the packages.
-      <mediaobject>
-        <imageobject>
-          <imagedata format="GIF" fileref="images/cookbook/small.gif"/>
-        </imageobject>
-      </mediaobject>
-      <itemizedlist>
-        <listitem><para>User Interface</para></listitem>
-        <listitem><para>Diagrams (see <xref linkend="diagrams"/>)</para></listitem>
-        <listitem><para>GEF</para></listitem>
-        <listitem><para>Model</para></listitem>
-        <listitem><para>Saving/Loading</para></listitem>
-        <listitem><para>Notation (see <xref linkend="notation"/>)</para></listitem>
-        <listitem><para>Code Generation</para></listitem>
-        <listitem><para>Reverse Engineering (see <xref linkend="java"/>)</para></listitem>
-        <listitem><para>OCL</para></listitem>
-        <listitem><para>Help System (see <xref linkend="help"/>)</para></listitem>
-        <listitem><para>Internationalization (see <xref linkend="internationalization"/>)</para></listitem>
-        <listitem><para>Critics and other cognitive tools (see <xref linkend="critics"/>)</para></listitem>
-        <listitem><para>Plugin-Module API (see <xref linkend="plugins"/>)</para></listitem>
-        <listitem><para>Logging (see <xref linkend="logging"/>)</para></listitem>
-      </itemizedlist>
-</para>
-  </sect1>
-  -->
-  
+
+
 </chapter>
 
 <!-- Local stuff for Emacs - please do not delete
