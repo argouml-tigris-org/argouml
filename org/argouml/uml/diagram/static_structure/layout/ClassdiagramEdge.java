@@ -24,8 +24,10 @@
 
 package org.argouml.uml.diagram.static_structure.layout;
 
-import org.argouml.uml.diagram.layout.*;
-import org.tigris.gef.presentation.*;
+import org.argouml.uml.diagram.layout.LayoutedEdge;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigPoly;
 
 /** This class is an abstract implementation of all edges which are
  *  layoutable in the classdiagram.

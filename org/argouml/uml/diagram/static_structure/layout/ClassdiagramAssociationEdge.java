@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import java.awt.Point;
 
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
 
 /**
  *
@@ -44,6 +45,11 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
         super(edge);
     }
 
+    /**
+     * Size of self association edges.
+     */
+    private final static int SELF_SIZE = 30;
+    
     /*
      * @see org.argouml.uml.diagram.layout.LayoutedEdge#layout()
      */
@@ -56,19 +62,19 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
         if (getDestFigNode() == getSourceFigNode()) {
             Point centerRight = getCenterRight((FigNode) getSourceFigNode());
             int yoffset = getSourceFigNode().getHeight() / 2;
-            yoffset = java.lang.Math.min(30, yoffset);
-            getUnderlyingFig().addPoint(centerRight);
+            yoffset = java.lang.Math.min(SELF_SIZE, yoffset);
+            FigPoly fig = getUnderlyingFig();
+            fig.addPoint(centerRight);
             // move more right
-            getUnderlyingFig().addPoint(centerRight.x + 30, centerRight.y);
+            fig.addPoint(centerRight.x + SELF_SIZE, centerRight.y);
             // move down
-            getUnderlyingFig().addPoint(centerRight.x + 30,
-                                        centerRight.y + yoffset);
+            fig.addPoint(centerRight.x + SELF_SIZE, centerRight.y + yoffset);
             // move left
-            getUnderlyingFig().addPoint(centerRight.x, centerRight.y + yoffset);
+            fig.addPoint(centerRight.x, centerRight.y + yoffset);
 
-            getUnderlyingFig().setFilled(false);
-            getUnderlyingFig().setSelfLoop(true);
-            getCurrentEdge().setFig(getUnderlyingFig());
+            fig.setFilled(false);
+            fig.setSelfLoop(true);
+            getCurrentEdge().setFig(fig);
         }
         /* else {
             // brute force rectangular layout
@@ -90,9 +96,11 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
     }
 
     /**
-     * Return a point which is just right of the center.
-     *
-     * @param fig The fig.
+     * Return a point which is centered vertically on the right hand edge of the
+     * figure.
+     * 
+     * @param fig
+     *            The fig.
      * @return A Point.
      */
     private Point getCenterRight(FigNode fig) {

@@ -52,6 +52,7 @@ public class ClassdiagramNote extends ClassdiagramNode {
     /*
      * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramNode#calculateWeight()
      */
+    @Override
     public float calculateWeight() {
         setWeight(getWeight());
         return getWeight();
@@ -60,6 +61,7 @@ public class ClassdiagramNote extends ClassdiagramNode {
     /*
      * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramNode#getRank()
      */
+    @Override
     public int getRank() {
         return first() == null ? 0 : first().getRank();
     }
@@ -67,6 +69,7 @@ public class ClassdiagramNote extends ClassdiagramNode {
     /*
      * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramNode#getWeight()
      */
+    @Override
     public float getWeight() {
         return first() == null ? 0 : first().getWeight() * 0.9999999f;
     }
@@ -74,6 +77,7 @@ public class ClassdiagramNote extends ClassdiagramNode {
     /*
      * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramNode#isStandalone()
      */
+    @Override
     public boolean isStandalone() {
         return first() == null ? true : first().isStandalone();
     }
@@ -84,7 +88,6 @@ public class ClassdiagramNote extends ClassdiagramNode {
      * @return A ClassdiagramNode.
      */
     private ClassdiagramNode first() {
-        return getUplinks().isEmpty() ? null : (ClassdiagramNode) getUplinks()
-            .firstElement();
+        return getUpNodes().isEmpty() ? null : getUpNodes().get(0);
     }
 }

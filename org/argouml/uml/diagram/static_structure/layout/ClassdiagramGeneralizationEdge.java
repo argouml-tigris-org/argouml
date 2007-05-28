@@ -24,7 +24,7 @@
 
 package org.argouml.uml.diagram.static_structure.layout;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.FigEdge;
 
 /**
  *
