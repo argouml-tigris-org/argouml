@@ -30,12 +30,10 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -46,7 +44,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
@@ -77,12 +74,12 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     /**
      * keys are module name, values are PluggableImport instance.
      */
-    private Hashtable modules;
+    private Hashtable<String, ImportInterface> modules;
 
     /**
      * Current language module.
      */
-    private Object currentModule;
+    private ImportInterface currentModule;
 
 
     /**
@@ -99,12 +96,11 @@ public abstract class ImportCommon implements ImportSettingsInternal {
 
     protected ImportCommon() {
         super();
-        modules = new Hashtable();
+        modules = new Hashtable<String, ImportInterface>();
 
-        Set newPlugins = ImporterManager.getInstance().getImporters();
-        for (Iterator it = newPlugins.iterator(); it.hasNext();) {
-            ModuleInterface mod = (ModuleInterface) it.next();
-            modules.put(mod.getName(), mod);
+        for (ImportInterface importer : ImporterManager.getInstance()
+                .getImporters()) {
+            modules.put(importer.getName(), importer);
         }
         if (modules.size() == 0) {
             throw new RuntimeException("Internal error. "
@@ -180,25 +176,22 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * Get the files. For old style modules, this asks the module for the list.
      * For new style modules we generate it ourselves based on their specified
      * file suffixes.
-     *
+     * @param monitor progress monitor which can be used to cancel long running 
+     * request
      * @return the list of files to be imported
      */
-    protected List getFileList() {
+    protected List getFileList(ProgressMonitor monitor) {
         List files;
-        if (currentModule instanceof ImportInterface) {
-            files = FileImportUtils.getList(
-                    getSelectedFile(), isDescendSelected(),
-                    ((ImportInterface) currentModule)
-                            .getSuffixFilters());
-            // New style importer - we did the file selection
-            if (getSelectedFile().isDirectory()) {
-                setSrcPath(getSelectedFile().getAbsolutePath());
-            } else {
-                setSrcPath(null);
-            }
+        files =
+                FileImportUtils.getList(
+                        getSelectedFile(), isDescendSelected(), currentModule
+                                .getSuffixFilters(), monitor);
+        if (getSelectedFile().isDirectory()) {
+            setSrcPath(getSelectedFile().getAbsolutePath());
         } else {
-            throw new RuntimeException("Unrecognized module type");
+            setSrcPath(null);
         }
+
 
         if (isChangedOnlySelected()) {
             // filter out all unchanged files
@@ -276,7 +269,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      */
     public abstract boolean isChangedOnlySelected();
 
-    protected Hashtable getModules() {
+    protected Hashtable<String, ImportInterface> getModules() {
         return modules;
     }
 
@@ -288,11 +281,11 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         return selectedFile;
     }
 
-    protected void setCurrentModule(Object module) {
+    protected void setCurrentModule(ImportInterface module) {
         currentModule = module;
     }
 
-    protected Object getCurrentModule() {
+    protected ImportInterface getCurrentModule() {
         return currentModule;
     }
 
@@ -301,12 +294,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * @return a list of Strings with the names of the languages available
      */
     public List getLanguages() {
-        List languages = new ArrayList();
-        Enumeration iterator = modules.keys();
-        while (iterator.hasMoreElements()) {
-            languages.add((iterator.nextElement()));
-        }
-        return languages;
+        return Collections.unmodifiableList(new ArrayList(modules.keySet()));
     }
 
     /**
@@ -433,12 +421,12 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * initialization.
      * @return a list with Strings representing the classpaths
      */
-    public List getImportClasspath() {
-        List list = new ArrayList();
+    public List<String> getImportClasspath() {
+        List<String> list = new ArrayList<String>();
         URL[] urls = ImportClassLoader.getURLs(Configuration.getString(
                 Argo.KEY_USER_IMPORT_CLASSPATH, "")); //$NON-NLS-1$
-        for (int i = 0; i < urls.length; i++) {
-            list.add(urls[i].getFile());
+        for (URL url : urls) {
+            list.add(url.getFile());
         }
         return list;
     }
@@ -493,7 +481,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         monitor.setMaximumProgress(MAX_PROGRESS_PREPARE + MAX_PROGRESS_IMPORT);
         int progress = 0;
         monitor.updateSubTask(Translator.localize("dialog.import.preImport"));
-        List files = getFileList();
+        List files = getFileList(monitor);
         progress += MAX_PROGRESS_PREPARE;
         monitor.updateProgress(progress);
         if (files.size() == 0) {
@@ -530,24 +518,22 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         initCurrentDiagram();
         final StringBuffer problems = new StringBuffer();
         Collection newElements = new HashSet();
-        if (currentModule instanceof ImportInterface) {
-            try {
-                newElements.addAll(((ImportInterface) currentModule)
-                        .parseFiles(project, filesLeft, this, monitor));
-            } catch (ImportException e) {
-                problems.append(printToBuffer(e));
-            }
-            // New style importers don't create diagrams, so we'll do it
-            // based on the list of newElements that they created
-            if (isCreateDiagramsSelected()) {
-                addFiguresToDiagrams(newElements);
-            }
-        } else {
-            throw new RuntimeException("Unrecognized module type");
+        
+        try {
+            newElements.addAll(currentModule.parseFiles(
+                    project, filesLeft, this, monitor));
+        } catch (ImportException e) {
+            problems.append(printToBuffer(e));
+        }
+        // New style importers don't create diagrams, so we'll do it
+        // based on the list of newElements that they created
+        if (isCreateDiagramsSelected()) {
+            addFiguresToDiagrams(newElements);
         }
 
         // TODO: Skip layout if problems during import?
         if (isDiagramLayoutSelected()) {
+            // TODO: Monitor is getting dismissed before layout is complete
             monitor.updateMainTask(
                     Translator.localize("dialog.import.postImport"));
             monitor.updateSubTask(
@@ -579,8 +565,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      *            created.
      */
     private void addFiguresToDiagrams(Collection newElements) {
-        for (Iterator it = newElements.iterator(); it.hasNext();) {
-            Object element = it.next();
+        for (Object element : newElements) {
             if (Model.getFacade().isAClassifier(element)
                     || Model.getFacade().isAPackage(element)) {
 

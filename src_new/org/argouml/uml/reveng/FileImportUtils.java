@@ -27,8 +27,12 @@ package org.argouml.uml.reveng;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
+import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.util.SuffixFilter;
 
 /**
@@ -36,9 +40,8 @@ import org.argouml.util.SuffixFilter;
  */
 public  class FileImportUtils {
 
-   
     /**
-     * This method returns a List of source files to import.<p>
+     * Return a List of source files to import.<p>
      *
      * Processing each file in turn is equivalent to a breadth first
      * search through the directory structure.
@@ -47,39 +50,63 @@ public  class FileImportUtils {
      * @param recurse if true, descend directory tree recursively
      * @param filters array of file suffixes to match for filtering
      * @return a list of files to be imported
+     * @deprecated for 0.25.4 by tfmorris - use 
+     * {@link #getList(File, boolean, SuffixFilter[], ProgressMonitor)}
      */
     public static List getList(File file, boolean recurse,
             SuffixFilter[] filters) {
+        return getList(file, recurse, filters, null);
+    }
+        
+    /**
+     * This method returns a List of source files to import.
+     * <p>
+     * 
+     * Processing each file in turn is equivalent to a breadth first search
+     * through the directory structure.
+     * 
+     * @param file
+     *            file or directory to import
+     * @param recurse
+     *            if true, descend directory tree recursively
+     * @param filters
+     *            array of file suffixes to match for filtering
+     * @param monitor
+     *            a progress monitor which will be monitored for cancellation
+     *            requests. (Progress updates are not provided since the amount
+     *            of time required to get the files is non-deterministic).
+     * @return a list of files to be imported
+     */
+    public static List getList(File file, boolean recurse,
+            SuffixFilter[] filters, ProgressMonitor monitor) {
         if (file == null) {
             return Collections.EMPTY_LIST;
         }
         
-	List res = new ArrayList();
+	List<File> results = new ArrayList<File>();
 
-	List toDoDirectories = new ArrayList();
-	List doneDirectories = new ArrayList();
+	List<File> toDoDirectories = new LinkedList<File>();
+	Set<File> seenDirectories = new HashSet<File>();
 
 	toDoDirectories.add(file);
 
-	while (toDoDirectories.size() > 0) {
-	    File curDir = (File) toDoDirectories.get(0);
-	    toDoDirectories.remove(0);
-	    doneDirectories.add(curDir);
+	while (!toDoDirectories.isEmpty()) {
+            if (monitor != null && monitor.isCanceled()) {
+                return results;
+            }
+	    File curDir = toDoDirectories.remove(0);
 
 	    if (!curDir.isDirectory()) {
 	        // For some reason, this alleged directory is a single file
 	        // This could be that there is some confusion or just
 	        // the normal, that a single file was selected and is
 	        // supposed to be imported.
-	        res.add(curDir);
+	        results.add(curDir);
 	        continue;
 	    }
 
 	    // Get the contents of the directory
-	    String [] files = curDir.list();
-
-	    for (int i = 0; i < files.length; i++) {
-	        File curFile = new File(curDir, files[i]);
+	    for (File curFile : curDir.listFiles()) {
 
 	        // The following test can cause trouble with
 	        // links, because links are accepted as
@@ -88,23 +115,19 @@ public  class FileImportUtils {
 	        // reason we don't do this traversing recursively.
 	        if (curFile.isDirectory()) {
 	            // If this file is a directory
-	            if (recurse) {
-	                if (doneDirectories.indexOf(curFile) >= 0
-	                        || toDoDirectories.indexOf(curFile) >= 0) {
-	                    // This one is already seen or to be seen.
-	                } else {
-	                    toDoDirectories.add(curFile);
-	                }
+	            if (recurse && !seenDirectories.contains(curFile)) {
+	                toDoDirectories.add(curFile);
+                        seenDirectories.add(curFile);
 	            }
 	        } else {
 	            if (matchesSuffix(curFile, filters)) {
-	                res.add(curFile);
+	                results.add(curFile);
 	            }
 	        }
 	    }
 	}
 
-	return res;
+	return results;
     }
 
     /**
