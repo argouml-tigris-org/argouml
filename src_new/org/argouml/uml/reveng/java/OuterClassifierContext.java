@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -71,76 +71,7 @@ class OuterClassifierContext extends Context {
 
     public Object getInterface(String name)
 	throws ClassifierNotFoundException {
-        // Search in classifier
-        Object mInterface = Model.getFacade().lookupIn(mClassifier, name);
-
-	if (mInterface == null) {
-	    Class classifier;
-	    // Try to find it via the classpath
-	    try {
-
-		// Special case for model
-		if (Model.getFacade().isAModel(mPackage)) {
-		    classifier = Class.forName(namePrefix + name);
-		}
-		else {
-                    String clazzName =
-			packageJavaName + "." + namePrefix + name;
-		    classifier =
-			Class.forName(clazzName);
-		}
-		if (classifier.isInterface()) {
-		    mInterface =
-			Model.getCoreFactory()
-			    .buildInterface(name, mClassifier);
-		}
-		else {
-		    // Only interfaces will do
-		    throw new ClassNotFoundException();
-		}
-	    }
-	    catch (ClassNotFoundException e) {
-
-                // try USER classpath
-                try {
-                    // Special case for model
-                    if (Model.getFacade().isAModel(mPackage)) {
-                        classifier = Class.forName(namePrefix + name);
-                        classifier =
-			    ImportClassLoader.getInstance()
-			        .loadClass(namePrefix + name);
-                    }
-                    else {
-                        String clazzName =
-			    packageJavaName + "." + namePrefix + name;
-                        classifier =
-			    ImportClassLoader.getInstance()
-			        .loadClass(clazzName);
-                    }
-                    if (classifier.isInterface()) {
-                        mInterface =
-			    Model.getCoreFactory()
-			        .buildInterface(name, mClassifier);
-                    }
-                    else {
-                        // Only interfaces will do
-                        throw new ClassNotFoundException();
-                    }
-
-                }
-                catch (Exception e1) {
-                    // TODO: This too broad an exception catch to just continue
-                    // with - narrow to specific expected errors that can be
-                    // ignored
-                    LOG.warn(e1);
-                    // Continue the search through the rest of the model
-                    if (getContext() != null) {
-                        mInterface = getContext().getInterface(name);
-                    }
-                }
-	    }
-        }
-        return mInterface;
+        return get(name, true);
     }
 
     /**
@@ -153,6 +84,11 @@ class OuterClassifierContext extends Context {
      * @return Found classifier.
      */
     public Object get(String name)
+        throws ClassifierNotFoundException {
+        return get(name, false);
+    }
+
+    public Object get(String name, boolean interfacesOnly)
 	throws ClassifierNotFoundException {
 	// Search in classifier
 	Object iClassifier = Model.getFacade().lookupIn(mClassifier, name);
@@ -178,9 +114,13 @@ class OuterClassifierContext extends Context {
 			    .buildInterface(name, mClassifier);
 		}
 		else {
-		    iClassifier =
-			Model.getCoreFactory()
-			    .buildClass(name, mClassifier);
+		    if (interfacesOnly) {
+		        throw new ClassNotFoundException();
+		    } else {
+		        iClassifier =
+                                Model.getCoreFactory().buildClass(
+                                        name, mClassifier);
+		    }
 		}
 	    }
 	    catch (ClassNotFoundException e) {
@@ -207,9 +147,13 @@ class OuterClassifierContext extends Context {
 			        .buildInterface(name, mClassifier);
                     }
                     else {
-                        iClassifier =
-			    Model.getCoreFactory()
-			        .buildClass(name, mClassifier);
+                        if (interfacesOnly) {
+                            throw new ClassNotFoundException();
+                        } else {
+                            iClassifier =
+                                    Model.getCoreFactory().buildClass(
+                                            name, mClassifier);
+                        }
                     }
 
                 }
@@ -223,7 +167,7 @@ class OuterClassifierContext extends Context {
                     
                     // Continue the search through the rest of the model
                     if (getContext() != null) {
-                        iClassifier = getContext().get(name);
+                        iClassifier = getContext().get(name, interfacesOnly);
                     }
                 }
 	    }

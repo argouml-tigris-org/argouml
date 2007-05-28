@@ -60,69 +60,7 @@ class PackageContext extends Context {
 
     public Object getInterface(String name)
 	throws ClassifierNotFoundException {
-        // Search in model
-        Object mInterface = Model.getFacade().lookupIn(mPackage, name);
-
-        if (mInterface == null) {
-	    Class classifier;
-
-	    // Try to find it via the classpath
-	    try {
-
-		// Special case for model
-		if (Model.getFacade().isAModel(mPackage)) {
-		    classifier = Class.forName(name);
-		}
-		else {
-                    String clazzName = javaName + "." + name;
-		    classifier =
-			Class.forName(clazzName);
-		}
-		if (classifier.isInterface()) {
-		    mInterface =
-			Model.getCoreFactory()
-			    .buildInterface(name, mPackage);
-		    setGeneratedTag(mInterface);
-		}
-	    }
-	    catch (ClassNotFoundException e) {
-		// We didn't find any interface
-                // try USER classpath
-                try {
-                    // Special case for model
-                    if (Model.getFacade().isAModel(mPackage)) {
-                        classifier =
-			    ImportClassLoader.getInstance().loadClass(name);
-                    }
-                    else {
-                        String clazzName = javaName + "." + name;
-                        classifier =
-			    ImportClassLoader.getInstance()
-			        .loadClass(clazzName);
-                    }
-		    if (classifier.isInterface()) {
-			mInterface =
-			    Model.getCoreFactory()
-			        .buildInterface(name, mPackage);
-			setGeneratedTag(mInterface);
-		    }
-                } catch (MalformedURLException e1) {
-                    LOG.warn("Classpath configuration error ", e1);
-                } catch (ClassNotFoundException e1) {
-                    // Ignore - we'll deal with this later by checking to see
-                    // if we found anything.
-                }
-	    }
-	}
-	if (mInterface == null && getContext() != null) {
-	    // Continue the search through the rest of the model
-	    mInterface = getContext().getInterface(name);
-        }
-	if (mInterface == null) {
-	    throw new ClassifierNotFoundException(name);
-	}
-
-        return mInterface;
+        return get(name, true);
     }
 
     /**
@@ -136,6 +74,21 @@ class PackageContext extends Context {
      * @throws ClassifierNotFoundException if classifier couldn't be located
      */
     public Object get(String name)
+        throws ClassifierNotFoundException {
+        return get(name, false);
+    }
+    
+    /**
+     * Get a classifier from the model. If it is not in the model, try
+     * to find it with the CLASSPATH. If found, in the classpath, the
+     * classifier is created and added to the model. If not found at
+     * all, a datatype is created and added to the model.
+     *
+     * @param name The name of the classifier to find.
+     * @return Found classifier.
+     * @throws ClassifierNotFoundException if classifier couldn't be located
+     */
+    public Object get(String name, boolean interfacesOnly)
 	throws ClassifierNotFoundException {
 	// Search in model
 	Object mClassifier = Model.getFacade().lookupIn(mPackage, name);
@@ -151,20 +104,22 @@ class PackageContext extends Context {
 		}
 		else {
                     String clazzName = javaName + "." + name;
-		    classifier =
-			Class.forName(clazzName);
+                    classifier = Class.forName(clazzName);
 		}
 		if (classifier.isInterface()) {
 		    mClassifier =
-			Model.getCoreFactory()
-			    .buildInterface(name, mPackage);
+                            Model.getCoreFactory().buildInterface(
+                                    name, mPackage);
+		} else {
+                    if (!interfacesOnly) {
+                        mClassifier =
+                                Model.getCoreFactory().buildClass(
+                                        name, mPackage);
+                    }
 		}
-		else {
-		    mClassifier =
-			Model.getCoreFactory()
-			    .buildClass(name, mPackage);
-		}
-		setGeneratedTag(mClassifier);
+                if (mClassifier != null) {
+                    setGeneratedTag(mClassifier);
+                }
 	    }
 	    catch (ClassNotFoundException e) {
 		// No class or interface found
@@ -184,14 +139,18 @@ class PackageContext extends Context {
                     }
 		    if (classifier.isInterface()) {
 			mClassifier =
-			    Model.getCoreFactory()
-			        .buildInterface(name, mPackage);
+                                Model.getCoreFactory().buildInterface(
+                                        name, mPackage);
 		    } else {
-			mClassifier =
-			    Model.getCoreFactory()
-			        .buildClass(name, mPackage);
+		        if (!interfacesOnly) {
+                            mClassifier =
+                                    Model.getCoreFactory().buildClass(
+                                            name, mPackage);
+                        }
 		    }
-		    setGeneratedTag(mClassifier);
+                    if (mClassifier != null) {
+                        setGeneratedTag(mClassifier);
+                    }
                 }
                 catch (ClassNotFoundException e1) {
                     // Ignore - we'll deal with this later by checking to see
@@ -204,21 +163,21 @@ class PackageContext extends Context {
 	if (mClassifier == null) {
 	    // Continue the search through the rest of the model
 	    if (getContext() != null) {
-		mClassifier = getContext().get(name);
-	    }
-	    else {
+		mClassifier = getContext().get(name, interfacesOnly);
+	    } else {
 		// Check for java data types
-		if (name.equals("int")
-		    || name.equals("long")
-		    || name.equals("short")
-		    || name.equals("byte")
-		    || name.equals("char")
-		    || name.equals("float")
-		    || name.equals("double")
-		    || name.equals("boolean")
-		    || name.equals("void")
-		    // How do I represent arrays in UML?
-		    || name.indexOf("[]") != -1) {
+	        if (!interfacesOnly 
+	                && name.equals("int")
+	                || name.equals("long")
+	                || name.equals("short")
+	                || name.equals("byte")
+	                || name.equals("char")
+	                || name.equals("float")
+	                || name.equals("double")
+	                || name.equals("boolean")
+	                || name.equals("void")
+	                // How do I represent arrays in UML?
+	                || name.indexOf("[]") != -1) {
 		    mClassifier =
 			Model.getCoreFactory()
 			    .buildDataType(name, mPackage);
