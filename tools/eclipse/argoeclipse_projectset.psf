@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+	<provider id="org.tigris.subversion.subclipse.core.svnnature">
+		<project reference="0.9.3,http://argoeclipse.tigris.org/svn/argoeclipse/trunk/argouml-core-resources,argoeclipse-argouml-resources"/>
+		<project reference="0.9.3,http://argoeclipse.tigris.org/svn/argoeclipse/trunk/argoeclipse/core,argoeclipse-core"/>
+		<project reference="0.9.3,http://argoeclipse.tigris.org/svn/argoeclipse/trunk/argoeclipse/feature,argoeclipse-feature"/>
+		<project reference="0.9.3,http://argoeclipse.tigris.org/svn/argoeclipse/trunk/argoeclipse/help,argoeclipse-help"/>
+		<project reference="0.9.3,http://argoeclipse.tigris.org/svn/argoeclipse/trunk/argoeclipse/rcp,argoeclipse-rcp"/>
+		<project reference="0.9.3,http://argoeclipse.tigris.org/svn/argoeclipse/trunk/argoeclipse/ui,argoeclipse-ui"/>
+		<project reference="0.9.3,http://argoeclipse.tigris.org/svn/argoeclipse/trunk/argoeclipse/update-site,argoeclipse-update-site"/>
+		<project reference="0.9.3,http://argoeclipse.tigris.org/svn/argoeclipse/trunk/www,argoeclipse-www"/>
+	</provider>
+</psf>
