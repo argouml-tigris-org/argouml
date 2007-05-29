@@ -120,10 +120,10 @@ public abstract class UmlDiagramRenderer
         }
         FigNode figNode = null;
 
-        figNode = ProjectManager.getManager().getCurrentProject()
-		.getProfileConfiguration().getFigNodeStrategy()
-		.getFigNodelForElement(node, x, y, styleAttributes);
-        
+//        figNode = ProjectManager.getManager().getCurrentProject()
+//		.getProfileConfiguration().getFigNodeStrategy()
+//		.getFigNodelForElement(node, x, y, styleAttributes);
+//        
         if (figNode != null) {
             
         } else if (Model.getFacade().isAComment(node)) {

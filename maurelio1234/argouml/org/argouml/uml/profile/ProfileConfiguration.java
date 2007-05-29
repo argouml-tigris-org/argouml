@@ -102,19 +102,19 @@ public class ProfileConfiguration {
     
     private FigNodeStrategy compositeFigNodeStrategy = new FigNodeStrategy() {
 
-	public FigNode getFigNodelForElement(Object element, int x, int y, Map styleAttributes) {
-	    FigNode res = null;
-	    
-	    Iterator it = figNodeStrategies.iterator();
-	    while(it.hasNext()) {
-		FigNodeStrategy strat = (FigNodeStrategy) it.next();
-		res = strat.getFigNodelForElement(element, x, y, styleAttributes);
-		if (res != null) {
-		    break;		    
-		}
-	    }
-	    return res;
-	}
+//	public FigNode getFigNodelForElement(Object element, int x, int y, Map styleAttributes) {
+//	    FigNode res = null;
+//	    
+//	    Iterator it = figNodeStrategies.iterator();
+//	    while(it.hasNext()) {
+//		FigNodeStrategy strat = (FigNodeStrategy) it.next();
+//		res = strat.getFigNodelForElement(element, x, y, styleAttributes);
+//		if (res != null) {
+//		    break;		    
+//		}
+//	    }
+//	    return res;
+//	}
 	
     };
     
