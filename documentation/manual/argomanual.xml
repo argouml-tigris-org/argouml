@@ -40922,7 +40922,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
     <title>The C++ Module</title>
 
-    <para>The ArgoUML C++ Module (C++ Mod.) provides C++ code 
+    <para>The ArgoUML C++ Module (C++ module) provides C++ code 
     generation functionalities and C++ notation within ArgoUML. It 
     works the same way as the other languages&apos; modules.</para>
 
@@ -40946,10 +40946,39 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       not be described here, since it is assumed that an ArgoUML user 
       that wants to model for C++ has basic knowledge of both C++ and 
       UML.</para>
+      
+      <para>The C++ module comes with a UML profile for C++, which defines 
+      <link linkend="s1.ref.stereotype"><literal>Stereotypes</literal></link> 
+      and <link linkend="s1.ref.tagdefinition"><literal>Tagged 
+      Definitions</literal></link> 
+      which enable the modeling of C++ specific constructs, such as pointers 
+      and references.
+      It also includes 
+      <link linkend="s1.ref.datatype"><literal>Data Types</literal></link> 
+      that model the C++ built-in types, such as 
+      <literal>unsigned long int</literal>.
+      </para>
+      
+      <para>To have these constructs available in our model, we need to 
+      copy them into the model explicitly via the 
+      <literal>C++ Generator</literal> settings tab, within the 
+      <literal>Settings</literal> dialog, and use the button 
+      <literal>Copy the C++ Profile into the Model</literal>.
+      </para>
 
       <para>Tagged values are one of the main means by which we can 
-      define code generation behavior. They have a name - the tag - and 
-      a value, and are applied to model elements.</para>
+      define code generation behavior. 
+      They have a name - the tag - and 
+      a value, and are applied to model elements.
+      For each of the possible Tagged values, the C++ profile contains a 
+      tag definition, which is contained in a stereotype, applicable to the 
+      models elements to which we can define a tagged value's value to specify 
+      specific behaviour.
+      So, for instance, to define that the parameter <literal>x</literal> is a 
+      reference, you apply the stereotype <literal>cppParameter</literal> to 
+      it, them you add the tagged value <literal>reference</literal> with the 
+      value <literal>true</literal>.
+      </para>
 
       <para>The tagged values in use for the C++ module have two 
       categories:</para>
@@ -40993,6 +41022,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       <sect2>
 
         <title><literal>Class</literal> tagged values</title>
+        
+        <para>To make the tag definitions applicable to a C++ class available 
+        we apply the <literal>cppClass</literal> stereotype to it.
+        </para>
 
         <variablelist>
 
@@ -41180,7 +41213,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         <title><literal>Attribute</literal> tagged values</title>
 
         <para>UML <literal>Attributes</literal> are mapped to <literal>
-        class member variables</literal>.</para>
+        class member variables</literal>.
+        To make the tag definitions applicable to a C++ member variable 
+        available we apply the <literal>cppAttribute</literal> stereotype to 
+        it.</para>
 
         <variablelist>
 
@@ -41290,6 +41326,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       <sect2>
 
         <title><literal>Parameters</literal></title>
+        
+        <para>To make the tag definitions applicable to a C++ argument 
+        available we apply the <literal>cppParameter</literal> stereotype to 
+        it.
+        </para>
 
         <sect3>
 
@@ -41347,6 +41388,89 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>ditto</para>
+
+              </listitem>
+
+            </varlistentry>
+
+          </variablelist>
+
+        </sect3>
+
+      </sect2>
+
+      <sect2>
+
+        <title><literal>Generalization</literal></title>
+        
+        <para>To make the tag definitions applicable to a C++ generalization 
+        available we apply the <literal>cppGeneralization</literal> 
+        stereotype to it.
+        </para>
+
+        <sect3>
+
+          <title><literal>Generalization</literal> tagged values</title>
+
+          <variablelist>
+
+            <varlistentry>
+
+              <term><literal>cpp_virtual_inheritance</literal></term>
+
+              <listitem>
+
+                <para><literal>true || false</literal> (default) - used to 
+                specify virtual inheritance.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+            <varlistentry>
+
+              <term><literal>cpp_inheritance_visibility</literal></term>
+
+              <listitem>
+
+                <para><literal>public</literal> (default)<literal> || private 
+                || protected</literal> &ndash; use this to specify the 
+                inheritance visibility of the generalization.</para>
+
+              </listitem>
+
+            </varlistentry>
+
+          </variablelist>
+
+        </sect3>
+
+      </sect2>
+
+      <sect2>
+
+        <title><literal>Realization</literal></title>
+        
+        <para>To make the tag definitions applicable to a C++ realization 
+        available we apply the <literal>cppRealization</literal> 
+        stereotype to it.
+        </para>
+
+        <sect3>
+
+          <title><literal>Realization</literal> tagged values</title>
+
+          <variablelist>
+
+            <varlistentry>
+
+              <term><literal>cpp_inheritance_visibility</literal></term>
+
+              <listitem>
+
+                <para><literal>public</literal> (default)<literal> || private 
+                || protected</literal> &ndash; use this to specify the 
+                inheritance visibility of the generalization.</para>
 
               </listitem>
 
