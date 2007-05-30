@@ -113,23 +113,23 @@ public final class NotationUtilityUml {
                     public void found(Object element, String value) {
                         if (Model.getFacade().isAStructuralFeature(element)) {
                             if ("false".equalsIgnoreCase(value)) {
-                                Model.getCoreHelper().setChangeability(element,
-                                    Model.getChangeableKind().getChangeable());
+                                Model.getCoreHelper().setReadOnly(element, true);
                             } else {
-                                Model.getCoreHelper().setChangeability(element,
-                                    Model.getChangeableKind().getFrozen());
+                                Model.getCoreHelper().setReadOnly(element, false);
                             }
                         }
                     }
                 });
+        
+        // TODO: AddOnly has been removed in UML 2.x, so we should phase out
+        // support of it - tfm - 20070529
         attributeSpecialStrings[assPos++] =
             new PropertySpecialString("addonly",
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         if (Model.getFacade().isAStructuralFeature(element)) {
                             if ("false".equalsIgnoreCase(value)) {
-                                Model.getCoreHelper().setChangeability(element,
-                                    Model.getChangeableKind().getChangeable());
+                                Model.getCoreHelper().setReadOnly(element, true);
                             } else {
                                 Model.getCoreHelper().setChangeability(element,
                                     Model.getChangeableKind().getAddOnly());

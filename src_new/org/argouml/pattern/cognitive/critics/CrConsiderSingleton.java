@@ -85,7 +85,7 @@ public class CrConsiderSingleton extends CrUML {
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
      *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
      */
-
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only look at classes...
@@ -110,7 +110,7 @@ public class CrConsiderSingleton extends CrUML {
             return NO_PROBLEM;
         }
 
-        	// abstract classes are hardly ever singletons
+        // abstract classes are hardly ever singletons
         if (Model.getFacade().isAbstract(dm)) {
             return NO_PROBLEM;
         }
@@ -126,11 +126,11 @@ public class CrConsiderSingleton extends CrUML {
 	    return NO_PROBLEM;
 	}
 
-	// If there is an attribute with instance scope => no problem
+	// If there is an attribute which is not static => no problem
 	Iterator iter = Model.getFacade().getAttributes(dm).iterator();
 
 	while (iter.hasNext()) {
-	    if (Model.getFacade().isInstanceScope(iter.next())) {
+	    if (!Model.getFacade().isStatic(iter.next())) {
 	        return NO_PROBLEM;
 	    }
 	}
@@ -159,5 +159,5 @@ public class CrConsiderSingleton extends CrUML {
      * The UID.
      */
     private static final long serialVersionUID = -178026888698499288L;
-} /* end class CrConsiderSingleton */
+}
 

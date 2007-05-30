@@ -84,7 +84,7 @@ public class CrConstructorNeeded extends CrUML {
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
      *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
      */
-
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only look at classes
@@ -125,13 +125,13 @@ public class CrConstructorNeeded extends CrUML {
         while (attrs.hasNext()) {
             Object attr = attrs.next();
 
-            if (!Model.getFacade().isInstanceScope(attr))
+            if (Model.getFacade().isStatic(attr))
                 continue;
 
             if (Model.getFacade().isInitialized(attr))
                 continue;
 
-            // We have found one with instance scope that is not initialized.
+            // We have found a non-static one that is not initialized.
             return PROBLEM_FOUND;
         }
 
@@ -144,6 +144,7 @@ public class CrConstructorNeeded extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *      org.argouml.cognitive.ui.Wizard)
      */
+    @Override
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddConstructor) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
@@ -163,7 +164,8 @@ public class CrConstructorNeeded extends CrUML {
     /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
+    @Override
     public Class getWizardClass(ToDoItem item) {
 	return WizAddConstructor.class;
     }
-} /* end class CrConstructorNeeded */
+}

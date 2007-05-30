@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,6 +44,7 @@ public class ActionSetChangeability extends UndoableAction {
 
     /**
      * ADDONLY_COMMAND determines a changeability kind.
+     * TODO: Removed from UML 2.x.  Phase out of UI - tfm - 20070529
      */
     public static final String ADDONLY_COMMAND = "addonly";
 
@@ -80,15 +81,16 @@ public class ActionSetChangeability extends UndoableAction {
             if (Model.getFacade().isAAssociationEnd(target)
 		|| Model.getFacade().isAAttribute(target)) {
                 Object m =  target;
-                Object kind = null;
                 if (actionCommand.equals(CHANGEABLE_COMMAND)) {
-                    kind = Model.getChangeableKind().getChangeable();
+                    Model.getCoreHelper().setReadOnly(m, false);
                 } else if (actionCommand.equals(ADDONLY_COMMAND)) {
-                    kind = Model.getChangeableKind().getAddOnly();
+                    // TODO: Removed from UML 2.x - phase out usage - tfm 20070530
+                    Model.getCoreHelper().setChangeability(
+                            m, Model.getChangeableKind().getAddOnly());
                 } else {
-                    kind = Model.getChangeableKind().getFrozen();
+                    Model.getCoreHelper().setReadOnly(m, true);
                 }
-                Model.getCoreHelper().setChangeability(m, kind);
+
             }
         }
     }
