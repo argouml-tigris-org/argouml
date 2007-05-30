@@ -49,8 +49,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
@@ -73,7 +71,7 @@ import org.tigris.gef.undo.UndoManager;
  * The Project is a datastructure that represents the designer's
  * current project. It manages the list of diagrams and UML models.
  */
-public class Project implements java.io.Serializable, TargetListener {
+public class Project implements java.io.Serializable {
 
     /**
      * Logger.
@@ -200,7 +198,6 @@ public class Project implements java.io.Serializable, TargetListener {
             LOG.error("Exception setting the default profile", e);
         }
         addSearchPath("PROJECT_DIR");
-        TargetManager.getInstance().addTargetListener(this);
     }
 
     /**
@@ -1277,44 +1274,6 @@ public class Project implements java.io.Serializable, TargetListener {
         activeDiagram = theDiagram;
     }
 
-    public void targetAdded(TargetEvent e) {
-    	setTarget(e.getNewTarget());
-    }
-
-    public void targetRemoved(TargetEvent e) {
-    	setTarget(e.getNewTarget());
-    }
-
-    public void targetSet(TargetEvent e) {
-    	setTarget(e.getNewTarget());
-    }
-
-    /**
-     * Called to update the current namespace and active diagram after
-     * the target has changed.
-     *
-     * TODO: The parameter is not used. Why?
-     * @param target Not used.
-     */
-    private void setTarget(Object target) {
-        Object theCurrentNamespace = null;
-        target = TargetManager.getInstance().getModelTarget();
-        if (target instanceof UMLDiagram) {
-            theCurrentNamespace = ((UMLDiagram) target).getNamespace();
-        } else if (Model.getFacade().isANamespace(target)) {
-            theCurrentNamespace = target;
-        } else if (Model.getFacade().isAModelElement(target)) {
-            theCurrentNamespace = Model.getFacade().getNamespace(target);
-        } else {
-            theCurrentNamespace = getRoot();
-        }
-        setCurrentNamespace(theCurrentNamespace);
-
-        if (target instanceof ArgoDiagram) {
-            activeDiagram = (ArgoDiagram) target;
-        }
-    }
-
     /**
      * Remove the project.
      */
@@ -1368,7 +1327,6 @@ public class Project implements java.io.Serializable, TargetListener {
         vetoSupport = null;
         activeDiagram = null;
 
-        TargetManager.getInstance().removeTargetListener(this);
         trashcan.clear();
     }
 
