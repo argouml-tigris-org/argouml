@@ -74,7 +74,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
             Model.getCoreHelper().getAllPossibleNamespaces(target, model);
 
         /* These next lines for the case that the current namespace
-         * is not a valid one... Which ofcourse should not happen,
+         * is not a valid one... Which of course should not happen,
          * but it does - see the project attached to issue 3772.
          */
         /* TODO: Enhance the isValidNamespace function so
