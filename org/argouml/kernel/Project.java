@@ -25,6 +25,7 @@
 package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
@@ -862,8 +863,27 @@ public class Project implements java.io.Serializable {
         // send indeterminate new value instead of making copy of vector
 	d.setProject(this);
         diagrams.add(d);
+        
+        // TODO: Remove this next line after GEF 0.12.4M4 
+        // is replaced by a newer one - it fixes a GEF bug 
+        // when removing a diagram:
         d.addVetoableChangeListener(new Vcl());
+
+        d.addPropertyChangeListener("name", new NamePCL());
         setSaveEnabled(true);
+    }
+
+    /**
+     * Listener to events from the Diagram class. <p>
+     *
+     * Purpose: changing the name of a diagram shall set the need save flag.
+     *
+     * @author Michiel
+     */
+    private class NamePCL implements PropertyChangeListener {
+        public void propertyChange(PropertyChangeEvent evt) {
+            setSaveEnabled(true);
+        }
     }
 
     /**
@@ -892,18 +912,14 @@ public class Project implements java.io.Serializable {
     }
 
     /**
-     * Listener to events from the Diagram class. <p>
+     * TODO: Remove this class after GEF 0.12.4M4 is replaced by a newer one
      *
-     * Purpose: changing the name of a diagram shall set the need save flag.
-     *
-     * @author mvw@tigris.org
+     * @author Michiel
      */
     private class Vcl implements VetoableChangeListener {
         public void vetoableChange(PropertyChangeEvent evt)
             throws PropertyVetoException {
-            if (evt.getPropertyName().equals("name")) {
-                setSaveEnabled(true);
-            }
+            //
         }
     }
 
