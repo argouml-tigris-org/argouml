@@ -82,32 +82,22 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
      * is really changed
      */
     public void testDoClick() {
-        Object spec = Model.getFacade().getOwnerScope(elem);
 	if (box == null) {
 	    return; // Inconclusive
 	}
         box.doClick();
-        assertEquals(
-                Model.getScopeKind().getClassifier(),
-                Model.getFacade().getOwnerScope(elem));
+        assertTrue(Model.getFacade().isStatic(elem));
     }
 
     /**
-     * Tests whether a change in the modelelement is reflected in the
-     * checkbox.
+     * Tests whether a change in the modelelement is reflected in the checkbox.
      */
     public void testPropertySet() {
 	if (box == null) {
 	    return; // Inconclusive
 	}
         boolean selected = box.isSelected();
-        if (selected) {
-            Model.getCoreHelper().setOwnerScope(elem,
-                    Model.getScopeKind().getInstance());
-        } else {
-            Model.getCoreHelper().setOwnerScope(elem,
-                    Model.getScopeKind().getClassifier());
-        }
+        Model.getCoreHelper().setStatic(elem, !selected);
         Model.getPump().flushModelEvents();
         assertEquals(!selected, box.isSelected());
     }

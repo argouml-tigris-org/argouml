@@ -136,10 +136,10 @@ public class TestJavaImportEnumeration extends TestCase {
                 attributeGreen != null 
                 || attributeYellow != null 
                 || attributeRed != null);
-        assertFalse("Attribute GREEN should be final.",
-                Model.getFacade().isChangeable(attributeGreen));
+        assertTrue("Attribute GREEN should be final.",
+                Model.getFacade().isReadOnly(attributeGreen));
         assertTrue("Attribute GREEN should be static.",
-                Model.getFacade().isClassifierScope(attributeGreen));
+                Model.getFacade().isStatic(attributeGreen));
 
     }
 
@@ -214,13 +214,13 @@ public class TestJavaImportEnumeration extends TestCase {
                 || attributeLow != null 
                 || attributeNormal != null
                 || attributeHigh != null);
-        assertFalse("Attribute LOW should be final.",
-                Model.getFacade().isChangeable(attributeLow));
+        assertTrue("Attribute LOW should be final.",
+                Model.getFacade().isReadOnly(attributeLow));
 
         assertFalse("Attribute valuePersist should not be private.",
                 Model.getFacade().isPrivate(attributeVP));
-        assertTrue("Attribute valuePersist should not be final.",
-                Model.getFacade().isChangeable(attributeVP));
+        assertFalse("Attribute valuePersist should not be final.",
+                Model.getFacade().isReadOnly(attributeVP));
         Object attribType = Model.getFacade().getType(attributeVP);
         assertTrue("Attribute valuePersist should have type short.",
                 "short".equals(Model.getFacade().getName(attribType)));
@@ -264,7 +264,7 @@ public class TestJavaImportEnumeration extends TestCase {
                 BODY1,
                 getBody(operationCP));
         assertTrue("Operation createPersist should be static.",
-                Model.getFacade().isClassifierScope(operationCP));
+                Model.getFacade().isStatic(operationCP));
         assertTrue("Operation getString should be public.",
                 Model.getFacade().isPublic(operationGVP));
         assertEquals("The body of operation getString is wrong.",
