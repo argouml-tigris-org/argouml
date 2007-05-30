@@ -58,6 +58,7 @@ public class CrUtilityViolated extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
         // we could check for base class of the stereotype but the
 	// condition normally covers it all.
@@ -79,18 +80,18 @@ public class CrUtilityViolated extends CrUML {
 	    if (!Model.getFacade().isAInterface(o)) {
 		Iterator it2 = Model.getFacade().getAttributes(o).iterator();
 		while (it2.hasNext()) {
-		    if (Model.getFacade().isInstanceScope(it2.next())) {
+		    if (!Model.getFacade().isStatic(it2.next())) {
 			return PROBLEM_FOUND;
 		    }
 		}
 	    }
 	    Iterator it2 = Model.getFacade().getOperations(o).iterator();
 	    while (it2.hasNext()) {
-		if (Model.getFacade().isInstanceScope(it2.next())) {
+		if (!Model.getFacade().isStatic(it2.next())) {
 		    return PROBLEM_FOUND;
 		}
 	    }
 	}
         return NO_PROBLEM;
     }
-} /* end class CrUtilityViolated */
+}

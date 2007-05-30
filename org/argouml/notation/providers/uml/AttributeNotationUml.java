@@ -156,9 +156,9 @@ public class AttributeNotationUml extends AttributeNotation {
                 if (newAttribute != null) {
                     try {
                         parseAttribute(s, newAttribute);
-                        Model.getCoreHelper().setOwnerScope(
+                        Model.getCoreHelper().setStatic(
                                 newAttribute,
-                                Model.getFacade().getOwnerScope(attribute));
+                                Model.getFacade().isStatic(attribute));
                         if (i != -1) {
                             Model.getCoreHelper().addFeature(
                                     classifier, ++i, newAttribute);

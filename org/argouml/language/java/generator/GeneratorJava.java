@@ -1600,7 +1600,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
     }
 
     private String generateScope(Object f) {
-        if (Model.getFacade().isClassifierScope(f)) {
+        if (Model.getFacade().isStatic(f)) {
             return "static ";
         }
         return "";
@@ -1627,7 +1627,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
     }
 
     private String generateChangability(Object sf) {
-        if (!Model.getFacade().isChangeable(sf)) {
+        if (Model.getFacade().isReadOnly(sf)) {
             return "final ";
         }
         return "";

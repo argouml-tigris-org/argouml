@@ -115,7 +115,7 @@ public class CrSingletonViolatedMissingStaticAttr extends CrUML {
 	while (attrs.hasNext()) {
 	    Object attr = attrs.next();
 
-	    if (!(Model.getFacade().isClassifierScope(attr))) {
+	    if (!(Model.getFacade().isStatic(attr))) {
 	        continue;
 	    }
 
@@ -128,5 +128,5 @@ public class CrSingletonViolatedMissingStaticAttr extends CrUML {
 	return PROBLEM_FOUND;
     }
 
-} /* end class CrSingletonViolatedMissingStaticAttr */
+}
 

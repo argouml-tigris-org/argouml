@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -61,14 +61,7 @@ public class ActionSetFeatureOwnerScope extends UndoableAction {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
             if (Model.getFacade().isAFeature(target)) {
-                Object m = target;
-                if (source.isSelected()) {
-                    Model.getCoreHelper().setOwnerScope(m,
-                            Model.getScopeKind().getClassifier());
-                } else {
-                    Model.getCoreHelper().setOwnerScope(m,
-                            Model.getScopeKind().getInstance());
-                }
+                Model.getCoreHelper().setStatic(target, source.isSelected());
             }
         }
     }

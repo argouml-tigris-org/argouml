@@ -55,31 +55,43 @@ public class CrNoOperations extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAClass(dm)
-            || Model.getFacade().isAInterface(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClass(dm) 
+                || Model.getFacade().isAInterface(dm))) {
+            return NO_PROBLEM;
+        }
 
-	if (!(Model.getFacade().isPrimaryObject(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isPrimaryObject(dm))) {
+            return NO_PROBLEM;
+        }
 
         // if the object does not have a name,
         // than no problem
         if ((Model.getFacade().getName(dm) == null)
-                || ("".equals(Model.getFacade().getName(dm))))
-            return NO_PROBLEM;
+                || ("".equals(Model.getFacade().getName(dm)))) {
+            return NO_PROBLEM;            
+        }
+
 
  	// types can probably contain operations, but we should not nag at them
 	// not having any.
-	if (Model.getFacade().isType(dm)) return NO_PROBLEM;
+	if (Model.getFacade().isType(dm)) {
+            return NO_PROBLEM;
+        }
 
 	// utility is a namespace collection - also not strictly
 	// required to have operations.
-	if (Model.getFacade().isUtility(dm)) return NO_PROBLEM;
+	if (Model.getFacade().isUtility(dm)) {
+            return NO_PROBLEM;
+        }
 
 	//TODO: different critic or special message for classes
 	//that inherit all ops but define none of their own.
 
-	if (findInstanceOperationInInherited(dm, 0))
+	if (findInstanceOperationInInherited(dm, 0)) {
 	    return NO_PROBLEM;
+        }
 
 	return PROBLEM_FOUND;
     }
@@ -87,6 +99,7 @@ public class CrNoOperations extends CrUML {
     /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
+    @Override
     public Icon getClarifier() {
 	return ClOperationCompartment.getTheInstance();
     }
@@ -95,8 +108,9 @@ public class CrNoOperations extends CrUML {
 	Iterator ops = Model.getFacade().getOperations(dm).iterator();
 
 	while (ops.hasNext()) {
-	    if (Model.getFacade().isInstanceScope(ops.next()))
+	    if (!Model.getFacade().isStatic(ops.next())) {
 		return true;
+            }
 	}
 
 	if (depth > 50)
@@ -110,9 +124,10 @@ public class CrNoOperations extends CrUML {
 	    if (parent == dm)
 		continue;
 
-	    if (Model.getFacade().isAClassifier(parent))
-		if (findInstanceOperationInInherited(parent, depth + 1))
-		    return true;
+	    if (Model.getFacade().isAClassifier(parent)
+                    && findInstanceOperationInInherited(parent, depth + 1)) {
+                return true;
+            }
 	}
 
 	return false;
@@ -122,6 +137,7 @@ public class CrNoOperations extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
+    @Override
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddOperation) {
 	    String ins = super.getInstructions();
@@ -134,6 +150,9 @@ public class CrNoOperations extends CrUML {
     /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
-    public Class getWizardClass(ToDoItem item) { return WizAddOperation.class; }
-} /* end class CrNoOperations */
+    @Override
+    public Class getWizardClass(ToDoItem item) {
+        return WizAddOperation.class;
+    }
+}
 

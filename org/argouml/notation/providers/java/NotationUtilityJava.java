@@ -102,7 +102,7 @@ public class NotationUtilityJava {
     }
     
     static String generateScope(Object f) {
-        if (Model.getFacade().isClassifierScope(f)) {
+        if (Model.getFacade().isStatic(f)) {
             return "static ";
         }
         return "";
@@ -113,7 +113,7 @@ public class NotationUtilityJava {
      */
     static String generateChangeability(Object obj) {
         if (Model.getFacade().isAAttribute(obj)) {
-            if (!Model.getFacade().isChangeable(obj)) {
+            if (!Model.getFacade().isReadOnly(obj)) {
                 return "final ";
             }
         } else {

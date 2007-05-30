@@ -1365,9 +1365,9 @@ public class Modeller {
             }
 
             if ((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
-                Model.getCoreHelper().setChangeable(mAttribute, false);
-            } else if (!Model.getFacade().isChangeable(mAttribute)) {
-                Model.getCoreHelper().setChangeable(mAttribute, true);
+                Model.getCoreHelper().setReadOnly(mAttribute, true);
+            } else if (Model.getFacade().isReadOnly(mAttribute)) {
+                Model.getCoreHelper().setReadOnly(mAttribute, true);
             }
             addDocumentationTag(mAttribute, javadoc);
         }
@@ -1383,7 +1383,7 @@ public class Modeller {
             Model.getCoreHelper().setType(mAssociationEnd, mClassifier);
             Model.getCoreHelper().setName(mAssociationEnd, name);
             if ((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
-                Model.getCoreHelper().setChangeable(mAssociationEnd, false);
+                Model.getCoreHelper().setReadOnly(mAssociationEnd, true);
             }
             if (!mClassifier.equals(parseState.getClassifier())) {
                 // Because if they are equal,
@@ -1820,13 +1820,8 @@ public class Modeller {
        'static'.
     */
     private void setOwnerScope(Object feature, short modifiers) {
-        if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-            Model.getCoreHelper().setOwnerScope(feature,
-                    Model.getScopeKind().getClassifier());
-        } else {
-            Model.getCoreHelper().setOwnerScope(feature,
-                    Model.getScopeKind().getInstance());
-        }
+        Model.getCoreHelper().setStatic(
+                feature, (modifiers & JavaRecognizer.ACC_STATIC) > 0);
     }
 
     /**
@@ -1837,6 +1832,8 @@ public class Modeller {
        'static'.
     */
     private void setTargetScope(Object mAssociationEnd, short modifiers) {
+        // TODO: Review what this is trying to do and what it should
+        // be replaced by.  Target Scope is gone in UML 2.x - tfm 20070529
         if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
             Model.getCoreHelper().setTargetScope(
                     mAssociationEnd,
