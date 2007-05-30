@@ -43,6 +43,7 @@ INTERFACES="ActivityGraphsFactory ActivityGraphsHelper
     OrderingKind
     PseudostateKind
     ScopeKind
+    StateMachinesFactory StateMachinesHelper
     UmlFactory UmlHelper
     UseCasesFactory UseCasesHelper
     VisibilityKind"
@@ -150,7 +151,7 @@ do
 /**
  * The implementation of the ${i} for ${MINAME}.
  */
-public class $CLASSNAME implements $i {
+class $CLASSNAME implements $i {
 
     /**
      * The model implementation.
@@ -180,7 +181,7 @@ cat >>$FILENAME <<EOF
 /**
  * The implementation of the XmiWriter for ${MINAME}.
  */
-public class $CLASSNAME implements XmiWriter {
+class $CLASSNAME implements XmiWriter {
 
     /**
      * The model implementation.
