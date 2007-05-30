@@ -158,10 +158,12 @@ public interface CoreHelper {
 
     /**
      * Return all Interfaces of which this class is a realization.
-     *
-     * @param classifier  the class you want to have the interfaces for
+     * 
+     * @param classifier
+     *            the class you want to have the interfaces for
      * @return a collection of the Interfaces
-     * @deprecated for 0.25.2 by tfmorris - use {@link Facade#getSpecifications(Object)}
+     * @deprecated for 0.25.2 by tfmorris. Use
+     *             {@link Facade#getSpecifications(Object)}
      */
     Collection getSpecifications(Object classifier);
 
@@ -888,6 +890,9 @@ public interface CoreHelper {
      * @param ck
      *            a {@link ChangeableKind} of Changeable, Frozen or AddOnly
      *            returned from {@link Model#getChangeableKind()}.
+     * @deprecated for 0.25.4 by tfmorris - use
+     *             {@link #setReadOnly(Object, boolean)}. NOTE: The UML 1.x
+     *             enum of AddOnly has no equivalent in UML 2.x.
      */
     void setChangeability(Object handle, Object ck);
 
@@ -900,11 +905,23 @@ public interface CoreHelper {
      * @param handle
      *            is the feature
      * @param changeable true for Changeable and false for Frozen.
-     * @see #setChangeability(Object, Object)
-     * 
+     * @deprecated for 0.25.4 by tfmorris - use
+     *             {@link #setReadOnly(Object, boolean)} with a negated value.
      */
     void setChangeable(Object handle, boolean changeable);
 
+    /**
+     * Set the isReadOnly (UML 2.x) or changeable (UML 1.x) attribute of a
+     * StructuralFeature or AssociationEnd.
+     * 
+     * @param handle
+     *            is the feature
+     * @param isReadOnly
+     *            true for ReadOnly (Frozen in UML 1.x).
+     * 
+     */
+    void setReadOnly(Object handle, boolean isReadOnly);
+    
     /**
      * Set the child for a generalization.
      *
@@ -1101,9 +1118,22 @@ public interface CoreHelper {
      * @param scopeKind
      *            a {@link ScopeKind} of Instance or Classifier
      *            {@link Model#getScopeKind()}.
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #setStatic}.
      */
     void setOwnerScope(Object feature, Object scopeKind);
 
+    /**
+     * Set the isStatic (UML 2.x) or ownerScope (UML 1.x) attribute of a
+     * Feature.
+     * 
+     * @param feature
+     *            Feature
+     * @param isStatic
+     *            true if static (Classifier scope in UML 1.x). False is
+     *            equivalent to the UML 1.x ScopeKind of 'Instance'.
+     * @since 0.25.4
+     */
+    void setStatic(Object feature, boolean isStatic);
 
     /**
      * Set the parameter of a TemplateParameter.
@@ -1287,6 +1317,8 @@ public interface CoreHelper {
      * @param targetScope
      *            a {@link ScopeKind} of Instance or Classifier returned from
      *            {@link Model#getScopeKind()}.
+     * @deprecated for 0.25.4 by tfmorris.  Target Scope has been removed from 
+     * the UML 2.x spec so this should not be used.
      */
     void setTargetScope(Object handle, Object targetScope);
 

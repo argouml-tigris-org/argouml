@@ -35,6 +35,7 @@ import java.util.List;
  * @author Bob Tarling
  * @author Linus Tolke
  */
+@SuppressWarnings("deprecation")
 class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
     /**
@@ -45,8 +46,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     UndoCoreHelperDecorator(CoreHelper component) {
         super(component);
     }
-
-
 
     // Helper interfaces and methods.
     /**
@@ -205,7 +204,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         }, flag, Model.getFacade().isLeaf(handle));
     }
 
-
+    @Override
     public void setChangeability(final Object handle, Object ck) {
         createMemento(new ObjectSetter() {
             public void set(Object value) {
@@ -214,7 +213,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         }, ck, Model.getFacade().getChangeability(handle));
     }
 
-
+    @Override
     public void setChangeable(final Object handle, boolean flag) {
         createMemento(new BooleanSetter() {
             public void set(boolean value) {
@@ -223,6 +222,14 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         }, flag, Model.getFacade().isChangeable(handle));
     }
 
+    @Override
+    public void setReadOnly(final Object handle, boolean flag) {
+        createMemento(new BooleanSetter() {
+            public void set(boolean value) {
+                getComponent().setReadOnly(handle, value);
+            }
+        }, flag, Model.getFacade().isReadOnly(handle));
+    }
 
     public void setConcurrency(final Object handle, Object concurrencyKind) {
         createMemento(new ObjectSetter() {
@@ -341,6 +348,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     }
 
     
+    @Override
     public void setTargetScope(final Object handle, Object scopeKind) {
         createMemento(new ObjectSetter() {
             public void set(Object value) {
@@ -350,6 +358,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     }
 
     
+    @Override
     public void setVisibility(final Object handle, Object visibility) {
         createMemento(new ObjectSetter() {
             public void set(Object value) {
@@ -696,7 +705,11 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         super.setOwnerScope(handle, os);
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
-
+    
+    public void setStatic(Object handle, boolean isStatic) {
+        super.setStatic(handle, isStatic);
+        Model.notifyMementoCreationObserver(new DummyModelMemento());
+    }
     public void setParameters(Object handle, Collection parameters) {
         super.setParameters(handle, parameters);
         Model.notifyMementoCreationObserver(new DummyModelMemento());

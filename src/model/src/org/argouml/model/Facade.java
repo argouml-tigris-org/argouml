@@ -1146,19 +1146,28 @@ public interface Facade {
     boolean isActive(Object handle);
 
     /**
-     * Recognizer for StructuralFeatures and AssociationEnds that are 
+     * Recognizer for StructuralFeatures and AssociationEnds that are
      * changeable.
-     *
-     * @param handle candidate
+     * 
+     * @param handle
+     *            candidate
      * @return true if handle is changeable
+     * @deprecated for 0.25.4 by tfmorris - use {@link #isReadOnly(Object)}.
+     *             Note that isChangeable() != !isReadOnly() because UML 1.4
+     *             also has an enum point of ADD_ONLY. This has been removed in
+     *             UML 2.x.
      */
     boolean isChangeable(Object handle);
 
     /**
      * Recognizer for Attributes and Features with classifier scope.
-     *
-     * @param handle candidate
+     * 
+     * @param handle
+     *            candidate
      * @return true if handle has classifier scope.
+     * @deprecated for 0.25.4 by tfmorris - use {@link #isStatic()} which has
+     *             the same semantics, but is compatible with the UML 2.x
+     *             naming.
      */
     boolean isClassifierScope(Object handle);
 
@@ -1229,9 +1238,12 @@ public interface Facade {
 
     /**
      * Recognizer for attributes with instance scope.
-     *
-     * @param handle candidate
+     * 
+     * @param handle
+     *            candidate
      * @return true if handle has instance scope.
+     * @deprecated for 0.25.4 by tfmorris - use !{@link #isStatic(Object)}
+     *             which is compatible with the UML 2.x naming.
      */
     boolean isInstanceScope(Object handle);
 
@@ -1521,6 +1533,7 @@ public interface Facade {
      *
      * @param handle the StructuralFeature or AssociationEnd
      * @return the Changeability
+     * @deprecated for 0.25.4 by tfmorris - use {@link #isReadOnly(Object)}
      */
     Object getChangeability(Object handle);
 
@@ -2373,9 +2386,13 @@ public interface Facade {
 
     /**
      * Get the owner scope of a feature.
-     *
-     * @param handle feature
+     * 
+     * @param handle
+     *            feature
      * @return owner scope
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #isStatic(Object)}. The
+     *             ScopeKind with only two enumerated values has been replaced
+     *             by a boolean in UML 2.x.
      */
     Object getOwnerScope(Object handle);
 
@@ -2751,9 +2768,12 @@ public interface Facade {
 
     /**
      * Return the target scope of a ModelElement.
-     *
-     * @param handle the model element
+     * 
+     * @param handle
+     *            the model element
      * @return Object
+     * @deprecated for 0.25.4 by tmorris. This has been removed from UML 2.x and
+     *             should no longer be used.
      */
     Object getTargetScope(Object handle);
 
@@ -2954,6 +2974,8 @@ public interface Facade {
     Object getAggregation(Object handle);
 
     /**
+     * Return the alias of an ElementImport.
+     * 
      * @param handle the ElementImport
      * @return the alias Name
      */
@@ -3201,4 +3223,28 @@ public interface Facade {
      * @return true if this ObjectFlowState is a synch state.
      */
     boolean isSynch(Object handle);
+    
+    /**
+     * Return the value of the isStatic attribute. This replaces the ScopeKind
+     * enumeration of UML 1.x and is equivalent to a ScopeKind of CLASSIFIER.
+     * 
+     * @param handle
+     *            the Feature
+     * @return true if the element is static
+     * @since 0.25.4
+     */
+    boolean isStatic(Object handle);
+    
+    /**
+     * Return the value of the isReadOnly attribute. This replaces the
+     * ChangeableKind enumeration of UML 1.x and is equivalent to a
+     * ChangeableKind of FROZEN. The UML 1.x enum of ADD_ONLY has been removed
+     * from UML 2.x.
+     * 
+     * @param handle
+     *            the StructuralFeature
+     * @return true if the element is readonly
+     * @since 0.25.4
+     */
+    boolean isReadOnly(Object handle);
 }

@@ -369,6 +369,8 @@ public final class Model {
      * Getter for the ChangeableKind object.
      *
      * @return The object implementing the interface.
+     * @deprecated for 0.25.4 by tfmorris.  This enumeration has been
+     * removed from UML 2.  Use the getter for the isReadOnly attribute.
      */
     public static ChangeableKind getChangeableKind() {
         return impl.getChangeableKind();
@@ -396,6 +398,8 @@ public final class Model {
      * Getter for the ScopeKind object.
      *
      * @return The object implementing the interface.
+     * @deprecated for 0.25.4 by tfmorris.  This has been removed from 
+     * UML 2.  Use the getter for the isStatic attribute instead.
      */
     public static ScopeKind getScopeKind() {
         return impl.getScopeKind();

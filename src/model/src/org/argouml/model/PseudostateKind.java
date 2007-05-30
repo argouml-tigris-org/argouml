@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,7 @@
 package org.argouml.model;
 
 /**
- * The different PseudostateKinds.
+ * Encapsulation of the enumeration PseudostateKind.
  */
 public interface PseudostateKind {
     /**
@@ -63,4 +63,22 @@ public interface PseudostateKind {
      * @return Returns the ShallowHistory PseudostateKind.
      */
     Object getShallowHistory();
+    
+    /**
+     * @return the EntryPoint kind.
+     * @since 0.25.4 UML 2.x only
+     */
+    public Object getEntryPoint();
+
+    /**
+     * @return the ExitPoint kind.
+     * @since 0.25.4 UML 2.x only
+     */
+    public Object getExitPoint();
+    
+    /**
+     * @return the Terminate kind.
+     * @since 0.25.4 UML 2.x only
+     */
+    public Object getTerminate();
 }

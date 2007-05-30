@@ -32,6 +32,7 @@ import java.util.List;
  *
  * @author Bob Tarling
  */
+@SuppressWarnings("deprecation")
 public abstract class AbstractCoreHelperDecorator implements CoreHelper {
 
     /**
@@ -118,7 +119,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         return impl.getSpecification(object);
     }
 
-    @SuppressWarnings("deprecation")
+
     public Collection getSpecifications(Object classifier) {
         return impl.getSpecifications(classifier);
     }
@@ -203,7 +204,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         return impl.getAssociationEnd(type, assoc);
     }
 
-    @SuppressWarnings("deprecation")
     public Collection getAllContents(Object clazz) {
         return impl.getAllContents(clazz);
     }
@@ -402,8 +402,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.addSupplierDependency(supplier, dependency);
     }
 
-    
-    @SuppressWarnings("deprecation")
     public void addTaggedValue(Object handle, Object taggedValue) {
         impl.addTaggedValue(handle, taggedValue);
     }
@@ -496,7 +494,11 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     public void setOwnerScope(Object handle, Object os) {
         impl.setOwnerScope(handle, os);
     }
-
+    
+    public void setStatic(Object handle, boolean isStatic) {
+        impl.setStatic(handle, isStatic);
+    }
+    
     public void setParameter(Object handle, Object parameter) {
         impl.setParameter(handle, parameter);
     }
@@ -529,12 +531,10 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.setSpecifications(handle, specifications);
     }
 
-    @SuppressWarnings("deprecation")
     public void setTaggedValue(Object handle, String tag, String value) {
         impl.setTaggedValue(handle, tag, value);
     }
 
-    @SuppressWarnings("deprecation")
     public void setTaggedValues(Object handle, Collection taggedValues) {
         impl.setTaggedValues(handle, taggedValues);
     }
@@ -570,7 +570,11 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     public void setChangeable(Object handle, boolean flag) {
         impl.setChangeable(handle, flag);
     }
-
+    
+    public void setReadOnly(Object handle, boolean isReadOnly) {
+        impl.setReadOnly(handle, isReadOnly);
+    }
+    
     public void setConcurrency(Object handle, Object concurrencyKind) {
         impl.setConcurrency(handle, concurrencyKind);
     }

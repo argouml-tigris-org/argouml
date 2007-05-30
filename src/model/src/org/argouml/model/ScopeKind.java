@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,9 @@ package org.argouml.model;
 
 /**
  * The different ScopeKinds.
+ * 
+ * @deprecated for 0.25.4 by tfmorris. This enumeration has been removed from
+ *             UML 2. Use the getter for the isStatic attribute.
  */
 public interface ScopeKind {
     /**
