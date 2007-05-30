@@ -24,6 +24,10 @@
 
 package org.argouml.uml.profile;
 
-public interface FigNodeStrategy {
+import org.tigris.gef.presentation.Fig;
 
+public interface FigNodeStrategy {
+    
+    Fig[] getExtraFiguresForNode(Object element);
+    
 }

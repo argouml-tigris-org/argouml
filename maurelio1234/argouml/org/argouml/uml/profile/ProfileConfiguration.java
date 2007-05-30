@@ -26,11 +26,11 @@
 package org.argouml.uml.profile;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Vector;
+import org.apache.log4j.Logger;
 
 import org.argouml.uml.profile.java.ProfileJava;
-import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.Fig;
 /**
  *   This class captures the configurable behavior of Argo.
  *
@@ -44,6 +44,11 @@ public class ProfileConfiguration {
     private Profile defaultProfile; 
     private Vector profiles = new Vector();
     private Vector profileModels = new Vector();
+    
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(ProfileConfiguration.class);
     
     public ProfileConfiguration() {
 	defaultProfile = new ProfileJava();
@@ -100,21 +105,25 @@ public class ProfileConfiguration {
 	}
     }
     
+    @SuppressWarnings("unchecked")
     private FigNodeStrategy compositeFigNodeStrategy = new FigNodeStrategy() {
 
-//	public FigNode getFigNodelForElement(Object element, int x, int y, Map styleAttributes) {
-//	    FigNode res = null;
-//	    
-//	    Iterator it = figNodeStrategies.iterator();
-//	    while(it.hasNext()) {
-//		FigNodeStrategy strat = (FigNodeStrategy) it.next();
-//		res = strat.getFigNodelForElement(element, x, y, styleAttributes);
-//		if (res != null) {
-//		    break;		    
-//		}
-//	    }
-//	    return res;
-//	}
+	public Fig[] getExtraFiguresForNode(Object element) {
+	    Iterator it = figNodeStrategies.iterator();
+	    Vector cont = new Vector();
+
+	    while(it.hasNext()) {
+		FigNodeStrategy strat = (FigNodeStrategy) it.next();
+		Fig[] extra = strat.getExtraFiguresForNode(element);
+
+		for(int i=0;i<extra.length;++i) {
+		    cont.add(extra[i]);
+		}
+	    }
+
+	    LOG.info("RETURNING " + cont.size() + " elements");
+	    return (Fig[])cont.toArray(new Fig[0]);
+	}
 	
     };
     

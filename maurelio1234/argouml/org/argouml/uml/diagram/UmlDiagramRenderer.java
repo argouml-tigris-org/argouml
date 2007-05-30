@@ -92,6 +92,7 @@ import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigImage;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -120,16 +121,11 @@ public abstract class UmlDiagramRenderer
         }
         FigNode figNode = null;
 
-//        figNode = ProjectManager.getManager().getCurrentProject()
-//		.getProfileConfiguration().getFigNodeStrategy()
-//		.getFigNodelForElement(node, x, y, styleAttributes);
-//        
-        if (figNode != null) {
-            
-        } else if (Model.getFacade().isAComment(node)) {
+        if (Model.getFacade().isAComment(node)) {
             figNode = new FigComment();
         } else if (Model.getFacade().isAStubState(node)) {
-            return new FigStubState();
+            //return new FigStubState();
+            figNode = new FigStubState();
         } else if (Model.getFacade().isAAssociationClass(node)) {
             figNode = new FigClassAssociationClass(node, x, y, 10, 10);
         } else if (Model.getFacade().isAClass(node)) {
@@ -222,8 +218,17 @@ public abstract class UmlDiagramRenderer
             throw new IllegalArgumentException(
                     "Failed to construct a FigNode for " + node);
         }
-        setStyleAttributes(figNode, styleAttributes);
 
+        Fig[] fig = ProjectManager.getManager().getCurrentProject()
+	    .getProfileConfiguration().getFigNodeStrategy()
+	    .getExtraFiguresForNode(node);
+
+        for(int i=0;i<fig.length;++i) {
+            figNode.addFig(fig[i]);
+        }
+        
+        setStyleAttributes(figNode, styleAttributes);
+        
         return figNode;
     }
 
