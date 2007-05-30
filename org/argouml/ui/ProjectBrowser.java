@@ -87,6 +87,7 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ProjectFileView;
 import org.argouml.uml.ui.TabProps;
@@ -1004,33 +1005,53 @@ public final class ProjectBrowser
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        Object target = e.getNewTarget();
-        if (target instanceof ArgoDiagram) {
-            titleHandler.buildTitle(null, (ArgoDiagram) target);
-        }
-        determineRemoveEnabled();
+    	targetChanged(e.getNewTarget());
     }
 
     /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        Object target = e.getNewTarget();
-        if (target instanceof ArgoDiagram) {
-            titleHandler.buildTitle(null, (ArgoDiagram) target);
-        }
-        determineRemoveEnabled();
+    	targetChanged(e.getNewTarget());
     }
 
     /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        Object target = e.getNewTarget();
+    	targetChanged(e.getNewTarget());
+    }
+    
+    /**
+     * Called to update the current namespace and active diagram after
+     * the target has changed.
+     *
+     * @param target the new target
+     */
+    private void targetChanged(Object target) {
         if (target instanceof ArgoDiagram) {
             titleHandler.buildTitle(null, (ArgoDiagram) target);
         }
         determineRemoveEnabled();
+        
+        Project p = ProjectManager.getManager().getCurrentProject();
+        
+        Object theCurrentNamespace = null;
+        target = TargetManager.getInstance().getTarget();
+        if (target instanceof UMLDiagram) {
+            theCurrentNamespace = ((UMLDiagram) target).getNamespace();
+        } else if (Model.getFacade().isANamespace(target)) {
+            theCurrentNamespace = target;
+        } else if (Model.getFacade().isAModelElement(target)) {
+            theCurrentNamespace = Model.getFacade().getNamespace(target);
+        } else {
+            theCurrentNamespace = p.getRoot();
+        }
+        p.setCurrentNamespace(theCurrentNamespace);
+
+        if (target instanceof ArgoDiagram) {
+            p.setActiveDiagram((ArgoDiagram) target);
+        }
     }
 
     /**
