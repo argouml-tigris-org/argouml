@@ -484,9 +484,13 @@ public class TestCoreFactory extends TestCase {
         
         // A parameterized class can only be the client of a single binding
         try {
-            Object binding2 = Model.getCoreFactory().buildBinding(parameterizedClass,
-                    Model.getCoreFactory().buildClass("Template2", model), null);
-            fail("Attempt to create 2nd binding for a client didn't fail as expected.");
+            Model.getCoreFactory()
+                    .buildBinding(
+                            parameterizedClass,
+                            Model.getCoreFactory().buildClass(
+                                    "Template2", model), null);
+            fail("Attempt to create 2nd binding for a client didn't fail "
+                    + "as expected.");
         } catch (IllegalArgumentException e) {
             // exception expected - test success
         }
@@ -497,7 +501,7 @@ public class TestCoreFactory extends TestCase {
         
         args.remove(0);
         try {
-            Object binding2 = Model.getCoreFactory().buildBinding(
+            Model.getCoreFactory().buildBinding(
                     parameterizedClass2, templatedClass, args);
             fail("Expected exception for mismatched number of args & params");
         } catch (IllegalArgumentException e) {
@@ -506,9 +510,10 @@ public class TestCoreFactory extends TestCase {
 
         args.add(arg1);
         try {
-            Object binding2 = Model.getCoreFactory().buildBinding(
+            Model.getCoreFactory().buildBinding(
                     parameterizedClass2, templatedClass, args);
-            fail("Expected exception for mismatched type/order of args & params");
+            fail("Expected exception for mismatched type/order of args "
+                    + "& params");
         } catch (IllegalArgumentException e) {
             // expected - test success
         }

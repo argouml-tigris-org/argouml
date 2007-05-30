@@ -45,6 +45,7 @@ public class TestFigClonable extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
@@ -55,9 +56,8 @@ public class TestFigClonable extends TestCase {
      */
     public void testBranchStateClonable() {
 	FigBranchState fig = new FigBranchState();
-	FigBranchState figclone;
-
-	figclone = (FigBranchState) fig.clone();
+	FigBranchState figClone = (FigBranchState) fig.clone();
+        assertNotNull(figClone);
     }
 
     /**
@@ -65,9 +65,8 @@ public class TestFigClonable extends TestCase {
      */
     public void testCompositeStateClonable() {
 	FigCompositeState fig = new FigCompositeState();
-	FigCompositeState figclone;
-
-	figclone = (FigCompositeState) fig.clone();
+	FigCompositeState figClone = (FigCompositeState) fig.clone();
+        assertNotNull(figClone);
     }
 
     /**
@@ -75,9 +74,8 @@ public class TestFigClonable extends TestCase {
      */
     public void testDeepHistoryStateClonable() {
 	FigDeepHistoryState fig = new FigDeepHistoryState();
-	FigDeepHistoryState figclone;
-
-	figclone = (FigDeepHistoryState) fig.clone();
+	FigDeepHistoryState figClone = (FigDeepHistoryState) fig.clone();
+        assertNotNull(figClone);
     }
 
     /**
@@ -85,9 +83,8 @@ public class TestFigClonable extends TestCase {
      */
     public void testFinalStateClonable() {
 	FigFinalState fig = new FigFinalState();
-	FigFinalState figclone;
-
-	figclone = (FigFinalState) fig.clone();
+	FigFinalState figClone = (FigFinalState) fig.clone();
+        assertNotNull(figClone);
     }
 
 
@@ -96,9 +93,8 @@ public class TestFigClonable extends TestCase {
      */
     public void testForkStateClonable() {
 	FigForkState fig = new FigForkState();
-	FigForkState figclone;
-
-	figclone = (FigForkState) fig.clone();
+	FigForkState figClone = (FigForkState) fig.clone();
+        assertNotNull(figClone);
     }
 
     /**
@@ -106,9 +102,8 @@ public class TestFigClonable extends TestCase {
      */
     public void testInitialStateClonable() {
 	FigInitialState fig = new FigInitialState();
-	FigInitialState figclone;
-
-	figclone = (FigInitialState) fig.clone();
+	FigInitialState figClone = (FigInitialState) fig.clone();
+        assertNotNull(figClone);
     }
 
 
@@ -117,9 +112,8 @@ public class TestFigClonable extends TestCase {
      */
     public void testJoinStateClonable() {
 	FigJoinState fig = new FigJoinState();
-	FigJoinState figclone;
-
-	figclone = (FigJoinState) fig.clone();
+	FigJoinState figClone = (FigJoinState) fig.clone();
+        assertNotNull(figClone);
     }
 
     /**
@@ -127,9 +121,8 @@ public class TestFigClonable extends TestCase {
      */
     public void testShallowHistoryStateClonable() {
 	FigShallowHistoryState fig = new FigShallowHistoryState();
-	FigShallowHistoryState figclone;
-
-	figclone = (FigShallowHistoryState) fig.clone();
+	FigShallowHistoryState figClone = (FigShallowHistoryState) fig.clone();
+        assertNotNull(figClone);
     }
 
     /**
@@ -137,9 +130,8 @@ public class TestFigClonable extends TestCase {
      */
     public void testSimpleStateClonable() {
 	FigSimpleState fig = new FigSimpleState();
-	FigSimpleState figclone;
-
-	figclone = (FigSimpleState) fig.clone();
+	FigSimpleState figClone = (FigSimpleState) fig.clone();
+        assertNotNull(figClone);
     }
 
 
@@ -148,9 +140,8 @@ public class TestFigClonable extends TestCase {
      */
     public void testTransitionClonable() {
 	FigTransition fig = new FigTransition();
-	FigTransition figclone;
-
-	figclone = (FigTransition) fig.clone();
+	FigTransition figClone = (FigTransition) fig.clone();
+        assertNotNull(figClone);
     }
 
 
