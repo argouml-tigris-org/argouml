@@ -118,11 +118,6 @@ import org.omg.uml.modelmanagement.UmlPackage;
  */
 final class MetaTypesMDRImpl implements MetaTypes {
 
-    /**
-     * Given a model element instance returns the name of its meta type.
-     * @param modelElement The ModelElement on which extract the name
-     * @return A string which is the metatype name of the modelElement 
-     */
     public String getName(Object modelElement) {
         Class clazz;
         if (modelElement instanceof Class) {

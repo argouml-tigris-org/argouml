@@ -1987,23 +1987,22 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Attribute attr = (Attribute) createAttribute();
             doCopyAttribute((Attribute) source, attr);
             f = attr;
-        }
-        if (source instanceof Operation) {
+        } else if (source instanceof Operation) {
             Operation oper = (Operation) createOperation();
             doCopyOperation((Operation) source, oper);
             // TODO: build a return parameter
             f = oper;
-        }
-        if (source instanceof Method) {
+        } else if (source instanceof Method) {
             Method method = (Method) createMethod();
             doCopyMethod((Method) source, method);
             f = method;
-        }
-        if (source instanceof Reception) {
+        } else if (source instanceof Reception) {
             Reception reception = (Reception) 
                 nsmodel.getCommonBehaviorFactory().createReception();
             doCopyReception((Reception) source, reception);
             f = reception;
+        } else {
+            throw new IllegalArgumentException("source: " + source);
         }
 
         f.setOwner((Classifier) classifier);

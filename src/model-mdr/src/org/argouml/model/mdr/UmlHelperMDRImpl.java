@@ -55,16 +55,6 @@ class UmlHelperMDRImpl implements UmlHelper {
         nsmodel = implementation;
     }
 
-    /**
-     * Ensures that all of the elements in a model are registered to the
-     * UmlModelListener. 
-     * 
-     * This does nothing for the MDR implementation since we get events
-     * for all model elements by default.
-     * 
-     * @param model
-     *            the UML model
-     */
     public void addListenersToModel(Object model) {
         // Nothing to do - we get all events automatically
     }

@@ -240,10 +240,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         if (!(sm instanceof StateMachine)) {
             throw new IllegalArgumentException();
         }
-        if (sm == null) {
-            return null;
-        }
-        
+
         try  {
             return ((StateMachine) sm).getTop();
         } catch (InvalidObjectException e) {

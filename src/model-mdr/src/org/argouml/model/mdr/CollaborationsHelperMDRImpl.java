@@ -119,8 +119,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         ClassifierRole role = (ClassifierRole) roleArg;
 
         try {
-            if (role == null || role.getBase().isEmpty()) {
-                return new ArrayList();
+            if (role.getBase().isEmpty()) {
+                return Collections.EMPTY_LIST;
             }
             Iterator it = role.getBase().iterator();
             Set associations = new HashSet();

@@ -100,9 +100,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
         }
-        if (ns == null) {
-            return Collections.EMPTY_LIST;
-        }
         
         List l = new ArrayList();
         // TODO: this could be a huge collection - find a more efficient way
