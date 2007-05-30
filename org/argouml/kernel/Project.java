@@ -1098,8 +1098,6 @@ public class Project implements java.io.Serializable {
                 models.remove(obj);
             }
         } else if (obj instanceof ArgoDiagram) {
-            TargetManager.getInstance().removeTarget(obj);
-            TargetManager.getInstance().removeHistoryElement(obj);
             removeProjectMemberDiagram((ArgoDiagram) obj);
             // only need to manually delete diagrams because they
             // don't have a decent event system set up.

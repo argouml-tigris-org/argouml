@@ -974,9 +974,7 @@ public final class TargetManager {
          * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
          */
         public void propertyChange(PropertyChangeEvent evt) {
-            if ((evt instanceof DeleteInstanceEvent)
-                    && "remove".equals(evt.getPropertyName())) {
-
+            if ("remove".equals(evt.getPropertyName())) {
                 remove(evt.getSource());
             }
         }

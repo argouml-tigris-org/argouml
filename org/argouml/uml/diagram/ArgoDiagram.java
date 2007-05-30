@@ -472,6 +472,7 @@ public class ArgoDiagram extends Diagram {
             Fig f = (Fig) contents.get(i);
             f.removeFromDiagram();
         }
+        firePropertyChange("remove", null, null);
         super.remove();
     }
     
