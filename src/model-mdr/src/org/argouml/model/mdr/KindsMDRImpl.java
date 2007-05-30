@@ -28,6 +28,7 @@ import org.argouml.model.AggregationKind;
 import org.argouml.model.ChangeableKind;
 import org.argouml.model.ConcurrencyKind;
 import org.argouml.model.DirectionKind;
+import org.argouml.model.NotImplementedException;
 import org.argouml.model.OrderingKind;
 import org.argouml.model.PseudostateKind;
 import org.argouml.model.ScopeKind;
@@ -44,6 +45,7 @@ import org.omg.uml.foundation.datatypes.VisibilityKindEnum;
 /**
  * Class that contains enums in the Model.
  */
+@SuppressWarnings("deprecation")
 class KindsMDRImpl implements ChangeableKind, AggregationKind,
         PseudostateKind, ScopeKind, ConcurrencyKind, DirectionKind,
         OrderingKind, VisibilityKind {
@@ -253,6 +255,21 @@ class KindsMDRImpl implements ChangeableKind, AggregationKind,
      */
     public Object getUnordered() {
         return OrderingKindEnum.OK_UNORDERED;
+    }
+
+    public Object getEntryPoint() {
+        // UML 2.x only
+        throw new NotImplementedException();
+    }
+
+    public Object getExitPoint() {
+        // UML 2.x only
+        throw new NotImplementedException();
+    }
+
+    public Object getTerminate() {
+        // UML 2.x only
+        throw new NotImplementedException();
     }
 
 }

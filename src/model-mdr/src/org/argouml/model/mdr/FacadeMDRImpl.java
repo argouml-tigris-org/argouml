@@ -1415,6 +1415,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
+    @SuppressWarnings("deprecation")
     public Object getChangeability(Object handle) {
         try {
             if (handle instanceof StructuralFeature) {
@@ -1428,6 +1429,24 @@ class FacadeMDRImpl implements Facade {
             throw new InvalidElementException(e);
         }
     }
+
+
+    public boolean isReadOnly(Object handle) {
+        ChangeableKind ck;
+        try {
+            if (handle instanceof StructuralFeature) {
+                ck = ((StructuralFeature) handle).getChangeability();
+            } else if (handle instanceof AssociationEnd) {
+                ck = ((AssociationEnd) handle).getChangeability();
+            } else {
+                return illegalArgumentBoolean(handle);
+            }
+            return ChangeableKindEnum.CK_CHANGEABLE.equals(ck);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+    }
+
 
 
     public Object getChild(Object handle) {
@@ -2867,6 +2886,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
+    @SuppressWarnings("deprecation")
     public Object getOwnerScope(Object handle) {
         try {
             if (handle instanceof Feature) {
@@ -2876,6 +2896,12 @@ class FacadeMDRImpl implements Facade {
             throw new InvalidElementException(e);
         }
         return illegalArgumentObject(handle);
+    }
+    
+    
+    public boolean isStatic(Object handle) {
+        return ((Feature) handle).getOwnerScope().equals(
+                ScopeKindEnum.SK_CLASSIFIER);
     }
 
 
@@ -4442,5 +4468,6 @@ class FacadeMDRImpl implements Facade {
             throw new IllegalArgumentException(e);
         }
     }
+
 
 }

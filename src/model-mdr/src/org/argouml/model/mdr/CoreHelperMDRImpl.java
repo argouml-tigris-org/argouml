@@ -127,6 +127,7 @@ import org.omg.uml.foundation.datatypes.ParameterDirectionKindEnum;
 import org.omg.uml.foundation.datatypes.ProcedureExpression;
 import org.omg.uml.foundation.datatypes.PseudostateKind;
 import org.omg.uml.foundation.datatypes.ScopeKind;
+import org.omg.uml.foundation.datatypes.ScopeKindEnum;
 import org.omg.uml.foundation.datatypes.VisibilityKind;
 import org.omg.uml.foundation.datatypes.VisibilityKindEnum;
 import org.omg.uml.modelmanagement.ElementImport;
@@ -2467,11 +2468,15 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
+    @SuppressWarnings("deprecation")
     public void setChangeable(Object handle, boolean flag) {
-        setChangeability(handle, flag ? ChangeableKindEnum.CK_CHANGEABLE
-                : ChangeableKindEnum.CK_FROZEN);
+        setReadOnly(handle, !flag);
     }
 
+    public void setReadOnly(Object handle, boolean isReadOnly) {
+        setChangeability(handle, isReadOnly ? ChangeableKindEnum.CK_FROZEN
+                : ChangeableKindEnum.CK_CHANGEABLE);
+    }
 
     public void setChild(Object handle, Object child) {
         if (handle instanceof Generalization) {
@@ -2645,9 +2650,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         } else if (handle instanceof TaggedValue
                 && container instanceof Stereotype) {
             ((TaggedValue) handle).getStereotype().clear();
-            if (container != null) {
-                ((TaggedValue) handle).getStereotype().add(container);
-            }
+            ((TaggedValue) handle).getStereotype().add(container);
         } else if (handle instanceof TaggedValue
                 && container instanceof ModelElement) {
             ((TaggedValue) handle).setModelElement((ModelElement) container);
@@ -2808,6 +2811,16 @@ class CoreHelperMDRImpl implements CoreHelper {
                 + os);
     }
 
+    public void setStatic(Object handle, boolean isStatic) {
+        if (handle instanceof Feature) {
+            ((Feature) handle)
+                    .setOwnerScope(isStatic ? ScopeKindEnum.SK_CLASSIFIER
+                            : ScopeKindEnum.SK_INSTANCE);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+    
     public void setParameter(Object handle, Object parameter) {
         if (handle instanceof TemplateParameter
                 && parameter instanceof ModelElement) {
