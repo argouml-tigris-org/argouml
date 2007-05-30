@@ -273,6 +273,8 @@ public class Main {
                 impl = (ModelImplementation) implType.newInstance();
             } catch (ClassNotFoundException e) {
                 reportError(e);
+            } catch (NoClassDefFoundError e) {
+                reportError(e);
             } catch (InstantiationException e) {
                 reportError(e);
             } catch (IllegalAccessException e) {
@@ -445,7 +447,7 @@ public class Main {
     /**
      * @param e The exception to be logged.
      */
-    private static void reportError(Exception e) {
+    private static void reportError(Throwable e) {
         LOG.fatal("Model component not correctly initialized.", e);
     }
 
