@@ -823,6 +823,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
+    @SuppressWarnings("deprecation")
     public boolean isChangeable(Object handle) {
         try {
             if (handle instanceof StructuralFeature) {
@@ -842,6 +843,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
+    @SuppressWarnings("deprecation")
     public boolean isClassifierScope(Object handle) {
         try {
             if (handle instanceof Attribute) {
@@ -974,6 +976,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
+    @SuppressWarnings("deprecation")
     public boolean isInstanceScope(Object handle) {
         try {
             if (handle instanceof Feature) {
@@ -1441,7 +1444,7 @@ class FacadeMDRImpl implements Facade {
             } else {
                 return illegalArgumentBoolean(handle);
             }
-            return ChangeableKindEnum.CK_CHANGEABLE.equals(ck);
+            return ChangeableKindEnum.CK_FROZEN.equals(ck);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
@@ -1794,7 +1797,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public List getFeatures(Object handle) {
+    public List<Feature> getFeatures(Object handle) {
         try {
             if (handle instanceof Classifier) {
                 return ((Classifier) handle).getFeature();
@@ -1862,11 +1865,11 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getImportedElements(Object pack) {
+    public Collection<ModelElement> getImportedElements(Object pack) {
         if (!(pack instanceof UmlPackage)) {
             return illegalArgumentCollection(pack);
         }
-        Collection results = new ArrayList();
+        Collection<ModelElement> results = new ArrayList<ModelElement>();
         try {
             /*
              * TODO: This code manually processes the ElementImports of a
@@ -1874,9 +1877,8 @@ class FacadeMDRImpl implements Facade {
              * similar automatically as part of its namespace processing.
              * - tfm - 20060408
              */
-            Collection imports = ((UmlPackage) pack).getElementImport();
-            for (Iterator it = imports.iterator(); it.hasNext();) {
-                ElementImport ei = (ElementImport) it.next();
+            Collection<ElementImport> imports = ((UmlPackage) pack).getElementImport();
+            for (ElementImport ei : imports) {
                 ModelElement element = ei.getImportedElement();
                 results.add(element);
             }
@@ -2341,7 +2343,7 @@ class FacadeMDRImpl implements Facade {
      */
     private List getModelElementAssociated(Object handle,
             boolean contentsOnly) {
-        List results = new ArrayList();
+        List<RefBaseObject> results = new ArrayList<RefBaseObject>();
 
         if (!(handle instanceof RefFeatured)) {
             throw new IllegalArgumentException(
@@ -2357,13 +2359,11 @@ class FacadeMDRImpl implements Facade {
                         + handle);
             }
             MofClass metaclass = (MofClass) metaobject;
-            List types = new ArrayList(metaclass.allSupertypes());
+            List<MofClass> types = new ArrayList<MofClass>(metaclass.allSupertypes());
             types.add(metaclass);
-            for (Iterator it = types.iterator(); it.hasNext();) {
-                MofClass s = (MofClass) it.next();
-                List contents = s.getContents();
-                for (Iterator it2 = contents.iterator(); it2.hasNext();) {
-                    getReferenceOrAttribute((RefFeatured) handle, it2.next(),
+            for (MofClass s : types) {
+                for (Object contentElement : s.getContents()) {
+                    getReferenceOrAttribute((RefFeatured) handle, contentElement,
                             results, contentsOnly);
                 }
             }
@@ -2380,7 +2380,7 @@ class FacadeMDRImpl implements Facade {
      * @param returns A Collection that {@link RefBaseObject}s are added to.
      */
     private void getReferenceOrAttribute(RefFeatured parent, Object element,
-            Collection returns, boolean contentsOnly) {
+            Collection<RefBaseObject> returns, boolean contentsOnly) {
 
         try {
             if (!(element instanceof javax.jmi.model.Attribute 
@@ -2408,14 +2408,14 @@ class FacadeMDRImpl implements Facade {
                         Object o = it.next();
                         // Only add MOF elements, not primitive datatypes
                         if (o instanceof RefBaseObject) {
-                            returns.add(o);
+                            returns.add((RefBaseObject) o);
                         }
                     }
                 }
             } else {
                 // Only add MOF elements, not primitive datatypes
                 if (refends instanceof RefBaseObject) {
-                    returns.add(refends);
+                    returns.add((RefBaseObject) refends);
                 }
             }
         } catch (InvalidObjectException e) {
@@ -2719,18 +2719,15 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public List getOperations(Object handle) {
+    public List<Operation> getOperations(Object handle) {
         if (!(handle instanceof Classifier)) {
             return illegalArgumentList(handle);
         }
-        Classifier mclassifier = (Classifier) handle;
-        List result = new ArrayList();
+        List<Operation> result = new ArrayList<Operation>();
         try {
-            Iterator features = mclassifier.getFeature().iterator();
-            while (features.hasNext()) {
-                Feature feature = (Feature) features.next();
+            for (Feature feature : getFeatures(handle)) {
                 if (feature instanceof Operation) {
-                    result.add(feature);
+                    result.add((Operation) feature);
                 }
             }
         } catch (InvalidObjectException e) {
@@ -2740,12 +2737,11 @@ class FacadeMDRImpl implements Facade {
         return result;
     }
 
-    public List getOperationsAndReceptions(Object classifier) {
-        List opsAndReceps = new ArrayList();
-        for (Iterator it = getFeatures(classifier).iterator(); it.hasNext();) {
-            Object o = it.next();
-            if (isAOperation(o) || isAReception(o)) {
-                opsAndReceps.add(o);
+    public List<Feature> getOperationsAndReceptions(Object classifier) {
+        List<Feature> opsAndReceps = new ArrayList<Feature>();
+        for (Feature f : getFeatures(classifier)) {
+            if (isAOperation(f) || isAReception(f)) {
+                opsAndReceps.add(f);
             }
         }
         return opsAndReceps;
@@ -2900,8 +2896,14 @@ class FacadeMDRImpl implements Facade {
     
     
     public boolean isStatic(Object handle) {
-        return ((Feature) handle).getOwnerScope().equals(
-                ScopeKindEnum.SK_CLASSIFIER);
+        try {
+            return ((Feature) handle).getOwnerScope().equals(
+                    ScopeKindEnum.SK_CLASSIFIER);
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException(e);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
 
