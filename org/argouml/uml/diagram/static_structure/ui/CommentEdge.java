@@ -24,6 +24,9 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import javax.management.Notification;
+import javax.management.NotificationBroadcasterSupport;
+
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.model.UUIDManager;
@@ -39,7 +42,7 @@ import org.argouml.model.UUIDManager;
  * @since Jul 17, 2004
  * @author jaap.branderhorst@xs4all.nl
  */
-public class CommentEdge {
+public class CommentEdge extends NotificationBroadcasterSupport {
     private Object source;
     private Object dest;
     private Object uuid;
@@ -147,6 +150,7 @@ public class CommentEdge {
             if (Model.getFacade().isAComment(dest))
                 Model.getCoreHelper().removeAnnotatedElement(dest, source);
         }
+        this.sendNotification(new Notification("remove", this, 0));
     }
     
     /*
