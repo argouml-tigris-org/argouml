@@ -54,7 +54,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     /**
      * The extension mechanism helper.
@@ -68,7 +68,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
      *            To get other helpers and factories.
      */
     ExtensionMechanismsFactoryMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
+        modelImpl = implementation;
         extensionHelper = implementation.getExtensionMechanismsHelper();
     }
 
@@ -76,7 +76,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
      * @see org.argouml.model.ExtensionMechanismsFactory#createTaggedValue()
      */
     public Object createTaggedValue() {
-        TaggedValue tv = nsmodel.getUmlPackage().getCore().getTaggedValue().
+        TaggedValue tv = modelImpl.getUmlPackage().getCore().getTaggedValue().
                 createTaggedValue();
         super.initialize(tv);
         return tv;
@@ -94,7 +94,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         }
         
         // Look for a TagDefinition matching the given name
-        for (Iterator i = nsmodel.getUmlPackage().getCore().getTagDefinition()
+        for (Iterator i = modelImpl.getUmlPackage().getCore().getTagDefinition()
                 .refAllOfClass().iterator(); i.hasNext();) {
             TagDefinition td = (TagDefinition) i.next();
             if (tagName.equals(td.getName())) {
@@ -103,7 +103,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         }
         
         // Create a new TagDefinition if none found
-        Object rootModel = nsmodel.getModelManagementFactory().getRootModel();
+        Object rootModel = modelImpl.getModelManagementFactory().getRootModel();
         TagDefinition td = (TagDefinition) buildTagDefinition(tagName, null,
                 rootModel);
 
@@ -145,7 +145,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
                 stereo);
         if (stereo2 != null) {
             me.getStereotype().add(stereo2);
-            nsmodel.getUmlFactory().delete(stereo);
+            modelImpl.getUmlFactory().delete(stereo);
             return stereo2;
         }
         stereo.setNamespace(ns);
@@ -166,12 +166,12 @@ class ExtensionMechanismsFactoryMDRImpl extends
 
         Stereotype stereo = buildStereotype(theName);
         stereo.getBaseClass().add(
-                nsmodel.getExtensionMechanismsHelper().getMetaModelName(me));
+                modelImpl.getExtensionMechanismsHelper().getMetaModelName(me));
         Stereotype stereo2 = (Stereotype) extensionHelper.getStereotype(models,
                 stereo);
         if (stereo2 != null) {
             me.getStereotype().add(stereo2);
-            nsmodel.getUmlFactory().delete(stereo);
+            modelImpl.getUmlFactory().delete(stereo);
             return stereo2;
         }
         stereo.setNamespace((org.omg.uml.modelmanagement.Model) model);
@@ -191,7 +191,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
      * @return an initialized stereotype.
      */
     private Stereotype buildStereotype(String text) {
-        Stereotype stereotype = nsmodel.getUmlPackage().getCore().
+        Stereotype stereotype = modelImpl.getUmlPackage().getCore().
                 getStereotype().createStereotype();
         super.initialize(stereotype);
         stereotype.setName(text);
@@ -220,8 +220,8 @@ class ExtensionMechanismsFactoryMDRImpl extends
         TagDefinition td = (TagDefinition) getTagDefinition(tag);
         td = 
             (TagDefinition) 
-            nsmodel.getModelManagementHelper().getCorrespondingElement(
-                td, nsmodel.getModelManagementFactory().getRootModel(), true);
+            modelImpl.getModelManagementHelper().getCorrespondingElement(
+                td, modelImpl.getModelManagementFactory().getRootModel(), true);
         tv.setType(td);
         // TODO: Some CASE tools appear to manage only one
         // dataValue. This is an array of String according to the
@@ -271,9 +271,9 @@ class ExtensionMechanismsFactoryMDRImpl extends
         if (!(elem instanceof Stereotype)) {
             throw new IllegalArgumentException();
         }
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 ((Stereotype) elem).getDefinedTag());
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 ((Stereotype) elem).getStereotypeConstraint());
     }
 
@@ -297,8 +297,8 @@ class ExtensionMechanismsFactoryMDRImpl extends
             throw new IllegalArgumentException();
         }
         // Delete all TaggedValues with this type
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getCore().getATypeTypedValue()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getCore().getATypeTypedValue()
                         .getTypedValue((TagDefinition) elem));
     }
 
@@ -328,7 +328,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
      *            The object becoming a copy.
      */
     private void doCopyStereotype(Stereotype source, Stereotype target) {
-        ((CoreFactoryMDRImpl) nsmodel.getCoreFactory())
+        ((CoreFactoryMDRImpl) modelImpl.getCoreFactory())
                 .doCopyGeneralizableElement(source, target);
         target.getBaseClass().clear();
         target.getBaseClass().addAll(source.getBaseClass());
@@ -371,7 +371,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
      * @see org.argouml.model.ExtensionMechanismsFactory#createTagDefinition()
      */
     public Object createTagDefinition() {
-        TagDefinition td = nsmodel.getUmlPackage().getCore().getTagDefinition()
+        TagDefinition td = modelImpl.getUmlPackage().getCore().getTagDefinition()
                 .createTagDefinition();
         super.initialize(td);
         return td;
@@ -381,7 +381,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
      * @see org.argouml.model.ExtensionMechanismsFactory#createStereotype()
      */
     public Object createStereotype() {
-        Stereotype st = nsmodel.getUmlPackage().getCore().getStereotype()
+        Stereotype st = modelImpl.getUmlPackage().getCore().getStereotype()
             .createStereotype();
         super.initialize(st);
         return st;
@@ -418,7 +418,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
      */
     private void doCopyTagDefinition(TagDefinition source, 
             TagDefinition target) {
-        ((CoreFactoryMDRImpl) nsmodel.getCoreFactory())
+        ((CoreFactoryMDRImpl) modelImpl.getCoreFactory())
                 .doCopyModelElement(source, target);
         target.setTagType(source.getTagType());
         String srcMult = org.argouml.model.Model.getFacade().toString(

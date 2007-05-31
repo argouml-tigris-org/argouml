@@ -70,7 +70,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     /**
      * Don't allow instantiation.
@@ -79,7 +79,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      *            To get other helpers and factories.
      */
     CollaborationsHelperMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
+        modelImpl = implementation;
     }
 
     /*
@@ -126,7 +126,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             Set associations = new HashSet();
             while (it.hasNext()) {
                 Classifier base = (Classifier) it.next();
-                associations.addAll(nsmodel.getCoreHelper().getAssociations(
+                associations.addAll(modelImpl.getCoreHelper().getAssociations(
                         base));
             }
             return associations;
@@ -370,11 +370,11 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
         // wellformednessrule: if the role does not have a name, the role shall
         // be the only one with the particular base
-        if (nsmodel.getFacade().getName(role) == null
-                || nsmodel.getFacade().getName(role).equals("")) {
+        if (modelImpl.getFacade().getName(role) == null
+                || modelImpl.getFacade().getName(role).equals("")) {
 
             Collaboration collab = (Collaboration) role.getNamespace();
-            ModelManagementHelper mmHelper = nsmodel.getModelManagementHelper();
+            ModelManagementHelper mmHelper = modelImpl.getModelManagementHelper();
             Collection roles = mmHelper.getAllModelElementsOfKind(collab,
                     ClassifierRole.class);
             Iterator it = roles.iterator();
@@ -387,7 +387,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             }
         }
         role.getBase().add(base);
-        if (nsmodel.getFacade().getBases(role).size() == 1) {
+        if (modelImpl.getFacade().getBases(role).size() == 1) {
             role.getAvailableContents().clear();
             role.getAvailableContents().addAll(base.getOwnedElement());
             role.getAvailableFeature().clear();
@@ -531,7 +531,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             }
         }
         if (bases.isEmpty()) {
-            ModelManagementHelper mmh = nsmodel.getModelManagementHelper();
+            ModelManagementHelper mmh = modelImpl.getModelManagementHelper();
             Namespace ns = ((Collaboration) role.getNamespace()).getNamespace();
             ret.addAll(mmh.getAllModelElementsOfKind(ns, UmlAssociation.class));
             ret.removeAll(mmh.getAllModelElementsOfKind(ns,
@@ -542,7 +542,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 Classifier base1 = (Classifier) it.next();
                 if (it.hasNext()) {
                     Classifier base2 = (Classifier) it.next();
-                    CoreHelper ch = nsmodel.getCoreHelper();
+                    CoreHelper ch = modelImpl.getCoreHelper();
                     Collection assocs = ch.getAssociations(base1, base2);
                     ret.addAll(assocs);
                 }
@@ -582,25 +582,25 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      * @return Collection all possible bases
      */
     private Collection getAllPossibleBases(ClassifierRole role) {
-        if (role == null || nsmodel.getFacade().getNamespace(role) == null) {
+        if (role == null || modelImpl.getFacade().getNamespace(role) == null) {
             return new ArrayList();
         }
         Collaboration coll = (Collaboration) role.getNamespace();
         Namespace ns = coll.getNamespace();
-        ModelManagementHelper mmh = nsmodel.getModelManagementHelper();
+        ModelManagementHelper mmh = modelImpl.getModelManagementHelper();
         Collection returnList = mmh.getAllModelElementsOfKind(ns,
                 Classifier.class);
         returnList.removeAll(mmh.getAllModelElementsOfKind(ns,
                 ClassifierRole.class));
 
-        if (nsmodel.getFacade().getName(role) == null
-                || nsmodel.getFacade().getName(role).equals("")) {
+        if (modelImpl.getFacade().getName(role) == null
+                || modelImpl.getFacade().getName(role).equals("")) {
 
             List listToRemove = new ArrayList();
             Iterator it = returnList.iterator();
             while (it.hasNext()) {
                 Classifier clazz = (Classifier) it.next();
-                Collection classifierRoles = nsmodel.getUmlPackage().
+                Collection classifierRoles = modelImpl.getUmlPackage().
                     getCollaborations().getAClassifierRoleBase().
                         getClassifierRole(clazz);
                 if (!classifierRoles.isEmpty()) {
@@ -630,7 +630,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      * @return a collection of classifiers
      */
     private Collection getAllImportedClassifiers(Object obj) {
-        Collection c = nsmodel.getModelManagementHelper()
+        Collection c = modelImpl.getModelManagementHelper()
                         .getAllImportedElements(obj);
         return filterClassifiers(c);
     }
@@ -640,7 +640,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         Iterator i = in.iterator();
         while (i.hasNext()) {
             Object o = i.next();
-            if (nsmodel.getFacade().isAClassifier(o)) 
+            if (modelImpl.getFacade().isAClassifier(o)) 
                 out.add(o);
         }
         return out;
@@ -664,16 +664,16 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                         + "this role");
             }
             role.setBase(base);
-            ClassifierRole sender = (ClassifierRole) nsmodel.getCoreHelper().
+            ClassifierRole sender = (ClassifierRole) modelImpl.getCoreHelper().
                 getSource(role);
-            ClassifierRole receiver = (ClassifierRole) nsmodel.getCoreHelper().
+            ClassifierRole receiver = (ClassifierRole) modelImpl.getCoreHelper().
                 getDestination(role);
             Collection senderBases = sender.getBase();
             Collection receiverBases = receiver.getBase();
 
-            AssociationEndRole senderRole = (AssociationEndRole) nsmodel.
+            AssociationEndRole senderRole = (AssociationEndRole) modelImpl.
                 getCoreHelper().getAssociationEnd(sender, role);
-            AssociationEndRole receiverRole = (AssociationEndRole) nsmodel.
+            AssociationEndRole receiverRole = (AssociationEndRole) modelImpl.
                 getCoreHelper().getAssociationEnd(receiver, role);
 
             if (base != null) {
@@ -778,7 +778,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
     public void removeSuccessor(Object handle, Object mess) {
         try {
             if (handle instanceof Message && mess instanceof Message) {
-                nsmodel.getUmlPackage().getCollaborations()
+                modelImpl.getUmlPackage().getCollaborations()
                         .getAPredecessorSuccessor().remove((Message) handle,
                                 (Message) mess);
                 return;
@@ -863,7 +863,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      */
     public void addSuccessor(Object handle, Object mess) {
         if (handle instanceof Message && mess instanceof Message) {
-            nsmodel.getUmlPackage().getCollaborations().
+            modelImpl.getUmlPackage().getCollaborations().
                 getAPredecessorSuccessor().add((Message) handle,
                             (Message) mess);
             return;
@@ -1017,7 +1017,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         try {
             if (collab instanceof Collaboration
                     && interaction instanceof Interaction) {
-                nsmodel.getUmlPackage().getCollaborations()
+                modelImpl.getUmlPackage().getCollaborations()
                         .getAContextInteraction().remove(
                                 (Collaboration) collab,
                                 (Interaction) interaction);

@@ -56,7 +56,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     /**
      * Don't allow instantiation.
@@ -65,14 +65,14 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *            To get other helpers and factories.
      */
     ActivityGraphsFactoryMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
+        modelImpl = implementation;
     }
 
     /*
      * @see org.argouml.model.ActivityGraphsFactory#createActionState()
      */
     public Object createActionState() {
-        ActionState myActionState = nsmodel.getUmlPackage().getActivityGraphs().
+        ActionState myActionState = modelImpl.getUmlPackage().getActivityGraphs().
             getActionState().createActionState();
         super.initialize(myActionState);
         return myActionState;
@@ -82,7 +82,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.ActivityGraphsFactory#createActivityGraph()
      */
     public Object createActivityGraph() {
-        ActivityGraph myActivityGraph = nsmodel.getUmlPackage().
+        ActivityGraph myActivityGraph = modelImpl.getUmlPackage().
             getActivityGraphs().getActivityGraph().createActivityGraph();
         super.initialize(myActivityGraph);
         return myActivityGraph;
@@ -92,7 +92,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.ActivityGraphsFactory#createCallState()
      */
     public Object createCallState() {
-        CallState myCallState = nsmodel.getUmlPackage().getActivityGraphs().
+        CallState myCallState = modelImpl.getUmlPackage().getActivityGraphs().
             getCallState().createCallState();
         super.initialize(myCallState);
         return myCallState;
@@ -102,7 +102,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.ActivityGraphsFactory#createClassifierInState()
      */
     public Object createClassifierInState() {
-        ClassifierInState myClassifierInState = nsmodel.getUmlPackage().
+        ClassifierInState myClassifierInState = modelImpl.getUmlPackage().
             getActivityGraphs().getClassifierInState().
                 createClassifierInState();
         super.initialize(myClassifierInState);
@@ -113,7 +113,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.ActivityGraphsFactory#createObjectFlowState()
      */
     public Object createObjectFlowState() {
-        ObjectFlowState myObjectFlowState = nsmodel.getUmlPackage().
+        ObjectFlowState myObjectFlowState = modelImpl.getUmlPackage().
             getActivityGraphs().getObjectFlowState().
                 createObjectFlowState();
         super.initialize(myObjectFlowState);
@@ -124,7 +124,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.ActivityGraphsFactory#createPartition()
      */
     public Object createPartition() {
-        Partition myPartition = nsmodel.getUmlPackage().getActivityGraphs().
+        Partition myPartition = modelImpl.getUmlPackage().getActivityGraphs().
             getPartition().createPartition();
         super.initialize(myPartition);
         return myPartition;
@@ -134,7 +134,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.ActivityGraphsFactory#createSubactivityState()
      */
     public Object createSubactivityState() {
-        SubactivityState mySubactivityState = nsmodel.getUmlPackage().
+        SubactivityState mySubactivityState = modelImpl.getUmlPackage().
             getActivityGraphs().getSubactivityState().
                 createSubactivityState();
         super.initialize(mySubactivityState);
@@ -155,7 +155,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 myActivityGraph.setNamespace(((BehavioralFeature) theContext).
                         getOwner());
             }
-            Object top = nsmodel.getStateMachinesFactory().
+            Object top = modelImpl.getStateMachinesFactory().
                 buildCompositeStateOnStateMachine(myActivityGraph);
             myActivityGraph.setTop((State) top);
             return myActivityGraph;

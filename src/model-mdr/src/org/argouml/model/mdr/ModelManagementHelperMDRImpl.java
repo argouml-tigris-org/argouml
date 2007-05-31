@@ -67,7 +67,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     /**
      * Don't allow instantiation.
@@ -76,7 +76,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      *            To get other helpers and factories.
      */
     ModelManagementHelperMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
+        modelImpl = implementation;
     }
 
     /*
@@ -194,7 +194,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
 
         Collection allOfType = Collections.EMPTY_LIST;
         // Get all (UML) metaclasses and search for the requested one
-        Collection metaTypes = nsmodel.getModelPackage().getMofClass()
+        Collection metaTypes = modelImpl.getModelPackage().getMofClass()
                 .refAllOfClass();
         for (Iterator it = metaTypes.iterator(); it.hasNext();) {
             MofClass elem = (MofClass) it.next();
@@ -204,7 +204,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 List names = elem.getQualifiedName();
                 // TODO: Generalize to handle more than one level of package
                 // OK for UML 1.4 because of clustering
-                RefPackage pkg = nsmodel.getUmlPackage().refPackage(
+                RefPackage pkg = modelImpl.getUmlPackage().refPackage(
                         (String) names.get(0));
                 // Get the metatype proxy and use it to find all instances
                 RefClass classProxy = pkg.refClass((String) names.get(1));
@@ -234,7 +234,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         while (current != null) {
             if (container.equals(current))
                 return true;
-            current = nsmodel.getFacade().getModelElementContainer(current);
+            current = modelImpl.getFacade().getModelElementContainer(current);
         }
         return false;
     }
@@ -293,11 +293,11 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         ArrayList features = new ArrayList();
         try {
             Collection classifiers = getAllModelElementsOfKind(ns, 
-                    nsmodel.getMetaTypes().getClassifier());
+                    modelImpl.getMetaTypes().getClassifier());
             Iterator i = classifiers.iterator();
             // Get Features owned by those Classifiers
             while (i.hasNext()) {
-                features.addAll(nsmodel.getFacade().getFeatures(i.next()));
+                features.addAll(modelImpl.getFacade().getFeatures(i.next()));
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -321,20 +321,20 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         // TODO: Fully implement this!
         
         Object container = pack;
-        Object cc = nsmodel.getFacade().getModelElementContainer(pack);
+        Object cc = modelImpl.getFacade().getModelElementContainer(pack);
         while (cc != null) {
             container = cc;
-            cc = nsmodel.getFacade().getModelElementContainer(cc);
+            cc = modelImpl.getFacade().getModelElementContainer(cc);
         }
 
         Collection mes = getAllModelElementsOfKind(container, 
-                nsmodel.getMetaTypes().getModelElement());
+                modelImpl.getMetaTypes().getModelElement());
         
         Collection vmes = new ArrayList();
         Iterator i = mes.iterator();
         while (i.hasNext()) {
             Object me = i.next();
-            if (nsmodel.getCoreHelper().isValidNamespace(me, pack)) {
+            if (modelImpl.getCoreHelper().isValidNamespace(me, pack)) {
                 vmes.add(me);
             }
         }
@@ -386,8 +386,8 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             return new Vector();
         }
 
-        path = getPath(nsmodel.getFacade().getModelElementContainer(element));
-        path.add(nsmodel.getFacade().getName(element));
+        path = getPath(modelImpl.getFacade().getModelElementContainer(element));
+        path.add(modelImpl.getFacade().getName(element));
 
         return path;
     }
@@ -415,7 +415,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         }
 
         // Trivial case
-        if (nsmodel.getFacade().getModel(elem) == model) {
+        if (modelImpl.getFacade().getModel(elem) == model) {
             return elem;
         }
 
@@ -445,7 +445,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             return null;
         }
 
-        return nsmodel.getCopyHelper().copy(elem, ns);
+        return modelImpl.getCopyHelper().copy(elem, ns);
     }
 
     /**
@@ -501,10 +501,10 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     private List getOwnerShipPath(Object elem) {
         if (elem instanceof ModelElement) {
             List ownershipPath = new ArrayList();
-            Object parent = nsmodel.getFacade().getModelElementContainer(elem);
+            Object parent = modelImpl.getFacade().getModelElementContainer(elem);
             while (parent != null) {
                 ownershipPath.add(parent);
-                parent = nsmodel.getFacade().getModelElementContainer(parent);
+                parent = modelImpl.getFacade().getModelElementContainer(parent);
             }
             return ownershipPath;
         }
@@ -560,7 +560,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             i = toAdd.iterator();
             while (i.hasNext()) {
                 ModelElement me = (ModelElement) i.next();
-                toAddEIs.add(nsmodel.getModelManagementFactory()
+                toAddEIs.add(modelImpl.getModelManagementFactory()
                         .buildElementImport(pack, me));
             }
             eis.addAll(toAddEIs);
@@ -610,33 +610,33 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
              * This part (1) is about drawing an <<import>> permission
              * between packages.
              * The part (2) below is about ModelManagement.ElementImport. */
-            Collection deps = nsmodel.getFacade().getClientDependencies(pack);
+            Collection deps = modelImpl.getFacade().getClientDependencies(pack);
             Iterator i = deps.iterator();
             while (i.hasNext()) {
                 Object dep = i.next();
                 if (dep instanceof Permission) {
-                    if (nsmodel.getExtensionMechanismsHelper()
+                    if (modelImpl.getExtensionMechanismsHelper()
                             .hasStereoType(dep, FRIEND_STEREOTYPE)) {
-                        Collection mes = nsmodel.getFacade().getSuppliers(dep);
+                        Collection mes = modelImpl.getFacade().getSuppliers(dep);
                         Iterator mei = mes.iterator();
                         while (mei.hasNext()) {
                             Object o = mei.next();
-                            if (nsmodel.getFacade().isANamespace(o)) {
+                            if (modelImpl.getFacade().isANamespace(o)) {
                                 Collection v = 
-                                    nsmodel.getFacade().getOwnedElements(o);
+                                    modelImpl.getFacade().getOwnedElements(o);
                                 c.addAll(v);
                             }
                         }
-                    } else if (nsmodel.getExtensionMechanismsHelper()
+                    } else if (modelImpl.getExtensionMechanismsHelper()
                             .hasStereoType(dep, IMPORT_STEREOTYPE)
-                            || nsmodel.getExtensionMechanismsHelper()
+                            || modelImpl.getExtensionMechanismsHelper()
                                     .hasStereoType(dep, ACCESS_STEREOTYPE)) {
-                        Collection mes = nsmodel.getFacade().getSuppliers(dep);
+                        Collection mes = modelImpl.getFacade().getSuppliers(dep);
                         Iterator mei = mes.iterator();
                         while (mei.hasNext()) {
                             Object o = mei.next();
-                            if (nsmodel.getFacade().isANamespace(o)) {
-                                Collection v = nsmodel.getCoreHelper()
+                            if (modelImpl.getFacade().isANamespace(o)) {
+                                Collection v = modelImpl.getCoreHelper()
                                         .getAllVisibleElements(o);
                                 c.addAll(v);
                             }
@@ -645,7 +645,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 }
             }
             /* TODO: This is the 2nd part of this method: */
-            Collection imports = nsmodel.getFacade().getImportedElements(pack);
+            Collection imports = modelImpl.getFacade().getImportedElements(pack);
             c.addAll(imports);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -708,7 +708,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                         results.add(element);
                     }
                 }
-                it = nsmodel.getFacade().getGeneralizations(pack).iterator();
+                it = modelImpl.getFacade().getGeneralizations(pack).iterator();
                 while (it.hasNext()) {
                     results.addAll(getAllContents(it.next()));
                 }

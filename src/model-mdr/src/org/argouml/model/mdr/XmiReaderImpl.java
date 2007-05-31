@@ -63,7 +63,6 @@ import org.netbeans.lib.jmi.xmi.UnknownElementsListener;
 import org.omg.uml.UmlPackage;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.modelmanagement.Model;
-import org.openide.ErrorManager;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
@@ -82,7 +81,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      */
     private static final Logger LOG = Logger.getLogger(XmiReaderImpl.class);
 
-    private MDRModelImplementation parent;
+    private MDRModelImplementation modelImpl;
 
     private XmiReferenceResolverImpl resolver;
 
@@ -123,7 +122,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     public XmiReaderImpl(MDRModelImplementation parentModelImplementation,
             RefPackage mp) {
 
-        parent = parentModelImplementation;
+        modelImpl = parentModelImplementation;
         modelPackage = mp;
     }
 
@@ -168,7 +167,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             config.setUnknownElementsIgnored(true);
 
             resolver = new XmiReferenceResolverImpl(new RefPackage[] {extent},
-                    config, parent.getObjectToId());
+                    config, modelImpl.getObjectToId());
             config.setReferenceResolver(resolver);
             
             XMIReader xmiReader =
@@ -205,7 +204,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             ignoredElementCount = 0;
 
             // Disable event delivery during model load
-            parent.getModelEventPump().stopPumpingEvents();
+            modelImpl.getModelEventPump().stopPumpingEvents();
 
             Collection startTopElements = getTopLevelElements();
             int numElements = startTopElements.size();
@@ -284,7 +283,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                 }
 
             } finally {
-                parent.getModelEventPump().startPumpingEvents();
+                modelImpl.getModelEventPump().startPumpingEvents();
             }
 
             if (unknownElement) {
@@ -318,7 +317,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                 } else {
                     LOG.debug("Saving profile with MofID : "
                             + model.refMofId());
-                    parent.setProfileModel(model);
+                    modelImpl.setProfileModel(model);
                 }
             }
 
@@ -364,7 +363,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      */
     private Collection getTopLevelElements() {
         Collection elements = new ArrayList();
-        UmlPackage pkg = parent.getUmlPackage();
+        UmlPackage pkg = modelImpl.getUmlPackage();
         for (Iterator it =
                 pkg.getCore().getElement().refAllOfType().iterator();
                 it.hasNext();) {

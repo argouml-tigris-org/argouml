@@ -65,7 +65,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     /**
      * The Collaborations package.
@@ -79,8 +79,8 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *            To get other helpers and factories.
      */
     CollaborationsFactoryMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
-        collabPkg = nsmodel.getUmlPackage().getCollaborations();
+        modelImpl = implementation;
+        collabPkg = modelImpl.getUmlPackage().getCollaborations();
     }
 
     /*
@@ -320,15 +320,15 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException("Argument is not a link");
         }
 
-        Object from = nsmodel.getCoreHelper().getSource(link);
-        Object to = nsmodel.getCoreHelper().getDestination(link);
+        Object from = modelImpl.getCoreHelper().getSource(link);
+        Object to = modelImpl.getCoreHelper().getDestination(link);
         Object classifierRoleFrom =
-            nsmodel.getFacade().getClassifiers(from).iterator().next();
+            modelImpl.getFacade().getClassifiers(from).iterator().next();
         Object classifierRoleTo =
-            nsmodel.getFacade().getClassifiers(to).iterator().next();
+            modelImpl.getFacade().getClassifiers(to).iterator().next();
         Object collaboration =
-            nsmodel.getFacade().getNamespace(classifierRoleFrom);
-        if (collaboration != nsmodel.getFacade().getNamespace(
+            modelImpl.getFacade().getNamespace(classifierRoleFrom);
+        if (collaboration != modelImpl.getFacade().getNamespace(
                 classifierRoleTo)) {
             throw new IllegalStateException("ClassifierRoles do not belong "
                     + "to the same collaboration");
@@ -338,8 +338,8 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                     + "null");
         }
         Object associationRole = createAssociationRole();
-        nsmodel.getCoreHelper().setNamespace(associationRole, collaboration);
-        nsmodel.getCoreHelper().addLink(associationRole, link);
+        modelImpl.getCoreHelper().setNamespace(associationRole, collaboration);
+        modelImpl.getCoreHelper().addLink(associationRole, link);
         return associationRole;
     }
 
@@ -511,7 +511,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         AssociationRole role = (AssociationRole) elem;
         Iterator it = role.getMessage().iterator();
         while (it.hasNext()) {
-            nsmodel.getUmlFactory().delete(it.next());
+            modelImpl.getUmlFactory().delete(it.next());
         }
     }
 
@@ -522,9 +522,9 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     void deleteClassifierRole(Object elem) {
         ClassifierRole cr = (ClassifierRole) elem;
         // delete Messages which have this as sender or receiver
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 collabPkg.getAMessageSender().getMessage(cr));
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 collabPkg.getAReceiverMessage().getMessage(cr));
         // TODO: delete Collaborations where this is the last ClassifierRole?
 //        Object owner = cr.refImmediateComposite();
@@ -588,7 +588,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         // we delete the Interaction
         Interaction i = message.getInteraction();
         if (i != null && i.getMessage().size() == 1) {
-            nsmodel.getUmlFactory().delete(i);
+            modelImpl.getUmlFactory().delete(i);
         }
     }
 

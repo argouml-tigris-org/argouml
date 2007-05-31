@@ -61,7 +61,7 @@ class XmiWriterMDRImpl implements XmiWriter {
 
     private Logger LOG = Logger.getLogger(XmiWriterMDRImpl.class);
 
-    private MDRModelImplementation parent;
+    private MDRModelImplementation modelImpl;
 
     private Object model;
     
@@ -108,12 +108,12 @@ class XmiWriterMDRImpl implements XmiWriter {
         if (theParent == null) {
             throw new IllegalArgumentException("A parent must be provided");
         }
-        this.parent = theParent;
+        this.modelImpl = theParent;
         this.model = theModel;
         this.writer = theWriter;
         config = new OutputConfig();
         config.setEncoding(ENCODING);
-        config.setReferenceProvider(new XmiReferenceProviderImpl(parent
+        config.setReferenceProvider(new XmiReferenceProviderImpl(modelImpl
                 .getObjectToId()));
         config.setHeaderProvider(new XmiHeaderProviderImpl(version));
     }
@@ -130,8 +130,8 @@ class XmiWriterMDRImpl implements XmiWriter {
                 elements.add(model);
                 LOG.info("Saving model '" + ((Model) model).getName() + "'");
             } else {
-                RefObject profile = parent.getProfileModel();
-                UmlPackage pkg = parent.getUmlPackage();
+                RefObject profile = modelImpl.getProfileModel();
+                UmlPackage pkg = modelImpl.getUmlPackage();
                 for (Iterator it = pkg.getCore().getElement().refAllOfType()
                         .iterator(); it.hasNext();) {
                     RefObject obj = (RefObject) it.next();

@@ -161,7 +161,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     /**
      * The meta types factory.
@@ -253,8 +253,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *            To get other helpers and factories.
      */
     UmlFactoryMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
-        metaTypes = nsmodel.getMetaTypes();
+        modelImpl = implementation;
+        metaTypes = modelImpl.getMetaTypes();
 
         buildValidConnectionMap();
     }
@@ -421,7 +421,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getState()) {
             throw new IllegalArgumentException(
                     "Attempt to instantiate abstract type");
-        } else if (elementType == nsmodel.getMetaTypes().getSimpleState()) {
+        } else if (elementType == modelImpl.getMetaTypes().getSimpleState()) {
             return getStateMachines().createSimpleState();
         } else if (elementType == metaTypes.getClassifierRole()) {
             return getCollaborations().createClassifierRole();
@@ -540,7 +540,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return the ExtensionMechanisms factory instance.
      */
     private ExtensionMechanismsFactoryMDRImpl getExtensionMechanisms() {
-        return (ExtensionMechanismsFactoryMDRImpl) nsmodel.
+        return (ExtensionMechanismsFactoryMDRImpl) modelImpl.
                 getExtensionMechanismsFactory();
     }
 
@@ -550,7 +550,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return the Core factory instance.
      */
     private CoreFactoryMDRImpl getCore() {
-        return (CoreFactoryMDRImpl) nsmodel.getCoreFactory();
+        return (CoreFactoryMDRImpl) modelImpl.getCoreFactory();
     }
 
     /**
@@ -560,7 +560,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return the CommonBehavior factory instance.
      */
     private CommonBehaviorFactoryMDRImpl getCommonBehavior() {
-        return (CommonBehaviorFactoryMDRImpl) nsmodel.
+        return (CommonBehaviorFactoryMDRImpl) modelImpl.
                 getCommonBehaviorFactory();
     }
 
@@ -571,7 +571,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return the UseCases factory instance.
      */
     private UseCasesFactoryMDRImpl getUseCases() {
-        return (UseCasesFactoryMDRImpl) nsmodel.getUseCasesFactory();
+        return (UseCasesFactoryMDRImpl) modelImpl.getUseCasesFactory();
     }
 
     /**
@@ -581,7 +581,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return the StateMachines factory instance.
      */
     private StateMachinesFactoryMDRImpl getStateMachines() {
-        return (StateMachinesFactoryMDRImpl) nsmodel.getStateMachinesFactory();
+        return (StateMachinesFactoryMDRImpl) modelImpl.getStateMachinesFactory();
     }
 
     /**
@@ -591,7 +591,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return the Collaborations factory instance.
      */
     private CollaborationsFactoryMDRImpl getCollaborations() {
-        return (CollaborationsFactoryMDRImpl) nsmodel.
+        return (CollaborationsFactoryMDRImpl) modelImpl.
                 getCollaborationsFactory();
     }
 
@@ -602,7 +602,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return the ActivityGraphs factory instance.
      */
     private ActivityGraphsFactoryMDRImpl getActivityGraphs() {
-        return (ActivityGraphsFactoryMDRImpl) nsmodel.
+        return (ActivityGraphsFactoryMDRImpl) modelImpl.
                 getActivityGraphsFactory();
     }
 
@@ -612,7 +612,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return the ModelManagement factory instance.
      */
     private ModelManagementFactoryMDRImpl getModelManagement() {
-        return (ModelManagementFactoryMDRImpl) nsmodel.
+        return (ModelManagementFactoryMDRImpl) modelImpl.
                 getModelManagementFactory();
     }
 
@@ -679,7 +679,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         // Begin a write transaction - we'll do a bunch of reads first
         // to collect a set of elements to delete - then delete them all
-        nsmodel.getRepository().beginTrans(true);
+        modelImpl.getRepository().beginTrans(true);
         try {
             // TODO: Encountering a deleted object during
             // any part of this traversal will
@@ -792,7 +792,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             LOG.error("Encountered deleted object during delete of " + elem);
         } finally {
             // Commit our transacation
-            nsmodel.getRepository().endTrans();
+            modelImpl.getRepository().endTrans();
         }
 
 

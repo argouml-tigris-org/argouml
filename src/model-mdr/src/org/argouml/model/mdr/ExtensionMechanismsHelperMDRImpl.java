@@ -70,7 +70,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     private static Map packageMap = new HashMap(16);
 
@@ -81,7 +81,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      *            To get other helpers and factories.
      */
     ExtensionMechanismsHelperMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
+        modelImpl = implementation;
         packageMap.put("core", "Core");
         packageMap.put("datatypes", "Data_Types");
         packageMap.put("commonbehavior", "Common_Behavior");
@@ -215,7 +215,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      * @return the meta name of the UML class
      */
     protected String getMetaModelName(Class clazz) {
-        return nsmodel.getMetaTypes().getName(clazz);
+        return modelImpl.getMetaTypes().getName(clazz);
     }
 
     /*
@@ -291,7 +291,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 throw new IllegalArgumentException("Invalid class" + clazz);
             }
         }
-        RefPackage pkg = nsmodel.getUmlPackage().refPackage(packageName);
+        RefPackage pkg = modelImpl.getUmlPackage().refPackage(packageName);
         RefClass myClass = pkg.refClass(className);
         RefBaseObject metaObject = myClass.refMetaObject();
 
@@ -357,11 +357,11 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void addCopyStereotype(Object modelElement, Object stereotype) {
         if (stereotype != null) {
             stereotype =
-                nsmodel.getModelManagementHelper().
+                modelImpl.getModelManagementHelper().
                     getCorrespondingElement(stereotype,
-                            nsmodel.getFacade().getModel(modelElement), true);
+                            modelImpl.getFacade().getModel(modelElement), true);
         }
-        nsmodel.getCoreHelper().addStereotype(modelElement, stereotype);
+        modelImpl.getCoreHelper().addStereotype(modelElement, stereotype);
     }
 
 
@@ -401,7 +401,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 return true;
             }
             Iterator it = 
-                nsmodel.getCoreHelper().getSupertypes(object).iterator();
+                modelImpl.getCoreHelper().getSupertypes(object).iterator();
             while (it.hasNext()) {
                 if (isStereotypeInh(it.next(), name, base)) {
                     return true;
@@ -438,7 +438,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
             }
             if (baseClass instanceof ModelElement) {
                 ((Stereotype) handle).getBaseClass().add(
-                        nsmodel.getMetaTypes().getName(baseClass));
+                        modelImpl.getMetaTypes().getName(baseClass));
                 return;
             }
         }
@@ -458,7 +458,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 }
                 if (baseClass instanceof ModelElement) {
                     ((Stereotype) handle).getBaseClass().remove(
-                            nsmodel.getMetaTypes().getName(baseClass));
+                            modelImpl.getMetaTypes().getName(baseClass));
                     return;
                 }
             }
@@ -489,9 +489,9 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
             TaggedValue tv = (TaggedValue) handle;
             if (tag instanceof TagDefinition) {
                 tag =
-                    nsmodel.getModelManagementHelper()
+                    modelImpl.getModelManagementHelper()
                         .getCorrespondingElement(tag,
-                                nsmodel.getFacade().getModel(handle), true);
+                                modelImpl.getFacade().getModel(handle), true);
                 tv.setType((TagDefinition) tag);
             } else {
                 // TODO: Remove old UML 1.3 code
@@ -503,17 +503,17 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 if (td == null) {
                     td =
                         (TagDefinition)
-                        ((ExtensionMechanismsFactoryMDRImpl) nsmodel
+                        ((ExtensionMechanismsFactoryMDRImpl) modelImpl
                             .getExtensionMechanismsFactory())
                             .getTagDefinition(tag.toString());
-                    Object model = nsmodel.getFacade().getModel(handle);
-                    if (!nsmodel.getFacade().isAModel(model)) {
+                    Object model = modelImpl.getFacade().getModel(handle);
+                    if (!modelImpl.getFacade().isAModel(model)) {
                         model = 
-                            nsmodel.getModelManagementFactory().getRootModel();
+                            modelImpl.getModelManagementFactory().getRootModel();
                     }
                     td = 
                         (TagDefinition) 
-                        nsmodel.getModelManagementHelper()
+                        modelImpl.getModelManagementHelper()
                             .getCorrespondingElement(
                                 td, model, 
                                 true);
@@ -579,7 +579,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void setTaggedValue(Object handle, Collection taggedValues) {
         if (handle instanceof ModelElement) {
             Collection tv =
-                nsmodel.getFacade().getTaggedValuesCollection(handle);
+                modelImpl.getFacade().getTaggedValuesCollection(handle);
             if (!tv.isEmpty()) {
                 Vector tvs = new Vector(tv);
                 Iterator toRemove = tvs.iterator();
@@ -612,13 +612,13 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void setType(Object handle, Object type) {
         if (type == null || type instanceof TagDefinition) {
             if (handle instanceof TaggedValue) {
-                Object model = nsmodel.getFacade().getModel(handle);
-                if (!nsmodel.getFacade().isAModel(model)) {
+                Object model = modelImpl.getFacade().getModel(handle);
+                if (!modelImpl.getFacade().isAModel(model)) {
                     model = 
-                        nsmodel.getModelManagementFactory().getRootModel();
+                        modelImpl.getModelManagementFactory().getRootModel();
                 }
                 type = 
-                    nsmodel.getModelManagementHelper().getCorrespondingElement(
+                    modelImpl.getModelManagementHelper().getCorrespondingElement(
                         type, model, true);
                 ((TaggedValue) handle).setType((TagDefinition) type);
                 return;
@@ -633,11 +633,11 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      */
     public boolean hasStereoType(Object handle, String name) {
         try {
-            Collection sts = nsmodel.getFacade().getStereotypes(handle);
+            Collection sts = modelImpl.getFacade().getStereotypes(handle);
             Iterator i = sts.iterator();
             while (i.hasNext()) {
                 Object st = i.next();
-                if (name.equals(nsmodel.getFacade().getName(st))) {
+                if (name.equals(modelImpl.getFacade().getName(st))) {
                     return true;
                 }
             }

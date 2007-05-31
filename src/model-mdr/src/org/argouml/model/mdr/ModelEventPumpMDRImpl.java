@@ -86,7 +86,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     private static final Logger LOG =
         Logger.getLogger(ModelEventPumpMDRImpl.class);
 
-    private MDRModelImplementation modelImplementation;
+    private MDRModelImplementation modelImpl;
 
     private Object lock = new Byte[0];
 
@@ -127,9 +127,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     public ModelEventPumpMDRImpl(MDRModelImplementation implementation,
             MDRepository repo) {
         super();
-        modelImplementation = implementation;
+        modelImpl = implementation;
         repository = repo;
-        subtypeMap = buildTypeMap(modelImplementation.getModelPackage());
+        subtypeMap = buildTypeMap(modelImpl.getModelPackage());
     }
     
     /*
@@ -398,9 +398,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Firing "
-                    + modelImplementation.getMetaTypes().getName(event)
+                    + modelImpl.getMetaTypes().getName(event)
                     + " source "
-                    + modelImplementation.getMetaTypes().getName(
+                    + modelImpl.getMetaTypes().getName(
                             event.getSource())
                     + " [" + ((MDRObject) event.getSource()).refMofId()
                     + "]."  + event.getPropertyName()
@@ -424,9 +424,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             // OR the logging for every event which is fired - not both
             if (false/*LOG.isDebugEnabled()*/) {
                 LOG.debug("No listener for "
-                        + modelImplementation.getMetaTypes().getName(event)
+                        + modelImpl.getMetaTypes().getName(event)
                         + " source "
-                        + modelImplementation.getMetaTypes().getName(
+                        + modelImpl.getMetaTypes().getName(
                                 event.getSource())
                         + " ["
                         + ((MDRObject) event.getSource()).refMofId() + "]."
@@ -509,7 +509,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             String className = getClassName(modelClass);
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Register class ["
-                        + modelImplementation.getMetaTypes().getName(modelClass)
+                        + modelImpl.getMetaTypes().getName(modelClass)
                         + "properties:" + formatArray(propertyNames)
                         + ", listener:" + listener + "]");
             }
@@ -558,7 +558,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     }
 
     private String getClassName(Object elementOrClass) {
-        return modelImplementation.getMetaTypes().getName(elementOrClass);
+        return modelImpl.getMetaTypes().getName(elementOrClass);
     }
 
     /*
@@ -775,13 +775,13 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     private String formatElement(Object element) {
         try {
             if (element instanceof MDRObject) {
-                return modelImplementation.getMetaTypes().getName(element)
+                return modelImpl.getMetaTypes().getName(element)
                         + "<" + ((MDRObject) element).refMofId() + ">";
             } else if (element != null) {
                 return element.toString();
             }
         } catch (InvalidObjectException e) {
-            return modelImplementation.getMetaTypes().getName(element)
+            return modelImpl.getMetaTypes().getName(element)
                     + "<deleted>";
         }
         return null;

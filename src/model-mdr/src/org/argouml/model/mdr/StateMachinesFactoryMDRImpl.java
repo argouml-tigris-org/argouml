@@ -79,7 +79,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
     
     /**
      * The State Machine Package proxy 
@@ -93,8 +93,8 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *            To get other helpers and factories.
      */
     StateMachinesFactoryMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
-        smPackage = nsmodel.getUmlPackage().getStateMachines();
+        modelImpl = implementation;
+        smPackage = modelImpl.getUmlPackage().getStateMachines();
 
     }
 
@@ -249,7 +249,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     public Object buildStateMachine(Object oContext) {
         if (oContext != null
-                && (nsmodel.getStateMachinesHelper().
+                && (modelImpl.getStateMachinesHelper().
                         isAddingStatemachineAllowed(oContext))) {
             
             StateMachine machine = (StateMachine) createStateMachine();
@@ -417,7 +417,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             Transition trans = (Transition) createTransition();
             trans.setSource((StateVertex) source);
             trans.setTarget((StateVertex) target);
-            trans.setStateMachine((StateMachine) nsmodel.
+            trans.setStateMachine((StateMachine) modelImpl.
                     getStateMachinesHelper().getStateMachine(source));
             return trans;
         }
@@ -447,7 +447,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         String operationName = (name.indexOf("(") > 0) ? name.substring(0,
                 name.indexOf("(")).trim() : name.trim();
         evt.setName(operationName);
-        Object op = nsmodel.getStateMachinesHelper().findOperationByName(trans,
+        Object op = modelImpl.getStateMachinesHelper().findOperationByName(trans,
                 operationName);
         if (op != null) {
             evt.setOperation((Operation) op);
@@ -492,7 +492,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         TimeEvent event = (TimeEvent) createTimeEvent();
         event.setNamespace((Namespace) ns);
         event.setName("");
-        Object te = nsmodel.getDataTypesFactory().createTimeExpression("", s);
+        Object te = modelImpl.getDataTypesFactory().createTimeExpression("", s);
         event.setWhen((TimeExpression) te);
         return event;
     }
@@ -514,7 +514,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         ChangeEvent event = (ChangeEvent) createChangeEvent();
         event.setNamespace((Namespace) ns);
         event.setName("");
-        Object ce = nsmodel.getDataTypesFactory()
+        Object ce = modelImpl.getDataTypesFactory()
                 .createBooleanExpression("", s);
         event.setChangeExpression((BooleanExpression) ce);
         return event;
@@ -572,7 +572,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         Iterator it = vertices.iterator();
         while (it.hasNext()) {
             StateVertex vertex = (StateVertex) it.next();
-            nsmodel.getUmlFactory().delete(vertex);
+            modelImpl.getUmlFactory().delete(vertex);
         }
     }
 
@@ -652,10 +652,10 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         // associated by composition
         State top = (State) Model.getFacade().getTop(elem);
         if (top != null) {
-            nsmodel.getUmlFactory().delete(top);
+            modelImpl.getUmlFactory().delete(top);
         }
         
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 ((StateMachine) elem).getSubmachineState());
     }
 
@@ -671,9 +671,9 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException();
         }
 
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 ((StateVertex) elem).getIncoming());
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 ((StateVertex) elem).getOutgoing());
 
     }

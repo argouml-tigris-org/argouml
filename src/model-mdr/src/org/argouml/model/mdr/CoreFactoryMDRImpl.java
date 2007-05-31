@@ -114,7 +114,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     /**
      * The MDR core package for model element construction
@@ -128,8 +128,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *            To get other helpers and factories.
      */
     CoreFactoryMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
-        corePackage = nsmodel.getUmlPackage().getCore();
+        modelImpl = implementation;
+        corePackage = modelImpl.getUmlPackage().getCore();
     }
 
     /*
@@ -490,7 +490,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         UmlAssociation assoc = (UmlAssociation) createAssociation();
         assoc.setName("");
-        assoc.setNamespace((Namespace) nsmodel.getCoreHelper().
+        assoc.setNamespace((Namespace) modelImpl.getCoreHelper().
                 getFirstSharedNamespace(ns1, ns2));
         buildAssociationEnd(assoc, null, c1, null, null,
                 nav1, null, agg1, null, null, null);
@@ -524,7 +524,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         UmlAssociation assoc = (UmlAssociation) createAssociation();
         assoc.setName("");
-        assoc.setNamespace((Namespace) nsmodel.getCoreHelper().
+        assoc.setNamespace((Namespace) modelImpl.getCoreHelper().
                 getFirstSharedNamespace(ns1, ns2));
 
         boolean nav1 = true;
@@ -721,7 +721,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * Get a 1..1 multiplicity
      */
     private Multiplicity getMultiplicity11() {
-        return (Multiplicity) nsmodel.getDataTypesFactory().createMultiplicity(
+        return (Multiplicity) modelImpl.getDataTypesFactory().createMultiplicity(
                 1, 1);
     }
 
@@ -823,7 +823,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // Force type element into given namespace if not already there
         // side effect!
         if (model != clsType.getNamespace()
-                && !(nsmodel.getModelManagementHelper().getAllNamespaces(model).
+                && !(modelImpl.getModelManagementHelper().getAllNamespaces(model).
                         contains(clsType.getNamespace()))) {
             clsType.setNamespace((Model) model);
         }
@@ -907,7 +907,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     public Object buildClass(Object owner) {
         Object clazz = buildClass();
         if (owner instanceof Namespace) {
-            nsmodel.getCoreHelper().setNamespace(clazz, owner);
+            modelImpl.getCoreHelper().setNamespace(clazz, owner);
         }
         return clazz;
     }
@@ -917,7 +917,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     public Object buildClass(String name) {
         Object clazz = buildClass();
-        nsmodel.getCoreHelper().setName(clazz, name);
+        modelImpl.getCoreHelper().setName(clazz, name);
         return clazz;
     }
 
@@ -927,9 +927,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     public Object buildClass(String name, Object owner) {
         Object clazz = buildClass();
-        nsmodel.getCoreHelper().setName(clazz, name);
+        modelImpl.getCoreHelper().setName(clazz, name);
         if (owner instanceof Namespace) {
-            nsmodel.getCoreHelper().setNamespace(clazz, /* MNamespace */owner);
+            modelImpl.getCoreHelper().setNamespace(clazz, /* MNamespace */owner);
         }
         return clazz;
     }
@@ -1053,7 +1053,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         // TODO: In addition to "import," a Permission can also take "friend"
         // and "access" stereotypes, each with its own semantics
-        nsmodel.getExtensionMechanismsFactory().buildStereotype(per, 
+        modelImpl.getExtensionMechanismsFactory().buildStereotype(per, 
                 ModelManagementHelper.IMPORT_STEREOTYPE,
                 per.getNamespace());
         return per;
@@ -1252,10 +1252,10 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else {
             ns = (Namespace) model;
         }
-        nsmodel.getExtensionMechanismsFactory().buildStereotype(realization,
+        modelImpl.getExtensionMechanismsFactory().buildStereotype(realization,
                 CoreFactory.REALIZE_STEREOTYPE, ns);
-        nsmodel.getCoreHelper().addClientDependency(client, realization);
-        nsmodel.getCoreHelper().addSupplierDependency(supplier, realization);
+        modelImpl.getCoreHelper().addClientDependency(client, realization);
+        modelImpl.getCoreHelper().addSupplierDependency(supplier, realization);
         return realization;
     }
 
@@ -1459,11 +1459,11 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         UmlAssociation assoc = ae.getAssociation();
         if (assoc != null && assoc.getConnection() != null
                 && assoc.getConnection().size() == 2) { // binary association
-            nsmodel.getUmlFactory().delete(assoc);
+            modelImpl.getUmlFactory().delete(assoc);
         }
         // delete LinkEnds which have this as their associationEnd
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getCommonBehavior()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getCommonBehavior()
                         .getAAssociationEndLinkEnd().getLinkEnd(ae));
     }
 
@@ -1476,8 +1476,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("elem: " + elem);
         }
         // delete AttributeLinks where this is the Attribute
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getCommonBehavior()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getCommonBehavior()
                         .getAAttributeLinkAttribute().getAttributeLink(
                                 (Attribute) elem));
     }
@@ -1501,7 +1501,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (!(elem instanceof Binding)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 corePackage.getABindingArgument()
                         .getArgument((Binding) elem));
     }
@@ -1535,12 +1535,12 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (!(elem instanceof Classifier)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getFacade().getAssociationEnds(elem));
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getFacade().getAssociationEnds(elem));
         Classifier cls = (Classifier) elem;
         // delete CreateActions which have this as their instantiation
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getCommonBehavior()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getCommonBehavior()
                         .getACreateActionInstantiation().getCreateAction(cls));
         // TODO: ?delete Instances which have this as their classifier?
         // or should we leave them since they contain so much state that the
@@ -1553,8 +1553,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 //                nsmodel.getUmlPackage().getActivityGraphs()
 //                        .getATypeObjectFlowState().getObjectFlowState(cls));
         // TODO: ?delete ClassifierInStates which have this as their type?
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getActivityGraphs()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getActivityGraphs()
                         .getATypeClassifierInState().getClassifierInState(cls));
     }
 
@@ -1661,9 +1661,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
 
         GeneralizableElement generalizableElement = (GeneralizableElement) elem;
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 generalizableElement.getGeneralization());
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 corePackage.getAParentSpecialization().getSpecialization(
                         generalizableElement));
 
@@ -1730,7 +1730,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Dependency dep = (Dependency) it.next();
             if (dep.getClient().size() < 2
                     && dep.getClient().contains(elem)) {
-                nsmodel.getUmlFactory().delete(dep);
+                modelImpl.getUmlFactory().delete(dep);
             }
         }
 
@@ -1742,7 +1742,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Dependency dep = (Dependency) it.next();
             if (dep.getSupplier().size() < 2
                     && dep.getSupplier().contains(elem)) {
-                nsmodel.getUmlFactory().delete(dep);
+                modelImpl.getUmlFactory().delete(dep);
             }
         }
 
@@ -1750,12 +1750,12 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
          * The behavior-context relation in the UML model 
          * is an aggregate, not composition. See issue 4281. */
 
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 corePackage
                         .getAModelElementTemplateArgument()
                         .getTemplateArgument((ModelElement) elem));
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getModelManagement()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getModelManagement()
                         .getAImportedElementElementImport()
                         .getElementImport((ModelElement) elem));
         
@@ -1780,7 +1780,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         ownedElements.addAll(((Namespace) elem).getOwnedElement());
         Iterator it = ownedElements.iterator();
         while (it.hasNext()) {
-            nsmodel.getUmlFactory().delete(it.next());
+            modelImpl.getUmlFactory().delete(it.next());
         }
     }
 
@@ -1805,12 +1805,12 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         Operation oper = (Operation) elem;
         // delete CallActions which have this as their operation
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getCommonBehavior()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getCommonBehavior()
                         .getACallActionOperation().getCallAction(oper));
         // delete CallEvents which have this as their operation
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getStateMachines()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getStateMachines()
                         .getAOccurrenceOperation().getOccurrence(oper));
     }
 
@@ -1998,7 +1998,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             f = method;
         } else if (source instanceof Reception) {
             Reception reception = (Reception) 
-                nsmodel.getCommonBehaviorFactory().createReception();
+                modelImpl.getCommonBehaviorFactory().createReception();
             doCopyReception((Reception) source, reception);
             f = reception;
         } else {
@@ -2248,7 +2248,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         targetME.setSpecification(sourceME.isSpecification());
         targetME.setVisibility(sourceME.getVisibility());
-        nsmodel.getExtensionMechanismsFactory()
+        modelImpl.getExtensionMechanismsFactory()
                 .copyTaggedValues(source, target);
 
         if (!sourceME.getStereotype().isEmpty()) {
@@ -2259,7 +2259,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     .getModel(targetME);
             Iterator it = sourceME.getStereotype().iterator();
             while (it.hasNext()) {
-                Stereotype st = (Stereotype) nsmodel.getModelManagementHelper()
+                Stereotype st = (Stereotype) modelImpl.getModelManagementHelper()
                         .getCorrespondingElement(it.next(), targetModel, true);
                 targetME.getStereotype().add(st);
             }
@@ -2328,7 +2328,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         ProcedureExpression pe = source.getBody();
         if (pe != null) {
             target.setBody((ProcedureExpression) 
-                    nsmodel.getDataTypesFactory().createProcedureExpression(
+                    modelImpl.getDataTypesFactory().createProcedureExpression(
                             pe.getLanguage(), pe.getBody()));
         }
 
@@ -2365,11 +2365,11 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             BehavioralFeature target) {
         target.setQuery(source.isQuery());
         // copy raised signals:
-        Collection c = nsmodel.getUmlPackage().getCommonBehavior()
+        Collection c = modelImpl.getUmlPackage().getCommonBehavior()
             .getAContextRaisedSignal().getRaisedSignal(source);
         Iterator i = c.iterator();
         while (i.hasNext()) {
-            nsmodel.getUmlPackage().getCommonBehavior()
+            modelImpl.getUmlPackage().getCommonBehavior()
                 .getAContextRaisedSignal().add(target, (Signal) i.next());
         }
 

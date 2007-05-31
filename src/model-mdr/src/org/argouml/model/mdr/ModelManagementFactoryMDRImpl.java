@@ -66,7 +66,7 @@ final class ModelManagementFactoryMDRImpl extends
     /**
      * The model implementation.
      */
-    private ModelImplementation nsmodel;
+    private ModelImplementation modelImpl;
 
     /**
      * Constructor.
@@ -76,7 +76,7 @@ final class ModelManagementFactoryMDRImpl extends
      */
     public ModelManagementFactoryMDRImpl(MDRModelImplementation mi) {
         modelManagementPackage = mi.getUmlPackage().getModelManagement();
-        nsmodel = mi;
+        modelImpl = mi;
     }
 
     /*
@@ -192,7 +192,7 @@ final class ModelManagementFactoryMDRImpl extends
      *            The target package.
      */
     private void doCopyPackage(UmlPackage source, UmlPackage target) {
-        ((CoreFactoryMDRImpl) nsmodel.getCoreFactory())
+        ((CoreFactoryMDRImpl) modelImpl.getCoreFactory())
             .doCopyNamespace(source, target);
     }
 

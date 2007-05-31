@@ -65,7 +65,7 @@ import org.omg.uml.foundation.datatypes.TimeExpression;
  */
 class StateMachinesHelperMDRImpl implements StateMachinesHelper {
 
-    private MDRModelImplementation implementation;
+    private MDRModelImplementation modelImpl;
 
     /**
      * Constructor.
@@ -74,7 +74,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      */
     public StateMachinesHelperMDRImpl(MDRModelImplementation impl) {
         super();
-        this.implementation = impl;
+        this.modelImpl = impl;
     }
 
     /*
@@ -117,13 +117,13 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         }
         try {
             Object container =
-                implementation.getFacade().getModelElementContainer(handle);
+                modelImpl.getFacade().getModelElementContainer(handle);
             while (container != null) {
                 if (Model.getFacade().isAStateMachine(container)) {
                     return container;
                 }
                 container =
-                    implementation.getFacade()
+                    modelImpl.getFacade()
                         .getModelElementContainer(container);
             }
             /* In this case, either the container was not set,
@@ -347,7 +347,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public void addSubvertex(Object handle, Object subvertex) {
         if (handle instanceof CompositeState
                 && subvertex instanceof StateVertex) {
-            implementation.getUmlPackage().getStateMachines().
+            modelImpl.getUmlPackage().getStateMachines().
                     getAContainerSubvertex().add((CompositeState) handle,
                             (StateVertex) subvertex);
             return;
@@ -769,7 +769,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
      */
     public void addDeferrableEvent(Object state, Object deferrableEvent) {
         if (state instanceof State && deferrableEvent instanceof Event) {
-            implementation.getUmlPackage().getStateMachines()
+            modelImpl.getUmlPackage().getStateMachines()
                     .getAStateDeferrableEvent().add((State) state,
                             (Event) deferrableEvent);
             return;
@@ -783,7 +783,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public void removeDeferrableEvent(Object state, Object deferrableEvent) {
         try {
             if (state instanceof State && deferrableEvent instanceof Event) {
-                implementation.getUmlPackage().getStateMachines()
+                modelImpl.getUmlPackage().getStateMachines()
                         .getAStateDeferrableEvent().remove((State) state,
                                 (Event) deferrableEvent);
                 return;

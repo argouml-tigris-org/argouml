@@ -43,7 +43,7 @@ class UmlHelperMDRImpl implements UmlHelper {
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     /**
      * Don't allow instantiation.
@@ -52,7 +52,7 @@ class UmlHelperMDRImpl implements UmlHelper {
      *            To get other helpers and factories.
      */
     UmlHelperMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
+        modelImpl = implementation;
     }
 
     public void addListenersToModel(Object model) {
@@ -65,7 +65,7 @@ class UmlHelperMDRImpl implements UmlHelper {
     public void deleteCollection(Collection col) {
         Iterator it = col.iterator();
         while (it.hasNext()) {
-            nsmodel.getUmlFactory().delete(it.next());
+            modelImpl.getUmlFactory().delete(it.next());
         }
     }
 
@@ -76,13 +76,13 @@ class UmlHelperMDRImpl implements UmlHelper {
         if (relationship instanceof Relationship) {
             // handles all children of relationship including extend and
             // include which are not members of core
-            return nsmodel.getCoreHelper().getSource(relationship);
+            return modelImpl.getCoreHelper().getSource(relationship);
         }
         if (relationship instanceof Transition) {
-            return nsmodel.getStateMachinesHelper().getSource(relationship);
+            return modelImpl.getStateMachinesHelper().getSource(relationship);
         }
         if (relationship instanceof AssociationEnd) {
-            return nsmodel.getCoreHelper().getSource(relationship);
+            return modelImpl.getCoreHelper().getSource(relationship);
         }
         throw new IllegalArgumentException();
     }
@@ -94,14 +94,14 @@ class UmlHelperMDRImpl implements UmlHelper {
         if (relationShip instanceof Relationship) {
             // handles all children of relationship including extend and
             // include which are not members of core
-            return nsmodel.getCoreHelper().getDestination(relationShip);
+            return modelImpl.getCoreHelper().getDestination(relationShip);
         }
         if (relationShip instanceof Transition) {
-            return nsmodel.getStateMachinesHelper().
+            return modelImpl.getStateMachinesHelper().
                     getDestination(relationShip);
         }
         if (relationShip instanceof AssociationEnd) {
-            return nsmodel.getCoreHelper().getDestination(relationShip);
+            return modelImpl.getCoreHelper().getDestination(relationShip);
         }
         throw new IllegalArgumentException();
     }

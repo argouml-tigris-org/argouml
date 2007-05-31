@@ -79,7 +79,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
     
     /*
      * JMI package for Common Behavior package from UML metamodel
@@ -94,8 +94,8 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *            To get other helpers and factories.
      */
     CommonBehaviorFactoryMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
-        cbPackage = nsmodel.getUmlPackage().getCommonBehavior();
+        modelImpl = implementation;
+        cbPackage = modelImpl.getUmlPackage().getCommonBehavior();
     }
 
     /*
@@ -320,8 +320,8 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                     + " with a callaction.");
         }
         Object action = createCallAction();
-        nsmodel.getCoreHelper().setName(action, name);
-        nsmodel.getCommonBehaviorHelper().setOperation(action, oper);
+        modelImpl.getCoreHelper().setName(action, name);
+        modelImpl.getCommonBehaviorHelper().setOperation(action, oper);
         return action;
     }
 
@@ -331,7 +331,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     public Object buildUninterpretedAction(Object actionState) {
         Object action = createUninterpretedAction();
         if (actionState instanceof ActionState) {
-            nsmodel.getStateMachinesHelper().setEntry(actionState, action);
+            modelImpl.getStateMachinesHelper().setEntry(actionState, action);
         }
         return action;
     }
@@ -341,15 +341,15 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *      java.lang.Object)
      */
     public Object buildLink(Object fromInstance, Object toInstance) {
-        Object link = nsmodel.getCommonBehaviorFactory().createLink();
-        Object /* MLinkEnd */le0 = nsmodel.getCommonBehaviorFactory().
+        Object link = modelImpl.getCommonBehaviorFactory().createLink();
+        Object /* MLinkEnd */le0 = modelImpl.getCommonBehaviorFactory().
             createLinkEnd();
-        nsmodel.getCommonBehaviorHelper().setInstance(le0, fromInstance);
-        Object /* MLinkEnd */le1 = nsmodel.getCommonBehaviorFactory().
+        modelImpl.getCommonBehaviorHelper().setInstance(le0, fromInstance);
+        Object /* MLinkEnd */le1 = modelImpl.getCommonBehaviorFactory().
             createLinkEnd();
-        nsmodel.getCommonBehaviorHelper().setInstance(le1, toInstance);
-        nsmodel.getCoreHelper().addConnection(link, le0);
-        nsmodel.getCoreHelper().addConnection(link, le1);
+        modelImpl.getCommonBehaviorHelper().setInstance(le1, toInstance);
+        modelImpl.getCoreHelper().addConnection(link, le0);
+        modelImpl.getCoreHelper().addConnection(link, le1);
         return link;
     }
 
@@ -358,13 +358,13 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     public Object buildAction(Object message) {
         Object action = createCallAction();
-        nsmodel.getCoreHelper().setName(action, "action");
-        nsmodel.getCollaborationsHelper().setAction(message, action);
-        Object interaction = nsmodel.getFacade().getInteraction(message);
+        modelImpl.getCoreHelper().setName(action, "action");
+        modelImpl.getCollaborationsHelper().setAction(message, action);
+        Object interaction = modelImpl.getFacade().getInteraction(message);
         if (interaction != null
-            && nsmodel.getFacade().getContext(interaction) != null) {
-            nsmodel.getCoreHelper().setNamespace(action,
-                nsmodel.getFacade().getContext(interaction));
+            && modelImpl.getFacade().getContext(interaction) != null) {
+            modelImpl.getCoreHelper().setNamespace(action,
+                modelImpl.getFacade().getContext(interaction));
         } else {
             throw new IllegalStateException("In buildaction: message does not "
                     + "have an interaction or the "
@@ -415,15 +415,15 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     public Object buildStimulus(Object link) {
         if (link instanceof Link
-            && nsmodel.getCoreHelper().getSource(link) != null
-            && nsmodel.getCoreHelper().getDestination(link) != null) {
+            && modelImpl.getCoreHelper().getSource(link) != null
+            && modelImpl.getCoreHelper().getDestination(link) != null) {
 
             Object stimulus = createStimulus();
-            Object sender = nsmodel.getCoreHelper().getSource(link);
-            Object receiver = nsmodel.getCoreHelper().getDestination(link);
-            nsmodel.getCommonBehaviorHelper().setReceiver(stimulus, receiver);
-            nsmodel.getCollaborationsHelper().setSender(stimulus, sender);
-            nsmodel.getCommonBehaviorHelper().setCommunicationLink(stimulus,
+            Object sender = modelImpl.getCoreHelper().getSource(link);
+            Object receiver = modelImpl.getCoreHelper().getDestination(link);
+            modelImpl.getCommonBehaviorHelper().setReceiver(stimulus, receiver);
+            modelImpl.getCollaborationsHelper().setSender(stimulus, sender);
+            modelImpl.getCommonBehaviorHelper().setCommunicationLink(stimulus,
                     link);
             return stimulus;
         }
@@ -438,7 +438,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     public Object buildReception(Object aClassifier) {
         Object reception = createReception();
         if (aClassifier instanceof Classifier) {
-            nsmodel.getCoreHelper().setOwner(reception, aClassifier);
+            modelImpl.getCoreHelper().setOwner(reception, aClassifier);
         }
         return reception;
     }
@@ -452,12 +452,12 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException("elem: " + elem);
         }
         // Delete Stimulii which have this as their dispatchAction
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 cbPackage.getADispatchActionStimulus().getStimulus(
                         (Action) elem));
         // Delete Messages which have this as their action
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getCollaborations().getAActionMessage()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getCollaborations().getAActionMessage()
                         .getMessage((Action) elem));
     }
 
@@ -566,31 +566,31 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         }
 
         // Delete LinkEnds
-        nsmodel.getUmlHelper().deleteCollection(((Instance) elem).getLinkEnd());
+        modelImpl.getUmlHelper().deleteCollection(((Instance) elem).getLinkEnd());
 
         // Delete AttributeLinks where this is the value
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 cbPackage
                         .getAAttributeLinkValue().getAttributeLink(
                                 (Instance) elem));
 
         // Delete CollaborationInstanceSets where
         // this is the last participatingInstance
-        for (Iterator it = nsmodel.getUmlPackage().getCollaborations()
+        for (Iterator it = modelImpl.getUmlPackage().getCollaborations()
                 .getACollaborationInstanceSetParticipatingInstance()
                 .getCollaborationInstanceSet((Instance) elem).iterator(); it
                 .hasNext();) {
             CollaborationInstanceSet cis = (CollaborationInstanceSet) it.next();
             Collection instances = cis.getParticipatingInstance();
             if (instances.size() == 1 && instances.contains(elem)) {
-                nsmodel.getUmlFactory().delete(it.next());
+                modelImpl.getUmlFactory().delete(it.next());
             }
         }
 
         // Delete Stimuli which have this as a Sender or Receiver
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 cbPackage.getAStimulusSender().getStimulus((Instance) elem));
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 cbPackage.getAReceiverStimulus().getStimulus((Instance) elem));
 
     }
@@ -619,7 +619,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         Link link = ((LinkEnd) elem).getLink();
         if (link != null && link.getConnection() != null
             && link.getConnection().size() == 2) { // binary link
-            nsmodel.getUmlFactory().delete(link);
+            modelImpl.getUmlFactory().delete(link);
         }
     }
 
@@ -693,11 +693,11 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException("elem: " + elem);
         }
         // Delete all SendActions which have this as signal
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 cbPackage.getASignalSendAction().getSendAction((Signal) elem));
         // Delete all SignalEvents which have this as the signal
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getStateMachines()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getStateMachines()
                         .getASignalOccurrence().getOccurrence((Signal) elem));
     }
 
@@ -712,14 +712,14 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         
         // Delete InteractionInstanceSets where
         // this is the last participatingStimulus
-        for (Iterator it = nsmodel.getUmlPackage().getCollaborations()
+        for (Iterator it = modelImpl.getUmlPackage().getCollaborations()
                 .getAInteractionInstanceSetParticipatingStimulus()
                 .getInteractionInstanceSet((Stimulus) elem).iterator(); it
                 .hasNext();) {
             InteractionInstanceSet iis = (InteractionInstanceSet) it.next();
             Collection instances = iis.getParticipatingStimulus();
             if (instances.size() == 1 && instances.contains(elem)) {
-                nsmodel.getUmlFactory().delete(it.next());
+                modelImpl.getUmlFactory().delete(it.next());
             }
         }
     }

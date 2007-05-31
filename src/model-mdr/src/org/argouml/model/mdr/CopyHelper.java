@@ -48,7 +48,7 @@ final class CopyHelper implements org.argouml.model.CopyHelper {
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     /**
      * Constructor to forbid creation of this object.
@@ -57,7 +57,7 @@ final class CopyHelper implements org.argouml.model.CopyHelper {
      *            To get other helpers and factories.
      */
     CopyHelper(MDRModelImplementation implementation) {
-        nsmodel = implementation;
+        modelImpl = implementation;
     }
 
     /**
@@ -89,26 +89,26 @@ final class CopyHelper implements org.argouml.model.CopyHelper {
         Namespace ns = (Namespace) ans;
 
         if (element instanceof UmlPackage) {
-            return nsmodel.getModelManagementFactory().copyPackage(element, ns);
+            return modelImpl.getModelManagementFactory().copyPackage(element, ns);
         }
         if (element instanceof UmlClass) {
-            return nsmodel.getCoreFactory().copyClass(element, ns);
+            return modelImpl.getCoreFactory().copyClass(element, ns);
         }
         if (element instanceof DataType) {
-            return nsmodel.getCoreFactory().copyDataType(element, ns);
+            return modelImpl.getCoreFactory().copyDataType(element, ns);
         }
         if (element instanceof Interface) {
-            return nsmodel.getCoreFactory().copyInterface(element, ns);
+            return modelImpl.getCoreFactory().copyInterface(element, ns);
         }
         if (element instanceof Feature) {
-            return nsmodel.getCoreFactory().copyFeature(element, ns);
+            return modelImpl.getCoreFactory().copyFeature(element, ns);
         }
         if (element instanceof Stereotype) {
-            return nsmodel.getExtensionMechanismsFactory().copyStereotype(
+            return modelImpl.getExtensionMechanismsFactory().copyStereotype(
                     element, ns);
         }
         if (element instanceof TagDefinition) {
-            return nsmodel.getExtensionMechanismsFactory().copyTagDefinition(
+            return modelImpl.getExtensionMechanismsFactory().copyTagDefinition(
                     element, ns);
         }
         throw new IllegalArgumentException("anelement:" + anelement + ", ans: "

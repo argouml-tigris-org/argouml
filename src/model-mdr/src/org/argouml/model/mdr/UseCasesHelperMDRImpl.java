@@ -60,7 +60,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     /**
      * Don't allow instantiation.
@@ -69,7 +69,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
      *            To get other helpers and factories.
      */
     UseCasesHelperMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
+        modelImpl = implementation;
     }
 
     /*
@@ -245,7 +245,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         UseCase uc = (UseCase) ausecase;
         Set set = new HashSet();
         try {
-            set.addAll(nsmodel.getModelManagementHelper().
+            set.addAll(modelImpl.getModelManagementHelper().
                     getAllSurroundingNamespaces(uc));
             Set set2 = new HashSet();
             Iterator it = set.iterator();
@@ -290,7 +290,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
                 removeExtend(point, theExtend);
             }
             ExtensionPoint point =
-                (ExtensionPoint) nsmodel.
+                (ExtensionPoint) modelImpl.
                     getUseCasesFactory().buildExtensionPoint(base);
             theExtend.setBase((UseCase) base);
             addExtensionPoint(theExtend, point);

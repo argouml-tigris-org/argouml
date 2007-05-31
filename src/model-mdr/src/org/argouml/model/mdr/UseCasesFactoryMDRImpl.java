@@ -51,7 +51,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     /**
      * The model implementation.
      */
-    private MDRModelImplementation nsmodel;
+    private MDRModelImplementation modelImpl;
 
     /**
      * Don't allow instantiation.
@@ -60,14 +60,14 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *            To get other helpers and factories.
      */
     UseCasesFactoryMDRImpl(MDRModelImplementation implementation) {
-        nsmodel = implementation;
+        modelImpl = implementation;
     }
 
     /*
      * @see org.argouml.model.UseCasesFactory#createExtend()
      */
     public Object createExtend() {
-        Extend myExtend = nsmodel.getUmlPackage().getUseCases().getExtend().
+        Extend myExtend = modelImpl.getUmlPackage().getUseCases().getExtend().
             createExtend();
         super.initialize(myExtend);
         return myExtend;
@@ -77,7 +77,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.UseCasesFactory#createExtensionPoint()
      */
     public Object createExtensionPoint() {
-        ExtensionPoint myExtensionPoint = nsmodel.getUmlPackage().
+        ExtensionPoint myExtensionPoint = modelImpl.getUmlPackage().
             getUseCases().getExtensionPoint().createExtensionPoint();
         super.initialize(myExtensionPoint);
         return myExtensionPoint;
@@ -87,7 +87,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.UseCasesFactory#createActor()
      */
     public Object createActor() {
-        Actor myActor = nsmodel.getUmlPackage().getUseCases().getActor().
+        Actor myActor = modelImpl.getUmlPackage().getUseCases().getActor().
             createActor();
         super.initialize(myActor);
         return myActor;
@@ -97,7 +97,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.UseCasesFactory#createInclude()
      */
     public Object createInclude() {
-        Include myInclude = nsmodel.getUmlPackage().getUseCases().getInclude().
+        Include myInclude = modelImpl.getUmlPackage().getUseCases().getInclude().
             createInclude();
         super.initialize(myInclude);
         return myInclude;
@@ -107,7 +107,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.UseCasesFactory#createUseCase()
      */
     public Object createUseCase() {
-        UseCase myUseCase = nsmodel.getUmlPackage().getUseCases().getUseCase().
+        UseCase myUseCase = modelImpl.getUmlPackage().getUseCases().getUseCase().
             createUseCase();
         super.initialize(myUseCase);
         return myUseCase;
@@ -118,7 +118,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @see org.argouml.model.UseCasesFactory#createUseCaseInstance()
      */
     public Object createUseCaseInstance() {
-        UseCaseInstance myUseCaseInstance = nsmodel.getUmlPackage().
+        UseCaseInstance myUseCaseInstance = modelImpl.getUmlPackage().
             getUseCases().getUseCaseInstance().createUseCaseInstance();
         super.initialize(myUseCaseInstance);
         return myUseCaseInstance;
@@ -257,7 +257,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException();
         }
 
-        nsmodel.getUmlHelper().deleteCollection(
+        modelImpl.getUmlHelper().deleteCollection(
                 ((Extend) elem).getExtensionPoint());
     }
 
@@ -270,13 +270,13 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException();
         }
         // Delete Extends which have this as their only ExtensionPoint
-        Collection xtends = nsmodel.getUmlPackage().getUseCases()
+        Collection xtends = modelImpl.getUmlPackage().getUseCases()
                 .getAExtensionPointExtend().getExtend((ExtensionPoint) elem);
         for (Iterator it = xtends.iterator(); it.hasNext(); ) {
             Extend extend = (Extend) it.next();
             Collection eps = extend.getExtensionPoint();
             if (eps.size() == 1 && eps.contains(elem)) {
-                nsmodel.getUmlFactory().delete(extend);
+                modelImpl.getUmlFactory().delete(extend);
             }
         }
     }
@@ -302,15 +302,15 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         }
 
         UseCase useCase = ((UseCase) elem);
-        nsmodel.getUmlHelper().deleteCollection(useCase.getExtend());
-        nsmodel.getUmlHelper().deleteCollection(useCase.getInclude());
+        modelImpl.getUmlHelper().deleteCollection(useCase.getExtend());
+        modelImpl.getUmlHelper().deleteCollection(useCase.getInclude());
         // delete Extends where this is the base
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getUseCases().getABaseExtender()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getUseCases().getABaseExtender()
                         .getExtender(useCase));
         // delete Includes where this is the addition
-        nsmodel.getUmlHelper().deleteCollection(
-                nsmodel.getUmlPackage().getUseCases().getAIncluderAddition()
+        modelImpl.getUmlHelper().deleteCollection(
+                modelImpl.getUmlPackage().getUseCases().getAIncluderAddition()
                         .getIncluder(useCase));
     }
 
