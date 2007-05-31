@@ -810,6 +810,8 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
     /**
      * Recursive method to get all subtypes.
+     * 
+     * TODO: Does this have a scalability problem?
      */
     private Collection getSubtypes(ModelPackage extent, ModelElement me) {
         Collection allSubtypes = new HashSet();
