@@ -1114,13 +1114,10 @@ public class Project implements java.io.Serializable {
             // are not deleted (crtl-Del) they are removed (Del)
             LOG.error("Request to delete a Fig " + obj.getClass().getName());
         } else if (obj instanceof CommentEdge) {
-            TargetManager.getInstance().removeTarget(obj);
-            TargetManager.getInstance().removeHistoryElement(obj);
             CommentEdge ce = (CommentEdge) obj;
             LOG.info("Removing the link from " + ce.getAnnotatedElement()
                     + " to " + ce.getComment());
-            Model.getCoreHelper().removeAnnotatedElement(
-                    ce.getComment(), ce.getAnnotatedElement());
+            ce.delete();
         }
     }
 

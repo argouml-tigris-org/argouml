@@ -34,12 +34,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.management.ListenerNotFoundException;
+import javax.management.Notification;
+import javax.management.NotificationEmitter;
+import javax.management.NotificationListener;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
@@ -938,13 +941,15 @@ public final class TargetManager {
     }
 
     /**
-     * The listener to UML model changes. 
-     * Deleted model elements are removed 
-     * from the target list or from the history. 
+     * The listener to removals of UML model elements, 
+     * diagrams and CommentEdges. 
+     * Deleted elements are removed 
+     * from the target list and/or from the history. 
      * 
      * @author michiel
      */
-    private abstract class Remover implements PropertyChangeListener 
+    private abstract class Remover implements PropertyChangeListener, 
+        NotificationListener 
     {
 
         private void addListener(Object o) {
@@ -952,6 +957,9 @@ public final class TargetManager {
                 Model.getPump().addModelEventListener(this, o, "remove");
             } else if (o instanceof UMLDiagram) {
                 ((UMLDiagram) o).addPropertyChangeListener(this);
+            } else if (o instanceof NotificationEmitter) {
+                ((NotificationEmitter) o).addNotificationListener(
+                        this, null, o);
             }
         }
 
@@ -960,6 +968,13 @@ public final class TargetManager {
                 Model.getPump().removeModelEventListener(this, o, "remove");
             } else if (o instanceof UMLDiagram) {
                 ((UMLDiagram) o).removePropertyChangeListener(this);
+            } else if (o instanceof NotificationEmitter) {
+                try {
+                    ((NotificationEmitter) o).removeNotificationListener(this);
+                } catch (ListenerNotFoundException e) {
+                    LOG.error("Notification Listener for "
+                                + "CommentEdge not found", e);
+                }
             }
         }
 
@@ -977,6 +992,17 @@ public final class TargetManager {
             if ("remove".equals(evt.getPropertyName())) {
                 remove(evt.getSource());
             }
+        }
+
+        /*
+         * @see javax.management.NotificationListener#handleNotification(javax.management.Notification, java.lang.Object)
+         */
+        public void handleNotification(Notification notification, 
+                Object handback) {
+            if ("remove".equals(notification.getType())) {
+                remove(notification.getSource());
+            }
+            
         }
         
         protected abstract void remove(Object obj);
