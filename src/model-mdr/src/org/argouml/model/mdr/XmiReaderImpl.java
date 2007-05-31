@@ -63,6 +63,7 @@ import org.netbeans.lib.jmi.xmi.UnknownElementsListener;
 import org.omg.uml.UmlPackage;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.modelmanagement.Model;
+import org.openide.ErrorManager;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
@@ -74,7 +75,7 @@ import org.xml.sax.XMLReader;
  *
  * @author Bob Tarling
  */
-public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
+class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
     /**
      * Logger.
@@ -183,7 +184,19 @@ public class XmiReaderImpl implements XmiReader, UnknownElementsListener {
              * even if they're caught, which is unsightly, so we handle
              * unknown elements ourselves rather than letting MDR throw
              * an exception for us to catch.
+             * 
+             * org/netbeans/lib/jmi/util/Logger.java
+             * 
+             * This can be uses to disable logging.  Default output is System.err
+             * setProperty("org.netbeans.lib.jmi.Logger.fileName", "")
+             * 
+             * The property org.netbeans.lib.jmi.Logger controls the minimum severity level for logging
              */
+            // Turn off NetBeans logging to System.err
+//            System.setProperty("org.netbeans.lib.jmi.Logger.fileName", "");
+            // Set minimum severity level for MDR
+//            System.setProperty("org.netbeans.lib.jmi.Logger", 
+//                    Integer.toString(ErrorManager.INFORMATIONAL));
             InputConfig config2 = (InputConfig) xmiReader.getConfiguration();
             config2.setUnknownElementsListener(this);
             config2.setUnknownElementsIgnored(true);
