@@ -155,12 +155,14 @@ public class ModeCreateAssociationEnd extends ModeCreatePolyEdge {
             if (Model.getFacade().isAAssociationClass(source)
             	|| Model.getFacade().isAAssociationClass(dest)) {
                 // TODO: http://argouml.tigris.org/issues/show_bug.cgi?id=2991
-            } else if (Model.getFacade().isAAssociation(source)
-            	|| Model.getFacade().isAClassifier(dest)) {
+            } else if ((Model.getFacade().isAAssociation(source)
+                || Model.getFacade().isAClassifier(dest))
+                && !Model.getFacade().isAClassifier(source)) {
                 mouseReleasedOnClassifier(me, destFig);
                 return;
-            } else if (Model.getFacade().isAClassifier(dest)
-            	|| Model.getFacade().isAAssociation(dest)) {
+            } else if ((Model.getFacade().isAClassifier(dest)
+                || Model.getFacade().isAAssociation(dest))
+                && !Model.getFacade().isAClassifier(source)) {
                 mouseReleasedOnAssociation(me, destFig);
                 return;
             }
