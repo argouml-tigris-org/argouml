@@ -22,12 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui;
+package org.argouml.uml.diagram;
 
 import org.argouml.model.DiDiagram;
 import org.argouml.model.DiElement;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.tigris.gef.graph.GraphEvent;
 import org.tigris.gef.graph.GraphListener;
 import org.tigris.gef.graph.GraphModel;
@@ -36,7 +35,7 @@ import org.tigris.gef.presentation.Fig;
 /**
  * Adapts changes in the Diagram subsystem (the graph presentation layer)
  * to changes in the Model subsyetm (diagram interchange model).
- * The curent implementaion does this by listeneing to graph events and
+ * The curent implementaion does this by listening to graph events and
  * forwarding those as specific calls to the DiagramInterchangeModel.
  * This should be changed to a more standard Adapter architecture that
  * provides an interface for Figs and GraphModels to call only when required.
