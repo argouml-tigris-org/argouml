@@ -30,7 +30,6 @@
 package org.argouml.uml.diagram.ui;
 
 
-import org.argouml.ui.ActionSetMode;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 /**

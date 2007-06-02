@@ -31,7 +31,6 @@ package org.argouml.uml.diagram.ui;
 
 
 import org.argouml.model.Model;
-import org.argouml.ui.ActionSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /**

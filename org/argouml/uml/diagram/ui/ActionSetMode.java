@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui;
+package org.argouml.uml.diagram.ui;
 
 import java.util.Hashtable;
 import java.util.Properties;
@@ -33,13 +33,14 @@ import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.tigris.gef.base.SetModeAction;
 
 /**
  * Extends GEF ActionSetMode to add additional metadata such as tooltips.
  *
  * @author Jeremy Jones
  */
-public class ActionSetMode extends org.tigris.gef.base.SetModeAction {
+public class ActionSetMode extends SetModeAction {
     
     private static final Logger LOG = Logger.getLogger(ActionSetMode.class);
 
