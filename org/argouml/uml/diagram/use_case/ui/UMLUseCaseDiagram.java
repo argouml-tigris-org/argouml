@@ -43,6 +43,7 @@ import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * The base class of the use case diagram.<p>
@@ -452,5 +453,10 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         setNamespace(base);
         damage();
         return true;
+    }
+
+    public void encloserChanged(FigNode enclosed, 
+            FigNode oldEncloser, FigNode newEncloser) {
+        // Do nothing.        
     }
 } /* end class UMLUseCaseDiagram */

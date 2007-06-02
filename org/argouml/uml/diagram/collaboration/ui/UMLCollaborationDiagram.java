@@ -47,6 +47,7 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * The base class of the collaboration diagram.<p>
@@ -423,6 +424,10 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         return false;
     }
 
+    public void encloserChanged(FigNode enclosed, 
+            FigNode oldEncloser, FigNode newEncloser) {
+        // Do nothing.        
+    }
 
     /**
      * The UID.

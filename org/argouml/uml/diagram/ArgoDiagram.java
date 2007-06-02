@@ -32,7 +32,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.activity.ui.FigPool;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
@@ -50,7 +49,7 @@ import org.tigris.gef.presentation.FigNode;
  * This class represents all Diagrams within ArgoUML.
  * It is based upon the GEF Diagram.
  */
-public class ArgoDiagram extends Diagram {
+public abstract class ArgoDiagram extends Diagram {
 
     private ItemUID id;
 
@@ -58,15 +57,6 @@ public class ArgoDiagram extends Diagram {
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(ArgoDiagram.class);
-
-    static {
-        /**
-         * Hack to use vetocheck in constructing names.
-         *
-         * TODO: Is this needed?
-         */
-        new ArgoDiagram();
-    }
 
     /**
      * The constructor.
@@ -169,14 +159,6 @@ public class ArgoDiagram extends Diagram {
             }
         }
         return fig;
-    }
-
-    /*
-     * @see org.tigris.gef.base.Diagram#initialize(Object)
-     */
-    public void initialize(Object owner) {
-        super.initialize(owner);
-        ProjectManager.getManager().getCurrentProject().setActiveDiagram(this);
     }
 
     /**
@@ -491,11 +473,8 @@ public class ArgoDiagram extends Diagram {
      * @param oldEncloser the previous encloser
      * @param newEncloser the FigNode that encloses the dragged FigNode
      */
-    public void encloserChanged(
-            FigNode enclosed, FigNode oldEncloser, FigNode newEncloser) {
+    public abstract void encloserChanged(
+            FigNode enclosed, FigNode oldEncloser, FigNode newEncloser); 
 	// Do nothing, override in subclass.
-	// TODO: This should really be abstract, can we get rid of the static
-	// hack at the start of this class?
-    }
     
 } /* end class ArgoDiagram */
