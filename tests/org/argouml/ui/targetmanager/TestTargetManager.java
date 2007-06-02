@@ -38,6 +38,7 @@ import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 
 /**
@@ -456,6 +457,9 @@ public class TestTargetManager extends TestCase {
 		if (obj == owner)
 		    return fig;
 		return null;
+	    }
+	    public void encloserChanged(FigNode enclosed, 
+	            FigNode oldEncloser, FigNode newEncloser) {
 	    }
 	};
 	Project p = ProjectManager.getManager().getCurrentProject();
