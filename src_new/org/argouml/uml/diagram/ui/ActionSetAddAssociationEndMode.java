@@ -31,7 +31,6 @@ package org.argouml.uml.diagram.ui;
 
 
 import org.argouml.model.Model;
-import org.argouml.ui.ActionSetMode;
 
 /**
  * An extension of ActionSetMode to create all the parts of an association

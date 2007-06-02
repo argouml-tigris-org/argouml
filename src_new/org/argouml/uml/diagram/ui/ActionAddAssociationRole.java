@@ -29,7 +29,6 @@ import javax.swing.Icon;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.ui.ActionSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 
