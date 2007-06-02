@@ -142,7 +142,10 @@ public class ActionDeleteModelElements extends UndoableAction {
                 if (sureRemove(target)) {
                     // remove from the model
                     if (target instanceof Fig) {
-                        target = ((Fig) target).getOwner();
+                        Object owner = ((Fig) target).getOwner();
+                        if (owner != null) {
+                            target = owner;
+                        }
                     }
                     if (Model.getFacade().isAConcurrentRegion(target)) {
                         new ActionDeleteConcurrentRegion()

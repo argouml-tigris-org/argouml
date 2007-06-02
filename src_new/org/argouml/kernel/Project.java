@@ -1110,9 +1110,9 @@ public class Project implements java.io.Serializable {
             // I believe this code is never reached. If we delete a FigEdge
             // or FigNode we actually call this method with the owner not
             // the Fig itself.
-            // For Figs with no owner (primitives like circle etc) then they
-            // are not deleted (crtl-Del) they are removed (Del)
-            LOG.error("Request to delete a Fig " + obj.getClass().getName());
+            // MVW: This is now called by ActionDeleteModelElements
+            // for primitive Figs (without owner).
+            LOG.info("Request to delete a Fig " + obj.getClass().getName());
         } else if (obj instanceof CommentEdge) {
             CommentEdge ce = (CommentEdge) obj;
             LOG.info("Removing the link from " + ce.getAnnotatedElement()
