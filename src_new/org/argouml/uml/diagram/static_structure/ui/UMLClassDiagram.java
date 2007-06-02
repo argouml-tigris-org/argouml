@@ -42,6 +42,7 @@ import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * UML Class Diagram.
@@ -599,6 +600,11 @@ public class UMLClassDiagram extends UMLDiagram {
         setNamespace(base);
         damage();
         return true;
+    }
+
+    public void encloserChanged(FigNode enclosed, FigNode oldEncloser, 
+            FigNode newEncloser) {
+        // Do nothing.
     }
     
 } /* end class UMLClassDiagram */

@@ -35,6 +35,7 @@ import org.argouml.ui.ActionSetMode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * The diagram for sequence diagrams.<p>
@@ -218,6 +219,11 @@ public class UMLSequenceDiagram extends UMLDiagram {
     @Override
     public boolean relocate(Object base) {
         return false;
+    }
+
+    public void encloserChanged(FigNode enclosed, 
+            FigNode oldEncloser, FigNode newEncloser) {
+        // Do nothing.        
     }
 
 }

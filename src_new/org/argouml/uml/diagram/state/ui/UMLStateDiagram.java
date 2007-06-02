@@ -53,6 +53,7 @@ import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.presentation.FigNode;
 
 
 /**
@@ -724,6 +725,11 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public boolean relocate(Object base) {
         return false;
+    }
+
+    public void encloserChanged(FigNode enclosed, 
+            FigNode oldEncloser, FigNode newEncloser) {
+        // Do nothing.        
     }
 
 } /* end class UMLStateDiagram */
