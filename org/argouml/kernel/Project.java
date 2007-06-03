@@ -439,7 +439,6 @@ public class Project implements java.io.Serializable {
                 }
             }
             activeDiagram = defaultDiagram;
-            TargetManager.getInstance().setTarget(defaultDiagram);
         }
 
         removeDiagram(d);
