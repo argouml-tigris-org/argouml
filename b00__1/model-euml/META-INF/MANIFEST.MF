@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.argouml.core.model.euml2
+Bundle-Version: 0.25.3
+Bundle-Localization: plugin
+Export-Package: org.argouml.model.euml
+Bundle-Vendor: %pluginProvider
+Require-Bundle: org.argouml.core.model,
+ org.eclipse.core.runtime
+Bundle-ClassPath: 
+Eclipse-RegisterBuddy: 
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
