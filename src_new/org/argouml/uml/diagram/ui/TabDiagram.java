@@ -29,6 +29,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,6 +46,7 @@ import javax.swing.border.EtchedBorder;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -76,7 +79,8 @@ import org.tigris.toolbar.ToolBarFactory;
  */
 public class TabDiagram
     extends AbstractArgoJPanel
-    implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
+    implements TabModelTarget, GraphSelectionListener, ModeChangeListener,
+    PropertyChangeListener {
 
     /**
      * Logger.
@@ -164,11 +168,7 @@ public class TabDiagram
 
     /**
      * Sets the target of the tab. The target should allways be an instance of
-     * UMLDiagram
-     * @param t
-     * @deprecated As of ArgoUml version 0.13.5, the visibility of
-     * this method will change in the future, replaced by {@link
-     * org.argouml.ui.targetmanager.TargetManager}.
+     * UMLDiagram.
      * 
      * @param t the target
      */
@@ -182,6 +182,11 @@ public class TabDiagram
             return;
         }
         UMLDiagram newTarget = (UMLDiagram) t;
+
+        if (target != null) {
+        	target.removePropertyChangeListener("remove", this);
+        }
+        newTarget.addPropertyChangeListener("remove", this);
 
         setToolBar(newTarget.getJToolBar());
         
@@ -396,6 +401,14 @@ public class TabDiagram
      * The UID.
      */
     private static final long serialVersionUID = -3305029387374936153L;
+
+	public void propertyChange(PropertyChangeEvent arg0) {
+		if ("remove".equals(arg0.getPropertyName())) {
+			Diagram diagram = ProjectManager.getManager()
+				.getCurrentProject().getActiveDiagram();
+			TargetManager.getInstance().setTarget(diagram);
+		}
+	}
 }
 
 
