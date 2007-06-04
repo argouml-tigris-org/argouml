@@ -53,7 +53,7 @@ import org.argouml.util.osdep.StartBrowser;
  * the wizard, and increase the colored progress bar on the ToDoItem
  * "sticky note" icon in ToDo tree pane.
  *
- * @see org.argouml.cognitive.critics.Critic
+ * @see org.argouml.cognitive.Critic
  * @see org.argouml.cognitive.critics.Wizard
  */
 

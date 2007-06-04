@@ -27,10 +27,10 @@ package org.argouml.uml.cognitive.critics;
 import java.awt.Rectangle;
 import java.util.Vector;
 
+import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;

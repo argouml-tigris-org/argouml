@@ -42,7 +42,7 @@ import org.tigris.gef.util.ChildGenerator;
  * 
  * Argo's critic Agency uses this to apply critics where appropriate.
  * 
- * @see org.argouml.cognitive.critics.Agency
+ * @see org.argouml.cognitive.Agency
  * @stereotype singleton
  * @author jrobbins
  */

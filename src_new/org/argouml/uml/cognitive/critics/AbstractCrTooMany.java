@@ -63,7 +63,7 @@ public abstract class AbstractCrTooMany extends CrUML {
     /**
      * Provide a default wizard to adjust the threshold.
      *
-     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     * @see org.argouml.cognitive.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) {
         return WizTooMany.class;

@@ -30,10 +30,10 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
 import org.argouml.uml.GenDescendantClasses;
 import org.argouml.uml.cognitive.UMLDecision;

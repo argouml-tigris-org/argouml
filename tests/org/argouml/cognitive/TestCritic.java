@@ -22,9 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.cognitive.critics;
+package org.argouml.cognitive;
 
 import java.util.Hashtable;
+
+import org.argouml.cognitive.Critic;
 
 import junit.framework.TestCase;
 

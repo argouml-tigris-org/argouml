@@ -24,9 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import org.argouml.cognitive.critics.Agency;
-import org.argouml.cognitive.critics.CompoundCritic;
-import org.argouml.cognitive.critics.Critic;
+import org.argouml.cognitive.Agency;
+import org.argouml.cognitive.CompoundCritic;
+import org.argouml.cognitive.Critic;
 import org.argouml.language.java.cognitive.critics.CrMultipleInheritance;
 import org.argouml.language.java.cognitive.critics.CrMultipleRealization;
 import org.argouml.model.Model;
@@ -44,7 +44,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  * line here.
  *
  * @author jrobbins
- * @see org.argouml.cognitive.critics.Agency
+ * @see org.argouml.cognitive.Agency
  */
 public class Init {
 

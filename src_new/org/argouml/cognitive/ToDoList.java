@@ -34,7 +34,6 @@ import java.util.Vector;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.i18n.Translator;
 
 

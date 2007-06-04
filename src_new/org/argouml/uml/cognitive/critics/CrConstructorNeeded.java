@@ -27,9 +27,9 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.critics.Wizard;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;

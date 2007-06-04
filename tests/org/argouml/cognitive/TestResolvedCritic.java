@@ -29,7 +29,6 @@ import java.util.Vector;
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
 
 /**

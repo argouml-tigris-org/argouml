@@ -34,12 +34,12 @@ package org.argouml.uml.cognitive;
 import java.util.Enumeration;
 import java.util.Iterator;
 
+import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Highlightable;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;

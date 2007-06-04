@@ -36,8 +36,6 @@ import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-import org.argouml.cognitive.critics.Agency;
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.model.InvalidElementException;
@@ -640,7 +638,7 @@ public final class Designer
      * his items expire.
      *
      * @see ToDoItem
-     * @see org.argouml.cognitive.critics.Critic#stillValid
+     * @see org.argouml.cognitive.Critic#stillValid
      *
      * @see org.argouml.cognitive.Poster#stillValid(
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)

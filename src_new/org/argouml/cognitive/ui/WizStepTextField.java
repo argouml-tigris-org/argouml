@@ -40,7 +40,7 @@ import org.argouml.swingext.SpacerPanel;
  * A non-modal wizard step that shows instructions and prompts
  * the user to enter a string.
  *
- * @see org.argouml.cognitive.critics.Critic
+ * @see org.argouml.cognitive.Critic
  * @see org.argouml.cognitive.critics.Wizard
  */
 public class WizStepTextField extends WizStep {

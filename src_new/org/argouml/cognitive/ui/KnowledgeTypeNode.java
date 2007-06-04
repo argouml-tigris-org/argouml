@@ -25,7 +25,8 @@
 package org.argouml.cognitive.ui;
 
 import java.util.Vector;
-import org.argouml.cognitive.critics.Critic;
+
+import org.argouml.cognitive.Critic;
 
 
 /**

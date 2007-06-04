@@ -22,15 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.cognitive.critics;
+package org.argouml.cognitive;
 
 import java.util.Vector;
 import javax.swing.Icon;
-import org.argouml.cognitive.Decision;
-import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.Goal;
-import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.ListSet;
 
 /**
  * A CompoundCritic acts like a regular critic in that it checks the

@@ -25,10 +25,10 @@
 package org.argouml.uml.cognitive.critics;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -110,7 +110,7 @@ public class CrUML extends Critic {
     }
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#setHeadline(java.lang.String)
+     * @see org.argouml.cognitive.Critic#setHeadline(java.lang.String)
      * 
      * Set up the locale specific text for the critic headline 
      * (the one liner that appears in the to-do pane)
