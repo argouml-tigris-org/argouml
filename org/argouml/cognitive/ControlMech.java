@@ -22,9 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.cognitive.critics;
+package org.argouml.cognitive;
 
-import org.argouml.cognitive.Designer;
 
 /**
  * A ControlMech determines when a Critic should be active.  New

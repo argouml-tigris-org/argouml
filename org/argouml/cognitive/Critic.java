@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.cognitive.critics;
+package org.argouml.cognitive;
 
 import java.io.Serializable;
 import java.util.Enumeration;
@@ -34,14 +34,8 @@ import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.cognitive.Decision;
-import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.Goal;
-import org.argouml.cognitive.ListSet;
-import org.argouml.cognitive.Offender;
-import org.argouml.cognitive.Poster;
-import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.Translator;
+import org.argouml.cognitive.critics.SnoozeOrder;
+import org.argouml.cognitive.critics.Wizard;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 

@@ -41,7 +41,7 @@ import org.argouml.swingext.SpacerPanel;
  * A non-modal wizard step that shows instructions and allows
  * the user to select one of a series of radio-buttons.
  *
- * @see org.argouml.cognitive.critics.Critic
+ * @see org.argouml.cognitive.Critic
  * @see org.argouml.cognitive.critics.Wizard
  */
 

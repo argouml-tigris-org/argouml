@@ -22,11 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.cognitive.critics;
+package org.argouml.cognitive;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import org.argouml.cognitive.Designer;
 
 /**
  * The standard Control Mech. It extends an ANDControlMech with the individual

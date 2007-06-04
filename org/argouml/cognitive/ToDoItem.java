@@ -27,7 +27,6 @@ package org.argouml.cognitive;
 import java.io.Serializable;
 import java.util.Enumeration;
 import javax.swing.Icon;
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.critics.Wizard;
 import org.argouml.cognitive.critics.WizardItem;
 import org.argouml.model.Model;

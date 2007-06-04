@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.cognitive.critics;
+package org.argouml.cognitive;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +35,6 @@ import java.util.Observer;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.Designer;
 
 /**
  * Agency manages Critics.  Since classes are not really first class

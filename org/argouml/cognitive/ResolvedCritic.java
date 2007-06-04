@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Vector;
 
 
-import org.argouml.cognitive.critics.Critic;
 
 import org.apache.log4j.Logger;
 

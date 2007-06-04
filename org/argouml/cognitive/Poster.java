@@ -38,7 +38,7 @@ import javax.swing.Icon;
  *
  * Currently Critic and Designer implement this interface.
  *
- * @see org.argouml.cognitive.critics.Critic
+ * @see org.argouml.cognitive.Critic
  * @see Designer
  * @author Jason Robbins
  */

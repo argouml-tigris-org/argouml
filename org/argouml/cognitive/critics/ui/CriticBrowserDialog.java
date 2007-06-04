@@ -65,10 +65,10 @@ import javax.swing.table.TableColumn;
 import javax.swing.text.Document;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.Agency;
+import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
-import org.argouml.cognitive.critics.Agency;
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.util.ArgoDialog;
 import org.argouml.util.osdep.StartBrowser;
 import org.tigris.swidgets.BorderSplitPane;

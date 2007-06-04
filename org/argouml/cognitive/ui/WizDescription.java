@@ -31,11 +31,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
 
 
