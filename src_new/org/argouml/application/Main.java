@@ -42,6 +42,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.ToolTipManager;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
@@ -55,6 +56,7 @@ import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
@@ -747,7 +749,8 @@ public class Main {
      */
     private static void initializeGUI(SplashScreen splash) {
         // make the projectbrowser
-	ProjectBrowser pb = ProjectBrowser.makeInstance(splash);
+        JPanel todoPane = new ToDoPane(splash);
+	ProjectBrowser pb = ProjectBrowser.makeInstance(splash, true, todoPane);
 
 	JOptionPane.setRootFrame(pb);
 

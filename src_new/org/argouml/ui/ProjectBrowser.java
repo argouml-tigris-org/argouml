@@ -64,7 +64,6 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
@@ -197,7 +196,7 @@ public final class ProjectBrowser
     /**
      * The todopane (lower left corner of screen).
      */
-    private ToDoPane todoPane;
+    private JPanel todoPane;
 
     /**
      * A class that handles the title of this frame, 
@@ -234,7 +233,7 @@ public final class ProjectBrowser
      * TheInstance is filled.
      */
     private ProjectBrowser() {
-        this("ArgoUML", null, true);
+        this("ArgoUML", null, true, null);
     }
 
     /**
@@ -249,7 +248,7 @@ public final class ProjectBrowser
      *            False if we are providing components to another top level app.
      */
     private ProjectBrowser(String applicationName, SplashScreen splash, 
-             boolean mainApplication) {
+             boolean mainApplication, JPanel leftBottomPane) {
         super(applicationName);
         theInstance = this;
         isMainApplication = mainApplication;
@@ -259,7 +258,7 @@ public final class ProjectBrowser
         saveAction = new ActionSaveProject();
         ProjectManager.getManager().setSaveAction(saveAction);
 
-        createPanels(splash);
+        createPanels(splash, leftBottomPane);
 
         if (isMainApplication) {
             menuBar = new GenericArgoMenuBar();
@@ -329,17 +328,6 @@ public final class ProjectBrowser
     }
 
     /**
-     * Creator method for the projectbrowser.
-     *
-     * @return the singleton instance of the projectbrowser
-     *
-     * @param splash true if we are allowed to show a splash screen
-     */
-    public static ProjectBrowser makeInstance(SplashScreen splash) {
-        return makeInstance(splash, true);
-    }
-
-    /**
      * Creator method for the ProjectBrowser which optionally allows all
      * components to be created without making a top level application window
      * visible.
@@ -353,8 +341,9 @@ public final class ProjectBrowser
      * @return the singleton instance of the projectbrowser
      */
     public static ProjectBrowser makeInstance(SplashScreen splash,
-            boolean mainApplication) {
-        return new ProjectBrowser("ArgoUML", splash, mainApplication);
+            boolean mainApplication, JPanel leftBottomPane) {
+        return new ProjectBrowser("ArgoUML", splash, 
+                mainApplication, leftBottomPane);
     }
 
     /*
@@ -370,7 +359,7 @@ public final class ProjectBrowser
      *
      * @param splash true if we show  the splashscreen during startup
      */
-    protected void createPanels(SplashScreen splash) {
+    protected void createPanels(SplashScreen splash, JPanel leftBottomPane) {
 
         if (splash != null) {
             splash.getStatusBar().showStatus(
@@ -400,7 +389,7 @@ public final class ProjectBrowser
                     "statusmsg.bar.making-project-browser-to-do-pane"));
             splash.getStatusBar().incProgress(5);
         }
-        todoPane = new ToDoPane(splash);
+        todoPane = leftBottomPane;
         createDetailsPanes();
         restorePanelSizes();
     }
@@ -1074,7 +1063,7 @@ public final class ProjectBrowser
      * Returns the todopane.
      * @return ToDoPane
      */
-    public ToDoPane getTodoPane() {
+    public JPanel getTodoPane() {
         return todoPane;
     }
 
