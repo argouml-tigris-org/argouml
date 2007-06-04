@@ -24,7 +24,7 @@
 
 // Original Author: agauthie
 
-package org.argouml.ui;
+package org.argouml.cognitive.ui;
 
 import java.awt.event.ActionEvent;
 
@@ -32,6 +32,7 @@ import javax.swing.Action;
 
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.i18n.Translator;
+import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -60,7 +61,8 @@ public class ActionGoToCritique extends UndoableAction {
      */
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
-	ProjectBrowser.getInstance().getTodoPane().selectItem(item);
+	((ToDoPane) ProjectBrowser.getInstance().getTodoPane())
+            .selectItem(item);
     }
 
 } /* end class ActionGoToCritique */
