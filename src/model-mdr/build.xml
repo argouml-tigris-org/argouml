@@ -38,7 +38,7 @@ This is designed to work in two different environments:
     <property name="result.jar" value="argouml-mdr.jar"/>
     <property name="javainterfaces.jar" value="java-interfaces.jar"/>
 
-    <property name="mdrant.jar" value="tools/lib/mdrant.jar" /> 
+    <property name="mdrant.jar" value="tools/lib/mdrant-patched.jar" /> 
     <property name="mof.jar" value="${lib.dir}/mof.jar" /> 
     <property name="jmi.jar" value="${lib.dir}/jmi.jar" /> 
     <property name="mdrapi.jar" value="${lib.dir}/mdrapi.jar" /> 
@@ -101,7 +101,7 @@ This is designed to work in two different environments:
     </taskdef>
     
     <path id="ant.optional.classpath">
-      <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
+      <pathelement location="${ant.home}/ant-junit.jar"/>
       <path refid="junit.classpath"/>
     </path>
         
@@ -173,6 +173,8 @@ This is designed to work in two different environments:
                put it in the caller's directory when called from argouml build
     -->
     <echo message="Generating JMI interfaces from ${xmi.file}"/>
+    <echo message="Storage file is in ${basedir}/${build.javas}"/>
+    <echo message="Sources written to ${build.javas}"/>
     <mdr storageFile="${basedir}/${build.javas}/mymdr">
       <instantiate name="mof4models" /> 
       <readXMI file="${xmi.file}.xml" extent="mof4models" /> 
@@ -191,6 +193,7 @@ This is designed to work in two different environments:
       <printExtentNames/>
       -->
     </mdr>
+
   </target>
   
   <!-- =================================================================== -->
