@@ -17,7 +17,7 @@ fi
 #
 # build.sh always calls the version of ant distributed with ArgoUML
 #
-ANT_HOME=../argouml-core-tools/ant-1.6.2
+ANT_HOME=../argouml-core-tools/ant-1.7.0
 
 echo ANT_HOME is: $ANT_HOME
 echo
