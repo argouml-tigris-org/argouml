@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 
 import org.argouml.uml.profile.java.ProfileJava;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigImage;
 /**
  *   This class captures the configurable behavior of Argo.
  *
@@ -80,7 +81,7 @@ public class ProfileConfiguration {
 	
 	FigNodeStrategy fns = p.getFigureStrategy();
 	if (fns!=null) {
-	    figNodeStrategies.add(p);
+	    figNodeStrategies.add(fns);
 	}
     }
     
@@ -99,7 +100,7 @@ public class ProfileConfiguration {
 	    
 		FigNodeStrategy fns = p.getFigureStrategy();
 		if (fns!=null) {
-		    figNodeStrategies.remove(p);
+		    figNodeStrategies.remove(fns);
 		}
 	    
 	}
@@ -108,21 +109,18 @@ public class ProfileConfiguration {
     @SuppressWarnings("unchecked")
     private FigNodeStrategy compositeFigNodeStrategy = new FigNodeStrategy() {
 
-	public Fig[] getExtraFiguresForNode(Object element) {
+	public FigImage getIconForStereotype(Object element) {
 	    Iterator it = figNodeStrategies.iterator();
-	    Vector cont = new Vector();
 
 	    while(it.hasNext()) {
 		FigNodeStrategy strat = (FigNodeStrategy) it.next();
-		Fig[] extra = strat.getExtraFiguresForNode(element);
+		FigImage extra = strat.getIconForStereotype(element);
 
-		for(int i=0;i<extra.length;++i) {
-		    cont.add(extra[i]);
+		if (extra != null) {
+		    return extra;
 		}
 	    }
-
-	    LOG.info("RETURNING " + cont.size() + " elements");
-	    return (Fig[])cont.toArray(new Fig[0]);
+	    return null;
 	}
 	
     };

@@ -219,14 +219,6 @@ public abstract class UmlDiagramRenderer
                     "Failed to construct a FigNode for " + node);
         }
 
-        Fig[] fig = ProjectManager.getManager().getCurrentProject()
-	    .getProfileConfiguration().getFigNodeStrategy()
-	    .getExtraFiguresForNode(node);
-
-        for(int i=0;i<fig.length;++i) {
-            figNode.addFig(fig[i]);
-        }
-        
         setStyleAttributes(figNode, styleAttributes);
         
         return figNode;

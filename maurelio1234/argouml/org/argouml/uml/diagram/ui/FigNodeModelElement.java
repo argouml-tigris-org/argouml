@@ -86,11 +86,13 @@ import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigImage;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -222,6 +224,31 @@ public abstract class FigNodeModelElement
     private Fig stereotypeFig;
 
     /**
+     * Icon used instead of actual figure when provided by some profile
+     */
+    private Fig stereotypeIcon;
+
+    /**
+     * Icon used instead of actual figure when provided by some profile
+     */
+    private FigSingleLineText stereotypeIconText;
+
+    /**
+     * Icon used instead of actual figure when provided by some profile
+     */
+    private Fig defaultBigPort;
+    
+    /**
+     * Icon used instead of actual figure when provided by some profile
+     */
+    private boolean showStereotypeIcon = false;
+
+    /**
+     * Icon used instead of actual figure when provided by some profile
+     */
+    private boolean smallStereotype = true;
+
+    /**
      * EnclosedFigs are the Figs that are enclosed by this figure. Say that
      * it is a Package then these are the Classes, Interfaces, Packages etc
      * that are on this figure. This is not the same as the figures in the
@@ -268,6 +295,9 @@ public abstract class FigNodeModelElement
         // is inside it:
         bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
+        stereotypeIconText = new FigSingleLineText(0, 0, 0, 0, true);
+	stereotypeIconText.setJustification(FigSingleLineText.JUSTIFY_CENTER);
+	
         nameFig = new FigSingleLineText(10, 10, 90, 21, true);
         nameFig.setLineWidth(1);
         nameFig.setFilled(true);
@@ -308,7 +338,7 @@ public abstract class FigNodeModelElement
         setOwner(element);
         nameFig.setText(placeString());
         readyToEdit = false;
-        setLocation(x, y);
+        setLocation(x, y);        
     }
 
     /*
@@ -1092,6 +1122,7 @@ public abstract class FigNodeModelElement
                 addElementListener(mee.getNewValue(), "name");
             }
             updateStereotypeText();
+            updateStereotypeIcon();
             damage();
         }
     }
@@ -1238,7 +1269,7 @@ public abstract class FigNodeModelElement
      * wanted behaviour.
      */
     protected void updateStereotypeText() {
-        if (getOwner() == null) {
+	if (getOwner() == null) {
             LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
                     + "] is null.");
             LOG.warn("I return...");
@@ -1246,9 +1277,74 @@ public abstract class FigNodeModelElement
         }
 
         Object modelElement = getOwner();
-        stereotypeFig.setOwner(modelElement);
+        stereotypeFig.setOwner(modelElement);        
     }
 
+    protected void updateStereotypeIcon() {
+	System.out.println("UPDATING ICON!");
+	if (getOwner() == null) {
+            LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
+                    + "] is null.");
+            LOG.warn("I return...");
+            return;
+        }
+
+   	this.removeFig(stereotypeIcon);
+	if (showStereotypeIcon && !smallStereotype) {
+           	this.setBigPort(defaultBigPort);
+	}	
+	
+	showStereotypeIcon = false;	
+        Object modelElement = getOwner();
+        Collection stereos = Model.getFacade().getStereotypes(modelElement);
+
+        if (stereos != null) {
+            FigImage replaceIcon = null;
+            for (Object stereo : stereos) {
+		replaceIcon = ProjectManager.getManager().getCurrentProject()
+			.getProfileConfiguration().getFigNodeStrategy()
+			.getIconForStereotype(stereo);
+		if (replaceIcon != null) {
+		    break;
+		}
+	    }
+            
+            if (replaceIcon != null) {
+        	replaceIcon = (FigImage) replaceIcon.clone();
+        	
+        	if (smallStereotype) {
+        	    stereotypeIcon = replaceIcon;
+        	    stereotypeIcon.setLocation(getBigPort().getWidth() - 40, 2);
+        	    stereotypeIcon.setSize(32, 32);
+        	} else {
+        		stereotypeIconText.setText(getName());
+        		stereotypeIconText.setLocation(0, replaceIcon.getHeight() + 2);
+        		stereotypeIconText.setJustification(FigSingleLineText.JUSTIFY_CENTER);
+                	
+                	stereotypeIcon = new FigGroup();
+        
+                	((FigGroup)stereotypeIcon).addFig(replaceIcon);        	
+                	
+                	defaultBigPort = this.getBigPort();
+        		this.setBigPort(stereotypeIcon);		                	
+                	showStereotypeIcon = true;		
+        	}
+
+        	this.addFig(stereotypeIcon);				
+        	stereotypeIcon.setOwner(getOwner());
+		this.redraw();
+	    }
+        }
+    }
+    
+    public void paint(Graphics g) {
+	if (!showStereotypeIcon) {
+	    super.paint(g);
+	} else {
+	    stereotypeIcon.paint(g);
+	}
+    }
+    
     /**
      * Updates the text of the name FigText.
      */
@@ -1257,6 +1353,14 @@ public abstract class FigNodeModelElement
             if (getOwner() == null) {
                 return;
             }
+            FigText nameFig = null;
+            
+            if (showStereotypeIcon) {
+        	nameFig = stereotypeIconText;
+            } else {
+        	nameFig = this.nameFig;
+            }
+            
             if (notationProviderName != null) {
                 nameFig.setText(notationProviderName.toString(
                         getOwner(), npArguments));
@@ -1406,7 +1510,8 @@ public abstract class FigNodeModelElement
     public void renderingChanged() {
         updateNameText();
         updateStereotypeText();
-        updateBounds();
+        updateStereotypeIcon();
+        updateBounds();        
         damage();
     }
 

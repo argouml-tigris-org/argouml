@@ -24,10 +24,10 @@
 
 package org.argouml.uml.profile;
 
-import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigImage;
 
 public interface FigNodeStrategy {
     
-    Fig[] getExtraFiguresForNode(Object element);
+    FigImage getIconForStereotype(Object element);
     
 }
