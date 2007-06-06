@@ -22,12 +22,54 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.profile;
+package org.argouml.uml.diagram.ui;
 
 import java.awt.Image;
 
-public interface FigNodeStrategy {
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigImage;
+import org.tigris.gef.presentation.FigText;
+
+public class FigProfileIcon extends FigGroup {
+
+    private FigImage image = null;
     
-    Image getIconForStereotype(Object element);
+    private FigText  label = null;
+
+    private static final int GAP = 2;
+    public FigProfileIcon(Image icon, String str) {
+	image = new FigImage(0, 0, icon);
+	label = new FigSingleLineText(0, image.getHeight()+GAP, 0, 0, true);	
+	label.setText(str);
+	label.calcBounds();
+	
+	addFig(image);
+	addFig(label);
+
+	image.setResizable(false);
+	image.setLocked(true);
+    }
+        
+    protected void setBoundsImpl(int x, int y, int w, int h) {	
+	int width = Math.max(image.getWidth(), label.getWidth());
+	
+	image.setLocation(x + (width - image.getWidth())/2, y);
+	label.setLocation(x + (width - label.getWidth())/2, y + image.getHeight()+GAP);
+    }
+
+    public FigText getLabelFig() {
+        return label;
+    }
+    
+    public String getLabel() {
+        return label.getText();
+    }
+
+    public void setLabel(String label) {
+        this.label.setText(label);
+	this.label.calcBounds();
+	this.calcBounds();
+    }
+    
     
 }

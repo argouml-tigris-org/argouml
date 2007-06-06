@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -46,6 +47,7 @@ import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
@@ -86,13 +88,11 @@ import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
-import org.tigris.gef.presentation.FigImage;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -224,30 +224,11 @@ public abstract class FigNodeModelElement
     private Fig stereotypeFig;
 
     /**
-     * Icon used instead of actual figure when provided by some profile
      */
-    private Fig stereotypeIcon;
-
-    /**
-     * Icon used instead of actual figure when provided by some profile
-     */
-    private FigSingleLineText stereotypeIconText;
-
-    /**
-     * Icon used instead of actual figure when provided by some profile
-     */
-    private Fig defaultBigPort;
+    private FigProfileIcon stereotypeFigProfileIcon;
     
-    /**
-     * Icon used instead of actual figure when provided by some profile
-     */
-    private boolean showStereotypeIcon = false;
-
-    /**
-     * Icon used instead of actual figure when provided by some profile
-     */
-    private boolean smallStereotype = true;
-
+    private FigText originalNameFig;
+    
     /**
      * EnclosedFigs are the Figs that are enclosed by this figure. Say that
      * it is a Package then these are the Classes, Interfaces, Packages etc
@@ -295,9 +276,6 @@ public abstract class FigNodeModelElement
         // is inside it:
         bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
-        stereotypeIconText = new FigSingleLineText(0, 0, 0, 0, true);
-	stereotypeIconText.setJustification(FigSingleLineText.JUSTIFY_CENTER);
-	
         nameFig = new FigSingleLineText(10, 10, 90, 21, true);
         nameFig.setLineWidth(1);
         nameFig.setFilled(true);
@@ -338,7 +316,7 @@ public abstract class FigNodeModelElement
         setOwner(element);
         nameFig.setText(placeString());
         readyToEdit = false;
-        setLocation(x, y);        
+        setLocation(x, y);
     }
 
     /*
@@ -1269,7 +1247,7 @@ public abstract class FigNodeModelElement
      * wanted behaviour.
      */
     protected void updateStereotypeText() {
-	if (getOwner() == null) {
+        if (getOwner() == null) {
             LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
                     + "] is null.");
             LOG.warn("I return...");
@@ -1277,74 +1255,9 @@ public abstract class FigNodeModelElement
         }
 
         Object modelElement = getOwner();
-        stereotypeFig.setOwner(modelElement);        
+        stereotypeFig.setOwner(modelElement);
     }
 
-    protected void updateStereotypeIcon() {
-	System.out.println("UPDATING ICON!");
-	if (getOwner() == null) {
-            LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
-                    + "] is null.");
-            LOG.warn("I return...");
-            return;
-        }
-
-   	this.removeFig(stereotypeIcon);
-	if (showStereotypeIcon && !smallStereotype) {
-           	this.setBigPort(defaultBigPort);
-	}	
-	
-	showStereotypeIcon = false;	
-        Object modelElement = getOwner();
-        Collection stereos = Model.getFacade().getStereotypes(modelElement);
-
-        if (stereos != null) {
-            FigImage replaceIcon = null;
-            for (Object stereo : stereos) {
-		replaceIcon = ProjectManager.getManager().getCurrentProject()
-			.getProfileConfiguration().getFigNodeStrategy()
-			.getIconForStereotype(stereo);
-		if (replaceIcon != null) {
-		    break;
-		}
-	    }
-            
-            if (replaceIcon != null) {
-        	replaceIcon = (FigImage) replaceIcon.clone();
-        	
-        	if (smallStereotype) {
-        	    stereotypeIcon = replaceIcon;
-        	    stereotypeIcon.setLocation(getBigPort().getWidth() - 40, 2);
-        	    stereotypeIcon.setSize(32, 32);
-        	} else {
-        		stereotypeIconText.setText(getName());
-        		stereotypeIconText.setLocation(0, replaceIcon.getHeight() + 2);
-        		stereotypeIconText.setJustification(FigSingleLineText.JUSTIFY_CENTER);
-                	
-                	stereotypeIcon = new FigGroup();
-        
-                	((FigGroup)stereotypeIcon).addFig(replaceIcon);        	
-                	
-                	defaultBigPort = this.getBigPort();
-        		this.setBigPort(stereotypeIcon);		                	
-                	showStereotypeIcon = true;		
-        	}
-
-        	this.addFig(stereotypeIcon);				
-        	stereotypeIcon.setOwner(getOwner());
-		this.redraw();
-	    }
-        }
-    }
-    
-    public void paint(Graphics g) {
-	if (!showStereotypeIcon) {
-	    super.paint(g);
-	} else {
-	    stereotypeIcon.paint(g);
-	}
-    }
-    
     /**
      * Updates the text of the name FigText.
      */
@@ -1353,14 +1266,6 @@ public abstract class FigNodeModelElement
             if (getOwner() == null) {
                 return;
             }
-            FigText nameFig = null;
-            
-            if (showStereotypeIcon) {
-        	nameFig = stereotypeIconText;
-            } else {
-        	nameFig = this.nameFig;
-            }
-            
             if (notationProviderName != null) {
                 nameFig.setText(notationProviderName.toString(
                         getOwner(), npArguments));
@@ -1510,11 +1415,69 @@ public abstract class FigNodeModelElement
     public void renderingChanged() {
         updateNameText();
         updateStereotypeText();
-        updateStereotypeIcon();
-        updateBounds();        
+        updateStereotypeIcon();        
+        updateBounds();
         damage();
     }
 
+    private void updateStereotypeIcon() {
+	if (getOwner() == null) {
+            LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
+                    + "] is null.");
+            LOG.warn("I return...");
+            return;
+        }
+
+	if (stereotypeFigProfileIcon != null) {
+	    this.removeFig(stereotypeFigProfileIcon);
+	}	
+	if (originalNameFig != null) {
+		this.setNameFig(originalNameFig);        	    
+	}
+	
+        Object modelElement = getOwner();
+        Collection stereos = Model.getFacade().getStereotypes(modelElement);
+
+        if (stereos != null) {
+            Image replaceIcon = null;
+            for (Object stereo : stereos) {
+		replaceIcon = ProjectManager.getManager().getCurrentProject()
+			.getProfileConfiguration().getFigNodeStrategy()
+			.getIconForStereotype(stereo);
+		if (replaceIcon != null) {
+		    break;
+		}
+	    }
+            
+            if (replaceIcon != null) {        	
+        	stereotypeFigProfileIcon = new FigProfileIcon(replaceIcon, getName());
+            	stereotypeFigProfileIcon.setOwner(getOwner());
+        	this.addFig(stereotypeFigProfileIcon);
+
+        	originalNameFig = this.getNameFig();
+        	this.setNameFig(stereotypeFigProfileIcon.getLabelFig());
+
+        	for (Object fig : getFigs()) {
+		    ((Fig) fig).setVisible(fig==stereotypeFigProfileIcon);
+            	}		
+	    } else {
+		stereotypeFigProfileIcon = null;
+                for (Object fig : getFigs()) {
+		    ((Fig) fig).setVisible(fig!=stereotypeFigProfileIcon);
+            	}
+	    }
+    	    this.redraw();
+        }	
+    }
+
+    protected void setBoundsImpl(int x, int y, int w, int h) {	
+	if (stereotypeFigProfileIcon != null) {
+	    stereotypeFigProfileIcon.setBounds(x, y, w, h);
+	} else {
+	    super.setBoundsImpl(x, y, w, h);
+	}
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#calcBounds()
      */

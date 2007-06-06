@@ -25,6 +25,7 @@
 
 package org.argouml.uml.profile;
 
+import java.awt.Image;
 import java.util.Iterator;
 import java.util.Vector;
 import org.apache.log4j.Logger;
@@ -109,12 +110,12 @@ public class ProfileConfiguration {
     @SuppressWarnings("unchecked")
     private FigNodeStrategy compositeFigNodeStrategy = new FigNodeStrategy() {
 
-	public FigImage getIconForStereotype(Object element) {
+	public Image getIconForStereotype(Object element) {
 	    Iterator it = figNodeStrategies.iterator();
 
 	    while(it.hasNext()) {
 		FigNodeStrategy strat = (FigNodeStrategy) it.next();
-		FigImage extra = strat.getIconForStereotype(element);
+		Image extra = strat.getIconForStereotype(element);
 
 		if (extra != null) {
 		    return extra;
