@@ -585,60 +585,64 @@ public class FigClass extends FigClassifierBox
             final int w, final int h) {
         Rectangle oldBounds = getBounds();
 
-        // set bounds of big box
-        getBigPort().setBounds(x, y, w, h);
-        borderFig.setBounds(x, y, w, h);
+	if (stereotypeFigProfileIcon != null) {
+	    stereotypeFigProfileIcon.setBounds(x, y, w, h);
+	} else {
+	        // set bounds of big box
+	        getBigPort().setBounds(x, y, w, h);
+	        borderFig.setBounds(x, y, w, h);
 
-        // Save our old boundaries (needed later), and get minimum size
-        // info. "whitespace" will be used to maintain a running calculation
-        // of our size at various points.
+	        // Save our old boundaries (needed later), and get minimum size
+	        // info. "whitespace" will be used to maintain a running calculation
+	        // of our size at various points.
 
-        final int whitespace = h - getMinimumSize().height;
+	        final int whitespace = h - getMinimumSize().height;
 
-        getNameFig().setLineWidth(0);
-        getNameFig().setLineColor(Color.red);
-        int currentHeight = 0;
+	        getNameFig().setLineWidth(0);
+	        getNameFig().setLineColor(Color.red);
+	        int currentHeight = 0;
 
-        if (getStereotypeFig().isVisible()) {
-            int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
-            getStereotypeFig().setBounds(
-                    x,
-                    y,
-                    w,
-                    stereotypeHeight);
-            currentHeight = stereotypeHeight;
-        }
+	        if (getStereotypeFig().isVisible()) {
+	            int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
+	            getStereotypeFig().setBounds(
+	                    x,
+	                    y,
+	                    w,
+	                    stereotypeHeight);
+	            currentHeight = stereotypeHeight;
+	        }
 
-        int nameHeight = getNameFig().getMinimumSize().height;
-        getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
-        currentHeight += nameHeight;
+	        int nameHeight = getNameFig().getMinimumSize().height;
+	        getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
+	        currentHeight += nameHeight;
 
-        if (isAttributesVisible()) {
-            int attributesHeight = getAttributesFig().getMinimumSize().height;
-            if (isOperationsVisible()) {
-                attributesHeight += whitespace / 2;
-            }
-            getAttributesFig().setBounds(
-                    x,
-                    y + currentHeight,
-                    w,
-                    attributesHeight);
-            currentHeight += attributesHeight;
-        }
+	        if (isAttributesVisible()) {
+	            int attributesHeight = getAttributesFig().getMinimumSize().height;
+	            if (isOperationsVisible()) {
+	                attributesHeight += whitespace / 2;
+	            }
+	            getAttributesFig().setBounds(
+	                    x,
+	                    y + currentHeight,
+	                    w,
+	                    attributesHeight);
+	            currentHeight += attributesHeight;
+	        }
 
-        if (isOperationsVisible()) {
-            int operationsY = y + currentHeight;
-            int operationsHeight = (h + y) - operationsY - 1;
-            if (operationsHeight < getOperationsFig().getMinimumSize().height) {
-                operationsHeight = getOperationsFig().getMinimumSize().height;
-            }
-            getOperationsFig().setBounds(
-                    x,
-                    operationsY,
-                    w,
-                    operationsHeight);
-        }
+	        if (isOperationsVisible()) {
+	            int operationsY = y + currentHeight;
+	            int operationsHeight = (h + y) - operationsY - 1;
+	            if (operationsHeight < getOperationsFig().getMinimumSize().height) {
+	                operationsHeight = getOperationsFig().getMinimumSize().height;
+	            }
+	            getOperationsFig().setBounds(
+	                    x,
+	                    operationsY,
+	                    w,
+	                    operationsHeight);
+	        }
 
+	}
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
         // has changed.
@@ -646,6 +650,7 @@ public class FigClass extends FigClassifierBox
         calcBounds();
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
+	System.out.println("FIGNODEMODELELEMENT: " + getBounds());
     }
 
     /**

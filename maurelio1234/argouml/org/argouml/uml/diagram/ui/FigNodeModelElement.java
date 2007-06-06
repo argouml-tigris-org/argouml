@@ -225,7 +225,7 @@ public abstract class FigNodeModelElement
 
     /**
      */
-    private FigProfileIcon stereotypeFigProfileIcon;
+    protected FigProfileIcon stereotypeFigProfileIcon;
     
     private FigText originalNameFig;
     
@@ -1467,15 +1467,10 @@ public abstract class FigNodeModelElement
             	}
 	    }
     	    this.redraw();
-        }	
-    }
-
-    protected void setBoundsImpl(int x, int y, int w, int h) {	
-	if (stereotypeFigProfileIcon != null) {
-	    stereotypeFigProfileIcon.setBounds(x, y, w, h);
-	} else {
-	    super.setBoundsImpl(x, y, w, h);
-	}
+        }
+        
+        System.out.println("ICON: "+stereotypeFigProfileIcon);
+        System.out.println("NAME: "+getNameFig() + "[" + originalNameFig);
     }
     
     /*

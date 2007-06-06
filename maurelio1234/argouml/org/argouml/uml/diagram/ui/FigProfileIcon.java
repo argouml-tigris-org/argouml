@@ -55,6 +55,9 @@ public class FigProfileIcon extends FigGroup {
 	
 	image.setLocation(x + (width - image.getWidth())/2, y);
 	label.setLocation(x + (width - label.getWidth())/2, y + image.getHeight()+GAP);
+	
+        calcBounds();
+	System.out.println("FIGPROFILEICON: " + getBounds());
     }
 
     public FigText getLabelFig() {
