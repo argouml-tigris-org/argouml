@@ -7,11 +7,10 @@ import java.io.IOException;
 
 import org.argouml.model.Model;
 import org.argouml.uml.profile.FigNodeStrategy;
-import org.tigris.gef.presentation.FigImage;
 
 public class JavaBeansFigNodeStrategy implements FigNodeStrategy {
 
-    private FigImage icon = null;
+    private Image icon = null;
     
     public JavaBeansFigNodeStrategy() {
 	BufferedInputStream bis = new BufferedInputStream(this.getClass()
@@ -22,19 +21,15 @@ public class JavaBeansFigNodeStrategy implements FigNodeStrategy {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-	Image img = Toolkit.getDefaultToolkit().createImage(buf);
-	icon = new FigImage(0, 0, img);
+	icon = Toolkit.getDefaultToolkit().createImage(buf);
     }
     
-    public FigImage getIconForStereotype(Object stereotype) {
-	FigImage ret = null;
-	String s = Model.getFacade().getName(stereotype);
-	
-	if ("Bean".equals(s)) {
-	    ret = icon; 
+    public Image getIconForStereotype(Object stereotype) {
+	if ("Bean".equals(Model.getFacade().getName(stereotype))) {
+	    return icon;
+	} else {
+	    return null;
 	}
-	    
-	return ret;
     }
     
 }
