@@ -60,7 +60,7 @@ public class TestResolvedCritic extends TestCase {
     public void testConstructors() {
         Object testmc = Model.getCoreFactory().buildClass();
         Critic c = new Critic();
-        String crString = "class org.argouml.cognitive.critics.Critic";
+        String crString = "class org.argouml.cognitive.Critic";
         ResolvedCritic rc;
         Vector<String> vec = new Vector<String>();
         ListSet set = new ListSet();
