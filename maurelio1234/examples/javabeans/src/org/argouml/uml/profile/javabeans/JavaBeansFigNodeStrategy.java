@@ -15,14 +15,14 @@ public class JavaBeansFigNodeStrategy implements FigNodeStrategy {
     
     public JavaBeansFigNodeStrategy() {
 	iconBean = readImage("bean.GIF");
-	iconRay  = readImage("raio.gif");
+	iconRay  = readImage("event.gif");
     }
-
-    private final byte[] buf = new byte[10000];
-    
+   
     private Image readImage(String fileName) {
 	BufferedInputStream bis = new BufferedInputStream(this.getClass()
 		.getResourceAsStream(fileName));
+	
+	byte[] buf = new byte[10000];
 	try {
 	    bis.read(buf);
 	} catch (IOException e) {
