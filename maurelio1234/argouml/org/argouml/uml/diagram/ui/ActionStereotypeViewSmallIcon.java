@@ -24,57 +24,39 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.util.Vector;
+public class ActionStereotypeViewSmallIcon extends AbstractActionRadioMenuItem {
 
-import org.tigris.gef.presentation.FigImage;
-import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.FigText;
-
-public class FigProfileIcon extends FigNode {
-
-    private FigImage image = null;
+    private FigNodeModelElement node;
     
-    private FigText  label = null;
 
-    private static final int GAP = 2;
-    public FigProfileIcon(Image icon, String str) {
-	image = new FigImage(0, 0, icon);
-	label = new FigSingleLineText(0, image.getHeight()+GAP, 0, 0, true);	
-	label.setText(str);
-	label.calcBounds();
-	
-	addFig(image);
-	addFig(label);
+    public ActionStereotypeViewSmallIcon(FigNodeModelElement node) {
+	super("menu.popup.stereotype-view.small-icon", false);
 
-	image.setResizable(false);
-	image.setLocked(true);
-    }
-    
-    protected void setBoundsImpl(int x, int y, int w, int h) {	
-	int width = Math.max(image.getWidth(), label.getWidth());
-	
-	image.setLocation(x + (width - image.getWidth())/2, y);
-	label.setLocation(x + (width - label.getWidth())/2, y + image.getHeight()+GAP);
-	
-        calcBounds();
-        updateEdges();
+	this.node = node;
+	updateSelection();
     }
 
-    public FigText getLabelFig() {
-        return label;
-    }
-    
-    public String getLabel() {
-        return label.getText();
+    private void updateSelection() {
+	System.out.println("NODE SSVW: " + node.getStereotypeView());
+	putValue("SELECTED",
+		  Boolean.valueOf(
+			  node.getStereotypeView() == 
+			      FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON));
     }
 
-    public void setLabel(String label) {
-        this.label.setText(label);
-	this.label.calcBounds();
-	this.calcBounds();
+    @Override
+    void toggleValueOfTarget(Object t) {
+	node.setStereotypeView(FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON);
+	updateSelection();
     }
-    
-    
+
+    @Override
+    Object valueOfTarget(Object t) {
+	if (t instanceof FigNodeModelElement) {
+	    return ((FigNodeModelElement) t).getStereotypeView();
+	} else {
+	    return t;
+	}
+    }
+
 }

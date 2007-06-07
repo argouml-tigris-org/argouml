@@ -589,7 +589,7 @@ public class FigClass extends FigClassifierBox
 	    getBigPort().setBounds(x, y, w, h);	    
 	    borderFig.setBounds(x, y, w, h);
 
-	    stereotypeFigProfileIcon.setBounds(x, y, w, h);
+	    super.updateProfileBounds(x,y,w,h);
 	} else {
 	        // set bounds of big box
 	        getBigPort().setBounds(x, y, w, h);

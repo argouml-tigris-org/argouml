@@ -30,6 +30,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -93,6 +94,7 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigImage;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -204,6 +206,21 @@ public abstract class FigNodeModelElement
      */
     protected static final int ACTIVE = 8;
 
+    /**
+     * Used for #setStereotypeView().
+     */
+    public static final int STEREOTYPE_VIEW_TEXTUAL = 0;
+
+    /**
+     * Used for #setStereotypeView().
+     */
+    public static final int STEREOTYPE_VIEW_BIG_ICON = 1;
+
+    /**
+     * Used for #setStereotypeView().
+     */
+    public static final int STEREOTYPE_VIEW_SMALL_ICON = 2;
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -226,6 +243,9 @@ public abstract class FigNodeModelElement
     /**
      */
     protected FigProfileIcon stereotypeFigProfileIcon;
+    private   Vector floatingStereotypes = new Vector();
+    public int stereotypeView = STEREOTYPE_VIEW_TEXTUAL;   
+    private static final int ICON_WIDTH = 16;
     
     private FigText originalNameFig;
     
@@ -491,8 +511,9 @@ public abstract class FigNodeModelElement
             // Add stereotypes submenu
             Action[] stereoActions =
                 StereotypeUtility.getApplyStereotypeActions(getOwner());
+
+            popUpActions.insertElementAt(new JSeparator(), 0);
             if (stereoActions != null) {
-                popUpActions.insertElementAt(new JSeparator(), 0);
                 ArgoJMenu stereotypes =
                     new ArgoJMenu("menu.popup.apply-stereotypes");
                 for (int i = 0; i < stereoActions.length; ++i) {
@@ -500,8 +521,18 @@ public abstract class FigNodeModelElement
                 }
                 popUpActions.insertElementAt(stereotypes, 0);
             }
+            
+            // add stereotype view submenu
+            ArgoJMenu stereotypesView =
+                new ArgoJMenu("menu.popup.stereotype-view");
+            
+            stereotypesView.addRadioItem(new ActionStereotypeViewTextual(this));
+            stereotypesView.addRadioItem(new ActionStereotypeViewBigIcon(this));
+            stereotypesView.addRadioItem(new ActionStereotypeViewSmallIcon(this));
+            
+            System.out.println("BUILDING!!! STVIEW: " + getStereotypeView());
+            popUpActions.insertElementAt(stereotypesView, 0);
         }
-
         return popUpActions;
     }
 
@@ -1422,59 +1453,107 @@ public abstract class FigNodeModelElement
 
     private void updateStereotypeIcon() {
 	if (getOwner() == null) {
-            LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
-                    + "] is null.");
-            LOG.warn("I return...");
-            return;
-        }
+	    LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
+		    + "] is null.");
+	    LOG.warn("I return...");
+	    return;
+	}
 
 	if (stereotypeFigProfileIcon != null) {
 	    this.removeFig(stereotypeFigProfileIcon);
-	}	
-	if (originalNameFig != null) {
-	    this.setNameFig(originalNameFig);        	    
+	    stereotypeFigProfileIcon = null;
 	}
 	
-        Object modelElement = getOwner();
-        Collection stereos = Model.getFacade().getStereotypes(modelElement);
+	if (originalNameFig != null) {
+	    this.setNameFig(originalNameFig);
+	    originalNameFig = null;
+	}
 
-        if (stereos != null) {
-            Image replaceIcon = null;
-            for (Object stereo : stereos) {
-		replaceIcon = ProjectManager.getManager().getCurrentProject()
-			.getProfileConfiguration().getFigNodeStrategy()
-			.getIconForStereotype(stereo);
+	if (!floatingStereotypes.isEmpty()) {
+	    for (Object icon : floatingStereotypes) {
+		this.removeFig((Fig) icon);
+	    }
+	    floatingStereotypes.clear();
+	}
+
+	Object modelElement = getOwner();
+	Collection stereos = Model.getFacade().getStereotypes(modelElement);
+	if (getStereotypeView() != STEREOTYPE_VIEW_BIG_ICON) {
+	    stereotypeFigProfileIcon = null;
+	    for (Object fig : getFigs()) {
+		((Fig) fig).setVisible(fig != stereotypeFigProfileIcon);
+	    }
+	}	
+	 
+	if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON) {
+
+	    if (stereos != null) {
+		Image replaceIcon = null;
+
+		if (stereos.size() == 1) {
+		    Object stereo = stereos.iterator().next();
+		    replaceIcon = ProjectManager.getManager()
+			    .getCurrentProject().getProfileConfiguration()
+			    .getFigNodeStrategy().getIconForStereotype(stereo);
+		}
+		
 		if (replaceIcon != null) {
-		    break;
+		    stereotypeFigProfileIcon = new FigProfileIcon(replaceIcon,
+			    getName());
+		    stereotypeFigProfileIcon.setOwner(getOwner());
+
+		    stereotypeFigProfileIcon.setLocation(getBigPort()
+			    .getLocation());
+		    this.addFig(stereotypeFigProfileIcon);
+
+		    originalNameFig = this.getNameFig();
+		    this.setNameFig(stereotypeFigProfileIcon.getLabelFig());
+
+		    for (Object fig : getFigs()) {
+			((Fig) fig).setVisible(fig == stereotypeFigProfileIcon);
+		    }
 		}
 	    }
-            
-            if (replaceIcon != null) {        	
-        	stereotypeFigProfileIcon = new FigProfileIcon(replaceIcon, getName());
-            	stereotypeFigProfileIcon.setOwner(getOwner());
-            	
-            	stereotypeFigProfileIcon.setLocation(getBigPort().getLocation());
-        	this.addFig(stereotypeFigProfileIcon);
-
-        	originalNameFig = this.getNameFig();
-        	this.setNameFig(stereotypeFigProfileIcon.getLabelFig());
-
-        	for (Object fig : getFigs()) {
-		    ((Fig) fig).setVisible(fig==stereotypeFigProfileIcon);
-            	}		
-	    } else {
-		stereotypeFigProfileIcon = null;
-                for (Object fig : getFigs()) {
-		    ((Fig) fig).setVisible(fig!=stereotypeFigProfileIcon);
-            	}
+	} else if (getStereotypeView() == STEREOTYPE_VIEW_SMALL_ICON) {
+	    int i = this.getWidth();
+	    
+	    for (Object stereo : stereos) {
+		Image icon = ProjectManager.getManager().getCurrentProject()
+			.getProfileConfiguration().getFigNodeStrategy()
+			.getIconForStereotype(stereo);
+		if (icon != null) {
+		    FigImage fimg = new FigImage(i, this.getBigPort().getY()+2, icon);
+		    fimg.setSize(ICON_WIDTH,
+			    (icon.getHeight(null) * ICON_WIDTH)
+				    / icon.getWidth(null));
+		    
+		    addFig(fimg);
+		    floatingStereotypes.add(fimg);
+		    
+		    i -= ICON_WIDTH - 2;
+		}
 	    }
-    	    this.redraw();
-        }
+	}
+	    
+	this.redraw();
+    }
+    
+    public void updateProfileBounds(int x, int y, int w, int h) {
+	if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON) {
+	    stereotypeFigProfileIcon.setBounds(x, y, w, h);
+	} else if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON) {
+	    int i = this.getWidth();
+	    
+       	    for (Object ficon : this.floatingStereotypes) {
+        	((FigImage)ficon).setLocation(i, this.getBigPort().getY()+2);
+        	i -= ICON_WIDTH - 2;
+            }   
+	}
     }
     
     /*
-     * @see org.tigris.gef.presentation.Fig#calcBounds()
-     */
+         * @see org.tigris.gef.presentation.Fig#calcBounds()
+         */
     public void calcBounds() {
         if (suppressCalcBounds) {
             return;
@@ -1831,6 +1910,16 @@ public abstract class FigNodeModelElement
     protected boolean isSingleTarget() {
 	return TargetManager.getInstance().getSingleModelTarget()
 		== getOwner();
+    }
+
+    public int getStereotypeView() {
+        return stereotypeView;
+    }
+
+    public void setStereotypeView(int s) {
+	System.out.println("SETSSSVIEW: " + s);
+        this.stereotypeView = s;
+        renderingChanged();
     }
     
 } /* end class FigNodeModelElement */

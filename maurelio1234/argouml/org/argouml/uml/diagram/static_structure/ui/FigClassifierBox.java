@@ -321,4 +321,5 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     protected Object buildModifierPopUp() {
         return buildModifierPopUp(ABSTRACT | LEAF | ROOT);
     }
+
 }
