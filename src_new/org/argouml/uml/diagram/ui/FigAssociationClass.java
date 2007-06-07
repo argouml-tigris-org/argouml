@@ -24,6 +24,8 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,28 +35,31 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
 
-
 /**
- * An Association Class is represented by 3 separate Figs: <nl>
- * <li>FigAssociationClass is the association edge drawn between two classifiers
- * this displays that association properties of the association class.</li>
+ * An Association Class is represented by 3 separate Figs:
+ * <nl>
+ * <li>FigAssociationClass is the association edge drawn between two
+ * classifiers this displays that association properties of the association
+ * class.</li>
  * <li>FigClassAssociationClass is the classifier box that displays the class
  * properties of the association class.</li>
- * </li>FigEdgeAssociationClass is the dashed line that joins these two.</li>
+ * </li>
+ * FigEdgeAssociationClass is the dashed line that joins these two.</li>
  * </nl>
- * 
+ *
  * Whenever the user attempts to remove or delete one of these parts then all
- * parts must go.
- * Delete would be handled because the model element is deleted and all parts
- * are listening for such an event and will remove themselves.
+ * parts must go. Delete would be handled because the model element is deleted
+ * and all parts are listening for such an event and will remove themselves.
  * However if the user attempts to just remove from diagram one of these parts
- * then there is no such event. Hence the removeFromDiagram method is
- * overridden to delegate removal from a single removeFromDiagram method on
+ * then there is no such event. Hence the removeFromDiagram method is overridden
+ * to delegate removal from a single removeFromDiagram method on
  * FigAssociationClass.
  *
  * @author bob.tarling@gmail.com
  */
-public class FigAssociationClass extends FigAssociation {
+public class FigAssociationClass extends FigAssociation implements
+        AttributesCompartmentContainer, PathContainer,
+        OperationsCompartmentContainer {
 
     /**
      * The UID.
@@ -74,15 +79,17 @@ public class FigAssociationClass extends FigAssociation {
     /**
      * Construct a new FigAssociationClass from user interaction.
      *
-     * @param ed the edge
-     * @param lay the layer
+     * @param ed
+     *            the edge
+     * @param lay
+     *            the layer
      */
     public FigAssociationClass(Object ed, Layer lay) {
         this();
         setLayer(lay);
         setOwner(ed);
     }
-    
+
     /**
      * Discover the attached FigEdgeAssociationClass and the
      * FigClassAssociationClass attached to that. Remove them from the diagram
@@ -91,22 +98,22 @@ public class FigAssociationClass extends FigAssociation {
     protected void removeFromDiagramImpl() {
         FigEdgeAssociationClass figEdgeLink = null;
         List edges = null;
-        
+
         FigEdgePort figEdgePort = getEdgePort();
         if (figEdgePort != null) {
             edges = figEdgePort.getFigEdges();
         }
-        
+
         if (edges != null) {
-            for (Iterator it = edges.iterator();
-                    it.hasNext() && figEdgeLink == null; ) {
+            for (Iterator it = edges.iterator(); it.hasNext()
+                    && figEdgeLink == null;) {
                 Object o = it.next();
                 if (o instanceof FigEdgeAssociationClass) {
                     figEdgeLink = (FigEdgeAssociationClass) o;
                 }
             }
         }
-        
+
         if (figEdgeLink != null) {
             FigNode figClassBox = figEdgeLink.getDestFigNode();
             if (!(figClassBox instanceof FigClassAssociationClass)) {
@@ -115,14 +122,14 @@ public class FigAssociationClass extends FigAssociation {
             figEdgeLink.removeFromDiagramImpl();
             ((FigClassAssociationClass) figClassBox).removeFromDiagramImpl();
         }
-        
+
         super.removeFromDiagramImpl();
     }
 
     /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(
-     *         org.tigris.gef.presentation.Fig)
-     * TODO: Is this required? Why would the fig already be dashed?
+     *      org.tigris.gef.presentation.Fig) TODO: Is this required? Why would
+     *      the fig already be dashed?
      */
     public void setFig(Fig f) {
         super.setFig(f);
@@ -135,6 +142,177 @@ public class FigAssociationClass extends FigAssociation {
     protected FigText getNameFig() {
         return null;
     }
-    
-} /* end class FigAssociationClass */
 
+    /**
+     * Overrided in order to implement AttributesCompartmentContainer.
+     */
+    public Rectangle getAttributesBounds() {
+        if (getAssociationClass() != null)
+            return getAssociationClass().getAttributesBounds();
+        else
+            return new Rectangle(0, 0, 0, 0);
+    }
+
+    /**
+     * Overrided in order to implement AttributesCompartmentContainer.
+     */
+    public boolean isAttributesVisible() {
+        if (getAssociationClass() != null)
+            return getAssociationClass().isAttributesVisible();
+        else
+            return true;
+    }
+
+    /**
+     * Overrided in order to implement AttributesCompartmentContainer.
+     */
+    public void setAttributesVisible(boolean visible) {
+        getAssociationClass().setAttributesVisible(visible);
+
+    }
+
+    /**
+     * Overrided in order to implement PathCompartmentContainer.
+     */
+    public boolean isPathVisible() {
+        if (getAssociationClass() != null)
+            return getAssociationClass().isPathVisible();
+        else
+            return false;
+    }
+
+    /**
+     * Overrided in order to implement PathCompartmentContainer.
+     */
+    public void setPathVisible(boolean visible) {
+        getAssociationClass().setPathVisible(visible);
+    }
+
+    /**
+     * Overrided in order to implement OperationsCompartmentContainer.
+     */
+    public Rectangle getOperationsBounds() {
+        if (getAssociationClass() != null)
+            return getAssociationClass().getOperationsBounds();
+        else
+            return new Rectangle(0, 0, 0, 0);
+    }
+
+    /**
+     * Overrided in order to implement OperationsCompartmentContainer.
+     */
+    public boolean isOperationsVisible() {
+        if (getAssociationClass() != null)
+            return getAssociationClass().isOperationsVisible();
+        else
+            return true;
+    }
+
+    /**
+     * Overrided in order to implement OperationsCompartmentContainer.
+     */
+    public void setOperationsVisible(boolean visible) {
+        getAssociationClass().setOperationsVisible(visible);
+    }
+
+    /**
+     * Overrided in order to set fill color of contained
+     * FigClassAssociationClass.
+     */
+    @Override
+    public void setFillColor(Color color) {
+        getAssociationClass().setFillColor(color);
+    }
+
+    /**
+     * Overrided in order to get fill color of contained
+     * FigClassAssociationClass.
+     */
+    @Override
+    public Color getFillColor() {
+        if (getAssociationClass() != null)
+            return getAssociationClass().getFillColor();
+        else
+            return Color.white;
+    }
+
+    /**
+     * Overrided in order to set line color of contained
+     * FigClassAssociationClass.
+     */
+    @Override
+    public void setLineColor(Color arg0) {
+        super.setLineColor(arg0);
+        if (getAssociationClass() != null) {
+            getAssociationClass().setLineColor(arg0);
+        }
+        if (getFigEdgeAssociationClass() != null) {
+            getFigEdgeAssociationClass().setLineColor(arg0);
+        }
+    }
+
+    /**
+     * Gets FigClassAssociationClass that is contained in this
+     * FigAssociationClass.
+     *
+     * @return FigClassAssociationClass that is contained in this
+     *         FigAssociationClass.
+     */
+    public FigClassAssociationClass getAssociationClass() {
+        FigEdgeAssociationClass figEdgeLink = null;
+        List edges = null;
+
+        FigEdgePort figEdgePort = this.getEdgePort();
+        if (figEdgePort != null) {
+            edges = figEdgePort.getFigEdges();
+        }
+
+        if (edges != null) {
+            for (Iterator it = edges.iterator(); it.hasNext()
+                    && figEdgeLink == null;) {
+                Object o = it.next();
+                if (o instanceof FigEdgeAssociationClass) {
+                    figEdgeLink = (FigEdgeAssociationClass) o;
+                }
+            }
+        }
+
+        FigNode figClassBox = null;
+        if (figEdgeLink != null) {
+            figClassBox = figEdgeLink.getDestFigNode();
+            if (!(figClassBox instanceof FigClassAssociationClass)) {
+                figClassBox = figEdgeLink.getSourceFigNode();
+            }
+        }
+        return (FigClassAssociationClass) figClassBox;
+    }
+
+    /**
+     * Gets FigEdgeAssociationClass that is contained in this
+     * FigAssociationClass.
+     *
+     * @return FigEdgeAssociationClass that is contained in this
+     *         FigAssociationClass
+     */
+    public FigEdgeAssociationClass getFigEdgeAssociationClass() {
+        FigEdgeAssociationClass figEdgeLink = null;
+        List edges = null;
+
+        FigEdgePort figEdgePort = this.getEdgePort();
+        if (figEdgePort != null) {
+            edges = figEdgePort.getFigEdges();
+        }
+
+        if (edges != null) {
+            for (Iterator it = edges.iterator(); it.hasNext()
+                    && figEdgeLink == null;) {
+                Object o = it.next();
+                if (o instanceof FigEdgeAssociationClass) {
+                    figEdgeLink = (FigEdgeAssociationClass) o;
+                }
+            }
+        }
+
+        return figEdgeLink;
+    }
+} /* end class FigAssociationClass */
