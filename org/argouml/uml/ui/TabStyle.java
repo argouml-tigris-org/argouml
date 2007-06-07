@@ -46,10 +46,12 @@ import org.argouml.ui.TabFigTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.util.namespace.Namespace;
 import org.argouml.uml.util.namespace.StringNamespace;
 import org.argouml.uml.util.namespace.StringNamespaceElement;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 
 /**
  * Provides support for changing the appearance of a diagram element. For each
@@ -155,15 +157,24 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
     /**
      * Sets the target of the style tab.
-     *
-     * @deprecated As of ArgoUml version 0.13.5, the visibility of this method
-     *             will change in the future, replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager}.
+     * 
      * @param t
      *            is the new target
      */
     public void setTarget(Object t) {
-        if (target != null) target.removePropertyChangeListener(this);
+        if (target != null) {
+            target.removePropertyChangeListener(this);
+            if (target instanceof FigEdge) {
+                // In this case, the bounds are determined by the FigEdge
+                ((FigEdge) target).getFig().removePropertyChangeListener(this);
+            }
+            if (target instanceof FigAssociationClass) {
+                // In this case, the bounds (of the box) are determined 
+                // by the FigClassAssociationClass
+                ((FigAssociationClass) target).getAssociationClass()
+                    .removePropertyChangeListener(this);
+            }
+        }
         
         // TODO: Defer most of this work if the panel isn't visible - tfm
 
@@ -188,7 +199,19 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         }
 
         target = (Fig) t;
-        if (target != null) target.addPropertyChangeListener(this);
+        if (target != null) {
+            target.addPropertyChangeListener(this);
+            if (target instanceof FigEdge) {
+                // In this case, the bounds are determined by the FigEdge
+                ((FigEdge) target).getFig().addPropertyChangeListener(this);
+            }
+            if (target instanceof FigAssociationClass) {
+                // In this case, the bounds (of the box) are determined 
+                // by the FigClassAssociationClass
+                ((FigAssociationClass) target).getAssociationClass()
+                    .addPropertyChangeListener(this);
+            }
+        }
         if (lastPanel != null) {
             remove(lastPanel);
             if (lastPanel instanceof TargetListener) {

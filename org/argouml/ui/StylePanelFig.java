@@ -193,6 +193,7 @@ public class StylePanelFig
      */
     public void refresh() {
     	Fig target = getPanelTarget();
+    	 //TODO: How about FigAssociationClass?
         if (target instanceof FigEdgeModelElement) {
             hasEditableBoundingBox(false);
         } else {
