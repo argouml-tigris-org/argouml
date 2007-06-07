@@ -1432,7 +1432,7 @@ public abstract class FigNodeModelElement
 	    this.removeFig(stereotypeFigProfileIcon);
 	}	
 	if (originalNameFig != null) {
-		this.setNameFig(originalNameFig);        	    
+	    this.setNameFig(originalNameFig);        	    
 	}
 	
         Object modelElement = getOwner();
@@ -1452,6 +1452,8 @@ public abstract class FigNodeModelElement
             if (replaceIcon != null) {        	
         	stereotypeFigProfileIcon = new FigProfileIcon(replaceIcon, getName());
             	stereotypeFigProfileIcon.setOwner(getOwner());
+            	
+            	stereotypeFigProfileIcon.setLocation(getBigPort().getLocation());
         	this.addFig(stereotypeFigProfileIcon);
 
         	originalNameFig = this.getNameFig();
@@ -1468,9 +1470,6 @@ public abstract class FigNodeModelElement
 	    }
     	    this.redraw();
         }
-        
-        System.out.println("ICON: "+stereotypeFigProfileIcon);
-        System.out.println("NAME: "+getNameFig() + "[" + originalNameFig);
     }
     
     /*

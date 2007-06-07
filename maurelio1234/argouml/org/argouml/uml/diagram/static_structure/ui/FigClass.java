@@ -586,6 +586,9 @@ public class FigClass extends FigClassifierBox
         Rectangle oldBounds = getBounds();
 
 	if (stereotypeFigProfileIcon != null) {
+	    getBigPort().setBounds(x, y, w, h);	    
+	    borderFig.setBounds(x, y, w, h);
+
 	    stereotypeFigProfileIcon.setBounds(x, y, w, h);
 	} else {
 	        // set bounds of big box
@@ -650,7 +653,6 @@ public class FigClass extends FigClassifierBox
         calcBounds();
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
-	System.out.println("FIGNODEMODELELEMENT: " + getBounds());
     }
 
     /**

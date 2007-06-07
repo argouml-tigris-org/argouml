@@ -26,11 +26,11 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Image;
 
-import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigImage;
+import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 
-public class FigProfileIcon extends FigGroup {
+public class FigProfileIcon extends FigNode {
 
     private FigImage image = null;
     
@@ -57,7 +57,7 @@ public class FigProfileIcon extends FigGroup {
 	label.setLocation(x + (width - label.getWidth())/2, y + image.getHeight()+GAP);
 	
         calcBounds();
-	System.out.println("FIGPROFILEICON: " + getBounds());
+        updateEdges();
     }
 
     public FigText getLabelFig() {
