@@ -26,6 +26,7 @@
 
 package org.argouml.model.euml;
 
+import java.io.OutputStream;
 import java.io.Writer;
 
 import org.apache.log4j.Logger;
@@ -66,26 +67,8 @@ import org.argouml.model.UseCasesHelper;
 import org.argouml.model.VisibilityKind;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
-import org.argouml.model.euml.ActivityGraphsFactoryEUMLlImpl;
-import org.argouml.model.euml.ActivityGraphsHelperEUMLImpl;
-import org.argouml.model.euml.CommonBehaviorFactoryEUMLImpl;
-import org.argouml.model.euml.CommonBehaviorHelperEUMLImpl;
-import org.argouml.model.euml.CoreFactoryEUMLImpl;
-import org.argouml.model.euml.CoreHelperEUMLImpl;
-import org.argouml.model.euml.DataTypesFactoryEUMLImpl;
-import org.argouml.model.euml.DataTypesHelperEUMLImpl;
-import org.argouml.model.euml.ExtensionMechanismsFactoryEUMLImpl;
-import org.argouml.model.euml.ExtensionMechanismsHelperEUMLImpl;
-import org.argouml.model.euml.ModelEventPumpEUMLImpl;
-import org.argouml.model.euml.ModelManagementFactoryEUMLImpl;
-import org.argouml.model.euml.ModelManagementHelperEUMLImpl;
-import org.argouml.model.euml.StateMachinesFactoryEUMLImpl;
-import org.argouml.model.euml.StateMachinesHelperEUMLImpl;
-import org.argouml.model.euml.UseCasesFactoryEUMLImpl;
-import org.argouml.model.euml.UseCasesHelperEUMLImpl;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.uml2.uml.UMLFactory;
-import org.eclipse.uml2.uml.resource.UMLResource;
+import org.eclipse.uml2.uml.resource.XMI2UMLResource;
 
 /**
  * Eclipse UML2 implementation of the ArgoUML Model subsystem. Although built on
@@ -178,21 +161,21 @@ public class EUMLModelImplementation implements ModelImplementation {
      * Constructor.
      */
     public EUMLModelImplementation() {
-
-        registerResourceFactories();
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
+                XMI2UMLResource.FILE_EXTENSION, XMI2UMLResource.Factory.INSTANCE);
         
-//        model = UMLFactory.eINSTANCE.createModel();
-//        model.setName("uml2_simple_model");
+        // This registers the .uml extension too, but that conflicts with
+        // the ArgoUML usage for a concatenated project file.
+//        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
+//                UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
         
-//        theCoreFactory = new CoreFactoryEUMLImpl(this);
-//        
-//        
-//        
-//        // Create and start event pump first so it's available for all others
+        // Create and start event pump first so it's available for all others
 //        theModelEventPump = new ModelEventPumpEUMLImpl(this);
 //        theModelEventPump.startPumpingEvents();
 //        LOG.debug("EUML Init - event pump started");
-//
+
+        // We may want to initialize some basic packages first,
+        // but we should try to use lazy initialization for most/all.
 //        // DataTypes is next so it's available for Kinds, ModelManagement,
 //        // & Extensions
 //        theDataTypesFactory = new DataTypesFactoryEUMLImpl(this);
@@ -206,43 +189,8 @@ public class EUMLModelImplementation implements ModelImplementation {
 //        thePseudostateKind = new PseudostateKindEUMLImpl(this);
 //        theScopeKind = new ScopeKindEUMLImpl(this);
 //        theVisibilityKind = new VisibilityKindEUMLImpl(this);
-//
-//        theModelManagementFactory = new ModelManagementFactoryEUMLImpl(this);
-//        theExtensionMechanismsHelper =
-//            new ExtensionMechanismsHelperEUMLImpl(this);
-//        theExtensionMechanismsFactory =
-//            new ExtensionMechanismsFactoryEUMLImpl(this);
-//        LOG.debug("EUML Init - initialized package Extension mechanism");
-//
-//        // Initialize remaining factories and helpers
-//        // (but defer heavyweight ones until needed)
-//        theCopyHelper = new CopyHelperEUMLImpl(this);
-//        theActivityGraphsHelper = new ActivityGraphsHelperEUMLImpl(this);
-//        theCoreHelper = new CoreHelperEUMLImpl(this);
-//        LOG.debug("EUML Init - initialized package Core helper");
-//        theModelManagementHelper = new ModelManagementHelperEUMLImpl(this);
-//        theStateMachinesHelper = new StateMachinesHelperEUMLImpl(this);
-//        LOG.debug("EUML Init - initialized package StateMachines");
-//        theUseCasesFactory = new UseCasesFactoryEUMLImpl(this);
-//        theUseCasesHelper = new UseCasesHelperEUMLImpl(this);
-//        LOG.debug("EUML Init - initialized package Use Cases");
-//        theActivityGraphsFactory = new ActivityGraphsFactoryEUMLlImpl(this);
-//        LOG.debug("EUML Init - initialized package Collaborations");
-//        theCommonBehaviorFactory = new CommonBehaviorFactoryEUMLImpl(this);
-//        theCommonBehaviorHelper = new CommonBehaviorHelperEUMLImpl(this);
-//        LOG.debug("EUML Init - initialized package CommonBehavior");
-//        theStateMachinesFactory = new StateMachinesFactoryEUMLImpl(this);
-//        theCoreFactory = new CoreFactoryEUMLImpl(this);
-//        LOG.debug("EUML Init - all packages initialized");
     }
 
-    private static void registerResourceFactories() {
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
-                UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
-                "xmi", UMLResource.Factory.INSTANCE);
-    }
-    
     public ActivityGraphsFactory getActivityGraphsFactory() {
         if (theActivityGraphsFactory == null) {
             theActivityGraphsFactory = new ActivityGraphsFactoryEUMLlImpl(this);
@@ -487,9 +435,16 @@ public class EUMLModelImplementation implements ModelImplementation {
         return new XmiWriterEUMLImpl(this, model, writer, version);
     }
 
+    public XmiWriter getXmiWriter(Object model, OutputStream stream,
+            String version) throws UmlException {
+        return new XmiWriterEUMLImpl(this, model, stream, version);
+    }
+    
     public DiagramInterchangeModel getDiagramInterchangeModel() {
         // TODO Auto-generated method stub
         return null;
     }
+
+
 
 }
