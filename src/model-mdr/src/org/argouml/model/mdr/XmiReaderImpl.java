@@ -126,31 +126,15 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         modelPackage = mp;
     }
 
-    /**
-     * Parses a given inputsource as an XMI file conforming to our metamodel.
-     *
-     * @param pIs
-     *            The input source for parsing.
-     * @return a collection of top level ModelElements
-     * @throws UmlException
-     *             if there is a problem
+
+    /*
+     * @see org.argouml.model.XmiReader#parse(org.xml.sax.InputSource)
      */
     public Collection parse(InputSource pIs) throws UmlException {
         return parse(pIs, false);
     }
 
-    /**
-     * Parses a given inputsource as an XMI file conforming to our metamodel.
-     *
-     * @param pIs
-     *            The input source for parsing.
-     * @param profile
-     *            true if the model is a profile model. This will be read into a
-     *            separate extent.
-     * @return a collection of top level ModelElements
-     * @throws UmlException
-     *             if there is a problem
-     *             
+    /*
      * @see org.argouml.model.XmiReader#parse(org.xml.sax.InputSource, boolean)
      */
     public Collection parse(InputSource pIs, boolean profile)
@@ -375,8 +359,9 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         return elements;
     }
 
-    /**
-     * @return the map
+
+    /*
+     * @see org.argouml.model.XmiReader#getXMIUUIDToObjectMap()
      */
     public Map getXMIUUIDToObjectMap() {
         if (resolver != null) {
@@ -646,5 +631,10 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      */
     public int getIgnoredElementCount() {
         return ignoredElementCount;
+    }
+
+
+    public String getTagName() {
+        return "XMI";
     }
 }

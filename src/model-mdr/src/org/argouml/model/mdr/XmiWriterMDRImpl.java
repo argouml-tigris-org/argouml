@@ -51,8 +51,8 @@ import org.omg.uml.modelmanagement.Model;
  * could easily create a Writer from an OutputStream, but the reverse is not
  * true. 
  * 
- * TODO: Change interface to use OutputStream instead of Writer and change this
- * to match
+ * TODO: The old Writer based interface can be removed when the deprecated
+ * ModelImplementation.getXmiWriter is removed.
  * 
  * @author lmaitre
  * 
@@ -69,6 +69,8 @@ class XmiWriterMDRImpl implements XmiWriter {
 
     private Writer writer;
     
+    private OutputStream oStream;
+    
     private static final String ENCODING = "UTF-8";
     
     private static final String XMI_VERSION = "1.2";
@@ -84,8 +86,30 @@ class XmiWriterMDRImpl implements XmiWriter {
      */
     private static final boolean WRITE_ALL = false;
 
+
+    /*
+     * Private constructor for common work needed by both public
+     * constructors.
+     */
+    private XmiWriterMDRImpl(MDRModelImplementation theParent, Object theModel,
+             String version) {
+        if (theModel == null) {
+            throw new IllegalArgumentException("A model must be provided");
+        }
+        if (theParent == null) {
+            throw new IllegalArgumentException("A parent must be provided");
+        }
+        this.modelImpl = theParent;
+        this.model = theModel;
+        config = new OutputConfig();
+        config.setEncoding(ENCODING);
+        config.setReferenceProvider(new XmiReferenceProviderImpl(modelImpl
+                .getObjectToId()));
+        config.setHeaderProvider(new XmiHeaderProviderImpl(version));
+    }
+    
     /**
-     * Create an XMI writer for the given model or extent.
+     * Create an XMI writer for the given model.
      * 
      * @param theParent
      *            The ModelImplementation
@@ -96,31 +120,43 @@ class XmiWriterMDRImpl implements XmiWriter {
      *            The writer to write to
      * @param version the ArgoUML version
      * @throws IllegalArgumentException if no writer provided
+     * @deprecated for 0.25.4 by tfmorris.  Use other constructor.
      */
     public XmiWriterMDRImpl(MDRModelImplementation theParent, Object theModel,
             Writer theWriter, String version) {
+        this(theParent, theModel, version);
         if (theWriter == null) {
             throw new IllegalArgumentException("A writer must be provided");
         }
-        if (theModel == null) {
-            throw new IllegalArgumentException("A model must be provided");
+        writer = theWriter;
+    }
+    
+    /**
+     * Create an XMI writer for the given model.
+     * 
+     * @param theParent
+     *            The ModelImplementation
+     * @param theModel
+     *            The Model to write. If null, write all top-level model
+     *            elements.
+     * @param theStream
+     *            The OutputStream to write to.
+     * @param version
+     *            the ArgoUML version
+     * @throws IllegalArgumentException
+     *             if no output stream is provided
+     * @since 0.25.4
+     */
+    public XmiWriterMDRImpl(MDRModelImplementation theParent, Object theModel,
+            OutputStream theStream, String version) {
+        this(theParent, theModel, version);
+        if (theStream == null) {
+            throw new IllegalArgumentException("A writer must be provided");
         }
-        if (theParent == null) {
-            throw new IllegalArgumentException("A parent must be provided");
-        }
-        this.modelImpl = theParent;
-        this.model = theModel;
-        this.writer = theWriter;
-        config = new OutputConfig();
-        config.setEncoding(ENCODING);
-        config.setReferenceProvider(new XmiReferenceProviderImpl(modelImpl
-                .getObjectToId()));
-        config.setHeaderProvider(new XmiHeaderProviderImpl(version));
+        oStream = theStream;
     }
 
-    /*
-     * @see org.argouml.model.XmiWriter#write()
-     */
+
     public void write() throws UmlException {
         XMIWriter xmiWriter = XMIWriterFactory.getDefault().createXMIWriter(
                 config);
@@ -146,8 +182,14 @@ class XmiWriterMDRImpl implements XmiWriter {
                         + " top level model elements");
             }
      
-            WriterOuputStream wos = new WriterOuputStream(writer);
-            xmiWriter.write(wos, elements, XMI_VERSION);
+            OutputStream stream;
+            if (oStream == null) {
+                stream = new WriterOuputStream(writer);                
+            } else {
+                stream = oStream;
+            }
+
+            xmiWriter.write(stream, elements, XMI_VERSION);
         } catch (IOException e) {
             throw new UmlException(e);
         }
@@ -156,10 +198,11 @@ class XmiWriterMDRImpl implements XmiWriter {
     /**
      * Class which wraps a Writer into an OutputStream.
      * 
-     * (this can go away when/if org.argouml.model.XmiWriter
-     * interface changes - see ToDo in header)
+     * TODO: This entire class can go away when we remove
+     * the Writer based interface.
      * 
      * @author lmaitre
+     * @deprecated for 0.25.4 by tfmorris
      */
     public class WriterOuputStream extends OutputStream {
 

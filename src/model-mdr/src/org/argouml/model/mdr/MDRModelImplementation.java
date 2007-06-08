@@ -25,6 +25,7 @@
 package org.argouml.model.mdr;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Collections;
@@ -603,29 +604,29 @@ public class MDRModelImplementation implements ModelImplementation {
         return theKindsObject;
     }
 
-    /*
-     * @see org.argouml.model.ModelImplementation#getVisibilityKind()
-     */
+
     public VisibilityKind getVisibilityKind() {
         return theKindsObject;
     }
 
-    /*
-     * @see org.argouml.model.ModelImplementation#getXmiReader()
-     */
+    
     public XmiReader getXmiReader() throws UmlException {
         XmiReader reader = new XmiReaderImpl(this, umlPackage);
         return reader;
     }
- 
-    /*
-     * @see org.argouml.model.ModelImplementation#getXmiWriter(Object, Writer, String)
-     */
+
+    @SuppressWarnings("deprecation")
     public XmiWriter getXmiWriter(Object model, Writer writer, String version)
         throws UmlException {
         return new XmiWriterMDRImpl(this, model, writer, version);
     }
 
+
+    public XmiWriter getXmiWriter(Object model, OutputStream stream,
+            String version) throws UmlException {
+        return new XmiWriterMDRImpl(this, model, stream, version);
+    }
+    
     /**
      * @return the collection of model elements which make up the profile.
      */

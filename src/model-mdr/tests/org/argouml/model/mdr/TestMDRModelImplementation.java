@@ -24,6 +24,9 @@
 
 package org.argouml.model.mdr;
 
+import java.io.OutputStream;
+import java.io.Writer;
+
 import junit.framework.TestCase;
 
 import org.argouml.model.UmlException;
@@ -292,7 +295,8 @@ public class TestMDRModelImplementation extends TestCase {
      * @throws UmlException If an error occur
      */
     public void testGetXmiWriter() throws UmlException {
-        assertNotNull(modelImplementation.getXmiWriter(null, null, null));
+        assertNotNull(modelImplementation.getXmiWriter(
+                null, (OutputStream) null, null));
     }
 }
 
