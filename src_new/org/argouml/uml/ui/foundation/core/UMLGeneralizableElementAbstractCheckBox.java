@@ -48,7 +48,8 @@ public class UMLGeneralizableElementAbstractCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        if (getTarget() != null) {
+        if (getTarget() != null 
+                && Model.getFacade().isAGeneralizableElement(getTarget())) {
             setSelected(Model.getFacade().isAbstract(getTarget()));
         }
     }
