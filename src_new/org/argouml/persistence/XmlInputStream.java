@@ -196,8 +196,9 @@ class XmlInputStream extends BufferedInputStream {
                     // cover the case we deal with.  Using a real XML parser
                     // would be better.
                     // Look for XML document has just a single root element
-                    || (currentTag.charAt(currentTag.length() - 1) == '/' && tag
-                            .startsWith(tagName))) {
+                    || (currentTag.charAt(currentTag.length() - 1) == '/' 
+                        && tag.startsWith(tagName)
+                        && tag.indexOf(' ') == tagName.indexOf(' '))) {
                 return true;
             }
         } else if (inTag) {
