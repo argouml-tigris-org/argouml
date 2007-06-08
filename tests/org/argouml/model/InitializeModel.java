@@ -32,6 +32,14 @@ import junit.framework.TestCase;
  * @author lito
  */
 public final class InitializeModel {
+    
+    /**
+     * The default model implementation to start.
+     */
+    private static final String DEFAULT_MODEL_IMPLEMENTATION =
+        "org.argouml.model.mdr.MDRModelImplementation";
+
+
     /**
      * This is never instantiated.
      */
@@ -42,7 +50,11 @@ public final class InitializeModel {
      * Initialize the Model subsystem with the default ModelImplementation.
      */
     public static void initializeDefault() {
-        initializeMDR();
+        String className =
+            System.getProperty(
+                    "argouml.model.implementation",
+                    DEFAULT_MODEL_IMPLEMENTATION);
+        initializeModelImplementation(className);
     }
 
     /**
