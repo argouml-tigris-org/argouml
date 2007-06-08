@@ -24,12 +24,11 @@
 
 package org.argouml.persistence;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URL;
@@ -123,7 +122,12 @@ class ModelMemberFilePersister extends MemberFilePersister
      * @see org.argouml.persistence.MemberFilePersister#getMainTag()
      */
     public String getMainTag() {
-        return "XMI";
+        try {
+            return Model.getXmiReader().getTagName();
+        } catch (UmlException e) {
+            // Should never happen - something's really wrong
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -151,12 +155,9 @@ class ModelMemberFilePersister extends MemberFilePersister
                 File tempFile = File.createTempFile("xmi", null);
                 tempFile.deleteOnExit();
 
-                Writer writer =
-                    new BufferedWriter(
-                        new OutputStreamWriter(
-                                new FileOutputStream(tempFile), "UTF-8"));
+                OutputStream stream = new FileOutputStream(tempFile);
                 XmiWriter xmiWriter = 
-                    Model.getXmiWriter(model, writer, 
+                    Model.getXmiWriter(model, stream, 
                             ApplicationVersion.getVersion() + "(" 
                             + UmlFilePersister.PERSISTENCE_VERSION + ")");
                 
@@ -173,6 +174,33 @@ class ModelMemberFilePersister extends MemberFilePersister
         } catch (IOException e) {
             throw new SaveException(e);
         } catch (UmlException e) {
+            throw new SaveException(e);
+        }
+
+    }
+    
+    /**
+     * Save the project model to XMI.
+     * 
+     * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.OutputStream, boolean)
+     */
+    public void save(ProjectMember member, OutputStream outStream)
+        throws SaveException {
+
+        ProjectMemberModel pmm = (ProjectMemberModel) member;
+        Object model = pmm.getModel();
+
+        try {
+            XmiWriter xmiWriter = 
+                Model.getXmiWriter(model, outStream, 
+                        ApplicationVersion.getVersion() + "(" 
+                        + UmlFilePersister.PERSISTENCE_VERSION + ")");
+
+            xmiWriter.write();
+            outStream.flush();
+        } catch (UmlException e) {
+            throw new SaveException(e);
+        } catch (IOException e) {
             throw new SaveException(e);
         }
 

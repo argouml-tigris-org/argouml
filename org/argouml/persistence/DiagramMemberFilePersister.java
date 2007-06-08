@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 
@@ -49,10 +50,7 @@ class DiagramMemberFilePersister extends MemberFilePersister {
      */
     private static final String PGML_TEE = "/org/argouml/persistence/PGML.tee";
 
-    /*
-     * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
-     *      java.io.InputStream)
-     */
+    @Override
     public void load(Project project, InputStream inputStream)
         throws OpenException {
 
@@ -75,20 +73,15 @@ class DiagramMemberFilePersister extends MemberFilePersister {
         }
     }
 
-    /*
-     * @see org.argouml.persistence.MemberFilePersister#getMainTag()
-     */
+
+    @Override
     public String getMainTag() {
         return "pgml";
     }
 
-    /**
-     * Write the diagram to the given writer.
-     *
-     * @see org.argouml.persistence.MemberFilePersister#save(
-     *         org.argouml.kernel.ProjectMember, java.io.Writer,
-     *         java.lang.Integer)
-     */
+
+    @Override
+    @Deprecated
     public void save(ProjectMember member, Writer writer, boolean xmlFragment)
     	throws SaveException {
 
@@ -120,5 +113,31 @@ class DiagramMemberFilePersister extends MemberFilePersister {
                 throw new SaveException(e);
             }
         }
+    }
+    
+
+    @Override
+    public void save(ProjectMember member, OutputStream outStream)
+        throws SaveException {
+
+        ProjectMemberDiagram diagramMember = (ProjectMemberDiagram) member;
+        OCLExpander expander;
+        try {
+            expander =
+                    new OCLExpander(
+                            TemplateReader.getInstance().read(PGML_TEE));
+        } catch (ExpansionException e) {
+            throw new SaveException(e);
+        }
+        PrintWriter pw = new PrintWriter(outStream);
+        try {
+            // WARNING: the OutputStream version of this doesn't work! - tfm
+            expander.expand(pw, diagramMember.getDiagram());
+        } catch (ExpansionException e) {
+            throw new SaveException(e);
+        } finally {
+            pw.flush();
+        }
+        
     }
 }

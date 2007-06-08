@@ -29,6 +29,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
@@ -81,14 +82,8 @@ class TodoListMemberFilePersister extends MemberFilePersister {
         return "todo";
     }
 
-    /**
-     *
-     * Throws InvalidArgumentException if no writer specified.
-     *
-     * @see org.argouml.persistence.MemberFilePersister#save(
-     *         org.argouml.kernel.ProjectMember, java.io.Writer,
-     *         boolean)
-     */
+
+    @Deprecated
     public void save(ProjectMember member, Writer writer, boolean xmlFragment)
     	throws SaveException {
 
@@ -133,4 +128,33 @@ class TodoListMemberFilePersister extends MemberFilePersister {
 
         LOG.debug("Done saving TO DO LIST!!!");
     }
+    
+    public void save(ProjectMember member, OutputStream outStream)
+        throws SaveException {
+
+        OCLExpander expander;
+        try {
+            expander =
+                    new OCLExpander(TemplateReader.getInstance()
+                            .read(TO_DO_TEE));
+        } catch (ExpansionException e) {
+            throw new SaveException(e);
+        }
+
+        PrintWriter pw = new PrintWriter(outStream);
+        try {
+            Designer.disableCritiquing();
+            // WARNING: The GEF implementation of the OutputStream version of this
+            // method doesn't work - tfm - 20070531
+            expander.expand(pw, member);
+        } catch (ExpansionException e) {
+            throw new SaveException(e);
+        } finally {
+            pw.flush();
+//            pw.close();
+            Designer.enableCritiquing();
+        }
+
+    }
+
 }
