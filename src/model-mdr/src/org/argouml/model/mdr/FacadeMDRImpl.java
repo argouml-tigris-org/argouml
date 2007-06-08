@@ -557,6 +557,10 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof MultiplicityRange;
     }
 
+    public boolean isANamedElement(Object handle) {
+        return handle instanceof ModelElement;
+    }
+    
     public boolean isANamespace(Object handle) {
         return handle instanceof Namespace;
     }
@@ -949,7 +953,7 @@ class FacadeMDRImpl implements Facade {
         try {
             if (handle instanceof AssociationEnd) {
                 return AggregationKindEnum.AK_AGGREGATE
-                .equals(((AssociationEnd) handle).getAggregation());
+                        .equals(((AssociationEnd) handle).getAggregation());
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -1450,9 +1454,14 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-
-
+    
+    @SuppressWarnings("deprecation")
     public Object getChild(Object handle) {
+        return getSpecific(handle);
+    }
+
+
+    public Object getSpecific(Object handle) {
         try {
             if (handle instanceof Generalization) {
                 return ((Generalization) handle).getChild();
@@ -1462,7 +1471,7 @@ class FacadeMDRImpl implements Facade {
             throw new InvalidElementException(e);
         }
     }
-
+    
 
     public Collection getChildren(Object handle) {
         try {
@@ -2116,7 +2125,7 @@ class FacadeMDRImpl implements Facade {
             if (isAModel(handle)) {
                 return handle;
             }
-            if (!isAModelElement(handle)) {
+            if (!isAUMLElement(handle)) {
                 return illegalArgumentObject(handle);
             }
             // If we can't find a model, return the outermost
@@ -3034,7 +3043,12 @@ class FacadeMDRImpl implements Facade {
     }
 
 
+    @SuppressWarnings("deprecation")
     public Object getParent(Object handle) {
+        return getGeneral(handle);
+    }
+    
+    public Object getGeneral(Object handle) {
         try {
             if (handle instanceof Generalization) {
                 return ((Generalization) handle).getParent();
