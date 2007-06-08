@@ -65,8 +65,13 @@ public class TestModelFacade2 extends TestCase {
 	try {
 	    Model.getFacade().isAsynchronous(new Object());
 	    assertTrue("Error was not thrown", false);
-	} catch (IllegalArgumentException e) {
-	    // We expected an error to be thrown.
+	} catch (Throwable e) {
+            if (e instanceof IllegalArgumentException 
+                    || e instanceof ClassCastException) {
+                // one of the expected errors, just ignore
+            } else {
+                throw new RuntimeException(e);
+            }
 	}
     }
 

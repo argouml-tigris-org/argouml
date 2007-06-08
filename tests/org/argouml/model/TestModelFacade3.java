@@ -157,7 +157,8 @@ public class TestModelFacade3 extends TestCase {
             fail(methodToTest.getName()
                     + " does not deliver an IllegalArgumentException");
         } catch (InvocationTargetException e) {
-            if (e.getTargetException() instanceof IllegalArgumentException) {
+            if (e.getTargetException() instanceof IllegalArgumentException 
+                    || e.getTargetException() instanceof ClassCastException) {
                 return;
             }
             fail("Test failed for " + methodToTest.toString()
