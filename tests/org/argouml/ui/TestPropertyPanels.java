@@ -162,8 +162,7 @@ public class TestPropertyPanels extends TestCase {
 
         while (meIter.hasNext()) {
             Object obj = meIter.next();
-            if (Model.getFacade().isAModelElement(obj)
-                    || Model.getFacade().isADataType(obj)) {
+            if (Model.getFacade().isAUMLElement(obj)) {
                 if (!meMap.containsKey(obj.getClass())) {
                     suite.addTest(new TestPropertyPanels(
 			    obj,

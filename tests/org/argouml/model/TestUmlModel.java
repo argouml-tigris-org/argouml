@@ -46,7 +46,7 @@ public class TestUmlModel extends GenericUmlObjectTestFixture {
 	Object o =
 	    Model.getUmlFactory().buildNode(Model.getMetaTypes().getModel());
 	assertNotNull("Didn't create object", o);
-	assertTrue("Should be a base", Model.getFacade().isAModelElement(o));
+	assertTrue("Should be a base", Model.getFacade().isAUMLElement(o));
 	assertTrue("Should be a model", Model.getFacade().isAModel(o));
 	runTruthTests(o);
     }
