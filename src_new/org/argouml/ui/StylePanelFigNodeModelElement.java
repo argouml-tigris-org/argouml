@@ -101,8 +101,12 @@ public class StylePanelFigNodeModelElement
         refreshTransaction = true;
         // Let the parent do its refresh.
         super.refresh();
-        PathContainer pc = (PathContainer) getPanelTarget();
-        pathCheckBox.setSelected(pc.isPathVisible());
+        Object target = getPanelTarget();
+        // TODO: Why is this code even getting called for a FigGeneralization?
+        if (target instanceof PathContainer) {
+            PathContainer pc = (PathContainer) getPanelTarget();
+            pathCheckBox.setSelected(pc.isPathVisible());
+        }
         refreshTransaction = false;
 
         // lets redraw the box
