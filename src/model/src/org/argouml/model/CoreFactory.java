@@ -500,11 +500,16 @@ public interface CoreFactory extends Factory {
 
     /**
      * Builds a generalization between a parent and a child with a given name.
-     *
-     * @param child is the child
-     * @param parent is the parent
-     * @param name is the given name
+     * 
+     * @param child
+     *            is the child
+     * @param parent
+     *            is the parent
+     * @param name
+     *            is the given name
      * @return generalization
+     * @deprecated for 0.25.4 by tfmorris. Generalizations are unnamed in UML
+     *             2.x. Use {@link #buildGeneralization(Object, Object)}.
      */
     Object buildGeneralization(Object child, Object parent, String name);
 
@@ -610,13 +615,13 @@ public interface CoreFactory extends Factory {
      * Builds a realization between some supplier (for example an
      * interface in Java) and a client who implements the realization.
      *
-     * @param clnt is the client
-     * @param spplr is the supplier
-     * @param model the namespace to use if client and
+     * @param client is the client
+     * @param supplier is the supplier
+     * @param namespace the namespace to use if client and
      * supplier are of different namespace
      * @return Object the created abstraction
      */
-    Object buildRealization(Object clnt, Object spplr, Object model);
+    Object buildRealization(Object client, Object supplier, Object namespace);
 
     /**
      * Build a TemplateArgument which has the given element as its modelElement.

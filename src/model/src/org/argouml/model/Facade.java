@@ -713,6 +713,17 @@ public interface Facade {
      * @return true if handle is a ModelElement
      */
     boolean isAModelElement(Object handle);
+    
+    /**
+     * Recognizer for a UML element which can have a name. In UML 1.x, this is
+     * just a ModelElement, but in UML 2.x it's a separate metatype. Use this method
+     * if you're principally interested in whether something can be named.
+     * 
+     * @param handle
+     *            candidate
+     * @return true if handle is a ModelElement
+     */
+    boolean isANamedElement(Object handle);
 
     /**
      * Recognizer for Multiplicity.
@@ -1375,8 +1386,12 @@ public interface Facade {
     /**
      * Recognizer for ModelElements which have the <<singleton>> Stereotype
      * applied.
-     *
-     * @param handle candidate
+     * <p>
+     * TODO: Moved this out of the Facade to someplace elese since it's not
+     * Model subsystem specific - tfm 20070607
+     * 
+     * @param handle
+     *            candidate
      * @return true if handle is a singleton.
      */
     boolean isSingleton(Object handle);
@@ -1539,12 +1554,26 @@ public interface Facade {
 
     /**
      * Get the child of a generalization.
-     *
-     * @param handle generalization.
+     * 
+     * @param handle
+     *            generalization.
      * @return the child.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSpecific(Object)}
+     *             which matches the UML 2.x terminology.
      */
     Object getChild(Object handle);
 
+    /**
+     * Get the specific end of a generalization. This was getChild() in UML 1.x.
+     * 
+     * @param handle
+     *            generalization.
+     * @return the specific classifier.
+     * @since 0.25.4
+     */
+    Object getSpecific(Object handle);
+    
+    
     /**
      * Get the children of a GeneralizableElement.
      *
@@ -1971,9 +2000,12 @@ public interface Facade {
 
     /**
      * Get the Ranges from a Multiplicity.
-     *
-     * @param handle multiplicity to retrieve from.
+     * 
+     * @param handle
+     *            multiplicity to retrieve from.
      * @return iterator containing ranges
+     * @deprecated for 0.25.4 by tfmorris. Multiplicities in UML 2.x only have a
+     *             single range.
      */
     Iterator getRanges(Object handle);
 
@@ -2186,9 +2218,12 @@ public interface Facade {
 
     /**
      * Get the discriminator for a Generalization.
-     *
-     * @param handle the Generalization
+     * 
+     * @param handle
+     *            the Generalization
      * @return the discriminator a String
+     * @deprecated for 0.25.4 by tfmorris. Discriminators have been removed from
+     *             UML 2.x.
      */
     Object getDiscriminator(Object handle);
 
@@ -2488,12 +2523,25 @@ public interface Facade {
 
     /**
      * Get the parent of a generalization.
-     *
-     * @param handle generalization.
+     * 
+     * @param handle
+     *            generalization.
      * @return the parent.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getGeneral(Object)} which
+     *             matches the UML 2.x terminology.
      */
     Object getParent(Object handle);
 
+    /**
+     * Get the general end of a generalization. This was getParent in UML 1.x.
+     * 
+     * @param handle
+     *            generalization.
+     * @return the general end.
+     * @since 0.25.4
+     */
+    Object getGeneral(Object handle);
+    
     /**
      * Return the raised signals of an operation.
      *

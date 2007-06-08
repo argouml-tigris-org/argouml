@@ -123,12 +123,15 @@ public interface UseCasesFactory extends Factory {
     Object buildInclude(Object abase, Object anaddition);
 
     /**
-     * Builds an actor in the same namespace of the given actor. If
-     * object is no actor nothing is build.<p>
+     * Builds an actor in the same namespace as the given actor. If
+     * the object is not and actor nothing is built.<p>
+     * 
+     * TODO: This shouldn't just silently fail if it is passed a bad
+     * argument.  This contract will change. - tfm 20070607
      *
      * @param model The namespace.
      * @param actor the given actor
-     * @return MActor the newly build actor
+     * @return Actor the newly built actor
      */
     Object buildActor(Object actor, Object model);
 }
