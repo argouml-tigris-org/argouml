@@ -168,8 +168,8 @@ class OldZargoFilePersister extends ZargoFilePersister {
                     stream.putNextEntry(new ZipEntry(name));
                     MemberFilePersister persister =
                         getMemberFilePersister(projectMember);
-                    persister.save(projectMember, writer, false);
-                    writer.flush();
+                    persister.save(projectMember, stream);
+                    stream.flush();
                     stream.closeEntry();
                 }
             }
@@ -187,7 +187,8 @@ class OldZargoFilePersister extends ZargoFilePersister {
                             new ZipEntry(projectMember.getZipName()));
                     OldModelMemberFilePersister persister =
                         new OldModelMemberFilePersister();
-                    persister.save(projectMember, writer, false);
+                    persister.save(projectMember, stream);
+                    stream.flush();
                 }
             }
             

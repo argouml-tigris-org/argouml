@@ -29,6 +29,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -38,8 +39,16 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CoderResult;
+import java.nio.charset.CodingErrorAction;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
@@ -54,6 +63,7 @@ import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.model.UmlException;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
@@ -62,6 +72,7 @@ import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
 import org.xml.sax.SAXException;
+
 
 /**
  * To persist to and from argo (xml file) storage.
@@ -151,8 +162,7 @@ class UmlFilePersister extends AbstractFilePersister {
             project.setVersion(ApplicationVersion.getVersion());
             project.setPersistenceVersion(PERSISTENCE_VERSION);
 
-            FileOutputStream stream =
-                new FileOutputStream(file);
+            OutputStream stream = new FileOutputStream(file);
 
             writeProject(project, stream, progressMgr);
 
@@ -215,18 +225,21 @@ class UmlFilePersister extends AbstractFilePersister {
      * @throws InterruptedException     if the thread is interrupted
      */
     void writeProject(Project project, 
-            OutputStream stream, 
+            OutputStream oStream, 
             ProgressMgr progressMgr) throws SaveException, 
             InterruptedException {
         OutputStreamWriter outputStreamWriter;
         try {
-            outputStreamWriter = new OutputStreamWriter(stream, "UTF-8");
+            outputStreamWriter =
+                    new OutputStreamWriter(oStream, Argo.getEncoding());
         } catch (UnsupportedEncodingException e) {
             throw new SaveException(e);
         }
         PrintWriter writer =
             new PrintWriter(new BufferedWriter(outputStreamWriter));
 
+        XmlFilterOutputStream filteredStream =
+                new XmlFilterOutputStream(oStream, Argo.getEncoding());
         try {
             writer.println("<?xml version = \"1.0\" "
                     + "encoding = \"" 
@@ -241,6 +254,7 @@ class UmlFilePersister extends AbstractFilePersister {
             } catch (ExpansionException e) {
                 throw new SaveException(e);
             }
+            writer.flush();
 
             // Write out XMI section first
             int size = project.getMembers().size();
@@ -255,7 +269,13 @@ class UmlFilePersister extends AbstractFilePersister {
                     }
                     MemberFilePersister persister
                         = getMemberFilePersister(projectMember);
-                    persister.save(projectMember, writer, true);
+                    filteredStream.startEntry();
+                    persister.save(projectMember, filteredStream);
+                    try {
+                        filteredStream.flush();
+                    } catch (IOException e) {
+                        throw new SaveException(e);
+                    }
                 }
             }
 
@@ -275,7 +295,13 @@ class UmlFilePersister extends AbstractFilePersister {
                     }
                     MemberFilePersister persister
                         = getMemberFilePersister(projectMember);
-                    persister.save(projectMember, writer, true);
+                    filteredStream.startEntry();
+                    persister.save(projectMember, filteredStream);
+                    try {
+                        filteredStream.flush();
+                    } catch (IOException e) {
+                        throw new SaveException(e);
+                    }
                 }
             }
 
@@ -284,6 +310,11 @@ class UmlFilePersister extends AbstractFilePersister {
             writer.flush();
         } finally {
             writer.close();
+            try {
+                filteredStream.reallyClose();
+            } catch (IOException e) {
+                throw new SaveException(e);
+            }
         }
     }
 
@@ -369,7 +400,20 @@ class UmlFilePersister extends AbstractFilePersister {
                 LOG.info("Loading member with "
                         + persister.getClass().getName());
                 inputStream.reopen(persister.getMainTag());
-                persister.load(p, inputStream);
+                try {
+                    persister.load(p, inputStream);
+                } catch (OpenException e) {
+                    // UML 2.x files don't have XMI as their outer
+                    // tag.  Try again with uml:Model
+                    if ("XMI".equals(persister.getMainTag()) 
+                            && e.getCause() instanceof UmlException 
+                            && e.getCause().getCause() instanceof IOException) {
+                        inputStream.reopen("uml:Model");
+                        persister.load(p, inputStream);
+                    } else {
+                        throw e;
+                    }
+                }
             }
             
             // let's update the progress
@@ -597,5 +641,153 @@ class UmlFilePersister extends AbstractFilePersister {
      */
     public boolean hasAnIcon() {
         return true;
+    }
+    
+    /**
+     * Class to filter XML declaration and DOCTYPE declaration from
+     * an output stream to allow use as nested XML files.
+     * 
+     * @author Tom Morris
+     */
+    class XmlFilterOutputStream extends FilterOutputStream {
+
+        private CharsetDecoder decoder;
+
+        private boolean headerProcessed = false;
+
+        private static final int BUFFER_SIZE = 120;
+        
+        private byte[] bytes = new byte[BUFFER_SIZE * 2];
+        private ByteBuffer outBB = ByteBuffer.wrap(bytes);
+        // An input view of the same bytes that we can read from
+        private ByteBuffer inBB = ByteBuffer.wrap(bytes);
+
+        private CharBuffer outCB = CharBuffer.allocate(BUFFER_SIZE);
+        
+        // Backslashes are doubled up - one for Java, one for Regex
+        private final Pattern pattern = Pattern.compile(
+                "\\s*<\\?xml.*\\?>\\s*(<!DOCTYPE.*>\\s*)?");
+
+        public XmlFilterOutputStream(OutputStream outputStream,
+                String charsetName) {
+            this(outputStream, Charset.forName(charsetName));
+        }
+
+        public XmlFilterOutputStream(OutputStream outputStream, 
+                Charset charset) {
+            super(outputStream);
+            decoder = charset.newDecoder();
+            decoder.onMalformedInput(CodingErrorAction.REPORT);
+            decoder.onUnmappableCharacter(CodingErrorAction.REPORT);
+            startEntry();
+        }  
+        
+        public void startEntry() {
+            headerProcessed = false;
+            resetBuffers();
+        }
+
+        private void resetBuffers() {
+            inBB.limit(0);
+            outBB.position(0);
+            outCB.position(0);
+        }
+
+        @Override
+        public void write(byte[] b, int off, int len) throws IOException {
+            if ((off | len | (b.length - (len + off)) | (off + len)) < 0)
+                throw new IndexOutOfBoundsException();
+
+            if (headerProcessed) {
+                out.write(b, off, len);
+            } else {
+                // TODO: Make this more efficient for large I/Os
+                for (int i = 0; i < len; i++) {
+                    write(b[off + i]);
+                }                
+            }
+
+        }
+
+        @Override
+        public void write(int b) throws IOException {
+
+            if (headerProcessed) {
+                out.write(b);
+            } else {
+                outBB.put((byte) b);
+                inBB.limit(outBB.position());
+                // Convert from bytes back to characters
+                CoderResult result = decoder.decode(inBB, outCB, false);
+                if (result.isError()) {
+                    throw new RuntimeException(
+                            "Unknown character decoding error");
+                }
+                // This will have problems if the smallest possible
+                // data segment is smaller than the size of the buffer
+                // needed for regex matching
+
+                if (outCB.position() == outCB.limit()) {
+                    processHeader();
+                }
+
+            }
+        }
+
+        private void processHeader() throws IOException {
+            headerProcessed = true;
+            outCB.position(0); // rewind our character buffer
+            
+            Matcher matcher = pattern.matcher(outCB);
+            String headerString = matcher.replaceAll("");
+            
+            ByteBuffer bb = decoder.charset().encode(headerString);
+            
+            byte[] outBytes = new byte[bb.limit()];
+            bb.get(outBytes);
+            out.write(outBytes, 0, outBytes.length);
+
+            // Write any left over bytes from a partial character
+            if (inBB.remaining() > 0) {
+                out.write(inBB.array(), inBB.position(), 
+                        inBB.remaining());
+                inBB.position(0);
+                inBB.limit(0);
+            }
+        }
+
+
+        /**
+         * This method has no effect to keep sub-writers from closing it
+         * accidently. The master can use the method {@link #reallyClose()} to
+         * actually close the underlying stream.
+         */
+        @Override
+        public void close() throws IOException {
+            flush();
+        }
+        
+        /**
+         * Close the stream.
+         * 
+         * @throws IOException
+         */
+        public void reallyClose() throws IOException {
+            out.close();
+        }
+
+        /**
+         * Flush the stream.  This will throw an IllegalStateException if the
+         * stream is flushed before the header is completely processed.
+         */
+        @Override
+        public void flush() throws IOException {
+            if (!headerProcessed) {
+                throw new IllegalStateException(
+                        "Attempted flush while still processing header");
+            }
+            out.flush();
+        }
+        
     }
 }

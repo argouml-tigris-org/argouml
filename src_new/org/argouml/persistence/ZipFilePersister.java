@@ -31,14 +31,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -120,7 +118,7 @@ class ZipFilePersister extends XmiFilePersister {
                     "Failed to archive the previous file version", e);
         }
 
-        OutputStreamWriter writer = null;
+        OutputStream bufferedStream = null;
         try {
             //project.setFile(file);
 
@@ -130,9 +128,7 @@ class ZipFilePersister extends XmiFilePersister {
             ZipEntry xmiEntry =
                 new ZipEntry(fileName.substring(0, fileName.lastIndexOf(".")));
             stream.putNextEntry(xmiEntry);
-            OutputStream bout = new BufferedOutputStream(stream);
-            writer = new OutputStreamWriter(bout, 
-                    Argo.getEncoding());
+            bufferedStream = new BufferedOutputStream(stream);
 
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
@@ -146,7 +142,7 @@ class ZipFilePersister extends XmiFilePersister {
                     }
                     MemberFilePersister persister
                         = new ModelMemberFilePersister();
-                    persister.save(projectMember, writer, false);
+                    persister.save(projectMember, bufferedStream);
                 }
             }
             stream.close();
@@ -165,8 +161,10 @@ class ZipFilePersister extends XmiFilePersister {
         } catch (Exception e) {
             LOG.error("Exception occured during save attempt", e);
             try {
-                writer.close();
-            } catch (IOException ex) { }
+                bufferedStream.close();
+            } catch (IOException ex) {
+                // If we get a 2nd error, just ignore it
+            }
 
             // frank: in case of exception
             // delete name and mv name+"#" back to name if name+"#" exists
@@ -178,7 +176,7 @@ class ZipFilePersister extends XmiFilePersister {
         }
 
         try {
-            writer.close();
+            bufferedStream.close();
         } catch (IOException ex) {
             LOG.error("Failed to close save output writer", ex);
         }

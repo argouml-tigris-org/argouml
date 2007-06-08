@@ -43,6 +43,11 @@ import org.apache.log4j.Logger;
  * to the matching end tag or it can search for the first
  * occurence of a named tag and read on the child tags.
  * The tag is not expected to be an empty tag.
+ * 
+ * TODO: This is hardwired to assume a fixed single byte
+ * character encoding.  It probably needs to be updated to
+ * handle multi-byte encodings. - tfm 20070607
+ * 
  * @author Bob Tarling
  */
 class XmlInputStream extends BufferedInputStream {
@@ -134,7 +139,7 @@ class XmlInputStream extends BufferedInputStream {
         if (endStream) {
             return -1;
         }
-        int ch = superRead();
+        int ch = super.read();
         endStream = isLastTag(ch);
         return ch;
     }
@@ -185,7 +190,14 @@ class XmlInputStream extends BufferedInputStream {
             currentTag.setLength(0);
         } else if (ch == '>') {
             inTag = false;
-            if (currentTag.toString().equals(endTagName)) {
+            String tag = currentTag.toString();
+            if (tag.equals(endTagName)
+                    // TODO: The below is not strictly correct, but should
+                    // cover the case we deal with.  Using a real XML parser
+                    // would be better.
+                    // Look for XML document has just a single root element
+                    || (currentTag.charAt(currentTag.length() - 1) == '/' && tag
+                            .startsWith(tagName))) {
                 return true;
             }
         } else if (inTag) {
@@ -219,7 +231,8 @@ class XmlInputStream extends BufferedInputStream {
             // Compare each following character to see
             // that it matches the tag we want
             for (i = 0; i < tagName.length(); ++i) {
-                if (realRead() != searchChars[i]) {
+                int c = realRead();
+                if (c != searchChars[i]) {
                     found = false;
                     break;
                 }
@@ -359,14 +372,11 @@ class XmlInputStream extends BufferedInputStream {
     }
 
     private int realRead() throws IOException {
-        int read = superRead();
+        int read = super.read();
         if (read == -1) {
             throw new IOException("Tag " + tagName + " not found");
         }
         return read;
     }
 
-    private int superRead() throws IOException {
-        return super.read();
-    }
 }

@@ -31,6 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 
@@ -67,6 +68,7 @@ abstract class MemberFilePersister {
      * @param member The project member to save.
      * @param writer The Writer to which to save the XML.
      * @throws SaveException if the save fails
+     * @deprecated for 0.25.4 by tfmorris.
      */
     public void save(
             ProjectMember member,
@@ -75,19 +77,37 @@ abstract class MemberFilePersister {
     }
 
     /**
-     * Save the projectmember as XML to the given writer.
+     * Save the project member as XML to the given output stream.
+     * 
+     * @param member
+     *            The project member to save.
+     * @param stream
+     *            The OutputStream to write the contents to.
+     * @throws SaveException
+     *             if the save fails
+     * @since 0.25.4
+     */
+    public abstract void save(
+            ProjectMember member,
+            OutputStream stream) throws SaveException;
+    
+    /**
+     * Save the project member as XML to the given writer.
      *
      * @param member The project member to save.
      * @param writer The Writer to which to save the XML.
      * @param xmlFragment true if the XML saved is a fragment os some other
      *     XML file (ie part of .uml)
      * @throws SaveException if the save fails
+     * @deprecated for 0.25.4 by tfmorris. Use 
+     * {@link #save(ProjectMember, OutputStream, boolean)}.
      */
     public abstract void save(
             ProjectMember member,
             Writer writer,
             boolean xmlFragment) throws SaveException;
 
+    
     /**
      * Send an existing file of XML to the PrintWriter.
      * @param writer the PrintWriter.
@@ -122,4 +142,5 @@ abstract class MemberFilePersister {
             throw new SaveException(e);
         }
     }
+
 }

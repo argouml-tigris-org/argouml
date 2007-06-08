@@ -177,40 +177,26 @@ class XmiFilePersister extends AbstractFilePersister
             OutputStream stream, 
             ProgressMgr progressMgr) throws SaveException, 
             InterruptedException {
-        OutputStreamWriter outputStreamWriter;
-        try {
-            outputStreamWriter = new OutputStreamWriter(stream, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new SaveException(e);
-        }
-        PrintWriter writer =
-            new PrintWriter(new BufferedWriter(outputStreamWriter));
 
-        try {
-            int size = project.getMembers().size();
-            for (int i = 0; i < size; i++) {
-                ProjectMember projectMember =
-                    (ProjectMember) project.getMembers().get(i);
-                if (projectMember.getType().equalsIgnoreCase(getExtension())) {
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member of type: "
-                              + ((ProjectMember) project.getMembers()
+        int size = project.getMembers().size();
+        for (int i = 0; i < size; i++) {
+            ProjectMember projectMember =
+                (ProjectMember) project.getMembers().get(i);
+            if (projectMember.getType().equalsIgnoreCase(getExtension())) {
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Saving member of type: "
+                            + ((ProjectMember) project.getMembers()
                                     .get(i)).getType());
-                    }
-                    MemberFilePersister persister
-                        = new ModelMemberFilePersister();
-                    persister.save(projectMember, writer);
                 }
+                MemberFilePersister persister = new ModelMemberFilePersister();
+                persister.save(projectMember, stream);
             }
-            
-            if (progressMgr != null) {
-                progressMgr.nextPhase();
-            }
-
-            writer.flush();
-        } finally {
-            writer.close();
         }
+
+        if (progressMgr != null) {
+            progressMgr.nextPhase();
+        }
+
     }
 
 
