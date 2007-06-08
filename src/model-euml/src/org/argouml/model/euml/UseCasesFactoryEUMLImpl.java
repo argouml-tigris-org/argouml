@@ -26,6 +26,7 @@
 
 package org.argouml.model.euml;
 
+import org.argouml.model.NotImplementedException;
 import org.argouml.model.UseCasesFactory;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.Extend;
@@ -79,9 +80,10 @@ class UseCasesFactoryEUMLImpl implements UseCasesFactory {
             ep = buildExtensionPoint((UseCase) abase);
         } else {
             ep = (ExtensionPoint) apoint;
-            if (ep.getUseCase().equals(abase)) {
+            if (!ep.getUseCase().equals(abase)) {
                 throw new IllegalArgumentException(
-                        "extension point must belong to extended use case");
+                        "extension point must belong to " + //$NON-NLS-1$
+                        "extended use case"); //$NON-NLS-1$
             }
         }
         Extend extend =
@@ -118,9 +120,9 @@ class UseCasesFactoryEUMLImpl implements UseCasesFactory {
         return UMLFactory.eINSTANCE.createUseCase();
     }
 
+    @SuppressWarnings("deprecation")
     public InstanceSpecification createUseCaseInstance() {
-        // TODO: double check this - tfm 
-        return UMLFactory.eINSTANCE.createInstanceSpecification();
+        throw new NotImplementedException();
     }
 
 }

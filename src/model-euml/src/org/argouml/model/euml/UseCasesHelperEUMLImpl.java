@@ -27,8 +27,16 @@
 package org.argouml.model.euml;
 
 import java.util.Collection;
+import java.util.HashSet;
 
+import org.argouml.model.NotImplementedException;
 import org.argouml.model.UseCasesHelper;
+import org.eclipse.uml2.uml.Actor;
+import org.eclipse.uml2.uml.Extend;
+import org.eclipse.uml2.uml.ExtensionPoint;
+import org.eclipse.uml2.uml.Include;
+import org.eclipse.uml2.uml.Type;
+import org.eclipse.uml2.uml.UseCase;
 
 /**
  * The implementation of the UseCasesHelper for EUML2.
@@ -50,60 +58,81 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
         modelImpl = implementation;
     }
 
-    public void addExtend(Object elem, Object extend) {
-        // TODO Auto-generated method stub
-
+    public void addExtend(Object handle, Object extend) {
+        if (handle instanceof UseCase) {
+            ((UseCase) handle).getExtends().add(
+                    (Extend) extend);
+        } else if (handle instanceof ExtensionPoint) {
+            ((Extend) extend).getExtensionLocations().add(
+                    (ExtensionPoint) handle);
+        }
     }
 
     public void addExtensionPoint(Object handle, Object extensionPoint) {
-        // TODO Auto-generated method stub
-
+        if (handle instanceof UseCase) {
+            ((UseCase) handle).getExtensionPoints().add(
+                    (ExtensionPoint) extensionPoint);
+        } else if (handle instanceof Extend) {
+            ((Extend) handle).getExtensionLocations().add(
+                    (ExtensionPoint) extensionPoint);
+        }
+        throw new IllegalArgumentException(
+                "Must be UseCase or Extend : " //$NON-NLS-1$
+                + handle);
     }
 
     public void addExtensionPoint(Object handle, int position,
             Object extensionPoint) {
-        // TODO Auto-generated method stub
-
+        ((Extend) handle).getExtensionLocations().add(position,
+                (ExtensionPoint) extensionPoint);
     }
 
     public void addInclude(Object usecase, Object include) {
-        // TODO Auto-generated method stub
-
+        ((UseCase) usecase).getIncludes().add((Include) include);
     }
 
     public Collection getAllActors(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        return getAllOfType((org.eclipse.uml2.uml.Package) ns, Actor.class);
     }
 
     public Collection getAllUseCases(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        return getAllOfType((org.eclipse.uml2.uml.Package) ns, UseCase.class);
+    }
+    
+    private Collection<Type> getAllOfType(org.eclipse.uml2.uml.Package pkg,
+            Class type) {
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(
+                pkg, type);
     }
 
     public Collection getExtendedUseCases(Object ausecase) {
-        // TODO Auto-generated method stub
-        return null;
+        Collection<UseCase> result = new HashSet<UseCase>();
+        for (Extend extend : ((UseCase) ausecase).getExtends()) {
+            result.add(extend.getExtension());
+        }
+        return result;
     }
 
-    public Collection getExtendingUseCases(Object usecase) {
-        // TODO Auto-generated method stub
-        return null;
+    @SuppressWarnings("deprecation")
+    public Collection<UseCase> getExtendingUseCases(Object usecase) {
+        // TODO: association is not navigable in this direction
+        throw new NotImplementedException();
     }
 
-    public Object getExtends(Object abase, Object anextension) {
-        // TODO Auto-generated method stub
-        return null;
+    public Extend getExtends(Object abase, Object anextension) {
+        return ((UseCase) anextension).getExtend(null, (UseCase) abase);
     }
 
-    public Collection getIncludedUseCases(Object ausecase) {
-        // TODO Auto-generated method stub
-        return null;
+    public Collection<UseCase> getIncludedUseCases(Object ausecase) {
+        Collection<UseCase> result = new HashSet<UseCase>();
+        for (Include include : ((UseCase) ausecase).getIncludes() ) {
+            result.add(include.getAddition());
+        }
+        return result;
     }
 
-    public Object getIncludes(Object abase, Object aninclusion) {
-        // TODO Auto-generated method stub
-        return null;
+    public Include getIncludes(Object abase, Object aninclusion) {
+        return ((UseCase) abase).getInclude(null, (UseCase) aninclusion);
     }
 
     public Collection getSpecificationPath(Object ausecase) {
@@ -113,7 +142,6 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
 
     public void removeExtend(Object elem, Object extend) {
         // TODO Auto-generated method stub
-
     }
 
     public void removeExtensionPoint(Object elem, Object ep) {
@@ -122,13 +150,11 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
     }
 
     public void removeInclude(Object usecase, Object include) {
-        // TODO Auto-generated method stub
-
+        ((UseCase) usecase).getIncludes().remove((Include) include);
     }
 
     public void setAddition(Object handle, Object useCase) {
-        // TODO Auto-generated method stub
-
+        ((Include) handle).setAddition((UseCase) useCase);
     }
 
     public void setBase(Object extend, Object base) {
@@ -142,13 +168,22 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
     }
 
     public void setExtension(Object handle, Object ext) {
-        // TODO Auto-generated method stub
-
     }
 
     public void setExtensionPoints(Object handle, Collection extensionPoints) {
-        // TODO Auto-generated method stub
-
+        if (handle instanceof Extend) {
+            ((Extend) handle).getExtensionLocations().clear();
+            ((Extend) handle).getExtensionLocations().addAll(
+                    (Collection<ExtensionPoint>) extensionPoints);
+        } else if (handle instanceof UseCase) {
+            ((UseCase) handle).getExtensionPoints().clear();
+            ((UseCase) handle).getExtensionPoints().addAll(
+                    (Collection<ExtensionPoint>) extensionPoints);
+        } else {
+            throw new IllegalArgumentException(
+                    "Expected Extend or UseCase : "  //$NON-NLS-1$
+                    + handle);
+        }
     }
 
     public void setIncludes(Object handle, Collection includes) {

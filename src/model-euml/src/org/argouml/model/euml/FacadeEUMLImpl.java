@@ -238,6 +238,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getBase(Object handle) {
+        if (handle instanceof Extend) {
+            return ((Extend) handle).getExtendedCase();
+        }
         throw new NotYetImplementedException();
 
     }
@@ -524,7 +527,13 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public List<ExtensionPoint> getExtensionPoints(Object handle) {
-        return ((UseCase) handle).getExtensionPoints();
+        if (handle instanceof UseCase) {
+            return ((UseCase) handle).getExtensionPoints();
+        } else if (handle instanceof Extend) {
+            return ((Extend) handle).getExtensionLocations();
+        } 
+        throw new IllegalArgumentException(
+                "Expected UseCase or Extend : " + handle); //$NON-NLS-1$
     }
 
     public List<Feature> getFeatures(Object handle) {
@@ -1741,8 +1750,9 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof UseCase;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAUseCaseInstance(Object handle) {
-        throw new NotYetImplementedException();
+        throw new NotImplementedException();
     }
 
     public boolean isAVisibilityKind(Object handle) {

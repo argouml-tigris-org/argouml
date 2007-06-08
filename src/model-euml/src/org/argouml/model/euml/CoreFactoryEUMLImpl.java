@@ -71,7 +71,6 @@ class CoreFactoryEUMLImpl implements CoreFactory {
      */
     private EUMLModelImplementation modelImpl;
 
-
     /**
      * Constructor.
      *
