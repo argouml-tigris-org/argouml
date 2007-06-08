@@ -929,7 +929,7 @@ public class Project implements java.io.Serializable {
      */
     public int getPresentationCountFor(Object me) {
 
-        if (!Model.getFacade().isAModelElement(me)) {
+        if (!Model.getFacade().isAUMLElement(me)) {
             throw new IllegalArgumentException();
     	}
 

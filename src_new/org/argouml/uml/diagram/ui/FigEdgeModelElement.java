@@ -568,7 +568,7 @@ public abstract class FigEdgeModelElement
             super.propertyChange(pve);
         }
 
-        if (Model.getFacade().isAModelElement(src) 
+        if (Model.getFacade().isAUMLElement(src) 
                 && getOwner() != null
                 && !Model.getUmlFactory().isRemoved(getOwner())) {
             /* If the source of the event is an UML object,
@@ -859,7 +859,7 @@ public abstract class FigEdgeModelElement
             throw new IllegalStateException(
                     "The owner cannot be changed once set");
         }
-        if (!Model.getFacade().isAModelElement(owner)) {
+        if (!Model.getFacade().isAUMLElement(owner)) {
             throw new IllegalArgumentException(
                     "The owner must be a model element - got a "
                     + owner.getClass().getName());
@@ -882,6 +882,7 @@ public abstract class FigEdgeModelElement
         if (notationProviderName != null) {
             notationProviderName.cleanListener(this, own);
         }
+        // TODO: Should this be looking for a NamedElement? - tfm
         if (Model.getFacade().isAModelElement(own)) {
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(

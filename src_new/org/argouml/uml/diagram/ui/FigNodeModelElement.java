@@ -609,7 +609,7 @@ public abstract class FigNodeModelElement
         Object owner = getOwner();
 
         assert Model.getFacade().isAComponent(component);
-        assert Model.getFacade().isAModelElement(owner);
+        assert Model.getFacade().isAUMLElement(owner);
 
         Collection er1 = Model.getFacade().getElementResidences(owner);
         Collection er2 = Model.getFacade().getResidentElements(component);
@@ -885,7 +885,7 @@ public abstract class FigNodeModelElement
         } else {
             super.propertyChange(pve);
         }
-        if (Model.getFacade().isAModelElement(src)) {
+        if (Model.getFacade().isAUMLElement(src)) {
             /* If the source of the event is an UML object,
              * e.g. the owner of this Fig (but not always only the owner
              * is shown, e.g. for a class, also its attributes are shown),
@@ -1192,7 +1192,7 @@ public abstract class FigNodeModelElement
             throw new IllegalStateException(
                     "The owner cannot be changed once set");
         }
-        if (!Model.getFacade().isAModelElement(owner)) {
+        if (!Model.getFacade().isAUMLElement(owner)) {
             throw new IllegalArgumentException(
                     "The owner must be a model element - got a "
                     + owner.getClass().getName());
@@ -1215,7 +1215,7 @@ public abstract class FigNodeModelElement
         if (notationProviderName != null) {
             notationProviderName.cleanListener(this, own);
         }
-        if (Model.getFacade().isAModelElement(own)) {
+        if (Model.getFacade().isAUMLElement(own)) {
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         getNotationProviderType(), own, this);

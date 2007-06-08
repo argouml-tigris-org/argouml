@@ -113,7 +113,7 @@ public class WizDescription extends WizStep {
 	    description.setText(message);
 
 	    return;
-	} else if (Model.getFacade().isAModelElement(target)) {
+	} else if (Model.getFacade().isAUMLElement(target)) {
 	    message =
                 MessageFormat.format(
                         Translator.localize("message.item.branch-model"),

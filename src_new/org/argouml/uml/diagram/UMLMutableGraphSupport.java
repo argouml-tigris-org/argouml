@@ -393,6 +393,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         if (Model.getFacade().isAComment(node)) {
             cmnt.addAll(Model.getFacade().getAnnotatedElements(node));
         }
+        // TODO: Comments are on Element in UML 2.x
         if (Model.getFacade().isAModelElement(node)) {
             cmnt.addAll(Model.getFacade().getComments(node));
         }

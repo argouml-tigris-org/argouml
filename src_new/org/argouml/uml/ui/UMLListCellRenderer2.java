@@ -98,8 +98,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
         // Leave logging commented out by default for efficiency
 //        LOG.debug("determine rendering for: " + value);
 //        LOG.debug("show icon: " + showIcon);
-        if (Model.getFacade().isAModelElement(value)
-                || Model.getFacade().isAMultiplicity(value)) {
+        if (Model.getFacade().isAUMLElement(value)) {
 
 //            LOG.debug("is a Base or Multiplicity");
             String text = makeText(value);
@@ -171,7 +170,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             }
             return name;
         }
-        if (Model.getFacade().isAModelElement(value)) {
+        if (Model.getFacade().isAUMLElement(value)) {
             try {
                 name = getName(value);
                 if (Model.getFacade().isAStereotype(value)) {
@@ -232,7 +231,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     }
 
     private String makeTypeName(Object elem) {
-        if (Model.getFacade().isAModelElement(elem)) {
+        if (Model.getFacade().isAUMLElement(elem)) {
             return Model.getFacade().getUMLClassName(elem);
         }
         return null;

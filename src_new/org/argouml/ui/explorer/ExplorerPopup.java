@@ -99,7 +99,7 @@ public class ExplorerPopup extends JPopupMenu {
         boolean modelElementsOnly = true;
         for (Iterator it = TargetManager.getInstance().getTargets().iterator();
                 it.hasNext() && modelElementsOnly; ) {
-            if (!Model.getFacade().isAModelElement(it.next())) {
+            if (!Model.getFacade().isAUMLElement(it.next())) {
         	modelElementsOnly = false;
             }
         }
@@ -137,7 +137,7 @@ public class ExplorerPopup extends JPopupMenu {
 
         final Object projectModel = currentProject.getModel();
         final boolean modelElementSelected =
-            Model.getFacade().isAModelElement(selectedItem);
+            Model.getFacade().isAUMLElement(selectedItem);
 
         if (modelElementSelected) {
             final boolean nAryAssociationSelected =

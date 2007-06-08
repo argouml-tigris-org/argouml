@@ -78,7 +78,7 @@ public class ChildGenRelated implements ChildGenerator {
 
         // For all other model elements, return any elements
         // associated in any way
-        if (Model.getFacade().isAModelElement(o)) {
+        if (Model.getFacade().isAUMLElement(o)) {
             return Collections.enumeration(Model.getFacade()
                     .getModelElementAssociated(o));
         }

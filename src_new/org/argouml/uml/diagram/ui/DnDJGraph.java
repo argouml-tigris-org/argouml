@@ -197,7 +197,7 @@ class DnDJGraph
                         new AddExistingNodeCommand(me, dropTargetDropEvent,
                                 count++);
                     cmd.execute();
-                } else if (Model.getFacade().isAModelElement(me)) {
+                } else if (Model.getFacade().isAUMLElement(me)) {
                     if (gm.canAddEdge(me)) {
                         gm.addEdge(me);
                         // TODO: An AssociationClass should be possible to add

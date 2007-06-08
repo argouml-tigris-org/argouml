@@ -230,7 +230,7 @@ public class DocumentationManager {
 	    result.append(header).append(LINE_SEPARATOR);
 	}
 
-	if (Model.getFacade().isAModelElement(o)) {
+	if (Model.getFacade().isAUMLElement(o)) {
 	    Collection comments = Model.getFacade().getComments(o);
 	    if (!comments.isEmpty()) {
 		int nlcount = 2;

@@ -356,7 +356,7 @@ public class UseCaseDiagramGraphModel
 
         getNodes().add(node);
 
-        if (Model.getFacade().isAModelElement(node)
+        if (Model.getFacade().isAUMLElement(node)
                 && Model.getFacade().getNamespace(node) == null) {
             Model.getCoreHelper().addOwnedElement(getHomeModel(), node);
         }
@@ -406,7 +406,7 @@ public class UseCaseDiagramGraphModel
         getEdges().add(edge);
 
         // TODO: assumes public
-        if (Model.getFacade().isAModelElement(edge)
+        if (Model.getFacade().isAUMLElement(edge)
                 && Model.getFacade().getNamespace(edge) == null) {
             Model.getCoreHelper().addOwnedElement(getHomeModel(), edge);
         }
@@ -510,7 +510,7 @@ public class UseCaseDiagramGraphModel
         // Dependencies for model elements. Iterate over client and suppliers
         // together.
 
-        if (Model.getFacade().isAModelElement(node)) {
+        if (Model.getFacade().isAUMLElement(node)) {
             Vector specs =
                 new Vector(Model.getFacade().getClientDependencies(node));
 

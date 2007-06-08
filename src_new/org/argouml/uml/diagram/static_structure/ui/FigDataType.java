@@ -218,7 +218,7 @@ public class FigDataType extends FigClassifierBox {
                 && !Model.getFacade().isAInstance(encloser.getOwner()))) {
             super.setEnclosingFig(encloser);
         }
-        if (!(Model.getFacade().isAModelElement(getOwner()))) {
+        if (!(Model.getFacade().isAUMLElement(getOwner()))) {
             return;
         }
         /* If this fig is not visible, do not adapt the UML model!

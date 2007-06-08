@@ -163,15 +163,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * @param dsgr the designer
      */
     public ToDoItem(Critic c, Object dm, Designer dsgr) {
-        if (!Model.getFacade().isAModelElement(dm)
-                && !(dm instanceof Fig)
-                && !(dm instanceof Diagram)) {
-            //TODO: The cognitive system should not be aware of any other
-            // system. Find a better way to do this.
-            throw new IllegalArgumentException(
-                    "The offender must be a model element, "
-                    + "a Fig or a Diagram");
-        }
+        checkArgument(dm);
 
         thePoster = c;
         theHeadline = c.getHeadline(dm, dsgr);
@@ -180,6 +172,19 @@ public class ToDoItem implements Serializable, WizardItem {
         theDescription = c.getDescription(theOffenders, dsgr);
         theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
         theWizard = c.makeWizard(this);
+    }
+
+    //TODO: The cognitive system should not be aware of any other
+    // system. Find a better way to do this.
+    private void checkArgument(Object dm) {
+        if (!Model.getFacade().isAUMLElement(dm)
+                && !(dm instanceof Fig)
+                && !(dm instanceof Diagram)) {
+
+            throw new IllegalArgumentException(
+                    "The offender must be a model element, "
+                    + "a Fig or a Diagram");
+        }
     }
 
     /**
@@ -231,28 +236,13 @@ public class ToDoItem implements Serializable, WizardItem {
                     "A ListSet of offenders must be supplied.");
         }
         Object offender = CollectionUtil.getFirstItemOrNull(offs);
-        if (offender != null
-                && !Model.getFacade().isAModelElement(offender)
-                && !(offender instanceof Fig)
-                && !(offender instanceof Diagram)) {
-            //TODO: The cognitive system should not be aware of any other
-            // system. Find a better way to do this.
-            throw new IllegalArgumentException(
-                    "The first offender must be a model element, "
-                    + "a Fig or a Diagram");
+        if (offender != null) {
+            checkArgument(offender);
         }
 
         if (offs.size() >= 2) {
             offender = offs.elementAt(1);
-            if (!Model.getFacade().isAModelElement(offender)
-                    && !(offender instanceof Fig)
-                    && !(offender instanceof Diagram)) {
-                //TODO: The cognitive system should not be aware of any other
-                // system. Find a better way to do this.
-                throw new IllegalArgumentException(
-                        "The second offender must be a model element, "
-                        + "a Fig or a Diagram");
-            }
+            checkArgument(offender);
         }
     }
 
@@ -343,7 +333,7 @@ public class ToDoItem implements Serializable, WizardItem {
         // system. Find a better way to do this. We should not use
         // assert on public methods.
         assert theOffenders.size() <= 0
-        	|| Model.getFacade().isAModelElement(theOffenders.elementAt(0))
+        	|| Model.getFacade().isAUMLElement(theOffenders.elementAt(0))
         	|| theOffenders.elementAt(0) instanceof Fig
         	|| theOffenders.elementAt(0) instanceof Diagram;
         return theOffenders;

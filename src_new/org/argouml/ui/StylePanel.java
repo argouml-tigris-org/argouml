@@ -92,7 +92,7 @@ public class StylePanel
      */
     public void setTarget(Object t) {
 	if (!(t instanceof Fig)) {
-	    if (Model.getFacade().isAModelElement(t)) {
+	    if (Model.getFacade().isAUMLElement(t)) {
 		Project p =
                     ProjectManager.getManager()
                         .getCurrentProject();
