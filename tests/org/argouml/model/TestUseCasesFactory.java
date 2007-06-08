@@ -45,7 +45,7 @@ public class TestUseCasesFactory extends TestCase {
         "ExtensionPoint",
         "Include",
         "UseCase",
-        "UseCaseInstance",
+//        "UseCaseInstance",  // Gone in UML 2.x & unused by ArgoUML
     };
 
     /**
@@ -103,18 +103,54 @@ public class TestUseCasesFactory extends TestCase {
         Object extension = Model.getUseCasesFactory().createUseCase();
         Object point = Model.getUseCasesFactory()
             	.buildExtensionPoint(base);
+        assertTrue("extensionpoint not added to base",
+                   Model.getFacade().getExtensionPoints(base).contains(point));
         Object extend = Model.getUseCasesFactory()
             	.buildExtend(base, extension, point);
-        assertTrue("extensionpoint not added to base",
-		   !Model.getFacade().getExtensionPoints(base).isEmpty());
-        assertTrue("extend not added to base", 
-                !Model.getUseCasesHelper()
-                .getExtendingUseCases(base).isEmpty());
+        // The following method is unused by ArgoUML and has been
+        // deprecated.
+//        assertTrue("extend not added to base", 
+//                   Model.getUseCasesHelper()
+//                   .getExtendingUseCases(base).contains(extend));
         assertTrue("extend not added to extension",
-		   !Model.getFacade().getExtends(extension).isEmpty());
+		   Model.getFacade().getExtends(extension).contains(extend));
         assertTrue("extend not added to correct extensionpoint",
 		   (Model.getFacade().getExtensionPoints(extend).contains(point)
 		 && Model.getFacade().getExtensionPoints(extend).size() == 1));
+    }
+    
+    public void testGetAll() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object pkg = Model.getModelManagementFactory().createPackage();
+        Model.getCoreHelper().addOwnedElement(model, pkg);
+        
+        Object uc = Model.getUseCasesFactory().createUseCase();
+        Model.getCoreHelper().setName(uc, "UseCase1");
+        Model.getCoreHelper().addOwnedElement(model, uc);
+
+        uc = Model.getUseCasesFactory().createUseCase();
+        Model.getCoreHelper().setName(uc, "UseCase2");
+        Model.getCoreHelper().addOwnedElement(pkg, uc);
+
+        assertEquals("Failed to get two UseCases", 2, 
+                Model.getUseCasesHelper().getAllUseCases(model).size());
+
+        Object actor = Model.getUseCasesFactory().createActor();
+        Model.getCoreHelper().setName(actor, "Actor1");
+        Model.getCoreHelper().addOwnedElement(model, actor);
+
+        actor = Model.getUseCasesFactory().createActor();
+        Model.getCoreHelper().setName(actor, "Actor2");
+        Model.getCoreHelper().addOwnedElement(pkg, actor);
+
+
+        actor = Model.getUseCasesFactory().createActor();
+        Model.getCoreHelper().setName(actor, "Actor3");
+        Model.getCoreHelper().addOwnedElement(pkg, actor);
+        
+        assertEquals("Failed to get three Actors", 3, 
+                Model.getUseCasesHelper().getAllActors(model).size());
+        
     }
 
 }
