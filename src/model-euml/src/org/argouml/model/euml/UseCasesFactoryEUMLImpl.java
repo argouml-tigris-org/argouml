@@ -26,6 +26,7 @@
 
 package org.argouml.model.euml;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.NotImplementedException;
 import org.argouml.model.UseCasesFactory;
 import org.eclipse.uml2.uml.Actor;
@@ -41,7 +42,7 @@ import org.eclipse.uml2.uml.UseCase;
 /**
  * The implementation of the UseCasesFactory for EUML2.
  */
-class UseCasesFactoryEUMLImpl implements UseCasesFactory {
+class UseCasesFactoryEUMLImpl implements UseCasesFactory, AbstractModelFactory {
 
     /**
      * The model implementation.

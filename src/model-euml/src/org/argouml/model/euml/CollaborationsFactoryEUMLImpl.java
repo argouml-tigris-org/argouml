@@ -26,12 +26,14 @@
 
 package org.argouml.model.euml;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CollaborationsFactory;
 
 /**
  * Eclipse UML2 implementation of CollaborationsFactory.
  */
-class CollaborationsFactoryEUMLImpl implements CollaborationsFactory {
+class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
+        AbstractModelFactory {
 
     /**
      * The model implementation.

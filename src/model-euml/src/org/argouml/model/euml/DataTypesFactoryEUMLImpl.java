@@ -28,15 +28,16 @@ package org.argouml.model.euml;
 
 import java.util.List;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.DataTypesFactory;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.uml2.uml.Expression;
-import org.eclipse.uml2.uml.UMLFactory;
 
 /**
  * The implementation of the DataTypesFactory for EUML2.
  */
-class DataTypesFactoryEUMLImpl implements DataTypesFactory {
+class DataTypesFactoryEUMLImpl implements DataTypesFactory,
+        AbstractModelFactory {
 
     /**
      * The model implementation.

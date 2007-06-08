@@ -26,13 +26,15 @@
 
 package org.argouml.model.euml;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.StateMachinesFactory;
 import org.eclipse.uml2.uml.UMLFactory;
 
 /**
  * The implementation of the StateMachinesFactory for EUML2.
  */
-class StateMachinesFactoryEUMLImpl implements StateMachinesFactory {
+class StateMachinesFactoryEUMLImpl implements StateMachinesFactory,
+        AbstractModelFactory {
 
     /**
      * The model implementation.

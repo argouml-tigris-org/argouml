@@ -28,6 +28,7 @@ package org.argouml.model.euml;
 
 import java.util.Collection;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.ExtensionMechanismsFactory;
 import org.eclipse.uml2.uml.UMLFactory;
 
@@ -35,7 +36,7 @@ import org.eclipse.uml2.uml.UMLFactory;
  * The implementation of the ExtensionMechanismsFactory for EUML2.
  */
 class ExtensionMechanismsFactoryEUMLImpl implements
-        ExtensionMechanismsFactory {
+        ExtensionMechanismsFactory, AbstractModelFactory {
 
     /**
      * The model implementation.

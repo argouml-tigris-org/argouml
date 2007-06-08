@@ -26,18 +26,17 @@
 
 package org.argouml.model.euml;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CommonBehaviorFactory;
-import org.eclipse.uml2.uml.Action;
-import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.OpaqueAction;
 import org.eclipse.uml2.uml.Signal;
-import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.UMLFactory;
 
 /**
  * The implementation of the CommonBehaviorFactory for EUML2.
  */
-class CommonBehaviorFactoryEUMLImpl implements CommonBehaviorFactory {
+class CommonBehaviorFactoryEUMLImpl implements CommonBehaviorFactory,
+        AbstractModelFactory {
 
     /**
      * The model implementation.

@@ -28,6 +28,7 @@ package org.argouml.model.euml;
 
 import java.util.List;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CoreFactory;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.AggregationKind;
@@ -53,7 +54,6 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
@@ -64,7 +64,7 @@ import org.eclipse.uml2.uml.VisibilityKind;
 /**
  * The implementation of the CoreFactory for EUML2.
  */
-class CoreFactoryEUMLImpl implements CoreFactory {
+class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     /**
      * The model implementation.

@@ -26,6 +26,7 @@
 
 package org.argouml.model.euml;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.ModelManagementFactory;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.uml2.uml.ElementImport;
@@ -38,7 +39,8 @@ import org.eclipse.uml2.uml.UMLFactory;
 /**
  * The implementation of the ModelManagementFactory for EUML2.
  */
-class ModelManagementFactoryEUMLImpl implements ModelManagementFactory {
+class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
+        AbstractModelFactory {
 
     /**
      * The model implementation.

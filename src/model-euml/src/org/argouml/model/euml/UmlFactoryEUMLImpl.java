@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.UmlFactory;
@@ -63,7 +64,7 @@ import org.eclipse.uml2.uml.UseCase;
 /**
  * The implementation of the UmlFactory for EUML2.
  */
-class UmlFactoryEUMLImpl implements UmlFactory {
+class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
 
     private static final String IS_REMOVED_NAME = 
         "http://argouml.tigris.org/argouml-core-model-euml/isRemoved";
