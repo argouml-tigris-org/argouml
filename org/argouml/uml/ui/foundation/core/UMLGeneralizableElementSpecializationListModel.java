@@ -48,7 +48,8 @@ public class UMLGeneralizableElementSpecializationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (getTarget() != null) {
+        if (getTarget() != null &&
+                Model.getFacade().isAGeneralizableElement(getTarget())) {
             setAllElements(Model.getFacade().getSpecializations(getTarget()));
         }
     }
