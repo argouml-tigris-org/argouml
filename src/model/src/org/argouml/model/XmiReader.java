@@ -47,6 +47,8 @@ public interface XmiReader {
      * @param pIs the input source for parsing
      * @return a collection of top level elements
      * @throws UmlException on any error
+     * @deprecated for 0.25.4 by tfmorris. Use 
+     * {@link #parse(InputSource, boolean)}.
      */
     Collection parse(InputSource pIs) throws UmlException;
 
@@ -62,6 +64,7 @@ public interface XmiReader {
      * @return a collection of top level elements
      * @throws UmlException
      *             on any error
+     * @since 0.22
      */
     Collection parse(InputSource pIs, boolean profile) throws UmlException;
 
@@ -98,4 +101,11 @@ public interface XmiReader {
      * @return the count
      */
     public int getIgnoredElementCount();
+    
+    /**
+     * Return the name of the outermost tag in the XMI file.
+     * 
+     * @return the tag name
+     */
+    public String getTagName();
 }

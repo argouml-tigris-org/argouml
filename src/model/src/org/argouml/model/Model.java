@@ -24,6 +24,7 @@
 
 package org.argouml.model;
 
+import java.io.OutputStream;
 import java.io.Writer;
 
 
@@ -463,10 +464,30 @@ public final class Model {
      * @return the object implementing the XmiWriter interface
      * @throws UmlException
      *             on any error while writing
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #getXmiWriter(Object, OutputStream, String)}.
      */
     public static XmiWriter getXmiWriter(Object model, Writer writer,
             String version) throws UmlException {
         return impl.getXmiWriter(model, writer, version);
+    }
+    
+    /**
+     * Get the XmiWriter object.
+     * 
+     * @param model
+     *            the project member model
+     * @param writer
+     *            the writer
+     * @param version
+     *            string to be written into file header as XMI writer version
+     * @return the object implementing the XmiWriter interface
+     * @throws UmlException
+     *             on any error while writing
+     */
+    public static XmiWriter getXmiWriter(Object model, OutputStream stream,
+            String version) throws UmlException {
+        return impl.getXmiWriter(model, stream, version);
     }
 
     /**

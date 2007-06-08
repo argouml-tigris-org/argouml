@@ -24,6 +24,7 @@
 
 package org.argouml.model;
 
+import java.io.OutputStream;
 import java.io.Writer;
 
 
@@ -282,10 +283,29 @@ public interface ModelImplementation {
      * @return the object implementing the XmiWriter interface
      * @throws UmlException
      *             on any error while writing
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #getXmiWriter(Object, OutputStream, String)}
      */
     XmiWriter getXmiWriter(Object model, Writer writer, String version)
         throws UmlException;
 
+    /**
+     * A factory method that creates a new instance of an XmiWriter on each
+     * call.
+     * 
+     * @param model
+     *            the project member model
+     * @param stream the output stream to write to
+     * @param version
+     *            the version of ArgoUML which may be written to the output
+     *            to help identify who wrote it
+     * @return the object implementing the XmiWriter interface
+     * @throws UmlException
+     *             on any error while writing
+     */
+    XmiWriter getXmiWriter(Object model, OutputStream stream, String version)
+        throws UmlException;
+    
     /**
      * Get the copy helper.
      *
