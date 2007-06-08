@@ -29,27 +29,32 @@ package org.argouml.model.euml;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.argouml.model.Facade;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Action;
-import org.eclipse.uml2.uml.ActivityGroup;
 import org.eclipse.uml2.uml.ActivityPartition;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Artifact;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.AssociationClass;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.BehavioralFeature;
 import org.eclipse.uml2.uml.CallAction;
 import org.eclipse.uml2.uml.CallEvent;
+import org.eclipse.uml2.uml.ChangeEvent;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Collaboration;
+import org.eclipse.uml2.uml.CollaborationUse;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Component;
+import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.CreateObjectAction;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
@@ -58,6 +63,7 @@ import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
+import org.eclipse.uml2.uml.Event;
 import org.eclipse.uml2.uml.Expression;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.ExtensionPoint;
@@ -80,12 +86,14 @@ import org.eclipse.uml2.uml.ObjectNode;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.OutputPin;
 import org.eclipse.uml2.uml.PackageImport;
+import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Reception;
 import org.eclipse.uml2.uml.RedefinableElement;
+import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.Relationship;
 import org.eclipse.uml2.uml.SendObjectAction;
 import org.eclipse.uml2.uml.SendSignalAction;
@@ -103,6 +111,7 @@ import org.eclipse.uml2.uml.TypedElement;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.UseCase;
 import org.eclipse.uml2.uml.ValueSpecification;
+import org.eclipse.uml2.uml.Vertex;
 import org.eclipse.uml2.uml.VisibilityKind;
 
 
@@ -292,19 +301,21 @@ class FacadeEUMLImpl implements Facade {
 
     }
 
+    @SuppressWarnings("deprecation")
     public Object getChild(Object handle) {
-        throw new NotYetImplementedException();
-
+        return ((Generalization) handle).getSpecific();
     }
 
+    public Object getSpecific(Object handle) {
+        return ((Generalization) handle).getSpecific();
+    }
+    
     public Collection getChildren(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getClassifier(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getClassifierRoles(Object handle) {
@@ -316,12 +327,10 @@ class FacadeEUMLImpl implements Facade {
 
     public Collection getClassifiers(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getClassifiersInState(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection<Dependency> getClientDependencies(Object handle) {
@@ -332,12 +341,17 @@ class FacadeEUMLImpl implements Facade {
         return ((Dependency) handle).getClients();
     }
 
-    public Collection getCollaborations(Object handle) {
-        throw new NotYetImplementedException();
-
+    public Collection<Collaboration> getCollaborations(Object handle) {
+        Set<Collaboration> result = new HashSet<Collaboration>();
+        if (handle instanceof Classifier) {
+            for (CollaborationUse cu : ((Classifier) handle).getCollaborationUses()) {
+                result.add(cu.getType()); 
+            }
+        }
+        return result;
     }
 
-    public Collection getComments(Object handle) {
+    public Collection<Comment> getComments(Object handle) {
         return ((Element) handle).getOwnedComments();
     }
 
@@ -348,22 +362,18 @@ class FacadeEUMLImpl implements Facade {
 
     public Object getCommunicationLink(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getComponentInstance(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getConcurrency(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getCondition(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getConnections(Object handle) {
@@ -373,131 +383,116 @@ class FacadeEUMLImpl implements Facade {
         } else {
             throw new IllegalArgumentException();
         }
-
     }
 
     public List getConstrainedElements(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getConstrainingElements(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getConstraints(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getContainer(Object handle) {
+        if (handle instanceof Vertex) {
+            return ((Vertex) handle).getContainer();
+        } else if (handle instanceof Transition) {
+            return ((Transition) handle).getContainer();
+        } 
+        // TODO: unfinished implementation
         throw new NotYetImplementedException();
-
     }
 
     public Collection getContents(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getContext(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getContexts(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: This is probably related to the SendEvent that is sending the
+        // Signal, but the association is not navigable in that direction
+        return Collections.EMPTY_SET;
     }
 
     public Collection getCreateActions(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getDataValue(Object taggedValue) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getDefaultElement(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getDefaultValue(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getDeferrableEvents(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getDeployedComponents(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getDeploymentLocations(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getDiscriminator(Object handle) {
-        throw new NotYetImplementedException();
-
+        // Gone from UML 2.x
+//        throw new NotImplementedException();
+        return null;
     }
 
     public Object getDispatchAction(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
-    public Object getDoActivity(Object handle) {
-        throw new NotYetImplementedException();
-
+    public Behavior getDoActivity(Object handle) {
+        return ((State) handle).getDoActivity();
     }
 
-    public Object getEffect(Object handle) {
-        throw new NotYetImplementedException();
-
+    public Behavior getEffect(Object handle) {
+        return ((Transition) handle).getEffect();
     }
 
     public Collection getElementImports(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getElementImports2(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getElementResidences(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
-    public Object getEntry(Object handle) {
-        throw new NotYetImplementedException();
-
+    public Behavior getEntry(Object handle) {
+        return ((State) handle).getEntry();
     }
 
-    public Object getEnumeration(Object handle) {
-        throw new NotYetImplementedException();
-
+    public Enumeration getEnumeration(Object handle) {
+        return ((EnumerationLiteral) handle).getEnumeration();
     }
 
-    public List getEnumerationLiterals(Object handle) {
+    public List<EnumerationLiteral> getEnumerationLiterals(Object handle) {
         return ((Enumeration) handle).getOwnedLiterals();
     }
 
-    public Object getExit(Object handle) {
-        throw new NotYetImplementedException();
-
+    public Behavior getExit(Object handle) {
+        return ((State) handle).getExit();
     }
 
     public Object getExpression(Object handle) {
@@ -516,11 +511,11 @@ class FacadeEUMLImpl implements Facade {
 
     }
 
-    public Collection getExtends(Object handle) {
+    public Collection<Extend> getExtends(Object handle) {
         return ((UseCase) handle).getExtends();
     }
 
-    public Object getExtension(Object handle) {
+    public UseCase getExtension(Object handle) {
         return ((Extend) handle).getExtension();
     }
 
@@ -541,10 +536,14 @@ class FacadeEUMLImpl implements Facade {
 
     }
 
-    public Collection getGeneralizations(Object handle) {
-        // TODO: Check whether this returns all generalizations or just
-        // those that we are a child of (probably the former)
-        return ((Classifier) handle).getGeneralizations();
+    public Collection<Generalization> getGeneralizations(Object handle) {
+        Set<Generalization> result = new HashSet<Generalization>();
+        for (Generalization g : ((Classifier) handle).getGeneralizations()) {
+            if (handle.equals(g.getSpecific())) {
+                result.add(g);
+            }
+        }
+        return result;
     }
 
     public Object getGuard(Object handle) {
@@ -561,7 +560,7 @@ class FacadeEUMLImpl implements Facade {
         return ((ElementImport) elementImport).getImportedElement();
     }
 
-    public Collection getImportedElements(Object pack) {
+    public Collection<PackageableElement> getImportedElements(Object pack) {
         // TODO: double check - tfm
         return ((Namespace) pack).getImportedElements();
     }
@@ -576,18 +575,16 @@ class FacadeEUMLImpl implements Facade {
 
     }
 
-    public Collection getIncludes(Object handle) {
+    public Collection<Include> getIncludes(Object handle) {
         return ((UseCase) handle).getIncludes();
     }
 
     public Collection getIncomings(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getInitialValue(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getInstance(Object handle) {
@@ -596,23 +593,21 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getInstances(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: InstanceSpecification -> Classifier association isn't
+        // navigable in this direction
+        return Collections.EMPTY_SET;
     }
 
     public Object getInteraction(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getInteractions(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getInternalTransitions(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getKind(Object handle) {
@@ -627,12 +622,10 @@ class FacadeEUMLImpl implements Facade {
 
     public Object getLink(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getLinkEnds(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getLinks(Object handle) {
@@ -642,36 +635,30 @@ class FacadeEUMLImpl implements Facade {
 
     public String getLocation(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public int getLower(Object handle) {
-        throw new NotYetImplementedException();
+        return ((MultiplicityElement) handle).getLower();
     }
 
     public Collection getMessages(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getMethods(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getModel(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getModelElement(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public List getModelElementAssociated(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Element getModelElementContainer(Object handle) {
@@ -682,11 +669,11 @@ class FacadeEUMLImpl implements Facade {
         return ((Element) handle).getOwnedElements();
     }
 
-    public Object getMultiplicity(Object handle) {
+    public MultiplicityElement getMultiplicity(Object handle) {
         // MultiplicityElement is now an interface implemented
         // by element types that support multiplicities - tfm
         if (handle instanceof MultiplicityElement) {
-            return handle;
+            return (MultiplicityElement)handle;
         } else {
             throw new IllegalArgumentException();
         }
@@ -697,45 +684,46 @@ class FacadeEUMLImpl implements Facade {
             return (String) handle;
         } else if (handle instanceof NamedElement) {
             return ((NamedElement) handle).getName();
+        } else {
+            // TODO: Some elements such as Generalization are
+            // no longer named.  For a transitional period we'll
+            // return a String to debug can continue, but the
+            // calling code should probably be fixed. - tfm 20070607
+            return "";
         }
-        throw new IllegalArgumentException();
+//        throw new IllegalArgumentException();
     }
 
-    public Object getNamespace(Object handle) {
+    public Namespace getNamespace(Object handle) {
         return ((NamedElement) handle).getNamespace();
     }
 
     public Object getNextEnd(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getNodeInstance(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getObjectFlowStates(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getOccurrences(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getOperation(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
-    public List getOperations(Object handle) {
+    public List<Operation> getOperations(Object handle) {
         List<Feature> features = ((Classifier) handle).getFeatures();
-        List<Feature> result = new ArrayList<Feature>();
+        List<Operation> result = new ArrayList<Operation>();
         for (Feature f : features) {
             if (f instanceof Operation) {
-                result.add(f);
+                result.add((Operation) f);
             }
         }
         return result;
@@ -754,7 +742,6 @@ class FacadeEUMLImpl implements Facade {
 
     public Object getOppositeEnd(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getOrdering(Object handle) {
@@ -777,170 +764,157 @@ class FacadeEUMLImpl implements Facade {
 
     public Collection getOtherAssociationEnds(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getOtherLinkEnds(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getOutgoings(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
-    public Collection getOwnedElements(Object handle) {
+    public Collection<Element> getOwnedElements(Object handle) {
         return ((Namespace) handle).getOwnedElements();
     }
 
-    public Object getOwner(Object handle) {
-        throw new NotYetImplementedException();
-
+    public Element getOwner(Object handle) {
+        return ((Element) handle).getOwner();
     }
 
+    @SuppressWarnings("deprecation")
     public Object getOwnerScope(Object handle) {
-        throw new NotYetImplementedException();
-
+        // Removed from UML 2.x and deprecated in Model API
+        // so we won't implement it
+        throw new NotImplementedException();
     }
 
-    public Object getPackage(Object handle) {
-        throw new NotYetImplementedException();
-
+    public Namespace getPackage(Object handle) {
+        return ((ElementImport) handle).getImportingNamespace();
     }
 
     public Object getParameter(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getParameter(Object handle, int n) {
         throw new NotYetImplementedException();
-
     }
 
-    public Collection getParameters(Object handle) {
+    public Collection<Parameter> getParameters(Object handle) {
+        if (handle instanceof BehavioralFeature || handle instanceof Event) {
+            return getParametersList(handle);
+        } 
+        // TODO: implement remaining supported types
         throw new NotYetImplementedException();
-
     }
 
-    public List getParametersList(Object handle) {
+    public List<Parameter> getParametersList(Object handle) {
+        if (handle instanceof BehavioralFeature) {
+            return ((BehavioralFeature) handle).getOwnedParameters();
+        }
+        // TODO: implement remaining supported types
         throw new NotYetImplementedException();
-
     }
 
-    public Object getParent(Object handle) {
-        throw new NotYetImplementedException();
-
+    @SuppressWarnings("deprecation")
+    public Classifier getParent(Object handle) {
+        return ((Generalization) handle).getGeneral();
     }
 
+    public Classifier getGeneral(Object handle) {
+        return ((Generalization) handle).getGeneral();
+    }
+    
     public Collection getPartitions(Object container) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getPowertype(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getPowertypeRanges(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getPredecessors(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
+    @SuppressWarnings("deprecation")
     public Object getPseudostateKind(Object handle) {
-        throw new NotYetImplementedException();
-
+        throw new NotImplementedException();
     }
 
-    public List getQualifiers(Object handle) {
+    public List<Property> getQualifiers(Object handle) {
         return ((Property) handle).getQualifiers();
     }
 
     public Collection getRaisedSignals(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Iterator getRanges(Object handle) {
-        throw new NotYetImplementedException();
-
+        // Multiplicities only have a single range in UML 2.x
+        throw new NotImplementedException();
     }
 
     public Collection getReceivedMessages(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getReceivedStimuli(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getReceiver(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getReceptions(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: Signal -> Receptions association not navigable in this direction
+        return Collections.EMPTY_SET;
     }
 
     public Object getRecurrence(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public String getReferenceState(Object o) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getReferenceValue(Object taggedValue) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getRepresentedClassifier(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getRepresentedOperation(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getResident(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getResidentElements(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getResidents(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getScript(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getSender(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getSentMessages(Object handle) {
@@ -958,9 +932,8 @@ class FacadeEUMLImpl implements Facade {
 
     }
 
-    public Object getSource(Object handle) {
-        throw new NotYetImplementedException();
-
+    public Vertex getSource(Object handle) {
+        return ((Transition) handle).getSource();
     }
 
     public Collection getSourceFlows(Object handle) {
@@ -974,9 +947,13 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getSpecializations(Object handle) {
-        Collection generalizations = ((Classifier) handle).getGeneralizations();
-        // TODO: not implemented
-        return Collections.EMPTY_SET;
+        Set<Generalization> result = new HashSet<Generalization>();
+        for (Generalization g : ((Classifier) handle).getGeneralizations()) {
+            if (handle.equals(g.getGeneral())) {
+                result.add(g);
+            }
+        }
+        return result;
     }
 
     public String getSpecification(Object handle) {
@@ -998,17 +975,19 @@ class FacadeEUMLImpl implements Facade {
 
     public Object getState(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getStateMachine(Object handle) {
+        if (handle instanceof Pseudostate) {
+            return ((Pseudostate) handle).getStateMachine();
+        } else if (handle instanceof Region) {
+            return ((Region) handle).getStateMachine();
+        } 
         throw new NotYetImplementedException();
-
     }
 
     public Collection getStates(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getStereotypes(Object handle) {
@@ -1018,15 +997,14 @@ class FacadeEUMLImpl implements Facade {
 
     public Collection getStimuli(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
-    public List getStructuralFeatures(Object handle) {
+    public List<StructuralFeature> getStructuralFeatures(Object handle) {
         List<Feature> features = ((Classifier) handle).getFeatures();
-        List<Feature> result = new ArrayList<Feature>();
+        List<StructuralFeature> result = new ArrayList<StructuralFeature>();
         for (Feature f : features) {
             if (f instanceof StructuralFeature) {
-                result.add(f);
+                result.add((StructuralFeature) f);
             }
         }
         return result;
@@ -1053,7 +1031,6 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getSupplierDependencies(Object handle) {
-
         // TODO: not navigable this direction? - tfm
         return Collections.EMPTY_SET;
     }
@@ -1089,63 +1066,55 @@ class FacadeEUMLImpl implements Facade {
 
     public String getTaggedValueValue(Object handle, String name) {
         throw new NotYetImplementedException();
-
     }
 
     public Iterator getTaggedValues(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getTaggedValuesCollection(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
-    public Object getTarget(Object handle) {
-        throw new NotYetImplementedException();
-
+    public Vertex getTarget(Object handle) {
+        return ((Transition) handle).getTarget();
     }
 
     public Collection getTargetFlows(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     @SuppressWarnings("deprecation")
     public Object getTargetScope(Object handle) {
-        // Don't implement - deprecated method in interface.
+        // Removed from UML 2.x and deprecated in Model API
+        // so we won't implement it
         throw new NotImplementedException();
     }
 
     public Object getTemplate(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public List getTemplateParameters(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public String getTipString(Object modelElement) {
         // TODO: Not Model implementation dependent
-        return getUMLClassName(modelElement) + ": " + getName(modelElement);
+        return getUMLClassName(modelElement) + ": " //$NON-NLS-1$
+                + getName(modelElement);
     }
 
     public Object getTop(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Object getTransition(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Collection getTransitions(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public Trigger getTrigger(Object handle) {
@@ -1170,11 +1139,14 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getUUID(Object element) {
-        throw new NotYetImplementedException();
+        // TODO: Hack placeholder implementation
+        // I think we need to use XMIResourceFactoryImpl to provide a way
+        // to generate xmi.id's, but I don't know the details yet
+        return element.toString();
     }
 
     public int getUpper(Object handle) {
-        throw new NotYetImplementedException();
+        return ((MultiplicityElement) handle).getUpper();
     }
 
     public UseCase getUseCase(Object handle) {
@@ -1242,7 +1214,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAArgListsExpression(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isAArgument(Object modelElement) {
@@ -1290,7 +1261,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAAttributeLink(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isABehavioralFeature(Object handle) {
@@ -1299,12 +1269,10 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isABinding(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isABooleanExpression(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isACallAction(Object handle) {
@@ -1322,8 +1290,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAChangeEvent(Object handle) {
-        throw new NotYetImplementedException();
-
+        return handle instanceof ChangeEvent;
     }
 
     public boolean isAClass(Object handle) {
@@ -1375,12 +1342,10 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAConcurrentRegion(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isAConstraint(Object handle) {
-        throw new NotYetImplementedException();
-
+        return handle instanceof Constraint;
     }
 
     public boolean isACreateAction(Object handle) {
@@ -1394,12 +1359,10 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isADataValue(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isADependency(Object handle) {
-        throw new NotYetImplementedException();
-
+        return handle instanceof Dependency;
     }
 
     public boolean isADestroyAction(Object handle) {
@@ -1429,8 +1392,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAEvent(Object handle) {
-        throw new NotYetImplementedException();
-
+        return handle instanceof Event;
     }
 
     public boolean isAException(Object handle) {
@@ -1464,8 +1426,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAGeneralizableElement(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: Changed from UML 1.4
+        return handle instanceof Classifier;
     }
 
     public boolean isAGeneralization(Object handle) {
@@ -1493,7 +1455,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAInteractionInstanceSet(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isAInterface(Object handle) {
@@ -1502,13 +1463,16 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAIterationExpression(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isALink(Object handle) {
-//        return handle instanceof Link;
-        // TODO: 
-        return false;
+        // TODO: check semantics here - tfm
+        if (!(handle instanceof InstanceSpecification)) {
+            return false;
+        }
+        List classifiers = ((InstanceSpecification) handle).getClassifiers();
+        return classifiers.size() == 1
+                && classifiers.get(0) instanceof Association;
     }
 
     public boolean isALinkEnd(Object handle) {
@@ -1518,12 +1482,10 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isALinkObject(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isAMappingExpression(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isAMessage(Object handle) {
@@ -1552,6 +1514,10 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAMultiplicityRange(Object handle) {
         return handle instanceof MultiplicityElement;
+    }
+
+    public boolean isANamedElement(Object handle) {
+        return handle instanceof NamedElement;
     }
 
     public boolean isANamespace(Object handle) {
@@ -1584,7 +1550,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAObjectSetExpression(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isAOperation(Object handle) {
@@ -1608,18 +1573,17 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAPrimitive(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: Not in UML 2.x
+        return false;
     }
 
     public boolean isAProcedureExpression(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isAProgrammingLanguageDataType(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: Not in UML 2.x
+        return false;
     }
 
     public boolean isAPseudostate(Object handle) {
@@ -1656,7 +1620,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isASignalEvent(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isASimpleState(Object handle) {
@@ -1682,8 +1645,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAStimulus(Object handle) {
-//        return handle instanceof Stimulus;
-        // TODO:
+        // TODO: not implemented
         return false;
     }
 
@@ -1715,7 +1677,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isASubsystemInstance(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isASynchState(Object handle) {
@@ -1736,7 +1697,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isATemplateArgument(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isATemplateParameter(Object handle) {
@@ -1762,7 +1722,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isATypeExpression(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isAUMLElement(Object handle) {
@@ -1784,7 +1743,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAUseCaseInstance(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isAVisibilityKind(Object handle) {
@@ -1806,52 +1764,54 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAggregate(Object handle) {
-        throw new NotYetImplementedException();
+        // TODO: Not sure the semantics are an exact match here between
+        // UML 1.4 Aggregate and UML 2.x Shared.
+        return AggregationKind.SHARED_LITERAL.equals(((Property) handle)
+                .getAggregation());
     }
 
     public boolean isAsynchronous(Object handle) {
-        throw new NotYetImplementedException();
-
+        return !((CallAction) handle).isSynchronous();
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isChangeable(Object handle) {
-        throw new NotYetImplementedException();
-
+        return !isReadOnly(handle);
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isClassifierScope(Object handle) {
-        throw new NotYetImplementedException();
-
+        // Removed from UML 2.x and deprecated in Model API
+        // so we won't implement it
+        throw new NotImplementedException();
     }
 
     public boolean isComposite(Object handle) {
-        throw new NotYetImplementedException();
-
+        return AggregationKind.COMPOSITE_LITERAL.equals(((Property) handle)
+                .getAggregation());
     }
 
     public boolean isConcurrent(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isConstructor(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isFrozen(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isInitialized(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isInstanceScope(Object handle) {
-        throw new NotYetImplementedException();
-
+        // Removed from UML 2.x and deprecated in Model API
+        // so we won't implement it
+        throw new NotImplementedException();
     }
 
     public boolean isInternal(Object handle) {
@@ -1868,28 +1828,25 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isPackage(Object handle) {
-        throw new NotYetImplementedException();
-
+        return VisibilityKind.PACKAGE_LITERAL.equals(getVisibility(handle));
     }
 
     public boolean isPrimaryObject(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: Moved this out of the implementation-specific piece - tfm
+        // everything is primary for now (ie not reverse engineered)
+        return true;
     }
 
     public boolean isPrivate(Object handle) {
-        throw new NotYetImplementedException();
-
+        return VisibilityKind.PRIVATE_LITERAL.equals(getVisibility(handle));
     }
 
     public boolean isProtected(Object handle) {
-        throw new NotYetImplementedException();
-
+        return VisibilityKind.PROTECTED_LITERAL.equals(getVisibility(handle));
     }
 
     public boolean isPublic(Object handle) {
-        throw new NotYetImplementedException();
-
+        return VisibilityKind.PUBLIC_LITERAL.equals(getVisibility(handle));
     }
 
     public boolean isQuery(Object handle) {
@@ -1898,12 +1855,10 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isRealize(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isReturn(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isRoot(Object handle) {
@@ -1914,38 +1869,37 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isSingleton(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: this doesn't belong in the implementation specific piece - tfm
+        return false;
     }
 
     public boolean isSpecification(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isStereotype(Object handle, String stereotypename) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isSynch(Object handle) {
         throw new NotYetImplementedException();
-
     }
 
     public boolean isTop(Object handle) {
-        throw new NotYetImplementedException();
-
+        if (((State) handle).getContainer() == null) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isType(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: this doesn't belong in the implementation specific piece - tfm
+        return false;
     }
 
     public boolean isUtility(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: this doesn't belong in the implementation specific piece - tfm
+        return false;
     }
 
     public Object lookupIn(Object handle, String name) {
@@ -1958,10 +1912,11 @@ class FacadeEUMLImpl implements Facade {
             return org.argouml.model.Model.getDataTypesHelper()
                     .multiplicityToString(modelElement);
         } else if (modelElement instanceof Element) {
-            return getUMLClassName(modelElement) + ": " + getName(modelElement);
+            return getUMLClassName(modelElement) + ": " //$NON-NLS-1$
+                    + getName(modelElement);
         }
         if (modelElement == null) {
-            return "";
+            return ""; //$NON-NLS-1$
         }
         return modelElement.toString();
     }
