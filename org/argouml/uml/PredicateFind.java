@@ -90,7 +90,7 @@ public class PredicateFind implements Predicate {
      * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
      */
     public boolean predicate(Object o) {
-	if (!(Model.getFacade().isAModelElement(o))) {
+	if (!(Model.getFacade().isAUMLElement(o))) {
             return false;
         }
 	Object me = o;

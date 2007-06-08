@@ -548,7 +548,7 @@ public class FigClass extends FigClassifierBox
                 && !Model.getFacade().isAInstance(encloser.getOwner()))) {
             super.setEnclosingFig(encloser);
         }
-        if (!(Model.getFacade().isAModelElement(getOwner()))) {
+        if (!(Model.getFacade().isAUMLElement(getOwner()))) {
             return;
         }
         if (encloser != null

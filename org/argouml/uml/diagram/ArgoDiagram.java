@@ -147,7 +147,7 @@ public abstract class ArgoDiagram extends Diagram {
      */
     public Fig getContainingFig(Object obj) {
         Fig fig = super.presentationFor(obj);
-        if (fig == null && Model.getFacade().isAModelElement(obj)) {
+        if (fig == null && Model.getFacade().isAUMLElement(obj)) {
 	    // maybe we have a modelelement that is part of some other
             // fig
             if (Model.getFacade().isAOperation(obj)
@@ -352,7 +352,7 @@ public abstract class ArgoDiagram extends Diagram {
             // The fix
             f.removeFromDiagram();
         } else if ((f instanceof FigNode || f instanceof FigEdge)
-                &&  Model.getFacade().isAModelElement(f.getOwner())
+                &&  Model.getFacade().isAUMLElement(f.getOwner())
                 &&  Model.getUmlFactory().isRemoved(f.getOwner())) {
             if (figDescription == null) {
                 figDescription = figDescription(f);
