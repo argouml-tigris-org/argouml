@@ -35,6 +35,9 @@ import java.util.Map;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.UmlFactory;
+import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.impl.EcoreFactoryImpl;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
@@ -52,6 +55,7 @@ import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.Transition;
+import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.UseCase;
 
@@ -61,6 +65,11 @@ import org.eclipse.uml2.uml.UseCase;
  */
 class UmlFactoryEUMLImpl implements UmlFactory {
 
+    private static final String IS_REMOVED_NAME = 
+        "http://argouml.tigris.org/argouml-core-model-euml/isRemoved";
+    
+    private EAnnotation removedAnnotation;
+    
     /**
      * The model implementation.
      */
@@ -139,6 +148,9 @@ class UmlFactoryEUMLImpl implements UmlFactory {
         modelImpl = implementation;
         metaTypes = modelImpl.getMetaTypes();
         buildValidConnectionMap();
+
+        removedAnnotation = EcoreFactoryImpl.eINSTANCE.createEAnnotation();
+        removedAnnotation.setSource(IS_REMOVED_NAME);
     }
 
     // TODO: This is unchanged from UML 1.4 - needs review - tfm
@@ -300,8 +312,19 @@ class UmlFactoryEUMLImpl implements UmlFactory {
     }
 
     public void delete(Object elem) {
-        // TODO: Not sure if there's more to do here - tfm
+        // TODO: We probably need a better way of doing this - tfm
+        // Add an annotation saying that we've deleted the element
+        ((EModelElement) elem).getEAnnotations().add(removedAnnotation);
         ((Element) elem).destroy();
+    }
+    
+    public boolean isRemoved(Object o) {
+        // TODO: We  need a way to tell if #destroy() has
+        // been called
+        if (o instanceof Element) {
+            return ((EModelElement) o).getEAnnotation(IS_REMOVED_NAME) != null;
+        }
+        throw new IllegalArgumentException("Not an Element : " + o);
     }
 
     public boolean isConnectionType(Object connectionType) {
@@ -373,10 +396,7 @@ class UmlFactoryEUMLImpl implements UmlFactory {
         return true;
     }
 
-    public boolean isRemoved(Object o) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+
 
     /**
      * Returns the package factory for the UML package
