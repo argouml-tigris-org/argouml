@@ -59,8 +59,16 @@ public interface UseCasesHelper {
     Collection getExtendedUseCases(Object ausecase);
 
     /**
-     * @param usecase the given usecase
+     * Find all UseCases that extend this UseCase.
+     * <p>
+     * NOTE: The association is not navigable in this direction, so a brute
+     * force search will be used and it will only include models which are
+     * accessable, not any models which are potentially linked to this one.
+     * 
+     * @param usecase
+     *            the given usecase
      * @return Collection all usecases that extend the given usecase
+     * @deprecated for 0.25.4 by tfmorris
      */
     Collection getExtendingUseCases(Object usecase);
 

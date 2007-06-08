@@ -1137,6 +1137,8 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is a UseCaseInstance
+     * @deprecated for 0.25.4 by tfmorris. UseCaseInstances have been removed
+     *             from UML 2.x.
      */
     boolean isAUseCaseInstance(Object handle);
     
@@ -1780,12 +1782,12 @@ public interface Facade {
     Object getExtensionPoint(Object handle, int index);
 
     /**
-     * Return all Extends of a UseCase or Extend.
+     * Return all ExtensionPoints of a UseCase or Extend.
      * 
      * @param handle
      *            the UseCase or the Extend
-     * @return the Collection of Extends. If the argument was an Extend, the
-     *         Collection is ordered, ie a List.
+     * @return the Collection of ExtensionPoints. If the argument was an Extend,
+     *         the Collection is ordered, ie a List.
      */
     Collection getExtensionPoints(Object handle);
 
