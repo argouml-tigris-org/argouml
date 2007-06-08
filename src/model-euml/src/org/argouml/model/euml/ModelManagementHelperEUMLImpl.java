@@ -29,9 +29,13 @@ package org.argouml.model.euml;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.model.ModelManagementHelper;
+import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 
 
@@ -67,8 +71,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllContents(Object namespace) {
-        // TODO Auto-generated method stub
-        return null;
+        return ((Element) namespace).allOwnedElements();
     }
 
     public Collection getAllImportedElements(Object pack) {
@@ -149,6 +152,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         }
         return false;
     }
+    
     public Collection getAllModelElementsOfKind(Object nsa, String kind) {
         try {
             return getAllModelElementsOfKind(nsa, Class.forName(kind));
@@ -175,8 +179,13 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllNamespaces(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        Set<Element> results = new HashSet<Element>();
+        for (Element element : ((Namespace) ns).allOwnedElements()) {
+            if (element instanceof Namespace) {
+                results.add(element);
+            }
+        }
+        return results;
     }
 
     public Collection getAllPossibleImports(Object pack) {
@@ -190,8 +199,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllSurroundingNamespaces(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        return ((NamedElement) ns).allNamespaces();
     }
 
     public Collection getContents(Object namespace) {

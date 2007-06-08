@@ -300,8 +300,8 @@ class UmlFactoryEUMLImpl implements UmlFactory {
     }
 
     public void delete(Object elem) {
-        // TODO Auto-generated method stub
-        throw new NotYetImplementedException();
+        // TODO: Not sure if there's more to do here - tfm
+        ((Element) elem).destroy();
     }
 
     public boolean isConnectionType(Object connectionType) {

@@ -27,6 +27,7 @@
 package org.argouml.model.euml;
 
 import org.argouml.model.StateMachinesFactory;
+import org.eclipse.uml2.uml.UMLFactory;
 
 /**
  * The implementation of the StateMachinesFactory for EUML2.
@@ -175,15 +176,11 @@ class StateMachinesFactoryEUMLImpl implements StateMachinesFactory {
     }
 
     public Object createCallEvent() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        return UMLFactory.eINSTANCE.createCallEvent();
     }
 
     public Object createChangeEvent() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        return UMLFactory.eINSTANCE.createChangeEvent();
     }
 
     public Object createCompositeState() {
@@ -205,15 +202,11 @@ class StateMachinesFactoryEUMLImpl implements StateMachinesFactory {
     }
 
     public Object createPseudostate() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        return UMLFactory.eINSTANCE.createPseudostate();
     }
 
     public Object createSignalEvent() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        return UMLFactory.eINSTANCE.createSignalEvent();
     }
 
     public Object createSimpleState() {
@@ -223,9 +216,7 @@ class StateMachinesFactoryEUMLImpl implements StateMachinesFactory {
     }
 
     public Object createStateMachine() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        return UMLFactory.eINSTANCE.createStateMachine();
     }
 
     public Object createStubState() {
@@ -247,15 +238,11 @@ class StateMachinesFactoryEUMLImpl implements StateMachinesFactory {
     }
 
     public Object createTimeEvent() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        return UMLFactory.eINSTANCE.createTimeEvent();
     }
 
     public Object createTransition() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        return UMLFactory.eINSTANCE.createTransition();
     }
 
 }

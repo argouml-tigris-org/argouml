@@ -29,6 +29,9 @@ package org.argouml.model.euml;
 import java.util.List;
 
 import org.argouml.model.DataTypesFactory;
+import org.argouml.model.NotImplementedException;
+import org.eclipse.uml2.uml.Expression;
+import org.eclipse.uml2.uml.UMLFactory;
 
 /**
  * The implementation of the DataTypesFactory for EUML2.
@@ -64,7 +67,7 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory {
         return null;
     }
 
-    public Object createExpression(String language, String body) {
+    public Expression createExpression(String language, String body) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -79,29 +82,28 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory {
         return null;
     }
 
+    
+    // TODO: Callers will need to be refactored to work around the
+    // change in the way multiplicities work - tfm
+    
     public Object createMultiplicity(int lower, int upper) {
-        // TODO Auto-generated method stub
-        return null;
+        return new NotImplementedException();
     }
 
     public Object createMultiplicity(List range) {
-        // TODO Auto-generated method stub
-        return null;
+        return new NotImplementedException();
     }
 
     public Object createMultiplicity(String str) {
-        // TODO Auto-generated method stub
-        return null;
+        return new NotImplementedException();
     }
 
     public Object createMultiplicityRange(String str) {
-        // TODO Auto-generated method stub
-        return null;
+        return new NotImplementedException();
     }
 
     public Object createMultiplicityRange(int lower, int upper) {
-        // TODO Auto-generated method stub
-        return null;
+        return new NotImplementedException();
     }
 
     public Object createObjectSetExpression(String language, String body) {
