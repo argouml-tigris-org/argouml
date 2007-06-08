@@ -24,6 +24,7 @@
 
 package org.argouml.model;
 
+import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -652,5 +653,10 @@ class MockModelImplementation implements ModelImplementation {
      */
     public CopyHelper getCopyHelper() {
         return (CopyHelper) controlCopyHelper.getMock();
+    }
+
+    public XmiWriter getXmiWriter(Object model, OutputStream stream,
+            String version) throws UmlException {
+        throw new NotImplementedException();
     }
 }
