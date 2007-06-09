@@ -37,8 +37,8 @@ import org.tigris.gef.undo.UndoableAction;
  * in the metamodel (see UML standard) that have a {ordered} constraint.
  * <p>
  *
- * This adds the functionality of a popup menu with the items "Move Up" and
- * "Move Down".
+ * This adds the functionality of a popup menu with the items "Move Up",
+ * "Move Down", "Move to Top", and "Move to Bottom".
  *
  * @author Michiel
  */
@@ -76,8 +76,18 @@ public abstract class UMLModelElementOrderedListModel2 extends
      */
     protected abstract void moveDown(int index);
 
+    /**
+     * Move element at given index to top of list.
+     * 
+     * @param index starting position of element to be moved
+     */
     protected abstract void moveToTop(int index);
 
+    /**
+     * Move element at given index to bottom of list.
+     * 
+     * @param index starting position of element to be moved
+     */
     protected abstract void moveToBottom(int index);
 
     /*
@@ -176,9 +186,9 @@ class MoveDownAction extends UndoableAction {
 }
 
 /**
- * The action to move an item in the list one place down.
+ * Action to move an item to the top (beginning) of an ordered list model.
  *
- * @author mvw@tigris.org
+ * @author Aleksandar Vucetica
  */
 class MoveToTopAction extends UndoableAction {
     private UMLModelElementOrderedListModel2 model;
@@ -186,7 +196,13 @@ class MoveToTopAction extends UndoableAction {
     private int index;
 
     /**
-     * The constructor.
+     * Construct an action to move the item at the given index to the top of
+     * the given list.
+     * 
+     * @param theModel
+     *            the list model to operate on
+     * @param theIndex
+     *            starting position of element to move
      */
     public MoveToTopAction(UMLModelElementOrderedListModel2 theModel,
             int theIndex) {
@@ -214,9 +230,9 @@ class MoveToTopAction extends UndoableAction {
 }
 
 /**
- * The action to move an item in the list one place down.
+ * Move an item to the bottom of the list.
  *
- * @author mvw@tigris.org
+ * @author Aleksandar Vucetica
  */
 class MoveToBottomAction extends UndoableAction {
     private UMLModelElementOrderedListModel2 model;
@@ -224,7 +240,13 @@ class MoveToBottomAction extends UndoableAction {
     private int index;
 
     /**
-     * The constructor.
+     * Construct an action to move the item at the given index to the bottom of
+     * the given list.
+     * 
+     * @param theModel
+     *            the list model to operate on
+     * @param theIndex
+     *            starting position of element to move
      */
     public MoveToBottomAction(UMLModelElementOrderedListModel2 theModel,
             int theIndex) {
