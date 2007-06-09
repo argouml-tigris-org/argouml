@@ -962,6 +962,8 @@ public abstract class FigEdgeModelElement
         if (own != null) {
             ProjectManager.getManager().getCurrentProject().moveToTrash(own);
         }
+
+        /* TODO: MVW: Why is this not done in GEF? */
         Iterator it = getPathItemFigs().iterator();
         while (it.hasNext()) {
             ((Fig) it.next()).deleteFromModel();
@@ -1057,6 +1059,7 @@ public abstract class FigEdgeModelElement
             notationProviderName.cleanListener(this, getOwner());
         }
 
+        /* TODO: MVW: Why is this not done in GEF? */
         Iterator it = getPathItemFigs().iterator();
         while (it.hasNext()) {
             Fig fig = (Fig) it.next();
