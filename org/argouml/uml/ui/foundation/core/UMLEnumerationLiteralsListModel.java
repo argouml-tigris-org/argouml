@@ -80,6 +80,34 @@ public class UMLEnumerationLiteralsListModel
     }
 
     /**
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToBottom(int)
+     */
+    @Override
+    protected void moveToBottom(int index) {
+        Object clss = getTarget();
+        List c = Model.getFacade().getEnumerationLiterals(clss);
+        if (index < c.size() - 1) {
+            Object mem = c.get(index);
+            Model.getCoreHelper().removeLiteral(clss, mem);
+            Model.getCoreHelper().addLiteral(clss, c.size(), mem);
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToTop(int)
+     */
+    @Override
+    protected void moveToTop(int index) {
+        Object clss = getTarget();
+        List c = Model.getFacade().getEnumerationLiterals(clss);
+        if (index > 0) {
+            Object mem = c.get(index);
+            Model.getCoreHelper().removeLiteral(clss, mem);
+            Model.getCoreHelper().addLiteral(clss, 0, mem);
+        }
+    }
+
+    /**
      * The UID.
      */
     private static final long serialVersionUID = 4111214628991094451L;

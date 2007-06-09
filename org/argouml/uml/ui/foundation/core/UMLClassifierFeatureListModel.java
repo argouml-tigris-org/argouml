@@ -72,4 +72,32 @@ public class UMLClassifierFeatureListModel
             Model.getCoreHelper().addFeature(clss, index + 1, mem);
         }
     }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToBottom(int)
+     */
+    @Override
+    protected void moveToBottom(int index) {
+        Object clss = getTarget();
+        List c = Model.getFacade().getFeatures(clss);
+        if (index < c.size() - 1) {
+            Object mem = c.get(index);
+            Model.getCoreHelper().removeFeature(clss, mem);
+            Model.getCoreHelper().addFeature(clss, c.size(), mem);
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToTop(int)
+     */
+    @Override
+    protected void moveToTop(int index) {
+        Object clss = getTarget();
+        List c = Model.getFacade().getFeatures(clss);
+        if (index > 0) {
+            Object mem = c.get(index);
+            Model.getCoreHelper().removeFeature(clss, mem);
+            Model.getCoreHelper().addFeature(clss, 0, mem);
+        }
+    }
 }

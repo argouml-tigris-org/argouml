@@ -73,4 +73,32 @@ public class UMLAssociationEndQualifiersListModel
             Model.getCoreHelper().addQualifier(assocEnd, index + 1, mem);
         }
     }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToBottom(int)
+     */
+    @Override
+    protected void moveToBottom(int index) {
+        Object assocEnd = getTarget();
+        List c = Model.getFacade().getQualifiers(assocEnd);
+        if (index < c.size() - 1) {
+            Object mem = c.get(index);
+            Model.getCoreHelper().removeQualifier(assocEnd, mem);
+            Model.getCoreHelper().addQualifier(assocEnd, c.size() - 1, mem);
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToTop(int)
+     */
+    @Override
+    protected void moveToTop(int index) {
+        Object clss = getTarget();
+        List c = Model.getFacade().getQualifiers(clss);
+        if (index > 0) {
+            Object mem = c.get(index);
+            Model.getCoreHelper().removeQualifier(clss, mem);
+            Model.getCoreHelper().addQualifier(clss, 0, mem);
+        }
+    }
 }
