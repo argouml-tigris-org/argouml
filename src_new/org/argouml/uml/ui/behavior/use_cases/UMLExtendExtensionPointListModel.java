@@ -71,4 +71,34 @@ public class UMLExtendExtensionPointListModel
         Model.getUseCasesHelper().addExtensionPoint(extend, index2, mem1);
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToBottom(int)
+     */
+    @Override
+    protected void moveToBottom(int index) {
+        Object extend = getTarget();
+        /* In case of an Extend, we are sure an ordered List is returned! */
+        List c = (List) Model.getFacade().getExtensionPoints(extend);
+        if (index < c.size() - 1) {
+            Object mem1 = c.get(index);
+            Model.getUseCasesHelper().removeExtensionPoint(extend, mem1);
+            Model.getUseCasesHelper().addExtensionPoint(extend, c.size(), mem1);
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToTop(int)
+     */
+    @Override
+    protected void moveToTop(int index) {
+        Object extend = getTarget();
+        /* In case of an Extend, we are sure an ordered List is returned! */
+        List c = (List) Model.getFacade().getExtensionPoints(extend);
+        if (index > 0) {
+            Object mem1 = c.get(index);
+            Model.getUseCasesHelper().removeExtensionPoint(extend, mem1);
+            Model.getUseCasesHelper().addExtensionPoint(extend, 0, mem1);
+        }
+    }
+
 }

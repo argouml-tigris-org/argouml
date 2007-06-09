@@ -34,14 +34,14 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
  * The list model for the connections of the association. <p>
- * 
- * The specialty of this list model, is that it need to be aware 
- * of name changes in the ends connected to the association. 
- * Most other listmodels only listen to 
+ *
+ * The specialty of this list model, is that it need to be aware
+ * of name changes in the ends connected to the association.
+ * Most other listmodels only listen to
  * model changes in one UML element, but in this case, we also have to listen to
  * changes in some related elements. <p>
- * 
- * Why is this case different: because it is possible to modify the 
+ *
+ * Why is this case different: because it is possible to modify the
  * associationend names on the diagram, without changing the target - i.e.
  * the target remains the association throughout this modification.
  *
@@ -115,6 +115,36 @@ public class UMLAssociationConnectionListModel
             Object mem = c.get(index);
             Model.getCoreHelper().removeConnection(assoc, mem);
             Model.getCoreHelper().addConnection(assoc, index + 1, mem);
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToBottom(int)
+     */
+    @Override
+    protected void moveToBottom(int index) {
+        Object assoc = getTarget();
+        /* Since we are UML 1.4, this is surely a List! */
+        List c = (List) Model.getFacade().getConnections(assoc);
+        if (index < c.size() - 1) {
+            Object mem1 = c.get(index);
+            Model.getCoreHelper().removeConnection(assoc, mem1);
+            Model.getCoreHelper().addConnection(assoc, c.size() - 1, mem1);
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToTop(int)
+     */
+    @Override
+    protected void moveToTop(int index) {
+        Object assoc = getTarget();
+        /* Since we are UML 1.4, this is surely a List! */
+        List c = (List) Model.getFacade().getConnections(assoc);
+        if (index > 0) {
+            Object mem1 = c.get(index);
+            Model.getCoreHelper().removeConnection(assoc, mem1);
+            Model.getCoreHelper().addConnection(assoc, 0, mem1);
         }
     }
 }
