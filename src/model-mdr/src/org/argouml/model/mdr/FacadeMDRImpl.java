@@ -605,10 +605,16 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof UmlPackage;
     }
     
+    @SuppressWarnings("deprecation")
     public boolean isAPrimitive(Object handle) {
         return handle instanceof Primitive;
     }
+
+    public boolean isAPrimitiveType(Object handle) {
+        return handle instanceof Primitive;
+    }
     
+    @SuppressWarnings("deprecation")
     public boolean isAProgrammingLanguageDataType(Object handle) {
         return handle instanceof ProgrammingLanguageDataType;
     }
@@ -806,6 +812,7 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof UseCase;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAUseCaseInstance(Object handle) {
         return handle instanceof UseCaseInstance;
     }
@@ -2368,12 +2375,14 @@ class FacadeMDRImpl implements Facade {
                         + handle);
             }
             MofClass metaclass = (MofClass) metaobject;
-            List<MofClass> types = new ArrayList<MofClass>(metaclass.allSupertypes());
+            List<MofClass> types =
+                    new ArrayList<MofClass>(metaclass.allSupertypes());
             types.add(metaclass);
             for (MofClass s : types) {
                 for (Object contentElement : s.getContents()) {
-                    getReferenceOrAttribute((RefFeatured) handle, contentElement,
-                            results, contentsOnly);
+                    getReferenceOrAttribute(
+                            (RefFeatured) handle, contentElement, results,
+                            contentsOnly);
                 }
             }
         } catch (InvalidObjectException e) {
@@ -2568,6 +2577,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
+    @SuppressWarnings("deprecation")
     public Object getDiscriminator(Object handle) {
         try {
             if (handle instanceof Generalization) {
@@ -3512,6 +3522,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
+    @SuppressWarnings("deprecation")
     public Object getTargetScope(Object handle) {
         try {
             if (handle instanceof StructuralFeature) {

@@ -122,7 +122,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     private CorePackage corePackage;
 
     /**
-     * Don't allow instantiation.
+     * Constructor.
      * 
      * @param implementation
      *            To get other helpers and factories.
@@ -132,9 +132,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         corePackage = modelImpl.getUmlPackage().getCore();
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createAbstraction()
-     */
+
     public Object createAbstraction() {
         Abstraction myAbstraction = corePackage.getAbstraction()
                 .createAbstraction();
@@ -142,10 +140,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myAbstraction;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildAbstraction(java.lang.String,
-     *      java.lang.Object, java.lang.Object)
-     */
+
     public Object buildAbstraction(String name, Object supplier, 
             Object client) {
         if (!(client instanceof Classifier)
@@ -161,9 +156,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return abstraction;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createArtifact()
-     */
+
     public Object createArtifact() {
         Artifact artifact = corePackage.getArtifact().createArtifact();
         super.initialize(artifact);
@@ -171,9 +164,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    /*
-     * @see org.argouml.model.CoreFactory#createAssociation()
-     */
     public Object createAssociation() {
         UmlAssociation assoc = corePackage.getUmlAssociation()
                 .createUmlAssociation();
@@ -181,9 +171,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return assoc;
     }
 
-    /*
-     * @return an initialized UML AssociationClass instance.
-     */
+
     public Object createAssociationClass() {
         AssociationClass assoc = corePackage.getAssociationClass()
                 .createAssociationClass();
@@ -191,9 +179,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return assoc;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createAssociationEnd()
-     */
+
     public Object createAssociationEnd() {
         AssociationEnd assocEnd = corePackage.getAssociationEnd()
                 .createAssociationEnd();
@@ -201,54 +187,42 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return assocEnd;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createAttribute()
-     */
+
     public Object createAttribute() {
         Attribute myAttribute = corePackage.getAttribute().createAttribute();
         super.initialize(myAttribute);
         return myAttribute;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createBinding()
-     */
+
     public Object createBinding() {
         Binding myBinding = corePackage.getBinding().createBinding();
         super.initialize(myBinding);
         return myBinding;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createClass()
-     */
+
     public Object createClass() {
         UmlClass myClass = corePackage.getUmlClass().createUmlClass();
         super.initialize(myClass);
         return myClass;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createComment()
-     */
+
     public Object createComment() {
         Comment myComment = corePackage.getComment().createComment();
         super.initialize(myComment);
         return myComment;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createComponent()
-     */
+
     public Object createComponent() {
         Component myComponent = corePackage.getComponent().createComponent();
         super.initialize(myComponent);
         return myComponent;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createConstraint()
-     */
+
     public Object createConstraint() {
         Constraint myConstraint = corePackage.getConstraint()
                 .createConstraint();
@@ -256,18 +230,14 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myConstraint;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createDataType()
-     */
+
     public Object createDataType() {
         DataType dataType = corePackage.getDataType().createDataType();
         super.initialize(dataType);
         return dataType;
     }
 
-    /* 
-     * @see org.argouml.model.CoreFactory#createDependency()
-     */
+
     public Object createDependency() {
         Dependency myDependency = corePackage.getDependency()
                 .createDependency();
@@ -275,9 +245,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myDependency;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createElementResidence()
-     */
+
     public Object createElementResidence() {
         ElementResidence myElementResidence = corePackage.
                 getElementResidence().createElementResidence();
@@ -285,9 +253,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myElementResidence;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildElementResidence(java.lang.Object, java.lang.Object)
-     */
+
     public Object buildElementResidence(Object me, Object component) {
         ElementResidence myElementResidence = corePackage.
         getElementResidence().createElementResidence();
@@ -297,9 +263,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myElementResidence;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createEnumeration()
-     */
+    
     public Object createEnumeration() {
         Enumeration myEnumeration = corePackage.getEnumeration()
                 .createEnumeration();
@@ -308,9 +272,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    /*
-     * @see org.argouml.model.CoreFactory#createEnumerationLiteral()
-     */
     public Object createEnumerationLiteral() {
         EnumerationLiteral myEnumerationLiteral = corePackage
                 .getEnumerationLiteral().createEnumerationLiteral();
@@ -318,9 +279,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myEnumerationLiteral;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildEnumerationLiteral(java.lang.String, java.lang.Object)
-     */
+
     public Object buildEnumerationLiteral(String name, Object enumeration) {
         EnumerationLiteral el = 
             (EnumerationLiteral) createEnumerationLiteral();
@@ -328,18 +287,15 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         el.setEnumeration((Enumeration) enumeration);
         return el;
     }
-    /*
-     * @see org.argouml.model.CoreFactory#createFlow()
-     */
+
+    
     public Object createFlow() {
         Flow myFlow = corePackage.getFlow().createFlow();
         super.initialize(myFlow);
         return myFlow;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createGeneralization()
-     */
+
     public Object createGeneralization() {
         Generalization myGeneralization = corePackage.getGeneralization()
                 .createGeneralization();
@@ -347,9 +303,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myGeneralization;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createInterface()
-     */
+
     public Object createInterface() {
         Interface myInterface = corePackage
                 .getInterface().createInterface();
@@ -357,9 +311,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myInterface;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createMethod()
-     */
+
     public Object createMethod() {
         Method myMethod = corePackage.getMethod()
                 .createMethod();
@@ -367,18 +319,14 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myMethod;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createNode()
-     */
+
     public Object createNode() {
         Node myNode = corePackage.getNode().createNode();
         super.initialize(myNode);
         return myNode;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createOperation()
-     */
+
     public Object createOperation() {
         Operation myOperation = corePackage
                 .getOperation().createOperation();
@@ -386,9 +334,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myOperation;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createParameter()
-     */
+
     public Object createParameter() {
         Parameter myParameter = corePackage
                 .getParameter().createParameter();
@@ -396,9 +342,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myParameter;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createPermission()
-     */
+
     public Object createPermission() {
         Permission myPermission = corePackage
                 .getPermission().createPermission();
@@ -406,18 +350,21 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myPermission;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createPrimitive()
-     */
+
+    @SuppressWarnings("deprecation")
     public Object createPrimitive() {
+        return createPrimitiveType();
+    }
+
+
+    public Object createPrimitiveType() {
         Primitive obj = corePackage.getPrimitive().createPrimitive();
         super.initialize(obj);
         return obj;
     }
+    
 
-    /*
-     * @see org.argouml.model.CoreFactory#createProgrammingLanguageDataType()
-     */
+    @SuppressWarnings("deprecation")
     public Object createProgrammingLanguageDataType() {
         ProgrammingLanguageDataType obj = corePackage
                 .getProgrammingLanguageDataType()
@@ -426,9 +373,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return obj;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#createTemplateArgument()
-     */
+
     public Object createTemplateArgument() {
         TemplateArgument obj = corePackage.getTemplateArgument()
                 .createTemplateArgument();
@@ -436,9 +381,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return obj;
     }
         
-    /*
-     * @see org.argouml.model.CoreFactory#createTemplateParameter()
-     */
+
     public Object createTemplateParameter() {
         TemplateParameter myTemplateParameter = corePackage
                 .getTemplateParameter().createTemplateParameter();
@@ -447,9 +390,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    /*
-     * @see org.argouml.model.CoreFactory#createUsage()
-     */
     public Object createUsage() {
         Usage myUsage = corePackage.getUsage().createUsage();
         super.initialize(myUsage);
