@@ -327,13 +327,8 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         // and before the next $ or end of class name.
         int startName = name.lastIndexOf('.') + 1;
 
-        // MDR classes may have a UML or Uml prefix which should be removed.
-//        if (name.regionMatches(true, startName, "UML", 0, 3)) {
-//            startName += 3;
-//        }
-
-        // eUML2 implementation classes end with "Impl"
-        final String suffix = "Impl";
+        // Eclipse UML2 implementation classes end with "Impl"
+        final String suffix = "Impl"; //$NON-NLS-1$
         int endName = name.length();
         if (name.endsWith(suffix)) {
             endName -= suffix.length();
