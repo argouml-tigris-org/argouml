@@ -739,8 +739,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * 
      * @return Value of property createDiagramMenu
      */
-    public JToolBar getCreateDiagramMenu() {
-        return createDiagramToolbar;
+    public JMenu getCreateDiagramMenu() {
+        return createDiagramMenu;
     }
 
     /**
