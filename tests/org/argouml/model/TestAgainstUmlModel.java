@@ -26,7 +26,12 @@ package org.argouml.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,6 +42,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -46,26 +53,28 @@ import org.xml.sax.SAXException;
  */
 public class TestAgainstUmlModel extends TestCase {
 
-    /**
-     * List of element references and the factories that create them.
-     *
-     * This contains a complete list of the model elements
-     * that are <strong>expected</strong> to be found
-     * in the model.
-     */
-    private static Hashtable<String, Object> refs;
+    private static Set<String> dontTest = new HashSet<String>();
 
+    private static Hashtable<String, String> remap =
+            new Hashtable<String, String>();
+
+    private static boolean uml2 = false;
+    
     /**
      * The constructor.
      *
      * @param n the name
      */
-    public TestAgainstUmlModel(String n) { super(n); }
+    public TestAgainstUmlModel(String n) {
+        super(n);
+    }
 
     /**
      * @throws SAXException when things go wrong with SAX
      * @throws IOException when there's an IO error
      * @throws ParserConfigurationException when the parser finds wrong syntax
+     * 
+     * TODO: Unused?
      */
     public void testDataModel()
 	throws SAXException,
@@ -76,13 +85,104 @@ public class TestAgainstUmlModel extends TestCase {
 	    return;		// Could not find model.
 	}
 
-	NodeList list = doc.getElementsByTagName("Model:Class");
-
-	assertEquals(refs.size(), list.getLength());
-
-	for (int i = 0; i < list.getLength(); i++) {
-	    processClassNode (list.item(i));
+	List<String> classNames = getMetaclassNames(doc);
+	for (String className : classNames ) {
+	    processClass (className);
 	}
+    }
+
+   /*
+    * Get a list of UML metaclass names from the XMI document.
+    * <p>
+    * Though some of the DOM methods such as getAttributes
+    * may return null values under other conditions,
+    * in the context of this test
+    * and assuming a valid XMI file
+    * none should occur.
+    * <p>
+    * Hence there is no special checking for those abnormal
+    * cases, allowing the test to fail simply with a
+    * NullPointerException, with this comment indicating that
+    * either the input data is incorrect or the test needs
+    * to be improved.
+    */
+    private static List<String> getMetaclassNames(Document doc) {
+        List<String> result = new ArrayList<String>();
+        int abstractCount = 0;
+        if (uml2) {
+            // The UML 2.1.1 metamodel is a MOF 2.0 CMOF model, so
+            // we want nodes with
+            // tag="ownedMember", attribute xmi:type="cmof:Class"
+            // TODO: This code is untested - tfm
+            NodeList list = doc.getElementsByTagName("ownedMember");
+            for (int i = 0; i < list.getLength(); i++) {
+                Node node = list.item(i);
+                Node typeAttr = node.getAttributes().getNamedItem("xmi:type");
+                if ("cmof:Class".equals(typeAttr.getNodeValue())) {
+                    if (!isAbstract(node)) {
+                        result.add(getNames(node));
+                    } else {
+                        abstractCount++;
+                    }
+                }
+            }
+        } else {
+            // Handle UML 1.4 metamodel which is a MOF 1.3 model
+            NodeList list = doc.getElementsByTagName("Model:Class");
+            for (int i = 0; i < list.getLength(); i++) {
+                Node node = list.item(i);
+                if (!isAbstract(node)) {
+                    result.add(getNames(node));
+                } else {
+                    abstractCount++;
+                }
+            }
+        }
+        System.out.println("Skipping " + abstractCount + " abstract elements");
+        return result;
+    }
+
+    /*
+     * Get a node's name along with the name of its parent (which we'll use to
+     * find the factory to create it with.
+     */
+    private static String getNames(Node node) {
+        // TODO: Do we want the top level package here instead of the immediate
+        // parent?
+        
+        // Because UML 1.4 & 2.1 metamodels are organized differently we need
+        // to traverse the hierarchy looking for our owning Package.
+        Node pkg = node;
+        while (pkg != null && !isPackage(pkg)) {
+            pkg = pkg.getParentNode();
+        }
+        if (pkg == null) {
+            return getName(node);
+        } 
+        return  getName(pkg) + ":" + getName(node);
+    }
+
+    private static boolean isPackage(Node node) {
+        if ("Model:Package".equals(node.getNodeName())) {
+            // UML 1.4
+            return true;
+        } else {
+            Node type = node.getAttributes().getNamedItem("xmi:type");
+            if (type != null && "cmof:Package".equals(type.getNodeValue())) {
+                // UML 2.x
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private static String getName(Node node) {
+        return node.getAttributes().getNamedItem("name").getNodeValue();
+    }
+    
+    private static boolean isAbstract(Node node) {
+        Node isAbstract = node.getAttributes().getNamedItem("isAbstract");
+        return isAbstract != null && "true".equals(isAbstract.getNodeValue());
     }
 
 
@@ -124,234 +224,74 @@ public class TestAgainstUmlModel extends TestCase {
 				     + " cannot be found.");
 	    return null;
 	}
-	return builder.parse(file);
+        Document document = builder.parse(file);
+
+        Element root = document.getDocumentElement();
+        NamedNodeMap attributes = root.getAttributes();
+        Node versionNode = attributes.getNamedItem("xmi:version"); // XMI 2.1
+        if (versionNode == null) {
+            versionNode = attributes.getNamedItem("xmi.version"); // XMI 1.1
+        }
+        String version = versionNode.getNodeValue();
+        
+        // This is the XMI version used to encode the metamodel.  We could
+        // parse deeper to pull out the actual UML version.  The UML 1.4
+        // version is at XMI/XMI.header/XMI.model[@xmi.version].  The UML 2.1.1
+        // metamodel doesn't actually seem to contain its version.
+        if ("1.1".equals(version)) {
+            uml2 = false;
+        } else if ("2.1".equals(version)) {
+            uml2 = true;
+        } else {
+            System.out.println("Unknown metamodel type");
+        }
+        
+	return document;
     }
 
 
     /**
      * Walk through the UML Classes found.
-     *
-     * Though some of the DOM methods such as getAttributes
-     * may return null values under other conditions,
-     * in the context of this test
-     * and assuming a valid XMI file
-     * none should occur.
-     *
-     * Hence there is no special checking for those abnormal
-     * cases, allowing the test to fail simply with a
-     * NullPointerException, with this comment indicating that
-     * either the input data is incorrect or the test needs
-     * to be improved.
+
      */
-    private void processClassNode(Node node) {
-        String umlclass =
-            node.getAttributes().getNamedItem("name").getNodeValue();
-        Object factory = refs.get(umlclass);
-        assertNotNull("Unable to find factory '" + umlclass + "' in references",
-                      factory);
-        System.out.println ("Class:" + umlclass);
-        if (factory instanceof CannotTestThisClass) {
-            System.out.println ("Explicitly not checking for " + umlclass);
-        } else if (factory instanceof UmlFactory) {
+    private void processClass(String className) {
+
+        // Remap specific classes
+        String name;
+        if (remap.containsKey(className)) {
+            name = remap.get(className);
+        } else {
+            name = className;
+        }
+        
+        String[] pieces = name.split(":");
+        String umlclass = pieces[1];
+        
+        String pkgName = pieces[0].replaceAll("_", "");
+        // Only remap package if we didn't remap specific class
+        if (className.equals(name) && remap.containsKey(pkgName)) {
+            pkgName = remap.get(pkgName);
+        }
+        
+        String getter = "get" + pkgName + "Factory";
+        try {
+            Method getMethod = Model.class.getMethod(getter, new Class[0]);
+            Object factory = getMethod.invoke(null, new Object[0]);
+            if (!(factory instanceof Factory)) {
+                fail("Factory for " + name
+                        + "isn't an instanceof Model.Factory");
+            }
+            if ( dontTest.contains(umlclass) || dontTest.contains(name)) {
+                System.out.println("Skipping " + name);
+                return;
+            }
             String[] classarg = {umlclass, null};
             CheckUMLModelHelper.createAndRelease(factory, classarg);
-        } else {
-            fail("Test is invalid for uml method '" + umlclass + "'");
+        } catch (Exception e) {
+            fail("Failed to get factory for " + name + " - " + e);
         }
-    }
 
-    /**
-     * Initialize the lookup map to link the uml class names
-     * to the factories.
-     *
-     * This brute force method should be investigated
-     * in favor of determining the Uml Class namespace from
-     * the UML metamodel and computing the factory
-     * at run time.
-     *
-     * Certain classes that cannot be tested directly in this way
-     * should be calculated.  Event and StateVertex, for example,
-     * are marked abstract in the model.  But we need to make sure
-     * that the reverse is true, that there are no elements
-     * marked abstract in the model that in fact are instantiable
-     * by the model subsystem.
-     */
 
-    static {
-        InitializeModel.initializeDefault();
-
-        refs = new Hashtable<String, Object>(127);
-    }
-
-    static {
-        refs.put("Multiplicity",          Model.getDataTypesFactory());
-        refs.put("MultiplicityRange",     Model.getDataTypesFactory());
-        refs.put("Expression",            Model.getDataTypesFactory());
-        refs.put("ObjectSetExpression",   Model.getDataTypesFactory());
-        refs.put("TimeExpression",        Model.getDataTypesFactory());
-        refs.put("BooleanExpression",     Model.getDataTypesFactory());
-        refs.put("ActionExpression",      Model.getDataTypesFactory());
-        refs.put("IterationExpression",   Model.getDataTypesFactory());
-        refs.put("TypeExpression",        Model.getDataTypesFactory());
-        refs.put("ArgListsExpression",    Model.getDataTypesFactory());
-        refs.put("MappingExpression",     Model.getDataTypesFactory());
-        refs.put("ProcedureExpression",   Model.getDataTypesFactory());
-    }
-
-    static {
-        refs.put("Element",               new CannotTestClassIsAbstract());
-        refs.put("ModelElement",          new CannotTestClassIsAbstract());
-        refs.put("GeneralizableElement",  new CannotTestClassIsAbstract());
-        refs.put("Namespace",             new CannotTestClassIsAbstract());
-        refs.put("Classifier",            new CannotTestClassIsAbstract());
-        refs.put("Class",                 Model.getCoreFactory());
-        refs.put("DataType",              Model.getCoreFactory());
-        refs.put("Primitive",             Model.getCoreFactory());
-        refs.put("Enumeration",           Model.getCoreFactory());
-        refs.put("EnumerationLiteral",    Model.getCoreFactory());
-        refs.put("ProgrammingLanguageDataType",  Model.getCoreFactory());
-        refs.put("Feature",               new CannotTestClassIsAbstract());
-        refs.put("StructuralFeature",     new CannotTestClassIsAbstract());
-        refs.put("AssociationEnd",        Model.getCoreFactory());
-        refs.put("Interface",             Model.getCoreFactory());
-        refs.put("Constraint",            Model.getCoreFactory());
-        refs.put("Relationship",          new CannotTestClassIsAbstract());
-        refs.put("Association",           Model.getCoreFactory());
-        refs.put("Attribute",             Model.getCoreFactory());
-        refs.put("BehavioralFeature",     new CannotTestClassIsAbstract());
-        refs.put("Operation",             Model.getCoreFactory());
-        refs.put("Parameter",             Model.getCoreFactory());
-        refs.put("Method",                Model.getCoreFactory());
-        refs.put("Generalization",        Model.getCoreFactory());
-        refs.put("AssociationClass",      Model.getCoreFactory());
-        refs.put("Dependency",            Model.getCoreFactory());
-        refs.put("Abstraction",           Model.getCoreFactory());
-    }
-    
-    static {
-        refs.put("PresentationElement",   new CannotTestClassIsAbstract());
-        refs.put("Usage",                 Model.getCoreFactory());
-        refs.put("Binding",               Model.getCoreFactory());
-        refs.put("Component",             Model.getCoreFactory());
-        refs.put("Node",                  Model.getCoreFactory());
-        refs.put("Artifact",              Model.getCoreFactory());
-        refs.put("Permission",            Model.getCoreFactory());
-        refs.put("Comment",               Model.getCoreFactory());
-        refs.put("Flow",                  Model.getCoreFactory());
-        refs.put("ElementResidence",      Model.getCoreFactory());
-        refs.put("TemplateParameter",     Model.getCoreFactory());
-        refs.put("TemplateArgument",      Model.getCoreFactory());
-        refs.put("Stereotype", 
-                Model.getExtensionMechanismsFactory());
-        refs.put("TaggedValue",
-		 Model.getExtensionMechanismsFactory());
-        refs.put("TagDefinition",
-                 Model.getExtensionMechanismsFactory());
-        // Instance changed from concrete to abstract between UML 1.3 & 1.4
-        refs.put("Instance",              new CannotTestClassIsAbstract());
-        refs.put("Signal",                Model.getCommonBehaviorFactory());
-        refs.put("Action",                new CannotTestClassIsAbstract());
-        refs.put("CreateAction",          Model.getCommonBehaviorFactory());
-        refs.put("DestroyAction",         Model.getCommonBehaviorFactory());
-        refs.put("UninterpretedAction",   Model.getCommonBehaviorFactory());
-    }
-
-    static {
-        refs.put("AttributeLink",         Model.getCommonBehaviorFactory());
-        refs.put("Object",                Model.getCommonBehaviorFactory());
-        refs.put("Link",                  Model.getCommonBehaviorFactory());
-        refs.put("LinkObject",            Model.getCommonBehaviorFactory());
-        refs.put("DataValue",             Model.getCommonBehaviorFactory());
-        refs.put("CallAction",            Model.getCommonBehaviorFactory());
-        refs.put("SendAction",            Model.getCommonBehaviorFactory());
-        refs.put("ActionSequence",        Model.getCommonBehaviorFactory());
-        refs.put("Argument",              Model.getCommonBehaviorFactory());
-        refs.put("Reception",             Model.getCommonBehaviorFactory());
-        refs.put("LinkEnd",               Model.getCommonBehaviorFactory());
-        refs.put("ReturnAction",          Model.getCommonBehaviorFactory());
-        refs.put("TerminateAction",       Model.getCommonBehaviorFactory());
-        refs.put("Stimulus",              Model.getCommonBehaviorFactory());
-        refs.put("Exception",             Model.getCommonBehaviorFactory());
-        refs.put("ComponentInstance",     Model.getCommonBehaviorFactory());
-        refs.put("NodeInstance",          Model.getCommonBehaviorFactory());
-        refs.put("SubsystemInstance",     Model.getCommonBehaviorFactory());
-    }
-
-    static {
-        refs.put("UseCase",               Model.getUseCasesFactory());
-        refs.put("Actor",                 Model.getUseCasesFactory());
-        refs.put("UseCaseInstance",       Model.getUseCasesFactory());
-        refs.put("Extend",                Model.getUseCasesFactory());
-        refs.put("Include",               Model.getUseCasesFactory());
-        refs.put("ExtensionPoint",        Model.getUseCasesFactory());
-    }
-
-    static {
-        refs.put("StateMachine",          Model.getStateMachinesFactory());
-        refs.put("Event",                 new CannotTestClassIsAbstract());
-        refs.put("StateVertex",           new CannotTestClassIsAbstract());
-        // State changed from concrete to abstract between UML 1.3 & 1.4
-    	refs.put("State",                 new CannotTestClassIsAbstract());
-        refs.put("TimeEvent",             Model.getStateMachinesFactory());
-        refs.put("CallEvent",             Model.getStateMachinesFactory());
-        refs.put("SignalEvent",           Model.getStateMachinesFactory());
-        refs.put("Transition",            Model.getStateMachinesFactory());
-        refs.put("CompositeState",        Model.getStateMachinesFactory());
-        refs.put("ChangeEvent",           Model.getStateMachinesFactory());
-        refs.put("Guard",                 Model.getStateMachinesFactory());
-        refs.put("Pseudostate",           Model.getStateMachinesFactory());
-        refs.put("SimpleState",           Model.getStateMachinesFactory());
-        refs.put("SubmachineState",       Model.getStateMachinesFactory());
-        refs.put("SynchState",            Model.getStateMachinesFactory());
-        refs.put("StubState",             Model.getStateMachinesFactory());
-        refs.put("FinalState",            Model.getStateMachinesFactory());
-    }
-
-    static {
-        refs.put("Collaboration",         Model.getCollaborationsFactory());
-        refs.put("CollaborationInstanceSet", Model.getCollaborationsFactory());
-        refs.put("ClassifierRole",        Model.getCollaborationsFactory());
-        refs.put("AssociationRole",       Model.getCollaborationsFactory());
-        refs.put("AssociationEndRole",    Model.getCollaborationsFactory());
-        refs.put("Message",               Model.getCollaborationsFactory());
-        refs.put("Interaction",           Model.getCollaborationsFactory());
-        refs.put("InteractionInstanceSet",  Model.getCollaborationsFactory());
-        refs.put("ActivityGraph",         Model.getActivityGraphsFactory());
-        refs.put("Partition",             Model.getActivityGraphsFactory());
-        refs.put("SubactivityState",      Model.getActivityGraphsFactory());
-        refs.put("ActionState",           Model.getActivityGraphsFactory());
-        refs.put("CallState",             Model.getActivityGraphsFactory());
-        refs.put("ObjectFlowState",       Model.getActivityGraphsFactory());
-        refs.put("ClassifierInState",     Model.getActivityGraphsFactory());
-        refs.put("Package",               Model.getModelManagementFactory());
-        refs.put("Model",                 Model.getModelManagementFactory());
-        refs.put("Subsystem",             Model.getModelManagementFactory());
-        refs.put("ElementImport",         Model.getModelManagementFactory());
-    }
-
-    /**
-     * Returns the refs.
-     *
-     * TODO: Is this method used? Can it be removed? /Linus September 2005
-     *
-     * @return Hashtable
-     */
-    public static Hashtable<String, Object> getRefs() {
-        return refs;
-    }
-
-    /*
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        /* Running the tests here causes instantiation errors from the
-         * navigator pane.  This is a temporary hack until the object
-         * model is cleaned up.
-         */
-//      NavigatorPane.setInstance(null);
-//      assertNull("Still getting NavigatorPane", NavigatorPane.getInstance());
     }
 
     /**
@@ -376,52 +316,92 @@ public class TestAgainstUmlModel extends TestCase {
 	    return suite;	// Could not find model.
 	}
 
-        NodeList list = doc.getElementsByTagName("Model:Class");
-
-        //assertEquals(refs.size(), list.getLength());
-
-        for (int i = 0; i < list.getLength(); i++) {
-	    Node name = list.item(i).getAttributes().getNamedItem("name");
-	    String nameVal = name.getNodeValue();
-            suite.addTest(new TestAgainstUmlModel(nameVal));
+        for (String metaclassName : getMetaclassNames(doc)) {
+            suite.addTest(new TestAgainstUmlModel(metaclassName));            
         }
+
         return suite;
     }
 
     protected void runTest() throws Throwable {
-        String umlclass = getName();
-        Object factory = refs.get(umlclass);
-        assertNotNull("Unable to find factory '" + umlclass + "' in references",
-                      factory);
-        System.out.println ("Class:" + umlclass);
-        if (factory instanceof CannotTestThisClass) {
-            System.out.println ("Explicitly not checking for " + umlclass);
-        } else if (factory instanceof AbstractModelFactory) {
-            String[] classarg = {umlclass, null};
-            CheckUMLModelHelper.createAndRelease(factory, classarg);
-        } else {
-            fail("Test is invalid for uml method '" + umlclass + "'");
-        }
+        processClass(getName());
+    }
+
+    
+
+    /**
+     * Initialize the lookup map to link the uml class names
+     * to the factories.
+     *
+     * This brute force method should be investigated
+     * in favor of determining the Uml Class namespace from
+     * the UML metamodel and computing the factory
+     * at run time.
+     *
+     * Certain classes that cannot be tested directly in this way
+     * should be calculated.  Event and StateVertex, for example,
+     * are marked abstract in the model.  But we need to make sure
+     * that the reverse is true, that there are no elements
+     * marked abstract in the model that in fact are instantiable
+     * by the model subsystem.
+     */
+
+    static {
+        InitializeModel.initializeDefault();
+
+        /*
+         * The following UML 1.4 elements have been removed from UML 2.x, so we
+         * don't bother testing them.
+         */
+        dontTest.add("ProgrammingLanguageDataType");
+        dontTest.add("UseCaseInstance");
+        
+        dontTest.add("ArgListsExpression");
+        dontTest.add("BooleanExpression");
+        dontTest.add("IterationExpression");
+        dontTest.add("MappingExpression");
+        dontTest.add("ObjectSetExpression");
+        dontTest.add("ProcedureExpression");
+        dontTest.add("TimeExpression");
+        dontTest.add("TypeExpression");
+
+        /*
+         * A few of our factories are slightly different than as declared in the
+         * UML 1.4 metamodel, so we remap them here.  <metamodel, argouml>
+         */
+        remap.put("Core:Stereotype", "ExtensionMechanisms:Stereotype");
+        remap.put("Core:TaggedValue", "ExtensionMechanisms:TaggedValue");
+        remap.put("Core:TagDefinition", "ExtensionMechanisms:TagDefinition");
+        
+        /*
+         * The UML 2.x package structure is *entirely* different, so we have to
+         * remap a bunch of stuff. Names without embedded colons (:) indicate
+         * that the entire package is remapped. e.g. Kernel->Core As a matter of
+         * fact the only package which did NOT get renamed or moved is UseCases.
+         * 
+         * TODO: This section is very incomplete. - tfm
+         */
+        // Specific classes to be remapped
+//      remap.put("", "");
+        remap.put("Kernel:PrimitiveType", "Core:Primitive");
+        remap.put("Kernel:Expression", "DataTypes:Expression");
+        
+        // Packages to be remapped
+        remap.put("Kernel", "Core");
+        remap.put("Interfaces", "Core");
+        remap.put("Dependencies", "Core");
+        remap.put("Nodes", "Core");
+        remap.put("SimpleTime", "Core");
+        remap.put("AssociationClasses", "Core");
+        remap.put("Communications", "StateMachines");
+        remap.put("BehaviorStateMachines", "StateMachines");
+        remap.put("ProtocolStateMachines", "StateMachines");
+        remap.put("Models", "ModelManagement");
     }
 
 
+
 }
 
-/**
- * Token for keeping track of what to test.
- */
-interface CannotTestThisClass {
-}
 
-/**
- * Token with reason.
- */
-class CannotTestFactoryMethod implements CannotTestThisClass {
-}
-
-/**
- * Token with reason.
- */
-class CannotTestClassIsAbstract implements CannotTestThisClass {
-}
 

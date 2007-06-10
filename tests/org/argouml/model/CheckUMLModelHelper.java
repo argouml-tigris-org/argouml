@@ -259,6 +259,7 @@ public final class CheckUMLModelHelper {
         }
         return null;
     }
+    
     private static Method getMethod(Class clazz, String methodName,
             Class[] classes) {
         try {
@@ -296,28 +297,18 @@ public final class CheckUMLModelHelper {
      * @param names the names of the modelelements
      */
     public static void hasDeleteMethod(Object f, String[] names) {
-        Method[] methods = null;
-        try {
-            methods = f.getClass().getDeclaredMethods();
-        } catch (SecurityException se) {
-            TestCase.fail(
-                    "SecurityException while retrieving all methods from "
-                    + f.getClass().getName());
-            return;
-        }
         for (int i = 0; i < names.length; i++) {
             String methodName = "delete" + names[i];
-            boolean testFailed = true;
-            for (int j = 0; j < methods.length; j++) {
-                Method method = methods[j];
-                if (method.getName().equals(methodName)) {
-                    testFailed = false;
-                    break;
-                }
-            }
-            if (testFailed) {
-                TestCase.fail("Method " + methodName + " not found in "
+            try {
+                f.getClass().getMethod(methodName, new Class[0]);
+            } catch (SecurityException se) {
+                TestCase.fail(
+                        "SecurityException while retrieving all methods from "
                         + f.getClass().getName());
+                return;
+            } catch (NoSuchMethodException e) {
+                TestCase.fail("Method " + methodName + " not found in "
+                        + f.getClass().getName());   
             }
         }
     }
@@ -333,17 +324,17 @@ public final class CheckUMLModelHelper {
             for (int i = 0; i < names.length; i++) {
                 Method m = findMethod(factory.getClass(), Factory.class,
                         "create" + names[i], new Class[] {});
-                if (m == null) {
-                    TestCase.fail("Failed to find method create" + names[i]);
-                }
-                Object base = m.invoke(factory, new Object[] {});
-                if (Model.getFacade().isAModelElement(base)) {
-                    TestCase.assertTrue(
-                            "not a valid metaModelName " + names[i],
-                            Model.getExtensionMechanismsHelper()
-                            .getMetaModelName(base)
-                            .equals(names[i]));
-                }
+                TestCase.assertNotNull("Failed to find method create"
+                        + names[i], m);
+                Object element = m.invoke(factory, new Object[] {});
+                TestCase.assertTrue("Not a UML Element", 
+                        Model.getFacade().isAUMLElement(element));
+                String metaName =
+                        Model.getExtensionMechanismsHelper().getMetaModelName(
+                                element);
+                TestCase.assertTrue(
+                        "not a valid metaModelName " + names[i], 
+                        metaName.equals(names[i]));
             }
         } catch (Exception ex) {
             ex.printStackTrace();
