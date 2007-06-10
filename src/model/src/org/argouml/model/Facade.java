@@ -495,6 +495,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an ArgListsExpression
+     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
     boolean isAArgListsExpression(Object handle);
     
@@ -503,6 +504,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an BooleanExpression
+     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
     boolean isABooleanExpression(Object handle);
     
@@ -511,6 +513,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an IterationExpression
+     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
     boolean isAIterationExpression(Object handle);
     
@@ -519,6 +522,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an MappingExpression
+     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
     boolean isAMappingExpression(Object handle);
     
@@ -527,6 +531,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an ObjectSetExpression
+     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
     boolean isAObjectSetExpression(Object handle);
     /**
@@ -534,6 +539,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an ProcedureExpression
+     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
     boolean isAProcedureExpression(Object handle);
     
@@ -542,6 +548,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an TimeExpression
+     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
     boolean isATimeExpression(Object handle);
     
@@ -550,6 +557,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an TypeExpression
+     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
     boolean isATypeExpression(Object handle);
 
@@ -826,21 +834,34 @@ public interface Facade {
 
     /**
      * Recognizer for Primitive.
-     *
-     * @param handle candidate
+     * 
+     * @param handle
+     *            candidate
      * @return true if handle is a Primitive
+     * @deprecated for 0.25.4 by tfmorris. Renamed in UML 2.x. Use
+     *             {@link #isAPrimitiveType(Object).
      */
     boolean isAPrimitive(Object handle);
 
     /**
-     * Recognizer for ProgrammingLanguageDataType.
+     * Recognizer for PrimitiveType.
      *
      * @param handle candidate
+     * @return true if handle is a Primitive
+     */
+    boolean isAPrimitiveType(Object handle);
+    
+    /**
+     * Recognizer for ProgrammingLanguageDataType.
+     * 
+     * @param handle
+     *            candidate
      * @return true if handle is a ProgrammingLanguageDataType
+     * @deprecated for 0.25.4 by tfmorris. Removed from UML 2.x. Use
+     *             {@link #isAPrimitiveType(Object).
      */
     boolean isAProgrammingLanguageDataType(Object handle);
-    
-    
+
     /**
      * Recognizer for Pseudostate.
      *

@@ -224,14 +224,30 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 1.4
      * @return an initialized UML Primitive instance.
+     * @deprecated for 0.25.4 by tfmorris. Removed from UML 2.x. Use
+     *             {@link #createPrimitiveType()}. This can be scheduled for
+     *             speedy removal since it was just introduced with UML 1.4 and
+     *             is unused by ArgoUML.
      */
     public Object createPrimitive();
 
+    
+    /**
+     * Create a UML PrimitiveType.
+     * 
+     * @since UML 2.1.1
+     * @return an initialized UML Primitive instance.
+     */
+    public Object createPrimitiveType();
+    
     /**
      * Create a UML ProgrammingLanguageDataType.
      * 
      * @since UML 1.4
-     * @return an initialized ProgrammingLanguageDataType
+     * @return an initialized ProgrammingLanguageDataType *
+     * @deprecated for 0.25.4 by tfmorris. Removed from UML 2.x. This can be
+     *             scheduled for speedy removal since it was just introduced
+     *             with UML 1.4 and is unused by ArgoUML.
      */
     public Object createProgrammingLanguageDataType();
 
