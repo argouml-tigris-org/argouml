@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CoreFactory;
+import org.argouml.model.NotImplementedException;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Artifact;
@@ -133,7 +134,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
-    public Object buildAssociationEnd(Object assoc, String name, Object type, Object multi, Object stereo, boolean navigable, Object order, Object aggregation, Object scope, Object changeable, Object visibility) {
+    public Object buildAssociationEnd(Object assoc, String name, Object type,
+            Object multi, Object stereo, boolean navigable, Object order,
+            Object aggregation, Object scope, Object changeable,
+            Object visibility) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -206,7 +210,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public Object buildComment(Object element, Object model) {
         if (model == null) {
-            throw new IllegalArgumentException("A namespace must be supplied.");
+            throw new IllegalArgumentException(
+                    "A namespace must be supplied."); //$NON-NLS-1$
         }
         Element elementToAnnotate = (Element) element;
         // TODO: This actually creates the Comment as owned by
@@ -261,14 +266,17 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return ((Enumeration) enumeration).createOwnedLiteral(name);
     }
 
-    public Generalization buildGeneralization(Object child, Object parent, String name) {
-        // TODO: Generalizations are unnamed in UML 2.x
+    @SuppressWarnings("deprecation")
+    public Generalization buildGeneralization(Object child, Object parent,
+            String name) {
+        // Generalizations are unnamed in UML 2.x
         return buildGeneralization(parent, child);
     }
 
     public Generalization buildGeneralization(Object child, Object parent) {
         Generalization generalization =
-            ((BehavioredClassifier) child).createGeneralization((Classifier) parent);
+                ((BehavioredClassifier) child)
+                        .createGeneralization((Classifier) parent);
         return generalization;
     }
 
@@ -297,7 +305,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
-    public Operation buildOperation(Object classifier, Object model, Object returnType) {
+    public Operation buildOperation(Object classifier, Object model,
+            Object returnType) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -307,7 +316,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
-    public Operation buildOperation(Object cls, Object model, Object returnType, String name) {
+    public Operation buildOperation(Object cls, Object model,
+            Object returnType, String name) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -473,14 +483,19 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return UMLFactory.eINSTANCE.createPackageImport();
     }
 
+    @SuppressWarnings("deprecation")
     public Object createPrimitive() {
-        // TODO Auto-generated method stub
-        return null;
+        return createPrimitiveType();
     }
 
+    public Object createPrimitiveType() {
+        return UMLFactory.eINSTANCE.createPrimitiveType();
+    }
+    
+    @SuppressWarnings("deprecation")
     public Object createProgrammingLanguageDataType() {
-        // TODO Auto-generated method stub
-        return null;
+        // Removed from UML 2.x & unused by ArgoUML.
+        throw new NotImplementedException();
     }
 
     public Object createTemplateArgument() {

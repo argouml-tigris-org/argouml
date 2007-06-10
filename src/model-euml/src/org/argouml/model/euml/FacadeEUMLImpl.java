@@ -83,11 +83,13 @@ import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.ObjectFlow;
 import org.eclipse.uml2.uml.ObjectNode;
+import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.OutputPin;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Parameter;
+import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
@@ -1192,8 +1194,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAActionExpression(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: Fallback for UML 1.4
+        return isAExpression(handle);
     }
 
     public boolean isAActionSequence(Object handle) {
@@ -1222,7 +1224,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAArgListsExpression(Object handle) {
-        throw new NotYetImplementedException();
+        // TODO: Fallback for UML 1.4
+        return isAExpression(handle);
     }
 
     public boolean isAArgument(Object modelElement) {
@@ -1281,7 +1284,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isABooleanExpression(Object handle) {
-        throw new NotYetImplementedException();
+        // TODO: Fallback for UML 1.4
+        return isAExpression(handle);
     }
 
     public boolean isACallAction(Object handle) {
@@ -1410,7 +1414,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAExpression(Object handle) {
-        return handle instanceof Expression;
+        return handle instanceof Expression
+                // below for UML 1.4 compatibility
+                || handle instanceof OpaqueExpression;
     }
 
     public boolean isAExtend(Object handle) {
@@ -1471,7 +1477,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAIterationExpression(Object handle) {
-        throw new NotYetImplementedException();
+        // TODO: Fallback for UML 1.4
+        return isAExpression(handle);
     }
 
     public boolean isALink(Object handle) {
@@ -1494,7 +1501,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAMappingExpression(Object handle) {
-        throw new NotYetImplementedException();
+        // TODO: Fallback for UML 1.4
+        return isAExpression(handle);
     }
 
     public boolean isAMessage(Object handle) {
@@ -1558,7 +1566,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAObjectSetExpression(Object handle) {
-        throw new NotYetImplementedException();
+        // TODO: Fallback for UML 1.4
+        return isAExpression(handle);
     }
 
     public boolean isAOperation(Object handle) {
@@ -1581,18 +1590,24 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof PackageImport;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAPrimitive(Object handle) {
-        // TODO: Not in UML 2.x
-        return false;
+        return isAPrimitiveType(handle);
     }
 
+    public boolean isAPrimitiveType(Object handle) {
+        return handle instanceof PrimitiveType;
+    }
+    
     public boolean isAProcedureExpression(Object handle) {
-        throw new NotYetImplementedException();
+        // TODO: Fallback for UML 1.4
+        return isAExpression(handle);
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAProgrammingLanguageDataType(Object handle) {
-        // TODO: Not in UML 2.x
-        return false;
+        // TODO: Not in UML 2.x.  Fall back to PrimitiveType.
+        return isAPrimitiveType(handle);
     }
 
     public boolean isAPseudostate(Object handle) {
@@ -1722,7 +1737,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isATimeExpression(Object handle) {
-        return handle instanceof TimeExpression;
+        // TODO: Fallback for UML 1.4
+        return isAExpression(handle);
     }
 
     public boolean isATransition(Object handle) {
@@ -1730,7 +1746,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isATypeExpression(Object handle) {
-        throw new NotYetImplementedException();
+        // TODO: Fallback for UML 1.4
+        return isAExpression(handle);
     }
 
     public boolean isAUMLElement(Object handle) {
