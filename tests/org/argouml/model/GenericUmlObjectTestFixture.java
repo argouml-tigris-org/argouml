@@ -27,7 +27,6 @@ package org.argouml.model;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 /**
  * @author Thierry Lach
