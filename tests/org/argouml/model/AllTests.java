@@ -52,7 +52,6 @@ public class AllTests {
         suite.addTestSuite(TestUml.class);
         suite.addTestSuite(TestModelManagementFactory.class);
         suite.addTestSuite(TestUmlModel.class);
-        suite.addTestSuite(TestUmlFactory.class);
         suite.addTestSuite(TestUmlActor.class);
         suite.addTest(TestAgainstUmlModel.suite());
         suite.addTestSuite(TestModel2.class);
