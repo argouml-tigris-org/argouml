@@ -19,6 +19,6 @@ UML 1.4 + UML 2.0 Diagram Interchange
  - M2_DiagramInterchangeModel.xml - <deleted> - reportedly from Poseidon via AndroMDA
  
 UML 1.5 
- - ActionUML_Interchange_MetaModel_FTF.xml - base UML definintion - 
-        from OMG http://www.omg.org/cgi-bin/doc?formal/2004-04-04
+ - ActionUML_Interchange_MetaModel_FTF.xml - base UML definintion - <deleted>
+        available from OMG http://www.omg.org/cgi-bin/doc?formal/2004-04-04
  - ActionUML_Interchange_MetaModel_FTF_omg_Diff.xml - Java binding diffs - from ???
