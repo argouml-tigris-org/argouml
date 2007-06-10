@@ -28,6 +28,7 @@ package org.argouml.model.euml;
 
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CollaborationsFactory;
+import org.eclipse.uml2.uml.UMLFactory;
 
 /**
  * Eclipse UML2 implementation of CollaborationsFactory.
@@ -115,8 +116,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
     }
 
     public Object createCollaboration() {
-        // TODO Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createCollaboration();
     }
 
     public Object createCollaborationInstanceSet() {
@@ -125,8 +125,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
     }
 
     public Object createInteraction() {
-        // TODO Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createInteraction();
     }
 
     public Object createInteractionInstanceSet() {
@@ -135,8 +134,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
     }
 
     public Object createMessage() {
-        // TODO Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createMessage();
     }
 
 
