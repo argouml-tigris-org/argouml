@@ -159,7 +159,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
     /**
      * Toolbar:create diagram.
      */
-    private JMenu createDiagrams;
+    private JMenu createDiagramMenu;
 
     /**
      * Currently disactivated.
@@ -554,51 +554,53 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * The sequence of these items was determined by issue 1821.
      */
     private void initMenuCreate() {
-        createDiagrams = add(new JMenu(menuLocalize("Create Diagram")));
-        setMnemonic(createDiagrams, "Create Diagram");
+        createDiagramMenu = add(new JMenu(menuLocalize("Create Diagram")));
+        setMnemonic(createDiagramMenu, "Create Diagram");
         createDiagramToolbar = new ToolBar("Create Diagram Toolbar");
-        JMenuItem usecaseDiagram = createDiagrams
+        JMenuItem usecaseDiagram = createDiagramMenu
                 .add(new ActionUseCaseDiagram());
         setMnemonic(usecaseDiagram, "Usecase Diagram");
         createDiagramToolbar.add((new ActionUseCaseDiagram()));
         ShortcutMgr.assignAccelerator(usecaseDiagram,
                 ShortcutMgr.ACTION_USE_CASE_DIAGRAM);
 
-        JMenuItem classDiagram = createDiagrams.add(new ActionClassDiagram());
+        JMenuItem classDiagram =
+            createDiagramMenu.add(new ActionClassDiagram());
         setMnemonic(classDiagram, "Class Diagram");
         createDiagramToolbar.add((new ActionClassDiagram()));
         ShortcutMgr.assignAccelerator(classDiagram,
                 ShortcutMgr.ACTION_CLASS_DIAGRAM);
 
-        JMenuItem sequenzDiagram = createDiagrams
-                .add(new ActionSequenceDiagram());
+        JMenuItem sequenzDiagram =
+            createDiagramMenu.add(new ActionSequenceDiagram());
         setMnemonic(sequenzDiagram, "Sequenz Diagram");
         createDiagramToolbar.add((new ActionSequenceDiagram()));
         ShortcutMgr.assignAccelerator(sequenzDiagram,
                 ShortcutMgr.ACTION_SEQUENCE_DIAGRAM);
 
-        JMenuItem collaborationDiagram = createDiagrams
-                .add(new ActionCollaborationDiagram());
+        JMenuItem collaborationDiagram =
+            createDiagramMenu.add(new ActionCollaborationDiagram());
         setMnemonic(collaborationDiagram, "Collaboration Diagram");
         createDiagramToolbar.add((new ActionCollaborationDiagram()));
         ShortcutMgr.assignAccelerator(collaborationDiagram,
                 ShortcutMgr.ACTION_COLLABORATION_DIAGRAM);
 
-        JMenuItem stateDiagram = createDiagrams.add(new ActionStateDiagram());
+        JMenuItem stateDiagram =
+            createDiagramMenu.add(new ActionStateDiagram());
         setMnemonic(stateDiagram, "Statechart Diagram");
         createDiagramToolbar.add((new ActionStateDiagram()));
         ShortcutMgr.assignAccelerator(stateDiagram,
                 ShortcutMgr.ACTION_STATE_DIAGRAM);
 
-        JMenuItem activityDiagram = createDiagrams
-                .add(new ActionActivityDiagram());
+        JMenuItem activityDiagram =
+            createDiagramMenu.add(new ActionActivityDiagram());
         setMnemonic(activityDiagram, "Activity Diagram");
         createDiagramToolbar.add((new ActionActivityDiagram()));
         ShortcutMgr.assignAccelerator(activityDiagram,
                 ShortcutMgr.ACTION_ACTIVITY_DIAGRAM);
 
-        JMenuItem deploymentDiagram = createDiagrams
-                .add(new ActionDeploymentDiagram());
+        JMenuItem deploymentDiagram =
+            createDiagramMenu.add(new ActionDeploymentDiagram());
         setMnemonic(deploymentDiagram, "Deployment Diagram");
         createDiagramToolbar.add((new ActionDeploymentDiagram()));
         ShortcutMgr.assignAccelerator(deploymentDiagram,
@@ -727,6 +729,17 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * @return Value of property _createDiagramToolbar.
      */
     public JToolBar getCreateDiagramToolbar() {
+        return createDiagramToolbar;
+    }
+
+
+    /**
+     * Get the create diagram menu. Provided to allow plugins
+     * to appeand their own actions to this menu.
+     * 
+     * @return Value of property createDiagramMenu
+     */
+    public JToolBar getCreateDiagramMenu() {
         return createDiagramToolbar;
     }
 
