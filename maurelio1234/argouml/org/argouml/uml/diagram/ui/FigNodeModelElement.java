@@ -1451,7 +1451,7 @@ public abstract class FigNodeModelElement
         damage();
     }
 
-    private void updateStereotypeIcon() {
+    protected void updateStereotypeIcon() {
 	if (getOwner() == null) {
 	    LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
 		    + "] is null.");
@@ -1515,7 +1515,7 @@ public abstract class FigNodeModelElement
 		}
 	    }
 	} else if (getStereotypeView() == STEREOTYPE_VIEW_SMALL_ICON) {
-	    int i = this.getWidth();
+	    int i = this.getX() + this.getWidth() - ICON_WIDTH - 2;
 	    
 	    for (Object stereo : stereos) {
 		Image icon = ProjectManager.getManager().getCurrentProject()
@@ -1535,7 +1535,8 @@ public abstract class FigNodeModelElement
 	    }
 	}
 	    
-	this.redraw();
+	damage();
+//	this.redraw();
     }
     
     public void updateProfileBounds(int x, int y, int w, int h) {
