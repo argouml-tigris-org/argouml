@@ -1,4 +1,4 @@
-// $Id:CoreFactoryEUMLImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //
@@ -28,25 +28,44 @@ package org.argouml.model.euml;
 
 import java.util.List;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CoreFactory;
+import org.argouml.model.NotImplementedException;
+import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.AggregationKind;
+import org.eclipse.uml2.uml.Artifact;
 import org.eclipse.uml2.uml.Association;
+import org.eclipse.uml2.uml.AssociationClass;
+import org.eclipse.uml2.uml.BehavioredClassifier;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Comment;
+import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.DataType;
+import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
+import org.eclipse.uml2.uml.Generalization;
+import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.InterfaceRealization;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
+import org.eclipse.uml2.uml.Node;
+import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.PackageImport;
+import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
+import org.eclipse.uml2.uml.Usage;
+import org.eclipse.uml2.uml.VisibilityKind;
 
 
 /**
  * The implementation of the CoreFactory for EUML2.
  */
-class CoreFactoryEUMLImpl implements CoreFactory {
+class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     /**
      * The model implementation.
@@ -62,9 +81,12 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         modelImpl = implementation;
     }
 
-    public Object buildAbstraction(String name, Object supplier, Object client) {
-        // TODO Auto-generated method stub
-        return null;
+    public Abstraction buildAbstraction(String name, Object supplier, Object client) {
+        Abstraction abstraction = createAbstraction();
+        abstraction.setName(name);
+        abstraction.getSuppliers().add((NamedElement) supplier);
+        abstraction.getClients().add((NamedElement) client);
+        return abstraction;
     }
 
     // TODO: A few different ways of building Associations.  Pick one that
@@ -112,7 +134,10 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return null;
     }
 
-    public Object buildAssociationEnd(Object assoc, String name, Object type, Object multi, Object stereo, boolean navigable, Object order, Object aggregation, Object scope, Object changeable, Object visibility) {
+    public Object buildAssociationEnd(Object assoc, String name, Object type,
+            Object multi, Object stereo, boolean navigable, Object order,
+            Object aggregation, Object scope, Object changeable,
+            Object visibility) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -122,25 +147,24 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return null;
     }
     
-    public Object buildAttribute() {
-        // TODO: Required for UmlFactory.buildNode()
-        throw new NotYetImplementedException();
-//        Attribute attr = (Attribute) createAttribute();
-//        attr.setName("newAttr");
-//        attr.setMultiplicity(getMultiplicity11());
-//        attr.setVisibility(VisibilityKindEnum.VK_PUBLIC);
-//        attr.setOwnerScope(ScopeKindEnum.SK_INSTANCE);
-//        attr.setChangeability(ChangeableKindEnum.CK_CHANGEABLE);
-//        attr.setTargetScope(ScopeKindEnum.SK_INSTANCE);
-//        return attr;
+    public Property buildAttribute() {
+        Property attr = createAttribute();
+        attr.setName("newAttr");
+        attr.setLower(1);
+        attr.setUpper(1);
+        attr.setVisibility(VisibilityKind.PUBLIC_LITERAL);
+        attr.setIsStatic(false);
+        attr.setIsReadOnly(false);
+        return attr;
     }
 
-    public Object buildAttribute(Object model, Object type) {
-        // TODO Auto-generated method stub
-        return null;
+    public Property buildAttribute(Object model, Object type) {
+        Property attr = buildAttribute();
+        attr.setType((Type) type);
+        return attr;
     }
 
-    public Object buildAttribute(Object handle, Object model, Object type) {
+    public Property buildAttribute(Object handle, Object model, Object type) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -176,7 +200,7 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         org.eclipse.uml2.uml.Class cls =
                 (org.eclipse.uml2.uml.Class) createClass();
         if (owner != null) {
-            ((Namespace) owner).getOwnedElements().add(cls);
+            modelImpl.getCoreHelper().addOwnedElement(owner, cls);
         }
         if (name != null) {
             cls.setName(name);
@@ -186,21 +210,20 @@ class CoreFactoryEUMLImpl implements CoreFactory {
 
     public Object buildComment(Object element, Object model) {
         if (model == null) {
-            throw new IllegalArgumentException("A namespace must be supplied.");
+            throw new IllegalArgumentException(
+                    "A namespace must be supplied."); //$NON-NLS-1$
         }
         Element elementToAnnotate = (Element) element;
-        Comment comment = (Comment) createComment();
-
-        Element owner = null;
+        // TODO: This actually creates the Comment as owned by
+        // the Element itself, rather than the Element's namespace which
+        // seems to make more sense, but is different than the specified
+        // Model API semantics - tfm
         if (elementToAnnotate != null) {
-            comment.getAnnotatedElements().add(elementToAnnotate);
-            owner = elementToAnnotate.getOwner();
+            return elementToAnnotate.createOwnedComment();
         } else {
-            owner = (Namespace) model;
+            return ((Namespace) model).createOwnedComment();
         }
 
-        owner.getOwnedElements().add(comment);
-        return comment;
     }
 
     public Object buildConstraint(Object constrElement) {
@@ -216,7 +239,7 @@ class CoreFactoryEUMLImpl implements CoreFactory {
     public Object buildDataType(String name, Object owner) {
         DataType dt = (DataType) createDataType();
         dt.setName(name);
-        ((Element) owner).getOwnedElements().add(dt);
+        modelImpl.getCoreHelper().addOwnedElement(owner, dt);
         return dt;
     }
 
@@ -234,7 +257,7 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         Enumeration enumer = (Enumeration) createEnumeration();
         enumer.setName(name);
         if (owner != null) {
-            ((Element) owner).getOwnedElements().add(enumer);
+            modelImpl.getCoreHelper().addOwnedElement(owner, enumer);
         }
         return enumer;
     }
@@ -243,32 +266,36 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return ((Enumeration) enumeration).createOwnedLiteral(name);
     }
 
-    public Object buildGeneralization(Object child, Object parent, String name) {
+    @SuppressWarnings("deprecation")
+    public Generalization buildGeneralization(Object child, Object parent,
+            String name) {
+        // Generalizations are unnamed in UML 2.x
+        return buildGeneralization(parent, child);
+    }
+
+    public Generalization buildGeneralization(Object child, Object parent) {
+        Generalization generalization =
+                ((BehavioredClassifier) child)
+                        .createGeneralization((Classifier) parent);
+        return generalization;
+    }
+
+    public Interface buildInterface() {
+        return createInterface();
+    }
+
+    public Interface buildInterface(Object owner) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Object buildGeneralization(Object child, Object parent) {
-        // TODO Auto-generated method stub
-        return null;
+    public Interface buildInterface(String name) {
+        Interface i = buildInterface();
+        i.setName(name);
+        return i;
     }
 
-    public Object buildInterface() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public Object buildInterface(Object owner) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public Object buildInterface(String name) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public Object buildInterface(String name, Object owner) {
+    public Interface buildInterface(String name, Object owner) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -278,44 +305,50 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return null;
     }
 
-    public Object buildOperation(Object classifier, Object model, Object returnType) {
+    public Operation buildOperation(Object classifier, Object model,
+            Object returnType) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Object buildOperation(Object classifier, Object returnType) {
+    public Operation buildOperation(Object classifier, Object returnType) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Object buildOperation(Object cls, Object model, Object returnType, String name) {
+    public Operation buildOperation(Object cls, Object model,
+            Object returnType, String name) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Object buildOperation2(Object cls, Object returnType, String name) {
+    public Operation buildOperation2(Object cls, Object returnType, String name) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Object buildParameter(Object o, Object model, Object type) {
+    public Parameter buildParameter(Object o, Object model, Object type) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Object buildParameter(Object o, Object type) {
+    public Parameter buildParameter(Object o, Object type) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Object buildPermission(Object clientObj, Object supplierObj) {
+    public PackageImport buildPermission(Object clientObj, Object supplierObj) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Object buildRealization(Object clnt, Object spplr, Object model) {
-        // TODO Auto-generated method stub
-        return null;
+    public InterfaceRealization buildRealization(Object client,
+            Object supplier, Object namespace) {
+        // TODO: namespace is ignored
+        InterfaceRealization realization =
+                ((BehavioredClassifier) client).createInterfaceRealization(
+                        null, (Interface) supplier);
+        return realization;
     }
 
     public Object buildTemplateArgument(Object element) {
@@ -323,7 +356,7 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return null;
     }
 
-    public Object buildUsage(Object client, Object supplier) {
+    public Usage buildUsage(Object client, Object supplier) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -348,28 +381,28 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return null;
     }
 
-    public Object createAbstraction() {
+    public Abstraction createAbstraction() {
         return UMLFactory.eINSTANCE.createAbstraction();
     }
 
-    public Object createArtifact() {
+    public Artifact createArtifact() {
         return UMLFactory.eINSTANCE.createArtifact();
     }
 
-    public Object createAssociation() {
+    public Association createAssociation() {
         return UMLFactory.eINSTANCE.createAssociation();
     }
 
-    public Object createAssociationClass() {
+    public AssociationClass createAssociationClass() {
         return UMLFactory.eINSTANCE.createAssociationClass();
     }
 
-    public Object createAssociationEnd() {
-        // TODO Auto-generated method stub
-        return null;
+    public Property createAssociationEnd() {
+        // TODO: Double check - tfm
+        return UMLFactory.eINSTANCE.createProperty();
     }
 
-    public Object createAttribute() {
+    public Property createAttribute() {
         // TODO: Double check - tfm
         return UMLFactory.eINSTANCE.createProperty();
     }
@@ -378,11 +411,11 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return UMLFactory.eINSTANCE.createTemplateBinding();
     }
 
-    public Object createClass() {
+    public org.eclipse.uml2.uml.Class createClass() {
         return UMLFactory.eINSTANCE.createClass();
     }
 
-    public Object createComment() {
+    public Comment createComment() {
         return UMLFactory.eINSTANCE.createComment();
     }
 
@@ -391,15 +424,15 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return null;
     }
 
-    public Object createConstraint() {
+    public Constraint createConstraint() {
         return UMLFactory.eINSTANCE.createConstraint();
     }
 
-    public Object createDataType() {
+    public DataType createDataType() {
         return UMLFactory.eINSTANCE.createDataType();
     }
 
-    public Object createDependency() {
+    public Dependency createDependency() {
         return UMLFactory.eINSTANCE.createDependency();
     }
 
@@ -408,11 +441,11 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return null;
     }
 
-    public Object createEnumeration() {
+    public Enumeration createEnumeration() {
         return UMLFactory.eINSTANCE.createEnumeration();
     }
 
-    public Object createEnumerationLiteral() {
+    public EnumerationLiteral createEnumerationLiteral() {
         return UMLFactory.eINSTANCE.createEnumerationLiteral();
     }
 
@@ -421,11 +454,11 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return null;
     }
 
-    public Object createGeneralization() {
+    public Generalization createGeneralization() {
         return UMLFactory.eINSTANCE.createGeneralization();
     }
 
-    public Object createInterface() {
+    public Interface createInterface() {
         return UMLFactory.eINSTANCE.createInterface();
     }
 
@@ -434,30 +467,35 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return null;
     }
 
-    public Object createNode() {
+    public Node createNode() {
         return UMLFactory.eINSTANCE.createNode();
     }
 
-    public Object createOperation() {
+    public Operation createOperation() {
         return UMLFactory.eINSTANCE.createOperation();
     }
 
-    public Object createParameter() {
+    public Parameter createParameter() {
         return UMLFactory.eINSTANCE.createParameter();
     }
 
-    public Object createPermission() {
+    public PackageImport createPermission() {
         return UMLFactory.eINSTANCE.createPackageImport();
     }
 
+    @SuppressWarnings("deprecation")
     public Object createPrimitive() {
-        // TODO Auto-generated method stub
-        return null;
+        return createPrimitiveType();
     }
 
+    public Object createPrimitiveType() {
+        return UMLFactory.eINSTANCE.createPrimitiveType();
+    }
+    
+    @SuppressWarnings("deprecation")
     public Object createProgrammingLanguageDataType() {
-        // TODO Auto-generated method stub
-        return null;
+        // Removed from UML 2.x & unused by ArgoUML.
+        throw new NotImplementedException();
     }
 
     public Object createTemplateArgument() {
@@ -465,11 +503,11 @@ class CoreFactoryEUMLImpl implements CoreFactory {
         return null;
     }
 
-    public Object createTemplateParameter() {
+    public TemplateParameter createTemplateParameter() {
         return UMLFactory.eINSTANCE.createTemplateParameter();
     }
 
-    public Object createUsage() {
+    public Usage createUsage() {
         return UMLFactory.eINSTANCE.createUsage();
     }
 

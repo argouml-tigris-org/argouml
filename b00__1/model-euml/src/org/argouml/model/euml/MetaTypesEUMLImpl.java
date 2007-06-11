@@ -1,4 +1,4 @@
-// $Id:MetaTypesEUMLImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //
@@ -27,6 +27,7 @@
 package org.argouml.model.euml;
 
 import org.argouml.model.MetaTypes;
+import org.argouml.model.NotImplementedException;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Action;
 import org.eclipse.uml2.uml.ActivityPartition;
@@ -35,7 +36,10 @@ import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.AssociationClass;
 import org.eclipse.uml2.uml.BehavioralFeature;
+import org.eclipse.uml2.uml.CallAction;
+import org.eclipse.uml2.uml.CallConcurrencyKind;
 import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.DataType;
@@ -58,6 +62,7 @@ import org.eclipse.uml2.uml.ObjectNode;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
+import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
@@ -69,6 +74,7 @@ import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.UseCase;
+import org.eclipse.uml2.uml.VisibilityKind;
 
 
 /**
@@ -105,9 +111,9 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getActionState() {
-        // TODO: ActionState, CallState, and SubactivityState have been replaced
-        // in UML 2.0 by explicitly modeled Actions
-        return null;
+        // TODO: ActionState, CallState, and SubactivityState have been
+        // replaced in UML 2.0 by explicitly modeled Actions
+        return State.class;
     }
 
     public Object getActor() {
@@ -136,14 +142,14 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
         // AssociationEndRole have been replaced by the internal 
         // structure of the Collaboration
-        return null;
+        return Classifier.class;
     }
 
     public Object getAssociationRole() {
         // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
         // AssociationEndRole have been replaced by the internal 
         // structure of the Collaboration
-        return null;
+        return Classifier.class;
     }
 
     public Object getAttribute() {
@@ -161,19 +167,17 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getCallAction() {
-        // TODO Auto-generated method stub
-        throw new NotYetImplementedException();
+        return CallAction.class;
     }
 
     public Object getCallConcurrencyKind() {
-        // TODO Auto-generated method stub
-        throw new NotYetImplementedException();
+        return CallConcurrencyKind.class;
     }
 
     public Object getCallState() {
         // TODO: ActionState, CallState, and SubactivityState have been replaced
         // in UML 2.0 by explicitly modeled Actions
-        return null;
+        return State.class;
     }
 
     public Object getClassifier() {
@@ -184,12 +188,11 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
         // AssociationEndRole have been replaced by the internal 
         // structure of the Collaboration
-        return null;
+        return Classifier.class;
     }
 
     public Object getCollaboration() {
-        // TODO Auto-generated method stub
-        throw new NotYetImplementedException();
+        return Collaboration.class;
     }
 
     public Object getComment() {
@@ -201,8 +204,9 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getComponentInstance() {
-        // Gone in UML 2.x
-        return null;
+        // TODO: Gone in UML 2.x
+        // return place holder for now
+        return InstanceSpecification.class;
     }
 
     public Object getCompositeState() {
@@ -274,7 +278,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getInstance() {
-        // TODO: Just a guess - double check - tfm
+        // TODO: Check for changed semantics - tfm
         return InstanceSpecification.class;
     }
 
@@ -287,9 +291,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getLink() {
-        // TODO Auto-generated method stub
-//        throw new NotYetImplementedException();
-        return null;
+        // TODO: Gone in UML 2.1
+        // It is now an InstanceSpecification with an 
+        // Association as its classifier
+        return InstanceSpecification.class;
     }
 
     public Object getMessage() {
@@ -322,13 +327,8 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         // and before the next $ or end of class name.
         int startName = name.lastIndexOf('.') + 1;
 
-        // MDR classes may have a UML or Uml prefix which should be removed.
-//        if (name.regionMatches(true, startName, "UML", 0, 3)) {
-//            startName += 3;
-//        }
-
-        // eUML2 implementation classes end with "Impl"
-        final String suffix = "Impl";
+        // Eclipse UML2 implementation classes end with "Impl"
+        final String suffix = "Impl"; //$NON-NLS-1$
         int endName = name.length();
         if (name.endsWith(suffix)) {
             endName -= suffix.length();
@@ -349,8 +349,9 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getNodeInstance() {
-        // Gone in UML 2.x
-        return null;
+        // TODO: Gone in UML 2.x
+        // Return place holder for now
+        return InstanceSpecification.class;
     }
 
     public Object getObject() {
@@ -376,8 +377,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getParameterDirectionKind() {
-        // TODO Auto-generated method stub
-        throw new NotYetImplementedException();
+        return ParameterDirectionKind.class;
     }
 
     public Object getPartition() {
@@ -407,8 +407,8 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getScopeKind() {
-        // TODO Auto-generated method stub
-        throw new NotYetImplementedException();
+        // Not in UML 2.x - deprecated in Model API
+        throw new NotImplementedException();
     }
 
     public Object getSendAction() {
@@ -422,7 +422,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 
     public Object getSimpleState() {
         // TODO: Gone in UML 2.1
-        return null;
+        return State.class;
     }
 
     public Object getState() {
@@ -449,23 +449,23 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 
     public Object getStubState() {
         // TODO: gone in UML 2.1
-        return null;
+        return State.class;
     }
 
     public Object getSubactivityState() {
         // TODO: ActionState, CallState, and SubactivityState have been replaced
         // in UML 2.0 by explicitly modeled Actions
-        return null;
+        return State.class;
     }
 
     public Object getSubmachineState() {
         // TODO: gone in UML 2.1
-        return null;
+        return State.class;
     }
 
     public Object getSubsystem() {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO: Changed in UML 2.1 - Package with <<subsystem>> stereotype?
+        return org.eclipse.uml2.uml.Package.class;
     }
 
     public Object getSynchState() {
@@ -502,8 +502,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getVisibilityKind() {
-        // TODO Auto-generated method stub
-        throw new NotYetImplementedException();
+        return VisibilityKind.class;
     }
 
 }

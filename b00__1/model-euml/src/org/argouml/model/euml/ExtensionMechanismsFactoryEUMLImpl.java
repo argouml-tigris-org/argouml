@@ -1,4 +1,4 @@
-// $Id:ExtensionMechanismsFactoryEUMLImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //
@@ -28,13 +28,15 @@ package org.argouml.model.euml;
 
 import java.util.Collection;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.ExtensionMechanismsFactory;
+import org.eclipse.uml2.uml.UMLFactory;
 
 /**
  * The implementation of the ExtensionMechanismsFactory for EUML2.
  */
 class ExtensionMechanismsFactoryEUMLImpl implements
-        ExtensionMechanismsFactory {
+        ExtensionMechanismsFactory, AbstractModelFactory {
 
     /**
      * The model implementation.
@@ -95,8 +97,7 @@ class ExtensionMechanismsFactoryEUMLImpl implements
     }
 
     public Object createStereotype() {
-        // TODO Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createStereotype();
     }
 
     public Object createTagDefinition() {

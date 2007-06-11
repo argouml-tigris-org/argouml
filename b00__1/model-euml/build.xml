@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id: build.xml 12413 2007-04-21 15:44:59Z linus $
 
-Build file for the MDR implementation of the Model subsystem.
+Build file for the eUML implementation of the Model subsystem.
 
 This is designed to work in two different environments:
   - in a subdirectory of argouml, as stored in CVS
-    (ie argouml/src/model-mdr)
+    (ie argouml/src/model-euml)
   - in a peer directory of argouml, as checked out for Eclipse
-    (ie argouml-core-model-mdr)
+    (ie argouml-core-model-euml)
     
 -->
 
-<project default="compile" name="ArgoUML MDR Model subsystem">
+<project default="compile" name="ArgoUML eUML Model subsystem">
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
@@ -35,40 +35,24 @@ This is designed to work in two different environments:
     <property name="deprecation" value="yes"/>
     <property name="optimize" value="yes"/>
 
-    <property name="result.jar" value="argouml-mdr.jar"/>
-    <property name="javainterfaces.jar" value="java-interfaces.jar"/>
+    <property name="result.jar" value="argouml-euml.jar"/>
 
-    <property name="mdrant.jar" value="tools/lib/mdrant.jar" /> 
-    <property name="mof.jar" value="${lib.dir}/mof.jar" /> 
-    <property name="jmi.jar" value="${lib.dir}/jmi.jar" /> 
-    <property name="mdrapi.jar" value="${lib.dir}/mdrapi.jar" /> 
-    <property name="nbmdr.jar" value="${lib.dir}/nbmdr.jar" /> 
-    <property name="jmiutils.jar" value="${lib.dir}/jmiutils.jar" /> 
-    <property name="openide-lookup.jar" value="${lib.dir}/openide-util.jar" /> 
-        
-    <path id="mdr.generate.classpath">
-      <pathelement location="${mdrant.jar}" /> 
-      <pathelement location="${nbmdr.jar}" /> 
-      <pathelement location="${mdrapi.jar}" /> 
-      <pathelement location="${jmiutils.jar}" /> 
-      <pathelement location="${mof.jar}" /> 
-      <pathelement location="${jmi.jar}" /> 
-      <pathelement location="${openide-lookup.jar}" /> 
-    </path>
-        
-    <path id="mdr.compile.classpath">
-      <path refid="mdr.generate.classpath"/>
-      <pathelement location="${build.dir}/${javainterfaces.jar}"/>
+    <path id="euml.run.classpath">
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.common_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore.xmi_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.common_1.3.0.v200703011358.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.uml_2.1.0.v200703011358.jar"/>
     </path>
 
-    <path id="mdr.run.classpath">
-      <path refid="mdr.compile.classpath"/>
+    <path id="euml.compile.classpath">
+      <path refid="euml.run.classpath"/>
     </path>
-                
+
     <path id="compile.classpath">
       <pathelement location="${argo.build.dir}/log4j.jar"/>
         <pathelement location="${argo.build.dir}/argouml-model.jar"/>
-      <path refid="mdr.compile.classpath"/>
+      <path refid="euml.compile.classpath"/>
     </path>
 
 
@@ -81,25 +65,9 @@ This is designed to work in two different environments:
 
     <path id="run.classpath">
       <fileset dir="${argo.build.dir}" includes="*.jar"/>
-      <path refid="mdr.run.classpath"/>
+      <path refid="euml.run.classpath"/>
     </path>
 
-    <property name="profile.file.dir" value="org/argouml/model/mdr/profiles"/>
-    
-    <!-- Implementation classes for UML 1.4 are generated from this file -->
-    <!-- When changing to a different UML metamodel, be sure to use the 
-         _Diff file which adds the Java specific tags for JMI, not the
-         base OMG file
-      -->
-    <property name="mof.file.dir" value="org/argouml/model/mdr/mof"/>
-    <property name="xmi.file" value="src/${mof.file.dir}/01-02-15_Diff" /> 
-
-    <taskdef name="mdr" classname="org.netbeans.mdrant.MdrTask">
-      <classpath>
-        <path refid="mdr.generate.classpath" />
-      </classpath>
-    </taskdef>
-    
     <path id="ant.optional.classpath">
       <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
       <path refid="junit.classpath"/>
@@ -117,87 +85,12 @@ This is designed to work in two different environments:
 
   </target>
 
-
-  <!-- =================================================================== -->
-  <!-- Generate, compile, & package the JMI interfaces                     -->
-  <!-- =================================================================== -->
-  <target name="generate" depends="generate-internal" 
-      description="Generate the JMI interfaces for a UML metamodel."
-      unless="generate.notRequired">
-
-    <javac srcdir="${build.javas}"
-           source="1.5"
-           target="1.5">
-      <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
-      <classpath>
-        <pathelement location="${jmi.jar}" /> 
-      </classpath>
-    </javac>
-
-    <jar basedir="${build.javas}"
-         includes="**/*.class"
-         jarfile="${build.dir}/${javainterfaces.jar}"/>
-  </target>
-
-  <target name="generate-needed" depends="init">
-    <uptodate property="generate.notRequired" 
-      srcfile="${xmi.file}.xml"
-    	
-      targetfile="${build.dir}/${javainterfaces.jar}" >
-    	
-    </uptodate>
-
-  </target>
-
-  <target name="generate-skipped" if="generate.notRequired">
-    <echo message="${build.dir}/${javainterfaces.jar} is up to date"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Generate Java files for JMI interface from UML model in XMI         -->
-  <!-- =================================================================== -->
-  <target name="generate-internal" depends="init,generate-needed,generate-skipped" 
-      unless="generate.notRequired">
-    <!-- create directories -->
-    <mkdir dir="${build.dir}"/>
-    <delete>
-      <fileset dir="${build.javas}">
-    	<exclude name="**/.cvsignore"/>
-      	<exclude name="**/readme-build-java.txt"/>
-      	<exclude name="**/CVS/*"/>
-      </fileset>
-    </delete>
-    <mkdir dir="${build.javas}"/>
-
-    <!-- NOTE: The MDR task needs an absolute path for storageFile or it will
-               put it in the caller's directory when called from argouml build
-    -->
-    <echo message="Generating JMI interfaces from ${xmi.file}"/>
-    <mdr storageFile="${basedir}/${build.javas}/mymdr">
-      <instantiate name="mof4models" /> 
-      <readXMI file="${xmi.file}.xml" extent="mof4models" /> 
-      <mapJava dir="${build.javas}" extent="mof4models" /> 
-      
-      <!-- not sure this is correct, but try to generate a DTD -->
-      <instantiate name="uml" extent="mof4models" package="UML"/> 
-      <writeDTD file="${build.dir}/UML14.dtd" extent="uml"/>
-	
-      <!-- Other functions available
-      <writeXMI file="${storageDir}/${model}/xmi/${xmi.file}.xml" 
-          extent="mof4models" xmiVersion="1.2"/>
-      <writeDTD file="${storageDir}/${model}/xmi/${xmi.file}.dtd" 
-          extent="mof4models"/>
-      <mapClass dir="${build.javas}" extent="mof4models" /> 
-      <printExtentNames/>
-      -->
-    </mdr>
-  </target>
   
   <!-- =================================================================== -->
   <!-- Run from classes                                                    -->
   <!-- =================================================================== -->
   <target name="run" depends="compile"
-          description="Run ArgoUML with MDR model implementation.">
+          description="Run ArgoUML with eUML model implementation.">
     <java classname="org.argouml.application.Main"
           fork="yes"
           taskname="argouml"
@@ -206,7 +99,7 @@ This is designed to work in two different environments:
                    value="org/argouml/resource/warn_console.lcf"/>
       <!-- the following is redundant since it's the default, but leave for now -->
       <sysproperty key="argouml.model.implementation"
-                   value="org.argouml.model.mdr.MDRModelImplementation"/>
+                   value="org.argouml.model.euml.EUMLModelImplementation"/>
       <sysproperty key="org.netbeans.lib.jmi.Logger"
                    value="0"/>
       <classpath>
@@ -220,7 +113,7 @@ This is designed to work in two different environments:
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
   <target name="compile"
-          depends="init,generate"
+          depends="init"
           description="Compile the sources.">
     <!-- create directories -->
     <mkdir dir="${build.dir}"/>
@@ -243,8 +136,6 @@ This is designed to work in two different environments:
     <copy todir="${build.classes}">
       <fileset dir="src">
         <include name="**/*.xsl"/>
-        <include name="${mof.file.dir}/**"/>
-        <include name="${profile.file.dir}/**"/>
       </fileset>
     </copy>
   </target>
@@ -340,7 +231,7 @@ This is designed to work in two different environments:
         <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/info_console.lcf"/>
         <sysproperty key="argouml.model.implementation"
-                   value="org.argouml.model.mdr.MDRModelImplementation"/>
+                   value="org.argouml.model.euml.EUMLModelImplementation"/>
         <classpath>
         <pathelement location="${tests.classes}"/>
         <path refid="junit.classpath"/>

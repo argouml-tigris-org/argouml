@@ -1,4 +1,4 @@
-// $Id:CommonBehaviorFactoryEUMLImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //
@@ -26,12 +26,17 @@
 
 package org.argouml.model.euml;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CommonBehaviorFactory;
+import org.eclipse.uml2.uml.OpaqueAction;
+import org.eclipse.uml2.uml.Signal;
+import org.eclipse.uml2.uml.UMLFactory;
 
 /**
  * The implementation of the CommonBehaviorFactory for EUML2.
  */
-class CommonBehaviorFactoryEUMLImpl implements CommonBehaviorFactory {
+class CommonBehaviorFactoryEUMLImpl implements CommonBehaviorFactory,
+        AbstractModelFactory {
 
     /**
      * The model implementation.
@@ -98,6 +103,7 @@ class CommonBehaviorFactoryEUMLImpl implements CommonBehaviorFactory {
     }
 
     public Object createCallAction() {
+
         // TODO Auto-generated method stub
         return null;
     }
@@ -108,8 +114,7 @@ class CommonBehaviorFactoryEUMLImpl implements CommonBehaviorFactory {
     }
 
     public Object createCreateAction() {
-        // TODO Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createCreateObjectAction();
     }
 
     public Object createDataValue() {
@@ -118,8 +123,7 @@ class CommonBehaviorFactoryEUMLImpl implements CommonBehaviorFactory {
     }
 
     public Object createDestroyAction() {
-        // TODO Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createDestroyObjectAction();
     }
 
     public Object createException() {
@@ -153,8 +157,7 @@ class CommonBehaviorFactoryEUMLImpl implements CommonBehaviorFactory {
     }
 
     public Object createReception() {
-        // TODO Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createReception();
     }
 
     public Object createReturnAction() {
@@ -163,13 +166,11 @@ class CommonBehaviorFactoryEUMLImpl implements CommonBehaviorFactory {
     }
 
     public Object createSendAction() {
-        // TODO Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createSendObjectAction();
     }
 
-    public Object createSignal() {
-        // TODO Auto-generated method stub
-        return null;
+    public Signal createSignal() {
+        return UMLFactory.eINSTANCE.createSignal();
     }
 
     public Object createStimulus() {
@@ -187,7 +188,7 @@ class CommonBehaviorFactoryEUMLImpl implements CommonBehaviorFactory {
         return null;
     }
 
-    public Object createUninterpretedAction() {
+    public OpaqueAction createUninterpretedAction() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -1,4 +1,4 @@
-// $Id:ExtensionMechanismsHelperEUMLImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //
@@ -29,6 +29,7 @@ package org.argouml.model.euml;
 import java.util.Collection;
 
 import org.argouml.model.ExtensionMechanismsHelper;
+import org.eclipse.uml2.uml.Element;
 
 /**
  * The implementation of the ExtensionMechanismsHelper for EUML2.
@@ -75,10 +76,23 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public String getMetaModelName(Object m) {
-        // TODO Auto-generated method stub
-        return null;
+        if (m instanceof Element) {
+            return getMetaModelName(m.getClass());
+        }
+        throw new IllegalArgumentException("Not an Element");
+
     }
 
+    /**
+     * @param clazz
+     *            the UML class
+     * @return the meta name of the UML class
+     */
+    protected String getMetaModelName(Class clazz) {
+        return modelImpl.getMetaTypes().getName(clazz);
+    }
+    
+    
     public Object getStereotype(Object ns, Object stereo) {
         // TODO Auto-generated method stub
         return null;

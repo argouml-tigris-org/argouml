@@ -1,4 +1,4 @@
-// $Id:CommonBehaviorHelperEUMLImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //

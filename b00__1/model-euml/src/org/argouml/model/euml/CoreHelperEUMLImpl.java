@@ -1,4 +1,4 @@
-// $Id:CoreHelperEUMLImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //
@@ -28,7 +28,7 @@ package org.argouml.model.euml;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.argouml.model.CoreHelper;
@@ -45,6 +45,7 @@ import org.eclipse.uml2.uml.Include;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.RedefinableElement;
 import org.eclipse.uml2.uml.StructuralFeature;
@@ -73,340 +74,349 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void addAllStereotypes(Object modelElement, Collection stereos) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addAnnotatedElement(Object comment, Object annotatedElement) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addClient(Object dependency, Object element) {
-        // TODO Auto-generated method stub
-        
+        throw new NotYetImplementedException();
     }
 
     public void addClientDependency(Object handle, Object dependency) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addComment(Object element, Object comment) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addConnection(Object handle, Object connection) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addConnection(Object handle, int position, Object connection) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addConstraint(Object handle, Object mc) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addDeploymentLocation(Object handle, Object node) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addElementResidence(Object handle, Object residence) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addFeature(Object handle, int index, Object f) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addFeature(Object handle, Object f) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addLink(Object handle, Object link) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addLiteral(Object handle, int index, Object literal) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addMethod(Object handle, Object method) {
-        // TODO Auto-generated method stub
-        
+        throw new NotYetImplementedException();
     }
 
     public void addOwnedElement(Object handle, Object me) {
-        // TODO Auto-generated method stub
-        
+        if (handle instanceof org.eclipse.uml2.uml.Package
+                && me instanceof Type) {
+            ((org.eclipse.uml2.uml.Package) handle).getOwnedTypes().add(
+                    (Type) me);
+        } else if (handle instanceof org.eclipse.uml2.uml.Package
+                && me instanceof PackageableElement) {
+            ((org.eclipse.uml2.uml.Package) handle).getPackagedElements().add(
+                    (PackageableElement) me);
+        } else {
+            throw new NotYetImplementedException();
+        }
     }
 
     public void addParameter(Object handle, int index, Object parameter) {
-        // TODO Auto-generated method stub
-        
+        throw new NotYetImplementedException();
     }
 
     public void addParameter(Object handle, Object parameter) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addQualifier(Object handle, int position, Object qualifier) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addRaisedSignal(Object handle, Object sig) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addSourceFlow(Object handle, Object flow) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addStereotype(Object modelElement, Object stereo) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addSupplier(Object handle, Object element) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addSupplierDependency(Object supplier, Object dependency) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addTaggedValue(Object handle, Object taggedValue) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addTargetFlow(Object handle, Object flow) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addTemplateArgument(Object handle, int index, Object argument) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addTemplateArgument(Object handle, Object argument) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addTemplateParameter(Object handle, int index, Object parameter) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void addTemplateParameter(Object handle, Object parameter) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void clearStereotypes(Object handle) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public boolean equalsAggregationKind(Object associationEnd, String kindType) {
-        // TODO Auto-generated method stub
-        return false;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAllAttributes(Object classifier) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAllBehavioralFeatures(Object element) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAllClasses(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAllClassifiers(Object namespace) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAllComponents(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAllContents(Object namespace) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAllDataTypes(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAllInterfaces(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAllMetatypeNames() {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAllNodes(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAllPossibleNamespaces(Object modelElement, Object model) {
-        // TODO: Dummy implementation that just returns the current namespace
+        // TODO: Dummy implementation that just returns the current namespace hierarchy
         Collection<Namespace> result = new ArrayList<Namespace>();
-        result.add(((NamedElement) modelElement).getNamespace());
+        result.addAll(((NamedElement) modelElement).allNamespaces());
         return result;
     }
 
     public Collection getAllRealizedInterfaces(Object element) {
-        // TODO Auto-generated method stub
-        return Collections.EMPTY_SET;
+        return ((Classifier) element).getAllUsedInterfaces();
     }
 
     public Collection getAllSupertypes(Object classifier) {
-        // TODO Auto-generated method stub
-        return Collections.EMPTY_SET;
+        return ((Classifier) classifier).allParents();
     }
 
     public Collection getAllVisibleElements(Object ns) {
-        // TODO Auto-generated method stub
-        return Collections.EMPTY_SET;
+        throw new NotYetImplementedException();
     }
 
     public Collection getAssociateEnds(Object classifier) {
-        // TODO Auto-generated method stub
-        return Collections.EMPTY_SET;
+        throw new NotYetImplementedException();
     }
 
     public Collection getAssociateEndsInh(Object classifier) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
     }
 
     public Collection getAssociatedClassifiers(Object aclassifier) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Object getAssociationEnd(Object type, Object assoc) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
     }
 
     public Collection getAssociations(Object from, Object to) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAssociations(Object oclassifier) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getAttributesInh(Object classifier) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
-    public List getBehavioralFeatures(Object classifier) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<BehavioralFeature> getBehavioralFeatures(Object classifier) {
+        List<BehavioralFeature> result = new ArrayList<BehavioralFeature>();
+        for (Feature feature : ((Classifier) classifier).getFeatures()) {
+            if (feature instanceof BehavioralFeature) {
+                result.add((BehavioralFeature) feature);
+            }
+        }
+        return result;
     }
 
     public String getBody(Object comment) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
-    public Collection getChildren(Object element) {
-        // TODO Auto-generated method stub
-        return null;
+    public Collection<Classifier> getChildren(Object element) {
+        Collection<Classifier> results = new HashSet<Classifier>();
+        for (Generalization g : ((Classifier) element).getGeneralizations()) {
+            results.addAll(getChildren(g.getSpecific()));
+        }
+        results.remove(element);
+        return results;
     }
 
     public Collection getDependencies(Object supplierObj, Object clientObj) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getExtendedClassifiers(Object element) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getExtendingClassifiers(Object classifier) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getExtendingElements(Object element) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Object getFirstSharedNamespace(Object ns1, Object ns2) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getFlows(Object source, Object target) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Object getGeneralization(Object achild, Object aparent) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getOperationsInh(Object classifier) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getRealizedInterfaces(Object cls) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getRelationships(Object source, Object dest) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public List getReturnParameters(Object operation) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Object getSource(Object relationship) {
@@ -521,122 +531,132 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
 
     public Object getSpecification(Object object) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getSpecifications(Object classifier) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getSubtypes(Object cls) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public Collection getSupertypes(Object generalizableElement) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
+
     }
 
     public boolean hasCompositeEnd(Object association) {
-        // TODO Auto-generated method stub
-        return false;
+        throw new NotYetImplementedException();
+
     }
 
     public boolean isSubType(Object type, Object subType) {
-        // TODO Auto-generated method stub
-        return false;
+        throw new NotYetImplementedException();
+
     }
 
     public boolean isValidNamespace(Object element, Object namespace) {
-        // TODO Auto-generated method stub
-        return false;
+
+        if (!(element instanceof Element) 
+                || !(namespace instanceof Namespace)) {
+            return false;
+        }
+
+        Element e = (Element) element;
+        Namespace ns = (Namespace) namespace;
+        
+        // TODO: Needs implementation - for now anything is valid
+        
+        return true;
     }
 
     public void removeAnnotatedElement(Object handle, Object me) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeClientDependency(Object handle, Object dep) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeConnection(Object handle, Object connection) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeConstraint(Object handle, Object cons) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeDeploymentLocation(Object handle, Object node) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeElementResidence(Object handle, Object residence) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeFeature(Object cls, Object feature) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeLiteral(Object enumeration, Object literal) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeOwnedElement(Object handle, Object value) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeParameter(Object handle, Object parameter) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeQualifier(Object handle, Object qualifier) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeSourceFlow(Object handle, Object flow) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeStereotype(Object handle, Object stereo) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeSupplierDependency(Object supplier, Object dependency) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeTargetFlow(Object handle, Object flow) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeTemplateArgument(Object binding, Object argument) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void removeTemplateParameter(Object handle, Object parameter) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
@@ -655,101 +675,101 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setAggregation(Object handle, Object aggregationKind) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
     }
 
     public void setAnnotatedElements(Object handle, Collection elems) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setAssociation(Object handle, Object association) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setAttributes(Object classifier, List attributes) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setBody(Object handle, Object expr) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setBody(Object handle, String body) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
+    @SuppressWarnings("deprecation")
     public void setChangeability(Object handle, Object ck) {
-        // TODO Auto-generated method stub
-        
+        throw new NotImplementedException();
     }
 
+    @SuppressWarnings("deprecation")
     public void setChangeable(Object handle, boolean changeable) {
-        // TODO Auto-generated method stub
-        
+        setReadOnly(handle, !changeable);
     }
 
     public void setChild(Object handle, Object child) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setConcurrency(Object handle, Object concurrencyKind) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setConnections(Object handle, Collection ends) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setContainer(Object handle, Object component) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setDefaultElement(Object handle, Object element) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setDefaultValue(Object handle, Object expression) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setDiscriminator(Object handle, String discriminator) {
-        // TODO Auto-generated method stub
-        
+        // Removed from UML 2.x
+        throw new NotImplementedException();
     }
 
     public void setEnumerationLiterals(Object enumeration, List literals) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setFeature(Object classifier, int index, Object feature) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setFeatures(Object classifier, Collection features) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setInitialValue(Object attribute, Object expression) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setKind(Object handle, Object kind) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
@@ -758,12 +778,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setModelElementContainer(Object handle, Object container) {
-        // TODO Auto-generated method stub
-        
+        // TODO: This method is mostly (entirely?) redundant - tfm
+        addOwnedElement(container, handle);
     }
 
     public void setMultiplicity(Object handle, Object arg) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
@@ -772,7 +792,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setNamespace(Object handle, Object ns) {
-        ((Namespace) ns).getOwnedElements().add((NamedElement) handle);
+        addOwnedElement(ns, handle);
     }
 
     public void setNavigable(Object handle, boolean flag) {
@@ -780,46 +800,47 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setOperations(Object classifier, List operations) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setOrdering(Object handle, Object ordering) {
 //        ((Property) handle).setIsOrdered(ordering);
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
     }
 
     public void setOwner(Object handle, Object owner) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
     }
 
+    @SuppressWarnings("deprecation")
     public void setOwnerScope(Object feature, Object scopeKind) {
         // Don't implement - deprecated method in interface.
         throw new NotImplementedException();
     }
 
     public void setParameter(Object handle, Object parameter) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setParameters(Object handle, Collection parameters) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setParent(Object handle, Object parent) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setPowertype(Object handle, Object powerType) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setQualifiers(Object handle, List qualifiers) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
@@ -828,7 +849,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setRaisedSignals(Object handle, Collection raisedSignals) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
     
@@ -837,40 +858,40 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setResident(Object handle, Object resident) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setResidents(Object handle, Collection residents) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setRoot(Object handle, boolean isRoot) {
-        // TODO Auto-generated method stub
-        
+        // Appears to be gone from UML 2.x
+        throw new NotImplementedException();
     }
 
     public void setSources(Object handle, Collection specifications) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setSpecification(Object handle, boolean isSpecification) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setSpecification(Object method, Object specification) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
     }
 
     public void setSpecification(Object operation, String specification) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
     }
 
     public void setSpecifications(Object handle, Collection specifications) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
 
     }
     
@@ -879,15 +900,16 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setTaggedValue(Object handle, String tag, String value) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
     public void setTaggedValues(Object handle, Collection taggedValues) {
-        // TODO Auto-generated method stub
+        throw new NotYetImplementedException();
         
     }
 
+    @SuppressWarnings("deprecation")
     public void setTargetScope(Object handle, Object targetScope) {
         // Don't implement - deprecated method in interface.
         throw new NotImplementedException();

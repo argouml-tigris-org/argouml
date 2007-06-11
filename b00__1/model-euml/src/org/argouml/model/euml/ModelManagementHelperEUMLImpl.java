@@ -1,4 +1,4 @@
-// $Id:ModelManagementHelperEUMLImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //
@@ -29,10 +29,15 @@ package org.argouml.model.euml;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.model.ModelManagementHelper;
+import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
+import org.eclipse.uml2.uml.Type;
 
 
 /**
@@ -67,8 +72,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllContents(Object namespace) {
-        // TODO Auto-generated method stub
-        return null;
+        return ((Element) namespace).allOwnedElements();
     }
 
     public Collection getAllImportedElements(Object pack) {
@@ -84,55 +88,28 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         if (type instanceof String) {
             return getAllModelElementsOfKind(nsa, (String) type);
         }
-        if (!(nsa instanceof Namespace) || !(type instanceof Class)) {
+        if (!(nsa instanceof org.eclipse.uml2.uml.Package) || !(type instanceof Class)) {
             throw new IllegalArgumentException("illegal argument - namespace: "
                     + nsa + " type: " + type);
         }
+        
+        org.eclipse.uml2.uml.Package pkg = (org.eclipse.uml2.uml.Package) nsa;
+        Class typeClass = (Class) type;
 
-        return Collections.EMPTY_SET;
-        
-        // TODO: MDR impelementation below - needs review/conversion
-        
-        /*
-         * Because we get the metatype class stripped of its reflective
-         * proxies, we need to jump through a hoop or two to find it
-         * in the metamodel, then work from there to get its proxy.
-         */
-//        String name = ((Class) type).getName();
-//        name = name.substring(name.lastIndexOf(".") + 1);
-//        if (name.startsWith("Uml")) name = name.substring(3);
-//
-//        Collection allOfType = Collections.EMPTY_LIST;
-//        // Get all (UML) metaclasses and search for the requested one
-//        Collection metaTypes = nsmodel.getModelPackage().getMofClass()
-//                .refAllOfClass();
-//        for (Iterator it = metaTypes.iterator(); it.hasNext();) {
-//            MofClass elem = (MofClass) it.next();
-//            // TODO: Generalize - assumes UML type names are unique
-//            // without the qualifying package names - true for UML 1.4
-//            if (name.equals(elem.getName())) {
-//                List names = elem.getQualifiedName();
-//                // TODO: Generalize to handle more than one level of package
-//                // OK for UML 1.4 because of clustering
-//                RefPackage pkg = nsmodel.getUmlPackage().refPackage(
-//                        (String) names.get(0));
-//                // Get the metatype proxy and use it to find all instances
-//                RefClass classProxy = pkg.refClass((String) names.get(1));
-//                allOfType = classProxy.refAllOfType();
-//                break;
-//            }
-//        }
-//
-//        // Remove any elements not in requested namespace
-//        Collection returnElements = new ArrayList();
-//        for (Iterator i = allOfType.iterator(); i.hasNext();) {
-//            Object me = i.next();
-//            // TODO: Optimize for root model case? - tfm
-//            if (contained(nsa, me)) {
-//                returnElements.add(me);
-//            } 
-//        }
-//        return returnElements;
+        Collection<Type> result = new HashSet<Type>();
+        for (Type ownedType : pkg.getOwnedTypes()) {
+            if (typeClass.isAssignableFrom(ownedType.getClass())) {
+                result.add(ownedType);
+            }
+        }
+
+        for (org.eclipse.uml2.uml.Package nestedPackage : pkg
+                .getNestedPackages()) {
+            result.addAll(getAllModelElementsOfKind(nestedPackage, typeClass));
+        }
+        return result;        
+
+
 
     }
 
@@ -149,6 +126,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         }
         return false;
     }
+    
     public Collection getAllModelElementsOfKind(Object nsa, String kind) {
         try {
             return getAllModelElementsOfKind(nsa, Class.forName(kind));
@@ -175,8 +153,13 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllNamespaces(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        Set<Element> results = new HashSet<Element>();
+        for (Element element : ((Namespace) ns).allOwnedElements()) {
+            if (element instanceof Namespace) {
+                results.add(element);
+            }
+        }
+        return results;
     }
 
     public Collection getAllPossibleImports(Object pack) {
@@ -190,8 +173,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllSurroundingNamespaces(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        return ((NamedElement) ns).allNamespaces();
     }
 
     public Collection getContents(Object namespace) {

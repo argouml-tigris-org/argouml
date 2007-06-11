@@ -1,4 +1,4 @@
-// $Id:CollaborationsFactoryEUMLImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //
@@ -26,12 +26,15 @@
 
 package org.argouml.model.euml;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CollaborationsFactory;
+import org.eclipse.uml2.uml.UMLFactory;
 
 /**
  * Eclipse UML2 implementation of CollaborationsFactory.
  */
-class CollaborationsFactoryEUMLImpl implements CollaborationsFactory {
+class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
+        AbstractModelFactory {
 
     /**
      * The model implementation.
@@ -113,8 +116,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory {
     }
 
     public Object createCollaboration() {
-        // TODO Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createCollaboration();
     }
 
     public Object createCollaborationInstanceSet() {
@@ -123,8 +125,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory {
     }
 
     public Object createInteraction() {
-        // TODO Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createInteraction();
     }
 
     public Object createInteractionInstanceSet() {
@@ -133,8 +134,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory {
     }
 
     public Object createMessage() {
-        // TODO Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createMessage();
     }
 
 

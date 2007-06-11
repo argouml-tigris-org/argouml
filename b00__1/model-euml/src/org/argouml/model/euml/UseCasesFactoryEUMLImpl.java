@@ -1,4 +1,4 @@
-// $Id:UseCasesFactoryEUMLImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //
@@ -26,11 +26,14 @@
 
 package org.argouml.model.euml;
 
+import org.argouml.model.AbstractModelFactory;
+import org.argouml.model.NotImplementedException;
 import org.argouml.model.UseCasesFactory;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.ExtensionPoint;
 import org.eclipse.uml2.uml.Include;
+import org.eclipse.uml2.uml.InstanceSpecification;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UseCase;
@@ -39,7 +42,7 @@ import org.eclipse.uml2.uml.UseCase;
 /**
  * The implementation of the UseCasesFactory for EUML2.
  */
-class UseCasesFactoryEUMLImpl implements UseCasesFactory {
+class UseCasesFactoryEUMLImpl implements UseCasesFactory, AbstractModelFactory {
 
     /**
      * The model implementation.
@@ -56,65 +59,71 @@ class UseCasesFactoryEUMLImpl implements UseCasesFactory {
         modelImpl = implementation;
     }
 
-    public Object buildActor(Object actor, Object model) {
+    public Actor buildActor(Object actor, Object model) {
         Namespace ns = ((Actor) actor).getNamespace();
         if (ns == null) {
             ns = (Namespace) model;
         }
         Actor actor2 = (Actor) createActor();
-//        actor2.setNamespace(ns);
-        ns.getOwnedElements().add(actor2);
+        modelImpl.getCoreHelper().addOwnedElement(ns, actor2);
         actor2.setIsLeaf(false);
 //        actor2.setIsRoot(false);
         return actor2;
     }
 
-    public Object buildExtend(Object abase, Object anextension) {
-        // TODO Auto-generated method stub
-        return null;
+    public Extend buildExtend(Object abase, Object anextension) {
+        return buildExtend(abase, anextension, null);
     }
 
-    public Object buildExtend(Object abase, Object anextension, Object apoint) {
-        Extend ext = (Extend) createExtend();
-        // TODO Auto-generated method stub
-        return null;
+    public Extend buildExtend(Object abase, Object anextension, Object apoint) {
+        ExtensionPoint ep;
+        if (apoint == null) {
+            ep = buildExtensionPoint((UseCase) abase);
+        } else {
+            ep = (ExtensionPoint) apoint;
+            if (!ep.getUseCase().equals(abase)) {
+                throw new IllegalArgumentException(
+                        "extension point must belong to " + //$NON-NLS-1$
+                        "extended use case"); //$NON-NLS-1$
+            }
+        }
+        Extend extend =
+                ((UseCase) anextension).createExtend(null, (UseCase) abase);
+        extend.getExtensionLocations().add(ep);
+        return extend;
     }
 
-    public Object buildExtensionPoint(Object modelElement) {
-        ExtensionPoint ep = (ExtensionPoint) createExtensionPoint();
-        ((UseCase) modelElement).getExtensionPoints().add(ep);
-        return ep;
+    public ExtensionPoint buildExtensionPoint(Object modelElement) {
+        return ((UseCase) modelElement).createExtensionPoint(null);
     }
 
-    public Object buildInclude(Object abase, Object anaddition) {
-        Include inc = (Include) createInclude();
-        // TODO Auto-generated method stub
-        return inc;
+    public Include buildInclude(Object abase, Object anaddition) {
+        return ((UseCase) anaddition).createInclude(null, (UseCase) abase);
     }
 
-    public Object createActor() {
+    public Actor createActor() {
         return UMLFactory.eINSTANCE.createActor();
     }
 
-    public Object createExtend() {
+    public Extend createExtend() {
         return UMLFactory.eINSTANCE.createExtend();
     }
 
-    public Object createExtensionPoint() {
+    public ExtensionPoint createExtensionPoint() {
         return UMLFactory.eINSTANCE.createExtensionPoint();
     }
 
-    public Object createInclude() {
+    public Include createInclude() {
         return UMLFactory.eINSTANCE.createInclude();
     }
     
-    public Object createUseCase() {
+    public UseCase createUseCase() {
         return UMLFactory.eINSTANCE.createUseCase();
     }
 
-    public Object createUseCaseInstance() {
-        // TODO Auto-generated method stub
-        return null;
+    @SuppressWarnings("deprecation")
+    public InstanceSpecification createUseCaseInstance() {
+        throw new NotImplementedException();
     }
 
 }

@@ -1,4 +1,4 @@
-// $Id:ActivityGraphsFactoryEUMLlImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //
@@ -28,12 +28,14 @@ package org.argouml.model.euml;
 
 import java.util.Collection;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.ActivityGraphsFactory;
 
 /**
  * The implementation of the ActivityGraphsFactory for EUML2.
  */
-class ActivityGraphsFactoryEUMLlImpl implements ActivityGraphsFactory {
+class ActivityGraphsFactoryEUMLlImpl implements ActivityGraphsFactory,
+        AbstractModelFactory {
 
     /**
      * The model implementation.

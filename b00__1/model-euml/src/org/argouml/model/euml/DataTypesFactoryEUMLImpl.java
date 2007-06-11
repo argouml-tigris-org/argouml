@@ -1,4 +1,4 @@
-// $Id:DataTypesFactoryEUMLImpl.java 12721 2007-05-30 18:14:55Z tfmorris $
+// $Id$
 // Copyright (c) 2007, The ArgoUML Project
 // All rights reserved.
 //
@@ -28,12 +28,18 @@ package org.argouml.model.euml;
 
 import java.util.List;
 
+import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.DataTypesFactory;
+import org.argouml.model.NotImplementedException;
+import org.eclipse.uml2.uml.Expression;
+import org.eclipse.uml2.uml.OpaqueExpression;
+import org.eclipse.uml2.uml.UMLFactory;
 
 /**
  * The implementation of the DataTypesFactory for EUML2.
  */
-class DataTypesFactoryEUMLImpl implements DataTypesFactory {
+class DataTypesFactoryEUMLImpl implements DataTypesFactory,
+        AbstractModelFactory {
 
     /**
      * The model implementation.
@@ -50,78 +56,75 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory {
     }
 
     public Object createActionExpression(String language, String body) {
-        // TODO Auto-generated method stub
-        return null;
+        return createExpression(language, body);
     }
 
     public Object createArgListsExpression(String language, String body) {
-        // TODO Auto-generated method stub
-        return null;
+        return createExpression(language, body);
     }
 
     public Object createBooleanExpression(String language, String body) {
-        // TODO Auto-generated method stub
-        return null;
+        return createExpression(language, body);
     }
 
-    public Object createExpression(String language, String body) {
-        // TODO Auto-generated method stub
-        return null;
+    public OpaqueExpression createExpression(String language, String body) {
+        // TODO: We can choose between something which matches UML 1.4 in name
+        // or something that matches in functionality.  We've chosen
+        // functionality for now, but this will create a name conflict during
+        // the migration process. - tfm
+        OpaqueExpression expression =
+                UMLFactory.eINSTANCE.createOpaqueExpression();
+        expression.getLanguages().add(language);
+        expression.getBodies().add(body);
+        return expression;
     }
 
     public Object createIterationExpression(String language, String body) {
-        // TODO Auto-generated method stub
-        return null;
+        return createExpression(language, body);
     }
 
     public Object createMappingExpression(String language, String body) {
-        // TODO Auto-generated method stub
-        return null;
+        return createExpression(language, body);
     }
 
+    
+    // TODO: Callers will need to be refactored to work around the
+    // change in the way multiplicities work - tfm
+    
     public Object createMultiplicity(int lower, int upper) {
-        // TODO Auto-generated method stub
-        return null;
+        return new NotImplementedException();
     }
 
     public Object createMultiplicity(List range) {
-        // TODO Auto-generated method stub
-        return null;
+        return new NotImplementedException();
     }
 
     public Object createMultiplicity(String str) {
-        // TODO Auto-generated method stub
-        return null;
+        return new NotImplementedException();
     }
 
     public Object createMultiplicityRange(String str) {
-        // TODO Auto-generated method stub
-        return null;
+        return new NotImplementedException();
     }
 
     public Object createMultiplicityRange(int lower, int upper) {
-        // TODO Auto-generated method stub
-        return null;
+        return new NotImplementedException();
     }
 
     public Object createObjectSetExpression(String language, String body) {
-        // TODO Auto-generated method stub
-        return null;
+        return createExpression(language, body);
     }
 
     public Object createProcedureExpression(String language, String body) {
-        // TODO Auto-generated method stub
-        return null;
+        return createExpression(language, body);
     }
 
     public Object createTimeExpression(String language, String body) {
-        // TODO Auto-generated method stub
-        return null;
+        return createExpression(language, body);
     }
 
     public Object createTypeExpression(String language, String body) {
-        // TODO Auto-generated method stub
-        return null;
+        return createExpression(language, body);
     }
 
     /**
