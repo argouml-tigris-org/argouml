@@ -202,11 +202,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      * @see org.argouml.model.ExtensionMechanismsHelper#getMetaModelName(java.lang.Object)
      */
     public String getMetaModelName(Object m) {
-        if (m instanceof ModelElement) {
-            return getMetaModelName(m.getClass());
-        }
-        throw new IllegalArgumentException("Not a ModelElement");
-
+        return getMetaModelName(m.getClass());
     }
 
     /**
