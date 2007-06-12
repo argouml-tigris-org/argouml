@@ -527,7 +527,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    protected void setBoundsImpl(int px, int py, int w, int h) {
+    protected void setStandardBounds(int px, int py, int w, int h) {
         if (bodyTextFig == null) {
             return;
         }

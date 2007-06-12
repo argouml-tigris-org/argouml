@@ -476,7 +476,7 @@ public class FigInterface extends FigClassifierBox {
      *
      * @param h  Desired height of the FigInterface
      */
-    protected void setBoundsImpl(final int x, final int y, final int w,
+    protected void setStandardBounds(final int x, final int y, final int w,
             final int h) {
 
         Rectangle oldBounds = getBounds();

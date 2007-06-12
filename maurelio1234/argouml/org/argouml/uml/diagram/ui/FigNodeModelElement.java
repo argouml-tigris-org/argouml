@@ -30,7 +30,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -48,7 +47,6 @@ import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
@@ -530,7 +528,6 @@ public abstract class FigNodeModelElement
             stereotypesView.addRadioItem(new ActionStereotypeViewBigIcon(this));
             stereotypesView.addRadioItem(new ActionStereotypeViewSmallIcon(this));
             
-            System.out.println("BUILDING!!! STVIEW: " + getStereotypeView());
             popUpActions.insertElementAt(stereotypesView, 0);
         }
         return popUpActions;
@@ -1539,19 +1536,6 @@ public abstract class FigNodeModelElement
 //	this.redraw();
     }
     
-    public void updateProfileBounds(int x, int y, int w, int h) {
-	if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON) {
-	    stereotypeFigProfileIcon.setBounds(x, y, w, h);
-	} else if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON) {
-	    int i = this.getWidth();
-	    
-       	    for (Object ficon : this.floatingStereotypes) {
-        	((FigImage)ficon).setLocation(i, this.getBigPort().getY()+2);
-        	i -= ICON_WIDTH - 2;
-            }   
-	}
-    }
-    
     /*
          * @see org.tigris.gef.presentation.Fig#calcBounds()
          */
@@ -1921,6 +1905,67 @@ public abstract class FigNodeModelElement
 	System.out.println("SETSSSVIEW: " + s);
         this.stereotypeView = s;
         renderingChanged();
+    }
+    
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
+    protected final void setBoundsImpl(final int x, final int y, final int w,
+	    final int h) {
+
+	if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON) {
+	    if (stereotypeFigProfileIcon != null) {
+		    stereotypeFigProfileIcon.setBounds(x, y, w, h);
+		    // FigClass calls setBoundsImpl before we set 
+		    // the stereotypeFigProfileIcon
+	    }
+	} else {
+	    setStandardBounds(x, y, w, h);
+	    if (getStereotypeView() == STEREOTYPE_VIEW_SMALL_ICON) {
+		int i = this.getWidth() + this.getX() - ICON_WIDTH - 2;
+
+		for (Object ficon : this.floatingStereotypes) {
+		    ((FigImage) ficon).setLocation(i,
+			    this.getBigPort().getY() + 2);
+		    i -= ICON_WIDTH - 2;
+		}
+	    }
+	}
+    }
+    
+    /**
+         * Sets the bounds, but the size will be at least the one returned by
+         * {@link #getMinimumSize()}, unless checking of size is disabled.
+         * <p>
+         * 
+         * If the required height is bigger, then the additional height is
+         * equally distributed among all figs (i.e. compartments), such that the
+         * cumulated height of all visible figs equals the demanded height
+         * <p>.
+         * 
+         * Some of this has "magic numbers" hardcoded in. In particular there is
+         * a knowledge that the minimum height of a name compartment is 21
+         * pixels.
+         * <p>
+         * 
+         * @param x
+         *                Desired X coordinate of upper left corner
+         * 
+         * @param y
+         *                Desired Y coordinate of upper left corner
+         * 
+         * @param w
+         *                Desired width of the FigClass
+         * 
+         * @param h
+         *                Desired height of the FigClass
+         * 
+         * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int,
+         *      int)
+         */
+    protected void setStandardBounds(final int x, final int y,
+            final int w, final int h) {
+	
     }
     
 } /* end class FigNodeModelElement */

@@ -195,7 +195,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
-    protected void setBoundsImpl(final int x, final int y,
+    protected void setStandardBounds(final int x, final int y,
             final int w, final int h) {
         Rectangle oldBounds = getBounds();
 
