@@ -437,34 +437,42 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof Expression;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAArgListsExpression(Object handle) {
         return handle instanceof ArgListsExpression;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isABooleanExpression(Object handle) {
         return handle instanceof BooleanExpression;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAIterationExpression(Object handle) {
         return handle instanceof IterationExpression;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAMappingExpression(Object handle) {
         return handle instanceof MappingExpression;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAObjectSetExpression(Object handle) {
         return handle instanceof ObjectSetExpression;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAProcedureExpression(Object handle) {
         return handle instanceof ProcedureExpression;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isATimeExpression(Object handle) {
         return handle instanceof TimeExpression;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isATypeExpression(Object handle) {
         return handle instanceof TypeExpression;
     }
@@ -1893,7 +1901,8 @@ class FacadeMDRImpl implements Facade {
              * similar automatically as part of its namespace processing.
              * - tfm - 20060408
              */
-            Collection<ElementImport> imports = ((UmlPackage) pack).getElementImport();
+            Collection<ElementImport> imports =
+                    ((UmlPackage) pack).getElementImport();
             for (ElementImport ei : imports) {
                 ModelElement element = ei.getImportedElement();
                 results.add(element);
@@ -2192,6 +2201,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
+    @SuppressWarnings("deprecation")
     public Iterator getRanges(Object handle) {
         try {
             if (handle instanceof Multiplicity) {
