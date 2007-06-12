@@ -319,7 +319,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @author 10 Apr 2002. Jeremy Bennett (mail@jeremybennett.com). Patch to
      *         allow for stereotype as well.
      */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    protected void setStandardBounds(int x, int y, int w, int h) {
 
         // In the rather unlikely case that we have no name, we give up.
 

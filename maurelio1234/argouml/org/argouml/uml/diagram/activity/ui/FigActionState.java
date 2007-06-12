@@ -170,7 +170,7 @@ public class FigActionState extends FigStateVertex {
      *
      * Override setBounds to keep shapes looking right.
      */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    protected void setStandardBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
         }

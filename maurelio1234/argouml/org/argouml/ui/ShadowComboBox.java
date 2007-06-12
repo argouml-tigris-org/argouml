@@ -186,6 +186,8 @@ public class ShadowComboBox extends JComboBox {
          */
         private static final long serialVersionUID = 4999132551417131227L;
 
+	protected void setStandardBounds(int x, int y, int w, int h) {
+	}
 
     }
 
