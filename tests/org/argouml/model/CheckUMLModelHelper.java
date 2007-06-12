@@ -300,7 +300,8 @@ public final class CheckUMLModelHelper {
         for (int i = 0; i < names.length; i++) {
             String methodName = "delete" + names[i];
             try {
-                f.getClass().getMethod(methodName, new Class[0]);
+                f.getClass().getDeclaredMethod(methodName,
+                        new Class[] {Object.class});
             } catch (SecurityException se) {
                 TestCase.fail(
                         "SecurityException while retrieving all methods from "
