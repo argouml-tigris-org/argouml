@@ -34,6 +34,14 @@ import javax.swing.ButtonModel;
 import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
+import org.argouml.gefext.ArgoModeCreateFigCircle;
+import org.argouml.gefext.ArgoModeCreateFigInk;
+import org.argouml.gefext.ArgoModeCreateFigLine;
+import org.argouml.gefext.ArgoModeCreateFigPoly;
+import org.argouml.gefext.ArgoModeCreateFigRRect;
+import org.argouml.gefext.ArgoModeCreateFigRect;
+import org.argouml.gefext.ArgoModeCreateFigSpline;
+import org.argouml.gefext.ArgoModeCreateFigText;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.model.CoreHelper;
@@ -47,14 +55,6 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.ModeBroom;
-import org.tigris.gef.base.ModeCreateFigCircle;
-import org.tigris.gef.base.ModeCreateFigInk;
-import org.tigris.gef.base.ModeCreateFigLine;
-import org.tigris.gef.base.ModeCreateFigPoly;
-import org.tigris.gef.base.ModeCreateFigRRect;
-import org.tigris.gef.base.ModeCreateFigRect;
-import org.tigris.gef.base.ModeCreateFigSpline;
-import org.tigris.gef.base.ModeCreateFigText;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.base.ModeSelect;
 import org.tigris.toolbar.ToolBarFactory;
@@ -149,36 +149,36 @@ public abstract class UMLDiagram
         new ActionSetMode(ModeBroom.class, "button.broom");
 
     private static Action actionRectangle =
-        new RadioAction(new ActionSetMode(ModeCreateFigRect.class, "Rectangle",
-        			       "misc.primitive.rectangle"));
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigRect.class, 
+                "Rectangle", "misc.primitive.rectangle"));
 
     private static Action actionRRectangle =
-        new RadioAction(new ActionSetMode(ModeCreateFigRRect.class, "RRect",
-        			       "misc.primitive.rounded-rectangle"));
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigRRect.class, 
+                "RRect", "misc.primitive.rounded-rectangle"));
 
     private static Action actionCircle =
-        new RadioAction(new ActionSetMode(ModeCreateFigCircle.class, "Circle",
-        			       "misc.primitive.circle"));
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigCircle.class, 
+                "Circle", "misc.primitive.circle"));
 
     private static Action actionLine =
-        new RadioAction(new ActionSetMode(ModeCreateFigLine.class, "Line",
-        			       "misc.primitive.line"));
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigLine.class, 
+                "Line", "misc.primitive.line"));
 
     private static Action actionText =
-        new RadioAction(new ActionSetMode(ModeCreateFigText.class, "Text",
-        			       "misc.primitive.text"));
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigText.class, 
+                "Text", "misc.primitive.text"));
 
     private static Action actionPoly =
-        new RadioAction(new ActionSetMode(ModeCreateFigPoly.class, "Polygon",
-        			       "misc.primitive.polygon"));
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigPoly.class, 
+                "Polygon", "misc.primitive.polygon"));
 
     private static Action actionSpline =
-        new RadioAction(new ActionSetMode(ModeCreateFigSpline.class, "Spline",
-        			       "misc.primitive.spline"));
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigSpline.class, 
+                "Spline", "misc.primitive.spline"));
 
     private static Action actionInk =
-        new RadioAction(new ActionSetMode(ModeCreateFigInk.class, "Ink",
-        			       "misc.primitive.ink"));
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigInk.class, 
+                "Ink", "misc.primitive.ink"));
 
     ////////////////////////////////////////////////////////////////
     // instance variables
