@@ -66,7 +66,7 @@ public class ActionSetMode extends SetModeAction {
      * The constructor.
      *
      * @param modeClass the next global editor mode
-     * @param name the name of the command that is the tooltip text.
+     * @param name the name of the icon
      */
     public ActionSetMode(Class modeClass, String name) {
         super(modeClass);
@@ -78,7 +78,7 @@ public class ActionSetMode extends SetModeAction {
      * The constructor.
      *
      * @param modeClass the next global editor mode
-     * @param name the to be localized name of the command
+     * @param name the icon name
      * @param tooltipkey The key for the tooltip text.
      */
     public ActionSetMode(Class modeClass, String name, String tooltipkey) {
@@ -110,6 +110,8 @@ public class ActionSetMode extends SetModeAction {
 
     /**
      * The constructor.
+     * TODO: The "name" parameter is used for the icon and for the tooltip.
+     * This makes i18n of the tooltip impossible.
      *
      * @param modeClass the next global editor mode
      * @param modeArgs arguments for the new mode
@@ -135,6 +137,8 @@ public class ActionSetMode extends SetModeAction {
 
     /**
      * The constructor.
+     * TODO: The "name" parameter is used for the icon and for the tooltip.
+     * This makes i18n of the tooltip impossible.
      *
      * @param modeClass the next global editor mode
      * @param arg the name of a new argument for the new mode
