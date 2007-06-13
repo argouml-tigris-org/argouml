@@ -50,7 +50,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
 import org.argouml.uml.ProfileJava;
@@ -1102,8 +1101,6 @@ public class Project implements java.io.Serializable {
             // don't have a decent event system set up.
             ExplorerEventAdaptor.getInstance().modelElementRemoved(obj);
         } else if (obj instanceof Fig) {
-            TargetManager.getInstance().removeTarget(obj);
-            TargetManager.getInstance().removeHistoryElement(obj);
             ((Fig) obj).deleteFromModel();
             // TODO: Bob says - I've never seen this appear in the log.
             // I believe this code is never reached. If we delete a FigEdge
