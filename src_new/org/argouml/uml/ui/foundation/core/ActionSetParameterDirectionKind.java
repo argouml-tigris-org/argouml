@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,7 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
- * An action to set the concurrency of an operation.
+ * An action to set the direction of a parameter.
  *
  * @author mkl
  *
@@ -64,7 +64,7 @@ public class ActionSetParameterDirectionKind extends UndoableAction {
      * RETURN_COMMAND determines the kind of direction.
      */
     public static final String RETURN_COMMAND = "return";
-
+    
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
      */
@@ -78,6 +78,7 @@ public class ActionSetParameterDirectionKind extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (e.getSource() instanceof JRadioButton) {
@@ -86,18 +87,19 @@ public class ActionSetParameterDirectionKind extends UndoableAction {
             Object target = ((UMLRadioButtonPanel) source.getParent())
                     .getTarget();
             if (Model.getFacade().isAParameter(target)) {
-                Object m = /* (MModelElement) */target;
                 Object kind = null;
-                if (actionCommand.equals(IN_COMMAND)) {
+                if (actionCommand == null) {
+                    kind = null;
+                } else if (actionCommand.equals(IN_COMMAND)) {
                     kind = Model.getDirectionKind().getInParameter();
                 } else if (actionCommand.equals(OUT_COMMAND)) {
                     kind = Model.getDirectionKind().getOutParameter();
                 } else if (actionCommand.equals(INOUT_COMMAND)) {
                     kind = Model.getDirectionKind().getInOutParameter();
-                } else {
+                } else if (actionCommand.equals(RETURN_COMMAND)) {
                     kind = Model.getDirectionKind().getReturnParameter();
                 }
-                Model.getCoreHelper().setKind(m, kind);
+                Model.getCoreHelper().setKind(target, kind);
             }
         }
     }
