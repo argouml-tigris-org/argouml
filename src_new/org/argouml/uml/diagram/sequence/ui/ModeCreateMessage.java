@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.ModeCreate;
@@ -203,12 +204,8 @@ public class ModeCreateMessage extends ModeCreate {
 
             if (foundPort != null && foundPort != startPort) {
                 Fig destPortFig = destFigClassifierRole.getPortFig(foundPort);
-                Object edgeType = getArg("edgeClass");
-                if (edgeType != null) {
-                    message = mgm.connect(startPort, foundPort, edgeType);
-                } else {
-                    message = mgm.connect(startPort, foundPort);
-                }
+                Object edgeType = Model.getMetaTypes().getMessage();
+                message = mgm.connect(startPort, foundPort, edgeType);
 
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a

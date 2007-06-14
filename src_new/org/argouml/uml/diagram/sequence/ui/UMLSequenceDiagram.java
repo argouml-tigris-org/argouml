@@ -27,11 +27,11 @@ package org.argouml.uml.diagram.sequence.ui;
 import java.beans.PropertyVetoException;
 import java.util.Hashtable;
 
-import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
+import org.argouml.uml.diagram.ui.ActionSetAddMessageMode;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -136,36 +136,23 @@ public class UMLSequenceDiagram extends UMLDiagram {
     protected Object[] getUmlActions() {
         if (actions == null) {
             actions = new Object[7];
-            actions[0] =
-                new ActionAddClassifierRole();
-            int offset = 1;
-
-            Object[][] actionList = {
-                {Model.getMetaTypes().getCallAction(),
-                    "button.new-callaction", },
-                {Model.getMetaTypes().getReturnAction(),
-                    "button.new-returnaction", },
-                {Model.getMetaTypes().getCreateAction(),
-                    "button.new-createaction", },
-                {Model.getMetaTypes().getDestroyAction(),
-                    "button.new-destroyaction", },
-            };
+            actions[0] = new RadioAction(new ActionAddClassifierRole());
+            
+            actions[1] = new RadioAction(new ActionSetAddMessageMode(
+        	    Model.getMetaTypes().getCallAction(),
+        	    "button.new-callaction"));
+            actions[2] = new RadioAction(new ActionSetAddMessageMode(
+        	    Model.getMetaTypes().getReturnAction(),
+        	    "button.new-returnaction"));
+            actions[3] = new RadioAction(new ActionSetAddMessageMode(
+        	    Model.getMetaTypes().getCreateAction(),
+        	    "button.new-createaction"));
+            actions[4] = new RadioAction(new ActionSetAddMessageMode(
+        	    Model.getMetaTypes().getDestroyAction(),
+        	    "button.new-destroyaction"));
 
             Hashtable<String, Object> args = new Hashtable<String, Object>();
-	    for (int i = 0; i < actionList.length; i++) {
-                args.clear();
-                args.put("edgeClass", Model.getMetaTypes().getMessage());
-		args.put("action", actionList[i][0]);
-                args.put("actionName",
-			 ResourceLoaderWrapper
-			 .getImageBinding((String) actionList[i][1]));
-		actions[i + offset] =
-                    new RadioAction(new ActionSetMode(
-                        ModeCreateMessage.class, args,
-                        (String) actionList[i][1]));
-	    }
 
-            args.clear();
             args.put("name", SEQUENCE_EXPAND_BUTTON);
             actions[5] =
 		new RadioAction(new ActionSetMode(ModeChangeHeight.class,
