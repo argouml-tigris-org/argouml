@@ -24,7 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -45,23 +46,26 @@ public class UMLModelElementVisibilityRadioButtonPanel
      */
     private static final long serialVersionUID = -1705561978481456281L;
     
-    private static HashMap labelTextsAndActionCommands = new HashMap();
+    private static List<String[]> labelTextsAndActionCommands =
+        new ArrayList<String[]>();
 
-    // TODO: The buttons should be order of reducing visibility, but
-    // they get ordered by natural order of the keys (hash order?) - tfm
     static {
-        labelTextsAndActionCommands.put(Translator.localize(
-                "label.visibility-public"),
-                ActionSetModelElementVisibility.PUBLIC_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize(
-                "label.visibility-package"),
-                ActionSetModelElementVisibility.PACKAGE_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize(
-                "label.visibility-protected"),
-                ActionSetModelElementVisibility.PROTECTED_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize(
-                "label.visibility-private"),
-                ActionSetModelElementVisibility.PRIVATE_COMMAND);
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("label.visibility-public"),
+            ActionSetModelElementVisibility.PUBLIC_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("label.visibility-package"),
+            ActionSetModelElementVisibility.PACKAGE_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("label.visibility-protected"),
+            ActionSetModelElementVisibility.PROTECTED_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("label.visibility-private"),
+            ActionSetModelElementVisibility.PRIVATE_COMMAND
+        });
     }
 
     /**
@@ -82,8 +86,9 @@ public class UMLModelElementVisibilityRadioButtonPanel
         if (getTarget() != null) {
             Object target = getTarget();
             Object kind = Model.getFacade().getVisibility(target);
-            if (kind == null
-                    || kind.equals(
+            if (kind == null) {
+                setSelected(null);
+            } else if (kind.equals(
                             Model.getVisibilityKind().getPublic())) {
                 setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
             } else if (kind.equals(

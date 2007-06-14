@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
@@ -38,17 +38,22 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
 public class UMLOperationConcurrencyRadioButtonPanel extends
         UMLRadioButtonPanel {
 
-    private static Map labelTextsAndActionCommands =
-        new HashMap();
+    private static List<String[]> labelTextsAndActionCommands =
+        new ArrayList<String[]>();
 
     static {
-        // TODO: i18n, use Translator
-        labelTextsAndActionCommands.put("sequential",
-                ActionSetOperationConcurrencyKind.SEQUENTIAL_COMMAND);
-        labelTextsAndActionCommands.put("guarded",
-                ActionSetOperationConcurrencyKind.GUARDED_COMMAND);
-        labelTextsAndActionCommands.put("concurrent",
-                ActionSetOperationConcurrencyKind.CONCURRENT_COMMAND);
+        labelTextsAndActionCommands.add(new String[] {
+            "label.concurrency-sequential",
+            ActionSetOperationConcurrencyKind.SEQUENTIAL_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            "label.concurrency-guarded",
+            ActionSetOperationConcurrencyKind.GUARDED_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            "label.concurrency-concurrent",
+            ActionSetOperationConcurrencyKind.CONCURRENT_COMMAND
+        });
     }
 
     /**
@@ -59,8 +64,7 @@ public class UMLOperationConcurrencyRadioButtonPanel extends
      */
     public UMLOperationConcurrencyRadioButtonPanel(String title,
             boolean horizontal) {
-        // TODO: i18n
-        super(title, labelTextsAndActionCommands, "Concurrency",
+        super(title, labelTextsAndActionCommands, "concurrency",
                 ActionSetOperationConcurrencyKind.getInstance(), horizontal);
     }
 
@@ -69,24 +73,25 @@ public class UMLOperationConcurrencyRadioButtonPanel extends
      */
     public void buildModel() {
         if (getTarget() != null) {
-            Object target = /* (MModelElement) */getTarget();
+            Object target = getTarget();
             Object kind = Model.getFacade().getConcurrency(target);
-            if (kind == null
-                    || kind.equals(
-                            Model.getConcurrencyKind()
-                            	.getSequential())) {
-                setSelected(ActionSetOperationConcurrencyKind
-                        .SEQUENTIAL_COMMAND);
+            if (kind == null) {
+                setSelected(null);
+            } else if (kind.equals(
+                    Model.getConcurrencyKind().getSequential())) {
+                setSelected(
+                        ActionSetOperationConcurrencyKind.SEQUENTIAL_COMMAND);
             } else if (kind.equals(
                     Model.getConcurrencyKind().getGuarded())) {
-                setSelected(ActionSetOperationConcurrencyKind.GUARDED_COMMAND);
+                setSelected(
+                        ActionSetOperationConcurrencyKind.GUARDED_COMMAND);
             } else if (kind.equals(
                     Model.getConcurrencyKind().getConcurrent())) {
-                setSelected(ActionSetOperationConcurrencyKind
-                        .CONCURRENT_COMMAND);
+                setSelected(
+                        ActionSetOperationConcurrencyKind.CONCURRENT_COMMAND);
             } else {
-                setSelected(ActionSetOperationConcurrencyKind
-                        .SEQUENTIAL_COMMAND);
+                setSelected(
+                        ActionSetOperationConcurrencyKind.SEQUENTIAL_COMMAND);
             }
         }
     }

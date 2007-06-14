@@ -24,8 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -34,22 +34,29 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
 /**
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 29, 2003
+ * 
+ * TODO: For UML 2.x this needs to be changed to just a toggle which 
+ * represents ReadOnly (frozen) or not (changeable).
  */
 public class UMLStructuralFeatureChangeabilityRadioButtonPanel
 	extends UMLRadioButtonPanel {
 
-    private static Map labelTextsAndActionCommands = new HashMap();
+    private static List<String[]> labelTextsAndActionCommands =
+        new ArrayList<String[]>();
 
     static {
-        labelTextsAndActionCommands.put(Translator.localize(
-                "label.changeability-addonly"),
-                ActionSetChangeability.ADDONLY_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize(
-                "label.changeability-changeable"),
-                ActionSetChangeability.CHANGEABLE_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize(
-                "label.changeability-frozen"),
-                ActionSetChangeability.FROZEN_COMMAND);
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("label.changeability-addonly"),
+            ActionSetChangeability.ADDONLY_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("label.changeability-changeable"),
+            ActionSetChangeability.CHANGEABLE_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("label.changeability-frozen"),
+            ActionSetChangeability.FROZEN_COMMAND
+        });
     }
 
     /**
@@ -70,8 +77,9 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
         if (getTarget() != null) {
             Object target =  getTarget();
             Object kind = Model.getFacade().getChangeability(target);
-            if (kind == null
-                    || kind.equals(
+            if (kind == null) {
+                setSelected(null);
+            } else if (kind.equals(
                             Model.getChangeableKind().getAddOnly())) {
                 setSelected(ActionSetChangeability.ADDONLY_COMMAND);
             } else if (kind.equals(
