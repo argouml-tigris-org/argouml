@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,44 +24,54 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
- * A panel for the parameterdiretion (in, inout...) of a parameter.
+ * A panel for the ParameterDirectionKind (in, inout...) of a Parameter.
  *
  * @author mkl
  */
 public class UMLParameterDirectionKindRadioButtonPanel extends
         UMLRadioButtonPanel {
 
-    private static Map labelTextsAndActionCommands = new HashMap();
+    private static List<String[]> labelTextsAndActionCommands =
+            new ArrayList<String[]>();
 
     static {
-        // TODO: i18n, use Translator
-        labelTextsAndActionCommands.put("in",
-                ActionSetParameterDirectionKind.IN_COMMAND);
-        labelTextsAndActionCommands.put("out",
-                ActionSetParameterDirectionKind.OUT_COMMAND);
-        labelTextsAndActionCommands.put("inout",
-                ActionSetParameterDirectionKind.INOUT_COMMAND);
-        labelTextsAndActionCommands.put("return",
-                ActionSetParameterDirectionKind.RETURN_COMMAND);
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("button.in"),
+            ActionSetParameterDirectionKind.IN_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("button.out"),
+            ActionSetParameterDirectionKind.OUT_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("button.inout"),
+            ActionSetParameterDirectionKind.INOUT_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("button.return"),
+            ActionSetParameterDirectionKind.RETURN_COMMAND
+        });
     }
 
     /**
      * Constructor.
-     *
-     * @param title the title of the panel
-     * @param horizontal determines the orientation
+     * 
+     * @param title
+     *            the title of the panel
+     * @param horizontal
+     *            determines the orientation
      */
     public UMLParameterDirectionKindRadioButtonPanel(String title,
             boolean horizontal) {
-        // TODO: i18n
-        super(title, labelTextsAndActionCommands, "ParameterKind:",
+        super(title, labelTextsAndActionCommands, "kind",
                 ActionSetParameterDirectionKind.getInstance(), horizontal);
     }
 
@@ -70,11 +80,12 @@ public class UMLParameterDirectionKindRadioButtonPanel extends
      */
     public void buildModel() {
         if (getTarget() != null) {
-            Object target = /* (MModelElement) */getTarget();
+            Object target = getTarget();
             Object kind = Model.getFacade().getKind(target);
-            if (kind == null
-                    || kind.equals(
-                            Model.getDirectionKind().getInParameter())) {
+            if (kind == null) {
+                setSelected(null);
+            } else if (kind.equals(
+                    Model.getDirectionKind().getInParameter())) {
                 setSelected(ActionSetParameterDirectionKind.IN_COMMAND);
             } else if (kind.equals(
                     Model.getDirectionKind().getInOutParameter())) {

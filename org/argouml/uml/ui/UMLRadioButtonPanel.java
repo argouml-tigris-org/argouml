@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,14 +28,14 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
@@ -68,7 +68,7 @@ public abstract class UMLRadioButtonPanel
     private Object panelTarget;
 
     /**
-     * The name of the MEvent that is fired when the target object has changed
+     * The name of the event that is fired when the target object has changed
      * the attribute that is shown here.
      */
     private String propertySetName;
@@ -77,28 +77,34 @@ public abstract class UMLRadioButtonPanel
      * The group of buttons
      */
     private ButtonGroup buttonGroup = new ButtonGroup();
-
+    
     /**
      * Constructs a new UMLRadioButtonPanel.
-     * @param isDoubleBuffered @see JPanel
-     * @param title The title of the titledborder around the buttons. If the
-     * title is null, there is no border shown.
-     * @param labeltextsActioncommands A map of keys containing the texts for
-     * the buttons and values containing the actioncommand that permits the
-     * setAction to logically recognize the button.
-     * @param thePropertySetName the name of the MEvent that is fired when the
-     * property that it shows changes value.
-     * @param setAction the action that should be registred with the buttons and
-     * that's executed when one of the buttons is pressed.
-     * @param horizontal when true the buttons should be layed out horizontaly.
+     * 
+     * @param isDoubleBuffered see {@link JPanel}.
+     * @param title
+     *            The title of the titledborder around the buttons. If the title
+     *            is null, there is no border shown.
+     * @param labeltextsActioncommands
+     *            A map of keys containing the texts for the buttons and values
+     *            containing the actioncommand that permits the setAction to
+     *            logically recognize the button.
+     * @param thePropertySetName
+     *            the name of the MEvent that is fired when the property that it
+     *            shows changes value.
+     * @param setAction
+     *            the action that should be registred with the buttons and
+     *            that's executed when one of the buttons is pressed.
+     * @param horizontal
+     *            when true the buttons should be layed out horizontaly.
      */
     public UMLRadioButtonPanel(
-			       boolean isDoubleBuffered,
-			       String title,
-			       Map labeltextsActioncommands,
-			       String thePropertySetName,
-			       Action setAction,
-			       boolean horizontal) {
+                               boolean isDoubleBuffered,
+                               String title,
+                               List<String[]> labeltextsActioncommands,
+                               String thePropertySetName,
+                               Action setAction,
+                               boolean horizontal) {
         super(isDoubleBuffered);
         setLayout(horizontal ? new GridLayout() : new GridLayout(0, 1));
         setDoubleBuffered(true);
@@ -110,21 +116,100 @@ public abstract class UMLRadioButtonPanel
         setButtons(labeltextsActioncommands, setAction);
         setPropertySetName(thePropertySetName);
     }
+    
+    /**
+     * Constructs a new UMLRadioButtonPanel.
+     * 
+     * @param title
+     *            The title of the titledborder around the buttons.
+     * @param labeltextsActioncommands
+     *            A map of keys containing the texts for the buttons and values
+     *            containing the actioncommand that permits the setAction to
+     *            logically recognize the button.
+     * @param thePropertySetName
+     *            the name of the MEvent that is fired when the property that is
+     *            showns changes value.
+     * @param setAction
+     *            the action that should be registred with the buttons and
+     *            that's executed when one of the buttons is pressed
+     * @param horizontal
+     *            when true the buttons should be layed out horizontaly.
+     */
+    public UMLRadioButtonPanel(String title,
+                               List<String[]> labeltextsActioncommands,
+                               String thePropertySetName,
+                               Action setAction,
+                               boolean horizontal) {
+        this(true, title, labeltextsActioncommands,
+             thePropertySetName, setAction, horizontal);
+    }
+    
+    /**
+     * Constructs a new UMLRadioButtonPanel.
+     * 
+     * @param isDoubleBuffered See {@link JPanel}.
+     * @param title
+     *            The title of the titledborder around the buttons. If the title
+     *            is null, there is no border shown.
+     * @param labeltextsActioncommands
+     *            A map of keys containing the texts for the buttons and values
+     *            containing the actioncommand that permits the setAction to
+     *            logically recognize the button.
+     * @param thePropertySetName
+     *            the name of the MEvent that is fired when the property that it
+     *            shows changes value.
+     * @param setAction
+     *            the action that should be registred with the buttons and
+     *            that's executed when one of the buttons is pressed.
+     * @param horizontal
+     *            when true the buttons should be layed out horizontaly.
+     * @deprecated for 0.25.4 by tfmorris. Use List<String[]> form of
+     *             constructor.
+     */
+    public UMLRadioButtonPanel(
+			       boolean isDoubleBuffered,
+			       String title,
+			       Map<String, String> labeltextsActioncommands,
+			       String thePropertySetName,
+			       Action setAction,
+			       boolean horizontal) {
+        this(isDoubleBuffered, title, toList(labeltextsActioncommands),
+                thePropertySetName, setAction, horizontal);
+    }
+
+    private static List<String[]> toList(Map<String, String> map) {
+        List<String[]> list = new ArrayList<String[]>();
+        for (String key : map.keySet()) {
+            list.add(new String[] {key, map.get(key)});
+        }
+        return list;
+    }
 
     /**
      * Constructs a new UMLRadioButtonPanel.
-     * @param title The title of the titledborder around the buttons.
-     * @param labeltextsActioncommands A map of keys containing the texts for
-     * the buttons and values containing the actioncommand that permits the
-     * setAction to logically recognize the button.
-     * @param thePropertySetName the name of the MEvent that is fired when the
-     * property that is showns changes value.
-     * @param setAction the action that should be registred with the buttons and
-     * that's executed when one of the buttons is pressed
-     * @param horizontal when true the buttons should be layed out horizontaly.
+     * 
+     * @param title
+     *            The title of the titledborder around the buttons.
+     * @param labeltextsActioncommands
+     *            A map of keys containing the texts for the buttons and values
+     *            containing the actioncommand that permits the setAction to
+     *            logically recognize the button.
+     * @param thePropertySetName
+     *            the name of the MEvent that is fired when the property that is
+     *            showns changes value.
+     * @param setAction
+     *            the action that should be registred with the buttons and
+     *            that's executed when one of the buttons is pressed
+     * @param horizontal
+     *            when true the buttons should be layed out horizontaly.
+     * @deprecated for 0.25.4 by tfmorris. Use List<String[]> form of
+     *             constructor. See
+     *             {@link UMLParameterDirectionKindRadioButtonPanel} for an
+     *             example of a subclass which has been converted to the new
+     *             form of constructor.
      */
     public UMLRadioButtonPanel(String title,
-			       Map labeltextsActioncommands,
+			       Map<String, String> labeltextsActioncommands,
 			       String thePropertySetName,
 			       Action setAction,
 			       boolean horizontal) {
@@ -133,32 +218,34 @@ public abstract class UMLRadioButtonPanel
     }
 
     /**
-     * Initially constructs the buttons.
-     *
-     * @param labeltextsActioncommands A map of keys containing the
-     * texts for the buttons and values containing the actioncommand
-     * that permits the setAction to logically recognize the button.
-     * @param setAction the action that should be registred with the
-     * buttons and that's executed when one of the buttons is pressed
+     * Construct the buttons and place them in the panel as well as the button
+     * group.
      * 
-     * TODO: This forces the buttons to be ordered in key map order,
-     * an order which is arbitrary for a HashMap.  This should be
-     * changed to allow the UI designer to specify the order. - tfm
+     * @param labeltextsActioncommands
+     *            A list of string arrays containing a pair of strings with the
+     *            texts for the buttons (already localized) and string value for
+     *            the actioncommand that permits the setAction to logically
+     *            recognize the button.
+     * @param setAction
+     *            the action that should be registred with the buttons and
+     *            that's executed when one of the buttons is pressed
      */
-    private void setButtons(Map labeltextsActioncommands, Action setAction) {
+    private void setButtons(List<String[]> labeltextsActioncommands,
+            Action setAction) {
         Enumeration en = buttonGroup.getElements();
         while (en.hasMoreElements()) {
             AbstractButton button = (AbstractButton) en.nextElement();
             buttonGroup.remove(button);
         }
         removeAll();
-        Iterator it = labeltextsActioncommands.keySet().iterator();
-        while (it.hasNext()) {
-            String keyAndLabel = (String) it.next();
-            JRadioButton button = new JRadioButton(keyAndLabel);
+
+        // Add an invisible button to be used when everything is off
+        buttonGroup.add(new JRadioButton());
+        
+        for (String[] keyAndLabelX :  labeltextsActioncommands) {
+            JRadioButton button = new JRadioButton(keyAndLabelX[0]);
             button.addActionListener(setAction);
-	    String actionCommand =
-		(String) labeltextsActioncommands.get(keyAndLabel);
+	    String actionCommand = keyAndLabelX[1];
             button.setActionCommand(actionCommand);
             button.setFont(LookAndFeelMgr.getInstance().getStandardFont());
             buttonGroup.add(button);
@@ -228,17 +315,25 @@ public abstract class UMLRadioButtonPanel
     public abstract void buildModel();
 
     /**
-     * Selects the radiobutton with the given actionCommand
-     * @param actionCommand The actionCommand of the button that should be
-     * selected.
+     * Selects the radiobutton with the given actionCommand. If a null parameter
+     * is passed, all buttons in the group will be deselected.
+     * 
+     * @param actionCommand
+     *            The actionCommand of the button that should be selected or
+     *            null to deselect all buttons.
      */
     public void setSelected(String actionCommand) {
-        Enumeration en = buttonGroup.getElements();
-        ButtonModel model = null;
+        Enumeration<AbstractButton> en = buttonGroup.getElements();
+        if (actionCommand == null) {
+            // Our first button is invisible.  
+            // Selecting it deselects all visible buttons.
+            en.nextElement().setSelected(true);
+            return;
+        }
         while (en.hasMoreElements()) {
-            model = ((AbstractButton) en.nextElement()).getModel();
-            if (actionCommand.equals(model.getActionCommand())) {
-                model.setSelected(true);
+            AbstractButton b = en.nextElement();
+            if (actionCommand.equals(b.getModel().getActionCommand())) {
+                b.setSelected(true);
                 break;
             }
         }
