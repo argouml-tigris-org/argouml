@@ -44,19 +44,19 @@ public class UMLParameterDirectionKindRadioButtonPanel extends
 
     static {
         labelTextsAndActionCommands.add(new String[] {
-            Translator.localize("button.in"),
+            Translator.localize("label.parameter-direction-in"),
             ActionSetParameterDirectionKind.IN_COMMAND
         });
         labelTextsAndActionCommands.add(new String[] {
-            Translator.localize("button.out"),
+            Translator.localize("label.parameter-direction-out"),
             ActionSetParameterDirectionKind.OUT_COMMAND
         });
         labelTextsAndActionCommands.add(new String[] {
-            Translator.localize("button.inout"),
+            Translator.localize("label.parameter-direction-inout"),
             ActionSetParameterDirectionKind.INOUT_COMMAND
         });
         labelTextsAndActionCommands.add(new String[] {
-            Translator.localize("button.return"),
+            Translator.localize("label.parameter-Sdirection-return"),
             ActionSetParameterDirectionKind.RETURN_COMMAND
         });
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -39,18 +39,22 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
 public class UMLAssociationEndAggregationRadioButtonPanel
     extends UMLRadioButtonPanel {
 
-    private static Map labelTextsAndActionCommands = new HashMap();
+    private static List<String[]> labelTextsAndActionCommands =
+        new ArrayList<String[]>();
 
     static {
-        labelTextsAndActionCommands.put(
+        labelTextsAndActionCommands.add(new String[] {
             Translator.localize("label.aggregationkind-aggregate"),
-            ActionSetAssociationEndAggregation.AGGREGATE_COMMAND);
-        labelTextsAndActionCommands.put(
+            ActionSetAssociationEndAggregation.AGGREGATE_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
             Translator.localize("label.aggregationkind-composite"),
-            ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
-        labelTextsAndActionCommands.put(
+            ActionSetAssociationEndAggregation.COMPOSITE_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
             Translator.localize("label.aggregationkind-none"),
-            ActionSetAssociationEndAggregation.NONE_COMMAND);
+            ActionSetAssociationEndAggregation.NONE_COMMAND
+        });
     }
 
     /**
@@ -71,27 +75,18 @@ public class UMLAssociationEndAggregationRadioButtonPanel
         if (getTarget() != null) {
             Object target = getTarget();
             Object kind = Model.getFacade().getAggregation(target);
-            if (kind == null
-                    || kind.equals(
-                            Model.getAggregationKind().getNone())) {
+            if (kind == null) {
+                setSelected(null);
+            } else if (kind.equals(Model.getAggregationKind().getNone())) {
                 setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
+            } else if (kind.equals(Model.getAggregationKind().getAggregate())) {
+                setSelected(
+                        ActionSetAssociationEndAggregation.AGGREGATE_COMMAND);
+            } else if (kind.equals(Model.getAggregationKind().getComposite())) {
+                setSelected(
+                        ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
             } else {
-		if (kind.equals(
-		        Model.getAggregationKind().getAggregate())) {
-		    setSelected(ActionSetAssociationEndAggregation
-		            .AGGREGATE_COMMAND);
-		} else {
-		    if (kind.equals(
-		            Model.getAggregationKind()
-		            	.getComposite())) {
-			setSelected(ActionSetAssociationEndAggregation
-			        .COMPOSITE_COMMAND);
-		    } else {
-		        setSelected(ActionSetAssociationEndAggregation
-
-			        .NONE_COMMAND);
-		    }
-		}
+                setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
             }
         }
     }

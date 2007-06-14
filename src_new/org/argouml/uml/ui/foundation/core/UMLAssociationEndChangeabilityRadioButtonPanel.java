@@ -24,8 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -33,26 +33,33 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
  * This panel contains radio buttons that represent the Changeability
- * of an sssociation-end.
+ * of an asssociation-end.
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
+ * 
+ * TODO: For UML 2.x this needs to be changed to be just ReadOnly (frozen)
+ * or not (changeable).
  */
 public class UMLAssociationEndChangeabilityRadioButtonPanel
     extends UMLRadioButtonPanel {
 
-    private static Map labelTextsAndActionCommands = new HashMap();
+    private static List<String[]> labelTextsAndActionCommands =
+        new ArrayList<String[]>();
 
     static {
-        labelTextsAndActionCommands.put(Translator.localize(
-                "label.changeability-addonly"),
-                ActionSetChangeability.ADDONLY_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize(
-                "label.changeability-changeable"),
-                ActionSetChangeability.CHANGEABLE_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize(
-                "label.changeability-frozen"),
-                ActionSetChangeability.FROZEN_COMMAND);
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("label.changeability-addonly"),
+            ActionSetChangeability.ADDONLY_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("label.changeability-changeable"),
+            ActionSetChangeability.CHANGEABLE_COMMAND
+        });
+        labelTextsAndActionCommands.add(new String[] {
+            Translator.localize("label.changeability-frozen"),
+            ActionSetChangeability.FROZEN_COMMAND
+        });
     }
 
     /**
@@ -73,18 +80,17 @@ public class UMLAssociationEndChangeabilityRadioButtonPanel
         if (getTarget() != null) {
             Object target = getTarget();
             Object kind = Model.getFacade().getChangeability(target);
-            if (kind == null
-                || kind.equals(Model.getChangeableKind().getChangeable())) {
+            if (kind == null) {
+                setSelected(null);
+            } else if (kind.equals(Model.getChangeableKind().getChangeable())) {
                 setSelected(ActionSetChangeability.CHANGEABLE_COMMAND);
-            } else
-		if (kind.equals(Model.getChangeableKind().getAddOnly())) {
-		    setSelected(ActionSetChangeability.ADDONLY_COMMAND);
-		} else
-		    if (kind.equals(Model.getChangeableKind().getFrozen())) {
-			setSelected(ActionSetChangeability.FROZEN_COMMAND);
-		    } else {
-		        setSelected(ActionSetChangeability.CHANGEABLE_COMMAND);
-		    }
+            } else if (kind.equals(Model.getChangeableKind().getAddOnly())) {
+                setSelected(ActionSetChangeability.ADDONLY_COMMAND);
+            } else if (kind.equals(Model.getChangeableKind().getFrozen())) {
+                setSelected(ActionSetChangeability.FROZEN_COMMAND);
+            } else {
+                setSelected(ActionSetChangeability.CHANGEABLE_COMMAND);
+            }
         }
     }
 }
