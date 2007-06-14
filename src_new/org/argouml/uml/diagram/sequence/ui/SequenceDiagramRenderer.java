@@ -67,8 +67,6 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
             result = new FigComment(gm, node);
         }
         LOG.debug("SequenceDiagramRenderer getFigNodeFor " + result);
-        
-        lay.add(result);
         return result;
     }
 
