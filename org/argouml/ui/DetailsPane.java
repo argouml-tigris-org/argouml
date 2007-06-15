@@ -227,15 +227,21 @@ public class DetailsPane
         enableTabs(target);
         if (target != null) {
             boolean tabSelected = false;
-            for (int i = lastNonNullTab; i >= 1; i--) {
-                Component tab = topLevelTabbedPane.getComponentAt(i);
-                if (tab instanceof TabTarget) {
-                    if (((TabTarget) tab).shouldBeEnabled(target)) {
-                        topLevelTabbedPane.setSelectedIndex(i);
-                        tabSelected = true;
-                        lastNonNullTab = i;
-                        break;
-                    }
+
+            // Select prop panel if current panel is not appropriate
+            // for selected target
+            Component selectedTab = topLevelTabbedPane
+                    .getComponentAt(lastNonNullTab);
+            if (selectedTab instanceof TabTarget) {
+                if (((TabTarget) selectedTab).shouldBeEnabled(target)) {
+                    topLevelTabbedPane.setSelectedIndex(lastNonNullTab);
+                    tabSelected = true;
+                } else {
+                    int indexOfPropPanel = topLevelTabbedPane
+                            .indexOfComponent(getTabProps());
+                    topLevelTabbedPane.setSelectedIndex(indexOfPropPanel);
+                    tabSelected = true;
+                    lastNonNullTab = indexOfPropPanel;
                 }
             }
             if (!tabSelected) {
