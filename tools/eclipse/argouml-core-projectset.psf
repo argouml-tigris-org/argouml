@@ -5,6 +5,7 @@
 		<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/lib,argouml-core-lib"/>
 		<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/model,argouml-core-model"/>
 		<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/model-mdr,argouml-core-model-mdr"/>
+		<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/model-euml,argouml-core-model-euml"/>
 		<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/tests,argouml-core-tests"/>
 		<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/tools,argouml-core-tools"/>
 	</provider>
