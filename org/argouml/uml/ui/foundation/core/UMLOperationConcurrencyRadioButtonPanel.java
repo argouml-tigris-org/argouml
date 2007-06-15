@@ -39,22 +39,26 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
 public class UMLOperationConcurrencyRadioButtonPanel extends
         UMLRadioButtonPanel {
 
-    private static List<String[]> labelTextsAndActionCommands =
-        new ArrayList<String[]>();
+    private static List<String[]> labelTextsAndActionCommands;
 
-    static {
-        labelTextsAndActionCommands.add(new String[] {
-            Translator.localize("label.concurrency-sequential"),
-            ActionSetOperationConcurrencyKind.SEQUENTIAL_COMMAND
-        });
-        labelTextsAndActionCommands.add(new String[] {
-            Translator.localize("label.concurrency-guarded"),
-            ActionSetOperationConcurrencyKind.GUARDED_COMMAND
-        });
-        labelTextsAndActionCommands.add(new String[] {
-            Translator.localize("label.concurrency-concurrent"),
-            ActionSetOperationConcurrencyKind.CONCURRENT_COMMAND
-        });
+    private static List<String[]> getCommands() {
+        if (labelTextsAndActionCommands == null) {
+            labelTextsAndActionCommands =
+                new ArrayList<String[]>();
+            labelTextsAndActionCommands.add(new String[] {
+                Translator.localize("label.concurrency-sequential"),
+                ActionSetOperationConcurrencyKind.SEQUENTIAL_COMMAND
+            });
+            labelTextsAndActionCommands.add(new String[] {
+                Translator.localize("label.concurrency-guarded"),
+                ActionSetOperationConcurrencyKind.GUARDED_COMMAND
+            });
+            labelTextsAndActionCommands.add(new String[] {
+                Translator.localize("label.concurrency-concurrent"),
+                ActionSetOperationConcurrencyKind.CONCURRENT_COMMAND
+            });
+        }
+        return labelTextsAndActionCommands;
     }
 
     /**
@@ -65,7 +69,7 @@ public class UMLOperationConcurrencyRadioButtonPanel extends
      */
     public UMLOperationConcurrencyRadioButtonPanel(String title,
             boolean horizontal) {
-        super(title, labelTextsAndActionCommands, "concurrency",
+        super(title, getCommands(), "concurrency",
                 ActionSetOperationConcurrencyKind.getInstance(), horizontal);
     }
 
