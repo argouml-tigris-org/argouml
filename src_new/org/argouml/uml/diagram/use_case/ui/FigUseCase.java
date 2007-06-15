@@ -302,6 +302,8 @@ public class FigUseCase extends FigNodeModelElement
         // which we set as our bounds.
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
+        
+        updateExtensionPoint();
     }
 
     /**
@@ -1210,12 +1212,12 @@ public class FigUseCase extends FigNodeModelElement
 
             // Take each EP and its corresponding fig in turn
             Iterator iter = eps.iterator();
-            Vector figs = new Vector(epVec.getFigs());
+            List<Fig> figs = new ArrayList<Fig>(epVec.getFigs());
             if (figs.size() > 0) {
                 // Ignore the first fig:
-                figs.removeElementAt(0);
+                figs.remove(0);
             }
-            Vector toBeRemoved = new Vector(figs);
+            List<Fig> toBeRemoved = new ArrayList<Fig>(figs);
 
             while (iter.hasNext()) {
                 CompartmentFigText epFig = null;
@@ -1278,9 +1280,7 @@ public class FigUseCase extends FigNodeModelElement
 
             // Remove any spare figs we have if there are now fewer extension
             // points than figs
-            Iterator i = toBeRemoved.iterator();
-            while (i.hasNext()) {
-                Fig f = (Fig) i.next();
+            for (Fig f : toBeRemoved) {
                 epVec.removeFig(f);    
             }
         }
