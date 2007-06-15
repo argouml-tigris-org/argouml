@@ -1,13 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.argouml.core.model.euml2
+Bundle-SymbolicName: org.argouml.core.model.euml2_b00__1
 Bundle-Version: 0.25.3
-Bundle-Localization: plugin
-Export-Package: org.argouml.model.euml
 Bundle-Vendor: %pluginProvider
-Require-Bundle: org.argouml.core.model,
- org.eclipse.core.runtime
-Bundle-ClassPath: 
-Eclipse-RegisterBuddy: 
+Bundle-Localization: plugin
+Require-Bundle: org.argouml.core.model,org.eclipse.core.runtime,org.eclipse.uml2.common,org.eclipse.uml2.common.edit,org.eclipse.uml2.uml,org.eclipse.uml2.uml.edit,org.eclipse.uml2.uml.resources
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: org.argouml.model.euml
+Eclipse-RegisterBuddy: org.argouml.core.lib

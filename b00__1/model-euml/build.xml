@@ -38,11 +38,11 @@ This is designed to work in two different environments:
     <property name="result.jar" value="argouml-euml.jar"/>
 
     <path id="euml.run.classpath">
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.common_2.3.0.v200703080200.jar"/>
+      <!--<pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.common_2.3.0.v200703080200.jar"/>
       <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore.xmi_2.3.0.v200703080200.jar"/>
       <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore_2.3.0.v200703080200.jar"/>
       <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.common_1.3.0.v200703011358.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.uml_2.1.0.v200703011358.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.uml_2.1.0.v200703011358.jar"/>-->
     </path>
 
     <path id="euml.compile.classpath">
