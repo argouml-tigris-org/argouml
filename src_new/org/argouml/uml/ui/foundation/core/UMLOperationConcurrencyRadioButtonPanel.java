@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
@@ -43,15 +44,15 @@ public class UMLOperationConcurrencyRadioButtonPanel extends
 
     static {
         labelTextsAndActionCommands.add(new String[] {
-            "label.concurrency-sequential",
+            Translator.localize("label.concurrency-sequential"),
             ActionSetOperationConcurrencyKind.SEQUENTIAL_COMMAND
         });
         labelTextsAndActionCommands.add(new String[] {
-            "label.concurrency-guarded",
+            Translator.localize("label.concurrency-guarded"),
             ActionSetOperationConcurrencyKind.GUARDED_COMMAND
         });
         labelTextsAndActionCommands.add(new String[] {
-            "label.concurrency-concurrent",
+            Translator.localize("label.concurrency-concurrent"),
             ActionSetOperationConcurrencyKind.CONCURRENT_COMMAND
         });
     }
