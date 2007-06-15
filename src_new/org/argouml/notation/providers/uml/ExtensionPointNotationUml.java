@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.ExtensionPointNotation;
-import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * The notation for an extension point for UML.
@@ -94,7 +93,6 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
         // the fields of the extension point to the values in newEp.
         if (newEp == null) {
             ProjectManager.getManager().getCurrentProject().moveToTrash(ep);
-            TargetManager.getInstance().setTarget(useCase);
         } else {
             Model.getCoreHelper().setName(ep, Model.getFacade().getName(newEp));
             Model.getUseCasesHelper().setLocation(ep,
