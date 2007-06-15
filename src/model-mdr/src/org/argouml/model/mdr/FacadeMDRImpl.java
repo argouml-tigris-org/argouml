@@ -3891,8 +3891,11 @@ class FacadeMDRImpl implements Facade {
                 return me.getName();
             }
             if (handle instanceof Multiplicity) {
-                return modelImpl.getDataTypesHelper()
-                        .multiplicityToString(handle);
+                return modelImpl.getDataTypesHelper().multiplicityToString(
+                        handle);
+            }
+            if (handle instanceof Expression) {
+                return ((Expression) handle).getBody();
             }
         } catch (InvalidObjectException e) {
             String uuid = getUUID(handle);
