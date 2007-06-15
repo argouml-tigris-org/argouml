@@ -41,7 +41,6 @@ import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.OperationNotation;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.util.MyTokenizer;
 
 /**
@@ -107,14 +106,12 @@ public class OperationNotationUml extends OperationNotation {
         if (end == -1) {
             //no text? remove op!
             currentProject.moveToTrash(operation);
-            TargetManager.getInstance().setTarget(classifier);
             return;
         }
         String s = text.substring(start, end).trim();
         if (s.length() == 0) {
             //no non-whitechars in text? remove op!
             currentProject.moveToTrash(operation);
-            TargetManager.getInstance().setTarget(classifier);
             return;
         }
         parseOperation(s, operation);
