@@ -40,7 +40,6 @@ import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.AttributeNotation;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.util.MyTokenizer;
 
 /**
@@ -117,14 +116,12 @@ public class AttributeNotationUml extends AttributeNotation {
         if (end == -1) {
             //no text? remove attr!
             project.moveToTrash(attribute);
-            TargetManager.getInstance().setTarget(classifier);
             return;
         }
         String s = text.substring(start, end).trim();
         if (s.length() == 0) {
             //no non-whitechars in text? remove attr!
             project.moveToTrash(attribute);
-            TargetManager.getInstance().setTarget(classifier);
             return;
         }
         parseAttribute(s, attribute);
