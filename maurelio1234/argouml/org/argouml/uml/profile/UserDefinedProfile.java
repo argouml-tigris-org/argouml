@@ -37,9 +37,9 @@ public class UserDefinedProfile extends Profile {
     private File modelFile;
     private ProfileModelLoader modelLoader;
     
-    public UserDefinedProfile(File file, ProfileModelLoader loader) {
+    public UserDefinedProfile(File file) {
 	this.displayName = file.getName();
-	this.modelLoader = loader;
+	this.modelLoader = new FileModelLoader();
 	this.modelFile = file;
     }
     
@@ -63,4 +63,7 @@ public class UserDefinedProfile extends Profile {
 	return null;
     }
 
+    public File getModelFile() {
+        return modelFile;
+    }
 }
