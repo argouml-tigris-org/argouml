@@ -47,6 +47,7 @@ import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.argouml.util.FileConstants;
 import org.argouml.util.ThreadUtils;
 
@@ -200,7 +201,7 @@ class ZargoFilePersister extends UmlFilePersister {
         throws OpenException, InterruptedException {
         
         ProgressMgr progressMgr = new ProgressMgr();
-        progressMgr.setNumberOfPhases(3 + UML_PHASES_LOAD);
+        progressMgr.setNumberOfPhases(4 + UML_PHASES_LOAD);
         ThreadUtils.checkIfInterrupted();
 
         try {
@@ -220,7 +221,8 @@ class ZargoFilePersister extends UmlFilePersister {
                     + encoding + "\" ?>");
             
             int pgmlCount = getPgmlCount(file);
-            boolean containsToDo = containsTodo(file);
+            boolean containsToDo    = containsTodo(file);
+            boolean containsProfile = containsProfile(file);
 
             // first read the .argo file from Zip
             ZipInputStream zis =
@@ -266,6 +268,10 @@ class ZargoFilePersister extends UmlFilePersister {
                     if (containsToDo) {
                         writer.println("<member type='todo' name='.todo' />");
                     }
+                    if (containsProfile) {
+                	String type = ProfileConfiguration.EXTENSION;
+                        writer.println("<member type='"+type+"' name='."+type+"' />");
+                    }
                 }
                 writer.println(line);
             }
@@ -293,6 +299,33 @@ class ZargoFilePersister extends UmlFilePersister {
             // elements or figs that the todo items refer to
             // will exist before creating critics.
             zis = openZipStreamAt(file.toURL(), ".todo");
+            
+            if (zis != null) {
+                InputStreamReader isr = new InputStreamReader(zis, encoding);
+                reader = new BufferedReader(isr);
+                
+                String firstLine = reader.readLine();
+                if (firstLine.startsWith("<?xml")) {
+                    // Skip the 2 lines
+                    //<?xml version="1.0" encoding="UTF-8" ?>
+                    //<!DOCTYPE todo SYSTEM "todo.dtd" >
+                    reader.readLine();
+                } else {
+                    writer.println(firstLine);
+                }
+                
+                
+
+                readerToWriter(reader, writer);
+
+                progressMgr.nextPhase();
+                
+                zis.close();
+                reader.close();
+            }
+
+            // save the profile information
+            zis = openZipStreamAt(file.toURL(), "." + ProfileConfiguration.EXTENSION);
             
             if (zis != null) {
                 InputStreamReader isr = new InputStreamReader(zis, encoding);
@@ -459,10 +492,18 @@ class ZargoFilePersister extends UmlFilePersister {
     }
     
     private boolean containsTodo(File file) throws IOException {
+	return containsType(file, "todo");
+    }
+
+    private boolean containsProfile(File file) throws IOException {
+	return containsType(file, ProfileConfiguration.EXTENSION);
+    }
+
+    private boolean containsType(File file, String type) throws IOException {
         ZipInputStream zis = new ZipInputStream(file.toURL().openStream());
         ZipEntry entry = zis.getNextEntry();
         while (entry != null) {
-            if (entry.getName().endsWith(".todo")) {
+            if (entry.getName().endsWith("." + type)) {
                 return true;
             }
             entry = zis.getNextEntry();

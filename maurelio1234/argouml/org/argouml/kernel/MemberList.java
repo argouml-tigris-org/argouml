@@ -29,11 +29,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.tigris.gef.base.Diagram;
 
 /**
@@ -49,7 +51,10 @@ public class MemberList implements List {
     private AbstractProjectMember model;
     private List diagramMembers = new ArrayList(10);
     private AbstractProjectMember todoList;
-
+    private AbstractProjectMember profileConfiguration;
+    
+    private Vector allMembers = new Vector();
+    
     /**
      * The constructor.
      */
@@ -61,11 +66,14 @@ public class MemberList implements List {
 
         if (member instanceof ProjectMemberModel) {
             // Always put the model at the top
-            model = (AbstractProjectMember) member;
+            model = (AbstractProjectMember) member;            
             return true;
         } else if (member instanceof ProjectMemberTodoList) {
             // otherwise add the diagram at the start
             setTodoList((AbstractProjectMember) member);
+            return true;
+        } else if (member instanceof ProfileConfiguration) {
+            setProfileConfiguration((AbstractProjectMember) member);
             return true;
         } else if (member instanceof ProjectMemberDiagram) {
             // otherwise add the diagram at the start
@@ -87,6 +95,10 @@ public class MemberList implements List {
             LOG.info("Removing todo list");
             setTodoList(null);
             return true;
+        } else if (profileConfiguration == member) {
+            LOG.info("Removing profile configuration");
+            setProfileConfiguration(null);
+            return true;
         } else {
             return diagramMembers.remove(member);
         }
@@ -101,6 +113,9 @@ public class MemberList implements List {
         if (todoList != null) {
             temp.add(todoList);
         }
+        if (profileConfiguration != null) {
+            temp.add(profileConfiguration);
+        }
         return temp.iterator();
     }
 
@@ -113,6 +128,9 @@ public class MemberList implements List {
         if (todoList != null) {
             temp.add(todoList);
         }
+        if (profileConfiguration != null) {
+            temp.add(profileConfiguration);
+        }
         return temp.listIterator();
     }
 
@@ -124,6 +142,9 @@ public class MemberList implements List {
         temp.addAll(diagramMembers);
         if (todoList != null) {
             temp.add(todoList);
+        }
+        if (profileConfiguration != null) {
+            temp.add(profileConfiguration);
         }
         return temp.listIterator(arg0);
     }
@@ -150,6 +171,9 @@ public class MemberList implements List {
         if (todoList != null) {
             ++size;
         }
+        if (profileConfiguration != null) {
+            ++size;
+        }
         return size;
     }
 
@@ -158,6 +182,9 @@ public class MemberList implements List {
             return true;
         }
         if (model == member) {
+            return true;
+        }
+        if (profileConfiguration == member) {
             return true;
         }
         return diagramMembers.contains(member);
@@ -171,6 +198,10 @@ public class MemberList implements List {
         if (todoList != null) {
             todoList.remove();
         }
+        if (profileConfiguration != null) {
+            profileConfiguration.remove();
+        }
+
         Iterator membersIt = diagramMembers.iterator();
         while (membersIt.hasNext()) {
             ((AbstractProjectMember) membersIt.next()).remove();
@@ -188,6 +219,9 @@ public class MemberList implements List {
         }
         if (type == ProjectMemberTodoList.class) {
             return todoList;
+        }
+        if (type == ProfileConfiguration.class) {
+            return profileConfiguration;
         }
         throw new IllegalArgumentException(
             "There is no single instance of a " + type.getName() + " member");
@@ -211,6 +245,11 @@ public class MemberList implements List {
         if (type == ProjectMemberDiagram.class) {
             return diagramMembers;
         }
+        if (type == ProfileConfiguration.class) {
+            List temp = new ArrayList(1);
+            temp.add(profileConfiguration);
+            return temp;
+        }
         throw new IllegalArgumentException(
             "There is no single instance of a " + type.getName() + " member");
     }
@@ -225,6 +264,9 @@ public class MemberList implements List {
 
         if (i == diagramMembers.size()) {
             return todoList;
+        }
+        if (i == diagramMembers.size()+1) {
+            return profileConfiguration;
         }
 
         return diagramMembers.get(i);
@@ -245,6 +287,9 @@ public class MemberList implements List {
         }
         if (todoList != null) {
             temp[pos++] = todoList;
+        }
+        if (profileConfiguration != null) {
+            temp[pos++] = profileConfiguration;
         }
         return temp;
     }
@@ -300,5 +345,13 @@ public class MemberList implements List {
 
     public List subList(int arg0, int arg1) {
         throw new UnsupportedOperationException();
+    }
+
+    public AbstractProjectMember getProfileConfiguration() {
+        return profileConfiguration;
+    }
+
+    public void setProfileConfiguration(AbstractProjectMember profileConfiguration) {
+        this.profileConfiguration = profileConfiguration;
     }
 }
