@@ -169,9 +169,10 @@ public class Project implements java.io.Serializable, TargetListener {
      * Constructor.
      */
     public Project() {
-        profileConfiguration = new ProfileConfiguration();
-        projectSettings = new ProjectSettings();
+	setProfileConfiguration(new ProfileConfiguration(this));
 
+        projectSettings = new ProjectSettings();        
+        
         Model.getModelManagementFactory().setRootModel(null);
 
         authorname = Configuration.getString(Argo.KEY_USER_FULLNAME);
@@ -1389,6 +1390,21 @@ public class Project implements java.io.Serializable, TargetListener {
         return profileConfiguration;
     }
 
+    /**
+     * Sets the profile configuration
+     */
+    public void setProfileConfiguration(ProfileConfiguration pc) {
+	if (this.profileConfiguration != null) {
+	    this.members.remove(this.profileConfiguration);	    
+	}
+	
+	this.profileConfiguration = pc;
+
+	// there's just one ProfileConfiguration in a project
+        // and there's no other way to add another one
+	members.add(pc);	
+    }
+    
     /**
      * Repair all parts of the project before a save takes place.
      * @return a report of any fixes

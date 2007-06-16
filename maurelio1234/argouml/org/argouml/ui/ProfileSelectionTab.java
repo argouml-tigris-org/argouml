@@ -275,8 +275,7 @@ public class ProfileSelectionTab extends JPanel implements
 	    if (ret == JFileChooser.APPROVE_OPTION) {
 		File file = fileChooser.getSelectedFile();
 
-		Profile profile = new UserDefinedProfile(file,
-			new FileModelLoader());
+		Profile profile = new UserDefinedProfile(file);
 
 		if (profile.getModel() != null) {
 		    ProfileManagerImpl.getInstance().registerProfile(profile);

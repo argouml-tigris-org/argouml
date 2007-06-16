@@ -57,6 +57,7 @@ import org.argouml.kernel.ProjectMember;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.argouml.util.ThreadUtils;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
@@ -564,6 +565,8 @@ class UmlFilePersister extends AbstractFilePersister {
 		        .getDiagramMemberFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
+        } else if (pm instanceof ProfileConfiguration) {
+            persister = new ProfileConfigurationFilePersister();
         } else if (pm instanceof ProjectMemberModel) {
             persister = new ModelMemberFilePersister();
         }
@@ -584,6 +587,8 @@ class UmlFilePersister extends AbstractFilePersister {
                         .getDiagramMemberFilePersister();
         } else if (tag.equals("todo")) {
             persister = new TodoListMemberFilePersister();
+        } else if (tag.equals("profile")) {
+            persister = new ProfileConfigurationFilePersister();
         } else if (tag.equals("xmi")) {
             persister = new ModelMemberFilePersister();
         }
