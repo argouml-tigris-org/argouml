@@ -280,6 +280,10 @@ public class FigPartition extends FigNodeModelElement {
     public void removeFromDiagramImpl() {
 	int width = getWidth();
 	FigPool figPool = getFigPool();
+        if (figPool == null) { //Needed for project deletion
+            return;
+        }
+        
 	int newFigPoolWidth = figPool.getWidth() - width;
 	
 	super.removeFromDiagramImpl();
@@ -340,11 +344,11 @@ public class FigPartition extends FigNodeModelElement {
      * @return th partitions
      */
     private FigPool getFigPool() {
-        Iterator it = getLayer().getContents().iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof FigPool) {
-                return (FigPool) o;
+        if (getLayer() != null) { // This test needed for project deletion
+            for (Object o : getLayer().getContents()) {
+                if (o instanceof FigPool) {
+                    return (FigPool) o;
+                }
             }
         }
         
