@@ -1468,7 +1468,9 @@ public abstract class FigNodeModelElement
     }
     
     protected void removeFromDiagramImpl() {
-        notationProviderName.cleanListener(this, getOwner());
+        if (notationProviderName != null) { //This test needed for a FigPool
+            notationProviderName.cleanListener(this, getOwner());
+        }
         ArgoEventPump.removeListener(this);
         removeAllElementListeners();
         setShadowSize(0);
