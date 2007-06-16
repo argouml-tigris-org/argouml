@@ -27,9 +27,9 @@ package org.argouml.ui;
 import javax.swing.JPanel;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.cognitive.ui.TabToDo;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -66,6 +66,7 @@ public class TestDetailsPane extends TestCase {
         DetailsPane pane = new DetailsPane("detail", Horizontal.getInstance());
         JPanel todoPane = pane.getTab(TabToDo.class);
         JPanel propertyPane = pane.getTab(TabProps.class);
+//        JPanel docPane = pane.getTab(TabDocumentation.class);
 
         assertNotNull(todoPane);
         assertNotNull(propertyPane);
@@ -82,7 +83,7 @@ public class TestDetailsPane extends TestCase {
 		    o,
 		});
         pane.targetSet(e);
-        assertEquals("1:", todoPane, pane.getTabs().getSelectedComponent());
+        assertEquals("1:", propertyPane, pane.getTabs().getSelectedComponent());
         UMLDiagram diagram = new UMLClassDiagram();
         e =
             new TargetEvent(
@@ -120,9 +121,9 @@ public class TestDetailsPane extends TestCase {
          * commented out next piece to remove failure of testcase. The testcase
          * is probably correct but the implementation of DetailsPane is not
 
-        _pane.getTabs().setSelectedComponent(_docPane);
-        _pane.targetSet(e);
-        assertEquals(_docPane, _pane.getTabs().getSelectedComponent());
+        pane.getTabs().setSelectedComponent(docPane);
+        pane.targetSet(e);
+        assertEquals(docPane, pane.getTabs().getSelectedComponent());
         */
     }
 }
