@@ -28,17 +28,17 @@ package org.argouml.uml.profile;
 import java.awt.Image;
 import java.util.Iterator;
 import java.util.Vector;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
+import org.argouml.kernel.AbstractProjectMember;
+import org.argouml.kernel.Project;
 import org.argouml.uml.profile.java.ProfileJava;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigImage;
 /**
  *   This class captures the configurable behavior of Argo.
  *
  *   @author Marcos Aurélio
  */
-public class ProfileConfiguration {
+public class ProfileConfiguration extends AbstractProjectMember {
 
     private FormatingStrategy formatingStrategy;
     private Vector	      figNodeStrategies = new Vector();
@@ -47,12 +47,16 @@ public class ProfileConfiguration {
     private Vector profiles = new Vector();
     private Vector profileModels = new Vector();
     
+    public static final String EXTENSION = "profile";
+    
     /**
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(ProfileConfiguration.class);
     
-    public ProfileConfiguration() {
+    public ProfileConfiguration(Project project) {
+	super(EXTENSION, project);
+	
 	defaultProfile = new ProfileJava();
 
 	formatingStrategy = defaultProfile.getFormatingStrategy();
@@ -129,4 +133,14 @@ public class ProfileConfiguration {
     public FigNodeStrategy getFigNodeStrategy() {
 	return compositeFigNodeStrategy; 
     }
+
+    @Override
+    public String getType() {
+	return EXTENSION;
+    }
+
+    public String repair() {
+	return "";
+    }
+
 }
