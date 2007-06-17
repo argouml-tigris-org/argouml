@@ -28,8 +28,10 @@ import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
@@ -74,6 +76,8 @@ public class FigStereotypesCompartment extends FigCompartment {
     private String keyword;
 
     private int stereotypeCount = 0;
+    
+    private boolean hidingStereotypesWithIcon = false;
     
     /**
      * The constructor.
@@ -250,12 +254,31 @@ public class FigStereotypesCompartment extends FigCompartment {
                     removeFig((Fig) figs.get(i));
                 }
             }
+            
+            // remove all stereotypes that have a graphical icon
+            updateHiddenStereotypes();
         }
     }
 
+    private void updateHiddenStereotypes() {
+	List figs = getFigs();
+
+	for (int i = 0; i < figs.size(); ++i) {
+	    Fig f = (Fig) figs.get(i);
+	    if (f instanceof FigStereotype) {
+		FigStereotype fs = (FigStereotype) f;
+		fs.setVisible(ProjectManager.getManager().getCurrentProject()
+			.getProfileConfiguration().getFigNodeStrategy()
+			.getIconForStereotype(fs.getOwner()) == null
+			|| !isHidingStereotypesWithIcon());
+	    }
+	}
+    }
+
     /*
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
-     */
+         * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int,
+         *      int)
+         */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         Fig fig;
         int yy = y;
@@ -284,5 +307,14 @@ public class FigStereotypesCompartment extends FigCompartment {
     }
 
     protected void createModelElement() {
+    }
+
+    public boolean isHidingStereotypesWithIcon() {
+        return hidingStereotypesWithIcon;
+    }
+
+    public void setHidingStereotypesWithIcon(boolean hidingStereotypesWithIcon) {
+        this.hidingStereotypesWithIcon = hidingStereotypesWithIcon;
+        updateHiddenStereotypes();
     }
 }
