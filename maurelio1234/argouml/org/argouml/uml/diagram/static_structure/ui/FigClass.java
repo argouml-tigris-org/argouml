@@ -630,7 +630,7 @@ public class FigClass extends FigClassifierBox
 	    getOperationsFig().setBounds(x, operationsY, w, operationsHeight);
 	}
 
-	updateStereotypeIcon();
+//	updateStereotypeIcon();
 	// Now force calculation of the bounds of the figure, update the edges
 	// and trigger anyone who's listening to see if the "bounds" property
 	// has changed.

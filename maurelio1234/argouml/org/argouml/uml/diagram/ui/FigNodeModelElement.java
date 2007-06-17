@@ -246,6 +246,7 @@ public abstract class FigNodeModelElement
     private static final int ICON_WIDTH = 16;
     
     private FigText originalNameFig;
+    private Fig     originalBigPort;
     
     /**
      * EnclosedFigs are the Figs that are enclosed by this figure. Say that
@@ -1457,6 +1458,10 @@ public abstract class FigNodeModelElement
 	}
 
 	if (stereotypeFigProfileIcon != null) {
+	    for (Object fig : getFigs()) {
+		((Fig) fig).setVisible(fig != stereotypeFigProfileIcon);
+	    }
+
 	    this.removeFig(stereotypeFigProfileIcon);
 	    stereotypeFigProfileIcon = null;
 	}
@@ -1466,24 +1471,35 @@ public abstract class FigNodeModelElement
 	    originalNameFig = null;
 	}
 
+	if (originalBigPort != null) {
+	    this.setBigPort(originalBigPort);
+	    originalBigPort = null;
+	}
+	
 	if (!floatingStereotypes.isEmpty()) {
 	    for (Object icon : floatingStereotypes) {
 		this.removeFig((Fig) icon);
 	    }
 	    floatingStereotypes.clear();
 	}
-
+	
+	int practicalView = getStereotypeView();
 	Object modelElement = getOwner();
 	Collection stereos = Model.getFacade().getStereotypes(modelElement);
-	if (getStereotypeView() != STEREOTYPE_VIEW_BIG_ICON) {
-	    stereotypeFigProfileIcon = null;
-	    for (Object fig : getFigs()) {
-		((Fig) fig).setVisible(fig != stereotypeFigProfileIcon);
-	    }
+
+	if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON && 
+		(stereos == null || stereos.size() != 1)) {
+	    practicalView = STEREOTYPE_VIEW_TEXTUAL;
 	}	
 	 
-	if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON) {
+	Fig stereoFig = getStereotypeFig();
+	if (stereoFig instanceof FigStereotypesCompartment) {
+	    ((FigStereotypesCompartment) stereoFig)
+		    .setHidingStereotypesWithIcon(practicalView == STEREOTYPE_VIEW_SMALL_ICON);
+	}
 
+	if (practicalView == STEREOTYPE_VIEW_BIG_ICON) {
+	    
 	    if (stereos != null) {
 		Image replaceIcon = null;
 
@@ -1506,12 +1522,16 @@ public abstract class FigNodeModelElement
 		    originalNameFig = this.getNameFig();
 		    this.setNameFig(stereotypeFigProfileIcon.getLabelFig());
 
+		    originalBigPort = this.getBigPort();
+		    this.setBigPort(stereotypeFigProfileIcon);
+		    
 		    for (Object fig : getFigs()) {
 			((Fig) fig).setVisible(fig == stereotypeFigProfileIcon);
 		    }
+		    
 		}
 	    }
-	} else if (getStereotypeView() == STEREOTYPE_VIEW_SMALL_ICON) {
+	} else if (practicalView == STEREOTYPE_VIEW_SMALL_ICON) {
 	    int i = this.getX() + this.getWidth() - ICON_WIDTH - 2;
 	    
 	    for (Object stereo : stereos) {
@@ -1529,11 +1549,16 @@ public abstract class FigNodeModelElement
 		    
 		    i -= ICON_WIDTH - 2;
 		}
-	    }
+	    }	    
 	}
-	    
+
+	updateStereotypeText();
+	
 	damage();
-//	this.redraw();
+	calcBounds();
+	updateEdges();
+	this.updateBounds();
+	this.redraw();
     }
     
     /*
@@ -1902,7 +1927,6 @@ public abstract class FigNodeModelElement
     }
 
     public void setStereotypeView(int s) {
-	System.out.println("SETSSSVIEW: " + s);
         this.stereotypeView = s;
         renderingChanged();
     }
@@ -1915,7 +1939,8 @@ public abstract class FigNodeModelElement
 
 	if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON) {
 	    if (stereotypeFigProfileIcon != null) {
-		    stereotypeFigProfileIcon.setBounds(x, y, w, h);
+		    stereotypeFigProfileIcon.setBounds(stereotypeFigProfileIcon
+			.getX(), stereotypeFigProfileIcon.getY(), w, h);
 		    // FigClass calls setBoundsImpl before we set 
 		    // the stereotypeFigProfileIcon
 	    }
