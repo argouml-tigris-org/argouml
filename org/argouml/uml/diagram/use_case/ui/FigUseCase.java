@@ -298,12 +298,12 @@ public class FigUseCase extends FigNodeModelElement
         addFig(epSep);
         addFig(epVec);
 
+        updateExtensionPoint();
+        
         // Having built the figure, getBounds finds the enclosing rectangle,
         // which we set as our bounds.
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
-        
-        updateExtensionPoint();
     }
 
     /**
@@ -455,54 +455,34 @@ public class FigUseCase extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer#setExtensionPointVisible(boolean)
      */
     public void setExtensionPointVisible(boolean isVisible) {
-
-        // Record our current bounds for later use
-        Rectangle oldBounds = getBounds();
-
-        // First case is where the extension points are currently displayed and
-        // we are asked to turn them off.
         if (epVec.isVisible() && (!isVisible)) {
-
-            // Tell GEF that we are starting to make a change. Loop through the
-            // epVec marking each element as not visible.
-            Iterator it = epVec.getFigs().iterator();
-            while (it.hasNext()) {
-                ((Fig) (it.next())).setVisible(false);
-            }
-
-            // Mark the vector itself and the separator as not displayed
-            epVec.setVisible(false);
-            epSep.setVisible(false);
-
-            // Redo the bounds and then tell GEF the change has finished
-            setBounds(oldBounds.x, oldBounds.y,
-		      oldBounds.width,
-		      oldBounds.height);
-            endTrans();
-
+            setExtensionPointVisibleInternal(false);
         } else if ((!epVec.isVisible()) && isVisible) {
-            // Second case is where the extension points are not currently
-            // displayed and we are asked to turn them on.
-
-            // Tell GEF that we are starting to make a change. Loop through the
-            // epVec marking each element as visible.
-            Iterator it = epVec.getFigs().iterator();
-            while (it.hasNext()) {
-                ((Fig) (it.next())).setVisible(true);
-            }
-
-            // Mark the vector itself and the separator as displayed
-            epVec.setVisible(true);
-            epSep.setVisible(true);
-
-            // Redo the bounds and then tell GEF the change has finished
-            setBounds(oldBounds.x, oldBounds.y,
-		      oldBounds.width,
-		      oldBounds.height);
-            endTrans();
+            setExtensionPointVisibleInternal(true);
         }
         /* Move the stereotype out of the way: */
         updateStereotypeText();
+    }
+
+    private void setExtensionPointVisibleInternal(boolean visible) {
+        // Record our current bounds for later use
+        Rectangle oldBounds = getBounds();
+
+        // Tell GEF that we are starting to make a change. Loop through the
+        // epVec marking each element as not visible.
+        for (Fig fig : (List<Fig>) epVec.getFigs()) {
+            fig.setVisible(visible);
+        }
+
+        // Mark the vector itself and the separator as not displayed
+        epVec.setVisible(visible);
+        epSep.setVisible(visible);
+
+        // Redo the bounds and then tell GEF the change has finished
+        setBounds(oldBounds.x, oldBounds.y,
+                oldBounds.width,
+                oldBounds.height);
+        endTrans();
     }
 
     /**
@@ -550,22 +530,14 @@ public class FigUseCase extends FigNodeModelElement
             minSize.height += 2 * SPACER + 1;
 
             // Loop through all the extension points, to find the widest
-            // (remember the first fig is the box for the whole lot, 
-            // so ignore it).
-            Iterator it = epVec.getFigs().iterator();
-            if (it.hasNext()) it.next(); // ignore
-
-            while (it.hasNext()) {
-                int elemWidth =
-		    ((FigText) it.next()).getMinimumSize().width;
+            List<CompartmentFigText> figs = getEPFigs();
+            for (CompartmentFigText f : figs) {
+                int elemWidth = f.getMinimumSize().width;
                 minSize.width = Math.max(minSize.width, elemWidth);
             }
 
-            // Height allows one row for each extension point (remember to
-            // ignore the first element, which is the box for the lot), subject
-            // to there always being space for at least one extension point.
-            minSize.height +=
-		ROWHEIGHT * Math.max(1, epVec.getFigs().size() - 1);
+            // Height allows one row for each extension point 
+            minSize.height += ROWHEIGHT * Math.max(1, figs.size());
         }
 
         return minSize;
@@ -961,20 +933,16 @@ public class FigUseCase extends FigNodeModelElement
             // takes ROWHEIGHT pixels, so take the difference between the
             // centre of the mouse (me.getY() - 1) and the top of the epVec
             // (f.getY()) and integer divide by ROWHEIGHT.
-
-            // TODO: in future version of GEF call getFigs returning array
-            Vector v = new Vector(epVec.getFigs());
             int i = (me.getY() - f.getY() - 1) / ROWHEIGHT;
 
+            List<CompartmentFigText> figs = getEPFigs();
+            
             // If we are in the range of the EP list size (avoids any nasty
             // boundary overflows), we can select that EP entry. Make this
             // entry the target Fig, and note that we do have a
-            // target. Remember that the first entry in the vector is the
-            // bigPort itself.
-            if ((i >= 0) && (i < (v.size() - 1))) {
-                f = (Fig) v.elementAt(i + 1);
-
-                highlightedFigText = (CompartmentFigText) f;
+            // target.             
+            if ((i >= 0) && (i < figs.size())) {
+                highlightedFigText = figs.get(i);
                 highlightedFigText.setHighlighted(true);
             }
         }
@@ -1107,16 +1075,10 @@ public class FigUseCase extends FigNodeModelElement
 
         // Loop through the vector of extension points, until we find a
         // highlighted one.
-        Vector v = new Vector(epVec.getFigs());
-        int i;
-
-        for (i = 1; i < v.size(); i++) {
-            CompartmentFigText ft = (CompartmentFigText) v.elementAt(i);
-
+        for (CompartmentFigText ft : getEPFigs()) {
             if (ft.isHighlighted()) {
                 ft.setHighlighted(false);
                 highlightedFigText = null;
-
                 return ft;
             }
         }
@@ -1212,28 +1174,19 @@ public class FigUseCase extends FigNodeModelElement
 
             // Take each EP and its corresponding fig in turn
             Iterator iter = eps.iterator();
-            List<Fig> figs = new ArrayList<Fig>(epVec.getFigs());
-            if (figs.size() > 0) {
-                // Ignore the first fig:
-                figs.remove(0);
-            }
-            List<Fig> toBeRemoved = new ArrayList<Fig>(figs);
+            List<CompartmentFigText> figs = getEPFigs();
+            List<CompartmentFigText> toBeRemoved = 
+                new ArrayList<CompartmentFigText>(figs);
 
             while (iter.hasNext()) {
                 CompartmentFigText epFig = null;
                 Object ep = iter.next();
 
                 /* Find the fig for this ep: */
-                Iterator i = figs.iterator();
-                while (i.hasNext()) {
-                    CompartmentFigText candidate;
-                    Object fig = i.next();
-                    if (fig instanceof CompartmentFigText) {
-                        candidate = (CompartmentFigText) fig;
-                        if (candidate.getOwner() == ep) {
-                            epFig = candidate;
-                            break;
-                        }
+                for (CompartmentFigText candidate : figs) {
+                    if (candidate.getOwner() == ep) {
+                        epFig = candidate;
+                        break;
                     }
                 }
                 
@@ -1367,9 +1320,24 @@ public class FigUseCase extends FigNodeModelElement
             getStereotypeFig().setBounds(0, 0, 0, 0);
         }
     }
+    
+
+    /**
+     * Get a list of the extension point Figs <em>without</em> the first fig
+     * which is the bigport fig.
+     * 
+     * @return a list of the extension point Figs
+     */
+    private List<CompartmentFigText> getEPFigs() {
+        List<CompartmentFigText> l = 
+            new ArrayList<CompartmentFigText>(epVec.getFigs());
+        l.remove(0);
+        return l;
+    }
+
 
     /**
      * The UID.
      */
     private static final long serialVersionUID = -4018623737124023696L;
-} /* end class FigUseCase */
+}
