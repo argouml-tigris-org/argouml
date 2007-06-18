@@ -33,8 +33,8 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.OneRowLinkedList;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.OneRowLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 

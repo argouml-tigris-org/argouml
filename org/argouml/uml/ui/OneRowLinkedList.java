@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.uml.ui;
 
 import java.awt.Color;
 
@@ -31,8 +31,6 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.uml.ui.UMLLinkMouseListener;
-import org.argouml.uml.ui.UMLLinkedListCellRenderer;
 
 /**
  * A JList that just has one row.
