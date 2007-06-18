@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,34 +24,19 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.Color;
-
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
-
-import org.argouml.ui.LookAndFeelMgr;
 
 /**
- * A JList that just has one row.
+ * A UMLLinkedList that just has one row.
  */
-public class OneRowLinkedList extends JList {
+public class OneRowLinkedList extends UMLLinkedList {
     /**
      * The constructor.
      *
      * @param dataModel the data model
      */
     public OneRowLinkedList(DefaultListModel dataModel) {
-        super();
-        setModel(dataModel);
-        setDoubleBuffered(true);
-        setCellRenderer(new UMLLinkedListCellRenderer(true));
-        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        setForeground(Color.blue);
-        setSelectionForeground(Color.blue.darker());
-        UMLLinkMouseListener mouseListener = new UMLLinkMouseListener(this);
-        setFont(LookAndFeelMgr.getInstance().getStandardFont());
-        addMouseListener(mouseListener);
+        super(dataModel);
         setVisibleRowCount(1);
     }
 }
