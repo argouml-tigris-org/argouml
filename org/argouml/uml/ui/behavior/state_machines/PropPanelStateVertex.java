@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.tigris.swidgets.Orientation;
@@ -64,9 +65,8 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
                 new UMLStateVertexOutgoingListModel());
         outgoingScroll = new JScrollPane(outgoingList);
 
-        JList compositeList = new UMLLinkedList(
+        JList compositeList = new UMLSingleRowLinkedList(
                 new UMLStateVertexContainerListModel());
-        compositeList.setVisibleRowCount(1);
         containerScroll = new JScrollPane(compositeList);
 
         addAction(new ActionNavigateContainerElement());
@@ -99,5 +99,5 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
         return containerScroll;
     }
 
-} /* end class PropPanelStateVertex */
+}
 

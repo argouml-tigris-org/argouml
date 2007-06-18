@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.tigris.swidgets.Orientation;
 
@@ -66,8 +66,8 @@ public abstract class PropPanelInstance extends PropPanelModelElement {
      */
     protected JScrollPane getStimuliSenderScroll() {
         if (stimuliSenderScroll == null) {
-            JList stimuliSenderList = new UMLLinkedList(stimuliSenderListModel);
-            stimuliSenderList.setVisibleRowCount(1);
+            JList stimuliSenderList = new UMLSingleRowLinkedList(
+                    stimuliSenderListModel);
             stimuliSenderScroll = new JScrollPane(stimuliSenderList);
         }
         return stimuliSenderScroll;
@@ -78,11 +78,10 @@ public abstract class PropPanelInstance extends PropPanelModelElement {
      */
     protected JScrollPane getStimuliReceiverScroll() {
         if (stimuliReceiverScroll == null) {
-            JList stimuliReceiverList = new UMLLinkedList(
+            JList stimuliReceiverList = new UMLSingleRowLinkedList(
                     stimuliReceiverListModel);
-            stimuliReceiverList.setVisibleRowCount(1);
             stimuliReceiverScroll = new JScrollPane(stimuliReceiverList);
         }
         return stimuliReceiverScroll;
     }
-} /* end class PropPanelInstance */
+}

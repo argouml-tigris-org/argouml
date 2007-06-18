@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,19 +28,17 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
 import org.argouml.util.ConfigLoader;
 
 /**
- * The properties panel for an associationend.
- *
+ * The property panel for an AssociationEnd.
  */
 public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
 
     /**
      * Constructs the proppanel and places all scrollpanes etc. on the canvas.
-     * @see java.lang.Object#Object()
      */
     public PropPanelAssociationEndRole() {
         super("AssociationEndRole", ConfigLoader.getTabPropsOrientation());
@@ -53,15 +51,16 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
     /*
      * @see org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd#positionControls()
      */
+    @Override
     protected void positionControls() {
 
         JList baseList =
-	    new UMLLinkedList(new UMLAssociationEndRoleBaseListModel());
-        baseList.setVisibleRowCount(1);
+	    new UMLSingleRowLinkedList(
+                    new UMLAssociationEndRoleBaseListModel());
         addField(Translator.localize("label.base"),
 		 new JScrollPane(baseList));
 
         super.positionControls();
     }
 
-} /* end class PropPanelAssociationEndRole */
+}
