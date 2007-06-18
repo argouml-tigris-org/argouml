@@ -29,13 +29,13 @@ import javax.swing.DefaultListModel;
 /**
  * A UMLLinkedList that just has one row.
  */
-public class OneRowLinkedList extends UMLLinkedList {
+public class UMLSingleRowLinkedList extends UMLLinkedList {
     /**
      * The constructor.
      *
      * @param dataModel the data model
      */
-    public OneRowLinkedList(DefaultListModel dataModel) {
+    public UMLSingleRowLinkedList(DefaultListModel dataModel) {
         super(dataModel);
         setVisibleRowCount(1);
     }

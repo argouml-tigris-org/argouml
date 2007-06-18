@@ -34,7 +34,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.OneRowLinkedList;
+import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
@@ -63,7 +63,7 @@ public class PropPanelEnumerationLiteral extends PropPanelModelElement {
         addField(Translator.localize("label.name"),
                 getNameTextField());
 
-        JList lst = new OneRowLinkedList(new EnumerationListModel());
+        JList lst = new UMLSingleRowLinkedList(new EnumerationListModel());
         addField(Translator.localize("label.enumeration"),
                 new JScrollPane(lst));
 
