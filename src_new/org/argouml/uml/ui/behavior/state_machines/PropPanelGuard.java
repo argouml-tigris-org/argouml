@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,7 @@ import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionExpressionModel;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
-import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -63,9 +63,8 @@ public class PropPanelGuard extends PropPanelModelElement {
         
         addField(Translator.localize("label.name"), getNameTextField());
         
-        JList transitionList = new UMLLinkedList(
+        JList transitionList = new UMLSingleRowLinkedList(
                 new UMLGuardTransitionListModel());
-        transitionList.setVisibleRowCount(1);
         addField(Translator.localize("label.transition"), new JScrollPane(
                 transitionList));
         
@@ -87,4 +86,4 @@ public class PropPanelGuard extends PropPanelModelElement {
         addAction(getDeleteAction());
     }
     
-} /* end class PropPanelGuard */
+}

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,7 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.UMLStimulusActionTextField;
 import org.argouml.uml.ui.UMLStimulusActionTextProperty;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -62,14 +62,13 @@ public class PropPanelStimulus extends PropPanelModelElement {
                 new UMLStimulusActionTextField(this,
                         new UMLStimulusActionTextProperty("name")));
 
-        JList senderList = new UMLLinkedList(new UMLStimulusSenderListModel());
-	senderList.setVisibleRowCount(1);
+        JList senderList = 
+            new UMLSingleRowLinkedList(new UMLStimulusSenderListModel());
 	JScrollPane senderScroll = new JScrollPane(senderList);
 	addField(Translator.localize("label.sender"), senderScroll);
 
         JList receiverList =
-	    new UMLLinkedList(new UMLStimulusReceiverListModel());
-	receiverList.setVisibleRowCount(1);
+	    new UMLSingleRowLinkedList(new UMLStimulusReceiverListModel());
 	JScrollPane receiverScroll = new JScrollPane(receiverList);
 	addField(Translator.localize("label.receiver"),
             receiverScroll);

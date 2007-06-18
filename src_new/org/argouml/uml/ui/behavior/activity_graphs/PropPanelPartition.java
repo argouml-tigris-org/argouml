@@ -38,6 +38,7 @@ import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -65,9 +66,8 @@ public class PropPanelPartition extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"), getNameTextField());
         
-        JList activityGraphList = new UMLLinkedList(
+        JList activityGraphList = new UMLSingleRowLinkedList(
                 new UMLPartitionActivityGraphListModel());
-        activityGraphList.setVisibleRowCount(1);
         activityGraphScroll = new JScrollPane(activityGraphList);
         addField(Translator.localize("label.activity-graph"), 
                 getActivityGraphField());
