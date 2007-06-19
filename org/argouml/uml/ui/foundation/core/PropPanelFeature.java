@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,12 +25,10 @@
 package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.ImageIcon;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -80,9 +78,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
             if (ownerListModel == null) {
                 ownerListModel = new UMLFeatureOwnerListModel();
             }
-            JList list = new UMLLinkedList(ownerListModel);
-            list.setVisibleRowCount(1);
-            ownerScroll = new JScrollPane(list);
+            ownerScroll = getSingleRowScroll(ownerListModel);
         }
         return ownerScroll;
     }

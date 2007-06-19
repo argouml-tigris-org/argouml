@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.JList;
-import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewCallEvent;
@@ -33,7 +32,6 @@ import org.argouml.uml.diagram.state.ui.ButtonActionNewChangeEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewSignalEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewTimeEvent;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
@@ -70,44 +68,29 @@ public class PropPanelTransition extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        JList statemachineList = new UMLLinkedList(
-                new UMLTransitionStatemachineListModel());
-        statemachineList.setVisibleRowCount(1);
         addField(Translator.localize("label.statemachine"),
-                new JScrollPane(statemachineList));
-        JList stateList = new UMLLinkedList(new UMLTransitionStateListModel());
-        stateList.setVisibleRowCount(1);
+                getSingleRowScroll(new UMLTransitionStatemachineListModel()));
+
         addField(Translator.localize("label.state"),
-                new JScrollPane(stateList));
+                getSingleRowScroll(new UMLTransitionStateListModel()));
 
         addSeparator();
 
-        JList sourceList =
-            new UMLLinkedList(new UMLTransitionSourceListModel());
-        sourceList.setVisibleRowCount(1);
         addField(Translator.localize("label.source"),
-                new JScrollPane(sourceList));
-        JList targetList =
-            new UMLLinkedList(new UMLTransitionTargetListModel());
-        targetList.setVisibleRowCount(1);
+                getSingleRowScroll(new UMLTransitionSourceListModel()));
         addField(Translator.localize("label.target"),
-                new JScrollPane(targetList));
-        JList triggerList = new UMLTransitionTriggerList(
-                new UMLTransitionTriggerListModel());
-        triggerList.setVisibleRowCount(1);
+                getSingleRowScroll(new UMLTransitionTargetListModel()));
         addField(Translator.localize("label.trigger"),
-                new JScrollPane(triggerList));
+                getSingleRowScroll( new UMLTransitionTriggerListModel()));
         JList guardList = new UMLMutableLinkedList(
                 new UMLTransitionGuardListModel(), null,
                 ActionNewGuard.getSingleton());
-        guardList.setVisibleRowCount(1);
         addField(Translator.localize("label.guard"),
-                new JScrollPane(guardList));
+                getSingleRowScroll(guardList));
         JList effectList = new UMLTransitionEffectList(
                 new UMLTransitionEffectListModel());
-        effectList.setVisibleRowCount(1);
         addField(Translator.localize("label.effect"),
-                new JScrollPane(effectList));
+                getSingleRowScroll(effectList));
 
         addAction(new ActionNavigateContainerElement());
         addAction(getTriggerActions());
@@ -142,4 +125,4 @@ public class PropPanelTransition extends PropPanelModelElement {
         ToolBarUtility.manageDefault(actions, "transition.state.effect");
         return actions;
     }
-} /* end class PropPanelTransition */
+}

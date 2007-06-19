@@ -24,11 +24,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
 import org.argouml.util.ConfigLoader;
 
@@ -54,11 +50,8 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
     @Override
     protected void positionControls() {
 
-        JList baseList =
-	    new UMLSingleRowLinkedList(
-                    new UMLAssociationEndRoleBaseListModel());
         addField(Translator.localize("label.base"),
-		 new JScrollPane(baseList));
+		 getSingleRowScroll(new UMLAssociationEndRoleBaseListModel()));
 
         super.positionControls();
     }

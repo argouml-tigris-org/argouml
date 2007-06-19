@@ -25,10 +25,8 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import javax.swing.ImageIcon;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.tigris.swidgets.Orientation;
 
@@ -66,9 +64,7 @@ public abstract class PropPanelInstance extends PropPanelModelElement {
      */
     protected JScrollPane getStimuliSenderScroll() {
         if (stimuliSenderScroll == null) {
-            JList stimuliSenderList = new UMLSingleRowLinkedList(
-                    stimuliSenderListModel);
-            stimuliSenderScroll = new JScrollPane(stimuliSenderList);
+            stimuliSenderScroll = getSingleRowScroll(stimuliSenderListModel);
         }
         return stimuliSenderScroll;
     }
@@ -78,9 +74,8 @@ public abstract class PropPanelInstance extends PropPanelModelElement {
      */
     protected JScrollPane getStimuliReceiverScroll() {
         if (stimuliReceiverScroll == null) {
-            JList stimuliReceiverList = new UMLSingleRowLinkedList(
-                    stimuliReceiverListModel);
-            stimuliReceiverScroll = new JScrollPane(stimuliReceiverList);
+            stimuliReceiverScroll = 
+                getSingleRowScroll(stimuliReceiverListModel);
         }
         return stimuliReceiverScroll;
     }

@@ -80,11 +80,8 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         addSeparator();
 
-        JList usecaseList = new UMLLinkedList(
-                new UMLExtensionPointUseCaseListModel());
-        usecaseList.setVisibleRowCount(1);
         addField(Translator.localize("label.usecase-base"),
-                new JScrollPane(usecaseList));
+                getSingleRowScroll(new UMLExtensionPointUseCaseListModel()));
 
         JList extendList = new UMLLinkedList(
                 new UMLExtensionPointExtendListModel());

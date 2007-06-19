@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -274,6 +274,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
      * @see java.awt.event.MouseListener#mouseReleased(
      *      java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseReleased(MouseEvent e) {
         if (e.isPopupTrigger()) {
             Point point = e.getPoint();
@@ -293,6 +294,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
     /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
+    @Override
     public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger()) {
             JPopupMenu popup = getPopupMenu();
@@ -309,7 +311,10 @@ public class UMLMutableLinkedList extends UMLLinkedList
      * @return JPopupMenu
      */
     public JPopupMenu getPopupMenu() {
-        return new PopupMenu();
+        if (popupMenu == null) {
+            popupMenu =  new PopupMenu();
+        }
+        return popupMenu;
     }
 
     /**
@@ -344,6 +349,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseClicked(MouseEvent e) {
         if (e.isPopupTrigger()) {
             JPopupMenu popup = getPopupMenu();
@@ -357,6 +363,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
     /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseEntered(MouseEvent e) {
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }

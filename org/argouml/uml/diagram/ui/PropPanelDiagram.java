@@ -30,8 +30,6 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
@@ -40,7 +38,6 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNavigate;
 import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.util.ConfigLoader;
 
@@ -63,8 +60,8 @@ public class PropPanelDiagram extends PropPanel {
         field.getDocument().addDocumentListener(new DiagramNameDocument(field));
         addField(Translator.localize("label.name"), field);
 
-        JList lst = new UMLSingleRowLinkedList(new UMLDiagramHomeModelListModel());
-        addField(Translator.localize("label.home-model"), new JScrollPane(lst));
+        addField(Translator.localize("label.home-model"), 
+                getSingleRowScroll(new UMLDiagramHomeModelListModel()));
 
         addAction(new ActionNavigateUpFromDiagram());
         addAction(ActionDeleteModelElements.getTargetFollower());

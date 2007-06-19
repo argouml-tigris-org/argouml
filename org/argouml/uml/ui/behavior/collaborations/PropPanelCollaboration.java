@@ -31,7 +31,6 @@ import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelNamespace;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -87,11 +86,8 @@ public class PropPanelCollaboration extends PropPanelNamespace {
 
         addSeparator();
 
-        UMLLinkedList interactionList =
-	    new UMLSingleRowLinkedList(
-                    new UMLCollaborationInteractionListModel());
         addField(Translator.localize("label.interaction"),
-            new JScrollPane(interactionList));
+                getSingleRowScroll(new UMLCollaborationInteractionListModel()));
 
         UMLLinkedList constrainingList =
 	    new UMLLinkedList(

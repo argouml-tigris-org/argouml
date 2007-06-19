@@ -30,7 +30,6 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateContext;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -58,11 +57,8 @@ public class PropPanelInteraction extends PropPanelModelElement {
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
-        JList contextList =
-	    new UMLSingleRowLinkedList(new UMLInteractionContextListModel());
-        JScrollPane contextScroll = new JScrollPane(contextList);
         addField(Translator.localize("label.context"),
-                contextScroll);
+                getSingleRowScroll(new UMLInteractionContextListModel()));
 
         addSeparator();
 

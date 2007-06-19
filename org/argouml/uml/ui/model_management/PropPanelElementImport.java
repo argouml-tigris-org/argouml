@@ -25,9 +25,7 @@
 package org.argouml.uml.ui.model_management;
 
 import javax.swing.JComponent;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
@@ -35,7 +33,6 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextField2;
@@ -73,17 +70,12 @@ public class PropPanelElementImport extends PropPanelModelElement {
 
         addSeparator();
 
-        JList lst1 = new UMLLinkedList(
-                new ElementImportImportedElementListModel());
-        lst1.setVisibleRowCount(1);
         addField(Translator.localize("label.imported-element"),
-                new JScrollPane(lst1));
+                getSingleRowScroll(
+                        new ElementImportImportedElementListModel()));
 
-        JList lst2 = new UMLLinkedList(
-                new ElementImportPackageListModel());
-        lst2.setVisibleRowCount(1);
         addField(Translator.localize("label.package"),
-                new JScrollPane(lst2));
+                getSingleRowScroll(new ElementImportPackageListModel()));
 
         addAction(new ActionNavigateContainerElement());
         addAction(getDeleteAction());

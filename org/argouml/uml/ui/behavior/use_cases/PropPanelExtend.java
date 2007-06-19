@@ -120,20 +120,6 @@ public class PropPanelExtend extends PropPanelModelElement {
     }
 
     /**
-     * Create a single row scroll pane backed by a JList.
-     *
-     * @param list the list to be used to back the scroll pane
-     * @return a scrollpane with a single row
-     */
-    protected JScrollPane getSingleRowScroll(JList list) {
-        list.setVisibleRowCount(1);
-        JScrollPane scroll = new JScrollPane(list);
-
-        return scroll;
-    }
-
-
-    /**
      * Invoked by the "New Extension Point" toolbar button to create a new
      * extension point for this extend relationship in the same namespace as the
      * current extend relationship.<p>
@@ -161,6 +147,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAExtend(target)) {
@@ -182,4 +169,4 @@ public class PropPanelExtend extends PropPanelModelElement {
         }
     }
 
-} /* end class PropPanelExtend */
+}
