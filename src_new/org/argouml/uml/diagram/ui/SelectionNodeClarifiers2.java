@@ -118,14 +118,14 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
                     BOTTOM);
         }
         if (icons[2] != null) {
-            myPaintButtonLeft(icons[2], g, cx - OFFSET, cy + ch / 2, LEFT);
+            paintButtonLeft(icons[2], g, cx - OFFSET, cy + ch / 2, LEFT);
         }
         if (icons[3] != null) {
-            myPaintButtonRight(icons[3], g, cx + cw + OFFSET, cy + ch / 2,
+            paintButtonRight(icons[3], g, cx + cw + OFFSET, cy + ch / 2,
                     RIGHT);
         }
         if (icons[4] != null) {
-            myPaintButtonLeft(icons[4], g, cx - OFFSET, cy + ch, LOWER_LEFT);
+            paintButtonLeft(icons[4], g, cx - OFFSET, cy + ch, LOWER_LEFT);
         }
     }
 
@@ -202,15 +202,15 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
                 icons[1].getIconWidth(), icons[1].getIconHeight(), 
                 cursor)) {
             h.index = BOTTOM;
-        } else if (icons[2] != null && myHitLeft(cx, cy + ch / 2, 
+        } else if (icons[2] != null && hitLeft(cx, cy + ch / 2, 
                 icons[2].getIconWidth(), icons[2].getIconHeight(), 
                 cursor)) {
             h.index = LEFT;
-        } else if (icons[3] != null && myHitRight(cx + cw, cy + ch / 2, 
+        } else if (icons[3] != null && hitRight(cx + cw, cy + ch / 2, 
                 icons[3].getIconWidth(), icons[3].getIconHeight(), 
                 cursor)) {
             h.index = RIGHT;
-        } else if (icons[4] != null && myHitLeft(cx, cy + ch, 
+        } else if (icons[4] != null && hitLeft(cx, cy + ch, 
                 icons[4].getIconWidth(), icons[4].getIconHeight(), 
                 cursor)) {
             h.index = LOWER_LEFT;
@@ -224,72 +224,6 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
         }
     }
 
-    private static final int MARGIN = 2;
-    
-    /**
-     * Test if cursor is contained in the bounds of the icon to the left of, and
-     * centered vertically on the point x,y.
-     * <p>
-     * The GEF implementations of right/left are swapped, so this provides our
-     * own private implementation of what SelectionButtons.hitLeft
-     * <em>should</em> be doing. Rather than just calling the swapped method
-     * in GEF, we use our own implementation in case they ever swap
-     * hitRight/hitLeft to have the correct behavior.
-     * 
-     * @param x
-     *            X coordinate of left hand edge of displayed figure (right hand
-     *            edge of icon)
-     * @param y
-     *            Y coordinate of vertical <em>center</em> of icon
-     * @param w
-     *            width of icon
-     * @param h
-     *            height of icon
-     * @param r
-     *            cursor location, expressed as a 0-sized Rectange
-     * @return true if the cursor is contained in the given icon bounds.
-     */
-    protected boolean myHitLeft(int x, int y, int w, int h, Rectangle r) {
-        // return super.hitRight(x, y, w, h, r);
-        return intersectsRect(r, x - w - MARGIN, y - h / 2, w + MARGIN, h);
-    }
-
-    /**
-     * Test left handle hit. See
-     * {@link #myHitLeft(int, int, int, int, Rectangle)} for a more complete
-     * description.
-     */
-    protected boolean myHitRight(int x, int y, int w, int h, Rectangle r) {
-        // return super.hitLeft(x, y, w, h, r);
-        return intersectsRect(r, x, y - h / 2, w + MARGIN, h);
-    }
-
-    /**
-     * Paint right button. See
-     * {@link #myHitLeft(int, int, int, int, Rectangle)} for a more complete
-     * description.
-     */
-    protected void myPaintButtonRight(Icon i, Graphics g, int x, int y, 
-            int hi) {
-        // super.paintButtonLeft(i, g, x, y, hi);
-        paintButton(i, g, x + MARGIN, y - i.getIconHeight() / 2, hi);
-    }
-
-    /**
-     * Paint left button. See
-     * {@link #myHitLeft(int, int, int, int, Rectangle)} for a more complete
-     * description.
-     */
-    public void myPaintButtonLeft(Icon i, Graphics g, int x, int y, int hi) {
-        // super.paintButtonRight(i, g, x, y, hi);
-        paintButton(
-                    i,
-                    g,
-                    x - i.getIconWidth() - MARGIN,
-                    y - i.getIconHeight() / 2,
-                    hi);
-    }
-    
     /*
      * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
      * org.tigris.gef.presentation.Handle)
