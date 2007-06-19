@@ -176,8 +176,6 @@ public final class NotationProviderFactory2 {
     public static NotationProviderFactory2 getInstance() {
         if (instance == null) {
             instance = new NotationProviderFactory2();
-            InitNotationUml.init();
-            InitNotationJava.init();
         }
         return instance;
     }

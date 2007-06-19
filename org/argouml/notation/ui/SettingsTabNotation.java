@@ -35,6 +35,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
@@ -43,8 +45,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
-import org.argouml.ui.GUI;
-import org.argouml.ui.GUISettingsTabInterface;
 import org.argouml.ui.ShadowComboBox;
 
 /**
@@ -165,7 +165,7 @@ public class SettingsTabNotation
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
-        if (scope == GUI.SCOPE_APPLICATION) {
+        if (scope == Argo.SCOPE_APPLICATION) {
             showBoldNames.setSelected(getBoolean(
                     Notation.KEY_SHOW_BOLD_NAMES));
             useGuillemots.setSelected(getBoolean(
@@ -198,7 +198,7 @@ public class SettingsTabNotation
             defaultShadowWidth.setSelectedIndex(Configuration.getInteger(
                     Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
         }
-        if (scope == GUI.SCOPE_PROJECT) {
+        if (scope == Argo.SCOPE_PROJECT) {
             Project p = ProjectManager.getManager().getCurrentProject();
             ProjectSettings ps = p.getProjectSettings();
 
@@ -233,7 +233,7 @@ public class SettingsTabNotation
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
-        if (scope == GUI.SCOPE_APPLICATION) {
+        if (scope == Argo.SCOPE_APPLICATION) {
             Notation.setDefaultNotation(
                     (NotationName) notationLanguage.getSelectedItem());
             Configuration.setBoolean(Notation.KEY_SHOW_BOLD_NAMES,
@@ -257,7 +257,7 @@ public class SettingsTabNotation
             Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH,
                     defaultShadowWidth.getSelectedIndex());
         }
-        if (scope == GUI.SCOPE_PROJECT) {
+        if (scope == Argo.SCOPE_PROJECT) {
             Project p = ProjectManager.getManager().getCurrentProject();
             ProjectSettings ps = p.getProjectSettings();
             NotationName nn = (NotationName) notationLanguage.getSelectedItem();
@@ -287,7 +287,7 @@ public class SettingsTabNotation
      * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
      */
     public void handleResetToDefault() {
-        if (scope == GUI.SCOPE_PROJECT) {
+        if (scope == Argo.SCOPE_PROJECT) {
             notationLanguage.setSelectedItem(Notation.getConfiguredNotation());
             showBoldNames.setSelected(getBoolean(
                     Notation.KEY_SHOW_BOLD_NAMES));

@@ -35,8 +35,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.i18n.Translator;
-import org.argouml.ui.GUISettingsTabInterface;
 import org.tigris.swidgets.LabelledLayout;
 
 /**

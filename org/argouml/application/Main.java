@@ -53,6 +53,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
+import org.argouml.application.api.GUISettingsTabInterface;
+import org.argouml.application.api.InitSubsystem;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
@@ -64,8 +66,11 @@ import org.argouml.language.java.generator.GeneratorJava;
 import org.argouml.model.Model;
 import org.argouml.model.ModelImplementation;
 import org.argouml.moduleloader.ModuleLoader2;
+import org.argouml.notation.InitNotation;
+import org.argouml.notation.ui.InitNotationUI;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoFrame;
+import org.argouml.ui.GUI;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
@@ -302,6 +307,9 @@ public class Main {
 	// is that some of the commands will use the projectbrowser.
 	st.mark("initialize gui");
         initializeGUI(splash);
+        
+        initSubsystem(new InitNotationUI());
+        initSubsystem(new InitNotation());
 
         if (reloadRecent && projectName == null) {
             // If no project was entered on the command line,
@@ -787,6 +795,19 @@ public class Main {
                     "released SPACE", "released"
                 })
         );         
+    }
+
+    /**
+     * @param subsystem the subsystem to be initialised
+     */
+    private static void initSubsystem(InitSubsystem subsystem) {
+        subsystem.init();
+        for (GUISettingsTabInterface tab : subsystem.getSettingsTabs()) {
+            GUI.getInstance().addSettingsTab(tab);
+        }
+        for (GUISettingsTabInterface tab : subsystem.getProjectSettingsTabs()) {
+            GUI.getInstance().addProjectSettingsTab(tab);
+        }
     }
 
     /**

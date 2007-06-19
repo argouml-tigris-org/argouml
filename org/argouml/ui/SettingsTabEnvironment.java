@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.argouml.application.api.Argo;
+import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.SaveGraphicsManager;
