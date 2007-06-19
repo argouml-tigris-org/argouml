@@ -120,7 +120,7 @@ public class SelectionState extends SelectionNodeClarifiers2 {
 
     @Override
     protected boolean isReverseEdge(int index) {
-        if (index == 12) {
+        if (index == LEFT) {
             return true;
         }
         return false;
