@@ -125,7 +125,7 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
                     RIGHT);
         }
         if (icons[4] != null) {
-            paintButtonRight(icons[4], g, cx - OFFSET, cy + ch, LOWER_LEFT);
+            myPaintButtonLeft(icons[4], g, cx - OFFSET, cy + ch, LOWER_LEFT);
         }
     }
 
