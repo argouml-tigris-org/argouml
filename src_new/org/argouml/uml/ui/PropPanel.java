@@ -664,8 +664,15 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @return a scrollpane with a single row
      */
     protected JScrollPane getSingleRowScroll(JList list) {
+        // TODO: Temporary fix while we find something better - tfm
         list.setVisibleRowCount(2);
-        return new JScrollPane(list);
+//        list.setVisibleRowCount(1);
+        JScrollPane pane = new JScrollPane(list);
+        // Scroll bar is not allowed to take up more than 20% of height
+//        pane.getHorizontalScrollBar().setMaximumSize(
+//                new Dimension(1000, 
+//                        list.getPreferredScrollableViewportSize().height / 5));
+        return pane;
     }
 
     /**
