@@ -30,14 +30,22 @@ import java.net.URL;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
+import org.argouml.model.InitializeModel;
+import org.argouml.notation.InitNotation;
 
 /**
  * Testcase to load projects without exception.
  */
 public class TestZargoFilePersister extends TestCase {
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        (new InitNotation()).init();
+    }
+
     /**
      * The constructor.
      *

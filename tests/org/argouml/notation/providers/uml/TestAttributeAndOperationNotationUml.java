@@ -31,12 +31,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.NotationProvider;
 
 /**
@@ -115,7 +115,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
-        NotationProviderFactory2.getInstance();
+        (new InitNotation()).init();
     }
 
     /**

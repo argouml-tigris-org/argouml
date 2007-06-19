@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.ui;
 
 import junit.framework.TestCase;
 
+import org.argouml.notation.InitNotation;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
 /**
@@ -50,6 +51,7 @@ public class TestActionAddAllClassesFromModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        (new InitNotation()).init();
         diagram = new UMLClassDiagram();
 	action = new ActionAddAllClassesFromModel("Add all classes from model",
 						  diagram);

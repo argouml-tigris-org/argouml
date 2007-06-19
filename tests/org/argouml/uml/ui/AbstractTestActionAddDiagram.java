@@ -32,6 +32,7 @@ import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.InitNotation;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -69,6 +70,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      * Preparations for all test cases.
      */
     protected void setUp() {
+        (new InitNotation()).init();
 	action = getAction();
 
 	ns = getNamespace();
