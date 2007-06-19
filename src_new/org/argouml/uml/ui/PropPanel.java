@@ -41,8 +41,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.ListModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
@@ -654,5 +657,26 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     }
 
 
+    /**
+     * Create a single row scroll pane backed by a JList.
+     *
+     * @param list the list to be used to back the scroll pane
+     * @return a scrollpane with a single row
+     */
+    protected JScrollPane getSingleRowScroll(JList list) {
+        list.setVisibleRowCount(2);
+        return new JScrollPane(list);
+    }
 
-} /* end class PropPanel */
+    /**
+     * Create a single row scroll pane backed by a UMLLinkedList which uses
+     * the given list model.
+     *
+     * @param model the list to be used to back the scroll pane
+     * @return a scrollpane with a single row
+     */
+    protected JScrollPane getSingleRowScroll(ListModel model) {
+        return getSingleRowScroll(new UMLLinkedList(model));
+    }
+
+}

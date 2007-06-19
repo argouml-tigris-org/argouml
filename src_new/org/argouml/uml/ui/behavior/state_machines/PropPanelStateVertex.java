@@ -30,7 +30,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.tigris.swidgets.Orientation;
@@ -65,9 +64,8 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
                 new UMLStateVertexOutgoingListModel());
         outgoingScroll = new JScrollPane(outgoingList);
 
-        JList compositeList = new UMLSingleRowLinkedList(
-                new UMLStateVertexContainerListModel());
-        containerScroll = new JScrollPane(compositeList);
+        containerScroll = 
+            getSingleRowScroll(new UMLStateVertexContainerListModel());
 
         addAction(new ActionNavigateContainerElement());
         addExtraButtons();

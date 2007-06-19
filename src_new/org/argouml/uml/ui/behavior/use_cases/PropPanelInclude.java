@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import javax.swing.JList;
-import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -81,17 +80,6 @@ public class PropPanelInclude extends PropPanelModelElement {
         addAction(new ActionNavigateNamespace());
         addAction(new ActionNewStereotype());
         addAction(getDeleteAction());
-    }
-
-    /**
-     * @param list the list to wrap in a scrollpane.
-     * @return a scrollpane with a single row
-     */
-    protected JScrollPane getSingleRowScroll(JList list) {
-        list.setVisibleRowCount(1);
-        JScrollPane scroll = new JScrollPane(list);
-
-        return scroll;
     }
 
     /**

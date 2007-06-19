@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,10 +46,7 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
     private JScrollPane doScroll;
     private JScrollPane internalTransitionsScroll;
     private JScrollPane deferrableEventsScroll;
-    private JList entryList;
-    private JList exitList;
-    private JList doList;
-    private JList internalTransitionList;
+
 
 
     /**
@@ -68,17 +65,17 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
 
         deferrableEventsScroll = new JScrollPane(deferrableList);
 
-        entryList = new UMLStateEntryList(new UMLStateEntryListModel());
+        JList entryList = new UMLStateEntryList(new UMLStateEntryListModel());
         entryList.setVisibleRowCount(1);
         entryScroll = new JScrollPane(entryList);
-        exitList = new UMLStateExitList(new UMLStateExitListModel());
+        JList exitList = new UMLStateExitList(new UMLStateExitListModel());
         exitList.setVisibleRowCount(1);
         exitScroll = new JScrollPane(exitList);
-        internalTransitionList = new UMLMutableLinkedList(
+        JList internalTransitionList = new UMLMutableLinkedList(
                 new UMLStateInternalTransition(), null,
                 new ActionNewTransition());
         internalTransitionsScroll = new JScrollPane(internalTransitionList);
-        doList = new UMLStateDoActivityList(
+        JList doList = new UMLStateDoActivityList(
                 new UMLStateDoActivityListModel());
         doList.setVisibleRowCount(1);
         doScroll = new JScrollPane(doList);
@@ -87,6 +84,7 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */
+    @Override
     protected void addExtraButtons() {
         super.addExtraButtons();
         
@@ -105,14 +103,12 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
         return entryScroll;
     }
 
-
     /**
      * @return Returns the exitScroll.
      */
     protected JScrollPane getExitScroll() {
         return exitScroll;
     }
-
 
     /**
      * @return Returns the doScroll.
@@ -121,14 +117,12 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
         return doScroll;
     }
 
-
     /**
      * @return Returns the internalTransitionsScroll.
      */
     protected JScrollPane getInternalTransitionsScroll() {
         return internalTransitionsScroll;
     }
-
 
     /**
      * @return Returns the deferrableEventsScroll.
@@ -137,10 +131,7 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
         return deferrableEventsScroll;
     }
 
-
-
-
-} /* end class AbstractPropPanelState */
+}
 
 
 

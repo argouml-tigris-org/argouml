@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -36,7 +35,6 @@ import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionExpressionModel;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
-import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -63,10 +61,8 @@ public class PropPanelGuard extends PropPanelModelElement {
         
         addField(Translator.localize("label.name"), getNameTextField());
         
-        JList transitionList = new UMLSingleRowLinkedList(
-                new UMLGuardTransitionListModel());
         addField(Translator.localize("label.transition"), new JScrollPane(
-                transitionList));
+                getSingleRowScroll(new UMLGuardTransitionListModel())));
         
         addSeparator();
 

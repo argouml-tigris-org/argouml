@@ -24,13 +24,9 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.UMLSingleRowLinkedList;
 import org.argouml.uml.ui.UMLStimulusActionTextField;
 import org.argouml.uml.ui.UMLStimulusActionTextProperty;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -62,16 +58,11 @@ public class PropPanelStimulus extends PropPanelModelElement {
                 new UMLStimulusActionTextField(this,
                         new UMLStimulusActionTextProperty("name")));
 
-        JList senderList = 
-            new UMLSingleRowLinkedList(new UMLStimulusSenderListModel());
-	JScrollPane senderScroll = new JScrollPane(senderList);
-	addField(Translator.localize("label.sender"), senderScroll);
+	addField(Translator.localize("label.sender"),
+                getSingleRowScroll(new UMLStimulusSenderListModel()));
 
-        JList receiverList =
-	    new UMLSingleRowLinkedList(new UMLStimulusReceiverListModel());
-	JScrollPane receiverScroll = new JScrollPane(receiverList);
 	addField(Translator.localize("label.receiver"),
-            receiverScroll);
+                getSingleRowScroll(new UMLStimulusReceiverListModel()));
 
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
@@ -96,7 +87,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
     /**
      * @param element the sender of this stimulus
      */
-    public void setSender(Object/*MInstance*/ element) {
+    public void setSender(Object element) {
         Object target = getTarget();
         if (Model.getFacade().isAStimulus(target)) {
             Model.getCollaborationsHelper().setSender(target, element);
@@ -119,7 +110,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
     /**
      * @param element the receiver of this stimulus
      */
-    public void setReceiver(Object/*MInstance*/ element) {
+    public void setReceiver(Object element) {
         Object target = getTarget();
         if (Model.getFacade().isAStimulus(target)) {
             Model.getCommonBehaviorHelper().setReceiver(target, element);
@@ -152,14 +143,13 @@ public class PropPanelStimulus extends PropPanelModelElement {
     /**
      * @param element the association of the link of the stimulus
      */
-    public void setAssociation(Object/*MAssociation*/ element) {
+    public void setAssociation(Object element) {
         Object target = getTarget();
         if (Model.getFacade().isAStimulus(target)) {
-            Object stimulus = /*(MStimulus)*/ target;
+            Object stimulus = target;
             Object link = Model.getFacade().getCommunicationLink(stimulus);
             if (link == null) {
                 link = Model.getCommonBehaviorFactory().createLink();
-                //((MStimulus)stimulus).getFactory().createLink();
                 if (link != null) {
                     Model.getCommonBehaviorHelper().addStimulus(link, stimulus);
                     Model.getCommonBehaviorHelper().setCommunicationLink(

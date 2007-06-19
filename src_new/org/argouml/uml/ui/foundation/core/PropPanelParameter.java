@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.util.List;
 
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -40,7 +39,6 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -142,14 +140,12 @@ public class PropPanelParameter extends PropPanelModelElement {
             if (behFeatureModel == null) {
                 behFeatureModel = new UMLParameterBehavioralFeatListModel();
             }
-            JList list = new UMLLinkedList(behFeatureModel);
-            list.setVisibleRowCount(1);
-            behFeatureScroll = new JScrollPane(list);
+            behFeatureScroll = getSingleRowScroll(behFeatureModel);
         }
         return behFeatureScroll;
     }
 
-} /* end class PropPanelParameter */
+}
 
 class UMLDefaultValueExpressionModel extends UMLExpressionModel2 {
 

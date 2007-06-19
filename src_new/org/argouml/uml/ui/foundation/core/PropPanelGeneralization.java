@@ -24,8 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.JList;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
@@ -33,7 +31,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -71,19 +68,11 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
         addSeparator();
 
-        UMLGeneralizationParentListModel parentListModel =
-            new UMLGeneralizationParentListModel();
-        JList parentList = new UMLLinkedList(parentListModel);
-        parentList.setVisibleRowCount(1);
         addField(Translator.localize("label.parent"), 
-                new JScrollPane(parentList));
+                getSingleRowScroll(new UMLGeneralizationParentListModel()));
 
-        UMLGeneralizationChildListModel childListModel =
-            new UMLGeneralizationChildListModel();
-        JList childList = new UMLLinkedList(childListModel);
-        childList.setVisibleRowCount(1);
         addField(Translator.localize("label.child"),
-                new JScrollPane(childList));
+                getSingleRowScroll(new UMLGeneralizationChildListModel()));
 
         addField(Translator.localize("label.powertype"),
                 new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(),
@@ -97,6 +86,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     /*
      * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
      */
+    @Override
     public void navigateUp() {
         Object target = getTarget();
         if (Model.getFacade().isAModelElement(target)) {
@@ -117,4 +107,4 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         return discriminatorTextField;
     }
 
-} /* end class PropPanelGeneralization */
+}
