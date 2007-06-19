@@ -35,6 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
+import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.i18n.Translator;
 import org.argouml.util.ArgoDialog;
 

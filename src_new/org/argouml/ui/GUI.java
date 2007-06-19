@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.argouml.notation.ui.SettingsTabNotation;
+import org.argouml.application.api.GUISettingsTabInterface;
 
 /**
  * This is the "main" class for the GUI subsystem.<p>
@@ -42,20 +42,6 @@ import org.argouml.notation.ui.SettingsTabNotation;
  * @since 0.21.3
  */
 public final class GUI {
-
-    /**
-     * The scope of the settings: this setting is stored 
-     * in the userdirectory and valid for the application.
-     */
-    public static final int SCOPE_APPLICATION = 0;
-
-    /**
-     * The scope of the setting: this setting is stored with the project, 
-     * i.e. in e.g. a zargo file. This setting will also apply 
-     * when the zargo file is opened by another user, 
-     * on another computer. 
-     */
-    public static final int SCOPE_PROJECT = 1;
 
     /**
      * Constructor.
@@ -74,12 +60,8 @@ public final class GUI {
         addSettingsTab(new SettingsTabUser());
         addSettingsTab(new SettingsTabAppearance());
         addSettingsTab(new SettingsTabShortcuts());
-        addSettingsTab(new SettingsTabNotation(
-                GUI.SCOPE_APPLICATION));
 
         addProjectSettingsTab(new ProjectSettingsTabProperties());
-        addProjectSettingsTab(new SettingsTabNotation(
-                GUI.SCOPE_PROJECT));
     }
 
     /**
@@ -97,7 +79,8 @@ public final class GUI {
     /**
      * A List of {@link GUISettingsTabInterface}.
      */
-    private List settingsTabs = new ArrayList();
+    private List<GUISettingsTabInterface> settingsTabs = 
+        new ArrayList<GUISettingsTabInterface>();
 
     /**
      * Register a new SettingsTab.
@@ -120,7 +103,8 @@ public final class GUI {
     /**
      * A List of {@link GUISettingsTabInterface}.
      */
-    private List projectSettingsTabs = new ArrayList();
+    private List<GUISettingsTabInterface> projectSettingsTabs = 
+        new ArrayList<GUISettingsTabInterface>();
 
     /**
      * Register a new ProjectSettingsTab.

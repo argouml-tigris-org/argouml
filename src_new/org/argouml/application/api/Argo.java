@@ -348,6 +348,20 @@ public final class Argo {
      * @deprecated for 0.25.1 by tfmorris - don't use for new code.
      */
     public static final String DOCUMENTATION_TAG_ALT = "javadocs";
+
+    /**
+     * The scope of the settings: this setting is stored 
+     * in the userdirectory and valid for the application.
+     */
+    public static final int SCOPE_APPLICATION = 0;
+
+    /**
+     * The scope of the setting: this setting is stored with the project, 
+     * i.e. in e.g. a zargo file. This setting will also apply 
+     * when the zargo file is opened by another user, 
+     * on another computer. 
+     */
+    public static final int SCOPE_PROJECT = 1;
     
     /**
      * Don't let this class be instantiated.
