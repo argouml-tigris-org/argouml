@@ -179,7 +179,7 @@ public class DetailsPane
                 lastNonNullTab = i;
             }
         }
-        setTarget(null);
+        setTarget(null, true);
         topLevelTabbedPane.addMouseListener(this);
         topLevelTabbedPane.addChangeListener(this);
     }
@@ -215,6 +215,24 @@ public class DetailsPane
     }
 
     /**
+     * Selects the prop tab if it is appropriate for the target.
+     *
+     * @param target
+     *            the target object
+     * @return true if props tab is really selected
+     */
+    private boolean selectPropsTab(Object target) {
+        if (getTabProps().shouldBeEnabled(target)) {
+            int indexOfPropPanel = topLevelTabbedPane
+                    .indexOfComponent(getTabProps());
+            topLevelTabbedPane.setSelectedIndex(indexOfPropPanel);
+            lastNonNullTab = indexOfPropPanel;
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Sets the target of the Details pane to either be a
      * selected model element or
      * the owner(model element) of a selected fig.<p>
@@ -223,25 +241,27 @@ public class DetailsPane
      *
      * @param target the target object
      */
-    private void setTarget(Object target) {
+    private void setTarget(Object target, boolean defaultToProperties) {
         enableTabs(target);
         if (target != null) {
             boolean tabSelected = false;
 
-            // Select prop panel if current panel is not appropriate
-            // for selected target
-            Component selectedTab = topLevelTabbedPane
-                    .getComponentAt(lastNonNullTab);
-            if (selectedTab instanceof TabTarget) {
-                if (((TabTarget) selectedTab).shouldBeEnabled(target)) {
-                    topLevelTabbedPane.setSelectedIndex(lastNonNullTab);
-                    tabSelected = true;
-                } else {
-                    int indexOfPropPanel = topLevelTabbedPane
-                            .indexOfComponent(getTabProps());
-                    topLevelTabbedPane.setSelectedIndex(indexOfPropPanel);
-                    tabSelected = true;
-                    lastNonNullTab = indexOfPropPanel;
+            // Always select properties panel if defaultToProperties is true,
+            // and if properties panel is appropriate for selected perspective
+            if (defaultToProperties) {
+                tabSelected = selectPropsTab(target);
+            } else {
+                // Select prop panel if current panel is not appropriate
+                // for selected target
+                Component selectedTab = topLevelTabbedPane
+                        .getComponentAt(lastNonNullTab);
+                if (selectedTab instanceof TabTarget) {
+                    if (((TabTarget) selectedTab).shouldBeEnabled(target)) {
+                        topLevelTabbedPane.setSelectedIndex(lastNonNullTab);
+                        tabSelected = true;
+                    } else {
+                        tabSelected = selectPropsTab(target);
+                    }
                 }
             }
             if (!tabSelected) {
@@ -565,7 +585,7 @@ public class DetailsPane
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleTarget());
+        setTarget(TargetManager.getInstance().getSingleTarget(), false);
         fireTargetAdded(e);
     }
 
@@ -573,7 +593,7 @@ public class DetailsPane
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleTarget());
+        setTarget(TargetManager.getInstance().getSingleTarget(), false);
         fireTargetRemoved(e);
     }
 
@@ -581,7 +601,7 @@ public class DetailsPane
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleTarget());
+        setTarget(TargetManager.getInstance().getSingleTarget(), true);
         fireTargetSet(e);
     }
 

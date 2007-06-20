@@ -323,7 +323,7 @@ public class TabProps
             }
             return p;
         }
-        
+
         LOG.error("Failed to create a prop panel for : " + trgt);
         return null;
     }
@@ -338,7 +338,7 @@ public class TabProps
     private TabModelTarget createPropPanel(Object modelElement) {
 
 	TabModelTarget propPanel = null;
-	
+
         // Create prop panels for diagrams
         if (modelElement instanceof UMLActivityDiagram) {
             propPanel = new PropPanelUMLActivityDiagram();
@@ -515,7 +515,7 @@ public class TabProps
         } else if (modelElement instanceof FigText) {
             propPanel = new PropPanelString();
         }
-        
+
         if (propPanel instanceof PropPanel) {
             ((PropPanel) propPanel).buildToolbar();
         }
@@ -545,7 +545,7 @@ public class TabProps
     }
 
     /**
-     * Determines if the property panel should be enabled. 
+     * Determines if the property panel should be enabled.
      * The property panel should always be enabled if the
      * target is an instance of a modelelement or an argodiagram.
      * If the target given is a Fig, a check is made if the fig
@@ -557,7 +557,8 @@ public class TabProps
      */
     public boolean shouldBeEnabled(Object t) {
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (t instanceof Diagram || Model.getFacade().isAUMLElement(t)) {
+        if ((t instanceof Diagram || Model.getFacade().isAUMLElement(t))
+                && findPanelFor(t) != null) {
             shouldBeEnabled = true;
         } else {
             shouldBeEnabled = false;
