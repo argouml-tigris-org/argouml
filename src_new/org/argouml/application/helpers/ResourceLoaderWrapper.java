@@ -283,7 +283,7 @@ public final class ResourceLoaderWrapper {
                 
                 icon = lookupIconResource(cName);
                 if (icon == null) {
-                    LOG.warn("Can't find icon for " + cName);
+                    LOG.debug("Can't find icon for " + cName);
                 } else {
                     synchronized (iconCache) {
                         iconCache.put(value.getClass(), icon);
