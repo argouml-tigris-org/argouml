@@ -38,6 +38,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.notation.InitNotation;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -94,6 +95,7 @@ public class TestPropertyPanels extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        (new InitNotation()).init();
 
         if (theDetailsPane == null) {
             theDetailsPane =
