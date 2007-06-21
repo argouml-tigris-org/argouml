@@ -292,36 +292,6 @@ public class ShortcutMgr {
     /** Action key for reorder to back */
     public static final String ACTION_REORDER_TO_BACK = "reorderToBack";
     
-    /** 
-     * The expression between modifier/modifier and between modifier/text 
-     */
-    public static final String MODIFIER_JOINER = " + ";
-
-    /** 
-     * The text for the shift modifier 
-     */
-    public static final String SHIFT_MODIFIER = "SHIFT";
-
-    /** 
-     * The text for the ctrl modifier 
-     */
-    public static final String CTRL_MODIFIER = "CTRL";
-
-    /** 
-     * The text for the meta modifier 
-     */
-    public static final String META_MODIFIER = "META";
-
-    /** 
-     * The text for the alt modifier 
-     */
-    public static final String ALT_MODIFIER = "ALT";
-
-    /** 
-     * The text for the alt-gr modifier 
-     */
-    public static final String ALT_GRAPH_MODIFIER = "altGraph";
-
     /**
      * Logger.
      */
@@ -484,7 +454,7 @@ public class ShortcutMgr {
         assert (strKeyStroke != null);
 
         StringTokenizer tokenizer = new StringTokenizer(strKeyStroke,
-                MODIFIER_JOINER);
+                KeyEventUtils.MODIFIER_JOINER);
         int modifiers = 0;
         while (tokenizer.hasMoreElements()) {
             String nextElement = (String) tokenizer.nextElement();
@@ -538,15 +508,15 @@ public class ShortcutMgr {
     private static int decodeModifier(String modifier) {
         if (modifier == null || modifier.length() == 0) {
             return 0;
-        } else if (modifier.equals(CTRL_MODIFIER)) {
+        } else if (modifier.equals(KeyEventUtils.CTRL_MODIFIER)) {
             return InputEvent.CTRL_DOWN_MASK;
-        } else if (modifier.equals(ALT_MODIFIER)) {
+        } else if (modifier.equals(KeyEventUtils.ALT_MODIFIER)) {
             return InputEvent.ALT_DOWN_MASK;
-        } else if (modifier.equals(ALT_GRAPH_MODIFIER)) {
+        } else if (modifier.equals(KeyEventUtils.ALT_GRAPH_MODIFIER)) {
             return InputEvent.ALT_GRAPH_DOWN_MASK;
-        } else if (modifier.equals(META_MODIFIER)) {
+        } else if (modifier.equals(KeyEventUtils.META_MODIFIER)) {
             return InputEvent.META_DOWN_MASK;
-        } else if (modifier.equals(SHIFT_MODIFIER)) {
+        } else if (modifier.equals(KeyEventUtils.SHIFT_MODIFIER)) {
             return InputEvent.SHIFT_DOWN_MASK;
         } else {
             // it should never go here!

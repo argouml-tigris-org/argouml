@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,14 +31,38 @@ import java.lang.reflect.Modifier;
 
 import javax.swing.KeyStroke;
 
-import org.argouml.ui.cmd.ShortcutMgr;
-
 /**
  * Utility class for KeyEvents
  * 
  * @author andrea.nironi@gmail.com
  */
 public class KeyEventUtils {
+
+    /** 
+     * The expression between modifier/modifier and between modifier/text 
+     */
+    public static final String MODIFIER_JOINER = " + ";
+    /** 
+     * The text for the shift modifier 
+     */
+    public static final String SHIFT_MODIFIER = "SHIFT";
+    /** 
+     * The text for the ctrl modifier 
+     */
+    public static final String CTRL_MODIFIER = "CTRL";
+    /** 
+     * The text for the meta modifier 
+     */
+    public static final String META_MODIFIER = "META";
+    /** 
+     * The text for the alt modifier 
+     */
+    public static final String ALT_MODIFIER = "ALT";
+    /** 
+     * The text for the alt-gr modifier 
+     */
+    public static final String ALT_GRAPH_MODIFIER = "altGraph";
+
 
     /**
      * Returns whether the key in this event is an "action" key. This is a
@@ -179,24 +203,19 @@ public class KeyEventUtils {
         StringBuffer buf = new StringBuffer();
 
         if ((modifiers & InputEvent.SHIFT_MASK) != 0) {
-            buf.append(ShortcutMgr.SHIFT_MODIFIER).append(
-                    ShortcutMgr.MODIFIER_JOINER);
+            buf.append(SHIFT_MODIFIER).append(MODIFIER_JOINER);
         }
         if ((modifiers & InputEvent.CTRL_MASK) != 0) {
-            buf.append(ShortcutMgr.CTRL_MODIFIER).append(
-                    ShortcutMgr.MODIFIER_JOINER);
+            buf.append(CTRL_MODIFIER).append(MODIFIER_JOINER);
         }
         if ((modifiers & InputEvent.META_MASK) != 0) {
-            buf.append(ShortcutMgr.META_MODIFIER).append(
-                    ShortcutMgr.MODIFIER_JOINER);
+            buf.append(META_MODIFIER).append(MODIFIER_JOINER);
         }
         if ((modifiers & InputEvent.ALT_MASK) != 0) {
-            buf.append(ShortcutMgr.ALT_MODIFIER).append(
-                    ShortcutMgr.MODIFIER_JOINER);
+            buf.append(ALT_MODIFIER).append(MODIFIER_JOINER);
         }
         if ((modifiers & InputEvent.ALT_GRAPH_MASK) != 0) {
-            buf.append(ShortcutMgr.ALT_GRAPH_MODIFIER).append(
-                    ShortcutMgr.MODIFIER_JOINER);
+            buf.append(ALT_GRAPH_MODIFIER).append(MODIFIER_JOINER);
         }
         return buf.toString();
     }
