@@ -83,27 +83,30 @@ public class TestDependencies extends TestCase {
             new TestSuite("Tests for dependencies using Jdepend");
 
         String[] clean = {
-            "org.argouml.configuration",
             "org.argouml.application.api",
             "org.argouml.application.events",
             "org.argouml.application.helpers",
             "org.argouml.application.security",
             "org.argouml.cognitive.checklist",
-            "org.argouml.application.api",
+            //"org.argouml.cognitive.critics",
+            "org.argouml.configuration",
             "org.argouml.i18n",
-            "org.argouml.swingext",
-            "org.argouml.taskmgmt",
-            "org.argouml.uml.diagram.layout",
+            "org.argouml.gefext",
+            "org.argouml.language.ui",
             "org.argouml.notation.providers",
             //"org.argouml.notation.providers.java",
             //"org.argouml.notation.providers.uml",
             //"org.argouml.notation",
             //"org.argouml.notation.ui",
+            "org.argouml.swingext",
+            "org.argouml.taskmgmt",
+            "org.argouml.uml.diagram.layout",
+            "org.argouml.uml.generator",
             "org.argouml.uml.util.namespace",
             "org.argouml.util.logging",
             "org.argouml.util.osdep.win32",
             "org.argouml.util.osdep",
-            "org.argouml.swingext",
+            "org.argouml.util",
         };
         for (int i = 0; i < clean.length; i++) {
             suite.addTest(new CheckDependencyCycle(jdepend, clean[i]));
@@ -149,6 +152,7 @@ public class TestDependencies extends TestCase {
 //TODO:{"org.argouml.cognitive", "org.argouml.cognitive.critics"},
             {"org.argouml.uml.diagram", "org.argouml.ui"},
             {"org.argouml.ui", "org.argouml.notation.ui"},
+            {"org.argouml.util", "org.argouml.ui.cmd"},
         };
         for (int i = 0; i < dep.length; i++) {
             suite.addTest(new CheckNoDependency(jdepend, dep[i]));
