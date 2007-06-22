@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Iterator;
@@ -134,6 +135,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                             Model.getFacade().getName(stereotype));
                     stereotypeTextFig.setOwner(stereotype);
                     addFig(stereotypeTextFig);
+                    reorderStereotypeFigs();
                     damage();
                 }
             } else {
@@ -153,6 +155,40 @@ public class FigStereotypesCompartment extends FigCompartment {
                 LOG.warn("Unexpected property " + event.getPropertyName());
             }
         }
+    }
+
+    /**
+     * Keep the probaly invisible figs at the end of the list 
+     */
+    private void reorderStereotypeFigs() {
+	List allFigs = getFigs();
+	List figsWithIcon = new Vector();
+	List figsWithOutIcon = new Vector();
+	List others = new Vector();
+
+	Iterator it = allFigs.iterator();
+	
+	while(it.hasNext()) {
+	    Fig f = (Fig) it.next();
+	    if (f instanceof FigStereotype) {
+		FigStereotype s = (FigStereotype) f;
+		if (getIconForStereotype(s) != null) {
+		    figsWithIcon.add(s);
+		} else {
+		    figsWithOutIcon.add(s);
+		}
+	    } else {
+		others.add(f);
+	    }
+	}
+
+	Vector n = new Vector();
+	
+	n.addAll(others);
+	n.addAll(figsWithOutIcon);
+	n.addAll(figsWithIcon);	
+	
+	setFigs(n);
     }
 
     private Fig findFig(Object stereotype) {
@@ -218,7 +254,7 @@ public class FigStereotypesCompartment extends FigCompartment {
             stereotypeTextFig.setText(keyword);
             acounter++;
         }
-
+        
         Collection stereos = Model.getFacade().getStereotypes(modelElement);
         if (stereos != null) {
             Iterator iter = stereos.iterator();
@@ -254,6 +290,8 @@ public class FigStereotypesCompartment extends FigCompartment {
                     removeFig((Fig) figs.get(i));
                 }
             }
+
+            reorderStereotypeFigs();
             
             // remove all stereotypes that have a graphical icon
             updateHiddenStereotypes();
@@ -265,14 +303,18 @@ public class FigStereotypesCompartment extends FigCompartment {
 
 	for (int i = 0; i < figs.size(); ++i) {
 	    Fig f = (Fig) figs.get(i);
-	    if (f instanceof FigStereotype) {
-		FigStereotype fs = (FigStereotype) f;
-		fs.setVisible(ProjectManager.getManager().getCurrentProject()
-			.getProfileConfiguration().getFigNodeStrategy()
-			.getIconForStereotype(fs.getOwner()) == null
+	    if (f instanceof FigStereotype) {		
+		FigStereotype fs = (FigStereotype) f;		
+		fs.setVisible(getIconForStereotype(fs) == null
 			|| !isHidingStereotypesWithIcon());
 	    }
 	}
+    }
+
+    private Image getIconForStereotype(FigStereotype fs) {
+	return ProjectManager.getManager().getCurrentProject()
+		.getProfileConfiguration().getFigNodeStrategy()
+		.getIconForStereotype(fs.getOwner());
     }
 
     /*
