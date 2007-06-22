@@ -65,6 +65,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.language.java.generator.GeneratorJava;
 import org.argouml.model.Model;
 import org.argouml.model.ModelImplementation;
+import org.argouml.moduleloader.InitModuleLoader;
 import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.ui.InitNotationUI;
@@ -403,7 +404,7 @@ public class Main {
         // Initialize the module loader.
         st.mark("modules");
 
-        ModuleLoader2.doLoad(false);
+        initSubsystem(new InitModuleLoader());
 
         st.mark("open window");
 
@@ -798,6 +799,9 @@ public class Main {
     }
 
     /**
+     * The use of this method in the top-level package 
+     * prevents that the subsystem would depend on the GUI.
+     * 
      * @param subsystem the subsystem to be initialised
      */
     private static void initSubsystem(InitSubsystem subsystem) {
