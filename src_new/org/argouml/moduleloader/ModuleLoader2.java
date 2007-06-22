@@ -51,7 +51,6 @@ import java.util.jar.Manifest;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
-import org.argouml.ui.GUI;
 
 /**
  * This is the module loader that loads modules implementing the
@@ -109,7 +108,6 @@ public final class ModuleLoader2 {
      */
     private ModuleLoader2() {
 	moduleStatus = new HashMap<ModuleInterface, ModuleStatus>();
-        GUI.getInstance().addSettingsTab(new SettingsTabModules());
     }
 
     /**
