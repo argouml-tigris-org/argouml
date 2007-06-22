@@ -93,6 +93,7 @@ public class TestDependencies extends TestCase {
             "org.argouml.i18n",
             "org.argouml.gefext",
             "org.argouml.language.ui",
+            //"org.argouml.moduleloader", //there is no cycle, but it fails...
             "org.argouml.notation.providers",
             //"org.argouml.notation.providers.java",
             //"org.argouml.notation.providers.uml",
@@ -153,6 +154,7 @@ public class TestDependencies extends TestCase {
             {"org.argouml.uml.diagram", "org.argouml.ui"},
             {"org.argouml.ui", "org.argouml.notation.ui"},
             {"org.argouml.util", "org.argouml.ui.cmd"},
+            //{"org.argouml.moduleloader", "org.argouml.ui"},//Why does this fail?
         };
         for (int i = 0; i < dep.length; i++) {
             suite.addTest(new CheckNoDependency(jdepend, dep[i]));
