@@ -35,7 +35,6 @@ public class ActionStereotypeViewBigIcon extends AbstractActionRadioMenuItem {
 	updateSelection();
     }
     private void updateSelection() {
-	System.out.println("NODE SSVW: " + node.getStereotypeView());
 	putValue("SELECTED",
 		  Boolean.valueOf(
 			  node.getStereotypeView() == 
