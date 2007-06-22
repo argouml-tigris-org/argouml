@@ -25,46 +25,39 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
-import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import org.argouml.application.api.GUISettingsTabInterface;
-import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.TabConstraints;
-import org.argouml.uml.ui.TabDocumentation;
-import org.argouml.uml.ui.TabProps;
-import org.argouml.uml.ui.TabSrc;
-import org.argouml.uml.ui.TabStyle;
-import org.argouml.uml.ui.TabTaggedValues;
 import org.tigris.swidgets.Property;
-import org.tigris.swidgets.PropertyTable;
 
 /**
  * Settings dialog tab panel for layout options.<p>
  *
  * TODO: This class contains a lot of references to org.argouml.uml.ui.
  * It would probably be better to move it there.
+ * 
+ * TODO: This class breaks too many dependency limitations. 
+ * And it is not used anywhere. So I (MVW) disabled its functionality. 
  *
  * @author Linus Tolke
  */
 class SettingsTabLayout extends JPanel
     implements GUISettingsTabInterface {
 
-    private Property	prpTodo;
-    private Property	prpProperties;
-    private Property	prpDocumentation;
-    private Property	prpStyle;
-    private Property	prpSource;
-    private Property	prpConstraints;
-    private Property	prpTaggedValues;
+//    private Property	prpTodo;
+//    private Property	prpProperties;
+//    private Property	prpDocumentation;
+//    private Property	prpStyle;
+//    private Property	prpSource;
+//    private Property	prpConstraints;
+//    private Property	prpTaggedValues;
 
     /**
      * The constructor.
@@ -81,37 +74,37 @@ class SettingsTabLayout extends JPanel
 
         JPanel top = new JPanel(new BorderLayout());
 
-        prpTodo = createProperty("label.todo-pane", positions, TabToDo.class);
-        prpProperties =
-            createProperty("label.properties-pane",
-                    positions, TabProps.class);
-        prpDocumentation =
-            createProperty("label.documentation-pane",
-                    positions, TabDocumentation.class);
-        prpStyle =
-            createProperty("label.style-pane",
-                    positions, TabStyle.class);
-        prpSource =
-            createProperty("label.source-pane",
-                    positions, TabSrc.class);
-        prpConstraints =
-            createProperty("label.constraints-pane",
-                    positions, TabConstraints.class);
-        prpTaggedValues =
-            createProperty("label.tagged-values-pane",
-                    positions, TabTaggedValues.class);
-
-        Property[] propertyList = new Property[] {
-            prpTodo, prpProperties, prpDocumentation, prpStyle,
-	    prpSource, prpConstraints, prpTaggedValues,
-        };
-        Arrays.sort(propertyList);
-
-        top.add(new JScrollPane(new PropertyTable(
-						  propertyList,
-						  paneColumnHeader,
-						  positionColumnHeader)),
-		BorderLayout.CENTER);
+//        prpTodo = createProperty("label.todo-pane", positions, TabToDo.class);
+//        prpProperties =
+//            createProperty("label.properties-pane",
+//                    positions, TabProps.class);
+//        prpDocumentation =
+//            createProperty("label.documentation-pane",
+//                    positions, TabDocumentation.class);
+//        prpStyle =
+//            createProperty("label.style-pane",
+//                    positions, TabStyle.class);
+//        prpSource =
+//            createProperty("label.source-pane",
+//                    positions, TabSrc.class);
+//        prpConstraints =
+//            createProperty("label.constraints-pane",
+//                    positions, TabConstraints.class);
+//        prpTaggedValues =
+//            createProperty("label.tagged-values-pane",
+//                    positions, TabTaggedValues.class);
+//
+//        Property[] propertyList = new Property[] {
+//            prpTodo, prpProperties, prpDocumentation, prpStyle,
+//	    prpSource, prpConstraints, prpTaggedValues,
+//        };
+//        Arrays.sort(propertyList);
+//
+//        top.add(new JScrollPane(new PropertyTable(
+//						  propertyList,
+//						  paneColumnHeader,
+//						  positionColumnHeader)),
+//		BorderLayout.CENTER);
 
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
         add(top, BorderLayout.CENTER);
@@ -158,26 +151,26 @@ class SettingsTabLayout extends JPanel
      * When the setting values should be reloaded.
      */
     public void handleSettingsTabRefresh() {
-        loadPosition(prpTodo, TabToDo.class);
-        loadPosition(prpProperties, TabProps.class);
-        loadPosition(prpDocumentation, TabDocumentation.class);
-        loadPosition(prpStyle, TabStyle.class);
-        loadPosition(prpSource, TabSrc.class);
-        loadPosition(prpConstraints, TabConstraints.class);
-        loadPosition(prpTaggedValues, TabTaggedValues.class);
+//        loadPosition(prpTodo, TabToDo.class);
+//        loadPosition(prpProperties, TabProps.class);
+//        loadPosition(prpDocumentation, TabDocumentation.class);
+//        loadPosition(prpStyle, TabStyle.class);
+//        loadPosition(prpSource, TabSrc.class);
+//        loadPosition(prpConstraints, TabConstraints.class);
+//        loadPosition(prpTaggedValues, TabTaggedValues.class);
     }
 
     /**
      * When the ok or apply button is pressed.
      */
     public void handleSettingsTabSave() {
-        savePosition(prpTodo, TabToDo.class);
-        savePosition(prpProperties, TabProps.class);
-        savePosition(prpDocumentation, TabDocumentation.class);
-        savePosition(prpStyle, TabStyle.class);
-        savePosition(prpSource, TabSrc.class);
-        savePosition(prpConstraints, TabConstraints.class);
-        savePosition(prpTaggedValues, TabTaggedValues.class);
+//        savePosition(prpTodo, TabToDo.class);
+//        savePosition(prpProperties, TabProps.class);
+//        savePosition(prpDocumentation, TabDocumentation.class);
+//        savePosition(prpStyle, TabStyle.class);
+//        savePosition(prpSource, TabSrc.class);
+//        savePosition(prpConstraints, TabConstraints.class);
+//        savePosition(prpTaggedValues, TabTaggedValues.class);
     }
 
     /*
