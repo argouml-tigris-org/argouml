@@ -37,6 +37,7 @@ public class ProfileJavaBeans extends Profile {
     
     private ProfileModelLoader profileModelLoader;
     private Object model;
+    private FigNodeStrategy figStrategy = new JavaBeansFigNodeStrategy();
 
     private ProfileJavaBeans() {
 	    profileModelLoader = new ResourceModelLoader(this.getClass());
@@ -67,7 +68,7 @@ public class ProfileJavaBeans extends Profile {
     }
 
     public FigNodeStrategy getFigureStrategy() {	
-	return new JavaBeansFigNodeStrategy();
+	return figStrategy;
     }
 
 }
