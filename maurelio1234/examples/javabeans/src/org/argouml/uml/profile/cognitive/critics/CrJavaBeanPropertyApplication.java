@@ -10,7 +10,7 @@ import org.argouml.uml.profile.javabeans.ProfileJavaBeans;
 
 public class CrJavaBeanPropertyApplication extends CrUML {
     public CrJavaBeanPropertyApplication() {
-	setHeadline("");
+	setupHeadAndDesc();
 	addSupportedDecision(UMLDecision.PLANNED_EXTENSIONS);
 	setPriority(ToDoItem.HIGH_PRIORITY);
 	addTrigger("association");
