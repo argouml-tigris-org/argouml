@@ -31,6 +31,7 @@ import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.ui.ArgoFrame;
 import org.argouml.uml.reveng.Import;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -63,7 +64,7 @@ public class ActionImportFromSources extends UndoableAction {
      */
     public void actionPerformed(ActionEvent event) {
     	super.actionPerformed(event);
-    	new Import();
+    	new Import(ArgoFrame.getInstance());
     }
 
 

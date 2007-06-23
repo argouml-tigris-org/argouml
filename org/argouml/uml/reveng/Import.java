@@ -26,6 +26,7 @@ package org.argouml.uml.reveng;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -67,7 +68,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.taskmgmt.ProgressEvent;
 import org.argouml.taskmgmt.ProgressMonitor;
-import org.argouml.ui.ArgoFrame;
 import org.argouml.util.SuffixFilter;
 import org.argouml.util.UIUtils;
 import org.tigris.gef.base.Globals;
@@ -128,6 +128,8 @@ public class Import extends ImportCommon implements ImportSettings {
     private ImportStatusScreen iss;
 
     private StringBuffer problems = new StringBuffer();
+    
+    private Frame myFrame;
 
 
 
@@ -140,24 +142,27 @@ public class Import extends ImportCommon implements ImportSettings {
 
     /**
      * Creates dialog window with chooser and configuration panel.
+     *
+     * @param frame the ui frame to display dialogs on
      */
-    public Import() {
+    public Import(Frame frame) {
         super();
+        myFrame = frame;
 
         JComponent chooser = getChooser();
         dialog =
-            new JDialog(ArgoFrame.getInstance(),
+            new JDialog(frame,
                     Translator.localize("action.import-sources"), true);
 
         dialog.getContentPane().add(chooser, BorderLayout.CENTER);
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
         dialog.pack();
         int x =
-            (ArgoFrame.getInstance().getSize().width
+            (frame.getSize().width
              - dialog.getSize().width)
             / 2;
         int y =
-            (ArgoFrame.getInstance().getSize().height
+            (frame.getSize().height
              - dialog.getSize().height)
             / 2;
         dialog.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
@@ -656,7 +661,7 @@ public class Import extends ImportCommon implements ImportSettings {
          * @param iconName
          */
         public ImportStatusScreen(String title, String iconName) {
-            super(ArgoFrame.getInstance(), true);
+            super(myFrame, true);
             if (title != null) {
                 setTitle(title);
             }
@@ -872,6 +877,13 @@ public class Import extends ImportCommon implements ImportSettings {
         private static final long serialVersionUID = -9221358976863603143L;
     }
 
+    /**
+     * @return Returns the Frame.
+     */
+    public Frame getFrame() {
+        return myFrame;
+    }
+
 
 }
 
@@ -1069,7 +1081,7 @@ class ImportClasspathDialog extends JDialog {
                 }
             });
 
-            chooser.showOpenDialog(ArgoFrame.getInstance());
+            chooser.showOpenDialog(importProcess.getFrame());
         }
     }
 
