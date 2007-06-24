@@ -38,7 +38,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DiDiagram;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
+import org.argouml.uml.CommentEdge;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Mode;

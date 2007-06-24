@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.static_structure.ui;
+package org.argouml.uml;
 
 import javax.management.Notification;
 import javax.management.NotificationBroadcasterSupport;
@@ -49,35 +49,35 @@ public class CommentEdge extends NotificationBroadcasterSupport {
     private Object comment;
     private Object annotatedElement;
 
-    CommentEdge() {
+    public CommentEdge() {
         uuid = UUIDManager.getInstance().getNewUUID();
     }
 
     /**
      * Constructor.
      *
-     * @param source the source
-     * @param dest the destination
+     * @param theSource the source
+     * @param theDest the destination
      */
-    public CommentEdge(Object source, Object dest) {
-        if (!(Model.getFacade().isAModelElement(source))) {
+    public CommentEdge(Object theSource, Object theDest) {
+        if (!(Model.getFacade().isAModelElement(theSource))) {
             throw new IllegalArgumentException(
                     "The source of the CommentEdge must be a model element");
         }
-        if (!(Model.getFacade().isAModelElement(dest))) {
+        if (!(Model.getFacade().isAModelElement(theDest))) {
             throw new IllegalArgumentException(
                     "The destination of the CommentEdge "
                             + "must be a model element");
         }
-        if (Model.getFacade().isAComment(source)) {
-            comment = source;
-            annotatedElement = dest;
+        if (Model.getFacade().isAComment(theSource)) {
+            comment = theSource;
+            annotatedElement = theDest;
         } else {
-            comment = dest;
-            annotatedElement = source;
+            comment = theDest;
+            annotatedElement = theSource;
         }
-        this.source = source;
-        this.dest = dest;
+        this.source = theSource;
+        this.dest = theDest;
         uuid = UUIDManager.getInstance().getNewUUID();
     }
 
@@ -124,19 +124,19 @@ public class CommentEdge extends NotificationBroadcasterSupport {
     }
 
     /**
-     * @param source The source to set.
+     * @param theSource The source to set.
      */
-    public void setSource(Object source) {
-        if (source == null) {
+    public void setSource(Object theSource) {
+        if (theSource == null) {
             throw new IllegalArgumentException(
                     "The source of a comment edge cannot be null");
         }
-        if (!(Model.getFacade().isAModelElement(source))) {
+        if (!(Model.getFacade().isAModelElement(theSource))) {
             throw new IllegalArgumentException(
                     "The source of the CommentEdge cannot be a "
-                    + source.getClass().getName());
+                    + theSource.getClass().getName());
         }
-        this.source = source;
+        this.source = theSource;
     }
 
     /**
@@ -165,30 +165,30 @@ public class CommentEdge extends NotificationBroadcasterSupport {
         return annotatedElement;
     }
 
-    public void setAnnotatedElement(Object annotatedElement) {
-        if (annotatedElement == null) {
+    public void setAnnotatedElement(Object theAnnotatedElement) {
+        if (theAnnotatedElement == null) {
             throw new IllegalArgumentException(
                     "An annotated element must be supplied");
         }
-        if (Model.getFacade().isAComment(annotatedElement)) {
+        if (Model.getFacade().isAComment(theAnnotatedElement)) {
             throw new IllegalArgumentException(
                     "An annotated element cannot be a comment");
         }
-        this.annotatedElement = annotatedElement;
+        this.annotatedElement = theAnnotatedElement;
     }
 
     public Object getComment() {
         return comment;
     }
 
-    public void setComment(Object comment) {
-        if (comment == null) {
+    public void setComment(Object theComment) {
+        if (theComment == null) {
             throw new IllegalArgumentException("A comment must be supplied");
         }
-        if (!Model.getFacade().isAComment(comment)) {
+        if (!Model.getFacade().isAComment(theComment)) {
             throw new IllegalArgumentException("A comment cannot be a "
-                    + comment.getClass().getName());
+                    + theComment.getClass().getName());
         }
-        this.comment = comment;
+        this.comment = theComment;
     }
 }

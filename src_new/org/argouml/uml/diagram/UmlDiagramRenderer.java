@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
+import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.activity.ui.FigCallState;
 import org.argouml.uml.diagram.activity.ui.FigObjectFlowState;
@@ -57,7 +58,6 @@ import org.argouml.uml.diagram.state.ui.FigStubState;
 import org.argouml.uml.diagram.state.ui.FigSubmachineState;
 import org.argouml.uml.diagram.state.ui.FigSynchState;
 import org.argouml.uml.diagram.state.ui.FigTransition;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigDataType;

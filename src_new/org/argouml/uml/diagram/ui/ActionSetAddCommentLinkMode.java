@@ -30,7 +30,7 @@
 package org.argouml.uml.diagram.ui;
 
 
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
+import org.argouml.uml.CommentEdge;
 
 /**
  * An extension of ActionSetMode to set the parameters for a comment link.
