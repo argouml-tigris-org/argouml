@@ -32,7 +32,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLCheckBox2;
-import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextField2;
@@ -97,8 +96,6 @@ public class PropPanelElementImport extends PropPanelModelElement {
                 "label.modifiers"));
             modifiersPanel.add(
                     new UMLElementImportIsSpecificationCheckbox());
-            modifiersPanel.add(
-                    new UMLDerivedCheckBox());
         }
         return modifiersPanel;
     }
