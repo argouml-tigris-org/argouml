@@ -111,6 +111,11 @@ public class TestModel extends TestCase {
             return;
         }
 
+        // Handling the initialise method
+        if (factoryIF.getName().equals("java.lang.Throwable")) {
+            return;
+        }
+
         assertTrue("The return type from " + savedMethod
                 + " must be an interface.",
                 factoryIF.isInterface());
