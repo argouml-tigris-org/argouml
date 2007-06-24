@@ -25,7 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
+import org.argouml.uml.CommentEdge;
 import org.tigris.gef.presentation.Fig;
 
 /**

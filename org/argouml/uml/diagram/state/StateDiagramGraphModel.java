@@ -35,8 +35,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.presentation.Fig;
 
 /**

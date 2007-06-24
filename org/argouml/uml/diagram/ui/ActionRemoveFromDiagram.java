@@ -32,7 +32,7 @@ import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
+import org.argouml.uml.CommentEdge;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.di.GraphElement;
