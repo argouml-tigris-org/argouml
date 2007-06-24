@@ -491,6 +491,37 @@ public final class Model {
     }
 
     /**
+     * Initialise the model repository, based on 
+     * the name of a ModelImplementation class. <p>
+     * 
+     * The name shall include the path, 
+     * e.g. "org.argouml.model.mdr.MDRModelImplementation".
+     * 
+     * @param modelName class name of the model implementation
+     * @return null if initialised correctly, the error otherwise
+     */
+    public static Throwable initialise(String modelName) {
+        ModelImplementation newImplementation = null;
+        try {
+            Class implType = Class.forName(modelName);
+            newImplementation = (ModelImplementation) implType.newInstance();
+        } catch (ClassNotFoundException e) {
+            return e;
+        } catch (NoClassDefFoundError e) {
+            return e;
+        } catch (InstantiationException e) {
+            return e;
+        } catch (IllegalAccessException e) {
+            return e;
+        }
+        if (newImplementation == null) {
+            return new Throwable();
+        }
+        Model.setImplementation(newImplementation);
+        return null;
+    }
+
+    /**
      * @return <code>true</code> if the Model subsystem is correctly initiated.
      */
     public static boolean isInitiated() {
