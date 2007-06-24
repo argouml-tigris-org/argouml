@@ -64,7 +64,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.language.java.generator.GeneratorJava;
 import org.argouml.model.Model;
-import org.argouml.model.ModelImplementation;
 import org.argouml.moduleloader.InitModuleLoader;
 import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.notation.InitNotation;
@@ -269,35 +268,7 @@ public class Main {
         // Initialize the Model subsystem
         st.mark("initialize model subsystem");
 
-        {
-            String className =
-                System.getProperty(
-                        "argouml.model.implementation",
-                        DEFAULT_MODEL_IMPLEMENTATION);
-
-            ModelImplementation impl = null;
-            try {
-                Class implType = Class.forName(className);
-                impl = (ModelImplementation) implType.newInstance();
-            } catch (ClassNotFoundException e) {
-                reportError(e);
-            } catch (NoClassDefFoundError e) {
-                reportError(e);
-            } catch (InstantiationException e) {
-                reportError(e);
-            } catch (IllegalAccessException e) {
-                reportError(e);
-            }
-
-            if (impl == null) {
-                System.err.println(className
-                        + " is not a working Model implementation.");
-                System.exit(1);
-                return;
-            }
-            
-            Model.setImplementation(impl);
-        }
+        initModel();
         
         updateProgress(splash, 5, "statusmsg.bar.model-subsystem");
 
@@ -454,12 +425,21 @@ public class Main {
         //ToolTipManager.sharedInstance().setInitialDelay(500);
         ToolTipManager.sharedInstance().setDismissDelay(50000000);
     }
-    
+
     /**
-     * @param e The exception to be logged.
+     * Initialise the UMl model repository.
      */
-    private static void reportError(Throwable e) {
-        LOG.fatal("Model component not correctly initialized.", e);
+    private static void initModel() {
+        String className = System.getProperty(
+                "argouml.model.implementation",
+                DEFAULT_MODEL_IMPLEMENTATION);
+        Throwable ret = Model.initialise(className);
+        if (ret != null) {
+            LOG.fatal("Model component not correctly initialized.", ret);
+            System.err.println(className
+                    + " is not a working Model implementation.");
+            System.exit(1);
+        }
     }
 
     /**
