@@ -83,7 +83,7 @@ public class TestDetailsPane extends TestCase {
 		    o,
 		});
         pane.targetSet(e);
-        assertEquals("1:", propertyPane, pane.getTabs().getSelectedComponent());
+        assertEquals("1:", todoPane, pane.getTabs().getSelectedComponent());
         UMLDiagram diagram = new UMLClassDiagram();
         e =
             new TargetEvent(
