@@ -44,7 +44,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
@@ -433,7 +432,7 @@ public final class TargetManager {
 
 	if (o != null) {
             Object newTarget;
-            if (o instanceof UMLDiagram) { // Needed for Argo startup :-(
+            if (o instanceof Diagram) { // Needed for Argo startup :-(
                 newTarget = o;
             } else {
 	        newTarget = getOwner(o);
@@ -882,7 +881,7 @@ public final class TargetManager {
                 target = owner;
             }
         }
-        return target instanceof UMLDiagram
+        return target instanceof Diagram
             || Model.getFacade().isAUMLElement(target) ? target : null;
 
     }
@@ -955,8 +954,8 @@ public final class TargetManager {
         private void addListener(Object o) {
             if (Model.getFacade().isAModelElement(o)) {
                 Model.getPump().addModelEventListener(this, o, "remove");
-            } else if (o instanceof UMLDiagram) {
-                ((UMLDiagram) o).addPropertyChangeListener(this);
+            } else if (o instanceof Diagram) {
+                ((Diagram) o).addPropertyChangeListener(this);
             } else if (o instanceof NotificationEmitter) {
                 ((NotificationEmitter) o).addNotificationListener(
                         this, null, o);
@@ -966,8 +965,8 @@ public final class TargetManager {
         private void removeListener(Object o) {
             if (Model.getFacade().isAModelElement(o)) {
                 Model.getPump().removeModelEventListener(this, o, "remove");
-            } else if (o instanceof UMLDiagram) {
-                ((UMLDiagram) o).removePropertyChangeListener(this);
+            } else if (o instanceof Diagram) {
+                ((Diagram) o).removePropertyChangeListener(this);
             } else if (o instanceof NotificationEmitter) {
                 try {
                     ((NotificationEmitter) o).removeNotificationListener(this);
