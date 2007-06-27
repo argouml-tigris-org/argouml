@@ -73,8 +73,8 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.Relocatable;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.<p>
@@ -329,8 +329,8 @@ public class DnDExplorerTree
                     LOG.debug("Valid Drag: namespace " + dest);
                     return true;
                 }
-                if (me instanceof UMLDiagram) {
-                    UMLDiagram d = (UMLDiagram) me;
+                if (me instanceof Relocatable) {
+                    Relocatable d = (Relocatable) me;
                     if (d.isRelocationAllowed(dest)) {
                         LOG.debug("Valid Drag: diagram " + dest);
                         return true;
@@ -774,8 +774,8 @@ public class DnDExplorerTree
                                 }
                             }
                         }
-                        if (me instanceof UMLDiagram) {
-                            UMLDiagram d = (UMLDiagram) me;
+                        if (me instanceof Relocatable) {
+                            Relocatable d = (Relocatable) me;
                             if (d.isRelocationAllowed(dest)) {
                                 if (d.relocate(dest)) {
                                     ExplorerEventAdaptor.getInstance()
