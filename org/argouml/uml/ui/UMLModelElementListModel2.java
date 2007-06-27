@@ -416,6 +416,8 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
     protected boolean isValidEvent(PropertyChangeEvent e) {
         boolean valid = false;
         if (!(getChangedElement(e) instanceof Collection)) {
+            // TODO: Considering all delete events to be valid like below
+            // is going to cause lots of unecessary work and some problems
             if ((e.getNewValue() == null && e.getOldValue() != null)
                     // Don't test changed element if it was deleted
                     || isValidElement(getChangedElement(e))) {
