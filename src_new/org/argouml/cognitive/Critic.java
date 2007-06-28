@@ -191,6 +191,10 @@ public class Critic extends Observable implements Poster, Serializable {
     /**
      * Arguments used to configure the critic.
      * TODO: Could this be removed from the main critics class?
+     * @deprecated for 0.25.4 by Linus Tolke.
+     *             This way of storing information encourages
+     *             violation of type safety.
+     *             Create member attributes instead. 
      */
     private Hashtable args = new Hashtable();
 
@@ -955,6 +959,10 @@ public class Critic extends Observable implements Poster, Serializable {
     /**
      * @param name  the key
      * @param value the value
+     * @deprecated for 0.25.4 by Linus Tolke.
+     *             This way of storing information encourages
+     *             violation of type safety.
+     *             Create member attributes instead. 
      */
     protected void setArg(String name, Object value) {
 	args.put(name, value);
@@ -963,6 +971,10 @@ public class Critic extends Observable implements Poster, Serializable {
     /**
      * @param name the key
      * @return     the value
+     * @deprecated for 0.25.4 by Linus Tolke.
+     *             This way of storing information encourages
+     *             violation of type safety.
+     *             Create member attributes instead. 
      */
     protected Object getArg(String name) {
 	return args.get(name);
@@ -970,11 +982,19 @@ public class Critic extends Observable implements Poster, Serializable {
 
     /**
      * @return the (key, value) pairs
+     * @deprecated for 0.25.4 by Linus Tolke.
+     *             This way of storing information encourages
+     *             violation of type safety.
+     *             Create member attributes instead. 
      */
     public Hashtable  getArgs() { return args; }
 
     /**
      * @param h the new table of (key, value) pairs
+     * @deprecated for 0.25.4 by Linus Tolke.
+     *             This way of storing information encourages
+     *             violation of type safety.
+     *             Create member attributes instead. 
      */
     public void setArgs(Hashtable h) { args = h; }
 

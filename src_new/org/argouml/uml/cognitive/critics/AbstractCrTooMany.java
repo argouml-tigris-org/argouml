@@ -35,8 +35,8 @@ import org.argouml.cognitive.ToDoItem;
  * @author mkl
  */
 public abstract class AbstractCrTooMany extends CrUML {
-
-    private static final String THRESHOLD = "Threshold";
+    
+    private int criticThreshold;
 
     /**
      * Set the threshold.
@@ -46,7 +46,7 @@ public abstract class AbstractCrTooMany extends CrUML {
      * @param threshold The threshold to compare to.
      */
     public void setThreshold(int threshold) {
-        setArg(THRESHOLD, new Integer(threshold));
+        criticThreshold = threshold;
     }
 
     /**
@@ -57,13 +57,13 @@ public abstract class AbstractCrTooMany extends CrUML {
      * @return The current threshold.
      */
     public int getThreshold() {
-        return ((Integer) getArg(THRESHOLD)).intValue();
+        return criticThreshold;
     }
 
     /**
      * Provide a default wizard to adjust the threshold.
      *
-     * @see org.argouml.cognitive.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     * {@inheritDoc}
      */
     public Class getWizardClass(ToDoItem item) {
         return WizTooMany.class;
