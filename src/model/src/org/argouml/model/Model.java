@@ -477,8 +477,8 @@ public final class Model {
      * 
      * @param model
      *            the project member model
-     * @param writer
-     *            the writer
+     * @param stream
+     *            the stream to write to
      * @param version
      *            string to be written into file header as XMI writer version
      * @return the object implementing the XmiWriter interface

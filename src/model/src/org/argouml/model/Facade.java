@@ -723,9 +723,10 @@ public interface Facade {
     boolean isAModelElement(Object handle);
     
     /**
-     * Recognizer for a UML element which can have a name. In UML 1.x, this is
-     * just a ModelElement, but in UML 2.x it's a separate metatype. Use this method
-     * if you're principally interested in whether something can be named.
+     * Recognizer for a UML element which can have a name. In UML 1.x,
+     * this is just a ModelElement, but in UML 2.x it's a separate
+     * metatype. Use this method if you're principally interested in
+     * whether something can be named.
      * 
      * @param handle
      *            candidate
@@ -839,7 +840,7 @@ public interface Facade {
      *            candidate
      * @return true if handle is a Primitive
      * @deprecated for 0.25.4 by tfmorris. Renamed in UML 2.x. Use
-     *             {@link #isAPrimitiveType(Object).
+     *             {@link #isAPrimitiveType(Object)}.
      */
     boolean isAPrimitive(Object handle);
 
@@ -858,7 +859,7 @@ public interface Facade {
      *            candidate
      * @return true if handle is a ProgrammingLanguageDataType
      * @deprecated for 0.25.4 by tfmorris. Removed from UML 2.x. Use
-     *             {@link #isAPrimitiveType(Object).
+     *             {@link #isAPrimitiveType(Object)}.
      */
     boolean isAProgrammingLanguageDataType(Object handle);
 

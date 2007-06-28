@@ -128,12 +128,13 @@ public interface UmlFactory {
     void delete(Object elem);
 
     /**
-     * Check whether a model element has been deleted.
-     * <p>
-     * <em>NOTE:</em>Not thread-safe!  Without external synchronization there's no
-     * guarantee that the element won't be deleted by thread after this method
-     * returns, but before the caller can do anything with it.
-     * <p>
+     * Check whether a model element has been deleted.<p>
+     *
+     * <em>NOTE:</em>Not thread-safe!
+     * Without external synchronization there's no guarantee that the
+     * element won't be deleted by thread after this method returns, but
+     * before the caller can do anything with it.<p>
+     *
      * If the calling code isn't protected by a lock or some other type of
      * synchronization, an alternative to using this call is to use a 
      * try/catch block which catches InvalidElementExceptions.
