@@ -24,6 +24,62 @@
 
 package org.argouml.uml.profile;
 
-public class TestProfileManagerImpl {
+import java.io.File;
 
+import junit.framework.TestCase;
+
+/**
+ * Tests for the default implementation of the ProfileManager
+ *
+ * @author Marcos Aurélio
+ */
+public class TestProfileManagerImpl extends TestCase {
+    /**
+     * The constructor.
+     *
+     * @param name the name of the test.
+     */
+    public TestProfileManagerImpl(String name) {
+        super(name);
+    }
+    
+    /**
+     * Test whether the ProfileManager can register a new profile
+     */
+    public void testRegisterProfile() {
+        Profile profile = new UserDefinedProfile(new File("someprofile"));
+        ProfileManager manager = ProfileManagerImpl.getInstance();
+        manager.registerProfile(profile);        
+        assertTrue("Profile was not correctly registered", manager
+		.getRegisteredProfiles().contains(profile));
+    }
+
+    /**
+     * Test whether the ProfileManager can remove a previously registered 
+     * profile
+     */
+    public void testUnregisterRegisteredProfile() {
+        Profile profile = new UserDefinedProfile(new File("someprofile"));
+        ProfileManager manager = ProfileManagerImpl.getInstance();
+        
+        if (!manager.getRegisteredProfiles().contains(profile)) {
+            manager.registerProfile(profile);
+            manager.removeProfile(profile);
+            assertTrue("Profile was not correctly unregistered", !manager
+    		.getRegisteredProfiles().contains(profile));
+        }
+    }
+    
+    /**
+     * Test whether the ProfileManager can handle a non proviously registered 
+     * profile being removed. In this case it should not raise any exception.
+     */
+    public void testUnregisterUnknownProfile() {
+        Profile profile = new UserDefinedProfile(new File("someprofile"));
+        ProfileManager manager = ProfileManagerImpl.getInstance();
+        
+        if (!manager.getRegisteredProfiles().contains(profile)) {
+            manager.removeProfile(profile);
+        }
+    }       
 }
