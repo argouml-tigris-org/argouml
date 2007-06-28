@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!DOCTYPE TemplateSet [
+  <!ELEMENT TemplateSet (macro | template)* >
+  <!ELEMENT macro (#PCDATA)>
+  <!ATTLIST macro name ID #REQUIRED>
+  <!ELEMENT template (#PCDATA)>
+  <!ATTLIST template class CDATA #REQUIRED
+                     guard CDATA #IMPLIED>
+]>
+<!-- This is argo.tee, for Argo/UML to save project -->
+<!-- files.  "tee" = Template with Embedded Expressions. -->
+
+<!-- Original Author: jrobbins@ics.uci.edu -->
+<!-- $Id$ -->
+
+
+<TemplateSet>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="org.argouml.kernel.Project">
+<![CDATA[
+<argo version="<ocl>self.persistenceVersion</ocl>">
+  <documentation>
+    <authorname><ocl>self.authorname</ocl></authorname>
+    <authoremail><ocl>self.authoremail</ocl></authoremail>
+    <version><ocl>self.version</ocl></version>
+    <description>
+      <ocl>self.description</ocl>
+    </description>
+  </documentation>
+  <settings>
+    <notationlanguage><ocl>self.projectSettings.notationLanguage</ocl></notationlanguage>
+    <showboldnames><ocl>self.projectSettings.showBoldNames</ocl></showboldnames>
+    <useguillemots><ocl>self.projectSettings.useGuillemots</ocl></useguillemots>
+    <showvisibility><ocl>self.projectSettings.showVisibility</ocl></showvisibility>
+    <showmultiplicity><ocl>self.projectSettings.showMultiplicity</ocl></showmultiplicity>
+    <showinitialvalue><ocl>self.projectSettings.showInitialValue</ocl></showinitialvalue>
+    <showproperties><ocl>self.projectSettings.showProperties</ocl></showproperties>
+    <showtypes><ocl>self.projectSettings.showTypes</ocl></showtypes>
+    <showstereotypes><ocl>self.projectSettings.showStereotypes</ocl></showstereotypes>
+    <showsingularmultiplicities><ocl>self.projectSettings.showSingularMultiplicities</ocl></showsingularmultiplicities>
+    <defaultshadowwidth><ocl>self.projectSettings.defaultShadowWidth</ocl></defaultshadowwidth>
+  </settings>
+  
+  <searchpath href="<ocl>self.searchPath</ocl>" />
+
+  <ocl>self.members</ocl>
+
+  <historyfile name="<ocl>self.historyFile</ocl>" />
+
+</argo>
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Write out the ProjectMember data. Note that this is not         -->
+<!-- required to reload a project for ArgoUML but is used by at      -->
+<!-- least one 3rd party tool. See -                                 -->
+<!-- http://argouml.tigris.org/issues/show_bug.cgi?id=4491           -->
+<template class="org.argouml.uml.diagram.ProjectMemberDiagram">
+<![CDATA[
+<member type="<ocl>self.type</ocl>"
+        name="<ocl>self.zipName</ocl>"
+        diagramclass="<ocl>self.diagram.class.name</ocl>"
+        diagramname="<ocl>self.diagram.name</ocl>" />
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Write out the ProjectMember data. Note that this is not         -->
+<!-- required to reload a project for ArgoUML but is used by at      -->
+<!-- least one 3rd party tool. See -                                 -->
+<!-- http://argouml.tigris.org/issues/show_bug.cgi?id=4491           -->
+<template class="org.argouml.kernel.AbstractProjectMember">
+<![CDATA[
+<member type="<ocl>self.type</ocl>"
+        name="<ocl>self.zipName</ocl>" />
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="org.argouml.ui.UsageStatistic">
+<![CDATA[
+<stat name="<ocl>self.name</ocl>"
+     value="<ocl>self.value</ocl>" />
+]]>
+</template>
+
+</TemplateSet>
+
+<!-- -  End of File  - - - - - - - - - - - - - - - - - - - - - - - - -->
