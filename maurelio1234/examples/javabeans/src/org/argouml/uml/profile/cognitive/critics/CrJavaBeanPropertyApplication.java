@@ -5,12 +5,13 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
-import org.argouml.uml.cognitive.critics.CrUML;
+import org.argouml.uml.cognitive.critics.CrProfile;
 import org.argouml.uml.profile.javabeans.ProfileJavaBeans;
 
-public class CrJavaBeanPropertyApplication extends CrUML {
+public class CrJavaBeanPropertyApplication extends CrProfile {
     public CrJavaBeanPropertyApplication() {
-	setupHeadAndDesc();
+	super("beansprofile");
+	
 	addSupportedDecision(UMLDecision.PLANNED_EXTENSIONS);
 	setPriority(ToDoItem.HIGH_PRIORITY);
 	addTrigger("association");

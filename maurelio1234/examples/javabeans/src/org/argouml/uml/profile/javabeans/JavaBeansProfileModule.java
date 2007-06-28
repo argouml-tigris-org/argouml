@@ -24,7 +24,7 @@
 
 package org.argouml.uml.profile.javabeans;
 
-import org.argouml.cognitive.critics.Agency;
+import org.argouml.cognitive.Agency;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.uml.profile.ProfileManagerImpl;
