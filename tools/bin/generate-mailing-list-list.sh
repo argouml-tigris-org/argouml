@@ -34,13 +34,19 @@ projects="argouml \
     argouml-nb \
     argouml-php \
     argouml-pt \
+    argouml-pt-br \
     argouml-python \
     argouml-ru \
     argouml-ruby \
+    argouml-sql \
     argouml-stats \
     argoumlinstaller \
     seeds \
+    argopdf \
+    argoprint \
+    argouml-actionscript3 \
     argouml-ada \
+    argouml-atl \
     argouml-ca \
     argouml-delphi \
     argouml-emf \
@@ -48,15 +54,15 @@ projects="argouml \
     argouml-it \
     argouml-ja \
     argouml-java \
+    argouml-javascript \
     argouml-pattern-wizard \
-    argouml-pt-br \
+    argouml-python \
     argouml-ro \
-    argouml-sql \
+    argouml-sequence \
     argouml-sv \
     argouml-zh-cn \
     argouml-zh-tw \
     \
-    argoprint \
     argouml-ar \
 "
 
