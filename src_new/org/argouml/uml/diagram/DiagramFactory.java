@@ -44,8 +44,8 @@ import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
 
@@ -181,7 +181,7 @@ public final class DiagramFactory {
 
     public Object createRenderingElement(Object diagram, Object model) {
         GraphNodeRenderer rend =
-            ((UMLDiagram) diagram).getLayer().getGraphNodeRenderer();
+            ((Diagram) diagram).getLayer().getGraphNodeRenderer();
         Object renderingElement =
                 rend.getFigNodeFor(model, 0, 0, noStyleProperties);
         return renderingElement;

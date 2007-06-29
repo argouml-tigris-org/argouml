@@ -476,5 +476,19 @@ public abstract class ArgoDiagram extends Diagram {
     public abstract void encloserChanged(
             FigNode enclosed, FigNode oldEncloser, FigNode newEncloser); 
 	// Do nothing, override in subclass.
+
+    /**
+     * This method shall return any UML modelelements
+     * that should be deleted when the diagram gets deleted,
+     * or null if there are none. The default implementation returns null;
+     * e.g. a statechart diagram should return its statemachine.
+     *
+     * @author mvw@tigris.org
+     *
+     * @return the dependent element - in the general case there aren't, so null
+     */
+    public Object getDependentElement() {
+        return null;
+    }
     
 } /* end class ArgoDiagram */

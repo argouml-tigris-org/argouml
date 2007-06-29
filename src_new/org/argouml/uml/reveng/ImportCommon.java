@@ -46,9 +46,9 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.reveng.ImportInterface.ImportException;
 import org.tigris.gef.base.Globals;
 
@@ -454,7 +454,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         int total = startingProgress + diagrams.size()
                 / 10;
         for (int i = 0; i < diagrams.size(); i++) {
-            UMLDiagram diagram = (UMLDiagram) diagrams.elementAt(i);
+            ArgoDiagram diagram = (ArgoDiagram) diagrams.elementAt(i);
             ClassdiagramLayouter layouter = new ClassdiagramLayouter(diagram);
             layouter.layout();
             int act = startingProgress + (i + 1) / 10;

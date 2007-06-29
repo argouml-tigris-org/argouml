@@ -36,7 +36,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * A go rule to navigate from a statemachine or activitygraph
@@ -56,7 +55,7 @@ public class GoStatemachineToDiagram extends AbstractPerspectiveRule {
             Project proj = ProjectManager.getManager().getCurrentProject();
             Iterator it = proj.getDiagrams().iterator();
             while (it.hasNext()) {
-                UMLDiagram diagram = (UMLDiagram) it.next();
+                Object diagram = it.next();
                 if (diagram instanceof UMLActivityDiagram) {
                     UMLActivityDiagram activityDiagram =
                         (UMLActivityDiagram) diagram;

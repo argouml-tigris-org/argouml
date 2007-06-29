@@ -36,6 +36,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -77,7 +78,7 @@ public abstract class ActionAddDiagram extends UndoableAction {
 
         if (ns != null && isValidNamespace(ns)) {
             super.actionPerformed(e);
-            UMLDiagram diagram = createDiagram(ns);
+            ArgoDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
             //TODO: make the explorer listen to project member property
             //changes...  to eliminate coupling on gui.

@@ -62,6 +62,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.CheckboxTableModel;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
@@ -69,7 +70,6 @@ import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
 import org.argouml.uml.diagram.sequence.ui.FigMessage;
 import org.argouml.uml.diagram.sequence.ui.SequenceDiagramLayer;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.reveng.ImportSettings;
 import org.argouml.uml.reveng.java.JavaLexer;
 import org.argouml.uml.reveng.java.JavaRecognizer;
@@ -110,7 +110,7 @@ public class RESequenceDiagramDialog
     private List calldata = new ArrayList();
     private Hashtable types = new Hashtable();
     private Object collaboration;
-    private UMLDiagram diagram;
+    private ArgoDiagram diagram;
     private SequenceDiagramGraphModel graphModel;
     private CheckboxTableModel callTable;
     private JComboBox modeChoice;
@@ -171,7 +171,7 @@ public class RESequenceDiagramDialog
             Project p = ProjectManager.getManager().getCurrentProject();
             Iterator iter = p.getDiagrams().iterator();
             while (iter.hasNext()) {
-                diagram = (UMLDiagram) iter.next();
+                diagram = (ArgoDiagram) iter.next();
                 if (graphModel == diagram.getGraphModel()) {
                     break;
                 }
@@ -474,7 +474,7 @@ public class RESequenceDiagramDialog
                 Model.getFacade().getNamespace(theClassifier),
                 theClassifier);
         diagram =
-            (UMLDiagram) DiagramFactory.getInstance().createDiagram(
+            DiagramFactory.getInstance().createDiagram(
                 UMLSequenceDiagram.class,
                 collaboration,
                 null);

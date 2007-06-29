@@ -34,9 +34,9 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.layout.LayoutedObject;
 import org.argouml.uml.diagram.layout.Layouter;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -287,7 +287,7 @@ public class ClassdiagramLayouter implements Layouter {
     /**
      * The diagram that will be layouted.
      */
-    private UMLDiagram diagram;
+    private ArgoDiagram diagram;
 
     /**
      * HashMap with figures as key and Nodes as elements.
@@ -335,7 +335,7 @@ public class ClassdiagramLayouter implements Layouter {
      *
      * @param theDiagram The diagram to layout.
      */
-    public ClassdiagramLayouter(UMLDiagram theDiagram) {
+    public ClassdiagramLayouter(ArgoDiagram theDiagram) {
         diagram = theDiagram;
         Iterator<Fig> nodeIter = diagram.getLayer().getContents().iterator();
         while (nodeIter.hasNext()) {
