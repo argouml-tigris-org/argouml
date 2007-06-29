@@ -39,9 +39,9 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -271,9 +271,9 @@ public class FigInterface extends FigClassifierBox {
             // If default Namespace is not already set
             if (Model.getFacade().getNamespace(me) == null
                     && (TargetManager.getInstance().getTarget()
-                    instanceof UMLDiagram)) {
+                    instanceof ArgoDiagram)) {
                 m =
-                    ((UMLDiagram) TargetManager.getInstance().getTarget())
+                    ((ArgoDiagram) TargetManager.getInstance().getTarget())
                         .getNamespace();
                 Model.getCoreHelper().setNamespace(me, m);
             }

@@ -86,7 +86,6 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ProjectFileView;
 import org.argouml.uml.ui.TabProps;
@@ -1027,8 +1026,8 @@ public final class ProjectBrowser
         
         Object theCurrentNamespace = null;
         target = TargetManager.getInstance().getTarget();
-        if (target instanceof UMLDiagram) {
-            theCurrentNamespace = ((UMLDiagram) target).getNamespace();
+        if (target instanceof ArgoDiagram) {
+            theCurrentNamespace = ((ArgoDiagram) target).getNamespace();
         } else if (Model.getFacade().isANamespace(target)) {
             theCurrentNamespace = target;
         } else if (Model.getFacade().isAModelElement(target)) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,10 +34,10 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * Rule for Package->Diagram.
@@ -64,7 +64,7 @@ public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
             Project proj = ProjectManager.getManager().getCurrentProject();
             Iterator it = proj.getDiagrams().iterator();
             while (it.hasNext()) {
-                UMLDiagram diagram = (UMLDiagram) it.next();
+                ArgoDiagram diagram = (ArgoDiagram) it.next();
                 // Sequence diagrams are not shown as children of the
                 // collaboration that they show but as children of the
                 // classifier/operation the collaboration represents.

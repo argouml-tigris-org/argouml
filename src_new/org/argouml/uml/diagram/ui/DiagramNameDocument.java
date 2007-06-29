@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,6 +35,7 @@ import org.apache.log4j.Logger;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 
 /**
  * This is the model for the diagram name text box (JTextField)
@@ -75,9 +76,9 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
      * @param t the currently selected object
      */
     private void setTarget(Object t) {
-        if (t instanceof UMLDiagram) {
+        if (t instanceof ArgoDiagram) {
             stopEvents = true;
-            field.setText(((UMLDiagram) t).getName());
+            field.setText(((ArgoDiagram) t).getName());
             stopEvents = false;
         }
     }
@@ -133,8 +134,8 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
     private void update(DocumentEvent e) {
         if (!stopEvents) {
             Object target = TargetManager.getInstance().getTarget();
-            if (target instanceof UMLDiagram) {
-                UMLDiagram d = (UMLDiagram) target;
+            if (target instanceof ArgoDiagram) {
+                ArgoDiagram d = (ArgoDiagram) target;
                 try {
                     int documentLength = e.getDocument().getLength();
                     String newName = e.getDocument().getText(0, documentLength);

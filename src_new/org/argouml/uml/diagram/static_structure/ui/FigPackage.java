@@ -53,7 +53,6 @@ import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.VisibilityContainer;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Geometry;
@@ -635,8 +634,8 @@ public class FigPackage extends FigNodeModelElement
 		    Enumeration diagEnum = diags.elements();
 		    ArgoDiagram lFirst = null;
 		    while (diagEnum.hasMoreElements()) {
-			UMLDiagram lDiagram =
-			    (UMLDiagram) diagEnum.nextElement();
+			ArgoDiagram lDiagram =
+			    (ArgoDiagram) diagEnum.nextElement();
 			Object lDiagramNS = lDiagram.getNamespace();
 			if ((lNS == null && lDiagramNS == null)
 			    || (lNS.equals(lDiagramNS))) {

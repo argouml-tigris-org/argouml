@@ -572,8 +572,8 @@ public abstract class FigNodeModelElement
 	
 	if (layer != null && newEncloser != oldEncloser) {
             Diagram diagram = layer.getDiagram();
-            if (diagram instanceof UMLDiagram) {
-        	UMLDiagram umlDiagram = (UMLDiagram) diagram;
+            if (diagram instanceof ArgoDiagram) {
+        	ArgoDiagram umlDiagram = (ArgoDiagram) diagram;
         	// Set the namespace of the enclosed model element to the
         	// namespace of the encloser.
                 Object namespace = null;

@@ -36,6 +36,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.ui.AbstractActionNavigate;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanel;
@@ -91,8 +92,8 @@ class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object source) {
-        if (source instanceof UMLDiagram) {
-            return ((UMLDiagram) source).getNamespace();
+        if (source instanceof ArgoDiagram) {
+            return ((ArgoDiagram) source).getNamespace();
         }
         return null;
     }
@@ -125,7 +126,7 @@ class UMLDiagramHomeModelListModel
     extends DefaultListModel
     implements TargetListener, PropertyChangeListener {
 
-    private static UMLDiagram oldTarget = null;
+    private static ArgoDiagram oldTarget = null;
     /**
      * Constructor for UMLCommentAnnotatedElementListModel.
      */
@@ -159,15 +160,15 @@ class UMLDiagramHomeModelListModel
     private void setTarget(Object t) {
         if (oldTarget != null) {
             oldTarget.removePropertyChangeListener(
-                    UMLDiagram.NAMESPACE_KEY, this);
+                    ArgoDiagram.NAMESPACE_KEY, this);
         }
 
-        UMLDiagram target = null;
-        if (t instanceof UMLDiagram) {
-            target = (UMLDiagram) t;
+        ArgoDiagram target = null;
+        if (t instanceof ArgoDiagram) {
+            target = (ArgoDiagram) t;
             oldTarget = target;
             target.addPropertyChangeListener(
-                    UMLDiagram.NAMESPACE_KEY, this);
+                    ArgoDiagram.NAMESPACE_KEY, this);
         }
         removeAllElements();
 

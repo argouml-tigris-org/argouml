@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -140,5 +139,5 @@ public abstract class ActionAddDiagram extends UndoableAction {
      * @param ns The namespace the UMLDiagram should get.
      * @return UMLDiagram
      */
-    public abstract UMLDiagram createDiagram(Object ns);
+    public abstract ArgoDiagram createDiagram(Object ns);
 }
