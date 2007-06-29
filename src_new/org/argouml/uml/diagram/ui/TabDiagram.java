@@ -402,13 +402,13 @@ public class TabDiagram
      */
     private static final long serialVersionUID = -3305029387374936153L;
 
-	public void propertyChange(PropertyChangeEvent arg0) {
-		if ("remove".equals(arg0.getPropertyName())) {
-			Diagram diagram = ProjectManager.getManager()
-				.getCurrentProject().getActiveDiagram();
-			TargetManager.getInstance().setTarget(diagram);
-		}
-	}
+    public void propertyChange(PropertyChangeEvent arg0) {
+        if ("remove".equals(arg0.getPropertyName())) {
+            Diagram diagram = ProjectManager.getManager()
+                .getCurrentProject().getActiveDiagram();
+            TargetManager.getInstance().setTarget(diagram);
+        }
+    }
 }
 
 
