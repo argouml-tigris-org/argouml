@@ -34,8 +34,8 @@ import org.argouml.model.InitializeModel;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -114,7 +114,7 @@ public class TestActionCollaborationDiagram extends TestCase {
      *
      * @param diagram The diagram to check the namespace for.
      */
-    protected void checkNamespace(UMLDiagram diagram) {
+    protected void checkNamespace(ArgoDiagram diagram) {
         assertTrue(
         	   "The Collaboration diagram has a non-valid namespace",
         	   Model.getFacade().isACollaboration(diagram.getNamespace()));
@@ -128,9 +128,9 @@ public class TestActionCollaborationDiagram extends TestCase {
         Model.getPump().flushModelEvents();
         action.actionPerformed(null);
         Object d = TargetManager.getInstance().getTarget();
-        assertTrue("No diagram generated", d instanceof UMLDiagram);
+        assertTrue("No diagram generated", d instanceof ArgoDiagram);
         Model.getPump().flushModelEvents();
-        UMLDiagram diagram = (UMLDiagram) d;
+        ArgoDiagram diagram = (ArgoDiagram) d;
         assertNotNull(
                       "The diagram has no namespace",
                       diagram.getNamespace());
@@ -149,9 +149,9 @@ public class TestActionCollaborationDiagram extends TestCase {
     public void testDifferentNames() {
         action.actionPerformed(null);
         Object d = TargetManager.getInstance().getTarget();
-        assertTrue("No diagram generated", d instanceof UMLDiagram);
+        assertTrue("No diagram generated", d instanceof ArgoDiagram);
         Model.getPump().flushModelEvents();
-        UMLDiagram diagram1 = (UMLDiagram) d;
+        ArgoDiagram diagram1 = (ArgoDiagram) d;
         // This next line is needed to register the diagram in the project,
         // since creating a next diagram will need the new name to be compared
         // with existing diagrams in the project, to validate
@@ -161,9 +161,9 @@ public class TestActionCollaborationDiagram extends TestCase {
         TargetManager.getInstance().setTarget(ns);
         action.actionPerformed(null);
         d = TargetManager.getInstance().getTarget();
-        assertTrue("No diagram generated", d instanceof UMLDiagram);
+        assertTrue("No diagram generated", d instanceof ArgoDiagram);
         Model.getPump().flushModelEvents();
-        UMLDiagram diagram2 = (UMLDiagram) d;
+        ArgoDiagram diagram2 = (ArgoDiagram) d;
 
         Model.getPump().flushModelEvents();
         assertTrue(
@@ -195,7 +195,7 @@ public class TestActionCollaborationDiagram extends TestCase {
             assertTrue(
                     objDesc
                     + " is not valid namespace for the diagram",
-                    d instanceof UMLDiagram);
+                    d instanceof ArgoDiagram);
         }
     }
 

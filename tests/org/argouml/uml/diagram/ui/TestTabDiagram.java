@@ -128,7 +128,7 @@ public class TestTabDiagram extends TestCase {
         // setup
         if (PERFORMANCE_TEST) {
             try {
-                UMLDiagram[] diagrams = new UMLDiagram[NUMBER_OF_DIAGRAMS];
+                ArgoDiagram[] diagrams = new ArgoDiagram[NUMBER_OF_DIAGRAMS];
                 Project project =
                     ProjectManager.getManager().getCurrentProject();
                 Object clazz = Model.getCoreFactory().buildClass();
