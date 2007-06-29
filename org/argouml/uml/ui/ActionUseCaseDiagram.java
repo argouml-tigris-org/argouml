@@ -26,8 +26,8 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
 /**
@@ -48,14 +48,14 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
     /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
-    public UMLDiagram createDiagram(Object namespace) {
+    public ArgoDiagram createDiagram(Object namespace) {
         if (!Model.getFacade().isANamespace(namespace)) {
             LOG.error("No namespace as argument");
             LOG.error(namespace);
             throw new IllegalArgumentException(
                 "The argument " + namespace + "is not a namespace.");
         }
-        return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
+        return DiagramFactory.getInstance().createDiagram(
                 UMLUseCaseDiagram.class,
                 namespace,
                 null);

@@ -494,7 +494,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * @param namespace the namespace (or null for diagram)
      * @see org.argouml.uml.diagram.ui.UMLDiagram#setModelElementNamespace(java.lang.Object, Object)
      */
-    protected void setModelElementNamespace(
+    public void setModelElementNamespace(
 	    Object modelElement, 
 	    Object namespace) {
 	Facade facade = Model.getFacade();

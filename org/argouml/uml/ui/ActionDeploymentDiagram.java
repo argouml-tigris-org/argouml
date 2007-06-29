@@ -28,9 +28,9 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * Action to trigger creation of a deployment diagram.
@@ -61,7 +61,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
-    public UMLDiagram createDiagram(Object notUsedHandle) {
+    public ArgoDiagram createDiagram(Object notUsedHandle) {
         // a deployment diagram shows something about the whole model
         // according to the uml spec
 	Project p = ProjectManager.getManager().getCurrentProject();
@@ -73,7 +73,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
 					       "The argument " + handle
 					       + "is not a namespace.");
         }
-        return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
+        return DiagramFactory.getInstance().createDiagram(
                 UMLDeploymentDiagram.class,
                 handle,
                 null);

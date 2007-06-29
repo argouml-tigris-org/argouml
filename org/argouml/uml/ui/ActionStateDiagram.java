@@ -34,7 +34,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * Action to create a new statechart diagram.
@@ -51,7 +50,7 @@ public class ActionStateDiagram extends ActionNewDiagram {
     /*
      * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
      */
-    protected UMLDiagram createDiagram() {
+    protected ArgoDiagram createDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
         Object target = TargetManager.getInstance().getModelTarget();
         Object machine = null;
@@ -78,7 +77,7 @@ public class ActionStateDiagram extends ActionNewDiagram {
                     .buildCompositeStateOnStateMachine(machine);
         }
         
-        return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
+        return DiagramFactory.getInstance().createDiagram(
                 UMLStateDiagram.class,
                 Model.getFacade().getNamespace(machine),
                 machine);

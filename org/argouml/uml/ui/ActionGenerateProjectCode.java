@@ -35,7 +35,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.GeneratorManager;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 import org.tigris.gef.undo.UndoableAction;
@@ -77,7 +76,7 @@ public class ActionGenerateProjectCode extends UndoableAction {
 	if (activeDiagram == null) {
 	    return;
 	}
-	Object ns = ((UMLDiagram) activeDiagram).getNamespace();
+	Object ns = activeDiagram.getNamespace();
 	if (ns == null) {
 	    return;
 	}

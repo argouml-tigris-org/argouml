@@ -26,9 +26,9 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * Action to trigger creation of new class diagram.
@@ -57,9 +57,9 @@ public class ActionClassDiagram extends ActionAddDiagram {
     /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
-    public UMLDiagram createDiagram(Object ns) {
+    public ArgoDiagram createDiagram(Object ns) {
         if (Model.getFacade().isANamespace(ns)) {
-            return (UMLDiagram) DiagramFactory.getInstance().createDiagram(
+            return DiagramFactory.getInstance().createDiagram(
                     UMLClassDiagram.class,
                     ns,
                     null);

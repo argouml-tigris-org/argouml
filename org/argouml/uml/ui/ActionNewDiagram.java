@@ -35,7 +35,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -65,7 +65,7 @@ public abstract class ActionNewDiagram extends UndoableAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         
-        UMLDiagram diagram = createDiagram();
+        ArgoDiagram diagram = createDiagram();
         assert (diagram != null)
         	: "No diagram was returned by the concrete class";
         
@@ -81,7 +81,7 @@ public abstract class ActionNewDiagram extends UndoableAction {
     /**
      * @return the new diagram
      */
-    protected abstract UMLDiagram createDiagram();
+    protected abstract ArgoDiagram createDiagram();
     
     /**
      * Utility function to create a collaboration.

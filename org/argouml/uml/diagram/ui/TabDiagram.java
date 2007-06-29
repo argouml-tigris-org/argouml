@@ -51,6 +51,7 @@ import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.ui.ActionCopy;
 import org.argouml.uml.ui.ActionCut;
 import org.argouml.uml.ui.TabModelTarget;
@@ -184,7 +185,7 @@ public class TabDiagram
         UMLDiagram newTarget = (UMLDiagram) t;
 
         if (target != null) {
-        	target.removePropertyChangeListener("remove", this);
+            target.removePropertyChangeListener("remove", this);
         }
         newTarget.addPropertyChangeListener("remove", this);
 
@@ -223,7 +224,7 @@ public class TabDiagram
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object newTarget) {
-        return newTarget instanceof UMLDiagram;
+        return newTarget instanceof ArgoDiagram;
     }
 
     ////////////////////////////////////////////////////////////////

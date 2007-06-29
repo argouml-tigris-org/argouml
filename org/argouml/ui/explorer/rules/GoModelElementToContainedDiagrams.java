@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * Rule for ModelElement -> Contained diagrams. <p>
@@ -65,10 +64,8 @@ public class GoModelElementToContainedDiagrams extends AbstractPerspectiveRule {
             Iterator it = diagrams.iterator();
             while (it.hasNext()) {
                 ArgoDiagram diagram = (ArgoDiagram) it.next();
-                if (diagram instanceof UMLDiagram) {
-                    if (((UMLDiagram) diagram).getNamespace() == parent) {
-                        ret.add(diagram);
-                    }
+                if (diagram.getNamespace() == parent) {
+                    ret.add(diagram);
                 }
             }
             return ret;

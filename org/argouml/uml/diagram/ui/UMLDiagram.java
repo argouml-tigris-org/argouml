@@ -25,8 +25,6 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Component;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
@@ -44,10 +42,7 @@ import org.argouml.gefext.ArgoModeCreateFigSpline;
 import org.argouml.gefext.ArgoModeCreateFigText;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.model.CoreHelper;
-import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
-import org.argouml.model.ModelManagementHelper;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -65,8 +60,7 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  * This class provides support for writing a UML diagram for argo using
  * the GEF framework. <p>
  *
- * It adds common buttons, a namespace, capability
- * to delete itself when its namespace is deleted, some help
+ * It adds common buttons, and some help
  * with creating a valid diagram name. <p>
  *
  * There are various methods for returning 'structures' of Actions
@@ -88,28 +82,13 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  * For a activitydiagram is that the activitygraph.
  * Override the getOwner method to return the owner. <p>
  *
- *The "owner" is shown in the diagram's properties
- *panel as the "home model". <p>
- *
- * TODO: MVW: I am not sure of the following:<p>
- * The "namespace" of the diagram is e.g. used when creating new elements
- * that are shown on the diagram; they will have their namespace set
- * according this. It is NOT necessarily equal to the "owner". <p>
- *
- * MVW: I doubt all following:
- * The "namespace" of the diagram is e.g. used to register a listener
- * to the UML model, to be notified if this element is removed;
- * which will imply that this diagram has to be deleted, too. <p>
- * 
- * Hence the namespace of e.g. a collaboration diagram should be the
- * represented classifier or, in case of a represented operation, the
- * classifier that owns this operation.
- * And the namespace of the statechart diagram should be 
- * the namespace of its statemachine.
+ * The "owner" is shown in the diagram's properties
+ * panel as the "home model". <p>
  */
 public abstract class UMLDiagram
     extends ArgoDiagram
-    implements PropertyChangeListener, Relocatable {
+    implements Relocatable {
+
     /**
      * Logger.
      */
@@ -120,13 +99,6 @@ public abstract class UMLDiagram
      * Used to create an unique number for the name of the diagram.
      */
     private int diagramSerial = 1;
-
-    /** The bean property name denoting the diagram's namespace. 
-     * Value is a String. */
-    public static final String NAMESPACE_KEY = "namespace";
-    
-    ////////////////////////////////////////////////////////////////
-    // actions for toolbar
 
     /**
      * Tool to add a comment node.
@@ -179,10 +151,6 @@ public abstract class UMLDiagram
     private static Action actionInk =
         new RadioAction(new ActionSetMode(ArgoModeCreateFigInk.class, 
                 "Ink", "misc.primitive.ink"));
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-    private Object namespace;
 
     private JToolBar toolBar;
 
@@ -238,41 +206,6 @@ public abstract class UMLDiagram
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
-     * @return the namespace for the diagram
-     */
-    public Object getNamespace() {
-        return namespace;
-    }
-
-    /**
-     * Sets the namespace of the Diagram, and
-     * adds the diagram as a listener of its namespace in the UML model
-     * (so that it can delete itself when the model element is deleted).
-     *
-     * @param ns the namespace for the diagram
-     */
-    public void setNamespace(Object ns) {
-        if (!Model.getFacade().isANamespace(ns)) {
-            LOG.error("Not a namespace");
-            LOG.error(ns);
-            throw new IllegalArgumentException("Given object not a namespace");
-        }
-        if ((namespace != null) && (namespace != ns)) {
-            Model.getPump().removeModelEventListener(this, namespace);
-        }
-        Object oldNs = namespace;
-        namespace = ns;
-        firePropertyChange(NAMESPACE_KEY, oldNs, ns);
-
-        // Add the diagram as a listener to the namespace so
-        // that when the namespace is removed the diagram is deleted also.
-        /* Listening only to "remove" events does not work... 
-         * TODO: Check if this works now with new event pump - tfm 
-         */
-        Model.getPump().addModelEventListener(this, namespace, "remove");
-    }
-
     /*
      * @see org.tigris.gef.base.Diagram#getClassAndModelID()
      */
@@ -283,16 +216,6 @@ public abstract class UMLDiagram
         }
         String id = UUIDHelper.getUUID(getOwner());
         return s + "|" + id;
-    }
-
-    /**
-     * The default implementation for diagrams that
-     * have the namespace as their owner.
-     *
-     * @return the namespace
-     */
-    public Object getOwner() {
-        return getNamespace();
     }
 
     /**
@@ -423,30 +346,6 @@ public abstract class UMLDiagram
 
         ToolBarUtility.manageDefault(actions, "diagram.shape");
         return actions;
-    }
-
-    /**
-     * This diagram listens to events from its namespace ModelElement;
-     * when the modelelement is removed, we also want to delete this
-     * diagram.  <p>
-     *
-     * There is also a risk that if this diagram was the one shown in
-     * the diagram panel, then it will remain after it has been
-     * deleted. So we need to deselect this diagram. 
-     * There are other things to take care of, so all this is delegated to 
-     * {@link org.argouml.kernel.Project#moveToTrash(Object)}.
-     *
-     * {@inheritDoc}
-     */
-    public void propertyChange(PropertyChangeEvent evt) {
-        if ((evt.getSource() == namespace)
-                && (evt instanceof DeleteInstanceEvent)
-                && "remove".equals(evt.getPropertyName())) {
-
-            Model.getPump().removeModelEventListener(this, namespace, "remove");
-
-            getProject().moveToTrash(this);
-        }
     }
 
     /**
@@ -644,56 +543,6 @@ public abstract class UMLDiagram
 	gm.setProject(p);
     }
     
-    /**
-     * Set the namespace of a model element to the owner of
-     * the given namespace. If the namespace is null
-     * the namespace of the diagram is used instead.
-     * If the modelElement is not valid in the given namespace
-     * this method takes no action.
-     * @param modelElement the model element
-     * @param ns the namespace
-     */
-    protected void setModelElementNamespace(
-	    Object modelElement, 
-	    Object ns) {
-	if (modelElement == null) {
-	    return;
-	}
-	
-	// If we're not provided a namespace then get it from the diagram or
-	// the root
-        if (ns == null) {
-            if (getNamespace() != null) {
-        	ns = getNamespace();
-            } else {
-        	ns = getProject().getRoot();
-            }
-        }
-        
-        // If we haven't succeeded in getting a namespace then abort
-        if (ns == null) {
-            return;
-        }
-        
-        // If we're trying to set the namespace to the existing value
-        // then don't do any more work.
-	if (Model.getFacade().getNamespace(modelElement) == ns) {
-	    return;
-	}
-        
-        CoreHelper coreHelper = Model.getCoreHelper();
-        ModelManagementHelper modelHelper = Model.getModelManagementHelper();
-        
-        if (!modelHelper.isCyclicOwnership(ns, modelElement)
-                && coreHelper.isValidNamespace(modelElement, ns)) {
-            
-            coreHelper.setModelElementContainer(modelElement, ns);
-            /* TODO: move the associations to the correct owner (namespace)
-             * i.e. issue 2151
-             */
-        }
-    }
-
     /**
      * The UID.
      */

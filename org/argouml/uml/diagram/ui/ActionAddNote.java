@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,6 +39,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -90,11 +91,11 @@ public class ActionAddNote extends UndoableAction {
         Collection targets = TargetManager.getInstance().getModelTargets();
 
         //Let's build the comment first, unlinked.
-        Diagram diagram =
+        ArgoDiagram diagram =
             ProjectManager.getManager().getCurrentProject().getActiveDiagram();
         Object comment =
             Model.getCoreFactory().buildComment(null,
-                ((UMLDiagram) diagram).getNamespace());
+                diagram.getNamespace());
         MutableGraphModel mgm = (MutableGraphModel) diagram.getGraphModel();
 
         //Now, we link it to the modelelements which are represented by FigNode
