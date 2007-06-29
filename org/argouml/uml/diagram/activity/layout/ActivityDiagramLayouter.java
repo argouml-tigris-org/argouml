@@ -31,9 +31,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.layout.LayoutedObject;
 import org.argouml.uml.diagram.layout.Layouter;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -52,7 +52,7 @@ public class ActivityDiagramLayouter implements Layouter {
     /*
      * The diagram to be laid out.
      */
-    private UMLDiagram diagram;
+    private ArgoDiagram diagram;
 
     /*
      * List of objects.
@@ -84,7 +84,7 @@ public class ActivityDiagramLayouter implements Layouter {
      * Construct a new layout engine for an ActivityDiagram.
      * @param d the ActivityDiagram to be laid out.
      */
-    public ActivityDiagramLayouter(UMLDiagram d)  {
+    public ActivityDiagramLayouter(ArgoDiagram d)  {
         this.diagram = d;
     }
 

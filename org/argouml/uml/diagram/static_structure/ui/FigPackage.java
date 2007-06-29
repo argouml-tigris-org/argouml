@@ -633,7 +633,7 @@ public class FigPackage extends FigNodeModelElement
 
 		    Vector diags = lP.getDiagrams();
 		    Enumeration diagEnum = diags.elements();
-		    UMLDiagram lFirst = null;
+		    ArgoDiagram lFirst = null;
 		    while (diagEnum.hasMoreElements()) {
 			UMLDiagram lDiagram =
 			    (UMLDiagram) diagEnum.nextElement();

@@ -628,20 +628,6 @@ public abstract class UMLDiagram
      */
     public abstract String getLabelName();
 
-    /**
-     * This method shall return any UML modelelements
-     * that should be deleted when the diagram gets deleted,
-     * or null if there are none. The default implementation returns null;
-     * e.g. a statechart diagram should return its statemachine.
-     *
-     * @author mvw@tigris.org
-     *
-     * @return the dependent element - in the general case there aren't, so null
-     */
-    public Object getDependentElement() {
-        return null;
-    }
-
     /*
      * @see org.argouml.ui.explorer.Relocatable#isRelocationAllowed(java.lang.Object)
      */

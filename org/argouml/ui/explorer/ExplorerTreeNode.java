@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,7 @@ import java.util.Set;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Diagram;
 
 /**
  * Ensures that explorer tree nodes have a default ordering.
@@ -59,8 +59,8 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode implements
     public ExplorerTreeNode(Object userObj, ExplorerTreeModel m) {
         super(userObj);
         this.model = m;
-        if (userObj instanceof UMLDiagram)
-            ((UMLDiagram) userObj).addPropertyChangeListener(this);
+        if (userObj instanceof Diagram)
+            ((Diagram) userObj).addPropertyChangeListener(this);
     }
 
     /*
@@ -124,7 +124,7 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode implements
      */
     public void propertyChange(PropertyChangeEvent evt) {
         // Name of the UMLDiagram represented by this node has changed.
-        if (evt.getSource() instanceof UMLDiagram
+        if (evt.getSource() instanceof Diagram
                 && "name".equals(evt.getPropertyName())) {
             model.nodeChanged(this);
         }

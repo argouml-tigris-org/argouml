@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,6 @@ import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.layout.Layouter;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.SelectionManager;
@@ -99,10 +98,10 @@ public class ActionLayout extends UndoableAction {
                 .getCurrentProject().getActiveDiagram();
         Layouter layouter;
         if (diagram instanceof UMLClassDiagram) {
-            layouter = new ClassdiagramLayouter((UMLClassDiagram) diagram);
+            layouter = new ClassdiagramLayouter(diagram);
         } else if (diagram instanceof UMLActivityDiagram) {
             layouter = 
-                 new ActivityDiagramLayouter((UMLActivityDiagram) diagram);
+                 new ActivityDiagramLayouter(diagram);
         } else {
             return;
         }
@@ -114,8 +113,8 @@ public class ActionLayout extends UndoableAction {
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
         Collection nodes =
-            ((UMLDiagram) ProjectManager.getManager().getCurrentProject()
-                    .getActiveDiagram())
+            ProjectManager.getManager().getCurrentProject()
+                    .getActiveDiagram()
                     .getLayer().getContents();                    
         sm.select(nodes);
 

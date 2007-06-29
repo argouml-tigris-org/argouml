@@ -83,6 +83,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -570,7 +571,7 @@ public abstract class FigNodeModelElement
 	super.setEnclosingFig(newEncloser);
 	
 	if (layer != null && newEncloser != oldEncloser) {
-            ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
+            Diagram diagram = layer.getDiagram();
             if (diagram instanceof UMLDiagram) {
         	UMLDiagram umlDiagram = (UMLDiagram) diagram;
         	// Set the namespace of the enclosed model element to the

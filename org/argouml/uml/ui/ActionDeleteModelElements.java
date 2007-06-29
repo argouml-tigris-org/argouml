@@ -47,8 +47,8 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -176,9 +176,9 @@ public class ActionDeleteModelElements extends UndoableAction {
         } else if (Model.getFacade().isAUMLElement(target)) {
             // It is a UML element that is not a ModelElement
             sure = true;
-        } else if (target instanceof UMLDiagram) {
+        } else if (target instanceof ArgoDiagram) {
             // lets see if this diagram has some figs on it
-            UMLDiagram diagram = (UMLDiagram) target;
+            ArgoDiagram diagram = (ArgoDiagram) target;
             if (diagram.getNodes().size() + diagram.getEdges().size() != 0) {
                 // the diagram contains figs so lets ask the user if
                 // he/she is sure

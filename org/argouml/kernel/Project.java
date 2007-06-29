@@ -60,7 +60,6 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
@@ -897,15 +896,13 @@ public class Project implements java.io.Serializable {
     protected void removeDiagram(ArgoDiagram d) {
         d.removeVetoableChangeListener(new Vcl());
         diagrams.remove(d);
-        if (d instanceof UMLDiagram) {
-            /* If this is a UML diagram, then remove the dependent
-             * modelelements, such as the statemachine
-             * for a statechartdiagram.
-             */
-            Object o = ((UMLDiagram) d).getDependentElement();
-            if (o != null) {
-                moveToTrash(o);
-            }
+        /* Remove the dependent
+         * modelelements, such as the statemachine
+         * for a statechartdiagram:
+         */
+        Object o = d.getDependentElement();
+        if (o != null) {
+            moveToTrash(o);
         }
     }
 
