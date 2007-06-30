@@ -29,6 +29,10 @@ package org.argouml.model;
  * different UML types. These objects are use as tokens used to create
  * model elements in some methods.
  *
+ * TODO: There are parts of ArgoUML which assume that the objects returned
+ * here are Classes.  We should formalize that by changing the return types to
+ * match. tfm - 20070620
+ * 
  * @see org.argouml.model.UmlFactory#buildConnection(
  *         Object, Object, Object, Object, Object, Object, Object)
  * @see org.argouml.model.UmlFactory#buildNode(Object)
