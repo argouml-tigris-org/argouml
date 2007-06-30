@@ -30,6 +30,7 @@ package org.argouml.model;
  * @deprecated for 0.25.4 by tfmorris. This enumeration has been removed from
  *             UML 2. Use the getter for the isReadOnly attribute.
  */
+@Deprecated
 public interface ChangeableKind {
     /**
      * @return Returns the AddOnly ChangeableKind.

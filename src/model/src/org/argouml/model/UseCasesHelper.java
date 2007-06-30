@@ -70,6 +70,7 @@ public interface UseCasesHelper {
      * @return Collection all usecases that extend the given usecase
      * @deprecated for 0.25.4 by tfmorris
      */
+    @Deprecated
     Collection getExtendingUseCases(Object usecase);
 
     /**

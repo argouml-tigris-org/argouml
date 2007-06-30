@@ -30,6 +30,7 @@ package org.argouml.model;
  * @deprecated for 0.25.4 by tfmorris. This enumeration has been removed from
  *             UML 2. Use the getter for the isStatic attribute.
  */
+@Deprecated
 public interface ScopeKind {
     /**
      * @return Returns the Classifier ScopeKind.

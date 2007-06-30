@@ -50,6 +50,7 @@ public interface XmiReader {
      * @deprecated for 0.25.4 by tfmorris. Use 
      * {@link #parse(InputSource, boolean)}.
      */
+    @Deprecated
     Collection parse(InputSource pIs) throws UmlException;
 
     /**

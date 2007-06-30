@@ -39,6 +39,7 @@ public interface DataTypesHelper {
      * @deprecated for 0.25.2 by tfmorris - use
      *   {@link ExtensionMechanismsFactory#copyTaggedValues(Object, Object)}
      */
+    @Deprecated
     void copyTaggedValues(Object from, Object to);
 
     /**

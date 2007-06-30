@@ -497,6 +497,7 @@ public interface Facade {
      * @return true if handle is an ArgListsExpression
      * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
+    @Deprecated
     boolean isAArgListsExpression(Object handle);
     
     /**
@@ -506,6 +507,7 @@ public interface Facade {
      * @return true if handle is an BooleanExpression
      * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
+    @Deprecated
     boolean isABooleanExpression(Object handle);
     
     /**
@@ -515,6 +517,7 @@ public interface Facade {
      * @return true if handle is an IterationExpression
      * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
+    @Deprecated
     boolean isAIterationExpression(Object handle);
     
     /**
@@ -524,6 +527,7 @@ public interface Facade {
      * @return true if handle is an MappingExpression
      * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
+    @Deprecated
     boolean isAMappingExpression(Object handle);
     
     /**
@@ -533,6 +537,7 @@ public interface Facade {
      * @return true if handle is an ObjectSetExpression
      * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
+    @Deprecated
     boolean isAObjectSetExpression(Object handle);
     /**
      * Recognizer for ProcedureExpression.
@@ -541,6 +546,7 @@ public interface Facade {
      * @return true if handle is an ProcedureExpression
      * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
+    @Deprecated
     boolean isAProcedureExpression(Object handle);
     
     /**
@@ -550,6 +556,7 @@ public interface Facade {
      * @return true if handle is an TimeExpression
      * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
+    @Deprecated
     boolean isATimeExpression(Object handle);
     
     /**
@@ -559,6 +566,7 @@ public interface Facade {
      * @return true if handle is an TypeExpression
      * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
      */
+    @Deprecated
     boolean isATypeExpression(Object handle);
 
     /**
@@ -842,6 +850,7 @@ public interface Facade {
      * @deprecated for 0.25.4 by tfmorris. Renamed in UML 2.x. Use
      *             {@link #isAPrimitiveType(Object)}.
      */
+    @Deprecated
     boolean isAPrimitive(Object handle);
 
     /**
@@ -861,6 +870,7 @@ public interface Facade {
      * @deprecated for 0.25.4 by tfmorris. Removed from UML 2.x. Use
      *             {@link #isAPrimitiveType(Object)}.
      */
+    @Deprecated
     boolean isAProgrammingLanguageDataType(Object handle);
 
     /**
@@ -886,6 +896,7 @@ public interface Facade {
      * @return the Kind
      * @deprecated by tfmorris for 0.25.3 - use {@link #getKind(Object)}
      */
+    @Deprecated
     Object getPseudostateKind(Object handle);
 
     /**
@@ -1162,6 +1173,7 @@ public interface Facade {
      * @deprecated for 0.25.4 by tfmorris. UseCaseInstances have been removed
      *             from UML 2.x.
      */
+    @Deprecated
     boolean isAUseCaseInstance(Object handle);
     
     /**
@@ -1192,6 +1204,7 @@ public interface Facade {
      *             also has an enum point of ADD_ONLY. This has been removed in
      *             UML 2.x.
      */
+    @Deprecated
     boolean isChangeable(Object handle);
 
     /**
@@ -1204,6 +1217,7 @@ public interface Facade {
      *             the same semantics, but is compatible with the UML 2.x
      *             naming.
      */
+    @Deprecated
     boolean isClassifierScope(Object handle);
 
     /**
@@ -1280,6 +1294,7 @@ public interface Facade {
      * @deprecated for 0.25.4 by tfmorris - use !{@link #isStatic(Object)}
      *             which is compatible with the UML 2.x naming.
      */
+    @Deprecated
     boolean isInstanceScope(Object handle);
 
     /**
@@ -1574,6 +1589,7 @@ public interface Facade {
      * @return the Changeability
      * @deprecated for 0.25.4 by tfmorris - use {@link #isReadOnly(Object)}
      */
+    @Deprecated
     Object getChangeability(Object handle);
 
     /**
@@ -1585,6 +1601,7 @@ public interface Facade {
      * @deprecated for 0.25.4 by tfmorris. Use {@link #getSpecific(Object)}
      *             which matches the UML 2.x terminology.
      */
+    @Deprecated
     Object getChild(Object handle);
 
     /**
@@ -2031,6 +2048,7 @@ public interface Facade {
      * @deprecated for 0.25.4 by tfmorris. Multiplicities in UML 2.x only have a
      *             single range.
      */
+    @Deprecated
     Iterator getRanges(Object handle);
 
     /**
@@ -2249,6 +2267,7 @@ public interface Facade {
      * @deprecated for 0.25.4 by tfmorris. Discriminators have been removed from
      *             UML 2.x.
      */
+    @Deprecated
     Object getDiscriminator(Object handle);
 
     /**
@@ -2387,6 +2406,7 @@ public interface Facade {
      * @return Object the opposite end.
      * @deprecated for 0.25.2 by tfmorris - use {@link #getNextEnd(Object)}
      */
+    @Deprecated
     Object getOppositeEnd(Object handle);
 
     /**
@@ -2453,6 +2473,7 @@ public interface Facade {
      *             ScopeKind with only two enumerated values has been replaced
      *             by a boolean in UML 2.x.
      */
+    @Deprecated
     Object getOwnerScope(Object handle);
 
     /**
@@ -2554,6 +2575,7 @@ public interface Facade {
      * @deprecated for 0.25.4 by tfmorris. Use {@link #getGeneral(Object)} which
      *             matches the UML 2.x terminology.
      */
+    @Deprecated
     Object getParent(Object handle);
 
     /**
@@ -2847,6 +2869,7 @@ public interface Facade {
      * @deprecated for 0.25.4 by tmorris. This has been removed from UML 2.x and
      *             should no longer be used.
      */
+    @Deprecated
     Object getTargetScope(Object handle);
 
     /**

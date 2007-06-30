@@ -72,6 +72,7 @@ public interface UseCasesFactory extends Factory {
      *             from UML 2.x. Use an InstanceSpecification with a UseCase as
      *             its Classifier.
      */
+    @Deprecated
     Object createUseCaseInstance();
 
     /**

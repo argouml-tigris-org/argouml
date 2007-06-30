@@ -229,6 +229,7 @@ public interface CoreFactory extends Factory {
      *             speedy removal since it was just introduced with UML 1.4 and
      *             is unused by ArgoUML.
      */
+    @Deprecated
     public Object createPrimitive();
 
     
@@ -249,6 +250,7 @@ public interface CoreFactory extends Factory {
      *             scheduled for speedy removal since it was just introduced
      *             with UML 1.4 and is unused by ArgoUML.
      */
+    @Deprecated
     public Object createProgrammingLanguageDataType();
 
     /**
@@ -390,6 +392,7 @@ public interface CoreFactory extends Factory {
      * @deprecated for 0.25.2 by tfmorris - use the side effect free version
      * {@link #buildAttribute2(Object, Object)}
      */
+    @Deprecated
     Object buildAttribute(Object handle, Object model, Object type);
 
     /**
@@ -527,6 +530,7 @@ public interface CoreFactory extends Factory {
      * @deprecated for 0.25.4 by tfmorris. Generalizations are unnamed in UML
      *             2.x. Use {@link #buildGeneralization(Object, Object)}.
      */
+    @Deprecated
     Object buildGeneralization(Object child, Object parent, String name);
 
     /**
@@ -558,6 +562,7 @@ public interface CoreFactory extends Factory {
      * @deprecated for 0.25.2 by tfmorris 
      * use {@link #buildOperation(Object, Object)}
      */
+    @Deprecated
     Object buildOperation(Object classifier, Object model, Object returnType);
 
     /**
@@ -580,6 +585,7 @@ public interface CoreFactory extends Factory {
      * @deprecated for 0.25.2 by tfmorris - use 
      * {@link #buildOperation2(Object, Object, String)}
      */
+    @Deprecated
     Object buildOperation(Object cls, Object model, Object returnType,
             String name);
 
@@ -615,6 +621,7 @@ public interface CoreFactory extends Factory {
      * @deprecated for 0.25.2 by tfmorris - use
      *             {@link #buildParameter(Object, Object)}
      */
+    @Deprecated
     Object buildParameter(Object o, Object model, Object type);
 
     /**

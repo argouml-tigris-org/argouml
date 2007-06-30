@@ -209,7 +209,10 @@ public interface ModelImplementation {
      * Getter for the ChangeableKind object.
      *
      * @return The object implementing the interface.
+     * @deprecated for 0.25.4 by tfmorris.  Use 
+     * {@link Facade#isReadOnly(Object)}.
      */
+    @Deprecated
     ChangeableKind getChangeableKind();
 
     /**
@@ -228,9 +231,12 @@ public interface ModelImplementation {
 
     /**
      * Getter for the ScopeKind object.
-     *
+     * 
      * @return The object implementing the interface.
+     * @deprecated for 0.25.4 by tfmorris. Use 
+     * {@link Facade#isStatic(Object)}.
      */
+    @Deprecated
     ScopeKind getScopeKind();
 
     /**
@@ -286,6 +292,7 @@ public interface ModelImplementation {
      * @deprecated for 0.25.4 by tfmorris. Use
      *             {@link #getXmiWriter(Object, OutputStream, String)}
      */
+    @Deprecated
     XmiWriter getXmiWriter(Object model, Writer writer, String version)
         throws UmlException;
 

@@ -91,6 +91,7 @@ public interface UmlFactory {
      * @param toElement       the UML object type of the "to"
      * @return true if valid
      */
+    @Deprecated
     boolean isConnectionValid(Object connectionType, Object fromElement,
             Object toElement);
     

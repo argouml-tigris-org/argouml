@@ -373,6 +373,7 @@ public final class Model {
      * @deprecated for 0.25.4 by tfmorris.  This enumeration has been
      * removed from UML 2.  Use the getter for the isReadOnly attribute.
      */
+    @Deprecated
     public static ChangeableKind getChangeableKind() {
         return impl.getChangeableKind();
     }
@@ -402,6 +403,7 @@ public final class Model {
      * @deprecated for 0.25.4 by tfmorris.  This has been removed from 
      * UML 2.  Use the getter for the isStatic attribute instead.
      */
+    @Deprecated
     public static ScopeKind getScopeKind() {
         return impl.getScopeKind();
     }
@@ -467,6 +469,7 @@ public final class Model {
      * @deprecated for 0.25.4 by tfmorris. Use
      *             {@link #getXmiWriter(Object, OutputStream, String)}.
      */
+    @Deprecated
     public static XmiWriter getXmiWriter(Object model, Writer writer,
             String version) throws UmlException {
         return impl.getXmiWriter(model, writer, version);

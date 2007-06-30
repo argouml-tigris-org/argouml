@@ -165,6 +165,7 @@ public interface CoreHelper {
      * @deprecated for 0.25.2 by tfmorris. Use
      *             {@link Facade#getSpecifications(Object)}
      */
+    @Deprecated
     Collection getSpecifications(Object classifier);
 
     /**
@@ -350,6 +351,7 @@ public interface CoreHelper {
      * @deprecated for 0.25.1 by tfmorris - 
      * use {@link ModelManagementHelper#getAllContents(Object)}
      */
+    @Deprecated
     Collection getAllContents(Object namespace);
 
     /**
@@ -769,6 +771,7 @@ public interface CoreHelper {
      * @deprecated for 0.25.1 by tfmorris - use 
      * {@link ExtensionMechanismsHelper#addTaggedValue(Object, Object)}
      */
+    @Deprecated
     void addTaggedValue(Object handle, Object taggedValue);
 
     /**
@@ -894,6 +897,7 @@ public interface CoreHelper {
      *             {@link #setReadOnly(Object, boolean)}. NOTE: The UML 1.x
      *             enum of AddOnly has no equivalent in UML 2.x.
      */
+    @Deprecated
     void setChangeability(Object handle, Object ck);
 
     /**
@@ -908,6 +912,7 @@ public interface CoreHelper {
      * @deprecated for 0.25.4 by tfmorris - use
      *             {@link #setReadOnly(Object, boolean)} with a negated value.
      */
+    @Deprecated
     void setChangeable(Object handle, boolean changeable);
 
     /**
@@ -1120,6 +1125,7 @@ public interface CoreHelper {
      *            {@link Model#getScopeKind()}.
      * @deprecated for 0.25.4 by tfmorris.  Use {@link #setStatic}.
      */
+    @Deprecated
     void setOwnerScope(Object feature, Object scopeKind);
 
     /**
@@ -1297,6 +1303,7 @@ public interface CoreHelper {
      * use {@link ExtensionMechanismsHelper#setType(Object, Object)}
      * and {@link ExtensionMechanismsHelper#setValueOfTag(Object, String)}
      */
+    @Deprecated
     void setTaggedValue(Object handle, String tag, String value);
 
     /**
@@ -1307,6 +1314,7 @@ public interface CoreHelper {
      * @deprecated for 0.25.1 by tfmorris - use 
      * {@link ExtensionMechanismsHelper#setTaggedValue(Object, Collection)}
      */
+    @Deprecated
     void setTaggedValues(Object handle, Collection taggedValues);
 
     /**
@@ -1320,6 +1328,7 @@ public interface CoreHelper {
      * @deprecated for 0.25.4 by tfmorris.  Target Scope has been removed from 
      * the UML 2.x spec so this should not be used.
      */
+    @Deprecated
     void setTargetScope(Object handle, Object targetScope);
 
     /**

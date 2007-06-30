@@ -182,6 +182,7 @@ public interface ExtensionMechanismsHelper {
      * @param tag String
      * @deprecated by tfmorris for 0.23.3 - use {@link #setType(Object, Object)}
      */
+    @Deprecated
     void setTag(Object handle, Object tag);
     
     /**
