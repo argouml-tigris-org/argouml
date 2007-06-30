@@ -247,7 +247,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     };
 
     /**
-     * Don't allow external instantiation.
+     * Package-private constructor.
      *
      * @param implementation
      *            To get other helpers and factories.
@@ -297,9 +297,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
     }
 
-    /*
-     * @see org.argouml.model.UmlFactory#buildConnection(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object)
-     */
+
     public Object buildConnection(Object elementType, Object fromElement,
             Object fromStyle, Object toElement, Object toStyle,
             Object unidirectional, Object namespace)
@@ -371,9 +369,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return connection;
     }
 
-    /*
-     * @see org.argouml.model.UmlFactory#buildNode(java.lang.Object)
-     */
+
     public Object buildNode(Object elementType) {
         if (elementType == metaTypes.getActor()) {
             return getUseCases().createActor();
@@ -581,7 +577,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return the StateMachines factory instance.
      */
     private StateMachinesFactoryMDRImpl getStateMachines() {
-        return (StateMachinesFactoryMDRImpl) modelImpl.getStateMachinesFactory();
+        return (StateMachinesFactoryMDRImpl) modelImpl
+                .getStateMachinesFactory();
     }
 
     /**
@@ -837,9 +834,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Model.notifyMementoCreationObserver(new DummyModelMemento());
     }
 
-    /*
-     * @see org.argouml.model.UmlFactory#isRemoved(java.lang.Object)
-     */
+
     public boolean isRemoved(Object o) {
         if (!(o instanceof RefObject)) {
             throw new IllegalArgumentException(

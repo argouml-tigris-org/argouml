@@ -153,9 +153,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         return stereo;
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsFactory#buildStereotype(java.lang.Object, java.lang.String, java.lang.Object, java.util.Collection)
-     */
+
     public Object buildStereotype(
             Object theModelElementObject,
             String theName,
@@ -198,9 +196,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         return stereotype;
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsFactory#buildStereotype(java.lang.String, java.lang.Object)
-     */
+
     public Object buildStereotype(String text, Object ns) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException(
@@ -212,9 +208,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         return stereo;
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsFactory#buildTaggedValue(java.lang.String, java.lang.String)
-     */
+
     public Object buildTaggedValue(String tag, String value) {
         TaggedValue tv = (TaggedValue) createTaggedValue();
         TagDefinition td = (TagDefinition) getTagDefinition(tag);
@@ -230,9 +224,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         return tv;
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsFactory#copyTaggedValues(java.lang.Object, java.lang.Object)
-     */
+
     public void copyTaggedValues(Object source, Object target) {    
         if (!(source instanceof ModelElement)
                 || !(target instanceof ModelElement)) {
@@ -302,9 +294,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
                         .getTypedValue((TagDefinition) elem));
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsFactory#copyStereotype(java.lang.Object, java.lang.Object)
-     */
+
     public Object copyStereotype(Object source, Object ns) {
         if (!(source instanceof Stereotype)) {
             throw new IllegalArgumentException("source");
@@ -337,10 +327,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         // TODO: required tags
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsFactory#buildTagDefinition(
-     *          java.lang.String, java.lang.Object, java.lang.Object)
-     */
+
     public Object buildTagDefinition(String text, Object owner, Object ns) {
         if (owner != null) {
             if (!(owner instanceof Stereotype)) {
@@ -367,19 +354,15 @@ class ExtensionMechanismsFactoryMDRImpl extends
         return td;
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsFactory#createTagDefinition()
-     */
+
     public Object createTagDefinition() {
-        TagDefinition td = modelImpl.getUmlPackage().getCore().getTagDefinition()
-                .createTagDefinition();
+        TagDefinition td = modelImpl.getUmlPackage().getCore()
+                .getTagDefinition().createTagDefinition();
         super.initialize(td);
         return td;
     }
     
-    /*
-     * @see org.argouml.model.ExtensionMechanismsFactory#createStereotype()
-     */
+
     public Object createStereotype() {
         Stereotype st = modelImpl.getUmlPackage().getCore().getStereotype()
             .createStereotype();
@@ -387,9 +370,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         return st;
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsFactory#copyTagDefinition(java.lang.Object, java.lang.Object)
-     */
+
     public Object copyTagDefinition(Object anElement, Object aNs) {
         if (!(anElement instanceof TagDefinition)) {
             throw new IllegalArgumentException("source: " + anElement);

@@ -68,19 +68,15 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         modelImpl = implementation;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsFactory#createActionState()
-     */
+
     public Object createActionState() {
-        ActionState myActionState = modelImpl.getUmlPackage().getActivityGraphs().
-            getActionState().createActionState();
+        ActionState myActionState = modelImpl.getUmlPackage()
+                .getActivityGraphs().getActionState().createActionState();
         super.initialize(myActionState);
         return myActionState;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsFactory#createActivityGraph()
-     */
+
     public Object createActivityGraph() {
         ActivityGraph myActivityGraph = modelImpl.getUmlPackage().
             getActivityGraphs().getActivityGraph().createActivityGraph();
@@ -88,9 +84,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myActivityGraph;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsFactory#createCallState()
-     */
+
     public Object createCallState() {
         CallState myCallState = modelImpl.getUmlPackage().getActivityGraphs().
             getCallState().createCallState();
@@ -98,9 +92,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myCallState;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsFactory#createClassifierInState()
-     */
+
     public Object createClassifierInState() {
         ClassifierInState myClassifierInState = modelImpl.getUmlPackage().
             getActivityGraphs().getClassifierInState().
@@ -109,9 +101,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myClassifierInState;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsFactory#createObjectFlowState()
-     */
+
     public Object createObjectFlowState() {
         ObjectFlowState myObjectFlowState = modelImpl.getUmlPackage().
             getActivityGraphs().getObjectFlowState().
@@ -120,9 +110,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myObjectFlowState;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsFactory#createPartition()
-     */
+
     public Object createPartition() {
         Partition myPartition = modelImpl.getUmlPackage().getActivityGraphs().
             getPartition().createPartition();
@@ -130,9 +118,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myPartition;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsFactory#createSubactivityState()
-     */
+
     public Object createSubactivityState() {
         SubactivityState mySubactivityState = modelImpl.getUmlPackage().
             getActivityGraphs().getSubactivityState().
@@ -141,9 +127,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return mySubactivityState;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsFactory#buildActivityGraph(java.lang.Object)
-     */
+
     public Object buildActivityGraph(Object theContext) {
         if (theContext instanceof ModelElement) {
             ActivityGraph myActivityGraph = (ActivityGraph) 
@@ -164,9 +148,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 "Cannot create an ActivityGraph with context " + theContext);
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsFactory#buildObjectFlowState(java.lang.Object)
-     */
+
     public Object buildObjectFlowState(Object compositeState) {
         if (!(compositeState instanceof CompositeState)) {
             throw new IllegalArgumentException();
@@ -177,9 +159,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return state;
     }
 
-    /*
-     * @see org.argouml.model.ActivityGraphsFactory#buildClassifierInState(java.lang.Object, java.util.Collection)
-     */
+
     public Object buildClassifierInState(Object classifier, Collection state) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException();

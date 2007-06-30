@@ -457,8 +457,8 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                         (Action) elem));
         // Delete Messages which have this as their action
         modelImpl.getUmlHelper().deleteCollection(
-                modelImpl.getUmlPackage().getCollaborations().getAActionMessage()
-                        .getMessage((Action) elem));
+                modelImpl.getUmlPackage().getCollaborations()
+                        .getAActionMessage().getMessage((Action) elem));
     }
 
     /**
@@ -566,7 +566,8 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         }
 
         // Delete LinkEnds
-        modelImpl.getUmlHelper().deleteCollection(((Instance) elem).getLinkEnd());
+        modelImpl.getUmlHelper().deleteCollection(
+                ((Instance) elem).getLinkEnd());
 
         // Delete AttributeLinks where this is the value
         modelImpl.getUmlHelper().deleteCollection(

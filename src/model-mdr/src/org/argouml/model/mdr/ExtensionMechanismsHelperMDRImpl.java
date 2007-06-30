@@ -92,10 +92,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         packageMap.put("modelmanagement", "Model_Management");
     }
 
-
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotypes(java.lang.Object)
-     */
+    
     public Collection getStereotypes(Object ns) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
@@ -120,9 +117,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotype(java.lang.Object, java.lang.Object)
-     */
     public Object getStereotype(Object ns, Object stereo) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException("namespace");
@@ -157,9 +151,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotype(java.util.Collection, java.lang.Object)
-     */
     public Object getStereotype(Collection models, Object stereo) {
         if (stereo == null) {
             throw new IllegalArgumentException("null argument");
@@ -198,9 +189,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         return null;
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#getMetaModelName(java.lang.Object)
-     */
+
     public String getMetaModelName(Object m) {
         return getMetaModelName(m.getClass());
     }
@@ -311,9 +300,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#isValidStereoType(java.lang.Object, java.lang.Object)
-     */
     public boolean isValidStereoType(Object theModelElement,
             Object theStereotype) {
         if (theModelElement == null) {
@@ -323,9 +309,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#getStereotypes(java.util.Collection)
-     */
     public Collection getStereotypes(Collection models) {
         List ret = new ArrayList();
         Iterator it = models.iterator();
@@ -347,9 +330,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#addCopyStereotype(java.lang.Object, java.lang.Object)
-     */
     public void addCopyStereotype(Object modelElement, Object stereotype) {
         if (stereotype != null) {
             stereotype =
@@ -361,9 +341,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#isStereotype(java.lang.Object, java.lang.String, java.lang.String)
-     */
+
     public boolean isStereotype(Object object, String name, String base) {
         if (!(object instanceof Stereotype)) {
             return false;
@@ -385,9 +363,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#isStereotypeInh(java.lang.Object, java.lang.String, java.lang.String)
-     */
+
     public boolean isStereotypeInh(Object object, String name, String base) {
         if (!(object instanceof Stereotype)) {
             return false;
@@ -409,9 +385,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         return false;
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#addExtendedElement(java.lang.Object, java.lang.Object)
-     */
+
     public void addExtendedElement(Object handle, Object extendedElement) {
         if (handle instanceof Stereotype
                 && extendedElement instanceof ModelElement) {
@@ -423,9 +397,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#addBaseClass(java.lang.Object, java.lang.Object)
-     */
     public void addBaseClass(Object handle, Object baseClass) {
         if (handle instanceof Stereotype) {
             if (baseClass instanceof String) {
@@ -442,9 +413,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or baseClass: " + baseClass);
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#removeBaseClass(java.lang.Object, java.lang.Object)
-     */
+
     public void removeBaseClass(Object handle, Object baseClass) {
         try {
             if (handle instanceof Stereotype) {
@@ -465,9 +434,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or baseClass: " + baseClass);
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#setIcon(java.lang.Object, java.lang.Object)
-     */
+
     public void setIcon(Object handle, Object icon) {
         if (handle instanceof Stereotype
                 && (icon == null || icon instanceof String)) {
@@ -504,8 +471,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                             .getTagDefinition(tag.toString());
                     Object model = modelImpl.getFacade().getModel(handle);
                     if (!modelImpl.getFacade().isAModel(model)) {
-                        model = 
-                            modelImpl.getModelManagementFactory().getRootModel();
+                        model = modelImpl.getModelManagementFactory()
+                                .getRootModel();
                     }
                     td = 
                         (TagDefinition) 
@@ -525,9 +492,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#setValueOfTag(java.lang.Object, java.lang.String)
-     */
     public void setValueOfTag(Object handle, String value) {
         if (handle instanceof TaggedValue) {
             TaggedValue tv = (TaggedValue) handle;
@@ -543,9 +507,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#addTaggedValue(java.lang.Object, java.lang.Object)
-     */
+
     public void addTaggedValue(Object handle, Object taggedValue) {
         if (handle instanceof ModelElement
                 && taggedValue instanceof TaggedValue) {
@@ -556,9 +518,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or taggedValue: " + taggedValue);
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#removeTaggedValue(java.lang.Object, java.lang.Object)
-     */
+
     public void removeTaggedValue(Object handle, Object taggedValue) {
         if (handle instanceof ModelElement
                 && taggedValue instanceof TaggedValue) {
@@ -569,9 +529,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or taggedValue: " + taggedValue);
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#setTaggedValue(java.lang.Object, java.util.Collection)
-     */
+
     public void setTaggedValue(Object handle, Collection taggedValues) {
         if (handle instanceof ModelElement) {
             Collection tv =
@@ -601,10 +559,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or taggedValues: " + taggedValues);
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#setType(
-     *          java.lang.Object, java.lang.Object)
-     */
+
     public void setType(Object handle, Object type) {
         if (type == null || type instanceof TagDefinition) {
             if (handle instanceof TaggedValue) {
@@ -614,8 +569,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                         modelImpl.getModelManagementFactory().getRootModel();
                 }
                 type = 
-                    modelImpl.getModelManagementHelper().getCorrespondingElement(
-                        type, model, true);
+                    modelImpl.getModelManagementHelper()
+                        .getCorrespondingElement(type, model, true);
                 ((TaggedValue) handle).setType((TagDefinition) type);
                 return;
             }
@@ -624,9 +579,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + type);
     }
 
-    /*
-     * @see org.argouml.model.ExtensionMechanismsHelper#hasStereoType(java.lang.Object, java.lang.String)
-     */
+
     public boolean hasStereoType(Object handle, String name) {
         try {
             Collection sts = modelImpl.getFacade().getStereotypes(handle);

@@ -87,7 +87,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     private StateMachinesPackage smPackage;
     
     /**
-     * Don't allow instantiation.
+     * Package-private constructor.
      *
      * @param implementation
      *            To get other helpers and factories.
@@ -95,21 +95,16 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     StateMachinesFactoryMDRImpl(MDRModelImplementation implementation) {
         modelImpl = implementation;
         smPackage = modelImpl.getUmlPackage().getStateMachines();
-
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createCallEvent()
-     */
+
     public Object createCallEvent() {
         CallEvent myCallEvent = smPackage.getCallEvent().createCallEvent();
         super.initialize(myCallEvent);
         return myCallEvent;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createChangeEvent()
-     */
+
     public Object createChangeEvent() {
         ChangeEvent myChangeEvent = smPackage.getChangeEvent()
                 .createChangeEvent();
@@ -117,9 +112,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myChangeEvent;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createCompositeState()
-     */
+
     public Object createCompositeState() {
         CompositeState myCompositeState = smPackage.getCompositeState()
                 .createCompositeState();
@@ -127,27 +120,21 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myCompositeState;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createFinalState()
-     */
+
     public Object createFinalState() {
         FinalState myFinalState = smPackage.getFinalState().createFinalState();
         super.initialize(myFinalState);
         return myFinalState;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createGuard()
-     */
+
     public Object createGuard() {
         Guard myGuard = smPackage.getGuard().createGuard();
         super.initialize(myGuard);
         return myGuard;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createPseudostate()
-     */
+
     public Object createPseudostate() {
         Pseudostate myPseudostate = smPackage.getPseudostate()
                 .createPseudostate();
@@ -155,9 +142,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myPseudostate;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createSignalEvent()
-     */
+
     public Object createSignalEvent() {
         SignalEvent mySignalEvent = smPackage.getSignalEvent()
                 .createSignalEvent();
@@ -165,9 +150,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return mySignalEvent;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createSimpleState()
-     */
+
     public Object createSimpleState() {
         SimpleState mySimpleState = smPackage.getSimpleState()
                 .createSimpleState();
@@ -175,9 +158,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return mySimpleState;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createStateMachine()
-     */
+
     public Object createStateMachine() {
         StateMachine myStateMachine = smPackage.getStateMachine()
                 .createStateMachine();
@@ -185,18 +166,14 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myStateMachine;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createStubState()
-     */
+
     public Object createStubState() {
         StubState myStubState = smPackage.getStubState().createStubState();
         super.initialize(myStubState);
         return myStubState;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createSubmachineState()
-     */
+
     public Object createSubmachineState() {
         SubmachineState mySubmachineState = smPackage.getSubmachineState()
                 .createSubmachineState();
@@ -204,36 +181,28 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return mySubmachineState;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createSynchState()
-     */
+
     public Object createSynchState() {
         SynchState mySynchState = smPackage.getSynchState().createSynchState();
         super.initialize(mySynchState);
         return mySynchState;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createTimeEvent()
-     */
+
     public Object createTimeEvent() {
         TimeEvent myTimeEvent = smPackage.getTimeEvent().createTimeEvent();
         super.initialize(myTimeEvent);
         return myTimeEvent;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#createTransition()
-     */
+
     public Object createTransition() {
         Transition myTransition = smPackage.getTransition().createTransition();
         super.initialize(myTransition);
         return myTransition;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildCompositeStateOnStateMachine(java.lang.Object)
-     */
+
     public Object buildCompositeStateOnStateMachine(Object statemachine) {
         if (statemachine instanceof StateMachine) {
             CompositeState state = (CompositeState) createCompositeState();
@@ -244,9 +213,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         throw new IllegalArgumentException("statemachine");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildStateMachine(java.lang.Object)
-     */
+
     public Object buildStateMachine(Object oContext) {
         if (oContext != null
                 && (modelImpl.getStateMachinesHelper().
@@ -269,9 +236,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 + "context null or not legal");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildTransition(java.lang.Object, java.lang.Object, java.lang.Object)
-     */
+
     public Object buildTransition(Object owningState, Object source, 
             Object dest) {
         if (!(owningState instanceof CompositeState)) {
@@ -299,9 +264,6 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildPseudoState(java.lang.Object)
-     */
     public Object buildPseudoState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
             Pseudostate state = (Pseudostate) createPseudostate();
@@ -314,9 +276,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 "Argument must be a CompositeState");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildSynchState(java.lang.Object)
-     */
+
     public Object buildSynchState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
             SynchState state = (SynchState) createSynchState();
@@ -328,9 +288,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 "Argument must be a CompositeState");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildStubState(java.lang.Object)
-     */
+
     public Object buildStubState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
             StubState state = (StubState) createStubState();
@@ -342,9 +300,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 "Argument must be a CompositeState");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildCompositeState(java.lang.Object)
-     */
+
     public Object buildCompositeState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
             CompositeState state = (CompositeState) createCompositeState();
@@ -356,9 +312,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 "Argument must be a CompositeState");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildSimpleState(java.lang.Object)
-     */
+
     public Object buildSimpleState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
             SimpleState state = (SimpleState) createSimpleState();
@@ -369,9 +323,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 "Argument must be a CompositeState");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildFinalState(java.lang.Object)
-     */
+
     public Object buildFinalState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
             FinalState state = (FinalState) createFinalState();
@@ -382,9 +334,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 "Argument must be a CompositeState");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildSubmachineState(java.lang.Object)
-     */
+
     public Object buildSubmachineState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
             SubmachineState state = (SubmachineState) createSubmachineState();
@@ -395,9 +345,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 "Argument must be a CompositeState");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildInternalTransition(java.lang.Object)
-     */
+
     public Object buildInternalTransition(Object state) {
         if (state instanceof State) {
             Transition trans = (Transition) createTransition();
@@ -409,9 +357,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         throw new IllegalArgumentException("Argument must be a State");    
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildTransition(java.lang.Object, java.lang.Object)
-     */
+
     public Object buildTransition(Object source, Object target) {
         if (source instanceof StateVertex && target instanceof StateVertex) {
             Transition trans = (Transition) createTransition();
@@ -424,9 +370,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         throw new IllegalArgumentException();
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildCallEvent(java.lang.Object)
-     */
+
     public Object buildCallEvent(Object ns) {
         CallEvent event = (CallEvent) createCallEvent();
         event.setNamespace((Namespace) ns);
@@ -434,9 +378,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return event;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildCallEvent(java.lang.Object, java.lang.String, java.lang.Object)
-     */
+
     public Object buildCallEvent(Object trans, String name, Object ns) {
         if (!(trans instanceof Transition)) {
             throw new IllegalArgumentException();
@@ -447,17 +389,15 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         String operationName = (name.indexOf("(") > 0) ? name.substring(0,
                 name.indexOf("(")).trim() : name.trim();
         evt.setName(operationName);
-        Object op = modelImpl.getStateMachinesHelper().findOperationByName(trans,
-                operationName);
+        Object op = modelImpl.getStateMachinesHelper().findOperationByName(
+                trans, operationName);
         if (op != null) {
             evt.setOperation((Operation) op);
         }
         return evt;        
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildSignalEvent(java.lang.Object)
-     */
+
     public Object buildSignalEvent(Object ns) {
         SignalEvent event = (SignalEvent) createSignalEvent();
         event.setNamespace((Namespace) ns);
@@ -465,9 +405,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return event;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildSignalEvent(java.lang.String, java.lang.Object)
-     */
+
     public Object buildSignalEvent(String name, Object ns) {
         SignalEvent event = (SignalEvent) createSignalEvent();
         event.setNamespace((Namespace) ns);
@@ -475,9 +413,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return event;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildTimeEvent(java.lang.Object)
-     */
+
     public Object buildTimeEvent(Object ns) {
         TimeEvent event = (TimeEvent) createTimeEvent();
         event.setNamespace((Namespace) ns);
@@ -485,9 +421,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return event;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildTimeEvent(java.lang.String, java.lang.Object)
-     */
+
     public Object buildTimeEvent(String s, Object ns) {
         TimeEvent event = (TimeEvent) createTimeEvent();
         event.setNamespace((Namespace) ns);
@@ -497,9 +431,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return event;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildChangeEvent(java.lang.Object)
-     */
+
     public Object buildChangeEvent(Object ns) {
         ChangeEvent event = (ChangeEvent) createChangeEvent();
         event.setNamespace((Namespace) ns);
@@ -507,9 +439,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return event;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildChangeEvent(java.lang.String, java.lang.Object)
-     */
+
     public Object buildChangeEvent(String s, Object ns) {
         ChangeEvent event = (ChangeEvent) createChangeEvent();
         event.setNamespace((Namespace) ns);
@@ -520,10 +450,8 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return event;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesFactory#buildGuard(java.lang.Object)
-     */
-    public Object/*Guard*/ buildGuard(Object transition) {
+
+    public Object buildGuard(Object transition) {
         if (transition instanceof Transition) {
             Transition t = (Transition) transition;
             if (t.getGuard() != null) {

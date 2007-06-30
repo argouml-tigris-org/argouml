@@ -661,8 +661,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * Get a 1..1 multiplicity
      */
     private Multiplicity getMultiplicity11() {
-        return (Multiplicity) modelImpl.getDataTypesFactory().createMultiplicity(
-                1, 1);
+        return (Multiplicity) modelImpl.getDataTypesFactory()
+                .createMultiplicity(1, 1);
     }
 
     /*
@@ -763,8 +763,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // Force type element into given namespace if not already there
         // side effect!
         if (model != clsType.getNamespace()
-                && !(modelImpl.getModelManagementHelper().getAllNamespaces(model).
-                        contains(clsType.getNamespace()))) {
+                && !(modelImpl.getModelManagementHelper().getAllNamespaces(
+                        model).contains(clsType.getNamespace()))) {
             clsType.setNamespace((Model) model);
         }
         return buildAttribute2(theType);
@@ -826,9 +826,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return attr;
     }
     
-    /*
-     * @see org.argouml.model.CoreFactory#buildClass()
-     */
+
     public Object buildClass() {
         UmlClass cl = (UmlClass) createClass();
         cl.setName("");
@@ -841,9 +839,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return cl;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildClass(java.lang.Object)
-     */
+
     public Object buildClass(Object owner) {
         Object clazz = buildClass();
         if (owner instanceof Namespace) {
@@ -852,31 +848,24 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return clazz;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildClass(java.lang.String)
-     */
+
     public Object buildClass(String name) {
         Object clazz = buildClass();
         modelImpl.getCoreHelper().setName(clazz, name);
         return clazz;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildClass(java.lang.String,
-     *      java.lang.Object)
-     */
+
     public Object buildClass(String name, Object owner) {
         Object clazz = buildClass();
         modelImpl.getCoreHelper().setName(clazz, name);
         if (owner instanceof Namespace) {
-            modelImpl.getCoreHelper().setNamespace(clazz, /* MNamespace */owner);
+            modelImpl.getCoreHelper().setNamespace(clazz, owner);
         }
         return clazz;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildInterface()
-     */
+
     public Object buildInterface() {
         Interface cl = (Interface) createInterface();
         cl.setName("");
@@ -888,9 +877,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return cl;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildInterface(java.lang.Object)
-     */
+
     public Object buildInterface(Object owner) {
         Interface cl = (Interface) buildInterface();
         if (owner instanceof Namespace) {
@@ -899,19 +886,14 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return cl;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildInterface(java.lang.String)
-     */
+
     public Object buildInterface(String name) {
         Interface cl = (Interface) buildInterface();
         cl.setName(name);
         return cl;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildInterface(java.lang.String,
-     *      java.lang.Object)
-     */
+
     public Object buildInterface(String name, Object owner) {
         Interface cl = (Interface) buildInterface();
         cl.setName(name);
@@ -2199,8 +2181,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     .getModel(targetME);
             Iterator it = sourceME.getStereotype().iterator();
             while (it.hasNext()) {
-                Stereotype st = (Stereotype) modelImpl.getModelManagementHelper()
-                        .getCorrespondingElement(it.next(), targetModel, true);
+                Stereotype st = (Stereotype) modelImpl
+                        .getModelManagementHelper().getCorrespondingElement(
+                                it.next(), targetModel, true);
                 targetME.getStereotype().add(st);
             }
         }

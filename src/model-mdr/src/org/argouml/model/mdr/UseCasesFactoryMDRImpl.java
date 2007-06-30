@@ -83,9 +83,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myExtensionPoint;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesFactory#createActor()
-     */
+
     public Object createActor() {
         Actor myActor = modelImpl.getUmlPackage().getUseCases().getActor().
             createActor();
@@ -93,30 +91,25 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myActor;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesFactory#createInclude()
-     */
+
     public Object createInclude() {
-        Include myInclude = modelImpl.getUmlPackage().getUseCases().getInclude().
-            createInclude();
+        Include myInclude = modelImpl.getUmlPackage().getUseCases()
+                .getInclude().createInclude();
         super.initialize(myInclude);
         return myInclude;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesFactory#createUseCase()
-     */
+
     public Object createUseCase() {
-        UseCase myUseCase = modelImpl.getUmlPackage().getUseCases().getUseCase().
-            createUseCase();
+        UseCase myUseCase = modelImpl.getUmlPackage().getUseCases()
+                .getUseCase().createUseCase();
         super.initialize(myUseCase);
         return myUseCase;
 
     }
 
-    /*
-     * @see org.argouml.model.UseCasesFactory#createUseCaseInstance()
-     */
+
+    @SuppressWarnings("deprecation")
     public Object createUseCaseInstance() {
         UseCaseInstance myUseCaseInstance = modelImpl.getUmlPackage().
             getUseCases().getUseCaseInstance().createUseCaseInstance();
@@ -124,16 +117,12 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myUseCaseInstance;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesFactory#buildExtend(java.lang.Object, java.lang.Object)
-     */
+
     public Object buildExtend(Object abase, Object anextension) {
         return buildExtend(abase, anextension, null);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesFactory#buildExtend(java.lang.Object, java.lang.Object, java.lang.Object)
-     */
+
     public Object buildExtend(Object abase, Object anextension, Object apoint) {
         UseCase base = (UseCase) abase;
         UseCase extension = (UseCase) anextension;
@@ -161,9 +150,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return extend;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesFactory#buildExtensionPoint(java.lang.Object)
-     */
+
     public Object buildExtensionPoint(Object modelElement) {
         if (!(modelElement instanceof UseCase)) {
             throw new IllegalArgumentException("An extension point can only "
@@ -183,9 +170,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return extensionPoint;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesFactory#buildInclude(java.lang.Object, java.lang.Object)
-     */
+
     public Object buildInclude(Object/* MUseCase */abase,
             Object/* MUseCase */anaddition) {
         UseCase base = (UseCase) abase;
@@ -227,9 +212,6 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    /*
-     * @see org.argouml.model.UseCasesFactory#buildActor(java.lang.Object, java.lang.Object)
-     */
     public Object buildActor(Object actor, Object model) {
         if (actor instanceof Actor) {
             return buildActor(((Actor) actor).getNamespace(), model);

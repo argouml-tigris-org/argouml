@@ -79,9 +79,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         modelImpl = implementation;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getAllSubSystems(java.lang.Object)
-     */
+
     public Collection getAllSubSystems(Object ns) {
         if (ns == null) {
             return new ArrayList();
@@ -106,11 +104,8 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     }
 
     /*
-     * @see org.argouml.model.ModelManagementHelper#getAllNamespaces(java.lang.Object)
-     * 
      * This method is CPU intensive and therefore needs to be as efficient as
      * possible.
-     * 
      */
     public Collection getAllNamespaces(Object ns) {
 
@@ -149,9 +144,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return list;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getAllModelElementsOfKindWithModel(java.lang.Object, java.lang.Object)
-     */
+
     public Collection getAllModelElementsOfKindWithModel(Object model,
             Object type) {
         if (model == null) {
@@ -168,9 +161,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return ret;
     }
     
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getAllModelElementsOfKind(java.lang.Object, java.lang.Object)
-     */
+
     public Collection getAllModelElementsOfKind(Object nsa, Object type) {
         if (nsa == null || type == null) {
             return Collections.EMPTY_LIST;
@@ -239,10 +230,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return false;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getAllModelElementsOfKind(java.lang.Object,
-     *      java.lang.String)
-     */
+
     public Collection getAllModelElementsOfKind(Object nsa, String kind) {
 
         if (nsa == null || kind == null) {
@@ -262,9 +250,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return col;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getAllSurroundingNamespaces(java.lang.Object)
-     */
+
     public Collection getAllSurroundingNamespaces(Object ns) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
@@ -280,8 +266,6 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     }
 
     /*
-     * @see org.argouml.model.ModelManagementHelper#getAllBehavioralFeatures(java.lang.Object)
-     * 
      * TODO: As currently coded, this actually returns all BehavioralFeatures
      * which are owned by Classifiers contained in the given namespace, which
      * is slightly different then what's documented.  It will not include any
@@ -314,9 +298,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return behavioralfeatures;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getAllPossibleImports(java.lang.Object)
-     */
+
     public Collection getAllPossibleImports(Object pack) {
         // TODO: Fully implement this!
         
@@ -342,9 +324,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return vmes;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getElement(java.util.Vector, java.lang.Object)
-     */
+    
     public Object getElement(Vector path, Object theRootNamespace) {
         ModelElement root = (ModelElement) theRootNamespace;
         Object name;
@@ -374,9 +354,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return root;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getPath(java.lang.Object)
-     */
+    
     public Vector getPath(Object element) {
         Vector path;
 
@@ -392,17 +370,12 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return path;
     }
 
-
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getCorrespondingElement(java.lang.Object, java.lang.Object)
-     */
+    
     public Object getCorrespondingElement(Object elem, Object model) {
         return getCorrespondingElement(elem, model, true);
     }
 
     /*
-     * @see org.argouml.model.ModelManagementHelper#getCorrespondingElement(java.lang.Object, java.lang.Object, boolean)
-     * 
      * TODO: This should be supplement/replaced with methods to manage
      * references to external profiles using HREFs rather than using 
      * copy-on-reference semantics
@@ -469,9 +442,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return true;
     }
     
-    /*
-     * @see org.argouml.model.ModelManagementHelper#corresponds(java.lang.Object, java.lang.Object)
-     */
+
     public boolean corresponds(Object obj1, Object obj2) {
         if (!(obj1 instanceof ModelElement)) {
             throw new IllegalArgumentException("obj1");
@@ -491,17 +462,24 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 ((ModelElement) obj1).getNamespace());
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#isCyclicOwnership(java.lang.Object, java.lang.Object)
-     */
+
     public boolean isCyclicOwnership(Object parent, Object child) {
         return (getOwnerShipPath(parent).contains(child) || parent == child);
     }
 
+    /**
+     * Return a list of all ModelElements which contain this one, starting with
+     * the immediate parent and ending with the top level ModelElement.
+     * 
+     * @param elem
+     *            the model element to search for
+     * @return a list of ModelElements
+     */
     private List getOwnerShipPath(Object elem) {
         if (elem instanceof ModelElement) {
             List ownershipPath = new ArrayList();
-            Object parent = modelImpl.getFacade().getModelElementContainer(elem);
+            Object parent = modelImpl.getFacade()
+                    .getModelElementContainer(elem);
             while (parent != null) {
                 ownershipPath.add(parent);
                 parent = modelImpl.getFacade().getModelElementContainer(parent);
@@ -511,9 +489,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         throw new IllegalArgumentException("Not a base");
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#removeImportedElement(java.lang.Object, java.lang.Object)
-     */
+
     public void removeImportedElement(Object pack, Object me) {
         try {
             if (pack instanceof UmlPackage && me instanceof ModelElement) {
@@ -537,9 +513,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 "There must be a Package and a ModelElement"); 
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#setImportedElements(java.lang.Object, java.util.Collection)
-     */
+
     public void setImportedElements(Object pack, Collection imports) {
         if (pack instanceof UmlPackage) {
             Collection eis = ((UmlPackage) pack).getElementImport();
@@ -570,9 +544,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 "There must be a Package and a ModelElement");
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#setAlias(java.lang.Object, java.lang.String)
-     */
+
     public void setAlias(Object handle, String alias) {
         if ((handle instanceof ElementImport) && (alias != null)) {
             ((ElementImport) handle).setAlias(alias);
@@ -590,17 +562,13 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getContents(java.lang.Object)
-     */
+
     public Collection getContents(Object namespace) {
         // TODO: Auto-generated method stub
         return null;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getAllImportedElements(java.lang.Object)
-     */
+
     public Collection getAllImportedElements(Object pack) {
         Collection c = new ArrayList();
         try {
@@ -617,7 +585,8 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 if (dep instanceof Permission) {
                     if (modelImpl.getExtensionMechanismsHelper()
                             .hasStereoType(dep, FRIEND_STEREOTYPE)) {
-                        Collection mes = modelImpl.getFacade().getSuppliers(dep);
+                        Collection mes = modelImpl.getFacade()
+                                .getSuppliers(dep);
                         Iterator mei = mes.iterator();
                         while (mei.hasNext()) {
                             Object o = mei.next();
@@ -631,7 +600,8 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                             .hasStereoType(dep, IMPORT_STEREOTYPE)
                             || modelImpl.getExtensionMechanismsHelper()
                                     .hasStereoType(dep, ACCESS_STEREOTYPE)) {
-                        Collection mes = modelImpl.getFacade().getSuppliers(dep);
+                        Collection mes = modelImpl.getFacade()
+                                .getSuppliers(dep);
                         Iterator mei = mes.iterator();
                         while (mei.hasNext()) {
                             Object o = mei.next();
@@ -645,7 +615,8 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 }
             }
             /* TODO: This is the 2nd part of this method: */
-            Collection imports = modelImpl.getFacade().getImportedElements(pack);
+            Collection imports = modelImpl.getFacade()
+                    .getImportedElements(pack);
             c.addAll(imports);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -653,9 +624,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return c;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementHelper#getAllContents(java.lang.Object)
-     */
+
     public Collection getAllContents(Object pack) {
         Set results = new HashSet();
         if (pack == null) {

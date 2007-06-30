@@ -82,16 +82,14 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         modelImpl = implementation;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#getAllClassifierRoles(java.lang.Object)
-     */
+
     public Collection getAllClassifierRoles(Object ns) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
         }
 
         try {
-            List list = new ArrayList();
+            List<Object> list = new ArrayList<Object>();
             Iterator it = ((Namespace) ns).getOwnedElement().iterator();
             while (it.hasNext()) {
                 Object o = it.next();
@@ -108,9 +106,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#getAllPossibleAssociationRoles(java.lang.Object)
-     */
+
     public Collection getAllPossibleAssociationRoles(Object roleArg) {
         if (!(roleArg instanceof ClassifierRole)) {
             throw new IllegalArgumentException();
@@ -126,8 +122,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             Set associations = new HashSet();
             while (it.hasNext()) {
                 Classifier base = (Classifier) it.next();
-                associations.addAll(modelImpl.getCoreHelper().getAssociations(
-                        base));
+                associations.addAll(
+                        modelImpl.getCoreHelper().getAssociations(base));
             }
             return associations;
         } catch (InvalidObjectException e) {
@@ -135,9 +131,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#getClassifierRoles(java.lang.Object)
-     */
+
     public Collection getClassifierRoles(Object role) {
         if (role == null) {
             return new ArrayList();
@@ -175,10 +169,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         return roles;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#getAssociationRole(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public Object getAssociationRole(Object afrom, Object ato) {
         if (afrom == null || ato == null) {
             throw new IllegalArgumentException();
@@ -208,9 +199,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         return null;
     }
     
-    /*
-     * @see org.argouml.model.CollaborationsHelper#getAllPossibleActivators(java.lang.Object)
-     */
+
     public Collection getAllPossibleActivators(Object ames) {
         Message mes = (Message) ames;
         if (mes == null || mes.getInteraction() == null) {
@@ -237,10 +226,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#hasAsActivator(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public boolean hasAsActivator(Object message, Object activator) {
         if (!(message instanceof Message)) {
             throw new IllegalArgumentException();
@@ -264,10 +250,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#setActivator(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setActivator(Object ames, Object anactivator) {
         if (ames == null) {
             throw new IllegalArgumentException("message is null");
@@ -327,9 +310,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#getAllPossiblePredecessors(java.lang.Object)
-     */
+
     public Collection getAllPossiblePredecessors(Object amessage) {
         Message message = (Message) amessage;
         if (message == null) {
@@ -374,7 +355,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 || modelImpl.getFacade().getName(role).equals("")) {
 
             Collaboration collab = (Collaboration) role.getNamespace();
-            ModelManagementHelper mmHelper = modelImpl.getModelManagementHelper();
+            ModelManagementHelper mmHelper = 
+                modelImpl.getModelManagementHelper();
             Collection roles = mmHelper.getAllModelElementsOfKind(collab,
                     ClassifierRole.class);
             Iterator it = roles.iterator();
@@ -410,10 +392,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#setBases(java.lang.Object,
-     *      java.util.Collection)
-     */
+
     public void setBases(Object role, Collection bases) {
         if (role == null || bases == null) {
             throw new IllegalArgumentException("In setBases: either the role "
@@ -422,9 +401,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         CollectionHelper.update(((ClassifierRole) role).getBase(), bases);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#allAvailableFeatures(java.lang.Object)
-     */
+
     public Collection allAvailableFeatures(Object arole) {
         
         if (arole instanceof ClassifierRole) {
@@ -452,9 +429,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + arole);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#allAvailableContents(java.lang.Object)
-     */
+
     public Collection allAvailableContents(Object arole) {
         try {
             if (arole instanceof ClassifierRole) {
@@ -482,9 +457,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + arole);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#getAllPossibleBases(java.lang.Object)
-     */
+
     public Collection getAllPossibleBases(Object role) {
         try {
             if (role instanceof ClassifierRole) {
@@ -533,7 +506,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         if (bases.isEmpty()) {
             ModelManagementHelper mmh = modelImpl.getModelManagementHelper();
             Namespace ns = ((Collaboration) role.getNamespace()).getNamespace();
-            ret.addAll(mmh.getAllModelElementsOfKind(ns, UmlAssociation.class));
+            ret.addAll(
+                    mmh.getAllModelElementsOfKind(ns, UmlAssociation.class));
             ret.removeAll(mmh.getAllModelElementsOfKind(ns,
                     AssociationRole.class));
         } else {
@@ -646,10 +620,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         return out;
     }
     
-    /*
-     * @see org.argouml.model.CollaborationsHelper#setBase( java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setBase(Object arole, Object abase) {
         if (arole == null) {
             throw new IllegalArgumentException("role is null");
@@ -664,10 +635,10 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                         + "this role");
             }
             role.setBase(base);
-            ClassifierRole sender = (ClassifierRole) modelImpl.getCoreHelper().
-                getSource(role);
-            ClassifierRole receiver = (ClassifierRole) modelImpl.getCoreHelper().
-                getDestination(role);
+            ClassifierRole sender = (ClassifierRole) modelImpl.getCoreHelper()
+                    .getSource(role);
+            ClassifierRole receiver = (ClassifierRole) modelImpl
+                    .getCoreHelper().getDestination(role);
             Collection senderBases = sender.getBase();
             Collection receiverBases = receiver.getBase();
 
@@ -702,19 +673,17 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         throw new IllegalArgumentException("role");
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#isAddingCollaborationAllowed(java.lang.Object)
-     */
+
     public boolean isAddingCollaborationAllowed(Object context) {
-        return (/* context instanceof Collaboration || */
-                context instanceof Classifier || context instanceof Operation
-        /* || context instanceof Model */);
+        return (
+                context instanceof Classifier 
+                || context instanceof Operation
+                //|| context instanceof Collaboration
+                //|| context instanceof Model
+                );
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#removeBase(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void removeBase(Object handle, Object c) {
         try {
             if (handle instanceof ClassifierRole && c instanceof Classifier) {
@@ -729,10 +698,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 "There must be a ClassifierRole and a Classifier");
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#removeConstrainingElement(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void removeConstrainingElement(Object handle, Object constraint) {
         try {
             if (handle instanceof Collaboration
@@ -749,10 +715,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or constraint: " + constraint);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#removeMessage(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void removeMessage(Object handle, Object message) {
         try {
             if (handle instanceof Interaction && message instanceof Message) {
@@ -771,10 +734,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or message: " + message);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#removeSuccessor(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void removeSuccessor(Object handle, Object mess) {
         try {
             if (handle instanceof Message && mess instanceof Message) {
@@ -790,10 +750,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or successor: " + mess);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#removePredecessor(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void removePredecessor(Object handle, Object message) {
         try {
             if (handle instanceof Message && message instanceof Message) {
@@ -807,10 +764,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or message: " + message);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#addConstrainingElement(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void addConstrainingElement(Object handle, Object constraint) {
         if (handle instanceof Collaboration
                 && constraint instanceof ModelElement) {
@@ -823,10 +777,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or constraint: " + constraint);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#addInstance(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void addInstance(Object classifierRole, Object instance) {
         if (classifierRole instanceof ClassifierRole
                 && instance instanceof Instance) {
@@ -838,10 +789,6 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
     }
 
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#addMessage(java.lang.Object,
-     *      java.lang.Object)
-     */
     public void addMessage(Object handle, Object elem) {
         if (handle instanceof Interaction && elem instanceof Message) {
             ((Interaction) handle).getMessage().add(elem);
@@ -857,10 +804,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + elem);
     }
  
-    /*
-     * @see org.argouml.model.CollaborationsHelper#addSuccessor(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void addSuccessor(Object handle, Object mess) {
         if (handle instanceof Message && mess instanceof Message) {
             modelImpl.getUmlPackage().getCollaborations().
@@ -873,41 +817,29 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or successor: " + mess);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#addPredecessor(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void addPredecessor(Object handle, Object predecessor) {
         if (handle != null && handle instanceof Message && predecessor != null
                 && predecessor instanceof Message) {
             ((Message) handle).getPredecessor().add(predecessor);
-    
             return;
         }
-
         throw new IllegalArgumentException("handle: " + handle
                 + " or predecessor: " + predecessor);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#setAction(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setAction(Object handle, Object action) {
         if (handle instanceof Message
                 && (action == null || action instanceof Action)) {
             ((Message) handle).setAction((Action) action);
             return;
         }
-
         throw new IllegalArgumentException("handle: " + handle + " or action: "
                 + action);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#setContext(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setContext(Object handle, Object col) {
         if (handle instanceof Interaction
                 && (col instanceof Collaboration || col == null)) {
@@ -919,10 +851,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + col);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#setSuccessors(java.lang.Object,
-     *      java.util.Collection)
-     */
+
     public void setSuccessors(Object handle, Collection messages) {
         if (handle instanceof Message) {
             Collection currentMessages = 
@@ -945,10 +874,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or messages: " + messages);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#setPredecessors(java.lang.Object,
-     *      java.util.Collection)
-     */
+
     public void setPredecessors(Object handle, Collection predecessors) {
         if (handle instanceof Message) {
             CollectionHelper.update(
@@ -959,10 +885,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or predecessors: " + predecessors);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#setRepresentedClassifier(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setRepresentedClassifier(Object handle, Object classifier) {
         if (handle instanceof Collaboration
                 && ((classifier == null) || classifier instanceof Classifier)) {
@@ -974,10 +897,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or classifier: " + classifier);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#setRepresentedOperation(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setRepresentedOperation(Object handle, Object operation) {
         if (handle instanceof Collaboration
                 && ((operation == null) || operation instanceof Operation)) {
@@ -990,10 +910,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + " or operation: " + operation);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsHelper#setSender(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setSender(Object handle, Object sender) {
         if (handle instanceof Message
                 && (sender instanceof ClassifierRole || sender == null)) {
@@ -1008,11 +925,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 + sender);
     }
 
-    /*
-     * 
-     * @see org.argouml.model.CollaborationsHelper#removeInteraction(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void removeInteraction(Object collab, Object interaction) {
         try {
             if (collab instanceof Collaboration
