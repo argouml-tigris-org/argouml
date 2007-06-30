@@ -147,7 +147,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
     
-    public Property buildAttribute() {
+    Property buildAttribute() {
         Property attr = createAttribute();
         attr.setName("newAttr");
         attr.setLower(1);
@@ -164,7 +164,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return attr;
     }
 
-    public Property buildAttribute(Object handle, Object model, Object type) {
+    @SuppressWarnings("deprecation")
+	public Property buildAttribute(Object handle, Object model, Object type) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -305,7 +306,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
-    public Operation buildOperation(Object classifier, Object model,
+    @SuppressWarnings("deprecation")
+	public Operation buildOperation(Object classifier, Object model,
             Object returnType) {
         // TODO Auto-generated method stub
         return null;
@@ -316,7 +318,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
-    public Operation buildOperation(Object cls, Object model,
+    @SuppressWarnings("deprecation")
+	public Operation buildOperation(Object cls, Object model,
             Object returnType, String name) {
         // TODO Auto-generated method stub
         return null;
@@ -327,7 +330,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
-    public Parameter buildParameter(Object o, Object model, Object type) {
+    @SuppressWarnings("deprecation")
+	public Parameter buildParameter(Object o, Object model, Object type) {
         // TODO Auto-generated method stub
         return null;
     }
