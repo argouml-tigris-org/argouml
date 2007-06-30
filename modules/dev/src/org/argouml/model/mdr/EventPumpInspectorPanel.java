@@ -48,10 +48,10 @@ import org.argouml.model.Model;
  */
 public final class EventPumpInspectorPanel extends JPanel {
 
-	/**
+    /**
      * The UID.
      */
-	private static final long serialVersionUID = -7217414480003857977L;
+    private static final long serialVersionUID = -7217414480003857977L;
 
     /**
      * The instance.
@@ -78,26 +78,26 @@ public final class EventPumpInspectorPanel extends JPanel {
     
     private class RefreshAction extends AbstractAction {
     	
-    	/**
-		 * UID
-		 */
-		private static final long serialVersionUID = -2527310696451597274L;
+        /**
+         * UID
+         */
+        private static final long serialVersionUID = -2527310696451597274L;
 
-		RefreshAction() {
-    		super("Refresh");
-    	}
+        RefreshAction() {
+            super("Refresh");
+        }
 
-		public void actionPerformed(ActionEvent arg0) {
-	        JTree tree = new JTree(getTree());
-	        tree.expandRow(0);
-	        if (scroller != null) {
-		        remove(scroller);
-	        }
-	        scroller = new JScrollPane(tree);
-	        add(scroller);
-	        invalidate();
-	        validate();
-		}
+        public void actionPerformed(ActionEvent arg0) {
+            JTree tree = new JTree(getTree());
+            tree.expandRow(0);
+            if (scroller != null) {
+                remove(scroller);
+            }
+            scroller = new JScrollPane(tree);
+            add(scroller);
+            invalidate();
+            validate();
+        }
     }
     
     
@@ -107,30 +107,30 @@ public final class EventPumpInspectorPanel extends JPanel {
      * @return a root tree node
      */
     TreeNode getTree() {
-		ModelEventPumpMDRImpl mep = (ModelEventPumpMDRImpl) Model.getPump();
-		Map elements = mep.getElements();
+        ModelEventPumpMDRImpl mep = (ModelEventPumpMDRImpl) Model.getPump();
+        Map elements = mep.getElements();
         DefaultMutableTreeNode root =
             new DefaultMutableTreeNode("registry");
         for (Iterator it = elements.keySet().iterator(); it.hasNext(); ) {
-                String item = it.next().toString();
+            String item = it.next().toString();
             DefaultMutableTreeNode modelElementNode =
                 new DefaultMutableTreeNode(getDescr(item));
             root.add(modelElementNode);
             Map propertyMap = (Map) elements.get(item);
-            for (Iterator propertyIterator = propertyMap.keySet().iterator();
-                    propertyIterator.hasNext(); ) {
+            for (Iterator propertyIterator = propertyMap.keySet().iterator(); 
+                    propertyIterator.hasNext();) {
                 Object property = propertyIterator.next();
                 DefaultMutableTreeNode propertyNode =
                     new DefaultMutableTreeNode(property);
                 modelElementNode.add(propertyNode);
-            
+
                 List listenerList = (List) propertyMap.get(property);
                 for (Iterator listIt = listenerList.iterator();
                         listIt.hasNext(); ) {
                     Object listener = listIt.next();
                     DefaultMutableTreeNode listenerNode =
                         new DefaultMutableTreeNode(
-                                        listener.getClass().getName());
+                                listener.getClass().getName());
                     propertyNode.add(listenerNode);
                 }
             }
@@ -140,13 +140,13 @@ public final class EventPumpInspectorPanel extends JPanel {
     }
 
     private String getDescr(String mofId) {
-		ModelEventPumpMDRImpl mep = (ModelEventPumpMDRImpl) Model.getPump();
+        ModelEventPumpMDRImpl mep = (ModelEventPumpMDRImpl) Model.getPump();
         Object modelElement = mep.getByMofId(mofId);
         String descr = Model.getFacade().getName(modelElement);
         if (descr != null && descr.trim().length() != 0) {
-                return "\"" + descr + "\" - " + modelElement.toString();
+            return "\"" + descr + "\" - " + modelElement.toString();
         } else {
-                return modelElement.toString();
+            return modelElement.toString();
         }
     }
 }

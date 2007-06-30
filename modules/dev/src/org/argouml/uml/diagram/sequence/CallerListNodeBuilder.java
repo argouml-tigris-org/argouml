@@ -1,4 +1,4 @@
-// $Id: MessageNodeBuilder.java 10500 2006-04-29 11:02:37Z linus $
+// $Id$
 // Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.argouml.uml.diagram.sequence.MessageNode;
 
 public class CallerListNodeBuilder {
 

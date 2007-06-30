@@ -37,11 +37,11 @@ public class MessageNodeBuilder {
         int nodeCount = fcr.getNodeCount();
         for (int i = 0; i < nodeCount; ++i) {
             MessageNode mn = fcr.getNode(i);
-            String descr =
-            	"MessageNode y=" + 
-            	fcr.getYCoordinate(mn) + 
-            	" " + 
-            	mn.getState();
+            String descr = 
+                "MessageNode y=" 
+                + fcr.getYCoordinate(mn) 
+                + " "
+                + mn.getState();
             FigMessagePort fmp = mn.getFigMessagePort();
             if (fmp != null) {
                 descr += " FigMessagePort registered";
