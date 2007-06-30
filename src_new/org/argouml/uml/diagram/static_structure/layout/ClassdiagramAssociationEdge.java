@@ -48,7 +48,7 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
     /**
      * Size of self association edges.
      */
-    private final static int SELF_SIZE = 30;
+    private static final int SELF_SIZE = 30;
     
     /*
      * @see org.argouml.uml.diagram.layout.LayoutedEdge#layout()
