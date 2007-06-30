@@ -71,7 +71,7 @@ abstract class Context
      * Return a classifier restricting the search to Interfaces only.
      * 
      * @param name the name of the Interface to search for
-     * @return
+     * @return an Interface with the given name
      * @throws ClassifierNotFoundException
      */
     public abstract Object getInterface(String name)

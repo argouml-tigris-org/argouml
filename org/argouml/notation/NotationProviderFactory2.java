@@ -210,7 +210,7 @@ public final class NotationProviderFactory2 {
                 try {
                     Class[] mp = {};
                     Method m = clazz.getMethod("getInstance", mp);
-                    return (NotationProvider) m.invoke(null, mp);
+                    return (NotationProvider) m.invoke(null, (Object[]) mp);
                 } catch (Exception e) {
                     Class[] cp = {Object.class};
                     Constructor constructor = clazz.getConstructor(cp);

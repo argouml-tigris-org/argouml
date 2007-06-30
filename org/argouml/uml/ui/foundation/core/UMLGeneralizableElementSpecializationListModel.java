@@ -44,19 +44,15 @@ public class UMLGeneralizableElementSpecializationListModel
         	true);
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
-     */
+    @Override
     protected void buildModelList() {
-        if (getTarget() != null &&
-                Model.getFacade().isAGeneralizableElement(getTarget())) {
+        if (getTarget() != null
+                && Model.getFacade().isAGeneralizableElement(getTarget())) {
             setAllElements(Model.getFacade().getSpecializations(getTarget()));
         }
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
-     */
+    @Override
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAGeneralization(element)
             && Model.getFacade().getSpecializations(getTarget())

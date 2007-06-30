@@ -156,7 +156,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
     /**
      * Number of points to compute for gravity point circle.
      */
-    private final static int CIRCLE_POINTS = 32;
+    private static final int CIRCLE_POINTS = 32;
     
     /**
      * Return a list of gravity points around circle which is enclosed
