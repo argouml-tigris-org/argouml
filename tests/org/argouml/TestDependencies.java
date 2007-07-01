@@ -108,6 +108,7 @@ public class TestDependencies extends TestCase {
             "org.argouml.util.osdep.win32",
             "org.argouml.util.osdep",
             "org.argouml.util",
+            //"org.argouml.uml.cognitive.critics", //there is no cycle, but it fails...
         };
         for (int i = 0; i < clean.length; i++) {
             suite.addTest(new CheckDependencyCycle(jdepend, clean[i]));
