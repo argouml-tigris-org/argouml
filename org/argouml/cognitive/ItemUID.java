@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.uml.CommentEdge;
 import org.argouml.uml.UUIDHelper;
 
 /**
@@ -157,7 +158,8 @@ public class ItemUID {
      * @return	The ID of the object, or null.
      */
     protected static String readObjectID(Object obj) {
-        if (Model.getFacade().isAUMLElement(obj)) {
+        if (Model.getFacade().isAUMLElement(obj) 
+                || (obj instanceof CommentEdge)) {
             return UUIDHelper.getUUID(obj);
         }
 	/*
