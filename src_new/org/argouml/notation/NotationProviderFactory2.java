@@ -155,7 +155,7 @@ public final class NotationProviderFactory2 {
      * and as value a second HashMap. This latter HashMap has as key the "type"
      * converted to Integer, and as value the provider (NotationProvider).
      */
-    private Map allLanguages;
+    private Map<NotationName, Map<Integer, Class>> allLanguages;
 
     /**
      * The instance is the singleton.
@@ -167,7 +167,7 @@ public final class NotationProviderFactory2 {
      */
     private NotationProviderFactory2() {
         super();
-        allLanguages = new HashMap();
+        allLanguages = new HashMap<NotationName, Map<Integer, Class>>();
     }
 
     /**
@@ -296,14 +296,14 @@ public final class NotationProviderFactory2 {
      */
     private Class getNotationProviderClass(int type, NotationName name) {
         if (allLanguages.containsKey(name)) {
-            Map t = (Map) allLanguages.get(name);
+            Map<Integer, Class> t = allLanguages.get(name);
             if (t.containsKey(new Integer(type))) {
-                return (Class) t.get(new Integer(type));
+                return t.get(new Integer(type));
             }
         }
-        Map t = (Map) allLanguages.get(defaultLanguage);
-        if (t.containsKey(new Integer(type))) {
-            return (Class) t.get(new Integer(type));
+        Map<Integer, Class> t = allLanguages.get(defaultLanguage);
+        if (t != null && t.containsKey(new Integer(type))) {
+            return t.get(new Integer(type));
         }
         return null;
     }
@@ -316,10 +316,10 @@ public final class NotationProviderFactory2 {
     public void addNotationProvider(int type,
             NotationName notationName, Class provider) {
         if (allLanguages.containsKey(notationName)) {
-            Map t = (Map) allLanguages.get(notationName);
+            Map<Integer, Class> t = allLanguages.get(notationName);
             t.put(new Integer(type), provider);
         } else {
-            Map t = new HashMap();
+            Map<Integer, Class> t = new HashMap<Integer, Class>();
             t.put(new Integer(type), provider);
             allLanguages.put(notationName, t);
         }
