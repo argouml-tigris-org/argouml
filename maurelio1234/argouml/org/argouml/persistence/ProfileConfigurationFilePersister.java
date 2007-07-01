@@ -28,9 +28,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.StringTokenizer;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.kernel.Project;
@@ -40,14 +41,29 @@ import org.argouml.uml.profile.ProfileConfiguration;
 import org.argouml.uml.profile.ProfileManagerImpl;
 import org.argouml.uml.profile.UserDefinedProfile;
 
+/**
+ * Persister for Project's Profile Configuration
+ *
+ * @author maurelio1234
+ */
 public class ProfileConfigurationFilePersister extends MemberFilePersister {
 
-    @Override
+    /**
+     * @return the tag used to store this content on the uml file
+     * 
+     * @see org.argouml.persistence.MemberFilePersister#getMainTag()
+     */
     public String getMainTag() {
 	return "profile";
     }
 
-    @Override
+    /**
+     * @param project
+     * @param inputStream
+     * @throws OpenException
+     * 
+     * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project, java.io.InputStream)
+     */
     public void load(Project project, InputStream inputStream)
 	    throws OpenException {
 	try {
@@ -57,7 +73,12 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 		    inputStream));
 
 	    String line = null;
-	    while (!(line = br.readLine().trim()).equals("<profile>"));
+	    while (true) {
+		line = br.readLine();
+		if (line.trim().equals("<profile>")) {
+		    break;
+		}
+	    }
 
 	    while (true) {
 		line = br.readLine().trim();
@@ -118,30 +139,59 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 	}
     }
 
-    @Override
-    public void save(ProjectMember member, Writer writer, boolean xmlFragment) throws SaveException {
+    /**
+     * @param member
+     * @param writer
+     * @param xmlFragment
+     * @throws SaveException
+     * @deprecated
+     * 
+     * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.Writer, boolean)
+     */
+    public void save(ProjectMember member, Writer writer, boolean xmlFragment)
+	    throws SaveException {
+	PrintWriter w = new PrintWriter(writer);
+	saveProjectMember(member, w);
+    }
+
+    /**
+     * @param member
+     * @param stream
+     * @throws SaveException
+     * 
+     * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.OutputStream)
+     */
+    public void save(ProjectMember member, OutputStream stream)
+	    throws SaveException {
+	PrintWriter w = new PrintWriter(stream);
+	saveProjectMember(member, w);
+    }
+
+    private void saveProjectMember(ProjectMember member, PrintWriter w)
+	    throws SaveException {
 	try {
 	    if (member instanceof ProfileConfiguration) {
 		ProfileConfiguration pc = (ProfileConfiguration) member;
-		PrintWriter w = new PrintWriter(writer);
 
 		w.println("<?xml version = \"1.0\" encoding = \"UTF-8\" ?>");
 		w.println("<!DOCTYPE profile SYSTEM \"profile.dtd\" >");
 		w.println("<profile>");
-		
-		for (Object p : pc.getProfiles()) {
-		    Profile profile = (Profile) p;
+
+		Iterator it = pc.getProfiles().iterator();
+		while (it.hasNext()) {
+		    Profile profile = (Profile) it.next();
 
 		    if (profile != pc.getDefaultProfile()) {
 			if (profile instanceof UserDefinedProfile) {
 			    w.println("\t\t<userDefined>");
-			    w.println("\t\t\t"+((UserDefinedProfile) profile)
-				    .getModelFile().getCanonicalPath());
+			    w.println("\t\t\t"
+				    + ((UserDefinedProfile) profile)
+					    .getModelFile().getCanonicalPath());
 			    w.println("\t\t</userDefined>");
 			} else {
 			    w.println("\t\t<plugin>");
-			    w.println("\t\t\t"+p.getClass().getName());
-			    w.println("\t\t</plugin>");			    
+			    w.println("\t\t\t" + profile.getClass().getName());
+			    w.println("\t\t</plugin>");
 			}
 		    }
 		}
