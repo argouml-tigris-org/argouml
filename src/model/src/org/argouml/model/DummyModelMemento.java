@@ -35,10 +35,12 @@ package org.argouml.model;
  */
 public class DummyModelMemento extends ModelMemento {
 
+    @Override
     public void undo() {
         // Do nothing.
     }
 
+    @Override
     public void redo() {
         // Do nothing.
     }

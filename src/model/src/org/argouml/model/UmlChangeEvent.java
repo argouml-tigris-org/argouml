@@ -65,6 +65,7 @@ public abstract class UmlChangeEvent extends PropertyChangeEvent {
         return originalEvent;
     }
     
+    @Override
     public String toString() {
         return super.toString() + ": " + originalEvent;
     }
