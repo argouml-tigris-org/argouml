@@ -347,6 +347,7 @@ public final class Argo {
      * used for backward compatibilty.
      * @deprecated for 0.25.1 by tfmorris - don't use for new code.
      */
+    @Deprecated
     public static final String DOCUMENTATION_TAG_ALT = "javadocs";
 
     /**

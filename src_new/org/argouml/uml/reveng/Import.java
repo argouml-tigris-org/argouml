@@ -35,9 +35,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
@@ -242,13 +240,8 @@ public class Import extends ImportCommon implements ImportSettings {
             general.add(new JLabel(
                     Translator.localize("action.import-select-lang")));
 
-            Vector languages = new Vector();
-
-            for (Enumeration keys = getModules().keys();
-                    keys.hasMoreElements();) {
-                languages.add(keys.nextElement());
-            }
-            JComboBox selectedLanguage = new JComboBox(languages);
+            JComboBox selectedLanguage = 
+                new JComboBox(getModules().keySet().toArray());
             selectedLanguage.addActionListener(
                     new SelectedLanguageListener(importInstance, tab));
             general.add(selectedLanguage);
@@ -380,11 +373,8 @@ public class Import extends ImportCommon implements ImportSettings {
 //            general.add(encoding);
 
             tab.add(general, Translator.localize("action.import-general"));
-            String moduleName = "";
-            if (getCurrentModule() instanceof ModuleInterface) {
-                moduleName = ((ModuleInterface) getCurrentModule()).getName();
-            }
-            tab.add(getConfigPanelExtension(), moduleName);
+            tab.add(getConfigPanelExtension(), 
+                    ((ModuleInterface) getCurrentModule()).getName());
             configPanel = tab;
         }
         return configPanel;
@@ -433,15 +423,14 @@ public class Import extends ImportCommon implements ImportSettings {
             String selected = (String) cb.getSelectedItem();
             ImportInterface oldModule = getCurrentModule();
             setCurrentModule(getModules().get(selected));
-            if (getCurrentModule() instanceof ImportInterface) {
-                updateFilters(
-                        (JFileChooser) dialog.getContentPane().getComponent(0),
-                        ((ImportInterface) oldModule).getSuffixFilters(),
-                        ((ImportInterface) getCurrentModule())
-                                .getSuffixFilters());
-                // TODO: Update configPanelExtension with extension settings
-                // for new language
-            }
+            updateFilters(
+                    (JFileChooser) dialog.getContentPane().getComponent(0),
+                    oldModule.getSuffixFilters(),
+                    getCurrentModule()
+                    .getSuffixFilters());
+            // TODO: Update configPanelExtension with extension settings
+            // for new language
+            
         }
     }
 
