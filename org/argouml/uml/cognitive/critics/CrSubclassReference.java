@@ -27,7 +27,6 @@ package org.argouml.uml.cognitive.critics;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.cognitive.Critic;
@@ -63,11 +62,16 @@ public class CrSubclassReference extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAClass(dm))) return NO_PROBLEM;
-	Object cls = /*(MClass)*/ dm;
+	if (!(Model.getFacade().isAClass(dm))) {
+            return NO_PROBLEM;
+        }
+	Object cls = dm;
 	ListSet offs = computeOffenders(cls);
-	if (offs != null) return PROBLEM_FOUND;
+	if (offs != null) {
+            return PROBLEM_FOUND;
+        }
 	return NO_PROBLEM;
     }
 
@@ -75,8 +79,9 @@ public class CrSubclassReference extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	Object cls = /*(MClassifier)*/ dm;
+	Object cls = dm;
 	ListSet offs = computeOffenders(cls);
 	return new UMLToDoItem(this, offs, dsgr);
     }
@@ -85,10 +90,13 @@ public class CrSubclassReference extends CrUML {
      * @see org.argouml.cognitive.Poster#stillValid(
      *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+            return false;
+        }
 	ListSet offs = i.getOffenders();
-	Object dm = /*(MClassifier)*/ offs.firstElement();
+	Object dm = offs.get(0);
 	//if (!predicate(dm, dsgr)) return false;
 	ListSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
@@ -105,33 +113,38 @@ public class CrSubclassReference extends CrUML {
 
 	Enumeration descendEnum =
 	    GenDescendantClasses.getSINGLETON().gen(cls);
-	if (!descendEnum.hasMoreElements()) return null;
+	if (!descendEnum.hasMoreElements()) {
+            return null;
+        }
 	ListSet descendants = new ListSet();
 	while (descendEnum.hasMoreElements())
-	    descendants.addElement(descendEnum.nextElement());
+	    descendants.add(descendEnum.nextElement());
 
 	//TODO: GenNavigableClasses?
 	ListSet offs = null;
-	for (Iterator iter = asc.iterator(); iter.hasNext();) {
-	    Object ae = /*(MAssociationEnd)*/ iter.next();
+        for (Object ae : asc) {
 	    Object a = Model.getFacade().getAssociation(ae);
 	    List conn = new ArrayList(Model.getFacade().getConnections(a));
-	    if (conn.size() != 2) continue;
-	    Object otherEnd = /*(MAssociationEnd)*/ conn.get(0);
+	    if (conn.size() != 2) {
+                continue;
+            }
+	    Object otherEnd = conn.get(0);
 	    if (ae == conn.get(0))
-		otherEnd = /*(MAssociationEnd)*/ conn.get(1);
-	    if (!Model.getFacade().isNavigable(otherEnd)) continue;
+		otherEnd = conn.get(1);
+	    if (!Model.getFacade().isNavigable(otherEnd)) {
+                continue;
+            }
 	    Object otherCls = Model.getFacade().getType(otherEnd);
 	    if (descendants.contains(otherCls)) {
 		if (offs == null) {
 		    offs = new ListSet();
-		    offs.addElement(cls);
+		    offs.add(cls);
 		}
-		offs.addElement(a);
-		offs.addElement(otherCls);
+		offs.add(a);
+		offs.add(otherCls);
 	    }
 	}
 	return offs;
     }
 
-} /* end class CrSubclassReference */
+}

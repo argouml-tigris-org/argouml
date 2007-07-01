@@ -24,6 +24,8 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -34,7 +36,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
 /**
- * A non-modal wizard to help the user change the name of a MModelElement to a
+ * A non-modal wizard to help the user change the name of a ModelElement to a
  * better name.
  * 
  * @author jrobbins
@@ -54,7 +56,7 @@ public class WizManyNames extends UMLWizard {
     /**
      * A vector of model elements.
      */
-    private Vector mes;
+    private List mes;
 
     private WizStepManyTextFields step1;
 
@@ -68,20 +70,31 @@ public class WizManyNames extends UMLWizard {
     /**
      * @param m
      *            the offenders
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #setModelElements(List)}.
      */
+    @Deprecated
     public void setMEs(Vector m) {
-        int mSize = m.size();
+        setModelElements(m);
+    }
+
+    /**
+     * Set the list of offending ModelElements.
+     * 
+     * @param elements the list of offending ModelElements
+     */
+    public void setModelElements(List elements) {
+        int mSize = elements.size();
         for (int i = 0; i < 3 && i < mSize; ++i) {
-            if (!Model.getFacade().isAModelElement(m.get(i))) {
+            if (!Model.getFacade().isAModelElement(elements.get(i))) {
                 throw new IllegalArgumentException(
                         "The vector should contain model elements in "
                                 + "the first 3 positions");
             }
         }
 
-        mes = m;
+        mes = elements;
     }
-
+    
     /*
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
@@ -89,11 +102,11 @@ public class WizManyNames extends UMLWizard {
         switch (newStep) {
         case 1:
             if (step1 == null) {
-                Vector names = new Vector();
+                List<String> names = new ArrayList<String>();
                 int size = mes.size();
                 for (int i = 0; i < size; i++) {
-                    Object me = /* (MModelElement) */mes.elementAt(i);
-                    names.addElement(Model.getFacade().getName(me));
+                    Object me = mes.get(i);
+                    names.add(Model.getFacade().getName(me));
                 }
                 step1 = new WizStepManyTextFields(this, instructions, names);
             }
@@ -111,16 +124,15 @@ public class WizManyNames extends UMLWizard {
         LOG.debug("doAction " + oldStep);
         switch (oldStep) {
         case 1:
-            Vector newNames = null;
+            List<String> newNames = null;
             if (step1 != null) {
-                newNames = step1.getStrings();
+                newNames = step1.getStringList();
             }
             try {
                 int size = mes.size();
                 for (int i = 0; i < size; i++) {
-                    Object me = /* (MModelElement) */mes.elementAt(i);
-                    Model.getCoreHelper().setName(me,
-                            (String) newNames.elementAt(i));
+                    Object me = mes.get(i);
+                    Model.getCoreHelper().setName(me, newNames.get(i));
                 }
             } catch (Exception pve) {
                 LOG.error("could not set name", pve);
@@ -135,4 +147,4 @@ public class WizManyNames extends UMLWizard {
      * The UID.
      */
     private static final long serialVersionUID = -2827847568754795770L;
-} /* end class WizManyNames */
+}

@@ -24,17 +24,19 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
-import org.argouml.cognitive.ListSet;
 
 
 
@@ -51,16 +53,14 @@ public class GoListToPosterToItem extends AbstractGoList {
      * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
      */
     public Object getChild(Object parent, int index) {
-	Vector children = getChildren(parent);
-	return (children == null) ? null : children.elementAt(index);
+	return getChildrenList(parent).get(index);
     }
 
     /*
      * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
      */
     public int getChildCount(Object parent) {
-	Vector children = getChildren(parent);
-	return (children == null) ? 0 : children.size();
+        return getChildrenList(parent).size();
     }
 
     /*
@@ -68,8 +68,7 @@ public class GoListToPosterToItem extends AbstractGoList {
      * java.lang.Object, java.lang.Object)
      */
     public int getIndexOfChild(Object parent, Object child) {
-	Vector children = getChildren(parent);
-	return (children == null) ? -1 : children.indexOf(child);
+        return getChildrenList(parent).indexOf(child);
     }
 
     /*
@@ -85,43 +84,59 @@ public class GoListToPosterToItem extends AbstractGoList {
     /**
      * @param parent the parent object to check for offspring
      * @return the children
+     * @deprecated for 0.25.4 by tfmorris. Use 
+     * {@link #getChildrenList(Object)}.
      */
+    @Deprecated
     public Vector getChildren(Object parent) {
-	ListSet allPosters =
-	    Designer.theDesigner().getToDoList().getPosters();
-	if (parent instanceof ToDoList) {
-	    return allPosters.asVector();
-	}
-	//otherwise parent must be an offending design material
-	if (allPosters.contains(parent)) {
-	    Vector res = new Vector();
-	    ToDoList list = Designer.theDesigner().getToDoList();
-	    Enumeration elems = list.elements();
-	    while (elems.hasMoreElements()) {
-		ToDoItem item = (ToDoItem) elems.nextElement();
-		Poster post = item.getPoster();
-		if (post == parent) res.addElement(item);
-	    }
-	    return res;
-	}
-	return null;
+        List result = getChildrenList(parent);
+        if (result.size() == 0) {
+            return null;
+        }
+        return new Vector(result);
+    }
+    
+    /**
+     * @param parent the parent object to check for offspring
+     * @return the children
+     */
+    public List getChildrenList(Object parent) {
+        ListSet allPosters =
+            Designer.theDesigner().getToDoList().getPosters();
+        if (parent instanceof ToDoList) {
+            return allPosters;
+        }
+        //otherwise parent must be an offending design material
+        if (allPosters.contains(parent)) {
+            List<ToDoItem> result = new ArrayList<ToDoItem>();
+            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
+                Poster post = item.getPoster();
+                if (post == parent) {
+                    result.add(item);
+                }
+            }
+            return result;
+        }
+        return Collections.EMPTY_LIST;
     }
 
     /*
      * @see javax.swing.tree.TreeModel#valueForPathChanged(
      * javax.swing.tree.TreePath, java.lang.Object)
      */
-    public void valueForPathChanged(TreePath path, Object newValue) { }
+    public void valueForPathChanged(TreePath path, Object newValue) {
+    }
 
     /*
      * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
      */
-    public void addTreeModelListener(TreeModelListener l) { }
+    public void addTreeModelListener(TreeModelListener l) {
+    }
 
     /*
      * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
      */
-    public void removeTreeModelListener(TreeModelListener l) { }
+    public void removeTreeModelListener(TreeModelListener l) {
+    }
 
-
-} /* end class GoListToPosterToItem */
+}

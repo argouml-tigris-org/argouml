@@ -56,10 +56,12 @@ public abstract class UMLWizard extends Wizard {
      * Preset the number of steps to 1. You need to override this
      * method, in case your Wizard requires a different number of steps.
      * This method is a convenience implementation.
-     *
-     * @see org.argouml.cognitive.critics.Wizard#getNumSteps()
+     * 
+     * {@inheritDoc}
      */
-    public int getNumSteps() { return 1; }
+    public int getNumSteps() {
+        return 1;
+    }
 
     /**
      * @return the offending modelelement
@@ -69,7 +71,7 @@ public abstract class UMLWizard extends Wizard {
             ToDoItem item = (ToDoItem) getToDoItem();
             ListSet offs = item.getOffenders();
             if (offs.size() >= 1) {
-                Object me = /*(MModelElement)*/ offs.elementAt(0);
+                Object me = offs.get(0);
                 return me;
             }
         }

@@ -24,6 +24,8 @@
 
 package org.argouml.cognitive;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.Icon;
 
@@ -54,7 +56,7 @@ public class CompoundCritic extends Critic {
     /**
      * The sub-critics that make up this CompoundCritic.
      */
-    private Vector critics = new Vector();
+    private List<Critic> critics = new ArrayList<Critic>();
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -74,8 +76,8 @@ public class CompoundCritic extends Critic {
      */
     public CompoundCritic(Critic c1, Critic c2) {
 	this();
-	critics.addElement(c1);
-	critics.addElement(c2);
+	critics.add(c1);
+	critics.add(c2);
     }
 
     /**
@@ -87,7 +89,7 @@ public class CompoundCritic extends Critic {
      */
     public CompoundCritic(Critic c1, Critic c2, Critic c3) {
 	this(c1, c2);
-	critics.addElement(c3);
+	critics.add(c3);
     }
 
     /**
@@ -100,32 +102,62 @@ public class CompoundCritic extends Critic {
      */
     public CompoundCritic(Critic c1, Critic c2, Critic c3, Critic c4) {
 	this(c1, c2, c3);
-	critics.addElement(c4);
+	critics.add(c4);
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
     /**
+     * @param c
+     *            the new list of critics that completely replaces the old list
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #setCritics(List)}.
+     *             Unused in ArgoUML. Can be scheduled for speedy removal.
+     */
+    @Deprecated
+    public void setCritics(Vector<Critic> c) {
+        critics = c;
+    }
+
+    /**
      * @param c the new list of critics that completely
      *                replaces the old list
      */
-    public void setCritics(Vector c) { critics = c; }
+    public void setCritics(List<Critic> c) {
+        critics = c;
+    }
+
+    /**
+     * @return the complete list of critics
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getCriticList()}. Unused
+     *             in ArgoUML. Can be scheduled for speedy removal.
+     */
+    @Deprecated
+    public Vector<Critic> getCritics() {
+        return new Vector<Critic>(critics);
+    }
 
     /**
      * @return the complete list of critics
      */
-    public Vector getCritics() { return critics; }
+    public List<Critic> getCriticList() {
+        return critics;
+    }
 
+    
     /**
      * @param c the critic to be added at the end of the current list
      */
-    public void addCritic(Critic c) { critics.addElement(c); }
+    public void addCritic(Critic c) {
+        critics.add(c);
+    }
 
     /**
      * @param c the critic to be removed
      */
-    public void removeCritic(Critic c) { critics.removeElement(c); }
+    public void removeCritic(Critic c) {
+        critics.remove(c);
+    }
 
     ////////////////////////////////////////////////////////////////
     // critiquing
@@ -134,10 +166,9 @@ public class CompoundCritic extends Critic {
      * @see org.argouml.cognitive.critics.Critic#critique(java.lang.Object,
      * org.argouml.cognitive.Designer)
      */
+    @Override
     public void critique(Object dm, Designer dsgr) {
-	int size = critics.size();
-	for (int i = 0; i < size; ++i) {
-	    Critic c = (Critic) critics.elementAt(i);
+	for (Critic c : critics) {
 	    if (c.isActive() && c.predicate(dm, dsgr)) {
 		ToDoItem item = c.toDoItem(dm, dsgr);
 		postItem(item, dm, dsgr);
@@ -149,10 +180,9 @@ public class CompoundCritic extends Critic {
     /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Decision)
      */
+    @Override
     public boolean supports(Decision d) {
-	int size = critics.size();
-	for (int i = 0; i < size; ++i) {
-	    Critic c = (Critic) critics.elementAt(i);
+        for (Critic c : critics) {
 	    if (c.supports(d)) {
 		return true;
 	    }
@@ -163,13 +193,15 @@ public class CompoundCritic extends Critic {
     /*
      * @see org.argouml.cognitive.Poster#getSupportedDecisions()
      */
-    public Vector getSupportedDecisions() {
+    @Override
+    public List<Decision> getSupportedDecisions() {
 	throw new UnsupportedOperationException();
     }
 
     /*
      * @see org.argouml.cognitive.critics.Critic#addSupportedDecision(org.argouml.cognitive.Decision)
      */
+    @Override
     public void addSupportedDecision(Decision d) {
 	throw new UnsupportedOperationException();
     }
@@ -177,10 +209,9 @@ public class CompoundCritic extends Critic {
     /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
      */
+    @Override
     public boolean supports(Goal g) {
-	int size = critics.size();
-	for (int i = 0; i < size; ++i) {
-	    Critic c = (Critic) critics.elementAt(i);
+        for (Critic c : critics) {
 	    if (c.supports(g)) {
 		return true;
 	    }
@@ -191,13 +222,15 @@ public class CompoundCritic extends Critic {
     /*
      * @see org.argouml.cognitive.Poster#getSupportedGoals()
      */
-    public Vector getSupportedGoals() {
+    @Override
+    public List<Goal> getSupportedGoals() {
 	throw new UnsupportedOperationException();
     }
 
     /*
      * @see org.argouml.cognitive.critics.Critic#addSupportedGoal(org.argouml.cognitive.Goal)
      */
+    @Override
     public void addSupportedGoal(Goal g) {
 	throw new UnsupportedOperationException();
     }
@@ -205,10 +238,9 @@ public class CompoundCritic extends Critic {
     /*
      * @see org.argouml.cognitive.Poster#containsKnowledgeType(java.lang.String)
      */
+    @Override
     public boolean containsKnowledgeType(String type) {
-	int size = critics.size();
-	for (int i = 0; i < size; ++i) {
-	    Critic c = (Critic) critics.elementAt(i);
+        for (Critic c : critics) {
 	    if (c.containsKnowledgeType(type)) {
 		return true;
 	    }
@@ -219,6 +251,7 @@ public class CompoundCritic extends Critic {
     /*
      * @see org.argouml.cognitive.critics.Critic#addKnowledgeType(java.lang.String)
      */
+    @Override
     public void addKnowledgeType(String type) {
 	throw new UnsupportedOperationException();
     }
@@ -226,6 +259,7 @@ public class CompoundCritic extends Critic {
     /*
      * @see org.argouml.cognitive.Poster#expand(java.lang.String, ListSet)
      */
+    @Override
     public String expand(String desc, ListSet offs) {
 	throw new UnsupportedOperationException();
     }
@@ -233,6 +267,7 @@ public class CompoundCritic extends Critic {
     /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
+    @Override
     public Icon getClarifier() {
 	throw new UnsupportedOperationException();
     }
@@ -241,10 +276,9 @@ public class CompoundCritic extends Critic {
     /*
      * @see org.argouml.cognitive.critics.Critic#isActive()
      */
+    @Override
     public boolean isActive() {
-	int size = critics.size();
-	for (int i = 0; i < size; ++i) {
-	    Critic c = (Critic) critics.elementAt(i);
+        for (Critic c : critics) {
 	    if (c.isActive()) {
 		return true;
 	    }
@@ -258,6 +292,7 @@ public class CompoundCritic extends Critic {
     /*
      * @see org.argouml.cognitive.critics.Critic#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
 	return true;
     }
@@ -269,8 +304,9 @@ public class CompoundCritic extends Critic {
      * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
      * org.argouml.cognitive.Designer)
      */
+    @Override
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	throw new UnsupportedOperationException();
     }
 
-} /* end class CompoundCritic */
+}

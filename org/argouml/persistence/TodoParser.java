@@ -25,7 +25,8 @@
 package org.argouml.persistence;
 
 import java.io.Reader;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 
@@ -35,7 +36,7 @@ import org.argouml.cognitive.ListSet;
 import org.xml.sax.SAXException;
 
 
-// TODO: Reuse the offender Vector.
+// TODO: Reuse the offender List.
 
 /**
  * Class that reads a todo list from a todo xml file.
@@ -79,7 +80,7 @@ class TodoParser extends SAXParserBase {
      * The offenders vector of the ResolvedCritic currently being
      * read.
      */
-    private Vector offenders;
+    private List offenders;
 
     /**
      * Creates a new TodoParser.
@@ -367,7 +368,7 @@ class TodoParser extends SAXParserBase {
      */
     protected void handleOffender(XMLElement e) {
         if (offenders == null) {
-            offenders = new Vector();
+            offenders = new ArrayList();
         }
         offenders.add(decode(e.getText()).trim());
     }

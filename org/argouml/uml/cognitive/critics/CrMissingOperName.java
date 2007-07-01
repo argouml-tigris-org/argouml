@@ -50,6 +50,7 @@ public class CrMissingOperName extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAOperation(dm))) return NO_PROBLEM;
 	Object oper = dm;
@@ -63,10 +64,11 @@ public class CrMissingOperName extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
+    @Override
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object me = item.getOffenders().elementAt(0);
+	    Object me = item.getOffenders().get(0);
 	    String ins = super.getInstructions();
 	    String sug = super.getDefaultSuggestion();
 	    if (Model.getFacade().isAOperation(me)) {
@@ -85,6 +87,9 @@ public class CrMissingOperName extends CrUML {
     /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
-    public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+    @Override
+    public Class getWizardClass(ToDoItem item) {
+        return WizMEName.class;
+    }
 
-} /* end class CrMissingOperName */
+}

@@ -27,7 +27,9 @@ package org.argouml.cognitive;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -58,8 +60,14 @@ import org.tigris.gef.util.EnumerationEmpty;
  * This class listens to property changes from ...?<p>
  *
  * A Designer can as well create ToDO Items, such as critics do. Hence he
- * implements the Poster interface.
+ * implements the Poster interface.<p>
  *
+ * TODO: There is a strong dependency cycle between Agency and Designer.  They
+ * either need to be merged into a single class or partitioned differently, 
+ * perhaps using an interface to break the cycle.  The Designer singleton gets
+ * passed to almost every single part of the Critic subsystem, creating strong
+ * coupling throughout. - tfm 20070620
+ * 
  * @author Jason Robbins
  */
 public final class Designer
@@ -78,16 +86,16 @@ public final class Designer
 
     private static boolean userWorking;
 
-    private static Vector<Decision> unspecDecisionVector;
-    private static Vector<Goal> unspecGoalVector;
+    private static List<Decision> unspecifiedDecision;
+    private static List<Goal> unspecifiedGoal;
 
     private static Action saveAction;
 
     static {
-        unspecDecisionVector = new Vector<Decision>();
-        unspecDecisionVector.addElement(Decision.UNSPEC);
-        unspecGoalVector = new Vector<Goal>();
-        unspecGoalVector.addElement(Goal.getUnspecifiedGoal());
+        unspecifiedDecision = new ArrayList<Decision>();
+        unspecifiedDecision.add(Decision.UNSPEC);
+        unspecifiedGoal = new ArrayList<Goal>();
+        unspecifiedGoal.add(Goal.getUnspecifiedGoal());
     }
 
     /**
@@ -160,15 +168,15 @@ public final class Designer
    /**
      * dm's that should be critiqued ASAP.
      */
-    private Vector<Object> hotQueue;
+    private List<Object> hotQueue;
 
-    private Vector<Long> hotReasonQueue;
+    private List<Long> hotReasonQueue;
 
-    private Vector<Object> addQueue;
+    private List<Object> addQueue;
 
-    private Vector<Long> addReasonQueue;
+    private List<Long> addReasonQueue;
 
-    private Vector<Object> removeQueue;
+    private List<Object> removeQueue;
 
     private static int longestAdd;
 
@@ -177,7 +185,7 @@ public final class Designer
     /**
      * dm's that should be critiqued relatively soon.
      */
-    private Vector<Object> warmQueue;
+    private List<Object> warmQueue;
 
     private ChildGenerator childGenerator;
 
@@ -221,15 +229,15 @@ public final class Designer
         critiquingInterval = 8000;
         critiqueCPUPercent = 10;
 
-        hotQueue = new Vector<Object>();
-        hotReasonQueue = new Vector<Long>();
-        addQueue = new Vector<Object>();
-        addReasonQueue = new Vector<Long>();
-        removeQueue = new Vector<Object>();
+        hotQueue = new ArrayList<Object>();
+        hotReasonQueue = new ArrayList<Long>();
+        addQueue = new ArrayList<Object>();
+        addReasonQueue = new ArrayList<Long>();
+        removeQueue = new ArrayList<Object>();
         longestAdd = 0;
         longestHot = 0;
 
-        warmQueue = new Vector<Object>();
+        warmQueue = new ArrayList<Object>();
 
         childGenerator = new EmptyChildGenerator();
 
@@ -299,34 +307,33 @@ public final class Designer
 
                         size = addQueue.size();
                         for (int i = 0; i < size; i++) {
-                            hotQueue.addElement(addQueue.elementAt(i));
-                            hotReasonQueue.addElement(addReasonQueue
-                                    .elementAt(i));
+                            hotQueue.add(addQueue.get(i));
+                            hotReasonQueue.add(addReasonQueue.get(i));
                         }
-                        addQueue.removeAllElements();
-                        addReasonQueue.removeAllElements();
+                        addQueue.clear();
+                        addReasonQueue.clear();
 
                         longestHot = Math.max(longestHot, hotQueue.size());
                         agency.determineActiveCritics(this);
 
                         while (hotQueue.size() > 0) {
-                            Object dm = hotQueue.elementAt(0);
+                            Object dm = hotQueue.get(0);
                             Long reasonCode =
-                                    hotReasonQueue.elementAt(0);
-                            hotQueue.removeElementAt(0);
-                            hotReasonQueue.removeElementAt(0);
+                                    hotReasonQueue.get(0);
+                            hotQueue.remove(0);
+                            hotReasonQueue.remove(0);
                             Agency.applyAllCritics(dm, theDesigner(),
                                     reasonCode.longValue());
                         }
 
                         size = removeQueue.size();
                         for (int i = 0; i < size; i++) {
-                            warmQueue.removeElement(removeQueue.elementAt(i));
+                            warmQueue.remove(removeQueue.get(i));
                         }
-                        removeQueue.removeAllElements();
+                        removeQueue.clear();
 
                         if (warmQueue.size() == 0) {
-                            warmQueue.addElement(critiquingRoot);
+                            warmQueue.add(critiquingRoot);
                         }
                         while (warmQueue.size() > 0
                                 && (System.currentTimeMillis() < cutoffTime
@@ -334,8 +341,8 @@ public final class Designer
                             if (minWarmElements > 0) {
                                 minWarmElements--;
                             }
-                            Object dm = warmQueue.elementAt(0);
-                            warmQueue.removeElementAt(0);
+                            Object dm = warmQueue.get(0);
+                            warmQueue.remove(0);
                             try {
                                 Agency.applyAllCritics(dm, theDesigner());
                                 java.util.Enumeration subDMs =
@@ -343,7 +350,7 @@ public final class Designer
                                 while (subDMs.hasMoreElements()) {
                                     Object nextDM = subDMs.nextElement();
                                     if (!(warmQueue.contains(nextDM))) {
-                                        warmQueue.addElement(nextDM);
+                                        warmQueue.add(nextDM);
                                     }
                                 }
                             } catch (InvalidElementException e) {
@@ -399,17 +406,17 @@ public final class Designer
         LOG.debug("critiqueASAP:" + dm);
         int addQueueIndex = addQueue.indexOf(dm);
         if (addQueueIndex == -1) {
-            addQueue.addElement(dm);
+            addQueue.add(dm);
             Long reasonCodeObj = new Long(rCode);
-            addReasonQueue.addElement(reasonCodeObj);
+            addReasonQueue.add(reasonCodeObj);
         } else {
             Long reasonCodeObj =
-		addReasonQueue.elementAt(addQueueIndex);
+		addReasonQueue.get(addQueueIndex);
             long rc = reasonCodeObj.longValue() | rCode;
             Long newReasonCodeObj = new Long(rc);
-            addReasonQueue.setElementAt(newReasonCodeObj, addQueueIndex);
+            addReasonQueue.set(addQueueIndex, newReasonCodeObj);
         }
-        removeQueue.addElement(dm);
+        removeQueue.add(dm);
         longestAdd = Math.max(longestAdd, addQueue.size());
     }
 
@@ -574,12 +581,12 @@ public final class Designer
     public static void clearCritiquing() {
         synchronized (theDesigner()) {
             theDesigner().toDoList.removeAllElements(); //v71
-            theDesigner().hotQueue.removeAllElements();
-            theDesigner().hotReasonQueue.removeAllElements();
-            theDesigner().addQueue.removeAllElements();
-            theDesigner().addReasonQueue.removeAllElements();
-            theDesigner().removeQueue.removeAllElements();
-            theDesigner().warmQueue.removeAllElements();
+            theDesigner().hotQueue.clear();
+            theDesigner().hotReasonQueue.clear();
+            theDesigner().addQueue.clear();
+            theDesigner().addReasonQueue.clear();
+            theDesigner().removeQueue.clear();
+            theDesigner().warmQueue.clear();
         }
         //clear out queues! @@@
     }
@@ -606,29 +613,49 @@ public final class Designer
     /**
      * @return the childgenerator
      */
-    public ChildGenerator getChildGenerator() { return childGenerator; }
+    public ChildGenerator getChildGenerator() {
+        return childGenerator;
+    }
 
     /**
      * @param cg the childgenerator
      */
-    public void setChildGenerator(ChildGenerator cg) { childGenerator = cg; }
+    public void setChildGenerator(ChildGenerator cg) {
+        childGenerator = cg;
+    }
 
     /**
      * @return the decisions
      */
-    public DecisionModel getDecisionModel() { return decisions; }
+    public DecisionModel getDecisionModel() {
+        return decisions;
+    }
 
 
     /**
      * @return the goals
      */
-    public GoalModel getGoalModel() { return goals; }
+    public GoalModel getGoalModel() {
+        return goals;
+    }
 
     /**
      * @return the goals
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getGoalList()}.
      */
-    public Vector getGoals() { return goals.getGoals(); }
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public Vector<Goal> getGoals() {
+        return goals.getGoals();
+    }
 
+    /**
+     * @return the goals.
+     */
+    public List<Goal> getGoalList() {
+        return goals.getGoalList();
+    }
+    
     /**
      * This method returns true.<p>
      *
@@ -652,27 +679,31 @@ public final class Designer
     /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Decision)
      */
-    public boolean supports(Decision d) { return d == Decision.UNSPEC; }
+    public boolean supports(Decision d) {
+        return d == Decision.UNSPEC;
+    }
 
     /*
      * @see org.argouml.cognitive.Poster#getSupportedDecisions()
      */
-    public Vector<Decision> getSupportedDecisions() { 
-        return unspecDecisionVector; 
+    public List<Decision> getSupportedDecisions() { 
+        return unspecifiedDecision; 
     }
-
+    
     /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
      */
-    public boolean supports(Goal g) { return true; }
+    public boolean supports(Goal g) {
+        return true;
+    }
 
     /*
      * @see org.argouml.cognitive.Poster#getSupportedGoals()
      */
-    public Vector<Goal> getSupportedGoals() { 
-        return unspecGoalVector; 
+    public List<Goal> getSupportedGoals() { 
+        return unspecifiedGoal; 
     }
-
+    
     /*
      * @see org.argouml.cognitive.Poster#containsKnowledgeType(java.lang.String)
      */
@@ -803,8 +834,8 @@ public final class Designer
 
     /**
      * Reply the Agency object that is helping this Designer.
-     *
-     * @return my agancy
+     * 
+     * @return my agency
      */
     public Agency getAgency() { return agency; }
 
@@ -912,4 +943,4 @@ public final class Designer
      * The UID.
      */
     private static final long serialVersionUID = -3647853023882216454L;
-} /* end class Designer */
+}

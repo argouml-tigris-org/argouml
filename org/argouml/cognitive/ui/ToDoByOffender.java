@@ -24,15 +24,14 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
-import org.argouml.cognitive.ListSet;
 
 /**
  * Represents a perspective for ToDo items: grouping by offender type.
@@ -60,20 +59,16 @@ public class ToDoByOffender extends ToDoPerspective
      */
     public void toDoItemsChanged(ToDoListEvent tde) {
         LOG.debug("toDoItemsChanged");
-        Vector items = tde.getToDoItems();
-        int nItems = items.size();
+        List<ToDoItem> items = tde.getToDoItemList();
         Object[] path = new Object[2];
         path[0] = Designer.theDesigner().getToDoList();
 
         ListSet allOffenders = Designer.theDesigner().getToDoList()
                 .getOffenders();
-        Enumeration elems = allOffenders.elements();
-        while (elems.hasMoreElements()) {
-            Object off = elems.nextElement();
+        for (Object off : allOffenders) {
             path[1] = off;
             int nMatchingItems = 0;
-            for (int i = 0; i < nItems; i++) {
-                ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : items) {
                 ListSet offenders = item.getOffenders();
                 if (!offenders.contains(off)) continue;
                 nMatchingItems++;
@@ -82,8 +77,7 @@ public class ToDoByOffender extends ToDoPerspective
             int[] childIndices = new int[nMatchingItems];
             Object[] children = new Object[nMatchingItems];
             nMatchingItems = 0;
-            for (int i = 0; i < nItems; i++) {
-                ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : items) {
                 ListSet offenders = item.getOffenders();
                 if (!offenders.contains(off)) continue;
                 childIndices[nMatchingItems] = getIndexOfChild(off, item);
@@ -99,32 +93,33 @@ public class ToDoByOffender extends ToDoPerspective
      */
     public void toDoItemsAdded(ToDoListEvent tde) {
         LOG.debug("toDoItemAdded");
-        Vector items = tde.getToDoItems();
-        int nItems = items.size();
+        List<ToDoItem> items = tde.getToDoItemList();
         Object[] path = new Object[2];
         path[0] = Designer.theDesigner().getToDoList();
 
-        ListSet allOffenders = Designer.theDesigner().getToDoList()
-                .getOffenders();
-        Enumeration elems = allOffenders.elements();
-        while (elems.hasMoreElements()) {
-            Object off = elems.nextElement();
+        for (Object off : Designer.theDesigner().getToDoList().getOffenders()) {
             path[1] = off;
             int nMatchingItems = 0;
-            for (int i = 0; i < nItems; i++) {
-                ToDoItem item = (ToDoItem) items.elementAt(i);
+            // TODO: This first loop just to count the items appears 
+            // redundant to me - tfm 20070630
+            for (ToDoItem item : items) {
                 ListSet offenders = item.getOffenders();
-                if (!offenders.contains(off)) continue;
+                if (!offenders.contains(off)) {
+                    continue;
+                }
                 nMatchingItems++;
             }
-            if (nMatchingItems == 0) continue;
+            if (nMatchingItems == 0) {
+                continue;
+            }
             int[] childIndices = new int[nMatchingItems];
             Object[] children = new Object[nMatchingItems];
             nMatchingItems = 0;
-            for (int i = 0; i < nItems; i++) {
-                ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : items) {
                 ListSet offenders = item.getOffenders();
-                if (!offenders.contains(off)) continue;
+                if (!offenders.contains(off)) {
+                    continue;
+                }
                 childIndices[nMatchingItems] = getIndexOfChild(off, item);
                 children[nMatchingItems] = item;
                 nMatchingItems++;
@@ -138,20 +133,13 @@ public class ToDoByOffender extends ToDoPerspective
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
         LOG.debug("toDoItemRemoved");
-        Vector items = tde.getToDoItems();
-        int nItems = items.size();
-        
+        List<ToDoItem> items = tde.getToDoItemList();
         Object[] path = new Object[2];
         path[0] = Designer.theDesigner().getToDoList();
 
-        ListSet allOffenders = Designer.theDesigner().getToDoList()
-                .getOffenders();
-        Enumeration elems = allOffenders.elements();
-        while (elems.hasMoreElements()) {
-            Object off = elems.nextElement();
+        for (Object off : Designer.theDesigner().getToDoList().getOffenders()) {
             boolean anyInOff = false;
-            for (int i = 0; i < nItems; i++) {
-                ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : items) {
                 ListSet offenders = item.getOffenders();
                 if (offenders.contains(off)) { 
                     anyInOff = true;

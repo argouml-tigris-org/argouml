@@ -119,6 +119,7 @@ public class CrUML extends Critic {
      * 
      * MVW: Maybe we can make it part of the constructor CrUML()?
      */
+    @Override
     public final void setHeadline(String s) {
         setupHeadAndDesc();
     }
@@ -137,6 +138,7 @@ public class CrUML extends Critic {
      * @see org.argouml.cognitive.critics.Critic#predicate( java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate(Object dm, Designer dsgr) {
 	Project p = ProjectManager.getManager().getCurrentProject();
         if (p.isInTrash(dm)
@@ -179,7 +181,7 @@ public class CrUML extends Critic {
 	    return res;
 	}
 
-        Object off1 = offs.firstElement();
+        Object off1 = offs.get(0);
 
         StringBuffer beginning = new StringBuffer("");
         int matchPos = res.indexOf(OCL_START);
@@ -223,6 +225,7 @@ public class CrUML extends Critic {
     /*
      * @see org.argouml.cognitive.critics.Critic#toDoItem(Object, Designer)
      */
+    @Override
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	return new UMLToDoItem(this, dm, dsgr);
     }
@@ -244,4 +247,4 @@ public class CrUML extends Critic {
      * The UID.
      */
     private static final long serialVersionUID = 1785043010468681602L;
-} /* end class CrUML */
+}

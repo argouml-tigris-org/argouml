@@ -32,6 +32,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -111,7 +113,7 @@ public class ToDoPane extends JPanel
     /**
      * Vector of TreeModels.
      */
-    private Vector<ToDoPerspective> perspectives;
+    private List<ToDoPerspective> perspectives;
     private ToDoPerspective curPerspective;
 
     private ToDoList root;
@@ -133,7 +135,7 @@ public class ToDoPane extends JPanel
         combo = new JComboBox();
         tree = new DisplayTextTree();
 
-        perspectives = new Vector<ToDoPerspective>();
+        perspectives = new ArrayList<ToDoPerspective>();
 
         countLabel = new JLabel(formatCountLabel(999));
         countLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
@@ -188,34 +190,54 @@ public class ToDoPane extends JPanel
 
     /**
      * @return the perspectives treemodels
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getPerspectiveList()}.
      */
-    public Vector<ToDoPerspective> getPerspectives() { return perspectives; }
+    @Deprecated
+    public Vector<ToDoPerspective> getPerspectives() {
+        return new Vector<ToDoPerspective>(perspectives);
+    }
+
+    /**
+     * @return the perspectives treemodels
+     */
+    public List<ToDoPerspective> getPerspectiveList() {
+        return perspectives;
+    }
+    
+    /**
+     * @param pers the perspectives
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #setPerspectives(List)}.
+     */
+    @Deprecated
+    public void setPerspectives(Vector<ToDoPerspective> pers) {
+        setPerspectives((List<ToDoPerspective>) pers);
+    }
 
     /**
      * @param pers the perspectives
      */
-    public void setPerspectives(Vector<ToDoPerspective> pers) {
+    public void setPerspectives(List<ToDoPerspective> pers) {
         perspectives = pers;
         if (pers.isEmpty()) {
-	    curPerspective = null;
-	} else {
-	    curPerspective = pers.elementAt(0);
-	}
+            curPerspective = null;
+        } else {
+            curPerspective = pers.get(0);
+        }
 
         for (ToDoPerspective tdp : perspectives) {
             combo.addItem(tdp);
-	}
+        }
 
         if (pers.isEmpty()) {
-	    curPerspective = null;
-	} else if (pers.contains(curPerspective)) {
+            curPerspective = null;
+        } else if (pers.contains(curPerspective)) {
             setCurPerspective(curPerspective);
-	} else {
-            setCurPerspective(perspectives.elementAt(0));
-	}
+        } else {
+            setCurPerspective(perspectives.get(0));
+        }
         updateTree();
     }
-
+    
     /**
      * @return the current perspectives
      */
@@ -366,8 +388,8 @@ public class ToDoPane extends JPanel
         if (curPerspective instanceof ToDoListListener) {
             ((ToDoListListener) curPerspective).toDoItemsAdded(tde);
 	}
-        Vector<ToDoItem> v = tde.getToDoItems();
-        for (ToDoItem todo : v) {
+        List<ToDoItem> items = tde.getToDoItemList();
+        for (ToDoItem todo : items) {
             if (todo.getPriority() >= ToDoItem.INTERRUPTIVE_PRIORITY) {
                 // keep nagging until the user solves the problem:
                 // This seems a nice way to nag:
@@ -499,7 +521,7 @@ public class ToDoPane extends JPanel
     /**
      * The perspectives to be chosen in the combobox are built here.
      */
-    private static Vector<ToDoPerspective> buildPerspectives() {
+    private static List<ToDoPerspective> buildPerspectives() {
 
         ToDoPerspective priority = new ToDoByPriority();
         ToDoPerspective decision = new ToDoByDecision();
@@ -509,7 +531,7 @@ public class ToDoPane extends JPanel
         ToDoPerspective type = new ToDoByType();
 
         // add the perspetives to a vector for the combobox
-        Vector<ToDoPerspective> perspectives = new Vector<ToDoPerspective>();
+        List<ToDoPerspective> perspectives = new ArrayList<ToDoPerspective>();
 
         perspectives.add(priority);
         perspectives.add(decision);
@@ -532,4 +554,4 @@ public class ToDoPane extends JPanel
      * The UID.
      */
     private static final long serialVersionUID = 1911401582875302996L;
-} /* end class ToDoPane */
+}

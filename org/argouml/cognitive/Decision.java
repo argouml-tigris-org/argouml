@@ -73,6 +73,7 @@ public class Decision {
     /*
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         if (name == null) {
             return 0;
@@ -86,6 +87,7 @@ public class Decision {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object d2) {
         if (!(d2 instanceof Decision)) {
             return false;
@@ -126,7 +128,8 @@ public class Decision {
     /*
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return getName();
     }
-} /* end class Decision */
+}

@@ -25,6 +25,7 @@
 
 package org.argouml.cognitive;
 
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -33,23 +34,48 @@ import java.util.Vector;
  */
 public class ToDoListEvent {
 
-    private Vector<ToDoItem> items;
+    private List<ToDoItem> items;
 
     /**
      * The constructor.
      *
      */
-    public ToDoListEvent() { items = null; }
+    public ToDoListEvent() {
+        items = null;
+    }
+    
     /**
      * The constructor.
      *
      * @param i the Vector of ToDoItems that were changed/added/removed 
      */
-    public ToDoListEvent(Vector<ToDoItem> i) { items = i; }
+    public ToDoListEvent(Vector<ToDoItem> i) {
+        items = i;
+    }
+
+    /**
+     * The constructor.
+     *
+     * @param i the Vector of ToDoItems that were changed/added/removed 
+     */
+    public ToDoListEvent(List<ToDoItem> i) {
+        items = i;
+    }
+    
+    /**
+     * @return the todo list events
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getToDoItemList()}.
+     */
+    @Deprecated
+    public Vector<ToDoItem> getToDoItems() {
+        return new Vector<ToDoItem>(items);
+    }
 
     /**
      * @return the todo list events
      */
-    public Vector<ToDoItem> getToDoItems() { return items; }
-
-} /* end class ToDoListEvent */
+    public List<ToDoItem> getToDoItemList() {
+        return items;
+    }
+    
+}

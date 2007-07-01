@@ -24,8 +24,7 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
@@ -60,29 +59,30 @@ public class ToDoByType extends ToDoPerspective
      */
     public void toDoItemsChanged(ToDoListEvent tde) {
 	LOG.debug("toDoItemsChanged");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
+        List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Enumeration elems = KnowledgeTypeNode.getTypes().elements();
-	while (elems.hasMoreElements()) {
-	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) elems.nextElement();
+        for (KnowledgeTypeNode ktn : KnowledgeTypeNode.getTypeList()) {
 	    String kt = ktn.getName();
 	    path[1] = ktn;
 	    int nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.containsKnowledgeType(kt)) continue;
+            for (ToDoItem item : items) {
+		if (!item.containsKnowledgeType(kt)) {
+                    continue;
+                }
 		nMatchingItems++;
 	    }
-	    if (nMatchingItems == 0) continue;
+	    if (nMatchingItems == 0) {
+                continue;
+            }
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.containsKnowledgeType(kt)) continue;
+            for (ToDoItem item : items) {
+		if (!item.containsKnowledgeType(kt)) {
+                    continue;
+                }
 		childIndices[nMatchingItems] = getIndexOfChild(ktn, item);
 		children[nMatchingItems] = item;
 		nMatchingItems++;
@@ -96,29 +96,30 @@ public class ToDoByType extends ToDoPerspective
      */
     public void toDoItemsAdded(ToDoListEvent tde) {
 	LOG.debug("toDoItemAdded");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
+        List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Enumeration elems = KnowledgeTypeNode.getTypes().elements();
-	while (elems.hasMoreElements()) {
-	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) elems.nextElement();
+        for (KnowledgeTypeNode ktn : KnowledgeTypeNode.getTypeList()) {
 	    String kt = ktn.getName();
 	    path[1] = ktn;
 	    int nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.containsKnowledgeType(kt)) continue;
+            for (ToDoItem item : items) {
+		if (!item.containsKnowledgeType(kt)) {
+                    continue;
+                }
 		nMatchingItems++;
 	    }
-	    if (nMatchingItems == 0) continue;
+	    if (nMatchingItems == 0) {
+                continue;
+            }
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.containsKnowledgeType(kt)) continue;
+            for (ToDoItem item : items) {
+		if (!item.containsKnowledgeType(kt)) {
+                    continue;
+                }
 		childIndices[nMatchingItems] = getIndexOfChild(ktn, item);
 		children[nMatchingItems] = item;
 		nMatchingItems++;
@@ -132,21 +133,21 @@ public class ToDoByType extends ToDoPerspective
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
 	LOG.debug("toDoItemRemoved");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
+        List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Enumeration elems = KnowledgeTypeNode.getTypes().elements();
-	while (elems.hasMoreElements()) {
-	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) elems.nextElement();
+        for (KnowledgeTypeNode ktn : KnowledgeTypeNode.getTypeList()) {
 	    boolean anyInKT = false;
 	    String kt = ktn.getName();
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (item.containsKnowledgeType(kt)) anyInKT = true;
+            for (ToDoItem item : items) {
+		if (item.containsKnowledgeType(kt)) {
+                    anyInKT = true;
+                }
 	    }
-	    if (!anyInKT) continue;
+	    if (!anyInKT) {
+                continue;
+            }
 	    LOG.debug("toDoItemRemoved updating PriorityNode");
 	    path[1] = ktn;
 	    //fireTreeNodesChanged(this, path, childIndices, children);
@@ -159,6 +160,6 @@ public class ToDoByType extends ToDoPerspective
      */
     public void toDoListChanged(ToDoListEvent tde) { }
 
-} /* end class ToDoByType */
+}
 
 

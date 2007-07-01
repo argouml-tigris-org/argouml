@@ -25,7 +25,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -64,8 +64,8 @@ public class WizNavigable extends UMLWizard {
     /**
      * @return the options
      */
-    public Vector getOptions() {
-	Vector res = new Vector();
+    public List<String> getOptions() {
+        List<String> result = new ArrayList<String>();
 	Object asc = getModelElement();
 	Object ae0 = 
             new ArrayList(Model.getFacade().getConnections(asc)).get(0);
@@ -84,10 +84,10 @@ public class WizNavigable extends UMLWizard {
                 + Model.getFacade().getName(cls1);
         }
 
-	res.addElement(option0);
-	res.addElement(option1);
-	res.addElement(option2);
-	return res;
+	result.add(option0);
+	result.add(option1);
+	result.add(option2);
+	return result;
     }
 
     /**
@@ -143,6 +143,7 @@ public class WizNavigable extends UMLWizard {
     /*
      * @see org.argouml.cognitive.ui.Wizard#canFinish()
      */
+    @Override
     public boolean canFinish() {
 	if (!super.canFinish()) {
             return false;

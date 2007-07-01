@@ -25,7 +25,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.awt.Rectangle;
-import java.util.Vector;
+import java.util.List;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -67,15 +67,18 @@ public class CrNodesOverlap extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof Diagram)) return NO_PROBLEM;
+	if (!(dm instanceof Diagram)) {
+            return NO_PROBLEM;
+        }
 	Diagram d = (Diagram) dm;
 
 	// fixes bug #669. Sequencediagrams always overlap, so they shall
 	// never report a problem
-	if (dm
-	    instanceof UMLSequenceDiagram)
-	    return NO_PROBLEM;
+	if (dm instanceof UMLSequenceDiagram) {
+            return NO_PROBLEM;
+        }
 
 	ListSet offs = computeOffenders(d);
 	if (offs == null) return NO_PROBLEM;
@@ -87,6 +90,7 @@ public class CrNodesOverlap extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Diagram d = (Diagram) dm;
 	ListSet offs = computeOffenders(d);
@@ -97,10 +101,13 @@ public class CrNodesOverlap extends CrUML {
      * @see org.argouml.cognitive.Poster#stillValid(
      *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+            return false;
+        }
 	ListSet offs = i.getOffenders();
-	Diagram d = (Diagram) offs.firstElement();
+	Diagram d = (Diagram) offs.get(0);
 	//if (!predicate(dm, dsgr)) return false;
 	ListSet newOffs = computeOffenders(d);
 	boolean res = offs.equals(newOffs);
@@ -113,17 +120,21 @@ public class CrNodesOverlap extends CrUML {
      */
     public ListSet computeOffenders(Diagram d) {
 	//TODO: algorithm is n^2 in number of nodes
-	Vector figs = new Vector(d.getLayer().getContents());
+	List figs = d.getLayer().getContents();
 	int numFigs = figs.size();
 	ListSet offs = null;
 	for (int i = 0; i < numFigs - 1; i++) {
-	    Object oi = figs.elementAt(i);
-	    if (!(oi instanceof FigNode)) continue;
+	    Object oi = figs.get(i);
+	    if (!(oi instanceof FigNode)) {
+                continue;
+            }
 	    FigNode fni = (FigNode) oi;
 	    Rectangle boundsi = fni.getBounds();
 	    for (int j = i + 1; j < numFigs; j++) {
-		Object oj = figs.elementAt(j);
-		if (!(oj instanceof FigNode)) continue;
+		Object oj = figs.get(j);
+		if (!(oj instanceof FigNode)) {
+                    continue;
+                }
 		FigNode fnj = (FigNode) oj;
 		if (fnj.intersects(boundsi)) {
 		    if (!(d instanceof UMLDeploymentDiagram)) {
@@ -154,10 +165,10 @@ public class CrNodesOverlap extends CrUML {
 		    }
 		    if (offs == null) {
 			offs = new ListSet();
-			offs.addElement(d);
+			offs.add(d);
 		    }
-		    offs.addElement(fni);
-		    offs.addElement(fnj);
+		    offs.add(fni);
+		    offs.add(fnj);
 		    break;
 		}
 	    }
@@ -165,7 +176,7 @@ public class CrNodesOverlap extends CrUML {
 	return offs;
     }
 
-} /* end class CrNodesOverlap */
+} 
 
 
 

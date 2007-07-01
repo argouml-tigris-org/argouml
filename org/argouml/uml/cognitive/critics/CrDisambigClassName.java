@@ -133,7 +133,7 @@ public class CrDisambigClassName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object me = item.getOffenders().elementAt(0);
+	    Object me = item.getOffenders().get(0);
 	    String sug = Model.getFacade().getName(me);
 	    String ins = super.getInstructions();
 	    ((WizMEName) w).setInstructions(ins);
@@ -148,4 +148,4 @@ public class CrDisambigClassName extends CrUML {
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 
-} /* end class CrDisambigClassName */
+}

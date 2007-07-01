@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2006 The Regents of the University of California. All
+// Copyright (c) 2002-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,11 +24,9 @@
 
 package org.argouml.cognitive;
 
-import java.util.Enumeration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-
-
 
 import org.apache.log4j.Logger;
 
@@ -54,7 +52,7 @@ public class ResolvedCritic {
     /**
      * The IDs of the objects that define the context of the critic.
      */
-    private List offenders;
+    private List<String> offenders;
 
     /**
      * Creates a new ResolvedCritic using the name of the Critic and the
@@ -62,16 +60,30 @@ public class ResolvedCritic {
      *
      * @param	cr	The name of the Critic that has been resolved
      * @param	offs	The Vector of related objects.
+     * @deprecated for 0.25.4 by tfmorris.  Use 
+     * {@link #ResolvedCritic(String, List)}.
      */
+    @Deprecated
     public ResolvedCritic(String cr, Vector offs) {
-	critic = cr;
-	if (offs != null && offs.size() > 0) {
-	    offenders = new Vector(offs);
-	} else {
-	    offenders = null;
-	}
+        this(cr, (List) offs);
     }
 
+    /**
+     * Creates a new ResolvedCritic using the name of the Critic and the
+     * List of objects that triggered the Critic given as parameters.
+     *
+     * @param   cr      The name of the Critic that has been resolved
+     * @param   offs    The List of related objects.
+     */
+    public ResolvedCritic(String cr, List<String> offs) {
+        critic = cr;
+        if (offs != null && offs.size() > 0) {
+            offenders = new ArrayList<String>(offs);
+        } else {
+            offenders = null;
+        }
+    }
+    
     /**
      * Same as {@link #ResolvedCritic(Critic,ListSet,boolean)}.
      *
@@ -108,7 +120,7 @@ public class ResolvedCritic {
 
 	try {
 	    if (offs != null && offs.size() > 0) {
-		offenders = new Vector(offs.size());
+		offenders = new ArrayList<String>(offs.size());
 		importOffenders(offs, canCreate);
 	    } else {
 	        offenders = null;
@@ -231,11 +243,9 @@ public class ResolvedCritic {
     protected void importOffenders(ListSet set, boolean canCreate)
 	throws UnresolvableException {
 
-	Enumeration elems = set.elements();
 	String fail = null;
 
-	while (elems.hasMoreElements()) {
-	    Object obj = elems.nextElement();
+        for (Object obj : set) {
 	    String id = ItemUID.getIDOfObject(obj, canCreate);
 	    if (id == null) {
 		if (!canCreate) {
@@ -291,12 +301,11 @@ public class ResolvedCritic {
     /*
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
 	StringBuffer sb =
 	    new StringBuffer("ResolvedCritic: " + critic + " : ");
-	int i;
-
-	for (i = 0; i < offenders.size(); i++) {
+	for (int i = 0; i < offenders.size(); i++) {
 	    if (i > 0) {
 	        sb.append(", ");
 	    }

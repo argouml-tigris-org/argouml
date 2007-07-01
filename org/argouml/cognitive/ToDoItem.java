@@ -25,8 +25,9 @@
 package org.argouml.cognitive;
 
 import java.io.Serializable;
-import java.util.Enumeration;
+
 import javax.swing.Icon;
+
 import org.argouml.cognitive.critics.Wizard;
 import org.argouml.cognitive.critics.WizardItem;
 import org.argouml.model.Model;
@@ -105,9 +106,13 @@ public class ToDoItem implements Serializable, WizardItem {
      * Which part of the design this issue affects.<p>
      *
      * Each member is either a model element, a {@link Fig}, or
-     * a {@link Diagram}.<p>
+     * a {@link Diagram}. TODO: Because there is not a common
+     * supertype for these three types, we can't type this list.
+     * We should introduce a common supertype/interface. - tfm <p>
      *
-     * This is set by the constructor and cannot change.
+     * This is set by the constructor and cannot change.<p>
+     * 
+     * TODO: Offenders need to be more strongly typed. - tfm 20070630
      */
     private ListSet theOffenders;
 
@@ -241,7 +246,7 @@ public class ToDoItem implements Serializable, WizardItem {
         }
 
         if (offs.size() >= 2) {
-            offender = offs.elementAt(1);
+            offender = offs.get(1);
             checkArgument(offender);
         }
     }
@@ -326,6 +331,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * Reply a Set of design material's that are the subject of this ToDoItem.
      *
      * @return the offenders
+     * TODO: Offenders need to be more strongly typed. - tfm 20070630
      */
     public ListSet getOffenders() {
         assert theOffenders != null;
@@ -333,9 +339,9 @@ public class ToDoItem implements Serializable, WizardItem {
         // system. Find a better way to do this. We should not use
         // assert on public methods.
         assert theOffenders.size() <= 0
-        	|| Model.getFacade().isAUMLElement(theOffenders.elementAt(0))
-        	|| theOffenders.elementAt(0) instanceof Fig
-        	|| theOffenders.elementAt(0) instanceof Diagram;
+        	|| Model.getFacade().isAUMLElement(theOffenders.get(0))
+        	|| theOffenders.get(0) instanceof Fig
+        	|| theOffenders.get(0) instanceof Diagram;
         return theOffenders;
     }
 
@@ -343,6 +349,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * Set the design material that is subject of this ToDoItem.
      *
      * @param offenders the offenders
+     * TODO: Offenders need to be more strongly typed. - tfm 20070630
      */
     public void setOffenders(ListSet offenders) {
         theOffenders = offenders;
@@ -353,7 +360,9 @@ public class ToDoItem implements Serializable, WizardItem {
      *
      * @return the poster
      */
-    public Poster getPoster() { return thePoster; }
+    public Poster getPoster() {
+        return thePoster;
+    }
 
     /**
      * Return a clarifier object that can graphical highlight this
@@ -398,6 +407,7 @@ public class ToDoItem implements Serializable, WizardItem {
     /*
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         int code = 0;
 
@@ -417,6 +427,7 @@ public class ToDoItem implements Serializable, WizardItem {
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object o) {
 	if (!(o instanceof ToDoItem)) {
 	    return false;
@@ -446,9 +457,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * the "offending" design material's.
      */
     public void select() {
-	Enumeration offs = getOffenders().elements();
-	while (offs.hasMoreElements()) {
-	    Object dm = offs.nextElement();
+        for (Object dm : getOffenders()) {
 	    if (dm instanceof Highlightable) {
 	        ((Highlightable) dm).setHighlight(true);
 	    }
@@ -460,9 +469,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * unhighlight the "offending" design material's.
      */
     public void deselect() {
-	Enumeration offs = getOffenders().elements();
-	while (offs.hasMoreElements()) {
-	    Object dm =  offs.nextElement();
+        for (Object dm : getOffenders()) {
 	    if (dm instanceof Highlightable) {
 	        ((Highlightable) dm).setHighlight(false);
 	    }
@@ -475,7 +482,10 @@ public class ToDoItem implements Serializable, WizardItem {
      * re-select it, subclasses may choose to do more (e.g., navigate to
      * the offending item if it is not visible).
      */
-    public void action() { deselect(); select(); }
+    public void action() {
+        deselect();
+        select();
+    }
 
     /**
      * Notify the user interface that this ToDoItem has
@@ -494,7 +504,9 @@ public class ToDoItem implements Serializable, WizardItem {
      * Some problems can be automatically fixed, ask the Critic to do
      * it if it can. <p>
      */
-    public void fixIt() { thePoster.fixIt(this, null); }
+    public void fixIt() {
+        thePoster.fixIt(this, null);
+    }
 
     /**
      * Some problems can be automatically fixed, ask the Critic to do
@@ -502,7 +514,9 @@ public class ToDoItem implements Serializable, WizardItem {
      *
      * @return true if the critic can automatically fix the problem
      */
-    public boolean canFixIt() { return thePoster.canFixIt(this); }
+    public boolean canFixIt() {
+        return thePoster.canFixIt(this);
+    }
 
     /**
      * TODO: this is not done yet. Eventually this will also
@@ -538,6 +552,7 @@ public class ToDoItem implements Serializable, WizardItem {
      *
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
 	return this.getClass().getName()
 	    + "(" + getHeadline() + ") on " + getOffenders().toString();
@@ -547,7 +562,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * The UID.
      */
     private static final long serialVersionUID = 3058660098451455153L;
-} /* end class ToDoItem */
+}
 
 
 

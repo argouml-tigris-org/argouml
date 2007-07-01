@@ -439,4 +439,4 @@ public class Init {
 	Agency.register(new CrOppEndVsAttr(), classifierCls);
     }
 
-} /* end class Init */
+}

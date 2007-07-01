@@ -24,9 +24,10 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -88,6 +89,7 @@ public class WizOperName extends WizMEName {
     /*
      * @see org.argouml.uml.cognitive.critics.UMLWizard#getNumSteps()
      */
+    @Override
     public int getNumSteps() {
         if (possibleConstructor) {
             return 2;
@@ -95,10 +97,10 @@ public class WizOperName extends WizMEName {
         return 1;
     }
 
-    private Vector getOptions() {
-        Vector res = new Vector();
-        res.addElement(option0);
-        res.addElement(option1);
+    private List<String> getOptions() {
+        List<String> res = new ArrayList<String>();
+        res.add(option0);
+        res.add(option1);
         return res;
     }
 
@@ -116,6 +118,7 @@ public class WizOperName extends WizMEName {
     /*
      * @see org.argouml.uml.cognitive.critics.WizMEName#makePanel(int)
      */
+    @Override
     public JPanel makePanel(int newStep) {
         if (!possibleConstructor) {
             return super.makePanel(newStep);
@@ -153,12 +156,13 @@ public class WizOperName extends WizMEName {
     /**
      * There is a possibility that the next step forward takes another path in
      * this wizard. To allow for this we must destroy the path already traveled
-     * by. TODO: I (Linus) would say that this is really a problem with the
-     * Wizard implementation since I believe it should be possible to explore a
-     * path in the wizard and then go back.
-     *
-     * @see org.argouml.cognitive.critics.Wizard#undoAction(int)
+     * by.
+     * <p>
+     * TODO: I (Linus) would say that this is really a problem with the Wizard
+     * implementation since I believe it should be possible to explore a path in
+     * the wizard and then go back. {@inheritDoc}
      */
+    @Override
     public void undoAction(int origStep) {
         super.undoAction(origStep);
         if (getStep() >= 1) {
@@ -176,6 +180,7 @@ public class WizOperName extends WizMEName {
     /*
      * @see org.argouml.uml.cognitive.critics.WizMEName#doAction(int)
      */
+    @Override
     public void doAction(int oldStep) {
         if (!possibleConstructor) {
             super.doAction(oldStep);
@@ -317,4 +322,4 @@ public class WizOperName extends WizMEName {
      * The UID.
      */
     private static final long serialVersionUID = -4013730212763172160L;
-} /* end class WizOperName */
+} 

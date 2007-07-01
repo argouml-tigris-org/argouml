@@ -24,8 +24,7 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Decision;
@@ -60,29 +59,30 @@ public class ToDoByDecision extends ToDoPerspective
      */
     public void toDoItemsChanged(ToDoListEvent tde) {
 	LOG.debug("toDoItemChanged");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
+        List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector decs = Designer.theDesigner().getDecisionModel().getDecisions();
-	Enumeration elems = decs.elements();
-	while (elems.hasMoreElements()) {
-	    Decision dec = (Decision) elems.nextElement();
+        for (Decision dec : Designer.theDesigner().getDecisionModel()
+                .getDecisionList()) {
 	    int nMatchingItems = 0;
 	    path[1] = dec;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.supports(dec)) continue;
+	    for (ToDoItem item : items) {
+		if (!item.supports(dec)) {
+                    continue;
+                }
 		nMatchingItems++;
 	    }
-	    if (nMatchingItems == 0) continue;
+	    if (nMatchingItems == 0) {
+                continue;
+            }
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.supports(dec)) continue;
+            for (ToDoItem item : items) {
+		if (!item.supports(dec)) {
+                    continue;
+                }
 		childIndices[nMatchingItems] = getIndexOfChild(dec, item);
 		children[nMatchingItems] = item;
 		nMatchingItems++;
@@ -96,29 +96,30 @@ public class ToDoByDecision extends ToDoPerspective
      */
     public void toDoItemsAdded(ToDoListEvent tde) {
 	LOG.debug("toDoItemAdded");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
+	List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector decs = Designer.theDesigner().getDecisionModel().getDecisions();
-	Enumeration elems = decs.elements();
-	while (elems.hasMoreElements()) {
-	    Decision dec = (Decision) elems.nextElement();
+        for (Decision dec : Designer.theDesigner().getDecisionModel()
+                .getDecisionList()) {
 	    int nMatchingItems = 0;
 	    path[1] = dec;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.supports(dec)) continue;
+            for (ToDoItem item : items) {
+		if (!item.supports(dec)) {
+                    continue;
+                }
 		nMatchingItems++;
 	    }
-	    if (nMatchingItems == 0) continue;
+	    if (nMatchingItems == 0) {
+                continue;
+            }
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.supports(dec)) continue;
+            for (ToDoItem item : items) {
+		if (!item.supports(dec)) {
+                    continue;
+                }
 		childIndices[nMatchingItems] = getIndexOfChild(dec, item);
 		children[nMatchingItems] = item;
 		nMatchingItems++;
@@ -132,22 +133,22 @@ public class ToDoByDecision extends ToDoPerspective
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
 	LOG.debug("toDoItemRemoved");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
+	List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector decs = Designer.theDesigner().getDecisionModel().getDecisions();
-	Enumeration elems = decs.elements();
-	while (elems.hasMoreElements()) {
-	    Decision dec = (Decision) elems.nextElement();
+        for (Decision dec : Designer.theDesigner().getDecisionModel()
+                .getDecisionList()) {
 	    LOG.debug("toDoItemRemoved updating decision node!");
 	    boolean anyInDec = false;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (item.supports(dec)) anyInDec = true;
+            for (ToDoItem item : items) {
+		if (item.supports(dec)) {
+                    anyInDec = true;
+                }
 	    }
-	    if (!anyInDec) continue;
+	    if (!anyInDec) {
+                continue;
+            }
 	    path[1] = dec;
 	    //fireTreeNodesChanged(this, path, childIndices, children);
 	    fireTreeStructureChanged(path);

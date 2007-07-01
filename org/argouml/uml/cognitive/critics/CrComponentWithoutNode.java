@@ -82,7 +82,7 @@ public class CrComponentWithoutNode extends CrUML {
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	ListSet offs = i.getOffenders();
-	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
+	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.get(0);
 	//if (!predicate(dm, dsgr)) return false;
 	ListSet newOffs = computeOffenders(dd);
 	boolean res = offs.equals(newOffs);
@@ -117,9 +117,9 @@ public class CrComponentWithoutNode extends CrUML {
 	    if ((fc.getEnclosingFig() == null) && isNode) {
 		if (offs == null) {
 		    offs = new ListSet();
-		    offs.addElement(dd);
+		    offs.add(dd);
 		}
-		offs.addElement(fc);
+		offs.add(fc);
 	    } else if (fc.getEnclosingFig() != null
 		     && (((Model.getFacade()
 		             .getDeploymentLocations(fc.getOwner()) == null)
@@ -128,9 +128,9 @@ public class CrComponentWithoutNode extends CrUML {
 			     == 0))))) {
 		if (offs == null) {
 		    offs = new ListSet();
-		    offs.addElement(dd);
+		    offs.add(dd);
 		}
-		offs.addElement(fc);
+		offs.add(fc);
 	    }
 
 	}
@@ -138,5 +138,5 @@ public class CrComponentWithoutNode extends CrUML {
 	return offs;
     }
 
-} /* end class CrComponentWithoutNode */
+}
 

@@ -25,7 +25,8 @@
 package org.argouml.cognitive;
 
 import java.io.Serializable;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Vector;
 
@@ -47,14 +48,14 @@ import java.util.Vector;
  * @author Jason Robbins
  */
 public class DecisionModel extends Observable implements Serializable {
-    private Vector decisions = new Vector();
+    private List<Decision> decisions = new ArrayList<Decision>();
 
     /**
      * The constructor.
      *
      */
     public DecisionModel() {
-	decisions.addElement(Decision.UNSPEC);
+	decisions.add(Decision.UNSPEC);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -62,9 +63,19 @@ public class DecisionModel extends Observable implements Serializable {
 
     /**
      * @return the list of decisions
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getDecisionList()}.
      */
-    public Vector getDecisions() { return decisions; }
+    @Deprecated
+    public Vector<Decision> getDecisions() {
+        return new Vector<Decision>(decisions);
+    }
 
+    /**
+     * @return the list of decisions
+     */
+    public List<Decision> getDecisionList() {
+        return decisions;
+    }
 
     /**
      * This function sets the priority of an existing decision, or
@@ -79,7 +90,7 @@ public class DecisionModel extends Observable implements Serializable {
 	Decision d = findDecision(decision);
 	if (null == d) {
 	    d = new Decision(decision, priority);
-	    decisions.addElement(d);
+	    decisions.add(d);
 	    return;
 	}
 	d.setPriority(priority);
@@ -110,8 +121,8 @@ public class DecisionModel extends Observable implements Serializable {
      * @param d the interesting decision
      */
     public void startConsidering(Decision d) {
-	decisions.removeElement(d);
-	decisions.addElement(d);
+	decisions.remove(d);
+	decisions.add(d);
     }
 
 
@@ -122,7 +133,7 @@ public class DecisionModel extends Observable implements Serializable {
      * @param d the uninteresting decision
      */
     public void stopConsidering(Decision d) {
-	decisions.removeElement(d);
+	decisions.remove(d);
     }
 
     /**
@@ -132,9 +143,7 @@ public class DecisionModel extends Observable implements Serializable {
      * @return a decision or null if not found.
      */
     protected Decision findDecision(String decName) {
-	Enumeration elems = decisions.elements();
-	while (elems.hasMoreElements()) {
-	    Decision d = (Decision) elems.nextElement();
+        for (Decision d : decisions) {
 	    if (decName.equals(d.getName())) {
 		return d;
 	    }
@@ -142,4 +151,4 @@ public class DecisionModel extends Observable implements Serializable {
 	return null;
     }
 
-} /* end class DecisionModel */
+}

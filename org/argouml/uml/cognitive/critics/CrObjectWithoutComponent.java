@@ -25,7 +25,6 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
@@ -57,6 +56,7 @@ public class CrObjectWithoutComponent extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
@@ -69,6 +69,7 @@ public class CrObjectWithoutComponent extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	ListSet offs = computeOffenders(dd);
@@ -79,10 +80,11 @@ public class CrObjectWithoutComponent extends CrUML {
      * @see org.argouml.cognitive.Poster#stillValid(
      *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	ListSet offs = i.getOffenders();
-	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
+	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.get(0);
 	//if (!predicate(dm, dsgr)) return false;
 	ListSet newOffs = computeOffenders(dd);
 	boolean res = offs.equals(newOffs);
@@ -100,11 +102,11 @@ public class CrObjectWithoutComponent extends CrUML {
      */
     public ListSet computeOffenders(UMLDeploymentDiagram dd) {
 	Collection figs = dd.getLayer().getContents();
-        Iterator figIter = figs.iterator();
 	ListSet offs = null;
-	while (figIter.hasNext()) {
-	    Object obj = figIter.next();
-	    if (!(obj instanceof FigObject)) continue;
+        for (Object obj : figs) {
+	    if (!(obj instanceof FigObject)) {
+                continue;
+            }
 	    FigObject fo = (FigObject) obj;
 	    Fig enclosing = fo.getEnclosingFig();
 	    if (enclosing == null
@@ -113,12 +115,12 @@ public class CrObjectWithoutComponent extends CrUML {
 		        enclosing.getOwner())))) {
 		if (offs == null) {
 		    offs = new ListSet();
-		    offs.addElement(dd);
+		    offs.add(dd);
 		}
-		offs.addElement(fo);
+		offs.add(fo);
 	    }
 	}
 	return offs;
     }
 
-} /* end class CrObjectWithoutComponent */
+}

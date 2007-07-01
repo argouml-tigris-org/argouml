@@ -27,9 +27,8 @@ package org.argouml.cognitive.ui;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -52,19 +51,18 @@ import org.argouml.util.ArgoDialog;
  *
  */
 public class GoalsDialog extends ArgoDialog implements ChangeListener {
-    ////////////////////////////////////////////////////////////////
-    // constants
+
     private static final int DIALOG_WIDTH = 320;
     private static final int DIALOG_HEIGHT = 400;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-    private JPanel  mainPanel = new JPanel();
-    private Hashtable slidersToDecisions = new Hashtable();
-    private Hashtable slidersToDigits = new Hashtable();
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
+    private JPanel mainPanel = new JPanel();
+
+    private Hashtable<JSlider, Goal> slidersToGoals = 
+        new Hashtable<JSlider, Goal>();
+
+    private Hashtable<JSlider, JLabel> slidersToDigits = 
+        new Hashtable<JSlider, JLabel>();
 
     /**
      * The constructor.
@@ -83,7 +81,7 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener {
 
     private void initMainPanel() {
 	GoalModel gm = Designer.theDesigner().getGoalModel();
-	Vector goals = gm.getGoals();
+	List<Goal> goals = gm.getGoalList();
 
 	GridBagLayout gb = new GridBagLayout();
 	mainPanel.setLayout(gb);
@@ -141,14 +139,12 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener {
 
 
 	c.gridy = 1;
-	Enumeration elems = goals.elements();
-	while (elems.hasMoreElements()) {
-	    Goal d = (Goal) elems.nextElement();
-	    JLabel decLabel = new JLabel(d.getName());
-	    JLabel valueLabel = new JLabel("    " + d.getPriority());
+        for (Goal goal : goals) {
+	    JLabel decLabel = new JLabel(goal.getName());
+	    JLabel valueLabel = new JLabel("    " + goal.getPriority());
 	    JSlider decSlide =
                 new JSlider(SwingConstants.HORIZONTAL,
-                            0, 5, d.getPriority());
+                            0, 5, goal.getPriority());
 	    decSlide.setPaintTicks(true);
 	    decSlide.setPaintLabels(true);
 	    decSlide.addChangeListener(this);
@@ -158,7 +154,7 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener {
 	    decSlide.setSize(smallSize);
 	    decSlide.setPreferredSize(smallSize);
 
-	    slidersToDecisions.put(decSlide, d);
+	    slidersToGoals.put(decSlide, goal);
 	    slidersToDigits.put(decSlide, valueLabel);
 
 	    c.gridx = 0;
@@ -185,18 +181,15 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener {
 	}
     }
 
-    ////////////////////////////////////////////////////////////////
-    // event handlers
-
     /*
      * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
      */
     public void stateChanged(ChangeEvent ce) {
 	JSlider srcSlider = (JSlider) ce.getSource();
-	Goal d = (Goal) slidersToDecisions.get(srcSlider);
-	JLabel valLab = (JLabel) slidersToDigits.get(srcSlider);
+	Goal goal = slidersToGoals.get(srcSlider);
+	JLabel valLab = slidersToDigits.get(srcSlider);
 	int pri = srcSlider.getValue();
-	d.setPriority(pri);
+	goal.setPriority(pri);
 	if (pri == 0) {
 	    valLab.setText(Translator.localize("label.off"));
 	} else {
@@ -208,8 +201,4 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener {
      * The UID.
      */
     private static final long serialVersionUID = -1871200638199122363L;
-} /* end class DesignIssuesDialog */
-
-
-
-////////////////////////////////////////////////////////////////
+}

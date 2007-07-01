@@ -24,7 +24,7 @@
 
 package org.argouml.cognitive;
 
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Icon;
 
@@ -41,6 +41,10 @@ import javax.swing.Icon;
  * @see org.argouml.cognitive.Critic
  * @see Designer
  * @author Jason Robbins
+ * @since 0.25.4 An incompatible change was made to the API so that methods
+ * which used to return Vector now return List<listType>.  Introducing a new
+ * interface with the different methods would have been just as incompatible,
+ * so we just changed this one.
  */
 public interface Poster {
 
@@ -65,8 +69,11 @@ public interface Poster {
 
     /**
      * @return the list of supported decisions
+     * @since 0.25.4 An incompatible change was made to the return type. It used
+     *        to return Vector.  Deprecation wasn't used since this is only used
+     *        one place in ArgoUML.
      */
-    Vector getSupportedDecisions();
+    List<Decision> getSupportedDecisions();
 
     /**
      * @param g the goal
@@ -76,8 +83,11 @@ public interface Poster {
 
     /**
      * @return the list of supported goals
+     * @since 0.25.4 An incompatible change was made to the return type. It used
+     *        to return Vector.  Deprecation wasn't used since this is only used
+     *        one place in ArgoUML.
      */
-    Vector getSupportedGoals();
+    List<Goal> getSupportedGoals();
 
     /**
      * @param knowledgeType the knowledge type

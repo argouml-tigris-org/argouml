@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,101 +24,53 @@
 
 package org.argouml.cognitive.checklist;
 
-import java.io.Serializable;
-import java.util.Enumeration;
-import java.util.Vector;
 
 /**
  * A list of CheckItems that the designer has marked off as already
  * considered.  In the ArgoUML system, this determines which items
  * in the TabChecklist have checkmarks.
+ * <p>
+ * The only difference between this class and its superclass is that
+ * adds are counted (but there is no access to the counter, so it apparently
+ * is only for debugging purposes).
  *
  * @see org.argouml.cognitive.checklist.ui.TabChecklist
  * @author Jason Robbins
  */
-public class ChecklistStatus implements Serializable {
-    private static int numChecks = 0;
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+public class ChecklistStatus extends Checklist {
 
-    /** CheckItems that the designer has marked off as already considered. */
-    private Vector items = new Vector();
+    private static int numChecks = 0;
 
     /**
      * The constructor.
      *
      */
-    public ChecklistStatus() { }
+    public ChecklistStatus() { 
+        super();
+    }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
+    
     /**
-     * @return the checked items
+     * @param item the item to be checkmarked
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #add(CheckItem)}.
      */
-    public Vector getCheckItems() { return items; }
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public void addItem(CheckItem item) {
+        add(item);
+    }
 
     /**
      * @param item the item to be checkmarked
+     * @return true
      */
-    public void addItem(CheckItem item) {
-	items.addElement(item);
-	numChecks++;
+    @Override
+    public boolean add(CheckItem item) {
+        super.add(item);
+        numChecks++;
+        return true;
     }
+    
 
-    /**
-     * @param list set the list of checkmarked items
-     */
-    public synchronized void addAll(ChecklistStatus list) {
-	Enumeration cur = list.elements();
-	while (cur.hasMoreElements()) {
-	    CheckItem item = (CheckItem) cur.nextElement();
-	    addItem(item);
-	}
-    }
-
-    /**
-     * @param item the item for which to remove a checkmark
-     */
-    public void removeItem(CheckItem item) {
-	items.removeElement(item);
-    }
-
-    /**
-     * @return the items in Enumeration format
-     */
-    public Enumeration elements() { return items.elements(); }
-
-    /**
-     * @param index an index into this vector
-     * @return the element
-     */
-    public CheckItem elementAt(int index) {
-	return (CheckItem) items.elementAt(index);
-    }
-
-    /**
-     * @param item the item
-     * @return true if the given item is contained in the list
-     */
-    public boolean contains(CheckItem item) {
-	return items.contains(item);
-    }
-
-    /*
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-	String res;
-	res = getClass().getName() + " {\n";
-	Enumeration cur = elements();
-	while (cur.hasMoreElements()) {
-	    CheckItem item = (CheckItem) cur.nextElement();
-	    res += "    " + item.toString() + "\n";
-	}
-	res += "  }";
-	return res;
-    }
-
-} /* end class ChecklistStatus */
+} 
 

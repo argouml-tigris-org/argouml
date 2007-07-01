@@ -27,6 +27,8 @@ package org.argouml.cognitive.ui;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
@@ -47,7 +49,7 @@ import org.argouml.swingext.SpacerPanel;
 
 public class WizStepManyTextFields extends WizStep {
     private JTextArea instructions = new JTextArea();
-    private Vector fields = new Vector();
+    private List<JTextField> fields = new ArrayList<JTextField>();
 
     /**
      * The constructor.
@@ -56,7 +58,7 @@ public class WizStepManyTextFields extends WizStep {
      * @param instr  the instructions
      * @param strings the strings
      */
-    public WizStepManyTextFields(Wizard w, String instr, Vector strings) {
+    public WizStepManyTextFields(Wizard w, String instr, List strings) {
 	// store wizard?
 	instructions.setText(instr);
 	instructions.setWrapStyleWord(true);
@@ -112,11 +114,11 @@ public class WizStepManyTextFields extends WizStep {
 	int size = strings.size();
 	for (int i = 0; i < size; i++) {
 	    c.gridy = 2 + i;
-	    String s = (String) strings.elementAt(i);
+	    String s = (String) strings.get(i);
 	    JTextField tf = new JTextField(s, 50);
 	    tf.setMinimumSize(new Dimension(200, 20));
 	    tf.getDocument().addDocumentListener(this);
-	    fields.addElement(tf);
+	    fields.add(tf);
 	    gb.setConstraints(tf, c);
 	    getMainPanel().add(tf);
 	}
@@ -134,17 +136,24 @@ public class WizStepManyTextFields extends WizStep {
 
     /**
      * @return the strings
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getStringList()}.
      */
-    public Vector getStrings() {
-	int size = fields.size();
-	Vector res = new Vector(size);
-	for (int i = 0; i < size; i++) {
-	    JTextField tf = (JTextField) fields.elementAt(i);
-	    res.addElement(tf.getText());
-	}
-	return res;
+    @Deprecated
+    public Vector<String> getStrings() {
+        return new Vector<String>(getStringList());
     }
 
+    /**
+     * @return the strings
+     */
+    public List<String> getStringList() {
+        List<String> result = new ArrayList<String>(fields.size());
+        for (JTextField tf : fields) {
+            result.add(tf.getText());
+        }
+        return result;
+    }
+    
     /**
      * The UID.
      */
