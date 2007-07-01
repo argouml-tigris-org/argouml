@@ -26,9 +26,10 @@ package org.argouml.cognitive;
 
 // Diagrams
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.FigClassifierRole;
@@ -125,6 +126,7 @@ public class TestItemUID extends TestCase {
      */
     public void testAssignIDsToObjects() {
         Object testmc = Model.getCoreFactory().buildClass();
+        CommentEdge commentedge = new CommentEdge();
         UMLActivityDiagram actdiag = new UMLActivityDiagram();
         UMLClassDiagram classdiag = new UMLClassDiagram();
         UMLCollaborationDiagram colldiag = new UMLCollaborationDiagram();
@@ -170,6 +172,7 @@ public class TestItemUID extends TestCase {
         FigUseCase figusecase = new FigUseCase();
 
         checkAssignIDToObject(testmc, true, true);
+        checkAssignIDToObject(commentedge, false, true);
         checkAssignIDToObject(actdiag, true, true);
         checkAssignIDToObject(classdiag, true, true);
         checkAssignIDToObject(colldiag, true, true);
