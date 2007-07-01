@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.cognitive;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -38,17 +39,20 @@ import org.tigris.gef.util.Predicate;
 import org.tigris.gef.util.PredicateTrue;
 
 /**
- * An Ordered, non-duplicated collecton of objects (not exactly a
+ * An Ordered, non-duplicated collection of objects (not exactly a
  * mathemetical set because it is ordered).
+ * 
+ * @param <T> The type of objects this ListSet is to contain.
  */
-public class ListSet implements Serializable, Set, List {
+public class ListSet<T extends Object> 
+    implements Serializable, Set<T>, List<T> {
     ////////////////////////////////////////////////////////////////
     // constants
     private static final int TC_LIMIT = 50;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    private Vector vector;
+    private List<T> list;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -57,7 +61,7 @@ public class ListSet implements Serializable, Set, List {
      * The constructor.
      */
     public ListSet() {
-        vector = new Vector();
+        list = new ArrayList<T>();
     }
 
     /**
@@ -66,7 +70,7 @@ public class ListSet implements Serializable, Set, List {
      * @param n the initial capacity of the vector
      */
     public ListSet(int n) {
-        vector = new Vector(n);
+        list = new ArrayList<T>(n);
     }
 
     /**
@@ -74,62 +78,51 @@ public class ListSet implements Serializable, Set, List {
      *
      * @param o1 the first object to add
      */
-    public ListSet(Object o1) {
-        vector = new Vector();
-        addElement(o1);
+    public ListSet(T o1) {
+        list = new ArrayList<T>();
+        add(o1);
     }
 
     /**
-     * @param o the object to add
+     * @param o
+     *            the object to add
+     * @deprecated for 0.25.4 by tfmorris. Use List methods instead of Vector
+     *             methods.
      */
-    public void addElement(Object o) {
+    @Deprecated
+    public void addElement(T o) {
         if (!contains(o)) {
-            vector.addElement(o);
+            list.add(o);
         }
     }
-
+    
     /**
      * @param v a collection of objects to be added
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #addAll(Collection)}.
      */
-    public void addAllElements(Collection v) {
+    @Deprecated
+    public void addAllElements(Collection< ? extends T> v) {
         if (v == null) {
             return;
         }
-        addAllElements(v.iterator());
+        addAll(v);
     }
 
     /**
      * @param iter an enumeration of objects to be added
      */
-    public void addAllElements(Enumeration iter) {
+    public void addAllElements(Enumeration<T> iter) {
         while (iter.hasMoreElements()) {
-            addElement(iter.nextElement());
+            add(iter.nextElement());
         }
     }
 
     /**
      * @param iter an iterator of objects to be added
      */
-    public void addAllElements(Iterator iter) {
+    public void addAllElements(Iterator<T> iter) {
         while (iter.hasNext()) {
-            addElement(iter.next());
-        }
-    }
-
-    /**
-     * @param iter an enumeration of objects to be added
-     * @param p the predicate the objects have to fulfill to be added
-     */
-    public void addAllElementsSuchThat(Enumeration iter, Predicate p) {
-        if (p instanceof PredicateTrue) {
-            addAllElements(iter);
-        } else {
-            while (iter.hasMoreElements()) {
-                Object e = iter.nextElement();
-                if (p.predicate(e)) {
-                    addElement(e);
-                }
-            }
+            add(iter.next());
         }
     }
 
@@ -137,14 +130,14 @@ public class ListSet implements Serializable, Set, List {
      * @param iter an iterator of objects to be added
      * @param p the predicate the objects have to fulfill to be added
      */
-    public void addAllElementsSuchThat(Iterator iter, Predicate p) {
+    public void addAllElementsSuchThat(Iterator<T> iter, Predicate p) {
         if (p instanceof PredicateTrue) {
             addAllElements(iter);
         } else {
             while (iter.hasNext()) {
-                Object e = iter.next();
+                T e = iter.next();
                 if (p.predicate(e)) {
-                    addElement(e);
+                    add(e);
                 }
             }
         }
@@ -152,17 +145,19 @@ public class ListSet implements Serializable, Set, List {
 
     /**
      * @param s a listset of objects to be added
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #addAll(Collection)}.
      */
-    public void addAllElements(ListSet s) {
-        addAllElements(s.elements());
+    @Deprecated
+    public void addAllElements(ListSet<T> s) {
+        addAll(s);
     }
 
     /**
      * @param s a listset of objects to be added
      * @param p the predicate the objects have to fulfill to be added
      */
-    public void addAllElementsSuchThat(ListSet s, Predicate p) {
-        addAllElementsSuchThat(s.elements(), p);
+    public void addAllElementsSuchThat(ListSet<T> s, Predicate p) {
+        addAllElementsSuchThat(s.iterator(), p);
     }
 
     /*
@@ -171,7 +166,7 @@ public class ListSet implements Serializable, Set, List {
     public boolean remove(Object o) {
         boolean result = contains(o);
         if (o != null) {
-            vector.removeElement(o);
+            list.remove(o);
         }
         return result;
     }
@@ -181,7 +176,7 @@ public class ListSet implements Serializable, Set, List {
      */
     public void removeElement(Object o) {
         if (o != null) {
-            vector.removeElement(o);
+            list.remove(o);
         }
     }
 
@@ -189,7 +184,7 @@ public class ListSet implements Serializable, Set, List {
      * Remove all objects.
      */
     public void removeAllElements() {
-        vector.removeAllElements();
+        list.clear();
     }
 
     /*
@@ -197,7 +192,7 @@ public class ListSet implements Serializable, Set, List {
      */
     public boolean contains(Object o) {
         if (o != null) {
-            return vector.contains(o);
+            return list.contains(o);
         }
         return false;
     }
@@ -218,9 +213,7 @@ public class ListSet implements Serializable, Set, List {
      * @return the found object or null
      */
     public Object findSuchThat(Predicate p) {
-        Enumeration elts = elements();
-        while (elts.hasMoreElements()) {
-            Object o = elts.nextElement();
+        for (Object o : list) {
             if (p.predicate(o)) {
                 return o;
             }
@@ -230,24 +223,49 @@ public class ListSet implements Serializable, Set, List {
 
     /**
      * @return all the objects as enumeration
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #iterator()}.
      */
-    public Enumeration elements() {
-        return vector.elements();
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public Enumeration<T> elements() {
+        return asVector().elements();
     }
 
     /**
      * @param index the location
      * @return the object at the given index
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #get(int)}.
      */
-    public Object elementAt(int index) {
-        return vector.elementAt(index);
+    @Deprecated
+    public T elementAt(int index) {
+        return list.get(index);
+    }
+
+    /**
+     * @param iter an enumeration of objects to be added
+     * @param p the predicate the objects have to fulfill to be added
+     */
+    public void addAllElementsSuchThat(Enumeration<T> iter, Predicate p) {
+        if (p instanceof PredicateTrue) {
+            addAllElements(iter);
+        } else {
+            while (iter.hasMoreElements()) {
+                T e = iter.nextElement();
+                if (p.predicate(e)) {
+                    add(e);
+                }
+            }
+        }
     }
 
     /**
      * @return all the objects as vector
+     * @deprecated for 0.25.4 by tfmorris. Use List methods instead of Vector
+     *             methods.
      */
-    public Vector asVector() {
-        return vector;
+    @Deprecated
+    public Vector<T> asVector() {
+        return new Vector<T>(list);
     }
 
     /*
@@ -271,9 +289,7 @@ public class ListSet implements Serializable, Set, List {
         if (set.size() != size()) {
             return false;
         }
-        Enumeration myEs = elements();
-        while (myEs.hasMoreElements()) {
-            Object obj = myEs.nextElement();
+        for (Object obj : list) {
             if (!(set.contains(obj))) {
                 return false;
             }
@@ -284,16 +300,18 @@ public class ListSet implements Serializable, Set, List {
 
     /**
      * @return the first object
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #get(int)} get(0).
      */
-    public Object firstElement() {
-        return vector.firstElement();
+    @Deprecated
+    public T firstElement() {
+        return list.get(0);
     }
 
     /*
      * @see java.util.Collection#size()
      */
     public int size() {
-        return vector.size();
+        return list.size();
     }
 
     /*
@@ -301,10 +319,9 @@ public class ListSet implements Serializable, Set, List {
      */
     public String toString() {
         String res = "Set{";
-        Enumeration eles = elements();
-        while (eles.hasMoreElements()) {
-            res += eles.nextElement();
-            if (eles.hasMoreElements()) {
+        for (Iterator it = iterator(); it.hasNext(); ) {
+            res += it.next();
+            if (it.hasNext()) {
                 res += ", ";
             }
         }
@@ -322,7 +339,7 @@ public class ListSet implements Serializable, Set, List {
      * @param cg the given childgenerator
      * @return the resulting listset
      */
-    public ListSet transitiveClosure(ChildGenerator cg) {
+    public ListSet<T> transitiveClosure(ChildGenerator cg) {
         return transitiveClosure(cg, TC_LIMIT, PredicateTrue.theInstance());
     }
 
@@ -337,7 +354,7 @@ public class ListSet implements Serializable, Set, List {
      * @param cg the given childgenerator
      * @return the resulting listset
      */
-    public ListSet reachable(ChildGenerator cg) {
+    public ListSet<T> reachable(ChildGenerator cg) {
         return reachable(cg, TC_LIMIT, PredicateTrue.theInstance());
     }
 
@@ -355,11 +372,9 @@ public class ListSet implements Serializable, Set, List {
      * @param p the predicate the objects have to fulfill
      * @return the resulting listset
      */
-    public ListSet reachable(ChildGenerator cg, int max, Predicate p) {
-        ListSet kids = new ListSet();
-        Enumeration rootEnum = elements();
-        while (rootEnum.hasMoreElements()) {
-            Object r = rootEnum.nextElement();
+    public ListSet<T> reachable(ChildGenerator cg, int max, Predicate p) {
+        ListSet<T> kids = new ListSet<T>();
+        for (Object r : list) {
             kids.addAllElementsSuchThat(cg.gen(r), p);
         }
         return kids.transitiveClosure(cg, max, p);
@@ -378,25 +393,28 @@ public class ListSet implements Serializable, Set, List {
      * @param max the maximum depth
      * @param p the predicate the objects have to fulfill
      * @return the resulting listset
+     * 
+     * TODO: This shouldn't depend on GEF.  Replace ChildGenerator in this API.
+     * - tfm 20070630
      */
-    public ListSet transitiveClosure(ChildGenerator cg, int max, Predicate p) {
+    public ListSet<T> transitiveClosure(ChildGenerator cg, int max, 
+            Predicate p) {
         int iterCount = 0;
         int lastSize = -1;
-        ListSet touched = new ListSet();
-        ListSet frontier;
-        ListSet recent = this;
+        ListSet<T> touched = new ListSet<T>();
+        ListSet<T> frontier;
+        ListSet<T> recent = this;
 
-        touched.addAllElements(this);
+        touched.addAll(this);
         while ((iterCount < max) && (touched.size() > lastSize)) {
             iterCount++;
             lastSize = touched.size();
-            frontier = new ListSet();
-            Enumeration recentEnum = recent.elements();
-            while (recentEnum.hasMoreElements()) {
-                Enumeration frontsEnum = cg.gen(recentEnum.nextElement());
+            frontier = new ListSet<T>();
+            for (T recentElement : recent) {
+                Enumeration frontsEnum = cg.gen(recentElement);
                 frontier.addAllElementsSuchThat(frontsEnum, p);
             }
-            touched.addAllElements(frontier);
+            touched.addAll(frontier);
             recent = frontier;
         }
         return touched;
@@ -406,37 +424,38 @@ public class ListSet implements Serializable, Set, List {
      * @see java.util.Collection#isEmpty()
      */
     public boolean isEmpty() {
-        return vector.isEmpty();
+        return list.isEmpty();
     }
 
     /*
      * @see java.util.Collection#iterator()
      */
-    public Iterator iterator() {
-        return vector.iterator();
+    public Iterator<T> iterator() {
+        return list.iterator();
     }
 
     /*
      * @see java.util.Collection#toArray()
      */
     public Object[] toArray() {
-        return vector.toArray();
+        return list.toArray();
     }
 
     /*
      * @see java.util.Collection#toArray(java.lang.Object[])
      */
-    public Object[] toArray(Object[] arg0) {
-        return vector.toArray(arg0);
+    public <A> A[] toArray(A[] arg0) {
+        return list.toArray(arg0);
     }
+
 
     /*
      * @see java.util.Collection#add(java.lang.Object)
      */
-    public boolean add(Object arg0) {
-        boolean result = contains(arg0);
+    public boolean add(T arg0) {
+        boolean result = list.contains(arg0);
         if (!result) {
-            addElement(arg0);
+            list.add(arg0);
         }
         return !result;
     }
@@ -445,33 +464,22 @@ public class ListSet implements Serializable, Set, List {
      * @see java.util.Collection#containsAll(java.util.Collection)
      */
     public boolean containsAll(Collection arg0) {
-        return vector.containsAll(arg0);
+        return list.containsAll(arg0);
     }
 
 
     /*
      * @see java.util.Collection#addAll(java.util.Collection)
      */
-    public boolean addAll(Collection arg0) {
-        boolean result = containsAll(arg0);
-        addAllElements(arg0);
-        return !result;
-
+    public boolean addAll(Collection< ? extends T> arg0) {
+        return list.addAll(arg0);
     }
 
     /*
      * @see java.util.Collection#retainAll(java.util.Collection)
      */
-    public boolean retainAll(Collection arg0) {
-        Vector copy = (Vector) vector.clone();
-        boolean result = false;
-        for (Iterator iter = copy.iterator(); iter.hasNext();) {
-            Object elem = iter.next();
-            if (!arg0.contains(elem)) {
-                result = result || remove(elem);
-            }
-        }
-        return result;
+    public boolean retainAll(Collection< ? > arg0) {
+        return list.retainAll(arg0);
     }
 
     /*
@@ -490,82 +498,82 @@ public class ListSet implements Serializable, Set, List {
      * @see java.util.Collection#clear()
      */
     public void clear() {
-        vector.clear();
+        list.clear();
     }
 
     /*
      * @see java.util.List#addAll(int, java.util.Collection)
      */
-    public boolean addAll(int arg0, Collection arg1) {
-        return vector.addAll(arg0, arg1);
+    public boolean addAll(int arg0, Collection< ? extends T> arg1) {
+        return list.addAll(arg0, arg1);
     }
 
     /*
      * @see java.util.List#get(int)
      */
-    public Object get(int index) {
-        return vector.get(index);
+    public T get(int index) {
+        return list.get(index);
     }
 
     /*
      * @see java.util.List#set(int, java.lang.Object)
      */
-    public Object set(int arg0, Object o) {
+    public T set(int arg0, T o) {
         if (contains(o)) {
-            vector.remove(o);
+            list.remove(o);
         }
-        return vector.set(arg0, o);
+        return list.set(arg0, o);
     }
 
     /*
      * @see java.util.List#add(int, java.lang.Object)
      */
-    public void add(int arg0, Object arg1) {
-        if (!vector.contains(arg1)) {
-            vector.add(arg0, arg1);
+    public void add(int arg0, T arg1) {
+        if (!list.contains(arg1)) {
+            list.add(arg0, arg1);
         }
     }
 
     /*
      * @see java.util.List#remove(int)
      */
-    public Object remove(int index) {
-        return vector.remove(index);
+    public T remove(int index) {
+        return list.remove(index);
     }
 
     /*
      * @see java.util.List#indexOf(java.lang.Object)
      */
     public int indexOf(Object o) {
-        return vector.indexOf(o);
+        return list.indexOf(o);
     }
 
     /*
      * @see java.util.List#lastIndexOf(java.lang.Object)
      */
     public int lastIndexOf(Object o) {
-        return vector.lastIndexOf(o);
+        return list.lastIndexOf(o);
     }
 
     /*
      * @see java.util.List#listIterator()
      */
-    public ListIterator listIterator() {
-        return vector.listIterator();
+    public ListIterator<T> listIterator() {
+        return list.listIterator();
     }
 
     /*
      * @see java.util.List#listIterator(int)
      */
-    public ListIterator listIterator(int index) {
-        return listIterator(index);
+    public ListIterator<T> listIterator(int index) {
+        return list.listIterator(index);
     }
 
     /*
      * @see java.util.List#subList(int, int)
      */
-    public List subList(int fromIndex, int toIndex) {
+    public List<T> subList(int fromIndex, int toIndex) {
         return subList(fromIndex, toIndex);
     }
 
-} /* end class ListSet */
+}
