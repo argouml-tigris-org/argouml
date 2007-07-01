@@ -773,7 +773,7 @@ public class Main {
      * 
      * @param subsystem the subsystem to be initialised
      */
-    private static void initSubsystem(InitSubsystem subsystem) {
+    static void initSubsystem(InitSubsystem subsystem) {
         subsystem.init();
         for (GUISettingsTabInterface tab : subsystem.getSettingsTabs()) {
             GUI.getInstance().addSettingsTab(tab);

@@ -27,12 +27,7 @@ package org.argouml.uml.cognitive.critics;
 import org.argouml.cognitive.Agency;
 import org.argouml.cognitive.CompoundCritic;
 import org.argouml.cognitive.Critic;
-import org.argouml.language.java.cognitive.critics.CrMultipleInheritance;
-import org.argouml.language.java.cognitive.critics.CrMultipleRealization;
 import org.argouml.model.Model;
-import org.argouml.pattern.cognitive.critics.CrConsiderSingleton;
-import org.argouml.pattern.cognitive.critics.CrSingletonViolatedMissingStaticAttr;
-import org.argouml.pattern.cognitive.critics.CrSingletonViolatedOnlyPrivateConstructors;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -243,27 +238,13 @@ public class Init {
 
     private static Critic crReservedName = new CrReservedName();
 
-    private static Critic crMultiInherit = new CrMultipleInheritance();
-
-    private static Critic crMultiRealization = new CrMultipleRealization();
-
     // code generation
     private static Critic crIllegalName = new CrIllegalName();
-
-    // Pattern specific
-    private static Critic crConsiderSingleton = new CrConsiderSingleton();
-
-    private static Critic crSingletonViolatedMSA =
-	new CrSingletonViolatedMissingStaticAttr();
-
-    private static Critic crSingletonViolatedOPC =
-	new CrSingletonViolatedOnlyPrivateConstructors();
 
     // Presentation critics
     private static Critic crNodesOverlap = new CrNodesOverlap();
 
     private static Critic crZeroLengthEdge = new CrZeroLengthEdge();
-
 
     // Compound critics
     private static CompoundCritic clsNaming =
@@ -304,7 +285,6 @@ public class Init {
         Object stateCls = Model.getMetaTypes().getState();
         Object compositieStateCls = Model.getMetaTypes().getCompositeState();
         Object synchStateCls = Model.getMetaTypes().getSynchState();
-
 	// Class stateDiagramCls   = UMLStateDiagram.class;
 	// Class useCaseDiagramCls = UMLUseCaseDiagram.class;
 
@@ -369,8 +349,6 @@ public class Init {
 	Agency.register(crReservedName, attrCls);
 	Agency.register(crReservedName, stateCls);
 	Agency.register(crReservedName, assocCls);
-	Agency.register(crMultiInherit, classCls);
-	Agency.register(crMultiRealization, interfaceCls);
 	Agency.register(crTooManyAssoc, classCls);
 	Agency.register(crTooManyAttr, classCls);
 	Agency.register(crTooManyOper, classCls);
@@ -393,9 +371,6 @@ public class Init {
 	Agency.register(crUnconventionalAttrName, attrCls);
 	Agency.register(crUnconventionalClassName, classCls);
 	Agency.register(crUnconventionalPackName, packageCls);
-	Agency.register(crConsiderSingleton, classCls);
-	Agency.register(crSingletonViolatedMSA, classCls);
-	Agency.register(crSingletonViolatedOPC, classCls);
 	Class deploymentDiagramCls = UMLDeploymentDiagram.class;
 	Agency.register(crNodeInsideElement, deploymentDiagramCls);
 	Agency.register(crNodeInstanceInsideElement, deploymentDiagramCls);
