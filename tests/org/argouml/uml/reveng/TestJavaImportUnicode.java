@@ -41,9 +41,14 @@ import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
 /**
- * Test the import of Java sources which have Unicode characters in various
- * locations, including in identifiers. The content of the Java source file is a
- * private constant at the bottom of the source of this class.
+ * Test the import of Java sources which have Unicode characters in
+ * various locations, including in identifiers.
+ *
+ * The content of the Java source file is a private constant at the
+ * bottom of the source of this class.
+ *
+ * The constant is written using the ISO8859-1 encoding so this class
+ * needs to be compiled using that encoding.
  */
 public class TestJavaImportUnicode extends TestCase {
     /*

@@ -759,6 +759,27 @@ Property files to be searched:
            optimize="false" 
            destdir="${argo.tests.classes}"
            srcdir="${argo.tests.src}"
+	   includes="org/argouml/uml/reveng/TestJavaImportUnicode.java"
+           excludes="org/argouml/model/uml/**"
+	   encoding="iso8859-1"
+    	   source="1.5"
+           target="1.5">
+      <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+      <classpath>
+        <pathelement location="${argo.build.classes}"/>
+        <pathelement location="${junit.jar.path}"/>
+        <pathelement location="${easymock.jar.path}"/>
+        <pathelement location="${jdepend.jar.path}"/>
+	<path refid="argo.compile.classpath"/>
+      </classpath>
+    </javac>
+
+    <!-- We want debug, optimize, deprecation to be non-modifiable here -->
+    <javac debug="true" 
+           deprecation="${deprecation}"
+           optimize="false" 
+           destdir="${argo.tests.classes}"
+           srcdir="${argo.tests.src}"
            excludes="org/argouml/model/uml/**"
     	   source="1.5"
            target="1.5">
