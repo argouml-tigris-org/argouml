@@ -24,11 +24,12 @@
 
 package org.argouml.cognitive;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 
 /**
@@ -43,14 +44,15 @@ public class TestResolvedCritic extends TestCase {
      * @param name the name of the test
      */
     public TestResolvedCritic(String name) {
-	super(name);
+        super(name);
     }
 
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     public void setUp() throws Exception {
-	super.setUp();
+        super.setUp();
         InitializeModel.initializeDefault();
     }
 
@@ -62,25 +64,25 @@ public class TestResolvedCritic extends TestCase {
         Critic c = new Critic();
         String crString = "class org.argouml.cognitive.Critic";
         ResolvedCritic rc;
-        Vector<String> vec = new Vector<String>();
+        List<String> list = new ArrayList<String>();
         ListSet set = new ListSet();
 
         /* ResolvedCritic(String, Vector) */
 
-        rc = new ResolvedCritic("rc", null);
+        rc = new ResolvedCritic("rc", (List<String>) null);
         assertTrue("getCritic simple", "rc".equals(rc.getCritic()));
         assertTrue(
-        	   "getOffenderList simple",
-        	   (rc.getOffenderList() == null
-        	    || rc.getOffenderList().size() == 0));
+                "getOffenderList simple",
+                (rc.getOffenderList() == null
+                        || rc.getOffenderList().size() == 0));
 
-        vec.add("str1");
-        rc = new ResolvedCritic("rc2", vec);
+        list.add("str1");
+        rc = new ResolvedCritic("rc2", list);
         assertTrue("getCritic 2nd", "rc2".equals(rc.getCritic()));
         assertTrue(
-        	   "getOffenderList 2nd",
-        	   rc.getOffenderList() != null
-        	   && "str1".equals(rc.getOffenderList().get(0)));
+                "getOffenderList 2nd",
+                rc.getOffenderList() != null
+                && "str1".equals(rc.getOffenderList().get(0)));
 
         /* ResolvedCritic(Critic, VectorSet) */
 
@@ -89,26 +91,26 @@ public class TestResolvedCritic extends TestCase {
             System.out.println(rc.getCritic());
             assertTrue("getCritic 1", crString.equals(rc.getCritic()));
             assertTrue(
-        	       "getOffenderList 1",
-        	       rc.getOffenderList() == null
-        	       || rc.getOffenderList().size() == 0);
+                    "getOffenderList 1",
+                    rc.getOffenderList() == null
+                    || rc.getOffenderList().size() == 0);
         } catch (UnresolvableException ure1) {
             assertTrue("create 1 with MClass", false);
         }
 
-        set.addElement(testmc);
+        set.add(testmc);
         try {
             rc = new ResolvedCritic(c, set);
 
             assertTrue("getCritic 2", crString.equals(rc.getCritic()));
             assertTrue(
-        	       "assigns id 2",
-        	       ItemUID.getIDOfObject(testmc, false) != null);
+                    "assigns id 2",
+                    ItemUID.getIDOfObject(testmc, false) != null);
             assertTrue(
-        	       "getOffenderList 2",
-        	       rc.getOffenderList() != null
-        	       && (ItemUID.getIDOfObject(testmc, false).equals(
-        			   rc.getOffenderList().get(0))));
+                    "getOffenderList 2",
+                    rc.getOffenderList() != null
+                    && (ItemUID.getIDOfObject(testmc, false).equals(
+                            rc.getOffenderList().get(0))));
         } catch (UnresolvableException ure1) {
             assertTrue("create 2 with MClass", false);
         }
@@ -122,15 +124,15 @@ public class TestResolvedCritic extends TestCase {
 
             assertTrue("getCritic 3", crString.equals(rc.getCritic()));
             assertTrue(
-        	       "assigns id 3",
-        	       ItemUID.getIDOfObject(testmc, false) != null);
+                    "assigns id 3",
+                    ItemUID.getIDOfObject(testmc, false) != null);
             assertTrue(
-        	       "getOffenderList 3",
-        	       rc.getOffenderList() != null
-        	       && (ItemUID.getIDOfObject(testmc, false).equals(
-        			   rc.getOffenderList().get(0))));
+                    "getOffenderList 3",
+                    rc.getOffenderList() != null
+                    && (ItemUID.getIDOfObject(testmc, false).equals(
+                            rc.getOffenderList().get(0))));
         } catch (UnresolvableException ure1) {
-            assertTrue("create 3 with MClass", false);
+            assertTrue("create 3 with Class", false);
         }
         set.remove(testmc);
     }
@@ -139,43 +141,43 @@ public class TestResolvedCritic extends TestCase {
      * Test the equals() method.
      */
     public void testEquals() {
-	Critic c = new Critic();
-	ResolvedCritic rc1, rc2;
-	Vector<String> vec = new Vector<String>();
-	ListSet set = new ListSet();
+        Critic c = new Critic();
+        ResolvedCritic rc1, rc2;
+        List<String> list = new ArrayList<String>();
+        ListSet set = new ListSet();
 
-	rc1 = new ResolvedCritic("RC", null);
-	rc2 = new ResolvedCritic("RC", null);
-	assertTrue("Same empty ctor", rc1.equals(rc2) && rc2.equals(rc1));
+        rc1 = new ResolvedCritic("RC", (List<String>) null);
+        rc2 = new ResolvedCritic("RC", (List<String>) null);
+        assertTrue("Same empty ctor", rc1.equals(rc2) && rc2.equals(rc1));
 
-	rc2 = new ResolvedCritic("RC", vec);
-	assertTrue("Empty vec ctor", rc1.equals(rc2) && rc2.equals(rc1));
+        rc2 = new ResolvedCritic("RC", list);
+        assertTrue("Empty vec ctor", rc1.equals(rc2) && rc2.equals(rc1));
 
-	vec.add("a");
-	rc2 = new ResolvedCritic("RC", vec);
-	assertTrue("Bigger rc2 - 1", rc1.equals(rc2));
-	assertTrue("Bigger rc2 - 2", !rc2.equals(rc1));
+        list.add("a");
+        rc2 = new ResolvedCritic("RC", list);
+        assertTrue("Bigger rc2 - 1", rc1.equals(rc2));
+        assertTrue("Bigger rc2 - 2", !rc2.equals(rc1));
 
-	rc1 = new ResolvedCritic("RC", vec);
-	assertTrue("Same vec ctor", rc1.equals(rc2) && rc2.equals(rc1));
+        rc1 = new ResolvedCritic("RC", list);
+        assertTrue("Same vec ctor", rc1.equals(rc2) && rc2.equals(rc1));
 
-	vec.clear();
-	vec.add("b");
-	rc2 = new ResolvedCritic("RC", vec);
-	assertTrue("Diff rc2 - 1", !rc1.equals(rc2));
-	assertTrue("Diff rc2 - 2", !rc2.equals(rc1));
+        list.clear();
+        list.add("b");
+        rc2 = new ResolvedCritic("RC", list);
+        assertTrue("Diff rc2 - 1", !rc1.equals(rc2));
+        assertTrue("Diff rc2 - 2", !rc2.equals(rc1));
 
-	try {
-	    rc1 = new ResolvedCritic(c, null);
-	    rc2 = new ResolvedCritic(c, null);
-	    assertTrue(
-		       "Same empty ctor (c)",
-		       rc1.equals(rc2) && rc2.equals(rc1));
+        try {
+            rc1 = new ResolvedCritic(c, null);
+            rc2 = new ResolvedCritic(c, null);
+            assertTrue(
+                    "Same empty ctor (c)",
+                    rc1.equals(rc2) && rc2.equals(rc1));
 
-	    rc2 = new ResolvedCritic(c, set);
-	    assertTrue("Empty set ctor", rc1.equals(rc2) && rc2.equals(rc1));
-	} catch (UnresolvableException ure) {
-	    assertTrue("Test error URE", false);
-	}
+            rc2 = new ResolvedCritic(c, set);
+            assertTrue("Empty set ctor", rc1.equals(rc2) && rc2.equals(rc1));
+        } catch (UnresolvableException ure) {
+            assertTrue("Test error URE", false);
+        }
     }
 }
