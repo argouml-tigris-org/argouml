@@ -100,9 +100,6 @@ public class Main {
      */
     private static final Logger LOG = Logger.getLogger(Main.class);
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
     /**
      * The location of the default logging configuration (.lcf) file.
      */
@@ -115,15 +112,7 @@ public class Main {
     private static final String DEFAULT_MODEL_IMPLEMENTATION =
         "org.argouml.model.mdr.MDRModelImplementation";
 
-
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    private static Vector postLoadActions = new Vector();
-
-    ////////////////////////////////////////////////////////////////
-    // main
+    private static List<Runnable> postLoadActions = new ArrayList<Runnable>();
 
     /**
      * The main entry point of ArgoUML.
@@ -184,7 +173,7 @@ public class Main {
         boolean reloadRecent =
             Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, false);
 	boolean batch = false;
-	List commands = new ArrayList();
+	List<String> commands = new ArrayList<String>();
 
         String projectName = null;
 
@@ -554,7 +543,7 @@ public class Main {
      * @param r a "Runnable" action
      */
     public static void addPostLoadAction(Runnable r) {
-        postLoadActions.addElement(r);
+        postLoadActions.add(r);
     }
 
     /**
@@ -823,17 +812,28 @@ class PostLoad implements Runnable {
     /**
      * The list of actions to perform.
      */
-    private Vector postLoadActions;
+    private List<Runnable> postLoadActions;
+
+    /**
+     * Constructor.
+     *
+     * @param v The actions to perform.
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #PostLoad(List)}.
+     */
+    @Deprecated
+    public PostLoad(Vector<Runnable> v) {
+        this((List<Runnable>) v);
+    }
 
     /**
      * Constructor.
      *
      * @param v The actions to perform.
      */
-    public PostLoad(Vector v) {
-        postLoadActions = v;
+    public PostLoad(List<Runnable> actions) {
+        postLoadActions = actions;
     }
-
+    
     /*
      * @see java.lang.Runnable#run()
      */
@@ -843,9 +843,7 @@ class PostLoad implements Runnable {
         } catch (Exception ex) {
             LOG.error("post load no sleep", ex);
         }
-        int size = postLoadActions.size();
-        for (int i = 0; i < size; i++) {
-            Runnable r = (Runnable) postLoadActions.elementAt(i);
+        for (Runnable r : postLoadActions) {
             r.run();
             try {
                 Thread.sleep(100);
