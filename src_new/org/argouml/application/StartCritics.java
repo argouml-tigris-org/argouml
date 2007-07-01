@@ -36,6 +36,7 @@ import org.argouml.model.Model;
 import org.argouml.pattern.cognitive.critics.InitPatternCritics;
 import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
+import org.argouml.uml.cognitive.critics.InitCognitiveCritics;
 
 /**
  * StartCritics is a thread which helps to start the critiquing thread.
@@ -51,7 +52,7 @@ public class StartCritics implements Runnable {
      */
     public void run() {
         Designer dsgr = Designer.theDesigner();
-        org.argouml.uml.cognitive.critics.Init.init();
+        Main.initSubsystem(new InitCognitiveCritics());
         Main.initSubsystem(new InitJavaCritics());
         Main.initSubsystem(new InitPatternCritics());
         org.argouml.uml.cognitive.checklist.Init.init();

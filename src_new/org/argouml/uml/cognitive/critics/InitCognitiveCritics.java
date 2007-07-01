@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,11 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.argouml.application.api.GUISettingsTabInterface;
+import org.argouml.application.api.InitSubsystem;
 import org.argouml.cognitive.Agency;
 import org.argouml.cognitive.CompoundCritic;
 import org.argouml.cognitive.Critic;
@@ -41,7 +46,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  * @author jrobbins
  * @see org.argouml.cognitive.Agency
  */
-public class Init {
+public class InitCognitiveCritics implements InitSubsystem {
 
     // UML specific
     private static Critic crAssocNameConflict = new CrAssocNameConflict();
@@ -107,8 +112,8 @@ public class Init {
 
     private static Critic crDisambigStateName = new CrDisambigStateName();
 
-    private static Critic crConflictingComposites =
-	new CrConflictingComposites();
+//    private static Critic crConflictingComposites =
+//	new CrConflictingComposites();
 
     private static Critic crTooManyAssoc = new CrTooManyAssoc();
 
@@ -263,7 +268,7 @@ public class Init {
     /**
      * static initializer, register all appropriate critics.
      */
-    public static void init() {
+    public void init() {
         Object modelCls = Model.getMetaTypes().getModel();
         Object packageCls = Model.getMetaTypes().getPackage();
         Object classCls = Model.getMetaTypes().getUMLClass();
@@ -412,6 +417,14 @@ public class Init {
 	Agency.register(crAlreadyRealizes, classCls);
 	Agency.register(new CrUtilityViolated(), classifierCls);
 	Agency.register(new CrOppEndVsAttr(), classifierCls);
+    }
+
+    public List<GUISettingsTabInterface> getProjectSettingsTabs() {
+        return Collections.emptyList();
+    }
+
+    public List<GUISettingsTabInterface> getSettingsTabs() {
+        return Collections.emptyList();
     }
 
 }
