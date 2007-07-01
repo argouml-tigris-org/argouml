@@ -89,7 +89,8 @@ final class CopyHelper implements org.argouml.model.CopyHelper {
         Namespace ns = (Namespace) ans;
 
         if (element instanceof UmlPackage) {
-            return modelImpl.getModelManagementFactory().copyPackage(element, ns);
+            return modelImpl.getModelManagementFactory().copyPackage(element,
+                    ns);
         }
         if (element instanceof UmlClass) {
             return modelImpl.getCoreFactory().copyClass(element, ns);
