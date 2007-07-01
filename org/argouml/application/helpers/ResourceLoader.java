@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 /**
@@ -48,9 +49,10 @@ import javax.swing.ImageIcon;
 
 // NOTE: This is package scope to force callers to use ResourceLoaderWrapper
 class ResourceLoader {
-    private static HashMap resourceCache = new HashMap();
-    private static List resourceLocations = new ArrayList();
-    private static List resourceExtensions = new ArrayList();
+    private static HashMap<String, Icon> resourceCache = 
+        new HashMap<String, Icon>();
+    private static List<String> resourceLocations = new ArrayList<String>();
+    private static List<String> resourceExtensions = new ArrayList<String>();
 
     public static ImageIcon lookupIconResource(String resource) {
         return lookupIconResource(resource, resource);

@@ -25,7 +25,6 @@
 package org.argouml.application.events;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -47,7 +46,7 @@ public final class ArgoEventPump {
      *
      * It is a list of {@link Pair}.
      */
-    private List listeners;
+    private List<Pair> listeners;
 
     /**
      * The singleton.
@@ -103,7 +102,7 @@ public final class ArgoEventPump {
      */
     protected void doAddListener(int event, ArgoEventListener listener) {
         if (listeners == null) {
-            listeners = new ArrayList();
+            listeners = new ArrayList<Pair>();
         }
         listeners.add(new Pair(event, listener));
     }
@@ -121,12 +120,9 @@ public final class ArgoEventPump {
         if (listeners == null) {
             return;
         }
-        Iterator it = listeners.iterator();
-        List removeList = new ArrayList();
+        List<Pair> removeList = new ArrayList<Pair>();
         if (event == ArgoEventTypes.ANY_EVENT) {
-
-            while (it.hasNext()) {
-                Pair p = (Pair) it.next();
+            for (Pair p : listeners) {
                 if (p.listener == listener) {
                     removeList.add(p);
                 }
@@ -134,8 +130,7 @@ public final class ArgoEventPump {
 
         } else {
             Pair test = new Pair(event, listener);
-            while (it.hasNext()) {
-                Pair p = (Pair) it.next();
+            for (Pair p : listeners) {
                 if (p.equals(test)) {
                     removeList.add(p);
                 }

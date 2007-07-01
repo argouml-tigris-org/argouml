@@ -57,12 +57,13 @@ public final class Translator {
     /**
      * Store bundles for current Locale.
      */
-    private static Map bundles;
+    private static Map<String, ResourceBundle> bundles;
 
     /**
      * Store of ClassLoaders where we could find the bundles.
      */
-    private static List classLoaders = new ArrayList();
+    private static List<ClassLoader> classLoaders = 
+        new ArrayList<ClassLoader>();
 
     /**
      * Used to make this class self-initialising when needed.
@@ -91,6 +92,7 @@ public final class Translator {
      * 
      * @deprecated by MVW in V0.25, replaced by initForEclipse(String).
      */
+    @Deprecated
     public static void initForEclipse() {
         initInternal(""/*Configuration.getString(Argo.KEY_LOCALE)*/);
     }
@@ -113,6 +115,7 @@ public final class Translator {
      * Default Locale is set and resources Bundles are loaded.
      * @deprecated by MVW in V0.25.3, replaced by init(String locale).
      */
+    @Deprecated
     public static void init () {
         initInternal(""/*Configuration.getString(Argo.KEY_LOCALE)*/);
         /* TODO: This is an uplevel reference from GEF to ArgoUML - tfm
@@ -235,7 +238,7 @@ public final class Translator {
      */
     public static void setLocale(Locale locale) {
         Locale.setDefault(locale);
-        bundles = new HashMap();
+        bundles = new HashMap<String, ResourceBundle>();
     }
 
     /**
@@ -355,7 +358,7 @@ public final class Translator {
 
         loadBundle(name);
 
-        ResourceBundle bundle = (ResourceBundle) bundles.get(name);
+        ResourceBundle bundle = bundles.get(name);
         if (bundle == null) {
             LOG.debug("Bundle (" + name + ") for resource "
                     + key + " not found.");

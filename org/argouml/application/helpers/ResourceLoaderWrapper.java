@@ -69,7 +69,7 @@ public final class ResourceLoaderWrapper {
     private static ImageIcon exceptionIcon;
     private static ImageIcon commentIcon;
 
-    private Hashtable iconCache = new Hashtable();
+    private Hashtable<Class, Icon> iconCache = new Hashtable<Class, Icon>();
 
     /**
      * Singleton implementation.
@@ -229,7 +229,7 @@ public final class ResourceLoaderWrapper {
             return null;
         }
 
-        Icon icon = (Icon) iconCache.get(value.getClass());
+        Icon icon = iconCache.get(value.getClass());
         
         try {
             if (Model.getFacade().isAPseudostate(value)) {
@@ -301,7 +301,7 @@ public final class ResourceLoaderWrapper {
     /**
      * Map to convert tokens into file names.
      */
-    private static Map images = new HashMap();
+    private static Map<String, String> images = new HashMap<String, String>();
     static {
         images.put("action.about-argouml", "AboutArgoUML");
         images.put("action.activity-diagram", "Activity Diagram");
@@ -434,7 +434,7 @@ public final class ResourceLoaderWrapper {
      * @return the file name (base part only).
      */
     public static String getImageBinding(String name) {
-        String found = (String) images.get(name);
+        String found = images.get(name);
         if (found == null) {
             return name;
         }
