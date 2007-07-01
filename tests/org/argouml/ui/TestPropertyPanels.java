@@ -121,6 +121,7 @@ public class TestPropertyPanels extends TestCase {
      */
     public static Test suite() throws Exception {
         InitializeModel.initializeDefault();
+        new InitNotation().init();
 
         // constains instances of each modelelement
         // used for testing so that we only use each modelelement
