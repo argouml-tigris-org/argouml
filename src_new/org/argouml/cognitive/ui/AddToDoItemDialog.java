@@ -144,12 +144,11 @@ public class AddToDoItemDialog extends ArgoDialog {
         setContent(panel);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // event handlers
 
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (e.getSource() == getOkButton()) {
@@ -178,11 +177,11 @@ public class AddToDoItemDialog extends ArgoDialog {
 	    new UMLToDoItem(designer, headline, priority, desc, moreInfoURL);
         ListSet newOffenders = new ListSet();
         for (int i = 0; i < offenderList.getModel().getSize(); i++) {
-            newOffenders.addElement(offenderList.getModel().getElementAt(i));
+            newOffenders.add(offenderList.getModel().getElementAt(i));
         }
         item.setOffenders(newOffenders);
         designer.getToDoList().addElement(item); //? inform()
         Designer.firePropertyChange(Designer.MODEL_TODOITEM_ADDED, null, item);
     }
-} /* end class AddToDoItemDialog */
+}
 

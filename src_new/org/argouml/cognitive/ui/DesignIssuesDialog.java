@@ -27,9 +27,8 @@ package org.argouml.cognitive.ui;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -58,8 +57,10 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
     ////////////////////////////////////////////////////////////////
     // instance variables
     private JPanel  mainPanel = new JPanel();
-    private Hashtable slidersToDecisions = new Hashtable();
-    private Hashtable slidersToDigits = new Hashtable();
+    private Hashtable<JSlider, Decision> slidersToDecisions = 
+        new Hashtable<JSlider, Decision>();
+    private Hashtable<JSlider, JLabel> slidersToDigits = 
+        new Hashtable<JSlider, JLabel>();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -84,7 +85,7 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
 
     private void initMainPanel() {
         DecisionModel dm = Designer.theDesigner().getDecisionModel();
-        Vector decs = dm.getDecisions();
+        List<Decision> decs = dm.getDecisionList();
 
         GridBagLayout gb = new GridBagLayout();
         mainPanel.setLayout(gb);
@@ -143,9 +144,7 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
 
 
         c.gridy = 2;
-        Enumeration elems = decs.elements();
-        while (elems.hasMoreElements()) {
-            Decision d = (Decision) elems.nextElement();
+        for (Decision d : decs) {
             JLabel decLabel = new JLabel(d.getName());
             JLabel valueLabel = new JLabel(getValueText(d.getPriority()));
             JSlider decSlide =
@@ -199,8 +198,8 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
      */
     public void stateChanged(ChangeEvent ce) {
         JSlider srcSlider = (JSlider) ce.getSource();
-        Decision d = (Decision) slidersToDecisions.get(srcSlider);
-        JLabel valLab = (JLabel) slidersToDigits.get(srcSlider);
+        Decision d = slidersToDecisions.get(srcSlider);
+        JLabel valLab = slidersToDigits.get(srcSlider);
         int pri = srcSlider.getValue();
         d.setPriority((pri == 4) ? 0 : pri);
         valLab.setText(getValueText(pri));
@@ -226,7 +225,7 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
         return label;
     }
 
-} /* end class DesignIssuesDialog */
+}
 
 
 

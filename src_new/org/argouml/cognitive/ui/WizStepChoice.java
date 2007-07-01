@@ -27,7 +27,10 @@ package org.argouml.cognitive.ui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
+
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
@@ -47,8 +50,9 @@ import org.argouml.swingext.SpacerPanel;
 
 public class WizStepChoice extends WizStep {
     private JTextArea instructions = new JTextArea();
-    private Vector choices = new Vector();
+    private List<String> choices = new ArrayList<String>();
     private int selectedIndex = -1;
+
 
     /**
      * The constructor.
@@ -56,8 +60,22 @@ public class WizStepChoice extends WizStep {
      * @param w the wizard
      * @param instr the instructions
      * @param ch the choices
+     * @deprecated for 0.25.4 by tfmorris.  
+     * Use {@link #WizStepChoice(Wizard, String, List)}.
      */
-    public WizStepChoice(Wizard w, String instr, Vector ch) {
+    @Deprecated
+    public WizStepChoice(Wizard w, String instr, Vector<String> ch) {
+        this(w, instr, (List<String>) ch);
+    }
+    
+    /**
+     * The constructor.
+     *
+     * @param w the wizard
+     * @param instr the instructions
+     * @param ch the choices
+     */
+    public WizStepChoice(Wizard w, String instr, List<String> ch) {
 	// store wizard?
 	choices = ch;
 
@@ -113,7 +131,7 @@ public class WizStepChoice extends WizStep {
 	int size = ch.size();
 	for (int i = 0; i < size; i++) {
 	    c.gridy = 2 + i;
-	    String s = (String) ch.elementAt(i);
+	    String s = ch.get(i);
 	    JRadioButton rb = new JRadioButton(s);
 	    rb.setActionCommand(s);
 	    rb.addActionListener(this);
@@ -135,12 +153,15 @@ public class WizStepChoice extends WizStep {
     /**
      * @return the index of the selected item
      */
-    public int getSelectedIndex() { return selectedIndex; }
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
 
 
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
 	super.actionPerformed(e);
 	if (e.getSource() instanceof JRadioButton) {
@@ -151,7 +172,7 @@ public class WizStepChoice extends WizStep {
 	    }
 	    int size = choices.size();
 	    for (int i = 0; i < size; i++) {
-		String s = (String) choices.elementAt(i);
+		String s = choices.get(i);
 		if (s.equals(cmd)) {
                     selectedIndex = i;
                 }
@@ -165,7 +186,7 @@ public class WizStepChoice extends WizStep {
      * The UID.
      */
     private static final long serialVersionUID = 8055896491830976354L;
-} /* end class WizStepChoice */
+} 
 
 
 

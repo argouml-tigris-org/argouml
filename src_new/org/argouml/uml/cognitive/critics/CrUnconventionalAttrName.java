@@ -101,8 +101,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 
 	// check whether constant, constants are often weird and thus not a
 	// problem
-	Object ck = Model.getFacade().getChangeability(attr);
-	if (ck != null && Model.getFacade().isFrozen(ck)) {
+	if (Model.getFacade().isReadOnly(attr)) {
 	    return NO_PROBLEM;
 	}
 
@@ -129,7 +128,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      */
     protected ListSet computeOffenders(Object dm) {
 	ListSet offs = new ListSet(dm);
-	offs.addElement(Model.getFacade().getOwner(dm));
+	offs.add(Model.getFacade().getOwner(dm));
 	return offs;
     }
 
@@ -183,7 +182,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 	    return false;
 	}
 	ListSet offs = i.getOffenders();
-	Object f = /*(MFeature)*/ offs.firstElement();
+	Object f = offs.get(0);
 	if (!predicate(f, dsgr)) {
 	    return false;
 	}
@@ -200,8 +199,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object me =
-		/*(MModelElement)*/ item.getOffenders().elementAt(0);
+	    Object me = item.getOffenders().get(0);
 	    String sug = computeSuggestion(Model.getFacade().getName(me));
 	    String ins = super.getInstructions();
 	    ((WizMEName) w).setInstructions(ins);
@@ -212,11 +210,14 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
     /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
-    public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+    @Override
+    public Class getWizardClass(ToDoItem item) {
+        return WizMEName.class;
+    }
 
     /**
      * The UID.
      */
     private static final long serialVersionUID = 4741909365018862474L;
 
-} /* end class CrUnconventionalAttrName */
+}

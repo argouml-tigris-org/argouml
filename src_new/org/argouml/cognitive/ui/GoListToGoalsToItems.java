@@ -24,7 +24,8 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.event.TreeModelListener;
@@ -51,14 +52,11 @@ public class GoListToGoalsToItems extends AbstractGoList {
      */
     public Object getChild(Object parent, int index) {
 	if (parent instanceof ToDoList) {
-	    return getGoals().elementAt(index);
+	    return getGoalList().get(index);
 	}
 	if (parent instanceof Goal) {
 	    Goal g = (Goal) parent;
-	    Enumeration itemEnum =
-		Designer.theDesigner().getToDoList().elements();
-	    while (itemEnum.hasMoreElements()) {
-		ToDoItem item = (ToDoItem) itemEnum.nextElement();
+            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
 		if (item.getPoster().supports(g)) {
 		    if (index == 0) return item;
 		    index--;
@@ -74,15 +72,12 @@ public class GoListToGoalsToItems extends AbstractGoList {
      */
     public int getChildCount(Object parent) {
 	if (parent instanceof ToDoList) {
-	    return getGoals().size();
+	    return getGoalList().size();
 	}
 	if (parent instanceof Goal) {
 	    Goal g = (Goal) parent;
-	    Enumeration itemEnum =
-		Designer.theDesigner().getToDoList().elements();
 	    int count = 0;
-	    while (itemEnum.hasMoreElements()) {
-		ToDoItem item = (ToDoItem) itemEnum.nextElement();
+            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
 		if (item.getPoster().supports(g)) count++;
 	    }
 	    return count;
@@ -96,18 +91,17 @@ public class GoListToGoalsToItems extends AbstractGoList {
      */
     public int getIndexOfChild(Object parent, Object child) {
 	if (parent instanceof ToDoList) {
-	    return getGoals().indexOf(child);
+	    return getGoalList().indexOf(child);
 	}
 	if (parent instanceof Goal) {
 	    // instead of makning a new vector, decrement index, return when
 	    // found and index == 0
-	    Vector candidates = new Vector();
+	    List<ToDoItem> candidates = new ArrayList<ToDoItem>();
 	    Goal g = (Goal) parent;
-	    Enumeration itemEnum =
-		Designer.theDesigner().getToDoList().elements();
-	    while (itemEnum.hasMoreElements()) {
-		ToDoItem item = (ToDoItem) itemEnum.nextElement();
-		if (item.getPoster().supports(g)) candidates.addElement(item);
+            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
+		if (item.getPoster().supports(g)) {
+                    candidates.add(item);
+                }
 	    }
 	    return candidates.indexOf(child);
 	}
@@ -140,15 +134,21 @@ public class GoListToGoalsToItems extends AbstractGoList {
     public void removeTreeModelListener(TreeModelListener l) { }
 
 
-
-    ////////////////////////////////////////////////////////////////
-    // utility methods
+    /**
+     * @return the goals
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getGoalList()}.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public Vector<Goal> getGoals() {
+	return Designer.theDesigner().getGoalModel().getGoals();
+    }
 
     /**
      * @return the goals
      */
-    public Vector getGoals() {
-	return Designer.theDesigner().getGoalModel().getGoals();
+    public List<Goal> getGoalList() {
+        return Designer.theDesigner().getGoalModel().getGoalList();
     }
-
-} /* end class GoListToGoalsToItems */
+    
+}

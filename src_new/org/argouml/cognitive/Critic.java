@@ -25,10 +25,10 @@
 package org.argouml.cognitive;
 
 import java.io.Serializable;
-import java.util.Enumeration;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Observable;
-import java.util.Vector;
 
 import javax.swing.Icon;
 
@@ -53,7 +53,9 @@ import org.argouml.configuration.ConfigurationKey;
  *
  * @author Jason Robbins
  */
-public class Critic extends Observable implements Poster, Serializable {
+public class Critic 
+    extends Observable 
+    implements Poster, Serializable {
 
     /**
      * Logger.
@@ -196,7 +198,8 @@ public class Critic extends Observable implements Poster, Serializable {
      *             violation of type safety.
      *             Create member attributes instead. 
      */
-    private Hashtable args = new Hashtable();
+    @Deprecated
+    private Hashtable<String, Object> args = new Hashtable<String, Object>();
 
     /**
      * The icon representing the resource.
@@ -221,9 +224,9 @@ public class Critic extends Observable implements Poster, Serializable {
      */
     private String decisionCategory;
 
-    private Vector supportedDecisions = new Vector();
+    private List<Decision> supportedDecisions = new ArrayList<Decision>();
 
-    private Vector supportedGoals = new Vector();
+    private List<Goal> supportedGoals = new ArrayList<Goal>();
 
     /**
      * The decision type of this critic.  For example, correctness,
@@ -242,9 +245,10 @@ public class Critic extends Observable implements Poster, Serializable {
      * Control records used in determining if this Critic should be
      * active.
      */
-    private Hashtable controlRecs = new Hashtable();
+    private Hashtable<String, Object> controlRecs = 
+        new Hashtable<String, Object>();
 
-    private ListSet knowledgeTypes = new ListSet();
+    private ListSet<String> knowledgeTypes = new ListSet<String>();
     private long triggerMask = 0L;
 
     ////////////////////////////////////////////////////////////////
@@ -271,7 +275,7 @@ public class Critic extends Observable implements Poster, Serializable {
 	}
 	addControlRec(SNOOZE_ORDER, new SnoozeOrder());
 	criticType = "correctness";
-	knowledgeTypes.addElement(KT_CORRECTNESS);
+	knowledgeTypes.add(KT_CORRECTNESS);
 	decisionCategory = "Checking";
 
 	moreInfoURL = defaultMoreInfoURL();
@@ -436,8 +440,7 @@ public class Critic extends Observable implements Poster, Serializable {
      * TODO: Maybe ToDoItem should carry some data to make
      * this method more efficient.
      *
-     * @see org.argouml.cognitive.Poster#stillValid(
-     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     * {@inheritDoc}
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) {
@@ -447,7 +450,7 @@ public class Critic extends Observable implements Poster, Serializable {
 	if (i.getOffenders().size() != 1) {
 	    return true;
 	}
-	if (predicate(i.getOffenders().firstElement(), dsgr)) {
+	if (predicate(i.getOffenders().get(0), dsgr)) {
 	    // Now we know that this critic is still valid. What we need to
 	    // figure out is if the corresponding to-do item is still valid.
 	    // The to-do item is to be replaced if the name of some offender
@@ -456,7 +459,7 @@ public class Critic extends Observable implements Poster, Serializable {
 	    // We check that by creating a new ToDoItem and then verifying
 	    // that it looks exactly the same.
 	    // This really creates a lot of to-do items that goes to waste.
-	    ToDoItem item = toDoItem(i.getOffenders().firstElement(), dsgr);
+	    ToDoItem item = toDoItem(i.getOffenders().get(0), dsgr);
 	    return (item.equals(i));
 	}
 	return false;
@@ -469,18 +472,15 @@ public class Critic extends Observable implements Poster, Serializable {
 	return supportedDecisions.contains(d);
     }
 
-    /*
-     * @see org.argouml.cognitive.Poster#getSupportedDecisions()
-     */
-    public Vector getSupportedDecisions() {
-	return supportedDecisions;
+    public List<Decision> getSupportedDecisions() {
+        return supportedDecisions;
     }
-
+    
     /**
      * @param d the decision
      */
     public void addSupportedDecision(Decision d) {
-	supportedDecisions.addElement(d);
+	supportedDecisions.add(d);
     }
 
     /*
@@ -490,18 +490,14 @@ public class Critic extends Observable implements Poster, Serializable {
         return supportedGoals.contains(g);
     }
 
-    /*
-     * @see org.argouml.cognitive.Poster#getSupportedGoals()
-     */
-    public Vector getSupportedGoals() {
-	return supportedGoals;
+    public List<Goal> getSupportedGoals() {
+        return supportedGoals;
     }
-
     /**
      * @param g the goal
      */
     public void addSupportedGoal(Goal g) {
-	supportedGoals.addElement(g);
+	supportedGoals.add(g);
     }
 
     /*
@@ -515,18 +511,22 @@ public class Critic extends Observable implements Poster, Serializable {
      * @param type the knowledgetype
      */
     public void addKnowledgeType(String type) {
-	knowledgeTypes.addElement(type);
+	knowledgeTypes.add(type);
     }
 
     /**
      * @return the knowledgetypes
      */
-    public ListSet getKnowledgeTypes() { return knowledgeTypes; }
+    public ListSet<String> getKnowledgeTypes() {
+        return knowledgeTypes;
+    }
 
     /**
      * @param kt the knowledgetypes
      */
-    public void setKnowledgeTypes(ListSet kt) { knowledgeTypes = kt; }
+    public void setKnowledgeTypes(ListSet<String> kt) {
+        knowledgeTypes = kt;
+    }
 
     /**
      * Reset all knowledgetypes, and add the given one.
@@ -534,7 +534,7 @@ public class Critic extends Observable implements Poster, Serializable {
      * @param t1 the only knowledgetype in string format
      */
     public void setKnowledgeTypes(String t1) {
-	knowledgeTypes = new ListSet();
+	knowledgeTypes = new ListSet<String>();
 	addKnowledgeType(t1);
     }
 
@@ -545,7 +545,7 @@ public class Critic extends Observable implements Poster, Serializable {
      * @param t2 a knowledgetype in string format
      */
     public void setKnowledgeTypes(String t1, String t2) {
-	knowledgeTypes = new ListSet();
+	knowledgeTypes = new ListSet<String>();
 	addKnowledgeType(t1);
 	addKnowledgeType(t2);
     }
@@ -558,7 +558,7 @@ public class Critic extends Observable implements Poster, Serializable {
      * @param t3 a knowledgetype in string format
      */
     public void setKnowledgeTypes(String t1, String t2, String t3) {
-	knowledgeTypes = new ListSet();
+	knowledgeTypes = new ListSet<String>();
 	addKnowledgeType(t1);
 	addKnowledgeType(t2);
 	addKnowledgeType(t3);
@@ -575,7 +575,9 @@ public class Critic extends Observable implements Poster, Serializable {
     /**
      * @return the trigger mask
      */
-    public long getTriggerMask() { return triggerMask; }
+    public long getTriggerMask() {
+        return triggerMask;
+    }
 
     /**
      * @param s the trigger to be added (is ORed into the mask)
@@ -738,9 +740,7 @@ public class Critic extends Observable implements Poster, Serializable {
      * @return true if relevant
      */
     public boolean isRelevantToDecisions(Designer dsgr) {
-	Enumeration elems = getSupportedDecisions().elements();
-	while (elems.hasMoreElements()) {
-	    Decision d = (Decision) elems.nextElement();
+        for (Decision d : getSupportedDecisions()) {
         /* TODO: Make use of the constants defined in the ToDoItem class! */
 	    if (d.getPriority() > 0 && d.getPriority() <= getPriority()) {
 		return true;
@@ -807,7 +807,9 @@ public class Critic extends Observable implements Poster, Serializable {
      * @param item the todo item
      * @return null if no wizard is defined.
      */
-    public Class getWizardClass(ToDoItem item) { return null; }
+    public Class getWizardClass(ToDoItem item) {
+        return null;
+    }
 
 
     /**
@@ -819,7 +821,8 @@ public class Critic extends Observable implements Poster, Serializable {
      *
      * @param w the wizard
      */
-    public void initWizard(Wizard w) { }
+    public void initWizard(Wizard w) {
+    }
 
     ////////////////////////////////////////////////////////////////
     // accessors
@@ -831,7 +834,9 @@ public class Critic extends Observable implements Poster, Serializable {
      *
      * @return the decision category
      */
-    public String getDecisionCategory() { return decisionCategory; }
+    public String getDecisionCategory() {
+        return decisionCategory;
+    }
 
     /**
      * Set the decisionCategory, usually done in the constructor. I
@@ -840,7 +845,9 @@ public class Critic extends Observable implements Poster, Serializable {
      *
      * @param c the category
      */
-    protected void setDecisionCategory(String c) { decisionCategory = c; }
+    protected void setDecisionCategory(String c) {
+        decisionCategory = c;
+    }
 
     /**
      * Reply a string used to contol critics according to
@@ -849,7 +856,9 @@ public class Critic extends Observable implements Poster, Serializable {
      *
      * @return the critic knowledge type
      */
-    public String getCriticType() { return criticType; }
+    public String getCriticType() {
+        return criticType;
+    }
 
     /**
      * Reply the headline used in feedback produced by this Critic.
@@ -870,7 +879,7 @@ public class Critic extends Observable implements Poster, Serializable {
      * @return the headline
      */
     public String getHeadline(ListSet offenders, Designer dsgr) {
-	return getHeadline(offenders.firstElement(), dsgr);
+	return getHeadline(offenders.get(0), dsgr);
     }
 
     /**
@@ -878,14 +887,18 @@ public class Critic extends Observable implements Poster, Serializable {
      *
      * @return the headline
      */
-    public String getHeadline() { return headline; }
+    public String getHeadline() {
+        return headline;
+    }
 
     /**
      * Set the headline used in feedback produced by this Critic.
      *
      * @param h the headline
      */
-    public void setHeadline(String h) {  headline = h; }
+    public void setHeadline(String h) {
+        headline = h;
+    }
 
     /**
      * Reply the priority used in feedback produced by this Critic.
@@ -901,7 +914,9 @@ public class Critic extends Observable implements Poster, Serializable {
     /**
      * @param p the priority
      */
-    public void setPriority(int p) { priority = p; }
+    public void setPriority(int p) {
+        priority = p;
+    }
 
     /**
      * @return the priority
@@ -924,7 +939,9 @@ public class Critic extends Observable implements Poster, Serializable {
     /**
      * @param d the description
      */
-    public void setDescription(String d) {  description = d; }
+    public void setDescription(String d) {
+        description = d;
+    }
 
     /**
      * @return the description
@@ -947,7 +964,9 @@ public class Critic extends Observable implements Poster, Serializable {
     /**
      * @param m the more-info-url
      */
-    public void setMoreInfoURL(String m) {  moreInfoURL = m; }
+    public void setMoreInfoURL(String m) {
+        moreInfoURL = m;
+    }
 
     /**
      * @return the more-info-url
@@ -964,6 +983,7 @@ public class Critic extends Observable implements Poster, Serializable {
      *             violation of type safety.
      *             Create member attributes instead. 
      */
+    @Deprecated
     protected void setArg(String name, Object value) {
 	args.put(name, value);
     }
@@ -976,6 +996,7 @@ public class Critic extends Observable implements Poster, Serializable {
      *             violation of type safety.
      *             Create member attributes instead. 
      */
+    @Deprecated
     protected Object getArg(String name) {
 	return args.get(name);
     }
@@ -987,7 +1008,10 @@ public class Critic extends Observable implements Poster, Serializable {
      *             violation of type safety.
      *             Create member attributes instead. 
      */
-    public Hashtable  getArgs() { return args; }
+    @Deprecated
+    public Hashtable<String, Object> getArgs() {
+        return args;
+    }
 
     /**
      * @param h the new table of (key, value) pairs
@@ -996,7 +1020,10 @@ public class Critic extends Observable implements Poster, Serializable {
      *             violation of type safety.
      *             Create member attributes instead. 
      */
-    public void setArgs(Hashtable h) { args = h; }
+    @Deprecated
+    public void setArgs(Hashtable<String, Object> h) {
+        args = h;
+    }
 
     ////////////////////////////////////////////////////////////////
     // design feedback
@@ -1013,7 +1040,7 @@ public class Critic extends Observable implements Poster, Serializable {
      * 
      * @see Critic#critique
      *
-     * @param dm
+     * @param dm the offender
      * @param dsgr the designer
      * @return ToDoItem
      */
@@ -1042,15 +1069,17 @@ public class Critic extends Observable implements Poster, Serializable {
     /*
      * @see org.argouml.cognitive.Poster#fixIt(org.argouml.cognitive.ToDoItem, java.lang.Object)
      */
-    public void fixIt(ToDoItem item, Object arg) { }
+    public void fixIt(ToDoItem item, Object arg) {
+    }
 
     /*
      * Reply a string that describes this Critic. Identical to getCriticName()
      *
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
 	return getCriticName();
     }
 
-} /* end class Critic */
+}

@@ -58,7 +58,7 @@ public class Init {
 				     Checklist checklist) {
 	CheckItem checkitem =
 	    new UMLCheckItem(category, Translator.localize(key));
-	checklist.addItem(checkitem);
+	checklist.add(checkitem);
     }
 
     /**
@@ -594,4 +594,4 @@ public class Init {
 
     }
 
-} /* end class Init */
+}

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,8 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ToDoItem;
@@ -53,7 +54,7 @@ public abstract class ToDoPerspective extends TreeModelComposite {
     /**
      * todoList specific.
      */
-    private Vector flatChildren;
+    private List<ToDoItem> flatChildren;
 
     /**
      * The constructor.
@@ -63,7 +64,7 @@ public abstract class ToDoPerspective extends TreeModelComposite {
     public ToDoPerspective(String name) {
 
         super(name);
-        flatChildren = new Vector();
+        flatChildren = new ArrayList<ToDoItem>();
     }
 
     ////////////////////////////////////////////////////////////////
@@ -76,9 +77,10 @@ public abstract class ToDoPerspective extends TreeModelComposite {
      * @param index of child to find
      * @return the child found at index. Null if index is out of bounds.
      */
+    @Override
     public Object getChild(Object parent, int index) {
         if (flat && parent == getRoot()) {
-            return flatChildren.elementAt(index);
+            return flatChildren.get(index);
         }
         return super.getChild(parent,  index);
     }
@@ -86,6 +88,7 @@ public abstract class ToDoPerspective extends TreeModelComposite {
     /*
      * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
      */
+    @Override
     public int getChildCount(Object parent) {
         if (flat && parent == getRoot()) {
             return flatChildren.size();
@@ -97,6 +100,7 @@ public abstract class ToDoPerspective extends TreeModelComposite {
      * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
      *      java.lang.Object)
      */
+    @Override
     public int getIndexOfChild(Object parent, Object child) {
         if (flat && parent == getRoot()) {
             return flatChildren.indexOf(child);
@@ -124,13 +128,15 @@ public abstract class ToDoPerspective extends TreeModelComposite {
      *
      * @return the flatness: true if flat
      */
-    public boolean getFlat() { return flat; }
+    public boolean getFlat() {
+        return flat;
+    }
 
     /**
      * TodoList specific.
      */
     public void calcFlatChildren() {
-        flatChildren.removeAllElements();
+        flatChildren.clear();
         addFlatChildren(getRoot());
     }
 
@@ -147,7 +153,7 @@ public abstract class ToDoPerspective extends TreeModelComposite {
         // hack for to do items only, should check isLeaf(node), but that
         // includes empty folders. Really I need alwaysLeaf(node).
         if ((node instanceof ToDoItem) && !flatChildren.contains(node)) {
-            flatChildren.addElement(node);
+            flatChildren.add((ToDoItem) node);
 	}
 
         int nKids = getChildCount(node);
@@ -156,4 +162,4 @@ public abstract class ToDoPerspective extends TreeModelComposite {
         }
     }
 
-} /* end class ToDoPerspective */
+}

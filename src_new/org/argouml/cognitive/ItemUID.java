@@ -173,8 +173,8 @@ public class ItemUID {
 
 	Object rv;
 	try {
-	    Method m = obj.getClass().getMethod("getItemUID", null);
-	    rv = m.invoke(obj, null);
+	    Method m = obj.getClass().getMethod("getItemUID", (Class) null);
+	    rv = m.invoke(obj, (Object) null);
 	} catch (NoSuchMethodException nsme) {
 	    // Apparently this object had no getItemUID
 	    return null;

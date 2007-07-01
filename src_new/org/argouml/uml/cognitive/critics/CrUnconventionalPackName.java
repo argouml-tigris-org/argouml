@@ -53,6 +53,7 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAPackage(dm))) {
 	    return NO_PROBLEM;
@@ -87,10 +88,11 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
+    @Override
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
+	    Object me = item.getOffenders().get(0);
 	    String ins = super.getInstructions();
 	    String nameStr = Model.getFacade().getName(me);
 	    String sug = computeSuggestion(nameStr);
@@ -125,6 +127,9 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
     /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
-    public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+    @Override
+    public Class getWizardClass(ToDoItem item) {
+        return WizMEName.class;
+    }
 
-} /* end class CrUnconventionalPackName */
+}

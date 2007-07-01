@@ -25,7 +25,8 @@
 package org.argouml.cognitive;
 
 import java.io.Serializable;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Vector;
 
@@ -41,7 +42,7 @@ import java.util.Vector;
  * @author Jason Robbins
  */
 public class GoalModel extends Observable implements Serializable {
-    private Vector goals = new Vector();
+    private List<Goal> goals = new ArrayList<Goal>();
 
     /**
      * The constructor.
@@ -56,18 +57,34 @@ public class GoalModel extends Observable implements Serializable {
 
     /**
      * @return the list of goals
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getGoalList()}.
      */
-    public Vector getGoals() { return goals; }
+    @Deprecated
+    public Vector<Goal> getGoals() {
+        return new Vector<Goal>(goals);
+    }
 
+    /**
+     * @return the list of goals
+     */
+    public List<Goal> getGoalList() {
+        return goals;
+    }
+
+    
     /**
      * @param g the goal to be added
      */
-    public void addGoal(Goal g) { goals.addElement(g); }
+    public void addGoal(Goal g) {
+        goals.add(g);
+    }
 
     /**
      * @param g the goal to be removed
      */
-    public void removeGoal(Goal g) { goals.removeElement(g); }
+    public void removeGoal(Goal g) {
+        goals.remove(g);
+    }
 
     /**
      * Reply true iff the Designer wants to achieve the given goal.
@@ -76,9 +93,7 @@ public class GoalModel extends Observable implements Serializable {
      * @return true if the designer wants this
      */
     public boolean hasGoal(String goalName) {
-	Enumeration goalEnum = goals.elements();
-	while (goalEnum.hasMoreElements()) {
-	    Goal g = (Goal) goalEnum.nextElement();
+        for (Goal g : goals) {
 	    if (g.getName().equals(goalName)) {
 		return g.getPriority() > 0;
 	    }
@@ -92,8 +107,8 @@ public class GoalModel extends Observable implements Serializable {
      */
     public synchronized void setGoalPriority(String goalName, int priority) {
 	Goal g = new Goal(goalName, priority);
-	goals.removeElement(g);
-	goals.addElement(g);
+	goals.remove(g);
+	goals.add(g);
     }
 
     //   public Object getGoalInfo(String goal) {
@@ -125,4 +140,4 @@ public class GoalModel extends Observable implements Serializable {
     }
 
 
-} /* end class GoalModel */
+}

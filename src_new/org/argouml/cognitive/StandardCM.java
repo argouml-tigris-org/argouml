@@ -24,7 +24,9 @@
 
 package org.argouml.cognitive;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -99,12 +101,21 @@ class CurDecisionCM implements ControlMech {
 } // end class CurDecisionCM
 
 abstract class CompositeCM implements ControlMech {
-    private Vector mechs = new Vector();
+    private List<ControlMech> mechs = new ArrayList<ControlMech>();
 
     /**
-     * @return Returns the _mechs.
+     * @return Returns the ControlMechs.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getControlMechs}.
      */
-    protected Vector getMechs() {
+    @Deprecated
+    protected Vector<ControlMech> getMechs() {
+        return new Vector<ControlMech>(mechs);
+    }
+    
+    /**
+     * @return a list of the ControlMechs.
+     */
+    protected List<ControlMech> getMechList() {
         return mechs;
     }
 
@@ -113,7 +124,7 @@ abstract class CompositeCM implements ControlMech {
      *            the ControlMech
      */
     public void addMech(ControlMech cm) {
-        mechs.addElement(cm);
+        mechs.add(cm);
     }
 } // end class CompositeCM
 

@@ -339,6 +339,7 @@ class TableModelChecklist extends AbstractTableModel
     /*
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
+    @Override
     public String  getColumnName(int c) {
 	if (c == 0) {
 	    return "X";
@@ -365,6 +366,7 @@ class TableModelChecklist extends AbstractTableModel
     /*
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
+    @Override
     public boolean isCellEditable(int row, int col) {
 	return col == 0;
     }
@@ -391,7 +393,7 @@ class TableModelChecklist extends AbstractTableModel
 	if (cl == null) {
 	    return "no checklist";
 	}
-	CheckItem ci = cl.elementAt(row);
+	CheckItem ci = cl.get(row);
 	if (col == 0) {
 	    ChecklistStatus stat = CheckManager.getStatusFor(target);
 	    return (stat.contains(ci)) ? Boolean.TRUE : Boolean.FALSE;
@@ -405,6 +407,7 @@ class TableModelChecklist extends AbstractTableModel
     /*
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
+    @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
 	LOG.debug("setting table value " + rowIndex + ", " + columnIndex);
 	if (columnIndex != 0) {
@@ -418,13 +421,13 @@ class TableModelChecklist extends AbstractTableModel
 	if (cl == null) {
 	    return;
 	}
-	CheckItem ci = cl.elementAt(rowIndex);
+	CheckItem ci = cl.get(rowIndex);
 	if (columnIndex == 0) {
 	    ChecklistStatus stat = CheckManager.getStatusFor(target);
 	    if (val) {
-	        stat.addItem(ci);
+	        stat.add(ci);
 	    } else {
-	        stat.removeItem(ci);
+	        stat.remove(ci);
 	    }
 	}
     }
@@ -451,4 +454,4 @@ class TableModelChecklist extends AbstractTableModel
         fireTableStructureChanged();
         panel.resizeColumns();
     }
-} /* end class TableModelChecklist */
+} 

@@ -24,7 +24,8 @@
 
 package org.argouml.cognitive.critics;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -54,11 +55,8 @@ import javax.swing.JPanel;
  */
 public abstract class Wizard implements java.io.Serializable {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     /** User interface panels displayed so far. */
-    private Vector panels = new Vector();
+    private List<JPanel> panels = new ArrayList<JPanel>();
 
     /** The current step that the Wizard is on.  Zero indicates that the
      *  wizard has not yet begun. */
@@ -70,14 +68,9 @@ public abstract class Wizard implements java.io.Serializable {
 
     private WizardItem item = null;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /** Construct a new wizard to help the user repair a design flaw. */
-    public Wizard() { }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
+    public Wizard() {
+    }
 
     /**
      * @param s the step number of the panel to be removed
@@ -98,14 +91,18 @@ public abstract class Wizard implements java.io.Serializable {
     /**
      * @return the todoitem
      */
-    public WizardItem getToDoItem() { return item; }
+    public WizardItem getToDoItem() {
+        return item;
+    }
 
     /** An integer between 0 and 100, shows percent done. The current
      *  ArgoUML user interface shows different PostIt note icons for
      *  0, 1-25, 26-50. 51-75, and 76-100.
      *  @return the percentage done.
      */
-    public int getProgress() { return step * 100 / getNumSteps(); }
+    public int getProgress() {
+        return step * 100 / getNumSteps();
+    }
 
     /** Get the number of steps in this wizard.  Subclasses should
      *  override to return a constant, or compute based on context.
@@ -120,7 +117,9 @@ public abstract class Wizard implements java.io.Serializable {
      *  then returns his or her attention to the wizard.
      *  @return the panel that should be displayed now.
      */
-    public JPanel getCurrentPanel() { return getPanel(step); }
+    public JPanel getCurrentPanel() {
+        return getPanel(step);
+    }
 
 
     /** Get the exising panel at step s. Step 1 is the first wizard
@@ -129,8 +128,9 @@ public abstract class Wizard implements java.io.Serializable {
      * @return the panel for step s or null if none.
      */
     public JPanel getPanel(int s) {
-	if (s > 0 && s <= panels.size())
-	    return (JPanel) panels.elementAt(s - 1);
+	if (s > 0 && s <= panels.size()) {
+	    return panels.get(s - 1);
+        }
 	return null;
     }
 
@@ -142,7 +142,9 @@ public abstract class Wizard implements java.io.Serializable {
      *  and then check for legal context values.
      *  @return <code>true</code> iff the "Next&gt;" button should be enabled.
      */
-    public boolean canGoNext() { return step < getNumSteps(); }
+    public boolean canGoNext() {
+        return step < getNumSteps();
+    }
 
     /**
      * The next step of the wizard.
@@ -151,15 +153,21 @@ public abstract class Wizard implements java.io.Serializable {
 	doAction(step);
 	step++;
 	JPanel p = makePanel(step);
-	if (p != null) panels.addElement(p);
+	if (p != null) {
+            panels.add(p);
+        }
 	started = true;
-	if (item != null) item.changed();
+	if (item != null) {
+            item.changed();
+        }
     }
 
     /**
      * @return true if we can step back
      */
-    public boolean canGoBack() { return step > 0; }
+    public boolean canGoBack() {
+        return step > 0;
+    }
 
     /**
      * Step back.
@@ -174,17 +182,23 @@ public abstract class Wizard implements java.io.Serializable {
     /**
      * @return true if we can finish (i.e. the finish button is not downlighted)
      */
-    public boolean canFinish() { return true; }
+    public boolean canFinish() {
+        return true;
+    }
 
     /**
      * @return true if the wizard is started
      */
-    public boolean isStarted() { return started; }
+    public boolean isStarted() {
+        return started;
+    }
 
     /**
      * @return true if the wizard is finished
      */
-    public boolean isFinished() { return finished; }
+    public boolean isFinished() {
+        return finished;
+    }
 
     /**
      * Finish the wizard.
@@ -240,7 +254,8 @@ public abstract class Wizard implements java.io.Serializable {
      *
      * @param oldStep the given step
      */
-    public void undoAction(int oldStep) { }
+    public void undoAction(int oldStep) {
+    }
 
     /**
      * Undo the action.
@@ -253,4 +268,4 @@ public abstract class Wizard implements java.io.Serializable {
     protected int getStep() {
         return step;
     }
-} /* end class Wizard */
+}

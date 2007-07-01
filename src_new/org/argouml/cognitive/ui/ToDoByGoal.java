@@ -24,9 +24,6 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.Enumeration;
-import java.util.Vector;
-
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
@@ -61,29 +58,26 @@ public class ToDoByGoal extends ToDoPerspective
      */
     public void toDoItemsChanged(ToDoListEvent tde) {
 	LOG.debug("toDoItemsChanged");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector goals = Designer.theDesigner().getGoals();
-	Enumeration elems = goals.elements();
-	while (elems.hasMoreElements()) {
-	    Goal g = (Goal) elems.nextElement();
+        for (Goal g : Designer.theDesigner().getGoalList()) {
 	    path[1] = g;
 	    int nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.supports(g)) continue;
+            for (ToDoItem item : tde.getToDoItemList()) {
+		if (!item.supports(g)) {
+                    continue;
+                }
 		nMatchingItems++;
 	    }
 	    if (nMatchingItems == 0) continue;
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.supports(g)) continue;
+            for (ToDoItem item : tde.getToDoItemList()) {
+		if (!item.supports(g)) {
+                    continue;
+                }
 		childIndices[nMatchingItems] = getIndexOfChild(g, item);
 		children[nMatchingItems] = item;
 		nMatchingItems++;
@@ -97,19 +91,13 @@ public class ToDoByGoal extends ToDoPerspective
      */
     public void toDoItemsAdded(ToDoListEvent tde) {
 	LOG.debug("toDoItemAdded");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector goals = Designer.theDesigner().getGoals();
-	Enumeration elems = goals.elements();
-	while (elems.hasMoreElements()) {
-	    Goal g = (Goal) elems.nextElement();
+        for (Goal g : Designer.theDesigner().getGoalList()) {
 	    path[1] = g;
 	    int nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : tde.getToDoItemList()) {
 		if (!item.supports(g)) {
 		    continue;
 		}
@@ -121,9 +109,11 @@ public class ToDoByGoal extends ToDoPerspective
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.supports(g)) continue;
+            // TODO: This shouldn't require two passes through the list - tfm
+            for (ToDoItem item : tde.getToDoItemList()) {
+		if (!item.supports(g)) {
+                    continue;
+                }
 		childIndices[nMatchingItems] = getIndexOfChild(g, item);
 		children[nMatchingItems] = item;
 		nMatchingItems++;
@@ -137,19 +127,13 @@ public class ToDoByGoal extends ToDoPerspective
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
 	LOG.debug("toDoItemAdded");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector goals = Designer.theDesigner().getGoals();
-	Enumeration elems = goals.elements();
-	while (elems.hasMoreElements()) {
-	    Goal g = (Goal) elems.nextElement();
+        for (Goal g : Designer.theDesigner().getGoalList()) {
 	    LOG.debug("toDoItemRemoved updating decision node!");
 	    boolean anyInGoal = false;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : tde.getToDoItemList()) {
 		if (item.supports(g)) anyInGoal = true;
 	    }
 	    if (!anyInGoal) continue;
@@ -165,6 +149,6 @@ public class ToDoByGoal extends ToDoPerspective
     public void toDoListChanged(ToDoListEvent tde) { }
 
 
-} /* end class ToDoByGoal */
+}
 
 

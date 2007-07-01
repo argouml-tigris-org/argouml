@@ -24,8 +24,8 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
@@ -50,14 +50,11 @@ public class GoListToTypeToItem extends AbstractGoList {
      */
     public Object getChild(Object parent, int index) {
 	if (parent instanceof ToDoList) {
-	    return KnowledgeTypeNode.getTypes().elementAt(index);
+	    return KnowledgeTypeNode.getTypeList().get(index);
 	}
 	if (parent instanceof KnowledgeTypeNode) {
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
-	    Enumeration itemEnum =
-		Designer.theDesigner().getToDoList().elements();
-	    while (itemEnum.hasMoreElements()) {
-		ToDoItem item = (ToDoItem) itemEnum.nextElement();
+            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
 		if (item.containsKnowledgeType(ktn.getName())) {
 		    if (index == 0) return item;
 		    index--;
@@ -73,17 +70,15 @@ public class GoListToTypeToItem extends AbstractGoList {
      */
     public int getChildCount(Object parent) {
 	if (parent instanceof ToDoList) {
-	    return KnowledgeTypeNode.getTypes().size();
+	    return KnowledgeTypeNode.getTypeList().size();
 	}
 	if (parent instanceof KnowledgeTypeNode) {
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
-	    Enumeration itemEnum =
-		Designer.theDesigner().getToDoList().elements();
 	    int count = 0;
-	    while (itemEnum.hasMoreElements()) {
-		ToDoItem item = (ToDoItem) itemEnum.nextElement();
-		if (item.containsKnowledgeType(ktn.getName()))
+            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
+		if (item.containsKnowledgeType(ktn.getName())) {
 		    count++;
+                }
 	    }
 	    return count;
 	}
@@ -96,19 +91,17 @@ public class GoListToTypeToItem extends AbstractGoList {
      */
     public int getIndexOfChild(Object parent, Object child) {
 	if (parent instanceof ToDoList) {
-	    return KnowledgeTypeNode.getTypes().indexOf(child);
+	    return KnowledgeTypeNode.getTypeList().indexOf(child);
 	}
 	if (parent instanceof KnowledgeTypeNode) {
 	    // instead of makning a new vector, decrement index, return when
 	    // found and index == 0
-	    Vector candidates = new Vector();
+	    List<ToDoItem> candidates = new ArrayList<ToDoItem>();
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
-	    Enumeration itemEnum =
-		Designer.theDesigner().getToDoList().elements();
-	    while (itemEnum.hasMoreElements()) {
-		ToDoItem item = (ToDoItem) itemEnum.nextElement();
-		if (item.containsKnowledgeType(ktn.getName()))
-		    candidates.addElement(item);
+            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
+		if (item.containsKnowledgeType(ktn.getName())) {
+		    candidates.add(item);
+                }
 	    }
 	    return candidates.indexOf(child);
 	}
@@ -141,4 +134,4 @@ public class GoListToTypeToItem extends AbstractGoList {
      */
     public void removeTreeModelListener(TreeModelListener l) { }
 
-} /* end class GoListToTypeToItem */
+} 

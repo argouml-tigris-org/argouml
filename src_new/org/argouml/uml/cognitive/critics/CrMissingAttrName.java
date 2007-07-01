@@ -76,7 +76,7 @@ public class CrMissingAttrName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object me = item.getOffenders().elementAt(0);
+	    Object me = item.getOffenders().get(0);
 	    String ins = super.getInstructions();
 	    String sug = super.getDefaultSuggestion();
 	    if (Model.getFacade().isAAttribute(me)) {
@@ -97,4 +97,4 @@ public class CrMissingAttrName extends CrUML {
      */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
-} /* end class CrMissingAttrName */
+}

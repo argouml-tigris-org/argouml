@@ -31,7 +31,6 @@
 
 package org.argouml.uml.cognitive;
 
-import java.util.Enumeration;
 import java.util.Iterator;
 
 import org.argouml.cognitive.Critic;
@@ -122,23 +121,21 @@ public class UMLToDoItem extends ToDoItem {
      * around the call to
      * {@link ProjectBrowser#jumpToDiagramShowing(java.util.Vector)}.
      */
+    @Override
     public void action() {
         deselect();
         // this also sets the target as a convenient side effect
-        ProjectBrowser.getInstance()
-            .jumpToDiagramShowing(getOffenders().asVector());
+        ProjectBrowser.getInstance().jumpToDiagramShowing(getOffenders());
         select();
     }
 
     /*
      * @see org.argouml.cognitive.ToDoItem#deselect()
      */
+    @Override
     public void deselect() {
-        Enumeration offs = getOffenders().elements();
         Project p = ProjectManager.getManager().getCurrentProject();
-
-        while (offs.hasMoreElements()) {
-            Object dm =  offs.nextElement();
+        for (Object dm : getOffenders()) {
             if (dm instanceof Highlightable) {
                 ((Highlightable) dm).setHighlight(false);
 	    } else if (p != null) {
@@ -156,11 +153,10 @@ public class UMLToDoItem extends ToDoItem {
     /*
      * @see org.argouml.cognitive.ToDoItem#select()
      */
+    @Override
     public void select() {
-        Enumeration offs = getOffenders().elements();
         Project p = ProjectManager.getManager().getCurrentProject();
-        while (offs.hasMoreElements()) {
-            Object dm = offs.nextElement();
+        for (Object dm : getOffenders()) {
             if (dm instanceof Highlightable) {
                 ((Highlightable) dm).setHighlight(true);
 	    } else if (p != null) {

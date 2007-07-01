@@ -45,7 +45,7 @@ public interface ControlMech  {
      * @return true f the critic is relevant for the given designer
      */
     boolean isRelevant(Critic c, Designer d);
-} // end interface ControlMech
+}
 
 
 

@@ -27,7 +27,6 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.argouml.cognitive.Critic;
@@ -82,26 +81,24 @@ public class CrAssocNameConflict extends CrUML {
     protected ListSet computeOffenders(Object dm) {
         ListSet offenderResult = new ListSet();
         if (Model.getFacade().isANamespace(dm)) {
-            Iterator it = Model.getFacade().getOwnedElements(dm).iterator();
-            HashMap names = new HashMap();
-            while (it.hasNext()) {
-                Object name1Object = it.next();
-
-                if (!Model.getFacade().isAAssociation(name1Object))
+            HashMap<String, Object> names = new HashMap<String, Object>();
+            for (Object name1Object : Model.getFacade().getOwnedElements(dm)) {
+                if (!Model.getFacade().isAAssociation(name1Object)) {
                     continue;
+                }
                 String name = Model.getFacade().getName(name1Object);
                 Collection typ1 = getAllTypes(name1Object);
-                if (name == null)
+                if (name == null || "".equals(name)) {
                     continue;
-                if ("".equals(name))
-                    continue;
+                }
                 if (names.containsKey(name)) {
                     Object offender = names.get(name);
                     Collection typ2 = getAllTypes(offender);
                     if (typ1.containsAll(typ2) && typ2.containsAll(typ1)) {
-                        if (!offenderResult.contains(offender))
-                            offenderResult.addElement(offender);
-                        offenderResult.addElement(name1Object);
+                        if (!offenderResult.contains(offender)) {
+                            offenderResult.add(offender);
+                        }
+                        offenderResult.add(name1Object);
                     }
                 }
                 names.put(name, name1Object);
@@ -114,17 +111,20 @@ public class CrAssocNameConflict extends CrUML {
      * @see org.argouml.cognitive.Poster#stillValid(
      *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-        if (!isActive())
+        if (!isActive()) {
             return false;
+        }
         ListSet offs = i.getOffenders();
 
         // first element is e.g. the class, but we need to have its namespace
         // to recompute the offenders.
-        Object f = offs.firstElement();
+        Object f = offs.get(0);
         Object ns = Model.getFacade().getNamespace(f);
-        if (!predicate(ns, dsgr))
+        if (!predicate(ns, dsgr)) {
             return false;
+        }
         ListSet newOffs = computeOffenders(ns);
         boolean res = offs.equals(newOffs);
         return res;
@@ -132,14 +132,14 @@ public class CrAssocNameConflict extends CrUML {
 
     public Collection getAllTypes(Object assoc) {
         Set list = new HashSet();
-        if (assoc == null)
+        if (assoc == null) {
             return list;
+        }
         Collection assocEnds = Model.getFacade().getConnections(assoc);
-        if (assocEnds == null)
+        if (assocEnds == null) {
             return list;
-        Iterator iterator = assocEnds.iterator();
-        while (iterator.hasNext()) {
-            Object element = iterator.next();
+        }
+        for (Object element : assocEnds) {
             if (Model.getFacade().isAAssociationEnd(element)) {
                 Object type = Model.getFacade().getType(element);
                 list.add(type);
@@ -147,4 +147,4 @@ public class CrAssocNameConflict extends CrUML {
         }
         return list;
     }
-} /* end class CrAssocNameConflict */
+}

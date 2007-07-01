@@ -24,18 +24,14 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.List;
+
 import org.apache.log4j.Logger;
-
-
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
-import org.argouml.cognitive.ListSet;
 
 /**
  * Represents a perspective for ToDo items: grouping by poster type.
@@ -63,19 +59,14 @@ public class ToDoByPoster extends ToDoPerspective
      */
     public void toDoItemsChanged(ToDoListEvent tde) {
 	LOG.debug("toDoItemsChanged");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
+        List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	ListSet posters = Designer.theDesigner().getToDoList().getPosters();
-	Enumeration elems = posters.elements();
-	while (elems.hasMoreElements()) {
-	    Poster p = (Poster) elems.nextElement();
+        for (Poster p : Designer.theDesigner().getToDoList().getPosters()) {
 	    path[1] = p;
 	    int nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : items) {
 		Poster post = item.getPoster();
 		if (post != p) continue;
 		nMatchingItems++;
@@ -84,8 +75,7 @@ public class ToDoByPoster extends ToDoPerspective
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : items) {
 		Poster post = item.getPoster();
 		if (post != p) continue;
 		childIndices[nMatchingItems] = getIndexOfChild(p, item);
@@ -101,19 +91,14 @@ public class ToDoByPoster extends ToDoPerspective
      */
     public void toDoItemsAdded(ToDoListEvent tde) {
 	LOG.debug("toDoItemAdded");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
+	List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	ListSet posters = Designer.theDesigner().getToDoList().getPosters();
-	Enumeration elems = posters.elements();
-	while (elems.hasMoreElements()) {
-	    Poster p = (Poster) elems.nextElement();
+        for (Poster p : Designer.theDesigner().getToDoList().getPosters()) {
 	    path[1] = p;
 	    int nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : items) {
 		Poster post = item.getPoster();
 		if (post != p) continue;
 		nMatchingItems++;
@@ -122,8 +107,7 @@ public class ToDoByPoster extends ToDoPerspective
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : items) {
 		Poster post = item.getPoster();
 		if (post != p) continue;
 		childIndices[nMatchingItems] = getIndexOfChild(p, item);
@@ -139,20 +123,14 @@ public class ToDoByPoster extends ToDoPerspective
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
 	LOG.debug("toDoItemRemoved");
-        Vector items = tde.getToDoItems();
-        int nItems = items.size();
+        List<ToDoItem> items = tde.getToDoItemList();
         
-	ToDoList list = Designer.theDesigner().getToDoList(); //source?
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-
-	Enumeration elems = list.getPosters().elements();
- 	while (elems.hasMoreElements()) {
-	    Poster p = (Poster) elems.nextElement();
+        for (Poster p : Designer.theDesigner().getToDoList().getPosters()) {
             boolean anyInPoster = false;
-            for (int i = 0; i < nItems; i++) {
-                ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : items) {
                 Poster post = item.getPoster();
                 if (post == p) { 
                     anyInPoster = true;
@@ -170,9 +148,9 @@ public class ToDoByPoster extends ToDoPerspective
     /*
      * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
      */
-    public void toDoListChanged(ToDoListEvent tde) { }
+    public void toDoListChanged(ToDoListEvent tde) {
+    }
 
-
-} /* end class ToDoByPoster */
+}
 
 

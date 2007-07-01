@@ -25,7 +25,6 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
@@ -57,6 +56,7 @@ public class CrWrongLinkEnds extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
@@ -69,6 +69,7 @@ public class CrWrongLinkEnds extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#toDoItem(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	ListSet offs = computeOffenders(dd);
@@ -79,10 +80,13 @@ public class CrWrongLinkEnds extends CrUML {
      * @see org.argouml.cognitive.Poster#stillValid(
      *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+            return false;
+        }
 	ListSet offs = i.getOffenders();
-	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
+	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.get(0);
 	//if (!predicate(dm, dsgr)) return false;
 	ListSet newOffs = computeOffenders(dd);
 	boolean res = offs.equals(newOffs);
@@ -102,9 +106,7 @@ public class CrWrongLinkEnds extends CrUML {
     public ListSet computeOffenders(UMLDeploymentDiagram deploymentDiagram) {
 	Collection figs = deploymentDiagram.getLayer().getContents();
 	ListSet offs = null;
-        Iterator figIter = figs.iterator();
-	while (figIter.hasNext()) {
-	    Object obj = figIter.next();
+        for (Object obj : figs) {
 	    if (!(obj instanceof FigLink)) {
                 continue;
             }
@@ -113,10 +115,9 @@ public class CrWrongLinkEnds extends CrUML {
 	    Object link = figLink.getOwner();
 	    Collection ends = Model.getFacade().getConnections(link);
 	    if (ends != null && (ends.size() > 0)) {
-		int count = 0;
-		Iterator it = ends.iterator();
-		while (it.hasNext()) {
-                    Object instance = Model.getFacade().getInstance(it.next());
+                int count = 0;       
+                for (Object end : ends) {
+                    Object instance = Model.getFacade().getInstance(end);
                     if (Model.getFacade().isAComponentInstance(instance)
                             || Model.getFacade().isANodeInstance(instance)) {
                         Collection residencies =
@@ -134,15 +135,15 @@ public class CrWrongLinkEnds extends CrUML {
 		if (count == 3) {
 		    if (offs == null) {
 			offs = new ListSet();
-			offs.addElement(deploymentDiagram);
+			offs.add(deploymentDiagram);
 		    }
-		    offs.addElement(figLink);
-		    offs.addElement(figLink.getSourcePortFig());
-		    offs.addElement(figLink.getDestPortFig());
+		    offs.add(figLink);
+		    offs.add(figLink.getSourcePortFig());
+		    offs.add(figLink.getDestPortFig());
 		}
 	    }
 	}
 	return offs;
     }
 
-} /* end class CrWrongLinkEnds */
+}

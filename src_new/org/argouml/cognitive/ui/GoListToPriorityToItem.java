@@ -45,16 +45,15 @@ public class GoListToPriorityToItem extends AbstractGoList {
      */
     public Object getChild(Object parent, int index) {
 	if (parent instanceof ToDoList) {
-	    return PriorityNode.getPriorities().elementAt(index);
+	    return PriorityNode.getPriorityList().get(index);
 	}
 	if (parent instanceof PriorityNode) {
 	    PriorityNode pn = (PriorityNode) parent;
-	    ToDoList list = Designer.theDesigner().getToDoList();
-	    int size = list.size();
-	    for (int i = 0; i < size; i++) {
-		ToDoItem item = list.elementAt(i);
+            for (ToDoItem item :  Designer.theDesigner().getToDoList()) {
 		if (item.getPriority() == pn.getPriority()) {
-		    if (index == 0) return item;
+		    if (index == 0) {
+                        return item;
+                    }
 		    index--;
 		}
 	    }
@@ -68,16 +67,15 @@ public class GoListToPriorityToItem extends AbstractGoList {
      */
     public int getChildCount(Object parent) {
 	if (parent instanceof ToDoList) {
-	    return PriorityNode.getPriorities().size();
+	    return PriorityNode.getPriorityList().size();
 	}
 	if (parent instanceof PriorityNode) {
 	    int res = 0;
 	    PriorityNode pn = (PriorityNode) parent;
-	    ToDoList list = Designer.theDesigner().getToDoList();
-	    int size = list.size();
-	    for (int i = 0; i < size; i++) {
-		ToDoItem item = list.elementAt(i);
-		if (item.getPriority() == pn.getPriority()) res++;
+            for (ToDoItem item :  Designer.theDesigner().getToDoList()) {
+		if (item.getPriority() == pn.getPriority()) {
+                    res++;
+                }
 	    }
 	    return res;
 	}
@@ -90,17 +88,16 @@ public class GoListToPriorityToItem extends AbstractGoList {
      */
     public int getIndexOfChild(Object parent, Object child) {
 	if (parent instanceof ToDoList) {
-	    return PriorityNode.getPriorities().indexOf(child);
+	    return PriorityNode.getPriorityList().indexOf(child);
 	}
 	if (parent instanceof PriorityNode) {
 	    int index = 0;
 	    PriorityNode pn = (PriorityNode) parent;
-	    ToDoList list = Designer.theDesigner().getToDoList();
-	    int size = list.size();
-	    for (int i = 0; i < size; i++) {
-		ToDoItem item = list.elementAt(i);
+            for (ToDoItem item :  Designer.theDesigner().getToDoList()) {
 		if (item.getPriority() == pn.getPriority()) {
-		    if (item == child) return index;
+		    if (item == child) {
+                        return index;
+                    }
 		    index++;
 		}
 	    }
@@ -134,4 +131,4 @@ public class GoListToPriorityToItem extends AbstractGoList {
      */
     public void removeTreeModelListener(TreeModelListener l) { }
 
-} /* end class GoListToPriorityToItem */
+}

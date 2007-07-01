@@ -117,7 +117,7 @@ public class CrNameConfusion extends CrUML {
 	    String compareName = meName;
 	    if (confusable(stripped2, strip(compareName))
                 && !dmNameStr.equals(compareName)) {
-		res.addElement(me2);
+		res.add(me2);
 	    }
 	}
 	return res;
@@ -127,6 +127,7 @@ public class CrNameConfusion extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Object me = dm;
 	ListSet offs = computeOffenders(me);
@@ -137,12 +138,13 @@ public class CrNameConfusion extends CrUML {
      * @see org.argouml.cognitive.Poster#stillValid(
      *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) {
 	    return false;
 	}
 	ListSet offs = i.getOffenders();
-	Object dm = offs.firstElement();
+	Object dm = offs.get(0);
 	if (!predicate(dm, dsgr)) {
 	    return false;
 	}
@@ -202,6 +204,7 @@ public class CrNameConfusion extends CrUML {
     /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
+    @Override
     public Icon getClarifier() {
 	return ClClassName.getTheInstance();
     }
@@ -211,10 +214,11 @@ public class CrNameConfusion extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *      org.argouml.cognitive.ui.Wizard)
      */
+    @Override
     public void initWizard(Wizard w) {
 	if (w instanceof WizManyNames) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    ((WizManyNames) w).setMEs(item.getOffenders().asVector());
+	    ((WizManyNames) w).setModelElements(item.getOffenders());
 	}
     }
 
@@ -225,4 +229,4 @@ public class CrNameConfusion extends CrUML {
 	return WizManyNames.class;
     }
 
-} /* end class CrNameConfusion */
+}

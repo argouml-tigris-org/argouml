@@ -24,6 +24,8 @@
 
 package org.argouml.cognitive.ui;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import org.argouml.cognitive.Critic;
@@ -35,12 +37,7 @@ import org.argouml.cognitive.Critic;
  */
 public class KnowledgeTypeNode {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables and methods
-    private static Vector types = null;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    private static List<KnowledgeTypeNode> types = null;
 
     private String name;
 
@@ -55,36 +52,46 @@ public class KnowledgeTypeNode {
 
     /**
      * @return a list of all the types
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getTypeList()}.
      */
-    public static Vector getTypes() {
+    @Deprecated
+    public static Vector<KnowledgeTypeNode> getTypes() {
+        return new Vector<KnowledgeTypeNode>(getTypeList());
+    }
+
+    /**
+     * @return a list of all the types
+     */
+    public static List<KnowledgeTypeNode> getTypeList() {
         if (types == null) {
-            types = new Vector();
-            types.addElement(new KnowledgeTypeNode(Critic.KT_DESIGNERS));
-            types.addElement(new KnowledgeTypeNode(Critic.KT_CORRECTNESS));
-            types.addElement(new KnowledgeTypeNode(Critic.KT_COMPLETENESS));
-            types.addElement(new KnowledgeTypeNode(Critic.KT_CONSISTENCY));
-            types.addElement(new KnowledgeTypeNode(Critic.KT_SYNTAX));
-            types.addElement(new KnowledgeTypeNode(Critic.KT_SEMANTICS));
-            types.addElement(new KnowledgeTypeNode(Critic.KT_OPTIMIZATION));
-            types.addElement(new KnowledgeTypeNode(Critic.KT_PRESENTATION));
-            types.addElement(new KnowledgeTypeNode(Critic.KT_ORGANIZATIONAL));
-            types.addElement(new KnowledgeTypeNode(Critic.KT_EXPERIENCIAL));
-            types.addElement(new KnowledgeTypeNode(Critic.KT_TOOL));
+            types = new ArrayList<KnowledgeTypeNode>();
+            types.add(new KnowledgeTypeNode(Critic.KT_DESIGNERS));
+            types.add(new KnowledgeTypeNode(Critic.KT_CORRECTNESS));
+            types.add(new KnowledgeTypeNode(Critic.KT_COMPLETENESS));
+            types.add(new KnowledgeTypeNode(Critic.KT_CONSISTENCY));
+            types.add(new KnowledgeTypeNode(Critic.KT_SYNTAX));
+            types.add(new KnowledgeTypeNode(Critic.KT_SEMANTICS));
+            types.add(new KnowledgeTypeNode(Critic.KT_OPTIMIZATION));
+            types.add(new KnowledgeTypeNode(Critic.KT_PRESENTATION));
+            types.add(new KnowledgeTypeNode(Critic.KT_ORGANIZATIONAL));
+            types.add(new KnowledgeTypeNode(Critic.KT_EXPERIENCIAL));
+            types.add(new KnowledgeTypeNode(Critic.KT_TOOL));
         }
         return types;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
     /**
      * @return the name of the knowledgetype
      */
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     /*
      * @see java.lang.Object#toString()
      */
-    public String toString() { return getName(); }
+    public String toString() {
+        return getName();
+    }
 
-} /* end class KnowledgeTypeNode */
+}

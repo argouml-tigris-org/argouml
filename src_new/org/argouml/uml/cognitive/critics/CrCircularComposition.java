@@ -24,8 +24,6 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.Enumeration;
-
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -59,10 +57,14 @@ public class CrCircularComposition extends CrUML {
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAClassifier(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClassifier(dm))) {
+            return NO_PROBLEM;
+        }
 	ListSet reach =
 	    (new ListSet(dm)).reachable(GenCompositeClasses.getSINGLETON());
-	if (reach.contains(dm)) return PROBLEM_FOUND;
+	if (reach.contains(dm)) {
+            return PROBLEM_FOUND;
+        }
 	return NO_PROBLEM;
     }
 
@@ -83,12 +85,12 @@ public class CrCircularComposition extends CrUML {
     protected ListSet computeOffenders(Object dm) {
 	ListSet offs = new ListSet(dm);
 	ListSet above = offs.reachable(GenCompositeClasses.getSINGLETON());
-	Enumeration elems = above.elements();
-	while (elems.hasMoreElements()) {
-	    Object cls2 = elems.nextElement();
+        for (Object cls2 : above) {
 	    ListSet trans = (new ListSet(cls2))
 	        .reachable(GenCompositeClasses.getSINGLETON());
-	    if (trans.contains(dm)) offs.addElement(cls2);
+	    if (trans.contains(dm)) {
+                offs.add(cls2);
+            }
 	}
 	return offs;
     }
@@ -100,7 +102,7 @@ public class CrCircularComposition extends CrUML {
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	ListSet offs = i.getOffenders();
-	Object dm =  offs.firstElement();
+	Object dm =  offs.get(0);
 	if (!predicate(dm, dsgr)) return false;
 	ListSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
@@ -117,4 +119,4 @@ public class CrCircularComposition extends CrUML {
 	return WizBreakCircularComp.class;
     }
 
-} /* end class CrCircularComposition */
+}

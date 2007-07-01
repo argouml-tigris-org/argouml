@@ -27,9 +27,8 @@ package org.argouml.cognitive;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -52,8 +51,14 @@ import org.apache.log4j.Logger;
  * TODO: I am moving toward a more reactionary scheme in
  * which specific design manipulations in the editor cause critics
  * relevant to those manipulations to be applied.  This transition is
- * still half done.  Trigger's are the critiquing requests.  The code
- * for triggers is currently dormant (latent?).
+ * still half done.  Triggers are the critiquing requests.  The code
+ * for triggers is currently dormant (latent?).<p>
+ * 
+ * TODO: There is a strong dependency cycle between Agency and Designer.  They
+ * either need to be merged into a single class or partitioned differently, 
+ * perhaps using an interface to break the cycle.  The Designer singleton gets
+ * passed to almost every single part of the Critic subsystem, creating strong
+ * coupling throughout. - tfm 20070620
  *
  * @author Jason Robbins
  */
@@ -67,19 +72,22 @@ public class Agency extends Observable { //implements java.io.Serialization
     // instance variables
 
     /**
-     * A registery of all critics that are currently loaded into the
+     * A registry of all critics that are currently loaded into the
      * design environment.
      */
-    private static Hashtable criticRegistry = new Hashtable(100);
-    private static Vector critics = new Vector();
+    private static Hashtable<Class, List<Critic>> criticRegistry = 
+        new Hashtable<Class, List<Critic>>(100);
+    
+    private static List<Critic> critics = new ArrayList<Critic>();
 
-    //   private static boolean _hot = false;
     /**
      * The main control mechanism for determining which critics should
      * be active.
      */
     private ControlMech controlMech;
-    private static Hashtable singletonCritics = new Hashtable(40);
+    
+    private static Hashtable<String, Critic> singletonCritics = 
+        new Hashtable<String, Critic>(40);
 
     ////////////////////////////////////////////////////////////////
     // constructor and singleton methdos
@@ -122,23 +130,33 @@ public class Agency extends Observable { //implements java.io.Serialization
 	}
         return dsgr.getAgency();
     }
+    
     ////////////////////////////////////////////////////////////////
     // accessors
 
     /**
      * @return the registery.
      */
-    private static Hashtable getCriticRegistry() {
+    private static Hashtable<Class, List<Critic>> getCriticRegistry() {
         return criticRegistry;
     }
 
     /**
      * @return the critics
+     * @deprecated for 0.25.4 by tfmorris - use {@link #getCriticList()}.
      */
-    public static Vector getCritics() {
-        return critics;
+    @Deprecated
+    public static Vector<Critic> getCritics() {
+        return new Vector<Critic>(critics);
     }
 
+    /**
+     * @return the critics
+     */
+    public static List<Critic> getCriticList() {
+        return critics;
+    }
+    
     ////////////////////////////////////////////////////////////////
     // critic registration
     /**
@@ -149,13 +167,11 @@ public class Agency extends Observable { //implements java.io.Serialization
             return;
 	}
         if (!(cr instanceof CompoundCritic)) {
-            critics.addElement(cr);
+            critics.add(cr);
 	} else {
-            Vector subs = ((CompoundCritic) cr).getCritics();
-            Enumeration subCritics = subs.elements();
-            while (subCritics.hasMoreElements()) {
-                addCritic((Critic) subCritics.nextElement());
-	    }
+            for (Critic c : ((CompoundCritic) cr).getCriticList()) {
+                addCritic(c);
+            }
             return;
         }
     }
@@ -172,7 +188,7 @@ public class Agency extends Observable { //implements java.io.Serialization
             LOG.error("Error loading dm " + dmClassName, e);
             return;
         }
-        Critic cr = (Critic) singletonCritics.get(crClassName);
+        Critic cr = singletonCritics.get(crClassName);
         if (cr == null) {
             Class crClass;
             try {
@@ -206,20 +222,30 @@ public class Agency extends Observable { //implements java.io.Serialization
      * @param cr the critic to register
      * @param clazz the design material class that is to be criticized
      */
-    public static void register(Critic cr, Object clazz) {
-        Vector theCritics = (Vector) getCriticRegistry().get(clazz);
+    public static void register(Critic cr, Class clazz) {
+        List<Critic> theCritics = getCriticRegistry().get(clazz);
         if (theCritics == null) {
-            theCritics = new Vector();
+            theCritics = new ArrayList<Critic>();
             criticRegistry.put(clazz, theCritics);
         }
-        theCritics.addElement(cr);
+        theCritics.add(cr);
         notifyStaticObservers(cr);
         LOG.debug("Registered: " + theCritics.toString());
         cachedCritics.remove(clazz);
         addCritic(cr);
     }
 
-    private static Hashtable cachedCritics = new Hashtable();
+    /**
+     * Transitional method for migration purposes.  Don't use!
+     * @param cr the critic to register
+     * @param clazz the UML class to be criticized
+     */
+    public static void register(Critic cr, Object clazz) {
+        register(cr, (Class) clazz);
+    }
+    
+    private static Hashtable<Class, Collection<Critic>> cachedCritics = 
+        new Hashtable<Class, Collection<Critic>>();
 
     /**
      * Return a collection of all critics that can be applied to the
@@ -228,21 +254,20 @@ public class Agency extends Observable { //implements java.io.Serialization
      * @param clazz the design material to criticize
      * @return the collection of critics
      */
-    public static Collection criticsForClass(Class clazz) {
-        Collection col = (Collection) cachedCritics.get(clazz);
+    public static Collection<Critic> criticsForClass(Class clazz) {
+        Collection<Critic> col = cachedCritics.get(clazz);
         if (col == null) {
-            col = new ArrayList();
-	    col.addAll(criticsForSpecificClass(clazz));
-	    Collection classes = new ArrayList();
+            col = new ArrayList<Critic>();
+	    col.addAll(criticListForSpecificClass(clazz));
+	    Collection<Class> classes = new ArrayList<Class>();
 	    if (clazz.getSuperclass() != null) {
 		classes.add(clazz.getSuperclass());
 	    }
 	    if (clazz.getInterfaces() != null) {
 		classes.addAll(Arrays.asList(clazz.getInterfaces()));
 	    }
-	    Iterator it = classes.iterator();
-	    while (it.hasNext()) {
-		col.addAll(criticsForClass((Class) it.next()));
+            for (Class c : classes) {
+		col.addAll(criticsForClass(c));
 	    }
 	    cachedCritics.put(clazz, col);
         }
@@ -258,16 +283,31 @@ public class Agency extends Observable { //implements java.io.Serialization
      *
      * @param clazz the design material
      * @return the critics
+     * @deprecated for 0.25.4 by tfmorris - use 
+     * {@link #criticListForSpecificClass(Class)}.
      */
-    protected static Vector criticsForSpecificClass(Class clazz) {
-        Vector theCritics = (Vector) getCriticRegistry().get(clazz);
+    @Deprecated
+    protected static Vector<Critic> criticsForSpecificClass(Class clazz) {
+        return new Vector<Critic>(criticListForSpecificClass(clazz));
+    }
+
+    /**
+     * Return the List of all critics that are directly
+     * associated with the given design material subclass.<p>
+     *
+     * If there aren't any an empty List is returned.
+     *
+     * @param clazz the design material
+     * @return the critics
+     */
+    protected static List<Critic> criticListForSpecificClass(Class clazz) {
+        List<Critic> theCritics = getCriticRegistry().get(clazz);
         if (theCritics == null) {
-            theCritics = new Vector();
+            theCritics = new ArrayList<Critic>();
             criticRegistry.put(clazz, theCritics);
         }
         return theCritics;
     }
-
     ////////////////////////////////////////////////////////////////
     // criticism control
 
@@ -288,7 +328,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         Designer d,
         long reasonCode) {
         Class dmClazz = dm.getClass();
-        Collection c = criticsForClass(dmClazz);
+        Collection<Critic> c = criticsForClass(dmClazz);
         applyCritics(dm, d, c, reasonCode);
     }
 
@@ -298,7 +338,7 @@ public class Agency extends Observable { //implements java.io.Serialization
      */
     public static void applyAllCritics(Object dm, Designer d) {
         Class dmClazz = dm.getClass();
-        Collection c = criticsForClass(dmClazz);
+        Collection<Critic> c = criticsForClass(dmClazz);
         applyCritics(dm, d, c, -1L);
     }
 
@@ -311,12 +351,10 @@ public class Agency extends Observable { //implements java.io.Serialization
     public static void applyCritics(
         Object dm,
         Designer d,
-        Collection theCritics,
+        Collection<Critic> theCritics,
         long reasonCode) {
 
-        Iterator it = theCritics.iterator();
-        while (it.hasNext()) {
-            Critic c = (Critic) it.next();
+        for (Critic c : theCritics) {
             if (c.isActive() && c.matchReason(reasonCode)) {
                 try {
                     c.critique(dm, d);
@@ -346,9 +384,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         //     Enumeration clazzEnum = getCriticRegistry().keys();
         //     while (clazzEnum.hasMoreElements()) {
         //       Class clazz = (Class) (clazzEnum.nextElement());
-        Enumeration criticEnum = critics.elements();
-        while (criticEnum.hasMoreElements()) {
-            Critic c = (Critic) (criticEnum.nextElement());
+        for (Critic c : critics) {
             if (controlMech.isRelevant(c, d)) {
                 c.beActive();
             } else {

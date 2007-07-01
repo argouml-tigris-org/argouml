@@ -25,7 +25,6 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
@@ -56,8 +55,11 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof UMLSequenceDiagram)) return NO_PROBLEM;
+	if (!(dm instanceof UMLSequenceDiagram)) {
+            return NO_PROBLEM;
+        }
 	UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
 	ListSet offs = computeOffenders(sd);
 	if (offs == null) return NO_PROBLEM;
@@ -68,6 +70,7 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
 	ListSet offs = computeOffenders(sd);
@@ -78,10 +81,13 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
      * @see org.argouml.cognitive.Poster#stillValid(
      *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+            return false;
+        }
 	ListSet offs = i.getOffenders();
-	UMLSequenceDiagram sd = (UMLSequenceDiagram) offs.firstElement();
+	UMLSequenceDiagram sd = (UMLSequenceDiagram) offs.get(0);
 	//if (!predicate(dm, dsgr)) return false;
 	ListSet newOffs = computeOffenders(sd);
 	boolean res = offs.equals(newOffs);
@@ -99,26 +105,28 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
      */
     public ListSet computeOffenders(UMLSequenceDiagram sd) {
 	Collection figs = sd.getLayer().getContents();
-        Iterator figIter = figs.iterator();
 	ListSet offs = null;
-	while (figIter.hasNext()) {
-	    Object obj = figIter.next();
-	    if (!(obj instanceof FigNodeModelElement)) continue;
+        for (Object obj : figs) {
+	    if (!(obj instanceof FigNodeModelElement)) {
+                continue;
+            }
 	    FigNodeModelElement fn = (FigNodeModelElement) obj;
 	    if (fn != null && (Model.getFacade().isAInstance(fn.getOwner()))) {
-		Object minst = /*(MInstance)*/ fn.getOwner();
+		Object minst = fn.getOwner();
 		if (minst != null) {
 		    Collection col = Model.getFacade().getClassifiers(minst);
-		    if (col.size() > 0) continue;
+		    if (col.size() > 0) {
+                        continue;
+                    }
 		}
 		if (offs == null) {
 		    offs = new ListSet();
-		    offs.addElement(sd);
+		    offs.add(sd);
 		}
-		offs.addElement(fn);
+		offs.add(fn);
 	    }
 	}
 	return offs;
     }
 
-} /* end class CrSeqInstanceWithoutClassifier */
+}

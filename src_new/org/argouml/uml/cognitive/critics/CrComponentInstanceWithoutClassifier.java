@@ -87,7 +87,7 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 	    return false;
 	}
 	ListSet offs = i.getOffenders();
-	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
+	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.get(0);
 	//if (!predicate(dm, dsgr)) return false;
 	ListSet newOffs = computeOffenders(dd);
 	boolean res = offs.equals(newOffs);
@@ -126,9 +126,9 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 		}
 		if (offs == null) {
 		    offs = new ListSet();
-		    offs.addElement(deploymentDiagram);
+		    offs.add(deploymentDiagram);
 		}
-		offs.addElement(figComponentInstance);
+		offs.add(figComponentInstance);
 	    }
 	}
 

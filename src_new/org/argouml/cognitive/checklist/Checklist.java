@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,9 @@
 package org.argouml.cognitive.checklist;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -39,15 +41,8 @@ import java.util.Vector;
  *
  * @author Jason Robbins
  */
-public class Checklist implements Serializable {
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
-    /**
-     * Pending CheckItems for the designer to consider.
-     */
-    private Vector items = new Vector();
+public class Checklist extends ArrayList<CheckItem> implements List<CheckItem>,
+        Serializable {
 
     private String nextCategory = "General";
 
@@ -55,36 +50,50 @@ public class Checklist implements Serializable {
      * The constructor.
      *
      */
-    public Checklist() { }
+    public Checklist() {
+        super();
+    }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
+    /**
+     * @return the items
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getCheckItemList()}.
+     */
+    @Deprecated
+    public Vector<CheckItem> getCheckItems() {
+        return new Vector<CheckItem>(this);
+    }
 
     /**
      * @return the items
      */
-    public Vector getCheckItems() { return items; }
+    public List<CheckItem> getCheckItemList() {
+        return this;
+    }
 
+    
     /**
      * @param item the item to be added to the list
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #add(CheckItem)}.
      */
+    @Deprecated
     public void addItem(CheckItem item) {
-	items.addElement(item);
+	add(item);
     }
 
     /**
      * @param item the item to be removed
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #remove(CheckItem)}.
      */
+    @Deprecated
     public void removeItem(CheckItem item) {
-	items.removeElement(item);
+	remove(item);
     }
 
     /**
      * @param description the description for a new item
      */
     public void addItem(String description) {
-	CheckItem item = new CheckItem(nextCategory, description);
-	items.addElement(item);
+	add(new CheckItem(nextCategory, description));
     }
 
     /**
@@ -93,51 +102,52 @@ public class Checklist implements Serializable {
      * @param list the given new list
      */
     public synchronized void addAll(Checklist list) {
-	Enumeration cur = list.elements();
-	while (cur.hasMoreElements()) {
-	    CheckItem item = (CheckItem) cur.nextElement();
-	    addItem(item);
+        for (CheckItem item : list) {
+	    add(item);
 	}
     }
 
     /**
      * @return the list in enumeration format
+     * @deprecated for 0.25.4 by tfmorris.
      */
-    public Enumeration elements() { return items.elements(); }
+    @Deprecated
+    public Enumeration<CheckItem> elements() {
+        return new Vector<CheckItem>(this).elements();
+    }
 
-    /**
-     * @return the number of items in the list
-     */
-    public int size() { return items.size(); }
 
     /**
      * @param index the position of the item to retrieve
      * @return the item
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #get(int)}. 
      */
+    @Deprecated
     public CheckItem elementAt(int index) {
-	return (CheckItem) items.elementAt(index);
+	return get(index);
     }
 
     /**
      * @param cat the category
      */
-    public void setNextCategory(String cat) { nextCategory = cat; }
+    public void setNextCategory(String cat) {
+        nextCategory = cat;
+    }
 
 
     /*
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
 	String res;
 	res = getClass().getName() + " {\n";
-	Enumeration cur = elements();
-	while (cur.hasMoreElements()) {
-	    CheckItem item = (CheckItem) cur.nextElement();
+        for (CheckItem item : this) {
 	    res += "    " + item.toString() + "\n";
 	}
 	res += "  }";
 	return res;
     }
 
-} /* end class Checklist */
+}
 

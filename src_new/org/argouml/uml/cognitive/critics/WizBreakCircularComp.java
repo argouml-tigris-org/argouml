@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JPanel;
 
@@ -72,31 +71,31 @@ public class WizBreakCircularComp extends UMLWizard {
     /*
      * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
      */
-    public int getNumSteps() { return 3; }
-
-    /**
-     * @return The choices for this step.
-     */
-    protected Vector getOptions1() {
-	Vector res = new Vector();
-	if (getToDoItem() != null) {
-	    ToDoItem item = (ToDoItem) getToDoItem();
-	    ListSet offs = item.getOffenders();
-	    int size = offs.size();
-	    for (int i = 0; i < size; i++) {
-		Object me = offs.elementAt(i);
-		String s = Model.getFacade().getName(me);
-		res.addElement(s);
-	    }
-	}
-	return res;
+    @Override
+    public int getNumSteps() {
+        return 3;
     }
 
     /**
      * @return The choices for this step.
      */
-    protected Vector getOptions2() {
-	Vector res = new Vector();
+    protected List<String> getOptions1() {
+	List<String> result = new ArrayList<String>();
+	if (getToDoItem() != null) {
+	    ToDoItem item = (ToDoItem) getToDoItem();
+            for (Object me : item.getOffenders()) {
+		String s = Model.getFacade().getName(me);
+		result.add(s);
+	    }
+	}
+	return result;
+    }
+
+    /**
+     * @return The choices for this step.
+     */
+    protected List<String> getOptions2() {
+        List<String> result = new ArrayList<String>();
 	if (selectedCls != null) {
 	    Collection aes = Model.getFacade().getAssociationEnds(selectedCls);
 	    Object fromType = selectedCls;
@@ -121,10 +120,10 @@ public class WizBreakCircularComp extends UMLWizard {
                     + Translator.localize("critics.WizBreakCircularComp-to")
                     + " "
                     + toName;
-		res.addElement(s);
+		result.add(s);
 	    }
 	}
-	return res;
+	return result;
     }
 
     /*
@@ -169,7 +168,7 @@ public class WizBreakCircularComp extends UMLWizard {
 	    if (choice == -1) {
 		throw new Error("nothing selected, should not get here");
 	    }
-	    selectedCls = offs.elementAt(choice);
+	    selectedCls = offs.get(choice);
 	    break;
 	    ////////////////
 	case 2:
@@ -212,11 +211,15 @@ public class WizBreakCircularComp extends UMLWizard {
     /*
      * @see org.argouml.cognitive.ui.Wizard#canGoNext()
      */
-    public boolean canGoNext() { return canFinish(); }
+    @Override
+    public boolean canGoNext() {
+        return canFinish();
+    }
 
     /*
      * @see org.argouml.cognitive.ui.Wizard#canFinish()
      */
+    @Override
     public boolean canFinish() {
 	if (!super.canFinish()) {
 	    return false;
@@ -232,4 +235,4 @@ public class WizBreakCircularComp extends UMLWizard {
 	}
 	return false;
     }
-} /* end class WizBreakCircularComp */
+}

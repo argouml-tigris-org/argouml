@@ -159,7 +159,7 @@ public class CriticBrowserDialog extends ArgoDialog
 
     private Critic target;
 
-    private List   critics;
+    private List<Critic>   critics;
 
     /**
      * The constructor.
@@ -174,11 +174,10 @@ public class CriticBrowserDialog extends ArgoDialog
 	// Critics Table
 	JPanel tablePanel = new JPanel(new BorderLayout(5, 5));
 
-	critics = new ArrayList(Agency.getCritics());
-	Collections.sort(critics, new Comparator() {
-	    public int compare(Object o1, Object o2) {
-		return ((Critic) o1).getHeadline().compareTo(((Critic) o2)
-		                                            .getHeadline());
+	critics = new ArrayList<Critic>(Agency.getCriticList());
+	Collections.sort(critics, new Comparator<Critic>() {
+	    public int compare(Critic o1, Critic o2) {
+		return o1.getHeadline().compareTo(o2.getHeadline());
 	    }
 	});
 	tableModel.setTarget(critics);
@@ -579,9 +578,15 @@ class TableModelCritics extends AbstractTableModel
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
     public Class getColumnClass(int c) {
-	if (c == 0) return Boolean.class;
-	if (c == 1) return String.class;
-	if (c == 2) return String.class;
+	if (c == 0) {
+            return Boolean.class;
+        }
+	if (c == 1) {
+            return String.class;
+        }
+	if (c == 2) {
+            return String.class;
+        }
 	return String.class;
     }
 

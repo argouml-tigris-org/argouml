@@ -24,8 +24,6 @@
 
 package org.argouml.uml.cognitive;
 
-import java.util.Iterator;
-import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.cognitive.Designer;
@@ -67,6 +65,7 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
     /*
      * @see org.argouml.kernel.AbstractProjectMember#getZipFileExtension()
      */
+    @Override
     public String getZipFileExtension() {
         return TO_DO_EXT;
     }
@@ -75,26 +74,11 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
      * @return a vector containing the to do list
      * Used by todo.tee
      */
-    public Vector getToDoList() {
-        Vector in, out;
-        ToDoItem tdi;
-        Designer dsgr;
-        int i;
-
-        dsgr = Designer.theDesigner();
-        in = dsgr.getToDoList().getToDoItems();
-        out = new Vector();
-        for (i = 0; i < in.size(); i++) {
-            try {
-            	tdi = (ToDoItem) in.elementAt(i);
-            	if (tdi == null) {
-                    continue;
-                }
-            } catch (ClassCastException e) {
-                continue;
-            }
-
-            if (tdi.getPoster() instanceof Designer) {
+    public Vector<ToDoItemXMLHelper> getToDoList() {
+        Vector<ToDoItemXMLHelper> out = new Vector<ToDoItemXMLHelper>();
+        Designer dsgr = Designer.theDesigner();
+        for (ToDoItem tdi : dsgr.getToDoList().getToDoItemList()) {
+            if (tdi != null && tdi.getPoster() instanceof Designer) {
                 out.addElement(new ToDoItemXMLHelper(tdi));
             }
         }
@@ -105,27 +89,14 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
      * @return Vector conaining the resolved critics list
      * Used by todo.tee
      */
-    public Vector getResolvedCriticsList() {
-    	Set in;
-        Vector out;
-    	ResolvedCritic rci;
-    	Designer dsgr;
-
-    	dsgr = Designer.theDesigner();
-    	in = dsgr.getToDoList().getResolvedItems();
-
-    	out = new Vector();
-    	for (Iterator it = in.iterator(); it.hasNext();) {
-            Object o = it.next();
-    	    try {
-                rci = (ResolvedCritic) o;
-                if (rci == null) {
-                    continue;
-                }
-    	    } catch (ClassCastException e) {
-    	        continue;
-    	    }
-    	    out.addElement(new ResolvedCriticXMLHelper(rci));
+    public Vector<ResolvedCriticXMLHelper> getResolvedCriticsList() {
+        Vector<ResolvedCriticXMLHelper> out = 
+            new Vector<ResolvedCriticXMLHelper>();
+    	Designer dsgr = Designer.theDesigner();
+    	for (ResolvedCritic rci : dsgr.getToDoList().getResolvedItems()) {
+    	    if (rci != null) {
+                out.addElement(new ResolvedCriticXMLHelper(rci));
+            }
     	}
     	return out;
     }
@@ -133,7 +104,8 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
     /**
      * There is not yet any repair task for the ToDo model but this is open to
      * implement as and when any problems areas are discovered.
-     * @see org.argouml.kernel.ProjectMember#repair()
+     * 
+     * {@inheritDoc}
      */
     public String repair() {
         return "";

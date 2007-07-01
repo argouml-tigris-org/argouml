@@ -24,6 +24,8 @@
 
 package org.argouml.cognitive.ui;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
@@ -34,27 +36,20 @@ import org.argouml.cognitive.Translator;
  */
 public class PriorityNode {
 
-    // Private members.
-    private static final String HIGH =
+    private static final String HIGH = 
         Translator.localize("misc.level.high");
-    private static final String MEDIUM =
+
+    private static final String MEDIUM = 
         Translator.localize("misc.level.medium");
+
     private static final String LOW =
         Translator.localize("misc.level.low");
 
-    ////////////////////////////////////////////////////////////////
-    // static variables and methods
-    private static Vector priorities = null;
-
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    private static List<PriorityNode> priorities = null;
 
     private String name;
-    private int priority;
 
-    ////////////////////////////////////////////////////////////////
-    // contrsuctors
+    private int priority;
 
     /**
      * The constructor.
@@ -69,37 +64,50 @@ public class PriorityNode {
 
     /**
      * @return the list of all the priorities
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getPriorityList()}.
      */
-    public static Vector getPriorities() {
+    @Deprecated
+    public static Vector<PriorityNode> getPriorities() {
+        return new Vector<PriorityNode>(getPriorityList());
+    }
+
+    /**
+     * @return the list of all the priorities
+     */
+    public static List<PriorityNode> getPriorityList() {
         if (priorities == null) {
-            priorities = new Vector();
-            priorities.addElement(new PriorityNode(HIGH,
+            priorities = new ArrayList<PriorityNode>();
+            priorities.add(new PriorityNode(HIGH,
                     ToDoItem.HIGH_PRIORITY));
-            priorities.addElement(new PriorityNode(MEDIUM,
+            priorities.add(new PriorityNode(MEDIUM,
                     ToDoItem.MED_PRIORITY));
-            priorities.addElement(new PriorityNode(LOW,
+            priorities.add(new PriorityNode(LOW,
                     ToDoItem.LOW_PRIORITY));
         }
         return priorities;
     }
 
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
     /**
      * @return the name
      */
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     /**
      * @return the priority
      */
-    public int getPriority() { return priority; }
+    public int getPriority() {
+        return priority;
+    }
 
     /*
      * @see java.lang.Object#toString()
      */
-    public String toString() { return getName(); }
+    @Override
+    public String toString() {
+        return getName();
+    }
 
-} /* end class PriorityNode */
+}

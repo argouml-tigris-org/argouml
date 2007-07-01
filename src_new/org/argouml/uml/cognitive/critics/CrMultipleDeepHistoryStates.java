@@ -121,7 +121,7 @@ public class CrMultipleDeepHistoryStates extends CrUML {
                     && Model.getFacade().equalsPseudostateKind(
                             Model.getFacade().getKind(sv),
                             Model.getPseudostateKind().getDeepHistory())) {
-                offs.addElement(sv);
+                offs.add(sv);
             }
         }
         return offs;
@@ -136,7 +136,7 @@ public class CrMultipleDeepHistoryStates extends CrUML {
             return false;
         }
         ListSet offs = i.getOffenders();
-        Object dm = offs.firstElement();
+        Object dm = offs.get(0);
         ListSet newOffs = computeOffenders(dm);
         boolean res = offs.equals(newOffs);
         return res;

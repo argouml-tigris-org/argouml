@@ -55,6 +55,7 @@ public class CrMissingStateName extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!Model.getFacade().isAStateVertex(dm)) {
             return NO_PROBLEM;
@@ -86,6 +87,7 @@ public class CrMissingStateName extends CrUML {
     /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
+    @Override
     public Icon getClarifier() {
 	return ClClassName.getTheInstance();
     }
@@ -94,10 +96,11 @@ public class CrMissingStateName extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
+    @Override
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object me = item.getOffenders().elementAt(0);
+	    Object me = item.getOffenders().get(0);
 	    String ins = super.getInstructions();
 	    String sug = super.getDefaultSuggestion();
 	    if (Model.getFacade().isAStateVertex(me)) {
@@ -118,10 +121,13 @@ public class CrMissingStateName extends CrUML {
     /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
-    public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+    @Override
+    public Class getWizardClass(ToDoItem item) {
+        return WizMEName.class;
+    }
 
     /**
      * The UID.
      */
     private static final long serialVersionUID = 1181623952639408440L;
-} /* end class CrMissingStateName */
+}

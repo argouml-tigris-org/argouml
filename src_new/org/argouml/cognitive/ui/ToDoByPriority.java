@@ -24,8 +24,7 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
@@ -59,28 +58,29 @@ public class ToDoByPriority extends ToDoPerspective
      */
     public void toDoItemsChanged(ToDoListEvent tde) {
 	LOG.debug("toDoItemChanged");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
+        List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Enumeration elems = PriorityNode.getPriorities().elements();
-	while (elems.hasMoreElements()) {
-	    PriorityNode pn = (PriorityNode) elems.nextElement();
+        for (PriorityNode pn : PriorityNode.getPriorityList()) {
 	    path[1] = pn;
 	    int nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (item.getPriority() != pn.getPriority()) continue;
+            for (ToDoItem item : items) {
+		if (item.getPriority() != pn.getPriority()) {
+                    continue;
+                }
 		nMatchingItems++;
 	    }
-	    if (nMatchingItems == 0) continue;
+	    if (nMatchingItems == 0) {
+                continue;
+            }
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (item.getPriority() != pn.getPriority()) continue;
+            for (ToDoItem item : items) {
+		if (item.getPriority() != pn.getPriority()) {
+                    continue;
+                }
 		childIndices[nMatchingItems] = getIndexOfChild(pn, item);
 		children[nMatchingItems] = item;
 		nMatchingItems++;
@@ -94,28 +94,29 @@ public class ToDoByPriority extends ToDoPerspective
      */
     public void toDoItemsAdded(ToDoListEvent tde) {
 	LOG.debug("toDoItemAdded");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
+	List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Enumeration elems = PriorityNode.getPriorities().elements();
-	while (elems.hasMoreElements()) {
-	    PriorityNode pn = (PriorityNode) elems.nextElement();
+        for (PriorityNode pn : PriorityNode.getPriorityList()) {
 	    path[1] = pn;
 	    int nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (item.getPriority() != pn.getPriority()) continue;
+            for (ToDoItem item : items) {
+		if (item.getPriority() != pn.getPriority()) {
+                    continue;
+                }
 		nMatchingItems++;
 	    }
-	    if (nMatchingItems == 0) continue;
+	    if (nMatchingItems == 0) {
+                continue;
+            }
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (item.getPriority() != pn.getPriority()) continue;
+            for (ToDoItem item : items) {
+		if (item.getPriority() != pn.getPriority()) {
+                    continue;
+                }
 		childIndices[nMatchingItems] = getIndexOfChild(pn, item);
 		children[nMatchingItems] = item;
 		nMatchingItems++;
@@ -129,22 +130,22 @@ public class ToDoByPriority extends ToDoPerspective
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
 	LOG.debug("toDoItemRemoved");
-	Vector items = tde.getToDoItems();
-	int nItems = items.size();
+        List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Enumeration elems = PriorityNode.getPriorities().elements();
-	while (elems.hasMoreElements()) {
-	    PriorityNode pn = (PriorityNode) elems.nextElement();
+        for (PriorityNode pn : PriorityNode.getPriorityList()) {
 	    int nodePriority = pn.getPriority();
 	    boolean anyInPri = false;
-	    for (int i = 0; i < nItems; i++) {
-		ToDoItem item = (ToDoItem) items.elementAt(i);
+            for (ToDoItem item : items) {
 		int pri = item.getPriority();
-		if (pri == nodePriority) anyInPri = true;
+		if (pri == nodePriority) {
+                    anyInPri = true;
+                }
 	    }
-	    if (!anyInPri) continue;
+	    if (!anyInPri) {
+                continue;
+            }
 	    LOG.debug("toDoItemRemoved updating PriorityNode");
 	    path[1] = pn;
 	    //fireTreeNodesChanged(this, path, childIndices, children);
@@ -157,6 +158,7 @@ public class ToDoByPriority extends ToDoPerspective
      */
     public void toDoListChanged(ToDoListEvent tde) { }
 
-} /* end class ToDoByPriority */
+}
+
 
 

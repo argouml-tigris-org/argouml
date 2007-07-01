@@ -52,4 +52,5 @@ public interface ToDoListListener extends java.util.EventListener {
      * @param tde the todo list event
      */
     void toDoItemsRemoved(ToDoListEvent tde);
-} /* end interface ToDoListListener */
+    
+}
