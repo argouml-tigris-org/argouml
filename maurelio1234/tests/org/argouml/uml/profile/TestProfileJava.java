@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.profile.java;
+package org.argouml.uml.profile;
 
 import java.util.Collection;
 
@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.uml.profile.ProfileJava;
 
 /**
  * 

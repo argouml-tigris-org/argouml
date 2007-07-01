@@ -30,8 +30,6 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.model.InitializeModel;
-import org.argouml.uml.profile.java.JavaFormatingStrategy;
-import org.argouml.uml.profile.java.ProfileJava;
 
 /**
  * Tests the ProfileConfiguration
