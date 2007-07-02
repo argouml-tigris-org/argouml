@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2006 The Regents of the University of California. All
+// Copyright (c) 2002-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -162,21 +162,11 @@ public class ItemUID {
                 || (obj instanceof CommentEdge)) {
             return UUIDHelper.getUUID(obj);
         }
-	/*
-	// Want to use the "built in" UID of the MXxx instances
-	// d00mst 2002-10-08
-	if (obj instanceof MModelElement)
-	{
-	String id = ((MModelElement)obj).getTaggedValue("org.argouml.uid");
-	//LOG.debug("Read UID " + id + " from an object!");
-	return id;
-	}
-	*/
 
 	Object rv;
 	try {
-	    Method m = obj.getClass().getMethod("getItemUID", (Class) null);
-	    rv = m.invoke(obj, (Object) null);
+	    Method m = obj.getClass().getMethod("getItemUID", (Class[]) null);
+	    rv = m.invoke(obj, (Object[]) null);
 	} catch (NoSuchMethodException nsme) {
 	    // Apparently this object had no getItemUID
 	    return null;
