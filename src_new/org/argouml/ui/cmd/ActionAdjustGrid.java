@@ -1,5 +1,5 @@
 // $Id: eclipse-argo-codetemplates.xml 10612 2006-05-25 12:58:04Z linus $
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -55,7 +54,7 @@ import org.tigris.gef.base.LayerGrid;
  */
 public class ActionAdjustGrid extends AbstractAction {
 
-    private HashMap myMap;
+    private HashMap<String, Comparable> myMap;
     private static final String DEFAULT_ID = "03";
     private static ButtonGroup myGroup;
 
@@ -67,7 +66,7 @@ public class ActionAdjustGrid extends AbstractAction {
      *          the spacing, paintLines and paintDots. 
      * @param name the name for this action
      */
-    private ActionAdjustGrid(HashMap map, String name) {
+    private ActionAdjustGrid(HashMap<String, Comparable> map, String name) {
         super();
         myMap = map;
         putValue(Action.NAME, name);
@@ -97,13 +96,10 @@ public class ActionAdjustGrid extends AbstractAction {
      * Additionally, the ButtonGroup is searched for the right Action, 
      * and when found, the button's model initialised.
      */
-    public static void init() {
+    static void init() {
         String id = Configuration.getString(Argo.KEY_GRID, DEFAULT_ID);
-        List actions = createAdjustGridActions(false);
-        Iterator i = actions.iterator();
-        Action a;
-        while (i.hasNext()) {
-            a = (Action) i.next();
+        List<Action> actions = createAdjustGridActions(false);
+        for (Action a : actions) {
             if (a.getValue("ID").equals(id)) {
                 a.actionPerformed(null);
 
@@ -135,15 +131,15 @@ public class ActionAdjustGrid extends AbstractAction {
      * @param longStrings
      * @return List of Actions which adjust the grid
      */
-    static List createAdjustGridActions(boolean longStrings) {
-        List result = new ArrayList();
+    static List<Action> createAdjustGridActions(boolean longStrings) {
+        List<Action> result = new ArrayList<Action>();
         Action a;
         String shortname, longname, name;
 
         shortname = "menu.item.lines-16";
         longname = "action.adjust-grid.lines-16";
         name = Translator.localize(longStrings ? longname : shortname);
-        HashMap map1 = new HashMap(4);
+        HashMap<String, Comparable> map1 = new HashMap<String, Comparable>(4);
         map1.put("spacing", new Integer(16));
         map1.put("paintLines", new Boolean(true));
         map1.put("paintDots", new Boolean(true));
@@ -156,7 +152,7 @@ public class ActionAdjustGrid extends AbstractAction {
         shortname = "menu.item.lines-8";
         longname = "action.adjust-grid.lines-8";
         name = Translator.localize(longStrings ? longname : shortname);
-        HashMap map2 = new HashMap(4);
+        HashMap<String, Comparable> map2 = new HashMap<String, Comparable>(4);
         map2.put("spacing", new Integer(8));
         map2.put("paintLines", new Boolean(true));
         map2.put("paintDots", new Boolean(true));
@@ -169,7 +165,7 @@ public class ActionAdjustGrid extends AbstractAction {
         shortname = "menu.item.dots-16";
         longname = "action.adjust-grid.dots-16";
         name = Translator.localize(longStrings ? longname : shortname);
-        HashMap map3 = new HashMap(4);
+        HashMap<String, Comparable> map3 = new HashMap<String, Comparable>(4);
         map3.put("spacing", new Integer(16));
         map3.put("paintLines", new Boolean(false));
         map3.put("paintDots", new Boolean(true));
@@ -182,7 +178,7 @@ public class ActionAdjustGrid extends AbstractAction {
         shortname = "menu.item.dots-32";
         longname = "action.adjust-grid.dots-32";
         name = Translator.localize(longStrings ? longname : shortname);
-        HashMap map4 = new HashMap(4);
+        HashMap<String, Comparable> map4 = new HashMap<String, Comparable>(4);
         map4.put("spacing", new Integer(32));
         map4.put("paintLines", new Boolean(false));
         map4.put("paintDots", new Boolean(true));
@@ -195,7 +191,7 @@ public class ActionAdjustGrid extends AbstractAction {
         shortname = "menu.item.none";
         longname = "action.adjust-grid.none";
         name = Translator.localize(longStrings ? longname : shortname);
-        HashMap map5 = new HashMap(4);
+        HashMap<String, Comparable> map5 = new HashMap<String, Comparable>(4);
         map5.put("spacing", new Integer(16));
         map5.put("paintLines", new Boolean(false));
         map5.put("paintDots", new Boolean(false));

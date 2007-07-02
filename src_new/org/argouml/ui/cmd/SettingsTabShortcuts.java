@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui;
+package org.argouml.ui.cmd;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -50,11 +50,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.i18n.Translator;
-import org.argouml.ui.cmd.Action;
-import org.argouml.ui.cmd.ShortcutChangedEvent;
-import org.argouml.ui.cmd.ShortcutChangedListener;
-import org.argouml.ui.cmd.ShortcutField;
-import org.argouml.ui.cmd.ShortcutMgr;
 import org.argouml.util.KeyEventUtils;
 
 /**
