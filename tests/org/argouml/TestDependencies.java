@@ -27,9 +27,9 @@ package org.argouml;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import jdepend.framework.JDepend;
-import jdepend.framework.JavaClass;
 import jdepend.framework.JavaPackage;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -93,7 +93,7 @@ public class TestDependencies extends TestCase {
             "org.argouml.i18n",
             "org.argouml.gefext",
             "org.argouml.language.ui",
-            //"org.argouml.moduleloader", //there is no cycle, but it fails...
+            "org.argouml.moduleloader",
             "org.argouml.notation.providers",
             //"org.argouml.notation.providers.java",
             //"org.argouml.notation.providers.uml",
@@ -108,7 +108,10 @@ public class TestDependencies extends TestCase {
             "org.argouml.util.osdep.win32",
             "org.argouml.util.osdep",
             "org.argouml.util",
-            //"org.argouml.uml.cognitive.critics", //there is no cycle, but it fails...
+            // There was a comment saying that the below has no cycles, but
+            // Classycle thinks there's a cycle here too, so I believe there
+            // really is one - tfm 20070702
+//            "org.argouml.uml.cognitive.critics",
         };
         for (int i = 0; i < clean.length; i++) {
             suite.addTest(new CheckDependencyCycle(jdepend, clean[i]));
@@ -155,7 +158,7 @@ public class TestDependencies extends TestCase {
             {"org.argouml.uml.diagram", "org.argouml.ui"},
             {"org.argouml.ui", "org.argouml.notation.ui"},
             {"org.argouml.util", "org.argouml.ui.cmd"},
-            //{"org.argouml.moduleloader", "org.argouml.ui"},//Why does this fail?
+            {"org.argouml.moduleloader", "org.argouml.ui"},
             //{"org.argouml.uml.reveng", "org.argouml.ui"},
             //{"org.argouml.language.java.generator", "org.argouml.kernel"},
         };
@@ -184,13 +187,33 @@ public class TestDependencies extends TestCase {
                 StringBuffer msg = new StringBuffer(
                         "JDepend indicates a dependency cycle in ");
                 msg.append(p.getName());
-                msg.append("(" + p.getClassCount() + " classes: ");
-                Collection<JavaClass> c = p.getClasses();
-                for (JavaClass jc : c) {
-                    msg.append(jc.getName());
-                    msg.append(" ");
+                List<JavaPackage> firstCycle = new ArrayList<JavaPackage>();
+                p.collectCycle(firstCycle);
+                msg.append("(" + firstCycle.size());
+                msg.append(" packages in first cycle: ");
+                for (JavaPackage cp : firstCycle) {
+                    msg.append(cp.getName()).append(" ");
                 }
-                msg.append(")");
+                msg.append(") -- ");
+                List<JavaPackage> otherCycles = new ArrayList<JavaPackage>();
+                p.collectAllCycles(otherCycles);
+                otherCycles.removeAll(firstCycle);
+                if (!otherCycles.isEmpty()) {
+                    msg.append("(" + otherCycles.size());
+                    msg.append(" packages in additional cycle(s): ");
+                    for (JavaPackage cp : otherCycles) {
+                        msg.append(cp.getName()).append(" ");
+                    }
+                    msg.append(") -- ");
+                }
+                
+//                msg.append("(" + p.getClassCount() + " classes: ");
+//                Collection<JavaClass> c = p.getClasses();
+//                for (JavaClass jc : c) {
+//                    msg.append(jc.getName());
+//                    msg.append(" ");
+//                }
+//                msg.append(")");
                 assertTrue(msg.toString(), false);
             }
         }
