@@ -34,7 +34,9 @@ import org.argouml.cognitive.Critic;
 import org.argouml.model.Model;
 
 /**
- * Initialise the Java related critics.
+ * Initialise the Java related critics. <p>
+ * 
+ * TODO: Test and then enable the CrReservedNameJava.
  *
  * @author Michiel
  */
@@ -42,6 +44,7 @@ public class InitJavaCritics implements InitSubsystem {
 
     private static Critic crMultiInherit = new CrMultipleInheritance();
     private static Critic crMultiRealization = new CrMultipleRealization();
+    //private static Critic crReservedNameJava = new CrReservedNameJava();
 
     public List<GUISettingsTabInterface> getProjectSettingsTabs() {
         return Collections.emptyList();
@@ -56,6 +59,7 @@ public class InitJavaCritics implements InitSubsystem {
         Object interfaceCls = Model.getMetaTypes().getInterface();
         Agency.register(crMultiInherit, classCls);
         Agency.register(crMultiRealization, interfaceCls);
+        //Agency.register(crReservedNameJava, interfaceCls);
     }
 
 }

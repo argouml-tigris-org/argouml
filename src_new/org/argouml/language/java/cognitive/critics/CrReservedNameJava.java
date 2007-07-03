@@ -22,10 +22,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.cognitive.critics;
+package org.argouml.language.java.cognitive.critics;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.argouml.uml.cognitive.critics.CrReservedName;
 
 /**
  * Critic to check whether the name of a ModelElement in the Model resembles or
