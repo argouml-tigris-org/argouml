@@ -473,7 +473,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getElementImports(Object handle) {
-        throw new NotYetImplementedException();
+	return Collections.EMPTY_LIST;
+//        throw new NotYetImplementedException();
     }
 
     public Collection getElementImports2(Object handle) {

@@ -5,7 +5,15 @@ Bundle-SymbolicName: org.argouml.core.model.euml2_b00__1
 Bundle-Version: 0.25.3
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
-Require-Bundle: org.argouml.core.model,org.eclipse.core.runtime,org.eclipse.uml2.common,org.eclipse.uml2.common.edit,org.eclipse.uml2.uml,org.eclipse.uml2.uml.edit,org.eclipse.uml2.uml.resources
+Require-Bundle: org.argouml.core.model,
+ org.eclipse.core.runtime,
+ org.eclipse.uml2.common,
+ org.eclipse.uml2.common.edit,
+ org.eclipse.uml2.uml,
+ org.eclipse.uml2.uml.edit,
+ org.eclipse.uml2.uml.resources,
+ org.eclipse.uml2,
+ org.eclipse.uml2.uml.editor
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.argouml.model.euml
 Eclipse-RegisterBuddy: org.argouml.core.lib
