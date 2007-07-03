@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<title>org.argouml.cognitive.critics package</title>
+<!--
+   Copyright (c) 1996-2004 The Regents of the University of California. All
+   Rights Reserved. Permission to use, copy, modify, and distribute this
+   software and its documentation without fee, and without a written
+   agreement is hereby granted, provided that the above copyright notice
+   and this paragraph appear in all copies.  This software program and
+   documentation are copyrighted by The Regents of the University of
+   California. The software program and documentation are supplied "AS
+   IS", without any accompanying services from The Regents. The Regents
+   does not warrant that the operation of the program will be
+   uninterrupted or error-free. The end-user understands that the program
+   was developed for research purposes and is advised not to rely
+   exclusively on the program for any reason.  IN NO EVENT SHALL THE
+   UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+   SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+</head>
+<body bgcolor="white">
+
+<p>The classes at the heart of critic functionality, including classes for
+general critics that belong in no more specific category.</p>
+
+
+<!-- Description of the package itself -->
+
+<h2>Package Specification</h2>
+
+<h3>Interfaces</h3>
+
+<p>This package defines no interfaces.</p>
+
+<h3>Classes</h3>
+
+<p>The key classes are:<p>
+
+<ul>
+  <li><p>{@link org.argouml.cognitive.critics.Agency}. The central class
+    controlling the critics.</p></li>
+
+  <li><p>{@link org.argouml.cognitive.critics.Critic}. The main class for
+    defining critics. Specializations include {@link
+      org.argouml.cognitive.critics.CompoundCritic} for critics built out of
+    several other critics and {@link org.argouml.uml.cognitive.critics.CrUML}
+    for critics relating specifically to UML.</p></li>
+    
+  <li><p>{@link org.argouml.cognitive.critics.ControlMech}. A control mech is 
+  	used by the agency to control when a critic is active or not. We use the standard mech.</p></li>
+
+</ul>
+
+<p>A number of other classes are provided to support these classes&mdash;see
+the individual classes for more details.</p>
+
+<p>This package also contains critics relating to the overall use of
+ArgoUML. Each critic has its own class, with naming of the form
+Cr<em>CriticName</em>.</p>
+
+<h3>Subpackages</h3>
+
+<p>{@link org.argouml.cognitive.critics.ui} contains classes relating the user
+interface for the critics mechanism.</p>
+
+<h2>Related Documentation </h2>
+
+<p>For more information on the critics mechanism, see the {@link <a
+href="http://argouml.tigris.org/documentation/snapshot/manual/argomanual.html">User
+Manual</a>}, in particular the reference section on  {@link <a
+href="http://argouml.tigris.org/documentation/snapshot/manual/argomanual.html#ch.ref.critics">Critics</a>}.</p>
+
+<p>Critics specialized to particular areas may be found in the following
+packages.</p>
+
+<ul>
+  <li><p>{@link org.argouml.language.java.cognitive.critics}. Critics relating
+    to Java language specific issues.</p></li>
+
+  <li><p>{@link org.argouml.pattern.cognitive.critics}. Critics relating
+    to design patterns (in the Gang of Four sense).</p></li>
+
+  <li><p>{@link org.argouml.uml.cognitive.critics}. Critics relating
+    to uml specific issues.</p></li>
+</ul>
+
+</body>
+</html>
+
+

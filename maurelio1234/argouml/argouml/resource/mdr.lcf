@@ -1,0 +1,17 @@
+#
+# add -Dlog4j.configuration=org/argouml/resource/mdr.lcf
+# to the command line to use this log4j configuration
+#
+# $Id: mdr.lcf 9137 2005-10-25 03:17:45Z tfmorris $
+
+#
+log4j.rootCategory=ERROR, MDR
+
+#
+#log4j.category.org.argouml.model.mdr.ModelEventPumpMDRImpl=MDR
+log4j.category.org.argouml.model.mdr=MDR
+# 
+log4j.appender.MDR=org.apache.log4j.ConsoleAppender
+log4j.appender.MDR.layout=org.apache.log4j.PatternLayout
+log4j.appender.MDR.layout.ConversionPattern=%5p: %m (%F:%L)%n
+log4j.appender.MDR.Threshold=DEBUG
