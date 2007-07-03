@@ -22,15 +22,17 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.cognitive.critics;
+package org.argouml.pattern.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.uml.cognitive.UMLDecision;
+import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  * A critic to suggest using the facade stereotype. <p>
  *
- * TODO: at the moment only a dummy implementation
+ * TODO: At the moment only a dummy implementation,
+ * see issue 3093.
 */
 public class CrConsiderFacade extends CrUML {
 
@@ -39,7 +41,7 @@ public class CrConsiderFacade extends CrUML {
      */
     public CrConsiderFacade() {
         setupHeadAndDesc();
-	addSupportedDecision(UMLDecision.MODULARITY);
+	addSupportedDecision(UMLDecision.PATTERNS);
 	addTrigger("ownedElement");
     }
 
