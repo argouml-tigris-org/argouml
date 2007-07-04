@@ -24,10 +24,23 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+/*
+ * This implementation uses ideas and code snippets from the 
+ * "org.eclipse.uml2.uml.editor.presentation" package
+ * 
+ * The package "org.eclipse.uml2.uml.editor.presentation" is part of the
+ * Eclipse UML2 plugin and it is available under the terms of the Eclipse Public License v1.0
+ * 
+ * The Eclipse Public License v1.0 is available at http://www.eclipse.org/legal/epl-v10.html
+ */
+
 package org.argouml.model.euml;
 
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.EventObject;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ActivityGraphsFactory;
@@ -67,8 +80,16 @@ import org.argouml.model.UseCasesHelper;
 import org.argouml.model.VisibilityKind;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.uml2.uml.resource.XMI2UMLResource;
+import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.command.CommandStackListener;
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.uml2.common.edit.domain.UML2AdapterFactoryEditingDomain;
+import org.eclipse.uml2.uml.edit.providers.UMLItemProviderAdapterFactory;
+import org.eclipse.uml2.uml.edit.providers.UMLReflectiveItemProviderAdapterFactory;
+import org.eclipse.uml2.uml.edit.providers.UMLResourceItemProviderAdapterFactory;
 
 /**
  * Eclipse UML2 implementation of the ArgoUML Model subsystem. Although built on
@@ -158,21 +179,26 @@ public class EUMLModelImplementation implements ModelImplementation {
     private VisibilityKind theVisibilityKind;
 
     /**
+     * This keeps track of the editing domain that is used to track all changes to the model.
+     */
+    private AdapterFactoryEditingDomain editingDomain;
+    
+    /**
+     * This is the one adapter factory used for providing views of the model.
+     */
+    private ComposedAdapterFactory adapterFactory;
+    
+    /**
      * Constructor.
      */
     public EUMLModelImplementation() {
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
-                XMI2UMLResource.FILE_EXTENSION, XMI2UMLResource.Factory.INSTANCE);
-        
-        // This registers the .uml extension too, but that conflicts with
-        // the ArgoUML usage for a concatenated project file.
-//        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
-//                UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
-        
-        // Create and start event pump first so it's available for all others
-//        theModelEventPump = new ModelEventPumpEUMLImpl(this);
+//	theModelEventPump = new ModelEventPumpEUMLImpl(this);
+//        LOG.debug("EUML Init - event pump started"); //$NON-NLS-1$
+
+	initializeEditingDomain();
+	LOG.debug("EUML Init - editing domain initialized"); //$NON-NLS-1$
+	
 //        theModelEventPump.startPumpingEvents();
-//        LOG.debug("EUML Init - event pump started");
 
         // We may want to initialize some basic packages first,
         // but we should try to use lazy initialization for most/all.
@@ -189,6 +215,76 @@ public class EUMLModelImplementation implements ModelImplementation {
 //        thePseudostateKind = new PseudostateKindEUMLImpl(this);
 //        theScopeKind = new ScopeKindEUMLImpl(this);
 //        theVisibilityKind = new VisibilityKindEUMLImpl(this);
+    }
+    
+//    /**
+//     * This sets up {@link org.eclipse.emf.ecore.resource.Resource.Factory.Registry Resource.Factory.Registry} and
+//     * {@link org.eclipse.emf.ecore.resource.URIConverter URIConverter} for
+//     * the ArgoUML standalone (not the Eclipse plugin) application.
+//     * <p>
+//     * You must define a "eUML.org_eclipse_uml2_uml_resources" property to point to the
+//     * location of the "org.eclipse.uml2.uml.resources" jar plugin.
+//     * TODO: exemplu cale jar
+//     */
+//    private void initializeRegisters() {
+//	Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
+//		UML22UMLResource.FILE_EXTENSION,
+//		UML22UMLResource.Factory.INSTANCE);
+//	Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
+//		XMI2UMLResource.FILE_EXTENSION,
+//		XMI2UMLResource.Factory.INSTANCE);
+//	Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
+//		UMLResource.FILE_EXTENSION,
+//		UMLResource.Factory.INSTANCE);
+//	
+//	URIConverter.URI_MAP.putAll(UML22UMLExtendedMetaData.getURIMap());
+//	URIConverter.URI_MAP.putAll(XMI2UMLExtendedMetaData.getURIMap());
+//	
+//	String uriPath = System.getProperty("eUML.org_eclipse_uml2_uml_resources"); //$NON-NLS-1$
+//	if (uriPath == null)
+//	    throw(new RuntimeException("'eUML.org_eclipse_uml2_uml_resources' property not defined"));
+//	URI uri = URI.createURI(uriPath);
+//	
+//	URIConverter.URI_MAP.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP),
+//		uri.appendSegment("libraries").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
+//	URIConverter.URI_MAP.put(URI.createURI(UMLResource.METAMODELS_PATHMAP),
+//		uri.appendSegment("metamodels").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
+//	URIConverter.URI_MAP.put(URI.createURI(UMLResource.PROFILES_PATHMAP),
+//		uri.appendSegment("profiles").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
+//    }
+    
+    /**
+     * This sets up the editing domain for the model editor.
+     */
+    private void initializeEditingDomain() {
+	List<AdapterFactory> factories = new ArrayList<AdapterFactory>();
+	factories.add(new UMLResourceItemProviderAdapterFactory());
+	factories.add(new UMLItemProviderAdapterFactory());
+	factories.add(new EcoreItemProviderAdapterFactory());
+	factories.add(new UMLReflectiveItemProviderAdapterFactory());
+
+	adapterFactory = new ComposedAdapterFactory(factories);
+
+	BasicCommandStack commandStack = new BasicCommandStack() {
+
+	    @Override
+	    protected void handleError(Exception exception) {
+		super.handleError(exception);
+		LOG.error("Command error - " + exception); //$NON-NLS-1$
+	    }
+
+	};
+
+	commandStack.addCommandStackListener(new CommandStackListener() {
+
+	    public void commandStackChanged(final EventObject event) {
+		LOG.debug("Command stack - " + event); //$NON-NLS-1$
+	    }
+
+	});
+
+	editingDomain = new UML2AdapterFactoryEditingDomain(adapterFactory,
+		commandStack);
     }
 
     public ActivityGraphsFactory getActivityGraphsFactory() {
