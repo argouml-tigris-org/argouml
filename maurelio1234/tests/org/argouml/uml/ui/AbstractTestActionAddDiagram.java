@@ -33,8 +33,8 @@ import org.argouml.model.InitializeModel;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * @author JBranderhorst
@@ -119,7 +119,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
 	assertTrue("The test case has a non-valid namespace",
 		   action.isValidNamespace(ns));
 
-	UMLDiagram diagram = action.createDiagram(ns);
+	ArgoDiagram diagram = action.createDiagram(ns);
         Model.getPump().flushModelEvents();
 	assertNotNull(
 		      "The diagram has no namespace",
@@ -143,7 +143,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      *
      * @param diagram The diagram to check the namespace for.
      */
-    protected void checkNamespace(UMLDiagram diagram) {
+    protected void checkNamespace(ArgoDiagram diagram) {
         assertTrue(
         	   "The diagram has a non-valid namespace",
         	   action.isValidNamespace(diagram.getNamespace()));
@@ -153,13 +153,13 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      * Tests if two diagrams created have different names.
      */
     public void testDifferentNames() {
-	UMLDiagram diagram1 = action.createDiagram(ns);
+	ArgoDiagram diagram1 = action.createDiagram(ns);
 	// This next line is needed to register the diagram in the project,
         // since creating a next diagram will need the new name to be compared
         // with existing diagrams in the project, to validate
         // there are no duplicates.
 	ProjectManager.getManager().getCurrentProject().addMember(diagram1);
-        UMLDiagram diagram2 = action.createDiagram(ns);
+        ArgoDiagram diagram2 = action.createDiagram(ns);
         Model.getPump().flushModelEvents();
 	assertTrue(
 		   "The created diagrams have the same name",

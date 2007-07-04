@@ -58,12 +58,12 @@ public class GUITestModuleLoader2 extends TestCase {
     }
 
     public void testAllModules() {
-	Collection all = ModuleLoader2.allModules();
+	Collection<String> all = ModuleLoader2.allModules();
 	assertNotNull(all);
 
-	Iterator iter = all.iterator();
+	Iterator<String> iter = all.iterator();
 	while (iter.hasNext()) {
-	    assertTrue(iter.next() instanceof ModuleInterface);
+	    assertNotNull(iter.next());
 	}
     }
 
@@ -89,9 +89,9 @@ public class GUITestModuleLoader2 extends TestCase {
 	List<String> extensionLocations =
 	    ModuleLoader2.getInstance().getExtensionLocations();
 	assertNotNull(extensionLocations);
-	for (Iterator iter = extensionLocations.iterator();
+	for (Iterator<String> iter = extensionLocations.iterator();
 		iter.hasNext();) {
-	    assertTrue(iter.next() instanceof String);
+	    assertNotNull(iter.next());
 	}
     }
 

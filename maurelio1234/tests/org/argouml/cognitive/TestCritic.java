@@ -24,10 +24,6 @@
 
 package org.argouml.cognitive;
 
-import java.util.Hashtable;
-
-import org.argouml.cognitive.Critic;
-
 import junit.framework.TestCase;
 
 /**
@@ -46,12 +42,16 @@ public class TestCritic extends TestCase {
         cr = new Critic();
     }
 
-    public void testArgs() {
-        Hashtable<String, Object> t = new Hashtable<String, Object>();
-        t.put("threshold", new Integer(5));
-        t.put("param1", "XYZ");
-        cr.setArgs(t);
-        assertSame(t, cr.getArgs());
-    }
+    /**
+     * Test some basic functions.
+     */
+    public void testBasics() {
+        assertFalse(cr.predicate(null, null));
 
+        assertTrue(cr.isActive());
+        cr.beInactive();
+        assertFalse(cr.isActive());
+        cr.beActive();
+        assertTrue(cr.isActive());
+    }
 }

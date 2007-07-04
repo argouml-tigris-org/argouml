@@ -32,6 +32,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.graph.presentation.JGraph;
@@ -46,7 +47,7 @@ public class TestTabDiagram extends TestCase {
 
     private static final boolean PERFORMANCE_TEST = false;
 
-    private UMLDiagram diagram;
+    private ArgoDiagram diagram;
 
     /**
      * Constructor for TestTabDiagram.
@@ -127,7 +128,7 @@ public class TestTabDiagram extends TestCase {
         // setup
         if (PERFORMANCE_TEST) {
             try {
-                UMLDiagram[] diagrams = new UMLDiagram[NUMBER_OF_DIAGRAMS];
+                ArgoDiagram[] diagrams = new ArgoDiagram[NUMBER_OF_DIAGRAMS];
                 Project project =
                     ProjectManager.getManager().getCurrentProject();
                 Object clazz = Model.getCoreFactory().buildClass();

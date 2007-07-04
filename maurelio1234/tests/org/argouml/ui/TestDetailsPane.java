@@ -34,7 +34,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.swidgets.Horizontal;
 
@@ -84,7 +83,7 @@ public class TestDetailsPane extends TestCase {
 		});
         pane.targetSet(e);
         assertEquals("1:", todoPane, pane.getTabs().getSelectedComponent());
-        UMLDiagram diagram = new UMLClassDiagram();
+        UMLClassDiagram diagram = new UMLClassDiagram();
         e =
             new TargetEvent(
 			    this,
