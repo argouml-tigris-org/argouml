@@ -1,4 +1,4 @@
-// $Id: UMLModelElementListModel2.java 12911 2007-06-27 18:06:22Z tfmorris $
+// $Id$
 // Copyright (c) 2002-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

@@ -1,4 +1,4 @@
-// $Id: StylePanelFigAssociationClass.java 12774 2007-06-07 19:10:36Z mvw $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

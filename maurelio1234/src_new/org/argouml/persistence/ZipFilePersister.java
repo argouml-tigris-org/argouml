@@ -1,4 +1,4 @@
-// $Id: ZipFilePersister.java 12859 2007-06-16 11:57:03Z maurelio1234 $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -31,14 +31,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -47,7 +45,6 @@ import org.argouml.model.Model;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.uml.profile.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**
@@ -121,7 +118,7 @@ class ZipFilePersister extends XmiFilePersister {
                     "Failed to archive the previous file version", e);
         }
 
-        OutputStreamWriter writer = null;
+        OutputStream bufferedStream = null;
         try {
             //project.setFile(file);
 
@@ -131,9 +128,7 @@ class ZipFilePersister extends XmiFilePersister {
             ZipEntry xmiEntry =
                 new ZipEntry(fileName.substring(0, fileName.lastIndexOf(".")));
             stream.putNextEntry(xmiEntry);
-            OutputStream bout = new BufferedOutputStream(stream);
-            writer = new OutputStreamWriter(bout, 
-                    Argo.getEncoding());
+            bufferedStream = new BufferedOutputStream(stream);
 
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
@@ -147,7 +142,7 @@ class ZipFilePersister extends XmiFilePersister {
                     }
                     MemberFilePersister persister
                         = new ModelMemberFilePersister();
-                    persister.save(projectMember, writer, false);
+                    persister.save(projectMember, bufferedStream);
                 }
             }
             stream.close();
@@ -166,8 +161,10 @@ class ZipFilePersister extends XmiFilePersister {
         } catch (Exception e) {
             LOG.error("Exception occured during save attempt", e);
             try {
-                writer.close();
-            } catch (IOException ex) { }
+                bufferedStream.close();
+            } catch (IOException ex) {
+                // If we get a 2nd error, just ignore it
+            }
 
             // frank: in case of exception
             // delete name and mv name+"#" back to name if name+"#" exists
@@ -179,7 +176,7 @@ class ZipFilePersister extends XmiFilePersister {
         }
 
         try {
-            writer.close();
+            bufferedStream.close();
         } catch (IOException ex) {
             LOG.error("Failed to close save output writer", ex);
         }
@@ -199,8 +196,6 @@ class ZipFilePersister extends XmiFilePersister {
                     .getDiagramMemberFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
-        } else if (pm instanceof ProfileConfiguration) {
-            persister = new ProfileConfigurationFilePersister();
         } else if (pm instanceof ProjectMemberModel) {
             persister = new ModelMemberFilePersister();
         }

@@ -1,4 +1,4 @@
-// $Id: ActionImportFromSources.java 12900 2007-06-23 06:32:17Z mvw $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

@@ -1,5 +1,5 @@
-// $Id: ItemUID.java 12950 2007-07-01 08:10:04Z tfmorris $
-// Copyright (c) 2002-2006 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2002-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.uml.CommentEdge;
 import org.argouml.uml.UUIDHelper;
 
 /**
@@ -157,24 +158,15 @@ public class ItemUID {
      * @return	The ID of the object, or null.
      */
     protected static String readObjectID(Object obj) {
-        if (Model.getFacade().isAUMLElement(obj)) {
+        if (Model.getFacade().isAUMLElement(obj) 
+                || (obj instanceof CommentEdge)) {
             return UUIDHelper.getUUID(obj);
         }
-	/*
-	// Want to use the "built in" UID of the MXxx instances
-	// d00mst 2002-10-08
-	if (obj instanceof MModelElement)
-	{
-	String id = ((MModelElement)obj).getTaggedValue("org.argouml.uid");
-	//LOG.debug("Read UID " + id + " from an object!");
-	return id;
-	}
-	*/
 
 	Object rv;
 	try {
-	    Method m = obj.getClass().getMethod("getItemUID", (Class) null);
-	    rv = m.invoke(obj, (Object) null);
+	    Method m = obj.getClass().getMethod("getItemUID", (Class[]) null);
+	    rv = m.invoke(obj, (Object[]) null);
 	} catch (NoSuchMethodException nsme) {
 	    // Apparently this object had no getItemUID
 	    return null;

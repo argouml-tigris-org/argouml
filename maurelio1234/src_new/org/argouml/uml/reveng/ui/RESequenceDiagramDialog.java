@@ -1,4 +1,4 @@
-// $Id: RESequenceDiagramDialog.java 12924 2007-06-29 19:26:40Z mvw $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

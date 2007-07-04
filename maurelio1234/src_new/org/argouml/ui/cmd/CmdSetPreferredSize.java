@@ -1,4 +1,4 @@
-// $Id: CmdSetPreferredSize.java 11918 2007-01-26 20:07:08Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -27,11 +27,8 @@ package org.argouml.ui.cmd;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
 import org.argouml.i18n.Translator;
-import org.argouml.uml.diagram.state.ui.FigCompositeState;
-import org.argouml.uml.diagram.static_structure.ui.FigPackage;
-
-
 import org.tigris.gef.base.Cmd;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -41,7 +38,9 @@ import org.tigris.gef.presentation.Fig;
 
 /**
  * A command to set selected figs to their minimum size. <p>
- * Despite its name, really the minimum size is selected here! 
+ * Despite its name, really the minimum size is selected here! <p>
+ * 
+ * TODO: Rename this class.
  *
  * @author Markus Klink
  */
@@ -49,8 +48,9 @@ public class CmdSetPreferredSize extends Cmd {
 
     /**
      * Constant to indicate command should set preferred size of Fig.
-     * @deprecated by mvw for 0.24.alpha3
+     * @deprecated by mvw for 0.24.alpha3. Nobody uses this...
      */
+    @Deprecated
     public static final int PREFERRED_SIZE = 0;
 
     /** constant for MINIMUM_SIZE */
@@ -67,9 +67,12 @@ public class CmdSetPreferredSize extends Cmd {
     
     /**
      * Constructor for the command.
+     * @deprecated by MVW in V0.25.3. 
+     * Use the constructor without params instead.
      *
      * @param theMode one of the defined constants
      */
+    @Deprecated
     public CmdSetPreferredSize(int theMode) {
 //        super(Translator.localize("action.size-to-fit-contents"));
 	super(Translator.localize("action.set-" + wordFor(theMode) + "-size"));
@@ -132,10 +135,13 @@ public class CmdSetPreferredSize extends Cmd {
 
         for (int i = 0; i < size; i++) {
             Fig fi = (Fig) figs.get(i);
-            // only resize elements which the user would also be able
-            // to resize.
-            if (fi.isResizable() && (!((fi instanceof FigPackage)
-		                     || (fi instanceof FigCompositeState)))) {
+            /* Only resize elements which the user would also be able
+             * to resize: */
+            if (fi.isResizable() 
+                    /* But exclude elements that enclose others, 
+                     * since their algorithms to calculate the minimum size 
+                     * does not take enclosed objects into account: */
+                    && (fi.getEnclosedFigs().size() == 0)) {
                 if (mode == PREFERRED_SIZE) {
                     fi.setSize(fi.getPreferredSize());
                 } else {

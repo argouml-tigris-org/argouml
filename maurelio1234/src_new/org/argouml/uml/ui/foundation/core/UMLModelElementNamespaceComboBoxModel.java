@@ -1,4 +1,4 @@
-// $Id: UMLModelElementNamespaceComboBoxModel.java 12727 2007-05-30 19:02:28Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

@@ -1,4 +1,4 @@
-// $Id: ArgoEventPump.java 12945 2007-07-01 05:48:28Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

@@ -1,4 +1,4 @@
-// $Id: InitCognitiveCritics.java 12957 2007-07-01 20:04:21Z mvw $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

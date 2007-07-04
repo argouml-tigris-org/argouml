@@ -1,4 +1,4 @@
-// $Id: ActionGoToCritique.java 12754 2007-06-04 21:22:32Z mvw $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

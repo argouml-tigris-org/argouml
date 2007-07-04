@@ -1,4 +1,4 @@
-// $Id: TargetManager.java 12909 2007-06-25 18:58:43Z mvw $
+// $Id$
 // Copyright (c) 2002-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

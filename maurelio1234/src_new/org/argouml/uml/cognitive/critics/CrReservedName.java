@@ -1,4 +1,4 @@
-// $Id: CrReservedName.java 12950 2007-07-01 08:10:04Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -173,20 +173,15 @@ public class CrReservedName extends CrUML {
     }
 
     /**
-<<<<<<< .mine
-     * Dont critique the built-in types, they are supposed to
-     * have those "reserved" names.
-=======
      * Don't critique elements from the profile, they may have names
      * which are nominally "reserved."
->>>>>>> .r12950
      *
      * @param name The name of the type to test.
      * @return true if it is a builtin.
      */
     protected boolean isBuiltin(String name) {
         Project p = ProjectManager.getManager().getCurrentProject();
-        Object type = p.findTypeInProfileModels(name);
+        Object type = p.findTypeInDefaultModel(name);
         return type != null;
     }
 

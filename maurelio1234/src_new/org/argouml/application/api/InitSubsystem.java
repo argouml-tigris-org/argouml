@@ -1,4 +1,4 @@
-// $Id: InitSubsystem.java 12883 2007-06-19 21:04:47Z mvw $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -28,7 +28,7 @@ import java.util.List;
 
 
 /**
- * Any subsystem that needs to initialize itself, 
+ * Any subsystem that needs to initialise itself, 
  * could implement this interface.
  * The Main class (or any other top-level class 
  * that knows about the subsystem) then takes care 

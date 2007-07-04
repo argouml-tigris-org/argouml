@@ -1,4 +1,4 @@
-// $Id: CrUnconventionalClassName.java 12950 2007-07-01 08:10:04Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

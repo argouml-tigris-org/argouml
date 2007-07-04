@@ -1269,7 +1269,8 @@ public abstract class FigNodeModelElement
             throw new IllegalStateException(
                     "The owner cannot be changed once set");
         }
-        if (!Model.getFacade().isAUMLElement(owner)) {            throw new IllegalArgumentException(
+        if (!Model.getFacade().isAUMLElement(owner)) {
+            throw new IllegalArgumentException(
                     "The owner must be a model element - got a "
                     + owner.getClass().getName());
         }

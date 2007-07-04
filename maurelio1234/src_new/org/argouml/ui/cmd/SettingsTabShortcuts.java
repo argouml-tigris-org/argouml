@@ -1,4 +1,4 @@
-// $Id: SettingsTabShortcuts.java 12959 2007-07-02 17:53:38Z mvw $
+// $Id$
 // Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

@@ -1,4 +1,4 @@
-// $Id: Main.java 12946 2007-07-01 05:53:25Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -74,9 +74,8 @@ import org.argouml.ui.GUI;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
-import org.argouml.ui.cmd.ActionAdjustGrid;
-import org.argouml.ui.cmd.ActionAdjustSnap;
 import org.argouml.ui.cmd.ActionExit;
+import org.argouml.ui.cmd.InitUiCmdSubsystem;
 import org.argouml.ui.cmd.PrintManager;
 import org.argouml.uml.reveng.java.JavaImport;
 import org.argouml.util.logging.SimpleTimer;
@@ -269,6 +268,7 @@ public class Main {
 	st.mark("initialize gui");
         initializeGUI(splash);
         
+        initSubsystem(new InitUiCmdSubsystem());
         initSubsystem(new InitNotationUI());
         initSubsystem(new InitNotation());
 
@@ -395,9 +395,6 @@ public class Main {
         PostLoad pl = new PostLoad(postLoadActions);
         Thread postLoadThead = new Thread(pl);
         postLoadThead.start();
-
-        ActionAdjustSnap.init();
-        ActionAdjustGrid.init();
 
         LOG.info("");
         LOG.info("profile of load time ############");
@@ -773,7 +770,7 @@ public class Main {
      * 
      * @param subsystem the subsystem to be initialised
      */
-    private static void initSubsystem(InitSubsystem subsystem) {
+    static void initSubsystem(InitSubsystem subsystem) {
         subsystem.init();
         for (GUISettingsTabInterface tab : subsystem.getSettingsTabs()) {
             GUI.getInstance().addSettingsTab(tab);

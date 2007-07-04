@@ -1,4 +1,4 @@
-// $Id: UMLParameterDirectionKindRadioButtonPanel.java 12842 2007-06-15 06:02:14Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

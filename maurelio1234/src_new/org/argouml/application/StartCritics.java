@@ -1,4 +1,4 @@
-// $Id: StartCritics.java 12546 2007-05-05 16:54:40Z linus $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -31,9 +31,12 @@ import org.argouml.cognitive.Designer;
 import org.argouml.configuration.Configuration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.language.java.cognitive.critics.InitJavaCritics;
 import org.argouml.model.Model;
+import org.argouml.pattern.cognitive.critics.InitPatternCritics;
 import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
+import org.argouml.uml.cognitive.critics.InitCognitiveCritics;
 
 /**
  * StartCritics is a thread which helps to start the critiquing thread.
@@ -49,7 +52,9 @@ public class StartCritics implements Runnable {
      */
     public void run() {
         Designer dsgr = Designer.theDesigner();
-        org.argouml.uml.cognitive.critics.Init.init();
+        Main.initSubsystem(new InitCognitiveCritics());
+        Main.initSubsystem(new InitJavaCritics());
+        Main.initSubsystem(new InitPatternCritics());
         org.argouml.uml.cognitive.checklist.Init.init();
         Project p = ProjectManager.getManager().getCurrentProject();
         // set the icon for this poster

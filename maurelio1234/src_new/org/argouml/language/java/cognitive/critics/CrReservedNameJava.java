@@ -1,4 +1,4 @@
-// $Id: CrReservedNameJava.java 12967 2007-07-03 11:58:21Z mvw $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

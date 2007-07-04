@@ -1,4 +1,4 @@
-// $Id: ActionSetMode.java 12827 2007-06-13 18:56:14Z mvw $
+// $Id$
 // Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

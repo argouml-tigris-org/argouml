@@ -25,6 +25,7 @@
 package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
@@ -49,9 +50,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetListener;
-import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.CommentEdge;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
@@ -59,7 +58,6 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.argouml.uml.profile.Profile;
 import org.argouml.uml.profile.ProfileConfiguration;
@@ -72,7 +70,7 @@ import org.tigris.gef.undo.UndoManager;
  * The Project is a datastructure that represents the designer's
  * current project. It manages the list of diagrams and UML models.
  */
-public class Project implements java.io.Serializable, TargetListener {
+public class Project implements java.io.Serializable {
 
     /**
      * Logger.
@@ -189,7 +187,6 @@ public class Project implements java.io.Serializable, TargetListener {
 
         LOG.info("making empty project with empty model");
         addSearchPath("PROJECT_DIR");
-        TargetManager.getInstance().addTargetListener(this);
     }
 
     /**
@@ -430,7 +427,6 @@ public class Project implements java.io.Serializable, TargetListener {
                 }
             }
             activeDiagram = defaultDiagram;
-            TargetManager.getInstance().setTarget(defaultDiagram);
         }
 
         removeDiagram(d);
@@ -854,8 +850,27 @@ public class Project implements java.io.Serializable, TargetListener {
         // send indeterminate new value instead of making copy of vector
 	d.setProject(this);
         diagrams.add(d);
+        
+        // TODO: Remove this next line after GEF 0.12.4M4 
+        // is replaced by a newer one - it fixes a GEF bug 
+        // when removing a diagram:
         d.addVetoableChangeListener(new Vcl());
+
+        d.addPropertyChangeListener("name", new NamePCL());
         setSaveEnabled(true);
+    }
+
+    /**
+     * Listener to events from the Diagram class. <p>
+     *
+     * Purpose: changing the name of a diagram shall set the need save flag.
+     *
+     * @author Michiel
+     */
+    private class NamePCL implements PropertyChangeListener {
+        public void propertyChange(PropertyChangeEvent evt) {
+            setSaveEnabled(true);
+        }
     }
 
     /**
@@ -871,31 +886,25 @@ public class Project implements java.io.Serializable, TargetListener {
     protected void removeDiagram(ArgoDiagram d) {
         d.removeVetoableChangeListener(new Vcl());
         diagrams.remove(d);
-        if (d instanceof UMLDiagram) {
-            /* If this is a UML diagram, then remove the dependent
-             * modelelements, such as the statemachine
-             * for a statechartdiagram.
-             */
-            Object o = ((UMLDiagram) d).getDependentElement();
-            if (o != null) {
-                moveToTrash(o);
-            }
+        /* Remove the dependent
+         * modelelements, such as the statemachine
+         * for a statechartdiagram:
+         */
+        Object o = d.getDependentElement();
+        if (o != null) {
+            moveToTrash(o);
         }
     }
 
     /**
-     * Listener to events from the Diagram class. <p>
+     * TODO: Remove this class after GEF 0.12.4M4 is replaced by a newer one
      *
-     * Purpose: changing the name of a diagram shall set the need save flag.
-     *
-     * @author mvw@tigris.org
+     * @author Michiel
      */
     private class Vcl implements VetoableChangeListener {
         public void vetoableChange(PropertyChangeEvent evt)
             throws PropertyVetoException {
-            if (evt.getPropertyName().equals("name")) {
-                setSaveEnabled(true);
-            }
+            //
         }
     }
 
@@ -906,7 +915,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public int getPresentationCountFor(Object me) {
 
-        if (!Model.getFacade().isAModelElement(me)) {
+        if (!Model.getFacade().isAUMLElement(me)) {
             throw new IllegalArgumentException();
     	}
 
@@ -1074,31 +1083,24 @@ public class Project implements java.io.Serializable, TargetListener {
                 models.remove(obj);
             }
         } else if (obj instanceof ArgoDiagram) {
-            TargetManager.getInstance().removeTarget(obj);
-            TargetManager.getInstance().removeHistoryElement(obj);
             removeProjectMemberDiagram((ArgoDiagram) obj);
             // only need to manually delete diagrams because they
             // don't have a decent event system set up.
             ExplorerEventAdaptor.getInstance().modelElementRemoved(obj);
         } else if (obj instanceof Fig) {
-            TargetManager.getInstance().removeTarget(obj);
-            TargetManager.getInstance().removeHistoryElement(obj);
             ((Fig) obj).deleteFromModel();
             // TODO: Bob says - I've never seen this appear in the log.
             // I believe this code is never reached. If we delete a FigEdge
             // or FigNode we actually call this method with the owner not
             // the Fig itself.
-            // For Figs with no owner (primitives like circle etc) then they
-            // are not deleted (crtl-Del) they are removed (Del)
-            LOG.error("Request to delete a Fig " + obj.getClass().getName());
+            // MVW: This is now called by ActionDeleteModelElements
+            // for primitive Figs (without owner).
+            LOG.info("Request to delete a Fig " + obj.getClass().getName());
         } else if (obj instanceof CommentEdge) {
-            TargetManager.getInstance().removeTarget(obj);
-            TargetManager.getInstance().removeHistoryElement(obj);
             CommentEdge ce = (CommentEdge) obj;
             LOG.info("Removing the link from " + ce.getAnnotatedElement()
                     + " to " + ce.getComment());
-            Model.getCoreHelper().removeAnnotatedElement(
-                    ce.getComment(), ce.getAnnotatedElement());
+            ce.delete();
         }
     }
 
@@ -1283,44 +1285,6 @@ public class Project implements java.io.Serializable, TargetListener {
         activeDiagram = theDiagram;
     }
 
-    public void targetAdded(TargetEvent e) {
-    	setTarget(e.getNewTarget());
-    }
-
-    public void targetRemoved(TargetEvent e) {
-    	setTarget(e.getNewTarget());
-    }
-
-    public void targetSet(TargetEvent e) {
-    	setTarget(e.getNewTarget());
-    }
-
-    /**
-     * Called to update the current namespace and active diagram after
-     * the target has changed.
-     *
-     * TODO: The parameter is not used. Why?
-     * @param target Not used.
-     */
-    private void setTarget(Object target) {
-        Object theCurrentNamespace = null;
-        target = TargetManager.getInstance().getModelTarget();
-        if (target instanceof UMLDiagram) {
-            theCurrentNamespace = ((UMLDiagram) target).getNamespace();
-        } else if (Model.getFacade().isANamespace(target)) {
-            theCurrentNamespace = target;
-        } else if (Model.getFacade().isAModelElement(target)) {
-            theCurrentNamespace = Model.getFacade().getNamespace(target);
-        } else {
-            theCurrentNamespace = getRoot();
-        }
-        setCurrentNamespace(theCurrentNamespace);
-
-        if (target instanceof ArgoDiagram) {
-            activeDiagram = (ArgoDiagram) target;
-        }
-    }
-
     /**
      * Remove the project.
      */
@@ -1374,7 +1338,6 @@ public class Project implements java.io.Serializable, TargetListener {
         vetoSupport = null;
         activeDiagram = null;
 
-        TargetManager.getInstance().removeTargetListener(this);
         trashcan.clear();
     }
 

@@ -1,4 +1,4 @@
-// $Id: GenericArgoMenuBar.java 12817 2007-06-10 22:17:05Z bobtarling $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

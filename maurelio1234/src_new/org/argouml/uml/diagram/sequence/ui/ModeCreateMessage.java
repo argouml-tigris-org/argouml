@@ -1,4 +1,4 @@
-// $Id: ModeCreateMessage.java 12836 2007-06-14 20:27:54Z bobtarling $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

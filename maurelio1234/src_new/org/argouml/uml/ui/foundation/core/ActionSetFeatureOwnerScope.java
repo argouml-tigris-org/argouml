@@ -1,4 +1,4 @@
-// $Id: ActionSetFeatureOwnerScope.java 12731 2007-05-30 19:06:18Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

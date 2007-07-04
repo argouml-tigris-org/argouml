@@ -1,4 +1,4 @@
-// $Id: ExtensionPointNotationUml.java 12850 2007-06-15 18:49:22Z mvw $
+// $Id$
 // Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

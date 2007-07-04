@@ -1,4 +1,4 @@
-// $Id: PropPanelElementImport.java 12902 2007-06-24 07:55:17Z mvw $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

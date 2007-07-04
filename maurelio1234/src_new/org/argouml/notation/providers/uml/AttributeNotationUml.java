@@ -1,4 +1,4 @@
-// $Id: AttributeNotationUml.java 12849 2007-06-15 18:47:49Z mvw $
+// $Id$
 // Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

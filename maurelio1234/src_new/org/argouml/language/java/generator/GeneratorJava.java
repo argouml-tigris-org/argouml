@@ -1,4 +1,4 @@
-// $Id: GeneratorJava.java 12500 2007-05-03 19:29:55Z mvw $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,9 +47,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.configuration.Configuration;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.ocl.ArgoFacade;
@@ -1600,7 +1597,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
     }
 
     private String generateScope(Object f) {
-        if (Model.getFacade().isClassifierScope(f)) {
+        if (Model.getFacade().isStatic(f)) {
             return "static ";
         }
         return "";
@@ -1627,7 +1624,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
     }
 
     private String generateChangability(Object sf) {
-        if (!Model.getFacade().isChangeable(sf)) {
+        if (Model.getFacade().isReadOnly(sf)) {
             return "final ";
         }
         return "";
@@ -2042,40 +2039,45 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
     }
 
     private String generateStereotype(Object st) {
-        if (st == null)
-            return "";
-        Project project = 
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
-        if (Model.getFacade().isAModelElement(st)) {
-            if (Model.getFacade().getName(st) == null)
-                return ""; // Patch by Jeremy Bennett
-            if (Model.getFacade().getName(st).length() == 0)
-                return "";
-            return ps.getLeftGuillemot()
-                + generateName(Model.getFacade().getName(st))
-                + ps.getRightGuillemot();
-        }
-        if (st instanceof Collection) {
-            Object o;
-            StringBuffer sb = new StringBuffer(10);
-            boolean first = true;
-            Iterator iter = ((Collection) st).iterator();
-            while (iter.hasNext()) {
-                if (!first)
-                    sb.append(',');
-                o = iter.next();
-                if (o != null) {
-                    sb.append(generateName(Model.getFacade().getName(o)));
-                    first = false;
-                }
-            }
-            if (!first) {
-                return ps.getLeftGuillemot()
-                    + sb.toString()
-                    + ps.getRightGuillemot();
-            }
-        }
+        /*
+         * TODO: This code is not used. Why is it here?
+         * It causes an unwanted dependency 
+         * to the org.argouml.kernel. (Project,...)
+         * */
+//        if (st == null)
+//            return "";
+//        Project project = 
+//            ProjectManager.getManager().getCurrentProject();
+//        ProjectSettings ps = project.getProjectSettings();
+//        if (Model.getFacade().isAModelElement(st)) {
+//            if (Model.getFacade().getName(st) == null)
+//                return ""; // Patch by Jeremy Bennett
+//            if (Model.getFacade().getName(st).length() == 0)
+//                return "";
+//            return ps.getLeftGuillemot()
+//                + generateName(Model.getFacade().getName(st))
+//                + ps.getRightGuillemot();
+//        }
+//        if (st instanceof Collection) {
+//            Object o;
+//            StringBuffer sb = new StringBuffer(10);
+//            boolean first = true;
+//            Iterator iter = ((Collection) st).iterator();
+//            while (iter.hasNext()) {
+//                if (!first)
+//                    sb.append(',');
+//                o = iter.next();
+//                if (o != null) {
+//                    sb.append(generateName(Model.getFacade().getName(o)));
+//                    first = false;
+//                }
+//            }
+//            if (!first) {
+//                return ps.getLeftGuillemot()
+//                    + sb.toString()
+//                    + ps.getRightGuillemot();
+//            }
+//        }
         return "";
     }
 

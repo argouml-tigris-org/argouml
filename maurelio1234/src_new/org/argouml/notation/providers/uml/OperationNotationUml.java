@@ -1,4 +1,4 @@
-// $Id: OperationNotationUml.java 12851 2007-06-15 18:51:50Z mvw $
+// $Id$
 // Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

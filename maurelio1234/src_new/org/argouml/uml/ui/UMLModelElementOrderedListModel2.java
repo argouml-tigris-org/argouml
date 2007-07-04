@@ -1,4 +1,4 @@
-// $Id: UMLModelElementOrderedListModel2.java 12803 2007-06-09 20:08:48Z tfmorris $
+// $Id$
 // Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

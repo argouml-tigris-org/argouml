@@ -1,4 +1,4 @@
-// $Id: ArgoModeCreateFigLine.java 12828 2007-06-13 19:08:44Z mvw $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

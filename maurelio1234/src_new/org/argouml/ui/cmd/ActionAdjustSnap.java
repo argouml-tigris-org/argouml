@@ -1,5 +1,5 @@
 // $Id: eclipse-argo-codetemplates.xml 10612 2006-05-25 12:58:04Z linus $
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -86,13 +85,10 @@ public class ActionAdjustSnap extends AbstractAction {
      * This function is intended for the initial setting 
      * of the snap when ArgoUML is started.
      */
-    public static void init() {
+    static void init() {
         String id = Configuration.getString(Argo.KEY_SNAP, DEFAULT_ID);
-        List actions = createAdjustSnapActions();
-        Iterator i = actions.iterator();
-        Action a;
-        while (i.hasNext()) {
-            a = (Action) i.next();
+        List<Action> actions = createAdjustSnapActions();
+        for (Action a : actions) {
             if (a.getValue("ID").equals(id)) {
                 a.actionPerformed(null);
 
@@ -121,8 +117,8 @@ public class ActionAdjustSnap extends AbstractAction {
      * 
      * @return List of Actions which adjust the size of the snap grid
      */
-    static List createAdjustSnapActions() {
-        List result = new ArrayList();
+    static List<Action> createAdjustSnapActions() {
+        List<Action> result = new ArrayList<Action>();
         Action a;
         String name;
         

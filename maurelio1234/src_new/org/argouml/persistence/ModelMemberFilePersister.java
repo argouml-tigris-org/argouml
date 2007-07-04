@@ -1,4 +1,4 @@
-// $Id: ModelMemberFilePersister.java 12780 2007-06-08 07:50:15Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -57,7 +57,6 @@ import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.profile.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**
@@ -214,16 +213,15 @@ class ModelMemberFilePersister extends MemberFilePersister
      * @return the persister
      */
     protected MemberFilePersister getMemberFilePersister(ProjectMember pm) {
-	MemberFilePersister persister = null;
-	if (pm instanceof ProjectMemberDiagram) {
-	    persister = PersistenceManager.getInstance()
-		    .getDiagramMemberFilePersister();
-	} else if (pm instanceof ProjectMemberTodoList) {
-	    persister = new TodoListMemberFilePersister();
-	} else if (pm instanceof ProfileConfiguration) {
-	    persister = new ProfileConfigurationFilePersister();
-	}
-	return persister;
+        MemberFilePersister persister = null;
+        if (pm instanceof ProjectMemberDiagram) {
+            persister =
+                PersistenceManager.getInstance()
+                    .getDiagramMemberFilePersister();
+        } else if (pm instanceof ProjectMemberTodoList) {
+            persister = new TodoListMemberFilePersister();
+        }
+        return persister;
     }
 
     public void parse(String label, String xmiExtensionString) {
