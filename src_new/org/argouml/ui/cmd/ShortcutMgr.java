@@ -43,7 +43,6 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 import org.argouml.configuration.Configuration;
-import org.argouml.notation.ui.ActionNotation;
 import org.argouml.ui.ActionExportXMI;
 import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionProjectSettings;

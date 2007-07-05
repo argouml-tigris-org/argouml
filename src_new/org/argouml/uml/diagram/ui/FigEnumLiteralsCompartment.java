@@ -27,8 +27,8 @@ package org.argouml.uml.diagram.ui;
 import java.util.Collection;
 
 import org.argouml.model.Model;
+import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.notation.providers.NotationProvider;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigEnumerationLiteral;
 import org.tigris.gef.presentation.Fig;
