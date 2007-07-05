@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import org.argouml.model.Model;
-import org.argouml.notation.providers.NotationProvider;
+import org.argouml.notation.NotationProvider;
 
 /**
  * This class is a utility for the Java notation.

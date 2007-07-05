@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.notation.ui;
+package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 import java.util.List;

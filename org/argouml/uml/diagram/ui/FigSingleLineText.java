@@ -33,7 +33,7 @@ import java.util.Arrays;
 
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.providers.NotationProvider;
+import org.argouml.notation.NotationProvider;
 import org.tigris.gef.presentation.FigText;
 
 /**
