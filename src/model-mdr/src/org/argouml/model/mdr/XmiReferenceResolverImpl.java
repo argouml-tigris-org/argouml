@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,11 +29,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
@@ -70,9 +70,10 @@ import org.netbeans.lib.jmi.xmi.XmiContext;
  */
 class XmiReferenceResolverImpl extends XmiContext {
 
-    private Map idToObjects = Collections.synchronizedMap(new HashMap());
+    private Map<String, Object> idToObjects = 
+        Collections.synchronizedMap(new HashMap<String, Object>());
 
-    private Map objectsToId;
+    private Map<Object, XmiReference> objectsToId;
 
     /**
      * Logger.
@@ -86,7 +87,7 @@ class XmiReferenceResolverImpl extends XmiContext {
      * Copied from AndroMDA 3.1 by Ludo (rastaman).
      * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
      */
-    private static List modulesPath = new Vector();
+    private static List<String> modulesPath = new ArrayList<String>();
 
     /**
      * Module to URL map to cache things we've already found.
@@ -94,7 +95,7 @@ class XmiReferenceResolverImpl extends XmiContext {
      * 
      * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
      */
-    private static Map urlMap = new HashMap();
+    private static Map<String, URL> urlMap = new HashMap<String, URL>();
     
     /**
      * Constructor.
@@ -102,7 +103,7 @@ class XmiReferenceResolverImpl extends XmiContext {
      * (see also {link org.netbeans.api.xmi.XMIReferenceResolver})
      */
     XmiReferenceResolverImpl(RefPackage[] extents, 
-            XMIInputConfig config, Map objectToIdMap) {
+            XMIInputConfig config, Map<Object, XmiReference> objectToIdMap) {
         super(extents, config);
         registerSearchPath();
         objectsToId = objectToIdMap;
@@ -158,12 +159,12 @@ class XmiReferenceResolverImpl extends XmiContext {
     private void registerSearchPath() {
         //TODO: Replace by something elegant (i.e in the Model, or anything 
         //accessible by the components of ArgoUML base and this class).
-        String path = 
+        String pathList = 
             System.getProperty("org.argouml.model.modules_search_path");
-        if (path != null) {
-            String[] paths = path.split(",");
-            for (int i = 0; i < paths.length; i++) {
-                addModuleSearchPath(paths[i]);
+        if (pathList != null) {
+            String[] paths = pathList.split(",");
+            for (String path : paths) {
+                addModuleSearchPath(path);
             }
         }
     }
@@ -177,7 +178,7 @@ class XmiReferenceResolverImpl extends XmiContext {
      * @return String[] An array with all the module search paths
      */
     public static String[] getModuleSearchPath() {
-        return (String[]) modulesPath.toArray(new String[modulesPath.size()]);
+        return modulesPath.toArray(new String[modulesPath.size()]);
     }
     
     /**
@@ -219,7 +220,7 @@ class XmiReferenceResolverImpl extends XmiContext {
         // the suffix without it and store it in the urlMap
         String exts = "\\.jar|\\.zip";
         String suffixWithExt = suffix.replaceAll(exts, "");
-        URL modelUrl = (URL) urlMap.get(suffixWithExt);
+        URL modelUrl = urlMap.get(suffixWithExt);
 
         // Several tries to construct a URL that really exists.
         if (modelUrl == null) {
@@ -275,8 +276,8 @@ class XmiReferenceResolverImpl extends XmiContext {
             LOG.debug("findModuleURL: moduleSearchPath.length="
                     + moduleSearchPath.length);
         }
-        for (int i = 0; i < moduleSearchPath.length; i++) {
-            File candidate = new File(moduleSearchPath[i], moduleName);
+        for (String moduleDirectory : moduleSearchPath) {
+            File candidate = new File(moduleDirectory, moduleName);
             if (LOG.isDebugEnabled())
                 LOG.debug("candidate '" + candidate.toString() + "' exists="
                         + candidate.exists());
@@ -351,12 +352,10 @@ class XmiReferenceResolverImpl extends XmiContext {
         if (modelUrl == null) {
             if (CLASSPATH_MODEL_SUFFIXES != null
                     && CLASSPATH_MODEL_SUFFIXES.length > 0) {
-                int suffixNum = CLASSPATH_MODEL_SUFFIXES.length;
-                for (int ctr = 0; ctr < suffixNum; ctr++) {
+                for (String suffix : CLASSPATH_MODEL_SUFFIXES) {
                     if (LOG.isDebugEnabled())
                         LOG.debug("searching for model reference --> '"
                                 + modelUrl + "'");
-                    String suffix = CLASSPATH_MODEL_SUFFIXES[ctr];
                     modelUrl = Thread.currentThread().getContextClassLoader()
                             .getResource(modelName + dot + suffix);
                     if (modelUrl != null) {
