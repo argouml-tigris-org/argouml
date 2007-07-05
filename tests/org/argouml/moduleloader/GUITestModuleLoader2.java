@@ -25,10 +25,10 @@
 package org.argouml.moduleloader;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
+
 import org.argouml.model.InitializeModel;
 
 /**
@@ -61,9 +61,8 @@ public class GUITestModuleLoader2 extends TestCase {
 	Collection<String> all = ModuleLoader2.allModules();
 	assertNotNull(all);
 
-	Iterator<String> iter = all.iterator();
-	while (iter.hasNext()) {
-	    assertNotNull(iter.next());
+        for (String module : all) {
+	    assertNotNull(module);
 	}
     }
 
@@ -89,9 +88,9 @@ public class GUITestModuleLoader2 extends TestCase {
 	List<String> extensionLocations =
 	    ModuleLoader2.getInstance().getExtensionLocations();
 	assertNotNull(extensionLocations);
-	for (Iterator<String> iter = extensionLocations.iterator();
-		iter.hasNext();) {
-	    assertNotNull(iter.next());
+        
+	for (String extensionLocation : extensionLocations) {
+	    assertNotNull(extensionLocation);
 	}
     }
 
