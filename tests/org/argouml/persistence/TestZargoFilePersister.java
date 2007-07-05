@@ -34,6 +34,8 @@ import junit.framework.TestSuite;
 import org.argouml.kernel.Project;
 import org.argouml.model.InitializeModel;
 import org.argouml.notation.InitNotation;
+import org.argouml.notation.providers.java.InitNotationJava;
+import org.argouml.notation.providers.uml.InitNotationUml;
 
 /**
  * Testcase to load projects without exception.
@@ -44,6 +46,8 @@ public class TestZargoFilePersister extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         (new InitNotation()).init();
+        (new InitNotationUml()).init();
+        (new InitNotationJava()).init();
     }
 
     /**

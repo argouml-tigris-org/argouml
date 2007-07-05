@@ -37,7 +37,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
-import org.argouml.notation.providers.NotationProvider;
+import org.argouml.notation.NotationProvider;
+import org.argouml.notation.providers.java.InitNotationJava;
 
 /**
  * @author michiel
@@ -116,6 +117,8 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
      */
     protected void setUp() {
         (new InitNotation()).init();
+        (new InitNotationUml()).init();
+        (new InitNotationJava()).init();
     }
 
     /**

@@ -32,7 +32,7 @@ import org.argouml.model.InitializeModel;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.notation.providers.NotationProvider;
+import org.argouml.notation.NotationProvider;
 
 /**
  * Test ParserDisplay: parsing transitions.
