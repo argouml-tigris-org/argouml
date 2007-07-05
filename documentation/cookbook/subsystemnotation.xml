@@ -61,7 +61,8 @@
 
   <para>
     In the scope of issue 3140, 
-    the following has been decided about the notation architecture:
+    the notation architecturehas been discussed.
+    Later, a change has been performed to resolve dependency cycles.
   </para>
   <para>
     We decide that we support other languages than UML 
@@ -72,7 +73,7 @@
     Hence we need not store the notationlanguage per Fig.
     
     So, this means that you can set 
-    the notation lanuage in the project properties,
+    the notation language in the project properties,
     and in the application-wide defaults.
   </para>
 
