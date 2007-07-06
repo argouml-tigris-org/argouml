@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
+import org.argouml.notation.NotationProvider;
 
 /**
  * This abstract class forms the basis of all Notation providers
