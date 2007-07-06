@@ -7,7 +7,7 @@
   <!ATTLIST template class CDATA #REQUIRED
                      guard CDATA #IMPLIED>
 ]>
-<!-- This is argo.tee, for Argo/UML to save project -->
+<!-- This is argo.tee, for ArgoUML to save project -->
 <!-- files.  "tee" = Template with Embedded Expressions. -->
 
 <!-- Original Author: jrobbins@ics.uci.edu -->
