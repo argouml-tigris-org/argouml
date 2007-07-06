@@ -67,6 +67,8 @@ import org.argouml.model.Model;
 import org.argouml.moduleloader.InitModuleLoader;
 import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.notation.InitNotation;
+import org.argouml.notation.providers.java.InitNotationJava;
+import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.notation.ui.InitNotationUI;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoFrame;
@@ -271,6 +273,8 @@ public class Main {
         initSubsystem(new InitUiCmdSubsystem());
         initSubsystem(new InitNotationUI());
         initSubsystem(new InitNotation());
+        initSubsystem(new InitNotationUml());
+        initSubsystem(new InitNotationJava());
 
         if (reloadRecent && projectName == null) {
             // If no project was entered on the command line,

@@ -39,8 +39,6 @@ public class InitNotation implements InitSubsystem {
 
     public void init() {
         NotationProviderFactory2.getInstance();
-        InitNotationUml.init();
-        InitNotationJava.init();
     }
 
     public List<GUISettingsTabInterface> getProjectSettingsTabs() {
