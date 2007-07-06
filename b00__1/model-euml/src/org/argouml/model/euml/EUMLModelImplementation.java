@@ -36,11 +36,17 @@
 
 package org.argouml.model.euml;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ActivityGraphsFactory;
@@ -81,15 +87,25 @@ import org.argouml.model.VisibilityKind;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
 import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.uml2.common.edit.domain.UML2AdapterFactoryEditingDomain;
+import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.edit.providers.UMLItemProviderAdapterFactory;
 import org.eclipse.uml2.uml.edit.providers.UMLReflectiveItemProviderAdapterFactory;
 import org.eclipse.uml2.uml.edit.providers.UMLResourceItemProviderAdapterFactory;
+import org.eclipse.uml2.uml.resource.UML22UMLExtendedMetaData;
+import org.eclipse.uml2.uml.resource.UML22UMLResource;
+import org.eclipse.uml2.uml.resource.UMLResource;
+import org.eclipse.uml2.uml.resource.XMI2UMLExtendedMetaData;
+import org.eclipse.uml2.uml.resource.XMI2UMLResource;
 
 /**
  * Eclipse UML2 implementation of the ArgoUML Model subsystem. Although built on
@@ -217,42 +233,6 @@ public class EUMLModelImplementation implements ModelImplementation {
 //        theVisibilityKind = new VisibilityKindEUMLImpl(this);
     }
     
-//    /**
-//     * This sets up {@link org.eclipse.emf.ecore.resource.Resource.Factory.Registry Resource.Factory.Registry} and
-//     * {@link org.eclipse.emf.ecore.resource.URIConverter URIConverter} for
-//     * the ArgoUML standalone (not the Eclipse plugin) application.
-//     * <p>
-//     * You must define a "eUML.org_eclipse_uml2_uml_resources" property to point to the
-//     * location of the "org.eclipse.uml2.uml.resources" jar plugin.
-//     * TODO: exemplu cale jar
-//     */
-//    private void initializeRegisters() {
-//	Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
-//		UML22UMLResource.FILE_EXTENSION,
-//		UML22UMLResource.Factory.INSTANCE);
-//	Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
-//		XMI2UMLResource.FILE_EXTENSION,
-//		XMI2UMLResource.Factory.INSTANCE);
-//	Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
-//		UMLResource.FILE_EXTENSION,
-//		UMLResource.Factory.INSTANCE);
-//	
-//	URIConverter.URI_MAP.putAll(UML22UMLExtendedMetaData.getURIMap());
-//	URIConverter.URI_MAP.putAll(XMI2UMLExtendedMetaData.getURIMap());
-//	
-//	String uriPath = System.getProperty("eUML.org_eclipse_uml2_uml_resources"); //$NON-NLS-1$
-//	if (uriPath == null)
-//	    throw(new RuntimeException("'eUML.org_eclipse_uml2_uml_resources' property not defined"));
-//	URI uri = URI.createURI(uriPath);
-//	
-//	URIConverter.URI_MAP.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP),
-//		uri.appendSegment("libraries").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
-//	URIConverter.URI_MAP.put(URI.createURI(UMLResource.METAMODELS_PATHMAP),
-//		uri.appendSegment("metamodels").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
-//	URIConverter.URI_MAP.put(URI.createURI(UMLResource.PROFILES_PATHMAP),
-//		uri.appendSegment("profiles").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
-//    }
-    
     /**
      * This sets up the editing domain for the model editor.
      */
@@ -278,13 +258,56 @@ public class EUMLModelImplementation implements ModelImplementation {
 	commandStack.addCommandStackListener(new CommandStackListener() {
 
 	    public void commandStackChanged(final EventObject event) {
-		LOG.debug("Command stack - " + event); //$NON-NLS-1$
+		LOG.debug("Command stack changed"); //$NON-NLS-1$
+		Command mostRecentCommand = ((CommandStack) event.getSource())
+			.getMostRecentCommand();
+		if (mostRecentCommand != null) {
+		    LOG.debug("Affected objects: " //$NON-NLS-1$
+			    + mostRecentCommand.getAffectedObjects());
+		}
 	    }
 
 	});
 
 	editingDomain = new UML2AdapterFactoryEditingDomain(adapterFactory,
 		commandStack);
+	
+	ResourceSet resourceSet = editingDomain.getResourceSet();
+	Map<String, Object> extensionToFactoryMap = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
+	Map<URI, URI> uriMap = resourceSet.getURIConverter().getURIMap();
+
+	// If the eUML.resources system property is defined then we are in a
+	// stand alone application, else we're in an Eclipse plug in.
+	// The eUML.resource should contain the path to the org.eclipse.uml2.uml.resource jar plugin.
+	String path = System.getProperty("eUML.resources"); //$NON-NLS-1$
+	
+	if (path != null && path.length() > 0) {
+	    try {
+		FileInputStream in = new FileInputStream(path);
+		in.close();
+	    } catch (IOException e) {
+		throw(new RuntimeException(e));
+	    }
+	    
+	    path = path.replace('\\', '/');
+	    if (Character.isLetter(path.charAt(0))) {
+		path = '/' + path;
+	    }
+	    URI uri = URI.createURI("jar:file:" + path + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
+	    LOG.debug("eUML.resource URI --> " + uri); //$NON-NLS-1$
+	    
+	    resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+	    extensionToFactoryMap.put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
+	    uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri.appendSegment("libraries").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
+	    uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri.appendSegment("metamodels").appendSegment(""));  //$NON-NLS-1$//$NON-NLS-2$
+	    uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uri.appendSegment("profiles").appendSegment(""));  //$NON-NLS-1$//$NON-NLS-2$
+	}
+
+	extensionToFactoryMap.put(UML22UMLResource.FILE_EXTENSION, UML22UMLResource.Factory.INSTANCE);
+	extensionToFactoryMap.put(XMI2UMLResource.FILE_EXTENSION, XMI2UMLResource.Factory.INSTANCE);
+	uriMap.putAll(UML22UMLExtendedMetaData.getURIMap());
+	uriMap.putAll(XMI2UMLExtendedMetaData.getURIMap());
+	
     }
 
     public ActivityGraphsFactory getActivityGraphsFactory() {
