@@ -1089,7 +1089,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- =================================================================== -->
   <!-- Runs Classycle to find cyclic dependencies in ArgoUML.             -->
   <!-- =================================================================== -->
-    <target name="classycle" depends="init" 
+    <target name="classycle" depends="compile" 
         description="Analyze sources for cyclic dependencies using Classcycle">
       <echo>
   Running classcyle on ${source.dir}.
