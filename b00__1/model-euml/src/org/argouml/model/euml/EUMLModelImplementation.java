@@ -36,11 +36,8 @@
 
 package org.argouml.model.euml;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -95,6 +92,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.uml2.common.edit.domain.UML2AdapterFactoryEditingDomain;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -200,11 +198,6 @@ public class EUMLModelImplementation implements ModelImplementation {
     private AdapterFactoryEditingDomain editingDomain;
     
     /**
-     * This is the one adapter factory used for providing views of the model.
-     */
-    private ComposedAdapterFactory adapterFactory;
-    
-    /**
      * Constructor.
      */
     public EUMLModelImplementation() {
@@ -237,14 +230,13 @@ public class EUMLModelImplementation implements ModelImplementation {
      * This sets up the editing domain for the model editor.
      */
     private void initializeEditingDomain() {
-	List<AdapterFactory> factories = new ArrayList<AdapterFactory>();
-	factories.add(new UMLResourceItemProviderAdapterFactory());
-	factories.add(new UMLItemProviderAdapterFactory());
-	factories.add(new EcoreItemProviderAdapterFactory());
-	factories.add(new UMLReflectiveItemProviderAdapterFactory());
+	// If the eUML.resources system property is defined then we are in a
+	// stand alone application, else we're in an Eclipse plug in.
+	// The eUML.resource should contain the path to the org.eclipse.uml2.uml.resource jar plugin.
+	String path = System.getProperty("eUML.resources"); //$NON-NLS-1$
 
-	adapterFactory = new ComposedAdapterFactory(factories);
-
+	ComposedAdapterFactory adapterFactory = null;
+	
 	BasicCommandStack commandStack = new BasicCommandStack() {
 
 	    @Override
@@ -254,7 +246,7 @@ public class EUMLModelImplementation implements ModelImplementation {
 	    }
 
 	};
-
+	
 	commandStack.addCommandStackListener(new CommandStackListener() {
 
 	    public void commandStackChanged(final EventObject event) {
@@ -269,6 +261,15 @@ public class EUMLModelImplementation implements ModelImplementation {
 
 	});
 
+	if (path == null) {
+	    List<AdapterFactory> factories = new ArrayList<AdapterFactory>();
+	    factories.add(new UMLResourceItemProviderAdapterFactory());
+	    factories.add(new UMLItemProviderAdapterFactory());
+	    factories.add(new EcoreItemProviderAdapterFactory());
+	    factories.add(new UMLReflectiveItemProviderAdapterFactory());
+	    adapterFactory = new ComposedAdapterFactory(factories);
+	}
+	
 	editingDomain = new UML2AdapterFactoryEditingDomain(adapterFactory,
 		commandStack);
 	
@@ -276,12 +277,8 @@ public class EUMLModelImplementation implements ModelImplementation {
 	Map<String, Object> extensionToFactoryMap = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
 	Map<URI, URI> uriMap = resourceSet.getURIConverter().getURIMap();
 
-	// If the eUML.resources system property is defined then we are in a
-	// stand alone application, else we're in an Eclipse plug in.
-	// The eUML.resource should contain the path to the org.eclipse.uml2.uml.resource jar plugin.
-	String path = System.getProperty("eUML.resources"); //$NON-NLS-1$
 	
-	if (path != null && path.length() > 0) {
+	if (path != null) {
 	    try {
 		FileInputStream in = new FileInputStream(path);
 		in.close();
@@ -308,6 +305,14 @@ public class EUMLModelImplementation implements ModelImplementation {
 	uriMap.putAll(UML22UMLExtendedMetaData.getURIMap());
 	uriMap.putAll(XMI2UMLExtendedMetaData.getURIMap());
 	
+    }
+    
+    /**
+     * Getter for {@link #editingDomain the Editing Domain}
+     * @return the editing domain of the current EUMLModelImplementation instance
+     */
+    public EditingDomain getEditingDomain() {
+	return editingDomain;
     }
 
     public ActivityGraphsFactory getActivityGraphsFactory() {
