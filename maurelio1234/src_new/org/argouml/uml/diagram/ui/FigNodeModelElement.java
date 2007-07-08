@@ -1974,16 +1974,21 @@ public abstract class FigNodeModelElement
      * 
      * @return current practical stereotype view
      */
-    public int getPracticalView() {
+    public int getPracticalView() {               
 	int practicalView = getStereotypeView();
-	Object modelElement = getOwner();
-	Collection stereos = Model.getFacade().getStereotypes(modelElement);
+        Object modelElement = getOwner();
 
-	if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON && 
-		(stereos == null || stereos.size() != 1)) {
-	    practicalView = STEREOTYPE_VIEW_TEXTUAL;
-	}	
-	return practicalView;
+        if (modelElement != null) {
+            Collection stereos = Model.getFacade().getStereotypes(modelElement);
+
+            if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON
+                    && (stereos == null || stereos.size() != 1)) {
+                practicalView = STEREOTYPE_VIEW_TEXTUAL;
+            }
+            return practicalView;
+        } else {
+            return practicalView;
+        }
     }
     
     /**
