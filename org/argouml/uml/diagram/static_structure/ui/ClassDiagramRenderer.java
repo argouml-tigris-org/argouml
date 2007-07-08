@@ -313,16 +313,6 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         return newEdge;
     }
 
-    private void setSourcePort(FigEdge edge, FigNode source) {
-        edge.setSourcePortFig(source);
-        edge.setSourceFigNode(source);
-    }
-
-    private void setDestPort(FigEdge edge, FigNode dest) {
-        edge.setDestPortFig(dest);
-        edge.setDestFigNode(dest);
-    }
-    
     /**
      * Get the FigNode from the given layer that represents the given
      * model element.

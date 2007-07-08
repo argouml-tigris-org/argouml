@@ -301,4 +301,15 @@ public abstract class UmlDiagramRenderer
 
         return newEdge;
     }
+    
+    final protected void setSourcePort(FigEdge edge, FigNode source) {
+        edge.setSourcePortFig(source);
+        edge.setSourceFigNode(source);
+    }
+
+    final protected void setDestPort(FigEdge edge, FigNode dest) {
+        edge.setDestPortFig(dest);
+        edge.setDestFigNode(dest);
+    }
+
 } /* end class CollabDiagramRenderer */

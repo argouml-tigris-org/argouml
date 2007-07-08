@@ -69,6 +69,9 @@ import org.tigris.gef.presentation.FigNode;
  * @author abonner
  */
 public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
+    
+    static final long serialVersionUID = 2217410137377934879L;
+
     /**
      * Logger.
      */
@@ -283,17 +286,5 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
 
         return newEdge;
     }
-
-    private void setSourcePort(FigEdge edge, FigNode source) {
-        edge.setSourcePortFig(source);
-        edge.setSourceFigNode(source);
-    }
-
-    private void setDestPort(FigEdge edge, FigNode dest) {
-        edge.setDestPortFig(dest);
-        edge.setDestFigNode(dest);
-    }
-
-    static final long serialVersionUID = 2217410137377934879L;
 
 } /* end class UseCaseDiagramRenderer */
