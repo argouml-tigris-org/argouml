@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.UmlHelper;
+import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Relationship;
@@ -73,6 +74,10 @@ class UmlHelperMDRImpl implements UmlHelper {
      * @see org.argouml.model.UmlHelper#getSource(java.lang.Object)
      */
     public Object getSource(Object relationship) {
+        if (relationship instanceof Message) {
+            Message message = (Message) relationship;
+            return message.getSender();
+        }
         if (relationship instanceof Relationship) {
             // handles all children of relationship including extend and
             // include which are not members of core
@@ -90,18 +95,22 @@ class UmlHelperMDRImpl implements UmlHelper {
     /*
      * @see org.argouml.model.UmlHelper#getDestination(java.lang.Object)
      */
-    public Object getDestination(Object relationShip) {
-        if (relationShip instanceof Relationship) {
+    public Object getDestination(Object relationship) {
+        if (relationship instanceof Message) {
+            Message message = (Message) relationship;
+            return message.getSender();
+        }
+        if (relationship instanceof Relationship) {
             // handles all children of relationship including extend and
             // include which are not members of core
-            return modelImpl.getCoreHelper().getDestination(relationShip);
+            return modelImpl.getCoreHelper().getDestination(relationship);
         }
-        if (relationShip instanceof Transition) {
+        if (relationship instanceof Transition) {
             return modelImpl.getStateMachinesHelper().
-                    getDestination(relationShip);
+                    getDestination(relationship);
         }
-        if (relationShip instanceof AssociationEnd) {
-            return modelImpl.getCoreHelper().getDestination(relationShip);
+        if (relationship instanceof AssociationEnd) {
+            return modelImpl.getCoreHelper().getDestination(relationship);
         }
         throw new IllegalArgumentException();
     }
