@@ -31,6 +31,8 @@ import java.util.List;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.NotImplementedException;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.uml2.common.edit.command.ChangeCommand;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Artifact;
@@ -60,6 +62,9 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.VisibilityKind;
+import org.eclipse.uml2.uml.internal.impl.AssociationImpl;
+import org.eclipse.uml2.uml.internal.impl.PropertyImpl;
+import org.eclipse.uml2.uml.internal.impl.TypeImpl;
 
 
 /**
@@ -71,6 +76,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
+    
+    private EditingDomain editingDomain;
+    
+    private UMLFactory uml = UMLFactory.eINSTANCE;
 
     /**
      * Constructor.
@@ -79,57 +88,69 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
      */
     public CoreFactoryEUMLImpl(EUMLModelImplementation implementation) {
         modelImpl = implementation;
+        editingDomain = implementation.getEditingDomain();
     }
 
     public Abstraction buildAbstraction(String name, Object supplier, Object client) {
-        Abstraction abstraction = createAbstraction();
+        Abstraction abstraction = uml.createAbstraction();
         abstraction.setName(name);
         abstraction.getSuppliers().add((NamedElement) supplier);
         abstraction.getClients().add((NamedElement) client);
         return abstraction;
     }
 
-    // TODO: A few different ways of building Associations.  Pick one that
-    // works and is efficient - tfm
-    public Object buildAssociation(Object fromClassifier,
-            Object aggregationKind1, Object toClassifier,
-            Object aggregationKind2, Boolean unidirectional) {
-        
-//        return ((Type) fromClassifier).createAssociation(
-//                true, (AggregationKind) aggregationKind1, null, 1, 1, 
-//                (Type) toClassifier, 
-//                true, (AggregationKind) aggregationKind2, null, 1, 1); 
+    @SuppressWarnings("all")
+    public Association buildAssociation(final Object type1,
+	    final Boolean navigability1, final Object aggregationKind1,
+	    final String name1, final Object type2,
+	    final Boolean navigability2, final Object aggregationKind2,
+	    final String name2, final String associationName) {
 
-        Association assoc = (Association) createAssociation();
-        Property end1 = assoc.createNavigableOwnedEnd(null, (Type) fromClassifier);
-        Property end2 = assoc.createOwnedEnd(null, (Type) toClassifier);
-        boolean uni = false;
-        if (unidirectional != null && unidirectional.booleanValue()) {
-            uni = true;
-        }
-        end2.setIsNavigable(uni);
-        return assoc;
-        
+	RunnableClass run = new RunnableClass() {
+	    public void run() {
+		Association assoc = ((Type) type1).createAssociation(
+			navigability1,
+			aggregationKind1 == null ? AggregationKind.NONE_LITERAL
+				: (AggregationKind) aggregationKind1, name1, 0,
+			1, (Type) type2, navigability2,
+			aggregationKind2 == null ? AggregationKind.NONE_LITERAL
+				: (AggregationKind) aggregationKind2, name2, 0,
+			1);
+		if (associationName != null) {
+		    assoc.setName(associationName);
+		}
+		getParams().add(assoc);
+	    }
+	};
+	editingDomain.getCommandStack().execute(
+		new ChangeCommand(editingDomain, run));
+
+	return (Association) run.getParams().get(0);
+
+    }
+    
+    public Association buildAssociation(Object fromClassifier,
+	    Object aggregationKind1, Object toClassifier,
+	    Object aggregationKind2, Boolean unidirectional) {
+
+	return buildAssociation(fromClassifier, true, aggregationKind1, null,
+		toClassifier, !unidirectional, aggregationKind2, null, null);
+
     }
 
-    public Object buildAssociation(Object classifier1, Object classifier2) {
-        return buildAssociation(
-                classifier1, AggregationKind.NONE_LITERAL, classifier2,
-                AggregationKind.NONE_LITERAL, false);
+    public Association buildAssociation(Object classifier1, Object classifier2) {
+	return buildAssociation(classifier1, true,
+		AggregationKind.NONE_LITERAL, null, classifier2, true,
+		AggregationKind.NONE_LITERAL, null, null);
     }
 
-    public Object buildAssociation(Object c1, boolean nav1, Object c2,
-            boolean nav2, String name) {
-        Association assoc = (Association) createAssociation();
-        Property end1 = assoc.createOwnedEnd(null, (Type) c1);
-        end1.setIsNavigable(nav1);
-        Property end2 = assoc.createOwnedEnd(null, (Type) c2);
-        end2.setIsNavigable(nav1);
-        assoc.setName(name);
-        return assoc;
+    public Association buildAssociation(Object c1, boolean nav1, Object c2,
+	    boolean nav2, String name) {
+	return buildAssociation(c1, nav1, AggregationKind.NONE_LITERAL, null,
+		c2, nav2, AggregationKind.NONE_LITERAL, null, name);
     }
 
-    public Object buildAssociationClass(Object end1, Object end2) {
+    public Association buildAssociationClass(Object end1, Object end2) {
         // TODO Auto-generated method stub
         return null;
     }

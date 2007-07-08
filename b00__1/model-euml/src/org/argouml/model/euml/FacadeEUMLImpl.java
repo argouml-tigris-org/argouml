@@ -1249,7 +1249,7 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAAssociationEnd(Object handle) {
         return handle instanceof Property
-                && ((Property) handle).getOwningAssociation() != null;
+                && ((Property) handle).getAssociation() != null;
     }
 
     public boolean isAAssociationEndRole(Object handle) {

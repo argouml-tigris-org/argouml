@@ -201,29 +201,8 @@ public class EUMLModelImplementation implements ModelImplementation {
      * Constructor.
      */
     public EUMLModelImplementation() {
-//	theModelEventPump = new ModelEventPumpEUMLImpl(this);
-//        LOG.debug("EUML Init - event pump started"); //$NON-NLS-1$
-
 	initializeEditingDomain();
 	LOG.debug("EUML Init - editing domain initialized"); //$NON-NLS-1$
-	
-//        theModelEventPump.startPumpingEvents();
-
-        // We may want to initialize some basic packages first,
-        // but we should try to use lazy initialization for most/all.
-//        // DataTypes is next so it's available for Kinds, ModelManagement,
-//        // & Extensions
-//        theDataTypesFactory = new DataTypesFactoryEUMLImpl(this);
-//        theDataTypesHelper = new DataTypesHelperEUMLImpl(this);
-//
-//        theAggregationKind = new AggregationKindEUMLImpl(this);
-//        theChangeableKind = new ChangeableKindEUMLImpl(this);
-//        theConcurrencyKind = new ConcurrencyKindEUMLImpl(this);
-//        theDirectionKind = new DirectionKindEUMLImpl(this);
-//        theOrderingKind = new OrderingKindEUMLImpl(this);
-//        thePseudostateKind = new PseudostateKindEUMLImpl(this);
-//        theScopeKind = new ScopeKindEUMLImpl(this);
-//        theVisibilityKind = new VisibilityKindEUMLImpl(this);
     }
     
     /**
@@ -242,7 +221,8 @@ public class EUMLModelImplementation implements ModelImplementation {
 	    @Override
 	    protected void handleError(Exception exception) {
 		super.handleError(exception);
-		LOG.error("Command error - " + exception); //$NON-NLS-1$
+		exception.printStackTrace();
+		throw new RuntimeException(exception);
 	    }
 
 	};
