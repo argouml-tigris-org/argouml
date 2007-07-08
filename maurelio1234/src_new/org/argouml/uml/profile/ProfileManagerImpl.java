@@ -62,7 +62,9 @@ public class ProfileManagerImpl implements ProfileManager {
      * @see org.argouml.uml.profile.ProfileManager#registerProfile(org.argouml.uml.profile.Profile)
      */
     public void registerProfile(Profile p) {
-	profiles.add(p);
+        if (!profiles.contains(p)) {
+            profiles.add(p);
+        }
     }
 
     /**

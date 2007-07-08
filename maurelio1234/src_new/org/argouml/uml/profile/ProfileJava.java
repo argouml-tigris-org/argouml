@@ -36,11 +36,22 @@ public class ProfileJava extends Profile {
     private FormatingStrategy formatingStrategy;
     private ProfileModelLoader profileModelLoader;
     private Object model;
-
+    private static ProfileJava instance;
+    
+    /**
+     * @return the unique instance for this profile
+     */
+    public static ProfileJava getInstance() {
+        if (instance == null) {
+            instance = new ProfileJava();
+        }
+        return instance;
+    }
+    
     /**
      * The default constructor for this class 
      */
-    public ProfileJava() {
+    private ProfileJava() {
 	profileModelLoader = new ResourceModelLoader();
 	model = profileModelLoader
 		.loadModel("/org/argouml/default-java.xmi");

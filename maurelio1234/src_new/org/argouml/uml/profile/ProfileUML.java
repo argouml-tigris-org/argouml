@@ -36,11 +36,22 @@ public class ProfileUML extends Profile {
     private FormatingStrategy formatingStrategy;
     private ProfileModelLoader profileModelLoader;
     private Object model;
-
+    private static ProfileUML instance;
+    
+    /**
+     * @return the unique instance for this profile
+     */
+    public static ProfileUML getInstance() {
+        if (instance == null) {
+            instance = new ProfileUML();
+        }
+        return instance;
+    }
+    
     /**
      * The default constructor for this class 
      */
-    public ProfileUML() {
+    private ProfileUML() {
         formatingStrategy = new JavaFormatingStrategy();
 	profileModelLoader = new ResourceModelLoader();
 	model = profileModelLoader

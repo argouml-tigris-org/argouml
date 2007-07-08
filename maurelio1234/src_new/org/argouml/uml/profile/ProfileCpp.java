@@ -36,11 +36,23 @@ public class ProfileCpp extends Profile {
     private FormatingStrategy formatingStrategy;
     private ProfileModelLoader profileModelLoader;
     private Object model;
+    private static ProfileCpp instance;
+    
+    /**
+     * @return the unique instance for this profile
+     */
+    public static ProfileCpp getInstance() {
+        if (instance == null) {
+            instance = new ProfileCpp();
+        }
+        return instance;
+    }
 
+    
     /**
      * The default constructor for this class 
      */
-    public ProfileCpp() {
+    private ProfileCpp() {
 	profileModelLoader = new ResourceModelLoader();
 	model = profileModelLoader
 		.loadModel("/org/argouml/default-cpp.xmi");
