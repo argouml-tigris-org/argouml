@@ -155,30 +155,5 @@ public class FigInclude extends FigEdgeModelElement {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
     }
-
-
-    /**
-     * @return
-     * @see org.tigris.gef.presentation.FigEdge#getDestPortFig()
-     */
-    @Override
-    public Fig getDestPortFig() {
-        // TODO: Auto-generated method stub
-        return super.getDestPortFig();
-    }
-
-
-    /**
-     * @return
-     * @see org.tigris.gef.presentation.FigEdge#getSourcePortFig()
-     */
-    @Override
-    public Fig getSourcePortFig() {
-        // TODO: Auto-generated method stub
-        return super.getSourcePortFig();
-    }
-    
-    
-    
 } /* end class FigInclude */
 
