@@ -219,15 +219,4 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
         lay.add(newEdge);
         return newEdge;
     }
-    
-
-    private void setSourcePort(FigEdge edge, FigNode source) {
-        edge.setSourcePortFig(source);
-        edge.setSourceFigNode(source);
-    }
-
-    private void setDestPort(FigEdge edge, FigNode dest) {
-        edge.setDestPortFig(dest);
-        edge.setDestFigNode(dest);
-    }
 }
