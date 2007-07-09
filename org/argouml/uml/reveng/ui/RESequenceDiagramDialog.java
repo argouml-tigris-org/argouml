@@ -36,7 +36,6 @@ import java.awt.event.ItemListener;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -180,15 +179,15 @@ public class RESequenceDiagramDialog
             portCnt =
                 SequenceDiagramLayer.getNodeIndex(
                     figMessage.getDestMessageNode().getFigMessagePort().getY());
-            Enumeration enu = diagram.elements();
-            while (enu.hasMoreElements()) {
-                Object f = enu.nextElement();
+            Iterator<Fig> it = diagram.getFigIterator();
+            while (it.hasNext()) {
+                Fig f = it.next();
                 if (f instanceof FigClassifierRole) {
-                    int x = ((Fig) f).getX();
+                    int x = f.getX();
                     if (maxXPos < x) {
                         maxXPos = x;
                     }
-                    if (Model.getFacade().getName(((Fig) f).getOwner())
+                    if (Model.getFacade().getName(f.getOwner())
                             .startsWith("anon")) {
                         anonCnt++;
                     }

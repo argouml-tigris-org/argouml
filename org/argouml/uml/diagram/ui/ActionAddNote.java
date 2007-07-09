@@ -40,7 +40,6 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -157,7 +156,7 @@ public class ActionAddNote extends UndoableAction {
      * @return The position where it should be placed.
      */
     private Point calculateLocation(
-            Diagram diagram, Object firstTarget, Fig noteFig) {
+            ArgoDiagram diagram, Object firstTarget, Fig noteFig) {
         Point point = new Point(DEFAULT_POS, DEFAULT_POS);
 
         if (firstTarget == null) {
