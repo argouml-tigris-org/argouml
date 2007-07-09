@@ -24,7 +24,6 @@
 
 package org.argouml.persistence;
 
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,16 +31,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectFactory;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
@@ -223,7 +220,7 @@ class XmiFilePersister extends AbstractFilePersister
         LOG.info("Loading with XMIFilePersister");
         
         try {
-            Project p = new Project();
+            Project p = ProjectFactory.getInstance().createProject();
             
             
             long length = file.length();
