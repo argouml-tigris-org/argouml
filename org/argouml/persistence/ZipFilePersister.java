@@ -39,6 +39,7 @@ import java.util.zip.ZipOutputStream;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectFactory;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
@@ -211,7 +212,7 @@ class ZipFilePersister extends XmiFilePersister {
         LOG.info("Receiving file '" + file.getName() + "'");
 
         try {
-            Project p = new Project();
+            Project p = ProjectFactory.getInstance().createProject();
             String fileName = file.getName();
             String extension =
                 fileName.substring(

@@ -250,7 +250,7 @@ public final class ProjectManager implements MementoCreationObserver {
         creatingCurrentProject = true;
         LOG.info("making empty project");
         Project oldProject = currentProject;
-        currentProject = new Project();
+        currentProject = new ProjectImpl();
         if (addDefaultDiagrams) {
             createDefaultDiagrams();
         }
