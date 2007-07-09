@@ -45,7 +45,7 @@ import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.UUIDHelper;
-import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.ArgoDiagramImpl;
 import org.argouml.uml.diagram.Relocatable;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.util.ToolBarUtility;
@@ -86,7 +86,7 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  * panel as the "home model". <p>
  */
 public abstract class UMLDiagram
-    extends ArgoDiagram
+    extends ArgoDiagramImpl
     implements Relocatable {
 
     /**

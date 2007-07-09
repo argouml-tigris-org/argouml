@@ -34,7 +34,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.GotoDialog;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.base.Diagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.undo.UndoableAction;
 
 ////////////////////////////////////////////////////////////////
@@ -73,7 +73,7 @@ public class ActionGotoDiagram
      */
     public boolean doCommand(String argument) {
 	Project p = ProjectManager.getManager().getCurrentProject();
-        Diagram d = p.getDiagram(argument);
+        ArgoDiagram d = p.getDiagram(argument);
         if (d != null) {
             TargetManager.getInstance().setTarget(d);
             return true;

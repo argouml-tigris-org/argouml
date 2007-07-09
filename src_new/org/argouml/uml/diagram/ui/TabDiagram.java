@@ -405,8 +405,8 @@ public class TabDiagram
 
     public void propertyChange(PropertyChangeEvent arg0) {
         if ("remove".equals(arg0.getPropertyName())) {
-            Diagram diagram = ProjectManager.getManager()
-                .getCurrentProject().getActiveDiagram();
+            ArgoDiagram diagram = ProjectManager.getManager()
+                    .getCurrentProject().getActiveDiagram();
             TargetManager.getInstance().setTarget(diagram);
         }
     }
