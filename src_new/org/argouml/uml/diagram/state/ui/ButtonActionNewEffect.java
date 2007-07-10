@@ -30,7 +30,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.undo.UndoableAction;
@@ -53,11 +52,12 @@ abstract class ButtonActionNewEffect extends UndoableAction implements
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (!isEnabled()) return;
+        if (!isEnabled()) {
+            return;
+        }
         super.actionPerformed(e);
         Object target = TargetManager.getInstance().getModelTarget();
-        Object model =
-            ProjectManager.getManager().getCurrentProject().getModel();
+        Object model = Model.getFacade().getModel(target);
         Object ns = Model.getStateMachinesHelper()
                     .findNamespaceForEvent(target, model);
         Object event = createEvent(ns);
