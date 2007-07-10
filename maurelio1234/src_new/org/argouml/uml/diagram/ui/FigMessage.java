@@ -1,4 +1,4 @@
-// $Id: FigMessage.java 12683 2007-05-27 00:20:29Z bobtarling $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

@@ -1,4 +1,4 @@
-// $Id: GoNodeToResidentComponent.java 11924 2007-01-27 16:26:20Z mvw $
+// $Id$
 // Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

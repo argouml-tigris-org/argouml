@@ -1,4 +1,4 @@
-// $Id: ActionSetTagDefinitionType.java 11414 2006-11-07 04:51:01Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

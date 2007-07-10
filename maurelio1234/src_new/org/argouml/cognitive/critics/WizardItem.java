@@ -1,4 +1,4 @@
-// $Id: WizardItem.java 12635 2007-05-22 20:35:29Z mvw $
+// $Id$
 // Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

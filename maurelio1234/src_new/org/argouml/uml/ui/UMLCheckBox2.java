@@ -1,4 +1,4 @@
-// $Id: UMLCheckBox2.java 12335 2007-04-04 21:15:14Z mvw $
+// $Id$
 // Copyright (c) 2002-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

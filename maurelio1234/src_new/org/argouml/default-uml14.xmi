@@ -2,7 +2,7 @@
 <XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Sat Jun 30 05:36:33 BRT 2007'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>PRE-0.25.4(5) revised on $Date: 2007-05-12 03:08:08 -0300 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>PRE-0.25.4(5) revised on $Date$ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>

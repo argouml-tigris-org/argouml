@@ -1,4 +1,4 @@
-// $Id: UMLList2.java 11493 2006-11-16 06:20:40Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

@@ -1,4 +1,4 @@
-// $Id: UMLDeprecatedCheckBox.java 12516 2007-05-04 05:46:30Z tfmorris $
+// $Id$
 // Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

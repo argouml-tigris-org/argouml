@@ -11,7 +11,7 @@
 <!-- files.  "tee" = Template with Embedded Expressions. -->
 
 <!-- Original Author: jrobbins@ics.uci.edu -->
-<!-- $Id: argo.tee 12291 2007-03-22 18:36:14Z mvw $ -->
+<!-- $Id$ -->
 
 
 <TemplateSet>

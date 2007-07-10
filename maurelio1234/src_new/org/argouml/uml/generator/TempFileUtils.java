@@ -1,4 +1,4 @@
-// $Id: TempFileUtils.java 11531 2006-11-27 17:40:06Z tfmorris $
+// $Id$
 // Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

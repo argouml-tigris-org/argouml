@@ -1,4 +1,4 @@
-// $Id: ArgoFrame.java 12638 2007-05-22 21:23:39Z mvw $
+// $Id$
 // Copyright (c) 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

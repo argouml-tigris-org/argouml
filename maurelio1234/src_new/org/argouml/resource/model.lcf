@@ -2,7 +2,7 @@
 # add -Dlog4j.configuration=org/argouml/resource/event.lcf
 # to the command line to use this log4j configuration
 #
-# $Id: model.lcf 2186 2002-08-04 17:44:21Z thierrylach $
+# $Id$
 #
 log4j.rootCategory=ERROR, MODEL
 #

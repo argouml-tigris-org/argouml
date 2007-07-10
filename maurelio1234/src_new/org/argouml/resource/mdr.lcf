@@ -2,7 +2,7 @@
 # add -Dlog4j.configuration=org/argouml/resource/mdr.lcf
 # to the command line to use this log4j configuration
 #
-# $Id: mdr.lcf 9137 2005-10-25 03:17:45Z tfmorris $
+# $Id$
 
 #
 log4j.rootCategory=ERROR, MDR

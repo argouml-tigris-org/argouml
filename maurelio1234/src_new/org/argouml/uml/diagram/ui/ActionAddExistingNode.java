@@ -1,4 +1,4 @@
-// $Id: ActionAddExistingNode.java 12583 2007-05-09 20:11:45Z mvw $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

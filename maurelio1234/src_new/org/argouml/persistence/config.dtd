@@ -25,7 +25,7 @@
 
 <!-- Argo/UML configuration file DTD -->
 <!-- original author: jrobbins@ics.uci.edu -->
-<!-- $Id: config.dtd 7289 2004-12-23 18:27:56Z bobtarling $ -->
+<!-- $Id$ -->
 
 <!-- Note that this file is not currently used in Argo v0.6, but it -->
 <!-- may be in a future version.  For v0.6, see argo.ini and -->

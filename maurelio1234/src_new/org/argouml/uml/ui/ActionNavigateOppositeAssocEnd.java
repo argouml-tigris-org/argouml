@@ -1,4 +1,4 @@
-// $Id: ActionNavigateOppositeAssocEnd.java 12356 2007-04-10 16:01:31Z tfmorris $
+// $Id$
 // Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

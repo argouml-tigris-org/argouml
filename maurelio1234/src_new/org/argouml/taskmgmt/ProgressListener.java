@@ -1,4 +1,4 @@
-// $Id: ProgressListener.java 12455 2007-04-29 10:34:21Z mvw $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

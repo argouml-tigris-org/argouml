@@ -1,4 +1,4 @@
-// $Id: SelectionDataType.java 12062 2007-02-15 21:12:59Z tfmorris $
+// $Id$
 // Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

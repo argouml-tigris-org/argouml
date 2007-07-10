@@ -1,4 +1,4 @@
-// $Id: GoLinkToStimuli.java 11516 2006-11-25 04:30:15Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,7 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-// $Id: GoLinkToStimuli.java 11516 2006-11-25 04:30:15Z tfmorris $
+// $Id$
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;

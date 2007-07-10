@@ -1,4 +1,4 @@
-// $Id: PGMLStackParser.java 12657 2007-05-24 20:20:04Z bobtarling $
+// $Id$
 // Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

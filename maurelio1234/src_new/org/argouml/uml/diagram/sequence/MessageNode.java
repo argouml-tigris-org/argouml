@@ -1,4 +1,4 @@
-// $Id: MessageNode.java 11274 2006-10-01 15:21:51Z bobtarling $
+// $Id$
 // Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

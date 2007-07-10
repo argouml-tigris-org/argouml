@@ -1,4 +1,4 @@
-// $Id: TabTaggedValues.java 12087 2007-02-16 23:48:47Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

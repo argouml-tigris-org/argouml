@@ -1,4 +1,4 @@
-// $Id: UmlVersionException.java 10737 2006-06-11 19:01:27Z mvw $
+// $Id$
 // Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

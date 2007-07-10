@@ -1,4 +1,4 @@
-// $Id: AbstractActionAddModelElement.java 11450 2006-11-12 07:27:42Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

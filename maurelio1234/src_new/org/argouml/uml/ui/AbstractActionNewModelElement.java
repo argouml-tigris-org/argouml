@@ -1,4 +1,4 @@
-// $Id: AbstractActionNewModelElement.java 12565 2007-05-06 23:05:31Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id: AbstractActionNewModelElement.java 12565 2007-05-06 23:05:31Z tfmorris $
+// $Id$
 package org.argouml.uml.ui;
 
 import javax.swing.Action;

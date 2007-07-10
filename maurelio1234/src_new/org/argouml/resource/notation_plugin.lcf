@@ -2,7 +2,7 @@
 # add -Dlog4j.configuration=org/argouml/resource/notation_plugin.lcf
 # to the command line to use this log4j configuration
 #
-# $Id: notation_plugin.lcf 935 2001-10-24 12:32:01Z thierrylach $
+# $Id$
 #
 log4j.rootCategory=ERROR, NP
 #

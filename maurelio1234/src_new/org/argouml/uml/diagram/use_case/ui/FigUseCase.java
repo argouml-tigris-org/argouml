@@ -1,4 +1,4 @@
-// $Id: FigUseCase.java 12866 2007-06-17 18:31:30Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

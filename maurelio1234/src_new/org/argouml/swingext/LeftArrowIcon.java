@@ -1,4 +1,4 @@
-// $Id: LeftArrowIcon.java 12653 2007-05-24 17:05:31Z mvw $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

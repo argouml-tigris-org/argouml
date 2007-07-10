@@ -1,4 +1,4 @@
-// $Id: WeakExplorerNode.java 10314 2006-04-03 20:52:04Z linus $
+// $Id$
 // Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

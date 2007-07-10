@@ -1,4 +1,4 @@
-// $Id: PropPanelLink.java 11639 2006-12-21 20:22:14Z mvw $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

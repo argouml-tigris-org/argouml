@@ -1,4 +1,4 @@
-// $Id: java.g 5374 2003-12-05 07:44:28Z lepekhine $
+// $Id$
 
 header {
 	package org.argouml.language.java.generator;
@@ -63,7 +63,7 @@ header {
  *
  * Version tracking now done with following ID:
  *
- * $Id: java.g 5374 2003-12-05 07:44:28Z lepekhine $
+ * $Id$
  *
  * BUG:
  * 		Doesn't like boolean.class!

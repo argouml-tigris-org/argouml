@@ -1,4 +1,4 @@
-// $Id: ActionAddSupplierDependencyAction.java 11798 2007-01-10 21:39:10Z mvw $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

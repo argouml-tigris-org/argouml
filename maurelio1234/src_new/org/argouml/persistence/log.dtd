@@ -25,7 +25,7 @@
 
 <!-- Argo/UML usage log file DTD -->
 <!-- original author: jrobbins@ics.uci.edu -->
-<!-- $Id: log.dtd 7289 2004-12-23 18:27:56Z bobtarling $ -->
+<!-- $Id$ -->
 
 <!-- NOTE: this file is currently not used, instead I have added a -->
 <!-- stats tag to argo.dtd -->

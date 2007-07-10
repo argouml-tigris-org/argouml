@@ -1,4 +1,4 @@
-// $Id: ActivityDiagramRenderer.java 12276 2007-03-16 17:52:00Z mvw $
+// $Id$
 // Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

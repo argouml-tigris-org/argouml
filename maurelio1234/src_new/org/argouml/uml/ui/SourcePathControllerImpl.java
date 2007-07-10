@@ -1,4 +1,4 @@
-// $Id: SourcePathControllerImpl.java 12238 2007-03-09 08:20:04Z tfmorris $
+// $Id$
 // Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

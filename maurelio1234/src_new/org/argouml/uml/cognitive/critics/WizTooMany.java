@@ -1,4 +1,4 @@
-// $Id: WizTooMany.java 11576 2006-12-10 17:02:26Z tfmorris $
+// $Id$
 // Copyright (c) 2003-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

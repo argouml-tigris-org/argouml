@@ -1,4 +1,4 @@
-// $Id: CodeGenerator.java 11296 2006-10-13 11:19:34Z thn $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

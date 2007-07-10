@@ -1,4 +1,4 @@
-// $Id: FigInterface.java 12926 2007-06-29 20:13:47Z mvw $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

@@ -1,4 +1,4 @@
-// $Id: SourceUnit.java 11377 2006-11-03 23:51:55Z tfmorris $
+// $Id$
 // Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

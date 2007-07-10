@@ -1,4 +1,4 @@
-// $Id: ActionAutoCritique.java 12684 2007-05-27 07:25:08Z mvw $
+// $Id$
 // Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

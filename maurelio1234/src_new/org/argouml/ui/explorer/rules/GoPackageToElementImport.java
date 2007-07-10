@@ -1,4 +1,4 @@
-// $Id: GoPackageToElementImport.java 12379 2007-04-11 19:22:34Z mvw $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

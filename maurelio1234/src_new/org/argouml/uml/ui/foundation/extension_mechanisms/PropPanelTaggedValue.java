@@ -1,4 +1,4 @@
-// $Id: PropPanelTaggedValue.java 11590 2006-12-11 07:43:47Z linus $
+// $Id$
 // Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

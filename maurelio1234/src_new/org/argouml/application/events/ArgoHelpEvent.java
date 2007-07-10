@@ -1,4 +1,4 @@
-// $Id: ArgoHelpEvent.java 12431 2007-04-22 19:01:48Z mvw $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

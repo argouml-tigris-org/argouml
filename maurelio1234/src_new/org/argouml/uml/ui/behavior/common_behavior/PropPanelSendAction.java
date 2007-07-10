@@ -1,4 +1,4 @@
-// $Id: PropPanelSendAction.java 12244 2007-03-09 17:00:24Z mvw $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

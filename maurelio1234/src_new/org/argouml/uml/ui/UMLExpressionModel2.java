@@ -1,4 +1,4 @@
-// $Id: UMLExpressionModel2.java 11959 2007-02-02 19:06:05Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

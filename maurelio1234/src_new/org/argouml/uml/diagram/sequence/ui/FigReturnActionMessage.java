@@ -1,4 +1,4 @@
-// $Id: FigReturnActionMessage.java 11667 2006-12-28 21:52:22Z mvw $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

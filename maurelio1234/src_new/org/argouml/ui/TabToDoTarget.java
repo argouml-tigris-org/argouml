@@ -1,4 +1,4 @@
-// $Id: TabToDoTarget.java 12653 2007-05-24 17:05:31Z mvw $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

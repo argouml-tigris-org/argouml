@@ -1,4 +1,4 @@
-// $Id: ActionNewClassifierInState.java 11478 2006-11-14 08:50:12Z tfmorris $
+// $Id$
 // Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

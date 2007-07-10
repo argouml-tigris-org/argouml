@@ -1,4 +1,4 @@
-// $Id: UMLTaggedValueCheckBox.java 12518 2007-05-04 07:11:31Z tfmorris $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

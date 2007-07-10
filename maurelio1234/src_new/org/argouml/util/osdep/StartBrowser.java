@@ -1,4 +1,4 @@
-// $Id: StartBrowser.java 11117 2006-09-04 18:44:56Z andrea_nironi $
+// $Id$
 // Copyright (c) 2002-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

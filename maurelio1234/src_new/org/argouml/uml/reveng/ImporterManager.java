@@ -1,4 +1,4 @@
-// $Id: ImporterManager.java 10735 2006-06-11 17:14:04Z mvw $
+// $Id$
 // Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

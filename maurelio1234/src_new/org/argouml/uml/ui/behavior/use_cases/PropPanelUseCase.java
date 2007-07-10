@@ -1,4 +1,4 @@
-// $Id: PropPanelUseCase.java 12672 2007-05-26 21:28:01Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
