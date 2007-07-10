@@ -45,7 +45,7 @@ import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ActionSettings;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectActions;
 import org.argouml.ui.ZoomSliderButton;
 import org.argouml.ui.explorer.ActionPerspectiveConfig;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -67,11 +67,15 @@ import org.argouml.uml.ui.ActionPaste;
 import org.argouml.uml.ui.ActionRevertToSaved;
 import org.argouml.uml.ui.ActionSaveAllGraphics;
 import org.argouml.uml.ui.ActionSaveGraphics;
+import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.tigris.gef.base.AdjustPageBreaksAction;
+import org.tigris.gef.base.AlignAction;
+import org.tigris.gef.base.DistributeAction;
+import org.tigris.gef.base.ReorderAction;
 import org.tigris.gef.base.SelectAllAction;
 import org.tigris.gef.base.SelectInvertAction;
 import org.tigris.gef.base.ZoomAction;
@@ -301,12 +305,11 @@ public class GenericArgoMenuBar extends JMenuBar implements
         fileToolbar.add(new ActionOpenProject());
         file.addSeparator();
 
-        JMenuItem saveProjectItem = file.add(ProjectBrowser.getInstance()
-                .getSaveAction());
+        JMenuItem saveProjectItem = file.add(ActionSaveProject.getInstance());
         setMnemonic(saveProjectItem, "Save");
         ShortcutMgr.assignAccelerator(saveProjectItem,
                 ShortcutMgr.ACTION_SAVE_PROJECT);
-        fileToolbar.add((ProjectBrowser.getInstance().getSaveAction()));
+        fileToolbar.add(ActionSaveProject.getInstance());
         JMenuItem saveProjectAsItem = file.add(new ActionSaveProjectAs());
         setMnemonic(saveProjectAsItem, "SaveAs");
         ShortcutMgr.assignAccelerator(saveProjectAsItem,
@@ -381,13 +384,13 @@ public class GenericArgoMenuBar extends JMenuBar implements
         edit = add(new JMenu(menuLocalize("Edit")));
         setMnemonic(edit, "Edit");
 
-        JMenuItem undoItem = edit.add(ProjectBrowser.getInstance()
+        JMenuItem undoItem = edit.add(ProjectActions.getInstance()
                 .getUndoAction());
         setMnemonic(undoItem, "Undo");
         ShortcutMgr.assignAccelerator(undoItem, ShortcutMgr.ACTION_UNDO);
         undoItem.setVisible(UndoEnabler.isEnabled());
 
-        JMenuItem redoItem = edit.add(ProjectBrowser.getInstance()
+        JMenuItem redoItem = edit.add(ProjectActions.getInstance()
                 .getRedoAction());
         setMnemonic(redoItem, "Redo");
         ShortcutMgr.assignAccelerator(redoItem, ShortcutMgr.ACTION_REDO);
@@ -437,7 +440,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         //
         // edit.addSeparator();
 
-        Action removeFromDiagram = ProjectBrowser.getInstance()
+        Action removeFromDiagram = ProjectActions.getInstance()
                 .getRemoveFromDiagramAction();
         JMenuItem removeItem = edit.add(removeFromDiagram);
 
@@ -629,8 +632,137 @@ public class GenericArgoMenuBar extends JMenuBar implements
         arrange.add(new ActionLayout());
 
         // This used to be deferred, but it's only 30-40 msec of work.
-        InitMenusLater.initMenus(align, distribute, reorder);
+        initAlignMenu(align);
+        initDistributeMenu(distribute);
+        initReorderMenu(reorder);
     }
+    
+    /**
+     * Initialize submenus of the Align menu.
+     * 
+     * @param align
+     *            the Align menu
+     */
+    private static void initAlignMenu(JMenu align) {
+        JMenuItem alignTops = align
+                .add(new AlignAction(AlignAction.ALIGN_TOPS));
+        setMnemonic(alignTops, "align tops");
+        ShortcutMgr.assignAccelerator(alignTops, ShortcutMgr.ACTION_ALIGN_TOPS);
+
+        JMenuItem alignBottoms = align.add(new AlignAction(
+                AlignAction.ALIGN_BOTTOMS));
+        setMnemonic(alignBottoms, "align bottoms");
+        ShortcutMgr.assignAccelerator(alignBottoms,
+                ShortcutMgr.ACTION_ALIGN_BOTTOMS);
+
+        JMenuItem alignRights = align.add(new AlignAction(
+                AlignAction.ALIGN_RIGHTS));
+        setMnemonic(alignRights, "align rights");
+        ShortcutMgr.assignAccelerator(alignRights,
+                ShortcutMgr.ACTION_ALIGN_RIGHTS);
+
+        JMenuItem alignLefts = align.add(new AlignAction(
+                AlignAction.ALIGN_LEFTS));
+        setMnemonic(alignLefts, "align lefts");
+        ShortcutMgr.assignAccelerator(alignLefts,
+                ShortcutMgr.ACTION_ALIGN_LEFTS);
+
+        JMenuItem alignHCenters = align.add(new AlignAction(
+                AlignAction.ALIGN_H_CENTERS));
+        setMnemonic(alignHCenters,
+                "align horizontal centers");
+        ShortcutMgr.assignAccelerator(alignHCenters,
+                ShortcutMgr.ACTION_ALIGN_H_CENTERS);
+
+        JMenuItem alignVCenters = align.add(new AlignAction(
+                AlignAction.ALIGN_V_CENTERS));
+        setMnemonic(alignVCenters, "align vertical centers");
+        ShortcutMgr.assignAccelerator(alignVCenters,
+                ShortcutMgr.ACTION_ALIGN_V_CENTERS);
+
+        JMenuItem alignToGrid = align.add(new AlignAction(
+                AlignAction.ALIGN_TO_GRID));
+        setMnemonic(alignToGrid, "align to grid");
+        ShortcutMgr.assignAccelerator(alignToGrid,
+                ShortcutMgr.ACTION_ALIGN_TO_GRID);
+    }
+
+    /**
+     * Initialize submenus of the Distribute menu.
+     * 
+     * @param distribute
+     *            the Distribute menu
+     */
+    private static void initDistributeMenu(JMenu distribute) {
+        JMenuItem distributeHSpacing = distribute.add(new DistributeAction(
+                DistributeAction.H_SPACING));
+        setMnemonic(distributeHSpacing,
+                "distribute horizontal spacing");
+        ShortcutMgr.assignAccelerator(distributeHSpacing,
+                ShortcutMgr.ACTION_DISTRIBUTE_H_SPACING);
+
+        JMenuItem distributeHCenters = distribute.add(new DistributeAction(
+                DistributeAction.H_CENTERS));
+        setMnemonic(distributeHCenters,
+                "distribute horizontal centers");
+        ShortcutMgr.assignAccelerator(distributeHCenters,
+                ShortcutMgr.ACTION_DISTRIBUTE_H_CENTERS);
+
+        JMenuItem distributeVSpacing = distribute.add(new DistributeAction(
+                DistributeAction.V_SPACING));
+        setMnemonic(distributeVSpacing,
+                "distribute vertical spacing");
+        ShortcutMgr.assignAccelerator(distributeVSpacing,
+                ShortcutMgr.ACTION_DISTRIBUTE_V_SPACING);
+
+        JMenuItem distributeVCenters = distribute.add(new DistributeAction(
+                DistributeAction.V_CENTERS));
+        setMnemonic(distributeVCenters,
+                "distribute vertical centers");
+        ShortcutMgr.assignAccelerator(distributeVCenters,
+                ShortcutMgr.ACTION_DISTRIBUTE_V_CENTERS);
+    }
+
+    /**
+     * Initialize the submenus for the Reorder menu.
+     * 
+     * @param reorder
+     *            the main Reorder menu
+     */
+    private static void initReorderMenu(JMenu reorder) {
+        JMenuItem reorderBringForward = reorder.add(new ReorderAction(
+                Translator.localize("action.bring-forward"),
+                ReorderAction.BRING_FORWARD));
+        setMnemonic(reorderBringForward,
+                "reorder bring forward");
+        ShortcutMgr.assignAccelerator(reorderBringForward,
+                ShortcutMgr.ACTION_REORDER_FORWARD);
+
+        JMenuItem reorderSendBackward = reorder.add(new ReorderAction(
+                Translator.localize("action.send-backward"),
+                ReorderAction.SEND_BACKWARD));
+        setMnemonic(reorderSendBackward,
+                "reorder send backward");
+        ShortcutMgr.assignAccelerator(reorderSendBackward,
+                ShortcutMgr.ACTION_REORDER_BACKWARD);
+
+        JMenuItem reorderBringToFront = reorder.add(new ReorderAction(
+                Translator.localize("action.bring-to-front"),
+                ReorderAction.BRING_TO_FRONT));
+        setMnemonic(reorderBringToFront,
+                "reorder bring to front");
+        ShortcutMgr.assignAccelerator(reorderBringToFront,
+                ShortcutMgr.ACTION_REORDER_TO_FRONT);
+
+        JMenuItem reorderSendToBack = reorder.add(new ReorderAction(
+                Translator.localize("action.send-to-back"),
+                ReorderAction.SEND_TO_BACK));
+        setMnemonic(reorderSendToBack,
+                "reorder send to back");
+        ShortcutMgr.assignAccelerator(reorderSendToBack,
+                ShortcutMgr.ACTION_REORDER_TO_BACK);
+    }
+
 
     /**
      * Build the menu "Generation".
@@ -721,6 +853,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         // setHelpMenu(help);
         add(help);
     }
+    
 
     /**
      * Get the create diagram toolbar.
@@ -754,7 +887,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
             // editToolbar.add(ActionCopy.getInstance());
             // editToolbar.add(ActionPaste.getInstance());
             editToolbar.addFocusListener(ActionPaste.getInstance());
-            editToolbar.add(ProjectBrowser.getInstance()
+            editToolbar.add(ProjectActions.getInstance()
                     .getRemoveFromDiagramAction());
             editToolbar.add(navigateTargetBackAction);
             editToolbar.add(navigateTargetForwardAction);
@@ -811,6 +944,9 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * 
      * @param filename
      *            of the project
+     *            
+     * TODO: This should listen for file save events rather than being called 
+     * directly - tfm.
      */
     public void addFileSaved(String filename) {
         lruList.addEntry(filename);

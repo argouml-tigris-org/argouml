@@ -41,7 +41,7 @@ import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectActions;
 
 
 /**
@@ -119,13 +119,13 @@ public class UMLToDoItem extends ToDoItem {
      * Action jumps to the diagram containing all or most of the
      * offenders and calls {@link #deselect()}, {@link #select()}
      * around the call to
-     * {@link ProjectBrowser#jumpToDiagramShowing(java.util.Vector)}.
+     * {@link ProjectDiagramActions#jumpToDiagramShowing(java.util.List)}.
      */
     @Override
     public void action() {
         deselect();
         // this also sets the target as a convenient side effect
-        ProjectBrowser.getInstance().jumpToDiagramShowing(getOffenders());
+        ProjectActions.jumpToDiagramShowing(getOffenders());
         select();
     }
 

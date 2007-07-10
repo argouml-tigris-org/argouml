@@ -39,7 +39,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import org.argouml.model.Model;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectActions;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
 import org.tigris.gef.base.Globals;
@@ -60,18 +60,11 @@ public class FigConcurrentRegion extends FigState
         MouseListener,
         MouseMotionListener {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
-    // /** The main label on this icon. */
-    //FigText _name;
 
     private FigRect cover;
     private FigLine dividerline;
     private static Handle curHandle = new Handle(-1);
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
@@ -146,16 +139,13 @@ public class FigConcurrentRegion extends FigState
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
     /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         popUpActions.remove(
-                ProjectBrowser.getInstance().getRemoveFromDiagramAction());
+                ProjectActions.getInstance().getRemoveFromDiagramAction());
         popUpActions.add(new JSeparator());
         popUpActions.addElement(
                 new ActionAddConcurrentRegion());
@@ -566,4 +556,4 @@ public class FigConcurrentRegion extends FigState
      * The UID.
      */
     private static final long serialVersionUID = -7228935179004210975L;
-} /* end class FigConcurrentRegion */
+}

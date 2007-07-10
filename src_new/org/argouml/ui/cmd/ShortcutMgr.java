@@ -47,7 +47,7 @@ import org.argouml.ui.ActionExportXMI;
 import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ActionSettings;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectActions;
 import org.argouml.ui.explorer.ActionPerspectiveConfig;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
@@ -63,6 +63,7 @@ import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.uml.ui.ActionRevertToSaved;
 import org.argouml.uml.ui.ActionSaveAllGraphics;
 import org.argouml.uml.ui.ActionSaveGraphics;
+import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
@@ -550,8 +551,7 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_OPEN_PROJECT, KeyStroke.getKeyStroke(
                 KeyEvent.VK_O, DEFAULT_MASK), new ActionOpenProject());
         putDefaultShortcut(ACTION_SAVE_PROJECT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_S, DEFAULT_MASK), ProjectBrowser.getInstance()
-                .getSaveAction());
+                KeyEvent.VK_S, DEFAULT_MASK), ActionSaveProject.getInstance());
         putDefaultShortcut(ACTION_SAVE_PROJECT_AS, null,
                 new ActionSaveProjectAs());
         putDefaultShortcut(ACTION_REVERT_TO_SAVED, null,
@@ -575,9 +575,9 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_SELECT_ALL, KeyStroke.getKeyStroke(
                 KeyEvent.VK_A, DEFAULT_MASK), new SelectAllAction());
         putDefaultShortcut(ACTION_REDO, KeyStroke.getKeyStroke(KeyEvent.VK_Y,
-                DEFAULT_MASK), ProjectBrowser.getInstance().getRedoAction());
+                DEFAULT_MASK), ProjectActions.getInstance().getRedoAction());
         putDefaultShortcut(ACTION_UNDO, KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-                DEFAULT_MASK), ProjectBrowser.getInstance().getUndoAction());
+                DEFAULT_MASK), ProjectActions.getInstance().getUndoAction());
         putDefaultShortcut(ACTION_NAVIGATE_FORWARD, null,
                 new NavigateTargetForwardAction());
         putDefaultShortcut(ACTION_NAVIGATE_BACK, null,
@@ -588,7 +588,7 @@ public class ShortcutMgr {
                 new ActionPerspectiveConfig());
         putDefaultShortcut(ACTION_SETTINGS, null, new ActionSettings());
         putDefaultShortcut(ACTION_REMOVE_FROM_DIAGRAM, KeyStroke.getKeyStroke(
-                KeyEvent.VK_DELETE, 0), ProjectBrowser.getInstance()
+                KeyEvent.VK_DELETE, 0), ProjectActions.getInstance()
                 .getRemoveFromDiagramAction());
         putDefaultShortcut(ACTION_DELETE_MODEL_ELEMENTS, KeyStroke
                 .getKeyStroke(KeyEvent.VK_DELETE, DEFAULT_MASK), 
