@@ -62,9 +62,11 @@ public class ActionAddExistingEdge extends UndoableAction {
     public void actionPerformed(ActionEvent arg0) {
         super.actionPerformed(arg0);
         // we have an edge (the UML modelelement!)
-        if (edge == null) return;
+        if (edge == null) {
+            return;
+        }
         // let's test which situation we have. 3 Possibilities:
-        // 1. The nodes are allready on the diagram, we can use
+        // 1. The nodes are already on the diagram, we can use
         //    canAddEdge for this.
         // 2. One of the nodes is already on the diagram. The other
         //    has to be added.
@@ -90,7 +92,9 @@ public class ActionAddExistingEdge extends UndoableAction {
         Object target = TargetManager.getInstance().getModelTarget();
         ArgoDiagram dia = ProjectManager.getManager().getCurrentProject().
             getActiveDiagram();
-        if (dia == null) return false;
+        if (dia == null) {
+            return false;
+        }
         MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
         return gm.canAddEdge(target);
     }

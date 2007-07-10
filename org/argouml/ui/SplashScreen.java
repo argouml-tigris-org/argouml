@@ -39,9 +39,6 @@ import org.tigris.gef.ui.IStatusBar;
 
 /**
  * The splash screen.
- *
- * TODO: JWindow? I don't want a frame or close widgets.
- *
  */
 public class SplashScreen extends JWindow implements IStatusBar {
 
@@ -95,15 +92,16 @@ public class SplashScreen extends JWindow implements IStatusBar {
     /**
      * @return the status bar of this dialog
      */
-    public StatusBar getStatusBar() { return statusBar; }
-
-    ////////////////////////////////////////////////////////////////
-    // IStatusBar
+    public StatusBar getStatusBar() {
+        return statusBar;
+    }
 
     /*
      * @see org.tigris.gef.ui.IStatusBar#showStatus(java.lang.String)
      */
-    public void showStatus(String s) { statusBar.showStatus(s); }
+    public void showStatus(String s) {
+        statusBar.showStatus(s);
+    }
     
     /*
      * Override paint so we can set a flag the first time we're called
@@ -111,6 +109,7 @@ public class SplashScreen extends JWindow implements IStatusBar {
      * painted.
      * @see java.awt.Component#paint(java.awt.Graphics)
      */
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
         if (!paintCalled) {
@@ -135,4 +134,4 @@ public class SplashScreen extends JWindow implements IStatusBar {
         return paintCalled;
     }
 
-} /* end class SplashScreen */
+}

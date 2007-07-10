@@ -89,7 +89,8 @@ public class ActionNotation extends UndoableAction
             if (o instanceof NotationName) {
                 NotationName nn = (NotationName) o;
                 if (key.equals(nn.getTitle())) {
-                    Project p = ProjectManager.getManager().getCurrentProject();
+                    Project p = ProjectManager.getManager()
+                            .getCurrentProject();
                     p.getProjectSettings().setNotationLanguage(nn);
                     break;
                 }

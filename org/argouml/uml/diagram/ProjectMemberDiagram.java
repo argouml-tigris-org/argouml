@@ -37,13 +37,7 @@ public class ProjectMemberDiagram extends AbstractProjectMember {
     private static final String MEMBER_TYPE = "pgml";
     private static final String FILE_EXT = ".pgml";
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private ArgoDiagram diagram;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
@@ -57,9 +51,6 @@ public class ProjectMemberDiagram extends AbstractProjectMember {
         makeUniqueName(s);
         setDiagram(d);
     }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
      * @return the diagram
@@ -78,6 +69,7 @@ public class ProjectMemberDiagram extends AbstractProjectMember {
     /*
      * @see org.argouml.kernel.AbstractProjectMember#getZipFileExtension()
      */
+    @Override
     public String getZipFileExtension() {
         return FILE_EXT;
     }
@@ -96,4 +88,4 @@ public class ProjectMemberDiagram extends AbstractProjectMember {
         return diagram.repair();
     }
 
-} /* end class ProjectMemberDiagram */
+}

@@ -51,9 +51,6 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionEdgesDisplay extends UndoableAction {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
     // compartments
     private static UndoableAction showEdges = new ActionEdgesDisplay(true,
                 Translator.localize("menu.popup.add.all-relations"));
@@ -61,9 +58,6 @@ public class ActionEdgesDisplay extends UndoableAction {
                 Translator.localize("menu.popup.remove.all-relations"));
 
     private boolean show;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
@@ -78,16 +72,13 @@ public class ActionEdgesDisplay extends UndoableAction {
         show = showEdge;
     }
 
-
-    // //////////////////////////////////////////////////////////////
-    // main methods
-
     /*
      * TODO: Support commentEdges.
      * TODO: Support associations to self.
      *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
         ArgoDiagram d = ProjectManager.getManager()
@@ -138,6 +129,7 @@ public class ActionEdgesDisplay extends UndoableAction {
      * @return true if the action is enabled
      * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
         return true;
     }
@@ -158,7 +150,7 @@ public class ActionEdgesDisplay extends UndoableAction {
         return hideEdges;
     }
 
-} /* end class ActionEdgesDisplay */
+}
 
 
 

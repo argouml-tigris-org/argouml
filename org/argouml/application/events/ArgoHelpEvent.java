@@ -50,7 +50,10 @@ public class ArgoHelpEvent extends ArgoEvent {
      *
      * @return the first id reserved for events.
      */
-    public int getEventStartRange() { return ANY_HELP_EVENT; }
+    @Override
+    public int getEventStartRange() {
+        return ANY_HELP_EVENT;
+    }
 
     /**
      * @return Returns the helpText.
