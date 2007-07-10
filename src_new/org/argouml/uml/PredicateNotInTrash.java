@@ -27,7 +27,6 @@
  */
 package org.argouml.uml;
 
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.tigris.gef.util.Predicate;
 
@@ -37,16 +36,11 @@ import org.tigris.gef.util.Predicate;
  * which are already in the trash bin.
  **/
 public class PredicateNotInTrash implements Predicate {
-    private Project p;
-
     /*
      * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
      */
     public boolean predicate(Object obj) {
-        p = ProjectManager.getManager().getCurrentProject();
-        if (p == null) return true;
-        if (p.isInTrash(obj)) return false;
-        return true;
+        return !ProjectManager.getManager().getCurrentProject().isInTrash(obj);
     }
 }
 
