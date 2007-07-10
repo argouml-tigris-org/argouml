@@ -110,7 +110,7 @@ public interface Project {
     public Vector<String> getSearchPath();
     
     /**
-     * Used by "argo.tee".
+     * NOT used by "argo.tee" yet.
      * 
      * @return the search path
      */
@@ -131,7 +131,7 @@ public interface Project {
      * Get all members of the project.
      * Used by "argo2.tee".
      *
-     * @return a Vector with all members.
+     * @return all members.
      */
     public MemberList getMembers();
 
