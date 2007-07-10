@@ -39,6 +39,6 @@ public class ActionStereotypeViewTextual extends ActionStereotypeView {
      */
     public ActionStereotypeViewTextual(FigNodeModelElement node) {
 	super(node, "menu.popup.stereotype-view.textual",
-		FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON);
+		FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
     }
 }
