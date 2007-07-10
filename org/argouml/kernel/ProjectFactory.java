@@ -27,7 +27,7 @@ package org.argouml.kernel;
 import java.net.URI;
 
 /**
- * Factory for creating new IProject instances.
+ * Factory for creating new Project instances.
  * <p>
  * Consumers who need an instance of a Project
  * should instead use this factory to get an instance which implements the
