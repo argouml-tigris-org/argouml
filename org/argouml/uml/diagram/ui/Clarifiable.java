@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,35 +26,15 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Graphics;
 
-import org.tigris.gef.base.SelectionMove;
-import org.tigris.gef.presentation.Fig;
-
 /**
- *
- *
- *
- * @author jrobbins
+ * Interface for objects which can be "clarified." This means they support the
+ * method paintClarifiers() to highlight a piece of the graphic. Used by the
+ * Critics subsystem to highlight problem areas.
+ * 
+ * @author Tom Morris
  */
-public class SelectionMoveClarifiers extends SelectionMove {
+public interface Clarifiable {
 
-    /** Construct a new SelectionMoveClarifiers for the given Fig
-     *
-     * @param f the given Fig
-     */
-    public SelectionMoveClarifiers(Fig f) {
-        super(f);
-    }
-
-    /**
-     * Paint the handles at the four corners and midway along each edge of the
-     * bounding box.
-     *
-     * @see org.tigris.gef.base.Selection#paint(java.awt.Graphics)
-     */
-    public void paint(Graphics g) {
-        ((Clarifiable) getContent()).paintClarifiers(g);
-        super.paint(g);
-    }
+    void paintClarifiers(Graphics g);
 
 }
-
