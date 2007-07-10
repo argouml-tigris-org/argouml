@@ -57,7 +57,7 @@ public class TestProject extends TestCase {
      */
     public void testMakeUntitledProject() {
         Project p = ProjectManager.getManager().getCurrentProject();
-        assertEquals(2, p.getDiagrams().size());
+        assertEquals(2, p.getDiagramList().size());
         assertEquals(Translator.localize("misc.untitled-model"), 
                 Model.getFacade().getName(p.getModel()));
         // maybe next test is going to change in future
@@ -139,13 +139,13 @@ public class TestProject extends TestCase {
      */
     public void testDeletePackageWithClassDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
-        assertEquals(2, p.getDiagrams().size());
+        assertEquals(2, p.getDiagramList().size());
         assertEquals(Translator.localize("misc.untitled-model"), 
                 Model.getFacade().getName(p.getModel()));
         assertEquals(p.getRoot(), p.getModel());
 
         int sizeMembers = p.getMembers().size();
-        int sizeDiagrams = p.getDiagrams().size();
+        int sizeDiagrams = p.getDiagramList().size();
 
         // test with a class and class diagram
         Object package1 =
@@ -156,12 +156,12 @@ public class TestProject extends TestCase {
 
         UMLClassDiagram cDiag = new UMLClassDiagram(package2);
         p.addMember(cDiag);
-        assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
+        assertEquals(sizeDiagrams + 1, p.getDiagramList().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
         p.moveToTrash(package2);
         Model.getPump().flushModelEvents();
         
-        assertEquals(sizeDiagrams, p.getDiagrams().size());
+        assertEquals(sizeDiagrams, p.getDiagramList().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
 
@@ -171,10 +171,10 @@ public class TestProject extends TestCase {
      */
     public void testDeleteClassWithStateDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
-        assertEquals(2, p.getDiagrams().size());
+        assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
-        int sizeDiagrams = p.getDiagrams().size();
+        int sizeDiagrams = p.getDiagramList().size();
 
         // test with a class and class diagram
         Object package1 =
@@ -191,7 +191,7 @@ public class TestProject extends TestCase {
                     machine);
         p.addMember(d);
         assertEquals("Diagram count incorrect", sizeDiagrams + 1, 
-                p.getDiagrams().size());
+                p.getDiagramList().size());
         assertEquals("Member count incorrect", sizeMembers + 1, 
                 p.getMembers().size());
         p.moveToTrash(aClass);
@@ -200,7 +200,7 @@ public class TestProject extends TestCase {
         assertTrue("Statemachine not in trash", p.isInTrash(machine));
         assertTrue("Class not in trash", p.isInTrash(aClass));
         assertEquals("Diagram count incorrect after trash", sizeDiagrams, 
-                p.getDiagrams().size());
+                p.getDiagramList().size());
         assertEquals("Member count incorrect after trash", sizeMembers, 
                 p.getMembers().size());
     }
@@ -210,10 +210,10 @@ public class TestProject extends TestCase {
      */
     public void testDeleteStateDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
-        assertEquals(2, p.getDiagrams().size());
+        assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
-        int sizeDiagrams = p.getDiagrams().size();
+        int sizeDiagrams = p.getDiagramList().size();
 
         // test with a class and class diagram
         Object package1 =
@@ -229,13 +229,13 @@ public class TestProject extends TestCase {
                     Model.getFacade().getNamespace(machine),
                     machine);
         p.addMember(d);
-        assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
+        assertEquals(sizeDiagrams + 1, p.getDiagramList().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
         p.moveToTrash(d);
         Model.getPump().flushModelEvents();
         
         assertTrue("Statediagram not in trash", p.isInTrash(d));
-        assertEquals(sizeDiagrams, p.getDiagrams().size());
+        assertEquals(sizeDiagrams, p.getDiagramList().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
 
@@ -245,7 +245,7 @@ public class TestProject extends TestCase {
      */
     public void testDeleteClassWithInnerClass() {
         Project p = ProjectManager.getManager().getCurrentProject();
-        assertEquals(2, p.getDiagrams().size());
+        assertEquals(2, p.getDiagramList().size());
 
         // test with a class and an inner class
         Object aClass = Model.getCoreFactory().buildClass("Test");
@@ -265,7 +265,7 @@ public class TestProject extends TestCase {
      */
     public void testDeletePackageWithClass() {
         Project p = ProjectManager.getManager().getCurrentProject();
-        assertEquals(2, p.getDiagrams().size());
+        assertEquals(2, p.getDiagramList().size());
 
         // test with a class and class diagram
         Object package1 =
@@ -286,10 +286,10 @@ public class TestProject extends TestCase {
      */
     public void testDeletePackageWithStateDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
-        assertEquals(2, p.getDiagrams().size());
+        assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
-        int sizeDiagrams = p.getDiagrams().size();
+        int sizeDiagrams = p.getDiagramList().size();
 
         // test with a class and class diagram
         Object package1 =
@@ -305,7 +305,7 @@ public class TestProject extends TestCase {
                     Model.getFacade().getNamespace(machine),
                     machine);
         p.addMember(d);
-        assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
+        assertEquals(sizeDiagrams + 1, p.getDiagramList().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
         
         p.moveToTrash(package1);
@@ -315,7 +315,7 @@ public class TestProject extends TestCase {
                 Model.getUmlFactory().isRemoved(aClass));
         assertTrue("Statemachine not in trash",
                 Model.getUmlFactory().isRemoved(machine));
-        assertEquals(sizeDiagrams, p.getDiagrams().size());
+        assertEquals(sizeDiagrams, p.getDiagramList().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
 
@@ -325,10 +325,10 @@ public class TestProject extends TestCase {
      */
     public void testDeleteOperationWithStateDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
-        assertEquals(2, p.getDiagrams().size());
+        assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
-        int sizeDiagrams = p.getDiagrams().size();
+        int sizeDiagrams = p.getDiagramList().size();
 
         // test with a class and class diagram
         Object package1 =
@@ -349,7 +349,7 @@ public class TestProject extends TestCase {
                     Model.getFacade().getNamespace(machine),
                     machine);
         p.addMember(d);
-        assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
+        assertEquals(sizeDiagrams + 1, p.getDiagramList().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
 
         p.moveToTrash(oper);
@@ -359,7 +359,7 @@ public class TestProject extends TestCase {
         /* Changed by issue 4281: */
         assertTrue("Statemachine in trash",
                 !Model.getUmlFactory().isRemoved(machine));
-        assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
+        assertEquals(sizeDiagrams + 1, p.getDiagramList().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
         /* After issue 4284 will be solved, we
          * may even delete the class, and the diagram
@@ -373,10 +373,10 @@ public class TestProject extends TestCase {
      */
     public void testDeletePackageWithClassWithActivityDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
-        assertEquals(2, p.getDiagrams().size());
+        assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
-        int sizeDiagrams = p.getDiagrams().size();
+        int sizeDiagrams = p.getDiagramList().size();
 
         // test with a package and a class and activity diagram
         Object package1 =
@@ -391,7 +391,7 @@ public class TestProject extends TestCase {
                     Model.getFacade().getNamespace(actgrph),
                     actgrph);
         p.addMember(d);
-        assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
+        assertEquals(sizeDiagrams + 1, p.getDiagramList().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
 
         p.moveToTrash(package1);
@@ -401,7 +401,7 @@ public class TestProject extends TestCase {
                 Model.getUmlFactory().isRemoved(aClass));
         assertTrue("ActivityGraph not in trash",
                 Model.getUmlFactory().isRemoved(actgrph));
-        assertEquals(sizeDiagrams, p.getDiagrams().size());
+        assertEquals(sizeDiagrams, p.getDiagramList().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
 
@@ -412,10 +412,10 @@ public class TestProject extends TestCase {
      */
     public void testDeletePackageWithPackageWithActivityDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
-        assertEquals(2, p.getDiagrams().size());
+        assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
-        int sizeDiagrams = p.getDiagrams().size();
+        int sizeDiagrams = p.getDiagramList().size();
 
         // test with a package and a class and activity diagram
         Object package1 =
@@ -432,7 +432,7 @@ public class TestProject extends TestCase {
             new UMLActivityDiagram(
                     Model.getFacade().getNamespace(actgrph), actgrph);
         p.addMember(d);
-        assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
+        assertEquals(sizeDiagrams + 1, p.getDiagramList().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
 
         p.moveToTrash(package1);
@@ -442,7 +442,7 @@ public class TestProject extends TestCase {
                 Model.getUmlFactory().isRemoved(package2));
         assertTrue("ActivityGraph not in trash",
                 Model.getUmlFactory().isRemoved(actgrph));
-        assertEquals(sizeDiagrams, p.getDiagrams().size());
+        assertEquals(sizeDiagrams, p.getDiagramList().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
 
@@ -452,15 +452,15 @@ public class TestProject extends TestCase {
      */
     public void testAddSearchPath() {
         Project p = ProjectManager.getManager().getCurrentProject();
-        assertNotNull(p.getSearchpath());
-        assertTrue(p.getSearchpath().size() == 1);
+        assertNotNull(p.getSearchPathList());
+        assertTrue(p.getSearchPathList().size() == 1);
         
         p.addSearchPath("PROJECT_DIR");
-        assertTrue(p.getSearchpath().size() == 1);
+        assertTrue(p.getSearchPathList().size() == 1);
         
         p.addSearchPath("foo");
         p.addSearchPath("foo");
-        assertTrue(p.getSearchpath().size() == 2);
+        assertTrue(p.getSearchPathList().size() == 2);
         
     }
 
@@ -468,6 +468,7 @@ public class TestProject extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
