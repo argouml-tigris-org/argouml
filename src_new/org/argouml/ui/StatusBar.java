@@ -33,11 +33,13 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.border.EtchedBorder;
 
+import org.tigris.gef.ui.IStatusBar;
+
 /**
  * The status bar.
  *
  */
-public class StatusBar extends JPanel implements Runnable {
+public class StatusBar extends JPanel implements Runnable, IStatusBar {
 
     private JLabel msg = new JLabel();
     private JProgressBar progress = new JProgressBar();
@@ -125,4 +127,4 @@ public class StatusBar extends JPanel implements Runnable {
     //     return false;
     //   }
 
-} /* end class StatusBar */
+}
