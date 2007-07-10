@@ -29,23 +29,24 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 import org.argouml.uml.Profile;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
+import org.tigris.gef.presentation.Fig;
 
 /**
- * The Project interface encapsulates all information about a designer's project. It contains
- * the list of diagrams and UML models, various project properties such as the
- * author's name, and defaults for various settings.
+ * The Project interface encapsulates all information about a designer's
+ * project. It contains the list of diagrams and UML models, various project
+ * properties such as the author's name, and defaults for various settings.
  * <p>
  * TODO: This interface was mechanically refactored from the implemenation class
- * {@link ProjectImpl}. It needs to be reviewed and cleaned up, eliminating methods
- * which should be part of the public API and splitting the interface into
- * smaller function specific (e.g. TrashCan) interfaces.
+ * {@link ProjectImpl}. It needs to be reviewed and cleaned up, eliminating
+ * methods which should be part of the public API and splitting the interface
+ * into smaller function specific (e.g. TrashCan) interfaces.
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  * @since 0.25.4 when it replaced the concrete class of the same name
@@ -103,14 +104,29 @@ public interface Project {
      * Used by "argo.tee".
      * 
      * @return the search path
+     * @deprecated by tfmorris for 0.25.4.  Use {@link #getSearchPathList()}.
      */
-    public Vector getSearchPath();
+    @Deprecated
+    public Vector<String> getSearchPath();
+    
+    /**
+     * Used by "argo.tee".
+     * 
+     * @return the search path
+     */
+    public List<String> getSearchPathList();
 
     /**
      * @param searchPathElement the element to be added to the searchpath
      */
     public void addSearchPath(String searchPathElement);
 
+    /**
+     * Sets the searchpath.
+     * @param theSearchpath The searchpath to set
+     */
+    public void setSearchPath(List<String> theSearchpath);
+    
     /**
      * Get all members of the project.
      * Used by "argo2.tee".
@@ -203,13 +219,25 @@ public interface Project {
      */
     public void setHistoryFile(String s);
 
+
+    /**
+     * Returns all models defined by the user. I.e. this does not return the
+     * default model but all other models.
+     * 
+     * @return A Vector of all user defined models.
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #getUserDefinedModelList()}.
+     */
+    @Deprecated
+    public Vector getUserDefinedModels();
+    
     /**
      * Returns all models defined by the user. I.e. this does not return the
      * default model but all other models.
      *
-     * @return A Vector of all user defined models.
+     * @return A List of all user defined models.
      */
-    public Vector getUserDefinedModels();
+    public List getUserDefinedModelList();
 
     /**
      * Returns all models, including the default model (default.xmi).
@@ -227,20 +255,12 @@ public interface Project {
      */
     public Object getModel();
 
-    /**
-     * Searches for a type/classifier with name s. If the type is not found, a
-     * new type is created and added to the current namespace.
-     * <p>
-     * @param s
-     *            the name of the type/classifier to be found
-     * @return Classifier
-     */
-    public Object findType(String s);
 
     /**
      * Return the default type for an attribute.
      * 
      * @return a Classifier to use as the default type
+     * TODO: This belongs in ProjectSettings. - tfm
      */
     public Object getDefaultAttributeType();
 
@@ -248,6 +268,7 @@ public interface Project {
      * Return the default type for a parameter.
      * 
      * @return a Classifier to use as the default type
+     * TODO: This belongs in ProjectSettings. - tfm
      */
     public Object getDefaultParameterType();
 
@@ -255,15 +276,28 @@ public interface Project {
      * Return the default type for the return parameter of a method.
      * 
      * @return a Classifier to use as the default type
+     * TODO: This belongs in ProjectSettings. - tfm
      */
     public Object getDefaultReturnType();
 
+    /**
+     * Searches for a type/classifier with name s. If the type is not found, a
+     * new type is created and added to the current namespace.
+     * <p>
+     * TODO: Move to Model subsystem - tfm 20070307
+     * 
+     * @param s
+     *            the name of the type/classifier to be found
+     * @return Classifier
+     */
+    public Object findType(String s);
+    
     /**
      * Searches for a type/classifier with name s. If defineNew is
      * true, a new type is defined if the type/classifier is not
      * found. The newly created type is added to the currentNamespace
      * and given the name s.
-     * 
+     * <p>
      * TODO: Move to Model subsystem - tfm 20070307
      * 
      * @param s the name of the type/classifier to be found
@@ -281,7 +315,7 @@ public interface Project {
      *              This can be a model element object but also another object.
      * @return Collection The collection with the figs.
      */
-    public Collection findFigsForMember(Object member);
+    public Collection<Fig> findFigsForMember(Object member);
 
     /**
      * Returns a list with all figs for some UML object on all diagrams.
@@ -314,12 +348,18 @@ public interface Project {
      */
     public Object getCurrentNamespace();
 
+
     /**
      * @return the diagrams
-     * TODO: Whats the best way of changing this to List without effecting
-     * modules or argoeclipse?
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getDiagramList()}.
      */
-    public Vector getDiagrams();
+    @Deprecated
+    public Vector<ArgoDiagram> getDiagrams();
+    
+    /**
+     * @return the diagrams
+     */
+    public List<ArgoDiagram> getDiagramList();
 
     /**
      * Get the number of diagrams in this project.
@@ -331,7 +371,7 @@ public interface Project {
     /**
      * Finds a diagram with a specific name or UID.
      *
-     * @return the diagram object (if found). Otherwize null.
+     * @return the diagram object (if found). Otherwise null.
      * @param name is the name to search for.
      */
     public ArgoDiagram getDiagram(String name);
@@ -355,11 +395,13 @@ public interface Project {
 
     /**
      * @param cgp the generation preferences
+     * TODO: Move to ProjectSettings - tfm
      */
     public void setGenerationPrefs(GenerationPreferences cgp);
 
     /**
      * @return the generation preferences
+     * TODO: Move to ProjectSettings - tfm
      */
     public GenerationPreferences getGenerationPrefs();
 
@@ -456,8 +498,10 @@ public interface Project {
     /**
      * Returns the searchpath.
      * @return Vector
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getSearchPathList()}.
      */
-    public Vector getSearchpath();
+    @Deprecated
+    public Vector<String> getSearchpath();
 
     /**
      * Returns the uri.
@@ -474,14 +518,16 @@ public interface Project {
     /**
      * Sets the searchpath.
      * @param theSearchpath The searchpath to set
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #setSearchPath(List)}.
      */
-    public void setSearchpath(Vector theSearchpath);
+    @Deprecated
+    public void setSearchpath(Vector<String> theSearchpath);
 
     /**
      * Sets the uUIDRefs.
      * @param uUIDRefs The uUIDRefs to set
      */
-    public void setUUIDRefs(HashMap uUIDRefs);
+    public void setUUIDRefs(Map<String, Object> uUIDRefs);
 
     /**
      * Sets the vetoSupport.
