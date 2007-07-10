@@ -28,9 +28,8 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 
 /**
  * Action to trigger creation of a new activity diagram.<p>
@@ -57,10 +56,11 @@ public class ActionActivityDiagram extends ActionNewDiagram {
      * @return the newly created and initialized diagram
      */
     protected ArgoDiagram createDiagram() {
-        Project p = ProjectManager.getManager().getCurrentProject();
         Object target = TargetManager.getInstance().getModelTarget();
         Object graph = null;
-        Object namespace = p.getRoot(); // the root model
+//      Project p = ProjectManager.getManager().getCurrentProject();
+//        Object namespace = p.getRoot(); // the root model
+        Object namespace = Model.getModelManagementFactory().getRootModel();
         if (Model.getActivityGraphsHelper().isAddingActivityGraphAllowed(
                 target)) {
             /* The target is a valid context */
@@ -76,7 +76,7 @@ public class ActionActivityDiagram extends ActionNewDiagram {
         }
 
         return DiagramFactory.getInstance().createDiagram(
-                UMLActivityDiagram.class,
+                DiagramFactory.DiagramType.Activity,
                 Model.getFacade().getNamespace(graph),
                 graph);
     }
@@ -86,4 +86,4 @@ public class ActionActivityDiagram extends ActionNewDiagram {
      */
     private static final long serialVersionUID = -28844322376391273L;
 
-} /* end class ActionActivityDiagram */
+} 

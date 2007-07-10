@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,26 +26,19 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 
 /**
  * Action to trigger creation of new class diagram.
  */
 public class ActionClassDiagram extends ActionAddDiagram {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
     /**
      * Logger.
      */
     private static final Logger LOG =
                 Logger.getLogger(ActionClassDiagram.class);
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Constructor.
@@ -60,7 +53,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
     public ArgoDiagram createDiagram(Object ns) {
         if (Model.getFacade().isANamespace(ns)) {
             return DiagramFactory.getInstance().createDiagram(
-                    UMLClassDiagram.class,
+                    DiagramFactory.DiagramType.Class,
                     ns,
                     null);
         }
@@ -87,4 +80,4 @@ public class ActionClassDiagram extends ActionAddDiagram {
      * The UID.
      */
     private static final long serialVersionUID = 2415943949021223859L;
-} /* end class ActionClassDiagram */
+}
