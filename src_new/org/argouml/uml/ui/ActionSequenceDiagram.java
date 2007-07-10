@@ -24,9 +24,8 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 
 /**
  * Action to add a new sequence diagram.
@@ -45,7 +44,7 @@ public final class ActionSequenceDiagram extends ActionNewDiagram {
      */
     public ArgoDiagram createDiagram() {
         return DiagramFactory.getInstance().createDiagram(
-                UMLSequenceDiagram.class,
+                DiagramFactory.DiagramType.Sequence,
                 createCollaboration(),
                 null);
     }

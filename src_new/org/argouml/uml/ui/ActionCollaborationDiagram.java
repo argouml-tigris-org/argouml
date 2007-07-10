@@ -24,9 +24,8 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 
 /**
  * Action to trigger creation of new collaboration diagram.
@@ -45,7 +44,7 @@ public class ActionCollaborationDiagram extends ActionNewDiagram {
      */
     public ArgoDiagram createDiagram() {
         return DiagramFactory.getInstance().createDiagram(
-                UMLCollaborationDiagram.class,
+                DiagramFactory.DiagramType.Collaboration,
                 createCollaboration(),
                 null);
     }
@@ -55,4 +54,4 @@ public class ActionCollaborationDiagram extends ActionNewDiagram {
      */
     private static final long serialVersionUID = -1089352213298998155L;
 
-} /* end class ActionCollaborationDiagram */
+}
