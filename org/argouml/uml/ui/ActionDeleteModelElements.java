@@ -48,8 +48,8 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
-import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
@@ -284,9 +284,9 @@ public class ActionDeleteModelElements extends UndoableAction {
             return true;
         }
         Object target = TargetManager.getInstance().getTarget();
-        if (target instanceof Diagram) { // we cannot delete the last diagram
+        if (target instanceof ArgoDiagram) { // we cannot delete the last diagram
             return (ProjectManager.getManager().getCurrentProject()
-                .getDiagrams().size() > 1);
+                .getDiagramList().size() > 1);
         }
         if (Model.getFacade().isAModel(target)
         // we cannot delete the model itself
@@ -305,4 +305,4 @@ public class ActionDeleteModelElements extends UndoableAction {
         }
         return target != null;
     }
-} /* end class ActionRemoveFromModel */
+}
