@@ -75,7 +75,7 @@ import org.tigris.gef.presentation.FigNode;
  * the namespace of its statemachine.
  */
 public abstract class ArgoDiagramImpl extends Diagram 
-    implements PropertyChangeListener, ArgoDiagram {
+    implements PropertyChangeListener, ArgoDiagram, IItemUID {
 
     private ItemUID id;
 
@@ -430,7 +430,7 @@ public abstract class ArgoDiagramImpl extends Diagram
     
 
     public void setProject(Project p) {
-	this.project = p;
+	project = p;
     }
     
     protected Project getProject() {
