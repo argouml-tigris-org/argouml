@@ -30,7 +30,6 @@ import java.awt.event.MouseListener;
 import java.util.Iterator;
 
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 
 /**
  * Custom class to group FigTexts in such a way that they don't
@@ -39,7 +38,7 @@ import org.tigris.gef.presentation.FigGroup;
  *
  * @author jaap.branderhorst@xs4all.nl
  */
-public class FigTextGroup extends FigGroup implements MouseListener {
+public class FigTextGroup extends ArgoFigGroup implements MouseListener {
 
     private boolean supressCalcBounds = false;
 

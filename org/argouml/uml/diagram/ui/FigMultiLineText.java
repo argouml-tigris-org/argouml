@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 
+import org.argouml.gefext.ArgoFigText;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -41,7 +42,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author Bob Tarling
  */
-public class FigMultiLineText extends FigText {
+public class FigMultiLineText extends ArgoFigText {
 
     /*
      * @see org.tigris.gef.presentation.FigText#FigText(
