@@ -34,7 +34,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DiDiagram;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
@@ -238,8 +237,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         Dictionary args = mode.getArgs();
         Object style = args.get("aggregation"); //MAggregationKind
         Boolean unidirectional = (Boolean) args.get("unidirectional");
-        Object model =
-            ProjectManager.getManager().getCurrentProject().getModel();
+        Object model = getProject().getModel();
 
         // Create the UML connection of the given type between the
         // given model elements.
@@ -534,7 +532,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * @param dd
      */
     void setDiDiagram(DiDiagram dd) {
-        this.diDiagram = dd;
+        diDiagram = dd;
     }
 
     /**
@@ -562,7 +560,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * @param p the project
      */
     public void setProject(Project p) {
-	this.project = p;
+	project = p;
     }
     
     /**
