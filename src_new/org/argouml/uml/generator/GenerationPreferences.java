@@ -34,6 +34,9 @@ import org.argouml.configuration.Configuration;
  * TODO: The header comment is curently not used - this function
  * is not completely implemented yet. How do we store this in the project?
  * Where should the user enter his header comment?
+ * 
+ * TODO: This should be included in 
+ * {@link org.argouml.kernel.ProjectSettings}. - tfm 20070706
  */
 public class GenerationPreferences implements java.io.Serializable {
     ////////////////////////////////////////////////////////////////
