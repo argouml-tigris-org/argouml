@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
@@ -48,7 +47,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.ui.DisplayTextTree;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -173,9 +172,9 @@ public class ExplorerTree
         private void myDoubleClick() {
             Object target = TargetManager.getInstance().getTarget();
             if (target != null) {
-                Vector show = new Vector();
+                List show = new ArrayList();
                 show.add(target);
-                ProjectBrowser.getInstance().jumpToDiagramShowing(show);
+                ProjectActions.jumpToDiagramShowing(show);
             }
         }
 
