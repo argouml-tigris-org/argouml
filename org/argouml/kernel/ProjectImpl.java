@@ -49,7 +49,8 @@ import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.persistence.ExtensionManager;
+import org.argouml.persistence.PersistenceManager;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.Profile;
@@ -153,7 +154,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     public ProjectImpl(URI theProjectUri) {
         this();
-        uri = ExtensionManager.getInstance().fixUriExtension(theProjectUri);
+        uri = PersistenceManager.getInstance().fixUriExtension(theProjectUri);
         uri = theProjectUri;
     }
 
@@ -195,7 +196,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public String getBaseName() {
         String n = getName();
-        n = ExtensionManager.getInstance().getBaseName(n);
+        n = PersistenceManager.getInstance().getBaseName(n);
         return n;
     }
 
@@ -232,7 +233,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setURI(URI theUri) {
         if (theUri != null) {
-            theUri = ExtensionManager.getInstance().fixUriExtension(theUri);
+            theUri = PersistenceManager.getInstance().fixUriExtension(theUri);
         }
 
         if (LOG.isDebugEnabled()) {
@@ -414,7 +415,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     private void setSaveEnabled(boolean enable) {
         ProjectManager pm = ProjectManager.getManager();
         if (pm.getCurrentProject() == this) {
-            ProjectSaveAction.getInstance().setSaveEnabled(enable);
+            pm.setSaveEnabled(enable);
         }
     }
 
