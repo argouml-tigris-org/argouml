@@ -31,6 +31,7 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 
+import org.argouml.gefext.ArgoFigText;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
@@ -48,7 +49,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author Bob Tarling
  */
-public class FigSingleLineText extends FigText {
+public class FigSingleLineText extends ArgoFigText {
 
     /**
      * The UID.

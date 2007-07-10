@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -24,22 +24,31 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.tigris.gef.presentation.FigEdgePoly;
+import org.argouml.kernel.Project;
 
 /**
- * Abstract class to display diagram lines (edges) in a UML diagram
+ * An interface that all ArgoUML Figs are required to interface. It provides a
+ * single place to specify behaviors that we want all Figs to have since with
+ * don't have access to the GEF class hiearchy (and it's made up of concrete
+ * classes instead of interfaces.
+ * 
+ * @author Tom Morris <tfmorris@gmail.com>
+ * @since 0.25.4
  */
-public abstract class FigGraphEdge
-    extends FigEdgePoly {
+public interface ArgoFig {
 
     /**
-     * Returns a {@link SelectionRerouteEdge} object that manages selection
-     * and rerouting of the edge.
-     *
-     * @return the SelectionRerouteEdge.
+     * Set the owning project for this Fig.
+     * 
+     * @param p the project
      */
-//    public Selection makeSelection() {
-//        return new SelectionRerouteEdge(this);
-//    }
+    public void setProject(Project p);
+
+    /**
+     * Get the owning project for this fig.
+     * 
+     * @return the project
+     */
+    public Project getProject();
 
 }

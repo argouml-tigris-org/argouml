@@ -78,9 +78,10 @@ import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.IItemUID;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Diagram;
@@ -113,7 +114,10 @@ public abstract class FigNodeModelElement
         PropertyChangeListener,
         PathContainer,
         ArgoNotationEventListener,
-        Highlightable {
+        Highlightable,
+        IItemUID,
+        Clarifiable,
+        ArgoFig {
 
     /**
      * Logger.
@@ -132,7 +136,7 @@ public abstract class FigNodeModelElement
     private static final Font BOLD_ITALIC_LABEL_FONT;
 
     private NotationProvider notationProviderName;
-    private HashMap npArguments = new HashMap();
+    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
     
     /**
      * True if an instance is allowed to be
@@ -259,7 +263,9 @@ public abstract class FigNodeModelElement
      */
     private boolean editable = true;
 
-    private Collection listeners = new ArrayList();
+    // TODO: A more strongly typed data structure could be used here.
+    private Collection<Object[]> listeners = new ArrayList<Object[]>();
+    
     /**
      * The main constructor.
      *
@@ -282,8 +288,9 @@ public abstract class FigNodeModelElement
         readyToEdit = false;
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
         
-        Project p = ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = p.getProjectSettings();
+
+        Project project = getProject();
+        ProjectSettings ps = project.getProjectSettings();
 
         showBoldName = ps.getShowBoldNamesValue();
         if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
@@ -452,7 +459,7 @@ public abstract class FigNodeModelElement
         popupAddOffset = 1;
         if (removeFromDiagram) {
             popUpActions.addElement(
-                    ProjectBrowser.getInstance().getRemoveFromDiagramAction());
+                    ProjectActions.getInstance().getRemoveFromDiagramAction());
             popupAddOffset++;
         }
         popUpActions.addElement(new ActionDeleteModelElements());
@@ -922,13 +929,13 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Utility function to localize the given string with help text,
-     * and show it in the status bar of the ArgoUML window.
-     * This function is used in favour of the inline call
-     * to enable later improvements; e.g. it would be possible to
-     * show a help-balloon. TODO: Work this out.
-     * One matter to possibly improve: show multiple lines.
-     *
+     * Utility function to localize the given string with help text, and show it
+     * in the status bar of the ArgoUML window. This function is used in favour
+     * of the inline call to enable later improvements; e.g. it would be
+     * possible to show a help-balloon.
+     * <p>
+     * TODO: Work this out. One matter to possibly improve: show multiple lines.
+     * 
      * @param s the given string to be localized and shown
      */
     protected void showHelp(String s) {
@@ -1157,10 +1164,11 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
+    @Override
     public void deleteFromModel() {
         Object own = getOwner();
         if (own != null) {
-            ProjectManager.getManager().getCurrentProject().moveToTrash(own);
+            getProject().moveToTrash(own);
         }
         Iterator it = getFigs().iterator();
         while (it.hasNext()) {
@@ -1177,6 +1185,7 @@ public abstract class FigNodeModelElement
      * by use of the empty constructor.
      * The assigned model element (owner) must not change during the lifetime
      * of the Fig.
+     * <p>
      * TODO: It is planned to refactor so that there is only one Fig
      * constructor. When this is achieved this method can refactored out.
      * 
@@ -1261,7 +1270,7 @@ public abstract class FigNodeModelElement
             if (notationProviderName != null) {
                 nameFig.setText(notationProviderName.toString(
                         getOwner(), npArguments));
-                Project p = ProjectManager.getManager().getCurrentProject();
+                Project p = getProject();
                 ProjectSettings ps = p.getProjectSettings();
                 showBoldName = ps.getShowBoldNamesValue();
                 if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
@@ -1499,6 +1508,7 @@ public abstract class FigNodeModelElement
 
     /**
      * Get the Fig containing the stereotype.
+     * <p>
      * TODO: Should return FigStereotypesCompartment or at the very least
      * a FigGroup
      *
@@ -1748,16 +1758,33 @@ public abstract class FigNodeModelElement
             npArguments.put(key, value);
         }
     }
+
+    /**
+     * This optional method is not implemented.  It will throw an
+     * {@link UnsupportedOperationException} if used.  Figs are 
+     * added to a GraphModel which is, in turn, owned by a project.
+     */
+    public void setProject(Project project) {
+        throw new UnsupportedOperationException();
+    }
     
-    protected Project getProject() {
+    public Project getProject() {
 	LayerPerspective layer = (LayerPerspective) getLayer();
         if (layer == null) {
             /* TODO: Without this, we fail to draw e.g. a Class.
              * But is this a good solution? 
              * Why is the Layer not set in the constructor? */
             Editor editor = Globals.curEditor();
+            if (editor == null) {
+                // TODO: The above doesn't work reliably in a constructor.  We
+                // need a better way of getting default fig settings for the owning
+                // project rather than using the project manager singleton. - tfm
+                return ProjectManager.getManager().getCurrentProject();
+            }
             Layer lay = editor.getLayerManager().getActiveLayer();
-            if (lay instanceof LayerPerspective) layer = (LayerPerspective) lay;
+            if (lay instanceof LayerPerspective) {
+                layer = (LayerPerspective) lay;
+            }
         }
 	UMLMutableGraphSupport gm = 
 	    (UMLMutableGraphSupport) layer.getGraphModel();
@@ -1774,4 +1801,4 @@ public abstract class FigNodeModelElement
 		== getOwner();
     }
     
-} /* end class FigNodeModelElement */
+}
