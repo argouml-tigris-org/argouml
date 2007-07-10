@@ -301,6 +301,23 @@ public interface ArgoDiagram {
      */
     public String getName();
     
+    /**
+     * Perform any pre-save actions.
+     * @see Diagram#preSave()
+     */
+    public void preSave();
+    
+    /**
+     * Perform any post-save actions.
+     * @see Diagram#postSave()
+     */
+    public void postSave();
+    
+    /**
+     * Perform any post-load actions.
+     * @see Diagram#postLoad()
+     */
+    public void postLoad();
     /////////////////// End GEF methods ////////////////////////
 
 }
