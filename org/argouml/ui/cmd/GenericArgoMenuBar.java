@@ -46,6 +46,7 @@ import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ActionSettings;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectActions;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.ZoomSliderButton;
 import org.argouml.ui.explorer.ActionPerspectiveConfig;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -67,7 +68,6 @@ import org.argouml.uml.ui.ActionPaste;
 import org.argouml.uml.ui.ActionRevertToSaved;
 import org.argouml.uml.ui.ActionSaveAllGraphics;
 import org.argouml.uml.ui.ActionSaveGraphics;
-import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
@@ -305,11 +305,12 @@ public class GenericArgoMenuBar extends JMenuBar implements
         fileToolbar.add(new ActionOpenProject());
         file.addSeparator();
 
-        JMenuItem saveProjectItem = file.add(ActionSaveProject.getInstance());
+        JMenuItem saveProjectItem = file.add(ProjectBrowser.getInstance()
+                .getSaveAction());
         setMnemonic(saveProjectItem, "Save");
         ShortcutMgr.assignAccelerator(saveProjectItem,
                 ShortcutMgr.ACTION_SAVE_PROJECT);
-        fileToolbar.add(ActionSaveProject.getInstance());
+        fileToolbar.add((ProjectBrowser.getInstance().getSaveAction()));
         JMenuItem saveProjectAsItem = file.add(new ActionSaveProjectAs());
         setMnemonic(saveProjectAsItem, "SaveAs");
         ShortcutMgr.assignAccelerator(saveProjectAsItem,
