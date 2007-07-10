@@ -1,4 +1,4 @@
-// $Id: ProjectSettings.java 12546 2007-05-05 16:54:40Z linus $
+// $Id$
 // Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

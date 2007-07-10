@@ -1,4 +1,4 @@
-// $Id: MemberList.java 12860 2007-06-16 11:57:48Z maurelio1234 $
+// $Id$
 // Copyright (c) 2004-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
