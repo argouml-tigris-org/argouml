@@ -42,6 +42,7 @@ import org.argouml.gefext.ArgoModeCreateFigSpline;
 import org.argouml.gefext.ArgoModeCreateFigText;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.UUIDHelper;
@@ -544,7 +545,23 @@ public abstract class UMLDiagram
     }
     
     /**
+     * Create a new diagram name.
+     * @return String
+     */
+    protected String getNewDiagramName() {
+        String name = getLabelName() + " " + getNextDiagramSerial();
+        //        Project project = getProject();
+        // TODO: If this gets called from the constructor the project
+        // won't be set yet. Figure out another way to handle it
+        Project project = ProjectManager.getManager().getCurrentProject();
+        if (!project.isValidDiagramName(name)) {
+            name = getNewDiagramName();
+        }
+        return name;
+    }
+
+    /**
      * The UID.
      */
     static final long serialVersionUID = -401219134410459387L;
-} /* end class UMLDiagram */
+}

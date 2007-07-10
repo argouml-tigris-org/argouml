@@ -28,7 +28,6 @@ import java.beans.PropertyVetoException;
 import java.util.Hashtable;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionSetAddMessageMode;
@@ -94,21 +93,6 @@ public class UMLSequenceDiagram extends UMLDiagram {
     public Object getOwner() {
         return getNamespace();
     }
-
-    /**
-     * Creates a new diagramname.
-     *
-     * @return a new unique name.
-     */
-    protected String getNewDiagramName() {
-        String name = getLabelName() + " " + getNextDiagramSerial();
-        if (!(ProjectManager.getManager().getCurrentProject()
-	      .isValidDiagramName(name))) {
-            name = getNewDiagramName();
-        }
-        return name;
-    }
-
 
     @Override
     public String getLabelName() {

@@ -31,7 +31,6 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
@@ -109,9 +108,6 @@ public class UMLStateDiagram extends UMLDiagram {
     private Action actionTransition;
     private Action actionJunctionPseudoState;
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
-
     /**
      * This constructor is used to build a dummy statechart diagram so
      * that a project will load properly.
@@ -182,7 +178,9 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         
         Object namespace = Model.getFacade().getNamespace(machine);
-        if (namespace != null) return namespace;
+        if (namespace != null) {
+            return namespace;
+        }
         
         Object context = Model.getFacade().getContext(machine);
         if (Model.getFacade().isAClassifier(context)) {
@@ -192,8 +190,7 @@ public class UMLStateDiagram extends UMLDiagram {
                     Model.getFacade().getOwner(context));
         }
         if (namespace == null) {
-            namespace = 
-                ProjectManager.getManager().getCurrentProject().getRoot();
+            namespace = getProject().getRoot();
         }
         if (namespace == null || !Model.getFacade().isANamespace(namespace)) {
             throw new IllegalStateException(
@@ -304,7 +301,7 @@ public class UMLStateDiagram extends UMLDiagram {
                 && "remove".equals(evt.getPropertyName())) {
             Model.getPump().removeModelEventListener(this, 
                     theStateMachine, new String[] {"remove", "namespace"});
-            ProjectManager.getManager().getCurrentProject().moveToTrash(this);
+            getProject().moveToTrash(this);
         }
         if (evt.getSource() == theStateMachine 
                 && "namespace".equals(evt.getPropertyName())) {
@@ -394,20 +391,6 @@ public class UMLStateDiagram extends UMLDiagram {
         };
         ToolBarUtility.manageDefault(actions, "diagram.state.effect");
         return actions;
-    }
-
-    /**
-     * Creates a name for the diagram.
-     *
-     * @return the new diagram name
-     */
-    protected String getNewDiagramName() {
-        String name = getLabelName() + " " + getNextDiagramSerial();
-        if (!ProjectManager.getManager().getCurrentProject()
-                 .isValidDiagramName(name)) {
-            name = getNewDiagramName();
-        }
-        return name;
     }
 
     /*
@@ -706,7 +689,7 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     @Override
     public Object getDependentElement() {
-        return getStateMachine(); /* The StateMachine. */
+        return getStateMachine();
     }
 
     /*
@@ -732,4 +715,4 @@ public class UMLStateDiagram extends UMLDiagram {
         // Do nothing.        
     }
 
-} /* end class UMLStateDiagram */
+}
