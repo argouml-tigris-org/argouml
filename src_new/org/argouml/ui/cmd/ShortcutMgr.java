@@ -48,6 +48,7 @@ import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ActionSettings;
 import org.argouml.ui.ProjectActions;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ActionPerspectiveConfig;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
@@ -551,7 +552,8 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_OPEN_PROJECT, KeyStroke.getKeyStroke(
                 KeyEvent.VK_O, DEFAULT_MASK), new ActionOpenProject());
         putDefaultShortcut(ACTION_SAVE_PROJECT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_S, DEFAULT_MASK), ActionSaveProject.getInstance());
+                KeyEvent.VK_S, DEFAULT_MASK), 
+                ProjectBrowser.getInstance().getSaveAction());
         putDefaultShortcut(ACTION_SAVE_PROJECT_AS, null,
                 new ActionSaveProjectAs());
         putDefaultShortcut(ACTION_REVERT_TO_SAVED, null,
