@@ -32,6 +32,14 @@ import javax.management.NotificationEmitter;
 import javax.management.NotificationFilter;
 import javax.management.NotificationListener;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.uml.diagram.ui.ArgoFig;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -39,7 +47,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author Michiel
  */
-public class ArgoFigText extends FigText implements NotificationEmitter {
+public class ArgoFigText extends FigText implements NotificationEmitter, ArgoFig {
 
     private NotificationBroadcasterSupport notifier = 
         new NotificationBroadcasterSupport();
@@ -48,7 +56,10 @@ public class ArgoFigText extends FigText implements NotificationEmitter {
         super(x, y, w, h);
     }
 
-
+    public ArgoFigText(int x, int y, int w, int h, boolean expandOnly) {
+        super(x, y, w, h, expandOnly);
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
@@ -90,6 +101,38 @@ public class ArgoFigText extends FigText implements NotificationEmitter {
     public void removeNotificationListener(NotificationListener listener) 
         throws ListenerNotFoundException {
         notifier.removeNotificationListener(listener);
+    }
+    
+    /**
+     * This optional method is not implemented.  It will throw an
+     * {@link UnsupportedOperationException} if used.  Figs are 
+     * added to a GraphModel which is, in turn, owned by a project.
+     */
+    public void setProject(Project project) {
+        throw new UnsupportedOperationException();
+    }
+    
+    public Project getProject() {
+        LayerPerspective layer = (LayerPerspective) getLayer();
+        if (layer == null) {
+            /* TODO: Without this, we fail to draw e.g. a Class.
+             * But is this a good solution? 
+             * Why is the Layer not set in the constructor? */
+            Editor editor = Globals.curEditor();
+            if (editor == null) {
+                // TODO: The above doesn't work reliably in a constructor.  We
+                // need a better way of getting default fig settings for the owning
+                // project rather than using the project manager singleton. - tfm
+                return ProjectManager.getManager().getCurrentProject();
+            }
+            Layer lay = editor.getLayerManager().getActiveLayer();
+            if (lay instanceof LayerPerspective) {
+                layer = (LayerPerspective) lay;
+            }
+        }
+        UMLMutableGraphSupport gm = 
+            (UMLMutableGraphSupport) layer.getGraphModel();
+        return gm.getProject();
     }
 
 }
