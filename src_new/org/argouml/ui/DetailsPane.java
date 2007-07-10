@@ -95,7 +95,7 @@ public class DetailsPane
     /**
      * a list of all the tabs, which are JPanels, in the JTabbedPane tabs.
      */
-    private List tabPanelList = new ArrayList();
+    private List<JPanel> tabPanelList = new ArrayList<JPanel>();
 
     /**
      * index of the selected tab in the JTabbedPane.
@@ -146,9 +146,8 @@ public class DetailsPane
         setFont(new Font("Dialog", Font.PLAIN, 10));
         add(topLevelTabbedPane, BorderLayout.CENTER);
 
-        for (int i = 0; i < tabPanelList.size(); i++) {
+        for (JPanel t : tabPanelList) {
             String titleKey = "tab";
-            JPanel t = (JPanel) tabPanelList.get(i);
             if (t instanceof AbstractArgoJPanel) {
                 titleKey = ((AbstractArgoJPanel) t).getTitle();
             }
@@ -203,8 +202,7 @@ public class DetailsPane
      */
     public boolean setToDoItem(Object item) {
         enableTabs(item);
-        for (int i = 0; i < tabPanelList.size(); i++) {
-            JPanel t = (JPanel) tabPanelList.get(i);
+        for (JPanel t : tabPanelList) {
             if (t instanceof TabToDoTarget) {
                 ((TabToDoTarget) t).setTarget(item);
                 topLevelTabbedPane.setSelectedComponent(t);
@@ -282,7 +280,7 @@ public class DetailsPane
             }
             // default tab todo
             if (!tabSelected) {
-                JPanel tab = (JPanel) tabPanelList.get(0);
+                JPanel tab = tabPanelList.get(0);
                 if (!(tab instanceof TabToDoTarget)) {
                     Iterator it = tabPanelList.iterator();
                     while (it.hasNext()) {
@@ -390,9 +388,9 @@ public class DetailsPane
      * @param p the given property panel
      */
     public void addToPropTab(Class c, PropPanel p) {
-        for (int i = 0; i < tabPanelList.size(); i++) {
-            if (tabPanelList.get(i) instanceof TabProps) {
-                ((TabProps) tabPanelList.get(i)).addPanel(c, p);
+        for (JPanel panel : tabPanelList) {
+            if (panel instanceof TabProps) {
+                ((TabProps) panel).addPanel(c, p);
             }
         }
     }
@@ -572,13 +570,12 @@ public class DetailsPane
      * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
      */
     public void setOrientation(Orientation orientation) {
-        for (int i = 0; i < tabPanelList.size(); i++) {
-            JPanel t = (JPanel) tabPanelList.get(i);
+        for (JPanel t : tabPanelList) {
             if (t instanceof Orientable) {
                 Orientable o = (Orientable) t;
                 o.setOrientation(orientation);
             }
-        } /* end for */
+        }
     }
 
     /*
@@ -616,7 +613,7 @@ public class DetailsPane
         // iterate through the tabbed panels to determine wether they
         // should be enabled.
         for (int i = 0; i < tabPanelList.size(); i++) {
-            JPanel tab = (JPanel) tabPanelList.get(i);
+            JPanel tab = tabPanelList.get(i);
             boolean shouldEnable = false;
             if (tab instanceof TargetListener) {
                 if (tab instanceof TabTarget) {
@@ -671,4 +668,4 @@ public class DetailsPane
         }
     }
 
-} /* end class DetailsPane */
+}

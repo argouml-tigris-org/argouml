@@ -26,9 +26,8 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -50,14 +49,11 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
         if (Model.getFacade().isAOperation(parent)) {
-            Object operation = parent; //MOperation
+            Object operation = parent;
             Collection col = Model.getFacade().getCollaborations(operation);
-            Vector ret = new Vector();
+            Set<ArgoDiagram> ret = new HashSet<ArgoDiagram>();
             Project p = ProjectManager.getManager().getCurrentProject();
-            Vector diagrams = p.getDiagrams();
-            Iterator it = diagrams.iterator();
-            while (it.hasNext()) {
-                ArgoDiagram diagram = (ArgoDiagram) it.next();
+            for (ArgoDiagram diagram : p.getDiagramList()) {
                 if (diagram instanceof UMLCollaborationDiagram
 		    && col.contains(((UMLCollaborationDiagram) diagram)
 				    .getNamespace())) {

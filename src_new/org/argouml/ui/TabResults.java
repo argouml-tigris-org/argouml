@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
-
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +32,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -79,15 +80,14 @@ public class TabResults
      */
     private static final int INSET_PX = 3;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
     private PredicateFind pred;
     private ChildGenerator cg;
     private Object root;
     private JSplitPane mainPane;
-    private Vector results = new Vector();
-    private Vector related = new Vector();
-    private Vector diagrams = new Vector();
+    private List results = new ArrayList();
+    private List related = new ArrayList();
+    // TODO: This should be some non-GEF type such as ArgoDiagram.
+    private List<Diagram> diagrams = new ArrayList<Diagram>();
     private boolean relatedShown;
 
     private JLabel resultsLabel = new JLabel();
@@ -160,9 +160,6 @@ public class TabResults
 
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
     /**
      * @param p the predicate for the search
      */
@@ -187,19 +184,29 @@ public class TabResults
     /**
      * @param res the results
      * @param dia the diagrams
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #setResults(List, List)}.
      */
+    @Deprecated
     public void setResults(Vector res, Vector dia) {
-	results = res;
-	diagrams = dia;
-	Object[] msgArgs = {new Integer(results.size()) };
-	resultsLabel.setText(Translator.messageFormat(
-            "dialog.tabresults.results-items", msgArgs));
-	resultsModel.setTarget(results, diagrams);
-	relatedModel.setTarget(null, null);
-	relatedLabel.setText(
-            Translator.localize("dialog.tabresults.related-items"));
+        setResults((List) res, (List) dia);
     }
 
+    /**
+     * @param res the results
+     * @param dia the diagrams
+     */
+    public void setResults(List res, List dia) {
+        results = res;
+        diagrams = dia;
+        Object[] msgArgs = {new Integer(results.size()) };
+        resultsLabel.setText(Translator.messageFormat(
+            "dialog.tabresults.results-items", msgArgs));
+        resultsModel.setTarget(results, diagrams);
+        relatedModel.setTarget((List) null, (List) null);
+        relatedLabel.setText(
+            Translator.localize("dialog.tabresults.related-items"));
+    }
+    
     /*
      * @see org.argouml.ui.AbstractArgoJPanel#spawn()
      */
@@ -288,15 +295,15 @@ public class TabResults
 	    if (row < 0) {
                 return;
             }
-	    sel = results.elementAt(row);
-	    d = (Diagram) diagrams.elementAt(row);
+	    sel = results.get(row);
+	    d = (Diagram) diagrams.get(row);
 	} else if (src == relatedTable) {
 	    int row = relatedTable.getSelectionModel().getMinSelectionIndex();
 	    if (row < 0) {
                 return;
             }
 	    numJumpToRelated++;
-	    sel = related.elementAt(row);
+	    sel = related.get(row);
 	}
 
 	if (d != null) {
@@ -345,14 +352,14 @@ public class TabResults
 	}
 	if (relatedShown) {
 	    int row = lse.getFirstIndex();
-	    Object sel = results.elementAt(row);
+	    Object sel = results.get(row);
 	    LOG.debug("selected " + sel);
-	    related.removeAllElements();
+	    related.clear();
 	    Enumeration elems =
 		ChildGenRelated.getSingleton().gen(sel);
 	    if (elems != null) {
 		while (elems.hasMoreElements()) {
-		    related.addElement(elems.nextElement());
+		    related.add(elems.nextElement());
 		}
 	    }
 	    relatedModel.setTarget(related, null);
@@ -362,15 +369,12 @@ public class TabResults
 	}
     }
 
-    ////////////////////////////////////////////////////////////////
-    // actions
-
     /*
      * @see java.lang.Runnable#run()
      */
     public void run() {
 	resultsLabel.setText(Translator.localize("dialog.find.searching"));
-	results.removeAllElements();
+	results.clear();
 	depthFirst(root, null);
 	setResults(results, diagrams);
     }
@@ -403,8 +407,8 @@ public class TabResults
 	    Object c = elems.nextElement();
 	    if (pred.predicate(c)
                     && (lastDiagram != null || pred.matchDiagram(""))) {
-		results.addElement(c);
-		diagrams.addElement(lastDiagram);
+		results.add(c);
+		diagrams.add(lastDiagram);
 	    }
 	    depthFirst(c, lastDiagram);
 	}
@@ -414,4 +418,4 @@ public class TabResults
      * The UID.
      */
     private static final long serialVersionUID = 4980167466628873068L;
-} /* end class TabResults */
+}
