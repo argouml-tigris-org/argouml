@@ -26,7 +26,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.argouml.kernel.Project;
@@ -66,9 +65,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
     protected void buildModelList() {
         Set elements = new HashSet();
         Project p = ProjectManager.getManager().getCurrentProject();
-        Iterator it = p.getUserDefinedModels().iterator();
-        while (it.hasNext()) {
-	    Object model = it.next();
+        for (Object model : p.getUserDefinedModelList()) {
 	    elements.addAll(Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(model,
                         Model.getMetaTypes().getClassifier()));

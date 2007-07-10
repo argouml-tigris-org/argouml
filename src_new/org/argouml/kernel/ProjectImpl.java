@@ -34,6 +34,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -48,7 +49,7 @@ import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.persistence.PersistenceManager;
+import org.argouml.persistence.ExtensionManager;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.Profile;
@@ -57,11 +58,8 @@ import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
-import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
@@ -105,7 +103,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     private ProjectSettings projectSettings;
 
-    private Vector searchpath;
+    private List<String> searchpath;
 
     // TODO: break into 3 main member types
     // model, diagram and other
@@ -122,15 +120,15 @@ public class ProjectImpl implements java.io.Serializable, Project {
     /**
      * Instances of the uml model.
      */
-    private final Vector models = new Vector();
+    private final List models = new ArrayList();
 
     /**
      * Instances of the uml diagrams.
      */
-    private final List diagrams = new ArrayList();
+    private final List<ArgoDiagram> diagrams = new ArrayList<ArgoDiagram>();
     private Object defaultModel;
     private Object currentNamespace;
-    private Map uuidRefs;
+    private Map<String, Object> uuidRefs;
     private GenerationPreferences cgPrefs;
     private transient VetoableChangeSupport vetoSupport;
 
@@ -144,7 +142,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     /**
      * Cache for the default model.
      */
-    private HashMap defaultModelTypeCache;
+    private HashMap<String, Object> defaultModelTypeCache;
 
     private Collection trashcan = new ArrayList();
 
@@ -155,7 +153,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     public ProjectImpl(URI theProjectUri) {
         this();
-        uri = PersistenceManager.getInstance().fixUriExtension(theProjectUri);
+        uri = ExtensionManager.getInstance().fixUriExtension(theProjectUri);
+        uri = theProjectUri;
     }
 
     /**
@@ -173,10 +172,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
         // this should be moved to a ui action.
         version = ApplicationVersion.getVersion();
 
-        searchpath = new Vector();
+        searchpath = new ArrayList<String>();
         historyFile = "";
         cgPrefs = new GenerationPreferences();
-        defaultModelTypeCache = new HashMap();
+        defaultModelTypeCache = new HashMap<String, Object>();
 
         LOG.info("making empty project with empty model");
         try {
@@ -196,7 +195,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public String getBaseName() {
         String n = getName();
-        n = PersistenceManager.getInstance().getBaseName(n);
+        n = ExtensionManager.getInstance().getBaseName(n);
         return n;
     }
 
@@ -221,14 +220,19 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    public URI getUri() {
+        return uri;
+    }
+    
+
     public URI getURI() {
         return uri;
     }
-
+    
 
     public void setURI(URI theUri) {
         if (theUri != null) {
-            theUri = PersistenceManager.getInstance().fixUriExtension(theUri);
+            theUri = ExtensionManager.getInstance().fixUriExtension(theUri);
         }
 
         if (LOG.isDebugEnabled()) {
@@ -255,14 +259,20 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public Vector getSearchPath() {
+    @SuppressWarnings("deprecation")
+    public Vector<String> getSearchPath() {
+        return new Vector<String>(searchpath);
+    }
+
+
+    public List<String> getSearchPathList() {
         return searchpath;
     }
 
 
     public void addSearchPath(String searchPathElement) {
-        if (!this.searchpath.contains(searchPathElement)) {
-            searchpath.addElement(searchPathElement);
+        if (!searchpath.contains(searchPathElement)) {
+            searchpath.add(searchPathElement);
         }
     }
 
@@ -272,7 +282,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
         return members;
     }
 
-
+    /**
+     * @param d the diagram
+     */
     private void addDiagramMember(ArgoDiagram d) {
         ProjectMember pm = new ProjectMemberDiagram(d, this);
         addDiagram(d);
@@ -352,7 +364,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
         // fire indeterminate change to avoid copying vector
         if (!models.contains(model)) {
-            models.addElement(model);
+            models.add(model);
         }
         setCurrentNamespace(model);
         setSaveEnabled(true);
@@ -370,18 +382,20 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 // TODO: Once we go MDI we won't need this.
                 Object treeRoot =
                     Model.getModelManagementFactory().getRootModel();
-                defaultDiagram =
-                    DiagramFactory.getInstance().createDiagram(
-                	    UMLClassDiagram.class,
-                	    treeRoot,
-                	    null);
-                addMember(defaultDiagram);
+                // TODO: This is the center of a very large dependency cycle
+                // Just refuse to delete the last diagram for now - tfm
+                LOG.error("Can't delete last diagram in the project");
+                return;
+//                defaultDiagram =
+//                    DiagramFactory.getInstance().createDefaultDiagram(
+//                	    treeRoot);
+//                addMember(defaultDiagram);
             } else {
                 // Make the topmost diagram (that is not the one being deleted)
                 // current.
-                defaultDiagram = (ArgoDiagram) diagrams.get(0);
+                defaultDiagram = diagrams.get(0);
                 if (defaultDiagram == d) {
-                    defaultDiagram = (ArgoDiagram) diagrams.get(1);
+                    defaultDiagram = diagrams.get(1);
                 }
             }
             activeDiagram = defaultDiagram;
@@ -400,7 +414,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     private void setSaveEnabled(boolean enable) {
         ProjectManager pm = ProjectManager.getManager();
         if (pm.getCurrentProject() == this) {
-            pm.setSaveEnabled(enable);
+            ProjectSaveAction.getInstance().setSaveEnabled(enable);
         }
     }
 
@@ -497,7 +511,13 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @SuppressWarnings("deprecation")
     public Vector getUserDefinedModels() {
+        return new Vector(models);
+    }
+
+
+    public List getUserDefinedModelList() {
         return models;
     }
 
@@ -514,7 +534,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         if (models.size() != 1) {
             return null;
         }
-        return models.elementAt(0);
+        return models.get(0);
     }
 
 
@@ -549,9 +569,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
             return null;
         }
         Object cls = null;
-        int numModels = models.size();
-        for (int i = 0; i < numModels; i++) {
-            cls = findTypeInModel(s, models.elementAt(i));
+        for (Object model : models) {
+            cls = findTypeInModel(s, model);
             if (cls != null) {
                 return cls;
             }
@@ -573,12 +592,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public Collection findFigsForMember(Object member) {
-        Collection figs = new ArrayList();
-        Iterator it = diagrams.iterator();
-        while (it.hasNext()) {
-            ArgoDiagram diagram = (ArgoDiagram) it.next();
-            Object fig = diagram.getContainingFig(member);
+    public Collection<Fig> findFigsForMember(Object member) {
+        Collection<Fig> figs = new ArrayList<Fig>();
+        for (ArgoDiagram diagram : diagrams) {
+            Fig fig = diagram.getContainingFig(member);
             if (fig != null) {
                 figs.add(fig);
             }
@@ -589,9 +606,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public Collection findAllPresentationsFor(Object obj) {
         Collection figs = new ArrayList();
-        Iterator it = diagrams.iterator();
-        while (it.hasNext()) {
-            Diagram diagram = (Diagram) it.next();
+        for (ArgoDiagram diagram : diagrams) {
             Fig aFig = diagram.presentationFor(obj);
             if (aFig != null) {
                 figs.add(aFig);
@@ -646,8 +661,13 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public Vector getDiagrams() {
-        return new Vector(diagrams);
+    @SuppressWarnings("deprecation")
+    public Vector<ArgoDiagram> getDiagrams() {
+        return new Vector<ArgoDiagram>(diagrams);
+    }
+
+    public List<ArgoDiagram> getDiagramList() {
+        return Collections.unmodifiableList(diagrams);
     }
 
 
@@ -657,9 +677,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public ArgoDiagram getDiagram(String name) {
-        Iterator it = diagrams.iterator();
-        while (it.hasNext()) {
-            ArgoDiagram ad = (ArgoDiagram) it.next();
+        for (ArgoDiagram ad : diagrams) {
             if (ad.getName() != null && ad.getName().equals(name)) {
                 return ad;
             }
@@ -742,9 +760,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     	}
 
         int presentations = 0;
-        int size = diagrams.size();
-        for (int i = 0; i < size; i++) {
-            Diagram d = (Diagram) diagrams.get(i);
+        for (ArgoDiagram d : diagrams) {
             presentations += d.getLayer().presentationCountFor(me);
         }
         return presentations;
@@ -756,7 +772,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             return diagrams.get(0);
         }
         if (models.size() > 0) {
-            return models.elementAt(0);
+            return models.get(0);
         }
         return null;
     }
@@ -781,16 +797,16 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public void preSave() {
-        for (int i = 0; i < diagrams.size(); i++) {
-            ((Diagram) diagrams.get(i)).preSave();
+        for (ArgoDiagram diagram : diagrams) {
+            diagram.preSave();
         }
         // TODO: is preSave needed for models?
     }
 
 
     public void postSave() {
-        for (int i = 0; i < diagrams.size(); i++) {
-            ((Diagram) diagrams.get(i)).postSave();
+        for (ArgoDiagram diagram : diagrams) {
+            diagram.postSave();
         }
         // TODO: is postSave needed for models?
         setSaveEnabled(true);
@@ -798,8 +814,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public void postLoad() {
-        for (int i = 0; i < diagrams.size(); i++) {
-            ((Diagram) diagrams.get(i)).postLoad();
+        for (ArgoDiagram diagram : diagrams) {
+            diagram.postLoad();
         }
         // issue 1725: the root is not set, which leads to problems
         // with displaying prop panels
@@ -817,6 +833,14 @@ public class ProjectImpl implements java.io.Serializable, Project {
     ////////////////////////////////////////////////////////////////
     // trash related methods
 
+    /**
+     * Empty the trash can and permanently delete all objects that it contains.
+     * 
+     * @see org.argouml.kernel.Project#emptyTrashCan()
+     */
+    public void emptyTrashCan() {
+        trashcan.clear();
+    }
 
     public void moveToTrash(Object obj) {
         if (obj instanceof Collection) {
@@ -903,7 +927,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         }
 
         defaultModel = theDefaultModel;
-        defaultModelTypeCache = new HashMap();
+        defaultModelTypeCache = new HashMap<String, Object>();
     }
 
 
@@ -950,10 +974,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public boolean isValidDiagramName(String name) {
-        Iterator it = diagrams.iterator();
         boolean rv = true;
-        while (it.hasNext()) {
-            ArgoDiagram diagram = (ArgoDiagram) it.next();
+        for (ArgoDiagram diagram : diagrams) {
             if (diagram.getName().equals(name)) {
                 rv = false;
                 break;
@@ -963,33 +985,34 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public Vector getSearchpath() {
-        return searchpath;
+    @SuppressWarnings("deprecation")
+    public Vector<String> getSearchpath() {
+        return new Vector(searchpath);
     }
 
 
-    public URI getUri() {
-        return uri;
-    }
-
-
-    public Map getUUIDRefs() {
+    public Map<String, Object> getUUIDRefs() {
         return uuidRefs;
     }
 
 
-    public void setSearchpath(Vector theSearchpath) {
-        this.searchpath = theSearchpath;
+    @SuppressWarnings("deprecation")
+    public void setSearchpath(Vector<String> theSearchpath) {
+        searchpath = theSearchpath;
     }
 
 
-    public void setUUIDRefs(HashMap uUIDRefs) {
+    public void setSearchPath(List<String> theSearchpath) {
+        searchpath = theSearchpath;
+    }
+
+    public void setUUIDRefs(Map<String, Object> uUIDRefs) {
         uuidRefs = uUIDRefs;
     }
 
 
     public void setVetoSupport(VetoableChangeSupport theVetoSupport) {
-        this.vetoSupport = theVetoSupport;
+        vetoSupport = theVetoSupport;
     }
 
 
@@ -1004,16 +1027,13 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public void remove() {
-
-        for (Iterator it = diagrams.iterator(); it.hasNext();) {
-            Diagram diagram = (Diagram) it.next();
+        for (ArgoDiagram diagram : diagrams) {
             diagram.remove();
         }
 
         members.clear();
 
-        for (Iterator it = models.iterator(); it.hasNext();) {
-            Object model = it.next();
+        for (Object model : models) {
             LOG.debug("Deleting project model "
                     + Model.getFacade().getName(model));
             Model.getUmlFactory().delete(model);
@@ -1053,7 +1073,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         vetoSupport = null;
         activeDiagram = null;
 
-        trashcan.clear();
+        emptyTrashCan();
     }
 
 

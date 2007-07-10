@@ -63,7 +63,7 @@ public class GotoDialog extends ArgoDialog {
 
         Project p = ProjectManager.getManager().getCurrentProject();
 
-        allDiagrams.setResults(p.getDiagrams(), p.getDiagrams());
+        allDiagrams.setResults(p.getDiagramList(), p.getDiagramList());
 
         // TabResults has really large preferred height, so divide in
         // half to reduce size of dialog which will be sized based on

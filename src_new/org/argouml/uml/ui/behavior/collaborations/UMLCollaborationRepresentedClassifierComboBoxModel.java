@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -56,18 +55,16 @@ class UMLCollaborationRepresentedClassifierComboBoxModel
     protected void buildModelList() {
         Collection classifiers = new ArrayList();
         Project p = ProjectManager.getManager().getCurrentProject();
-        Iterator it = p.getUserDefinedModels().iterator();
-        while (it.hasNext()) {
-            Object model = it.next();
+        for (Object model : p.getUserDefinedModelList()) {
             Collection c = Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(model, 
                     Model.getMetaTypes().getClassifier());
-            Iterator ci = c.iterator();
-            while (ci.hasNext()) {
-                Object cls = ci.next();
+            for (Object cls : c) {
                 Collection s = Model.getModelManagementHelper()
                     .getAllSurroundingNamespaces(cls);
-                if (!s.contains(getTarget())) classifiers.add(cls);
+                if (!s.contains(getTarget())) {
+                    classifiers.add(cls);
+                }
             }
         }
         setElements(classifiers);
