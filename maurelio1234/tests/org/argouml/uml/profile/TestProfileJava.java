@@ -30,7 +30,6 @@ import junit.framework.TestCase;
 
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
-import org.argouml.uml.profile.ProfileJava;
 
 /**
  * 
@@ -63,7 +62,7 @@ public class TestProfileJava extends TestCase {
      * exist.
      */
     public void testLoadProfileModel() {
-        ProfileJava profile = new ProfileJava();
+        ProfileJava profile = ProfileJava.getInstance();
         Object model = profile.getModel();
         Collection stereos = Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(model,
