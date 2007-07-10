@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
@@ -428,8 +427,7 @@ public class SequenceDiagramGraphModel
         if (collaboration == null) {
             collaboration =
                 Model.getCollaborationsFactory().buildCollaboration(
-                        ProjectManager.getManager().getCurrentProject()
-                        .getRoot());
+                        getProject().getRoot());
         }
 
         return collaboration;
