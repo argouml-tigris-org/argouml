@@ -30,7 +30,6 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
@@ -105,8 +104,6 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     private Action actionExtensionPoint;
 
-    // constructors
-
     /**
      * Construct a new use case diagram with no defined namespace.<p>
      *
@@ -123,7 +120,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
-        // TODO: All super constrcutors should take a GraphModel
+        // TODO: All super constrctors should take a GraphModel
         setGraphModel(createGraphModel());
     }
 
@@ -252,18 +249,6 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         };
         ToolBarUtility.manageDefault(actions, "diagram.usecase.association");
         return actions;
-    }
-
-    /**
-     * @return a new unique name for the diagram
-     */
-    protected String getNewDiagramName() {
-        String name = getLabelName() + " " + getNextDiagramSerial();
-        if (!(ProjectManager.getManager().getCurrentProject()
-	          .isValidDiagramName(name))) {
-            name = getNewDiagramName();
-        }
-        return name;
     }
 
     /*
@@ -459,4 +444,5 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             FigNode oldEncloser, FigNode newEncloser) {
         // Do nothing.        
     }
-} /* end class UMLUseCaseDiagram */
+
+}

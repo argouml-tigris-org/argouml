@@ -32,7 +32,6 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
@@ -85,10 +84,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     private Action actionMGeneralization;
     private Action actionMAbstraction;
 
-
-    ////////////////////////////////////////////////////////////////
-    // contructors
-
+    
     /**
      * Constructor.
      */
@@ -189,19 +185,6 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * The UID.
      */
     static final long serialVersionUID = -375918274062198744L;
-
-    /**
-     * Creates a new diagramname.
-     * @return String
-     */
-    protected String getNewDiagramName() {
-        String name = getLabelName() + " " + getNextDiagramSerial();
-        if (!ProjectManager.getManager().getCurrentProject()
-	        .isValidDiagramName(name)) {
-            name = getNewDiagramName();
-        }
-        return name;
-    }
 
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
@@ -473,11 +456,11 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base)  {
-    	return false;
-		/* TODO: We may return the following when the
-		 * relocate() has been implemented.
-                 */
-//    	base == ProjectManager.getManager().getCurrentProject().getModel();
+        return false;
+        /* TODO: We may return the following when the
+         * relocate() has been implemented.
+         */
+//      base == ProjectManager.getManager().getCurrentProject().getModel();
     }
 
     /*
@@ -532,4 +515,4 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
     }
 
-} /* end class UMLDeploymentDiagram */
+}

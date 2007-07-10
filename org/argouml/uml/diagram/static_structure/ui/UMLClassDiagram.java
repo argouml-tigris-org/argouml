@@ -30,7 +30,6 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ModeCreateDependency;
@@ -264,19 +263,6 @@ public class UMLClassDiagram extends UMLDiagram {
         };
         ToolBarUtility.manageDefault(actions, "diagram.class.composition");
         return actions;
-    }
-
-    /**
-     * Create a new diagram name.
-     * @return String
-     */
-    protected String getNewDiagramName() {
-        String name = getLabelName() + " " + getNextDiagramSerial();
-        if (!ProjectManager.getManager().getCurrentProject()
-	        .isValidDiagramName(name)) {
-            name = getNewDiagramName();
-        }
-        return name;
     }
 
     /*
