@@ -64,7 +64,9 @@ public class ActionAddExistingNode extends UndoableAction {
         Object target = TargetManager.getInstance().getTarget();
         ArgoDiagram dia = ProjectManager.getManager().
             getCurrentProject().getActiveDiagram();
-        if (dia == null) return false;
+        if (dia == null) {
+            return false;
+        }
         MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
         return gm.canAddNode(target);
     }
@@ -77,4 +79,4 @@ public class ActionAddExistingNode extends UndoableAction {
         AddExistingNodeCommand cmd = new AddExistingNodeCommand(object);
         cmd.execute();
     }
-} /* end class ActionAddExistingNode */
+}

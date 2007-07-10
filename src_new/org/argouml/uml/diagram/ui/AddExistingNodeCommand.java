@@ -48,9 +48,6 @@ import org.tigris.gef.presentation.Fig;
 */
 public class AddExistingNodeCommand implements Command, GraphFactory {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     /**
      * The UML object to be added to the diagram.
      */
@@ -91,9 +88,6 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
         dropEvent = event;
         count = cnt;
     }
-
-    ////////////////////////////////////////////////////////////////
-    // constructor
 
     /*
      * @see org.tigris.gef.base.Command#execute()
@@ -192,4 +186,4 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
         return object;
     }
 
-} /* end class ActionAddExistingNode */
+}
