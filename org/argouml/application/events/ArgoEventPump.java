@@ -199,6 +199,42 @@ public final class ArgoEventPump {
         }
     }
 
+
+    /**
+     * Handle firing a status text event.
+     *
+     * @param event The event to be fired.
+     * @param listener The listener.
+     */
+    private void handleFireStatusEvent(
+        ArgoStatusEvent event,
+        ArgoStatusEventListener listener) {
+        switch (event.getEventType()) {
+        case ArgoEventTypes.STATUS_TEXT :
+            listener.statusText(event);
+            break;
+
+        case ArgoEventTypes.STATUS_CLEARED :
+            listener.statusCleared(event);
+            break;
+
+        case ArgoEventTypes.STATUS_PROJECT_SAVED :
+            listener.projectSaved(event);
+            break;
+
+        case ArgoEventTypes.STATUS_PROJECT_LOADED :
+            listener.projectLoaded(event);
+            break;
+
+        case ArgoEventTypes.STATUS_PROJECT_MODIFIED :
+            listener.projectModified(event);
+            break;
+            
+        default :
+            LOG.error("Invalid event:" + event.getEventType());
+            break;
+        }
+    }
     /**
      * Handle firing a generator event.
      *
@@ -237,6 +273,10 @@ public final class ArgoEventPump {
                 handleFireHelpEvent((ArgoHelpEvent) event,
                                         (ArgoHelpEventListener) listener);
             }
+            if (listener instanceof ArgoStatusEventListener) {
+                handleFireStatusEvent((ArgoStatusEvent) event,
+                        (ArgoStatusEventListener) listener);
+            }
         } else {
             if (event.getEventType() >= ArgoEventTypes.ANY_NOTATION_EVENT
                 && event.getEventType() < ArgoEventTypes.LAST_NOTATION_EVENT) {
@@ -257,6 +297,13 @@ public final class ArgoEventPump {
                 if (listener instanceof ArgoGeneratorEventListener) {
                     handleFireGeneratorEvent((ArgoGeneratorEvent) event,
                             (ArgoGeneratorEventListener) listener);
+                }
+            }
+            if (event.getEventType() >= ArgoEventTypes.ANY_STATUS_EVENT
+                    && event.getEventType() < ArgoEventTypes.LAST_STATUS_EVENT) {
+                if (listener instanceof ArgoStatusEventListener) {
+                    handleFireStatusEvent((ArgoStatusEvent) event,
+                            (ArgoStatusEventListener) listener);
                 }
             }
         }
