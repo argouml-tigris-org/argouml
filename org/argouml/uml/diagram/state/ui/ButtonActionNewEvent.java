@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -57,8 +56,7 @@ abstract class ButtonActionNewEvent extends UndoableAction
         if (!isEnabled()) return;
         super.actionPerformed(e);
         Object target = TargetManager.getInstance().getModelTarget();
-        Object model =
-            ProjectManager.getManager().getCurrentProject().getModel();
+        Object model = Model.getFacade().getModel(target);
         Object ns = Model.getStateMachinesHelper()
                     .findNamespaceForEvent(target, model);
         Object event = createEvent(ns);
