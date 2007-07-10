@@ -30,24 +30,24 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Iterator;
-import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoStatusEvent;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoFrame;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.base.SaveGraphicsAction;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.SaveGraphicsAction;
 import org.tigris.gef.undo.UndoableAction;
 import org.tigris.gef.util.Util;
 
@@ -102,8 +102,6 @@ public class ActionSaveAllGraphics extends UndoableAction {
     public boolean trySave(boolean overwrite, File directory) {
         Project p =  ProjectManager.getManager().getCurrentProject();
         TargetManager tm = TargetManager.getInstance();
-        Vector  targets = p.getDiagrams();
-        Iterator it = targets.iterator();        
         File saveDir = (directory != null) ? directory : getSaveDir(p);
         if (saveDir == null) {
             /* The user cancelled! */
@@ -111,10 +109,12 @@ public class ActionSaveAllGraphics extends UndoableAction {
         }
         boolean okSoFar = true;
         ArgoDiagram activeDiagram = p.getActiveDiagram();
-        while (it.hasNext() && okSoFar) {
-            ArgoDiagram d = (ArgoDiagram) it.next();
+        for (ArgoDiagram d : p.getDiagramList()) {
             tm.setTarget(d);
             okSoFar = trySaveDiagram(overwrite, d, saveDir);
+            if (!okSoFar) {
+                break;
+            }
         }
         tm.setTarget(activeDiagram);
         return okSoFar;
@@ -128,7 +128,6 @@ public class ActionSaveAllGraphics extends UndoableAction {
      */
     protected boolean trySaveDiagram(boolean overwrite, Object target,
             File saveDir) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
         if ( target instanceof Diagram ) {
             String defaultName = ((Diagram) target).getName();
             defaultName = Util.stripJunk(defaultName);
@@ -144,13 +143,14 @@ public class ActionSaveAllGraphics extends UndoableAction {
                     .getSaveActionBySuffix(
                         SaveGraphicsManager.getInstance().getDefaultSuffix());
                 if (cmd == null) {
-                    pb.showStatus("Unknown graphics file type with extension "
-                        + SaveGraphicsManager.getInstance().getDefaultSuffix());
+                    showStatus("Unknown graphics file type with extension "
+                            + SaveGraphicsManager.getInstance()
+                                    .getDefaultSuffix());
                     return false;
                 }
-                pb.showStatus( "Writing " + path + name + "..." );
+                showStatus( "Writing " + path + name + "..." );
                 saveGraphicsToFile(theFile, cmd, overwrite);
-                pb.showStatus( "Wrote " + path + name );
+                showStatus( "Wrote " + path + name );
                 return true;
             }
             catch ( FileNotFoundException ignore ) {
@@ -238,4 +238,8 @@ public class ActionSaveAllGraphics extends UndoableAction {
         return chooser;
     }
 
+    private void showStatus(String text) {
+        ArgoEventPump.fireEvent(new ArgoStatusEvent(
+                ArgoEventTypes.STATUS_TEXT, this, text));
+    }
 }
