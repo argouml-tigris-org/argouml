@@ -41,9 +41,6 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionAddTopLevelPackage extends UndoableAction {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      *  The constructor.
      */
@@ -55,16 +52,13 @@ public class ActionAddTopLevelPackage extends UndoableAction {
     }
 
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
 	Project p = ProjectManager.getManager().getCurrentProject();
-        int numPacks = p.getUserDefinedModels().size();
+        int numPacks = p.getUserDefinedModelList().size();
         String nameStr = "package_" + (numPacks + 1);
         Object model = Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(model, nameStr);
@@ -74,4 +68,4 @@ public class ActionAddTopLevelPackage extends UndoableAction {
 
 
     }
-} /* end class ActionAddTopLevelPackage */
+}

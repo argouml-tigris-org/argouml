@@ -48,7 +48,7 @@ public class GoProjectToDiagram extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (parent instanceof Project) {
-	    return ((Project) parent).getDiagrams();
+	    return ((Project) parent).getDiagramList();
 	}
 	return null;
     }

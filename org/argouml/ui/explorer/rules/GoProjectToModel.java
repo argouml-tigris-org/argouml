@@ -48,7 +48,7 @@ public class GoProjectToModel extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (parent instanceof Project) {
-	    return ((Project) parent).getUserDefinedModels();
+	    return ((Project) parent).getUserDefinedModelList();
 	}
 	return null;
     }

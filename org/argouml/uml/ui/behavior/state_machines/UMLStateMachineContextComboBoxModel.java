@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -56,11 +55,7 @@ public class UMLStateMachineContextComboBoxModel
     protected void buildModelList() {
         Collection elements = new ArrayList();
         Project p = ProjectManager.getManager().getCurrentProject();
-        Iterator it = p.getUserDefinedModels().iterator();
-
-        while (it.hasNext()) {
-            Object model = it.next();
-
+        for (Object model : p.getUserDefinedModelList()) {
             elements.addAll(Model
                     .getModelManagementHelper().getAllModelElementsOfKind(
                             model, Model.getMetaTypes().getClassifier()));

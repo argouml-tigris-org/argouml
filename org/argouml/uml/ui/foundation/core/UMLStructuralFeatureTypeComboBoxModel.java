@@ -84,11 +84,8 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         if (p == null) {
             return;
         }
-        Iterator it = (new ArrayList(p.getUserDefinedModels())).iterator();
-
-        while (it.hasNext()) {
-            Object model = it.next();
-
+        
+        for (Object model : p.getUserDefinedModelList()) {
             elements.addAll(Model.getModelManagementHelper()
                     .getAllModelElementsOfKind(
                             model, Model.getMetaTypes().getUMLClass()));
