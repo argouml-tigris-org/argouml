@@ -29,13 +29,13 @@ import java.awt.Dimension;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-class FigHead extends FigGroup {
+class FigHead extends ArgoFigGroup {
 
     private final FigText nameFig;
     private final Fig stereotypeFig;
