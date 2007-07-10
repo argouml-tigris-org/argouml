@@ -216,10 +216,14 @@ public class ProfileSelectionTab extends JPanel implements
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
 	public Object getElementAt(int n) {
-	    ProfileConfiguration config = ProjectManager.getManager()
-		    .getCurrentProject().getProfileConfiguration();
-	    return ((Profile) config.getProfiles().elementAt(n))
-		    .getDisplayName();
+            ProfileConfiguration config = ProjectManager.getManager()
+                    .getCurrentProject().getProfileConfiguration();
+            if (n >= 0 && n < config.getProfiles().size()) {
+                return ((Profile) config.getProfiles().elementAt(n))
+                        .getDisplayName();
+            } else {
+                return null;
+            }
 	}
 
 	/**
@@ -299,34 +303,45 @@ public class ProfileSelectionTab extends JPanel implements
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent arg0) {
-	if (arg0.getSource() == addButton) {
-	    AvailableProfilesListModel model = 
-		((AvailableProfilesListModel) availableList.getModel());
-	    Profile selected = model.getProfileAt(availableList
-		    .getSelectedIndex());
-	    ProjectManager.getManager().getCurrentProject()
-		    .getProfileConfiguration().addProfile(selected);
-	    model.fireListeners();
+        AvailableProfilesListModel modelAvl = ((AvailableProfilesListModel) availableList
+                .getModel());
+        UsedProfilesListModel modelUsd = ((UsedProfilesListModel) usedList
+                .getModel());
+
+        if (arg0.getSource() == addButton) {
+            if (availableList.getSelectedIndex() != -1) {
+                Profile selected = modelAvl.getProfileAt(availableList
+                        .getSelectedIndex());
+                ProjectManager.getManager().getCurrentProject()
+                        .getProfileConfiguration().addProfile(selected);
+                
+                modelAvl.fireListeners();
+                modelUsd.fireListeners();
+            }
 	} else if (arg0.getSource() == removeButton) {
-	    UsedProfilesListModel model = ((UsedProfilesListModel) usedList
-		    .getModel());
-	    Profile selected = model.getProfileAt(usedList.getSelectedIndex());
-	    ProjectManager.getManager().getCurrentProject()
-		    .getProfileConfiguration().removeProfile(selected);
-	    model.fireListeners();
+            if (usedList.getSelectedIndex() != -1) {
+                Profile selected = modelUsd.getProfileAt(usedList
+                        .getSelectedIndex());
+                ProjectManager.getManager().getCurrentProject()
+                        .getProfileConfiguration().removeProfile(selected);
+                
+                modelAvl.fireListeners();
+                modelUsd.fireListeners();
+            }
 	} else if (arg0.getSource() == unregisterProfile) {
-	    AvailableProfilesListModel model = 
-		((AvailableProfilesListModel) availableList
-		    .getModel());
-	    Profile selected = model.getProfileAt(availableList
-		    .getSelectedIndex());
-	    if (selected instanceof UserDefinedProfile) {
-		ProfileManagerImpl.getInstance().removeProfile(selected);
-		model.fireListeners();
-	    } else {
-		JOptionPane.showMessageDialog(this,
-			"Only user defined profiles can be removed");
-	    }
+	    if (availableList.getSelectedIndex() != -1) {
+                Profile selected = modelAvl.getProfileAt(availableList
+                        .getSelectedIndex());
+                if (selected instanceof UserDefinedProfile) {
+                    ProfileManagerImpl.getInstance().removeProfile(selected);
+
+                    modelAvl.fireListeners();
+                    modelUsd.fireListeners();
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                            "Only user defined profiles can be removed");
+                }
+            }
 	} else if (arg0.getSource() == loadFromFile) {
 	    JFileChooser fileChooser = new JFileChooser();
 	    fileChooser.setFileFilter(new FileFilter() {
