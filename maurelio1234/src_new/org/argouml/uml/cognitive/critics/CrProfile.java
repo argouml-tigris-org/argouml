@@ -54,7 +54,7 @@ public class CrProfile extends CrUML {
     public CrProfile(final String prefix) {
 	super();
 	
-	if (prefix == null || prefix.isEmpty()) {
+	if (prefix == null || "".equals(prefix)) {
 	    this.localizationPrefix = "critics";
 	} else {
 	    this.localizationPrefix = prefix;
