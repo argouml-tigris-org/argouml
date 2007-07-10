@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,9 +25,8 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -51,12 +50,9 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
 
         if (Model.getFacade().isABehavioralFeature(parent)) {
             Collection col = Model.getFacade().getBehaviors(parent);
-            Vector ret = new Vector();
+            Set<ArgoDiagram> ret = new HashSet<ArgoDiagram>();
             Project p = ProjectManager.getManager().getCurrentProject();
-            Vector diagrams = p.getDiagrams();
-            Iterator it = diagrams.iterator();
-            while (it.hasNext()) {
-                ArgoDiagram diagram = (ArgoDiagram) it.next();
+            for (ArgoDiagram diagram : p.getDiagramList()) {
                 if (diagram instanceof UMLStateDiagram
                     && col.contains(((UMLStateDiagram) diagram)
                             .getStateMachine())) {
