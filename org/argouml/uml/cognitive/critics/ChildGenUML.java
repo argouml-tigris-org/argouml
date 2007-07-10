@@ -24,18 +24,19 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Vector;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
+import org.argouml.util.IteratorEnumeration;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
-import org.tigris.gef.util.EnumerationComposite;
-import org.tigris.gef.util.EnumerationEmpty;
-import org.tigris.gef.util.EnumerationSingle;
 
 /**
  * This class gives critics access to parts of the UML model of the
@@ -59,12 +60,23 @@ public class ChildGenUML implements ChildGenerator {
 
     /**
      * Reply a java.util.Enumeration of the children of the given Object
-     * TODO: GEF has moved away from vectors to collections
-     * returning an iterator would now seem better.
+     * 
+     * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
+     * @deprecated for 0.25.4 by tfmorris. Only for use with legacy GEF
+     *             interfaces. Use {@link #gen2(Object)} for new applications.
+     */
+    @Deprecated
+    public Enumeration gen(Object o) {
+        return new IteratorEnumeration(gen2(o));
+    }
+    
+    /**
+     * Return an Iterator of the children of the given Object
      *
+     * @param o object to return the children of
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
-    public Enumeration gen(Object o) {
+    public Iterator gen2(Object o) {
 
         if (o == null) {
             LOG.debug("Object is null");
@@ -74,92 +86,95 @@ public class ChildGenUML implements ChildGenerator {
 
 	if (o instanceof Project) {
 	    Project p = (Project) o;
-	    return new EnumerationComposite(p.getUserDefinedModels().elements(),
-					    p.getDiagrams().elements());
+            Collection result = new ArrayList();
+            result.addAll(p.getUserDefinedModelList());
+            result.addAll(p.getDiagramList());
+            return result.iterator();
 	}
 
 	if (o instanceof Diagram) {
 	    Collection figs = ((Diagram) o).getLayer().getContents();
 	    if (figs != null) {
-	        return new Vector(figs).elements();
+	        return figs.iterator();
 	    }
 	}
 
 	if (Model.getFacade().isAPackage(o)) {
-	    Vector ownedElements =
-		new Vector(Model.getFacade().getOwnedElements(o));
+	    Collection ownedElements = 
+                Model.getFacade().getOwnedElements(o);
 	    if (ownedElements != null) {
-	        return ownedElements.elements();
+	        return ownedElements.iterator();
 	    }
 	}
 
 	if (Model.getFacade().isAElementImport(o)) {
-	    Object me = Model.getFacade().getModelElement(o);
-	    return new EnumerationSingle(me);  //wasteful!
+	    Collection result = new ArrayList();
+            result.add(Model.getFacade().getModelElement(o));
+	    return result.iterator();  //wasteful!
 	}
 
 
 	// TODO: associationclasses fit both of the next 2 cases
 
 	if (Model.getFacade().isAClassifier(o)) {
-	    EnumerationComposite res = new EnumerationComposite();
-	    res.addSub(new Vector(Model.getFacade().getFeatures(o)));
+            Collection result = new ArrayList();
+	    result.addAll(Model.getFacade().getFeatures(o));
 
-	    Vector sms = new Vector(Model.getFacade().getBehaviors(o));
+	    Collection sms = Model.getFacade().getBehaviors(o);
 	    //Object sm = null;
 	    //if (sms != null && sms.size() > 0)
 		//sm = sms.elementAt(0);
 	    //if (sm != null) res.addSub(new EnumerationSingle(sm));
             if (sms != null) {
-                res.addSub(sms.elements());
+                result.addAll(sms);
             }
-	    return res;
+	    return result.iterator();
 	}
 
 	if (Model.getFacade().isAAssociation(o)) {
-	    Vector assocEnds = new Vector(Model.getFacade().getConnections(o));
+	    List assocEnds = (List) Model.getFacade().getConnections(o);
 	    if (assocEnds != null) {
-	        return assocEnds.elements();
+	        return assocEnds.iterator();
 	    }
-	    //TODO: MAssociationRole
+	    //TODO: AssociationRole
 	}
 
 	// // needed?
 	if (Model.getFacade().isAStateMachine(o)) {
-	    EnumerationComposite res = new EnumerationComposite();
+            Collection result = new ArrayList();
 	    Object top = Model.getStateMachinesHelper().getTop(o);
 	    if (top != null) {
-	        res.addSub(new EnumerationSingle(top));
+                result.add(top);
 	    }
-	    res.addSub(new Vector(Model.getFacade().getTransitions(o)));
-	    return res;
+	    result.addAll(Model.getFacade().getTransitions(o));
+	    return result.iterator();
 	}
 
 	// needed?
 	if (Model.getFacade().isACompositeState(o)) {
-	    Vector substates = new Vector(Model.getFacade().getSubvertices(o));
+	    Collection substates = Model.getFacade().getSubvertices(o);
 	    if (substates != null) {
-	        return substates.elements();
+	        return substates.iterator();
 	    }
 	}
 
         if (Model.getFacade().isAOperation(o)) {
-            Vector params = new Vector(Model.getFacade().getParameters(o));
+            Collection params = Model.getFacade().getParameters(o);
             if (params != null) {
-                return params.elements();
+                return params.iterator();
             }
         }
 
         if (Model.getFacade().isAModelElement(o)) {
-	    Vector behavior = new Vector(Model.getFacade().getBehaviors(o));
+	    Collection behavior = Model.getFacade().getBehaviors(o);
 	    if (behavior != null) {
-	        return behavior.elements();
+	        return behavior.iterator();
 	    }
 	}
 
 	// tons more cases
         LOG.debug("No children found for: " + o.getClass());
 
-	return EnumerationEmpty.theInstance();
+	return Collections.EMPTY_SET.iterator();
     }
-} /* end class ChildGenUML */
+}
