@@ -29,12 +29,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 
 
 /**
@@ -93,7 +93,7 @@ public class FigAssociationRole extends FigAssociation {
  * 
  * TODO: Should this be in its own source file?
  */
-class FigMessageGroup extends FigGroup {
+class FigMessageGroup extends ArgoFigGroup {
 
     /**
      * Constructor for FigMessageGroup.
