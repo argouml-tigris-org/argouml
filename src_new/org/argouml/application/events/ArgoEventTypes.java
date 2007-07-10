@@ -131,25 +131,60 @@ public interface ArgoEventTypes {
 
 
     /**
-     * Id indicating any GENERATION event.
+     * Id indicating any HELP event.
      */
     int ANY_HELP_EVENT        =  1400;
 
     /**
-     * Id indicating the default GENERATION was changed.
+     * Id indicating the help text was changed.
      */
     int HELP_CHANGED          =  1401;
 
     /**
-     * Id indicating a GENERATION was removed.
+     * Id indicating a help text was removed.
      */
     int HELP_REMOVED          =  1403;
 
     /**
-     * Last generation event.
+     * Last help event.
      */
     int LAST_HELP_EVENT       =  1499;
+
+
+    /**
+     * Id indicating any STATUS event.
+     */
+    int ANY_STATUS_EVENT        =  1500;
+
+    /**
+     * Id indicating the status text was changed.
+     */
+    int STATUS_TEXT          =  1501;
+
+    /**
+     * Id indicating that there is no current status text.
+     */
+    int STATUS_CLEARED          =  1503;
+
+    /**
+     * Id indicating that a project was saved.
+     */
+    int STATUS_PROJECT_SAVED          =  1504;
+
+    /**
+     * Id indicating that a project was loaded.
+     */
+    int STATUS_PROJECT_LOADED         =  1505;
+
+    /**
+     * Id indicating that a project was modified.
+     */
+    int STATUS_PROJECT_MODIFIED        =  1506;
     
+    /**
+     * Last help event.
+     */
+    int LAST_STATUS_EVENT       =  1599;
 
     /**
      * Id marker for the last Argo event.
