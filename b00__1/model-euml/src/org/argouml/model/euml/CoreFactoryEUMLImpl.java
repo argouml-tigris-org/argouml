@@ -116,6 +116,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 			aggregationKind2 == null ? AggregationKind.NONE_LITERAL
 				: (AggregationKind) aggregationKind2, name2, 0,
 			1);
+		for (Property p : assoc.getMemberEnds()) {
+		    p.setLowerValue(null);
+		    p.setUpperValue(null);
+		}
 		if (associationName != null) {
 		    assoc.setName(associationName);
 		}
