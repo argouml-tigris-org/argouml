@@ -44,6 +44,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.swingext.ArgoToolbarManager;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ArgoDiagramImpl;
@@ -226,6 +227,9 @@ public abstract class UMLDiagram
     public JToolBar getJToolBar() {
         if (toolBar == null) {
             initToolBar();
+            toolBar.setName(Translator.localize("misc.toolbar.diagram"));
+            ArgoToolbarManager.getInstance().registerToolbar(UMLDiagram.class,
+                    toolBar, 4);
         }
         return toolBar;
     }
