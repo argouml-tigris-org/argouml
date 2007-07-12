@@ -18,7 +18,7 @@
 
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="org.argouml.kernel.Project">
+<template class="org.argouml.kernel.ProjectImpl">
 <![CDATA[
 <argo version="<ocl>self.persistenceVersion</ocl>">
   <documentation>
