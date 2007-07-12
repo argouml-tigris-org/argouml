@@ -30,6 +30,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -56,6 +58,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -77,6 +80,7 @@ import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.persistence.UmlVersionException;
 import org.argouml.persistence.VersionException;
 import org.argouml.persistence.XmiFormatException;
+import org.argouml.swingext.ArgoToolbarManager;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -411,15 +415,76 @@ public final class ProjectBrowser
         // Toolbar boundary is the area between the menu and the status
         // bar. It contains the workarea at centre and the toolbar
         // position north, south, east or west.
-        JPanel toolbarBoundary = new JPanel();
+        final JPanel toolbarBoundary = new JPanel();
         toolbarBoundary.setLayout(new DockBorderLayout());
         // TODO: - should save and restore the last positions of the toolbars
-        toolbarBoundary.add(menuBar.getFileToolbar(), BorderLayout.NORTH);
-        toolbarBoundary.add(menuBar.getEditToolbar(), BorderLayout.NORTH);
-        toolbarBoundary.add(menuBar.getViewToolbar(), BorderLayout.NORTH);
+        final String toolbarPosition = BorderLayout.NORTH;
+        toolbarBoundary.add(menuBar.getFileToolbar(), toolbarPosition);
+        toolbarBoundary.add(menuBar.getEditToolbar(), toolbarPosition);
+        toolbarBoundary.add(menuBar.getViewToolbar(), toolbarPosition);
         toolbarBoundary.add(menuBar.getCreateDiagramToolbar(),
-                           BorderLayout.NORTH);
+                        toolbarPosition);
         toolbarBoundary.add(workAreaPane, BorderLayout.CENTER);
+
+
+        /**
+         * Registers all toolbars and enables north panel hidding when all
+         * toolbars are hidden.
+         */
+        ArgoToolbarManager.getInstance().registerToolbar(
+                menuBar.getFileToolbar(), menuBar.getFileToolbar(), 0);
+        ArgoToolbarManager.getInstance().registerToolbar(
+                menuBar.getEditToolbar(), menuBar.getEditToolbar(), 1);
+        ArgoToolbarManager.getInstance().registerToolbar(
+                menuBar.getViewToolbar(), menuBar.getViewToolbar(), 2);
+        ArgoToolbarManager.getInstance().registerToolbar(
+                menuBar.getCreateDiagramToolbar(),
+                menuBar.getCreateDiagramToolbar(), 3);
+
+        final JToolBar[] toolbars = new JToolBar[] {menuBar.getFileToolbar(),
+                menuBar.getEditToolbar(), menuBar.getViewToolbar(),
+                menuBar.getCreateDiagramToolbar() };
+        for (JToolBar toolbar : toolbars) {
+            toolbar.addComponentListener(new ComponentAdapter() {
+                public void componentHidden(ComponentEvent e) {
+                    boolean allHidden = true;
+                    for (JToolBar bar : toolbars) {
+                        if (bar.isVisible()) {
+                            allHidden = false;
+                            break;
+                        }
+                    }
+
+                    if (allHidden) {
+                        for (JToolBar bar : toolbars) {
+                            toolbarBoundary.getLayout().removeLayoutComponent(
+                                    bar);
+                        }
+                        toolbarBoundary.getLayout().layoutContainer(
+                                toolbarBoundary);
+                    }
+                }
+
+                public void componentShown(ComponentEvent e) {
+                    JToolBar oneVisible = null;
+                    for (JToolBar bar : toolbars) {
+                        if (bar.isVisible()) {
+                            oneVisible = bar;
+                            break;
+                        }
+                    }
+
+                    if (oneVisible != null) {
+                        toolbarBoundary.add(oneVisible, toolbarPosition);
+                        toolbarBoundary.getLayout().layoutContainer(
+                                toolbarBoundary);
+                    }
+                }
+            });
+        }
+        /**
+         * END registering toolbar
+         */
 
         return toolbarBoundary;
     }

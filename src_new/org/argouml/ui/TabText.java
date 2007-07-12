@@ -35,6 +35,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
+import org.argouml.swingext.ArgoToolbarManager;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.TabModelTarget;
@@ -95,7 +97,11 @@ public class TabText
         if (withToolbar) {
             toolbar = new ToolBar();
             toolbar.setOrientation(SwingConstants.HORIZONTAL);
+            toolbar.setName(Translator.localize(getTitle()));
             add(toolbar, BorderLayout.NORTH);
+
+            ArgoToolbarManager.getInstance().registerToolbar(this.getClass(),
+                    toolbar, 6);
         }
     }
 

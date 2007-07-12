@@ -40,6 +40,7 @@ import javax.swing.KeyStroke;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.UndoEnabler;
+import org.argouml.swingext.ArgoToolbarManager;
 import org.argouml.ui.ActionExportXMI;
 import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionProjectSettings;
@@ -542,6 +543,12 @@ public class GenericArgoMenuBar extends JMenuBar implements
                 ShortcutMgr.ACTION_ADJUST_PAGE_BREAKS);
 
         view.addSeparator();
+        JMenu menuToolbars = ArgoToolbarManager.getInstance().getMenu();
+        menuToolbars.setText(menuLocalize("toolbars"));
+        setMnemonic(menuToolbars, "toolbars");
+        view.add(menuToolbars);
+        view.addSeparator();
+
         JMenuItem showSaved = view.add(new ActionShowXMLDump());
         setMnemonic(showSaved, "Show Saved");
         ShortcutMgr.assignAccelerator(showSaved,
