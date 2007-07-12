@@ -119,13 +119,15 @@ public class ProfileConfiguration extends AbstractProjectMember {
      * @param p the profile to be applied
      */
     public void addProfile(Profile p) {
-	profiles.add(p);
-	profileModels.add(p.getModel());
-	
-	FigNodeStrategy fns = p.getFigureStrategy();
-	if (fns != null) {
-	    figNodeStrategies.add(fns);
-	}
+        if (!profiles.contains(p)) {
+            profiles.add(p);
+            profileModels.add(p.getModel());
+
+            FigNodeStrategy fns = p.getFigureStrategy();
+            if (fns != null) {
+                figNodeStrategies.add(fns);
+            }
+        }
     }
     
     /**

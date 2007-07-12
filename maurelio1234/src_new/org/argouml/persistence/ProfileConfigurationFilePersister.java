@@ -117,13 +117,9 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 		    line = br.readLine().trim();		    
 		} else if (line.equals("<plugin>")) {
 		    String className = br.readLine().trim();
-		    for (int i = 0; i < profiles.size(); ++i) {
-			Profile p = (Profile) profiles.get(i);
-			if (p.getClass().getName().equals(className)) {
-			    profile = p;
-			    break;
-			}
-		    }
+
+                    profile = ProfileManagerImpl.getInstance()
+                            .getProfileForClass(className);
 		    
 		    line = br.readLine().trim();
 		}
@@ -165,6 +161,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 	    throws SaveException {
 	PrintWriter w = new PrintWriter(stream);
 	saveProjectMember(member, w);
+        w.flush();
     }
 
     private void saveProjectMember(ProjectMember member, PrintWriter w)
@@ -181,7 +178,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 		while (it.hasNext()) {
 		    Profile profile = (Profile) it.next();
 
-		    if (profile != pc.getDefaultProfile()) {
+		    if (!pc.getDefaultProfile().equals(profile)) {
 			if (profile instanceof UserDefinedProfile) {
 			    w.println("\t\t<userDefined>");
 			    w.println("\t\t\t"

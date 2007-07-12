@@ -48,5 +48,10 @@ public interface ProfileManager {
     /**
      * @return the list of registered profiles
      */
-    Vector getRegisteredProfiles();    
+    Vector getRegisteredProfiles();
+    
+    /**
+     * @return the profile instance for the class
+     */
+    Profile getProfileForClass(String className);
 }

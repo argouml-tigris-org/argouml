@@ -24,6 +24,7 @@
 
 package org.argouml.uml.profile;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -63,7 +64,9 @@ public class ProfileManagerImpl implements ProfileManager {
      */
     public void registerProfile(Profile p) {
         if (!profiles.contains(p)) {
-            profiles.add(p);
+            if (getProfileForClass(p.getClass().getName()) == null) {
+                profiles.add(p);
+            }
         }
     }
 
@@ -73,6 +76,26 @@ public class ProfileManagerImpl implements ProfileManager {
      */
     public void removeProfile(Profile p) {
 	profiles.remove(p);
+    }
+
+    /**
+     * @param profileClass the profile class
+     * @return the profile object or null if there is no one
+     * @see org.argouml.uml.profile.ProfileManager#getProfileForClass(java.lang.Class)
+     */
+    public Profile getProfileForClass(String profileClass) {
+        Iterator it = profiles.iterator();
+        Profile found = null;
+        
+        while(it.hasNext()) {
+            Profile p = (Profile) it.next();
+            if (p.getClass().getName().equals(profileClass)) {
+                found = p;
+                break;
+            }
+        }
+        
+        return found;
     }
 
 }
