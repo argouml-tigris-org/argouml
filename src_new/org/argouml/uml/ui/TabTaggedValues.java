@@ -90,7 +90,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
     public TabTaggedValues() {
         super("tab.tagged-values");
         buttonPanel = new ToolBar();
-        buttonPanel.setName(Translator.localize(getTitle()));
+        buttonPanel.setName(getTitle());
         ArgoToolbarManager.getInstance().registerToolbar(this.getClass(),
                 buttonPanel, 8);
         buttonPanel.setFloatable(false);

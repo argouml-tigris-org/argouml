@@ -97,7 +97,7 @@ public class TabText
         if (withToolbar) {
             toolbar = new ToolBar();
             toolbar.setOrientation(SwingConstants.HORIZONTAL);
-            toolbar.setName(Translator.localize(getTitle()));
+            toolbar.setName(getTitle());
             add(toolbar, BorderLayout.NORTH);
 
             ArgoToolbarManager.getInstance().registerToolbar(this.getClass(),

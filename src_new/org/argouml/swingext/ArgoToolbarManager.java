@@ -42,10 +42,10 @@ import javax.swing.SwingUtilities;
 
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
+import org.argouml.i18n.Translator;
 
 /**
  * Class that handles toolbars show/hide functionality.
- * 
  * 
  * @author Aleksandar
  */
@@ -154,13 +154,11 @@ public class ArgoToolbarManager {
     /**
      * Registers new toolbar.
      * 
-     * @param key
-     *            Class that is toolbar connected to, or toolbar object itself
-     *            (it there is just one toolbar of that kind in the application.
-     * @param toolbar
-     *            new toolbar to register
-     * @param prefferedMenuPosition
-     *            preffered menu postition, -1 for the last postition
+     * @param key Class that is toolbar connected to, or toolbar object itself
+     *            (if there is just one toolbar of that kind in the application.
+     * @param toolbar new toolbar to register
+     * @param prefferedMenuPosition preffered menu postition, -1 for the last
+     *            postition
      */
     private void registerNew(Object key, JToolBar newToolbar,
             int prefferedMenuPosition) {
@@ -185,13 +183,13 @@ public class ArgoToolbarManager {
         if (wantedMenuItem == null) {
             ToolbarManagerMenuItemAction action = 
                 new ToolbarManagerMenuItemAction(
-                    newToolbar.getName(), key);
-            wantedMenuItem = new JCheckBoxMenuItem(newToolbar.getName(),
-                    newToolbar.isVisible());
+                    Translator.localize(newToolbar.getName()), key);
+            wantedMenuItem = new JCheckBoxMenuItem(Translator
+                    .localize(newToolbar.getName()), newToolbar.isVisible());
             wantedMenuItem.setAction(action);
 
-            JCheckBoxMenuItem menuItem2 = new JCheckBoxMenuItem(newToolbar
-                    .getName(), newToolbar.isVisible());
+            JCheckBoxMenuItem menuItem2 = new JCheckBoxMenuItem(Translator
+                    .localize(newToolbar.getName()), newToolbar.isVisible());
             menuItem2.setAction(action);
 
             getMenu().insert(wantedMenuItem, prefferedMenuPosition);
@@ -240,10 +238,8 @@ public class ArgoToolbarManager {
      * placed on JPanel, when all toolbars are hidden, this panel needs to be
      * hidden, too.
      * 
-     * @param container
-     *            container
-     * @param toolbars
-     *            toolbars in the container
+     * @param container container
+     * @param toolbars toolbars in the container
      */
     public void registerContainer(final JComponent container,
             final JToolBar[] toolbars) {
@@ -287,12 +283,10 @@ public class ArgoToolbarManager {
     /**
      * Registers new toolbar for specific group.
      * 
-     * @param key
-     *            group that toolbar belongs to.
-     * @param newToolbar
-     *            new toolbar to register.
-     * @param prefferedMenuPosition
-     *            preffered menu postition, -1 for the last postition
+     * @param key group that toolbar belongs to.
+     * @param newToolbar new toolbar to register.
+     * @param prefferedMenuPosition preffered menu postition, -1 for the last
+     *            postition
      */
     public void registerToolbar(Object key, JToolBar newToolbar,
             int prefferedMenuPosition) {
@@ -329,11 +323,9 @@ public class ArgoToolbarManager {
      * Gets toolbar visibility status from configuration. If it doesn't exist in
      * configuration it creates new entries in configuration for that toolbar.
      * 
-     * @param toolbarName
-     *            Name of the toolbar to get visibility status
-     * @param currentStatus
-     *            Toolbar current status to write to config file if it doesn't
-     *            exist
+     * @param toolbarName Name of the toolbar to get visibility status
+     * @param currentStatus Toolbar current status to write to config file if it
+     *            doesn't exist
      * @return visibility status
      */
     public boolean getConfiguredToolbarAppearance(String toolbarName,
