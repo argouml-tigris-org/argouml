@@ -294,7 +294,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         JMenu file = new JMenu(menuLocalize("File"));
         add(file);
         setMnemonic(file, "File");
-        fileToolbar = new ToolBar("File Toolbar");
+        fileToolbar = new ToolBar("misc.toolbar.file");
         JMenuItem newItem = file.add(new ActionNew());
         setMnemonic(newItem, "New");
         ShortcutMgr.assignAccelerator(newItem, ShortcutMgr.ACTION_NEW_PROJECT);
@@ -566,7 +566,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
     private void initMenuCreate() {
         createDiagramMenu = add(new JMenu(menuLocalize("Create Diagram")));
         setMnemonic(createDiagramMenu, "Create Diagram");
-        createDiagramToolbar = new ToolBar("Create Diagram Toolbar");
+        createDiagramToolbar = new ToolBar("misc.toolbar.create-diagram");
         JMenuItem usecaseDiagram = createDiagramMenu
                 .add(new ActionUseCaseDiagram());
         setMnemonic(usecaseDiagram, "Usecase Diagram");
@@ -890,7 +890,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
      */
     public JToolBar getEditToolbar() {
         if (editToolbar == null) {
-            editToolbar = new ToolBar("Edit Toolbar");
+            editToolbar = new ToolBar("misc.toolbar.edit");
             // editToolbar.add(ActionCut.getInstance());
             // editToolbar.add(ActionCopy.getInstance());
             // editToolbar.add(ActionPaste.getInstance());
@@ -920,7 +920,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
      */
     public JToolBar getViewToolbar() {
         if (viewToolbar == null) {
-            viewToolbar = new ToolBar("View Toolbar");
+            viewToolbar = new ToolBar("misc.toolbar.view");
             viewToolbar.add(new ActionFind());
             viewToolbar.add(new ZoomSliderButton());
         }

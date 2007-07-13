@@ -227,7 +227,7 @@ public abstract class UMLDiagram
     public JToolBar getJToolBar() {
         if (toolBar == null) {
             initToolBar();
-            toolBar.setName(Translator.localize("misc.toolbar.diagram"));
+            toolBar.setName("misc.toolbar.diagram");
             ArgoToolbarManager.getInstance().registerToolbar(UMLDiagram.class,
                     toolBar, 4);
         }
