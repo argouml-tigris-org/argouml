@@ -31,6 +31,9 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
+import org.argouml.uml.diagram.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.ExtensionsCompartmentContainer;
+import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;

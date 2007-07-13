@@ -32,7 +32,7 @@ import java.awt.Rectangle;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.ui.Clarifier;
-import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.tigris.gef.presentation.Fig;
 
 /**

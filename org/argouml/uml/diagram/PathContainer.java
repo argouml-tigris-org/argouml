@@ -22,30 +22,26 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.uml.diagram;
 
-import java.awt.Rectangle;
 
 /**
- * An interface to be implemented by any Fig that contains
- * a FigOperationsCompartment.
- * @author Bob Tarling
- */
-public interface OperationsCompartmentContainer {
+* An interface to be implemented by any Fig that may or may not
+* show a full path (of which the segments are seperated by ::).
+*
+* @author mvw@tigris.org
+*/
+public interface PathContainer {
     /**
-     * Determine if the operations compartment is visible.
-     * @return true if the operations compartment is visible.
+     * Determine if the path is visible.
+     * @return true if the path is visible.
      */
-    boolean isOperationsVisible();
+    boolean isPathVisible();
 
     /**
-     * Set the visibility of the operations compartment.
-     * @param visible the new visibility status.
+     * Set the visibility of the path.
+     * @param visible the new path status.
      */
-    void setOperationsVisible(boolean visible);
+    void setPathVisible(boolean visible);
 
-    /**
-     * @return The bounds of the operations compartment
-     */
-    Rectangle getOperationsBounds();
 }

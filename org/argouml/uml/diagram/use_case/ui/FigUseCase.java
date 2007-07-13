@@ -48,11 +48,11 @@ import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ExtensionsCompartmentContainer;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
-import org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -432,7 +432,7 @@ public class FigUseCase extends FigNodeModelElement
      * @return  <code>true</code> if the extensionpoints are visible,
      *          <code>false</code> otherwise.
      *
-     * @see org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer#isExtensionPointVisible()
+     * @see org.argouml.uml.diagram.ExtensionsCompartmentContainer#isExtensionPointVisible()
      */
     public boolean isExtensionPointVisible() {
         return epVec.isVisible();
@@ -452,7 +452,7 @@ public class FigUseCase extends FigNodeModelElement
      * @param isVisible  <code>true</code> if the compartment should be shown,
      *                   <code>false</code> otherwise.
      *
-     * @see org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer#setExtensionPointVisible(boolean)
+     * @see org.argouml.uml.diagram.ExtensionsCompartmentContainer#setExtensionPointVisible(boolean)
      */
     public void setExtensionPointVisible(boolean isVisible) {
         if (epVec.isVisible() && (!isVisible)) {

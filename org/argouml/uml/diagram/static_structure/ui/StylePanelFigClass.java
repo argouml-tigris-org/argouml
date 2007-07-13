@@ -31,8 +31,8 @@ import javax.swing.JCheckBox;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.StylePanelFigNodeModelElement;
-import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
-import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
+import org.argouml.uml.diagram.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.OperationsCompartmentContainer;
 
 /**
  * Stylepanel which adds an attributes and operations checkbox and depends on

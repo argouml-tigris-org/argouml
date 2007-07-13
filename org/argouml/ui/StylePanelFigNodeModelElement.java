@@ -35,7 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.diagram.ui.PathContainer;
+import org.argouml.uml.diagram.PathContainer;
 import org.tigris.gef.ui.ColorRenderer;
 
 /**
