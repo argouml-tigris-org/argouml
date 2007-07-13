@@ -82,6 +82,7 @@ import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.IItemUID;
+import org.argouml.uml.diagram.PathContainer;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Diagram;

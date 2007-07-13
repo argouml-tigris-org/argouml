@@ -29,6 +29,9 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.uml.diagram.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.OperationsCompartmentContainer;
+import org.argouml.uml.diagram.PathContainer;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;

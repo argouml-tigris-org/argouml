@@ -22,26 +22,25 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.uml.diagram;
 
 
 /**
 * An interface to be implemented by any Fig that may or may not
-* show visibility (by symbol -, + or #).
-*
+* show a stereotype.
 * @author mvw@tigris.org
 */
-public interface VisibilityContainer {
+public interface StereotypeContainer {
     /**
-     * Determine if the visibility is visible.
-     * @return true if the visibility is visible.
+     * Determine if the stereotype is visible.
+     * @return true if the stereotype is visible.
      */
-    boolean isVisibilityVisible();
+    boolean isStereotypeVisible();
 
     /**
-     * Set the visibility of the visibility.
+     * Set the visibility of the stereotype.
      * @param visible the new visibility status.
      */
-    void setVisibilityVisible(boolean visible);
+    void setStereotypeVisible(boolean visible);
 
 }
