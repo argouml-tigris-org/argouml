@@ -42,6 +42,7 @@ import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.ExtensionsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigEdgePort;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.PathContainer;
 import org.argouml.uml.diagram.ui.StereotypeContainer;
@@ -280,6 +281,14 @@ class PGMLStackParser
             } else if ("extensionPointVisible".equals(name)) {
                 ((ExtensionsCompartmentContainer) fig)
                     .setExtensionPointVisible(value.equalsIgnoreCase("true"));
+            } else if ("stereotypeView".equals(name)) {
+                FigNodeModelElement fnme = (FigNodeModelElement) fig;
+                
+                try {
+                    fnme.setStereotypeView(Integer.parseInt(value));
+                } catch(NumberFormatException nfe) {
+                    fnme.setStereotypeView(FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
+                }
             }
         }
     }

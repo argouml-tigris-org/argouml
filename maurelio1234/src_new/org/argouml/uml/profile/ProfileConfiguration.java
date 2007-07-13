@@ -209,4 +209,11 @@ public class ProfileConfiguration extends AbstractProjectMember {
 	return "";
     }
 
+    /**
+     * @return the "Profile Configuration" string
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return "Profile Configuration";
+    }
 }

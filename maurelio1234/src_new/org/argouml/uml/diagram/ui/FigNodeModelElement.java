@@ -1385,7 +1385,8 @@ public abstract class FigNodeModelElement
         return getClass().getName()
             + "[" + getX() + ", " + getY() + ", "
             + getWidth() + ", " + getHeight() + "]"
-            + "pathVisible=" + isPathVisible() + ";";
+            + "pathVisible=" + isPathVisible() + ";"
+            + "stereotypeView=" + getStereotypeView() + ";";
     }
 
     /**

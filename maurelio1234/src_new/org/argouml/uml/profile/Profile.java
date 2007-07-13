@@ -55,4 +55,11 @@ public abstract class Profile {
      */
     public abstract FigNodeStrategy   getFigureStrategy();
 
+    /**
+     * @return the display name
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return getDisplayName();
+    }
 }

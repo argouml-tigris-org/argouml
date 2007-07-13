@@ -56,6 +56,8 @@ import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.diagram.ui.ActionAddExistingNodes;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
+import org.argouml.uml.profile.Profile;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionAddPackage;
 import org.argouml.uml.ui.ActionClassDiagram;
@@ -92,6 +94,9 @@ public class ExplorerPopup extends JPopupMenu {
     public ExplorerPopup(Object selectedItem, MouseEvent me) {
         super("Explorer popup menu");
 
+        final Project currentProject =
+            ProjectManager.getManager().getCurrentProject();
+
         /* Check if multiple items are selected. */
         boolean multiSelect =
                 TargetManager.getInstance().getTargets().size() > 1;
@@ -99,13 +104,15 @@ public class ExplorerPopup extends JPopupMenu {
         boolean modelElementsOnly = true;
         for (Iterator it = TargetManager.getInstance().getTargets().iterator();
                 it.hasNext() && modelElementsOnly; ) {
-            if (!Model.getFacade().isAUMLElement(it.next())) {
+            Object element = it.next();
+            if (!Model.getFacade().isAUMLElement(element) ||
+                    
+                    // profile elements are NOT model elements
+                    isRelatedToProfiles(currentProject, element)) {
         	modelElementsOnly = false;
             }
         }
 
-        final Project currentProject =
-            ProjectManager.getManager().getCurrentProject();
         final Diagram activeDiagram = currentProject.getActiveDiagram();
 
         // TODO: I've made some attempt to rationalize the conditions here
@@ -126,7 +133,10 @@ public class ExplorerPopup extends JPopupMenu {
         // this.add(action);
         // }
 
-        if (!multiSelect) {
+        if (!multiSelect && 
+                
+                // a profile element is not considered a selection
+                !isRelatedToProfiles(currentProject, selectedItem)) {
             initMenuCreateDiagrams();
             this.add(createDiagrams);
         }
@@ -137,7 +147,10 @@ public class ExplorerPopup extends JPopupMenu {
 
         final Object projectModel = currentProject.getModel();
         final boolean modelElementSelected =
-            Model.getFacade().isAUMLElement(selectedItem);
+            Model.getFacade().isAUMLElement(selectedItem) &&
+            
+            // avoids modifications on profile models
+            !isRelatedToProfiles(currentProject, selectedItem);
 
         if (modelElementSelected) {
             final boolean nAryAssociationSelected =
@@ -253,7 +266,10 @@ public class ExplorerPopup extends JPopupMenu {
             while (iter != null && iter.hasNext()) {
                 Object o = iter.next();
                 if (Model.getFacade().isAClassifier(o)
-                     && !Model.getFacade().isARelationship(o)) {
+                     && !Model.getFacade().isARelationship(o)
+
+                     // avoids modifications on profile models
+                     && !isRelatedToProfiles(currentProject, o)) {
                     classifiers.add(o);
                 }
             }
@@ -273,6 +289,23 @@ public class ExplorerPopup extends JPopupMenu {
             this.add(ad);
         }
 
+    }
+
+    private boolean isRelatedToProfiles(Project currentProject, Object selectedItem) {                
+        boolean found = selectedItem instanceof ProfileConfiguration ||
+                            selectedItem instanceof Profile;
+        
+        Iterator it = currentProject.getProfileConfiguration().getProfileModels().iterator();
+        while(!found && it.hasNext()) {
+            Object model = it.next();
+            
+            if ((Model.getFacade().getModel(selectedItem).equals(model))) {
+                found = true;
+                break;
+            }
+        }
+        
+        return found;
     }
 
     /**
