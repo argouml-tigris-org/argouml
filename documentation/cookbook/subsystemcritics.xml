@@ -211,9 +211,14 @@ You can have multiple calls to this method for different meta-classes.
 After this add a method 
 <command>public boolean predicate2(Object dm, Designer dsgr);</command>.
 This is the decision routine for the critic.
-<parameter>dm</parameter> is the UML entity (a Model subsystem object)
+The parameter
+<parameter>dm</parameter>
+(short for Design Material)
+is the UML entity (a Model subsystem object)
 that is being checked.
-The second argument, <parameter>dsgr</parameter> is for future
+The second argument, <parameter>dsgr</parameter> 
+(short for Designer)
+is for future
 development and can be ignored.
 The <classname>Critic</classname> class conveniently defines
 two boolean constants 
@@ -222,6 +227,7 @@ two boolean constants
 according to whether the object is OK, or triggers the critic.
 </para>
           <para>
+          The parameter
 <parameter>dm</parameter> may be any UML object, 
 so the first action is to see if it is an
 artifact of interest and if not return 
@@ -245,6 +251,7 @@ which will be named respectively
 and
 <constant>critics<replaceable>CrXxxxxYyyyZzzz</replaceable>-desc</constant>.
 There are plenty of examples to look at there.
+Headlines shall be unique, see issue 618.
 The other files 
 for
 British English,
