@@ -130,7 +130,6 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 		new ChangeCommand(editingDomain, run));
 
 	return (Association) run.getParams().get(0);
-
     }
     
     public Association buildAssociation(Object fromClassifier,
@@ -139,7 +138,6 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
 	return buildAssociation(fromClassifier, true, aggregationKind1, null,
 		toClassifier, !unidirectional, aggregationKind2, null, null);
-
     }
 
     public Association buildAssociation(Object classifier1, Object classifier2) {
@@ -209,28 +207,27 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
-    public Object buildClass() {
-        return createClass();
+    public org.eclipse.uml2.uml.Class buildClass() {
+        return uml.createClass();
     }
 
-    public Object buildClass(Object owner) {
+    public org.eclipse.uml2.uml.Class buildClass(Object owner) {
         return buildClass(null, owner);
     }
 
-    public Object buildClass(String name) {
+    public org.eclipse.uml2.uml.Class buildClass(String name) {
         return buildClass(name, null);
     }
 
-    public Object buildClass(String name, Object owner) {
-        org.eclipse.uml2.uml.Class cls =
-                (org.eclipse.uml2.uml.Class) createClass();
-        if (owner != null) {
-            modelImpl.getCoreHelper().addOwnedElement(owner, cls);
-        }
-        if (name != null) {
-            cls.setName(name);
-        }
-        return cls;
+    public org.eclipse.uml2.uml.Class buildClass(final String name,
+	    final Object owner) {
+	org.eclipse.uml2.uml.Class cls = uml.createClass();
+	if (name != null) {
+	    cls.setName(name);
+	}
+	if (owner != null)
+	    modelImpl.getCoreHelper().addOwnedElement(owner, cls);
+	return cls;
     }
 
     public Object buildComment(Object element, Object model) {
@@ -407,7 +404,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Abstraction createAbstraction() {
-        return UMLFactory.eINSTANCE.createAbstraction();
+        return uml.createAbstraction();
     }
 
     public Artifact createArtifact() {
@@ -415,7 +412,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Association createAssociation() {
-        return UMLFactory.eINSTANCE.createAssociation();
+        return uml.createAssociation();
     }
 
     public AssociationClass createAssociationClass() {
@@ -437,7 +434,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public org.eclipse.uml2.uml.Class createClass() {
-        return UMLFactory.eINSTANCE.createClass();
+        return uml.createClass();
     }
 
     public Comment createComment() {
