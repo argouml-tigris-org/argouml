@@ -56,7 +56,9 @@ import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
+import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.TemplateBinding;
 import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
@@ -230,7 +232,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 	return cls;
     }
 
-    public Object buildComment(Object element, Object model) {
+    public Comment buildComment(Object element, Object model) {
         if (model == null) {
             throw new IllegalArgumentException(
                     "A namespace must be supplied."); //$NON-NLS-1$
@@ -258,7 +260,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
-    public Object buildDataType(String name, Object owner) {
+    public DataType buildDataType(String name, Object owner) {
         DataType dt = (DataType) createDataType();
         dt.setName(name);
         modelImpl.getCoreHelper().addOwnedElement(owner, dt);
@@ -275,7 +277,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
-    public Object buildEnumeration(String name, Object owner) {
+    public Enumeration buildEnumeration(String name, Object owner) {
         Enumeration enumer = (Enumeration) createEnumeration();
         enumer.setName(name);
         if (owner != null) {
@@ -284,7 +286,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return enumer;
     }
 
-    public Object buildEnumerationLiteral(String name, Object enumeration) {
+    public EnumerationLiteral buildEnumerationLiteral(String name, Object enumeration) {
         return ((Enumeration) enumeration).createOwnedLiteral(name);
     }
 
@@ -408,7 +410,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Artifact createArtifact() {
-        return UMLFactory.eINSTANCE.createArtifact();
+        return uml.createArtifact();
     }
 
     public Association createAssociation() {
@@ -416,21 +418,21 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public AssociationClass createAssociationClass() {
-        return UMLFactory.eINSTANCE.createAssociationClass();
+        return uml.createAssociationClass();
     }
 
     public Property createAssociationEnd() {
         // TODO: Double check - tfm
-        return UMLFactory.eINSTANCE.createProperty();
+        return uml.createProperty();
     }
 
     public Property createAttribute() {
         // TODO: Double check - tfm
-        return UMLFactory.eINSTANCE.createProperty();
+        return uml.createProperty();
     }
 
-    public Object createBinding() {
-        return UMLFactory.eINSTANCE.createTemplateBinding();
+    public TemplateBinding createBinding() {
+        return uml.createTemplateBinding();
     }
 
     public org.eclipse.uml2.uml.Class createClass() {
@@ -438,7 +440,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Comment createComment() {
-        return UMLFactory.eINSTANCE.createComment();
+        return uml.createComment();
     }
 
     public Object createComponent() {
@@ -447,15 +449,15 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Constraint createConstraint() {
-        return UMLFactory.eINSTANCE.createConstraint();
+        return uml.createConstraint();
     }
 
     public DataType createDataType() {
-        return UMLFactory.eINSTANCE.createDataType();
+        return uml.createDataType();
     }
 
     public Dependency createDependency() {
-        return UMLFactory.eINSTANCE.createDependency();
+        return uml.createDependency();
     }
 
     public Object createElementResidence() {
@@ -464,11 +466,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Enumeration createEnumeration() {
-        return UMLFactory.eINSTANCE.createEnumeration();
+        return uml.createEnumeration();
     }
 
     public EnumerationLiteral createEnumerationLiteral() {
-        return UMLFactory.eINSTANCE.createEnumerationLiteral();
+        return uml.createEnumerationLiteral();
     }
 
     public Object createFlow() {
@@ -477,11 +479,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Generalization createGeneralization() {
-        return UMLFactory.eINSTANCE.createGeneralization();
+        return uml.createGeneralization();
     }
 
     public Interface createInterface() {
-        return UMLFactory.eINSTANCE.createInterface();
+        return uml.createInterface();
     }
 
     public Object createMethod() {
@@ -490,19 +492,19 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Node createNode() {
-        return UMLFactory.eINSTANCE.createNode();
+        return uml.createNode();
     }
 
     public Operation createOperation() {
-        return UMLFactory.eINSTANCE.createOperation();
+        return uml.createOperation();
     }
 
     public Parameter createParameter() {
-        return UMLFactory.eINSTANCE.createParameter();
+        return uml.createParameter();
     }
 
     public PackageImport createPermission() {
-        return UMLFactory.eINSTANCE.createPackageImport();
+        return uml.createPackageImport();
     }
 
     @SuppressWarnings("deprecation")
@@ -510,8 +512,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return createPrimitiveType();
     }
 
-    public Object createPrimitiveType() {
-        return UMLFactory.eINSTANCE.createPrimitiveType();
+    public PrimitiveType createPrimitiveType() {
+        return uml.createPrimitiveType();
     }
     
     @SuppressWarnings("deprecation")
@@ -526,12 +528,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public TemplateParameter createTemplateParameter() {
-        return UMLFactory.eINSTANCE.createTemplateParameter();
+        return uml.createTemplateParameter();
     }
 
     public Usage createUsage() {
-        return UMLFactory.eINSTANCE.createUsage();
+        return uml.createUsage();
     }
-
 
 }
