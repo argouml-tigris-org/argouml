@@ -34,8 +34,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * Well-formedness rule [1] for Namespace. See page 33 of UML 1.1
- * Semantics. OMG document ad/97-08-04.
+ * This critics tests if a ModelElement has a name.
  */
 public class CrMissingClassName extends CrUML {
 
