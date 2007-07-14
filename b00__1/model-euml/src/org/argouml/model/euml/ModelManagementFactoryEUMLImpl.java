@@ -29,6 +29,7 @@ package org.argouml.model.euml;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.ModelManagementFactory;
 import org.argouml.model.NotImplementedException;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Namespace;
@@ -47,7 +48,11 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
      */
     private EUMLModelImplementation modelImpl;
     
-    private Model theRootModel;
+    private EditingDomain editingDomain;
+    
+    private org.eclipse.uml2.uml.Package theRootModel;
+    
+    private UMLFactory uml = UMLFactory.eINSTANCE;
 
     /**
      * Constructor.
@@ -58,16 +63,17 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
     public ModelManagementFactoryEUMLImpl(
             EUMLModelImplementation implementation) {
         modelImpl = implementation;
+        editingDomain = implementation.getEditingDomain();
     }
 
-    public Object buildElementImport(Object pack, Object me) {
+    public ElementImport buildElementImport(Object pack, Object me) {
         ElementImport imp = (ElementImport) createElementImport();
         imp.setImportingNamespace((Namespace) pack);
         imp.setImportedElement((PackageableElement) me);
         return imp;
     }
 
-    public Object buildPackage(String name, String uuid) {
+    public org.eclipse.uml2.uml.Package buildPackage(String name, String uuid) {
         org.eclipse.uml2.uml.Package pkg =
                 (org.eclipse.uml2.uml.Package) createPackage();
         pkg.setName(name);
@@ -80,37 +86,37 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
         return null;
     }
 
-    public Object createElementImport() {
-        return UMLFactory.eINSTANCE.createElementImport();
+    public ElementImport createElementImport() {
+        return uml.createElementImport();
     }
 
-    public Object createModel() {
-        return UMLFactory.eINSTANCE.createModel();
+    public Model createModel() {
+        return uml.createModel();
     }
 
-    public Object createPackage() {
-        return UMLFactory.eINSTANCE.createPackage();
+    public org.eclipse.uml2.uml.Package createPackage() {
+        return uml.createPackage();
     }
 
+    @Deprecated
     public Object createSubsystem() {
-        // TODO: Removed from UML 2?
+        // Removed from UML 2
         throw new NotImplementedException();
     }
 
     // TODO: get/setRootModel aren't specific to the Model implementation
     // they could probably be moved elsewhere - tfm - 20070530
     public void setRootModel(Object rootModel) {
-        if (rootModel != null && !(rootModel instanceof Model)) {
-            throw new IllegalArgumentException(
-                    "The rootModel supplied must be a Model. Got a "
-                            + rootModel.getClass().getName());
-        }
-        theRootModel = (Model) rootModel;
+	if (rootModel != null && !(rootModel instanceof org.eclipse.uml2.uml.Package)) {
+	    throw new IllegalArgumentException(
+		    "The rootModel supplied must be a Package. Got a "
+			    + rootModel.getClass().getName());
+	}
+	theRootModel = (org.eclipse.uml2.uml.Package) rootModel;
     }
 
-    public Object getRootModel() {
+    public org.eclipse.uml2.uml.Package getRootModel() {
         return theRootModel;
     }
-
 
 }
