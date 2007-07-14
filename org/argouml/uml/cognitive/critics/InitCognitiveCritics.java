@@ -317,6 +317,7 @@ public class InitCognitiveCritics implements InitSubsystem {
 	Agency.register(crNavFromInterface, assocCls);
 	Agency.register(crNameConflictAC, assocClassCls);
 	Agency.register(clsNaming, classCls);
+        Agency.register(clsNaming, interfaceCls);
 	Agency.register(clsNaming, actorCls);
 	Agency.register(clsNaming, useCaseCls);
 
