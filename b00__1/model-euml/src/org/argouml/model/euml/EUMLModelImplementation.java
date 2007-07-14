@@ -211,11 +211,12 @@ public class EUMLModelImplementation implements ModelImplementation {
     private void initializeEditingDomain() {
 	// If the eUML.resources system property is defined then we are in a
 	// stand alone application, else we're in an Eclipse plug in.
-	// The eUML.resource should contain the path to the org.eclipse.uml2.uml.resource jar plugin.
+	// The eUML.resource should contain the path to the
+	// org.eclipse.uml2.uml.resource jar plugin.
 	String path = System.getProperty("eUML.resources"); //$NON-NLS-1$
 
 	ComposedAdapterFactory adapterFactory = null;
-	
+
 	BasicCommandStack commandStack = new BasicCommandStack() {
 
 	    @Override
@@ -226,7 +227,7 @@ public class EUMLModelImplementation implements ModelImplementation {
 	    }
 
 	};
-	
+
 	commandStack.addCommandStackListener(new CommandStackListener() {
 
 	    public void commandStackChanged(final EventObject event) {
@@ -249,42 +250,49 @@ public class EUMLModelImplementation implements ModelImplementation {
 	    factories.add(new UMLReflectiveItemProviderAdapterFactory());
 	    adapterFactory = new ComposedAdapterFactory(factories);
 	}
-	
+
 	editingDomain = new UML2AdapterFactoryEditingDomain(adapterFactory,
 		commandStack);
-	
+
 	ResourceSet resourceSet = editingDomain.getResourceSet();
-	Map<String, Object> extensionToFactoryMap = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
+	Map<String, Object> extensionToFactoryMap = resourceSet
+		.getResourceFactoryRegistry().getExtensionToFactoryMap();
 	Map<URI, URI> uriMap = resourceSet.getURIConverter().getURIMap();
 
-	
 	if (path != null) {
 	    try {
 		FileInputStream in = new FileInputStream(path);
 		in.close();
 	    } catch (IOException e) {
-		throw(new RuntimeException(e));
+		throw (new RuntimeException(e));
 	    }
-	    
+
 	    path = path.replace('\\', '/');
 	    if (Character.isLetter(path.charAt(0))) {
 		path = '/' + path;
 	    }
 	    URI uri = URI.createURI("jar:file:" + path + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
 	    LOG.debug("eUML.resource URI --> " + uri); //$NON-NLS-1$
-	    
-	    resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-	    extensionToFactoryMap.put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
-	    uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri.appendSegment("libraries").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
-	    uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri.appendSegment("metamodels").appendSegment(""));  //$NON-NLS-1$//$NON-NLS-2$
-	    uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uri.appendSegment("profiles").appendSegment(""));  //$NON-NLS-1$//$NON-NLS-2$
+
+	    resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI,
+		    UMLPackage.eINSTANCE);
+	    extensionToFactoryMap.put(UMLResource.FILE_EXTENSION,
+		    UMLResource.Factory.INSTANCE);
+	    uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri
+		    .appendSegment("libraries").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
+	    uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri
+		    .appendSegment("metamodels").appendSegment("")); //$NON-NLS-1$//$NON-NLS-2$
+	    uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uri
+		    .appendSegment("profiles").appendSegment("")); //$NON-NLS-1$//$NON-NLS-2$
 	}
 
-	extensionToFactoryMap.put(UML22UMLResource.FILE_EXTENSION, UML22UMLResource.Factory.INSTANCE);
-	extensionToFactoryMap.put(XMI2UMLResource.FILE_EXTENSION, XMI2UMLResource.Factory.INSTANCE);
+	extensionToFactoryMap.put(UML22UMLResource.FILE_EXTENSION,
+		UML22UMLResource.Factory.INSTANCE);
+	extensionToFactoryMap.put(XMI2UMLResource.FILE_EXTENSION,
+		XMI2UMLResource.Factory.INSTANCE);
 	uriMap.putAll(UML22UMLExtendedMetaData.getURIMap());
 	uriMap.putAll(XMI2UMLExtendedMetaData.getURIMap());
-	
+
     }
     
     /**
@@ -321,7 +329,6 @@ public class EUMLModelImplementation implements ModelImplementation {
         if (theChangeableKind == null) {
             theChangeableKind = new ChangeableKindEUMLImpl();
         }
-
         return theChangeableKind;
     }
 
@@ -415,7 +422,6 @@ public class EUMLModelImplementation implements ModelImplementation {
             theExtensionMechanismsHelper =
                     new ExtensionMechanismsHelperEUMLImpl(this);
         }
-
         return theExtensionMechanismsHelper;
     }
 
@@ -423,7 +429,6 @@ public class EUMLModelImplementation implements ModelImplementation {
         if (theFacade == null) {
             theFacade = new FacadeEUMLImpl(this);
         }
-
         return theFacade;
     }
 
@@ -460,7 +465,6 @@ public class EUMLModelImplementation implements ModelImplementation {
         if (theOrderingKind == null) {
             theOrderingKind = new OrderingKindEUMLImpl();
         }
-
         return theOrderingKind;
     }
 
@@ -526,7 +530,6 @@ public class EUMLModelImplementation implements ModelImplementation {
         if (theVisibilityKind == null) {
             theVisibilityKind = new VisibilityKindEUMLImpl();
         }
-
         return theVisibilityKind;
     }
 
@@ -548,7 +551,5 @@ public class EUMLModelImplementation implements ModelImplementation {
         // TODO Auto-generated method stub
         return null;
     }
-
-
 
 }
