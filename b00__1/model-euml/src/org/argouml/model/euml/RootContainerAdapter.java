@@ -45,6 +45,27 @@ public class RootContainerAdapter extends EContentAdapter {
     
     private Notifier rootContainer;
     
+    private ModelEventPumpEUMLImpl pump;
+    
+    private boolean deliverEvents = true;
+    
+    /**
+     * Constructor
+     * @param pump The ModelEventPump instance
+     */
+    public RootContainerAdapter(ModelEventPumpEUMLImpl pump) {
+	super();
+	this.pump = pump;
+    }
+    
+    /**
+     * Stop or start the firing of events.
+     * @param value True for delivering events, false otherwise
+     */
+    public void setDeliverEvents(boolean value) {
+	deliverEvents = value;
+    }
+    
     /**
      * Setter for the root container
      * @param n the new root container
@@ -90,6 +111,9 @@ public class RootContainerAdapter extends EContentAdapter {
     @Override
     public void notifyChanged(Notification notification) {
 	super.notifyChanged(notification);
+	if (deliverEvents) {
+	    pump.notifyChanged(notification);
+	}
     }
 
 }

@@ -29,6 +29,7 @@ package org.argouml.model.euml;
 import java.beans.PropertyChangeListener;
 
 import org.argouml.model.ModelEventPump;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 
 /**
@@ -43,7 +44,7 @@ class ModelEventPumpEUMLImpl implements ModelEventPump {
     
     private Notifier rootContainer;
     
-    private RootContainerAdapter rootContainerAdapter;
+    private RootContainerAdapter rootContainerAdapter = new RootContainerAdapter(this);
 
     /**
      * Constructor.
@@ -56,9 +57,6 @@ class ModelEventPumpEUMLImpl implements ModelEventPump {
     }
     
     public void setRootContainer(Notifier container) {
-	if (rootContainerAdapter == null) {
-	    rootContainerAdapter = new RootContainerAdapter();
-	}
 	rootContainerAdapter.setRootContainer(container);
     }
 
@@ -126,15 +124,17 @@ class ModelEventPumpEUMLImpl implements ModelEventPump {
         // TODO Auto-generated method stub
 
     }
+    
+    public void notifyChanged(Notification notification) {
+	
+    }
 
     public void startPumpingEvents() {
-        // TODO Auto-generated method stub
-
+	rootContainerAdapter.setDeliverEvents(true);
     }
 
     public void stopPumpingEvents() {
-        // TODO Auto-generated method stub
-
+	rootContainerAdapter.setDeliverEvents(false);
     }
 
 }
