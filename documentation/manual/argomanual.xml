@@ -16902,12 +16902,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <sect2 id="critics.CrTooManyClasses">
 
-          <title>Reduce Classes in diagram &lt;diagram&gt;</title>
+          <title>Reduce Classes in namespace &lt;namespace&gt;</title>
 
-          <para>Suggestion to improve readability by having fewer 
-          classes on a diagram. If one class diagram has too many 
-          classes it may become very difficult for humans to 
-          understand. Defining an understandable set of class diagrams 
+          <para>Suggestion to improve understandability by having fewer 
+          classes in one namespace. If one namespace 
+          (such as the model, a package, or a class) 
+          has too many classes
+          it may become very difficult for humans to 
+          understand. Defining an understandable set of
+          namespaces 
           is an important part of your design.</para>
           
           <para>The Wizard of this critic allows setting of the treshold, 
