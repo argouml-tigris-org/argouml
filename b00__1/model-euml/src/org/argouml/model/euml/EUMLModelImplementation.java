@@ -243,12 +243,13 @@ public class EUMLModelImplementation implements ModelImplementation {
 	});
 
 	if (path == null) {
-	    List<AdapterFactory> factories = new ArrayList<AdapterFactory>();
-	    factories.add(new UMLResourceItemProviderAdapterFactory());
-	    factories.add(new UMLItemProviderAdapterFactory());
-	    factories.add(new EcoreItemProviderAdapterFactory());
-	    factories.add(new UMLReflectiveItemProviderAdapterFactory());
-	    adapterFactory = new ComposedAdapterFactory(factories);
+	    // TODO: figure out how to use the ItemProviders - delayed until the ArgoEclipse version will be out 
+//	    List<AdapterFactory> factories = new ArrayList<AdapterFactory>();
+//	    factories.add(new UMLResourceItemProviderAdapterFactory());
+//	    factories.add(new UMLItemProviderAdapterFactory());
+//	    factories.add(new EcoreItemProviderAdapterFactory());
+//	    factories.add(new UMLReflectiveItemProviderAdapterFactory());
+//	    adapterFactory = new ComposedAdapterFactory(factories);
 	}
 
 	editingDomain = new UML2AdapterFactoryEditingDomain(adapterFactory,
