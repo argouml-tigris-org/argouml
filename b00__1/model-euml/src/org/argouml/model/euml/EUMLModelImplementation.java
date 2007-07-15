@@ -200,6 +200,40 @@ public class EUMLModelImplementation implements ModelImplementation {
     }
     
     /**
+     * Verifies if the editing domain can undo the last changes in the UML model 
+     * @return true if undo is possible, false otherwise
+     */
+    public boolean canUndo() {
+	return editingDomain.getCommandStack().canUndo();
+    }
+    
+    /**
+     * Verifies if the editing domain can redo the last undone command 
+     * @return true if redo is possible, false otherwise
+     */
+    public boolean canRedo() {
+	return editingDomain.getCommandStack().canRedo();
+    }
+
+    /**
+     * Undo the last command
+     * <p>
+     * If {@link #canUndo()} returns false, nothing will happen
+     */
+    public void undo() {
+	editingDomain.getCommandStack().undo();
+    }
+    
+    /**
+     * Redo the last command
+     * <p>
+     * If {@link #canRedo()} returns false, nothing will happen
+     */
+    public void redo() {
+	editingDomain.getCommandStack().redo();
+    }
+    
+    /**
      * This sets up the editing domain for the model editor.
      */
     private void initializeEditingDomain() {
