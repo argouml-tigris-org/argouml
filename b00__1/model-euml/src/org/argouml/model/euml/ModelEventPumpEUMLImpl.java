@@ -27,16 +27,69 @@
 package org.argouml.model.euml;
 
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import org.argouml.model.ModelEventPump;
+import org.argouml.model.AbstractModelEventPump;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * The implementation of the ModelEventPump for EUML2.
  */
-class ModelEventPumpEUMLImpl implements ModelEventPump {
+class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
+    /**
+     * A listener attached to a UML element
+     */
+    class Listener {
+	
+	private PropertyChangeListener listener;
+	
+	private Set<String> props;
+	
+	Listener(PropertyChangeListener listener, String[] properties) {
+	    this.listener = listener;
+	    if (properties != null) {
+		props = null;
+		addProperties(properties);
+	    }
+	}
+	
+	void addProperties(String[] properties) {
+	    if (properties == null) {
+		return;
+	    }
+	    if (props == null) {
+		props = new HashSet<String>();
+	    }
+	    for (String s : properties) {
+		props.add(s);
+	    }
+	}
+	
+	void removeProperties(String[] properties) {
+	    for (String s : properties) {
+		props.remove(s);
+	    }
+	}
+	
+	PropertyChangeListener getListener() {
+	    return listener;
+	}
+	
+	Set<String> getProperties() {
+	    return props;
+	}
+	
+    }
+    
     /**
      * The model implementation.
      */
@@ -45,6 +98,8 @@ class ModelEventPumpEUMLImpl implements ModelEventPump {
     private Notifier rootContainer;
     
     private RootContainerAdapter rootContainerAdapter = new RootContainerAdapter(this);
+    
+    private Map<Object,List<Listener>> register = new HashMap<Object,List<Listener>>();
 
     /**
      * Constructor.
@@ -66,32 +121,44 @@ class ModelEventPumpEUMLImpl implements ModelEventPump {
 
     public void addClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void addClassModelEventListener(PropertyChangeListener listener,
-            Object modelClass, String propertyName) {
-        // TODO Auto-generated method stub
-
+	registerListener(modelClass, listener, propertyNames);
     }
 
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void addModelEventListener(PropertyChangeListener listener,
-            Object modelelement, String propertyName) {
-        // TODO Auto-generated method stub
-
+	registerListener(modelelement, listener, propertyNames);
     }
 
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
-        // TODO Auto-generated method stub
-
+	registerListener(modelelement, listener, null);
+    }
+    
+    private void registerListener(Object notifier,
+	    PropertyChangeListener listener, String[] propertyNames) {
+	if (notifier == null || listener == null) {
+	    throw new NullPointerException();
+	}
+	if (!(notifier instanceof EObject || notifier instanceof Class)) {
+	    throw new IllegalArgumentException();
+	}
+	List<Listener> array = register.get(notifier);
+	boolean put = false;
+	if (array == null) {
+	    put = true;
+	    array = new ArrayList<Listener>();
+	}
+	int i = array.indexOf(listener);
+	if (i != -1) {
+	    // TODO: Do we really want to add new properties to the already
+	    // registered listener or we want to replace the old properties
+	    array.get(i).addProperties(propertyNames);
+	} else {
+	    array.add(new Listener(listener, propertyNames));
+	}
+	if (put) {
+	    register.put(notifier, array);
+	}
     }
 
     public void flushModelEvents() {
@@ -101,32 +168,39 @@ class ModelEventPumpEUMLImpl implements ModelEventPump {
 
     public void removeClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void removeClassModelEventListener(PropertyChangeListener listener,
-            Object modelClass, String propertyName) {
-        // TODO Auto-generated method stub
-
+	unregisterListener(modelClass, listener, propertyNames);
     }
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void removeModelEventListener(PropertyChangeListener listener,
-            Object modelelement, String propertyName) {
-        // TODO Auto-generated method stub
-
+	unregisterListener(modelelement, listener, propertyNames);
     }
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
-        // TODO Auto-generated method stub
-
+	unregisterListener(modelelement, listener, null);
+    }
+    
+    private void unregisterListener(Object notifier, PropertyChangeListener listener, String[] propertyNames) {
+	if (notifier == null || listener == null) {
+	    throw new NullPointerException();
+	}
+	if (!(notifier instanceof EObject || notifier instanceof EClass)) {
+	    throw new IllegalArgumentException();
+	}
+	List<Listener> array = register.get(notifier);
+	if (array == null) {
+	    return;
+	}
+	int i = array.indexOf(listener);
+	if (i == -1) {
+	    return;
+	}
+	if (propertyNames == null) {
+	    array.remove(i);
+	} else {
+	    array.get(i).removeProperties(propertyNames);
+	}
     }
     
     /**
@@ -144,5 +218,5 @@ class ModelEventPumpEUMLImpl implements ModelEventPump {
     public void stopPumpingEvents() {
 	rootContainerAdapter.setDeliverEvents(false);
     }
-
+    
 }
