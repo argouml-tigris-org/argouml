@@ -287,7 +287,6 @@ public class EUMLModelImplementation implements ModelImplementation {
 		XMI2UMLResource.Factory.INSTANCE);
 	uriMap.putAll(UML22UMLExtendedMetaData.getURIMap());
 	uriMap.putAll(XMI2UMLExtendedMetaData.getURIMap());
-
     }
     
     /**

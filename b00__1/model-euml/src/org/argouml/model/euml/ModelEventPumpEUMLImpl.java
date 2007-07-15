@@ -56,6 +56,10 @@ class ModelEventPumpEUMLImpl implements ModelEventPump {
         modelImpl = implementation;
     }
     
+    /**
+     * Setter for the root container
+     * @param container
+     */
     public void setRootContainer(Notifier container) {
 	rootContainerAdapter.setRootContainer(container);
     }
@@ -125,6 +129,10 @@ class ModelEventPumpEUMLImpl implements ModelEventPump {
 
     }
     
+    /**
+     * @see org.eclipse.emf.common.notify.Adapter#notifyChanged(Notification)
+     * @param notification The notification event
+     */
     public void notifyChanged(Notification notification) {
 	
     }
