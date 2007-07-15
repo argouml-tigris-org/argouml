@@ -29,6 +29,7 @@ package org.argouml.model.euml;
 import java.beans.PropertyChangeListener;
 
 import org.argouml.model.ModelEventPump;
+import org.eclipse.emf.common.notify.Notifier;
 
 /**
  * The implementation of the ModelEventPump for EUML2.
@@ -39,6 +40,10 @@ class ModelEventPumpEUMLImpl implements ModelEventPump {
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
+    
+    private Notifier rootContainer;
+    
+    private RootContainerAdapter rootContainerAdapter;
 
     /**
      * Constructor.
@@ -48,6 +53,13 @@ class ModelEventPumpEUMLImpl implements ModelEventPump {
      */
     public ModelEventPumpEUMLImpl(EUMLModelImplementation implementation) {
         modelImpl = implementation;
+    }
+    
+    public void setRootContainer(Notifier container) {
+	if (rootContainerAdapter == null) {
+	    rootContainerAdapter = new RootContainerAdapter();
+	}
+	rootContainerAdapter.setRootContainer(container);
     }
 
     public void addClassModelEventListener(PropertyChangeListener listener,

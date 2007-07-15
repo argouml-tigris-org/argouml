@@ -113,6 +113,7 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
 			    + rootModel.getClass().getName());
 	}
 	theRootModel = (org.eclipse.uml2.uml.Package) rootModel;
+	modelImpl.getModelEventPump().setRootContainer(theRootModel);
     }
 
     public org.eclipse.uml2.uml.Package getRootModel() {

@@ -165,7 +165,7 @@ public class EUMLModelImplementation implements ModelImplementation {
 
     private MetaTypes theMetaTypes;
 
-    private ModelEventPump theModelEventPump;
+    private ModelEventPumpEUMLImpl theModelEventPump;
 
     private ModelManagementFactory theModelManagementFactory;
 
@@ -440,7 +440,7 @@ public class EUMLModelImplementation implements ModelImplementation {
         return theMetaTypes;
     }
 
-    public ModelEventPump getModelEventPump() {
+    public ModelEventPumpEUMLImpl getModelEventPump() {
         if (theModelEventPump == null) {
             theModelEventPump = new ModelEventPumpEUMLImpl(this);
         }
