@@ -91,8 +91,6 @@ public class TabTaggedValues extends AbstractArgoJPanel
         super("tab.tagged-values");
         buttonPanel = new ToolBar();
         buttonPanel.setName(getTitle());
-        ArgoToolbarManager.getInstance().registerToolbar(this.getClass(),
-                buttonPanel, 8);
         buttonPanel.setFloatable(false);
 
         JButton b = new JButton();
