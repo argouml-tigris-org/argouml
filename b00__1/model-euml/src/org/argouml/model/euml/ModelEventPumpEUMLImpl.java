@@ -30,6 +30,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -97,7 +98,11 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     
     private RootContainerAdapter rootContainerAdapter = new RootContainerAdapter(this);
     
-    private Map<Object,List<Listener>> register = new HashMap<Object,List<Listener>>();
+    // Access should be fast
+    private Map<Object,List<Listener>> registerForElement = new HashMap<Object,List<Listener>>();
+    
+    // Iteration should be fast
+    private Map<Object,List<Listener>> registerForClass = new LinkedHashMap<Object,List<Listener>>();
 
     /**
      * Constructor.
@@ -119,21 +124,22 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void addClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
-	registerListener(modelClass, listener, propertyNames);
+	registerListener(modelClass, listener, propertyNames, registerForClass);
     }
 
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-	registerListener(modelelement, listener, propertyNames);
+	registerListener(modelelement, listener, propertyNames, registerForElement);
     }
 
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
-	registerListener(modelelement, listener, null);
+	registerListener(modelelement, listener, null, registerForElement);
     }
     
     private void registerListener(Object notifier,
-	    PropertyChangeListener listener, String[] propertyNames) {
+	    PropertyChangeListener listener, String[] propertyNames,
+	    Map<Object, List<Listener>> register) {
 	if (notifier == null || listener == null) {
 	    throw new NullPointerException();
 	}
@@ -167,24 +173,27 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void removeClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
-	unregisterListener(modelClass, listener, propertyNames);
+	unregisterListener(modelClass, listener, propertyNames, registerForClass);
     }
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-	unregisterListener(modelelement, listener, propertyNames);
+	unregisterListener(modelelement, listener, propertyNames, registerForElement);
     }
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
-	unregisterListener(modelelement, listener, null);
+	unregisterListener(modelelement, listener, null, registerForElement);
     }
     
-    private void unregisterListener(Object notifier, PropertyChangeListener listener, String[] propertyNames) {
+    private void unregisterListener(Object notifier,
+	    PropertyChangeListener listener, String[] propertyNames,
+	    Map<Object, List<Listener>> register) {
 	if (notifier == null || listener == null) {
 	    throw new NullPointerException();
 	}
-	if (!(notifier instanceof EObject || notifier instanceof EClass)) {
+	if (!(notifier instanceof EObject || (notifier instanceof Class && EObject.class
+		.isAssignableFrom((Class) notifier)))) {
 	    throw new IllegalArgumentException();
 	}
 	List<Listener> array = register.get(notifier);
@@ -207,7 +216,26 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      * @param notification The notification event
      */
     public void notifyChanged(Notification notification) {
+	Object notifier = notification.getNotifier();
+	List<Listener> array = registerForElement.get(notifier);
+	if (array != null) {
+	    for (Listener l : array) {
+		// TODO: test the propery names
+		// TODO: notify listeners
+	    }
+	}
 	
+	for (Object o : registerForClass.keySet()) {
+	    if (o instanceof Class) {
+		Class type = (Class) o;
+		if (type.isAssignableFrom(notifier.getClass())) {
+		    for (Listener l : registerForClass.get(o)) {
+			// TODO: test the propery names
+			// TODO: notify listeners
+		    }
+		}
+	    }
+	}
     }
 
     public void startPumpingEvents() {
