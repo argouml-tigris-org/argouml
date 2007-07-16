@@ -86,7 +86,7 @@ class XmiReaderEUMLImpl implements XmiReader {
 	    resource.unload();
 	}
 	
-	// Dummy resource
+	// Dummy URI
 	Resource r = editingDomain.createResource("foo.xmi"); //$NON-NLS-1$
 	try {
 	    r.load(inputSource.getByteStream(), null);
