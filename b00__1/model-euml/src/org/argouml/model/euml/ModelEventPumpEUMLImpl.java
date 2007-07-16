@@ -95,8 +95,6 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      */
     private EUMLModelImplementation modelImpl;
     
-    private Notifier rootContainer;
-    
     private RootContainerAdapter rootContainerAdapter = new RootContainerAdapter(this);
     
     private Map<Object,List<Listener>> register = new HashMap<Object,List<Listener>>();
@@ -139,7 +137,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 	if (notifier == null || listener == null) {
 	    throw new NullPointerException();
 	}
-	if (!(notifier instanceof EObject || notifier instanceof Class)) {
+	if (!(notifier instanceof EObject || (notifier instanceof Class && EObject.class
+		.isAssignableFrom((Class) notifier)))) {
 	    throw new IllegalArgumentException();
 	}
 	List<Listener> array = register.get(notifier);
