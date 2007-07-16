@@ -99,8 +99,6 @@ public class TabToDo extends AbstractArgoJPanel
         factory.setOrientation(SwingConstants.VERTICAL);
         JToolBar toolBar = factory.createToolBar();
         toolBar.setName(getTitle());
-        ArgoToolbarManager.getInstance().registerToolbar(this.getClass(),
-                toolBar, 9);
         add(toolBar, BorderLayout.WEST);
 
         splitPane = new BorderSplitPane();

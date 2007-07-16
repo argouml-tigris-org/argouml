@@ -99,9 +99,6 @@ public class TabText
             toolbar.setOrientation(SwingConstants.HORIZONTAL);
             toolbar.setName(getTitle());
             add(toolbar, BorderLayout.NORTH);
-
-            ArgoToolbarManager.getInstance().registerToolbar(this.getClass(),
-                    toolbar, 6);
         }
     }
 

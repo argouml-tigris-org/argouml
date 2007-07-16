@@ -206,8 +206,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         factory.setFloatable(false);
         JToolBar toolBar = factory.createToolBar();
         toolBar.setName("misc.toolbar.properties");
-        ArgoToolbarManager.getInstance().registerToolbar(PropPanel.class,
-                toolBar, 5);
 
 	buttonPanel.removeAll();
         buttonPanel.add(BorderLayout.WEST, toolBar);

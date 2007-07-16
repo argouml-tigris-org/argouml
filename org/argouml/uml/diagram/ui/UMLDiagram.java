@@ -228,8 +228,6 @@ public abstract class UMLDiagram
         if (toolBar == null) {
             initToolBar();
             toolBar.setName("misc.toolbar.diagram");
-            ArgoToolbarManager.getInstance().registerToolbar(UMLDiagram.class,
-                    toolBar, 4);
         }
         return toolBar;
     }

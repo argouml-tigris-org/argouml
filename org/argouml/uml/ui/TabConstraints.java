@@ -97,8 +97,6 @@ public class TabConstraints extends AbstractArgoJPanel
         setToolbarRollover(true);
         setToolbarFloatable(false);
         getOclToolbar().setName("misc.toolbar.constraints");
-        ArgoToolbarManager.getInstance().registerToolbar(this.getClass(),
-                getOclToolbar(), 7);
 
         add(mOcleEditor);
         

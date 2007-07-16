@@ -176,7 +176,7 @@ public class ArgoToolbarManager {
         // If there is persistant state for this toolbar, respect it,
         // or add it to persistance data
         boolean visibility = getConfiguredToolbarAppearance(newToolbar
-                .getName(), newToolbar.isVisible());
+                .getName());
         newToolbar.setVisible(visibility);
 
         // Create new menu item if it doesn't exist for this class.
@@ -321,23 +321,16 @@ public class ArgoToolbarManager {
 
     /**
      * Gets toolbar visibility status from configuration. If it doesn't exist in
-     * configuration it creates new entries in configuration for that toolbar.
+     * configuration it does NOT create new entries in configuration for that
+     * toolbar.
      * 
      * @param toolbarName Name of the toolbar to get visibility status
-     * @param currentStatus Toolbar current status to write to config file if it
-     *            doesn't exist
      * @return visibility status
      */
-    public boolean getConfiguredToolbarAppearance(String toolbarName,
-            Boolean currentStatus) {
+    public boolean getConfiguredToolbarAppearance(String toolbarName) {
         ConfigurationKey key = Configuration.makeKey("toolbars", toolbarName);
         String visibilityAsString = Configuration.getString(key);
 
-        if (visibilityAsString.equals("")) {
-            visibilityAsString = currentStatus.toString();
-            Configuration.setString(key, visibilityAsString);
-        }
-
-        return (visibilityAsString.equals("true")) ? true : false;
+        return (visibilityAsString.equals("false")) ? false : true;
     }
 }
