@@ -87,6 +87,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -305,6 +306,8 @@ public class EUMLModelImplementation implements ModelImplementation {
 
 	    resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI,
 		    UMLPackage.eINSTANCE);
+	    resourceSet.getPackageRegistry().put(EcorePackage.eNS_URI,
+		    EcorePackage.eINSTANCE);
 	    extensionToFactoryMap.put(UMLResource.FILE_EXTENSION,
 		    UMLResource.Factory.INSTANCE);
 	    uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri
