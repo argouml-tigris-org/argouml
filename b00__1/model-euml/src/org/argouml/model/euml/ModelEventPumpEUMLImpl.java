@@ -38,7 +38,6 @@ import java.util.Set;
 import org.argouml.model.AbstractModelEventPump;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -215,13 +214,13 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      * @see org.eclipse.emf.common.notify.Adapter#notifyChanged(Notification)
      * @param notification The notification event
      */
+    @SuppressWarnings("unchecked")
     public void notifyChanged(Notification notification) {
 	Object notifier = notification.getNotifier();
 	List<Listener> array = registerForElement.get(notifier);
 	if (array != null) {
 	    for (Listener l : array) {
-		// TODO: test the propery names
-		// TODO: notify listeners
+		fireNotification(notification, l);
 	    }
 	}
 	
@@ -230,12 +229,15 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 		Class type = (Class) o;
 		if (type.isAssignableFrom(notifier.getClass())) {
 		    for (Listener l : registerForClass.get(o)) {
-			// TODO: test the propery names
-			// TODO: notify listeners
+			fireNotification(notification, l);
 		    }
 		}
 	    }
 	}
+    }
+    
+    private void fireNotification(Notification n, Listener l) {
+	// TODO: verify the property names && fire the notification
     }
 
     public void startPumpingEvents() {
