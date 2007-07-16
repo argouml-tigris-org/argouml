@@ -34,12 +34,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.VetoableChangeListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -49,23 +43,17 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.text.Document;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.Agency;
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
@@ -77,8 +65,7 @@ import org.tigris.swidgets.BorderSplitPane;
  * Dialog box to list all critics and allow editing of some of their
  * properties. <p>
  *
- * TODO: knowledge type, supported goals,
- * supported decisions, critic network.
+ * TODO: supported goals, critic network.
  */
 public class CriticBrowserDialog extends ArgoDialog
     implements ActionListener,
@@ -91,11 +78,6 @@ public class CriticBrowserDialog extends ArgoDialog
 	Logger.getLogger(CriticBrowserDialog.class);
 
     private static int numCriticBrowser = 0;
-
-    ////////////////////////////////////////////////////////////////
-    // constants
-    private static final String DESC_WIDTH_TEXT =
-	"This is Sample Text for determining Column Width";
 
     private static final int NUM_COLUMNS = 25;
 
@@ -139,8 +121,8 @@ public class CriticBrowserDialog extends ArgoDialog
     private JLabel clarifierLabel = new JLabel(
             Translator.localize("dialog.browse.label.use-clarifier"));
 
-    private TableModelCritics tableModel  = new TableModelCritics();
-    private JTable table        = new JTable();
+    private TableCritics table;
+
     private JTextField className = new JTextField("", NUM_COLUMNS);
     private JTextField headline = new JTextField("", NUM_COLUMNS);
     private JComboBox priority  = new JComboBox(PRIORITIES);
@@ -156,10 +138,11 @@ public class CriticBrowserDialog extends ArgoDialog
             Translator.localize("dialog.browse.button.edit-network"));
     private JButton goButton      = new JButton(
             Translator.localize("dialog.browse.button.go"));
+    private JButton advancedButton  = new JButton(
+            Translator.localize("dialog.browse.button.advanced"));
 
     private Critic target;
 
-    private List<Critic>   critics;
 
     /**
      * The constructor.
@@ -173,43 +156,16 @@ public class CriticBrowserDialog extends ArgoDialog
        
 	// Critics Table
 	JPanel tablePanel = new JPanel(new BorderLayout(5, 5));
-
-	critics = new ArrayList<Critic>(Agency.getCriticList());
-	Collections.sort(critics, new Comparator<Critic>() {
-	    public int compare(Critic o1, Critic o2) {
-		return o1.getHeadline().compareTo(o2.getHeadline());
-	    }
-	});
-	tableModel.setTarget(critics);
-	table.setModel(tableModel);
-	table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	table.setShowVerticalLines(false);
-	table.getSelectionModel().addListSelectionListener(this);
-        table.getModel().addTableModelListener(this);
-	table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-	TableColumn checkCol = table.getColumnModel().getColumn(0);
-	TableColumn descCol = table.getColumnModel().getColumn(1);
-	TableColumn actCol = table.getColumnModel().getColumn(2);
-	checkCol.setMinWidth(35);
-	checkCol.setMaxWidth(35);
-	checkCol.setWidth(30);
-	int descWidth = table.getFontMetrics(table.getFont())
-	        .stringWidth(DESC_WIDTH_TEXT);
-	descCol.setMinWidth(descWidth);
-	descCol.setWidth(descWidth); // no maximum set, so it will stretch...
-	actCol.setMinWidth(50);
-	actCol.setMaxWidth(50);
-	actCol.setWidth(50);
-
-	tablePanel.add(criticsLabel, BorderLayout.NORTH);
+        table = new TableCritics(new TableModelCritics(false), this, this);
+        criticsLabel.setText(criticsLabel.getText() + " (" 
+                + table.getModel().getRowCount() + ")");
+        tablePanel.add(criticsLabel, BorderLayout.NORTH);
 	JScrollPane tableSP = new JScrollPane(table);
 	tablePanel.add(tableSP, BorderLayout.CENTER);
 
 	// Set tableSP's preferred height to 0 so that details height
 	// is used in pack()
-	tableSP.setPreferredSize(new Dimension(checkCol.getWidth()
-	        + descCol.getWidth() + actCol.getWidth() + 20,
-	        0));
+	tableSP.setPreferredSize(table.getInitialSize());
         bsp.add(tablePanel, BorderSplitPane.CENTER);
         
 	// Critic Details panel
@@ -298,6 +254,7 @@ public class CriticBrowserDialog extends ArgoDialog
 	fieldConstraints.gridy = 6;
 	JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	buttonPanel.add(wakeButton);
+        buttonPanel.add(advancedButton);
         /* TODO: These buttons for future enhancement:
 	buttonPanel.add(configButton);
 	buttonPanel.add(networkButton); */
@@ -318,6 +275,7 @@ public class CriticBrowserDialog extends ArgoDialog
         goButton.addActionListener(this);
         networkButton.addActionListener(this);
         wakeButton.addActionListener(this);
+        advancedButton.addActionListener(this);
         configButton.addActionListener(this);
         headline.getDocument().addDocumentListener(this);
         moreInfo.getDocument().addDocumentListener(this);
@@ -335,20 +293,33 @@ public class CriticBrowserDialog extends ArgoDialog
         
         goButton.setEnabled(false);
         wakeButton.setEnabled(false);
+        advancedButton.setEnabled(true);
         networkButton.setEnabled(false);
         configButton.setEnabled(false);
+
+        useClar.setSelectedItem(null);
+        useClar.repaint();
     }
     
     /**
      * @param t the new target
      */
-    private void setTarget(Object t) {
-	target = (Critic) t;
+    private void setTarget(Critic cr) {
+        if (cr == null) {
+            enableFieldsAndButtons();
+            className.setText("");
+            headline.setText("");
+            priority.setSelectedItem(null);
+            priority.repaint();
+            moreInfo.setText("");
+            desc.setText("");
+            return;
+        }
         updateButtonsEnabled();
-	className.setText(target.getClass().getName());
-	headline.setText(target.getHeadline());
+	className.setText(cr.getClass().getName());
+	headline.setText(cr.getHeadline());
 
-	int p = target.getPriority();
+	int p = cr.getPriority();
 	if (p == ToDoItem.HIGH_PRIORITY) {
 	    priority.setSelectedItem(HIGH);
 	} else if (p == ToDoItem.MED_PRIORITY) {
@@ -358,8 +329,8 @@ public class CriticBrowserDialog extends ArgoDialog
 	}
 	priority.repaint();
 
-	moreInfo.setText(target.getMoreInfoURL());
-	desc.setText(target.getDescriptionTemplate());
+	moreInfo.setText(cr.getMoreInfoURL());
+	desc.setText(cr.getDescriptionTemplate());
 	desc.setCaretPosition(0);
 	useClar.setSelectedItem(ALWAYS);
 	useClar.repaint();
@@ -367,7 +338,6 @@ public class CriticBrowserDialog extends ArgoDialog
 
     /**
      * Updates the states of the buttons
-     *
      */
     protected void updateButtonsEnabled() {
         this.configButton.setEnabled(false);
@@ -441,6 +411,10 @@ public class CriticBrowserDialog extends ArgoDialog
             table.repaint();
 	    return;
 	}
+        if (e.getSource() == advancedButton) {
+            table.setAdvanced(true);
+            advancedButton.setEnabled(false);
+        }
 	LOG.debug("unknown src in CriticBrowserDialog: " + e.getSource());
     }
 
@@ -459,7 +433,7 @@ public class CriticBrowserDialog extends ArgoDialog
         if (this.target != null) {
             this.target.deleteObserver(this);
         }
-	setTarget(critics.get(row));
+	setTarget((row == -1) ? null : table.getCriticAtRow(row));
         if (this.target != null) {
             this.target.addObserver(this);
         }
@@ -525,121 +499,4 @@ public class CriticBrowserDialog extends ArgoDialog
         table.repaint();
     }
 
-} /* end class CriticBrowserDialog */
-
-
-
-
-class TableModelCritics extends AbstractTableModel
-    implements VetoableChangeListener {
-    private static final Logger LOG =
-	Logger.getLogger(TableModelCritics.class);
-
-    ////////////////
-    // instance varables
-    private List target;
-
-    /**
-     * Constructor.
-     */
-    public TableModelCritics() { }
-
-    ////////////////
-    // accessors
-    /**
-     * @param critics the list of critics
-     */
-    public void setTarget(List critics) {
-	target = critics;
-	//fireTableStructureChanged();
-    }
-
-    ////////////////
-    // TableModel implemetation
-    /*
-     * @see javax.swing.table.TableModel#getColumnCount()
-     */
-    public int getColumnCount() { return 3; }
-
-    /*
-     * @see javax.swing.table.TableModel#getColumnName(int)
-     */
-    public String getColumnName(int c) {
-	if (c == 0)
-	    return Translator.localize("dialog.browse.column-name.active");
-	if (c == 1)
-	    return Translator.localize("dialog.browse.column-name.headline");
-	if (c == 2)
-	    return Translator.localize("dialog.browse.column-name.snoozed");
-	return "XXX";
-    }
-
-    /*
-     * @see javax.swing.table.TableModel#getColumnClass(int)
-     */
-    public Class getColumnClass(int c) {
-	if (c == 0) {
-            return Boolean.class;
-        }
-	if (c == 1) {
-            return String.class;
-        }
-	if (c == 2) {
-            return String.class;
-        }
-	return String.class;
-    }
-
-    /*
-     * @see javax.swing.table.TableModel#isCellEditable(int, int)
-     */
-    public boolean isCellEditable(int row, int col) {
-	return col == 0;
-    }
-
-    /*
-     * @see javax.swing.table.TableModel#getRowCount()
-     */
-    public int getRowCount() {
-	if (target == null) return 0;
-	return target.size();
-    }
-
-    /*
-     * @see javax.swing.table.TableModel#getValueAt(int, int)
-     */
-    public Object getValueAt(int row, int col) {
-	Critic cr = (Critic) target.get(row);
-	if (col == 0) return cr.isEnabled() ? Boolean.TRUE : Boolean.FALSE;
-	if (col == 1) return cr.getHeadline();
-	if (col == 2) return cr.isActive() ? "no" : "yes";
-	return "CR-" + row * 2 + col; // for debugging
-    }
-
-    /*
-     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
-     */
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
-	LOG.debug("setting table value " + rowIndex + ", " + columnIndex);
-	if (columnIndex != 0) return;
-	if (!(aValue instanceof Boolean)) return;
-	Boolean enable = (Boolean) aValue;
-	Critic cr = (Critic) target.get(rowIndex);
-	cr.setEnabled(enable.booleanValue());
-	fireTableRowsUpdated(rowIndex, rowIndex); //TODO:
-    }
-
-    ////////////////
-    // event handlers
-
-    /*
-     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
-     */
-    public void vetoableChange(PropertyChangeEvent pce) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                fireTableStructureChanged();
-            }
-        });
-    }
-} /* end class TableModelCritics */
+}
