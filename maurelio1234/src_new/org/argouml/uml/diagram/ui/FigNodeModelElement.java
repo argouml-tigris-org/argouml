@@ -360,6 +360,8 @@ public abstract class FigNodeModelElement
         setShadowSize(ps.getDefaultShadowWidthValue());
         /* TODO: how to handle changes in shadowsize 
          * from the project properties? */
+        
+        stereotypeView = ps.getDefaultStereotypeViewValue();
     }
 
     /**

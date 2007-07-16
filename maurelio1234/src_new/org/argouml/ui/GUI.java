@@ -59,9 +59,10 @@ public final class GUI {
         addSettingsTab(new SettingsTabEnvironment());
         addSettingsTab(new SettingsTabUser());
         addSettingsTab(new SettingsTabAppearance());
+        addSettingsTab(new SettingsTabProfile());
 
         addProjectSettingsTab(new ProjectSettingsTabProperties());
-        addProjectSettingsTab(new ProfileSelectionTab());
+        addProjectSettingsTab(new ProjectSettingsTabProfile());
     }
 
     /**

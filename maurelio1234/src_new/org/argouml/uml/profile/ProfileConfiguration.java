@@ -68,14 +68,8 @@ public class ProfileConfiguration extends AbstractProjectMember {
 	
 	defaultProfile = ProfileUML.getInstance();
 	
-	Profile cppProfile = ProfileCpp.getInstance();
-	Profile javaProfile = ProfileJava.getInstance();
-	
-	ProfileManagerImpl.getInstance().registerProfile(cppProfile);
-	ProfileManagerImpl.getInstance().registerProfile(javaProfile);	
+        addProfile(defaultProfile);
 
-	addProfile(defaultProfile);
-	addProfile(javaProfile);
 	activateFormatingStrategy(defaultProfile);
     }
     

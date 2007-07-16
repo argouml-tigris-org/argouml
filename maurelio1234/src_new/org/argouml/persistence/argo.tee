@@ -41,6 +41,7 @@
     <showstereotypes><ocl>self.projectSettings.showStereotypes</ocl></showstereotypes>
     <showsingularmultiplicities><ocl>self.projectSettings.showSingularMultiplicities</ocl></showsingularmultiplicities>
     <defaultshadowwidth><ocl>self.projectSettings.defaultShadowWidth</ocl></defaultshadowwidth>
+    <defaultstereotypeview><ocl>self.projectSettings.defaultStereotypeView</ocl></defaultstereotypeview>
   </settings>
   
   <searchpath href="<ocl>self.searchPath</ocl>" />

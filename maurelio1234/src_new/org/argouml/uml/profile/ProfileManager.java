@@ -54,4 +54,48 @@ public interface ProfileManager {
      * @return the profile instance for the class
      */
     Profile getProfileForClass(String className);
+    
+    /**
+     * @return the default set of profiles
+     */
+    Vector getDefaultProfiles();
+    
+    /**
+     * Adds a profile to the default list.
+     * 
+     * @param p profile to add
+     */
+    void addToDefaultProfiles(Profile p);
+    
+    /**
+     * Remove a profile from the default list
+     * 
+     * @param p the profile to be removed
+     */
+    void removeFromDefaultProfiles(Profile p);
+    
+    /**
+     * Adds a new directory to the directory list
+     * 
+     * @param path user defined directory
+     */
+    void addSearchPathDirectory(String path);
+    
+    /**
+     * Removes a directory from the directory list
+     * 
+     * @param path
+     */
+    void removeSearchPathDirectory(String path);
+    
+    /**
+     * @return the current directory list
+     */
+    Vector getSearchPathDirectories();
+    
+    /**
+     * Looks for XMI files at the current directory list and registers
+     * them as user defined profiles.
+     */
+    void refreshRegisteredProfiles();
 }

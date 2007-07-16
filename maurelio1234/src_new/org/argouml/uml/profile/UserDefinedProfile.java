@@ -87,4 +87,8 @@ public class UserDefinedProfile extends Profile {
     public File getModelFile() {
         return modelFile;
     }
+    
+    public String toString() {
+        return super.toString() + " [" + getModelFile() + "]";
+    }
 }

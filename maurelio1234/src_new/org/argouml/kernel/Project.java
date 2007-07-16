@@ -61,6 +61,7 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.argouml.uml.profile.Profile;
 import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.uml.profile.ProfileManagerImpl;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.Memento;
@@ -170,6 +171,12 @@ public class Project implements java.io.Serializable {
     public Project() {
 	setProfileConfiguration(new ProfileConfiguration(this));
 
+        Iterator it = ProfileManagerImpl.getInstance().getDefaultProfiles().iterator();
+        
+        while (it.hasNext()) {
+            getProfileConfiguration().addProfile((Profile) it.next());
+        }
+        
         projectSettings = new ProjectSettings();        
         
         Model.getModelManagementFactory().setRootModel(null);

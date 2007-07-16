@@ -34,6 +34,8 @@ import org.argouml.configuration.ConfigurationKey;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.ui.SettingsTabProfile;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
@@ -60,7 +62,8 @@ public class ProjectSettings {
     private boolean showStereotypes;
     private boolean showSingularMultiplicities;
     private int defaultShadowWidth;
-
+    private int defaultStereotypeView;
+    
 
     /**
      * Create a new set of project settings, 
@@ -104,6 +107,9 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true); 
         defaultShadowWidth = Configuration.getInteger(
                 Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
+        defaultStereotypeView = Configuration.getInteger(
+                SettingsTabProfile.KEY_DEFAULT_STEREOTYPE_VIEW,
+                FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
     }
 
 
@@ -666,6 +672,53 @@ public class ProjectSettings {
     }
 
     /**
+     * Used by "argo.tee".
+     * 
+     * @return Returns the default stereotype view
+     */
+    public String getDefaultStereotypeView() {
+        return new Integer(defaultStereotypeView).toString();
+    }
+    
+    /**
+     * @return Returns the default stereotype view
+     */
+    public int getDefaultStereotypeViewValue() {
+        return defaultStereotypeView;
+    }
+
+    /**
+     * @param defaultStereotypeView the default stereotype view
+     */
+    public void setDefaultStereotypeView(final int newView) {
+        this.defaultStereotypeView = defaultStereotypeView;
+
+        if (defaultStereotypeView == newView) return;
+
+        final int oldValue = defaultStereotypeView;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = 
+                SettingsTabProfile.KEY_DEFAULT_STEREOTYPE_VIEW;
+
+            public void redo() {
+                defaultStereotypeView = newView;
+                fireEvent(key, oldValue, newView);
+            }
+
+            public void undo() {
+                defaultStereotypeView = oldValue;
+                fireEvent(key, newView, oldValue);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
+    }
+
+    /**
      * @param width The shadow width to set.
      */
     public void setDefaultShadowWidth(String width) {
@@ -709,4 +762,5 @@ public class ProjectSettings {
                 ArgoEventTypes.NOTATION_CHANGED, new PropertyChangeEvent(this,
                         key.getKey(), oldValue, newValue)));
     }
+
 }
