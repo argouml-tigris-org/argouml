@@ -80,7 +80,7 @@ import org.xml.sax.SAXException;
  *
  * @author Bob Tarling
  */
-class UmlFilePersister extends AbstractFilePersister {
+public class UmlFilePersister extends AbstractFilePersister {
 
     /**
      * The PERSISTENCE_VERSION is increased every time the persistence format
@@ -88,7 +88,7 @@ class UmlFilePersister extends AbstractFilePersister {
      * This controls conversion of old persistence version files to be
      * converted to the current one, keeping ArgoUML backwards compatible.
      */
-    protected static final int PERSISTENCE_VERSION = 5;
+    public static final int PERSISTENCE_VERSION = 5;
     
     /**
      * The TOTAL_PHASES_LOAD constant is the number of phases used by the load
