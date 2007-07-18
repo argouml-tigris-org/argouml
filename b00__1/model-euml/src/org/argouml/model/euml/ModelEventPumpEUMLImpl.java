@@ -30,6 +30,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,10 +99,10 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     private RootContainerAdapter rootContainerAdapter = new RootContainerAdapter(this);
     
     // Access should be fast
-    private Map<Object,List<Listener>> registerForElement = new HashMap<Object,List<Listener>>();
+    private Map<Object,List<Listener>> registerForElements = new HashMap<Object,List<Listener>>();
     
     // Iteration should be fast
-    private Map<Object,List<Listener>> registerForClass = new LinkedHashMap<Object,List<Listener>>();
+    private Map<Object,List<Listener>> registerForClasses = new LinkedHashMap<Object,List<Listener>>();
 
     /**
      * Constructor.
@@ -122,18 +123,25 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     }
 
     public void addClassModelEventListener(PropertyChangeListener listener,
-            Object modelClass, String[] propertyNames) {
-	registerListener(modelClass, listener, propertyNames, registerForClass);
+	    Object modelClass, String[] propertyNames) {
+	if (!(modelClass instanceof Class && EObject.class
+		.isAssignableFrom((Class) modelClass))) {
+	    throw new IllegalArgumentException();
+	}
+	registerListener(modelClass, listener, propertyNames, registerForClasses);
     }
 
     public void addModelEventListener(PropertyChangeListener listener,
-            Object modelelement, String[] propertyNames) {
-	registerListener(modelelement, listener, propertyNames, registerForElement);
+	    Object modelelement, String[] propertyNames) {
+	if (!(modelelement instanceof EObject)) {
+	    throw new IllegalArgumentException();
+	}
+	registerListener((EObject) modelelement, listener, propertyNames, registerForElements);
     }
 
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
-	registerListener(modelelement, listener, null, registerForElement);
+	addModelEventListener(listener, modelelement, (String []) null);
     }
     
     private void registerListener(Object notifier,
@@ -142,26 +150,26 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 	if (notifier == null || listener == null) {
 	    throw new NullPointerException();
 	}
-	if (!(notifier instanceof EObject || (notifier instanceof Class && EObject.class
-		.isAssignableFrom((Class) notifier)))) {
-	    throw new IllegalArgumentException();
-	}
-	List<Listener> array = register.get(notifier);
-	boolean put = false;
-	if (array == null) {
-	    put = true;
-	    array = new ArrayList<Listener>();
-	}
-	int i = array.indexOf(listener);
-	if (i != -1) {
-	    // TODO: Do we really want to add new properties to the already
-	    // registered listener or we want to replace the old properties
-	    array.get(i).addProperties(propertyNames);
+	List<Listener> list = register.get(notifier);
+	boolean new_ = false;
+	boolean found = false;
+	if (list == null) {
+	    new_ = true;
+	    list = new ArrayList<Listener>();
 	} else {
-	    array.add(new Listener(listener, propertyNames));
+	    for (Listener l : list) {
+		if (l.getListener() == listener) {
+		    // TODO: Do we really want to add new properties to the already
+		    // registered listener or we want to replace the old properties
+		    l.addProperties(propertyNames);
+		    found = true;
+		    break;
+		}
+	    }
 	}
-	if (put) {
-	    register.put(notifier, array);
+	if (new_ || !found) {
+	    list.add(new Listener(listener, propertyNames));
+	    register.put(notifier, list);
 	}
     }
 
@@ -172,17 +180,24 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void removeClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
-	unregisterListener(modelClass, listener, propertyNames, registerForClass);
+	if (!(modelClass instanceof Class && EObject.class
+		.isAssignableFrom((Class) modelClass))) {
+	    throw new IllegalArgumentException();
+	}
+	unregisterListener(modelClass, listener, propertyNames, registerForClasses);
     }
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-	unregisterListener(modelelement, listener, propertyNames, registerForElement);
+	if (!(modelelement instanceof EObject)) {
+	    throw new IllegalArgumentException();
+	}
+	unregisterListener(modelelement, listener, propertyNames, registerForElements);
     }
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
-	unregisterListener(modelelement, listener, null, registerForElement);
+	removeModelEventListener(listener, modelelement, (String []) null);
     }
     
     private void unregisterListener(Object notifier,
@@ -191,22 +206,21 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 	if (notifier == null || listener == null) {
 	    throw new NullPointerException();
 	}
-	if (!(notifier instanceof EObject || (notifier instanceof Class && EObject.class
-		.isAssignableFrom((Class) notifier)))) {
-	    throw new IllegalArgumentException();
-	}
-	List<Listener> array = register.get(notifier);
-	if (array == null) {
+	List<Listener> list = register.get(notifier);
+	if (list == null) {
 	    return;
 	}
-	int i = array.indexOf(listener);
-	if (i == -1) {
-	    return;
-	}
-	if (propertyNames == null) {
-	    array.remove(i);
-	} else {
-	    array.get(i).removeProperties(propertyNames);
+	Iterator<Listener> iter = list.iterator();
+	while (iter.hasNext()) {
+	    Listener l = iter.next();
+	    if (l.getListener() == listener) {
+		if (propertyNames == null) {
+		    l.removeProperties(propertyNames);
+		} else {
+		    iter.remove();
+		}
+		break;
+	    }
 	}
     }
     
@@ -217,18 +231,18 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     @SuppressWarnings("unchecked")
     public void notifyChanged(Notification notification) {
 	Object notifier = notification.getNotifier();
-	List<Listener> array = registerForElement.get(notifier);
-	if (array != null) {
-	    for (Listener l : array) {
+	List<Listener> list = registerForElements.get(notifier);
+	if (list != null) {
+	    for (Listener l : list) {
 		fireNotification(notification, l);
 	    }
 	}
 	
-	for (Object o : registerForClass.keySet()) {
+	for (Object o : registerForClasses.keySet()) {
 	    if (o instanceof Class) {
 		Class type = (Class) o;
 		if (type.isAssignableFrom(notifier.getClass())) {
-		    for (Listener l : registerForClass.get(o)) {
+		    for (Listener l : registerForClasses.get(o)) {
 			fireNotification(notification, l);
 		    }
 		}
