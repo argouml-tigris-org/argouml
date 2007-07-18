@@ -35,7 +35,8 @@ public class UserDefinedProfile extends Profile {
 
     private String displayName;
     private File modelFile;
-    private ProfileModelLoader modelLoader;
+    private Object model;
+    private boolean fromZargo;
     
     /**
      * The default constructor for this class
@@ -44,17 +45,32 @@ public class UserDefinedProfile extends Profile {
      */
     public UserDefinedProfile(File file) {
 	this.displayName = file.getName();
-	this.modelLoader = new FileModelLoader();
 	this.modelFile = file;
+        this.model = new FileModelLoader().loadModel(modelFile.getPath());
+        this.fromZargo = false;
     }
     
     /**
-     * @return the string that should represent this profile in the GUI.
+     * This constructor is used by the persitence subsystem
+     * when loading an user defined profile from a zargo file.
+     * 
+     * @param fileName the fake file name
+     * @param model    the model loaded from the zargo file
+     */
+    public UserDefinedProfile(String fileName, Object model) {
+        this.displayName = fileName;
+        this.modelFile = new File(fileName);
+        this.model = model;
+        this.fromZargo = true;
+    }
+    
+    /**
+     * @return the string that should represent this profile in the GUI. An start (*) is placed on it if it comes from the currently opened zargo file.
      * 
      * @see org.argouml.uml.profile.Profile#getDisplayName()
      */
     public String getDisplayName() {
-	return displayName;
+	return displayName + (fromZargo? "*" : "");
     }
 
     /**
@@ -70,7 +86,7 @@ public class UserDefinedProfile extends Profile {
      * @see org.argouml.uml.profile.Profile#getModel()
      */
     public Object getModel() {
-	return modelLoader.loadModel(modelFile.getPath());
+	return model;
     }
 
     /**

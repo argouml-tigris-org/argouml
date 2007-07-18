@@ -386,11 +386,27 @@ public class ProjectSettingsTabProfile extends JPanel implements
             if (usedList.getSelectedIndex() != -1) {
                 Profile selected = modelUsd.getProfileAt(usedList
                         .getSelectedIndex());
-                ProjectManager.getManager().getCurrentProject()
-                        .getProfileConfiguration().removeProfile(selected);
                 
-                modelAvl.fireListeners();
-                modelUsd.fireListeners();
+                boolean remove = true;
+                if (!ProfileManagerImpl.getInstance().getRegisteredProfiles()
+                        .contains(selected)) {
+                    remove = (JOptionPane
+                            .showConfirmDialog(
+                                    this,
+                                    Translator
+                                            .localize("tab.profiles.confirmdeleteunregistered"),
+                                    Translator
+                                            .localize("tab.profiles.confirmdeleteunregistered.title"),
+                                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
+                }
+
+                if (remove) {
+                    ProjectManager.getManager().getCurrentProject()
+                            .getProfileConfiguration().removeProfile(selected);
+
+                    modelAvl.fireListeners();
+                    modelUsd.fireListeners();
+                }
             }
 	} else if (arg0.getSource() == unregisterProfile) {
 	    if (availableList.getSelectedIndex() != -1) {

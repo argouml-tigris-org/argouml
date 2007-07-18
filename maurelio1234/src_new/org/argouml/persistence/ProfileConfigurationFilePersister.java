@@ -25,21 +25,32 @@
 package org.argouml.persistence;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.model.Model;
+import org.argouml.model.UmlException;
+import org.argouml.model.XmiReader;
+import org.argouml.model.XmiWriter;
 import org.argouml.uml.profile.Profile;
 import org.argouml.uml.profile.ProfileConfiguration;
 import org.argouml.uml.profile.ProfileManagerImpl;
+import org.argouml.uml.profile.StreamModelLoader;
 import org.argouml.uml.profile.UserDefinedProfile;
+import org.xml.sax.InputSource;
 
 /**
  * Persister for Project's Profile Configuration
@@ -92,28 +103,29 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 			.getRegisteredProfiles();
 
 		if (line.equals("<userDefined>")) {
-		    String fileName = br.readLine().trim();
+                    line = br.readLine().trim();
+		    String fileName = line.substring(line.indexOf(">")+1, line.indexOf("</")).trim();
 
+                    // consumes the <model> tag
+                    br.readLine();
+                    
 		    File file = new File(fileName);
 
-		    boolean found = false;
-		    for (int i = 0; i < profiles.size(); ++i) {
-			if (profiles.get(i) instanceof UserDefinedProfile) {
-			    UserDefinedProfile p = (UserDefinedProfile) profiles
-				    .get(i);
-			    if (p.getModelFile().equals(file)) {
-				found = true;
-				profile = p;
-				break;
-			    }
-			}
-		    }
-
-		    if (!found) {
-			UserDefinedProfile ud = new UserDefinedProfile(file);
-			profile = ud;
-		    }
-		    
+		    StringBuffer xmi = new StringBuffer();
+                    
+                    while(true) {
+                        line = br.readLine();
+                        if (line == null || line.contains("</model>")) {
+                            break;
+                        }
+                        
+                        xmi.append(line+"\n");
+                    }
+                    
+                    Object model = readModelXMI(xmi.toString());
+                    profile = new UserDefinedProfile(fileName, model);
+                    
+                    // consumes the </userDefined>
 		    line = br.readLine().trim();		    
 		} else if (line.equals("<plugin>")) {
 		    String className = br.readLine().trim();
@@ -181,9 +193,12 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 		    if (!pc.getDefaultProfile().equals(profile)) {
 			if (profile instanceof UserDefinedProfile) {
 			    w.println("\t\t<userDefined>");
-			    w.println("\t\t\t"
-				    + ((UserDefinedProfile) profile)
-					    .getModelFile().getCanonicalPath());
+                            w.println("\t\t\t<filename>"+((UserDefinedProfile)profile).getModelFile().getName()+"</filename>");
+                            w.println("\t\t\t<model>");
+                            
+                            printModelXMI(w, profile.getModel());
+                            
+                            w.println("\t\t\t</model>");                            
 			    w.println("\t\t</userDefined>");
 			} else {
 			    w.println("\t\t<plugin>");
@@ -199,6 +214,24 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 	    e.printStackTrace();
 	    throw new SaveException(e);
 	}
+    }
+
+    private void printModelXMI(PrintWriter w, Object model) throws UmlException {
+        StringWriter myWriter = new StringWriter();
+        XmiWriter xmiWriter = Model.getXmiWriter(model, myWriter, ApplicationVersion
+                .getVersion()
+                + "(" + UmlFilePersister.PERSISTENCE_VERSION + ")");
+        xmiWriter.write();
+        
+        myWriter.flush();
+        w.println("" + myWriter.toString());
+    }
+
+    private Object readModelXMI(String xmi) throws UmlException {
+        XmiReader xmiReader = Model.getXmiReader();
+        InputSource inputSource = new InputSource(new ByteArrayInputStream(xmi.getBytes()));
+        Collection elements = xmiReader.parse(inputSource, true);
+        return elements.iterator().next();
     }
 
 }
