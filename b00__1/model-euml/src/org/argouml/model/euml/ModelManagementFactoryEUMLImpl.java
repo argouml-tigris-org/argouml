@@ -29,6 +29,8 @@ package org.argouml.model.euml;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.ModelManagementFactory;
 import org.argouml.model.NotImplementedException;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Model;
@@ -112,7 +114,14 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
 		    "The rootModel supplied must be a Package. Got a "
 			    + rootModel.getClass().getName());
 	}
+	if (theRootModel != null && theRootModel.eResource() != null) {
+	    EcoreUtil.remove(theRootModel);
+	}
 	theRootModel = (org.eclipse.uml2.uml.Package) rootModel;
+	if (rootModel != null) {
+	    Resource r = editingDomain.createResource("http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
+	    r.getContents().add(theRootModel);
+	}
 	modelImpl.getModelEventPump().setRootContainer(theRootModel);
     }
 
