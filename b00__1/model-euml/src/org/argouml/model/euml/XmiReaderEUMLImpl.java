@@ -86,8 +86,7 @@ class XmiReaderEUMLImpl implements XmiReader {
 	    resource.unload();
 	}
 	
-	// Dummy URI
-	Resource r = editingDomain.createResource("foo.xmi"); //$NON-NLS-1$
+	Resource r = editingDomain.createResource("http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
 	try {
 	    r.load(inputSource.getByteStream(), null);
 	} catch (IOException e) {

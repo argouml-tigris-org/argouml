@@ -96,9 +96,9 @@ class XmiWriterEUMLImpl implements XmiWriter {
     }
 
     public void write() throws UmlException {
-        // This URI is a dummy.  We're going to write to our OutputStream
-        Resource resource = modelImpl.getEditingDomain().createResource("foo.xmi");
-        resource.getContents().add(model);
+	if (model.eResource() == null) {
+	    throw new UmlException("Root container is not affiliated with any resource!"); //$NON-NLS-1$
+	}
 
         // Do we need to get stereotype applications for each element? - tfm
 //        for (Iterator allContents = UMLUtil.getAllContents(model, true,
@@ -114,7 +114,7 @@ class XmiWriterEUMLImpl implements XmiWriter {
         // TODO: Is there an option we can use to save our ArgoUML version?
         
         try {
-            resource.save(oStream, options);
+            model.eResource().save(oStream, options);
         } catch (IOException ioe) {
             throw new UmlException(ioe);
         }
