@@ -35,7 +35,6 @@ import java.util.List;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ActivityGraphsHelper;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
@@ -248,7 +247,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                 && "remove".equals(evt.getPropertyName())) {
             Model.getPump().removeModelEventListener(this, 
                     theActivityGraph, new String[] {"remove", "namespace"});
-            ProjectManager.getManager().getCurrentProject().moveToTrash(this);
+            getProject().moveToTrash(this);
         }
         if (evt.getSource() == getStateMachine()) {
             Object newNamespace = 
@@ -278,6 +277,10 @@ public class UMLActivityDiagram extends UMLDiagram {
 
     /**
      * @return the statemachine
+     * 
+     * TODO: If this method is called by any of the Figs, it will introduce
+     * a dependency cycle.  It would be much better if they could just
+     * use {@link ArgoDiagram#getOwner()} which does the same thing.
      */
     public Object getStateMachine() {
         GraphModel gm = getGraphModel();
@@ -357,20 +360,6 @@ public class UMLActivityDiagram extends UMLDiagram {
         };
         ToolBarUtility.manageDefault(actions, "diagram.activity.effect");
         return actions;
-    }
-
-    /**
-     * Creates a new diagram name.<p>
-     *
-     * @return String
-     */
-    protected String getNewDiagramName() {
-        String name = getLabelName() + " " + getNextDiagramSerial();
-        if (!ProjectManager.getManager().getCurrentProject()
-                 .isValidDiagramName(name)) {
-            name = getNewDiagramName();
-        }
-        return name;
     }
 
     /*
@@ -743,4 +732,4 @@ public class UMLActivityDiagram extends UMLDiagram {
 	return Model.getFacade().getContents(partition).contains(state);
     }
 
-} /* end class UMLActivityDiagram */
+}

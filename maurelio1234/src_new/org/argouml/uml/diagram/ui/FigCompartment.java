@@ -35,7 +35,7 @@ import org.tigris.gef.presentation.FigRect;
 /**
  * @author Bob Tarling
  */
-public abstract class FigCompartment extends FigGroup {
+public abstract class FigCompartment extends ArgoFigGroup {
 
     private Fig bigPort;
 

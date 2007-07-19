@@ -25,13 +25,14 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
@@ -59,23 +60,18 @@ public class GoCollaborationToDiagram extends AbstractPerspectiveRule {
         if (p == null)
             return null;
 
-        Vector res = new Vector();
-        Vector diagrams = p.getDiagrams();
-        if (diagrams == null)
-            return null;
-        java.util.Enumeration elems = diagrams.elements();
-        while (elems.hasMoreElements()) {
-            Object d = elems.nextElement();
+        Set<ArgoDiagram> res = new HashSet<ArgoDiagram>();
+        for (ArgoDiagram d : p.getDiagramList()) {
             if (d instanceof UMLCollaborationDiagram
                 && ((UMLCollaborationDiagram) d).getNamespace() == parent) {
-                res.addElement(d);
+                res.add(d);
             }
             /* Also show unattached sequence diagrams: */
             if ((d instanceof UMLSequenceDiagram)
                 && (Model.getFacade().getRepresentedClassifier(parent) == null)
                 &&  (Model.getFacade().getRepresentedOperation(parent) == null)
                 && (parent == ((UMLSequenceDiagram) d).getNamespace())) {
-                res.addElement(d);
+                res.add(d);
             }
         }
         return res;

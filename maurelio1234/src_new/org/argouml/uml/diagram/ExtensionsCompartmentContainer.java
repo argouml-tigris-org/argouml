@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,30 +22,26 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
-
-import java.awt.Rectangle;
+package org.argouml.uml.diagram;
 
 /**
  * An interface to be implemented by any Fig that contains
- * a FigOperationsCompartment.
- * @author Bob Tarling
+ * a Extensions Compartment.
+ *
+ * @author mvw@tigris.org
  */
-public interface OperationsCompartmentContainer {
+public interface ExtensionsCompartmentContainer {
+
     /**
      * Determine if the operations compartment is visible.
      * @return true if the operations compartment is visible.
      */
-    boolean isOperationsVisible();
+    boolean isExtensionPointVisible();
 
     /**
      * Set the visibility of the operations compartment.
      * @param visible the new visibility status.
      */
-    void setOperationsVisible(boolean visible);
+    void setExtensionPointVisible(boolean visible);
 
-    /**
-     * @return The bounds of the operations compartment
-     */
-    Rectangle getOperationsBounds();
 }

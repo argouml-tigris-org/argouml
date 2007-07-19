@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,9 +27,7 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ItemUID;
-import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.IItemUID;
 import org.tigris.gef.persistence.pgml.Container;
 import org.tigris.gef.persistence.pgml.FigEdgeHandler;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
@@ -78,10 +76,10 @@ class PrivateHandler
 
         if (container instanceof PGMLHandler) {
             Object o = getPGMLStackParser().getDiagram();
-            if (o instanceof ArgoDiagram) {
+            if (o instanceof IItemUID) {
                 ItemUID uid = getItemUID(contents);
                 if (uid != null) {
-                    ((ArgoDiagram) o).setItemUID(uid);
+                    ((IItemUID) o).setItemUID(uid);
                 }
             }
             // No other uses of string in PGMLHandler
@@ -90,20 +88,20 @@ class PrivateHandler
 
         if (container instanceof FigGroupHandler) {
             Object o = ((FigGroupHandler) container).getFigGroup();
-            if (o instanceof FigNodeModelElement) {
+            if (o instanceof IItemUID) {
                 ItemUID uid = getItemUID(contents);
                 if (uid != null) {
-                    ((FigNodeModelElement) o).setItemUID(uid);
+                    ((IItemUID) o).setItemUID(uid);
                 }
             }
         }
 
         if (container instanceof FigEdgeHandler) {
             Object o = ((FigEdgeHandler) container).getFigEdge();
-            if (o instanceof FigEdgeModelElement) {
+            if (o instanceof IItemUID) {
                 ItemUID uid = getItemUID(contents);
                 if (uid != null) {
-                    ((FigEdgeModelElement) o).setItemUID(uid);
+                    ((IItemUID) o).setItemUID(uid);
                 }
             }
         }

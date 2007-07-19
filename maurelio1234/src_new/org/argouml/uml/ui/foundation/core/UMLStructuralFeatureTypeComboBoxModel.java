@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -84,11 +83,8 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         if (p == null) {
             return;
         }
-        Iterator it = (new ArrayList(p.getUserDefinedModels())).iterator();
-
-        while (it.hasNext()) {
-            Object model = it.next();
-
+        
+        for (Object model : p.getUserDefinedModelList()) {
             elements.addAll(Model.getModelManagementHelper()
                     .getAllModelElementsOfKind(
                             model, Model.getMetaTypes().getUMLClass()));
@@ -100,7 +96,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
                             model, Model.getMetaTypes().getDataType()));
         }
 
-        it = p.getProfileConfiguration().getProfileModels().iterator();
+        Iterator it = p.getProfileConfiguration().getProfileModels().iterator();
 
         while (it.hasNext()) {
 	    Object model = it.next();

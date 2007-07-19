@@ -48,7 +48,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.AbstractArgoJPanel;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -88,9 +87,6 @@ public class TabDiagram
      */
     private static final Logger LOG = Logger.getLogger(TabDiagram.class);
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     /**
      * The diagram object.
      */
@@ -112,9 +108,6 @@ public class TabDiagram
      */
     private JToolBar toolBar;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * Default constructor.
      */
@@ -134,7 +127,8 @@ public class TabDiagram
         graph.setDrawingSize((612 - 30) * 2, (792 - 55 - 20) * 2);
         // TODO: should update to size of diagram contents
 
-        Globals.setStatusBar(ProjectBrowser.getInstance());
+        Globals.setStatusBar(new StatusBarAdapter());
+        
         JPanel p = new JPanel();
         p.setLayout(new BorderLayout());
         p.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
@@ -152,6 +146,7 @@ public class TabDiagram
      * Toolbar.
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         // next statement gives us a clone JGraph but not a cloned Toolbar
         TabDiagram newPanel = new TabDiagram();
@@ -227,8 +222,6 @@ public class TabDiagram
         return newTarget instanceof ArgoDiagram;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
      * Getter for the {@link JGraph}.
@@ -405,7 +398,7 @@ public class TabDiagram
 
     public void propertyChange(PropertyChangeEvent arg0) {
         if ("remove".equals(arg0.getPropertyName())) {
-            Diagram diagram = ProjectManager.getManager()
+            ArgoDiagram diagram = ProjectManager.getManager()
                 .getCurrentProject().getActiveDiagram();
             TargetManager.getInstance().setTarget(diagram);
         }
@@ -443,6 +436,7 @@ class ArgoEditor extends Editor {
     /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseEntered(MouseEvent me) {
 	if (getActiveTextEditor() != null) {
             getActiveTextEditor().requestFocus();
@@ -457,6 +451,7 @@ class ArgoEditor extends Editor {
     /*
      * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseMoved(MouseEvent me) {
 	//- RedrawManager.lock();
 	translateMouseEvent(me);
@@ -489,6 +484,7 @@ class ArgoEditor extends Editor {
      *
      * @see org.tigris.gef.base.Editor#paint(java.awt.Graphics)
      */
+    @Override
     public synchronized void paint(Graphics g) {
         if (!shouldPaint()) {
             return;

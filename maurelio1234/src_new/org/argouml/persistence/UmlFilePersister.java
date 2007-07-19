@@ -62,6 +62,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectFactory;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.UmlException;
 import org.argouml.uml.ProjectMemberModel;
@@ -340,7 +341,7 @@ public class UmlFilePersister extends AbstractFilePersister {
 
         XmlInputStream inputStream = null;
         try {
-            Project p = new Project(file.toURI());
+            Project p = ProjectFactory.getInstance().createProject(file.toURI());
             
             // Run through any stylesheet upgrades
             int fileVersion = getPersistenceVersionFromFile(file);

@@ -31,6 +31,7 @@ import java.util.Vector;
 
 import org.argouml.kernel.AbstractProjectMember;
 import org.argouml.kernel.Project;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
 /**
  *   This class captures represents the unique access point for the 
  *   configurability allowed by the use of profiles. 
@@ -121,6 +122,8 @@ public class ProfileConfiguration extends AbstractProjectMember {
             if (fns != null) {
                 figNodeStrategies.add(fns);
             }
+            
+            ExplorerEventAdaptor.getInstance().structureChanged();
         }
     }
     
@@ -131,6 +134,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
      */
     public void setDefaultProfile(Profile profile) {
         this.defaultProfile = profile;
+        ExplorerEventAdaptor.getInstance().structureChanged();
     }
     
     /**
@@ -156,6 +160,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
 		figNodeStrategies.remove(fns);
 	    }
 
+            ExplorerEventAdaptor.getInstance().structureChanged();
 	}
     }
     

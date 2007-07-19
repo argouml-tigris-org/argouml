@@ -26,7 +26,6 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -52,10 +51,9 @@ public class GoProjectToStateMachine extends AbstractPerspectiveRule {
     public Collection getChildren(Object parent) {
 	Collection col = new ArrayList();
 	if (parent instanceof Project) {
-	    Iterator it = ((Project) parent).getUserDefinedModels().iterator();
-	    while (it.hasNext()) {
+            for (Object model : ((Project) parent).getUserDefinedModelList()) {
 		col.addAll(Model.getModelManagementHelper()
-			   .getAllModelElementsOfKind(it.next(),
+			   .getAllModelElementsOfKind(model,
 			           Model.getMetaTypes().getStateMachine()));
 	    }
 	}

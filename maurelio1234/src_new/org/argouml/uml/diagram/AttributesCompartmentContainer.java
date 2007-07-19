@@ -22,26 +22,31 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.uml.diagram;
 
+import java.awt.Rectangle;
 
 /**
-* An interface to be implemented by any Fig that may or may not
-* show visibility (by symbol -, + or #).
-*
-* @author mvw@tigris.org
-*/
-public interface VisibilityContainer {
+ * An interface to be implemented by any Fig that contains
+ * a FigAttributesCompartment.
+ * @author Bob Tarling
+ */
+public interface AttributesCompartmentContainer {
     /**
-     * Determine if the visibility is visible.
-     * @return true if the visibility is visible.
+     * Determine if the attributes compartment is visible.
+     * @return true if the attributes compartment is visible.
      */
-    boolean isVisibilityVisible();
+    boolean isAttributesVisible();
 
     /**
-     * Set the visibility of the visibility.
+     * Set the visibility of the attributes compartment.
      * @param visible the new visibility status.
      */
-    void setVisibilityVisible(boolean visible);
+    void setAttributesVisible(boolean visible);
 
+
+    /**
+     * @return The bounds of the operations compartment
+     */
+    Rectangle getAttributesBounds();
 }

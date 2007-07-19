@@ -66,15 +66,13 @@ public class UMLGeneralizationPowertypeComboBoxModel
     protected void buildModelList() {
         Set elements = new HashSet();
         Project p = ProjectManager.getManager().getCurrentProject();
-        Iterator it = p.getUserDefinedModels().iterator();
-        while (it.hasNext()) {
-	    Object model = it.next();
+        for (Object model : p.getUserDefinedModelList()) {
 	    elements.addAll(Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(model,
                         Model.getMetaTypes().getClassifier()));
         }
         
-        it = p.getProfileConfiguration().getProfileModels().iterator();
+        Iterator it = p.getProfileConfiguration().getProfileModels().iterator();
         while (it.hasNext()) {
 	    Object model = it.next();
  	    elements.addAll(Model.getModelManagementHelper()

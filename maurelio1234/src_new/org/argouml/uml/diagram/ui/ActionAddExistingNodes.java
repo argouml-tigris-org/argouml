@@ -63,14 +63,15 @@ public class ActionAddExistingNodes extends UndoableAction {
     /*
      * @see javax.swing.Action#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
-        ArgoDiagram dia = ProjectManager.getManager().
-            getCurrentProject().getActiveDiagram();
-        if (dia == null) return false;
+        ArgoDiagram dia = ProjectManager.getManager().getCurrentProject()
+                .getActiveDiagram();
+        if (dia == null) {
+            return false;
+        }
         MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
-        Iterator iter = objects.iterator();
-        while (iter.hasNext()) {
-            Object o = iter.next();
+        for (Object o : objects) {
             if (gm.canAddNode(o)) {
                 return true;
             }
@@ -81,19 +82,18 @@ public class ActionAddExistingNodes extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
         super.actionPerformed(ae);
         if (!objects.isEmpty()) {
             // Use DiagramInterface to add classes to diagram
-            ArgoDiagram dia = ProjectManager.getManager().
-                getCurrentProject().getActiveDiagram();
+            ArgoDiagram dia = ProjectManager.getManager().getCurrentProject()
+                    .getActiveDiagram();
             if (dia != null) {
                 DiagramInterface diagram =
                     new DiagramInterface(Globals.curEditor());
                 diagram.setCurrentDiagram(dia);
-                Iterator iter = objects.iterator();
-                while (iter.hasNext()) {
-                    Object o = iter.next();
+                for (Object o : objects) {
                     if (Model.getFacade().isAClass(o)) {
                         diagram.addClass(o, false);
                     } else if (Model.getFacade().isAInterface(o)) {
@@ -103,4 +103,4 @@ public class ActionAddExistingNodes extends UndoableAction {
             }
         }
     }
-} /* end class ActionAddExistingNodes */
+}

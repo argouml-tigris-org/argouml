@@ -24,6 +24,7 @@
 
 package org.argouml.uml;
 
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
@@ -41,8 +42,8 @@ import org.tigris.gef.base.Diagram;
  */
 public class TMResults extends AbstractTableModel {
 
-    private Vector rowObjects;
-    private Vector diagrams;
+    private List rowObjects;
+    private List<UMLDiagram> diagrams;
     private boolean showInDiagramColumn;
 
     /**
@@ -63,19 +64,25 @@ public class TMResults extends AbstractTableModel {
         showInDiagramColumn = showTheInDiagramColumn;
     }
 
-    ////////////////
-    // accessors
+    /**
+     * @param results the row objects
+     * @param theDiagrams the diagrams
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #setTarget(List, List)}.
+     */
+    public void setTarget(Vector results, Vector theDiagrams) {
+        setTarget((List) results, (List) theDiagrams);
+    }
 
     /**
      * @param results the row objects
      * @param theDiagrams the diagrams
      */
-    public void setTarget(Vector results, Vector theDiagrams) {
+    public void setTarget(List results, List theDiagrams) {
         rowObjects = results;
         diagrams = theDiagrams;
         fireTableStructureChanged();
     }
-
+    
     ////////////////
     // TableModel implementation
 
@@ -141,7 +148,7 @@ public class TMResults extends AbstractTableModel {
         if (col < 0 || col >= (showInDiagramColumn ? 4 : 3)) {
             return "bad col!";
         }
-        Object rowObj = rowObjects.elementAt(row);
+        Object rowObj = rowObjects.get(row);
         if (rowObj instanceof Diagram) {
             Diagram d = (Diagram) rowObj;
             switch (col) {
@@ -164,7 +171,7 @@ public class TMResults extends AbstractTableModel {
         if (Model.getFacade().isAModelElement(rowObj)) {
             Diagram d = null;
             if (diagrams != null) {
-                d = (Diagram) diagrams.elementAt(row);
+                d = (Diagram) diagrams.get(row);
             }
             switch (col) {
 	    case 0 : // the name of this type of ModelElement
@@ -215,6 +222,7 @@ public class TMResults extends AbstractTableModel {
     /*
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
+    @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     }
 
@@ -222,4 +230,4 @@ public class TMResults extends AbstractTableModel {
      * The UID.
      */
     private static final long serialVersionUID = -1444599676429024575L;
-} /* end class TMResults */
+}

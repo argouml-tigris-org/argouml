@@ -34,7 +34,6 @@ import org.argouml.cognitive.CompoundCritic;
 import org.argouml.cognitive.Critic;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -292,6 +291,7 @@ public class InitCognitiveCritics implements InitSubsystem {
         Object synchStateCls = Model.getMetaTypes().getSynchState();
 	// Class stateDiagramCls   = UMLStateDiagram.class;
 	// Class useCaseDiagramCls = UMLUseCaseDiagram.class;
+        // Class classDiagramCls   = UMLClassDiagram.class;
 
 	// TODO: Agency should allow registration by interface
 	// useful for MAssociation.
@@ -317,6 +317,7 @@ public class InitCognitiveCritics implements InitSubsystem {
 	Agency.register(crNavFromInterface, assocCls);
 	Agency.register(crNameConflictAC, assocClassCls);
 	Agency.register(clsNaming, classCls);
+        Agency.register(clsNaming, interfaceCls);
 	Agency.register(clsNaming, actorCls);
 	Agency.register(clsNaming, useCaseCls);
 
@@ -359,8 +360,7 @@ public class InitCognitiveCritics implements InitSubsystem {
 	Agency.register(crTooManyOper, classCls);
 	Agency.register(crTooManyTransitions, stateVertexCls);
 	Agency.register(crTooManyStates, compositieStateCls);
-	Class classDiagramCls   = UMLClassDiagram.class;
-	Agency.register(crTooManyClasses, classDiagramCls);
+	Agency.register(crTooManyClasses, namespaceCls);
 	Object pseudostateCls = Model.getMetaTypes().getPseudostate();
 	Object transitionCls = Model.getMetaTypes().getTransition();
 	Agency.register(noTrans1, stateVertexCls);

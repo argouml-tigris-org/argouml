@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,24 +22,34 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.util;
 
-import org.tigris.gef.presentation.FigEdgePoly;
+import java.util.Enumeration;
+import java.util.Iterator;
 
 /**
- * Abstract class to display diagram lines (edges) in a UML diagram
+ * Iterator which wraps an Enumeration for transitional purposes.
+ * Does not support the remove() method. 
+ * @author Tom Morris <tfmorris@gmail.com>
  */
-public abstract class FigGraphEdge
-    extends FigEdgePoly {
+public class EnumerationIterator implements Iterator {
 
-    /**
-     * Returns a {@link SelectionRerouteEdge} object that manages selection
-     * and rerouting of the edge.
-     *
-     * @return the SelectionRerouteEdge.
-     */
-//    public Selection makeSelection() {
-//        return new SelectionRerouteEdge(this);
-//    }
+    private Enumeration enumeration;
+    
+    public EnumerationIterator(Enumeration e) {
+        enumeration = e;
+    }
+    
+    public boolean hasNext() {
+        return enumeration.hasMoreElements();
+    }
+
+    public Object next() {
+        return enumeration.nextElement();
+    }
+
+    public void remove() {
+        throw new UnsupportedOperationException();
+    }
 
 }

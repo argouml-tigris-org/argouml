@@ -59,7 +59,7 @@ public class ActionAddConcurrentRegion extends UndoableAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-	/** logger */
+    /** logger */
     private static final Logger LOG =
         Logger.getLogger(ActionAddConcurrentRegion.class);
 

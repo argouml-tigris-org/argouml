@@ -24,10 +24,8 @@
 
 package org.argouml.ui.explorer.rules;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -58,12 +56,10 @@ public class GoClassifierToSequenceDiagram extends AbstractPerspectiveRule {
     public Collection getChildren(Object parent) {
 	if (Model.getFacade().isAClassifier(parent)) {
 	    Collection col = Model.getFacade().getCollaborations(parent);
-	    List ret = new ArrayList();
+	    Set<ArgoDiagram> ret = new HashSet<ArgoDiagram>();
 	    Project p = ProjectManager.getManager().getCurrentProject();
-	    Iterator it = p.getDiagrams().iterator();
-
-	    while (it.hasNext()) {
-		ArgoDiagram diagram = (ArgoDiagram) it.next();
+            
+            for (ArgoDiagram diagram : p.getDiagramList()) {
 		if (diagram instanceof UMLSequenceDiagram
 		    && col.contains(((SequenceDiagramGraphModel)
 		            ((UMLSequenceDiagram) diagram).getGraphModel())

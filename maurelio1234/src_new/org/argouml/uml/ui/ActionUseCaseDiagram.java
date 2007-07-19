@@ -26,9 +26,8 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 
 /**
  * Action to create a new use case diagram.
@@ -56,7 +55,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
                 "The argument " + namespace + "is not a namespace.");
         }
         return DiagramFactory.getInstance().createDiagram(
-                UMLUseCaseDiagram.class,
+                DiagramFactory.DiagramType.UseCase,
                 namespace,
                 null);
     }
@@ -67,7 +66,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
     public boolean isValidNamespace(Object handle) {
         boolean validNamespace = false;
         if (Model.getFacade().isAPackage(handle)
-            || Model.getFacade().isAClassifier(handle))
+                || Model.getFacade().isAClassifier(handle))
             validNamespace = true;
         return validNamespace;
     }

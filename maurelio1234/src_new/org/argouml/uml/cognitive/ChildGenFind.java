@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,8 +58,8 @@ public class ChildGenFind implements ChildGenerator {
 	if (o instanceof Project) {
 	    Project p = (Project) o;
 	    Vector res = new Vector();
-	    res.addAll(p.getUserDefinedModels());
-	    res.addAll(p.getDiagrams());
+	    res.addAll(p.getUserDefinedModelList());
+	    res.addAll(p.getDiagramList());
 	    return res.elements();
 	}
         
@@ -86,4 +86,4 @@ public class ChildGenFind implements ChildGenerator {
     public static ChildGenFind getSingleton() {
         return SINGLETON;
     }
-} /* end class ChildGenFind */
+}

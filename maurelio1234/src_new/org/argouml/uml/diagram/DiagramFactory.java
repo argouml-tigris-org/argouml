@@ -24,10 +24,11 @@
 
 package org.argouml.uml.diagram;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.argouml.model.ActivityDiagram;
 import org.argouml.model.ClassDiagram;
@@ -47,18 +48,50 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.GraphNodeRenderer;
-import org.tigris.gef.presentation.Fig;
 
 /**
 * Provide a factory method to create different UML diagrams.
 * @author Bob Tarling
 */
 public final class DiagramFactory {
+
+    /**
+     * Map from our public enum to our internal implementation classes.
+     * This allows use to hide the implementation classes from users of
+     * the factory.
+     * NOTE: This needs to be initialized before the constructor is called
+     * to initialize the singleton.
+     */
+    private static Map<DiagramType, Class> diagramClasses = 
+        new EnumMap<DiagramType, Class>(DiagramType.class);
+    
+    /**
+     * The singleton instance.
+     */
     private static DiagramFactory diagramFactory = new DiagramFactory();
 
-    private List diagrams = new Vector();
+    /**
+     * Enumeration containing all the different types of UML diagrams.
+     */
+    public enum DiagramType {
+        Class, UseCase, State, Deployment, Collaboration, Activity, Sequence
+    }
+
+
+    
+   
+    private List<ArgoDiagram> diagrams = new ArrayList<ArgoDiagram>();
 
     private DiagramFactory() {
+        super();
+        diagramClasses.put(DiagramType.Class, UMLClassDiagram.class);
+        diagramClasses.put(DiagramType.UseCase, UMLUseCaseDiagram.class);
+        diagramClasses.put(DiagramType.State, UMLStateDiagram.class);
+        diagramClasses.put(DiagramType.Deployment, UMLDeploymentDiagram.class);
+        diagramClasses.put(DiagramType.Collaboration, 
+                UMLCollaborationDiagram.class);
+        diagramClasses.put(DiagramType.Activity, UMLActivityDiagram.class);
+        diagramClasses.put(DiagramType.Sequence, UMLSequenceDiagram.class);
     }
 
     /**
@@ -71,17 +104,21 @@ public final class DiagramFactory {
     /**
      * @return the list of diagrams
      */
-    public List getDiagram() {
+    public List<ArgoDiagram> getDiagram() {
         return diagrams;
     }
 
+    
+    /**
+     * Factory method to create a new default instance of an ArgoDiagram.
+     * @param namespace The namespace that (in)directly 
+     *                        owns the elements on the diagram
+     * @return the newly instantiated class diagram
+     */
+    public ArgoDiagram createDefaultDiagram(Object namespace) {
+        return createDiagram(DiagramType.Class, namespace, null);
+    }
 
-//    public ArgoDiagram createDiagram(Class type, Object namespace,
-//            Object machine) {
-//	
-//    }
-    
-    
     /**
      * Factory method to create a new instance of an ArgoDiagram.
      *
@@ -92,6 +129,24 @@ public final class DiagramFactory {
      *                         (only: statemachine - activitygraph)
      * @return the newly instantiated class diagram
      */
+    public ArgoDiagram createDiagram(DiagramType type, Object namespace,
+            Object machine) {
+        return createDiagram(diagramClasses.get(type), namespace, machine);
+    }
+    
+    /**
+     * Factory method to create a new instance of an ArgoDiagram.
+     *
+     * @param type The class of rendering diagram to create
+     * @param namespace The namespace that (in)directly 
+     *                        owns the elements on the diagram
+     * @param machine The StateMachine for the diagram
+     *                         (only: statemachine - activitygraph)
+     * @return the newly instantiated class diagram
+     * @deprecated for 0.25.4 by tfmorris.  Use 
+     * {@link #createDiagram(DiagramType, Object, Object)}.
+     */
+    @Deprecated
     public ArgoDiagram createDiagram(Class type, Object namespace,
             Object machine) {
 
@@ -159,22 +214,24 @@ public final class DiagramFactory {
         return diagram;
     }
 
-    public DiDiagram getDiDiagram(Object graphModel) {
-        if (graphModel instanceof UMLMutableGraphSupport) {
-            return ((UMLMutableGraphSupport) graphModel).getDiDiagram();
-        }
-        throw new IllegalArgumentException("graphModel: " + graphModel);
-    }
+    // Unused - tfm - 20070706
+//    public DiDiagram getDiDiagram(Object graphModel) {
+//        if (graphModel instanceof UMLMutableGraphSupport) {
+//            return ((UMLMutableGraphSupport) graphModel).getDiDiagram();
+//        }
+//        throw new IllegalArgumentException("graphModel: " + graphModel);
+//    }
 
-    public void addElement(Object diagram, Object element) {
-        if (!(diagram instanceof ArgoDiagram)) {
-            throw new IllegalArgumentException("diagram: " + diagram);
-        }
-        if (!(element instanceof Fig)) {
-            throw new IllegalArgumentException("fig: " + element);
-        }
-        ((ArgoDiagram) diagram).add((Fig) element);
-    }
+    // Unused - tfm 20070706
+//    public void addElement(Object diagram, Object element) {
+//        if (!(diagram instanceof ArgoDiagram)) {
+//            throw new IllegalArgumentException("diagram: " + diagram);
+//        }
+//        if (!(element instanceof Fig)) {
+//            throw new IllegalArgumentException("fig: " + element);
+//        }
+//        ((ArgoDiagram) diagram).add((Fig) element);
+//    }
 
 
     private final Map noStyleProperties = new HashMap();

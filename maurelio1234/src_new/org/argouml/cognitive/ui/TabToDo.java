@@ -35,6 +35,8 @@ import javax.swing.SwingConstants;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Wizard;
 import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.swingext.ArgoToolbarManager;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.TabToDoTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -96,7 +98,7 @@ public class TabToDo extends AbstractArgoJPanel
         factory.setFloatable(false);
         factory.setOrientation(SwingConstants.VERTICAL);
         JToolBar toolBar = factory.createToolBar();
-
+        toolBar.setName(getTitle());
         add(toolBar, BorderLayout.WEST);
 
         splitPane = new BorderSplitPane();

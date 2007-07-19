@@ -69,6 +69,9 @@ import org.tigris.gef.presentation.FigNode;
  * @author abonner
  */
 public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
+    
+    static final long serialVersionUID = 2217410137377934879L;
+
     /**
      * Logger.
      */
@@ -251,30 +254,7 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
                     "Don't know how to create FigEdge for model type "
                     + edge.getClass().getName());
         } else {
-            if (newEdge.getSourcePortFig() == null) {
-                Object source;
-                if (edge instanceof CommentEdge) {
-                    source = ((CommentEdge) edge).getSource();
-                } else {
-                    source = Model.getUmlHelper().getSource(edge);
-                }
-                setSourcePort(newEdge, (FigNode) lay.presentationFor(source));
-            }
-            if (newEdge.getDestPortFig() == null) {
-                Object dest;
-                if (edge instanceof CommentEdge) {
-                    dest = ((CommentEdge) edge).getDestination();
-                } else {
-                    dest = Model.getUmlHelper().getDestination(edge);
-                }
-                setDestPort(newEdge, (FigNode) lay.presentationFor(dest));
-            }
-            if (newEdge.getSourcePortFig() == null
-                    || newEdge.getDestPortFig() == null) {
-                throw new IllegalStateException("Edge of type "
-                    + newEdge.getClass().getName()
-                    + " created with no source or destination port");
-            }
+            setPorts(lay, newEdge);
         }
 
         lay.add(newEdge);
@@ -283,17 +263,5 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
 
         return newEdge;
     }
-
-    private void setSourcePort(FigEdge edge, FigNode source) {
-        edge.setSourcePortFig(source);
-        edge.setSourceFigNode(source);
-    }
-
-    private void setDestPort(FigEdge edge, FigNode dest) {
-        edge.setDestPortFig(dest);
-        edge.setDestFigNode(dest);
-    }
-
-    static final long serialVersionUID = 2217410137377934879L;
 
 } /* end class UseCaseDiagramRenderer */

@@ -92,8 +92,9 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     /*
      * @see org.tigris.gef.base.SelectionButtons#paint(java.awt.Graphics)
      */
+    @Override
     public void paint(Graphics g) {
-        ((FigNodeModelElement) getContent()).paintClarifiers(g);
+        ((Clarifiable) getContent()).paintClarifiers(g);
         super.paint(g);
     }
 

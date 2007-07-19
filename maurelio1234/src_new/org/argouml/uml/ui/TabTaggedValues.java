@@ -50,6 +50,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.swingext.ArgoToolbarManager;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -89,6 +90,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
     public TabTaggedValues() {
         super("tab.tagged-values");
         buttonPanel = new ToolBar();
+        buttonPanel.setName(getTitle());
         buttonPanel.setFloatable(false);
 
         JButton b = new JButton();

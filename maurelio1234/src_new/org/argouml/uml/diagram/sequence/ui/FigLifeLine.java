@@ -36,6 +36,7 @@ import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.sequence.ui.FigClassifierRole.TempFig;
+import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.persistence.pgml.Container;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
 import org.tigris.gef.persistence.pgml.HandlerFactory;
@@ -43,14 +44,13 @@ import org.tigris.gef.persistence.pgml.HandlerStack;
 import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.persistence.pgml.UnknownHandler;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-class FigLifeLine extends FigGroup implements HandlerFactory {
+class FigLifeLine extends ArgoFigGroup implements HandlerFactory {
 
     /**
      * The UID.

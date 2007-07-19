@@ -37,9 +37,6 @@ import org.tigris.gef.presentation.Fig;
  */
 public class SelectionMoveClarifiers extends SelectionMove {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /** Construct a new SelectionMoveClarifiers for the given Fig
      *
      * @param f the given Fig
@@ -55,9 +52,9 @@ public class SelectionMoveClarifiers extends SelectionMove {
      * @see org.tigris.gef.base.Selection#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
-        ((FigNodeModelElement) getContent()).paintClarifiers(g);
+        ((Clarifiable) getContent()).paintClarifiers(g);
         super.paint(g);
     }
 
-} /* end class SelectionMoveClarifiers */
+}
 

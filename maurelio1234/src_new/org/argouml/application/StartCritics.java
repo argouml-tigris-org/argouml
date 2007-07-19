@@ -63,10 +63,8 @@ public class StartCritics implements Runnable {
         Configuration.addListener(Argo.KEY_USER_FULLNAME, dsgr); //MVW
         dsgr.spawnCritiquer(p);
         dsgr.setChildGenerator(new ChildGenUML());
-        java.util.Enumeration models = (p.getUserDefinedModels()).elements();
-        while (models.hasMoreElements()) {
-            Object o = models.nextElement();
-            Model.getPump().addModelEventListener(dsgr, o);
+        for (Object model : p.getUserDefinedModelList()) {
+            Model.getPump().addModelEventListener(dsgr, model);
         }
         LOG.info("spawned critiquing thread");
         dsgr.getDecisionModel().startConsidering(UMLDecision.CLASS_SELECTION);

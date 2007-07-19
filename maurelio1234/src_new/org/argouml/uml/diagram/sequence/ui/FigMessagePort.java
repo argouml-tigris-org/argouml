@@ -25,14 +25,12 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.awt.Point;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.argouml.uml.diagram.sequence.MessageNode;
-
+import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigLine;
 
 /**
@@ -40,7 +38,7 @@ import org.tigris.gef.presentation.FigLine;
  *
  * @author jaap.branderhorst
  */
-public class FigMessagePort extends FigGroup {
+public class FigMessagePort extends ArgoFigGroup {
 
     private static final long serialVersionUID = -7805833566723101923L;
     

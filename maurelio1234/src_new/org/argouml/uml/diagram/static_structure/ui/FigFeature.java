@@ -28,7 +28,7 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.model.Model;
-import org.argouml.notation.providers.NotationProvider;
+import org.argouml.notation.NotationProvider;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;

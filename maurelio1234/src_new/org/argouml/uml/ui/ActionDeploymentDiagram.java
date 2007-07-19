@@ -25,28 +25,21 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 
 /**
  * Action to trigger creation of a deployment diagram.
  */
 public class ActionDeploymentDiagram extends ActionAddDiagram {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
     /**
      * Logger.
      */
     private static final Logger LOG =
         Logger.getLogger(ActionDeploymentDiagram.class);
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Constructor.
@@ -55,17 +48,15 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
         super("action.deployment-diagram");
     }
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
     /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
     public ArgoDiagram createDiagram(Object notUsedHandle) {
         // a deployment diagram shows something about the whole model
         // according to the uml spec
-	Project p = ProjectManager.getManager().getCurrentProject();
-	Object handle = p.getRoot();
+        Object handle = Model.getModelManagementFactory().getRootModel();
+//	Project p = ProjectManager.getManager().getCurrentProject();
+//	Object handle = p.getRoot();
         if (!Model.getFacade().isANamespace(handle)) {
             LOG.error("No namespace as argument");
             LOG.error(handle);
@@ -74,7 +65,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
 					       + "is not a namespace.");
         }
         return DiagramFactory.getInstance().createDiagram(
-                UMLDeploymentDiagram.class,
+                DiagramFactory.DiagramType.Deployment,
                 handle,
                 null);
     }
@@ -109,4 +100,4 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
      * The UID.
      */
     private static final long serialVersionUID = 9027235104963895167L;
-} /* end class ActionDeploymentDiagram */
+} 

@@ -155,6 +155,5 @@ public class FigInclude extends FigEdgeModelElement {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
     }
-    
 } /* end class FigInclude */
 

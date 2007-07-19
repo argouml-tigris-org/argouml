@@ -265,36 +265,10 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
                     "Don't know how to create FigEdge for model type "
                     + edge.getClass().getName());
         }
+        
+        setPorts(lay, newEdge);
 
-        if (newEdge.getSourcePortFig() == null) {
-            Object source;
-            if (edge instanceof CommentEdge) {
-                source = ((CommentEdge) edge).getSource();
-            } else {
-                source = Model.getUmlHelper().getSource(edge);
-            }
-            FigNode sourceNode = getNodePresentationFor(lay, source);
-            assert (sourceNode != null) : "No FigNode found for " + source;
-            setSourcePort(newEdge, sourceNode);
-        }
-
-        if (newEdge.getDestPortFig() == null) {
-            Object dest;
-            if (edge instanceof CommentEdge) {
-                dest = ((CommentEdge) edge).getDestination();
-            } else {
-                dest = Model.getUmlHelper().getDestination(edge);
-            }
-            LOG.info("The dest model element is " + dest);
-            setDestPort(newEdge, getNodePresentationFor(lay, dest));
-        }
-
-        if (newEdge.getSourcePortFig() == null
-                || newEdge.getDestPortFig() == null) {
-            throw new IllegalStateException("Edge of type "
-                    + newEdge.getClass().getName()
-                    + " created with no source or destination port");
-        }
+        assert newEdge != null : "There has been no FigEdge created";
 
         newEdge.setDiElement(
             GraphChangeAdapter.getInstance().createElement(gm, edge));
@@ -313,46 +287,4 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         return newEdge;
     }
 
-    private void setSourcePort(FigEdge edge, FigNode source) {
-        edge.setSourcePortFig(source);
-        edge.setSourceFigNode(source);
-    }
-
-    private void setDestPort(FigEdge edge, FigNode dest) {
-        edge.setDestPortFig(dest);
-        edge.setDestFigNode(dest);
-    }
-    
-    /**
-     * Get the FigNode from the given layer that represents the given
-     * model element.
-     * The FigNode portion of an association class is returned in preference
-     * to the FigEdge portion.
-     * If no FigNode is found then a FIgEdge is searched for and the FigNode
-     * that acts as its edge port is returned.
-     * @param lay the layer containing the Fig
-     * @param modelElement the model element to find presentation for
-     * @return the FigNode presentation of the model element
-     */
-    private FigNode getNodePresentationFor(Layer lay, Object modelElement) {
-        assert modelElement != null : "A modelElement must be supplied";
-        for (Iterator it = lay.getContentsNoEdges().iterator();
-                it.hasNext(); ) {
-            Object fig = it.next();
-            if (fig instanceof FigNode
-                    && ((FigNode) fig).getOwner().equals(modelElement)) {
-                return ((FigNode) fig);
-            }
-        }
-        for (Iterator it = lay.getContentsEdgesOnly().iterator();
-            it.hasNext(); ) {
-            Object fig = it.next();
-            if (fig instanceof FigEdgeModelElement
-                    && modelElement.equals(((FigEdgeModelElement) fig)
-                	    .getOwner())) {
-                return ((FigEdgeModelElement) fig).getEdgePort();
-            }
-        }
-        return null;
-    }
 } /* end class ClassDiagramRenderer */

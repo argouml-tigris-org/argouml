@@ -70,23 +70,23 @@ import org.argouml.uml.diagram.static_structure.ui.FigModel;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.static_structure.ui.FigStereotypeDeclaration;
 import org.argouml.uml.diagram.static_structure.ui.FigSubsystem;
-import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigAssociationEnd;
 import org.argouml.uml.diagram.ui.FigClassAssociationClass;
 import org.argouml.uml.diagram.ui.FigDependency;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.FigPermission;
 import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.FigUsage;
-import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.use_case.ui.FigActor;
 import org.argouml.uml.diagram.use_case.ui.FigExtend;
 import org.argouml.uml.diagram.use_case.ui.FigInclude;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
@@ -301,4 +301,87 @@ public abstract class UmlDiagramRenderer
 
         return newEdge;
     }
+
+    /**
+     * Find the Figs in the given layer that should be the source and
+     * destination and attach these to either end of the FigEdge
+     * @param layer the layer to look for the FigNodes
+     * @param newEdge The edge to attach
+     */
+    protected final void setPorts(Layer layer, FigEdge newEdge) {
+        Object modelElement = newEdge.getOwner();
+        if (newEdge.getSourcePortFig() == null) {
+            Object source;
+            if (modelElement instanceof CommentEdge) {
+                source = ((CommentEdge) modelElement).getSource();
+            } else {
+                source = Model.getUmlHelper().getSource(modelElement);
+            }
+            FigNode sourceNode = getNodePresentationFor(layer, source);
+            assert (sourceNode != null) : "No FigNode found for " + source;
+            setSourcePort(newEdge, sourceNode);
+        }
+
+        if (newEdge.getDestPortFig() == null) {
+            Object dest;
+            if (modelElement instanceof CommentEdge) {
+                dest = ((CommentEdge) modelElement).getDestination();
+            } else {
+                dest = Model.getUmlHelper().getDestination(newEdge.getOwner());
+            }
+            setDestPort(newEdge, getNodePresentationFor(layer, dest));
+        }
+        
+        if (newEdge.getSourcePortFig() == null
+                || newEdge.getDestPortFig() == null) {
+            throw new IllegalStateException("Edge of type "
+                + newEdge.getClass().getName()
+                + " created with no source or destination port");
+        }
+    }
+
+    private void setSourcePort(FigEdge edge, FigNode source) {
+        edge.setSourcePortFig(source);
+        edge.setSourceFigNode(source);
+    }
+
+    private void setDestPort(FigEdge edge, FigNode dest) {
+        edge.setDestPortFig(dest);
+        edge.setDestFigNode(dest);
+    }
+    
+    /**
+     * Get the FigNode from the given layer that represents the given
+     * model element.
+     * The FigNode portion of an association class is returned in preference
+     * to the FigEdge portion.
+     * If no FigNode is found then a FIgEdge is searched for and the FigNode
+     * that acts as its edge port is returned.
+     * @param lay the layer containing the Fig
+     * @param modelElement the model element to find presentation for
+     * @return the FigNode presentation of the model element
+     */
+    private FigNode getNodePresentationFor(Layer lay, Object modelElement) {
+        assert modelElement != null : "A modelElement must be supplied";
+        for (Iterator it = lay.getContentsNoEdges().iterator();
+                it.hasNext(); ) {
+            Object fig = it.next();
+            if (fig instanceof FigNode
+                    && ((FigNode) fig).getOwner().equals(modelElement)) {
+                return ((FigNode) fig);
+            }
+        }
+        for (Iterator it = lay.getContentsEdgesOnly().iterator();
+            it.hasNext(); ) {
+            Object fig = it.next();
+            if (fig instanceof FigEdgeModelElement
+                    && modelElement.equals(((FigEdgeModelElement) fig)
+                            .getOwner())) {
+                return ((FigEdgeModelElement) fig).getEdgePort();
+            }
+        }
+        return null;
+    }
+    
+
 } /* end class CollabDiagramRenderer */

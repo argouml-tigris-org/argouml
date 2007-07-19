@@ -33,8 +33,10 @@ import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect when an initial state has more than one
- * outgoing transitions.  Implements a constraint from the UML
- * 1.1 standard: page 10, Pseudostate [1].
+ * outgoing transitions.  
+ * Implements the first part of a well-formedness rule from the UML
+ * 1.4.2 standard: Pseudostate [1]:<p>
+ * An initial vertex can have at most one outgoing transition (...).
  *
  * @author jrobbins
  */

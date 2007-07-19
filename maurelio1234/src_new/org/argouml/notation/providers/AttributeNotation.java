@@ -24,6 +24,8 @@
 
 package org.argouml.notation.providers;
 
+import org.argouml.notation.NotationProvider;
+
 /**
  * This abstract class forms the basis of all Notation providers
  * for the text shown in the attribute compartment of a Class.

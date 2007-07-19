@@ -25,6 +25,7 @@
 package org.argouml.uml.reveng;
 
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -34,15 +35,14 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.Fig;
@@ -77,7 +77,8 @@ public class DiagramInterface {
      * To know what diagrams we have to layout after the import,
      * we store them in this Vector.
      */
-    private Vector modifiedDiagrams = new Vector();
+    private List<ArgoDiagram> modifiedDiagrams = 
+        new ArrayList<ArgoDiagram>();
 
     /**
      * The current GraphModel of the current classdiagram.
@@ -120,10 +121,22 @@ public class DiagramInterface {
      *
      * @param diagram The diagram to mark as modified.
      */
-    void markDiagramAsModified(Object diagram) {
-	if (!modifiedDiagrams.contains(diagram)) {
-	    modifiedDiagrams.add(diagram);
-	}
+    void markDiagramAsModified(ArgoDiagram diagram) {
+        if (!modifiedDiagrams.contains(diagram)) {
+            modifiedDiagrams.add(diagram);
+        }
+    }
+    
+    /**
+     * Get the list of modified diagrams.
+     * 
+     * @return The list of modified diagrams.
+     * @deprecated for 0.25.4 by tfmorris. Use 
+     * {@link #getModifiedDiagramList()}.
+     */
+    @Deprecated
+    public Vector<ArgoDiagram> getModifiedDiagrams() {
+	return new Vector<ArgoDiagram>(modifiedDiagrams);
     }
 
     /**
@@ -131,15 +144,15 @@ public class DiagramInterface {
      *
      * @return The list of modified diagrams.
      */
-    public Vector getModifiedDiagrams() {
-	return modifiedDiagrams;
+    public List<ArgoDiagram> getModifiedDiagramList() {
+        return modifiedDiagrams;
     }
-
+    
     /**
      * Reset the list of modified diagrams.
      */
     void resetModifiedDiagrams() {
-	modifiedDiagrams = new Vector();
+	modifiedDiagrams = new ArrayList<ArgoDiagram>();
     }
 
     /**
@@ -249,12 +262,12 @@ public class DiagramInterface {
      */
     public void addClassDiagram(Object ns, String name) {
         Project p = ProjectManager.getManager().getCurrentProject();
+//        Object root = p.getRoot();
+        Object root = Model.getModelManagementFactory().getRootModel();
 
-        ArgoDiagram d =
-            DiagramFactory.getInstance().createDiagram(
-                    UMLClassDiagram.class,
-                    ns == null ? p.getRoot() : ns,
-                    null);
+        ArgoDiagram d = DiagramFactory.getInstance().createDiagram(
+                DiagramFactory.DiagramType.Class,
+                ns == null ? root : ns, null);
 
         try {
             d.setName(getDiagramName(name));

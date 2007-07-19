@@ -22,43 +22,32 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.notation;
+package org.argouml.notation.providers.uml;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.argouml.application.api.GUISettingsTabInterface;
+import org.argouml.application.api.InitSubsystem;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.notation.providers.uml.ActionStateNotationUml;
-import org.argouml.notation.providers.uml.AssociationEndNameNotationUml;
-import org.argouml.notation.providers.uml.AssociationNameNotationUml;
-import org.argouml.notation.providers.uml.AssociationRoleNotationUml;
-import org.argouml.notation.providers.uml.AttributeNotationUml;
-import org.argouml.notation.providers.uml.CallStateNotationUml;
-import org.argouml.notation.providers.uml.ClassifierRoleNotationUml;
-import org.argouml.notation.providers.uml.ComponentInstanceNotationUml;
-import org.argouml.notation.providers.uml.ExtensionPointNotationUml;
-import org.argouml.notation.providers.uml.MessageNotationUml;
-import org.argouml.notation.providers.uml.ModelElementNameNotationUml;
-import org.argouml.notation.providers.uml.NodeInstanceNotationUml;
-import org.argouml.notation.providers.uml.NotationUtilityUml;
-import org.argouml.notation.providers.uml.ObjectFlowStateStateNotationUml;
-import org.argouml.notation.providers.uml.ObjectFlowStateTypeNotationUml;
-import org.argouml.notation.providers.uml.ObjectNotationUml;
-import org.argouml.notation.providers.uml.OperationNotationUml;
-import org.argouml.notation.providers.uml.StateBodyNotationUml;
-import org.argouml.notation.providers.uml.TransitionNotationUml;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationProviderFactory2;
 
 /**
- * This class initialises the Notation subsystem.
+ * This class initialises the UML Notation subsystem.
  * 
  * This class is the only one that has the knowledge of the complete list of
  * NotationProvider4 implementations for UML. <p>
  * 
  * @author mvw@tigris.org
  */
-class InitNotationUml {
+public class InitNotationUml implements InitSubsystem {
 
     /**
      * static initializer, register all appropriate notations.
      */
-    static void init() {
+    public void init() {
         NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();
         NotationName name =
             Notation.makeNotation(
@@ -126,6 +115,14 @@ class InitNotationUml {
 
         /* Initialise the NotationUtilityUml: */
         (new NotationUtilityUml()).init();
+    }
+
+    public List<GUISettingsTabInterface> getProjectSettingsTabs() {
+        return Collections.emptyList();
+    }
+
+    public List<GUISettingsTabInterface> getSettingsTabs() {
+        return Collections.emptyList();
     }
 
 }

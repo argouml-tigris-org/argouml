@@ -39,12 +39,14 @@ import java.util.zip.ZipOutputStream;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectFactory;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**
@@ -194,6 +196,8 @@ class ZipFilePersister extends XmiFilePersister {
             persister =
                 PersistenceManager.getInstance()
                     .getDiagramMemberFilePersister();
+        } else if (pm instanceof ProfileConfiguration) {
+            persister = new ProfileConfigurationFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
         } else if (pm instanceof ProjectMemberModel) {
@@ -211,7 +215,7 @@ class ZipFilePersister extends XmiFilePersister {
         LOG.info("Receiving file '" + file.getName() + "'");
 
         try {
-            Project p = new Project();
+            Project p = ProjectFactory.getInstance().createProject();
             String fileName = file.getName();
             String extension =
                 fileName.substring(

@@ -26,7 +26,6 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -62,9 +61,7 @@ public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
         if (Model.getFacade().isANamespace(namespace)) {
             List returnList = new ArrayList();
             Project proj = ProjectManager.getManager().getCurrentProject();
-            Iterator it = proj.getDiagrams().iterator();
-            while (it.hasNext()) {
-                ArgoDiagram diagram = (ArgoDiagram) it.next();
+            for (ArgoDiagram diagram : proj.getDiagramList()) {
                 // Sequence diagrams are not shown as children of the
                 // collaboration that they show but as children of the
                 // classifier/operation the collaboration represents.

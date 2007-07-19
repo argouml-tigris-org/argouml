@@ -73,15 +73,17 @@ import org.argouml.model.DiElement;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.notation.providers.NotationProvider;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.IItemUID;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
@@ -108,7 +110,9 @@ public abstract class FigEdgeModelElement
         KeyListener,
         PropertyChangeListener,
         ArgoNotationEventListener,
-        Highlightable {
+        Highlightable,
+        IItemUID,
+        ArgoFig {
 
     private static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);
@@ -250,6 +254,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
      */
+    @Override
     public String getTipString(MouseEvent me) {
         ToDoItem item = hitClarifier(me.getX(), me.getY());
         String tip = "";
@@ -286,7 +291,7 @@ public abstract class FigEdgeModelElement
         popupAddOffset = 1;
         if (removeFromDiagram) {
             popUpActions.addElement(
-                    ProjectBrowser.getInstance().getRemoveFromDiagramAction());
+                    ProjectActions.getInstance().getRemoveFromDiagramAction());
             popupAddOffset++;
         }
         popUpActions.addElement(new ActionDeleteModelElements());
@@ -960,7 +965,7 @@ public abstract class FigEdgeModelElement
     public void deleteFromModel() {
         Object own = getOwner();
         if (own != null) {
-            ProjectManager.getManager().getCurrentProject().moveToTrash(own);
+            getProject().moveToTrash(own);
         }
 
         /* TODO: MVW: Why is this not done in GEF? */
@@ -1072,10 +1077,7 @@ public abstract class FigEdgeModelElement
         // GEF does not take into account the multiple diagrams we have
         // therefore we loop through our diagrams and delete each and every
         // occurence on our own
-        it = ProjectManager.getManager().getCurrentProject().getDiagrams()
-                .iterator();
-        while (it.hasNext()) {
-            ArgoDiagram diagram = (ArgoDiagram) it.next();
+        for (ArgoDiagram diagram : getProject().getDiagramList()) {
             diagram.damage();
         }
 
@@ -1368,15 +1370,37 @@ public abstract class FigEdgeModelElement
         listeners.clear();
     }
 
-    /**
-     * Get the Project that the Fig belongs to
-     * @return the project
-     */
-    protected Project getProject() {
-	LayerPerspective layer = (LayerPerspective) getLayer();
-	UMLMutableGraphSupport gm = 
-	    (UMLMutableGraphSupport) layer.getGraphModel();
-	return gm.getProject();
-    }
 
-} /* end class FigEdgeModelElement */
+    /**
+     * This optional method is not implemented.  It will throw an
+     * {@link UnsupportedOperationException} if used. Figs are 
+     * added to a GraphModel which is, in turn, owned by a project.
+     */
+    public void setProject(Project project) {
+        throw new UnsupportedOperationException();
+    }
+    
+    public Project getProject() {
+        LayerPerspective layer = (LayerPerspective) getLayer();
+        if (layer == null) {
+            /* TODO: Without this, we fail to draw e.g. a Class.
+             * But is this a good solution? 
+             * Why is the Layer not set in the constructor? */
+            Editor editor = Globals.curEditor();
+            if (editor == null) {
+                // TODO: The above doesn't work reliably in a constructor.  We
+                // need a better way of getting default fig settings for the owning
+                // project rather than using the project manager singleton. - tfm
+                return ProjectManager.getManager().getCurrentProject();
+            }
+            Layer lay = editor.getLayerManager().getActiveLayer();
+            if (lay instanceof LayerPerspective) {
+                layer = (LayerPerspective) lay;
+            }
+        }
+        UMLMutableGraphSupport gm = 
+            (UMLMutableGraphSupport) layer.getGraphModel();
+        return gm.getProject();
+    }
+    
+}

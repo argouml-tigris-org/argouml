@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.notation.ui;
+package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -89,7 +89,8 @@ public class ActionNotation extends UndoableAction
             if (o instanceof NotationName) {
                 NotationName nn = (NotationName) o;
                 if (key.equals(nn.getTitle())) {
-                    Project p = ProjectManager.getManager().getCurrentProject();
+                    Project p = ProjectManager.getManager()
+                            .getCurrentProject();
                     p.getProjectSettings().setNotationLanguage(nn);
                     break;
                 }

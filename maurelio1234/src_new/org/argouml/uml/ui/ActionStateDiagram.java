@@ -24,15 +24,12 @@
 
 package org.argouml.uml.ui;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 /**
@@ -51,10 +48,11 @@ public class ActionStateDiagram extends ActionNewDiagram {
      * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
      */
     protected ArgoDiagram createDiagram() {
-        Project p = ProjectManager.getManager().getCurrentProject();
         Object target = TargetManager.getInstance().getModelTarget();
         Object machine = null;
-        Object namespace = p.getRoot(); // the root model
+        Object namespace = Model.getModelManagementFactory().getRootModel();
+//      Project p = ProjectManager.getManager().getCurrentProject();
+//      Object namespace = p.getRoot(); // the root model
         if (Model.getStateMachinesHelper().isAddingStatemachineAllowed(
               target)) {
             /* The target is a valid context. */
@@ -78,17 +76,14 @@ public class ActionStateDiagram extends ActionNewDiagram {
         }
         
         return DiagramFactory.getInstance().createDiagram(
-                UMLStateDiagram.class,
+                DiagramFactory.DiagramType.State,
                 Model.getFacade().getNamespace(machine),
                 machine);
     }
     
     private boolean hasNoDiagramYet(Object machine) {
         Project p = ProjectManager.getManager().getCurrentProject();
-        Collection c = p.getDiagrams();
-        Iterator i = c.iterator();
-        while (i.hasNext()) {
-            ArgoDiagram d = (ArgoDiagram) i.next();
+        for (ArgoDiagram d : p.getDiagramList()) {
             if (d instanceof UMLStateDiagram) {
                 if (((UMLStateDiagram) d).getStateMachine() == machine) {
                     return false;
@@ -103,4 +98,4 @@ public class ActionStateDiagram extends ActionNewDiagram {
      */
     private static final long serialVersionUID = -5197718695001757808L;
 
-} /* end class ActionStateDiagram */
+}

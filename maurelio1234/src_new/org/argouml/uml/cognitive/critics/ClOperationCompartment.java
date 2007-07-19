@@ -31,7 +31,7 @@ import java.awt.Rectangle;
 
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.ui.Clarifier;
-import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
+import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.tigris.gef.presentation.Fig;
 
 

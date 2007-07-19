@@ -29,8 +29,8 @@ import java.awt.event.ItemEvent;
 import javax.swing.JCheckBox;
 
 import org.argouml.ui.StylePanelFigNodeModelElement;
-import org.argouml.uml.diagram.ui.StereotypeContainer;
-import org.argouml.uml.diagram.ui.VisibilityContainer;
+import org.argouml.uml.diagram.StereotypeContainer;
+import org.argouml.uml.diagram.VisibilityContainer;
 
 /**
  * Stylepanel which adds a checkbox to show or hide the stereotype.<p>

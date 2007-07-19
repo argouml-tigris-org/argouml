@@ -43,7 +43,7 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
@@ -204,7 +204,7 @@ public class FigClass extends FigClassifierBox
      * Returns the status of the attribute field.
      * @return true if the attributes are visible, false otherwise
      *
-     * @see org.argouml.uml.diagram.ui.AttributesCompartmentContainer#isAttributesVisible()
+     * @see org.argouml.uml.diagram.AttributesCompartmentContainer#isAttributesVisible()
      */
     public boolean isAttributesVisible() {
         return getAttributesFig().isVisible();
@@ -213,7 +213,7 @@ public class FigClass extends FigClassifierBox
     /**
      * @param isVisible true if the attribute compartment is visible
      *
-     * @see org.argouml.uml.diagram.ui.AttributesCompartmentContainer#setAttributesVisible(boolean)
+     * @see org.argouml.uml.diagram.AttributesCompartmentContainer#setAttributesVisible(boolean)
      */
     public void setAttributesVisible(boolean isVisible) {
         Rectangle rect = getBounds();

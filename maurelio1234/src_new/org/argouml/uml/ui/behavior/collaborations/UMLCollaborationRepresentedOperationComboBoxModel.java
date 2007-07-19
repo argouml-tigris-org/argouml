@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -56,15 +55,11 @@ class UMLCollaborationRepresentedOperationComboBoxModel
     protected void buildModelList() {
         Collection operations = new ArrayList();
         Project p = ProjectManager.getManager().getCurrentProject();
-        Iterator it = p.getUserDefinedModels().iterator();
-        while (it.hasNext()) {
-            Object model = it.next();
+        for (Object model : p.getUserDefinedModelList()) {
             Collection c = Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(model, 
                     Model.getMetaTypes().getOperation());
-            Iterator ci = c.iterator();
-            while (ci.hasNext()) {
-                Object oper = ci.next();
+            for (Object oper : c) {
                 Object ns = Model.getFacade().getOwner(oper);
                 Collection s = Model.getModelManagementHelper()
                     .getAllSurroundingNamespaces(ns);
@@ -90,6 +85,7 @@ class UMLCollaborationRepresentedOperationComboBoxModel
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         /* Do nothing by design. */
     }

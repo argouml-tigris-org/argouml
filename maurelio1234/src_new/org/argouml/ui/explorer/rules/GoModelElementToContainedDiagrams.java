@@ -24,10 +24,8 @@
 
 package org.argouml.ui.explorer.rules;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -59,11 +57,8 @@ public class GoModelElementToContainedDiagrams extends AbstractPerspectiveRule {
     public Collection getChildren(Object parent) {
         if (Model.getFacade().isAModelElement(parent)) {
             Project p = ProjectManager.getManager().getCurrentProject();
-            Collection ret = new ArrayList();
-            Collection diagrams = p.getDiagrams();
-            Iterator it = diagrams.iterator();
-            while (it.hasNext()) {
-                ArgoDiagram diagram = (ArgoDiagram) it.next();
+            Set<ArgoDiagram> ret = new HashSet<ArgoDiagram>();
+            for (ArgoDiagram diagram : p.getDiagramList()) {
                 if (diagram.getNamespace() == parent) {
                     ret.add(diagram);
                 }

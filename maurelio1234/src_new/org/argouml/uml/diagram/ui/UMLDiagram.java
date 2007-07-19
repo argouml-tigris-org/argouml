@@ -42,10 +42,12 @@ import org.argouml.gefext.ArgoModeCreateFigSpline;
 import org.argouml.gefext.ArgoModeCreateFigText;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.swingext.ArgoToolbarManager;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.UUIDHelper;
-import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.ArgoDiagramImpl;
 import org.argouml.uml.diagram.Relocatable;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.util.ToolBarUtility;
@@ -86,7 +88,7 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  * panel as the "home model". <p>
  */
 public abstract class UMLDiagram
-    extends ArgoDiagram
+    extends ArgoDiagramImpl
     implements Relocatable {
 
     /**
@@ -225,6 +227,7 @@ public abstract class UMLDiagram
     public JToolBar getJToolBar() {
         if (toolBar == null) {
             initToolBar();
+            toolBar.setName("misc.toolbar.diagram");
         }
         return toolBar;
     }
@@ -544,7 +547,23 @@ public abstract class UMLDiagram
     }
     
     /**
+     * Create a new diagram name.
+     * @return String
+     */
+    protected String getNewDiagramName() {
+        String name = getLabelName() + " " + getNextDiagramSerial();
+        //        Project project = getProject();
+        // TODO: If this gets called from the constructor the project
+        // won't be set yet. Figure out another way to handle it
+        Project project = ProjectManager.getManager().getCurrentProject();
+        if (!project.isValidDiagramName(name)) {
+            name = getNewDiagramName();
+        }
+        return name;
+    }
+
+    /**
      * The UID.
      */
     static final long serialVersionUID = -401219134410459387L;
-} /* end class UMLDiagram */
+}

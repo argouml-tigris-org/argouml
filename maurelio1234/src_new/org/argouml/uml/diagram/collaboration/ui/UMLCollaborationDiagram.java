@@ -32,7 +32,6 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
@@ -234,19 +233,6 @@ public class UMLCollaborationDiagram extends UMLDiagram {
                 }
             }
         }
-    }
-
-    /**
-     * Creates a new diagramname.
-     * @return String
-     */
-    protected String getNewDiagramName() {
-        String name = getLabelName() + " " + getNextDiagramSerial();
-        if (!ProjectManager.getManager().getCurrentProject()
-	        .isValidDiagramName(name)) {
-            name = getNewDiagramName();
-        }
-        return name;
     }
 
     /*

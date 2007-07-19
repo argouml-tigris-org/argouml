@@ -113,13 +113,13 @@ public class ExplorerPopup extends JPopupMenu {
             }
         }
 
-        final Diagram activeDiagram = currentProject.getActiveDiagram();
+        final ArgoDiagram activeDiagram = currentProject.getActiveDiagram();
 
         // TODO: I've made some attempt to rationalize the conditions here
         // and make them more readable. However I'd suggest that the
         // conditions should move to each diagram.
         // Break up one complex method into a few simple ones and
-        // give the diagrams more knowledge of themselelves
+        // give the diagrams more knowledge of themselves
         // (although the diagrams may in fact delegate this in
         // turn to the Model component).
         // Bob Tarling 31 Jan 2004
