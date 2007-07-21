@@ -50,7 +50,6 @@ import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.Profile;
