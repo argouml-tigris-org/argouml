@@ -34,7 +34,6 @@ import java.util.List;
 
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.Project;
-import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
