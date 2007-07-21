@@ -40,12 +40,12 @@ import javax.swing.KeyStroke;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.UndoEnabler;
-import org.argouml.swingext.ArgoToolbarManager;
 import org.argouml.ui.ActionExportXMI;
 import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ActionSettings;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.ArgoToolbarManager;
 import org.argouml.ui.ProjectActions;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.ZoomSliderButton;
