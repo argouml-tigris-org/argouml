@@ -40,7 +40,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ocl.ArgoFacade;
 import org.argouml.ocl.OCLUtil;
-import org.argouml.swingext.ArgoToolbarManager;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
