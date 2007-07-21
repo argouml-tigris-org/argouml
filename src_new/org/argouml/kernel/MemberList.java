@@ -37,6 +37,18 @@ import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.tigris.gef.base.Diagram;
 
 /**
+ * List of ProjectMembers. <p>
+ * 
+ * The project members are grouped into 3 categories: 
+ * model, diagrams and the todo item list. <p>
+ *
+ * The purpose of these categories is to make sure that members are read 
+ * and written in the correct order. The model must be read before diagrams, 
+ * diagrams must be read before todo items. <p>
+ *
+ * This implementation supports only 1 model member, 
+ * multiple diagram members, and one todo list member.
+ * 
  * @author Bob Tarling
  */
 public class MemberList implements List {
