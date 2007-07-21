@@ -47,7 +47,8 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author Michiel
  */
-public class ArgoFigText extends FigText implements NotificationEmitter, ArgoFig {
+public class ArgoFigText extends FigText 
+    implements NotificationEmitter, ArgoFig {
 
     private NotificationBroadcasterSupport notifier = 
         new NotificationBroadcasterSupport();
@@ -107,6 +108,9 @@ public class ArgoFigText extends FigText implements NotificationEmitter, ArgoFig
      * This optional method is not implemented.  It will throw an
      * {@link UnsupportedOperationException} if used.  Figs are 
      * added to a GraphModel which is, in turn, owned by a project.
+     *
+     * @param project the project
+     * @see org.argouml.uml.diagram.ui.ArgoFig#setProject(org.argouml.kernel.Project)
      */
     public void setProject(Project project) {
         throw new UnsupportedOperationException();
@@ -120,9 +124,11 @@ public class ArgoFigText extends FigText implements NotificationEmitter, ArgoFig
              * Why is the Layer not set in the constructor? */
             Editor editor = Globals.curEditor();
             if (editor == null) {
-                // TODO: The above doesn't work reliably in a constructor.  We
-                // need a better way of getting default fig settings for the owning
-                // project rather than using the project manager singleton. - tfm
+                /* TODO: The above doesn't work reliably in a constructor. 
+                * We need a better way of getting default fig settings 
+                * for the owning project rather than using the project 
+                * manager singleton. - tfm
+                */
                 return ProjectManager.getManager().getCurrentProject();
             }
             Layer lay = editor.getLayerManager().getActiveLayer();
