@@ -26,7 +26,6 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 
-import org.argouml.gefext.ArgoFigText;
 import org.tigris.gef.presentation.FigText;
 
 /**
