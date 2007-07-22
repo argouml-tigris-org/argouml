@@ -1272,15 +1272,17 @@ public abstract class FigNodeModelElement
                 nameFig.setText(notationProviderName.toString(
                         getOwner(), npArguments));
                 Project p = getProject();
-                ProjectSettings ps = p.getProjectSettings();
-                showBoldName = ps.getShowBoldNamesValue();
-                if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
-                    nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT
-                            : ITALIC_LABEL_FONT);
-                } else {
-                    nameFig
-                            .setFont(showBoldName ? BOLD_LABEL_FONT
-                                    : LABEL_FONT);
+                if (p != null) {
+                    ProjectSettings ps = p.getProjectSettings();
+                    showBoldName = ps.getShowBoldNamesValue();
+                    if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
+                        nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT
+                                : ITALIC_LABEL_FONT);
+                    } else {
+                        nameFig
+                        .setFont(showBoldName ? BOLD_LABEL_FONT
+                                : LABEL_FONT);
+                    }
                 }
                 updateBounds();
             }
