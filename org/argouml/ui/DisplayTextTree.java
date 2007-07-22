@@ -46,7 +46,6 @@ import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
 import org.tigris.gef.base.Diagram;
 
@@ -216,10 +215,9 @@ public class DisplayTextTree extends JTree {
 
                 // Look for stereotype
                 if (showStereotype) {
-                    Collection stereos =
+                    Collection<Object> stereos =
                         Model.getFacade().getStereotypes(value);
-                    name += " "
-                        + NotationUtilityUml.generateStereotype(stereos);
+                    name += " " + generateStereotype(stereos);
                     if (name != null && name.length() > 80) {
                         name = name.substring(0, 80) + "...";
                     }
@@ -298,7 +296,37 @@ public class DisplayTextTree extends JTree {
         }
         return "-";
     }
-    
+
+    /**
+     * @param st a collection of stereotypes
+     * @return a string representing the given stereotype(s)
+     */
+    public static String generateStereotype(Collection<Object> st) {
+        if (st == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder(10);
+        boolean first = true;
+        for (Object o : st) {
+            if (!first) {
+                sb.append(',');
+            }
+            if (o != null) {
+                sb.append(Model.getFacade().getName(o));
+                first = false;
+            }
+        }
+        if (!first) {
+            Project project =
+                ProjectManager.getManager().getCurrentProject();
+            ProjectSettings ps = project.getProjectSettings();
+            return ps.getLeftGuillemot()
+                + sb.toString()
+                + ps.getRightGuillemot();
+        }
+        return "";
+    }
+
     public static final String getModelElementDisplayName(Object modelElement) {
         String name = Model.getFacade().getName(modelElement);
         if (name == null || name.equals("")) {
