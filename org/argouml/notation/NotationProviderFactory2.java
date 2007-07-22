@@ -145,6 +145,11 @@ public final class NotationProviderFactory2 {
     public static final int TYPE_ASSOCIATION_NAME = 18;
 
     /**
+     * The text shown for a multiplicity.
+     */
+    public static final int TYPE_MULTIPLICITY = 19;
+
+    /**
      * defaultLanguage the Notation language used by default, i.e. UML
      */
     private NotationName defaultLanguage;

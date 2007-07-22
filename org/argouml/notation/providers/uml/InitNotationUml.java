@@ -109,7 +109,9 @@ public class InitNotationUml implements InitSubsystem {
         npf.addNotationProvider(
                 NotationProviderFactory2.TYPE_ASSOCIATION_NAME,
                 name, AssociationNameNotationUml.class);
-
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_MULTIPLICITY,
+                name, MultiplicityNotationUml.class);
 
         NotationProviderFactory2.getInstance().setDefaultNotation(name);
 

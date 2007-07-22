@@ -29,16 +29,12 @@ import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoHelpEvent;
-import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.presentation.FigText;
@@ -47,7 +43,11 @@ import org.tigris.gef.presentation.FigText;
  * Class to display graphics for N-ary association edges (association ends).<p>
  *
  * This class represents an association End Fig on a diagram, 
- * i.e. the line between the diamond and a node (like a class).
+ * i.e. the line between the diamond and a node (like a class). <p>
+ * 
+ * This class makes use of 2 NotationProviders: 
+ * one for the association end name, 
+ * and one for the multiplicity.
  *
  * @author pepargouml@yahoo.es
  */
@@ -65,6 +65,11 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     private FigText srcOrdering;
     
     private Logger LOG = Logger.getLogger(FigAssociationEnd.class);
+    
+    /**
+     * The notation provider for the multiplicity.
+     */
+    private NotationProvider multiplicityNotationProvider;
 
     /**
      * The constructor.
@@ -126,6 +131,19 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         return NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME;
     }
 
+    @Override
+    protected void initNotationProviders(Object own) {
+        if (multiplicityNotationProvider != null) {
+            multiplicityNotationProvider.cleanListener(this, own);
+        }
+        super.initNotationProviders(own);
+        if (Model.getFacade().isAAssociationEnd(own)) {
+            multiplicityNotationProvider =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_MULTIPLICITY, own, this);
+        }
+    }
+
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
@@ -180,22 +198,8 @@ public class FigAssociationEnd extends FigEdgeModelElement {
             /* The text the user has filled in the textfield is first checked
              * to see if it's a valid multiplicity. If so then that is the 
              * multiplicity to be set. If not the input is rejected. */
-            String msg =
-                Translator.localize("statusmsg.bar.error.parsing.multiplicity");
-            Object multi = null;
-            try {
-                multi = Model.getDataTypesFactory().createMultiplicity(
-                        srcMult.getText());
-                Model.getCoreHelper().setMultiplicity(getOwner(), multi);
-            } catch (IllegalArgumentException e) {
-                Object[] args = {e.getLocalizedMessage()};
-                ArgoEventPump.fireEvent(new ArgoHelpEvent(
-                        ArgoEventTypes.HELP_CHANGED, this,
-                    Translator.messageFormat(msg, args)));
-                srcMult.setText(NotationUtilityUml.generateMultiplicity(
-                        Model.getFacade().getMultiplicity(getOwner())));
-            }            
-            
+            multiplicityNotationProvider.parse(getOwner(), ft.getText());
+            ft.setText(multiplicityNotationProvider.toString(getOwner(), null));
         }
     }
 
@@ -205,7 +209,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     @Override
     protected void textEditStarted(FigText ft) {
         if (ft == srcMult) {
-            showHelp("parsing.help.fig-association-source-multiplicity");
+            showHelp(multiplicityNotationProvider.getParsingHelp());
         } else {
             super.textEditStarted(ft);
         }
@@ -219,8 +223,10 @@ public class FigAssociationEnd extends FigEdgeModelElement {
             throw new IllegalArgumentException();
         }
 
-        Object multi = Model.getFacade().getMultiplicity(owner);
-        multiToUpdate.setText(NotationUtilityUml.generateMultiplicity(multi));
+        if (multiplicityNotationProvider != null) {
+            multiToUpdate.setText(
+                    multiplicityNotationProvider.toString(getOwner(), null));
+        }
 
         Object order = Model.getFacade().getOrdering(owner);
         orderingToUpdate.setText(getOrderingName(order));
@@ -235,6 +241,10 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         if (e instanceof AttributeChangeEvent
                 || e instanceof AssociationChangeEvent) {
             renderingChanged();
+            if (multiplicityNotationProvider != null) {
+                multiplicityNotationProvider.updateListener(this, 
+                        getOwner(), e);
+            }
         }
     }
 
@@ -255,6 +265,12 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     @Override
     protected void updateStereotypeText() {
         /* There is none... */
+    }
+
+    @Override
+    protected void removeFromDiagramImpl() {
+        multiplicityNotationProvider.cleanListener(this, getOwner());
+        super.removeFromDiagramImpl();
     }
 
     /*

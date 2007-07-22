@@ -47,7 +47,6 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.Layer;
@@ -166,6 +165,17 @@ public class FigAssociation extends FigEdgeModelElement {
         destMult.setOwner(dest);
     }
 
+    @Override
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        Object[] ends = 
+            Model.getFacade().getConnections(own).toArray();
+        Object source = ends[0];
+        Object dest = ends[1];
+        srcMult.initNotationProviders(source);
+        destMult.initNotationProviders(dest);
+    }
+
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
@@ -203,41 +213,14 @@ public class FigAssociation extends FigEdgeModelElement {
             return;
         }
 
-	String msg =
-	    Translator.localize("statusmsg.bar.error.parsing.multiplicity");
-
 	if (ft == srcGroup.getRole()) {
             ((FigRole) ft).parse();
 	} else if (ft == destGroup.getRole()) {
             ((FigRole) ft).parse();
 	} else if (ft == srcMult) {
-	    Object srcAE = (conn.toArray())[0];
-	    try {
-	        Object multi = Model.getDataTypesFactory()
-	                        .createMultiplicity(srcMult.getText());
-	        Model.getCoreHelper().setMultiplicity(srcAE, multi);
-	    } catch (IllegalArgumentException e) {
-	        Object[] args = {e.getLocalizedMessage()};
-                ArgoEventPump.fireEvent(new ArgoHelpEvent(
-                            ArgoEventTypes.HELP_CHANGED, this,
-                    Translator.messageFormat(msg, args)));
-	        srcMult.setText(NotationUtilityUml.generateMultiplicity(
-                        Model.getFacade().getMultiplicity(srcAE)));
-	    }
+            srcMult.textEdited();
 	} else if (ft == destMult) {
-	    Object destAE = (conn.toArray())[1];
-	    try {
-	        Object multi = Model.getDataTypesFactory()
-	                        .createMultiplicity(destMult.getText());
-	        Model.getCoreHelper().setMultiplicity(destAE, multi);
-	    } catch (IllegalArgumentException e) {
-	        Object[] args = {e.getLocalizedMessage()};
-                ArgoEventPump.fireEvent(new ArgoHelpEvent(
-                            ArgoEventTypes.HELP_CHANGED, this,
-                    Translator.messageFormat(msg, args)));
-                destMult.setText(NotationUtilityUml.generateMultiplicity(
-                        Model.getFacade().getMultiplicity(destAE)));
-	    }
+            destMult.textEdited();
 	}
     }
 
@@ -251,9 +234,9 @@ public class FigAssociation extends FigEdgeModelElement {
         } else if (ft == destGroup.getRole()) {
             showHelp(destGroup.getRole().getParsingHelp());
         } else if (ft == srcMult) {
-            showHelp("parsing.help.fig-association-source-multiplicity");
+            srcMult.textEditStarted();
         } else if (ft == destMult) {
-            showHelp("parsing.help.fig-association-destination-multiplicity");
+            destMult.textEditStarted();
         } else {
             super.textEditStarted(ft);
         }
@@ -532,12 +515,16 @@ public class FigAssociation extends FigEdgeModelElement {
 
 /**
  * A Fig representing the multiplicty of some model element.
- * This has potential reuse for other edges showing multiplicity
+ * This has potential reuse for other edges showing multiplicity. <p>
+ * 
+ * The owner is an AssociationEnd.
+ * 
  * @author Bob Tarling
  */
 class FigMultiplicity extends FigSingleLineText 
     implements PropertyChangeListener {
 
+    private NotationProvider notationProvider;
     private static final long serialVersionUID = 5385230942216677015L;
 
     FigMultiplicity() {
@@ -550,9 +537,38 @@ class FigMultiplicity extends FigSingleLineText
     @Override
     protected void setText() {
         assert getOwner() != null;
-        Object multi = Model.getFacade().getMultiplicity(getOwner());
-        setText(NotationUtilityUml.generateMultiplicity(multi));
+        setText(notationProvider.toString(getOwner(), null));
         damage();
+    }
+    
+    protected void textEdited() {
+        notationProvider.parse(getOwner(), getText());
+        setText(notationProvider.toString(getOwner(), null));
+    }
+    
+    protected void textEditStarted() {
+        String s = notationProvider.getParsingHelp();
+        ArgoEventPump.fireEvent(new ArgoHelpEvent(
+                ArgoEventTypes.HELP_CHANGED, this,
+                Translator.localize(s)));
+        setText(notationProvider.toString(getOwner(), null));
+    }
+
+    /**
+     * Create the NotationProviders.
+     * 
+     * @param own the current owner
+     */
+    protected void initNotationProviders(Object own) {
+        /* Careful; the owner is not yet set! */
+        if (notationProvider != null) {
+            notationProvider.cleanListener(this, own);
+        }
+        if (Model.getFacade().isAModelElement(own)) {
+            notationProvider =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_MULTIPLICITY, own, this);
+        }
     }
 }
 
