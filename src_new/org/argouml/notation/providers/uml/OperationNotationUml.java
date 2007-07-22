@@ -41,6 +41,7 @@ import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.OperationNotation;
+import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.MyTokenizer;
 
 /**
@@ -349,7 +350,7 @@ public class OperationNotationUml extends OperationNotation {
         // but create any other parsed stereotypes as needed
         if (!Model.getFacade().isAReception(op) 
                 || !RECEPTION_KEYWORD.equals(stereotype)) {
-            NotationUtilityUml.dealWithStereotypes(op, stereotype, true);
+            StereotypeUtility.dealWithStereotypes(op, stereotype, true);
         }
     }
 

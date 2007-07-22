@@ -65,7 +65,7 @@ public class FigStereotypesCompartment extends FigCompartment {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ActionAddStereotype.class);
+        Logger.getLogger(FigStereotypesCompartment.class);
 
     /**
      * One UML keyword is allowed. These are not strictly stereotypes but are

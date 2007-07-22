@@ -47,7 +47,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.StereotypeUtility;
+import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeListModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
