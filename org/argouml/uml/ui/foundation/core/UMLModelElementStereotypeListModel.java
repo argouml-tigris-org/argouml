@@ -31,7 +31,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.StereotypeUtility;
+import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**

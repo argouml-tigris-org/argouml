@@ -34,6 +34,7 @@ import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.AssociationEndNameNotation;
+import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.MyTokenizer;
 
 /**
@@ -166,7 +167,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
             Model.getCoreHelper().setName(role, name);
         }
 
-        NotationUtilityUml.dealWithStereotypes(role, stereotype, true);
+        StereotypeUtility.dealWithStereotypes(role, stereotype, true);
     }
 
     /*

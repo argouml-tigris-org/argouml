@@ -79,6 +79,7 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.IItemUID;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;

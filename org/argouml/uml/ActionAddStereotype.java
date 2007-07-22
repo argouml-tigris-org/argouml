@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.uml;
 
 import java.awt.event.ActionEvent;
 
@@ -40,7 +40,7 @@ import org.tigris.gef.undo.UndoableAction;
  * Action to add a sterotype to a model element.
  * @author Bob Tarling
  */
-class ActionAddStereotype extends UndoableAction {
+public class ActionAddStereotype extends UndoableAction {
     private Object modelElement;
     private Object stereotype;
 

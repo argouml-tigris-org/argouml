@@ -30,7 +30,7 @@ import javax.swing.Icon;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.notation.providers.uml.NotationUtilityUml;
+import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 import org.tigris.gef.base.Globals;
@@ -96,7 +96,7 @@ public class SelectionStereotype extends SelectionNodeClarifiers2 {
         switch (index) {
         case 10:
             Object clazz = Model.getCoreFactory().buildClass(ns);
-            NotationUtilityUml.dealWithStereotypes(clazz, "metaclass", false);
+            StereotypeUtility.dealWithStereotypes(clazz, "metaclass", false);
             return clazz;
         case 11:
             Object st = 
@@ -121,7 +121,7 @@ public class SelectionStereotype extends SelectionNodeClarifiers2 {
     @Override
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
         Object dep = super.createEdgeAbove(mgm, newNode);
-        NotationUtilityUml.dealWithStereotypes(dep, "stereotype", false);
+        StereotypeUtility.dealWithStereotypes(dep, "stereotype", false);
         return dep;
     }
 

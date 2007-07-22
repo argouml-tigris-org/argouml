@@ -40,6 +40,7 @@ import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.AttributeNotation;
+import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.MyTokenizer;
 
 /**
@@ -473,7 +474,7 @@ public class AttributeNotationUml extends AttributeNotation {
                     NotationUtilityUml.attributeSpecialStrings);
         }
 
-        NotationUtilityUml.dealWithStereotypes(attribute, stereotype, true);
+        StereotypeUtility.dealWithStereotypes(attribute, stereotype, true);
     }
 
     /*
