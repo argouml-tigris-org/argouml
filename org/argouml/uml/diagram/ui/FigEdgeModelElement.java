@@ -639,6 +639,7 @@ public abstract class FigEdgeModelElement
     
     /**
      * TODO: Remove this - nobody should need this - Michiel.
+     * @deprecated by MVW in V0.25.4. Not used.
      * @return a i18 key that represents a help string
      *         giving an explanation to the user of the syntax
      */
