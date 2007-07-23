@@ -59,7 +59,6 @@ import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.uml.generator.GenerationPreferences;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
@@ -129,7 +128,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
     private Object defaultModel;
     private Object currentNamespace;
     private Map<String, Object> uuidRefs;
-    private GenerationPreferences cgPrefs;
     private transient VetoableChangeSupport vetoSupport;
 
     private Profile profile;
@@ -174,7 +172,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
         searchpath = new ArrayList<String>();
         historyFile = "";
-        cgPrefs = new GenerationPreferences();
         defaultModelTypeCache = new HashMap<String, Object>();
 
         LOG.info("making empty project with empty model");
@@ -778,16 +775,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void setGenerationPrefs(GenerationPreferences cgp) {
-        cgPrefs = cgp;
-    }
-
-
-    public GenerationPreferences getGenerationPrefs() {
-        return cgPrefs;
-    }
-
-
     public VetoableChangeSupport getVetoSupport() {
         if (vetoSupport == null) {
             vetoSupport = new VetoableChangeSupport(this);
@@ -1069,7 +1056,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         historyFile = null;
         defaultModel = null;
         currentNamespace = null;
-        cgPrefs = null;
         vetoSupport = null;
         activeDiagram = null;
 

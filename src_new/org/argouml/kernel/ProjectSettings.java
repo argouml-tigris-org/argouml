@@ -26,6 +26,7 @@ package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
 
+import org.argouml.application.api.Argo;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
@@ -42,7 +43,11 @@ import org.tigris.gef.undo.UndoManager;
  * 
  * Most getters return a string, since they are used by "argo.tee".
  * This is also the reason all these attributes 
- * are not part of a Map or something.
+ * are not part of a Map or something. <p>
+ *
+ * TODO: The header comment is curently not used - this function
+ * is not completely implemented yet. How do we store this in the project?
+ * Where should the user enter his header comment? See issue 4813.
  *
  * @author michiel
  */
@@ -60,6 +65,11 @@ public class ProjectSettings {
     private boolean showStereotypes;
     private boolean showSingularMultiplicities;
     private int defaultShadowWidth;
+    
+    /* Generation preferences: */
+    private String headerComment =
+        "Your copyright and other header comments";
+    private String generationOutputDir;
 
 
     /**
@@ -104,6 +114,17 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true); 
         defaultShadowWidth = Configuration.getInteger(
                 Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
+
+        /* Generation preferences: */
+        if (System.getProperty("file.separator").equals("/")) {
+            generationOutputDir = "/tmp";
+        } else {
+            //This does not even exist on many systems:
+            //_outputDir = "c:\\temp";
+            generationOutputDir = System.getProperty("java.io.tmpdir");
+        }
+        generationOutputDir = Configuration.getString(
+                Argo.KEY_MOST_RECENT_EXPORT_DIRECTORY, generationOutputDir);
     }
 
 
@@ -672,6 +693,33 @@ public class ProjectSettings {
         setDefaultShadowWidth(Integer.parseInt(width));
     }
     
+    /**
+     * Used by "argo.tee".
+     * 
+     * @return the output directory name
+     */
+    public String getGenerationOutputDir() { 
+        return generationOutputDir; 
+    }
+
+    /**
+     * @param od the output directory name
+     */
+    public void setGenerationOutputDir(String od) { 
+        generationOutputDir = od;
+        Configuration.setString(Argo.KEY_MOST_RECENT_EXPORT_DIRECTORY, od);
+    }
+
+    /**
+     * @return the header comment string
+     */
+    public String getHeaderComment() { return headerComment; }
+
+    /**
+     * @param c the header comment string
+     */
+    public void setHeaderComment(String c) { headerComment = c; }
+
 
     /**
      * Convenience methods to fire notation configuration change events.

@@ -226,7 +226,7 @@ public class ClassGenerationDialog
 
         Project p = ProjectManager.getManager().getCurrentProject();
         outputDirectoryComboBox.getModel().setSelectedItem(
-            p.getGenerationPrefs().getOutputDir());
+            p.getProjectSettings().getGenerationOutputDir());
     }
 
     /*
@@ -276,7 +276,7 @@ public class ClassGenerationDialog
         Collection entries = new TreeSet();
 
         Project p = ProjectManager.getManager().getCurrentProject();
-        entries.add(p.getGenerationPrefs().getOutputDir());
+        entries.add(p.getProjectSettings().getGenerationOutputDir());
 
         final String pathSep = System.getProperty("path.separator");
         StringTokenizer allEntries = new StringTokenizer(classpath, pathSep);
@@ -302,7 +302,7 @@ public class ClassGenerationDialog
                 ((String) outputDirectoryComboBox.getModel()
                         .getSelectedItem()).trim();
             Project p = ProjectManager.getManager().getCurrentProject();
-            p.getGenerationPrefs().setOutputDir(path);
+            p.getProjectSettings().setGenerationOutputDir(path);
             List[] fileNames = new Vector[languages.size()];
             for (int i = 0; i < languages.size(); i++) {
                 fileNames[i] = new Vector();
