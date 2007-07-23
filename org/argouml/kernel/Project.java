@@ -135,6 +135,8 @@ public interface Project {
     public MemberList getMembers();
 
     /**
+     * Add a member: ArgoDiagram, a UML Model, or a ProjectMemberTodoList.
+     * 
      * @param m the member to be added
      */
     public void addMember(Object m);
