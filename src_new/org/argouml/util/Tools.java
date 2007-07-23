@@ -48,9 +48,14 @@ public class Tools {
 
     private static final String[] PACKAGELIST =
 	new String[]{
-	    "org.argouml.application", "org.netbeans.mdr",
-            "org.tigris.gef.base", "org.xml.sax",
-            "java.lang", "org.apache.log4j",
+	    "org.argouml.application", 
+            // TODO: The following is MDR specific.  We need something generic
+            // to all Model subsystems - tfm 20070716
+	    "org.netbeans.mdr",
+            "org.tigris.gef.base", 
+            "org.xml.sax",
+            "java.lang", 
+            "org.apache.log4j",
 	};
 
     private static void getComponentVersionInfo(StringBuffer sb, String pn) {
@@ -95,6 +100,9 @@ public class Tools {
             Class cls = Class.forName("org.tigris.gef.base.Editor");
             cls = Class.forName("org.xml.sax.AttributeList");
             cls = Class.forName("org.apache.log4j.Logger");
+            
+            // TODO: The following is MDR specific.  We need something generic
+            // to all Model subsystems - tfm 20070716
             cls = Class.forName("org.netbeans.api.mdr.MDRManager");
 
             StringBuffer sb = new StringBuffer();
@@ -155,7 +163,9 @@ public class Tools {
 
             return sb.toString();
 
-        } catch (Exception e) { return e.toString(); }
+        } catch (Exception e) {
+            return e.toString();
+        }
 
     }
 
