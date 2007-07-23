@@ -49,7 +49,7 @@ public class ProjectFactory {
     /**
      * Create a new empty project.
      * 
-     * @return a new initialised project
+     * @return a new NOT initialised project
      */
     public Project createProject() {
         return new ProjectImpl();
