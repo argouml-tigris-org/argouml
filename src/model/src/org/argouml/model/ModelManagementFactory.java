@@ -57,11 +57,12 @@ public interface ModelManagementFactory extends Factory {
     Object createElementImport();
 
     /**
-     * Build a ElementImport for the given package and modelelement.
+     * Build a ElementImport which imports the given modelelement
+     * into the given package.
      * The visibility, alias and isSpecification are not filled in.
      * 
-     * @param pack the given package
-     * @param me the given modelelement
+     * @param pack the package to import into
+     * @param me the model element to import
      * @return the newly created ElementImport
      */
     Object buildElementImport(Object pack, Object me);
