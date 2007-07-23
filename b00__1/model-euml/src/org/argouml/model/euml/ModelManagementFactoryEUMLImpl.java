@@ -109,20 +109,22 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
     // TODO: get/setRootModel aren't specific to the Model implementation
     // they could probably be moved elsewhere - tfm - 20070530
     public void setRootModel(Object rootModel) {
-	if (rootModel != null && !(rootModel instanceof org.eclipse.uml2.uml.Package)) {
-	    throw new IllegalArgumentException(
-		    "The rootModel supplied must be a Package. Got a "
-			    + rootModel.getClass().getName());
-	}
+        if (rootModel != null 
+                && !(rootModel instanceof org.eclipse.uml2.uml.Package)) {
+            throw new IllegalArgumentException(
+                    "The rootModel supplied must be a Package. Got a "
+                    + rootModel.getClass().getName());
+        }
 	if (theRootModel != null && theRootModel.eResource() != null) {
 	    EcoreUtil.remove(theRootModel);
 	}
-	theRootModel = (org.eclipse.uml2.uml.Package) rootModel;
+        theRootModel = (org.eclipse.uml2.uml.Package) rootModel;
 	if (rootModel != null) {
-	    Resource r = editingDomain.createResource("http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
-	    r.getContents().add(theRootModel);
+            Resource r = editingDomain.createResource(
+                    "http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
+            r.getContents().add(theRootModel);
 	}
-	modelImpl.getModelEventPump().setRootContainer(theRootModel);
+        modelImpl.getModelEventPump().setRootContainer(theRootModel);
     }
 
     public org.eclipse.uml2.uml.Package getRootModel() {

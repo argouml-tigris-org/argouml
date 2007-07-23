@@ -41,8 +41,8 @@ public abstract class RunnableClass implements Runnable {
      * into a Runnable instance.
      */
     private ArrayList<Object> params = new ArrayList<Object>();
-    
+
     public ArrayList<Object> getParams() {
-	return params;
+        return params;
     }
 }

@@ -43,7 +43,8 @@ import org.xml.sax.InputSource;
  */
 class XmiReaderEUMLImpl implements XmiReader {
 
-    private static Logger LOG = Logger.getLogger(XmiReaderEUMLImpl.class);
+    private static final Logger LOG = 
+        Logger.getLogger(XmiReaderEUMLImpl.class);
         
     /**
      * The model implementation.
@@ -80,20 +81,22 @@ class XmiReaderEUMLImpl implements XmiReader {
     }
 
     public Collection parse(InputSource inputSource, boolean profile)
-	    throws UmlException {
-	EditingDomain editingDomain = modelImpl.getEditingDomain();
-	for (Resource resource : editingDomain.getResourceSet().getResources()) {
-	    resource.unload();
-	}
-	
-	Resource r = editingDomain.createResource("http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
-	try {
-	    r.load(inputSource.getByteStream(), null);
-	} catch (IOException e) {
-	    throw new UmlException(e);
-	}
-	
-	return r.getContents();
+            throws UmlException {
+        EditingDomain editingDomain = modelImpl.getEditingDomain();
+        for (Resource resource 
+                : editingDomain.getResourceSet().getResources()) {
+            resource.unload();
+        }
+
+	Resource r = editingDomain.createResource(
+	        "http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
+        try {
+            r.load(inputSource.getByteStream(), null);
+        } catch (IOException e) {
+            throw new UmlException(e);
+        }
+
+        return r.getContents();
     }
 
     public boolean setIgnoredElements(String[] elementNames) {
@@ -102,9 +105,9 @@ class XmiReaderEUMLImpl implements XmiReader {
     }
 
     public String getTagName() {
-	// This is not quite right
-	// TODO: Solve this
-        return "uml:Model";
+        // This is not quite right
+        // TODO: Solve this
+        return "uml:Model"; //$NON-NLS-1$
     }
     
 }

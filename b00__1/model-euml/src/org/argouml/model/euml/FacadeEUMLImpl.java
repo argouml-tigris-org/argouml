@@ -106,7 +106,6 @@ import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.StructuralFeature;
 import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.TimeEvent;
-import org.eclipse.uml2.uml.TimeExpression;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Trigger;
 import org.eclipse.uml2.uml.TypedElement;
@@ -299,7 +298,7 @@ class FacadeEUMLImpl implements Facade {
             if (((Property) handle).isReadOnly()) {
                 return modelImpl.getChangeableKind().getFrozen();
             } else {
-                return modelImpl.getChangeableKind().getChangeable();                
+                return modelImpl.getChangeableKind().getChangeable();
             }
         }
         throw new NotYetImplementedException();
@@ -349,8 +348,9 @@ class FacadeEUMLImpl implements Facade {
     public Collection<Collaboration> getCollaborations(Object handle) {
         Set<Collaboration> result = new HashSet<Collaboration>();
         if (handle instanceof Classifier) {
-            for (CollaborationUse cu : ((Classifier) handle).getCollaborationUses()) {
-                result.add(cu.getType()); 
+            for (CollaborationUse cu 
+                    : ((Classifier) handle).getCollaborationUses()) {
+                result.add(cu.getType());
             }
         }
         return result;
@@ -454,6 +454,7 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
+    @SuppressWarnings("deprecation")
     public Object getDiscriminator(Object handle) {
         // Gone from UML 2.x
 //        throw new NotImplementedException();
@@ -473,8 +474,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getElementImports(Object handle) {
-	return Collections.EMPTY_LIST;
-//        throw new NotYetImplementedException();
+        return Collections.EMPTY_LIST;
+//      throw new NotYetImplementedException();
     }
 
     public Collection getElementImports2(Object handle) {
@@ -685,7 +686,7 @@ class FacadeEUMLImpl implements Facade {
         // MultiplicityElement is now an interface implemented
         // by element types that support multiplicities - tfm
         if (handle instanceof MultiplicityElement) {
-            return (MultiplicityElement)handle;
+            return (MultiplicityElement) handle;
         } else {
             throw new IllegalArgumentException();
         }
@@ -701,7 +702,7 @@ class FacadeEUMLImpl implements Facade {
             // no longer named.  For a transitional period we'll
             // return a String to debug can continue, but the
             // calling code should probably be fixed. - tfm 20070607
-            return "";
+            return ""; //$NON-NLS-1$
         }
 //        throw new IllegalArgumentException();
     }
@@ -761,13 +762,13 @@ class FacadeEUMLImpl implements Facade {
             if (((Property) handle).isOrdered()) {
                 return modelImpl.getOrderingKind().getOrdered();
             } else {
-                return modelImpl.getOrderingKind().getUnordered();               
+                return modelImpl.getOrderingKind().getUnordered();
             }
         } else if (handle instanceof MultiplicityElement) {
             if (((MultiplicityElement) handle).isOrdered()) {
                 return modelImpl.getOrderingKind().getOrdered();
             } else {
-                return modelImpl.getOrderingKind().getUnordered();               
+                return modelImpl.getOrderingKind().getUnordered();
             }
         }
         throw new NotYetImplementedException();
@@ -885,7 +886,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getReceptions(Object handle) {
-        // TODO: Signal -> Receptions association not navigable in this direction
+        // TODO: Signal -> Receptions association not navigable in this
+        // direction
         return Collections.EMPTY_SET;
     }
 
@@ -1224,6 +1226,7 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof AggregationKind;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAArgListsExpression(Object handle) {
         // TODO: Fallback for UML 1.4
         return isAExpression(handle);
@@ -1284,6 +1287,7 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isABooleanExpression(Object handle) {
         // TODO: Fallback for UML 1.4
         return isAExpression(handle);
@@ -1477,6 +1481,7 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof Interface;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAIterationExpression(Object handle) {
         // TODO: Fallback for UML 1.4
         return isAExpression(handle);
@@ -1501,6 +1506,7 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAMappingExpression(Object handle) {
         // TODO: Fallback for UML 1.4
         return isAExpression(handle);
@@ -1566,6 +1572,7 @@ class FacadeEUMLImpl implements Facade {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAObjectSetExpression(Object handle) {
         // TODO: Fallback for UML 1.4
         return isAExpression(handle);
@@ -1600,6 +1607,7 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof PrimitiveType;
     }
     
+    @SuppressWarnings("deprecation")
     public boolean isAProcedureExpression(Object handle) {
         // TODO: Fallback for UML 1.4
         return isAExpression(handle);
@@ -1737,6 +1745,7 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof TimeEvent;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isATimeExpression(Object handle) {
         // TODO: Fallback for UML 1.4
         return isAExpression(handle);
@@ -1746,6 +1755,7 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof Transition;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isATypeExpression(Object handle) {
         // TODO: Fallback for UML 1.4
         return isAExpression(handle);

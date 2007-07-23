@@ -54,8 +54,8 @@ public class RootContainerAdapter extends EContentAdapter {
      * @param pump The ModelEventPump instance
      */
     public RootContainerAdapter(ModelEventPumpEUMLImpl pump) {
-	super();
-	this.pump = pump;
+        super();
+        this.pump = pump;
     }
     
     /**
@@ -63,7 +63,7 @@ public class RootContainerAdapter extends EContentAdapter {
      * @param value True for delivering events, false otherwise
      */
     public void setDeliverEvents(boolean value) {
-	deliverEvents = value;
+        deliverEvents = value;
     }
     
     /**
@@ -71,49 +71,49 @@ public class RootContainerAdapter extends EContentAdapter {
      * @param n the new root container
      */
     public void setRootContainer(Notifier n) {
-	if (n == rootContainer) {
-	    return;
-	}
-	
-	removeAllAdapters();
-	if (n != null) {
-	    rootContainer = n;
-	    rootContainer.eAdapters().add(this);
-	}
+        if (n == rootContainer) {
+            return;
+        }
+
+        removeAllAdapters();
+        if (n != null) {
+            rootContainer = n;
+            rootContainer.eAdapters().add(this);
+        }
     }
-    
+
     @Override
     protected void addAdapter(Notifier notifier) {
-	notifiers.add(notifier);
-	super.addAdapter(notifier);
+        notifiers.add(notifier);
+        super.addAdapter(notifier);
     }
 
     @Override
     protected void removeAdapter(Notifier notifier) {
-	notifiers.remove(notifier);
-	super.removeAdapter(notifier);
+        notifiers.remove(notifier);
+        super.removeAdapter(notifier);
     }
 
     /**
      * Removes this listener from all the notifiers' eAdapters list.
      */
     public void removeAllAdapters() {
-	for (Notifier n : notifiers) {
-	    super.removeAdapter(n);
-	}
-	if (rootContainer != null) {
-	    super.removeAdapter(rootContainer);
-	    rootContainer = null;
-	}
-	notifiers.clear();
+        for (Notifier n : notifiers) {
+            super.removeAdapter(n);
+        }
+        if (rootContainer != null) {
+            super.removeAdapter(rootContainer);
+            rootContainer = null;
+        }
+        notifiers.clear();
     }
 
     @Override
     public void notifyChanged(Notification notification) {
-	super.notifyChanged(notification);
-	if (deliverEvents) {
-	    pump.notifyChanged(notification);
-	}
+        super.notifyChanged(notification);
+        if (deliverEvents) {
+            pump.notifyChanged(notification);
+        }
     }
 
 }

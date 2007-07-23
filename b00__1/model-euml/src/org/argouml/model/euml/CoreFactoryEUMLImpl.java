@@ -64,9 +64,6 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.VisibilityKind;
-import org.eclipse.uml2.uml.internal.impl.AssociationImpl;
-import org.eclipse.uml2.uml.internal.impl.PropertyImpl;
-import org.eclipse.uml2.uml.internal.impl.TypeImpl;
 
 
 /**
@@ -78,9 +75,9 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
-    
+
     private EditingDomain editingDomain;
-    
+
     private UMLFactory uml = UMLFactory.eINSTANCE;
 
     /**
@@ -93,7 +90,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         editingDomain = implementation.getEditingDomain();
     }
 
-    public Abstraction buildAbstraction(String name, Object supplier, Object client) {
+    public Abstraction buildAbstraction(String name, Object supplier,
+            Object client) {
         Abstraction abstraction = uml.createAbstraction();
         abstraction.setName(name);
         abstraction.getSuppliers().add((NamedElement) supplier);
@@ -101,57 +99,57 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return abstraction;
     }
 
-    @SuppressWarnings("all")
-    public Association buildAssociation(final Object type1,
-	    final Boolean navigability1, final Object aggregationKind1,
-	    final String name1, final Object type2,
-	    final Boolean navigability2, final Object aggregationKind2,
-	    final String name2, final String associationName) {
+    Association buildAssociation(final Object type1,
+            final Boolean navigability1, final Object aggregationKind1,
+            final String name1, final Object type2,
+            final Boolean navigability2, final Object aggregationKind2,
+            final String name2, final String associationName) {
 
-	RunnableClass run = new RunnableClass() {
-	    public void run() {
-		Association assoc = ((Type) type1).createAssociation(
-			navigability1,
-			aggregationKind1 == null ? AggregationKind.NONE_LITERAL
-				: (AggregationKind) aggregationKind1, name1, 0,
-			1, (Type) type2, navigability2,
-			aggregationKind2 == null ? AggregationKind.NONE_LITERAL
-				: (AggregationKind) aggregationKind2, name2, 0,
-			1);
-		for (Property p : assoc.getMemberEnds()) {
-		    p.setLowerValue(null);
-		    p.setUpperValue(null);
-		}
-		if (associationName != null) {
-		    assoc.setName(associationName);
-		}
-		getParams().add(assoc);
-	    }
-	};
-	editingDomain.getCommandStack().execute(
-		new ChangeCommand(editingDomain, run));
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Association assoc = ((Type) type1).createAssociation(
+                        navigability1,
+                        aggregationKind1 == null ? AggregationKind.NONE_LITERAL
+                                : (AggregationKind) aggregationKind1, name1, 0,
+                        1, (Type) type2, navigability2,
+                        aggregationKind2 == null ? AggregationKind.NONE_LITERAL
+                                : (AggregationKind) aggregationKind2, name2, 0,
+                        1);
+                for (Property p : assoc.getMemberEnds()) {
+                    p.setLowerValue(null);
+                    p.setUpperValue(null);
+                }
+                if (associationName != null) {
+                    assoc.setName(associationName);
+                }
+                getParams().add(assoc);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
 
-	return (Association) run.getParams().get(0);
+        return (Association) run.getParams().get(0);
     }
-    
+
     public Association buildAssociation(Object fromClassifier,
-	    Object aggregationKind1, Object toClassifier,
-	    Object aggregationKind2, Boolean unidirectional) {
+            Object aggregationKind1, Object toClassifier,
+            Object aggregationKind2, Boolean unidirectional) {
 
-	return buildAssociation(fromClassifier, true, aggregationKind1, null,
-		toClassifier, !unidirectional, aggregationKind2, null, null);
+        return buildAssociation(fromClassifier, true, aggregationKind1, null,
+                toClassifier, !unidirectional, aggregationKind2, null, null);
     }
 
-    public Association buildAssociation(Object classifier1, Object classifier2) {
-	return buildAssociation(classifier1, true,
-		AggregationKind.NONE_LITERAL, null, classifier2, true,
-		AggregationKind.NONE_LITERAL, null, null);
+    public Association buildAssociation(Object classifier1, 
+            Object classifier2) {
+        return buildAssociation(classifier1, true,
+                AggregationKind.NONE_LITERAL, null, classifier2, true,
+                AggregationKind.NONE_LITERAL, null, null);
     }
 
     public Association buildAssociation(Object c1, boolean nav1, Object c2,
-	    boolean nav2, String name) {
-	return buildAssociation(c1, nav1, AggregationKind.NONE_LITERAL, null,
-		c2, nav2, AggregationKind.NONE_LITERAL, null, name);
+            boolean nav2, String name) {
+        return buildAssociation(c1, nav1, AggregationKind.NONE_LITERAL, null,
+                c2, nav2, AggregationKind.NONE_LITERAL, null, name);
     }
 
     public Association buildAssociationClass(Object end1, Object end2) {
@@ -171,8 +169,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         // TODO Auto-generated method stub
         return null;
     }
-    
-    public Property buildAttribute() {
+
+    Property buildAttribute() {
         Property attr = createAttribute();
         attr.setName("newAttr");
         attr.setLower(1);
@@ -189,6 +187,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return attr;
     }
 
+    @SuppressWarnings("deprecation")
     public Property buildAttribute(Object handle, Object model, Object type) {
         // TODO Auto-generated method stub
         return null;
@@ -222,14 +221,14 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public org.eclipse.uml2.uml.Class buildClass(final String name,
-	    final Object owner) {
-	org.eclipse.uml2.uml.Class cls = uml.createClass();
-	if (name != null) {
-	    cls.setName(name);
-	}
-	if (owner != null)
-	    modelImpl.getCoreHelper().addOwnedElement(owner, cls);
-	return cls;
+            final Object owner) {
+        org.eclipse.uml2.uml.Class cls = uml.createClass();
+        if (name != null) {
+            cls.setName(name);
+        }
+        if (owner != null)
+            modelImpl.getCoreHelper().addOwnedElement(owner, cls);
+        return cls;
     }
 
     public Comment buildComment(Object element, Object model) {
@@ -286,7 +285,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return enumer;
     }
 
-    public EnumerationLiteral buildEnumerationLiteral(String name, Object enumeration) {
+    public EnumerationLiteral buildEnumerationLiteral(String name,
+            Object enumeration) {
         return ((Enumeration) enumeration).createOwnedLiteral(name);
     }
 
@@ -299,8 +299,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public Generalization buildGeneralization(Object child, Object parent) {
         Generalization generalization =
-                ((BehavioredClassifier) child)
-                        .createGeneralization((Classifier) parent);
+            ((BehavioredClassifier) child)
+            .createGeneralization((Classifier) parent);
         return generalization;
     }
 
@@ -329,6 +329,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     public Operation buildOperation(Object classifier, Object model,
             Object returnType) {
         // TODO Auto-generated method stub
@@ -340,17 +341,20 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     public Operation buildOperation(Object cls, Object model,
             Object returnType, String name) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Operation buildOperation2(Object cls, Object returnType, String name) {
+    public Operation buildOperation2(Object cls, Object returnType, 
+            String name) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     public Parameter buildParameter(Object o, Object model, Object type) {
         // TODO Auto-generated method stub
         return null;
@@ -370,8 +374,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             Object supplier, Object namespace) {
         // TODO: namespace is ignored
         InterfaceRealization realization =
-                ((BehavioredClassifier) client).createInterfaceRealization(
-                        null, (Interface) supplier);
+            ((BehavioredClassifier) client).createInterfaceRealization(
+                    null, (Interface) supplier);
         return realization;
     }
 
@@ -515,7 +519,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     public PrimitiveType createPrimitiveType() {
         return uml.createPrimitiveType();
     }
-    
+
     @SuppressWarnings("deprecation")
     public Object createProgrammingLanguageDataType() {
         // Removed from UML 2.x & unused by ArgoUML.
