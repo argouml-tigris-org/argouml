@@ -26,18 +26,15 @@ package org.argouml.uml.reveng;
 
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
@@ -59,7 +56,6 @@ import org.tigris.gef.presentation.Fig;
  */
 public class DiagramInterface {
 
-    private static final String DIAGRAM_SUFFIX = ".pgml";
     private static final char DIAGRAM_NAME_SEPARATOR = '_';
     private static final String DIAGRAM_NAME_SUFFIX = "classes";
 
@@ -162,7 +158,6 @@ public class DiagramInterface {
      * @param newPackage The package to add.
      */
     public void addPackage(Object newPackage) {
-
         if (!isInDiagram(newPackage)) {
             if (currentGM.canAddNode(newPackage)) {
                 FigPackage newPackageFig = 
@@ -183,7 +178,6 @@ public class DiagramInterface {
      *         false otherwise.
      */
     public boolean isInDiagram(Object p) {
-
 	if (currentDiagram == null) {
             return false;
         } else {
@@ -194,13 +188,12 @@ public class DiagramInterface {
     /**
      * Check if this diagram already exists in the project.<p>
      *
-     * @param name diagram name.
+     * @param name package name (converted to class name)
      * @return true if diagram exists in project.
      */
     public boolean isDiagramInProject(String name) {
         Project project = ProjectManager.getManager().getCurrentProject();
-	return (findDiagramMemberByUniqueName(project,
-            getDiagramName(name))) != null;
+        return project.getDiagram(getDiagramName(name)) != null;
     }
 
     /**
@@ -229,25 +222,17 @@ public class DiagramInterface {
      * @param name The fully qualified name of this package.
      */
     public void selectClassDiagram(Object p, String name) {
-
-	// Check if this diagram already exists in the project
-	ProjectMember m;
-	if (isDiagramInProject(name)) {
-            Project project = ProjectManager.getManager().getCurrentProject();
-	    m =
-                findDiagramMemberByUniqueName(project,
-                        getDiagramName(name));
-
-	    // The diagram already exists in this project. Select it
-	    // as the current target.
-	    if (m instanceof ProjectMemberDiagram) {
-		setCurrentDiagram(((ProjectMemberDiagram) m).getDiagram());
-	    }
-
-	} else {
-	    // Otherwise create a new classdiagram for the package.
-	    addClassDiagram(p, name);
-	}
+        // Check if this diagram already exists in the project
+        Project project = ProjectManager.getManager().getCurrentProject();
+        ArgoDiagram m = project.getDiagram(getDiagramName(name));
+        if (m != null) {
+            // The diagram already exists in this project. Select it
+            // as the current target.
+            setCurrentDiagram(m);
+        } else {
+            // Otherwise create a new classdiagram for the package.
+            addClassDiagram(p, name);
+        }
     }
 
     /**
@@ -262,7 +247,6 @@ public class DiagramInterface {
      */
     public void addClassDiagram(Object ns, String name) {
         Project p = ProjectManager.getManager().getCurrentProject();
-//        Object root = p.getRoot();
         Object root = Model.getModelManagementFactory().getRootModel();
 
         ArgoDiagram d = DiagramFactory.getInstance().createDiagram(
@@ -276,7 +260,6 @@ public class DiagramInterface {
         }
         p.addMember(d);
         setCurrentDiagram(d);
-
     }
 
     /**
@@ -298,9 +281,6 @@ public class DiagramInterface {
      *                 (of attributes and operations)
      */
     private void addClassifier(Object classifier, boolean minimise) {
-
-        String name = Model.getFacade().getName(classifier);
-        
         // if the classifier is not in the current diagram, add it:
         if (currentGM.canAddNode(classifier)) {
             FigClassifierBox newFig;
@@ -375,7 +355,6 @@ public class DiagramInterface {
      * @param diagram the diagram
      */
     public void setCurrentDiagram(ArgoDiagram diagram) {
-
         if (diagram == null) {
             throw new RuntimeException("you can't select a null diagram");
         }
@@ -387,25 +366,6 @@ public class DiagramInterface {
         markDiagramAsModified(diagram);
     }
 
-    /**
-     * @param name the public name of the member to be found
-     * @param project the project
-     * @return the member
-     */
-    public ProjectMember findDiagramMemberByUniqueName(Project project,
-            String name) {
-        name = name + DIAGRAM_SUFFIX;
-        Iterator iter = project.getMembers().iterator();
-        while (iter.hasNext()) {
-            ProjectMember element = (ProjectMember) iter.next();
-            if (element instanceof ProjectMemberDiagram) {
-                if (name.equals(element.getUniqueDiagramName())) {
-                    return element;
-                }
-            }
-        }
-        return null;
-    }
 }
 
 
