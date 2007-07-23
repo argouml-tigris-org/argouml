@@ -200,6 +200,9 @@ class ArgoParser extends SAXParserBase {
         case ArgoTokenTable.TOKEN_DEFAULTSHADOWWIDTH:
             handleDefaultShadowWidth(e);
             break;
+        case ArgoTokenTable.TOKEN_GENERATION_OUTPUT_DIR:
+            handleGenerationOutputDir(e);
+            break;
         default:
             if (DBG) {
                 LOG.warn("WARNING: unknown end tag:" + e.getName());
@@ -385,7 +388,15 @@ class ArgoParser extends SAXParserBase {
         String dsw = e.getText().trim();
         ps.setDefaultShadowWidth(dsw);
     }
-    
+
+    /**
+     * @param e the element
+     */
+    protected void handleGenerationOutputDir(XMLElement e) {
+        String dsw = e.getText().trim();
+        ps.setGenerationOutputDir(dsw);
+    }
+
     /**
      * Get the numer of diagram members read.
      * @return the numer of diagram members read.

@@ -64,6 +64,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
     private static final String STRING_SHOWSTEREOTYPES = "showstereotypes";
     private static final String STRING_DEFAULTSHADOWWIDTH 
         = "defaultshadowwidth";
+    private static final String STRING_GENERATION_OUTPUT_DIR 
+        = "generationoutputdir";
 
     /** The token for argo. */
     public static final int    TOKEN_ARGO                    = 1;
@@ -106,7 +108,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
     public static final int    TOKEN_DEFAULTSHADOWWIDTH           = 19;
     /** A token for Notation Settings. */
     public static final int    TOKEN_SHOWBOLDNAMES           = 20;
-
+    /** A token for Generation Settings. */
+    public static final int    TOKEN_GENERATION_OUTPUT_DIR     = 21;
 
     /** The token for undefined. */
     public static final int    TOKEN_UNDEFINED               = 99;
@@ -139,6 +142,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
         addToken(STRING_SHOWSTEREOTYPES, new Integer(TOKEN_SHOWSTEREOTYPES));
         addToken(STRING_DEFAULTSHADOWWIDTH, 
                 new Integer(TOKEN_DEFAULTSHADOWWIDTH));
+        addToken(STRING_GENERATION_OUTPUT_DIR, 
+                new Integer(TOKEN_GENERATION_OUTPUT_DIR));
     }
 
 } /* end class ArgoTokenTable */

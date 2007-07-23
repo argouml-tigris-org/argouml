@@ -35,7 +35,6 @@ import java.util.Vector;
 
 import org.argouml.uml.Profile;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.generator.GenerationPreferences;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -392,18 +391,6 @@ public interface Project {
      * @return an initial target, in casu a diagram or a model
      */
     public Object getInitialTarget();
-
-    /**
-     * @param cgp the generation preferences
-     * TODO: Move to ProjectSettings - tfm
-     */
-    public void setGenerationPrefs(GenerationPreferences cgp);
-
-    /**
-     * @return the generation preferences
-     * TODO: Move to ProjectSettings - tfm
-     */
-    public GenerationPreferences getGenerationPrefs();
 
     /**
      * @return the VetoableChangeSupport

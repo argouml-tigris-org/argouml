@@ -41,6 +41,7 @@
     <showstereotypes><ocl>self.projectSettings.showStereotypes</ocl></showstereotypes>
     <showsingularmultiplicities><ocl>self.projectSettings.showSingularMultiplicities</ocl></showsingularmultiplicities>
     <defaultshadowwidth><ocl>self.projectSettings.defaultShadowWidth</ocl></defaultshadowwidth>
+    <generationoutputdir><ocl>self.projectSettings.generationOutputDir</ocl></generationoutputdir>
   </settings>
   
   <searchpath href="<ocl>self.searchPath</ocl>" />
