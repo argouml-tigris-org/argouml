@@ -1652,10 +1652,11 @@ public final class ProjectBrowser
                         if (project != null && !project.equals(oldProject)) {
                             //prepare the old project for gc
                             LOG.info("There are "
-                                    + oldProject.getMembers().size()
-                                    + " members in the old project");
-                            LOG.info("There are " + project.getMembers().size()
-                                    + " members in the new project");
+                                    + oldProject.getDiagramList().size()
+                                    + " diagrams in the old project");
+                            LOG.info("There are " 
+                                    + project.getDiagramList().size()
+                                    + " diagrams in the new project");
                             // Set new project before removing old so we always
                             // have a valid current project
                             ProjectManager.getManager().setCurrentProject(
@@ -1668,8 +1669,8 @@ public final class ProjectBrowser
                     if (project == null) {
                         LOG.info("The current project is null");
                     } else {
-                        LOG.info("There are " + project.getMembers().size()
-                                + " members in the current project");
+                        LOG.info("There are " + project.getDiagramList().size()
+                                + " diagrams in the current project");
                     }
                     UndoManager.getInstance().empty();
                     UndoManager.getInstance().removeMementoLock(this);
