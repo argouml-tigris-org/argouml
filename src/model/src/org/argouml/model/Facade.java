@@ -2026,6 +2026,16 @@ public interface Facade {
      * @return model for the model element.
      */
     Object getModel(Object handle);
+    
+    /**
+     * Return a collection of all Elements which have no owner (ie top level
+     * elements).
+     * <p>
+     * For ArgoUML created models this will typically just return a single 
+     * top level Model model element, but models created by other tools may
+     * have other top level elements.
+     */
+    Collection getRootElements();
 
     /**
      * Get the ModelElement which is one of:
