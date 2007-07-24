@@ -107,6 +107,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     private Map<Object, List<Listener>> registerForClasses = 
         new LinkedHashMap<Object, List<Listener>>();
 
+    private Object mutex;
+    
     /**
      * Constructor.
      * 
@@ -115,6 +117,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      */
     public ModelEventPumpEUMLImpl(EUMLModelImplementation implementation) {
         modelImpl = implementation;
+        mutex = this;
     }
 
     /**
@@ -156,31 +159,32 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         if (notifier == null || listener == null) {
             throw new NullPointerException();
         }
-        List<Listener> list = register.get(notifier);
-        boolean found = false;
-        if (list == null) {
-            list = new ArrayList<Listener>();
-        } else {
-            for (Listener l : list) {
-                if (l.getListener() == listener) {
-                    // TODO: Do we really want to add new properties to the
-                    // already registered listener or we want to replace the
-                    // old properties
-                    l.addProperties(propertyNames);
-                    found = true;
-                    break;
+        synchronized (mutex) {
+            List<Listener> list = register.get(notifier);
+            boolean found = false;
+            if (list == null) {
+                list = new ArrayList<Listener>();
+            } else {
+                for (Listener l : list) {
+                    if (l.getListener() == listener) {
+                        // TODO: Do we really want to add new properties to the
+                        // already registered listener or we want to replace the
+                        // old properties
+                        l.addProperties(propertyNames);
+                        found = true;
+                        break;
+                    }
                 }
             }
-        }
-        if (!found) {
-            list.add(new Listener(listener, propertyNames));
-            register.put(notifier, list);
+            if (!found) {
+                list.add(new Listener(listener, propertyNames));
+                register.put(notifier, list);
+            }
         }
     }
 
     public void flushModelEvents() {
         // TODO Auto-generated method stub
-
     }
 
     public void removeClassModelEventListener(PropertyChangeListener listener,
@@ -213,20 +217,22 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         if (notifier == null || listener == null) {
             throw new NullPointerException();
         }
-        List<Listener> list = register.get(notifier);
-        if (list == null) {
-            return;
-        }
-        Iterator<Listener> iter = list.iterator();
-        while (iter.hasNext()) {
-            Listener l = iter.next();
-            if (l.getListener() == listener) {
-                if (propertyNames == null) {
-                    l.removeProperties(propertyNames);
-                } else {
-                    iter.remove();
+        synchronized (mutex) {
+            List<Listener> list = register.get(notifier);
+            if (list == null) {
+                return;
+            }
+            Iterator<Listener> iter = list.iterator();
+            while (iter.hasNext()) {
+                Listener l = iter.next();
+                if (l.getListener() == listener) {
+                    if (propertyNames != null) {
+                        l.removeProperties(propertyNames);
+                    } else {
+                        iter.remove();
+                    }
+                    break;
                 }
-                break;
             }
         }
     }
