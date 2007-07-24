@@ -49,20 +49,14 @@ public class PropPanelModel extends PropPanelPackage  {
                 ConfigLoader.getTabPropsOrientation());
     }
 
-    /**
-     * Via this method, the GUI elements are added to the proppanel. 
-     */
     protected void placeElements() {
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        
-        /* The next 2 fields are commented out, 
-         * as long as ArgoUML does not support 
-         * more then one un-owned Model.  */
-//        addField(Translator.localize("label.namespace"),
-//                getNamespaceSelector());
 
-//        add(getNamespaceVisibilityPanel());
+        addField(Translator.localize("label.namespace"),
+                getNamespaceSelector());
+
+        add(getNamespaceVisibilityPanel());
 
         add(getModifiersPanel());
         
@@ -96,4 +90,4 @@ public class PropPanelModel extends PropPanelPackage  {
         addAction(getDeleteAction());
     }
 
-} /* end class PropPanelModel */
+}
