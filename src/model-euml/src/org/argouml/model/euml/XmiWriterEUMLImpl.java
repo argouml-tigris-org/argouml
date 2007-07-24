@@ -36,11 +36,7 @@ import org.argouml.model.NotImplementedException;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiExtensionWriter;
 import org.argouml.model.XmiWriter;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 
 /**
@@ -84,7 +80,6 @@ class XmiWriterEUMLImpl implements XmiWriter {
      */
     public XmiWriterEUMLImpl(EUMLModelImplementation implementation,
             Object theModel, OutputStream stream, String version) {
-        modelImpl = implementation;
         if (stream == null) {
             throw new IllegalArgumentException("An OutputStream must be provided");
         }
@@ -101,12 +96,9 @@ class XmiWriterEUMLImpl implements XmiWriter {
     }
 
     public void write() throws UmlException {
-        // This URI is a dummy.  We're going to write to our OutputStream
-        Resource resource =
-                new ResourceSetImpl().createResource(URI
-                        .createFileURI("foo.xmi"));
-        EList<EObject> contents = resource.getContents();
-        contents.add(model);
+	if (model.eResource() == null) {
+	    throw new UmlException("Root container is not affiliated with any resource!"); //$NON-NLS-1$
+	}
 
         // Do we need to get stereotype applications for each element? - tfm
 //        for (Iterator allContents = UMLUtil.getAllContents(model, true,
@@ -116,14 +108,13 @@ class XmiWriterEUMLImpl implements XmiWriter {
 //                contents.addAll(((Element) eObject).getStereotypeApplications());
 //            }
 //        }
-
         Map options = new HashMap();
         options.put(XMLResource.OPTION_LINE_WIDTH, 100);
         
         // TODO: Is there an option we can use to save our ArgoUML version?
         
         try {
-            resource.save(oStream, options);
+            model.eResource().save(oStream, options);
         } catch (IOException ioe) {
             throw new UmlException(ioe);
         }
@@ -134,5 +125,4 @@ class XmiWriterEUMLImpl implements XmiWriter {
         throw new NotYetImplementedException();
     }
 
-    
 }
