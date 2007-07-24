@@ -128,8 +128,8 @@ public class SelectionStereotype extends SelectionNodeClarifiers2 {
     @Override
     protected Icon[] getIcons() {
         // In the DeploymentDiagram there are no Generalizations
-        if (!(Globals.curEditor().getGraphModel() 
-                instanceof DeploymentDiagramGraphModel)) {
+        if (Globals.curEditor().getGraphModel() 
+                instanceof DeploymentDiagramGraphModel) {
             return null;
         }
         return icons;
