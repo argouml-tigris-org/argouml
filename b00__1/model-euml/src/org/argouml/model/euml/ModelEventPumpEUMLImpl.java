@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -109,6 +110,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     private Object mutex;
     
+    private Logger LOG = Logger.getLogger(ModelEventPumpEUMLImpl.class);
+    
     /**
      * Constructor.
      * 
@@ -161,8 +164,10 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         }
         synchronized (mutex) {
             List<Listener> list = register.get(notifier);
+            boolean new_ = false;
             boolean found = false;
             if (list == null) {
+                new_ = true;
                 list = new ArrayList<Listener>();
             } else {
                 for (Listener l : list) {
@@ -176,7 +181,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                     }
                 }
             }
-            if (!found) {
+            if (new_ || !found) {
                 list.add(new Listener(listener, propertyNames));
                 register.put(notifier, list);
             }
@@ -243,23 +248,46 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      */
     @SuppressWarnings("unchecked")
     public void notifyChanged(Notification notification) {
-        Object notifier = notification.getNotifier();
-        List<Listener> list = registerForElements.get(notifier);
-        if (list != null) {
-            for (Listener l : list) {
-                fireNotification(notification, l);
-            }
+        if (notification.getEventType() == Notification.REMOVING_ADAPTER) {
+            return;
+        }
+        Object source = null;
+        switch (notification.getEventType()) {
+        case Notification.REMOVE:
+            source = notification.getOldValue();
+            break;
+        default:
+            source = notification.getNotifier();
         }
 
-        for (Object o : registerForClasses.keySet()) {
-            if (o instanceof Class) {
-                Class type = (Class) o;
-                if (type.isAssignableFrom(notifier.getClass())) {
-                    for (Listener l : registerForClasses.get(o)) {
-                        fireNotification(notification, l);
+        List<Listener> listeners = new ArrayList<Listener>();
+        synchronized (mutex) {
+            List<Listener> list = registerForElements.get(source);
+            if (list != null) {
+                for (Listener l : list) {
+                    listeners.add(l);
+                }
+            }
+
+            boolean logged = false;
+            for (Object o : registerForClasses.keySet()) {
+                if (o instanceof Class) {
+                    Class type = (Class) o;
+                    if (type.isAssignableFrom(source.getClass())) {
+                        if (!logged) {
+                            LOG.debug("eUML is firing " + notification); //$NON-NLS-1$
+                            logged = true;
+                        }
+                        for (Listener l : registerForClasses.get(o)) {
+                            listeners.add(l);
+                        }
                     }
                 }
             }
+        }
+
+        for (Listener l : listeners) {
+            fireNotification(notification, l);
         }
     }
 
