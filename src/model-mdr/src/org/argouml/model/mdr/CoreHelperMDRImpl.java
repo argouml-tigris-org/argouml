@@ -1214,6 +1214,8 @@ class CoreHelperMDRImpl implements CoreHelper {
         try {
             if (Model.getFacade().getModel(ns) != Model.getFacade().getModel(
                     modelElement)) {
+                // TODO: This will incorrectly return false for 
+                // nested Models - tfm
                 return false;
             }
 
@@ -1451,24 +1453,20 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
     private boolean isValidNamespace(UmlAssociation assoc, Namespace ns) {
-        Iterator it = assoc.getConnection().iterator();
-        List namespaces = new ArrayList();
-        while (it.hasNext()) {
-            AssociationEnd end = (AssociationEnd) it.next();
+        List<Namespace> namespaces = new ArrayList<Namespace>();
+        for (AssociationEnd end 
+                : (List<AssociationEnd>) assoc.getConnection()) {
             namespaces.add(end.getParticipant().getNamespace());
         }
-        it = namespaces.iterator();
-        while (it.hasNext()) {
-            Namespace ns1 = (Namespace) it.next();
-            if (it.hasNext()) {
-                Namespace ns2 = (Namespace) it.next();
-                // TODO: this contains a small error (ns can be part
-                // of hierarchy of namespaces, that's not taken into
-                // account)
-                if (ns == getFirstSharedNamespace(ns1, ns2)) {
-                    return true;
-                }
-            }
+        if (namespaces.size() < 2) {
+            return false;
+        }
+        Namespace ns1 = namespaces.get(0);
+        Namespace ns2 = namespaces.get(1);
+        // TODO: This is incorrect.  AssociationEnds must be
+        // visible from Association's namespace, not vice versa. - tfm
+        if (ns == getFirstSharedNamespace(ns1, ns2)) {
+            return true;
         }
         return false;
     }
