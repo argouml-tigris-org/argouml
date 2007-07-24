@@ -50,6 +50,8 @@ public class GoModelToDiagrams extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
+        // TODO: This is assuming a single model per project which isn't
+        // true of models received from other UML tools - tfm 20070724
 	if (Model.getFacade().isAModel(parent)) {
 	    return ProjectManager.getManager()
                         .getCurrentProject().getDiagramList();
