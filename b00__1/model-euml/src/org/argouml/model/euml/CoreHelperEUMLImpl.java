@@ -33,6 +33,9 @@ import java.util.List;
 
 import org.argouml.model.CoreHelper;
 import org.argouml.model.NotImplementedException;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.uml2.common.edit.command.ChangeCommand;
+import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.BehavioralFeature;
 import org.eclipse.uml2.uml.Classifier;
@@ -146,15 +149,29 @@ class CoreHelperEUMLImpl implements CoreHelper {
         throw new NotYetImplementedException();
     }
 
-    public void addOwnedElement(Object handle, Object me) {
+    public void addOwnedElement(final Object handle, final Object me) {
+        EditingDomain editingDomain = modelImpl.getEditingDomain();
         if (handle instanceof org.eclipse.uml2.uml.Package
                 && me instanceof Type) {
-            ((org.eclipse.uml2.uml.Package) handle).getOwnedTypes().add(
-                    (Type) me);
+            RunnableClass run = new RunnableClass() {
+                public void run() {
+                    ((org.eclipse.uml2.uml.Package) handle).getOwnedTypes().add(
+                            (Type) me);
+                }
+            };
+            editingDomain.getCommandStack().execute(
+                    new ChangeCommand(editingDomain, run));
+
         } else if (handle instanceof org.eclipse.uml2.uml.Package
                 && me instanceof PackageableElement) {
-            ((org.eclipse.uml2.uml.Package) handle).getPackagedElements().add(
-                    (PackageableElement) me);
+            RunnableClass run = new RunnableClass() {
+                public void run() {
+                    ((org.eclipse.uml2.uml.Package) handle).getPackagedElements().add(
+                            (PackageableElement) me);
+                }
+            };
+            editingDomain.getCommandStack().execute(
+                    new ChangeCommand(editingDomain, run));
         } else {
             throw new NotYetImplementedException();
         }
