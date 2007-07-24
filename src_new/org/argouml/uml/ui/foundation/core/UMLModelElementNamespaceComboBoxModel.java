@@ -82,7 +82,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
          */
         if (target != null) {
             Object namespace = Model.getFacade().getNamespace(target);
-            if (!c.contains(namespace)) {
+            if (namespace != null && !c.contains(namespace)) {
                 c.add(namespace);
                 LOG.warn("The current namespace is not a valid one!");
             }
