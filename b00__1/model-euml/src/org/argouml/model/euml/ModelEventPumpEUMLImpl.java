@@ -26,6 +26,7 @@
 
 package org.argouml.model.euml;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,8 +39,12 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.DeleteInstanceEvent;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -292,7 +297,36 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     }
 
     private void fireNotification(Notification n, Listener l) {
-        // TODO: verify the property names && fire the notification
+        PropertyChangeEvent event = null;
+        switch (n.getEventType()) {
+        case Notification.REMOVE:
+            event = new DeleteInstanceEvent(
+                    n.getOldValue(), "remove", null, null, null); //$NON-NLS-1$
+            l.getListener().propertyChange(event);
+            removeModelEventListener(l.getListener(), n.getOldValue());
+            break;
+        case Notification.SET:
+            if (n.getFeature() instanceof EAttribute) {
+                event = new AttributeChangeEvent(
+                        n.getNotifier(),
+                        ((EAttribute) n.getFeature()).getName(),
+                        n.getOldValue(), n.getNewValue(), null);
+                l.getListener().propertyChange(event);
+            }
+            break;
+        case Notification.ADD:
+//            event = new AddAssociationEvent(
+//                    n.getNewValue(), "end", null, n.getNotifier(),
+//                    n.getNotifier(), null);
+//            l.getListener().propertyChange(event);
+//            event = new AddAssociationEvent(
+//                    n.getNotifier(), "reverse-end", null, n.getNewValue(),
+//                    n.getNewValue(), null);
+//            l.getListener().propertyChange(event);
+            break;
+        default:
+            LOG.debug("Uncought notification: " + n); //$NON-NLS-1$
+        }
     }
 
     public void startPumpingEvents() {
