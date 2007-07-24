@@ -1967,4 +1967,9 @@ class FacadeEUMLImpl implements Facade {
         return ((Feature) handle).isStatic();
     }
 
+    public Collection getRootElements() {
+        throw new NotYetImplementedException();
+        
+    }
+
 }
