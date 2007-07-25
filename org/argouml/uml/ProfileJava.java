@@ -173,8 +173,8 @@ public class ProfileJava extends Profile {
      * @return the default generalization name
      */
     protected String defaultGeneralizationName(Object gen, Object namespace) {
-	Object child = Model.getFacade().getChild(gen);
-        Object parent = Model.getFacade().getParent(gen);
+	Object child = Model.getFacade().getSpecific(gen);
+        Object parent = Model.getFacade().getGeneral(gen);
 	StringBuffer buf = new StringBuffer();
 	buf.append(formatElement(child, namespace));
 	buf.append(" extends ");
@@ -387,9 +387,7 @@ public class ProfileJava extends Profile {
         } catch (FileNotFoundException ex) {
             // No file found, try looking in the resources
             
-            // Not really an error, but we want to maximize our logging
-            // for debugging in a WebStart environment - tfm
-            LOG.error("Failed to load profile from file '" + modelFilename
+            LOG.warn("Failed to load profile from file '" + modelFilename
                     + "', attempting to load as resource");
 
             // Note that the class that we run getClass() in needs to be
