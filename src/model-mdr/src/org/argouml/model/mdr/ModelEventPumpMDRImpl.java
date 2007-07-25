@@ -100,7 +100,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     private Map elements = Collections.synchronizedMap(new HashMap());
 
     /**
-     * Map of Class/attribute tupes and the listeners they have registered.
+     * Map of Class/attribute tuples and the listeners they have registered.
      */
     private Map listenedClasses = Collections.synchronizedMap(new HashMap());
 
@@ -850,7 +850,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                 return;
             }
 
-            HashSet names = new HashSet();
+            HashSet<String> names = new HashSet<String>();
             // If we don't have a MofClass, see if we can get one from the
             // instance
             if (!(metaobject instanceof MofClass)) {
@@ -864,14 +864,10 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             }
 
             MofClass metaclass = (MofClass) metaobject;
-            for (Iterator it = metaclass.allSupertypes().iterator(); it
-                    .hasNext();) {
-                MofClass superclass = (MofClass) it.next();
+            for (MofClass superclass : (List<MofClass>)metaclass.allSupertypes()) {
                 // TODO: This won't find associations which aren't navigable in
                 // this direction
-                List contents = superclass.getContents();
-                for (Iterator i2 = contents.iterator(); i2.hasNext();) {
-                    Object o = i2.next();
+                for (Object o : superclass.getContents()) {
                     if (o instanceof javax.jmi.model.Reference
                             || o instanceof javax.jmi.model.Attribute) {
                         names.add(((javax.jmi.model.ModelElement) o).getName());
@@ -879,8 +875,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                 }
             }
 
-            for (int i = 0; i < attributes.length; i++) {
-                if (!names.contains(attributes[i])) {
+            for (String attribute : attributes) {
+                if (!names.contains(attribute) 
+                        && !"remove".equals(attribute)) {
                     /*
                      * TODO: For any names not found in the class definition,
                      * see if we can find an association with an end of the
@@ -890,7 +887,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                      * all associations, check the types of their association
                      * ends for one which matches our class, then get the name
                      */
-                    LOG.error("Property '" + attributes[i]
+                    LOG.error("Property '" + attribute
                              + "' for class '"
                              + metaclass.getName()
                              + "' doesn't exist in metamodel"
