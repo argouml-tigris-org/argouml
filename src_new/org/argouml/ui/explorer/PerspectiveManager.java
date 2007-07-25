@@ -75,11 +75,12 @@ import org.argouml.ui.explorer.rules.GoNodeToResidentComponent;
 import org.argouml.ui.explorer.rules.GoOperationToCollaboration;
 import org.argouml.ui.explorer.rules.GoOperationToCollaborationDiagram;
 import org.argouml.ui.explorer.rules.GoOperationToSequenceDiagram;
-import org.argouml.ui.explorer.rules.GoPackageToElementImport;
 import org.argouml.ui.explorer.rules.GoPackageToClass;
+import org.argouml.ui.explorer.rules.GoPackageToElementImport;
 import org.argouml.ui.explorer.rules.GoProjectToCollaboration;
 import org.argouml.ui.explorer.rules.GoProjectToDiagram;
 import org.argouml.ui.explorer.rules.GoProjectToModel;
+import org.argouml.ui.explorer.rules.GoProjectToRoots;
 import org.argouml.ui.explorer.rules.GoProjectToStateMachine;
 import org.argouml.ui.explorer.rules.GoSignalToReception;
 import org.argouml.ui.explorer.rules.GoStateMachineToState;
@@ -338,7 +339,7 @@ public final class PerspectiveManager {
         ExplorerPerspective classPerspective =
             new ExplorerPerspective(
                 "combobox.item.class-centric");
-        classPerspective.addRule(new GoProjectToModel());
+        classPerspective.addRule(new GoProjectToRoots());
         classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
         classPerspective.addRule(new GoNamespaceToDiagram());
         classPerspective.addRule(new GoClassToSummary());
@@ -352,7 +353,7 @@ public final class PerspectiveManager {
         ExplorerPerspective packagePerspective =
             new ExplorerPerspective(
                 "combobox.item.package-centric");
-        packagePerspective.addRule(new GoProjectToModel());
+        packagePerspective.addRule(new GoProjectToRoots());
         packagePerspective.addRule(new GoNamespaceToOwnedElements());
         packagePerspective.addRule(new GoPackageToElementImport());
         packagePerspective.addRule(new GoNamespaceToDiagram());
@@ -454,7 +455,7 @@ public final class PerspectiveManager {
         ExplorerPerspective compositionPerspective =
             new ExplorerPerspective(
                 "combobox.item.composite-centric");
-        compositionPerspective.addRule(new GoProjectToModel());
+        compositionPerspective.addRule(new GoProjectToRoots());
         compositionPerspective.addRule(new GoModelElementToContents());
         compositionPerspective.addRule(new GoModelElementToContainedDiagrams());
 
@@ -515,6 +516,7 @@ public final class PerspectiveManager {
             new GoPackageToElementImport(),
             new GoProjectToCollaboration(), new GoProjectToDiagram(),
             new GoProjectToModel(), new GoProjectToStateMachine(),
+            new GoProjectToRoots(),
             new GoSignalToReception(), new GoStateMachineToTop(),
             new GoStatemachineToDiagram(), new GoStateMachineToState(),
             new GoStateMachineToTransition(), new GoStateToDoActivity(),
