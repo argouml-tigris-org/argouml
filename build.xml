@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$
-This requires ANT 1.6.2
+This requires Apache Ant 1.6.2 and has been tested through Ant 1.7.
 
 Introduction
 ============
@@ -23,20 +23,24 @@ the ArgoUML CVS repository.  You can use
         build -version
 to find out what the current version is.
 
+If your directories are organized as set up by the Eclipse project set
+file, use the file build2.sh/build2.bat to build from the command line.
+This uses an alternate properties file, eclipse-ant-build.properties,
+which accommodates the different directory layout.
+
 Property Settings
 =================
-You may place a simple text file named "argouml.build.properties" in
-your home directory using which you can change certain properties. For
-example, by adding a line to argouml.build.properties you can change
-the compiler to be used
+The default property settings are in "default.properties".  To override
+them, create a file called "build.properties" here or 
+"argouml.build.properties" in your home directory.  Order of precedence
+is the reverse of the order they are mentioned in above.
 
-build.compiler=jikes
-(without a blank after "jikes"!).
+For example, to override the model subystem implementation used for
+tests, put the following line your file:
 
-This will force Ant to compile with jikes if you have it on your
-system.
+test.model.implementation=org.argouml.model.euml.EUMLModelImplementation
 
-Refer to the ant documentation for other settings.
+Refer to the Ant documentation and this file for other settings.
 
 Compilation instructions for ArgoUML
 ====================================
@@ -158,11 +162,7 @@ Property files to be searched:
       <pathelement location="${argo.build.dir}/argouml-model.jar"/>
     </path>
 
-    <!-- This runtime classpath is used for tests and other things started
-         from this file.
-      -->
-    <path id="argo.runtime.classpath">
-      <path refid="argo.compile.classpath"/>
+    <path id="argo.mdr.runtime.classpath">
       <pathelement location="${argo.mdr.dir}/build/java-interfaces.jar"/>
       <pathelement location="${argo.mdr.dir}/build/argouml-mdr.jar"/>
       <pathelement location="${argo.mdr.dir}/lib/mof.jar"/>
@@ -171,6 +171,31 @@ Property files to be searched:
       <pathelement location="${argo.mdr.dir}/lib/nbmdr.jar"/>
       <pathelement location="${argo.mdr.dir}/lib/jmiutils.jar"/>
       <pathelement location="${argo.mdr.dir}/lib/openide-util.jar"/>
+    </path>
+
+    <path id="argo.euml.runtime.classpath">
+      <pathelement location="${argo.euml.dir}/build/argouml-euml.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.common_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore.change_2.3.0.v200706262000.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore.xmi_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.edit_2.3.0.v200706262000.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.mapping.ecore2xml_2.3.0.v200706262000.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.common_1.3.0.v200703011358.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.common.edit_1.3.0.v200706251652.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.uml.resources_2.1.0.v200706251652.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.uml_2.1.0.v200703011358.jar"/>
+    </path>
+
+    <!-- This runtime classpath is used for tests and other things started
+         from this file.
+      -->
+    <path id="argo.runtime.classpath">
+      <path refid="argo.compile.classpath"/>
+      <!-- only one of the following will be used at a time -->
+      <!-- we put them together because there's little risk of crosstalk -->
+      <path refid="argo.mdr.runtime.classpath"/>
+      <path refid="argo.euml.runtime.classpath"/>
     </path>
 
     <!-- In order to use ant optional tasks which use jars that are not -->
@@ -225,6 +250,7 @@ Property files to be searched:
       <propertyref name="argo.tools.dir" />
       <propertyref name="argo.model.dir" />
       <propertyref name="argo.mdr.dir" />
+      <propertyref name="argo.euml.dir" />
     </propertyset>
 
   </target>
@@ -639,6 +665,11 @@ Property files to be searched:
         <propertyset refid="absolute-properties"/>
       </propertyset> 
     </ant>
+    <ant dir="${argo.euml.dir}" inheritAll="false" target="clean">
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
     <delete dir="${argo.build.dir}/tests"/>
     <delete dir="${argo.build.dir}/src_new"/>
     <delete dir="${argo.build.dir}/classes"/>
@@ -840,27 +871,36 @@ Property files to be searched:
   </target>
 
   <!-- =================================================================== -->
+  <!-- Build Eclipse UML2 library - internal target which calls argouml-euml build.  -->
+  <!-- =================================================================== -->
+  <target name="build-euml" depends="init,build-model" 
+        description="Build eUML model subsystem - not built by default">
+    <!-- We build unconditionally because only the eUML build itself knows if
+         everything is up to date -->
+    <echo message="=== Calling eUML build ==="/>
+    <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
+    <ant dir="${argo.euml.dir}" target="install" inheritAll="false" >
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
+  </target>
+
+  <!-- =================================================================== -->
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
   <target name="tests-dont-fail"
           depends="compile,junit-setup,junit-report-clean,
                    ant.optional.init">
-    <!-- ant 1.4 uses printsummary="true"                          -->
-    <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
-    <!-- This should never be committed as "withOutAndErr", but    -->
-    <!-- this comment is in case it gets committed by accident.    -->
-
-    <!-- TODO:  This should be contained in default.properties     -->
-    <!--        and overridable in build.properties so that        -->
-    <!--        individual users can set as wanted.                -->
-    <!--        That is part of issue 579.                         -->
 
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
            fork="yes" dir="${basedir}" forkmode="perTest"
            haltonfailure="false"
-           maxmemory="48M" printsummary="true">
+           maxmemory="48M" printsummary="${junit.printsummary}">
         <sysproperty key="test.model.uml" 
             value="${argo.mdr.dir}/src/org/argouml/model/mdr/mof/01-02-15.xml"/>
+        <sysproperty key="argouml.model.implementation" 
+            value="${test.model.implementation}"/>
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="java.awt.headless" value="true"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
@@ -899,20 +939,11 @@ Property files to be searched:
           depends="compile,junit-setup,junit-report-clean,
                    ant.optional.init"
           description="Run all tests that require the GUI components.">
-    <!-- ant 1.4 uses printsummary="true"                          -->
-    <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
-    <!-- This should never be committed as "withOutAndErr", but    -->
-    <!-- this comment is in case it gets committed by accident.    -->
-
-    <!-- TODO:  This should be contained in default.properties     -->
-    <!--        and overridable in build.properties so that        -->
-    <!--        individual users can set as wanted.                -->
-    <!--        That is part of issue 579.                         -->
 
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
            fork="yes" dir="${basedir}" forkmode="perTest"
            haltonfailure="false"
-           maxmemory="128M" printsummary="true">
+           maxmemory="128M" printsummary="${junit.printsummary}">
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
 	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
         <assertions>
@@ -1087,7 +1118,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
   </target>
 
   <!-- =================================================================== -->
-  <!-- Runs Classycle to find cyclic dependencies in ArgoUML.             -->
+  <!-- Runs Classycle to find cyclic dependencies in ArgoUML.              -->
   <!-- =================================================================== -->
     <target name="classycle" depends="compile" 
         description="Analyze sources for cyclic dependencies using Classcycle">
@@ -1113,4 +1144,5 @@ For details see http://www.clarkware.com/software/JDepend.html.
         </fileset>
       </copy>
     </target>
+
 </project><!-- End of file -->
