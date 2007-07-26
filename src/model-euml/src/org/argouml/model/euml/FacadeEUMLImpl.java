@@ -1968,8 +1968,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getRootElements() {
-        throw new NotYetImplementedException();
-        
+        // TODO: Temporary hack to let ArgoUML start up
+        Collection results = new ArrayList();
+        results.add(modelImpl.getModelManagementFactory().getRootModel());
+        return results;
     }
 
 }
