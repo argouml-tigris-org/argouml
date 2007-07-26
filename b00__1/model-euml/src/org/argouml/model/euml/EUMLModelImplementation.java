@@ -42,7 +42,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.EventObject;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -83,9 +82,6 @@ import org.argouml.model.VisibilityKind;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
 import org.eclipse.emf.common.command.BasicCommandStack;
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -225,6 +221,10 @@ public class EUMLModelImplementation implements ModelImplementation {
      * If {@link #canUndo()} returns false, nothing will happen
      */
     public void undo() {
+        if (!canUndo()) {
+            LOG.debug("!!! canUndo() == false !!!"); //$NON-NLS-1$
+            return;
+        }
         editingDomain.getCommandStack().undo();
     }
 
@@ -234,6 +234,10 @@ public class EUMLModelImplementation implements ModelImplementation {
      * If {@link #canRedo()} returns false, nothing will happen
      */
     public void redo() {
+        if (!canRedo()) {
+            LOG.debug("!!! canRedo() == false !!!"); //$NON-NLS-1$
+            return;
+        }
         editingDomain.getCommandStack().redo();
     }
 
@@ -254,25 +258,10 @@ public class EUMLModelImplementation implements ModelImplementation {
             @Override
             protected void handleError(Exception exception) {
                 super.handleError(exception);
-                exception.printStackTrace();
                 throw new RuntimeException(exception);
             }
 
         };
-
-        commandStack.addCommandStackListener(new CommandStackListener() {
-
-            public void commandStackChanged(final EventObject event) {
-                LOG.debug("Command stack changed"); //$NON-NLS-1$
-                Command mostRecentCommand = 
-                    ((CommandStack) event.getSource()).getMostRecentCommand();
-                if (mostRecentCommand != null) {
-                    LOG.debug("Affected objects: " //$NON-NLS-1$
-                            + mostRecentCommand.getAffectedObjects());
-                }
-            }
-
-        });
 
         if (path == null) {
             // TODO: figure out how to use the ItemProviders - 
@@ -586,7 +575,6 @@ public class EUMLModelImplementation implements ModelImplementation {
     }
 
     public DiagramInterchangeModel getDiagramInterchangeModel() {
-        // TODO Auto-generated method stub
         return null;
     }
 
