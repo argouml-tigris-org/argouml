@@ -43,9 +43,6 @@ import org.xml.sax.InputSource;
  */
 class XmiReaderEUMLImpl implements XmiReader {
 
-    private static final Logger LOG = 
-        Logger.getLogger(XmiReaderEUMLImpl.class);
-        
     /**
      * The model implementation.
      */
