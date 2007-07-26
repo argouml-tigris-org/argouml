@@ -149,7 +149,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
         // AssociationEndRole have been replaced by the internal 
         // structure of the Collaboration
-        return Classifier.class;
+        return null;
     }
 
     public Object getAttribute() {
