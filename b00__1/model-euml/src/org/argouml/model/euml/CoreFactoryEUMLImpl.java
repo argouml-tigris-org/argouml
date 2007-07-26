@@ -41,6 +41,7 @@ import org.eclipse.uml2.uml.AssociationClass;
 import org.eclipse.uml2.uml.BehavioredClassifier;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Comment;
+import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
@@ -78,8 +79,6 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     private EditingDomain editingDomain;
 
-    private UMLFactory uml = UMLFactory.eINSTANCE;
-
     /**
      * Constructor.
      *
@@ -92,7 +91,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public Abstraction buildAbstraction(String name, Object supplier,
             Object client) {
-        Abstraction abstraction = uml.createAbstraction();
+        Abstraction abstraction = createAbstraction();
         abstraction.setName(name);
         abstraction.getSuppliers().add((NamedElement) supplier);
         abstraction.getClients().add((NamedElement) client);
@@ -209,7 +208,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public org.eclipse.uml2.uml.Class buildClass() {
-        return uml.createClass();
+        return UMLFactory.eINSTANCE.createClass();
     }
 
     public org.eclipse.uml2.uml.Class buildClass(Object owner) {
@@ -222,7 +221,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public org.eclipse.uml2.uml.Class buildClass(final String name,
             final Object owner) {
-        org.eclipse.uml2.uml.Class cls = uml.createClass();
+        org.eclipse.uml2.uml.Class cls = UMLFactory.eINSTANCE.createClass();
         if (name != null) {
             cls.setName(name);
         }
@@ -410,105 +409,110 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Abstraction createAbstraction() {
-        return uml.createAbstraction();
+        return UMLFactory.eINSTANCE.createAbstraction();
     }
 
     public Artifact createArtifact() {
-        return uml.createArtifact();
+        return UMLFactory.eINSTANCE.createArtifact();
     }
 
     public Association createAssociation() {
-        return uml.createAssociation();
+        return UMLFactory.eINSTANCE.createAssociation();
     }
 
     public AssociationClass createAssociationClass() {
-        return uml.createAssociationClass();
+        return UMLFactory.eINSTANCE.createAssociationClass();
     }
 
     public Property createAssociationEnd() {
-        // TODO: Double check - tfm
-        return uml.createProperty();
+        return UMLFactory.eINSTANCE.createProperty();
     }
 
     public Property createAttribute() {
-        // TODO: Double check - tfm
-        return uml.createProperty();
+        return UMLFactory.eINSTANCE.createProperty();
     }
 
+    /**
+     * Removed from UML2.x, use TemplateBinding instead.
+     */
+    @Deprecated
     public TemplateBinding createBinding() {
-        return uml.createTemplateBinding();
+        return UMLFactory.eINSTANCE.createTemplateBinding();
     }
 
     public org.eclipse.uml2.uml.Class createClass() {
-        return uml.createClass();
+        return UMLFactory.eINSTANCE.createClass();
     }
 
     public Comment createComment() {
-        return uml.createComment();
+        return UMLFactory.eINSTANCE.createComment();
     }
 
-    public Object createComponent() {
-        // TODO Auto-generated method stub
-        return null;
+    public Component createComponent() {
+        return UMLFactory.eINSTANCE.createComponent();
     }
 
     public Constraint createConstraint() {
-        return uml.createConstraint();
+        return UMLFactory.eINSTANCE.createConstraint();
     }
 
     public DataType createDataType() {
-        return uml.createDataType();
+        return UMLFactory.eINSTANCE.createDataType();
     }
 
     public Dependency createDependency() {
-        return uml.createDependency();
+        return UMLFactory.eINSTANCE.createDependency();
     }
 
     public Object createElementResidence() {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Is it removed from UML2 ?
+        throw new NotImplementedException();
     }
 
     public Enumeration createEnumeration() {
-        return uml.createEnumeration();
+        return UMLFactory.eINSTANCE.createEnumeration();
     }
 
     public EnumerationLiteral createEnumerationLiteral() {
-        return uml.createEnumerationLiteral();
+        return UMLFactory.eINSTANCE.createEnumerationLiteral();
     }
 
     public Object createFlow() {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Is it removed from UML2 ?
+        throw new NotImplementedException();
     }
 
     public Generalization createGeneralization() {
-        return uml.createGeneralization();
+        return UMLFactory.eINSTANCE.createGeneralization();
     }
 
     public Interface createInterface() {
-        return uml.createInterface();
+        return UMLFactory.eINSTANCE.createInterface();
     }
 
     public Object createMethod() {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Is it removed from UML2 ?
+        throw new NotImplementedException();
     }
 
     public Node createNode() {
-        return uml.createNode();
+        return UMLFactory.eINSTANCE.createNode();
     }
 
     public Operation createOperation() {
-        return uml.createOperation();
+        return UMLFactory.eINSTANCE.createOperation();
     }
 
     public Parameter createParameter() {
-        return uml.createParameter();
+        return UMLFactory.eINSTANCE.createParameter();
     }
 
+    /**
+     * Removed from UML2.x, use PackageImport instead.
+     */
+    @Deprecated
     public PackageImport createPermission() {
-        return uml.createPackageImport();
+        return UMLFactory.eINSTANCE.createPackageImport();
     }
 
     @SuppressWarnings("deprecation")
@@ -517,7 +521,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public PrimitiveType createPrimitiveType() {
-        return uml.createPrimitiveType();
+        return UMLFactory.eINSTANCE.createPrimitiveType();
     }
 
     @SuppressWarnings("deprecation")
@@ -527,16 +531,16 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Object createTemplateArgument() {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Is it removed from UML2 ?
+        throw new NotImplementedException();
     }
 
     public TemplateParameter createTemplateParameter() {
-        return uml.createTemplateParameter();
+        return UMLFactory.eINSTANCE.createTemplateParameter();
     }
 
     public Usage createUsage() {
-        return uml.createUsage();
+        return UMLFactory.eINSTANCE.createUsage();
     }
 
 }
