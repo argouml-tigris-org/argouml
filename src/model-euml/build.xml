@@ -252,6 +252,7 @@ This is designed to work in two different environments:
   <!-- =================================================================== -->
   <target name="clean" depends="init"
           description="Clean out all built files.">
+    <mkdir dir="${build.dir}"/>
     <delete includeemptydirs="true">
       <fileset dir="${build.dir}">
     	<exclude name="**/.cvsignore"/>
