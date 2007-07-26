@@ -26,7 +26,6 @@
 
 package org.argouml.model.euml;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,26 +35,28 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 
 /**
- * The implementation of the ModelEventPump for EUML2.
+ * The implementation of the ModelEventPump for eUML.
  */
 class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     /**
      * A listener attached to a UML element
      */
-    class Listener {
+    private class Listener {
 
         private PropertyChangeListener listener;
 
@@ -152,8 +153,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             throw new IllegalArgumentException();
         }
         registerListener(
-                (EObject) modelelement, listener, propertyNames,
-                registerForElements);
+                modelelement, listener, propertyNames, registerForElements);
     }
 
     public void addModelEventListener(PropertyChangeListener listener,
@@ -249,86 +249,161 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     /**
      * @see org.eclipse.emf.common.notify.Adapter#notifyChanged(Notification)
-     * @param notification The notification event
+     * @param notification
+     *                The notification event
      */
-    @SuppressWarnings("unchecked")
     public void notifyChanged(Notification notification) {
         if (notification.getEventType() == Notification.REMOVING_ADAPTER) {
             return;
         }
-        Object source = null;
-        switch (notification.getEventType()) {
-        case Notification.REMOVE:
-            source = notification.getOldValue();
-            break;
-        default:
-            source = notification.getNotifier();
-        }
 
-        List<Listener> listeners = new ArrayList<Listener>();
-        synchronized (mutex) {
-            List<Listener> list = registerForElements.get(source);
-            if (list != null) {
-                for (Listener l : list) {
-                    listeners.add(l);
-                }
+        class EventAndListeners {
+            public EventAndListeners(UmlChangeEvent e,
+                    List<PropertyChangeListener> l) {
+                event = e;
+                listeners = l;
             }
 
-            boolean logged = false;
-            for (Object o : registerForClasses.keySet()) {
-                if (o instanceof Class) {
-                    Class type = (Class) o;
-                    if (type.isAssignableFrom(source.getClass())) {
-                        if (!logged) {
-                            LOG.debug("eUML is firing " + notification); //$NON-NLS-1$
-                            logged = true;
-                        }
-                        for (Listener l : registerForClasses.get(o)) {
-                            listeners.add(l);
-                        }
+            UmlChangeEvent event;
+
+            List<PropertyChangeListener> listeners;
+        }
+
+        List<EventAndListeners> events = new ArrayList<EventAndListeners>();
+
+        if (notification.getEventType() == Notification.SET) {
+            if (notification.getFeature() instanceof ENamedElement) {
+                String propName = ((ENamedElement) notification.getFeature()).getName();
+                events.add(new EventAndListeners(new AttributeChangeEvent(
+                        notification.getNotifier(), propName,
+                        notification.getOldValue(), notification.getNewValue(),
+                        null), getListeners(
+                        notification.getNotifier(), propName)));
+            }
+        } else if (notification.getEventType() == Notification.ADD
+                || notification.getEventType() == Notification.REMOVE) {
+            if (notification.getFeature() instanceof EReference) {
+                EReference ref = (EReference) notification.getFeature();
+                if (notification.getEventType() == Notification.ADD) {
+                    events.add(new EventAndListeners(new AddAssociationEvent(
+                            notification.getNotifier(), ref.getName(), null,
+                            notification.getNewValue(),
+                            notification.getNewValue(), null), getListeners(
+                            notification.getNotifier(), ref.getName())));
+                    events.add(new EventAndListeners(new AttributeChangeEvent(
+                            notification.getNotifier(), ref.getName(), null,
+                            notification.getNewValue(), null), getListeners(
+                            notification.getNotifier(), ref.getName())));
+                } else {
+                    events.add(new EventAndListeners(
+                            new DeleteInstanceEvent(
+                                    notification.getOldValue(),
+                                    "remove", null, null, null), getListeners(notification.getOldValue()))); //$NON-NLS-1$
+                    events.add(new EventAndListeners(
+                            new RemoveAssociationEvent(
+                                    notification.getNotifier(), ref.getName(),
+                                    notification.getOldValue(), null,
+                                    notification.getOldValue(), null),
+                            getListeners(
+                                    notification.getNotifier(), ref.getName())));
+                    events.add(new EventAndListeners(
+                            new AttributeChangeEvent(
+                                    notification.getNotifier(), ref.getName(),
+                                    notification.getOldValue(), null, null),
+                            getListeners(
+                                    notification.getNotifier(), ref.getName())));
+                }
+
+                EReference oppositeRef = ref.getEOpposite();
+                if (oppositeRef != null) {
+                    if (notification.getEventType() == Notification.ADD) {
+                        events.add(new EventAndListeners(
+                                new AddAssociationEvent(
+                                        notification.getNewValue(),
+                                        oppositeRef.getName(), null,
+                                        notification.getNotifier(),
+                                        notification.getNotifier(), null),
+                                getListeners(
+                                        notification.getNewValue(),
+                                        oppositeRef.getName())));
+                        events.add(new EventAndListeners(
+                                new AttributeChangeEvent(
+                                        notification.getNewValue(),
+                                        oppositeRef.getName(), null,
+                                        notification.getNotifier(), null),
+                                getListeners(
+                                        notification.getNewValue(),
+                                        oppositeRef.getName())));
+                    } else {
+                        events.add(new EventAndListeners(
+                                new AddAssociationEvent(
+                                        notification.getOldValue(),
+                                        oppositeRef.getName(),
+                                        notification.getNotifier(), null,
+                                        notification.getNotifier(), null),
+                                getListeners(
+                                        notification.getOldValue(),
+                                        oppositeRef.getName())));
+                        events.add(new EventAndListeners(
+                                new AttributeChangeEvent(
+                                        notification.getOldValue(),
+                                        oppositeRef.getName(),
+                                        notification.getNotifier(), null, null),
+                                getListeners(
+                                        notification.getOldValue(),
+                                        oppositeRef.getName())));
                     }
                 }
             }
         }
 
-        for (Listener l : listeners) {
-            fireNotification(notification, l);
-        }
-    }
-
-    private void fireNotification(Notification n, Listener l) {
-        PropertyChangeEvent event = null;
-        switch (n.getEventType()) {
-        case Notification.REMOVE:
-            event = new DeleteInstanceEvent(
-                    n.getOldValue(), "remove", null, null, null); //$NON-NLS-1$
-            l.getListener().propertyChange(event);
-            removeModelEventListener(l.getListener(), n.getOldValue());
-            break;
-        case Notification.SET:
-            if (n.getFeature() instanceof EAttribute) {
-                event = new AttributeChangeEvent(
-                        n.getNotifier(),
-                        ((EAttribute) n.getFeature()).getName(),
-                        n.getOldValue(), n.getNewValue(), null);
-                l.getListener().propertyChange(event);
+        for (EventAndListeners e : events) {
+            if (e.listeners != null) {
+                for (PropertyChangeListener l : e.listeners) {
+                    l.propertyChange(e.event);
+                }
             }
-            break;
-        case Notification.ADD:
-//            event = new AddAssociationEvent(
-//                    n.getNewValue(), "end", null, n.getNotifier(),
-//                    n.getNotifier(), null);
-//            l.getListener().propertyChange(event);
-//            event = new AddAssociationEvent(
-//                    n.getNotifier(), "reverse-end", null, n.getNewValue(),
-//                    n.getNewValue(), null);
-//            l.getListener().propertyChange(event);
-            break;
-        default:
-            LOG.debug("Uncought notification: " + n); //$NON-NLS-1$
         }
     }
+    
+    private List<PropertyChangeListener> getListeners(Object element) {
+        return getListeners(element, null);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private List<PropertyChangeListener> getListeners(Object element,
+            String propName) {
+        List<PropertyChangeListener> returnedList = new ArrayList<PropertyChangeListener>();
 
+        synchronized (mutex) {
+            addListeners(returnedList, element, propName, registerForElements);
+            for (Object o : registerForClasses.keySet()) {
+                if (o instanceof Class) {
+                    Class type = (Class) o;
+                    if (type.isAssignableFrom(element.getClass())) {
+                        addListeners(
+                                returnedList, o, propName, registerForClasses);
+                    }
+                }
+            }
+        }
+        return returnedList.isEmpty() ? null : returnedList;
+    }
+    
+    private void addListeners(List<PropertyChangeListener> listeners,
+            Object element, String propName,
+            Map<Object, List<Listener>> register) {
+        List<Listener> list = register.get(element);
+        if (list != null) {
+            for (Listener l : list) {
+                if (propName == null || l.getProperties() == null
+                        || l.getProperties().contains(propName)) {
+                    listeners.add(l.getListener());
+                }
+            }
+        }
+    }
+    
     public void startPumpingEvents() {
         rootContainerAdapter.setDeliverEvents(true);
     }
