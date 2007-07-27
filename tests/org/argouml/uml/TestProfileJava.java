@@ -67,7 +67,7 @@ public class TestProfileJava extends TestCase {
      */
     public void testLoadProfileModel() throws ProfileException {
         ProfileJava profile = new ProfileJava();
-        Object model = profile.loadProfileModel();
+        Object model = profile.getProfileModel();
         assertNotNull("Can't load profile model", model);
         Collection stereos = Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(model,
