@@ -94,7 +94,10 @@ public class WizAddConstructor extends UMLWizard {
     /**
      * Finds the create stereotype for an object. It is assumed to be
      * available from the java profile.
-     *
+     * <p>
+     * TODO: This needs to be recoded to handle multiple profile packages.
+     * It also seems Java specific (at least the above comment does) - tfm
+     * 
      * @param obj is the object the stereotype should be applicable to.
      * @return a suitable stereotype, or null.
      */
