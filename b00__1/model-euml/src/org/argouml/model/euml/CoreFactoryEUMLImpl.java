@@ -55,10 +55,12 @@ import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.Realization;
 import org.eclipse.uml2.uml.TemplateBinding;
 import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.Type;
@@ -364,28 +366,74 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
+    /**
+     * Removed from UML2.x, use buildPackageImport instead.
+     */
+    @Deprecated
     public PackageImport buildPermission(Object clientObj, Object supplierObj) {
-        // TODO Auto-generated method stub
+        return buildPackageImport(clientObj, supplierObj);
+    }
+    
+    public PackageImport buildPackageImport(final Object clientObj, final Object supplierObj) {
+//        RunnableClass run = new RunnableClass() {
+//            public void run() {
+//                PackageImport packageImport = createPackageImport();
+//                packageImport.setImportedPackage((Package) supplierObj);
+//                packageImport.setImportingNamespace((Namespace) clientObj);
+//                ((Namespace) clientObj).getNearestPackage().getPackagedElements().add(packageImport);
+//                getParams().add(packageImport);
+//            }
+//        };
+//        editingDomain.getCommandStack().execute(
+//                new ChangeCommand(editingDomain, run));
+//
+//        return (PackageImport) run.getParams().get(0);
         return null;
     }
 
-    public InterfaceRealization buildRealization(Object client,
-            Object supplier, Object namespace) {
-        // TODO: namespace is ignored
-        InterfaceRealization realization =
-            ((BehavioredClassifier) client).createInterfaceRealization(
-                    null, (Interface) supplier);
-        return realization;
+    public Realization buildRealization(final Object client,
+            final Object supplier, final Object namespace) {
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Realization realization = UMLFactory.eINSTANCE.createRealization();
+                realization.getClients().add((NamedElement) client);
+                realization.getSuppliers().add((NamedElement) supplier);
+                if (((NamedElement) client).getNearestPackage() == ((NamedElement) supplier).getNearestPackage()) {
+                    ((NamedElement) client).getNearestPackage().getPackagedElements().add(
+                            realization);
+                } else {
+                    ((org.eclipse.uml2.uml.Package) namespace).getPackagedElements().add(
+                            realization);
+                }
+                getParams().add(realization);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (Realization) run.getParams().get(0);
     }
 
     public Object buildTemplateArgument(Object element) {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Is it removed from UML2 ?
+        throw new RuntimeException(new NotImplementedException());
     }
 
-    public Usage buildUsage(Object client, Object supplier) {
-        // TODO Auto-generated method stub
-        return null;
+    public Usage buildUsage(final Object client, final Object supplier) {
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Usage usage = createUsage();
+                usage.getClients().add((NamedElement) client);
+                usage.getSuppliers().add((NamedElement) supplier);
+                ((NamedElement) client).getNearestPackage().getPackagedElements().add(
+                        usage);
+                getParams().add(usage);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (Usage) run.getParams().get(0);
     }
 
     public Object copyClass(Object source, Object ns) {
@@ -433,10 +481,14 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     /**
-     * Removed from UML2.x, use TemplateBinding instead.
+     * Removed from UML2.x, use createTemplateBinding instead.
      */
     @Deprecated
     public TemplateBinding createBinding() {
+        return createTemplateBinding();
+    }
+    
+    public TemplateBinding createTemplateBinding() {
         return UMLFactory.eINSTANCE.createTemplateBinding();
     }
 
@@ -508,10 +560,14 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     /**
-     * Removed from UML2.x, use PackageImport instead.
+     * Removed from UML2.x, use createPackageImport instead.
      */
     @Deprecated
     public PackageImport createPermission() {
+        return createPackageImport();
+    }
+    
+    public PackageImport createPackageImport() {
         return UMLFactory.eINSTANCE.createPackageImport();
     }
 
