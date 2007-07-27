@@ -335,6 +335,12 @@ public class ProfileJava extends Profile {
      * @return the profile model object or null
      */
     private Collection loadProfileModel() {
+        // Remove old profile packages, if any
+        if (profileElements != null) {
+            for (Object element : profileElements) {
+                Model.getUmlFactory().delete(element);
+            }
+        }
         Collection elements = new ArrayList();
         String modelFilename = getProfileModelFilename();
 
