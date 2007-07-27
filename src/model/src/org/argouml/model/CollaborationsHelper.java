@@ -166,7 +166,8 @@ public interface CollaborationsHelper {
     Collection allAvailableContents(Object arole);
 
     /**
-     * Returns all possible bases for the given element. <p>
+     * Returns all possible bases for the given element
+     * (a ClassifierRole or AssociationRole). <p>
      * TODO: Beware: this function does not return the current base!
      * Is that by design or a bug?
      *
