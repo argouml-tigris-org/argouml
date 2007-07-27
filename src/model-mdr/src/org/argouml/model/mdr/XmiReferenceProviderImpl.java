@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,21 +39,16 @@ import org.netbeans.api.xmi.XMIReferenceProvider;
  */
 class XmiReferenceProviderImpl implements XMIReferenceProvider {
     
-    private Map mofIdToXmiId;
+    private Map<String, XmiReference> mofIdToXmiId;
     
     /**
      * Create a new reference provider which uses the given map for lookups.
      * 
      * @param idMap
      */
-    XmiReferenceProviderImpl(Map idMap) {
+    XmiReferenceProviderImpl(Map<String, XmiReference> idMap) {
         mofIdToXmiId = idMap;
     }
-
-    /**
-     * The document for the objects.
-     */
-    private final String systemId = null;
 
     /*
      * @see org.netbeans.api.xmi.XMIReferenceProvider#getReference(javax.jmi.reflect.RefObject)
@@ -62,14 +57,17 @@ class XmiReferenceProviderImpl implements XMIReferenceProvider {
         String mofId = object.refMofId();
         
         // Look for an existing reference matching our MofID
-        XmiReference ref = ((XmiReference) mofIdToXmiId.get(mofId));
+        XmiReference ref = mofIdToXmiId.get(mofId);
 
-        // Create a new ref if none found, otherwise create one with our sysID
+        // Anything not found is newly created, so return a null SystemID
+        // indicating that it is in the parent document.  Otherwise return
+        // the same reference that we read in originally.
         if (ref == null) {
-            return new XMIReferenceProvider.XMIReference(systemId, mofId);
+            return new XMIReferenceProvider.XMIReference(null, mofId);
         } else {
-            return new XMIReferenceProvider.XMIReference(systemId, 
+            return new XMIReferenceProvider.XMIReference(ref.getSystemId(), 
                     ref.getXmiId());
         }
     }
+
 }

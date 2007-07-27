@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -167,13 +168,14 @@ public class MDRModelImplementation implements ModelImplementation {
      * (as indicated by the calling application) will be treated specially and
      * will not be written back out with the rest of the model data.
      */
-    private RefObject profileModel;
+    private Collection<RefObject> profileElements;
 
     /**
      * Map of model elements to xmi.ids used to keep xmi.ids stable
      * across read/write cycles.
      */
-    private Map objectToId = Collections.synchronizedMap(new HashMap());
+    private Map<String, XmiReference> objectToId = 
+        Collections.synchronizedMap(new HashMap<String, XmiReference>());
 
     /**
      * @return Returns the root UML Factory package for user model.
@@ -630,16 +632,16 @@ public class MDRModelImplementation implements ModelImplementation {
     /**
      * @return the collection of model elements which make up the profile.
      */
-    protected RefObject getProfileModel() {
-        return profileModel;
+    protected Collection<RefObject> getProfileElements() {
+        return profileElements;
     }
 
     /**
      * Save the given elements as belonging to the profile.
-     * @param element collection of model elements.
+     * @param elements collection of model elements.
      */
-    protected void setProfileModel(RefObject element) {
-        this.profileModel = element;
+    protected void setProfileElements(Collection<RefObject> elements) {
+        profileElements = elements;
     }
 
     /**
@@ -647,7 +649,7 @@ public class MDRModelImplementation implements ModelImplementation {
      *
      * @return the map
      */
-    protected Map getObjectToId() {
+    protected Map<String, XmiReference> getObjectToId() {
         return objectToId;
     }
 

@@ -26,6 +26,7 @@ package org.argouml.model.mdr;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +34,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.jmi.reflect.InvalidObjectException;
@@ -60,9 +60,6 @@ import org.netbeans.api.xmi.XMIReader;
 import org.netbeans.api.xmi.XMIReaderFactory;
 import org.netbeans.lib.jmi.xmi.InputConfig;
 import org.netbeans.lib.jmi.xmi.UnknownElementsListener;
-import org.omg.uml.UmlPackage;
-import org.omg.uml.foundation.core.ModelElement;
-import org.omg.uml.modelmanagement.Model;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
@@ -126,21 +123,16 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         modelPackage = mp;
     }
 
-
-    /*
-     * @see org.argouml.model.XmiReader#parse(org.xml.sax.InputSource)
-     */
+    
     public Collection parse(InputSource pIs) throws UmlException {
         return parse(pIs, false);
     }
 
-    /*
-     * @see org.argouml.model.XmiReader#parse(org.xml.sax.InputSource, boolean)
-     */
+    
     public Collection parse(InputSource pIs, boolean profile)
         throws UmlException {
 
-        Collection newElements = Collections.EMPTY_LIST;
+        Collection<RefObject> newElements = Collections.EMPTY_LIST;
         RefPackage extent = modelPackage;
 
         try {
@@ -190,7 +182,8 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             // Disable event delivery during model load
             modelImpl.getModelEventPump().stopPumpingEvents();
 
-            Collection startTopElements = getTopLevelElements();
+            Collection<RefObject> startTopElements = 
+                modelImpl.getFacade().getRootElements();
             int numElements = startTopElements.size();
             LOG.debug("Number of top level elements before import: "
                     + numElements);
@@ -202,46 +195,18 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                 // If a UML 1.3 file, attempt to upgrade it to UML 1.4
                 if (uml13) {
                     // First delete model data from our first attempt
-                    Collection toDelete = new ArrayList();
-                    toDelete.addAll(newElements);
-                    for (Iterator it = toDelete.iterator(); it.hasNext();) {
-                        try {
-                            ((RefObject) it.next()).refDelete();
-                        } catch (InvalidObjectException e) {
-                            // Just continue.  We tried to delete something 
-                            // twice, probably because it was contained in 
-                            // another element that we already deleted.
-                        }
-                    }
+                    deleteElements(newElements);
 
                     // Clear the associated ID maps & reset starting collection
                     resolver.clearIdMaps();
-                    startTopElements = getTopLevelElements();
+                    startTopElements = modelImpl.getFacade().getRootElements();
 
-                    LOG.info("XMI file doesn't appear to be UML 1.4 - "
-                            + "attempting UML 1.3->UML 1.4 conversion");
-                    final String[] transformFiles =
-                        new String[] {
-                            "NormalizeNSUML.xsl",
-                            "uml13touml14.xsl",
-                        };
-
-                    unknownElement = false;
-                    // InputSource xformedInput =
-                    //        chainedTransform(transformFiles, pIs);
-                    InputSource originalInput = 
-                        new InputSource(new FileInputStream(tmpFile));
-                    // Use the original file for the system ID
-                    // so any references resolve correctly
-                    originalInput.setSystemId(pIs.getSystemId());
-                    InputSource xformedInput = 
-                        serialTransform(transformFiles, originalInput);
-                    newElements =
-                        xmiReader.read(xformedInput.getByteStream(),
-                            xformedInput.getSystemId(), extent);
+                    newElements = convertAndLoadUml13(pIs.getSystemId(),
+                            extent, xmiReader, tmpFile);
                 }
 
-                numElements = getTopLevelElements().size() - numElements;
+                numElements = modelImpl.getFacade().getRootElements().size()
+                        - numElements;
 
                 // This indicates a malformed XMI file.  Log the error.
                 if (newElements.size() != numElements) {
@@ -252,19 +217,6 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                             + numElements + ")");
                 }
 
-                // ArgoUML only deals correctly with a single top level model.
-                // If we got more elements, force them to be contained by top.
-                // TODO:  This is a workaround for more general support.
-                if (numElements > 1) {
-                    LOG.warn("Forcing all model elements to be contained by"
-                            + " top level Model");
-                    Collection newTopElements = getTopLevelElements();
-                    newTopElements.removeAll(startTopElements);
-                    forceContainment(newTopElements);
-                    // Return our element list (of 1) rather than XMIreader's
-                    newElements = getTopLevelElements();
-                    newElements.removeAll(startTopElements);
-                }
 
             } finally {
                 modelImpl.getModelEventPump().startPumpingEvents();
@@ -287,83 +239,53 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         }
 
         if (profile) {
-            if (newElements.size() != 1) {
-                LOG.error("Unexpected number of profile model elements"
-                        + " (must be 1) : "
-                        + newElements.size());
-                return Collections.EMPTY_LIST;
-            } else {
-                RefObject model = (RefObject) newElements.iterator().next();
-                if (!(model instanceof Model)) {
-                    LOG.error("Profile XMI doesn't contain Model as top level"
-                            + " element.");
-                    return Collections.EMPTY_LIST;
-                } else {
-                    LOG.debug("Saving profile with MofID : "
-                            + model.refMofId());
-                    modelImpl.setProfileModel(model);
-                }
-            }
-
+            modelImpl.setProfileElements(newElements);
         }
         return newElements;
     }
 
-    /**
-     * Force containment of all elements by the first Model that is found.
-     * ArgoUML doesn't know how to deal with anything else.
-     * @param elements collection of elements
-     */
-    private void forceContainment(Collection elements) {
-        Model model = null;
-        for (Iterator it = elements.iterator(); it.hasNext();) {
-            Object o = it.next();
-            if (o instanceof Model) {
-                model = (Model) o;
-                break;
-            }
-        }
-        if (model == null) {
-            LOG.error("Collection of objects  doesn't contain"
-                    + " any elements of type Model");
-            return;
-        }
-        for (Iterator it = elements.iterator(); it.hasNext();) {
-            Object o = it.next();
-            if (!o.equals(model)) {
-                if (o instanceof ModelElement) {
-                    ((ModelElement) o).setNamespace(model);
-                } else {
-                    LOG.warn("Skipping setting namespace of element of type"
-                            + o.getClass().getName());
-                }
+    
+    private void deleteElements(Collection<RefObject> elements) {
+        Collection<RefObject> toDelete = new ArrayList<RefObject>(elements);
+        for (RefObject refObject : toDelete) {
+            try {
+                refObject.refDelete();
+            } catch (InvalidObjectException e) {
+                // Just continue.  We tried to delete something 
+                // twice, probably because it was contained in 
+                // another element that we already deleted.
             }
         }
     }
 
-    /**
-     * Returns a collection of all objects which are Elements or one of
-     * its subclasses and which are not contained in another object.
-     */
-    private Collection getTopLevelElements() {
-        Collection elements = new ArrayList();
-        UmlPackage pkg = modelImpl.getUmlPackage();
-        for (Iterator it =
-                pkg.getCore().getElement().refAllOfType().iterator();
-                it.hasNext();) {
-            RefObject obj = (RefObject) it.next();
-            if (obj.refImmediateComposite() == null) {
-                elements.add(obj);
-            }
-        }
-        return elements;
-    }
+    private Collection<RefObject> convertAndLoadUml13(String systemId,
+            RefPackage extent, XMIReader xmiReader, File file)
+        throws FileNotFoundException, UmlException, IOException,
+            MalformedXMIException {
+        
+        LOG.info("XMI file doesn't appear to be UML 1.4 - "
+                + "attempting UML 1.3->UML 1.4 conversion");
+        final String[] transformFiles = new String[] { 
+            "NormalizeNSUML.xsl",
+            "uml13touml14.xsl", };
 
+        unknownElement = false;
+        // InputSource xformedInput = chainedTransform(transformFiles, pIs);
+        InputSource originalInput = new InputSource(
+                new FileInputStream(file));
+        // Use the original file for the system ID
+        // so any references resolve correctly
+        originalInput.setSystemId(systemId);
+        InputSource xformedInput = serialTransform(transformFiles,
+                originalInput);
+        return xmiReader.read(xformedInput.getByteStream(), xformedInput
+                .getSystemId(), extent);
+    }
 
     /*
      * @see org.argouml.model.XmiReader#getXMIUUIDToObjectMap()
      */
-    public Map getXMIUUIDToObjectMap() {
+    public Map<String, Object> getXMIUUIDToObjectMap() {
         if (resolver != null) {
             return resolver.getIdToObjectMap();
         }

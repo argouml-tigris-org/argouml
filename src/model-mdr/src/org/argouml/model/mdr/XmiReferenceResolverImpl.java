@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,9 +50,9 @@ import org.netbeans.lib.jmi.xmi.XmiContext;
  * 
  * This provides two functions:
  * <nl>
- * <li>Records the mapping of <code>xmi.id</code>'s to MDR's object as they
+ * <li>Records the mapping of <code>xmi.id</code>'s to MDR objects as they
  * are resolved so that the map can be used to lookup objects by xmi.id later
- * (used by diagram subsystem to associated GEF/PGML objects with model
+ * (used by diagram subsystem to associate GEF/PGML objects with model
  * elements).
  * <li>Resolves a System ID to a fully specified URL which can be used by MDR
  * to open and read the referenced content. The standard MDR resolver is
@@ -70,16 +72,26 @@ import org.netbeans.lib.jmi.xmi.XmiContext;
  */
 class XmiReferenceResolverImpl extends XmiContext {
 
+    private static final Logger LOG =
+        Logger.getLogger(XmiReferenceResolverImpl.class);
+    
     private Map<String, Object> idToObjects = 
         Collections.synchronizedMap(new HashMap<String, Object>());
 
-    private Map<Object, XmiReference> objectsToId;
+    /**
+     * Map indexed by MOF ID.
+     */
+    private Map<String, XmiReference> objectsToId;
 
     /**
-     * Logger.
+     * System ID of top level document
      */
-    private static final Logger LOG =
-        Logger.getLogger(XmiReferenceResolverImpl.class);
+    private String topSystemId;
+
+    /**
+     * URI form of topSystemID for use in relativization.
+     */
+    private URI baseUri;
 
     /**
      * The array of paths in which the models references in other models will be
@@ -95,7 +107,14 @@ class XmiReferenceResolverImpl extends XmiContext {
      * 
      * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
      */
-    private static Map<String, URL> urlMap = new HashMap<String, URL>();
+    private Map<String, URL> urlMap = new HashMap<String, URL>();
+    
+    /**
+     * Mapping from URL or absolute reference back to the original SystemID
+     * that was read from the input file.  We'll preserve this mapping when
+     * we write things back out again.
+     */
+    private Map<String, String> reverseUrlMap = new HashMap<String, String>();
     
     /**
      * Constructor.
@@ -103,7 +122,7 @@ class XmiReferenceResolverImpl extends XmiContext {
      * (see also {link org.netbeans.api.xmi.XMIReferenceResolver})
      */
     XmiReferenceResolverImpl(RefPackage[] extents, 
-            XMIInputConfig config, Map<Object, XmiReference> objectToIdMap) {
+            XMIInputConfig config, Map<String, XmiReference> objectToIdMap) {
         super(extents, config);
         registerSearchPath();
         objectsToId = objectToIdMap;
@@ -120,24 +139,53 @@ class XmiReferenceResolverImpl extends XmiContext {
      *            referenced object
      */
     public void register(String systemId, String xmiId, RefObject object) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Registering XMI ID '" + xmiId 
+                    + "' in system ID '" + systemId + "'");
+        }
         super.register(systemId, xmiId, object);
-        if (!idToObjects.containsKey(xmiId)) {
-            // TODO: This needs to include the SystemID as well - tfm
-            idToObjects.put(xmiId, object);
+        if (topSystemId == null) {
+            topSystemId = systemId;
+            try {
+                baseUri = new URI(
+                        systemId.substring(0, systemId.lastIndexOf('/') + 1));
+            } catch (URISyntaxException e) {
+                LOG.error("Bad URI syntax for base URI from XMI document", e);
+            }
+            LOG.debug("Top system ID set to " + topSystemId);
+        }
+
+        if (systemId == topSystemId) {
+            systemId = null;
+        } else {
+            systemId = reverseUrlMap.get(systemId);
+        }
+        String key;
+        if (systemId == null) {
+            // No # here because PGML parser needs bare UUID/xmi.id
+            key = xmiId;            
+        } else {
+            key = systemId + "#" + xmiId;                
+        }
+
+        if (!idToObjects.containsKey(key)) {
+            idToObjects.put(key, object);
             objectsToId.put(object.refMofId(),
                     new XmiReference(systemId, xmiId));
         } else {
-            LOG.error("Collision - multiple elements with same xmi.id : " 
-                    + xmiId);
+            if (idToObjects.get(key) != object) {
+                LOG.error("Collision - multiple elements with same xmi.id : "
+                        + xmiId);
+            }
         }
     }
 
     /**
      * Return complete map of all registered objects.
      * 
-     * @return map of xmi.id to RefObject correspondances
+     * @return map of xmi.id to RefObject correspondences
      */
-    public Map getIdToObjectMap() {
+    public Map<String, Object> getIdToObjectMap() {
         return idToObjects;
     }
 
@@ -149,11 +197,11 @@ class XmiReferenceResolverImpl extends XmiContext {
         objectsToId.clear();
     }
     
-    /*
+    /**
      * Set up module search path to be used by AndroMDA URL resolver.
      * The path is retrieved from shared state (a system property) which
      * is set up externally (currently by 
-     * @link org.argouml.uml.ProfileJava#loadProfile() which is probably
+     * org.argouml.uml.ProfileJava#loadProfile() which is probably
      * the wrong place for it)
      */
     private void registerSearchPath() {
@@ -225,7 +273,7 @@ class XmiReferenceResolverImpl extends XmiContext {
         // Several tries to construct a URL that really exists.
         if (modelUrl == null) {
             // If systemId is a valid URL, simply use it
-            modelUrl = this.getValidURL(systemId);
+            modelUrl = this.getValidURL(fixupURL(systemId));
             if (modelUrl == null) {
                 // Try to find suffix in module list.
                 String modelUrlAsString = findModuleURL(suffix);
@@ -248,6 +296,20 @@ class XmiReferenceResolverImpl extends XmiContext {
             if (modelUrl != null) {
                 LOG.info("Referenced model --> '" + modelUrl + "'");
                 urlMap.put(suffixWithExt, modelUrl);
+                String relativeUri = systemId;
+                try {
+                    relativeUri = baseUri.relativize(new URI(systemId))
+                            .toString();
+                    LOG.debug("       system ID " + systemId 
+                            + "\n  relativized as " + relativeUri);
+                } catch (URISyntaxException e) {
+                    LOG.error("Error relativizing system ID " + systemId, e);
+                }
+                // MDR will register the first form in the actual file that it
+                // reads in and the second form when it resolves 
+                // an external reference
+                reverseUrlMap.put(modelUrl.toString(), relativeUri);
+                reverseUrlMap.put(systemId, relativeUri);
             }
         }
         return modelUrl;
@@ -289,24 +351,21 @@ class XmiReferenceResolverImpl extends XmiContext {
                     return null;
                 }
 
-                if (moduleName.endsWith(".zip") 
-                        || moduleName.endsWith(".jar")) {
-                    // typical case for MagicDraw
-                    urlString = "jar:" + urlString + "!/"
-                            + moduleName.substring(0, moduleName.length() - 4);
-                }
-                return urlString;
+                return fixupURL(urlString);
             }
         }
         return null;
     }
 
+
+    
     /**
-     * Gets the suffix of the <code>systemId</code>.<p>
-     * Copied from AndroMDA 3.1 by Ludo (rastaman).
-     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
-     * @param systemId
-     *            the system identifier.
+     * Gets the suffix of the <code>systemId</code>.
+     * <p>
+     * Copied from AndroMDA 3.1 by Ludo (rastaman). see
+     * org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     * 
+     * @param systemId the system identifier.
      * @return the suffix as a String.
      */
     private String getSuffix(String systemId) {
@@ -342,6 +401,10 @@ class XmiReferenceResolverImpl extends XmiContext {
     private URL findModelUrlOnClasspath(String systemId) {
         String modelName = systemId.substring(systemId.lastIndexOf("/") + 1,
                 systemId.length());
+
+        // TODO: The following will fail to find files with embedded dots such
+        // as andromda-profile-datatype-3.1.xml - tfm
+        
         String dot = ".";
         // remove the first prefix because it may be an archive
         // (like magicdraw)
@@ -399,4 +462,19 @@ class XmiReferenceResolverImpl extends XmiContext {
     ////////// End AndroMDA Code //////////////////////
     /////////////////////////////////////////////////////
 
+    /**
+     * Fix up a file URL for a Zip file or Jar.  Assume it is a single
+     * file archive with the entry name the same as the base name.
+     */
+    private String fixupURL(String url) {
+        final String suffix = getSuffix(url);
+        if (suffix.endsWith(".zargo")) {
+            url = "jar:" + url + "!/"
+                    + suffix.substring(0, suffix.length() - 6) + ".xmi";
+        } else if (suffix.endsWith(".zip") || suffix.endsWith(".jar")) {
+            url = "jar:" + url + "!/"
+                    + suffix.substring(0, suffix.length() - 4);
+        }
+        return url;
+    }
 }

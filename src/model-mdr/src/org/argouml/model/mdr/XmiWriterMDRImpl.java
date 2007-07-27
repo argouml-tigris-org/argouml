@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 
 import javax.jmi.reflect.RefObject;
@@ -84,8 +85,7 @@ class XmiWriterMDRImpl implements XmiWriter {
      * except for the profile model(s), ignoring the model specified by the 
      * caller.
      */
-    private static final boolean WRITE_ALL = false;
-
+    private static final boolean WRITE_ALL = true;
 
     /*
      * Private constructor for common work needed by both public
@@ -166,14 +166,14 @@ class XmiWriterMDRImpl implements XmiWriter {
                 elements.add(model);
                 LOG.info("Saving model '" + ((Model) model).getName() + "'");
             } else {
-                RefObject profile = modelImpl.getProfileModel();
+                Collection<RefObject> profileElements = modelImpl.getProfileElements();
                 UmlPackage pkg = modelImpl.getUmlPackage();
                 for (Iterator it = pkg.getCore().getElement().refAllOfType()
                         .iterator(); it.hasNext();) {
                     RefObject obj = (RefObject) it.next();
                     // Find top level objects which aren't part of profile
                     if (obj.refImmediateComposite() == null ) {
-                        if (!obj.equals(profile)) {
+                        if (!profileElements.contains(obj)) {
                             elements.add(obj);
                         }
                     }
@@ -189,7 +189,7 @@ class XmiWriterMDRImpl implements XmiWriter {
                 stream = oStream;
             }
 
-            xmiWriter.write(stream, elements, XMI_VERSION);
+            xmiWriter.write(stream, "file:///ThisIsADummyName.xmi", elements, XMI_VERSION);
         } catch (IOException e) {
             throw new UmlException(e);
         }
