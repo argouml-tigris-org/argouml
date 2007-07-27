@@ -590,6 +590,10 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             returnList.removeAll(listToRemove);
         }
 
+        /* TODO: We need to verify that ns is a Package!
+         * If not - find its parent package! 
+         * Currently this causes an exception when creating 
+         * a sequence diagram for a ClassifierRole.*/
         // now get all classifiers imported from other packages
         returnList.addAll(getAllImportedClassifiers(ns));
         
