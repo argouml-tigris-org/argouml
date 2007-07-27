@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
@@ -45,7 +46,7 @@ import org.argouml.model.XmiReader;
 import org.xml.sax.InputSource;
 
 /**
- * This class implements the abstract class Profile for use in modelling
+ * This class implements the abstract class Profile for use in modeling
  * Java language projects.  Eventually, this class may be replaced by
  * a configurable profile.
  *
@@ -57,7 +58,7 @@ import org.xml.sax.InputSource;
  * the argo.user.properties file.
  * 
  * TODO: This is an i18n nightmare.  Tons of hardcoded strings and
- * string concatentation.  Change to use message formatting. - tfm 20060226
+ * string concatenation.  Change to use message formatting. - tfm 20060226
  *
  * @author Curt Arnold
  */
@@ -67,12 +68,14 @@ public class ProfileJava extends Profile {
      */
     private static final Logger LOG = Logger.getLogger(ProfileJava.class);
 
-    private Object defaultModel;
+    private Object profileModel;
+    
+    private Collection profileElements;
     
     static final String DEFAULT_PROFILE = 
                             "/org/argouml/model/mdr/profiles/default-uml14.xmi";
     
-    private String defaultModelFilename;
+    private String profileFilename;
 
     /**
      * The constructor.
@@ -275,19 +278,30 @@ public class ProfileJava extends Profile {
 	return value;
     }
 
-    /*
-     * @see org.argouml.uml.Profile#getProfileModel()
-     */
+
+    @SuppressWarnings("deprecation")
     public Object getProfileModel() throws ProfileException {
-        if (defaultModel == null) {
-            defaultModel = loadProfileModel();
+        if (profileModel == null) {
+            for (Object pkg : getProfilePackages()) {
+                if (Model.getFacade().isAPackage(pkg)) {
+                    profileModel = pkg;
+                    return profileModel;
+                }
+            }
+            profileModel = getProfilePackages().iterator().next();
         }
-        return defaultModel;
+        return profileModel;
+    }
+
+
+    public Collection getProfilePackages() throws ProfileException {
+        if (profileElements == null) {
+            profileElements = loadProfileModel();
+        }
+        return profileElements;
     }
     
-    /*
-     * @see org.argouml.uml.Profile#setProfileModelFilename(java.lang.String)
-     */
+
     public void setProfileModelFilename(String name) throws ProfileException {
         if (loadProfile(name) != null) {
             Configuration.setString(Argo.KEY_DEFAULT_MODEL, name);
@@ -296,18 +310,16 @@ public class ProfileJava extends Profile {
         }
     }
     
-    /*
-     * @see org.argouml.uml.Profile#getProfileModelFilename()
-     */
+
     public String getProfileModelFilename() {
-        if (defaultModelFilename == null) {
+        if (profileFilename == null) {
             // TODO: Can we remove the use of this property
             // and just use the config file setting? - tfm 20060227
-            defaultModelFilename  = System.getProperty("argo.defaultModel",
+            profileFilename  = System.getProperty("argo.defaultModel",
                     Configuration.getString(Argo.KEY_DEFAULT_MODEL,
                             DEFAULT_PROFILE));            
         }
-        return defaultModelFilename;
+        return profileFilename;
     }
 
     /**
@@ -322,33 +334,34 @@ public class ProfileJava extends Profile {
      * 
      * @return the profile model object or null
      */
-    public Object loadProfileModel() {
-        Object profileModel = null;
+    private Collection loadProfileModel() {
+        Collection elements = new ArrayList();
         String modelFilename = getProfileModelFilename();
 
         if (modelFilename != null) {
-            profileModel = loadProfile(modelFilename);
-            if (profileModel != null) {
-                return profileModel;
+            elements.addAll(loadProfile(modelFilename));
+            if (!elements.isEmpty()) {
+                return elements;
             }
         }
 
         if (!(DEFAULT_PROFILE.equals(modelFilename))) {
             LOG.warn("Falling back to default profile '" 
                     + DEFAULT_PROFILE + "'");
-            profileModel = loadProfile(DEFAULT_PROFILE);
-            if (profileModel != null) {
-                defaultModelFilename = DEFAULT_PROFILE;
-                return profileModel;
+            elements.addAll(loadProfile(DEFAULT_PROFILE));
+            if (!elements.isEmpty()) {
+                profileFilename = DEFAULT_PROFILE;
+                return elements;
             }
         }
 
         LOG.error("Failed to load any profile - returning empty model");
-        defaultModelFilename = "";
-        return Model.getModelManagementFactory().createModel();
+        profileFilename = "";
+        elements.add(Model.getModelManagementFactory().createModel());
+        return elements;
     }
     
-    private Object loadProfile(String modelFilename) {
+    private Collection loadProfile(String modelFilename) {
         LOG.info("Loading profile '" + modelFilename + "'");
         InputStream is = null;
         //
@@ -402,14 +415,7 @@ public class ProfileJava extends Profile {
                 XmiReader xmiReader = Model.getXmiReader();
                 InputSource inputSource = new InputSource(is);
                 LOG.info("Loaded profile '" + modelFilename + "'");
-                Collection elements = xmiReader.parse(inputSource, true);
-                if (elements.size() != 1) {
-                    LOG.error("Error loading profile '" + modelFilename
-                            + "' expected 1 top level element" + " found "
-                            + elements.size());
-                    return null;
-                }
-                return elements.iterator().next();
+                return xmiReader.parse(inputSource, true);
             } catch (UmlException e) {
                 LOG.error("Exception while loading profile '" 
                         + modelFilename + "'", e);

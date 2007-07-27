@@ -238,7 +238,7 @@ class ZipFilePersister extends XmiFilePersister {
             ModelMemberFilePersister modelPersister =
                 new ModelMemberFilePersister();
             
-            modelPersister.readModels(p, is);
+            modelPersister.readModels(is);
             Object model = modelPersister.getCurModel();
             Model.getUmlHelper().addListenersToModel(model);
             p.setUUIDRefs(modelPersister.getUUIDRefs());
@@ -247,6 +247,7 @@ class ZipFilePersister extends XmiFilePersister {
             modelPersister.registerDiagrams(p);
 
             p.setRoot(model);
+            p.setRoots(modelPersister.getElementsRead());
             ProjectManager.getManager().setSaveEnabled(false);
             return p;
         } catch (IOException e) {

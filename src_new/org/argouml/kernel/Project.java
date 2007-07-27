@@ -445,15 +445,32 @@ public interface Project {
 
     /**
      * @param theDefaultModel a uml model
+     * @deprecated for 0.25.4 by tfmorris. Use 
+     *          {@link #setProfiles(Collection)}.
      */
+    @Deprecated
     public void setDefaultModel(Object theDefaultModel);
+
+    /**
+     * @param packages a Collection of packages containing profiles.
+     */
+    public void setProfiles(Collection packages);
 
     /**
      * Get the default model.
      *
      * @return A model.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getProfiles()}.
      */
+    @Deprecated
     public Object getDefaultModel();
+
+    /**
+     * Get the collection of profile packages.
+     *
+     * @return collection of Packages containing profiles.
+     */
+    public Object getProfiles();
 
     /**
      * Find a type by name in the default model.
@@ -464,17 +481,42 @@ public interface Project {
     public Object findTypeInDefaultModel(String name);
 
     /**
-     * Returns the root.
-     * @return MModel
+     * Returns the root package.
+     * 
+     * @return the Package which is the root
+     * @deprecated for 0.25.4 by tfmorris - use {@link #getRoots()} to
+     *             packages/model elements which are at the top level. TODO: We
+     *             probably need a getDefaultNamespace() method or something
+     *             similar to replace some uses of this.
      */
+    @Deprecated
     public Object getRoot();
 
     /**
-     * Sets the root.
-     * @param root The root to set, a uml model
+     * Sets the root package.
+     * @param root The root to set, a UML Package
+     * @deprecated for 0.25.4 by tfmorris - use {@link #setRoots}.
      */
+    @Deprecated
     public void setRoot(Object root);
 
+
+    /**
+     * Return a collection of top level Model Elements. Normally for ArgoUML
+     * created models, this will be a single Package or Model, but other tools
+     * may allow more liberal structures.
+     * 
+     * @return Collection of top level ModelElements
+     */
+    public Collection getRoots();
+
+    /**
+     * Set the top level ModelElements for this project.
+     * 
+     * @param elements Collection of top level ModelElements
+     */
+    public void setRoots(Collection elements);
+    
     /**
      * Returns true if the given name is a valid name for a diagram. Valid means
      * that it does not occur as a name for a diagram yet.

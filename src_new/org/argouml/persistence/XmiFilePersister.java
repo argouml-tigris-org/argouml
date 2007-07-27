@@ -244,7 +244,7 @@ class XmiFilePersister extends AbstractFilePersister
             ModelMemberFilePersister modelPersister =
                 new ModelMemberFilePersister();
             
-            modelPersister.readModels(p, source);
+            modelPersister.readModels(source);
             Object model = modelPersister.getCurModel();
             progressMgr.nextPhase();
             Model.getUmlHelper().addListenersToModel(model);
@@ -254,6 +254,7 @@ class XmiFilePersister extends AbstractFilePersister
             modelPersister.registerDiagrams(p);
             
             p.setRoot(model);
+            p.setRoots(modelPersister.getElementsRead());
             File defaultProjectFile = new File(file.getPath() + ".zargo");
             // Make sure the file doesn't exist so the user will 
             // get prompted to choose a new name
