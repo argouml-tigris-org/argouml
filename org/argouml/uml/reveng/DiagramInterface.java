@@ -247,11 +247,10 @@ public class DiagramInterface {
      */
     public void addClassDiagram(Object ns, String name) {
         Project p = ProjectManager.getManager().getCurrentProject();
-        Object root = Model.getModelManagementFactory().getRootModel();
 
         ArgoDiagram d = DiagramFactory.getInstance().createDiagram(
                 DiagramFactory.DiagramType.Class,
-                ns == null ? root : ns, null);
+                ns == null ? p.getRoot() : ns, null);
 
         try {
             d.setName(getDiagramName(name));
