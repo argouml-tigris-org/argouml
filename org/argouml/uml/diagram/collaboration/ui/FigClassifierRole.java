@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.AddAssociationEvent;
@@ -414,30 +413,8 @@ public class FigClassifierRole extends FigNodeModelElement {
                 || mee instanceof AttributeChangeEvent) {
             renderingChanged();
             updateListeners(getOwner(), getOwner());
+            notationProvider.updateListener(this, getOwner(), mee);
             damage();
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
-     */
-    protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
-        super.updateListeners(oldOwner, newOwner);
-        /* Now, let's register for all events from all modelelements
-         * that may change the text: 
-         */
-        if (newOwner != null) {
-            addElementListener(newOwner, 
-                    new String[] {"name", "base", "remove"});
-            Collection bases = Model.getFacade().getBases(newOwner);
-            Iterator i = bases.iterator();
-            while (i.hasNext()) {
-                Object base = i.next();
-                addElementListener(base, "name");
-            }
         }
     }
 
