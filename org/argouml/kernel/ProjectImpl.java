@@ -58,6 +58,7 @@ import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.Memento;
@@ -117,15 +118,20 @@ public class ProjectImpl implements java.io.Serializable, Project {
     private int persistenceVersion;
 
     /**
-     * Instances of the uml model.
+     * Instances of the UML model.
      */
     private final List models = new ArrayList();
+    
+    private Object root;
+    private Collection roots = new HashSet();
+    
 
     /**
-     * Instances of the uml diagrams.
+     * Instances of the UML diagrams.
      */
     private final List<ArgoDiagram> diagrams = new ArrayList<ArgoDiagram>();
-    private Object defaultModel;
+    
+    private Collection<Object> profilePackages = new HashSet<Object>();
     private Object currentNamespace;
     private Map<String, Object> uuidRefs;
     private transient VetoableChangeSupport vetoSupport;
@@ -180,7 +186,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             // load the default model
             // this is NOT the way how it should be since this makes argo
             // depend on Java even more.
-            setDefaultModel(profile.getProfileModel());
+            setProfiles(profile.getProfilePackages());
         } catch (ProfileException e) {
             // TODO: how are we going to handle exceptions here?
             // I think we need a ProjectException.
@@ -362,6 +368,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         // fire indeterminate change to avoid copying vector
         if (!models.contains(model)) {
             models.add(model);
+            roots.add(model);
         }
         setCurrentNamespace(model);
         setSaveEnabled(true);
@@ -377,16 +384,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
             if (diagrams.size() == 1) {
                 // We're deleting the last diagram so lets create a new one
                 // TODO: Once we go MDI we won't need this.
-                Object treeRoot =
-                    Model.getModelManagementFactory().getRootModel();
-                // TODO: This is the center of a very large dependency cycle
-                // Just refuse to delete the last diagram for now - tfm
-                LOG.error("Can't delete last diagram in the project");
-                return;
-//                defaultDiagram =
-//                    DiagramFactory.getInstance().createDefaultDiagram(
-//                	    treeRoot);
-//                addMember(defaultDiagram);
+                defaultDiagram =
+                    DiagramFactory.getInstance().createDefaultDiagram(
+                            getRoot());
+                addMember(defaultDiagram);
             } else {
                 // Make the topmost diagram (that is not the one being deleted)
                 // current.
@@ -522,7 +523,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public Collection getModels() {
         Set ret = new HashSet();
         ret.addAll(models);
-        ret.add(defaultModel);
+        ret.addAll(profilePackages);
         return ret;
     }
 
@@ -574,6 +575,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         }
         cls = findTypeInDefaultModel(s);
         // hey, now we should move it to the model the user is working in
+        // TODO: Remove this when we support linked profiles - tfm - 20070726
         if (cls != null) {
             cls =
                 Model.getModelManagementHelper()
@@ -612,29 +614,34 @@ public class ProjectImpl implements java.io.Serializable, Project {
         return figs;
     }
 
+    private Object findTypeInPackages(String name, Collection namespaces) {
+        for (Object namespace : namespaces) {
+            Object type = findTypeInModel(name, namespace);
+            if (type != null) {
+                return type;
+            }
+        }
+        return null;
+    }
 
-    public Object findTypeInModel(String s, Object ns) {
-
-        if (!Model.getFacade().isANamespace(ns)) {
+    public Object findTypeInModel(String typeName, Object namespace) {
+        if (typeName == null) {
+            throw new IllegalArgumentException("typeName must be non-null");
+        }
+        if (!Model.getFacade().isANamespace(namespace)) {
             throw new IllegalArgumentException(
-                    "Looking for the classifier " + s
-                    + " in a non-namespace object of " + ns
+                    "Looking for the classifier " + typeName
+                    + " in a non-namespace object of " + namespace
                     + ". A namespace was expected.");
     	}
 
         Collection allClassifiers =
             Model.getModelManagementHelper()
-	        .getAllModelElementsOfKind(ns,
+	        .getAllModelElementsOfKind(namespace,
 	                Model.getMetaTypes().getClassifier());
 
-        Object[] classifiers = allClassifiers.toArray();
-        Object classifier = null;
-
-        for (int i = 0; i < classifiers.length; i++) {
-
-            classifier = classifiers[i];
-            if (Model.getFacade().getName(classifier) != null
-            		&& Model.getFacade().getName(classifier).equals(s)) {
+        for (Object classifier : allClassifiers) {
+            if (typeName.equals(Model.getFacade().getName(classifier))) {
                 return classifier;
             }
         }
@@ -905,6 +912,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @SuppressWarnings("deprecation")
     public void setDefaultModel(Object theDefaultModel) {
 
         if (!Model.getFacade().isAModel(theDefaultModel)) {
@@ -913,52 +921,108 @@ public class ProjectImpl implements java.io.Serializable, Project {
                     + theDefaultModel.getClass().getName());
         }
 
-        defaultModel = theDefaultModel;
+        profilePackages.clear();
+        profilePackages.add(theDefaultModel);
         defaultModelTypeCache = new HashMap<String, Object>();
     }
 
 
-    public Object getDefaultModel() {
-        return defaultModel;
+    public void setProfiles(Collection packages) {
+
+        for (Object pkg : packages) {
+            if (!Model.getFacade().isAPackage(pkg)) {
+                throw new IllegalArgumentException(
+                        "Profiles must be of type Package. Received a "
+                                + pkg.getClass().getName());
+            }
+        }
+
+        profilePackages.clear();
+        profilePackages.addAll(packages);
+        defaultModelTypeCache = new HashMap<String, Object>();
     }
 
+    @SuppressWarnings("deprecation")
+    public Object getDefaultModel() {
+        // First priority is Model for best backward compatibility
+        for (Object pkg : profilePackages) {
+            if (Model.getFacade().isAModel(pkg)) {
+                return pkg;
+            }
+        }
+        // then a Package
+        for (Object pkg : profilePackages) {
+            if (Model.getFacade().isAPackage(pkg)) {
+                return pkg;
+            }
+        }
+        // if all else fails, just the first element
+        return profilePackages.iterator().next();
+    }
+    
+    public Collection getProfiles() {
+        return profilePackages;
+    }
 
     public Object findTypeInDefaultModel(String name) {
         if (defaultModelTypeCache.containsKey(name)) {
             return defaultModelTypeCache.get(name);
         }
 
-        Object result = findTypeInModel(name, getDefaultModel());
+        Object result = findTypeInPackages(name, profilePackages);
         defaultModelTypeCache.put(name, result);
         return result;
     }
 
 
+    @SuppressWarnings("deprecation")
     public Object getRoot() {
-        return Model.getModelManagementFactory().getRootModel();
+        return root;
     }
 
 
-    public void setRoot(Object root) {
+    @SuppressWarnings("deprecation")
+    public void setRoot(Object theRoot) {
 
-        if (root == null) {
+        if (theRoot == null) {
             throw new IllegalArgumentException(
         	    "A root model element is required");
         }
-        if (!Model.getFacade().isAModel(root)) {
+        if (!Model.getFacade().isAModel(theRoot)) {
             throw new IllegalArgumentException(
         	    "The root model element must be a model - got "
-        	    + root.getClass().getName());
+        	    + theRoot.getClass().getName());
         }
 
         Object treeRoot = Model.getModelManagementFactory().getRootModel();
         if (treeRoot != null) {
             models.remove(treeRoot);
         }
-        Model.getModelManagementFactory().setRootModel(root);
-        addModel(root);
+        root = theRoot;
+        // TODO: We don't really want to do the following, but I'm not sure
+        // what depends on it - tfm - 20070725
+        Model.getModelManagementFactory().setRootModel(theRoot);
+        addModel(theRoot);
     }
 
+    
+    public Collection getRoots() {
+        return roots;
+    }
+
+
+    public void setRoots(Collection elements) {
+        for (Object element : elements) {
+            if (!Model.getFacade().isAPackage(element)) {
+                LOG.warn("Top level element other than package found - " 
+                        + Model.getFacade().getName(element));
+            }
+            if (Model.getFacade().isAModel(element)) {
+                addModel(element);
+            }
+        }
+        roots = elements;
+    }
 
     public boolean isValidDiagramName(String name) {
         boolean rv = true;
@@ -1020,18 +1084,21 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
         members.clear();
 
-        for (Object model : models) {
-            LOG.debug("Deleting project model "
+        for (Object model : roots) {
+            LOG.debug("Deleting root element "
                     + Model.getFacade().getName(model));
             Model.getUmlFactory().delete(model);
         }
+        roots.clear();
         models.clear();
 
-        if (defaultModel != null) {
-            LOG.debug("Deleting profile model "
-                    + Model.getFacade().getName(defaultModel));
-            Model.getUmlFactory().delete(defaultModel);
-            defaultModel = null;
+        if (profilePackages != null) {
+            for (Object pkg : profilePackages) {
+                LOG.debug("Deleting profile element "
+                        + Model.getFacade().getName(pkg));
+                Model.getUmlFactory().delete(pkg);
+            }
+            profilePackages.clear();
         }
 
         diagrams.clear();
@@ -1054,7 +1121,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         version = null;
         searchpath = null;
         historyFile = null;
-        defaultModel = null;
+        profilePackages = null;
         currentNamespace = null;
         vetoSupport = null;
         activeDiagram = null;

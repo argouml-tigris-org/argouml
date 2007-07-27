@@ -96,7 +96,7 @@ class ModelMemberFilePersister extends MemberFilePersister
         // Created xmireader with method getErrors to check if parsing went well
         try {
             source.setEncoding(Argo.getEncoding());
-            readModels(project, source);
+            readModels(source);
             mmodel = getCurModel();
         } catch (OpenException e) {
             PersistenceManager.getInstance().setLastLoadStatus(false);
@@ -229,7 +229,6 @@ class ModelMemberFilePersister extends MemberFilePersister
     }
     
     private Object curModel;
-    private Project proj;
     private HashMap uUIDRefs;
 
     private Collection elementsRead;
@@ -242,13 +241,6 @@ class ModelMemberFilePersister extends MemberFilePersister
      */
     public Object getCurModel() {
         return curModel;
-    }
-
-    /**
-     * @param p the project
-     */
-    public void setProject(Project p) {
-        proj = p;
     }
 
     /**
@@ -271,7 +263,7 @@ class ModelMemberFilePersister extends MemberFilePersister
      * @param xmiExtensionParser the XmiExtensionParser
      * @throws OpenException when there is an IO error
      */
-    public synchronized void readModels(Project p, URL url,
+    public synchronized void readModels(URL url,
             XmiExtensionParser xmiExtensionParser) throws OpenException {
         LOG.info("=======================================");
         LOG.info("== READING MODEL " + url);
@@ -283,7 +275,7 @@ class ModelMemberFilePersister extends MemberFilePersister
                     url.openStream(), xmiExtensionParser, 100000, null));
             
             source.setSystemId(url.toString());
-            readModels(p, source);
+            readModels(source);
         } catch (IOException ex) {
             throw new OpenException(ex);
         }
@@ -295,10 +287,8 @@ class ModelMemberFilePersister extends MemberFilePersister
      * @param source The InputSource
      * @throws OpenException If an error occur while reading the source
      */
-    public synchronized void readModels(Project p, InputSource source)
+    public synchronized void readModels(InputSource source)
         throws OpenException {
-
-        proj = p;
 
         XmiReader reader = null;
         try {

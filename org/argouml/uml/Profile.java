@@ -25,6 +25,7 @@
 
 package org.argouml.uml;
 
+import java.util.Collection;
 import java.util.Iterator;
 /**
  *   This abstract class captures the configurable behavior of Argo.
@@ -54,8 +55,15 @@ public abstract class Profile {
     /**
      * @return the UML Model that contains the profile model
      * @throws ProfileException if failed to get profile.
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getProfilePackages()}.
      */
     public abstract Object getProfileModel() throws ProfileException;
+
+    /**
+     * @return the UML Model that contains the profile model
+     * @throws ProfileException if failed to get profile.
+     */
+    public abstract Collection getProfilePackages() throws ProfileException;
     
     /**
      * Set the filename to load the profile model from.  This will be
