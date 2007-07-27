@@ -47,12 +47,9 @@ public class ActionStateDiagram extends ActionNewDiagram {
     /*
      * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
      */
-    protected ArgoDiagram createDiagram() {
+    protected ArgoDiagram createDiagram(Object namespace) {
         Object target = TargetManager.getInstance().getModelTarget();
         Object machine = null;
-        Object namespace = Model.getModelManagementFactory().getRootModel();
-//      Project p = ProjectManager.getManager().getCurrentProject();
-//      Object namespace = p.getRoot(); // the root model
         if (Model.getStateMachinesHelper().isAddingStatemachineAllowed(
               target)) {
             /* The target is a valid context. */
