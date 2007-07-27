@@ -24,12 +24,10 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
 
 /**
  * Action to trigger creation of a new activity diagram.<p>
@@ -53,14 +51,13 @@ public class ActionActivityDiagram extends ActionNewDiagram {
 
     /**
      * Create the diagram.
+     * @param namespace the namespace in which to create the diagram
      * @return the newly created and initialized diagram
      */
-    protected ArgoDiagram createDiagram() {
+    protected ArgoDiagram createDiagram(Object namespace) {
         Object target = TargetManager.getInstance().getModelTarget();
         Object graph = null;
-//      Project p = ProjectManager.getManager().getCurrentProject();
-//        Object namespace = p.getRoot(); // the root model
-        Object namespace = Model.getModelManagementFactory().getRootModel();
+
         if (Model.getActivityGraphsHelper().isAddingActivityGraphAllowed(
                 target)) {
             /* The target is a valid context */

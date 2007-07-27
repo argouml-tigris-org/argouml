@@ -25,10 +25,9 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
 
 /**
  * Action to trigger creation of a deployment diagram.
@@ -51,46 +50,38 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
-    public ArgoDiagram createDiagram(Object notUsedHandle) {
+    public ArgoDiagram createDiagram(Object namespace) {
         // a deployment diagram shows something about the whole model
-        // according to the uml spec
-        Object handle = Model.getModelManagementFactory().getRootModel();
-//	Project p = ProjectManager.getManager().getCurrentProject();
-//	Object handle = p.getRoot();
-        if (!Model.getFacade().isANamespace(handle)) {
+        // according to the UML spec, but we rely on the caller to enforce
+        // that if desired.
+        if (!Model.getFacade().isANamespace(namespace)) {
             LOG.error("No namespace as argument");
-            LOG.error(handle);
+            LOG.error(namespace);
             throw new IllegalArgumentException(
-					       "The argument " + handle
+					       "The argument " + namespace
 					       + "is not a namespace.");
         }
         return DiagramFactory.getInstance().createDiagram(
                 DiagramFactory.DiagramType.Deployment,
-                handle,
+                namespace,
                 null);
     }
 
     /*
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(Object)
      */
-    public boolean isValidNamespace(Object notUsedHandle) {
+    public boolean isValidNamespace(Object namespace) {
         // a deployment diagram shows something about the whole model
         // according to the uml spec
-        Object handle =
-            ProjectManager.getManager().getCurrentProject().getRoot();
-        if (!Model.getFacade().isANamespace(handle)) {
+        if (!Model.getFacade().isANamespace(namespace)) {
             LOG.error("No namespace as argument");
-            LOG.error(handle);
+            LOG.error(namespace);
             throw new IllegalArgumentException(
-					       "The argument " + handle
+					       "The argument " + namespace
 					       + "is not a namespace.");
         }
         // may only occur as child of the model or in a package
-        if (handle
-                == ProjectManager.getManager().getCurrentProject().getModel()) {
-            return true;
-        }
-        if (Model.getFacade().isAPackage(handle)) {
+        if (Model.getFacade().isAPackage(namespace)) {
             return true;
         }
         return false;

@@ -64,12 +64,15 @@ public abstract class ActionNewDiagram extends UndoableAction {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        
-        ArgoDiagram diagram = createDiagram();
+
+        // TODO: Since there may be multiple top level elements in
+        // a project, this should be using the default Namespace (currently
+        // undefined) or something similar 
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ArgoDiagram diagram = createDiagram(p.getRoot());
         assert (diagram != null)
         	: "No diagram was returned by the concrete class";
-        
-        Project p = ProjectManager.getManager().getCurrentProject();
+
         p.addMember(diagram);
         //TODO: make the explorer listen to project member property
         //changes...  to eliminate coupling on gui.
@@ -79,9 +82,10 @@ public abstract class ActionNewDiagram extends UndoableAction {
     }
     
     /**
+     * @param namespace the namespace in which to create the diagram
      * @return the new diagram
      */
-    protected abstract ArgoDiagram createDiagram();
+    protected abstract ArgoDiagram createDiagram(Object namespace);
     
     /**
      * Utility function to create a collaboration.
