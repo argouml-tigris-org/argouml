@@ -606,18 +606,16 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      */
     private String getQualifiedName(Object element) {
         StringBuffer sb = new StringBuffer();
-
-        Object root = Model.getModelManagementFactory().getRootModel();
-
+        
         Object ns = element;
-        while (ns != null && !root.equals(ns)) {
+        while (ns != null) {
             String name = Model.getFacade().getName(ns);
             if (name == null) {
                 name = "";
             }
             sb.insert(0, name);
             ns = Model.getFacade().getNamespace(ns);
-            if (ns != null && !root.equals(ns)) {
+            if (ns != null) {
                 sb.insert(0, ".");
             }
         }
