@@ -1121,7 +1121,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         version = null;
         searchpath = null;
         historyFile = null;
-        profilePackages = null;
         currentNamespace = null;
         vetoSupport = null;
         activeDiagram = null;
