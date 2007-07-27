@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -107,22 +108,18 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         });
         Collection stereotypes = Model.getFacade().getStereotypes(t);
         Project project = ProjectManager.getManager().getCurrentProject();
-        Collection models = project.getModels();
-        Iterator it = models.iterator();
-        while (it.hasNext()) {
+        for (Object model : project.getModels()) {
             addAllUniqueModelElementsFrom(availableTagDefs, paths,
                     Model.getModelManagementHelper().getAllModelElementsOfKind(
-                            it.next(),
+                            model,
                             Model.getMetaTypes().getTagDefinition()));
         }
         addAllUniqueModelElementsFrom(availableTagDefs, paths,
                 Model.getModelManagementHelper().getAllModelElementsOfKind(
                         project.getDefaultModel(),
                         Model.getMetaTypes().getTagDefinition()));
-        ArrayList notValids = new ArrayList();
-        it = availableTagDefs.iterator();
-        while (it.hasNext()) {
-            Object tagDef = it.next();
+        List notValids = new ArrayList();
+        for (Object tagDef : availableTagDefs) {
             Object owner = Model.getFacade().getOwner(tagDef);
             if (owner != null && !stereotypes.contains(owner)) {
                 notValids.add(tagDef);
