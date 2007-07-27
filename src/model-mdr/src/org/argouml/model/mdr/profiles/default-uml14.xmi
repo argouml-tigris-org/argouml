@@ -1,15 +1,18 @@
 <?xml version = '1.0' encoding = 'UTF-8' ?>
 <XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Wed Jan 25 13:34:34 EST 2006'>
-  <XMI.header>  <XMI.header>
+  <XMI.header>
     <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>0.20.x</XMI.exporterVersion>
+      <XMI.exporterVersion>0.24</XMI.exporterVersion>
     </XMI.documentation>
-    <XMI.metamodel xmi.name="UML" xmi.version="1.4"/>  </XMI.header>
+    <XMI.metamodel xmi.name="UML" xmi.version="1.4"/>
 </XMI.header>
   <XMI.content>
-    <UML:Model xmi.id = '.:000000000000087A' name = 'default' isSpecification = 'false'
+    <UML:Model xmi.id = '.:000000000000087A' name = 'ArgoUML Profile' isSpecification = 'false'
       isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+      <UML:ModelElement.stereotype>
+        <UML:Stereotype xmi.idref = '.:0000000000000877'/>
+      </UML:ModelElement.stereotype>
       <UML:ModelElement.taggedValue>
         <UML:TaggedValue xmi.id = '.:000000000000087B' isSpecification = 'false'>
           <UML:TaggedValue.dataValue>This model contains the UML Standard Elements from Appendix A of the UML 1.4 specification.</UML:TaggedValue.dataValue>
