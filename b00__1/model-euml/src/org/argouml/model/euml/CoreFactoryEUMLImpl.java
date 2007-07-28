@@ -38,7 +38,7 @@ import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Artifact;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.AssociationClass;
-import org.eclipse.uml2.uml.BehavioredClassifier;
+import org.eclipse.uml2.uml.BehavioralFeature;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Component;
@@ -50,12 +50,10 @@ import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Interface;
-import org.eclipse.uml2.uml.InterfaceRealization;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Operation;
-import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.PrimitiveType;
@@ -66,6 +64,7 @@ import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Usage;
+import org.eclipse.uml2.uml.ValueSpecification;
 import org.eclipse.uml2.uml.VisibilityKind;
 
 
@@ -204,13 +203,30 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
+    /**
+     * Removed from UML2.x, use buildTemplateBinding instead.
+     */
+    @Deprecated
     public Object buildBinding(Object client, Object supplier, List arguments) {
-        // TODO Auto-generated method stub
-        return null;
+        return buildTemplateBinding(client, supplier, arguments);
+    }
+    
+    public TemplateBinding buildTemplateBinding(Object client, Object supplier, List arguments) {
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                TemplateBinding templateBinding = createTemplateBinding();
+                // TODO: add code to handle client, supplier and arguments
+                getParams().add(templateBinding);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (TemplateBinding) run.getParams().get(0);
     }
 
     public org.eclipse.uml2.uml.Class buildClass() {
-        return UMLFactory.eINSTANCE.createClass();
+        return createClass();
     }
 
     public org.eclipse.uml2.uml.Class buildClass(Object owner) {
@@ -218,77 +234,184 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public org.eclipse.uml2.uml.Class buildClass(String name) {
-        return buildClass(name, null);
+        org.eclipse.uml2.uml.Class class_ = createClass();
+        if (name != null) {
+            class_.setName(name);
+        }
+        return class_;
     }
 
     public org.eclipse.uml2.uml.Class buildClass(final String name,
             final Object owner) {
-        org.eclipse.uml2.uml.Class cls = UMLFactory.eINSTANCE.createClass();
-        if (name != null) {
-            cls.setName(name);
+        if (owner == null || !(owner instanceof org.eclipse.uml2.uml.Package)) {
+            throw new IllegalArgumentException("A namespace must be supplied."); //$NON-NLS-1$
         }
-        if (owner != null)
-            modelImpl.getCoreHelper().addOwnedElement(owner, cls);
-        return cls;
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                org.eclipse.uml2.uml.Class class_ = createClass();
+                if (name != null) {
+                    class_.setName(name);
+                }
+                class_.setPackage((org.eclipse.uml2.uml.Package) owner);
+                getParams().add(class_);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (org.eclipse.uml2.uml.Class) run.getParams().get(0);
     }
 
-    public Comment buildComment(Object element, Object model) {
-        if (model == null) {
+    public Comment buildComment(final Object element, final Object model) {
+        if (model == null || !(model instanceof Namespace)) {
+            throw new IllegalArgumentException("A namespace must be supplied."); //$NON-NLS-1$
+        }
+        if (!(element instanceof Element)) {
             throw new IllegalArgumentException(
-                    "A namespace must be supplied."); //$NON-NLS-1$
+                    "The annotated element must be instance of Element."); //$NON-NLS-1$
         }
-        Element elementToAnnotate = (Element) element;
-        // TODO: This actually creates the Comment as owned by
-        // the Element itself, rather than the Element's namespace which
-        // seems to make more sense, but is different than the specified
-        // Model API semantics - tfm
-        if (elementToAnnotate != null) {
-            return elementToAnnotate.createOwnedComment();
-        } else {
-            return ((Namespace) model).createOwnedComment();
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Comment comment = createComment();
+                if (element != null) {
+                    comment.getAnnotatedElements().add((Element) element);
+                }
+                ((Namespace) model).getOwnedComments().add(comment);
+                getParams().add(element);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (Comment) run.getParams().get(0);
+    }
+
+    public Constraint buildConstraint(final Object constrElement) {
+        if (!(constrElement instanceof Element) || constrElement == null) {
+            throw new IllegalArgumentException(
+                    "The constrained element must be instance of Element."); //$NON-NLS-1$
         }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Constraint constraint = createConstraint();
+                constraint.getConstrainedElements().add((Element) constrElement);
+                ((Element) constrElement).getNearestPackage().getPackagedElements().add(
+                        constraint);
+                getParams().add(constraint);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
 
+        return (Constraint) run.getParams().get(0);
     }
 
-    public Object buildConstraint(Object constrElement) {
-        // TODO Auto-generated method stub
-        return null;
+    public Constraint buildConstraint(String name, Object bexpr) {
+        // TODO: BooleanExpresion is removed from UML2.x, is it OK to use
+        // ValueSpecification?
+        if (bexpr == null || !(bexpr instanceof ValueSpecification)) {
+            throw new IllegalArgumentException(
+                    "The 'bexpr' value specification must be instance of ValueSpecification"); //$NON-NLS-1$
+        }
+        Constraint constraint = createConstraint();
+        if (name != null) {
+            constraint.setName(name);
+        }
+        constraint.setSpecification((ValueSpecification) bexpr);
+        return constraint;
     }
 
-    public Object buildConstraint(String name, Object bexpr) {
-        // TODO Auto-generated method stub
-        return null;
+    public DataType buildDataType(final String name, final Object owner) {
+        if (!(owner instanceof org.eclipse.uml2.uml.Package) || owner == null) {
+            throw new IllegalArgumentException(
+                    "The owner must be instance of Package."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                DataType dataType = createDataType();
+                if (name != null) {
+                    dataType.setName(name);
+                }
+                dataType.setPackage((org.eclipse.uml2.uml.Package) owner);
+                getParams().add(dataType);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (DataType) run.getParams().get(0);
     }
 
-    public DataType buildDataType(String name, Object owner) {
-        DataType dt = (DataType) createDataType();
-        dt.setName(name);
-        modelImpl.getCoreHelper().addOwnedElement(owner, dt);
-        return dt;
-    }
+    public Dependency buildDependency(final Object clientObj,
+            final Object supplierObj) {
+        if (!(clientObj instanceof NamedElement)
+                || !(supplierObj instanceof NamedElement) || clientObj == null
+                || supplierObj == null) {
+            throw new IllegalArgumentException(
+                    "The client and the supplier must be instances of NamedElement."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Dependency dependency = createDependency();
+                dependency.getClients().add((NamedElement) clientObj);
+                dependency.getSuppliers().add((NamedElement) supplierObj);
+                ((NamedElement) clientObj).getNearestPackage().getPackagedElements().add(
+                        dependency);
+                getParams().add(dependency);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
 
-    public Object buildDependency(Object clientObj, Object supplierObj) {
-        // TODO Auto-generated method stub
-        return null;
+        return (Dependency) run.getParams().get(0);
     }
 
     public Object buildElementResidence(Object me, Object component) {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Is it removed from UML2 ?
+        throw new NotImplementedException();
     }
 
-    public Enumeration buildEnumeration(String name, Object owner) {
-        Enumeration enumer = (Enumeration) createEnumeration();
-        enumer.setName(name);
-        if (owner != null) {
-            modelImpl.getCoreHelper().addOwnedElement(owner, enumer);
+    public Enumeration buildEnumeration(final String name, final Object owner) {
+        if (!(owner instanceof org.eclipse.uml2.uml.Package) || owner == null) {
+            throw new IllegalArgumentException(
+                    "The owner must be instance of Package."); //$NON-NLS-1$
         }
-        return enumer;
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Enumeration enumeration = createEnumeration();
+                if (name != null) {
+                    enumeration.setName(name);
+                }
+                enumeration.setPackage((org.eclipse.uml2.uml.Package) owner);
+                getParams().add(enumeration);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (Enumeration) run.getParams().get(0);
     }
 
-    public EnumerationLiteral buildEnumerationLiteral(String name,
-            Object enumeration) {
-        return ((Enumeration) enumeration).createOwnedLiteral(name);
+    public EnumerationLiteral buildEnumerationLiteral(final String name,
+            final Object enumeration) {
+        if (!(enumeration instanceof Enumeration) || enumeration == null) {
+            throw new IllegalArgumentException(
+                    "The enumeration must be instance of Enumeration."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                EnumerationLiteral enumerationLiteral = createEnumerationLiteral();
+                if (name != null) {
+                    enumerationLiteral.setName(name);
+                }
+                enumerationLiteral.setEnumeration((Enumeration) enumeration);
+                getParams().add(enumerationLiteral);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (EnumerationLiteral) run.getParams().get(0);
     }
 
     @SuppressWarnings("deprecation")
@@ -298,11 +421,25 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return buildGeneralization(parent, child);
     }
 
-    public Generalization buildGeneralization(Object child, Object parent) {
-        Generalization generalization =
-            ((BehavioredClassifier) child)
-            .createGeneralization((Classifier) parent);
-        return generalization;
+    public Generalization buildGeneralization(final Object child,
+            final Object parent) {
+        if (!(child instanceof Classifier) || !(parent instanceof Classifier)
+                || child == null || parent == null) {
+            throw new IllegalArgumentException(
+                    "The general (the parent) and the specific (the child) must be instances of Classifier."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Generalization generalization = createGeneralization();
+                generalization.setGeneral((Classifier) parent);
+                generalization.setSpecific((Classifier) child);
+                getParams().add(generalization);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (Generalization) run.getParams().get(0);
     }
 
     public Interface buildInterface() {
@@ -310,60 +447,115 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Interface buildInterface(Object owner) {
-        // TODO Auto-generated method stub
-        return null;
+        return buildInterface(null, owner);
     }
 
     public Interface buildInterface(String name) {
-        Interface i = buildInterface();
-        i.setName(name);
-        return i;
+        Interface interface_ = createInterface();
+        if (name != null) {
+            interface_.setName(name);
+        }
+        return interface_;
     }
 
-    public Interface buildInterface(String name, Object owner) {
-        // TODO Auto-generated method stub
-        return null;
+    public Interface buildInterface(final String name, final Object owner) {
+        if (!(owner instanceof org.eclipse.uml2.uml.Package) || owner == null) {
+            throw new IllegalArgumentException(
+                    "The owner must be instance of Package."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Interface interface_ = createInterface();
+                interface_.setPackage((org.eclipse.uml2.uml.Package) owner);
+                if (name != null) {
+                    interface_.setName(name);
+                }
+                getParams().add(interface_);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (Interface) run.getParams().get(0);
     }
 
     public Object buildMethod(String name) {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Is it removed from UML2 ?
+        throw new NotImplementedException();
     }
 
     @SuppressWarnings("deprecation")
     public Operation buildOperation(Object classifier, Object model,
             Object returnType) {
-        // TODO Auto-generated method stub
-        return null;
+        return buildOperation2(classifier, returnType, null);
     }
 
     public Operation buildOperation(Object classifier, Object returnType) {
-        // TODO Auto-generated method stub
-        return null;
+        return buildOperation2(classifier, returnType, null);
     }
 
     @SuppressWarnings("deprecation")
     public Operation buildOperation(Object cls, Object model,
             Object returnType, String name) {
-        // TODO Auto-generated method stub
-        return null;
+        return buildOperation2(cls, returnType, name);
     }
 
-    public Operation buildOperation2(Object cls, Object returnType, 
-            String name) {
-        // TODO Auto-generated method stub
-        return null;
+    public Operation buildOperation2(final Object cls, final Object returnType,
+            final String name) {
+        if (!(cls instanceof org.eclipse.uml2.uml.Class) || cls == null) {
+            throw new IllegalArgumentException(
+                    "The operation must be affiliated with an instance of Class."); //$NON-NLS-1$
+        }
+        if (!(returnType instanceof Type) || returnType == null) {
+            throw new IllegalArgumentException(
+                    "The type of the return parameter must be instance of Type."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Operation operation = createOperation();
+                operation.setClass_((org.eclipse.uml2.uml.Class) cls);
+                operation.createReturnResult(null, (Type) returnType);
+                if (name != null) {
+                    operation.setName(name);
+                }
+                getParams().add(operation);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (Operation) run.getParams().get(0);
     }
 
     @SuppressWarnings("deprecation")
     public Parameter buildParameter(Object o, Object model, Object type) {
-        // TODO Auto-generated method stub
-        return null;
+        return buildParameter(o, type);
     }
 
-    public Parameter buildParameter(Object o, Object type) {
-        // TODO Auto-generated method stub
-        return null;
+    public Parameter buildParameter(final Object o, final Object type) {
+        // TODO: In UML2.x Event has no parameters. The Event metaclass in UML1.x
+        // corresponds to the Trigger metaclass in UML2.x (see UML Superstructure
+        // page 456).
+        if (!(o instanceof BehavioralFeature) || o == null) {
+            throw new IllegalArgumentException(
+                    "The parameter must be attached to a BehavioralFeature."); //$NON-NLS-1$
+        }
+        if (!(type instanceof Type) || type == null) {
+            throw new IllegalArgumentException(
+                    "The type of the parameter must be instance of Type."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Parameter param = createParameter();
+                param.setType((Type) type);
+                ((BehavioralFeature) o).getOwnedParameters().add(param);
+                getParams().add(param);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (Parameter) run.getParams().get(0);
     }
 
     /**
@@ -374,25 +566,44 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return buildPackageImport(clientObj, supplierObj);
     }
     
-    public PackageImport buildPackageImport(final Object clientObj, final Object supplierObj) {
-//        RunnableClass run = new RunnableClass() {
-//            public void run() {
-//                PackageImport packageImport = createPackageImport();
-//                packageImport.setImportedPackage((Package) supplierObj);
-//                packageImport.setImportingNamespace((Namespace) clientObj);
-//                ((Namespace) clientObj).getNearestPackage().getPackagedElements().add(packageImport);
-//                getParams().add(packageImport);
-//            }
-//        };
-//        editingDomain.getCommandStack().execute(
-//                new ChangeCommand(editingDomain, run));
-//
-//        return (PackageImport) run.getParams().get(0);
-        return null;
+    public PackageImport buildPackageImport(final Object clientObj,
+            final Object supplierObj) {
+        if (!(clientObj instanceof Namespace) || clientObj == null) {
+            throw new IllegalArgumentException(
+                    "The client must be instance of Namespace."); //$NON-NLS-1$
+        }
+        if (!(supplierObj instanceof org.eclipse.uml2.uml.Package)
+                || supplierObj == null) {
+            throw new IllegalArgumentException(
+                    "The supplier must be instance of Package."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                PackageImport packageImport = createPackageImport();
+                packageImport.setImportedPackage((org.eclipse.uml2.uml.Package) supplierObj);
+                packageImport.setImportingNamespace((Namespace) clientObj);
+                getParams().add(packageImport);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (PackageImport) run.getParams().get(0);
     }
 
     public Realization buildRealization(final Object client,
             final Object supplier, final Object namespace) {
+        if (!(client instanceof NamedElement)
+                || !(supplier instanceof NamedElement) || client == null
+                || supplier == null) {
+            throw new IllegalArgumentException(
+                    "The client and the supplier must be NamedElements."); //$NON-NLS-1$
+        }
+        if (!(namespace instanceof Namespace)
+                || (((NamedElement) client).getNearestPackage() != ((NamedElement) supplier).getNearestPackage() && namespace == null)) {
+            throw new IllegalArgumentException(
+                    "The namespace must be instance of Namespace."); //$NON-NLS-1$
+        }
         RunnableClass run = new RunnableClass() {
             public void run() {
                 Realization realization = UMLFactory.eINSTANCE.createRealization();
@@ -402,7 +613,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                     ((NamedElement) client).getNearestPackage().getPackagedElements().add(
                             realization);
                 } else {
-                    ((org.eclipse.uml2.uml.Package) namespace).getPackagedElements().add(
+                    ((Namespace) namespace).getNearestPackage().getPackagedElements().add(
                             realization);
                 }
                 getParams().add(realization);
@@ -416,10 +627,16 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public Object buildTemplateArgument(Object element) {
         // TODO Is it removed from UML2 ?
-        throw new RuntimeException(new NotImplementedException());
+        throw new NotImplementedException();
     }
 
     public Usage buildUsage(final Object client, final Object supplier) {
+        if (!(client instanceof NamedElement)
+                || !(supplier instanceof NamedElement) || client == null
+                || supplier == null) {
+            throw new IllegalArgumentException(
+                    "The client and the supplier must be NamedElements."); //$NON-NLS-1$
+        }
         RunnableClass run = new RunnableClass() {
             public void run() {
                 Usage usage = createUsage();
