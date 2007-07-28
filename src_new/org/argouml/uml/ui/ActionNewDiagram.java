@@ -86,17 +86,29 @@ public abstract class ActionNewDiagram extends UndoableAction {
      * @return the new diagram
      */
     protected abstract ArgoDiagram createDiagram(Object namespace);
-    
+
     /**
      * Utility function to create a collaboration.
      * 
      * @return a new collaboration
+     * @deprecated by MVW in V0.25.3. Replaced by 
+     * createCollaboration(Object namespace)
      */
     protected static Object createCollaboration() {
         Project p = ProjectManager.getManager().getCurrentProject();
+        Object namespace = p.getRoot(); // the root model
+        return createCollaboration(namespace);
+    }
+
+    /**
+     * Utility function to create a collaboration.
+     * 
+     * @return a new collaboration
+     * @param namespace the back-up namespace to put the collaboration in
+     */
+    protected static Object createCollaboration(Object namespace) {
         Object target = TargetManager.getInstance().getModelTarget();
         Object collaboration = null;
-        Object namespace = p.getRoot(); // the root model
         if (Model.getFacade().isAOperation(target)) {
             Object ns = Model.getFacade().getNamespace(
                     Model.getFacade().getOwner(target));
@@ -110,6 +122,7 @@ public abstract class ActionNewDiagram extends UndoableAction {
             collaboration =
                 Model.getCollaborationsFactory().createCollaboration();
             if (Model.getFacade().isANamespace(target)) {
+                /* TODO: Not all namespaces are useful here - any WFRs? */
                 namespace = target;
             } else {
                 if (Model.getFacade().isAModelElement(target)) {
