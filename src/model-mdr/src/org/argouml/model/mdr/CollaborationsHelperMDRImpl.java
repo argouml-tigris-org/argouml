@@ -594,9 +594,17 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
          * If not - find its parent package! 
          * Currently this causes an exception when creating 
          * a sequence diagram for a ClassifierRole.*/
+        if (!modelImpl.getFacade().isAPackage(ns)) {
+            while (modelImpl.getFacade().isANamespace(ns)) {
+                ns = ns.getNamespace();
+                if (modelImpl.getFacade().isAPackage(ns)) break;
+            }
+        }
         // now get all classifiers imported from other packages
-        returnList.addAll(getAllImportedClassifiers(ns));
-        
+        if (modelImpl.getFacade().isAPackage(ns)) {
+            returnList.addAll(getAllImportedClassifiers(ns));
+        }
+
         return returnList;
     }
     
