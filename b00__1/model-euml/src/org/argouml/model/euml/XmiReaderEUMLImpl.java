@@ -79,14 +79,15 @@ class XmiReaderEUMLImpl implements XmiReader {
 
     public Collection parse(InputSource inputSource, boolean profile)
             throws UmlException {
+        if (inputSource == null) {
+            throw new NullPointerException("The input source must be non-null."); //$NON-NLS-1$
+        }
         EditingDomain editingDomain = modelImpl.getEditingDomain();
-        for (Resource resource 
-                : editingDomain.getResourceSet().getResources()) {
+        for (Resource resource : editingDomain.getResourceSet().getResources()) {
             resource.unload();
         }
 
-	Resource r = editingDomain.createResource(
-	        "http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
+        Resource r = editingDomain.createResource("http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
         try {
             r.load(inputSource.getByteStream(), null);
         } catch (IOException e) {

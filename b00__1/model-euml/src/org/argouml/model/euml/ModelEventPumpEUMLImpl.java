@@ -139,9 +139,9 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void addClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
-        if (!(modelClass instanceof Class && EObject.class
-                .isAssignableFrom((Class) modelClass))) {
-            throw new IllegalArgumentException();
+        if (!(modelClass instanceof Class && EObject.class.isAssignableFrom((Class) modelClass))) {
+            throw new IllegalArgumentException(
+                    "The model class must be instance of java.lang.Class<EObject>"); //$NON-NLS-1$
         }
         registerListener(
                 modelClass, listener, propertyNames, registerForClasses);
@@ -150,7 +150,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
         if (!(modelelement instanceof EObject)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "The modelelement must be instance of EObject."); //$NON-NLS-1$
         }
         registerListener(
                 modelelement, listener, propertyNames, registerForElements);
@@ -165,7 +166,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             PropertyChangeListener listener, String[] propertyNames,
             Map<Object, List<Listener>> register) {
         if (notifier == null || listener == null) {
-            throw new NullPointerException();
+            throw new NullPointerException(
+                    "The model element/class and the listener must be non-null."); //$NON-NLS-1$
         }
         synchronized (mutex) {
             List<Listener> list = register.get(notifier);
@@ -225,7 +227,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             PropertyChangeListener listener, String[] propertyNames,
             Map<Object, List<Listener>> register) {
         if (notifier == null || listener == null) {
-            throw new NullPointerException();
+            throw new NullPointerException(
+                    "The model element/class and the listener must be non-null."); //$NON-NLS-1$
         }
         synchronized (mutex) {
             List<Listener> list = register.get(notifier);
