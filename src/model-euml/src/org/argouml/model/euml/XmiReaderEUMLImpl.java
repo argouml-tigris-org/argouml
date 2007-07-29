@@ -34,6 +34,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.xml.sax.InputSource;
@@ -84,7 +85,7 @@ class XmiReaderEUMLImpl implements XmiReader {
             throws UmlException {
         EditingDomain editingDomain = modelImpl.getEditingDomain();
         for (Resource resource 
-                : editingDomain.getResourceSet().getResources()) {
+                : (EList<Resource>) editingDomain.getResourceSet().getResources()) {
             resource.unload();
         }
 
