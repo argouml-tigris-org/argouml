@@ -1009,6 +1009,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     public Object getSource(Object relationship) {
         if (!(relationship instanceof Relationship)
                 && !(relationship instanceof Link)
+                && !(relationship instanceof Message)
                 && !(relationship instanceof AssociationEnd)) {
 
             throw new IllegalArgumentException("Argument "
@@ -1066,6 +1067,9 @@ class CoreHelperMDRImpl implements CoreHelper {
             if (relationship instanceof AssociationEnd) {
                 return ((AssociationEnd) relationship).getAssociation();
             }
+            if (relationship instanceof Message) {
+                return ((Message) relationship).getSender();
+            }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
@@ -1076,6 +1080,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     public Object getDestination(Object relationship) {
         if (!(relationship instanceof Relationship)
                 && !(relationship instanceof Link)
+                && !(relationship instanceof Message)
                 && !(relationship instanceof AssociationEnd)) {
 
             throw new IllegalArgumentException("Argument is not "
@@ -1136,6 +1141,9 @@ class CoreHelperMDRImpl implements CoreHelper {
             }
             if (relationship instanceof AssociationEnd) {
                 return ((AssociationEnd) relationship).getParticipant();
+            }
+            if (relationship instanceof Message) {
+                return ((Message) relationship).getReceiver();
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
