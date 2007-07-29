@@ -61,11 +61,13 @@ import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Realization;
 import org.eclipse.uml2.uml.TemplateBinding;
 import org.eclipse.uml2.uml.TemplateParameter;
+import org.eclipse.uml2.uml.TemplateParameterSubstitution;
+import org.eclipse.uml2.uml.TemplateSignature;
+import org.eclipse.uml2.uml.TemplateableElement;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.ValueSpecification;
-import org.eclipse.uml2.uml.VisibilityKind;
 
 
 /**
@@ -170,37 +172,47 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
-    Property buildAttribute() {
-        Property attr = createAttribute();
-        attr.setName("newAttr");
-        attr.setLower(1);
-        attr.setUpper(1);
-        attr.setVisibility(VisibilityKind.PUBLIC_LITERAL);
-        attr.setIsStatic(false);
-        attr.setIsReadOnly(false);
-        return attr;
+    public Property buildAttribute(Object model, Object type) {
+        return buildAttribute2(type);
     }
 
-    public Property buildAttribute(Object model, Object type) {
-        Property attr = buildAttribute();
-        attr.setType((Type) type);
-        return attr;
+    public Property buildAttribute2(Object type) {
+        if (!(type instanceof Type) || type == null) {
+            throw new IllegalArgumentException(
+            "The type of the attribute must be instance of Type."); //$NON-NLS-1$
+        }
+        Property property = createAttribute();
+        property.setType((Type) type);
+        return property;
     }
 
     @SuppressWarnings("deprecation")
     public Property buildAttribute(Object handle, Object model, Object type) {
-        // TODO Auto-generated method stub
-        return null;
+        return buildAttribute2(handle, type);
     }
 
-    public Object buildAttribute2(Object type) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public Property buildAttribute2(final Object handle, final Object type) {
+        if (!(handle instanceof org.eclipse.uml2.uml.Class) || handle == null) {
+            throw new IllegalArgumentException(
+                    "The handle must be instance of UML2 Class."); //$NON-NLS-1$
+        }
+        if (!(type instanceof Type) || type == null) {
+            throw new IllegalArgumentException(
+                    "The type of the attribute must be instance of Type."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Property property = createAttribute();
+                property.setType((Type) type);
+                ((org.eclipse.uml2.uml.Class) handle).getOwnedAttributes().add(
+                        property);
+                getParams().add(property);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
 
-    public Object buildAttribute2(Object handle, Object type) {
-        // TODO Auto-generated method stub
-        return null;
+        return (Property) run.getParams().get(0);
     }
 
     /**
@@ -211,11 +223,37 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return buildTemplateBinding(client, supplier, arguments);
     }
     
-    public TemplateBinding buildTemplateBinding(Object client, Object supplier, List arguments) {
+    public TemplateBinding buildTemplateBinding(final Object client,
+            final Object supplier, final List arguments) {
+        // TODO: Is it appropriate the TemplateableElement as the client and a
+        // list of TemplateParameterSubstitution as the list of parameters?
+        if (!(client instanceof TemplateableElement) || client == null) {
+            throw new IllegalArgumentException(
+                    "The supplier must be instance of TemplateableElement."); //$NON-NLS-1$
+        }
+        if (!(supplier instanceof TemplateSignature) || supplier == null) {
+            throw new IllegalArgumentException(
+                    "The supplier must be instance of TemplateSignature."); //$NON-NLS-1$
+        }
+        if (arguments != null) {
+            for (Object o : arguments) {
+                if (!(o instanceof TemplateParameterSubstitution) || o == null) {
+                    throw new IllegalArgumentException(
+                            "The list of arguments must be instances of TemplateParameterSubstitutions."); //$NON-NLS-1$
+                }
+            }
+        }
         RunnableClass run = new RunnableClass() {
             public void run() {
                 TemplateBinding templateBinding = createTemplateBinding();
-                // TODO: add code to handle client, supplier and arguments
+                templateBinding.setBoundElement((TemplateableElement) client);
+                templateBinding.setSignature((TemplateSignature) supplier);
+                if (arguments != null) {
+                    for (Object o : arguments) {
+                        templateBinding.getParameterSubstitutions().add(
+                                (TemplateParameterSubstitution) o);
+                    }
+                }
                 getParams().add(templateBinding);
             }
         };
@@ -243,8 +281,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public org.eclipse.uml2.uml.Class buildClass(final String name,
             final Object owner) {
-        if (owner == null || !(owner instanceof org.eclipse.uml2.uml.Package)) {
-            throw new IllegalArgumentException("A namespace must be supplied."); //$NON-NLS-1$
+        if (!(owner instanceof org.eclipse.uml2.uml.Package) || owner == null) {
+            throw new IllegalArgumentException("The owner must be instance of Package."); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -263,7 +301,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Comment buildComment(final Object element, final Object model) {
-        if (model == null || !(model instanceof Namespace)) {
+        if (!(model instanceof Namespace) || model == null) {
             throw new IllegalArgumentException("A namespace must be supplied."); //$NON-NLS-1$
         }
         if (!(element instanceof Element)) {
