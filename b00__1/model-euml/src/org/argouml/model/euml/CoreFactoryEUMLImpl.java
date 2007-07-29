@@ -50,6 +50,7 @@ import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
@@ -68,6 +69,7 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.ValueSpecification;
+import org.eclipse.uml2.uml.VisibilityKind;
 
 
 /**
@@ -159,17 +161,74 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return null;
     }
 
-    public Object buildAssociationEnd(Object assoc, String name, Object type,
-            Object multi, Object stereo, boolean navigable, Object order,
-            Object aggregation, Object scope, Object changeable,
-            Object visibility) {
-        // TODO Auto-generated method stub
-        return null;
+    public Property buildAssociationEnd(final Object assoc, final String name,
+            final Object type, final Object multi, final Object stereo,
+            final boolean navigable, final Object order,
+            final Object aggregation, final Object scope,
+            final Object changeable, final Object visibility) {
+        // TODO: Set the stereotype, multiplicity, order, scope, changeable.
+        // Does they all still exists in UML2.x?
+        if (!(assoc instanceof Association) || assoc == null) {
+            throw new IllegalArgumentException(
+                    "The assoc must be instance of Association."); //$NON-NLS-1$
+        }
+        if (!(type instanceof Type) || type == null) {
+            throw new IllegalArgumentException(
+                    "The type of the property must be instance of Type."); //$NON-NLS-1$
+        }
+        if (aggregation != null && !(aggregation instanceof AggregationKind)) {
+            throw new IllegalArgumentException(
+                    "The aggregation of the property must be instance of AggregationKind."); //$NON-NLS-1$
+        }
+        if (visibility != null && !(visibility instanceof VisibilityKind)) {
+            throw new IllegalArgumentException(
+                    "The visibility of the property must be instance of VisibilityKind."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Property property = createAssociationEnd();
+                property.setType((Type) type);
+                property.setAssociation((Association) assoc);
+                if (name != null) {
+                    property.setName(name);
+                }
+                property.setIsNavigable(navigable);
+                if (aggregation != null) {
+                    property.setAggregation((AggregationKind) aggregation);
+                }
+                if (visibility != null) {
+                    property.setVisibility((VisibilityKind) visibility);
+                }
+                getParams().add(property);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (Property) run.getParams().get(0);
     }
 
-    public Object buildAssociationEnd(Object type, Object assoc) {
-        // TODO Auto-generated method stub
-        return null;
+    public Property buildAssociationEnd(final Object type, final Object assoc) {
+        if (!(assoc instanceof Association) || assoc == null) {
+            throw new IllegalArgumentException(
+                    "The assoc must be instance of Association."); //$NON-NLS-1$
+        }
+        if (!(type instanceof Type) || type == null) {
+            throw new IllegalArgumentException(
+                    "The type of the attribute must be instance of Type."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Property property = createAssociationEnd();
+                property.setType((Type) type);
+                property.setAssociation((Association) assoc);
+                getParams().add(property);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (Property) run.getParams().get(0);
     }
 
     public Property buildAttribute(Object model, Object type) {
