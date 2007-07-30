@@ -39,7 +39,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
 /**
- * Class to display graphics for a UML Class in a diagram.<p>
+ * Class to display graphics for a node with compartments in a diagram.<p>
  *
  * Note that the upper line of the name box will be blanked out
  * if there is eventually a stereotype above.
