@@ -448,14 +448,14 @@ public final class NotationUtilityUml {
     protected static String generatePath(Object modelElement) {
         String s = "";
         Object p = modelElement;
-        Stack stack = new Stack();
+        Stack<String> stack = new Stack<String>();
         Object ns = Model.getFacade().getNamespace(p);
         while (ns != null && !Model.getFacade().isAModel(ns)) {
             stack.push(Model.getFacade().getName(ns));
             ns = Model.getFacade().getNamespace(ns);
         }
         while (!stack.isEmpty()) {
-            s += (String) stack.pop() + "::";
+            s += stack.pop() + "::";
         }
 
         if (s.length() > 0 && !s.endsWith(":")) {
