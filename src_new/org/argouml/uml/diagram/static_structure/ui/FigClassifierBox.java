@@ -55,7 +55,7 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * Class to display graphics for a UML Class in a diagram.<p>
+ * Class to display graphics for any UML Classifier in a diagram.<p>
  *
  * Note that the upper line of the name box will be blanked out
  * if there is eventually a stereotype above.
