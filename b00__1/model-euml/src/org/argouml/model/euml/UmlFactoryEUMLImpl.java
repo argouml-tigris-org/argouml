@@ -298,7 +298,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         } else if (elementType == metaTypes.getStereotype()) {
             return getExtensionMechanisms().createStereotype();
         } else if (elementType == metaTypes.getAttribute()) {
-            return getCore().buildAttribute();
+            return getCore().createAttribute();
         } else if (elementType == metaTypes.getSignal()) {
             return getCommonBehavior().createSignal();
         } else if (elementType == metaTypes.getException()) {
