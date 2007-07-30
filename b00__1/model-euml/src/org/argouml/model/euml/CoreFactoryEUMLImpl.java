@@ -31,6 +31,7 @@ import java.util.List;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.NotImplementedException;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.uml2.common.edit.command.ChangeCommand;
 import org.eclipse.uml2.uml.Abstraction;
@@ -60,6 +61,8 @@ import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Realization;
+import org.eclipse.uml2.uml.Signal;
+import org.eclipse.uml2.uml.StructuredClassifier;
 import org.eclipse.uml2.uml.TemplateBinding;
 import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.TemplateParameterSubstitution;
@@ -70,6 +73,7 @@ import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.ValueSpecification;
 import org.eclipse.uml2.uml.VisibilityKind;
+import org.eclipse.uml2.uml.util.UMLSwitch;
 
 
 /**
@@ -103,30 +107,45 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return abstraction;
     }
 
-    Association buildAssociation(final Object type1,
+    private Association buildAssociation(final Object type1,
             final Boolean navigability1, final Object aggregationKind1,
-            final String name1, final Object type2,
-            final Boolean navigability2, final Object aggregationKind2,
-            final String name2, final String associationName) {
-
+            final Object type2, final Boolean navigability2,
+            final Object aggregationKind2, final String associationName) {
+        if (!(type1 instanceof Type) || !(type2 instanceof Type)
+                || type1 == null || type2 == null) {
+            throw new IllegalArgumentException(
+                    "The types must be instances of Type."); //$NON-NLS-1$
+        }
+        if ((aggregationKind1 != null && !(aggregationKind1 instanceof AggregationKind))
+                || (aggregationKind2 != null && !(aggregationKind2 instanceof AggregationKind))) {
+            throw new IllegalArgumentException(
+                    "The aggregations of the association ends must be instances of AggregationKind."); //$NON-NLS-1$
+        }
         RunnableClass run = new RunnableClass() {
             public void run() {
-                Association assoc = ((Type) type1).createAssociation(
-                        navigability1,
-                        aggregationKind1 == null ? AggregationKind.NONE_LITERAL
-                                : (AggregationKind) aggregationKind1, name1, 0,
-                        1, (Type) type2, navigability2,
-                        aggregationKind2 == null ? AggregationKind.NONE_LITERAL
-                                : (AggregationKind) aggregationKind2, name2, 0,
-                        1);
-                for (Property p : assoc.getMemberEnds()) {
-                    p.setLowerValue(null);
-                    p.setUpperValue(null);
+                Association association = createAssociation();
+                Property property1 = buildProperty(
+                        (Type) type1, null, (Type) type2);
+                Property property2 = buildProperty(
+                        (Type) type2, null, (Type) type1);
+                property1.setAssociation(association);
+                property2.setAssociation(association);
+                if (aggregationKind1 != null) {
+                    property1.setAggregation((AggregationKind) aggregationKind1);
+                }
+                if (aggregationKind2 != null) {
+                    property2.setAggregation((AggregationKind) aggregationKind2);
                 }
                 if (associationName != null) {
-                    assoc.setName(associationName);
+                    association.setName(associationName);
                 }
-                getParams().add(assoc);
+                if (navigability1 != null) {
+                    property1.setIsNavigable(navigability1);
+                }
+                if (navigability2 != null) {
+                    property2.setIsNavigable(navigability2);
+                }
+                getParams().add(association);
             }
         };
         editingDomain.getCommandStack().execute(
@@ -138,36 +157,66 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     public Association buildAssociation(Object fromClassifier,
             Object aggregationKind1, Object toClassifier,
             Object aggregationKind2, Boolean unidirectional) {
-
-        return buildAssociation(fromClassifier, true, aggregationKind1, null,
-                toClassifier, !unidirectional, aggregationKind2, null, null);
+        if (unidirectional != null) {
+            return buildAssociation(
+                    fromClassifier, true, aggregationKind1, toClassifier,
+                    !unidirectional, aggregationKind2, null);
+        } else {
+            return buildAssociation(
+                    fromClassifier, null, aggregationKind1, toClassifier, null,
+                    aggregationKind2, null);
+        }
     }
 
-    public Association buildAssociation(Object classifier1, 
-            Object classifier2) {
-        return buildAssociation(classifier1, true,
-                AggregationKind.NONE_LITERAL, null, classifier2, true,
-                AggregationKind.NONE_LITERAL, null, null);
+    public Association buildAssociation(Object classifier1, Object classifier2) {
+        return buildAssociation(
+                classifier1, null, null, classifier2, null, null, null);
     }
 
     public Association buildAssociation(Object c1, boolean nav1, Object c2,
             boolean nav2, String name) {
-        return buildAssociation(c1, nav1, AggregationKind.NONE_LITERAL, null,
-                c2, nav2, AggregationKind.NONE_LITERAL, null, name);
+        return buildAssociation(c1, nav1, null, c2, nav2, null, name);
     }
 
-    public Association buildAssociationClass(Object end1, Object end2) {
-        // TODO Auto-generated method stub
-        return null;
+    public AssociationClass buildAssociationClass(final Object end1,
+            final Object end2) {
+        if (!(end1 instanceof Type) || !(end2 instanceof Type) || end1 == null
+                || end2 == null) {
+            throw new IllegalArgumentException(
+                    "end1 and end2 must be instances of Type"); //$NON-NLS-1$
+        }
+        if (((Type) end1).getNearestPackage() == null) {
+            throw new NullPointerException(
+                    "The containing package of the end1 must be non-null."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                AssociationClass associationClass = createAssociationClass();
+                Property property1 = buildProperty(
+                        (Type) end1, null, (Type) end2);
+                Property property2 = buildProperty(
+                        (Type) end2, null, (Type) end1);
+                property1.setAssociation(associationClass);
+                property2.setAssociation(associationClass);
+                ((Type) end1).getNearestPackage().getPackagedElements().add(
+                        associationClass);
+                getParams().add(associationClass);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (AssociationClass) run.getParams().get(0);
     }
 
-    public Property buildAssociationEnd(final Object assoc, final String name,
+    private Property buildAssociationEnd(final Object assoc, final String name,
             final Object type, final Object multi, final Object stereo,
-            final boolean navigable, final Object order,
+            final Boolean navigable, final Object order,
             final Object aggregation, final Object scope,
             final Object changeable, final Object visibility) {
-        // TODO: Set the stereotype, multiplicity, order, scope, changeable.
-        // Does they all still exists in UML2.x?
+        // The attribute 'targetScope' of an AssociationEnd in UML1.x is no
+        // longer supported in UML2.x
+        // TODO: Set the stereotype of the Property
         if (!(assoc instanceof Association) || assoc == null) {
             throw new IllegalArgumentException(
                     "The assoc must be instance of Association."); //$NON-NLS-1$
@@ -184,6 +233,15 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             throw new IllegalArgumentException(
                     "The visibility of the property must be instance of VisibilityKind."); //$NON-NLS-1$
         }
+        if (multi != null && !(multi instanceof MultiplicityElement)) {
+            throw new IllegalArgumentException(
+                    "The multilicity of the property must be instance of MultiplicityElement."); //$NON-NLS-1$
+        }
+        if ((order != null && !(order instanceof Boolean))
+                || (changeable != null && !(changeable instanceof Boolean))) {
+            throw new IllegalArgumentException(
+                    "The isOrdered, isReadOnly attributes of the property must be instances of Boolean."); //$NON-NLS-1$
+        }
         RunnableClass run = new RunnableClass() {
             public void run() {
                 Property property = createAssociationEnd();
@@ -192,12 +250,31 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 if (name != null) {
                     property.setName(name);
                 }
-                property.setIsNavigable(navigable);
+                if (navigable != null) {
+                    property.setIsNavigable(navigable);
+                    if (!(Boolean) navigable) {
+                        ((Association) assoc).getOwnedEnds().add(property);
+                    }
+                }
                 if (aggregation != null) {
                     property.setAggregation((AggregationKind) aggregation);
                 }
                 if (visibility != null) {
                     property.setVisibility((VisibilityKind) visibility);
+                }
+                if (multi != null) {
+                    if (((MultiplicityElement) multi).getLowerValue() != null) {
+                        property.setLowerValue(((MultiplicityElement) multi).getLowerValue());
+                    }
+                    if (((MultiplicityElement) multi).getUpperValue() != null) {
+                        property.setLowerValue(((MultiplicityElement) multi).getUpperValue());
+                    }
+                }
+                if (order != null) {
+                    property.setIsOrdered((Boolean) order);
+                }
+                if (changeable != null) {
+                    property.setIsReadOnly((Boolean) changeable);
                 }
                 getParams().add(property);
             }
@@ -207,28 +284,20 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
         return (Property) run.getParams().get(0);
     }
+    
+    public Property buildAssociationEnd(Object assoc, String name, Object type,
+            Object multi, Object stereo, boolean navigable, Object order,
+            Object aggregation, Object scope, Object changeable,
+            Object visibility) {
+        return buildAssociationEnd(
+                assoc, name, type, multi, stereo, navigable, order,
+                aggregation, scope, changeable, visibility);
+    }
 
-    public Property buildAssociationEnd(final Object type, final Object assoc) {
-        if (!(assoc instanceof Association) || assoc == null) {
-            throw new IllegalArgumentException(
-                    "The assoc must be instance of Association."); //$NON-NLS-1$
-        }
-        if (!(type instanceof Type) || type == null) {
-            throw new IllegalArgumentException(
-                    "The type of the attribute must be instance of Type."); //$NON-NLS-1$
-        }
-        RunnableClass run = new RunnableClass() {
-            public void run() {
-                Property property = createAssociationEnd();
-                property.setType((Type) type);
-                property.setAssociation((Association) assoc);
-                getParams().add(property);
-            }
-        };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
-
-        return (Property) run.getParams().get(0);
+    public Property buildAssociationEnd(Object type, Object assoc) {
+        return buildAssociationEnd(
+                assoc, null, type, null, null, null, null, null, null, null,
+                null);
     }
 
     public Property buildAttribute(Object model, Object type) {
@@ -249,23 +318,60 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     public Property buildAttribute(Object handle, Object model, Object type) {
         return buildAttribute2(handle, type);
     }
+    
+    private Property buildProperty(Type owner, final String name,
+            final Type propertyType) {
+        return new UMLSwitch<Property>() {
+
+            @Override
+            public Property caseArtifact(Artifact artifact) {
+                return artifact.createOwnedAttribute(name, propertyType);
+            }
+
+            @Override
+            public Property caseAssociation(Association association) {
+                return association.createOwnedEnd(name, propertyType);
+            }
+
+            @Override
+            public Property caseAssociationClass(
+                    AssociationClass associationClass) {
+                return associationClass.createOwnedAttribute(name, propertyType);
+            }
+
+            @Override
+            public Property caseDataType(DataType dataType) {
+                return dataType.createOwnedAttribute(name, propertyType);
+            }
+
+            @Override
+            public Property caseInterface(Interface interface_) {
+                return interface_.createOwnedAttribute(name, propertyType);
+            }
+
+            @Override
+            public Property caseSignal(Signal signal) {
+                return signal.createOwnedAttribute(name, propertyType);
+            }
+
+            @Override
+            public Property caseStructuredClassifier(
+                    StructuredClassifier structuredClassifier) {
+                return structuredClassifier.createOwnedAttribute(
+                        name, propertyType);
+            }
+        }.doSwitch(owner);
+    }
 
     public Property buildAttribute2(final Object handle, final Object type) {
-        if (!(handle instanceof org.eclipse.uml2.uml.Class) || handle == null) {
+        if (!(handle instanceof Type) || !(type instanceof Type)
+                || handle == null || type == null) {
             throw new IllegalArgumentException(
-                    "The handle must be instance of UML2 Class."); //$NON-NLS-1$
-        }
-        if (!(type instanceof Type) || type == null) {
-            throw new IllegalArgumentException(
-                    "The type of the attribute must be instance of Type."); //$NON-NLS-1$
+                    "handle and type must be instances of Type."); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
-                Property property = createAttribute();
-                property.setType((Type) type);
-                ((org.eclipse.uml2.uml.Class) handle).getOwnedAttributes().add(
-                        property);
-                getParams().add(property);
+                getParams().add(buildProperty((Type) handle, null, (Type) type));
             }
         };
         editingDomain.getCommandStack().execute(
@@ -388,6 +494,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             throw new IllegalArgumentException(
                     "The constrained element must be instance of Element."); //$NON-NLS-1$
         }
+        if (((Element) constrElement).getNearestPackage() == null) {
+            throw new NullPointerException(
+                    "The containing package of the constrained element must be non-null."); //$NON-NLS-1$
+        }
         RunnableClass run = new RunnableClass() {
             public void run() {
                 Constraint constraint = createConstraint();
@@ -446,6 +556,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 || supplierObj == null) {
             throw new IllegalArgumentException(
                     "The client and the supplier must be instances of NamedElement."); //$NON-NLS-1$
+        }
+        if (((NamedElement) clientObj).getNearestPackage() == null) {
+            throw new NullPointerException(
+                    "The containing package of the client must be non-null."); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -601,7 +715,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             final String name) {
         if (!(cls instanceof org.eclipse.uml2.uml.Class) || cls == null) {
             throw new IllegalArgumentException(
-                    "The operation must be affiliated with an instance of Class."); //$NON-NLS-1$
+                    "The operation must be affiliated with an instance of a UML2 Class."); //$NON-NLS-1$
         }
         if (!(returnType instanceof Type) || returnType == null) {
             throw new IllegalArgumentException(
@@ -697,16 +811,25 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                     "The client and the supplier must be NamedElements."); //$NON-NLS-1$
         }
         if (!(namespace instanceof Namespace)
-                || (((NamedElement) client).getNearestPackage() != ((NamedElement) supplier).getNearestPackage() && namespace == null)) {
+                || (((NamedElement) client).getNearestPackage() != ((NamedElement) supplier).getNearestPackage() && namespace == null)
+                || (((NamedElement) client).getNearestPackage() == ((NamedElement) supplier).getNearestPackage()
+                        && ((NamedElement) supplier).getNearestPackage() == null && namespace == null)) {
             throw new IllegalArgumentException(
                     "The namespace must be instance of Namespace."); //$NON-NLS-1$
+        } else {
+            if (namespace != null
+                    && ((Namespace) namespace).getNearestPackage() == null) {
+                throw new NullPointerException(
+                        "The namespace must be contained in a package or be a package"); //$NON-NLS-1$
+            }
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
                 Realization realization = UMLFactory.eINSTANCE.createRealization();
                 realization.getClients().add((NamedElement) client);
                 realization.getSuppliers().add((NamedElement) supplier);
-                if (((NamedElement) client).getNearestPackage() == ((NamedElement) supplier).getNearestPackage()) {
+                if (((NamedElement) client).getNearestPackage() == ((NamedElement) supplier).getNearestPackage()
+                        && ((NamedElement) client).getNearestPackage() != null) {
                     ((NamedElement) client).getNearestPackage().getPackagedElements().add(
                             realization);
                 } else {
@@ -733,6 +856,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 || supplier == null) {
             throw new IllegalArgumentException(
                     "The client and the supplier must be NamedElements."); //$NON-NLS-1$
+        }
+        if (((NamedElement) client).getNearestPackage() == null) {
+            throw new NullPointerException(
+                    "The client is not contained in a package."); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
