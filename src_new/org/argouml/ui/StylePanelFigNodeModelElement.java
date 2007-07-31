@@ -29,6 +29,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -36,16 +38,18 @@ import javax.swing.JPanel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.PathContainer;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.ColorRenderer;
 
 /**
  * Stylepanel which provides base style information for modelelements, e.g.
- * shadow width.
+ * shadow width, the path checkbox.
  *
  */
 public class StylePanelFigNodeModelElement
     extends StylePanelFig
-    implements ItemListener, FocusListener, KeyListener {
+    implements ItemListener, FocusListener, KeyListener, 
+    PropertyChangeListener {
 
     /**
      * Flag to indicate that a refresh is going on.
@@ -94,6 +98,19 @@ public class StylePanelFigNodeModelElement
         displayPane.add(cb);
     }
 
+    @Override
+    public void setTarget(Object t) {
+        Fig oldTarget = getPanelTarget();
+        if (oldTarget != null) {
+            oldTarget.removePropertyChangeListener(this);
+        }
+        super.setTarget(t);
+        Fig newTarget = getPanelTarget();
+        if (newTarget != null) {
+            newTarget.addPropertyChangeListener(this);
+        }
+    }
+
     /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
@@ -125,6 +142,30 @@ public class StylePanelFigNodeModelElement
             } else {
                 super.itemStateChanged(e);
             }
+        }
+    }
+
+    /**
+     * This function is called when the Fig property is changed from
+     * outside this Panel, e.g. when the Fig is relocated or when one of
+     * its properties change. <p>
+     * 
+     * We currently only need to react on the property
+     * that indicates that the "pathVisible" is changed. See
+     * the FigNodeModelElement for when this event is triggered. <p>
+     * 
+     * When the user toggles the visibility of the path in
+     * the Fig's pop-up menu, then this function
+     * updates the Presentation panel checkbox.
+     *
+     * @param evt the event
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("pathVisible".equals(evt.getPropertyName())) {
+            refreshTransaction = true;
+            pathCheckBox.setSelected((Boolean) evt.getNewValue());
+            refreshTransaction = false;
         }
     }
 
