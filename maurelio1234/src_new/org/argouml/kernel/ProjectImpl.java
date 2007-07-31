@@ -59,6 +59,7 @@ import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.argouml.uml.profile.Profile;
 import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.uml.profile.ProfileJava;
 import org.argouml.uml.profile.ProfileManagerImpl;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.Memento;
@@ -185,6 +186,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
         LOG.info("making empty project with empty model");
         addSearchPath("PROJECT_DIR");
+        
+//        models.add(ProfileJava.getInstance().getModel());
     }
 
 

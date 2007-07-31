@@ -1580,27 +1580,30 @@ public abstract class FigNodeModelElement
 		}
 	    }
 	} else if (practicalView == STEREOTYPE_VIEW_SMALL_ICON) {
-	    int i = this.getX() + this.getWidth() - ICON_WIDTH - 2;
-	    
-	    Iterator it = stereos.iterator();
-	    while (it.hasNext()) {
-		Object stereo = it.next();
-		Image icon = ProjectManager.getManager().getCurrentProject()
-			.getProfileConfiguration().getFigNodeStrategy()
-			.getIconForStereotype(stereo);
-		if (icon != null) {
-		    FigImage fimg = new FigImage(i, this.getBigPort().getY()+2, icon);
-		    fimg.setSize(ICON_WIDTH,
-			    (icon.getHeight(null) * ICON_WIDTH)
-				    / icon.getWidth(null));
-		    
-		    addFig(fimg);
-		    floatingStereotypes.add(fimg);
-		    
-		    i -= ICON_WIDTH - 2;
-		}
-	    }	    
-	}
+            int i = this.getX() + this.getWidth() - ICON_WIDTH - 2;
+
+            Iterator it = stereos.iterator();
+            while (it.hasNext()) {
+                Object stereo = it.next();
+                Image icon = ProjectManager.getManager().getCurrentProject()
+                        .getProfileConfiguration().getFigNodeStrategy()
+                        .getIconForStereotype(stereo);
+                if (icon != null) {
+                    FigImage fimg = new FigImage(i,
+                            this.getBigPort().getY() + 2, icon);
+                    fimg.setSize(ICON_WIDTH,
+                            (icon.getHeight(null) * ICON_WIDTH)
+                                    / icon.getWidth(null));
+
+                    addFig(fimg);
+                    floatingStereotypes.add(fimg);
+
+                    i -= ICON_WIDTH - 2;
+                }
+            }
+
+            updateSmallIcons(this.getWidth());
+        }
 
 	updateStereotypeText();
 	
@@ -2057,36 +2060,33 @@ public abstract class FigNodeModelElement
 	} else {
 	    setStandardBounds(x, y, w, h);
 	    if (getStereotypeView() == STEREOTYPE_VIEW_SMALL_ICON) {
-		int i = w + x - ICON_WIDTH - 2;
-
-		Iterator it = this.floatingStereotypes.iterator();
-		while (it.hasNext()) {
-		    Object ficon = it.next();
-		    ((FigImage) ficon).setLocation(i,
-			    y + 2);
-		    i -= ICON_WIDTH - 2;
-		}
+	        updateSmallIcons(w);
 	    }
 	}
     }
-    
+
+    private void updateSmallIcons(int wid) {
+        int i = this.getX() + wid - ICON_WIDTH - 2;
+
+        Iterator it = floatingStereotypes.iterator();
+        while (it.hasNext()) {
+            FigImage ficon = (FigImage) it.next();
+            ficon.setLocation(i, this.getBigPort().getY() + 2);
+            i -= ICON_WIDTH - 2;
+        }
+
+        getNameFig().setRightMargin(
+                floatingStereotypes.size() * (ICON_WIDTH + 5));
+    }
+
     /**
      * Replaces {@link #setBoundsImpl(int, int, int, int)}.
      * 
-     * @param x
-     *                Desired X coordinate of upper left corner
-     * 
-     * @param y
-     *                Desired Y coordinate of upper left corner
-     * 
-     * @param w
-     *                Desired width of the FigClass
-     * 
-     * @param h
-     *                Desired height of the FigClass
-     * 
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int,
-     *      int)
+     * @param x Desired X coordinate of upper left corner
+     * @param y Desired Y coordinate of upper left corner
+     * @param w Desired width of the FigClass
+     * @param h Desired height of the FigClass
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     protected void setStandardBounds(final int x, final int y,
             final int w, final int h) {
